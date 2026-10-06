@@ -22,5 +22,5 @@ export function sameSideAsHolder(actor, ctx) {
   return mine !== null && mine == dispositionOf(holder);
 }
 
-registerTag('self:sameSideAsHolder', (rest, ctx) => sameSideAsHolder(ctx?.self, ctx));
-registerTag('target:sameSideAsHolder', (rest, ctx) => sameSideAsHolder(ctx?.other, ctx));
+registerTag('self:sameSideAsHolder', (rest, ctx) => sameSideAsHolder(ctx?.self, ctx), { phrase: ["{who} {is} on its owner's side", "{who} {isnt} on its owner's side"] });
+registerTag('target:sameSideAsHolder', (rest, ctx) => sameSideAsHolder(ctx?.other, ctx), { phrase: ["{who} {is} on its owner's side", "{who} {isnt} on its owner's side"] });

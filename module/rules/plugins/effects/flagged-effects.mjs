@@ -16,8 +16,8 @@ import { escape, listOf, localize, write } from "../shared/copy-and-data-helpers
 
 const flagged = (actor, flag) => listOf(actor?.effects).filter(effect => effect?.flags?.essence20?.[flag]);
 
-registerTag('self:hasEffectFlag', (rest, ctx) => (ctx?.self ? flagged(ctx.self, rest).length > 0 : false));
-registerTag('target:hasEffectFlag', (rest, ctx) => (ctx?.other ? flagged(ctx.other, rest).length > 0 : false));
+registerTag('self:hasEffectFlag', (rest, ctx) => (ctx?.self ? flagged(ctx.self, rest).length > 0 : false), { phrase: ['{who} {has} a {arg} effect', '{who} {hasnt} a {arg} effect'] });
+registerTag('target:hasEffectFlag', (rest, ctx) => (ctx?.other ? flagged(ctx.other, rest).length > 0 : false), { phrase: ['{who} {has} a {arg} effect', '{who} {hasnt} a {arg} effect'] });
 
 registerStep('undoEffect', async (step, ctx) => {
   const [actor] = recipients(step, ctx);

@@ -66,7 +66,12 @@ registerTag('picked', (rest, ctx) => {
   }
 
   return unknown ? null : false;
-}, { family: 'self', param: 'text' });
+}, { family: 'self', param: 'text', phrase: (arg, w) => {
+  const [id, key, ...more] = arg.split(':');
+  const who = `the ${w.humanize(key).toLowerCase()} you picked with ${w.itemName(id)}`;
+  const tags = more.join(':').split('&').filter(Boolean);
+  return tags.length ? [w.facts(tags, who), `no ${w.humanize(key).toLowerCase()} you picked qualifies (${w.facts(tags, 'the one picked')})`] : [`you picked a ${w.humanize(key).toLowerCase()} with ${w.itemName(id)}`, `you haven't picked a ${w.humanize(key).toLowerCase()} with ${w.itemName(id)}`];
+} });
 
 registerTag('target:pickedBy', (rest, ctx) => {
   const [id, key] = String(rest ?? '').split(':');
@@ -75,7 +80,10 @@ registerTag('target:pickedBy', (rest, ctx) => {
   }
 
   return pickedValues(ctx.self, id, key).some(uuid => uuid == ctx.other.uuid);
-});
+}, { phrase: (arg, w) => {
+  const [id, key] = arg.split(':');
+  return [`{who} {is} the ${w.humanize(key).toLowerCase()} you picked with ${w.itemName(id)}`, `{who} {isnt} the ${w.humanize(key).toLowerCase()} you picked with ${w.itemName(id)}`];
+} });
 
 registerTag('target:skillDieAtLeast', (rest, ctx) => {
   if (!ctx?.rolledSkill) {
@@ -84,7 +92,7 @@ registerTag('target:skillDieAtLeast', (rest, ctx) => {
 
   const shift = ctx.other?.system?.skills?.[ctx.rolledSkill]?.shift;
   return !!shift && SKILL_RANKS.indexOf(shift) >= SKILL_RANKS.indexOf(String(rest));
-});
+}, { phrase: ['{poss} rank in the Skill is at least {raw}', '{poss} rank in the Skill is below {raw}'] });
 
 /* The action ledger's reader, filled at setup (tests set it). */
 export const pickHelpers = { getLedger: null };
@@ -97,7 +105,7 @@ globalThis.Hooks?.once?.('setup', async () => {
   }
 });
 
-registerTag('self:costRuleUsed', (rest, ctx) => (Number(pickHelpers.getLedger?.(ctx?.self)?.perkUses?.[rest]) || 0) > 0);
+registerTag('self:costRuleUsed', (rest, ctx) => (Number(pickHelpers.getLedger?.(ctx?.self)?.perkUses?.[rest]) || 0) > 0, { phrase: ['{who} already used {arg} this turn', '{who} {havent} used {arg} this turn'] });
 
 /* -------------------------------------------- */
 /*  endOfNextRoundOrScene                        */

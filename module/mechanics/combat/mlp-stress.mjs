@@ -1,9 +1,8 @@
 /**
  * My Little Pony: Stress.
  *
- * Stress (MLP CRB p.160, "Stress, Essence Loss and Consequences"): "When a character suffers stress,
- * one of two things can happen. They can suffer a point of Health damage, or they can suffer damage
- * to their Essence Scores." So healing Stress heals either; suffering it takes either - the pony
+ * Stress (MLP CRB p.160, "Stress, Essence Loss and Consequences"): a point of stress is either Health
+ * damage or Essence damage. So healing Stress heals either; suffering it takes either - the pony
  * (or the GM) picks which.
  */
 import { num } from "../../items/shared/numbers.mjs";

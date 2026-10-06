@@ -6,11 +6,12 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Might attack on a smaller target (Brutal Might)","when":["attack","item:data:system.classification.skill=might","target:sizeDiff<=-1"],"edge":true}
+      {"type":"RollModifier","label":"Might attack on a smaller target (Brutal Might)","when":["attack","item:data:system.classification.skill=might","target:sizeDiff<=-1"],"edge":true},
+      {"type":"SkillSubstitution","label":"Brawn for Might attacks (Brutal Might)","stage":"attack","from":"might","to":"brawn","mode":"bestOf"}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Might attacks roll Brawn instead. When you're at least one Size Class larger than the target, they get Edge, labelled Brutal Might in the Roll Options Dialog.</p>"
+      "notes": "<p>Automatic: your Might attacks roll Brawn instead when your Brawn is the better die. When you're at least one Size Class larger than the target, they get Edge, labelled Brutal Might in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

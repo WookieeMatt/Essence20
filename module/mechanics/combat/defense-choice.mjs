@@ -13,12 +13,9 @@ export const DEFENSE_BOOST = 5;
 /**
  * Who actually gets to choose which Defense an attack is tested against (Welcome to Night Vale
  * Host Guide's shared Combat Actions chapter, p.33-34, matching every other core rulebook's own
- * identical core-rules text): "Once the Host and Citizen agree on the applicable Defense for the
- * attack, the attacker grabs their appropriate dice..." / "in most cases, the defender chooses
- * the Defense based on how they react to the attack... a character with a higher Toughness may
- * prefer to take a punch to the face, while a character with a higher Evasion will want to dodge
- * out of the way." / "If an attack specifies the Defense it targets, but the target has an
- * ability that dictates the Defense they use, the target's ability takes priority."
+ * identical core rule): the table settles the Defense before the attacker rolls; usually the
+ * defender picks it by how they react (soak it on Toughness, or dodge on Evasion); and a target
+ * ability that sets the Defense beats an attack that names one.
  *
  * Previously, dice.mjs's own Roll Options Dialog pre-filled the weapon's own configured
  * defenseType but then let the ATTACKER'S player freely override it via that same dialog's

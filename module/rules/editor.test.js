@@ -162,7 +162,7 @@ describe('reading it back', () => {
 
   test('tidy drops empties; the preview is the rule\'s summary', () => {
     expect(tidy({ a: undefined, b: {}, c: { d: {} }, e: [undefined, { f: 1 }], g: 0 })).toEqual({ e: [{ f: 1 }], g: 0 });
-    expect(previewLine({ type: 'RollModifier', upshift: 1, when: ['skill:might'], cost: {} })).toBe('↑1 on might tests');
+    expect(previewLine({ type: 'RollModifier', upshift: 1, when: ['skill:might'], cost: {} })).toBe('↑1 on Might tests');
   });
 
   test('every Add starting rule renders', () => {

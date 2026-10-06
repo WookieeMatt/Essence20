@@ -5,8 +5,8 @@ import { recipients, registerStep } from "../../steps.mjs";
 import { escape, localize, write } from "../shared/copy-and-data-helpers.mjs";
 
 /**
- * Round 15 (items2) - step `refundUse {to?, prompt?, message?}` (Delegate's "one additional use of one of their Role
- * Perks or General Perks"): the (first) recipient's spent uses that still count, one picked by the player, is given
+ * Round 15 (items2) - step `refundUse {to?, prompt?, message?}` (Delegate's extra use of one Role or General
+ * Perk): the (first) recipient's spent uses that still count, one picked by the player, is given
  * back - a counted Scene Clock record ({epoch, window, count}, mechanics/resources/scene-clock.mjs) or a this-turn /
  * this-round stamp on its flags, or one of its rule limits (flags.essence20.ruleUses - rules/limits.mjs) still spent in
  * its window. A count above 1 goes down by one; otherwise the record goes. Nothing to give back: `message` (an E20.

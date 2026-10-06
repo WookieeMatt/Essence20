@@ -165,8 +165,7 @@ export function getMutation(weapon) {
 
 /**
  * After an attack with a mutated weapon: the one-shot parts are spent, and a Fumble ends the rest -
- * "This effect lasts until you roll a Fumble with the weapon, at which point the altered
- * ammunition runs out."
+ * the altered ammunition lasts until a Fumble with the weapon.
  * @param {Item} weapon
  * @param {Boolean} fumbled
  */

@@ -4,6 +4,7 @@ import { meleeReach } from "../tags/checks-and-refs.mjs";
 import { recipients, registerStep, runSteps } from "../../steps.mjs";
 import { resolveValue } from "../../formula.mjs";
 import { registerEvent } from "../../types.mjs";
+import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * - Tag `rule:firstOnHost` - the rule's item is the first copy of its book item attached to its host (the weapon or
@@ -21,9 +22,6 @@ import { registerEvent } from "../../types.mjs";
  *   branch, a genuine new Defeat only); `watch` Triggers of other actors hear it (Not On My Watch).
  */
 
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-const itemsOf = actor => actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
-
 /** Whether `item` is the first item of its book entry on its host (by the actor's item order). */
 export function firstOnHost(item) {
   const hostId = item?.flags?.essence20?.parentId;
@@ -36,11 +34,11 @@ export function firstOnHost(item) {
   return !first || first === item || (!!first.id && first.id == item.id);
 }
 
-registerTag('rule:firstOnHost', (rest, ctx) => (ctx?.ruleItem ? firstOnHost(ctx.ruleItem) : null));
+registerTag('rule:firstOnHost', (rest, ctx) => (ctx?.ruleItem ? firstOnHost(ctx.ruleItem) : null), { phrase: ['this is the first copy on its item', "this isn't the first copy on its item"] });
 
 // roll:noEdge - the roll wasn't made with Edge (unknown counts as no Edge; roll:edge answers null then). Menacing Glare's
 // plain Trigger beside its roll:edge one (Terror's Terror for an Edge roll that Frightens).
-registerTag('roll:noEdge', (rest, ctx) => ctx?.edge !== true);
+registerTag('roll:noEdge', (rest, ctx) => ctx?.edge !== true, { phrase: ['without an Edge', 'with an Edge'] });
 
 // target:withinReach -the other party is no farther than this actor's melee Reach (@reach.melee); off the canvas counts
 // as near enough (as target:notBeyond does). Growl's "a creature within reach".
@@ -51,7 +49,7 @@ registerTag('target:withinReach', (rest, ctx) => {
 
   const feet = feetBetween(ctx.self, ctx.other);
   return feet === null || !Number.isFinite(feet) || feet <= meleeReach(ctx.self) + 0.5;
-});
+}, { phrase: ['{who} {is} within your reach', '{who} {isnt} within your reach'] });
 
 const escape = text => String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 

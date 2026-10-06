@@ -3,6 +3,8 @@
  * Foundry globals are only read inside functions.
  */
 
+import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
+
 export function resolve(uuid) {
   try {
     return uuid ? globalThis.fromUuidSync?.(uuid, { strict: false }) ?? null : null;
@@ -13,8 +15,7 @@ export function resolve(uuid) {
 
 export const worldList = collection => collection?.contents ?? (collection ? [...collection] : []);
 export const worldActors = () => worldList(globalThis.game?.actors);
-export const itemsOf = actor => worldList(actor?.items);
-export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
+export { itemsOf, sourceOf };
 
 /** The actor holding an item (a rule's holder). */
 export const holderOf = item => item?.parent ?? item?.actor ?? null;

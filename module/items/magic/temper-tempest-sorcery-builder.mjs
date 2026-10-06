@@ -1,16 +1,11 @@
-import { registerUse } from "../../mechanics/item-hooks.mjs";
-import { FMMC } from "../shared/gm-relayed-item-writes.mjs";
 import { T } from "../shared/item-lang.mjs";
-import { isFrom } from "../shared/item-lookups.mjs";
 import { num } from "../shared/numbers.mjs";
 
 /**
- * Magic: Finster's build-your-own Sorcerous Power (Table 4-1). (Knights of Canterlot's Temper Tempest is the spell's
- * own rules.)
+ * Magic: Finster's build-your-own Sorcerous Power (Table 4-1) - the builder dialog and the Power it makes. The Sorcery
+ * Perk's Use rule runs it (the buildSorcerousPower step, rules/plugins/picks/sorcery-builder-step.mjs). (Knights of
+ * Canterlot's Temper Tempest is the spell's own rules.)
  */
-export const O2_MAGIC = {
-  sorcery: FMMC('xUBOE1s5pgVyUrwj'),
-};
 
 // Thorn Warlord's Acid against Evasion is an outgoing Defense rule on the Perk (rules/conv10-slC10.test.js).
 
@@ -24,7 +19,9 @@ export const O2_MAGIC = {
 /**
  * Finster's Monster-Matic Cookbook, Table 4-1: Sorcerous Power Effect Costs (p.273). The point cost
  * of a Power built from the table's rows; the Power is then created on the Sorcery holder with that
- * cost, which documents/actor.mjs#_prepareSorcerousPower counts against the build budget.
+ * cost, which documents/actor.mjs#_prepareSorcerousPower counts against the build budget. The basic
+ * attacks deal Energy damage; any other type is a change (+1, and +1 damage; Void +2). No Power's cost
+ * drops below 1 (p.272).
  * @param {Object} b   The builder's choices.
  * @returns {Number}
  */
@@ -32,7 +29,7 @@ export function sorceryCost(b) {
   let cost = { targeting: 1, area: 2, mimic: 2, traitAttack: 1, traitArmor: 1 }[b.base] ?? 0;
   if (b.damageType == 'void') {
     cost += 2;
-  } else if (b.damageType && b.damageType != 'element') {
+  } else if (b.damageType && b.damageType != 'energy') {
     cost += 1;
   }
 
@@ -48,13 +45,13 @@ export function sorceryCost(b) {
   cost -= b.focus ? 1 : 0;
   cost -= b.nullified ? 1 : 0;
   cost -= b.resource ? 2 : 0;
-  return Math.max(0, cost);
+  return Math.max(1, cost);
 }
 
 /** The Power Item the choices make. */
 export function sorceryPowerData(b) {
   const attack = ['targeting', 'area'].includes(b.base);
-  const changedType = b.damageType && b.damageType != 'element';
+  const changedType = b.damageType && b.damageType != 'energy';
   const damage = attack ? 1 + num(b.extraDamage) + (changedType && b.damageType != 'void' ? 1 : 0) : 0;
   const range = 30 + (10 * num(b.rangeSteps));
   const shape = b.base == 'area' ? 'emanation' : (b.shape == 'blast' ? 'circle' : (b.shape == 'cone' ? 'cone' : null));
@@ -63,7 +60,7 @@ export function sorceryPowerData(b) {
   const skill = b.ritual && b.ritual != 'none' ? 'performance' : ({ targeting: 'targeting', area: 'culture' }[b.base] ?? 'culture');
   const summary = [
     T(`O2SorceryBase.${b.base}`),
-    attack ? T('O2SorcerySummaryAttack', { damage, type: game.i18n.localize(CONFIG.E20?.damageTypes?.[b.damageType || 'element'] ?? ''), range }) : '',
+    attack ? T('O2SorcerySummaryAttack', { damage, type: game.i18n.localize(CONFIG.E20?.damageTypes?.[b.damageType || 'energy'] ?? ''), range }) : '',
     b.accurate ? T('O2SorceryAccurate') : '',
     num(b.multiple) ? T('O2SorceryMultiple', { n: b.multiple }) : '',
   ].filter(Boolean).join('; ');
@@ -78,7 +75,7 @@ export function sorceryPowerData(b) {
       canActivate: true,
       actionType: b.ritual && b.ritual != 'none' ? 'free' : 'standard',
       attackSkill: attack || b.base == 'mimic' ? skill : null,
-      damageType: attack ? (b.damageType || 'element') : null,
+      damageType: attack ? (b.damageType || 'energy') : null,
       damageValue: damage,
       defenseType: attack ? 'toughness' : null,
       numTargets: 1 + num(b.multiple),
@@ -93,7 +90,7 @@ export function sorceryPowerData(b) {
 }
 
 function sorceryForm() {
-  const types = Object.entries(CONFIG.E20?.damageTypes ?? {}).map(([k, v]) => `<option value="${k}"${k == 'element' ? ' selected' : ''}>${game.i18n.localize(v)}</option>`).join('');
+  const types = Object.entries(CONFIG.E20?.damageTypes ?? {}).map(([k, v]) => `<option value="${k}"${k == 'energy' ? ' selected' : ''}>${game.i18n.localize(v)}</option>`).join('');
   const option = (name, keys) => `<select name="${name}">${keys.map(k => `<option value="${k}">${T(`O2SorceryOpt.${name}.${k}`)}</option>`).join('')}</select>`;
   const numberField = name => `<div class="form-group"><label>${T(`O2SorceryLabel.${name}`)}</label><input type="number" name="${name}" min="0" value="0"/></div>`;
   const check = name => `<div class="form-group"><label>${T(`O2SorceryLabel.${name}`)}</label><input type="checkbox" name="${name}"/></div>`;
@@ -118,32 +115,31 @@ function readForm(form) {
   };
 }
 
-registerUse({
-  id: 'o2SorceryBuilder',
-  matches: isFrom(O2_MAGIC.sorcery),
-  async run(item) {
-    const actor = item.parent;
-    const build = await foundry.applications.api.DialogV2.wait({
-      window: { title: T('O2SorceryTitle') },
-      classes: ["window-app", "e20-window"],
-      content: sorceryForm(),
-      buttons: [
-        { action: 'ok', label: T('O2SorceryCreate'), default: true, callback: (event, button) => readForm(button.form) },
-        { action: 'cancel', label: game.i18n.localize('E20.DialogCancelButton') },
-      ],
-      rejectClose: false,
-    });
-    if (!build || build == 'cancel') {
-      return null;
-    }
+/**
+ * The builder dialog; the Power it describes is created on the actor (a warning when it goes over the Sorcerous budget).
+ * @returns {Promise<String|null>}   The chat line, or null when cancelled.
+ */
+export async function buildSorcerousPower(actor) {
+  const build = await foundry.applications.api.DialogV2.wait({
+    window: { title: T('O2SorceryTitle') },
+    classes: ["window-app", "e20-window"],
+    content: sorceryForm(),
+    buttons: [
+      { action: 'ok', label: T('O2SorceryCreate'), default: true, callback: (event, button) => readForm(button.form) },
+      { action: 'cancel', label: game.i18n.localize('E20.DialogCancelButton') },
+    ],
+    rejectClose: false,
+  });
+  if (!build || build == 'cancel') {
+    return null;
+  }
 
-    const data = sorceryPowerData(build);
-    const sorcerous = actor.system?.powers?.sorcerous ?? {};
-    if (num(sorcerous.committed) + data.system.powerCost > num(sorcerous.max)) {
-      ui.notifications?.warn?.(T('O2SorceryOverBudget', { cost: data.system.powerCost, left: num(sorcerous.max) - num(sorcerous.committed) }));
-    }
+  const data = sorceryPowerData(build);
+  const sorcerous = actor.system?.powers?.sorcerous ?? {};
+  if (num(sorcerous.committed) + data.system.powerCost > num(sorcerous.max)) {
+    ui.notifications?.warn?.(T('O2SorceryOverBudget', { cost: data.system.powerCost, left: num(sorcerous.max) - num(sorcerous.committed) }));
+  }
 
-    await actor.createEmbeddedDocuments('Item', [data]);
-    return T('O2SorceryBuilt', { name: actor.name, power: data.name, cost: data.system.powerCost });
-  },
-});
+  await actor.createEmbeddedDocuments('Item', [data]);
+  return T('O2SorceryBuilt', { name: actor.name, power: data.name, cost: data.system.powerCost });
+}

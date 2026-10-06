@@ -1,6 +1,7 @@
 // Rules-engine plug-ins, round 17 (split1 - docs/rules-batches/slSplit117.md): the @tokensHolding reference.
 // Registered on import; see module/rules/plugins/index.mjs. Plain Node safe (reads the canvas only when asked).
 import { registerRef } from "../../formula.mjs";
+import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * `@tokensHolding.<16-character compendium id>.<feet>` - how many OTHER tokens in the viewed scene, of any side, stand
@@ -8,9 +9,6 @@ import { registerRef } from "../../formula.mjs";
  * an item from that compendium entry (any printing - the id is the uuid's last part). 0 off the canvas. Colony
  * Changeling: `min(3, @tokensHolding.FRUWPAePJzm7Mlf0.5)` more Evasion.
  */
-
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-const itemsOf = actor => actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
 
 /** Whether the actor holds an item from the compendium entry with that id. */
 function holds(actor, id) {

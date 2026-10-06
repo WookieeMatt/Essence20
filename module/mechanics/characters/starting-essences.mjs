@@ -2,8 +2,7 @@
  * The Essence points a player character spends at creation, before the Origin (+1) and the Role
  * (+3) add theirs. The same in every line's core rulebook: 12 points over the four Essences.
  *
- *   Transformers CRB p.24 - "12 Essence Points ... at least 1 point in each Essence Score ...
- *                            can't increase an Essence Score above 15"
+ *   Transformers CRB p.24 - 12 Essence Points, at least 1 in each Essence, none above 15
  *   GI Joe CRB p.37, Power Rangers CRB p.19, My Little Pony CRB p.24 - 12 points, no limits
  *                            printed (MLP: "generally ranges between 1-10"); Transformers' are
  *                            used, as the only ones any of these books states

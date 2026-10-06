@@ -32,8 +32,7 @@ export function requisitionSkill(item) {
  *   - A weapon has NO field corresponding to CONFIG.E20.weaponTypes. Its `classification`
  *     holds only `size`, so nothing on the item says whether it is an assaultRifle, a
  *     silent weapon, a finesse weapon, and so on - the very keys system.trained.weapons is
- *     keyed by. The CRB says training "usually indicates an element of the Classification
- *     or one of its traits", so closing this needs a real weaponType (or a trait mapping)
+ *     keyed by. The CRB says training usually names part of the Classification or a trait, so closing this needs a real weaponType (or a trait mapping)
  *     on the weapon Item plus data entry across the compendia.
  *   - Armor DOES carry `classification`, but CONFIG.E20.armorClassifications is only
  *     non/light/medium/heavy/ultraHeavy - a subset of the eight armorTypes the character

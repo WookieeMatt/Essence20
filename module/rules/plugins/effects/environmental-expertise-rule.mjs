@@ -24,7 +24,7 @@ registerRuleType('EnvironmentalExpertise', { params: { shareEnvironments: { kind
  */
 export const expertiseHelpers = { inEnvironment: null, terrainOf: null };
 
-registerTag('self:inExpertiseTerrain', (rest, ctx) => expertiseHelpers.inEnvironment?.(ctx?.self) === true);
+registerTag('self:inExpertiseTerrain', (rest, ctx) => expertiseHelpers.inEnvironment?.(ctx?.self) === true, { phrase: ['{who} {is} in an environment of expertise', '{who} {isnt} in an environment of expertise'] });
 
 /**
  * self:onHolderExpertiseTerrain - the terrain where this actor stands (a vehicle) is one of the rule holder's
@@ -33,7 +33,7 @@ registerTag('self:inExpertiseTerrain', (rest, ctx) => expertiseHelpers.inEnviron
 registerTag('self:onHolderExpertiseTerrain', (rest, ctx) => {
   const terrain = expertiseHelpers.terrainOf?.(ctx?.self) ?? null;
   return !!terrain && !!ctx?.holder && expertiseHelpers.inEnvironment?.(ctx.holder, terrain) === true;
-});
+}, { phrase: ["{who} {is} in one of its owner's environments of expertise", "{who} {isnt} in one of its owner's environments of expertise"] });
 
 /** Every EnvironmentalExpertise rule reaching the actor: its own (self scope), then linked ones, with their holder. */
 function entriesFor(actor) {

@@ -1,7 +1,7 @@
 import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
-// Hot To Trot (Knights of Canterlot, Elementary Enchantment spell, p.43): "This warmth increases
-// the pony's speed, allowing them to move 15ft further with each Movement action" for the spell's
+// Hot To Trot (Knights of Canterlot, Elementary Enchantment spell, p.43): +15ft on each Movement
+// action for the spell's
 // 1-scene duration. A flat on/off flag on whichever actor was targeted by the cast (read directly
 // in documents/actor.mjs#_prepareMovement, the same generic per-actor flag shape Fluttery
 // Wings/Lightning Speed already established for their own MLP CRB movement spells) - "1 scene" now

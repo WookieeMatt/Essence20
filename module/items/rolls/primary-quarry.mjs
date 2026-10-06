@@ -1,9 +1,7 @@
 /**
- * Primary Quarry (Decepticon Directive, Tracker Focus, 1st level, p.55): "You may choose a single
- * creature... to make your Primary Quarry by spending 1 hour studying information about them or
- * researching their travels. You gain [up 1] on Skill Tests to track and find your Primary
- * Quarry, whether or not they are in the scene. The bonus from Mark Target stacks with this bonus
- * if you designate your Primary Quarry at the beginning of a scene as your mark."
+ * Primary Quarry (Decepticon Directive, Tracker Focus, 1st level, p.55): an hour of research makes
+ * one creature the Quarry; ↑1 on tests to track and find it, in the scene or not, stacking with Mark
+ * Target when the Quarry is also the scene's mark.
  *
  * Same "plain designation flag + a Use button" shape as items/rolls/mark-target.mjs's own
  * MARK_TARGET_FLAG - the 1-hour research cost is unenforced narrative (this project's own
@@ -32,9 +30,8 @@ export function checkPrimaryQuarry(actor, target) {
     return false;
   }
 
-  // Secondary Mark (Decepticon Directive, Tracker, 10th level, p.56): "you can choose two creatures
-  // to be your Primary Quarry with the same hour of research. Both creatures count as your Primary
-  // Quarry for your Tracker Focus Perks." The second is set with that Perk's Use button
+  // Secondary Mark (Decepticon Directive, Tracker, 10th level, p.56): one hour of research sets two
+  // Quarries, both counting for the Tracker Focus Perks. The second is set with that Perk's Use button
   // (mechanics/combat/target-riders.mjs).
   return actor?.getFlag?.('essence20', PRIMARY_QUARRY_FLAG) == target.uuid
     || (actor?.getFlag?.('essence20', 'secondaryQuarryUuid') == target.uuid

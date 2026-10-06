@@ -130,8 +130,8 @@ E20.weaponRequirementShifts = {
 };
 
 // The Weapon requirement shifts as an ordered ladder, lowest to highest, used to step a
-// requirement down "one die" for a weapon installed in an Integrated Hardpoint (TF CRB p.114:
-// "lower their Brawn requirements (if any) by one die (a requirement of d4 Brawn becomes d2)").
+// requirement down one die for a weapon installed in an Integrated Hardpoint (TF CRB p.114: a d4
+// Brawn requirement becomes d2, and so on).
 E20.weaponRequirementShiftLadder = ["none", "d2", "d4", "d6", "d8", "d10", "d12", "2d8", "3d6"];
 
 // Options for Weapon size
@@ -249,8 +249,7 @@ E20.weaponTraits = {
   sniper: "E20.WeaponTraitSniper",
   sonic: "E20.WeaponTraitSonic",
   // Sorcerous (Finster's Monster-Matic Cookbook, Building an Enchanted Item or Focus, p.276):
-  // "If the magical focus is integrated into a piece of armor or a weapon, that equipment gains
-  // the Sorcerous trait." Table 4-1 (p.275) also lets a built Sorcerous Power spend a point to add
+  // armor or a weapon with a magical focus built in carries the Sorcerous trait. Table 4-1 (p.275) also lets a built Sorcerous Power spend a point to add
   // this trait to any attack/armor directly. Purely a descriptive marker (no existing weapon trait
   // triggers dice.mjs logic on its own name) - same "label only, GM/player self-tracks the fictional
   // permission it grants" shape as e.g. 'tool' or 'obfuscated' above.
@@ -497,9 +496,8 @@ E20.standardSpecializations = {
     finesse: ["Martial Arts", "Sharp Weaponry", "Throwing"],
     infiltration: ["Burglary", "Sleight of Hand", "Shadowing", "Stealth"],
     // "Weapon Type" (GI Joe CRB p.117) isn't itself a pick - it's mastery with one particular
-    // weapon family, "such as pistols, submachine guns, shotguns, assault rifles, sniper rifles,
-    // and other weapon types found in Chapter 8: Equipment. This can be taken multiple times,
-    // once for each weapon family" - so it's expanded here into the book's own named families
+    // weapon family (pistols, SMGs, shotguns and so on from the Equipment chapter), takeable once
+    // per family - so it's expanded here into the book's own named families
     // rather than left as one vague catalog entry a player couldn't actually specialize with.
     targeting: [
       "Archery", "Martial Arts", "Throwing", "Vehicle",
@@ -794,9 +792,8 @@ E20.actionTypes = {
   free: "E20.ActionTypeFree",
   fullAction: "E20.ActionTypeFullAction",
   move: "E20.ActionTypeMove",
-  // The Contingency action (GI Joe CRB, p.196): "making your character ready to do something when
-  // something else occurs... a predetermined action after your place in the Initiative order, but
-  // before the start of your next turn." This is Essence20's readied/interrupt mechanism, and it
+  // The Contingency action (GI Joe CRB, p.196): a prepared action that goes off on a named trigger,
+  // after the character's own Initiative slot and before their next turn. This is Essence20's readied/interrupt mechanism, and it
   // is a STANDARD action - there is no separate reaction resource anywhere in the rules. Listed
   // separately from plain 'standard' because several Perks change its cost specifically (Vigilance
   // p.110 and Not Getting Away That Easy p.98 both allow "a Contingency action as a Free action").
@@ -855,17 +852,16 @@ E20.actionTypeCosts = {
    the cost and decrement a pip by hand with no record of what it went on.
 
    Standard actions are Attack, Contingency, Defend, Hide, Lend Assistance, Search the Area, Use
-   a Skill and Sprint (GI Joe CRB p.192). Commanding a pet is also a Standard action - "Commanding
-   an animal pet requires a Handle Animal Skill Test as a Standard action" (p.164) - and is listed
+   a Skill and Sprint (GI Joe CRB p.192). Commanding a pet is also a Standard action (an Animal
+   Handling test, p.164) - and is listed
    because two Perks re-cost it and would otherwise have nothing to point at.
 
    `type` is a key of actionTypeCosts, so the cost lives in one place: Contingency stays a
    Standard action here exactly as it is there. Only labels are stored, never rule text. */
 E20.namedActions = {
   attack: { label: 'E20.ActionAttack', type: 'standard' },
-  // Aiming is a Free action and can be taken more than once: "you can choose to ignore one of
-  // the target's Armor Upgrades for each Free action you spend Aiming" (TF CRB), and GI Joe CRB
-  // p.133 speaks of "when you Aim as a Free action".
+  // Aiming is a Free action and can be taken more than once: the TF CRB lets each Free action of
+  // Aiming ignore one of the target's Armor Upgrades, and GI Joe CRB p.133 treats Aim as a Free action.
   aim: { label: 'E20.ActionAim', type: 'free' },
   contingency: { label: 'E20.ActionContingency', type: 'contingency' },
   defend: { label: 'E20.ActionDefend', type: 'standard' },
@@ -874,11 +870,11 @@ E20.namedActions = {
   searchTheArea: { label: 'E20.ActionSearchTheArea', type: 'standard' },
   useASkill: { label: 'E20.ActionUseASkill', type: 'standard' },
   sprint: { label: 'E20.ActionSprint', type: 'standard' },
-  // Push/Shove (GI Joe CRB p.118, PR CRB p.110): "they must spend a Standard action to do so when they
-  // are adjacent" - mechanics/combat/target-riders.mjs#rollShove.
+  // Push/Shove (GI Joe CRB p.118, PR CRB p.110): a Standard action against an adjacent target -
+  // mechanics/combat/target-riders.mjs#rollShove.
   shove: { label: 'E20.ActionShove', type: 'standard' },
-  // Bracing (GI Joe CRB p.194): "You can brace yourself for an automatic weapon's kickback as a Move
-  // action. Bracing grants a ↑1 shift when attacking multiple targets with a ranged weapon."
+  // Bracing (GI Joe CRB p.194): a Move action against an automatic weapon's kickback; ↑1 on a ranged
+  // attack at multiple targets.
   brace: { label: 'E20.ActionBrace', type: 'move' },
   // Drawing or stowing a weapon. "the usual Move action" (Cobra Codex, Heavy Holster, p.100) - the
   // cost Heavy Holster, Sling and Quick Draw each make cheaper.
@@ -1102,8 +1098,8 @@ E20.damageTypes = {
   // actually match those existing checks against a real schema choice for the first time, rather
   // than leaving 'emp' a value no weaponEffect's damageType field could ever actually be set to.
   emp: "E20.DamageEmp",
-  // Essence damage (GI Joe CRB p.207, TF CRB p.161): "Some attacks and effects don't damage your
-  // Health, they reduce your Essence Scores." Each key names which Essence it takes from - see
+  // Essence damage (GI Joe CRB p.207, TF CRB p.161): some attacks lower Essence Scores rather than
+  // Health. Each key names which Essence it takes from - see
   // E20.essenceDamageTypes below and mechanics/combat/essence-attack.mjs, which the Apply Damage button
   // routes these to instead of Health.
   essenceStrength: "E20.DamageEssenceStrength",
@@ -1158,10 +1154,10 @@ E20.essenceDamageTypes = {
 };
 
 // The concrete, choosable sub-types of the Element damage-type family (Weapon Effects and Traits:
-// "you must first choose the type of element the weapon uses") - the same 7 keys
+// an Element weapon picks its element) - the same 7 keys
 // mechanics/combat/combat.mjs#ENERGY_DAMAGE_TYPES matches against, minus the generic 'element' catch-all
-// itself (an unspecified type isn't something a Perk like A Jump Through Time's own "Adapted
-// Wavelength" - "choose a single type of Element damage" - could sensibly protect against).
+// itself (an unspecified type isn't something a Perk like A Jump Through Time's own Adapted
+// Wavelength - one chosen Element type - could sensibly protect against).
 E20.elementDamageTypes = {
   acid: "E20.DamageAcid",
   cold: "E20.DamageCold",
@@ -1173,8 +1169,8 @@ E20.elementDamageTypes = {
 };
 preLocalize("elementDamageTypes");
 
-// Stone Warlord (Finster's Monster-Matic Cookbook, Path of Stone, 20th level, p.297) - "Add an
-// additional Damage type to your Numbness list." RAW names no specific type, unlike
+// Stone Warlord (Finster's Monster-Matic Cookbook, Path of Stone, 20th level, p.297) - one more
+// damage type on the Numbness list. RAW names no specific type, unlike
 // elementDamageTypes' own scoped Element sub-types above - this is Numbness's own curated list of
 // genuine damage types (excluding E20.damageTypes' own non-damage Alternate-Effect/Condition
 // entries like frightened/grapple/spot, which a Resistance grant wouldn't sensibly apply to).
@@ -1203,15 +1199,14 @@ preLocalize("stoneWarlordDamageTypes");
 // one named Element sub-type) - each option's key encodes both which half it is AND which specific
 // Defense/damage type, since a single Perk instance's system.choice can only hold one value.
 // Electromagnetic Disruption (Technorganic Secrets, Technorganic Influence Perks, p.47,
-// prerequisite: Mutant Beast Influence): "choose one of your Alt Modes to gain one of the
-// following abilities: (1) once per day, send a 15ft electromagnetic pulse dealing 1
-// Electromagnetic damage and 1 Stun to non-organic opponents within range; (2) once per scene,
-// give one of your natural weapons the Electromagnetic trait for 2d2 rounds." Only option 1 is
+// prerequisite: Mutant Beast Influence): one Alt Mode gets either (1) a daily 15ft pulse, 1
+// Electromagnetic damage and 1 Stun to non-organic foes in range, or (2) once a scene, the
+// Electromagnetic trait on a natural weapon for 2d2 rounds. Only option 1 is
 // built (see items/attacks/electromagnetic-disruption.mjs) - option 2 needs the same temporary
 // weapon-trait-mutation mechanism already blocking the item-grant/equipment-mutation cluster
-// generally. "Which Alt Mode" isn't scoped - applies regardless of current Alt Mode, the same
+// generally. Which Alt Mode isn't scoped - applies regardless of current Alt Mode, the same
 // accepted simplification this project already uses for every other unenforceable narrative
-// qualifier. "Non-organic opponents" is dropped too - applies to any nearby enemy.
+// qualifier. The non-organic limit is dropped too - applies to any nearby enemy.
 E20.electromagneticDisruptionOptions = {
   pulse: "E20.ElectromagneticDisruptionPulse",
   weaponTrait: "E20.ElectromagneticDisruptionWeaponTrait",
@@ -1233,9 +1228,8 @@ E20.defensiveFlexibilityOptions = {
 };
 preLocalize("defensiveFlexibilityOptions");
 
-// Spared No Expense (Ferocious Fighters, Dino-Hunters Faction Perk, p.73): "Choose one of the
-// following Skills: Animal Handling, Infiltration, or Survival. You gain ↑1 on Skill Tests of your
-// chosen Skill." A dedicated, narrowly-scoped choiceType (rather than reusing the generic 'skills'
+// Spared No Expense (Ferocious Fighters, Dino-Hunters Faction Perk, p.73): ↑1 on one of Animal
+// Handling, Infiltration or Survival, picked once. A dedicated, narrowly-scoped choiceType (rather than reusing the generic 'skills'
 // choiceType, which offers every skill in the game) since RAW explicitly restricts the choice to
 // these 3 - same "a small option table for a narrow specific list" idiom elementDamageTypes above
 // already established.
@@ -1246,9 +1240,8 @@ E20.sparedNoExpenseSkills = {
 };
 preLocalize("sparedNoExpenseSkills");
 
-// Roaming the Land (Ferocious Fighters, Mega Monsters Faction Perk, p.75): "Choose to deal either
-// +1 damage with melee attacks targeting smaller creatures or +1 Stun with melee attacks targeting
-// larger creatures." A permanent, one-time pick (unlike Grid Surge's own pick-fresh-each-use
+// Roaming the Land (Ferocious Fighters, Mega Monsters Faction Perk, p.75): +1 melee damage on
+// smaller creatures, or +1 melee Stun on larger ones. A permanent, one-time pick (unlike Grid Surge's own pick-fresh-each-use
 // shape) - same "no numeric field of its own, read directly off system.choice" idiom as
 // sparedNoExpenseSkill/elementDamageType above.
 E20.roamingTheLandOptions = {
@@ -1257,8 +1250,8 @@ E20.roamingTheLandOptions = {
 };
 preLocalize("roamingTheLandOptions");
 
-// Community Helper (PR CRB, Influence Perk, p.68): "You gain an Edge on any non-combat tasks
-// related to your chosen service." Table 5-3.1's own 4-option Skill mapping (EMT/Firefighter/
+// Community Helper (PR CRB, Influence Perk, p.68): Edge on non-combat tasks tied to the chosen
+// service. Table 5-3.1's own 4-option Skill mapping (EMT/Firefighter/
 // Police Officer/National Guard) - a dedicated narrow choiceType (rather than the generic 'skills'
 // picker, which offers every Skill in the game), same "small option table for a narrow specific
 // list" idiom sparedNoExpenseSkills/roamingTheLandOptions above already establish. Keyed directly
@@ -1273,8 +1266,7 @@ E20.communityHelperSkills = {
 preLocalize("communityHelperSkills");
 
 // Two-Handed Assault (Factions in Action Vol. 2, Silent Weapons Expert Focus, 3rd level, p.12):
-// "choose to gain either ↑1 on Attacks with two light Silent Martial Arts weapons... or ↑1 on
-// Attacks with two-handed Silent Martial Arts weapons." A permanent, one-time pick determining
+// ↑1 on Attacks with a pair of light Silent Martial Arts weapons, or with a two-handed one. A permanent, one-time pick determining
 // which weapon-handedness configuration the manual Roll Options Dialog checkbox (same "no dual-
 // wielding/hand-tracking concept exists, so this is a self-declared toggle" idiom Akimbo's own
 // identical checkbox already establishes) checks against.
@@ -1284,9 +1276,8 @@ E20.twoHandedAssaultOptions = {
 };
 preLocalize("twoHandedAssaultOptions");
 
-// Vicious or Venom (Technorganic Secrets, Saurian Origin Benefit, p.43): "choose one of the
-// following benefits to add to your natural weapon attacks: Acidic Saliva (+1 Acid damage) /
-// Razor-Sharp (+1 Sharp damage) / Venomous (+1 Poison damage)." A distinct 3-option set from
+// Vicious or Venom (Technorganic Secrets, Saurian Origin Benefit, p.43): natural weapons get +1 Acid,
+// +1 Sharp or +1 Poison damage, picked once. A distinct 3-option set from
 // elementDamageTypes above - Sharp isn't an Element sub-type at all, and RAW doesn't offer every
 // Element option here, just these 3 specific ones.
 E20.viciousOrVenomOptions = {
@@ -1296,10 +1287,10 @@ E20.viciousOrVenomOptions = {
 };
 preLocalize("viciousOrVenomOptions");
 
-// Tooth and Claw (Decepticon Directive, Monstrosity Origin Benefit, p.38): "In your Alt Mode, your
-// Unarmed Attacks... inflict Sharp or Blunt damage (based on the attack)." Same "no numeric field
-// of its own, read directly off system.choice" shape as viciousOrVenomOptions above - "based on
-// the attack" is simplified to one fixed choice made when the Perk is taken, the same
+// Tooth and Claw (Decepticon Directive, Monstrosity Origin Benefit, p.38): Alt Mode Unarmed Attacks
+// deal Sharp or Blunt, depending on the attack. Same "no numeric field
+// of its own, read directly off system.choice" shape as viciousOrVenomOptions above - the
+// per-attack choice is simplified to one fixed choice made when the Perk is taken, the same
 // simplification Adapted Wavelength's own fixed per-instance Element choice already establishes.
 E20.toothAndClawOptions = {
   sharp: "E20.DamageSharp",
@@ -1307,8 +1298,8 @@ E20.toothAndClawOptions = {
 };
 preLocalize("toothAndClawOptions");
 
-// Energy Connection (Decepticon Directive, Elementalist Focus, 10th level, p.53): "choose one of
-// the following: Additional Energy Types / Deepen Connection." Only Deepen Connection's own
+// Energy Connection (Decepticon Directive, Elementalist Focus, 10th level, p.53): a pick between
+// Additional Energy Types and Deepen Connection. Only Deepen Connection's own
 // mechanical benefit is built (see items/attacks/energy-affinity.mjs's own doc comment on
 // DEEPEN_CONNECTION for why Additional Energy Types' Resistance grant isn't) - the choice itself
 // still offers both named options, same "no numeric field of its own, read directly off
@@ -1319,9 +1310,9 @@ E20.energyConnectionOptions = {
 };
 preLocalize("energyConnectionOptions");
 
-// Over the Candlestick (Technorganic Secrets, Climber/Nimble Origin Benefit, p.38): "choose one:
-// Agile Reflexes (once/scene, use Evasion instead of Toughness when targeted) / Innate Climber
-// (+40ft Climb Movement in Alt Mode)."
+// Over the Candlestick (Technorganic Secrets, Climber/Nimble Origin Benefit, p.38): a pick between
+// Agile Reflexes (once a scene, Evasion for a targeted Toughness) and Innate Climber (+40ft Climb in
+// Alt Mode).
 E20.overTheCandlestickOptions = {
   agileReflexes: "E20.OverTheCandlestickAgileReflexes",
   innateClimber: "E20.OverTheCandlestickInnateClimber",
@@ -1602,7 +1593,7 @@ E20.perkChoiceTypes = {
 preLocalize("perkChoiceTypes");
 
 // GI Joe CRB p.104 - the 3 skills Technician/Expert Focus's Field Perk can be chosen from
-// ("choose a Culture, Science, or Technology Specialization... This is your Field" - see
+// (a Culture, Science or Technology Specialization picked as the character's Field - see
 // perk-handler.mjs's 'field' choiceType). Not a distinct set of options from E20.skills, just a
 // restricted view of it - Eureka/Expert in Your Field (both gated on this same choice) read the
 // stored skill key directly off system.choice, same as Fighting Style already does.
@@ -1718,8 +1709,7 @@ E20.rerollResets = {
   none: "E20.RerollResetNone",
   scene: "E20.RerollResetScene",
   day: "E20.RerollResetDay",
-  // Transformers CRB p.? "Veteran" (General Perk): "Three times per MISSION, you can reroll a
-  // d20 on a Skill Test" - a mission is this game line's own encounter-spanning session unit,
+  // Transformers CRB p.? "Veteran" (General Perk): three d20 rerolls per MISSION - a mission is this game line's own encounter-spanning session unit,
   // distinct from a single scene. There's no existing "current mission" concept anywhere else in
   // this codebase to key off, so this reset bucket falls back to a manual GM-cleared flag - see
   // mechanics/rolls/reroll.mjs's own getRerollResetBucket for the "no automatic boundary" caveat.
@@ -1730,8 +1720,8 @@ E20.rerollResets = {
   // is then null) shares one bucket rather than being unlimited, since "once per combat" implies
   // this is meant to apply during one.
   combat: "E20.RerollResetCombat",
-  // A Jump Through Time p.47 "Quantum Master": "Once per turn, you may reroll a single Skill die
-  // result of 1... you must accept the second result." Scoped even narrower than "combat" above -
+  // A Jump Through Time p.47 "Quantum Master": once a turn, reroll one Skill die showing 1 and keep
+  // the new result. Scoped even narrower than "combat" above -
   // bucketed on the specific combatant-turn (game.combat's own id/round/turn triple, the exact
   // identity mechanics/characters/perks.mjs#hasUsedThisTurn/markUsedThisTurn already key their own once-per-
   // turn flags on) rather than the whole encounter. Outside an active Combat, shares one bucket,
@@ -1778,8 +1768,8 @@ E20.rerollConditions = {
   // outcome (rollContext.isFumble, dice.mjs#_isCritIsFumble) - distinct from this codebase's own
   // unrelated shift-based "fumble" auto-fail tier.
   fumble: "E20.RerollConditionFumble",
-  // Across the Stars "Destiny" (Influence Perk, p.45): "...the result on your d20 is a lower
-  // value than the maximum that could be rolled on your smallest Skill die..." Checked against
+  // Across the Stars "Destiny" (Influence Perk, p.45): the d20 came up below the top face of the
+  // character's smallest Skill die. Checked against
   // the triggering roll's own raw d20 result (rollContext.d20Result, the base term's own total
   // before Edge/Snag selection matters - there's always exactly one d20 term) versus the actor's
   // current lowest-faced trained Skill die (d2-d12; d20 itself, an untrained skill's default, has
@@ -1788,27 +1778,25 @@ E20.rerollConditions = {
   // default). The only numeric-threshold reroll condition in this set - every other entry here is
   // a plain boolean state check.
   belowSmallestSkillDie: "E20.RerollConditionBelowSmallestSkillDie",
-  // GI Joe CRB "Survivalist" (Focus: Predator, 17th level, p.94): "in your environment of
-  // expertise, reroll all skill dice results of 1..." Checked against
+  // GI Joe CRB "Survivalist" (Focus: Predator, 17th level, p.94): in the environment of expertise,
+  // reroll every Skill die showing 1. Checked against
   // mechanics/world/environmental-expertise.mjs#hasActiveEnvironmentalExpertise (the scene's terrain when
   // set, else the manual toggle), the same check Environmental Armor/Prowl/Recon read for their
   // own in-environment bonuses.
   inEnvironmentOfExpertise: "E20.RerollConditionInEnvironmentOfExpertise",
-  // A Jump Through Time "Focused Strike" (Quantum Ranger, 9th level, p.46): "When you make an
-  // Unarmed Attack, you can spend one Personal Power to re-roll..." Checked against the
+  // A Jump Through Time "Focused Strike" (Quantum Ranger, 9th level, p.46): a Personal Power buys a
+  // reroll on an Unarmed Attack. Checked against the
   // triggering roll's own context (rollContext.isUnarmedAttack, dice.mjs's own
   // "no parent weapon" proxy for unarmed - the same shape Empty Hands/Randori Master already use
   // elsewhere in dice.mjs), the same "computed there, read here" idiom as powerWeapon/
   // smallerTarget above.
   unarmedAttack: "E20.RerollConditionUnarmedAttack",
-  // Decepticon Directive "Homing Shots" (Cannonade Focus, 10th level, p.46): "you may reroll any
-  // single die that is part of a ranged attack using a weapon with the Consumable or Wrecker
-  // trait." Checked against the triggering roll's own context (rollContext
+  // Decepticon Directive "Homing Shots" (Cannonade Focus, 10th level, p.46): reroll one die of a
+  // ranged attack with a Consumable or Wrecker weapon. Checked against the triggering roll's own context (rollContext
   // .isConsumableOrWreckerRangedAttack, dice.mjs), the same "computed there, read here" shape as
   // isPowerWeaponAttack/isUnarmedAttack above.
   consumableOrWreckerRangedAttack: "E20.RerollConditionConsumableOrWreckerRangedAttack",
-  // Decepticon Directive "Metallikato" (General Perk, p.66): "When in Bot Mode ... melee attacks you
-  // make in the same turn." A melee attack (rollContext.isMeleeAttack) while not Transformed.
+  // Decepticon Directive "Metallikato" (General Perk, p.66): Bot Mode melee attacks that turn. A melee attack (rollContext.isMeleeAttack) while not Transformed.
   botModeMelee: "E20.RerollConditionBotModeMelee",
 };
 preLocalize("rerollConditions");
@@ -2004,9 +1992,8 @@ E20.statusEffects = [
     changes: [],
   },
   {
-    // Ice Flechettes (Finster's Monster-Matic Cookbook, Path of Frost, 9th level, p.293): "On a
-    // Critical Success, the target loses all Defense bonuses provided by armor until the end of
-    // their next turn." Unlike most Conditions here, this one IS mechanically enforced - see
+    // Ice Flechettes (Finster's Monster-Matic Cookbook, Path of Frost, 9th level, p.293): a Critical
+    // Success strips the target's armor Defense bonuses until the end of its next turn. Unlike most Conditions here, this one IS mechanically enforced - see
     // getDefenseValue's own comment in mechanics/combat/combat.mjs for how it forces ignoreArmor on
     // whichever Defense is being computed for a target carrying it. Icon: Font Awesome Free
     // "shield-halved" (CC BY 4.0, credit kept in the SVG).
@@ -2183,8 +2170,8 @@ E20.statusEffects = [
     name: 'E20.StatusAltMode',
     changes: [],
   },
-  // Poisoned (WTNV Citizen's Guide - Pet Venom Adaptation, p.47: "gain an Edge on Brawn Skill Tests
-  // to overcome the Poisoned Condition"). A marker the Host applies and removes.
+  // Poisoned (WTNV Citizen's Guide - Pet Venom Adaptation, p.47: Edge on Brawn tests to shake off
+  // Poisoned). A marker the Host applies and removes.
   {
     img: 'icons/svg/poison.svg',
     id: 'poisoned',
@@ -2229,11 +2216,9 @@ E20.statusEffects = [
     changes: [],
   },
   {
-    // Surprise (GI Joe CRB, Combat chapter): "any creature that doesn't or cannot notice a
-    // possible threat is considered surprised at the start of the combat scene. These creatures
-    // still roll their initiative as usual, but on the surprise round (the first round of the
-    // conflict), they cannot take any actions (including Standard, Move, or Free actions) and
-    // cannot roll Skill Tests, except contested Skill Tests."
+    // Surprise (GI Joe CRB, Combat chapter): a creature that fails to notice a threat starts the
+    // combat Surprised - it rolls Initiative as normal but, in the first round, takes no actions of
+    // any kind and rolls no Skill Tests except contested ones.
     //
     // Added 2026-09-15. Its absence was the single most-cited blocker in this system after action
     // economy - five separate Perks across four books were filed as unbuildable solely because
@@ -2242,7 +2227,7 @@ E20.statusEffects = [
     //
     // The action-zeroing half is now enforced (documents/actor.mjs#_prepareActions, alongside
     // Security and Unsurprising's own exceptions to it) now that the action economy exists to
-    // gate against. The "cannot roll Skill Tests, except contested ones" half is still a marker
+    // gate against. The no-Skill-Tests-but-contested-ones half is still a marker
     // only - dice.mjs has no generic "which Skill Tests are contested" concept to hang a block on.
     // What the marker unlocks either way: immunity to it, and Perks that key off a target having it.
     img: 'systems/essence20/assets/icons/status_effects/status_surprised.svg',
@@ -2251,9 +2236,8 @@ E20.statusEffects = [
     changes: [],
   },
   {
-    // "A target completely concealed by an obstacle or much larger creature is considered as
-    // having Total Cover. A target with Total Cover can't be targeted directly, although some
-    // special attacks may mitigate or eliminate this protection" (p.202) - the "can't be targeted"
+    // Total Cover (p.202): fully hidden behind an obstacle or a much bigger creature, the target
+    // can't be attacked directly, though some special attacks get round it - the no-direct-attack
     // half isn't enforced as a hard block (nothing else in this system's automatic combat
     // modifiers hard-blocks a roll, and the book itself treats it as overridable), so this status
     // gets the same automatic -2 as Cover instead - see dice.mjs#_getAutomaticCombatModifiers.

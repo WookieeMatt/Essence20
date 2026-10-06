@@ -173,7 +173,10 @@ registerRecipient(/^markedByMe:([\w-]+)$/, (match, ctx) => {
 registerTag('self:limitUsed', (rest, ctx) => {
   const [key, per = 'turn'] = String(rest).split(':');
   return ctx.self && key ? usesInWindow(ctx.self, key, per) > 0 : null;
-});
+}, { phrase: (arg, w) => {
+  const [key, per = 'turn'] = arg.split(':');
+  return [`${w.humanize(key)} was used this ${per}`, `${w.humanize(key)} hasn't been used this ${per}`];
+} });
 
 /** The attack card the GM last applied, when it was applied to this actor (no target recorded counts too). */
 function appliedTo(actor) {
@@ -181,8 +184,8 @@ function appliedTo(actor) {
   return applied && (!applied.targetUuid || !actor?.uuid || applied.targetUuid == actor.uuid) ? applied : null;
 }
 
-registerTag('damage:attack', (rest, ctx) => (ctx.damageAmount === undefined && ctx.damageType === undefined ? null : !!appliedTo(ctx.self)?.isAttack));
-registerTag('damage:melee', (rest, ctx) => (ctx.damageAmount === undefined && ctx.damageType === undefined ? null : !!appliedTo(ctx.self)?.isMelee));
+registerTag('damage:attack', (rest, ctx) => (ctx.damageAmount === undefined && ctx.damageType === undefined ? null : !!appliedTo(ctx.self)?.isAttack), { phrase: ['the damage came from an attack', "the damage didn't come from an attack"] });
+registerTag('damage:melee', (rest, ctx) => (ctx.damageAmount === undefined && ctx.damageType === undefined ? null : !!appliedTo(ctx.self)?.isMelee), { phrase: ['the damage came from a melee attack', "the damage didn't come from a melee attack"] });
 
 registerEvent('patchedUp');
 

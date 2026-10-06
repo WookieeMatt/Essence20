@@ -60,4 +60,4 @@ registerTag('target:amongUserTargets', (rest, ctx) => {
 
   const first = [...(globalThis.game?.user?.targets ?? [])].slice(0, count);
   return first.some(token => token?.actor === other || (!!other.uuid && token?.actor?.uuid == other.uuid));
-});
+}, { phrase: ['{who} {is} among the first {arg} targets you picked', '{who} {isnt} among the first {arg} targets you picked'] });

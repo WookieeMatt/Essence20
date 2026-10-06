@@ -1,7 +1,6 @@
 /**
- * Mode Lock (Enigma of Combination, p.49): "the character can remove the Condition by performing an
- * Energon flush, which requires spending 1 Energon and succeeding at a DIF 12 Technology Skill Test
- * as a Standard action." Conversion itself is already refused (sheet-handlers/transformer-handler.mjs);
+ * Mode Lock (Enigma of Combination, p.49): an Energon flush clears it - a Standard action, 1 Energon
+ * and a DIF 12 Technology test. Conversion itself is already refused (sheet-handlers/transformer-handler.mjs);
  * the flush is a button on the chat card posted when the Condition lands.
  *
  * (The Alt Modes' printed special attacks, which shared this file, are their items' own rules now -

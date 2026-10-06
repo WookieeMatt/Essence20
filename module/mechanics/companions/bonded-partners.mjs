@@ -1,4 +1,5 @@
 import { worldActors } from "./companion-link.mjs";
+import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 /**
  * Bonded partners - Headmasters, Powermasters and Targetmasters (Enigma of Combination p.33, 40-41,
  * 55).
@@ -27,19 +28,6 @@ export const BOND = {
 const MAKERS = [BOND.headmasterBody, BOND.headmasterHead, BOND.powermaster, BOND.targetmaster];
 const FLAG = 'bond';
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items.contents) ? items.contents : (typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-}
 
 const has = (actor, id) => itemsOf(actor).some(item => sourceOf(item) == id);
 
@@ -181,9 +169,8 @@ async function pickTargetmasterWeapon(actor, item) {
 /* -------------------------------------------- */
 
 /**
- * Powermaster: "You may draw upon a secondary, additional pool of 3 Energon Points created by the
- * module per day. If you are hit by Energy or Laser damage, the module regains 1 Energon Point, up to
- * its maximum of 3."
+ * Powermaster: the module is a second pool of 3 Energon Points a day; an Energy or Laser hit on the
+ * holder puts 1 back, up to 3.
  */
 export function moduleEnergon(actor) {
   const value = actor?.flags?.essence20?.powermasterEnergon;
@@ -240,8 +227,8 @@ export function bondRollSources(actor, target, { rolledSkill, isAttack, weaponId
   const bond = bondOf(actor);
   const ally = bondedAlly(actor);
 
-  // Headmaster Body: "While in Bot Mode and linked to the being using the Headmaster Rig, you gain ↑1
-  // to Skill Tests with Skills that being has at your Skill Rank or higher."
+  // Headmaster Body: linked and in Bot Mode, ↑1 on Skills the Headmaster partner has at the holder's
+  // Rank or better.
   if (bond?.linked && has(actor, BOND.headmasterBody) && !actor.system?.isTransformed && ally && rolledSkill) {
     const rank = s => CONFIG.E20.skillShiftList.indexOf(s?.system?.skills?.[rolledSkill]?.shift ?? 'd20');
     if (rank(ally) <= rank(actor)) {
@@ -249,15 +236,13 @@ export function bondRollSources(actor, target, { rolledSkill, isAttack, weaponId
     }
   }
 
-  // Targetmaster: "When using your Targetmaster partner's Special Attack, you always have Edge on the
-  // attack Skill Test."
+  // Targetmaster: the partner's Special Attack always rolls with Edge.
   if (isAttack && bond?.linked && has(actor, BOND.targetmaster) && weaponId && actor.flags?.essence20?.targetmasterWeapon == weaponId) {
     add('targetmaster', T('E20.Targetmaster'), { edge: true });
   }
 
   if (isAttack && target) {
-    // Headmaster Head: "While linked ... [you] can't be targeted directly without the attacker
-    // suffering ↓2."
+    // Headmaster Head: while linked, attacking the Head directly costs the attacker ↓2.
     const targetBond = bondOf(target);
     if (targetBond?.linked && has(target, BOND.headmasterHead) && !bondedAlly(target)?.system?.isTransformed) {
       add('headmasterHead', T('E20.HeadmasterHead'), { shiftDown: 2 });

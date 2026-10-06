@@ -13,11 +13,9 @@ import { sourceOf } from "../shared/item-lookups.mjs";
 /* -------------------------------------------- */
 
 /**
- * Support (GI Joe CRB, Technician, 2nd level, p.103): "you can grant an adjacent ally the benefits
- * of one of your Upgrades as a Free action. These benefits last until the start of your next turn."
- * Tech Support (9th level): "an ally within range of your Primary Tech". Extended Support (14th
- * level, p.104): "you can choose to use Support or Tech Support as a Move action instead of a Free
- * action. In that case, the benefits last for the duration of the scene."
+ * Support (GI Joe CRB, Technician, 2nd level, p.103): a Free action lends an adjacent ally one of the
+ * Technician's Upgrades until their next turn. Tech Support (9th level): any ally in Primary Tech
+ * range. Extended Support (14th level, p.104): as a Move action instead, it lasts the scene.
  *
  * The ally gets a temporary copy of the Upgrade (items/attacks/weapon-perk-uses.mjs sweeps it when its
  * time is up): an armor Upgrade counts loose, a weapon Upgrade goes on the weapon they pick. The Uses are the Perks'

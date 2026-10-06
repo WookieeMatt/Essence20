@@ -35,10 +35,10 @@ registerTag('self:inTeamOf', (rest, ctx) => {
   }
 
   return teamMembers().some(member => sameActor(member, ctx.self));
-});
+}, { phrase: arg => (arg.endsWith(':others') ? ["{who} {is} on its owner's team (not its owner)", "{who} {isnt} on its owner's team"] : ["{who} {is} on its owner's team", "{who} {isnt} on its owner's team"]) });
 
 /** self:hasTeammates - someone else is on that team. */
-registerTag('self:hasTeammates', (rest, ctx) => teamMembers().some(member => member && !sameActor(member, ctx.self)));
+registerTag('self:hasTeammates', (rest, ctx) => teamMembers().some(member => member && !sameActor(member, ctx.self)), { phrase: ['someone else is on the team', 'nobody else is on the team'] });
 
 /* -------------------------------------------- */
 /*  Recorded picks                               */
@@ -65,14 +65,14 @@ registerTag('item:recorded', (rest, ctx) => {
   }
 
   return entries.some(entry => matchesEntry(ctx.item, entry));
-});
+}, { phrase: ['{who} {is} one recorded as {arg}', '{who} {isnt} one recorded as {arg}'] });
 
 /** self:crewsRecorded:<key> - this actor crews a vehicle / Zord recorded under that key. */
 registerTag('self:crewsRecorded', (rest, ctx) => {
   const entries = recordedEntries(ctx.ruleItem, rest).filter(entry => entry.kind == 'vehicle');
   return entries.some(entry => worldActors().some(vehicle => vehicle?.uuid == entry.uuid
     && Object.values(vehicle.system?.actors ?? {}).some(crew => crew?.uuid == ctx.self?.uuid)));
-});
+}, { phrase: ['{who} crew{s} the vehicle recorded as {arg}', '{who} {doesnt} crew the vehicle recorded as {arg}'] });
 
 /** var:includes:<key>:<text> - a value the run stored (a list, or comma-joined text) holds that entry (a pick's traits). */
 registerTag('var:includes', (rest, ctx) => {
@@ -84,7 +84,10 @@ registerTag('var:includes', (rest, ctx) => {
 
   const list = Array.isArray(value) ? value : String(value).split(',');
   return list.map(lower).includes(lower(more.join(':')));
-});
+}, { phrase: (arg, w) => {
+  const [key, ...more] = arg.split(':');
+  return [`the stored ${w.humanize(key).toLowerCase()} includes ${w.humanize(more.join(':'))}`, `the stored ${w.humanize(key).toLowerCase()} doesn't include ${w.humanize(more.join(':'))}`];
+} });
 
 /* -------------------------------------------- */
 /*  Damage, turn, scene, effects                 */
@@ -95,17 +98,17 @@ const essenceDamaged = actor => Object.values(actor?.system?.essences ?? {})
   .some(essence => Math.max(0, (Number(essence?.max) || 0) - (Number(essence?.value) || 0)) > 0);
 
 // self: / target:healthDamaged - below maximum Health; essenceDamaged - some Essence below its maximum (resource/mlp.mjs).
-registerTag('self:healthDamaged', (rest, ctx) => healthDamaged(ctx.self));
-registerTag('target:healthDamaged', (rest, ctx) => (ctx.other ? healthDamaged(ctx.other) : false));
-registerTag('self:essenceDamaged', (rest, ctx) => essenceDamaged(ctx.self));
-registerTag('target:essenceDamaged', (rest, ctx) => (ctx.other ? essenceDamaged(ctx.other) : false));
+registerTag('self:healthDamaged', (rest, ctx) => healthDamaged(ctx.self), { phrase: ['{who} {is} below full Health', '{who} {is} at full Health'] });
+registerTag('target:healthDamaged', (rest, ctx) => (ctx.other ? healthDamaged(ctx.other) : false), { phrase: ['{who} {is} below full Health', '{who} {is} at full Health'] });
+registerTag('self:essenceDamaged', (rest, ctx) => essenceDamaged(ctx.self), { phrase: ['one of {poss} Essences is below its maximum', 'all of {poss} Essences are at their maximum'] });
+registerTag('target:essenceDamaged', (rest, ctx) => (ctx.other ? essenceDamaged(ctx.other) : false), { phrase: ['one of {poss} Essences is below its maximum', 'all of {poss} Essences are at their maximum'] });
 
 /** target:ownTurn - the other party is the creature whose turn it is (a started combat). */
 registerTag('target:ownTurn', (rest, ctx) => !!ctx.combat?.started && !!ctx.other
-  && (ctx.combat.combatant?.actor === ctx.other || (!!ctx.other.id && ctx.combat.combatant?.actor?.id == ctx.other.id)));
+  && (ctx.combat.combatant?.actor === ctx.other || (!!ctx.other.id && ctx.combat.combatant?.actor?.id == ctx.other.id)), { phrase: ["on the target's turn", "outside the target's turn"] });
 
 /** roll:damaging - the roll's (first) row came with damage (a hit / targeted Trigger: results[0].damageValue). */
-registerTag('roll:damaging', (rest, ctx) => (Array.isArray(ctx.results) ? (Number(ctx.results[0]?.damageValue) || 0) > 0 : null));
+registerTag('roll:damaging', (rest, ctx) => (Array.isArray(ctx.results) ? (Number(ctx.results[0]?.damageValue) || 0) > 0 : null), { phrase: ['the first result deals damage', 'the first result deals no damage'] });
 
 /**
  * self:onRecordedScene:<path> (also holder:) - the {sceneId} a recordScene step wrote at that path on the actor is
@@ -117,11 +120,11 @@ const onRecordedScene = (actor, path) => {
   return !!record?.sceneId && !!scene && record.sceneId == scene.id;
 };
 
-registerTag('self:onRecordedScene', (rest, ctx) => (ctx.self ? onRecordedScene(ctx.self, rest) : false));
+registerTag('self:onRecordedScene', (rest, ctx) => (ctx.self ? onRecordedScene(ctx.self, rest) : false), { phrase: ['{who} {is} in the scene recorded as {arg}', '{who} {isnt} in the scene recorded as {arg}'] });
 registerTag('holder:onRecordedScene', (rest, ctx) => {
   const holder = ctx.holder ?? ctx.self;
   return holder ? onRecordedScene(holder, rest) : false;
-});
+}, { phrase: ['{who} {is} in the scene recorded as {arg}', '{who} {isnt} in the scene recorded as {arg}'] });
 
 /**
  * self:itemEffect:<uuid>:<change key> - the actor's copy of that book item has an Active Effect, switched on, that
@@ -133,7 +136,10 @@ registerTag('self:itemEffect', (rest, ctx) => {
   const item = itemsOf(ctx.self).find(other => sourceOf(other) == uuid);
   const effects = item?.effects?.contents ?? (item?.effects ? [...item.effects] : []);
   return effects.some(effect => !effect.disabled && (effect.changes ?? effect.system?.changes ?? []).some(change => change.key == key));
-});
+}, { phrase: (arg, w) => {
+  const at = arg.lastIndexOf(':');
+  return [`{poss} ${w.itemName(arg.slice(0, at))} has its ${w.pathName(arg.slice(at + 1))} effect on`, `{poss} ${w.itemName(arg.slice(0, at))} doesn't have its ${w.pathName(arg.slice(at + 1))} effect on`];
+} });
 
 /* -------------------------------------------- */
 /*  @references                                  */

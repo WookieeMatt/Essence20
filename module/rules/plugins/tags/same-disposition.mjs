@@ -10,7 +10,7 @@ registerTag('target:sameDisposition', (rest, ctx) => {
   const mine = ctx.self?.getActiveTokens?.()?.[0];
   const theirs = ctx.other?.getActiveTokens?.()?.[0];
   return !!mine && !!theirs && mine.document?.disposition === theirs.document?.disposition;
-});
+}, { phrase: ['{who} {is} on your side', '{who} {isnt} on your side'] });
 
 /**
  * Tag `self:roleName:<text>` (round 15, systems): one of the actor's Role items has that text in its name (any case) -
@@ -21,4 +21,4 @@ registerTag('self:roleName', (rest, ctx) => {
   const items = ctx.self?.items?.contents ?? (ctx.self?.items ? [...ctx.self.items] : []);
   const text = String(rest ?? '').toLowerCase();
   return !!text && items.some(item => item?.type == 'role' && String(item.name ?? '').toLowerCase().includes(text));
-});
+}, { phrase: ['{poss} Role is named like "{raw}"', "{poss} Role isn't named like \"{raw}\""] });

@@ -62,11 +62,11 @@ const RATING_ONLY_ACTIONS = { fly: 'aerial', burrow: 'burrow' };
  * - Climb: core doubles its cost (costMultiplier 2). A Climb Movement is used "without penalty",
  *   and without one the halving is already applied by the half-Ground allowance - doubling the cost
  *   as well would count it twice.
- * - Jump: core doubles its cost too, but "each foot you clear on a long jump costs a foot of
- *   Movement" (GI Joe CRB p.220).
+ * - Jump: core doubles its cost too, but a long jump costs a foot of Movement per foot cleared
+ *   (GI Joe CRB p.220).
  * - Fly and Burrow: only selectable for an actor with that Movement type.
- * - Blink (teleport): not selectable while Metallic Armor Power Up! is active - "While Metallic
- *   Armor is active, you cannot teleport" (Through the Shattered Grid, p.26).
+ * - Blink (teleport): not selectable while Metallic Armor Power Up! is active - no teleporting
+ *   in Metallic Armor (Through the Shattered Grid, p.26).
  * @param {Object} actions   CONFIG.Token.movement.actions
  */
 export function configureMovementActions(actions) {
@@ -131,8 +131,8 @@ const PUSH_FEET_DOUBLED = 10;
 /**
  * Whether this actor is a vehicle someone is currently driving.
  *
- * "Unlike a Cybertronian, vehicles with a driver can't use Standard actions to Sprint or Free
- * actions to Push themselves" (Field Guide to Action and Adventure). Deliberately scoped to the
+ * A driven vehicle, unlike a Cybertronian, can't Sprint with a Standard action or Push itself with
+ * Free actions (Field Guide to Action and Adventure). Deliberately scoped to the
  * `vehicle` type: the rule names driven vehicles, and extending it to piloted `zord` actors would be
  * this system's invention rather than the book's.
  *

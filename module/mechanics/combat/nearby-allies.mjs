@@ -70,8 +70,8 @@ export function getAllNearbyTokens(actor, radiusFeet) {
 }
 
 /**
- * H.I.S.S. Column (GI Joe CRB, Vehicle Trait, p.302): "Every H.I.S.S. on a battlefield gains a
- * bonus to Evasion equal to the number of other H.I.S.S. on the battlefield." Unlike
+ * H.I.S.S. Column (GI Joe CRB, Vehicle Trait, p.302): +1 Evasion per other H.I.S.S. on the
+ * battlefield. Unlike
  * getNearbyAllyTokens/getAllNearbyTokens above, this has no radius (the whole current scene is
  * "the battlefield") and matches by actor identity (same actor name) rather than Disposition -
  * RAW's own "other H.I.S.S." clearly means other copies of this specific named vehicle, not any

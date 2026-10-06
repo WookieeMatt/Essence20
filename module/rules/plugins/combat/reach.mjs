@@ -33,7 +33,7 @@ registerTag('target:inRange', (rest, ctx) => {
   const distance = measure(mine.center, theirs.center);
   const range = rest == 'melee' ? meleeReach(ctx.self) : attackRange(ctx.self);
   return distance !== null && distance <= range;
-});
+}, { phrase: arg => (arg == 'melee' ? ['{who} {is} within your melee reach', "{who} {isnt} within your melee reach"] : ['{who} {is} within your attack range', "{who} {isnt} within your attack range"]) });
 
 /** Different dispositions, neither neutral; off the canvas, PC against non-PC. */
 export function areEnemies(a, b) {

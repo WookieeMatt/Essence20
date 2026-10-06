@@ -1,6 +1,6 @@
 /**
- * Monster... Grow! (Finster's Monster-Matic Cookbook, Sorcerous Power, p.274): "Turn an allied
- * Threat from Normal to Grown version as a combined Standard and Move action."
+ * Monster... Grow! (Finster's Monster-Matic Cookbook, Sorcerous Power, p.274): a Standard plus
+ * Move action turns an allied Threat from Normal to Grown.
  *
  * Two behaviours, in order of preference:
  *

@@ -70,7 +70,9 @@ beforeEach(() => {
 describe('registration', () => {
   test('registers uses, sources and decorators', () => {
     const registry = registrySnapshot();
-    expect(registry.uses.map(use => use.id)).toEqual(expect.arrayContaining(['q1Qualify', 'q1Addiction']));
+    expect(registry.uses.map(use => use.id)).toEqual(expect.arrayContaining(['q1Addiction']));
+    // Nu, Pogodi!'s seat swap and Condition removal are Use rules on the Perk (rules/conv18-convC.test.js).
+    expect(registry.uses.map(use => use.id)).not.toContain('q1Qualify');
     // Ignite (and Fireball's Edge for its fire) is rules on the Perk now (rules/conv10-slC10.test.js).
     expect(Object.keys(registry.chatButtons)).not.toContain('q1FightFire');
   });
@@ -78,8 +80,8 @@ describe('registration', () => {
 
 describe('common', () => {
   test('itemsFrom matches full uuid or bare id', () => {
-    const actor = makeActor([perk(Q1.nuPogodi), { type: 'upgrade', flags: { core: { sourceId: `Compendium.essence20.tf_crb.Item.${Q1_UPGRADE.silencer}` } } }]);
-    expect(itemsFrom(actor, Q1.nuPogodi)).toHaveLength(1);
+    const actor = makeActor([perk(Q1.addictedDarkEnergon), { type: 'upgrade', flags: { core: { sourceId: `Compendium.essence20.tf_crb.Item.${Q1_UPGRADE.silencer}` } } }]);
+    expect(itemsFrom(actor, Q1.addictedDarkEnergon)).toHaveLength(1);
     expect(itemsFrom(actor, Q1_UPGRADE.silencer)).toHaveLength(1);
     expect(itemsFrom(actor, null)).toEqual([]);
   });

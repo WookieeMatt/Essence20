@@ -170,8 +170,8 @@ function scaleEffect(effect, { rangeMultiplier, damageMultiplier }) {
 
 /**
  * Anything in a carried-over Perk/Power/Hang-Up that reads like it assumed the Normal form, so the
- * GM is pointed at it instead of it quietly coming along wrong. RAW: "being sure to remove or
- * replace anything requiring the Threat to be in its Normal Size or form."
+ * GM is pointed at it instead of it quietly coming along wrong. RAW: drop or swap anything
+ * that needs the Threat at Normal Size or form.
  */
 const FORM_DEPENDENT = /\b(normal|small(?:er)?|human[- ]siz|its size|this size|grown|shrink)\b/i;
 
@@ -238,8 +238,7 @@ export function computeGrownStatBlock(ir, options = {}) {
     }
   }
 
-  // "Add to all Movement Type values a number of feet equal to the increase of the Threat's
-  // natural Reach for the new Size."
+  // Every Movement type grows by however many feet the new Size adds to natural Reach.
   const reachGain = (CONFIG.E20.tokenSizes[newSize]?.reach ?? 0)
     - (CONFIG.E20.tokenSizes[ir.size]?.reach ?? 0);
   if (growMovement && reachGain > 0) {

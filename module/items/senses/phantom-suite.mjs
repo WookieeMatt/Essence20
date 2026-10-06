@@ -1,11 +1,9 @@
 import { findPerk } from "../../mechanics/characters/perks.mjs";
 
 /**
- * Phantom Suite (Across the Stars, Phantom Ranger, 1st/7th/12th/17th level, p.60): "While Morphed,
- * spend 1 Personal Power to become semi-invisible. You remain in this semi-invisible state until
- * you take damage from an Attack against your Evasion Defense. While the Phantom Suite is active,
- * you gain ↑1 and Edge to all Infiltration (Stealth) Skill Tests and a +[2/3/4/5, by level] bonus
- * to your Evasion Defense."
+ * Phantom Suite (Across the Stars, Phantom Ranger, 1st/7th/12th/17th level, p.60): while Morphed,
+ * 1 Personal Power makes the Ranger semi-invisible until damaged by an attack on Evasion; meanwhile
+ * ↑1 and Edge on Infiltration (Stealth) and +2/3/4/5 Evasion by level.
  *
  * An on/off toggle costing Power to switch ON (same shape as Power Boost/Power Adaptation), but
  * with one difference: it also switches itself back OFF automatically the first time an Evasion-

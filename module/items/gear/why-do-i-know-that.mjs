@@ -2,8 +2,7 @@ import { findCompendiumItems, pickCompendiumItem } from "../../util/compendium-i
 import { grantPerkOutright } from "../../sheet-handlers/perk-handler.mjs";
 
 /**
- * Why Do I Know That? (Across the Stars, Origin Perk): "Wherever you came from, it left a lasting
- * impact on what you know. You may choose any General Perk, provided you meet its prerequisites."
+ * Why Do I Know That? (Across the Stars, Origin Perk): any one General Perk the character qualifies for.
  *
  * FOUND 2026-09-15 by re-verifying a bundle the ledger had filed as narrative flavor. That bundle
  * carried an explicit caution - this book's original cached extraction silently omitted whole Perks,

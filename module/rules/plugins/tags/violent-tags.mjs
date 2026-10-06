@@ -22,7 +22,7 @@ export const NON_DAMAGE_EFFECT_TYPES = [
 
 const dealsHealthDamage = effect => !!effect?.damageValue && !NON_DAMAGE_EFFECT_TYPES.includes(effect.damageType);
 
-registerTag('item:healthDamage', (rest, ctx) => (ctx.item ? dealsHealthDamage(ctx.item.system) : null));
+registerTag('item:healthDamage', (rest, ctx) => (ctx.item ? dealsHealthDamage(ctx.item.system) : null), { phrase: ['{who} deal{s} Health damage', '{who} {doesnt} deal Health damage'] });
 
 registerTag('weapon:primariesNoDamage', (rest, ctx) => {
   const parentId = ctx.item?.flags?.essence20?.parentId;
@@ -33,4 +33,4 @@ registerTag('weapon:primariesNoDamage', (rest, ctx) => {
 
   const primaries = Object.values(weapon.system?.items ?? {}).filter(effect => effect?.type == 'weaponEffect' && !effect.shiftDown);
   return primaries.length > 0 && primaries.every(effect => !dealsHealthDamage(effect));
-});
+}, { phrase: ["none of the weapon's main attacks deal damage", "one of the weapon's main attacks deals damage"] });

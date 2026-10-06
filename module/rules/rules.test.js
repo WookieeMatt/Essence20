@@ -236,22 +236,23 @@ describe('types', () => {
   });
 
   test('summaries read in game words', () => {
-    expect(summarizeRule({ type: 'RollModifier', when: ['skill:might', 'self:morphed'], upshift: 1 })).toBe('↑1 on might tests, while Morphed');
+    expect(summarizeRule({ type: 'RollModifier', when: ['skill:might', 'self:morphed'], upshift: 1 })).toBe('↑1 on Might tests, while you are Morphed');
     expect(summarizeRule({ type: 'RollModifier', scope: 'incoming', when: ['attack'], snag: true })).toBe('Rolls against you: Snag on attacks');
-    expect(summarizeRule({ type: 'RollModifier', downshift: '@level', edge: true, specialize: true })).toBe('↓(@level), Edge, Specialized');
+    expect(summarizeRule({ type: 'RollModifier', downshift: '@level', edge: true, specialize: true })).toBe('↓ equal to your level, Edge, Specialized');
     expect(summarizeRule({ type: 'DialogSwitch', label: 'Aim', upshift: 2 })).toBe('Roll option "Aim": ↑2');
-    expect(summarizeRule({ type: 'Reroll', mode: 'ones', skills: ['might'], reset: 'scene' })).toBe('Reroll (ones) on might, once per scene');
-    expect(summarizeRule({ type: 'SkillSubstitution', from: 'might', to: 'finesse', mode: 'bestOf' })).toBe('Better of finesse and might');
+    expect(summarizeRule({ type: 'Reroll', mode: 'ones', skills: ['might'], reset: 'scene' })).toBe('Reroll (ones) on Might, once per scene');
+    expect(summarizeRule({ type: 'SkillSubstitution', from: 'might', to: 'finesse', mode: 'bestOf' })).toBe('Better of Finesse and Might');
     expect(summarizeRule({ type: 'Defense', defense: 'toughness', amount: 2 })).toBe('+2 Toughness');
     expect(summarizeRule({ type: 'Defense', defense: 'any', amount: -1 })).toBe('-1 every Defense');
-    expect(summarizeRule({ type: 'DerivedStat', path: 'system.health.max', value: 2 })).toBe('add 2 → system.health.max');
+    expect(summarizeRule({ type: 'DerivedStat', path: 'system.health.max', value: 2 })).toBe('+2 maximum Health');
     expect(summarizeRule({ type: 'DamageModifier', direction: 'taken', immune: true, damageType: 'fire' })).toBe('Immune to fire damage taken');
     expect(summarizeRule({ type: 'DamageModifier', direction: 'dealt', amount: 1 })).toBe('+1 damage dealt');
-    expect(summarizeRule({ type: 'Grant', uuid: 'U' })).toBe('Grants U');
-    expect(summarizeRule({ type: 'Toggle', key: 'k' })).toBe('Toggle: k');
-    expect(summarizeRule({ type: 'Pool', key: 'k', max: 3, reset: 'scene' })).toBe('Pool: k (max 3, resets each scene)');
-    expect(summarizeRule({ type: 'ChoiceSet', key: 'k', from: 'skill' })).toBe('Choice: k (skill)');
-    expect(summarizeRule({ type: 'Code', helper: 'h' })).toBe('Runs h');
+    expect(summarizeRule({ type: 'Grant', uuid: 'U' })).toBe('Grants a particular item');
+    expect(summarizeRule({ type: 'Grant', uuid: 'U', label: 'Shadow Saber' })).toBe('Grants Shadow Saber');
+    expect(summarizeRule({ type: 'Toggle', key: 'k' })).toBe('Toggle: K');
+    expect(summarizeRule({ type: 'Pool', key: 'k', max: 3, reset: 'scene' })).toBe('Pool: K (max 3, resets each scene)');
+    expect(summarizeRule({ type: 'ChoiceSet', key: 'k', from: 'skill' })).toBe('Choice: K (skill)');
+    expect(summarizeRule({ type: 'Code', helper: 'h' })).toBe('Runs H');
     expect(summarizeRule({ type: 'Aura' })).toBe('Aura (not supported yet)');
     expect(summarizeRule(null)).toBe('');
   });
@@ -259,8 +260,8 @@ describe('types', () => {
   test('describeWhen covers every family', () => {
     expect(describeWhen(['essence:speed', 'attack:melee', 'defense:evasion', 'self:transformed', 'self:status:prone', 'target:status:stunned', 'item:trait:fire',
       'combat', 'ownTurn', 'ask:it rains', 'not:self:morphed', { any: ['skill:might', 'skill:athletics'] }, 'odd'])).toBe(
-      'on speed tests, on melee attacks, against evasion, while in Alt Mode, while status prone, when the target is status stunned, with trait fire, '
-      + 'in combat, on your turn, when it rains, not while Morphed, (on might tests or on athletics tests), odd');
+      'on Speed tests, on melee attacks, against Evasion, while you are in Alt Mode, while you are Prone, while the target is Stunned, if the item has the Fire trait, '
+      + "in combat, on your turn, when it rains, while you aren't Morphed, on Might tests or on Athletics tests, if odd");
   });
 });
 
@@ -618,7 +619,7 @@ describe('sheet', () => {
     const actor = makeActor([item]);
     item.parent = { ...actor, documentName: 'Actor' };
     const context = rulesContext(item);
-    expect(context.rules.map(r => r.summary)[0]).toBe('↑1 on might tests');
+    expect(context.rules.map(r => r.summary)[0]).toBe('↑1 on Might tests');
     expect(context.rules[1].toggle).toEqual({ value: false });
     expect(context.rules[2].pool).toEqual({ value: 1, max: 2 });
     expect(context.rules[3].choice).toEqual({ value: 'might', label: 'E20.SkillMight' });

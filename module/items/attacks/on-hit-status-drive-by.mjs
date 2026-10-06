@@ -5,8 +5,8 @@ import { registerChatButton, registerPostRoll } from "../../mechanics/item-hooks
  * - A weaponEffect that inflicts a Condition on a hit (flags.essence20.onHitStatus), e.g. the
  *   Dynamite, Bundle alternate effect (A Jump Through Time, Table 3-8, p.79): "Target is Stunned
  *   for 2d2 turns".
- * - Drive-By (GI Joe CRB, Vehicle Traits, p.172): "In order to use this attack, the vehicle must
- *   move at least 15 feet first" - for the Ram and Flyby natural attacks.
+ * - Drive-By (GI Joe CRB, Vehicle Traits, p.172): the vehicle has to move 15 feet before
+ *   this attack - for the Ram and Flyby natural attacks.
  */
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));

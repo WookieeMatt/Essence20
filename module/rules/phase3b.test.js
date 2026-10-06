@@ -1136,7 +1136,7 @@ describe('round 35: scaled damage', () => {
     actor.system.isTransformed = true;
     expect(apply('final', 'ground', 60)).toBe(100);
     expect(validateRule({ type: 'Movement', movement: 'ground', op: 'add', value: 5 })).toEqual([]);
-    expect(summarizeRule({ type: 'Movement', movement: 'ground', op: 'add', value: 5 })).toBe('Ground Movement + 5');
+    expect(summarizeRule({ type: 'Movement', movement: 'ground', op: 'add', value: 5 })).toBe('Ground Movement +5');
   });
 
   test('a bank step can carry damage for the next attack; its source says so', async () => {

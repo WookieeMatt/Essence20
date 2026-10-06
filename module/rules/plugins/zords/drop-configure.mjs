@@ -125,4 +125,4 @@ registerTag('self:hasItemWhere', (rest, ctx) => {
   const tags = String(rest ?? '').split('&').filter(Boolean);
   const items = ctx?.self?.items?.contents ?? (ctx?.self?.items ? [...ctx.self.items] : []);
   return !!tags.length && items.some(item => evaluate(tags, contextFor({ self: ctx.self, ruleItem: ctx.ruleItem, item })) === true);
-});
+}, { phrase: (arg, w) => [`{who} {has} an item where ${w.items(arg.split('&'))}`, `{who} {has} no item where ${w.items(arg.split('&'))}`] });

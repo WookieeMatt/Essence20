@@ -24,12 +24,8 @@ const pickOne = jest.fn(async (title, rows) => {
   const name = picks.shift();
   return rows.find(row => row.name == name)?.uuid ?? null;
 });
-const chooseButtons = jest.fn(async () => null);
 jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({
-  findItems, pickOne, chooseButtons, chooseSelect: jest.fn(), grantCopy: jest.fn(), markIntegrated: jest.fn(), rollTest: jest.fn(),
-}));
-jest.unstable_mockModule('./items/healing/nu-pogodi.mjs', () => ({
-  canUseNuPogodiCondition: jest.fn(() => false), applyNuPogodiCondition: jest.fn(),
+  findItems, pickOne, chooseButtons: jest.fn(async () => null), chooseSelect: jest.fn(), grantCopy: jest.fn(), markIntegrated: jest.fn(), rollTest: jest.fn(),
 }));
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({
   createItemCopies: jest.fn(async () => {}),
@@ -40,7 +36,6 @@ const { rebuildIndex } = await import('./index.mjs');
 const { ruleQualifiedUpgrade, ruleRequisitionAccess } = await import('./adapter.mjs');
 const { runUse, useAvailable } = await import('./triggers.mjs');
 const { legacyChoiceUpdates } = await import('./legacy-choices.mjs');
-const { NU_POGODI_USE: QUALIFY_USE } = await import('../items/vehicles/nu-pogodi-seat-swap.mjs');
 const { effectiveAvailability, isQualifiedUpgrade } = await import('../items/gear/qualification-perks.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -249,24 +244,13 @@ describe('Nu, Pogodi!', () => {
     const perk = packItem(FILES.nuPogodi);
     const actor = makeActor([perk]);
     picks = ['Sniper Rifle'];
-    await use(perk);
+    // Its other Uses (the Condition removal, the seat swap - rules/conv18-convC.test.js) are offered beside the weapon pick.
+    await runUse(perk, async () => true, { pick: (item, available) => available.find(({ rule }) => rule.steps?.[0]?.do == 'pickGrant') });
     expect(offered[0]).toEqual(['Sniper Rifle']);
     expect(ruleRequisitionAccess(actor, requisitioned('Sniper Rifle'))).toBe('qualified');
     // Its Standard-weapon Qualification is untouched.
     expect(ruleRequisitionAccess(actor, requisitioned('Pistol'))).toBe('qualified');
     expect(ruleRequisitionAccess(actor, requisitioned('Machete'))).toBeNull();
-  });
-
-  test('the slice Use keeps the seat swap and Condition removal only; the moved Perks are no longer its', async () => {
-    const nu = packItem(FILES.nuPogodi);
-    nu.flags.core.sourceId = 'Compendium.essence20.intercontinental_adventures.Item.sItc8nD7ockbQ1mn';
-    const service = packItem(FILES.service);
-    service.flags.core.sourceId = 'Compendium.essence20.field_guide_action_adventure.Item.T7oYyl70KYmFT1lt';
-    makeActor([nu, service]);
-    expect(QUALIFY_USE.matches(nu)).toBe(true);
-    expect(QUALIFY_USE.matches(service)).toBe(false);
-    expect(await QUALIFY_USE.run(nu, null, async () => true)).toBeNull();
-    expect(chooseButtons.mock.calls.at(-1)[2].map(([key]) => key)).toEqual(['swap']);
   });
 });
 

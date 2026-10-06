@@ -116,7 +116,7 @@ function saveSpec(dataset) {
   }
 }
 
-registerTag('roll:save', (rest, ctx) => (ctx.dataset ? !!saveSpec(ctx.dataset) : null));
+registerTag('roll:save', (rest, ctx) => (ctx.dataset ? !!saveSpec(ctx.dataset) : null), { phrase: ['on a save', 'except on a save'] });
 registerTag('roll:poisonSave', (rest, ctx) => {
   if (!ctx.dataset) {
     return null;
@@ -124,15 +124,15 @@ registerTag('roll:poisonSave', (rest, ctx) => {
 
   const spec = saveSpec(ctx.dataset);
   return !!spec && (spec.damage?.type == 'poison' || spec.damageAlways?.type == 'poison' || spec.status == 'poisoned' || POISON.test(spec.title ?? ''));
-});
+}, { phrase: ['on a save against poison or illness', 'except on a save against poison or illness'] });
 
-registerTag('skill:of', (rest, ctx) => (ctx.rolledSkill ? globalThis.CONFIG?.E20?.skillToEssence?.[ctx.rolledSkill] == rest : false));
+registerTag('skill:of', (rest, ctx) => (ctx.rolledSkill ? globalThis.CONFIG?.E20?.skillToEssence?.[ctx.rolledSkill] == rest : false), { phrase: ['on {arg} Skill tests', 'except on {arg} Skill tests'] });
 
 /** roll:anyTarget:<tags joined by &> - some targeted creature meets them all, asked as the target. */
 registerTag('roll:anyTarget', (rest, ctx) => {
   const tags = rest.split('&');
   return targetedActors().some(other => tags.every(tag => evaluate(tag, { ...ctx, other }) === true));
-});
+}, { phrase: (arg, w) => [w.facts(arg.split('&'), 'one of your targets'), `no target qualifies (${w.facts(arg.split('&'), 'a target')})`] });
 
 /* -------------------------------------------- */
 /*  Creatures                                    */
@@ -151,9 +151,9 @@ registerTag('target:creature', (rest, ctx) => {
   const words = rest.split('|').map(word => word.trim().toLowerCase().replace(/[^\w-]/g, '')).filter(Boolean);
   const text = `${creatureTags(ctx.other).join(' ')} ${lower(ctx.other.name)}`;
   return words.some(word => new RegExp(`\\b${word}s?\\b`).test(text));
-});
+}, { phrase: arg => [`{who} {is} a ${arg.split('|').join(' or ')}`, `{who} {isnt} a ${arg.split('|').join(' or ')}`] });
 
-registerTag('target:tagStarts', (rest, ctx) => !!ctx.other && creatureTags(ctx.other).some(tag => tag.startsWith(lower(rest))));
+registerTag('target:tagStarts', (rest, ctx) => !!ctx.other && creatureTags(ctx.other).some(tag => tag.startsWith(lower(rest))), { phrase: ['{who} {has} a creature tag starting "{raw}"', '{who} {has} no creature tag starting "{raw}"'] });
 
 /** A Threat's Threat Level minus this actor's level; false for a creature with no Threat Level. */
 registerTag('target:threatVsLevel', (rest, ctx) => {
@@ -164,7 +164,17 @@ registerTag('target:threatVsLevel', (rest, ctx) => {
   }
 
   return compare(Number(threat) - (Number(ctx.self?.system?.level) || 0), match[1] ?? '=', Number(match[2]));
-});
+}, { phrase: (arg, w) => {
+  const match = /^(>=|<=|>|<|=)?(-?\d+)$/.exec(arg);
+  if (!match) {
+    return null;
+  }
+
+  const n = Number(match[2]);
+  const op = match[1] ?? '=';
+  const words = n == 0 ? { '>=': 'at least', '<=': 'at most', '>': 'above', '<': 'below', '=': 'equal to' }[op] : `${w.comparison(op, n)} levels against`;
+  return [`{poss} Threat Level is ${words} your level`, `{poss} Threat Level isn't ${words} your level`];
+} });
 
 function compare(a, op, b) {
   return { '>=': a >= b, '<=': a <= b, '>': a > b, '<': a < b, '=': a == b }[op] ?? false;
@@ -246,7 +256,7 @@ registerTag('item:weaponType', (rest, ctx) => {
   const parentId = item.type == 'weaponEffect' ? item.flags?.essence20?.parentId : null;
   const weapon = parentId ? (item.parent ?? item.actor)?.items?.get?.(parentId) ?? null : item;
   return !!weapon && weapon.type == 'weapon' && weaponIsType(weapon, type);
-});
+}, { phrase: (arg, w) => (arg.startsWith('flagOf:') ? [`{who} {is} the weapon type you picked for ${w.itemName(arg.slice(7))}`, `{who} {isnt} the weapon type you picked for ${w.itemName(arg.slice(7))}`] : ['{who} {is} a {arg} weapon', "{who} {isnt} a {arg} weapon"]) });
 
 /* -------------------------------------------- */
 /*  Refs                                         */

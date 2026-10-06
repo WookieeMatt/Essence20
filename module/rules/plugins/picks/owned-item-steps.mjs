@@ -2,8 +2,7 @@
 // module/rules/plugins/index.mjs.
 import { contextFor, evaluate, registerTag } from "../../predicate.mjs";
 import { itemsFor, registerStep } from "../../steps.mjs";
-
-const itemsOf = actor => actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
+import { itemsOf } from "../../../items/shared/item-lookups.mjs";
 
 /** The actor's items meeting every item tag (item:type:x, item:data:..., not:...). */
 export function itemsWhere(actor, tags, ruleItem = null) {
@@ -15,8 +14,8 @@ export function itemsWhere(actor, tags, ruleItem = null) {
  * `self:holdsItem:item:type:weaponEffect&item:data:system.numHands=2&not:item:data:system.classification.style=melee`
  * (Weapon Conversion's "a two-handed ranged weapon to convert").
  */
-registerTag('self:holdsItem', (rest, ctx) => itemsWhere(ctx?.self, String(rest ?? '').split('&').filter(Boolean), ctx?.ruleItem).length > 0);
-registerTag('target:holdsItem', (rest, ctx) => (ctx?.other ? itemsWhere(ctx.other, String(rest ?? '').split('&').filter(Boolean), ctx?.ruleItem).length > 0 : null));
+registerTag('self:holdsItem', (rest, ctx) => itemsWhere(ctx?.self, String(rest ?? '').split('&').filter(Boolean), ctx?.ruleItem).length > 0, { phrase: (arg, w) => [`{who} {has} an item where ${w.items(arg.split('&'))}`, `{who} {has} no item where ${w.items(arg.split('&'))}`] });
+registerTag('target:holdsItem', (rest, ctx) => (ctx?.other ? itemsWhere(ctx.other, String(rest ?? '').split('&').filter(Boolean), ctx?.ruleItem).length > 0 : null), { phrase: (arg, w) => [`{who} {has} an item where ${w.items(arg.split('&'))}`, `{who} {has} no item where ${w.items(arg.split('&'))}`] });
 
 async function write(doc, method, args) {
   const { needsGmRelay, relayToGm } = await import("../../../mechanics/world/gm-relay.mjs");

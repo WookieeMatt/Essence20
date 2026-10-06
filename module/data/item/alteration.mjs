@@ -34,8 +34,8 @@ export class AlterationItemData extends foundry.abstract.TypeDataModel {
       movementCost: new fields.ObjectField({}),
       selectedEssence: makeStrWithChoices(Object.keys(E20.essences), null),
       type: makeStrWithChoices(Object.keys(E20.alterationTypes), 'other'),
-      // Enhanced Photoreceptors (Cobra Codex, p.84): "You can see in darkness up to 30 feet as if
-      // it was dim light." The vision-granting shape already exists on gear/perk (see
+      // Enhanced Photoreceptors (Cobra Codex, p.84): darkness within 30 feet counts as dim light.
+      // The vision-granting shape already exists on gear/perk (see
       // GearItemData's own visionGrant, and mechanics/characters/vision-grant.mjs#getBestVisionGrant, which
       // reads item.system.visionGrant off ANY actor item regardless of type) - Alteration was
       // simply never given the field, so no alteration could ever declare one.

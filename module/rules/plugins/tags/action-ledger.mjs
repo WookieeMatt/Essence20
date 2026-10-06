@@ -47,7 +47,19 @@ registerTag('self:actionLog', (rest, ctx) => {
   }
 
   return compare(actionLogCount(ctx.self, match[1], match[2] ?? null), match[3], Number(match[4]));
-});
+}, { phrase: (arg, w) => {
+  const match = /^(flag:[\w-]+|[\w-]+)(?::(standard|move|free))?(=|!=|>=|<=|>|<)(\d+)$/.exec(arg);
+  if (!match) {
+    return null;
+  }
+
+  const what = match[1].startsWith('flag:') ? w.humanize(match[1].slice(5)) : w.humanize(match[1]);
+  const cost = match[2] ? ` as a ${w.humanize(match[2])} action` : '';
+  const times = n => (n == 1 ? 'once' : `${n} times`);
+  const count = { '>=': `at least ${times(match[4])}`, '<=': `at most ${times(match[4])}`, '>': `more than ${times(match[4])}`, '<': `fewer than ${times(match[4])}`, '=': match[4] == '0' ? 'not at all' : `exactly ${times(match[4])}`, '!=': `other than ${times(match[4])}` }[match[3]];
+  return match[3] == '>=' && match[4] == '1' ? [`{who} used ${what}${cost} this turn`, `{who} {havent} used ${what}${cost} this turn`]
+    : [`{who} used ${what}${cost} ${count} this turn`, `{who} didn't use ${what}${cost} ${count} this turn`];
+} });
 
 registerRef('ledger', (key, scope) => {
   const value = String(key ?? '').split('.').reduce((at, part) => (at === null || at === undefined ? at : at[part]), ledgerOf(scope.actor));

@@ -5,24 +5,20 @@
  *   live in items/zords/warrior-mode.mjs).
  * - Mesh Zord and Power Matrix (TtSG p.33-34) are their items' own rules (module/rules/ext/a/ - three picks from
  *   one list, DerivedStat / Defense / Size rules; the reserve drawn by the driver, refilled when the pilot rests).
- * - Versatile Combiner (TtSG p.35): "may combine into a Megaform with any Zord that lacks the
- *   Combiner Zord Feature without spending a Story Point. In addition, that Zord provides one of the
- *   following Megaform Trait benefits depending on its Ranger's spectrum: Black: Core Defenses;
- *   Blue: Layered Systems; Green: Enhanced Melee Attack; Pink: Move; Red: Assault Weapon; Yellow:
- *   Enhanced Ranged Attack; Other spectrums: Any of the above." The trait is the Feature's own added Trigger rule
+ * - Versatile Combiner (TtSG p.35): combines with Zords lacking the Combiner Feature at no Story
+ *   Point, and such a Zord brings a Megaform Trait set by its Ranger's spectrum (a fixed table, any
+ *   of them for other spectrums). The trait is the Feature's own added Trigger rule
  *   (rules/conv15-items2.test.js); what stays here is its part in combine eligibility below.
- * - Adaptable Future Tech (TtSG p.117): "Your Zord gains the Combiner Feature and may combine with
- *   other Zords that do not have the Combiner Zord Feature. When forming a Megaform that includes at
- *   least 3 Zords with this feature, it may include an ineligible vehicle or Zord."
+ * - Adaptable Future Tech (TtSG p.117): the Zord gains Combiner and can combine with non-Combiner
+ *   Zords; a Megaform with 3+ such Zords may take in one otherwise ineligible vehicle or Zord.
  *   Both combine-eligibility rules feed one roster check that warns when a Zord without Combiner
  *   joins a Megaform nothing lets it into (PR CRB: Zords combine through the Combiner Feature).
  *   The Combiner Feature itself comes from Adaptable Future Tech's own Grant rule (system.rules).
  * - Zord Feature (the Ranger Roles' Zord Feature picks) and Zord Ultra Mode (Field Guide to Action & Adventure) are their
  *   items' own rules (pickGrant a Feature onto the Zord or the character; a scene mark switching the Features' Active
  *   Effects with setEffects) - rules/conv15-items2.test.js.
- * - Defender Torozord (TtSG p.24): "While in Mega Defender form, you and the Torozord are considered
- *   to have the Combiner Zord Feature with the Core Body and Defender Megaform Traits, respectively,
- *   but only to combine to create a unique Megaform known as the Defender Torozord."
+ * - Defender Torozord (TtSG p.24): in Mega Defender form the Ranger and Torozord count as Combiners
+ *   (Core Body and Defender traits), but only to form the Defender Torozord Megaform.
  * - (Repair Zord's split healing on a combined Megaform is its pack item's own rule - healShared, rules/conv15-systems.test.js.)
  */
 import { registerUse } from "../../mechanics/item-hooks.mjs";

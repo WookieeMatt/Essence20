@@ -252,7 +252,7 @@ export function getUsesThisScene(actor, flagKey) {
 /**
  * Records that an actor just used a once-per-scene ability - see getUsesThisScene(). Increments
  * rather than overwrites, so a single Perk that consumes more than one "charge" at a time (e.g.
- * Old Reliable's "spend an additional Moxie to treat BOTH d20 results as a 10") can pass a larger
+ * Old Reliable's extra-Moxie option for both d20s) can pass a larger
  * count in one call.
  * @param {Actor} actor
  * @param {String} flagKey
@@ -264,8 +264,7 @@ export async function markUsedThisScene(actor, flagKey, count = 1) {
 
 /**
  * A one-shot bonus banked NOW for a Skill Test the actor (or an ally they chose) hasn't rolled
- * yet - e.g. Think On It ("grant yourself an Edge on one Skill Test before the beginning of your
- * next turn") or Plan of Action (the same idea, granted to an ally instead of yourself). Unlike
+ * yet - e.g. Think On It (Edge on one test before the holder's next turn) or Plan of Action (the same idea, granted to an ally instead of yourself). Unlike
  * hasUsedThisRound/ThisTurn/ThisEncounter above (which gate whether an ABILITY can trigger
  * again), this stores the bonus ITSELF, to be read back and cleared the next time a matching roll
  * happens - see getPendingBonus()/clearPendingBonus() below, and mechanics/resources/banked-buffs.mjs for the

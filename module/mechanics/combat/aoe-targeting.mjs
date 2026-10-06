@@ -1,9 +1,7 @@
 /**
- * Area of Effect targeting - GitHub issue #824 ("Add a shape (?) field to weapon effects...
- * either burst or cone"), scoped to the Blast/AoE half of GI Joe CRB p.198's own combat rules
- * ("Some attacks... are noted as having Area of Effect or Blast qualities... you roll your attack
- * as normal, using a single test result against the Defense of all targets fully or partially in
- * the target area"). That's exactly what dice.mjs's existing checkEntries already does for
+ * Area of Effect targeting - GitHub issue #824 (a burst-or-cone shape field on weapon effects), scoped to the Blast/AoE half of GI Joe CRB p.198's own combat rules (an
+ * Area or Blast attack is one roll compared against every target wholly or partly in the area).
+ * That's exactly what dice.mjs's existing checkEntries already does for
  * however many tokens happen to be in game.user.targets - one shared roll, compared per target -
  * so this file's only job is turning "a shape placed on the canvas" into "the right tokens
  * targeted." Nothing in the roll pipeline itself needs to change.

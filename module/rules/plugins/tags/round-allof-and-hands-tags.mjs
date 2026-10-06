@@ -10,13 +10,13 @@ import { listOf } from "../shared/chat-speaker-helpers.mjs";
 registerTag('combat:roundIs', rest => {
   const combat = globalThis.game?.combat;
   return combat?.started ? Number(combat.round) == Number(rest) : false;
-});
+}, { phrase: ['in round {raw}', 'except in round {raw}'] });
 
 // allOf:<tag>&<tag>... - every one of the tags holds (an AND inside an `any` list).
 registerTag('allOf', (rest, ctx) => {
   const answers = String(rest).split('&').filter(Boolean).map(tag => evaluate([tag], ctx));
   return answers.includes(false) ? false : answers.includes(null) ? null : answers.length > 0;
-}, { family: 'roll', param: 'text' });
+}, { family: 'roll', param: 'text', phrase: (arg, w) => [w.describe(arg.split('&').filter(Boolean)), `not all of these: ${w.describe(arg.split('&').filter(Boolean))}`] });
 
 // attackHands:<n> - the rolled attack belongs to a weapon held in at least n hands (its derived hands, else its hands,
 // else the attack's own).
@@ -31,4 +31,4 @@ registerTag('attackHands', (rest, ctx) => {
   const weapon = parentId ? owner?.items?.get?.(parentId) ?? listOf(owner?.items).find(item => item.id == parentId) ?? null : null;
   const hands = Number(weapon?.system?.derivedHands ?? weapon?.system?.hands ?? effect.system?.numHands ?? 1);
   return !!weapon && hands >= Number(rest);
-}, { family: 'roll', param: 'text' });
+}, { family: 'roll', param: 'text', phrase: ['the weapon is held in at least {raw} hands', 'the weapon is held in fewer than {raw} hands'] });

@@ -1,10 +1,8 @@
 import { findRolePointsItem } from "../../mechanics/rolls/reroll.mjs";
 
 /**
- * MLP CRB "Consummate Performer" (Laugh Tactic, p.86): "Roll a Performance Skill Test as a
- * Standard action to regain 1 Cheer. The first time you use Consummate Performer, the DIF of the
- * Performance Skill Test is 5. Every time you use Consummate Performer again on the same day, the
- * DIF goes up by 5."
+ * MLP CRB "Consummate Performer" (Laugh Tactic, p.86): a Standard action Performance test
+ * regains 1 Cheer, at DIF 5 the first time and 5 higher for each further use that day.
  *
  * Two halves, split the same way as every other Cheer-spending ability this session touches: the
  * roll itself reuses the existing generic flat-Difficulty Skill Test pipeline (the same minimal

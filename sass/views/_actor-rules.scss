@@ -1,0 +1,269 @@
+// The actor sheet's Rules tab (templates/actor/tabs/effects.hbs, module/rules/actor-view.mjs) - the
+// actor-side twin of the item sheet's Rules tab (_rules.scss), so the entries read the same way.
+// Every colour is a theme token (components/_theme_wrapper.scss), so the colour scheme and the
+// Sci-fi / MLP frame themes both carry through without per-theme rules here.
+
+.essence20 .tab.effects .e20-actor-rules {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 0.5rem;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.25rem 0.5rem 0.5rem;
+  color: var(--e20-theme-text-color);
+
+  // Every image in the tab is a thumbnail - a source item's art can be any size (Yo Joe!'s chevron
+  // is several hundred px), and outside an .item row nothing else sizes it.
+  img.item-image {
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    max-width: 28px;
+    object-fit: contain;
+    border: none;
+    margin: 0;
+  }
+
+  // The effect list no longer fills the tab on its own: the rules summary sits under it.
+  > .items-list {
+    flex: none;
+    min-height: 0;
+    padding-top: 0;
+  }
+
+  .e20-actor-rules-intro,
+  .e20-actor-rules-empty {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  .e20-actor-rules-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.35rem 0 0;
+    padding: 0 0 0.2rem;
+    border: none;
+    border-bottom: 1px solid var(--e20-theme-border-color);
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--e20-theme-text-color);
+  }
+
+  .e20-actor-rules-count {
+    font-size: 0.75rem;
+    font-weight: normal;
+    padding: 0 0.4rem;
+    border: 1px solid var(--e20-theme-border-color);
+    border-radius: 999px;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  // Shared with the item sheet's Rules tab: the small upper-case tag and the summary text.
+  .e20-rule-type {
+    flex: none;
+    font-size: 0.7rem;
+    font-weight: bold;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  .e20-rule-summary {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .e20-rule-source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+    cursor: pointer;
+    color: inherit;
+
+    &:hover {
+      color: var(--e20-theme-accent);
+      text-decoration: underline;
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Active Effects                               */
+  /* -------------------------------------------- */
+
+  .e20-effect-group .effect-name i {
+    margin-right: 0.3rem;
+  }
+
+  // Conditions, area effects and timed effects: an accent bar down the left, so anything that will
+  // go away reads as different from the always-on rows at a glance.
+  .e20-effect-group.is-transient {
+    border-left: 3px solid var(--e20-theme-accent);
+    padding-left: 0.3rem;
+  }
+
+  .e20-effect-entry {
+    align-items: center;
+
+    &.is-transient {
+      border-left: 3px solid var(--e20-theme-accent);
+    }
+
+    &.is-disabled,
+    &.is-suppressed {
+      opacity: 0.6;
+    }
+
+    .effect-name {
+      align-items: center;
+      gap: 0.4rem;
+      min-width: 0;
+    }
+
+    .effect-duration i {
+      color: var(--e20-theme-accent);
+    }
+  }
+
+  .e20-effect-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 0.1rem;
+
+    h4 {
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .effect-summaries {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.8rem;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  .e20-effect-statuses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .e20-effect-status {
+    font-size: 0.7rem;
+    padding: 0 0.35rem;
+    border: 1px solid var(--e20-theme-accent);
+    border-radius: 3px;
+  }
+
+  .e20-effect-note {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  .e20-effect-empty {
+    list-style: none;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  .effect-control.is-placeholder {
+    opacity: 0.45;
+    cursor: help;
+  }
+
+  /* -------------------------------------------- */
+  /*  Rules from items (read-only)                 */
+  /* -------------------------------------------- */
+
+  .e20-actor-rule-sources {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .e20-actor-rule-source {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--e20-theme-border-color);
+    border-radius: 4px;
+    background: var(--e20-theme-panel-bg);
+  }
+
+  .e20-actor-rule-source-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+  }
+
+  .e20-actor-rule-source-name {
+    font-weight: bold;
+    overflow-wrap: anywhere;
+  }
+
+  .e20-actor-rule-host {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+
+  .e20-actor-rule-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .e20-actor-rule {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.2rem 0.4rem;
+    list-style: none;
+    font-size: 0.85rem;
+    border-top: 1px solid var(--e20-theme-border-color);
+
+    &:first-child {
+      border-top: none;
+    }
+
+    &::before,
+    &::marker {
+      content: none;
+    }
+
+    // Applies only under its conditions ("while Morphed"), or reaches another actor (crew, aura).
+    &.is-situational .e20-rule-summary {
+      font-style: italic;
+    }
+
+    &.is-linked .e20-rule-type {
+      color: var(--e20-theme-accent);
+    }
+  }
+
+  .e20-actor-rule-state {
+    flex: none;
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    padding: 0 0.35rem;
+    border: 1px solid var(--e20-theme-border-color);
+    border-radius: 3px;
+  }
+}

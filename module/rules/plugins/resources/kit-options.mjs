@@ -10,7 +10,7 @@ import { registerRuleType } from "../../types.mjs";
  *  - `KitOption {label, cost?: standard | move | free, steps}` - one more choice in the kit's "What do you do with the kit?"
  *    list, offered first while `when` holds (self = the user, `rule:` the kit). Chosen: the action is paid (in combat),
  *    the steps run as the user with the user's targets, and their chat lines are the kit's message. WTNV's Medicine Kit:
- *    "consume this kit as a Standard action in combat to immediately heal 2 Health to yourself or an ally".
+ *    used up as a Standard action in combat to heal 2 Health on the user or an ally.
  *  - `KitSkill {skill, spec?}` - the kit's Skill and Specialization, where its name doesn't say them (kits.mjs#kitInfo):
  *    Night Vale's Medicine, Science and Travel Reporter kits.
  */

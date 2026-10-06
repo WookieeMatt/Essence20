@@ -77,4 +77,4 @@ registerTag('rule:bankedDie', (rest, ctx) => {
   const id = ctx.ruleItem?.id;
   return bankedDice(actor).some(entry => entry.source == id) || actor?.flags?.essence20?.[HEADS_FLAG]?.ruleBonusDie?.source == id
     || !!actor?.flags?.essence20?.pr1ProspectorDie;
-});
+}, { phrase: ['a die this item banked is still waiting', 'no die this item banked is waiting'] });

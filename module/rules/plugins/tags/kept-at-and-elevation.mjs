@@ -18,7 +18,7 @@ registerTag('target:keptAt', (rest, ctx) => {
 
   const kept = readPath(ctx.self, rest);
   return !!ctx.other?.uuid && !!kept && String(kept) == ctx.other.uuid;
-});
+}, { phrase: (arg, w) => [`{who} {is} your ${w.humanize(arg).replace(/ Uuid$/, '')}`, `{who} {isnt} your ${w.humanize(arg).replace(/ Uuid$/, '')}`] });
 
 const compare = (value, op, number) => ({ '>=': value >= number, '<=': value <= number, '>': value > number, '<': value < number, '=': value == number })[op];
 
@@ -34,4 +34,7 @@ registerTag('self:elevation', (rest, ctx) => {
   }
 
   return compare(Number(token.document?.elevation) || 0, match[1], Number(match[2]));
-});
+}, { phrase: (arg, w) => {
+  const match = /^(>=|<=|>|<|=)(-?\d+(?:\.\d+)?)$/.exec(arg);
+  return match ? [`{poss} elevation is ${w.comparison(match[1], match[2])} ft`, `{poss} elevation is ${w.comparison({ '>=': '<', '<=': '>', '>': '<=', '<': '>=', '=': '!=' }[match[1]], match[2])} ft`] : null;
+} });

@@ -1,7 +1,6 @@
 /**
- * Disguise (Dark Skies Over Equestria, Elementary Aid spell, p.21): "You put on a disguise that
- * gives you an Edge on Deception and Infiltration Skill Tests when you pretend to be another
- * creature of your Origin."
+ * Disguise (Dark Skies Over Equestria, Elementary Aid spell, p.21): a disguise as another creature
+ * of the caster's Origin, Edge on Deception and Infiltration while posing.
  *
  * Same shape as Observer/Illusory Disguise's own identical "Edge on 2 named skills while a
  * disguise is active" pattern already established twice this arc - a flat-DIF non-Attack cast

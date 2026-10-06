@@ -69,8 +69,7 @@ export const rerollSchema = () => ({
     // Whether a matched result keeps getting rerolled until it no longer matches (true, the
     // default - matches every existing grant so far, e.g. "reroll 1s" chases a second 1 into a
     // third roll) or is rerolled exactly once and the new result is kept regardless (false - PR
-    // CRB "Weapon Mastery": "...you can reroll the die and must use the new roll, even if the
-    // new roll is a 1 or a 2"). Only meaningful for the 'ones'/'onesAndTwos'/values-based
+    // CRB "Weapon Mastery": one reroll, kept even if it is another 1 or 2). Only meaningful for the 'ones'/'onesAndTwos'/values-based
     // matching in mechanics/rolls/reroll.mjs#applyRerollToDie - the unconditional "reroll this whole die"
     // and single-die-target cases are already inherently one-shot.
     recursive: makeBool(true),

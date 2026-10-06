@@ -51,11 +51,8 @@ function makeActor(data = {}) {
   return actor;
 }
 
-const src = uuid => ({ core: { sourceId: uuid } });
-
 let forms;
 let formState;
-let slots;
 let common;
 let ext;
 
@@ -89,7 +86,6 @@ beforeAll(async () => {
   common = await import('../shared/turn-stamps.mjs');
   formState = await import('../forms/ranger-form-state.mjs');
   forms = await import('../forms/ranger-form-perks.mjs');
-  slots = await import('../zords/megafauna.mjs');
   await import('../index.mjs');
 });
 
@@ -207,16 +203,4 @@ describe('Forms', () => {
   });
 });
 
-describe('Zord slots', () => {
-  // Megafauna's toggle, its Smarts / Social 3 and the pilot's Animal Handling are the Feature's own rules
-  // (module/rules/conv17-split2.test.js); arriving in form on summon stays here.
-  test('Megafauna: a summoned Zord arrives in Megafauna Form', () => {
-    const zord = makeActor({ type: 'zord', uuid: 'Actor.z', items: [{ type: 'feature', name: 'Megafauna', flags: src(slots.ZS.megafauna) }] });
-    const changes = { flags: { essence20: { zordSummonReadyRound: 3 } } };
-    slots.megafaunaOnSummon(zord, changes);
-    expect(changes.flags.essence20.zord1Megafauna).toBe(true);
-    const plain = { flags: { essence20: {} } };
-    slots.megafaunaOnSummon(zord, plain);
-    expect(plain.flags.essence20.zord1Megafauna).toBeUndefined();
-  });
-});
+// (Megafauna - arriving in form on summon too - is the Feature's own rules: rules/conv17-split2.test.js, rules/conv18-convB.test.js.)

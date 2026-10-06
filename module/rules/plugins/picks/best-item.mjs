@@ -3,8 +3,8 @@ import { registerStep } from "../../steps.mjs";
 import { itemsOf, localize } from "../shared/copy-and-data-helpers.mjs";
 
 /**
- * Round 15 (items2) - copying from the actor's own strongest item (Elemental Fury's "two times the damage of this
- * Zord's strongest ranged Attack, uses its Range"):
+ * Round 15 (items2) - copying from the actor's own strongest item (Elemental Fury: double the damage of the Zord's
+ * strongest ranged Attack, at its Range):
  *
  *   step bestItem {type, where?, by, keep, var?, message?}
  *       Among the actor's items of `type` whose `where` tags hold (item: = the candidate, self: = the actor), the one
@@ -17,7 +17,7 @@ import { itemsOf, localize } from "../shared/copy-and-data-helpers.mjs";
 const read = (doc, path) => String(path ?? '').split('.').reduce((at, key) => (at === null || at === undefined ? at : at[key]), doc);
 const clone = value => (value && typeof value == 'object' ? JSON.parse(JSON.stringify(value)) : value);
 
-registerTag('roll:crit', (rest, ctx) => (ctx?.isCrit === undefined ? null : !!ctx.isCrit));
+registerTag('roll:crit', (rest, ctx) => (ctx?.isCrit === undefined ? null : !!ctx.isCrit), { phrase: ['on a Critical Success', 'unless it is a Critical Success'] });
 
 registerStep('bestItem', async (step, ctx) => {
   const candidates = itemsOf(ctx.actor).filter(item => (!step.type || item.type == step.type)

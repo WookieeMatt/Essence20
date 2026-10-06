@@ -3,6 +3,8 @@
  * helpers are imported lazily inside functions.
  */
 
+import { sourceOf } from "../../../items/shared/item-lookups.mjs";
+
 /** A string from the RulesExtH block of the language file (E20.RulesExtH.<key>), or the key itself. */
 export function T(key, data = null) {
   const i18n = globalThis.game?.i18n;
@@ -37,10 +39,11 @@ export function listOf(collection) {
   return collection && typeof collection[Symbol.iterator] == 'function' ? [...collection] : [];
 }
 
+// Not item-lookups.mjs#itemsOf: a plain array is handed back as-is (that one copies it).
 export const itemsOf = actor => listOf(actor?.items);
 
-/** An item's book source (or the item it acts as). */
-export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
+/** An item's book source (or the item it acts as) - item-lookups.mjs's, re-exported. */
+export { sourceOf };
 
 /** A value at a dotted path. */
 export const read = (doc, path) => String(path ?? '').split('.').reduce((at, key) => (at === null || at === undefined ? at : at[key]), doc);

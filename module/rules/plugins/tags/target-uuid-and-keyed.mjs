@@ -7,7 +7,7 @@ import { registerTag } from "../../predicate.mjs";
  */
 
 // target:uuid:<uuid> - the other party is that actor ({var.x} / {choice.x} filled first).
-registerTag('target:uuid', (rest, ctx) => (ctx.other ? ctx.other.uuid == rest : false));
+registerTag('target:uuid', (rest, ctx) => (ctx.other ? ctx.other.uuid == rest : false), { phrase: ['{who} {is} the one picked', '{who} {isnt} the one picked'] });
 
 // @targetKeyed.<path>: a number this actor keeps per target under a flag object keyed by the target's uuid with its
 // dots as dashes (flags.essence20.analyzeTargetCounts) - for the run's first target.

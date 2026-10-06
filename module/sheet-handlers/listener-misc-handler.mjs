@@ -131,8 +131,7 @@ export async function spendRolePoint(actor, item) {
 async function _applyRestBenefits(actor, completeMessageKey) {
   const normalEnergon = actor.system.energon.normal;
   let maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
-  // A Hint of Independence's Energon Hunger: "Anytime you regenerate Energon, roll 1d4; on a 4, you
-  // regenerate 1 less than the normal amount."
+  // A Hint of Independence's Energon Hunger: on each Energon regain, a 4 on 1d4 means 1 less.
   if (imperfectionOf(actor)?.n == 5 && maxEnergonRestore > 0 && (await new Roll('1d4').evaluate()).total == 4) {
     maxEnergonRestore -= 1;
   }

@@ -17,9 +17,8 @@ export function addictionDie(previousUses) {
   return ADDICTION_LADDER[previousUses] ?? 'auto';
 }
 
-// "Dark Energon is highly addictive, making an attack against the Willpower of anyone who uses it,
-// starting with a base skill level of +d6 and gaining ↑1 for each time used until it automatically
-// succeeds. When the attack succeeds, the subject gains the Addicted (Dark Energon) Hang-Up."
+// Each use of Dark Energon makes a Willpower attack on the user, starting at d6 and ↑1 per use until
+// it succeeds outright; a hit gives the Addicted (Dark Energon) Hang-Up.
 export async function darkEnergonAddiction(actor) {
   if (has(actor, IDS.addictedDarkEnergon)) {
     return;

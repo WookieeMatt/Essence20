@@ -3,8 +3,8 @@ import { E20 } from "../../util/config.mjs";
 /**
  * Attacks that deal Essence damage instead of Health damage.
  *
- * Essence damage (GI Joe CRB p.207, TF CRB p.161): "Some attacks and effects don't damage your
- * Health, they reduce your Essence Scores." It is a point off an Essence's current value - the gap
+ * Essence damage (GI Joe CRB p.207, TF CRB p.161): some attacks lower Essence Scores rather than
+ * Health. It is a point off an Essence's current value - the gap
  * mechanics/combat/essence-damage.mjs reads and a Rest restores - and it only bites once a score reaches 0,
  * each Essence in its own way (Strength: "forced shutdown", Speed: "paralyzed", Smarts: "a stupor",
  * Social: "lethargic"). Those are posted to chat for the GM rather than applied as Conditions.
@@ -12,11 +12,10 @@ import { E20 } from "../../util/config.mjs";
  * A weaponEffect deals it by carrying one of the Essence damage types (E20.essenceDamageTypes):
  * - a fixed Essence or pair - the Antimatter Pistol's "1 Strength Essence damage" and the Catalytic
  *   Cannon's "2 Strength and Speed Essence damage" alternate effects (Decepticon Directive p.72-73);
- * - 'any', Sludge (Cobra Codex p.94): "One dose of Sludge deals 1 Essence damage... If Science is
- *   used for the Skill Test, the attacker chooses the Essence affected. Otherwise, randomly
- *   determine the Essence affected." Every point of the hit lands on that one Essence;
- * - 'swap', V.E.N.O.M. (same page): "+1 to one Essence, and -1 to one Essence", chosen or random the
- *   same way, "two different Essences must be affected". A lasting change to both scores (max and
+ * - 'any', Sludge (Cobra Codex p.94): 1 Essence damage a dose, to an Essence the attacker picks when
+ *   the attack used Science, otherwise a random one. Every point of the hit lands on that one Essence;
+ * - 'swap', V.E.N.O.M. (same page): +1 to one Essence and -1 to a different one, chosen or random the
+ *   same way. A lasting change to both scores (max and
  *   current), logged on the target so a GM can see and undo it. Not scaled by Degrees of Success -
  *   one dose is one change.
  *

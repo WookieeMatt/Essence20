@@ -3,6 +3,7 @@ import { contextFor, evaluate, interpolate, registerTag } from "../../predicate.
 import { itemsFor, registerStep, registerTextRef } from "../../steps.mjs";
 import { registerRuleType } from "../../types.mjs";
 import { write } from "../shared/chat-speaker-helpers.mjs";
+import { sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * Small pieces for the grant-style Use buttons (round 15, uses):
@@ -22,7 +23,6 @@ import { write } from "../shared/chat-speaker-helpers.mjs";
  */
 
 const listOf = collection => collection?.contents ?? (collection ? [...collection] : []);
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 
 registerStep('refreshMorphedToughness', async (step, ctx) => {
   const { setMorphedToughnessBonus } = await import("../../../sheet-handlers/perk-handler.mjs");
@@ -47,7 +47,7 @@ registerTag('item:heldBySelf', (rest, ctx) => {
   const uuid = ctx.item.uuid ?? null;
   const source = sourceOf(ctx.item) ?? uuid;
   return listOf(ctx.self.items).some(item => item !== ctx.item && (sourceOf(item) == source || (uuid && sourceOf(item) == uuid)));
-});
+}, { phrase: ['you already have {who}', "you don't have {who} yet"] });
 
 registerTag('item:entryOfOwned', (rest, ctx) => {
   const source = sourceOf(ctx.item) ?? ctx.item?.uuid;
@@ -57,7 +57,7 @@ registerTag('item:entryOfOwned', (rest, ctx) => {
 
   return listOf(ctx.self.items).filter(item => item.type == rest)
     .some(holder => Object.values(holder.system?.items ?? {}).some(entry => entry?.uuid && entry.uuid == source));
-});
+}, { phrase: ['{who} {is} listed on one of your {arg} items', '{who} {isnt} listed on any of your {arg} items'] });
 
 registerTextRef('sourced', (rest, ctx) => {
   const match = /^([A-Za-z0-9]{16})\.([^|]+)(?:\|(.*))?$/.exec(rest);

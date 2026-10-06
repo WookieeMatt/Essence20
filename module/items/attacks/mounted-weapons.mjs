@@ -3,8 +3,8 @@ import { ruleIgnoresTrait } from "../../rules/plugins/combat/trait-ignore.mjs";
 
 /**
  * Mounted (GI Joe CRB, Weapon Effects and Traits, p.148; identical wording recurs in every core
- * rulebook's own Weapon Traits list): "Requires a mount, such as a tripod or shooting rest, that
- * takes a Standard action to set up, and a Free action to pick up."
+ * rulebook's own Weapon Traits list): needs a mount (a tripod or rest) - a Standard action to set up,
+ * a Free action to pick up.
  *
  * Modelled as a per-weapon Item flag ('mountedSetUp'), the same idiom mechanics/combat/reload-trait.mjs's own
  * needsReload already establishes - a Mounted weapon starts NOT set up (flag absent), can't be

@@ -1,11 +1,11 @@
 import { worldActors } from "../companions/companion-link.mjs";
 import { getSceneEpoch } from "../resources/scene-clock.mjs";
+import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 
 /**
  * Perks that reach across the team - handing something to an ally, or acting together.
  *
  * - Team Player (PR CRB, Green Ranger, p.45): pass a Survival Boon to a Morphed teammate.
- * - Renegade Commander (Sgt Slaughter Sourcebook p.12): give an ally Reckless Abandon.
  * - Let's Bring 'Em Together! (PR CRB, Red Ranger, p.53): the combined Power Weapon attack.
  * - Carrier (PR CRB, Zord Feature, p.136).
  * - Morphin Pet (Field Guide p.71): the pet Morphs too, for 1 Personal Power.
@@ -14,7 +14,6 @@ import { getSceneEpoch } from "../resources/scene-clock.mjs";
 const uuid = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 export const TEAM = {
   teamPlayer: uuid('pr_crb', 'b4OEl1hxeFXcAAy8'),
-  renegadeCommander: uuid('sgt_slaughter_sourcebook', 'JgJRqxXzTPBOlOBz'),
   letsBringEmTogether: uuid('pr_crb', '6Jf4hI8PmVctLex1'),
   carrier: uuid('pr_crb', 'h1b0cjGJP1xqtfVv'),
   morphinPet: uuid('field_guide_action_adventure', 'TgrFrV09NhlXIxom'),
@@ -22,47 +21,13 @@ export const TEAM = {
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items.contents) ? items.contents : (typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-}
-
 const has = (actor, id) => itemsOf(actor).some(item => sourceOf(item) == id);
 
-const USE_KINDS = ['teamPlayer', 'renegadeCommander', 'letsBringEmTogether'];
+const USE_KINDS = ['teamPlayer', 'letsBringEmTogether'];
 const BY_SOURCE = Object.fromEntries(USE_KINDS.map(kind => [TEAM[kind], kind]));
 
 export function teamKindOf(item) {
   return BY_SOURCE[sourceOf(item)] ?? null;
-}
-
-function allyTokens(actor, feet = Infinity) {
-  const mine = actor?.getActiveTokens?.()?.[0];
-  if (!mine || !canvas?.tokens) {
-    return [];
-  }
-
-  return canvas.tokens.placeables.filter(t => t !== mine && t.actor && t.document.disposition == mine.document.disposition
-    && (feet == Infinity || canvas.grid.measurePath([mine.center, t.center]).distance <= feet));
-}
-
-async function pickToken(title, prompt, tokens) {
-  if (!tokens.length) {
-    ui.notifications.warn(T('E20.NoOneInRange'));
-    return null;
-  }
-
-  const { chooseSelect } = await import("../resources/grants.mjs");
-  const picked = tokens.length == 1 ? tokens[0].id : await chooseSelect(title, prompt, tokens.map(t => ({ value: t.id, label: t.name })));
-  return tokens.find(t => t.id == picked) ?? null;
 }
 
 /* -------------------------------------------- */
@@ -70,11 +35,9 @@ async function pickToken(title, prompt, tokens) {
 /* -------------------------------------------- */
 
 /**
- * Team Player (PR CRB, Green Ranger 10th): "you can transfer your unique Survival Boons to your Power
- * Ranger teammates. By making contact between your Morphed form and a teammate's Morphed form, and both
- * of you spend 1 Personal Power ... you may choose one of your current Survival Boons to pass to that
- * teammate. This transfer lasts until both of you return to your normal form; the next time you use
- * It's Morphin Time!, all transferred Survival Boons will have been returned to you."
+ * Team Player (PR CRB, Green Ranger 10th): two Morphed Rangers in contact each spend 1 Personal Power
+ * and the holder passes one Survival Boon to the teammate; it lasts until both unmorph and is back
+ * with the holder at their next It's Morphin Time!.
  *
  * The giver's Boon comes off their sheet and a copy is offered on a card; the teammate takes it
  * (spending their own Personal Power). It goes back on the giver's next Morph, and leaves the teammate
@@ -160,8 +123,7 @@ export async function onMorphChanged(actor, morphed) {
     }
   }
 
-  // Morphin Pet: "When you use It's Morphin Time!, you can spend 1 Personal Power to grant your pet the
-  // same benefits."
+  // Morphin Pet: 1 Personal Power at It's Morphin Time! Morphs the pet too.
   if (has(actor, TEAM.morphinPet)) {
     const { companionsOf } = await import("../companions/companion-link.mjs");
     const pets = companionsOf(actor).filter(p => p.type == 'companion' && p.system?.type == 'pet' && p.isOwner);
@@ -181,78 +143,7 @@ export async function onMorphChanged(actor, morphed) {
   }
 }
 
-/* -------------------------------------------- */
-/*  Renegade Commander                           */
-/* -------------------------------------------- */
-
-/**
- * Renegade Commander: "As a Standard action, you can grant an ally in Light or no armor who can see and
- * hear you the benefits of Reckless Abandon. You can use this ability a number of times in a day equal
- * to the Reckless Abandon Uses column". The uses are the Commander's own Role resource; the ally gets
- * the ↑2 on Strength tests and the Bonus Health as a scene-long effect. At 9th level the Commander can
- * pick themselves.
- */
-async function renegadeCommander(actor, item, pay) {
-  const rolePoints = actor._getBaseRolePoints?.();
-  const resource = rolePoints?.system?.resource;
-  if (!resource || (resource.value ?? 0) < 1) {
-    ui.notifications.warn(T('E20.RenegadeCommanderNoUses', { name: actor.name }));
-    return null;
-  }
-
-  const tokens = allyTokens(actor);
-  if ((Number(actor.system?.level) || 1) >= 9) {
-    const own = actor.getActiveTokens?.()?.[0];
-    if (own) {
-      tokens.unshift(own);
-    }
-  }
-
-  const token = await pickToken(item.name, T('E20.RenegadeCommanderPick'), tokens);
-  const ally = token?.actor;
-  if (!ally) {
-    return null;
-  }
-
-  const heavy = itemsOf(ally).some(i => i.type == 'armor' && i.system?.equipped && !['light'].includes(i.system?.classification));
-  if (heavy) {
-    ui.notifications.warn(T('E20.RenegadeCommanderArmor', { name: ally.name }));
-    return null;
-  }
-
-  if (!(await pay('standard'))) {
-    return null;
-  }
-
-  await rolePoints.update({ 'system.resource.value': resource.value - 1 });
-  const level = Number(actor.system?.level) || 1;
-  const bonusHealth = Number(rolePoints.system?.bonus?.[level == 20 ? 'level20Value' : 'value']) || 0;
-  const effect = {
-    name: T('E20.RenegadeCommanderEffect', { name: actor.name }), img: item.img,
-    flags: { essence20: { renegadeCommander: getSceneEpoch() } },
-    changes: [
-      { key: 'system.essenceShifts.strength.shiftUp', mode: 2, value: '2' },
-      ...(bonusHealth ? [{ key: 'system.health.bonus', mode: 2, value: String(bonusHealth) }] : []),
-    ],
-  };
-  const { needsGmRelay } = await import("../world/gm-relay.mjs");
-  if (needsGmRelay(ally)) {
-    ui.notifications.warn(T('E20.RenegadeCommanderNeedsOwner', { name: ally.name }));
-    return null;
-  }
-
-  await ally.createEmbeddedDocuments('ActiveEffect', [effect]);
-  return T('E20.RenegadeCommanderGiven', { name: actor.name, ally: ally.name });
-}
-
-/** Renegade Commander's grant, like the scene's other summons, ends with the scene. */
-export async function endSceneTeamEffects(actor) {
-  const ids = [...(actor?.effects ?? [])].filter(e => e.flags?.essence20?.renegadeCommander != null
-    && e.flags.essence20.renegadeCommander != getSceneEpoch()).map(e => e.id);
-  if (ids.length && actor.isOwner) {
-    await actor.deleteEmbeddedDocuments('ActiveEffect', ids);
-  }
-}
+// (Renegade Commander is a Use rule on the Perk: pickAlly, addEffect until scene - rules/conv18-convB.test.js.)
 
 // (Try Me is a Use rule and a CardButtons rule on the Perk - placeBeside, contest: rules/conv16-b.test.js.)
 
@@ -261,11 +152,9 @@ export async function endSceneTeamEffects(actor) {
 /* -------------------------------------------- */
 
 /**
- * Let's Bring 'Em Together! (Red Ranger 5th): "as a standard action, spend 1 Personal Power to begin
- * ... each other teammate must move to be adjacent to you and name the same Contingency action trigger
- * ... the combined Power weapon attack takes place. The ranged attack has a Reach of 100/250, gains an
- * additional ↑2 to hit using your attack traits and abilities, but inflicts 1 Damage upon a successful
- * hit per participating member."
+ * Let's Bring 'Em Together! (Red Ranger 5th): a Standard action and 1 Personal Power start it; each
+ * teammate moves adjacent and names the same Contingency trigger, then one combined Power Weapon
+ * attack goes off - range 100/250, ↑2 on the holder's attack, 1 damage per participant on a hit.
  */
 async function letsBringEmTogether(actor, item, pay) {
   const power = actor.system?.powers?.personal;
@@ -350,9 +239,8 @@ export async function onCombinedFire(button) {
 /* -------------------------------------------- */
 
 /**
- * Carrier: "Contains a metaphysical space that holds up to five Vehicular Scale Zords and their Crew
- * inside itself; carried Zords may not be harmed until released as an action • Automatically releases
- * all carried Zords upon reaching 0 Health". A Zord listed on a Carrier's sheet is carried.
+ * Carrier (PR CRB p.136): holds up to five Vehicular-Scale Zords and their Crew, unharmable until
+ * released with an action, and all released when the Carrier hits 0 Health. A Zord listed on a Carrier's sheet is carried.
  */
 export function carrierOf(zord) {
   if (zord?.type != 'zord') {
@@ -381,7 +269,7 @@ export function carrierCapacityLeft(carrier) {
 /*  Use buttons                                  */
 /* -------------------------------------------- */
 
-const HANDLERS = { teamPlayer, renegadeCommander, letsBringEmTogether };
+const HANDLERS = { teamPlayer, letsBringEmTogether };
 
 export async function runTeamUse(item, economy) {
   const kind = teamKindOf(item);

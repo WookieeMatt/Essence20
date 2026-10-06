@@ -20,4 +20,4 @@ export function terrainPickedTag(rest, ctx) {
   return !!terrain && list.includes(terrain);
 }
 
-registerTag('terrain:picked', terrainPickedTag);
+registerTag('terrain:picked', terrainPickedTag, { phrase: ['you are in the terrain you picked', "you aren't in the terrain you picked"] });

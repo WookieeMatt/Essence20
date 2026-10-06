@@ -11,4 +11,4 @@ export function autoDownshiftTag(rest, ctx) {
   return (Number(ctx.autoShiftDown) || 0) > 0;
 }
 
-registerTag('roll:autoDownshift', autoDownshiftTag);
+registerTag('roll:autoDownshift', autoDownshiftTag, { phrase: ['the roll takes an automatic downshift', 'the roll takes no automatic downshift'] });

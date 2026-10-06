@@ -29,12 +29,6 @@ export function roundStamp() {
   return combat ? { combatId: combat.id, round: combat.round } : { combatId: null, round: null };
 }
 
-/** Whether a stamp is from this combat's current round (never out of combat). */
-export function isThisRound(stamp) {
-  const combat = globalThis.game?.combat;
-  return !!stamp && !!combat && stamp.combatId == combat.id && stamp.round == combat.round;
-}
-
 /** Whether two stamps name the same combat turn. */
 export function sameTurn(a, b) {
   return !!a && !!b && a.combatId == b.combatId && a.round == b.round && a.turn == b.turn;

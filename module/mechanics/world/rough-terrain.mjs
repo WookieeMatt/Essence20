@@ -8,9 +8,8 @@ import { actorHasPerk } from "../characters/perks.mjs";
 import { ruleMovement } from "../../rules/adapter.mjs";
 
 /**
- * Rough Terrain (GI Joe CRB p.219; TF CRB, PR CRB and MLP CRB say the same): "Moving through rough
- * terrain doubles Movement cost, cumulative with other Movement penalties... Rough terrain
- * penalties do not stack no matter how many types are present."
+ * Rough Terrain (GI Joe CRB p.219; TF CRB, PR CRB and MLP CRB say the same): Movement costs
+ * double, on top of other Movement penalties, but several kinds of rough terrain don't stack.
  *
  * A GM marks it by ticking Rough Terrain on an Environment Region Behavior
  * (mechanics/world/environment.mjs). That Behavior feeds Foundry v14's own terrain-aware movement
@@ -48,15 +47,15 @@ const TELEPORT_MOVEMENT_ACTIONS = ['blink', 'displace'];
    no Environment Region under the segment, the scene's default. */
 export const ENVIRONMENT_MOVEMENT_COST = { highGravity: 3 };
 const ROUGH_ENVIRONMENTS = ['thickAtmosphere'];
-// Sputtering (Across the Stars, Space Vessel Condition, p.26): "The vessel treats its non-Ground
-// Movement as if moving through Rough Terrain."
+// Sputtering (Across the Stars, Space Vessel Condition, p.26): all non-Ground Movement counts as
+// Rough Terrain.
 const NON_GROUND_MOVEMENT_ACTIONS = ['fly', 'swim', 'burrow'];
 
 // (Take Point - TF CRB, Outrider Origin Benefit, p.52 - is item rules now: MovementAction ignoreRoughTerrain and a
 // Cover grant while self:inRoughTerrain.)
 // Over the Candlestick, Sewer Tunneler, Urban Jungle, Hard Tread Wheels, Clawed Feet and Feet Wet (sea
 // terrain) ignore Rough Terrain through MovementAction item rules on their packs (first entry below).
-// Environmental Expertise's "ignore the penalties for moving through Rough Terrain in your environment of expertise":
+// Environmental Expertise's free movement through Rough Terrain in its environment:
 // whoever an EnvironmentalExpertise item rule gives the benefits to (hasActiveEnvironmentalExpertise - it follows the
 // scene's terrain when one is set).
 // (Piledriver - TF CRB, Alt Mode gear, p.135 - is a `posted` Trigger with a placeRoughTerrain step, which calls

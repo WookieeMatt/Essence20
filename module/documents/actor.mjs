@@ -471,8 +471,7 @@ export class Essence20Actor extends Actor {
     const speedEssence = this.system.essences?.speed;
     const statuses = this.statuses ?? new Set();
 
-    // Surprise (GI Joe CRB, Combat chapter): "on the surprise round... they cannot take any
-    // actions (including Standard, Move, or Free actions)." Item rules carve the exceptions
+    // Surprise (GI Joe CRB, Combat chapter): no actions of any kind in the surprise round. Item rules carve the exceptions
     // (SurpriseExemption, rules/adapter.mjs#ruleSurpriseModes): "speedAsLevel" (Unsurprising) acts
     // with Speed capped to level, "normal" (Ready For Anything) acts as usual, and "move" (Security)
     // keeps the Move action inside the ordinary zero-out (see zeroed.move, further down).
@@ -505,8 +504,8 @@ export class Essence20Actor extends Actor {
       free: counts.free,
     };
 
-    // Asleep/Defeated/Stunned (GI Joe CRB, Conditions, p.226: "Stunned characters can't take
-    // actions (Standard, Movement, or Free)")/Unconscious all zero out every action budget - see
+    // Asleep/Defeated/Stunned (GI Joe CRB, Conditions, p.226: no actions of any kind while
+    // Stunned)/Unconscious all zero out every action budget - see
     // isUnableToAct's own doc comment (mechanics/actions/action-economy.mjs) for the Defeated exception and
     // why this used to be a second, separately-maintained copy of that same list.
     const incapacitated = isUnableToAct(this);
@@ -530,15 +529,13 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   * Defeat of a Vehicle (GI Joe CRB, p.214): "The vehicle is considered to have all Movement
-   * types reduced to 0 until repaired." Read-only + zeroed the same way _prepareMegaformData()
+   * Defeat of a Vehicle (GI Joe CRB, p.214): every Movement type is 0 until it is repaired. Read-only + zeroed the same way _prepareMegaformData()
    * already displays a computed-not-edited Movement (system.movementIsReadOnly) - the real
    * system.movement.<type>.total this Vehicle's sheet directly edits is left untouched
    * underneath, so clearing system.crashed (repairing it) needs nothing further to restore.
    *
-   * Crew (GI Joe CRB, p.212): "Drivers must have a d2 or more in the Driving skill and the
-   * vehicle needs the full number of drivers in order to move at full Movement; if understaffed
-   * or untrained, the vehicle can only use half of its listed Movement per turn." Only runs when
+   * Crew (GI Joe CRB, p.212): drivers need d2+ Driving, and a vehicle short of its full count of
+   * qualified drivers moves at half its listed Movement. Only runs when
    * not crashed (Movement is already fully zeroed above, a strictly stronger effect) - halves the
    * same in-memory .total each render rather than the real stored value, for the same
    * non-destructive reason as the crashed branch.
@@ -562,17 +559,15 @@ export class Essence20Actor extends Actor {
         return shiftIndex >= 0 && shiftIndex <= d2Index;
       }).length;
 
-    // Autopilot (GI Joe CRB, Vehicle Trait, p.173): "As long as this vehicle has 1 driver, it
-    // operates at full capacity" - a full exception to the driver-count halving below, not just a
+    // Autopilot (GI Joe CRB, Vehicle Trait, p.173): one driver is enough for full capacity - a full exception to the driver-count halving below, not just a
     // softer penalty, as soon as at least 1 qualified driver is seated (regardless of how many
-    // more the vehicle's own crew.numDrivers calls for). Autopilot, Advanced's own clause
-    // ("operates like a normal vehicle with at least 1 driver but less than its full complement,
-    // even with zero drivers") needs no separate code here - this halving branch already treats 0
+    // more the vehicle's own crew.numDrivers calls for). Autopilot, Advanced's own clause (it runs
+    // as an understaffed vehicle even with no driver at all) needs no separate code here - this halving branch already treats 0
     // qualified drivers the same as an understaffed-but-present crew (halved, not zeroed), which
     // is exactly that guarantee; nothing currently makes a 0-driver Vehicle fully immobile for
     // Advanced Autopilot to be an exception to.
-    // Undo Engine (Intercontinental Adventures p.71): "the vehicle's Movement is reduced to 0 until
-    // the driver uses their Standard action to restart the engines" - the flag its rules set (and the restart button clears).
+    // Undo Engine (Intercontinental Adventures p.71): Movement 0 until the driver spends a Standard
+    // action restarting the engines - the flag its rules set (and the restart button clears).
     if (this.getFlag?.('essence20', 'undoEngineMovementDisabled')) {
       for (const movementType of Object.keys(this.system.movement)) {
         this.system.movement[movementType].total = 0;
@@ -798,22 +793,20 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   * Sets system.energon.normal.max to this actor's lowest current Essence Score (p.104-105 -
-   * "capable of storing a number of personal Energon Points equal to their lowest Essence
-   * Score"), for actors that can transform. Non-transforming actors (vehicles, etc.) keep
+   * Sets system.energon.normal.max to this actor's lowest current Essence Score (p.104-105 - the
+   * personal Energon pool equals the lowest Essence Score), for actors that can transform. Non-transforming actors (vehicles, etc.) keep
    * whatever value was set manually, since they may use system.energon.normal as literal fuel
    * capacity rather than the Cybertronian Energon Points resource.
    *
    * Note the assignment below is `=`, not `+=`: this method OWNS the value, which is why anything
    * wanting to add to the pool has to land after it. Spark of the Ancients (Enigma of
-   * Combination, General Perk, p.41 - "Your maximum Energon Pool is increased by 2") used to be a
+   * Combination, General Perk, p.41 - +2 maximum Energon) used to be a
    * branch at the bottom of this method for exactly that reason; it is now an ordinary Active
    * Effect on the compendium Perk itself (packs/eocitems/_source/Spark_Of_the_Ancients_*.json),
    * applied in the FINAL phase so core runs it after prepareDerivedData rather than before, where
    * this assignment would simply overwrite it. Any future "+N maximum Energon" effect needs that
-   * same phase - see docs/ACTIVE_EFFECTS_UI_PLAN.md §13. The Perk's other two halves ("regain 1
-   * Energon at the beginning of any scene", "always register as having the highest amount of
-   * Energon") remain unbuilt: there is no scene-boundary hook and no scanner mechanic to hang
+   * same phase - see docs/ACTIVE_EFFECTS_UI_PLAN.md §13. The Perk's other two halves (1 Energon
+   * back at each scene start, and always reading as the highest Energon on a scan) remain unbuilt: there is no scene-boundary hook and no scanner mechanic to hang
    * them on.
    */
   _prepareEnergon() {
@@ -826,12 +819,11 @@ export class Essence20Actor extends Actor {
     const essences = this.system.essences;
     this.system.energon.normal.max = Math.min(essences.strength.value, essences.speed.value, essences.smarts.value, essences.social.value);
 
-    // Mini-Con Master (Decepticon Directive p.50): "Power Conduit: ... the maximum number of Energon
-    // Points you can store is increased by 1" per two docked.
+    // Mini-Con Master (Decepticon Directive p.50): Power Conduit Mini-Cons give +1 maximum Energon per
+    // two docked.
     this.system.energon.normal.max += linkedBonuses(this).energonMax;
 
-    // A Hint of Independence's Poor Energon Circulation: "Your maximum Energon Points is equal to your
-    // lowest Essence Score -1".
+    // A Hint of Independence's Poor Energon Circulation: maximum Energon is the lowest Essence -1.
     if (imperfectionOf(this)?.n == 1) {
       this.system.energon.normal.max = Math.max(0, this.system.energon.normal.max - 1);
     }
@@ -938,8 +930,8 @@ export class Essence20Actor extends Actor {
       return;
     }
 
-    // Compromised (Across the Stars, Space Vessel Condition, p.25): "each instance of the Condition
-    // reduces the vessel's maximum Health by another point." Defeat at 0 is
+    // Compromised (Across the Stars, Space Vessel Condition, p.25): -1 maximum Health per stack.
+    // Defeat at 0 is
     // mechanics/vehicles/vessel-conditions.mjs#syncVesselConditionConsequences.
     const compromised = getVesselConditionStacks(this, 'compromised');
 
@@ -995,8 +987,8 @@ export class Essence20Actor extends Actor {
         itemArmorBonus.evasion += parseInt(armorItem.system.totalBonusEvasion) || 0;
       }
 
-      // Grid Connection (Field Guide p.67): "you gain a light armor shell from the Grid, granting
-      // a +1 bonus to Toughness" while the summoned Power Weapon lasts (weapon-perk-uses.mjs).
+      // Grid Connection (Field Guide p.67): a light Grid armor shell, +1 Toughness, while the
+      // summoned Power Weapon lasts (weapon-perk-uses.mjs).
       if (isGridShellActive(this)) {
         itemArmorBonus.toughness += 1;
       }
@@ -1070,8 +1062,8 @@ export class Essence20Actor extends Actor {
         }
       }
 
-      // H.I.S.S. Column (GI Joe CRB, Vehicle Trait, p.302): "Every H.I.S.S. on a battlefield
-      // gains a bonus to Evasion equal to the number of other H.I.S.S. on the battlefield."
+      // H.I.S.S. Column (GI Joe CRB, Vehicle Trait, p.302): +1 Evasion per other H.I.S.S. on the
+      // battlefield.
       // Recomputed fresh every prepareData pass (getHissColumnBonus scans the live scene), same
       // idiom as every other condition-gated bonus in this loop, so it tracks other H.I.S.S.
       // tokens entering/leaving the scene automatically.
@@ -1186,8 +1178,8 @@ export class Essence20Actor extends Actor {
       // (High Gear's Ground Movement doubling is a Movement rule on the Feature, stage adjust - just above; a Megaform's
       // aggregate reads each Zord's own .base, so it never sees it.)
 
-      // Emotional Mastery: Distress (A Jump Through Time, Purple Ranger, p.37) - "Your Movement
-      // values increase by 10 feet whenever you begin your turn within 10 feet of an enemy."
+      // Emotional Mastery: Distress (A Jump Through Time, Purple Ranger, p.37) - +10ft to every
+      // Movement when the turn starts within 10ft of an enemy.
       // Every Movement type, same live-read touch-point as Warrior Rush above (see
       // getDistressMovementBonus's own doc comment for the "whenever you begin your turn"
       // approximation).
@@ -1286,9 +1278,8 @@ export class Essence20Actor extends Actor {
 
   /**
    * Low Gravity and Zero-G (Across the Stars, Exploring Infinite Environments, p.24-25), applied on
-   * top of every other Movement change. Low Gravity: "Movement types gain a 10-foot bonus" (each
-   * type the creature already has). Zero-G: "Treat all Movement like Aerospace Movement, with a rate
-   * of 20 feet/10 feet" - Aerial becomes 20 and every other type 0; the 10-foot inertia minimum has
+   * top of every other Movement change. Low Gravity: +10ft to each Movement type the creature
+   * already has. Zero-G: all Movement works like Aerospace at 20ft/10ft - Aerial becomes 20 and every other type 0; the 10-foot inertia minimum has
    * no field to live in and stays a table rule. High Gravity's tripled cost is a movement-cost rule
    * instead (mechanics/world/rough-terrain.mjs), so the ruler shows it.
    *
@@ -1321,9 +1312,8 @@ export class Essence20Actor extends Actor {
 
   /**
    * Prepares Sorcerous Power - a one-time BUILD budget (Finster's Monster-Matic Cookbook,
-   * "Building Sorcerous Powers," p.274: "You begin with 4 points of Sorcerous Powers, and gain 2
-   * more with each level gained after taking this Perk... Once you have created a Power, you can
-   * use it as often as the Power dictates"), not a spendable-per-use pool. USER DECISION
+   * "Building Sorcerous Powers," p.274: 4 points to build with, +2 per level after taking the
+   * Perk, and a built Power is used as often as it says), not a spendable-per-use pool. USER DECISION
    * (2026-09-24): Sorcerous Powers no longer spend `.value` on activation (see
    * sheet-handlers/power-handler.mjs#powerCost) - instead `.committed` tracks how much of the
    * budget is already spoken for by the actor's owned Sorcerous Powers, so the sheet can warn
@@ -1559,9 +1549,9 @@ export class Essence20Actor extends Actor {
 
           break;
         case 'defender':
-          // Across the Stars, p.104: "+1 bonus to the Megaform's adjusted Toughness Defense."
-          // The reactive half ("piloting Ranger may spend 1 Personal Power to impose a Snag on
-          // an attack targeting the Megaform") needs a "react to an incoming attack" hook this
+          // Across the Stars, p.104: +1 to the Megaform's adjusted Toughness.
+          // The reactive half (the pilot spends 1 Personal Power to Snag an attack on the
+          // Megaform) needs a "react to an incoming attack" hook this
           // system doesn't have yet - not built.
           toughnessTraitBonus += item.system.value;
           break;
@@ -1579,8 +1569,8 @@ export class Essence20Actor extends Actor {
           hasTenaciousBonds = true;
           break;
         case 'layeredSystems':
-          // Across the Stars, p.105: "adds 3 to the Health of its specific section (added after
-          // any modifiers for the Core Body position)" - a flat bonus to just this Zord's own
+          // Across the Stars, p.105: +3 Health to this Zord's own section, after the Core Body
+          // multiplier - a flat bonus to just this Zord's own
           // share, applied after (not doubled by) the Core Body multiplier below.
           layeredSystemsBonus += item.system.value;
           break;
@@ -1591,8 +1581,7 @@ export class Essence20Actor extends Actor {
           system.immunities.emp = true;
           break;
         case 'resistant':
-          // Across the Stars, p.105: "adds one of its damage Resistances to the entirety of
-          // the Megaform."
+          // Across the Stars, p.105: one of the Zord's Resistances covers the whole Megaform.
           system.resistances[item.system.damageType] = true;
           break;
         }
@@ -1602,9 +1591,8 @@ export class Essence20Actor extends Actor {
       combinedHealthValue += (Math.max(0, zord.system.health.value) * healthMultiplier) + layeredSystemsBonus;
     }
 
-    // Tenacious Bonds (A Jump Through Time, p.84): "this component Zord and all other component
-    // Zords gain 1 additional Health, added after any multipliers for the Core Body Megaform
-    // Trait... This Megaform Trait may only modify the Megaform once" - a flat, non-stacking +1
+    // Tenacious Bonds (A Jump Through Time, p.84): +1 Health to every component Zord, after the
+    // Core Body multiplier, counted once per Megaform however many carry it - a flat, non-stacking +1
     // per participant (not per instance of the trait across multiple holders), so this is a
     // single conditional add after the main loop rather than accumulated inside it.
     if (hasTenaciousBonds) {
@@ -1646,8 +1634,8 @@ export class Essence20Actor extends Actor {
     system.health.origin = combinedHealthMax;
     system.health.value = combinedHealthValue;
 
-    // Stun (p.170: "shown on the sheet as 'Stun / Health'... every hit that deals Stun damage
-    // adds to this instead of subtracting from Health") isn't pooled either, for the same reason
+    // Stun (p.170: tracked as Stun / Health, Stun damage adding to Stun rather than coming off
+    // Health) isn't pooled either, for the same reason
     // Health isn't - each participant tracks its own, and mechanics/vehicles/megaform-damage.mjs's
     // applyMegaformDamage already correctly routes Stun-type damage to each participant's own
     // system.stun.value (it just calls the ordinary applyDamage() per participant, which
@@ -1772,9 +1760,8 @@ export class Essence20Actor extends Actor {
         if (winner.system.skills[skill] && system.skills[skill]) {
           system.skills[skill] = foundry.utils.deepClone(winner.system.skills[skill]);
 
-          // Better as One (Component Ace Focus, 10th level, p.34): "any Skill Specializations
-          // you possess are also applied to the Skills of a Combiner form you are a component
-          // of." A holder's own Specializations in this skill are merged in even when they
+          // Better as One (Component Ace Focus, 10th level, p.34): the component's own Skill
+          // Specializations carry over to the Combiner form. A holder's own Specializations in this skill are merged in even when they
           // weren't the essence's high-score "winner" above (whose own Specializations were
           // already carried over by the deepClone just above).
           for (const component of participants) {
@@ -1829,9 +1816,9 @@ export class Essence20Actor extends Actor {
     // _prepareMegaformZordData's own identical comment (a per-roll dice.mjs hook, the
     // still-missing Megaform damage-distribution mechanic, and an out-of-turn action this
     // system already supports the core of via the ordinary system.actors remove control,
-    // respectively). Safe Release (Enigma of Combination, p.42: "when you are forced to leave a
-    // Combiner form... you do so with at least 1 Health") and Universal Receptors (p.43: "spend 1
-    // fewer Story Point... merging with Combiner-capable NPCs") are likewise unhandled here -
+    // respectively). Safe Release (Enigma of Combination, p.42: a forced exit from a Combiner leaves
+    // at least 1 Health) and Universal Receptors (p.43: one fewer Story Point to merge with
+    // Combiner-capable NPCs) are likewise unhandled here -
     // Safe Release needs Phase 4's still-unbuilt Vehicle/Megaform Defeat subsystem to have
     // anything to guard against, and Universal Receptors discounts a Story Point cost this system
     // doesn't charge anywhere yet (no code currently spends one for an NPC joining a Combiner).
@@ -1894,7 +1881,7 @@ export class Essence20Actor extends Actor {
           system.resistances[item.system.damageType] = true;
           break;
         case 'skillExpertise':
-          // Enigma of Combination, p.42: "the Combiner form receives ↑1 to each of these Skills"
+          // Enigma of Combination, p.42: ↑1 on each chosen Skill for the Combiner form
           // - an upshift, not a flat modifier (the shift glyph drops in this book's own text
           // extraction, the same lossy-glyph gotcha already documented for Weak Point/
           // Technostalgic elsewhere in this project). "Choose TWO Skills" is modeled as two
@@ -1912,9 +1899,8 @@ export class Essence20Actor extends Actor {
           hasTitanHardpoint = true;
           break;
         case 'commander':
-          // Enigma of Combination, p.42: "Note your two highest Essence Scores... and increase
-          // each of those Essence Scores of the Combined Form by 1... a Combiner form can only
-          // ever benefit from this Combiner feature once" - a flat, non-stacking flag (like
+          // Enigma of Combination, p.42: +1 to the Combined Form's two highest Essence Scores,
+          // once per Combiner however many hold it - a flat, non-stacking flag (like
           // Tenacious Bonds above), applied once after every other Essence bonus is tallied so it
           // reads the Combiner's own final scores, not a snapshot from before this loop finishes.
           // The holder's per-Essence Skill picks (the item's Use button, extensions/r2misc/
@@ -1929,7 +1915,7 @@ export class Essence20Actor extends Actor {
     system.defenses.toughness.armor += toughnessTraitBonus;
     system.defenses.evasion.armor += evasionTraitBonus;
 
-    // "This Combiner feature can only apply to Combiner forms of Gigantic Size or larger" - reuses
+    // Only for Combiner forms of Gigantic Size or bigger - reuses
     // this same function's own sizeOrder/giganticIndex (already computed above for the
     // Titanic/Towering Titanspark-adjacent check), read AFTER system.size was finalized just above.
     if (hasCommander && sizeOrder.indexOf(system.size) >= giganticIndex) {
@@ -1985,8 +1971,8 @@ export class Essence20Actor extends Actor {
     system.stun.value = participants.reduce((sum, component) => sum + (component.system.stun?.value || 0), 0);
 
     const defeatedCount = participants.filter(component => component.system.health.value <= 0).length;
-    // Keep it Together! (Component Ace Focus, 17th level, p.34): "a combined form you are
-    // merged with will not fall apart as long as you still have Health" - overrides the normal
+    // Keep it Together! (Component Ace Focus, 17th level, p.34): the combined form holds together
+    // while the holder has Health left - overrides the normal
     // majority-defeated rule entirely while ANY component holding the Perk is still above 0
     // Health, regardless of how many other components have fallen.
     const hasKeepItTogetherHolderStanding = participants.some(

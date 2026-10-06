@@ -84,4 +84,10 @@ registerTag('itemVar', (rest, ctx) => {
   const [key, ...tag] = String(rest).split(':');
   const item = lookup(ctx.vars?.[key]);
   return item ? evaluateTag(tag.join(':'), { ...ctx, item }) === true : false;
-});
+}, { phrase: (arg, w) => {
+  const [key, ...more] = arg.split(':');
+  const tag = more.join(':');
+  const stored = (w.humanize(key).replace(/ ?Uuid$/i, '') || 'Item').toLowerCase();
+  const who = `the stored ${stored}${stored.endsWith('item') ? '' : ' item'}`;
+  return [w.items([tag], who), w.items([`not:${tag}`], who)];
+} });

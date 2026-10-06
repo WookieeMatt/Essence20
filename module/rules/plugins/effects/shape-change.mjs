@@ -105,4 +105,4 @@ registerStep('changeShape', async (step, ctx) => {
 registerTag('shape:skill', (key, ctx) => {
   const shape = shapeOf(ctx.self);
   return !!shape?.[key] && !!ctx.rolledSkill && shape[key] == ctx.rolledSkill;
-});
+}, { phrase: ["the Skill is your changed shape's {arg}", "the Skill isn't your changed shape's {arg}"] });

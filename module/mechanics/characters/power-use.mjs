@@ -1,6 +1,6 @@
 import { postPerkUseChatCard } from "./perks.mjs";
 import { rollPowerAttack } from "./attack-powers.mjs";
-import { activateZeoCrystalBoost, canUseZeoCrystalBoost, pickZeoCrystalBoostOption } from "../../items/attacks/zeo-crystal-boost.mjs";
+import { powerGateOpen } from "../../rules/plugins/resources/power-gate.mjs";
 import { activateMonsterGrow } from "../../items/forms/monster-grow.mjs";
 
 /**
@@ -10,11 +10,8 @@ import { activateMonsterGrow } from "../../items/forms/monster-grow.mjs";
  * (templates/actor/parts/items/power/container.hbs's own roll-button inline) - so this replaces
  * that inline's previous bare `{{#if item.system.canActivate}}` check, folding the static
  * per-item flag in here too rather than needing both checks written out in the template. Most
- * Powers have no further dynamic gate beyond canActivate (this system has no generic once-per-
- * scene enforcement for Powers the way BANKABLE_PERKS' own encounter flags give Perks) - only Zeo
- * Crystal Boost currently needs one, via its own already-existing canUseZeoCrystalBoost. Any future
- * Power needing a dynamic once-per-scene/affordability gate adds its own branch here, the same
- * shape onPowerUse's own dispatch below already establishes.
+ * Powers have no further dynamic gate beyond canActivate; one that does carries a PowerGate rule
+ * (rules/plugins/resources/power-gate.mjs - Zeo Crystal Boost's once per scene).
  * @param {Item} item
  * @returns {Boolean}
  */
@@ -23,13 +20,7 @@ export function canUsePower(item) {
     return false;
   }
 
-  const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-
-  if (sourceId == ZEO_CRYSTAL_BOOST_ID) {
-    return canUseZeoCrystalBoost(item.parent);
-  }
-
-  return true;
+  return powerGateOpen(item);
 }
 
 /**
@@ -43,8 +34,8 @@ export function canUsePower(item) {
  * Called from power-handler.mjs#powerCost (the fixed-cost and free-to-activate paths) and
  * #_powerCountUpdate (the variable-cost path, reached via apps/power-cost-selector.mjs's own form
  * submit) - in every case AFTER the generic cost-spend has already completed (or confirmed there
- * was nothing to spend), matching onPerkUse's own "the click already resolved affordability, this
- * function only ever runs the actual effect" contract. A Power with no registered handler here
+ * was nothing to spend), matching onPerkUse's own contract: the click has already settled
+ * affordability, and this function only runs the effect. A Power with no registered handler here
  * silently no-ops, the same as onPerkUse falling through when a Perk's own sourceId isn't in
  * BANKABLE_PERKS/IMMEDIATE_ALLY_PERKS - most of the 49 Grid/Sorcerous Power items the Ledger
  * catalogued "Buildable now" still need their own entry added here, this is the plumbing they all
@@ -77,19 +68,7 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
   // source flags of its own, so the caller names it.
   const sourceId = sourceIdOverride ?? item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 
-  if (sourceId == ZEO_CRYSTAL_BOOST_ID) {
-    if (!canUseZeoCrystalBoost(actor)) {
-      return;
-    }
-
-    const option = await pickZeoCrystalBoostOption();
-    if (option) {
-      await activateZeoCrystalBoost(actor, option);
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
+  // (Zeo Crystal Boost is its Power's own PowerGate, powerUsed Trigger and bonus rules - rules/conv18-convB.test.js.)
 
   // (Chrono-File Access's report is a powerUsed Trigger on the Power - rules/conv17-perm.test.js.)
 
@@ -104,6 +83,5 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
 }
 
 // The Powers still dispatched here by compendium id (the rest are their items' own powerUsed rules).
-const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
 // (Blazing Strikes is its Power's own powerUsed Trigger, DamageType and sceneStart rules - rules/conv17-split2.test.js.)
 const MONSTER_GROW_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.KR4KuZlalNywMvSb";

@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Defense","label":"Impenetrable Armor (driven vehicle: +2 Defenses)","scope":"driven","defense":"any","amount":2,"when":["self:type:vehicle",{"any":["defense:toughness","defense:evasion","defense:willpower","defense:cleverness"]}]}
+      {"type":"Defense","label":"Impenetrable Armor (driven vehicle: +2 Defenses)","scope":"driven","defense":"any","amount":2,"when":["self:type:vehicle",{"any":["defense:toughness","defense:evasion","defense:willpower","defense:cleverness"]}]},
+      {"type":"Trigger","label":"Impenetrable Armor (take the hit on your vehicle)","event":"applyingDamage","redirectTo":"drivenVehicle","steps":[]}
     ],
     "automation": {
       "status": "full",

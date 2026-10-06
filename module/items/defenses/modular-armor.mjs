@@ -1,7 +1,6 @@
 /**
- * Modular (Across the Stars, Armor Traits, p.85): "These items gain the Integrated trait for the
- * wearer to use while in the armor. The number listed with this trait is the allowance for
- * attaching Medium or smaller weapons..."
+ * Modular (Across the Stars, Armor Traits, p.85): Medium-or-smaller weapons attached to the armor,
+ * up to the trait's number, count as Integrated while it is worn.
  *
  * The printed "(X)" lives in the armor's own system.modularAllowance (data/item/armor.mjs), the
  * same "magnitude field next to a plain trait membership check" shape Bulwark's
@@ -10,8 +9,8 @@
  * (templates/item/details/armor.hbs) - storing it on the armor keeps the allowance check in one
  * place and lets a plain form submit edit it.
  *
- * "Gain the Integrated trait" is Integrated the weapon SIZE (GI Joe CRB: "Integrated weapons can
- * not be disarmed, and do not need to be drawn to be wielded. They take 0 hands to wield"), so a
+ * That Integrated is the weapon SIZE (GI Joe CRB: can't be disarmed, needn't be drawn, takes 0
+ * hands), so a
  * socketed weapon reports effectiveSize 'integrated' and derivedHands 0 - the two derived fields
  * the Gear tab and the Load Out hand tally (documents/actor.mjs#_prepareLoadout) already read.
  * Applied from the ACTOR's own prepareDerivedData, not the weapon's, because it depends on a

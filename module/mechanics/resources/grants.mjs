@@ -3,6 +3,7 @@ import { grantKindOf, imperfectionOf } from "./grant-uses.mjs";
 import { getSceneEpoch } from "./scene-clock.mjs";
 import { lineOf } from "./game-lines.mjs";
 import { ruleEssenceRedirect } from "../../rules/plugins/resources/uses-grant-pieces.mjs";
+import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 
 /**
  * Items that hand the character something to pick - a free upgrade at Requisition, another Role's
@@ -24,23 +25,6 @@ import { ruleEssenceRedirect } from "../../rules/plugins/resources/uses-grant-pi
 
 const AVAILABILITY = ['standard', 'limited', 'restricted', 'prototype', 'unique', 'theoretical'];
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  if (Array.isArray(items.contents)) {
-    return items.contents;
-  }
-
-  return typeof items[Symbol.iterator] == 'function' ? [...items] : [];
-}
 
 /** A kit's availability is in its name ("Limited Burglary Kit"). */
 export function kitAvailability(name) {

@@ -32,7 +32,15 @@ registerTag('card:flagEquals', (rest, ctx) => {
   }
 
   return String(value) == match[2];
-});
+}, { phrase: (arg, w) => {
+  const [key, value = ''] = arg.split('=');
+  const flag = { isAttack: 'an attack', isMelee: 'melee' }[key];
+  if (flag && (value == 'true' || value == 'false')) {
+    return value == 'true' ? [`the roll is ${flag}`, `the roll isn't ${flag}`] : [`the roll isn't ${flag}`, `the roll is ${flag}`];
+  }
+
+  return [`the roll's ${w.humanize(key).toLowerCase()} is ${w.humanize(value)}`, `the roll's ${w.humanize(key).toLowerCase()} isn't ${w.humanize(value)}`];
+} });
 
 /**
  * Whether the card's damage is halved for the one it lands on.

@@ -18,4 +18,4 @@ registerRecipient('bondedAlly', (match, ctx) => {
   return ally ? [ally] : [];
 });
 
-registerTag('self:bonded', (rest, ctx) => !!bondedAlly(ctx?.self));
+registerTag('self:bonded', (rest, ctx) => !!bondedAlly(ctx?.self), { phrase: ['{who} {has} a bonded ally', '{who} {has} no bonded ally'] });

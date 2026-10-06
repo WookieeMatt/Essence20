@@ -3,9 +3,8 @@ import { getNearbyEnemyTokens } from "../../mechanics/combat/nearby-enemies.mjs"
 
 /**
  * Mysterious Aura (A Jump Through Time, White Spectrum Modification, replaces Follow Me!, p.45):
- * "As a Move action while Morphed that costs 1 Personal Power, you may emit one of the following
- * auras until you de-Morph. You may only have one aura active at a time, but you can re-activate
- * this Perk to choose a new aura":
+ * a Move action and 1 Personal Power while Morphed start one aura until de-Morphing; one at a time,
+ * and using the Perk again swaps it:
  * - Imposing: enemies within 20ft have their Willpower/Cleverness Defenses lowered by 2.
  * - Protective: you and allies within 20ft gain +2 to one Defense of your choice.
  * - Resplendent: ranged Attacks against targets within 20ft of you suffer ↓1.

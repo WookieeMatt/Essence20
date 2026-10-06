@@ -397,19 +397,18 @@ const REROLL_CONDITIONS = {
 
     return context.d20Result < Math.min(...faces);
   },
-  // GI Joe CRB "Survivalist" (Focus: Predator, 17th level, p.94): "in your environment of
-  // expertise, reroll all skill dice results of 1..." Same check Environmental Armor/Prowl/Recon
+  // GI Joe CRB "Survivalist" (Focus: Predator, 17th level, p.94): in the environment of
+  // expertise, reroll every Skill die showing 1. Same check Environmental Armor/Prowl/Recon
   // read for their own in-environment bonuses - the scene's terrain when the GM has set one, else
   // the manual toggle (see mechanics/world/environmental-expertise.mjs's own doc comment).
   inEnvironmentOfExpertise: actor => hasActiveEnvironmentalExpertise(actor),
   // A Jump Through Time "Focused Strike": "When you make an Unarmed Attack..." See
   // E20.rerollConditions.unarmedAttack's own doc comment (util/config.mjs).
   unarmedAttack: (actor, context) => !!context?.isUnarmedAttack,
-  // All Too Predictable (Decepticon Directive, Tracker, 20th level, p.56): "reroll any single die in a
-  // Skill Test involving or targeting your Primary Mark" - mechanics/combat/target-riders.mjs#isVsPrimaryQuarry.
+  // All Too Predictable (Decepticon Directive, Tracker, 20th level, p.56): reroll one die on a test
+  // involving or targeting the Primary Mark - mechanics/combat/target-riders.mjs#isVsPrimaryQuarry.
   vsPrimaryQuarry: (actor, context) => !!context?.vsPrimaryQuarry,
-  // Decepticon Directive "Homing Shots": "...a ranged attack using a weapon with the Consumable
-  // or Wrecker trait." See E20.rerollConditions.consumableOrWreckerRangedAttack's own doc comment.
+  // Decepticon Directive "Homing Shots": ranged attacks with a Consumable or Wrecker weapon. See E20.rerollConditions.consumableOrWreckerRangedAttack's own doc comment.
   consumableOrWreckerRangedAttack: (actor, context) => !!context?.isConsumableOrWreckerRangedAttack,
   // Decepticon Directive "Metallikato" (General Perk, p.66): "When in Bot Mode ... melee attacks you
   // make". The roll's own melee flag (context.isMeleeAttack, dice.mjs) and the actor still in Bot Mode.

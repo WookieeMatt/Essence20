@@ -1,9 +1,8 @@
 import { spend } from "../../mechanics/actions/action-economy.mjs";
 
 /**
- * Mythically Modular (Through the Shattered Grid, New Weapon Trait and Upgrade, p.116): "A
- * Mythically Modular weapon combines two or more weapons (or shields) into a single weapon that
- * can change form as needed as a Free action." The upgrade of the same name gives the trait to
+ * Mythically Modular (Through the Shattered Grid, New Weapon Trait and Upgrade, p.116): two or
+ * more weapons or shields merged into one that switches form as a Free action. The upgrade of the same name gives the trait to
  * each of the weapons being combined, so every form is its own weapon Item on the sheet.
  *
  * A form is "in use" when its weapon is equipped (the same "wielding" idiom dice.mjs already

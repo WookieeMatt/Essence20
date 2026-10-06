@@ -10,9 +10,8 @@ import { isActiveGm } from "../shared/hooks-and-clients.mjs";
 import { isItem, itemsOf, sourceOf } from "../shared/item-lookups.mjs";
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 
-// Circle of Magical Friends (MLP CRB, Spirit of Magic, 7th level, p.94): "when you participate in a
-// Circle of Friends, you and all your friends become Magical. If anypony in the circle Mastered a
-// spell, everypony in the circle treats the spell like they've mastered it." Use while the Circle
+// Circle of Magical Friends (MLP CRB, Spirit of Magic, 7th level, p.94): in a Circle, every member
+// counts as Magical and shares every spell any member has Mastered. Use while the Circle
 // (items/social/friendship-circle.mjs) is live: each member gets a copy of every spell another member
 // has Mastered; the copies go when the Circle ends.
 const CIRCLE_SPELL_FLAG = 'resCircleSpell';

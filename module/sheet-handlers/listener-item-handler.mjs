@@ -309,7 +309,7 @@ export async function onShieldActivationToggle(target, actorSheet) {
     });
   }
 
-  // "You must spend a Move action to raise your shield ... another Move action to lower your shield"
+  // Raising a shield is a Move action, and lowering it another
   // (Cobra Codex p.98). Hold The Line makes either one a Free action (mechanics/actions/action-perks.mjs).
   const paid = await spend(actor, 'move', { source: currentShield.name, context: { kind: 'shieldToggle' } });
   if (paid.blocked) {

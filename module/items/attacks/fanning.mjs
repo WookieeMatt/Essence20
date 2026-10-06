@@ -2,8 +2,8 @@ import { E20 } from "../../util/config.mjs";
 import { fanningShotRules } from "../../rules/plugins/combat/fanning-shots.mjs";
 
 /**
- * Fanning (X) (A Jump Through Time, New Weapon Traits, p.74): "may fire up to X Attacks in single
- * Standard action, with the first Attack suffering a ↓1 modifier, increasing to ↓2 on the next".
+ * Fanning (X) (A Jump Through Time, New Weapon Traits, p.74): up to X Attacks in one Standard
+ * action, the first at ↓1 and the next at ↓2.
  * The rest of the trait is built too: the volley stops at the first Fumble, and afterwards the
  * weapon needs a Move action before it fires again (mechanics/combat/reload-trait.mjs's own needsReload flag).
  *

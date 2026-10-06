@@ -128,7 +128,8 @@ export async function applyingDamage(target, damage, { attacker = null, damageTy
   const vars = { damage, damageType: damageType ?? '', dropSecondary: 0 };
   for (const { rule, item, index } of rulesOfType(landsOn, 'Trigger')) {
     // A staged one (rules/plugins/combat/applying-damage-stages.mjs) runs at its own place in the chain instead.
-    if (rule.event != 'applyingDamage' || rule.redirect || rule.stage || rule.disabled || !(Number(vars.damage) > 0)) {
+    // redirectTo: the one hit's own redirect, asked first (rules/plugins/combat/self-redirect.mjs).
+    if (rule.event != 'applyingDamage' || rule.redirect || rule.redirectTo || rule.stage || rule.disabled || !(Number(vars.damage) > 0)) {
       continue;
     }
 

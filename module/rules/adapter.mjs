@@ -553,7 +553,8 @@ export function applySkillSubstitution(actor, dataset, item) {
   const onItem = rulesOf(item).filter(rule => rule?.type == 'SkillSubstitution' && rule.scope == 'item' && !rule.disabled)
     .map(rule => ({ rule, item }));
   for (const { rule, item: ruleItem } of [...affecting(actor, 'SkillSubstitution', ['self', 'host']), ...onItem]) {
-    if ((rule.scope ?? 'self') == 'host' && !hostMatches(ruleItem, item)) {
+    // stage: attack - swapped earlier, as the attack's dataset is built (rules/plugins/rolls/attack-skill-substitution.mjs).
+    if (((rule.scope ?? 'self') == 'host' && !hostMatches(ruleItem, item)) || rule.stage == 'attack') {
       continue;
     }
 

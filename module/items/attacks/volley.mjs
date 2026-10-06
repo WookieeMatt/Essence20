@@ -1,9 +1,8 @@
 import { roleValueChange } from "../../sheet-handlers/role-handler.mjs";
 
-// Volley (Power Rangers CRB, Pink Ranger, 1st level, p.48): "By spending 1 Personal Power, you
-// may make a special Volley attack action as long as you do not move. This Volley attack action
-// allows you to make a number of ranged attacks against valid targets equal to the Volley Shots
-// number... Range, cover, and other modifiers apply to these targets INDIVIDUALLY." Unlike
+// Volley (Power Rangers CRB, Pink Ranger, 1st level, p.48): for 1 Personal Power and no movement,
+// as many ranged attacks as the Volley Shots number, each target with its own range, cover and other
+// modifiers. Unlike
 // Whirlwind Strike's own corrected build (a single roll vs. many Defenses), this genuinely IS the
 // "Multiple Targets" trait's own real mechanic (an independent re-roll per target) - see
 // mechanics/combat/multiple-targets.mjs's own doc comment for the distinction this project has now drawn

@@ -72,16 +72,15 @@ export function ignoresDefend(parentWeapon) {
 }
 
 /**
- * Energy (PR CRB, Weapon Traits): "Energy weapons gain ↑1 on attacks against all Threats in their
- * grown form."
+ * Energy (PR CRB, Weapon Traits): ↑1 for Energy weapons against any grown Threat.
  */
 export function isGrownThreat(target) {
   return isMonsterGrown(target) || !!target?.getFlag?.('essence20', 'normalFormId');
 }
 
 /**
- * Ballistic (GI Joe CRB p.147): "Ballistic weapons automatically affect Toughness against targets
- * at long range, unless the target is behind cover or has a Perk that dictates its Defense."
+ * Ballistic (GI Joe CRB p.147): at long range the attack goes against Toughness, unless the target
+ * has cover or a Perk that sets its Defense.
  * Long range is past the effect's first (effective) range.
  * @returns {Boolean}
  */
@@ -105,8 +104,8 @@ export function isBallisticLongRange(actor, item, parentWeapon, targetToken) {
 }
 
 /**
- * Silent (GI Joe CRB, Battledress Traits): "Anyone making an Infiltration Skill Test while wearing
- * battledress without the Silent trait does so with a penalty equal to its total bonus."
+ * Silent (GI Joe CRB, Battledress Traits): battledress without Silent costs its total bonus as a
+ * penalty on Infiltration.
  * @returns {Number}   The shift down.
  */
 export function noisyArmorPenalty(actor) {
@@ -117,7 +116,7 @@ export function noisyArmorPenalty(actor) {
 }
 
 /**
- * Computerized (battledress): "Electromagnetic weapons ignore this battledress' bonus to Evasion."
+ * Computerized (battledress): its Evasion bonus doesn't count against Electromagnetic weapons.
  */
 export function computerizedArmorEvasion(target) {
   return (target?.items ?? []).filter(item => item.type == 'armor' && item.system?.equipped
@@ -129,13 +128,13 @@ export function computerizedArmorEvasion(target) {
 
 /**
  * Extra Hardpoints from Perks (TF CRB p.114 slots):
- * - Armament (Gunner, p.68): "You gain an additional Integrated Weapon Hardpoint."
- * - Experiment (Influence, p.32): the "additional Integrated Hardpoint" option.
- * - In Case of Emergency (Support, p.54): "two additional Internal Hardpoints (Non-Weapon)". Only
+ * - Armament (Gunner, p.68): one more Integrated Weapon Hardpoint.
+ * - Experiment (Influence, p.32): its extra Integrated Hardpoint option.
+ * - In Case of Emergency (Support, p.54): two more non-weapon Internal Hardpoints. Only
  *   weapons are counted against the Integrated slots, so these two go in their own nonWeapon count
  *   instead of letting two more weapons in.
- * - The Fiercest Among You (Rainmaker, p.52): "an additional Reinforced Integrated Weapon Hardpoint."
- * - Quick Draw (Gunslinger, p.70): "a pair of holsters as special External Weapon Hardpoints."
+ * - The Fiercest Among You (Rainmaker, p.52): one more Reinforced Integrated Weapon Hardpoint.
+ * - Quick Draw (Gunslinger, p.70): two holsters that count as External Weapon Hardpoints.
  * @param {Actor} actor
  * @returns {{external: Number, integrated: Number, nonWeapon: Number}}
  */
@@ -147,9 +146,8 @@ export function hardpointBonus(actor) {
 }
 
 /**
- * Titan Hardpoint Upgrades (Enigma of Combination p.41): "You ignore the Size-based requirements of
- * any weapon installed into your Integrated Hardpoints, but each weapon requires an additional
- * Hardpoint."
+ * Titan Hardpoint Upgrades (Enigma of Combination p.41): Integrated Hardpoint weapons ignore Size
+ * requirements, but each takes one extra Hardpoint.
  */
 export function integratedHardpointsPerWeapon(actor) {
   return ruleHardpoints(actor).perWeapon;
@@ -158,7 +156,7 @@ export function integratedHardpointsPerWeapon(actor) {
 /**
  * Whether an Integrated Hardpoint weapon fires as if Reinforced: the Reinforced Hardpoint upgrade
  * (TF CRB p.128), The Fiercest Among You's Reinforced Hardpoint, or Gun Runner (Gunslinger, p.70:
- * "treat an Integrated Hardpoint as Reinforced when you use it to fire ballistic weapons").
+ * an Integrated Hardpoint counts as Reinforced for ballistic weapons).
  */
 export function firesAsReinforced(actor, weapon) {
   return !!weapon?.system?.hardpoint?.reinforced

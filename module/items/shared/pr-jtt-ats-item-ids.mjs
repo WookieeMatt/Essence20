@@ -14,6 +14,5 @@ export const pradv = pack('power_rangers_adventures');
 export const PR1 = {
   // A Jump Through Time
   spectrumShifted: jtt('sgRiSOX0hDIKkcMh'),
-  // Across the Stars
-  standBehindMe: ats('PcezfGdjUtNUZHYH'),
+  // (Across the Stars' Stand Behind Me! is its Perk's own rules - rules/conv18-convA.test.js.)
 };

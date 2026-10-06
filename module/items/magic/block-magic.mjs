@@ -1,6 +1,5 @@
-// Block Magic (Knights of Canterlot, Virtuoso Enchantment spell, p.49): "you block their access
-// to magical power for the duration of the spell. This means they must increase the cost of any
-// spell they cast by an additional 1 or suffer Snag on the casting test." A flat on/off flag on
+// Block Magic (Knights of Canterlot, Virtuoso Enchantment spell, p.49): while it lasts the target's
+// spells cost 1 more, or are cast with a Snag. A flat on/off flag on
 // the TARGET (banked on a successful hit, same shape as Hot To Trot/Foolscarrot), read directly
 // in documents/item.mjs's own generic spell-casting-cost computation - the one place EVERY spell
 // cast already computes its own cost, so this needed no new per-spell hook at all. Only the

@@ -17,4 +17,4 @@ export function holderChoiceOfTag(rest, ctx) {
   return !!chosen && ctx.rolledSkill == chosen;
 }
 
-registerTag('holder:choiceOf', holderChoiceOfTag);
+registerTag('holder:choiceOf', holderChoiceOfTag, { phrase: ["its owner's choice for {name} matches", "its owner's choice for {name} doesn't match"] });

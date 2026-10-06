@@ -21,8 +21,7 @@ import { darkEnergonAddiction, feedDarkEnergonCraving } from "./dark-energon-add
 /*  Alternate Energon strains                    */
 /* -------------------------------------------- */
 
-// "Having at least one Dark Energon Point grants a user a +1 temporary bonus to Toughness and
-// Evasion Defenses, and ↑1 on all Strength and Speed skills."
+// Holding any Dark Energon gives +1 Toughness and Evasion and ↑1 on Strength and Speed Skills.
 export function applyDarkEnergonDefenses(system) {
   if (num(system?.energon?.dark?.value) < 1) {
     return;
@@ -57,9 +56,8 @@ export function strainSources(actor, { rolledSkill, rolledEssence }, { primalAct
     sources.push({ id: 'redEnergon', label: T('ResRedEnergonSource'), shiftUp: 1 });
   }
 
-  // Primal Energon: "↑1 to all Strength-based skills, Alertness, Animal Handling, and Survival for
-  // one scene. However, while these bonuses are in effect, the user also suffers ↓1 to all other
-  // Smarts- and Social- based skills."
+  // Primal Energon: for a scene, ↑1 on Strength Skills, Alertness, Animal Handling and Survival, and
+  // ↓1 on the other Smarts and Social Skills.
   if (primalActive) {
     if (rolledEssence == 'strength' || PRIMAL_UP.includes(rolledSkill)) {
       sources.push({ id: 'primalEnergon', label: T('ResPrimalEnergonSource'), shiftUp: 1 });
@@ -83,10 +81,8 @@ function synthStable(actor) {
   return !!actor?.flags?.essence20?.synthEnStable;
 }
 
-// Spend-for-Edge on a Strength or Speed test: Dark ("spend 1 Dark Energon Point to gain Edge on a
-// Strength- or Speed-based Skill Test"), Red ("or gain Edge on a single Strength- or Speed-based
-// Skill Test"), and unstable Synth-En ("functions exactly like Red Energon"). Stable Synth-En
-// spends "in the same way as normal Energon Points" - a ↑1 like the dialog's own Energon spend -
+// Spend-for-Edge on a Strength or Speed test: Dark (1 point, Edge), Red (the same), and unstable
+// Synth-En (works as Red). Stable Synth-En spends like ordinary Energon - a ↑1 like the dialog's own Energon spend -
 // with its d6 surcharge.
 registerDialogToggles((actor, { rolledEssence }) => {
   const toggles = [];
@@ -112,9 +108,8 @@ registerDialogToggles((actor, { rolledEssence }) => {
 });
 
 /**
- * Stable Synth-En's surcharge: "roll 1d6. If the result is equal to or higher than the character's
- * remaining standard Energon Points, the character must spend a standard Energon Point
- * immediately to achieve the effect desired."
+ * Stable Synth-En's surcharge: a d6 at or above the character's remaining standard Energon means a
+ * standard Energon Point must be spent as well.
  * @returns {'synth'|'normal'|'fail'}   Which point pays for it.
  */
 export function synthEnPayer(d6, normalLeft) {
@@ -174,8 +169,7 @@ registerApplyDialog(async (actor, options) => {
 /*  Dark Energon reroll                          */
 /* -------------------------------------------- */
 
-// "A user can spend 1 Dark Energon Point ... to reroll as many dice as they choose after they roll a
-// Strength- or Speed-based Skill Test" (Decepticon Directive p.80). Offered on the roll's chat card
+// A Dark Energon Point rerolls any number of dice of a Strength or Speed test (Decepticon Directive p.80). Offered on the roll's chat card
 // like any other reroll while the actor holds a Dark Energon Point; spending it is a use, so the
 // addiction attack follows.
 const STRENGTH_SPEED_SKILLS = ['athletics', 'brawn', 'intimidation', 'might', 'acrobatics', 'driving', 'finesse', 'infiltration', 'initiative', 'targeting'];
@@ -279,8 +273,7 @@ async function runStrain(item) {
   }
 
   if (pick == 'stabilize') {
-    // "A character who succeeds at a DIF 16 Science (Chemistry or Physics) Skill Test can
-    // stabilize Synth-En into its blue-green state."
+    // A DIF 16 Science (Chemistry or Physics) test stabilizes Synth-En.
     const { success } = await rollTest(actor, 'science', 16);
     if (success) {
       await actor.setFlag('essence20', 'synthEnStable', true);

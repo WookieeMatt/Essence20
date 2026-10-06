@@ -2,6 +2,9 @@ import { formulaError } from "./formula.mjs";
 import { unknownTags } from "./predicate.mjs";
 import { LIMIT_WINDOWS } from "./limits.mjs";
 import { CARD_STEPS, stepErrors } from "./steps.mjs";
+import { describeWhen, formulaWords, humanize, itemClauses, itemName, pathName, skillName } from "./describe-when.mjs";
+
+export { describeWhen };
 
 /**
  * What an ActionCost can make cheaper: a named action (E20.namedActions), or a kind of cost the
@@ -648,19 +651,15 @@ const loc = key => {
 /** A localized word, or the fallback when there's no game (tests, the CI script). */
 const word = (key, fallback) => loc(key) ?? fallback;
 
-function skillName(key) {
-  return word(globalThis.CONFIG?.E20?.skills?.[key] ?? `E20.Skill${key}`, key);
-}
-
 function shiftPhrase(rule) {
   const parts = [];
-  const number = value => (typeof value == 'number' ? value : `(${value})`);
+  const number = value => (isPlainNumber(value) ? String(value).trim() : ` equal to ${amountWords(value)}`);
   if (rule.type == 'DialogSwitch' && rule.damage) {
-    parts.push(`+${number(rule.damage)} damage`);
+    parts.push(`${signed(rule.damage)} damage`);
   }
 
   if (rule.type == 'DialogSwitch' && rule.useSkill) {
-    parts.push(`roll ${rule.useSkill} instead`);
+    parts.push(`roll ${skillName(rule.useSkill)} instead`);
   }
 
   if (rule.upshift) {
@@ -689,41 +688,6 @@ function shiftPhrase(rule) {
 
   if (rule.immune?.length) {
     parts.push(`ignores ${rule.immune.map(kind => (kind == 'snag' ? 'Snags' : 'downshifts')).join(' and ')}`);
-  }
-
-  return parts.join(', ');
-}
-
-/** "while Morphed, on Might tests" - the `when` read out. */
-export function describeWhen(when) {
-  const parts = [];
-  for (const entry of Array.isArray(when) ? when : []) {
-    if (entry && typeof entry == 'object' && Array.isArray(entry.any)) {
-      parts.push(`(${entry.any.map(inner => describeWhen([inner])).join(' or ')})`);
-      continue;
-    }
-
-    const text = String(entry ?? '');
-    const negated = text.startsWith('not:');
-    const tag = negated ? text.slice(4) : text;
-    const [family, ...rest] = tag.split(':');
-    const arg = rest.join(':');
-    let phrase;
-    switch (family) {
-    case 'skill': phrase = `on ${skillName(arg)} tests`; break;
-    case 'essence': phrase = `on ${arg} tests`; break;
-    case 'attack': phrase = arg ? `on ${arg} attacks` : 'on attacks'; break;
-    case 'defense': phrase = `against ${arg}`; break;
-    case 'self': phrase = arg == 'morphed' ? 'while Morphed' : arg == 'transformed' ? 'while in Alt Mode' : `while ${arg.replace(':', ' ')}`; break;
-    case 'target': phrase = `when the target is ${arg.replace(':', ' ')}`; break;
-    case 'item': phrase = `with ${arg.replace(':', ' ')}`; break;
-    case 'combat': phrase = 'in combat'; break;
-    case 'ownTurn': phrase = 'on your turn'; break;
-    case 'ask': phrase = `when ${arg}`; break;
-    default: phrase = tag;
-    }
-
-    parts.push(negated ? `not ${phrase}` : phrase);
   }
 
   return parts.join(', ');
@@ -759,30 +723,28 @@ export function summarizeRule(rule) {
     case 'fail': return `${lead}${name} can't be beaten${tail}`;
     }
 
-    return `${lead}${signed(rule.amount)} ${name}${tail}`;
+    return `${lead}${signed(rule.amount)} ${isPlainNumber(rule.amount ?? 0) ? '' : 'to '}${name}${tail}`;
   }
 
-  case 'DerivedStat': return `${who}${rule.op ?? 'add'} ${rule.value} → ${rule.path}${tail}`;
+  case 'DerivedStat': return `${who}${statChange(rule.op, rule.value, pathName(rule.path))}${tail}`;
   case 'DamageModifier': return `${who}${rule.immune ? 'Immune to' : `${signed(rule.amount)}`} ${rule.damageType ? `${rule.damageType} ` : ''}damage ${rule.direction == 'dealt' ? 'dealt' : 'taken'}${tail}`;
-  case 'Grant': return `Grants ${rule.label ?? rule.uuid}`;
-  case 'Toggle': return `Toggle: ${rule.label ?? rule.key}`;
-  case 'Pool': return `Pool: ${rule.label ?? rule.key} (max ${rule.max}${rule.reset && rule.reset != 'none' ? `, resets each ${rule.reset}` : ''})`;
-  case 'ChoiceSet': return `Choice: ${rule.label ?? rule.key} (${rule.from})`;
-  case 'Code': return `Runs ${rule.helper}`;
+  case 'Grant': return `Grants ${rule.label ?? itemName(rule.uuid)}`;
+  case 'Toggle': return `Toggle: ${rule.label ?? humanize(rule.key)}`;
+  case 'Pool': return `Pool: ${rule.label ?? humanize(rule.key)} (max ${rule.max}${rule.reset && rule.reset != 'none' ? `, resets each ${rule.reset}` : ''})`;
+  case 'ChoiceSet': return `Choice: ${rule.label ?? humanize(rule.key)} (${rule.from})`;
+  case 'Code': return `Runs ${humanize(rule.helper)}`;
   case 'CriticalOption': return rule.improve !== undefined
     ? `Critical Effects +${rule.improve} step${tail}`
-    : `Critical Effect: ${rule.essence ? `1 ${rule.essence} Essence damage` : rule.status ? rule.status : rule.effect ? rule.effect : `${rule.damageValue ?? 1} ${rule.damageType}`}${tail}`;
-  case 'WeaponTrait': return `Weapons${rule.items?.length ? ` (${rule.items.join(', ')})` : ''} gain ${(rule.traits ?? []).join(', ')}${tail}`;
+    : `Critical Effect: ${rule.essence ? `1 ${humanize(rule.essence)} Essence damage` : rule.status ? humanize(rule.status) : rule.effect ? humanize(rule.effect) : `${rule.damageValue ?? 1}${rule.damageType ? ` ${rule.damageType}` : ''} damage`}${tail}`;
+  case 'WeaponTrait': return `Weapons${rule.items?.length ? ` where ${itemClauses(rule.items)}` : ''} gain ${(rule.traits ?? []).map(humanize).join(', ')}${tail}`;
   case 'Hardpoints': return `Hardpoints: ${[
     rule.external && `+${rule.external} External`, rule.integrated && `+${rule.integrated} Integrated`,
     rule.nonWeapon && `+${rule.nonWeapon} Non-Weapon`, rule.perWeapon && `+${rule.perWeapon} per Integrated weapon`,
     rule.reinforced && 'Integrated weapons fire as Reinforced',
   ].filter(Boolean).join('; ')}${tail}`;
-  case 'AttackCount': return `${who}${rule.additional !== undefined ? `+${rule.additional} attack(s)` : `${rule.count} attacks`} per Attack action${tail}`;
+  case 'AttackCount': return `${who}${rule.additional !== undefined ? (isPlainNumber(rule.additional) ? `+${rule.additional} attack(s)` : `extra attacks equal to ${amountWords(rule.additional)}`) : isPlainNumber(rule.count) ? `${rule.count} attacks` : `attacks equal to ${amountWords(rule.count)}`} per Attack action${tail}`;
   case 'CritOnD2': return `${who}Can critically succeed on the d2${tail}`;
-  case 'Movement': return `${who}${rule.movement == 'all' ? 'Every Movement' : `${capital(rule.movement ?? '')} Movement`} ${{
-    set: '=', multiply: '×', add: '+', max: 'at least', min: 'at most',
-  }[rule.op] ?? rule.op} ${rule.value}${rule.stage && rule.stage != 'final' ? ` (${rule.stage})` : ''}${tail}`;
+  case 'Movement': return `${who}${statChange(rule.op, rule.value, rule.movement == 'all' ? 'Every Movement' : `${humanize(rule.movement ?? '')} Movement`, true)}${tail}`;
   case 'DamageType': return `${who}Deals ${rule.to == 'choice' ? 'the chosen' : rule.to} damage${tail}`;
   case 'RollDice': return `${who}${[
     rule.d20Floor && `d20s show at least ${rule.d20Floor}`,
@@ -791,8 +753,8 @@ export function summarizeRule(rule) {
     rule.stepUp && `one step up (${rule.stepUp})`,
   ].filter(Boolean).join(', ')}${tail}`;
   case 'DieSubstitution': return `${who}${{
-    use: `Roll the ${(rule.skills ?? []).join('/')} die`,
-    best: `Best die of ${['rolled', ...(rule.skills ?? [])].join(' / ')}`,
+    use: `Roll the ${(rule.skills ?? []).map(skillName).join('/')} die`,
+    best: `Best die of ${['rolled', ...(rule.skills ?? []).map(skillName)].join(' / ')}`,
     floor: `At least a ${rule.die} die`,
   }[rule.mode] ?? 'Die'}${rule.specialize ? ', Specialized' : ''}${rule.clearSnag ? ', no Snag' : ''}${tail}`;
   case 'Cover': return `${who}${{
@@ -803,41 +765,90 @@ export function summarizeRule(rule) {
     add: `Cover ↓${rule.amount} more against it`,
   }[rule.mode] ?? 'Cover'}${tail}`;
   case 'AimBonus': return `${who}Aiming gives ${[rule.atLeast !== undefined && `at least ↑${rule.atLeast}`, rule.extra !== undefined && `+↑${rule.extra}`].filter(Boolean).join(', ')}${tail}${limitPhrase(rule.limit)}`;
-  case 'AlternateEffect': return `${who}${rule.scope == 'host' ? 'This weapon' : 'Matching weapons'} gain an alternate effect (${rule.key})${tail}`;
+  case 'AlternateEffect': return `${who}${rule.scope == 'host' ? 'This weapon' : 'Matching weapons'} gain an alternate effect (${humanize(rule.key)})${tail}`;
   case 'Assist': return `${who}${rule.side == 'receive' ? 'Being helped' : 'Helping'}: ${{ refuse: "can't Lend Assistance", anyRank: 'Lend Assistance at any Skill rank', anyRange: 'from any distance', self: 'can help themselves' }[rule.effect] ?? [
     rule.atLeast !== undefined && `at least ↑${rule.atLeast}`, rule.extra !== undefined && `+↑${rule.extra}`, rule.edge && 'Edge',
   ].filter(Boolean).join(', ')}${tail}`;
   case 'ConditionImmunity': return `${who}Immune to ${(rule.conditions ?? []).join(', ')}${tail}`;
   case 'Qualification': return `${who}${rule.access == 'trained' ? 'Trained' : 'Qualified'} in ${[
-    rule.items?.length && `items matching ${rule.items.map(tag => (typeof tag == 'string' ? tag : JSON.stringify(tag))).join(', ')}`,
-    rule.upgrades?.length && `upgrades matching ${rule.upgrades.map(tag => (typeof tag == 'string' ? tag : JSON.stringify(tag))).join(', ')}`,
+    rule.items?.length && `items where ${itemClauses(rule.items)}`,
+    rule.upgrades?.length && `upgrades where ${itemClauses(rule.upgrades)}`,
   ].filter(Boolean).join('; ')}${tail}`;
   case 'MovementAction': return `${who}${[
     rule.ignoreRoughTerrain && 'Ignores Rough Terrain',
     rule.pushFeet && `Push Yourself adds ${rule.pushFeet} ft per Free action`,
     rule.pushUnlimited && 'Push Yourself has no limit',
   ].filter(Boolean).join('; ')}${tail}`;
-  case 'ItemModifier': return `${rule.op ?? 'add'} ${rule.value} → ${rule.path} on items (${(rule.items ?? []).join(', ')})${tail}`;
+  case 'ItemModifier': return `${statChange(rule.op, rule.value, pathName(rule.path))} on items${rule.items?.length ? ` where ${itemClauses(rule.items)}` : ''}${tail}`;
   case 'Sense': return `${who}Sees in the dark to ${rule.range} ft${rule.mode && rule.mode != 'darkvision' ? ` (${rule.mode})` : ''}${tail}`;
   case 'SurpriseExemption': return `${who}${{ move: 'When Surprised, can still Move and make Skill Tests', speedAsLevel: 'When Surprised, acts with Speed equal to level' }[rule.mode] ?? 'Acts normally when Surprised'}${tail}`;
-  case 'ActionCost': return `${word(`E20.Rules.Field.Action.${rule.action}`, capital(rule.action))} costs ${rule.to == 'none' ? 'no action' : `a ${capital(rule.to)} action`}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}`;
-  case 'Reaction': return `Card button for ${{ attacker: 'the attacker', allyOfTarget: "the target's allies", allyOfAttacker: "the attacker's allies", enemyOfAttacker: "the attacker's enemies" }[rule.who] ?? 'the target'}${Number(rule.within) > 0 ? ` within ${rule.within} ft` : ''}${rule.outcome && rule.outcome != 'any' ? ` (on a ${rule.outcome})` : ''}${rule.attackOnly ? ', attacks only' : ''}${costPhrase(rule.cost)}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}: ${(rule.steps ?? []).map(step => step?.do).join(', ')}`;
+  case 'ActionCost': return `${word(`E20.Rules.Field.Action.${rule.action}`, humanize(rule.action))} costs ${rule.to == 'none' ? 'no action' : `a ${capital(rule.to)} action`}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}`;
+  case 'Reaction': return `Card button for ${{ attacker: 'the attacker', allyOfTarget: "the target's allies", allyOfAttacker: "the attacker's allies", enemyOfAttacker: "the attacker's enemies" }[rule.who] ?? 'the target'}${Number(rule.within) > 0 ? ` within ${rule.within} ft` : ''}${rule.outcome && rule.outcome != 'any' ? ` (on a ${rule.outcome})` : ''}${rule.attackOnly ? ', attacks only' : ''}${costPhrase(rule.cost)}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}: ${stepWords(rule.steps)}`;
   case 'Use': return `Use: ${rule.label ?? ''}${costPhrase(rule.cost)}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}`;
-  case 'Trigger': return `When ${rule.watch ? `${{ ally: 'an ally', enemy: 'an enemy', any: 'someone else' }[rule.watch] ?? rule.watch}${Number(rule.within) > 0 ? ` within ${rule.within} ft` : ''} - ` : ''}${EVENT_WORDS[rule.event] ?? rule.event}${['afterRoll', 'hit'].includes(rule.event) && rule.outcome && rule.outcome != 'any' ? ` (${rule.outcome})` : ''}${tail ? `,${tail}` : ''}: ${(rule.steps ?? []).map(step => step?.do).join(', ')}${limitPhrase(rule.limit)}`;
+  case 'Trigger': return `When ${rule.watch ? `${{ ally: 'an ally', enemy: 'an enemy', any: 'someone else' }[rule.watch] ?? humanize(rule.watch).toLowerCase()}${Number(rule.within) > 0 ? ` within ${rule.within} ft` : ''} - ` : ''}${EVENT_WORDS[rule.event] ?? humanize(rule.event).toLowerCase()}${['afterRoll', 'hit'].includes(rule.event) && rule.outcome && rule.outcome != 'any' ? ` (${humanize(rule.outcome).toLowerCase()})` : ''}${tail ? `,${tail}` : ''}: ${stepWords(rule.steps)}${limitPhrase(rule.limit)}`;
   }
 
   return `${rule.type ?? 'Rule'} (not supported yet)`;
 }
 
 const capital = text => String(text ?? '').charAt(0).toUpperCase() + String(text ?? '').slice(1);
+const lowerFirstWord = text => (/^[A-Z][a-z]+$/.test(String(text)) ? String(text).toLowerCase() : String(text));
 
 function signed(value) {
   if (typeof value == 'number') {
     return value < 0 ? `${value}` : `+${value}`;
   }
 
-  return value ? `+(${value})` : '+0';
+  if (!value) {
+    return '+0';
+  }
+
+  if (isPlainNumber(value)) {
+    return signed(Number(value));
+  }
+
+  const { text, negative } = formulaWords(value);
+  return `${negative ? '-' : '+'} ${text}`;
 }
+
+const isPlainNumber = value => typeof value == 'number' || /^-?\d+(\.\d+)?$/.test(String(value ?? '').trim());
+
+/** A stored object set by a rule: {type: 'sharp', value: 1} -> "1 Sharp"; {inhaled: true} -> "Inhaled". */
+function objectWords(value) {
+  if (value.type !== undefined && value.value !== undefined && Object.keys(value).length == 2) {
+    return `${amountWords(value.value)} ${humanize(String(value.type))}`;
+  }
+
+  const parts = Object.entries(value).filter(([, v]) => v !== false && v !== null && v !== '')
+    .map(([key, v]) => (v === true ? humanize(key) : `${humanize(key).toLowerCase()} ${typeof v == 'object' ? 'set' : humanize(String(v))}`));
+  return parts.length ? parts.join(', ') : 'nothing';
+}
+
+/** An amount as words: 2, or "your level" for a formula. */
+const amountWords = value => (isPlainNumber(value) ? String(value).trim() : formulaWords(value).text);
+
+/** A stat changed by a rule: "+2 maximum Health", "Ground Movement +10", "Size becomes Huge". */
+function statChange(op, value, label, after = false) {
+  const shown = isPlainNumber(value) ? value : typeof value == 'string' && !/[@(]/.test(value) ? humanize(value)
+    : value && typeof value == 'object' ? objectWords(value) : formulaWords(value).text;
+  const formula = !isPlainNumber(value);
+  if (typeof value == 'boolean') {
+    return value ? `Gains ${label}` : `Loses ${label}`;
+  }
+
+  switch (op ?? 'add') {
+  case 'add': return after ? `${label} ${signed(value)}` : formula ? `${signed(value)} to ${label}` : `${signed(Number(value))} ${label}`;
+  case 'set': return value === true ? `Gains ${label}` : value === false ? `Loses ${label}` : `${capital(label)} becomes ${shown}`;
+  case 'multiply': return `${capital(label)} ×${shown}`;
+  case 'max': return `${capital(label)} at least ${shown}`;
+  case 'min': return `${capital(label)} at most ${shown}`;
+  }
+
+  return `${capital(label)}: ${humanize(op).toLowerCase()} ${shown}`;
+}
+
+/** A Trigger's / Reaction's steps as words: "apply condition, chat". */
+const stepWords = steps => (steps ?? []).map(step => humanize(step?.do).toLowerCase()).join(', ');
 
 const EVENT_WORDS = {
   targeted: 'you are attacked or rolled against', dealtDamage: 'your damage lands on someone', defeatedEnemy: 'your damage Defeats someone',
@@ -863,12 +874,13 @@ function costPhrase(cost) {
   }
 
   if (cost.resource) {
-    parts.push(`${cost.amount ?? 1} ${cost.resource.storyPoints ? 'Story Point' : cost.resource.rolePoints ? 'Role Point' : cost.resource.pool ?? cost.resource.path}`);
+    parts.push(`${isPlainNumber(cost.amount ?? 1) ? cost.amount ?? 1 : amountWords(cost.amount)} ${cost.resource.storyPoints ? 'Story Point' : cost.resource.rolePoints ? 'Role Point' : cost.resource.pool ? lowerFirstWord(humanize(cost.resource.pool)) : pathName(cost.resource.path)}`);
   }
 
   return parts.length ? ` (${parts.join(', ')})` : '';
 }
 
 function limitPhrase(limit) {
-  return limit?.per ? `, ${limit.max ?? 1}/${limit.per}${limit.onlyOnSuccess ? ' (on a success)' : ''}` : '';
+  const most = isPlainNumber(limit?.max ?? 1) ? `${limit?.max ?? 1}/${limit?.per}` : `up to ${amountWords(limit.max)} per ${limit.per}`;
+  return limit?.per ? `, ${most}${limit.onlyOnSuccess ? ' (on a success)' : ''}` : '';
 }

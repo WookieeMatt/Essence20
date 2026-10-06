@@ -1,9 +1,8 @@
 import { registerUse } from "../../mechanics/item-hooks.mjs";
 
 /**
- * Commander (Enigma of Combination, Combiner feature, p.42): "Note your two highest Essence Scores ...
- * and increase each of those Essence Scores of the Combined Form by 1 (increasing two associated Skills
- * accordingly)."
+ * Commander (Enigma of Combination, Combiner feature, p.42): +1 to the Combined Form's two highest
+ * Essence Scores, with two linked Skills raised to match.
  *
  * Which two Essences get the +1 depends on the whole Combiner (documents/actor.mjs
  * #_prepareMegaformCombinerData works it out), so the holder can't pick "the two Skills" up front - but

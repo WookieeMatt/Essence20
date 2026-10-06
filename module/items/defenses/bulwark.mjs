@@ -1,7 +1,6 @@
 /**
- * Bulwark (GI Joe CRB, Tank Focus, 17th level, p.99): "You can plant yourself as a Free action,
- * becoming a one-soldier fortress. Your movement becomes zero and you are immune to forced
- * movement and the Frightened Condition, and provide cover to allies adjacent to you."
+ * Bulwark (GI Joe CRB, Tank Focus, 17th level, p.99): a Free action plants the holder - Movement
+ * 0, immune to forced movement and Frightened, and Cover for adjacent allies.
  *
  * A plain on/off actor flag (flags.essence20.bulwarkActive), switched by the Perk's own Use rule, which also carries the
  * Frightened immunity (a ConditionImmunity rule), the Movement 0 and the Cover aura; this file keeps the check:bulwark

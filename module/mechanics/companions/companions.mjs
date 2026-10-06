@@ -2,6 +2,7 @@ import { COMP, companionKindOf, isOnceCompanionUse } from "./companion-uses.mjs"
 import { companionsOf, countSourced, hasSourced, linkCompanion, ownerOf, worldActors } from "./companion-link.mjs";
 import { getSceneEpoch } from "../resources/scene-clock.mjs";
 import { rulePetCommandTier, rulePetCommandUpshift } from "../../rules/plugins/picks/pet-command.mjs";
+import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 
 /**
  * Companions: pets (GI JOE CRB p.163-168, MLP CRB p.154-157, WTNV Citizens' Guide p.73-75), drones
@@ -9,9 +10,8 @@ import { rulePetCommandTier, rulePetCommandUpshift } from "../../rules/plugins/p
  * alien companions (TF CRB p.109, Enigma of Combination p.39).
  *
  * - A companion is a `companion` actor tied to its owner by mechanics/companions/companion-link.mjs. The Perk that
- *   grants one has a Use button that builds it the first time and improves it after that ("You can
- *   choose this Perk up to three times, improving or replacing your pet with a pet of the next
- *   Availability each time").
+ *   grants one has a Use button that builds it the first time and improves it after that (the Perk
+ *   can be taken up to three times, each step moving the pet up one Availability).
  * - Actors and tokens are made through mechanics/world/gm-relay.mjs#createViaGm, since a player may not make
  *   them by default.
  * - The numbers are the books': build tables for pets and drones, the Mini-Con stat block. Where a
@@ -34,19 +34,6 @@ const ITEM = {
   canineCannon: uuid('across_the_stars', 'x51EQgTwqoC7f5ua'),
 };
 
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items.contents) ? items.contents : (typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-}
-
 const level = actor => Number(actor?.system?.level) || 1;
 
 async function skillRanks(actor, skill) {
@@ -67,10 +54,9 @@ const MOVEMENT = {
 };
 
 /**
- * An animal pet by the G.I. JOE / Night Vale tables: "A Standard Attack animal pet starts with 2
- * Strength and Speed, 1 Smarts and Social, 3 Health ... Standard Utility ... 1 Strength and Speed,
- * and 2 Smarts and Social, 2 Health ... a Limited animal pet gains 2 additional Essence and 1
- * additional Health. A Restricted animal pet gains 4 additional Essence and 3 additional Health."
+ * An animal pet by the G.I. JOE / Night Vale tables (GI JOE CRB p.165): Standard Attack is
+ * Strength/Speed 2, Smarts/Social 1, 3 Health; Standard Utility is the reverse with 2 Health;
+ * Limited adds 2 Essence and 1 Health, Restricted 4 Essence and 3 Health.
  * Size: Small gives +1/+2/+3 Evasion, Common +1/+2/+3 Toughness, Large (Restricted) +1 Toughness.
  * Cobra Codex's Sacrificial Pet: 3/4/6 Health on the Attack Essences.
  * The added Essence goes to the function's own pair; it stays editable on the sheet.
@@ -99,9 +85,9 @@ export function animalStats({ availability = 'standard', fn = 'attack', size = '
 }
 
 /**
- * A drone: "Standard drone pet starts with 2 Health and 1s in all Essence abilities. Limited ... 3
- * Health, 1s in all Essence abilities, and 2 Essence increases. Restricted ... 4 Health, 2s in all
- * Essence abilities, and 2 Essence increases." The increases go to Speed and Smarts.
+ * A drone (GI JOE CRB p.168): Standard 2 Health, every Essence 1; Limited 3 Health, every Essence 1
+ * plus 2 increases; Restricted 4 Health, every Essence 2 plus 2 increases. The increases go to
+ * Speed and Smarts.
  */
 export function droneStats({ availability = 'standard', size = 'small', move = 'air' } = {}) {
   const tier = Math.max(0, TIERS.indexOf(availability));
@@ -118,8 +104,8 @@ export function droneStats({ availability = 'standard', size = 'small', move = '
 }
 
 /**
- * An MLP pet: "Size of Small ... Land Movement of 30ft ... Strength 1, Speed 3, Smarts 2, Social 2 ...
- * +3 to Evasion". The book gives no Health; 3 is the G.I. JOE Attack pet's.
+ * An MLP pet (MLP CRB p.154-157): Small, 30ft Land, Strength 1 / Speed 3 / Smarts 2 / Social 2,
+ * +3 Evasion. The book gives no Health; 3 is the G.I. JOE Attack pet's.
  */
 export function ponyPetStats() {
   return statsData({ essences: { strength: 1, speed: 3, smarts: 2, social: 2 }, health: 3, defenses: { toughness: 0, evasion: 3 }, movement: { ground: 30 }, size: 'small' });
@@ -294,8 +280,8 @@ function petsFrom(owner, grantor) {
  * @returns {Promise<String|null>}
  */
 export async function grantPet(owner, grantor, { kind = 'animal', line = 'gij', maxPets = 1 } = {}) {
-  // Night Vale pets have no Availability tiers: each extra pick of the Adoption Center is "either
-  // gaining a new pet or improving a single pet with a new Animal Perk" (Citizens' Guide p.47).
+  // Night Vale pets have no Availability tiers: each extra pick of the Adoption Center is a new pet
+  // or one more Animal Perk on an existing pet (Citizens' Guide p.47).
   const nightVale = line == 'wtnv';
   const availability = kind == 'pony' || nightVale ? 'standard' : tierFor(owner, sourceOf(grantor));
   const existing = petsFrom(owner, grantor);
@@ -361,8 +347,8 @@ export async function grantPet(owner, grantor, { kind = 'animal', line = 'gij', 
     items.push(await copyOf(favorite));
   }
 
-  // "A Standard animal pet gains Acute Senses as a General Perk once ... Limited ... twice ...
-  // Restricted ... three times."
+  // Acute Senses as a General Perk once for a Standard animal pet, twice for Limited, three times
+  // for Restricted.
   if (kind == 'animal' || kind == 'robotAnimal') {
     for (let i = 0; i <= TIERS.indexOf(availability); i++) {
       items.push(await copyOf(ITEM.acuteSense));
@@ -395,8 +381,8 @@ export async function grantPet(owner, grantor, { kind = 'animal', line = 'gij', 
   }
 
   const { pickAndGrant } = await import("../resources/grants.mjs");
-  // Drone Attack/Utility: "1 weapon of an availability equal to the drone's availability ...
-  // integrated" / "1 integrated kit". Shield Drone: "1 Standard [Limited, Restricted] shield".
+  // Drone Attack/Utility: one integrated weapon of the drone's own availability / one integrated
+  // kit. Shield Drone: one shield of its tier.
   if (kind == 'drone') {
     if (fn == 'attack') {
       await pickAndGrant(companion, grantor, grantor.name, { type: 'weapon', availabilities: [availability] }, { integrated: true });
@@ -407,8 +393,7 @@ export async function grantPet(owner, grantor, { kind = 'animal', line = 'gij', 
     }
   }
 
-  // Venomous: "choose a Standard [or Limited] poison. On a successful hit ... it deals the effect of
-  // the chosen poison." The poison is kept on the pet and coats its natural attack.
+  // Venomous: a chosen Standard (or Limited) poison whose effect lands on a hit. The poison is kept on the pet and coats its natural attack.
   if (build.fn == 'venomous') {
     const poison = await pickAndGrant(companion, grantor, grantor.name, {
       type: 'weapon', availabilities: availability == 'restricted' ? ['standard', 'limited'] : ['standard'], matches: e => !!e.system?.isPoison,
@@ -429,15 +414,13 @@ export async function grantPet(owner, grantor, { kind = 'animal', line = 'gij', 
 
 /**
  * Mini-Cons (TF CRB p.74-76): a Mini-Con ally with a purpose Skill.
- * "For every two Skill Points you invest or have invested in your Skill that matches its purpose ...
- * your Mini-Con gains either two Essence Point Increases, or one Essence Point Increase and one
- * Mini-Con Perk. Either way, one Essence Point Increase must be used to increase the Essence Score
- * tied to your Mini-Con's purpose". The required increase is made here; the rest are the player's.
+ * Every two Skill Points in the purpose Skill give the Mini-Con two Essence increases, or one
+ * increase and a Mini-Con Perk; one increase always goes to the purpose's Essence. The required increase is made here; the rest are the player's.
  */
 export async function grantMiniCon(owner, grantor, { count = 1 } = {}) {
   const skills = Object.entries(CONFIG.E20.skills).filter(([key]) => key != 'initiative').map(([key, label]) => [key, T(label)]);
   const altModes = [['firearm', T('E20.MiniConAltFirearm')], ['cassette', T('E20.MiniConAltCassette')], ['vehicle', T('E20.MiniConAltVehicle')], ['conduit', T('E20.MiniConAltConduit')]];
-  // Mini-Con Affinity: "These Mini-Con allies and any others you gain must have the same Alt Mode."
+  // Mini-Con Affinity: every Mini-Con the holder has shares one Alt Mode.
   const affinity = hasSourced(owner, COMP.miniConAffinity);
   const sharedAlt = affinity ? companionsOf(owner, { type: 'miniCon' })[0]?.flags?.essence20?.miniCon?.altMode : null;
   const made = [];
@@ -483,9 +466,8 @@ export async function grantMiniCon(owner, grantor, { count = 1 } = {}) {
 }
 
 /**
- * Human Companion (TF CRB p.109): "Choose two Essences for your human companion to Specialize in.
- * Those two Essences are equal to your current level divided by two (round up) +2." Alien Companion
- * (Enigma of Combination p.39): "equal to half your current level (round up) +1".
+ * Human Companion (TF CRB p.109): two chosen Essences, each half the owner's level (rounded up) +2.
+ * Alien Companion (Enigma of Combination p.39): the same, +1 instead.
  */
 async function grantPerson(owner, grantor, bonus, typeKey) {
   const existing = petsFrom(owner, grantor)[0];
@@ -534,11 +516,9 @@ export function dockedMiniCons(owner) {
 }
 
 /**
- * Deploy: "You or your Mini-Con can use a Free action to deploy your Mini-Con from their dock. They
- * land standing in a space adjacent to you". Linked: "reduce your Health by any amount, as long as
- * it's at least 1 and it doesn't reduce you to 0 Health. Your Mini-Con gains that amount of Health
- * ... If you do not have at least 2 Health, your Mini-Con cannot deploy." Reinforced Bond: "you can
- * also assign them +1 or +2 to all their Defenses. Reduce your bonus to Defenses an equal amount."
+ * Deploy (TF CRB p.75): a Free action by either partner; the Mini-Con lands next to its owner.
+ * Linked: the owner moves 1 or more Health to the Mini-Con without dropping to 0 - under 2 Health,
+ * no deploy. Reinforced Bond: +1 or +2 to the Mini-Con's Defenses, taken off the owner's own.
  */
 export async function deployMiniCon(owner, miniCon, { health = null, defenses = 0, free = false } = {}) {
   const current = Number(owner.system?.health?.value) || 0;
@@ -565,9 +545,8 @@ export async function deployMiniCon(owner, miniCon, { health = null, defenses = 
 }
 
 /**
- * Dock: "Either you or your Mini-Con can use a Free action to dock as long as you're adjacent to one
- * another, even if one of you is Defeated. Your Health increases an amount equal to your Mini-Con's
- * current Health. This does count as being Repaired".
+ * Dock (TF CRB p.75): a Free action by either partner while adjacent, even Defeated; the owner gains
+ * the Mini-Con's current Health, which counts as being Repaired.
  */
 export async function dockMiniCon(owner, miniCon) {
   const back = Number(miniCon.system?.health?.value) || 0;
@@ -647,10 +626,9 @@ function favoriteSkill(pet) {
 }
 
 /**
- * The DIF to command: G.I. JOE "0 for a Standard animal pet, 10 for a Limited animal pet, and 15 for
- * a Restricted animal pet" (the drone's the same by its availability); MLP and Night Vale "DIF 10".
- * Agreeable (G.I. JOE): "treated as one step more available for the purposes of the Animal Handling
- * DIF for commanding it".
+ * The DIF to command: G.I. JOE 0 / 10 / 15 for a Standard / Limited / Restricted animal pet (a
+ * drone the same by its availability); MLP and Night Vale DIF 10. Agreeable (G.I. JOE): the pet
+ * counts one Availability step up for that DIF.
  */
 export function commandDif(pet) {
   const line = pet.flags?.essence20?.petBuild?.line;
@@ -665,10 +643,9 @@ export function commandDif(pet) {
 }
 
 /**
- * The Command a Pet action: "Commanding an animal pet requires a Handle Animal Skill Test as a
- * Standard action ... Commanding a drone pet requires a Technology Skill Test ... designate a Skill
- * you want it to use, and a target". Favorite Command: "Choose a Skill. You can Command your animal
- * pet to perform this Skill as a Move action instead of a Standard action" - that cost is set in
+ * The Command a Pet action: a Standard action - Animal Handling for an animal pet, Technology for a
+ * drone - naming the Skill it should use and a target. Favorite Command: one chosen Skill can be
+ * commanded as a Move action instead - that cost is set in
  * mechanics/actions/action-perks.mjs before this runs.
  * @param {Actor} actor
  * @returns {Promise<Object>}   {message} or {cancelled: true}.
@@ -722,9 +699,8 @@ export async function onCompanionTurnStart(actor, _combat) {
     return;
   }
 
-  // Emergency Deployment and Docking: "when one of your Mini-Cons is Defeated but you're not, a tractor
-  // beam ... moves your Defeated Mini-Con 30ft closer to you, until your Defeated Mini-Con is within
-  // your Reach."
+  // Emergency Deployment and Docking: a Defeated Mini-Con of a standing owner is pulled 30ft closer
+  // each time, until it is within the owner's Reach.
   const owner = ownerOf(actor);
   if (actor.system?.type == 'miniCon' && owner && actor.statuses?.has?.('defeated') && !owner.statuses?.has?.('defeated')
     && hasSourced(owner, COMP.emergencyDeployment)) {
@@ -753,8 +729,8 @@ async function tractorBeam(owner, miniCon) {
 }
 
 /**
- * Emergency Deployment and Docking: "if you are Defeated with one or more docked Mini-Con, your
- * Mini-Cons deploy with 2 Temporary Health each." Called when an owner becomes Defeated.
+ * Emergency Deployment and Docking: when the owner is Defeated, every docked Mini-Con deploys with
+ * 2 Temporary Health. Called when an owner becomes Defeated.
  */
 export async function onOwnerDefeated(owner) {
   if (!hasSourced(owner, COMP.emergencyDeployment)) {
@@ -798,16 +774,15 @@ export function linkedBonuses(actor) {
 
   const miniCons = companionsOf(actor, { type: 'miniCon' });
   if (miniCons.length) {
-    // Linked: "You gain 2 Health." Mini-Con Affinity: "Each Mini-Con ally you link with grants you only
-    // 1 Health (instead of 2)."
+    // Linked: +2 Health per Mini-Con; with Mini-Con Affinity only +1 each.
     out.health += miniCons.length * (hasSourced(actor, COMP.miniConAffinity) ? 1 : 2);
-    // Reinforced Bond: "Reduce your bonus to Defenses an equal amount."
+    // Reinforced Bond: the owner's Defenses drop by what was handed over.
     const handed = miniCons.filter(m => !isDocked(m)).reduce((sum, m) => Math.max(sum, Number(m.flags?.essence20?.miniCon?.defenseShift) || 0), 0);
     for (const defense of handed ? ['toughness', 'evasion', 'willpower', 'cleverness'] : []) {
       add(defense, -handed, 'Reinforced Bond');
     }
 
-    // Mini-Con Master: "For every two Mini-Cons of this type you have docked, you gain a +1 bonus".
+    // Mini-Con Master: +1 per two docked Mini-Cons of the type.
     if (hasSourced(actor, COMP.miniConMaster)) {
       const docked = miniCons.filter(isDocked);
       const pairs = Math.floor(docked.length / 2);
@@ -837,8 +812,7 @@ export function companionRollSources(actor, target, { rolledSkill } = {}) {
   // (Pack Attack, Automatic Harmonics and Ambush Deployment are RollModifier rules on their Perks, scopes self and
   // companion - the link: tags of rules/plugins/picks/companions.mjs.)
 
-  // Helper (TF CRB p.75): "When docked with your Mini-Con, you get ↑1 on Skill Tests related to their
-  // purpose."
+  // Helper (TF CRB p.75): ↑1 on the purpose Skill while the Mini-Con is docked.
   if (actor?.type != 'companion' && rolledSkill && dockedMiniCons(actor).some(m => (m.flags?.essence20?.miniCon?.purposes ?? [m.flags?.essence20?.miniCon?.purpose]).includes(rolledSkill))) {
     add('miniConHelper', T('E20.MiniConHelper'), { shiftUp: 1 });
   }
@@ -906,11 +880,9 @@ const HANDLERS = {
   animalPetGij: (owner, item) => grantPet(owner, item, { kind: 'animal', line: 'gij' }),
   robotPet: (owner, item) => grantPet(owner, item, { kind: 'drone', line: 'gij' }),
   animalPetMlp: (owner, item) => grantPet(owner, item, { kind: 'pony', line: 'mlp' }),
-  // Night Vale Community Adoption Center: "each time either gaining a new pet or improving a single pet
-  // with a new Animal Perk."
+  // Night Vale Community Adoption Center: each pick is a new pet or a new Animal Perk on one pet.
   adoptionCenter: (owner, item) => grantPet(owner, item, { kind: 'animal', line: 'wtnv', maxPets: countSourced(owner, COMP.adoptionCenter) }),
-  // Faithful Companion: "You gain the Night Vale Community Adoption Center General Perk and have a
-  // total of 5 Animal Perks to customize your pet, instead of 3."
+  // Faithful Companion: grants the Adoption Center Perk, and the pet gets 5 Animal Perks rather than 3.
   async faithfulCompanion(owner, item) {
     if (!hasSourced(owner, COMP.adoptionCenter)) {
       const { grantCopy } = await import("../resources/grants.mjs");
@@ -920,24 +892,22 @@ const HANDLERS = {
     const center = itemsOf(owner).find(i => sourceOf(i) == COMP.adoptionCenter);
     return center ? grantPet(owner, center, { kind: 'animal', line: 'wtnv', maxPets: 1 }) : null;
   },
-  // Morphin Pet: "a Standard animal as a pet ... When you use It's Morphin Time!, you can spend 1
-  // Personal Power to grant your pet the same benefits." Robotic Animal Pet: "both the Animal and Robot
-  // traits".
+  // Morphin Pet: a Standard animal pet that can Morph alongside its owner for 1 Personal Power.
+  // Robotic Animal Pet: carries both the Animal and Robot traits.
   morphinPet: (owner, item) => grantPet(owner, item, { kind: 'animal', line: 'gij' }),
   roboticAnimalPet: (owner, item) => grantPet(owner, item, { kind: 'robotAnimal', line: 'gij' }),
 
   // (Assistant is a Use rule on the Animal Perk: the lendAssist step. Night Vale's Favorite Command picks its Skill with a
   // Use rule.)
 
-  // Direct Control (Quartermaster's Guide p.21): "replace your Standard drone with a Limited drone. You
-  // may choose one Standard upgrade as a free upgrade". Master Control Program: "a Restricted drone ...
-  // up to two Standard or Limited upgrades".
+  // Direct Control (Quartermaster's Guide p.21): the Standard drone becomes Limited, with one free
+  // Standard upgrade. Master Control Program: Restricted, with up to two Standard or Limited upgrades.
   directControl: (owner, item) => raiseDrone(owner, item, 'limited', [['standard']]),
   masterControlProgram: (owner, item) => raiseDrone(owner, item, 'restricted', [['standard', 'limited'], ['standard', 'limited']]),
   // (Telemetry Data, Terminal Guidance and Buzz The Tower are Use rules on their Perks.)
 
-  // R.I.C. (Across the Stars p.85): "a robotic S.P.D. companion ... up to 2 kits integrated in its
-  // chassis ... the ability to transform into canine cannon mode". A Limited drone with the Canine
+  // R.I.C. (Across the Stars p.85): a robot S.P.D. companion with up to 2 integrated kits that can
+  // turn into a canine cannon. A Limited drone with the Canine
   // Cannon.
   async ric(owner, item) {
     if (petsFrom(owner, item).length) {
@@ -967,8 +937,7 @@ const HANDLERS = {
 
     return dockOrDeploy(owner, item, pay);
   },
-  // Multi-Purpose (TF CRB p.74): "Additional Purpose: Your Mini-Con gains an additional purpose. ...
-  // Additional Ally: You gain a second Mini-Con."
+  // Multi-Purpose (TF CRB p.74): either a second purpose for the Mini-Con, or a second Mini-Con.
   async multiPurpose(owner, item) {
     if (item.flags?.essence20?.granted) {
       ui.notifications.info(T('E20.GrantAlready'));
@@ -998,11 +967,10 @@ const HANDLERS = {
     return result;
   },
   // (Enhanced Sensors is a Use rule on the Mini-Con Perk.)
-  // Additional Mini-Con (Decepticon Directive p.64): "another basic Mini-Con". Mini-Con Hub: "whenever
-  // you choose the Additional Mini-Con General Perk, you gain two Mini-Cons instead of one."
+  // Additional Mini-Con (Decepticon Directive p.64): one more basic Mini-Con. Mini-Con Hub: that Perk
+  // gives two instead of one.
   additionalMiniCon: (owner, item) => grantOnce(owner, item, () => grantMiniCon(owner, item, { count: hasSourced(owner, COMP.miniConHub) ? 2 : 1 })),
-  // Mini-Con Affinity: "You gain two Mini-Con allies". Hub and Master: "another Mini-Con ally of the
-  // same Alt Mode".
+  // Mini-Con Affinity: two Mini-Con allies. Hub and Master: one more of the same Alt Mode.
   miniConAffinity: (owner, item) => grantOnce(owner, item, () => grantMiniCon(owner, item, { count: 2 })),
   miniConHub: (owner, item, pay) => grantOnce(owner, item, () => grantMiniCon(owner, item), () => dockOrDeployTwo(owner, item, pay)),
   miniConMaster: (owner, item) => grantOnce(owner, item, () => grantMiniCon(owner, item)),
@@ -1023,7 +991,7 @@ async function grantOnce(owner, item, first, after = null) {
   return after ? after() : (ui.notifications.info(T('E20.GrantAlready')), null);
 }
 
-/** Mini-Con Hub: "When you spend a Free action, you can deploy or dock up to two Mini-Cons at the same time". */
+/** Mini-Con Hub: one Free action docks or deploys up to two Mini-Cons. */
 async function dockOrDeployTwo(owner, item, pay) {
   if (!(await pay('free'))) {
     return null;

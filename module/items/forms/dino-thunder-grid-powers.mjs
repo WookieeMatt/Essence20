@@ -1,16 +1,15 @@
 import { registerRest, registerUse } from "../../mechanics/item-hooks.mjs";
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
+import { findSourced, sourceOf } from "../shared/item-lookups.mjs";
 
 /**
  * The three Grid Powers built on Dino Thunder [Form] (Beneath the Helmet, p.52-57):
- * - Dino Thunder Boost (p.56): "you are granted 3 extra Personal Power that may only be used to
- *   activate your Dino Thunder Form Power. This special form of Personal Power is recovered the same
- *   way that regular Personal Power is recovered."
- * - Extra Dino Thunder Form Power (p.57): "you may take an additional Dino Thunder Form Power ...
- *   using a Personal Power activates both of your powers, and both powers disappear when you morph."
- * - White Ranger Extra Dino Thunder (p.57): "When you spend 1 Personal Power, you may activate any
- *   Dino Thunder Power that you or your teammates have. If you choose a power that is not yours, then
- *   the Game Master may impose a Snag or a ↓1 on Skill Tests that involve those powers."
+ * - Dino Thunder Boost (p.56): a separate pool of 3 Personal Power, only for the Dino Thunder Form
+ *   Power, refilled the way ordinary Personal Power is.
+ * - Extra Dino Thunder Form Power (p.57): a second Form power; one Personal Power turns on both, and
+ *   both end on morphing.
+ * - White Ranger Extra Dino Thunder (p.57): for 1 Personal Power, use any Dino Thunder Power the
+ *   character or a teammate has; a borrowed one may cost a GM-imposed Snag or ↓1 on its Skill Tests.
  *
  * Which Form power a character has is the Dino Thunder [Form] Perk's own flags.essence20.zord1DinoPower (picked by
  * ranger-form-perks.mjs#pickDinoPower when the Perk lands, or the first time it's needed); the second one is the
@@ -43,22 +42,7 @@ const STATE_FLAG = 'zord1Dino';
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 const powerLabel = key => T(`E20.D1DinoPower${key.charAt(0).toUpperCase()}${key.slice(1)}`);
 
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items) ? items : (items.contents ?? [...items]);
-}
-
-export function findSourced(actor, uuid) {
-  return uuid ? itemsOf(actor).find(item => sourceOf(item) == uuid) ?? null : null;
-}
+export { findSourced };
 
 /** The actor's own Dino Thunder powers, primary first. */
 export function formPowersOf(actor) {
@@ -286,8 +270,7 @@ registerUse({
   },
 });
 
-// "This special form of Personal Power is recovered the same way that regular Personal Power is
-// recovered" - refilled whenever the sheet's Rest refills Personal Power.
+// The Boost pool comes back the way ordinary Personal Power does - refilled whenever the sheet's Rest refills Personal Power.
 export async function refillBoost(actor) {
   const boost = findSourced(actor, DINO.boost);
   if (boost && boostPool(actor) < BOOST_POOL_MAX) {

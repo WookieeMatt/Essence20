@@ -87,4 +87,4 @@ registerTag('holder:asOther', (rest, ctx) => {
 
   const holder = ctx.holder ?? ctx.self;
   return evaluate([`self:${rest}`], { ...ctx, self: holder, holder, other: ctx.self });
-});
+}, { phrase: (arg, w) => w.facts([`holder:${arg}`]).replace("the target's", 'yours') });

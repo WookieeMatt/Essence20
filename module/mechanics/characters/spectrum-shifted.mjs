@@ -1,7 +1,6 @@
 /**
- * Spectrum Shifted (A Jump Through Time, Quantum Ranger, 1st level, p.42): "When a player selects this
- * Advanced Spectrum Role at 4th Level or later, they keep the following Role Perks and abilities from
- * their original Role" - Table 2-16:
+ * Spectrum Shifted (A Jump Through Time, Quantum Ranger, 1st level, p.42): taken at 4th level or
+ * later, the character keeps some Role Perks and abilities of their original Role - Table 2-16:
  *
  *   Black Ranger   Heart of the Team (↑1), You Got This!; (3 Quips and Speeches)
  *   Blue Ranger    Eureka!, Helping Hand; (2 Idea Points)

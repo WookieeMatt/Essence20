@@ -17,5 +17,5 @@ export function choiceOfTag(actor, rest) {
   return itemsOf(actor).some(item => (sourceOf(item) == uuid || item.uuid == uuid) && !!item.system?.choice);
 }
 
-registerTag('self:choiceOf', (rest, ctx) => choiceOfTag(ctx?.self, rest));
-registerTag('target:choiceOf', (rest, ctx) => (ctx?.other ? choiceOfTag(ctx.other, rest) : null));
+registerTag('self:choiceOf', (rest, ctx) => choiceOfTag(ctx?.self, rest), { phrase: ['{poss} choice for {name} matches', "{poss} choice for {name} doesn't match"] });
+registerTag('target:choiceOf', (rest, ctx) => (ctx?.other ? choiceOfTag(ctx.other, rest) : null), { phrase: ['{poss} choice for {name} matches', "{poss} choice for {name} doesn't match"] });

@@ -13,12 +13,9 @@ import { clearVoiceOfPrimusAssistReady, hasVoiceOfPrimusAssistReady } from "../.
 /**
  * The Lend Assistance action (GI Joe CRB p.197).
  *
- * > "A character may take the Lend Assistance Standard action to help another character in a
- * > specific Skill Test, including hitting an enemy target in combat. In a Combat scene, you can
- * > Lend Assistance to an ally for a specific target within 50 ft. Until the beginning of your next
- * > turn, the first attack against the specific target gains an Edge. Alternatively, if a character
- * > has at least as many levels in a given skill as their ally, they may Lend Assistance to that
- * > ally to give them an automatic up-1 shift to their use of that given skill."
+ * In short: a Standard action to help someone with one Skill Test, attacks included. In combat the
+ * assister names a target within 50 ft and the first attack on it before the assister's next turn
+ * has Edge; otherwise an assister with at least the ally's Ranks in a Skill gives the ally ↑1 on it.
  *
  * Two different grants, so two flags rather than one with a mode field - an ally could plausibly be
  * assisted both ways in a round, and a single flag would have the second quietly overwrite the
@@ -28,14 +25,14 @@ import { clearVoiceOfPrimusAssistReady, hasVoiceOfPrimusAssistReady } from "../.
  * What is enforced, and what is not:
  *
  * - The **50 ft** is measured from the assisting character to the target, and refused past it.
- *   "an ally for a specific target within 50 ft" could also be read as the ALLY being the thing
+ *   The range clause could also be read as the ALLY being the thing
  *   within 50 ft; the target reading is taken because the target is what the sentence goes on to
  *   talk about, and because the ally is the one person in the exchange the assister is already
  *   choosing deliberately. The ally list is not distance-filtered as a result.
  * - The **skill-levels prerequisite** is enforced: getSkillRanks counts shifts above untrained plus
  *   a Specialization, and the assister needs at least as many as the ally. This is the one clause
  *   in the action with a hard numeric test, so leaving it to the table would be a waste of it.
- * - **"Until the beginning of your next turn"** is not enforced, matching every other banked bonus
+ * - **The until-the-assister's-next-turn limit** is not enforced, matching every other banked bonus
  *   in this system - see perks.mjs#bankPendingBonus, which stamps a combat id so a bonus never
  *   survives into a new encounter but deliberately does not expire on a turn boundary. The Edge is
  *   consumed by the first attack against that target either way, which is the clause that decides
@@ -57,10 +54,10 @@ export const LEND_ASSISTANCE_SHIFT_FLAG = 'pendingLendAssistanceShift';
 /** "a specific target within 50 ft" (GI Joe CRB p.197). */
 export const LEND_ASSISTANCE_RANGE_FEET = 50;
 
-// Team Player (Transformers CRB, Influence Perk, p.35): "If you spend a Standard action to Lend
-// Assistance in a dangerous situation, the action generates one Story Point, if successful."
+// Team Player (Transformers CRB, Influence Perk, p.35): a successful Lend Assistance in a dangerous
+// situation earns a Story Point.
 // Previously blocked outright on this whole gap - now just a post-assist hook on either half,
-// since both report back whether an assist actually landed. "In a dangerous situation" is an
+// since both report back whether an assist actually landed. The dangerous-situation clause is an
 // unenforceable narrative qualifier, dropped the same way as Bits To Spare/Truthseeker's own.
 // Only PR CRB's identically-named Perk is now excluded here, and only because its RAW has not been
 // read (no cached extraction of that chapter exists). GI Joe's and WTNV's were both on this
@@ -71,40 +68,36 @@ export const TEAM_PLAYER_TF_ID = "Compendium.essence20.tf_crb.Item.oWjvage64Y4Kr
 // (I Got You - Enigma of Combination, Team Leader Focus - is its item's own two Use rules: the Lend Assistance access
 // and the once/round Energon-for-↑1. Its id and the never-called pickIGotYouAction() picker went; audit fix 2026-10-07.)
 
-// Team Player (GI Joe CRB, General Perk, p.134): "When you spend a Standard action to Lend
-// Assistance in a combat, the action generates one Story Point if successful." Mechanically the
-// SAME grant as the Transformers Perk above, not a same-name-different-Perk case - the one real
-// difference is that where TF says "in a dangerous situation" (unenforceable, dropped), this one
-// says "in a combat", which is a plain game.combat test and so is actually enforced.
+// Team Player (GI Joe CRB, General Perk, p.134): a successful Lend Assistance in combat earns a
+// Story Point. Mechanically the SAME grant as the Transformers Perk above, not a
+// same-name-different-Perk case - the one real difference is that where TF's condition is a
+// dangerous situation (unenforceable, dropped), this one's is combat, which is a plain game.combat
+// test and so is actually enforced.
 const TEAM_PLAYER_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.itmsNR7wtqJQp0rr";
 
-// Team Player (WTNV Citizens' Guide, General Perk, p.47): "When you spend a Standard action to
-// Lend Assistance and the Skill Test is successful, add 1 Story Point to the player pool." The
-// same grant again, and the plainest printing of the three - no situational qualifier at all, so
+// Team Player (WTNV Citizens' Guide, General Perk, p.47): a successful Lend Assistance adds a Story
+// Point to the player pool. The same grant again, and the plainest printing of the three - no situational qualifier at all, so
 // unlike GI Joe's it needs no combat gate.
 const TEAM_PLAYER_WTNV_ID = "Compendium.essence20.wtnv_citizens_guide.Item.57KqLyhUgAHpCskm";
 
-// Lesson Plan (WTNV Citizens' Guide, Teacher Origin Perk, p.30): "When you Lend Assistance to an
-// ally for a non-combat Skill Test, they gain both ↑1 and an Edge." Word for word Teacher (PR CRB
-// p.76) above, down to the non-combat qualifier, so it rides the same branch rather than its own.
+// Lesson Plan (WTNV Citizens' Guide, Teacher Origin Perk, p.30): assisting a non-combat test gives
+// both ↑1 and Edge. The same rule as Teacher (PR CRB p.76) below, down to the non-combat qualifier, so it rides the same branch rather than its own.
 const LESSON_PLAN_ID = "Compendium.essence20.wtnv_citizens_guide.Item.MRJ2g8hLTsD3XmiC";
 
-// Greenshirt (GI Joe CRB, Influence Perk, p.49): "When you lend assistance, your ally gains both
-// an Edge and ↑1 on their Skill Test." Word for word the same upgrade as Bureaucrat above, and
+// Greenshirt (GI Joe CRB, Influence Perk, p.49): an assisted ally gets both Edge and ↑1. The same
+// upgrade as Bureaucrat below, and
 // unconditional like it - the ↑1 is already the base amount getAssistShiftUp returns, so what
 // this adds is the Edge.
 const GREENSHIRT_PERK_ID = "Compendium.essence20.gi_joe_crb.Item.XVu6skoSL0A3Hnve";
 
-// Bureaucrat (Transformers CRB, Influence Perk, p.32): "When using the Lend Assistance action,
-// you can grant the recipient both an Edge and a ↑1 to their Skill Test." An upgrade to the SKILL
-// half specifically - "the recipient"/"their Skill Test" is the assisted ally, whereas the combat
+// Bureaucrat (Transformers CRB, Influence Perk, p.32): the assisted ally may get both Edge and ↑1.
+// An upgrade to the SKILL half specifically - the recipient is the assisted ally, whereas the combat
 // half's own Edge goes to whoever attacks the marked target and carries no ↑1 to upgrade. Banked
 // alongside the ordinary shiftUp as a second field on the same flag, so consumption stays one
 // read rather than two competing ones.
 const BUREAUCRAT_TF_ID = "Compendium.essence20.tf_crb.Item.7XR1us1Zm4dKDrwW";
 
-// Teacher (PR CRB, Influence Perk, p.76): "When you Lend Assistance to an ally for a non-combat
-// Skill Test, they gain both ↑1 and Edge." Mechanically the same upgrade as Bureaucrat just
+// Teacher (PR CRB, Influence Perk, p.76): assisting a non-combat test gives both ↑1 and Edge. Mechanically the same upgrade as Bureaucrat just
 // above - the ↑1 is already the base amount getAssistShiftUp returns, so what this actually adds
 // is the Edge - but with a real, checkable "non-combat" gate rather than Bureaucrat's unconditional
 // grant. That gate is a plain !game.combat test: unusually for this project, the qualifier here is
@@ -114,27 +107,24 @@ const BUREAUCRAT_TF_ID = "Compendium.essence20.tf_crb.Item.7XR1us1Zm4dKDrwW";
 // doesn't exist", which stopped being true when that action was built earlier the same session.
 const TEACHER_ID = "Compendium.essence20.pr_crb.Item.kqkyJy7sEjBmmOp3";
 
-// Putting Others Before Yourself (MLP CRB, Spirit of Generosity, 5th level, p.74): "when you Lend
-// Assistance to a friend, they gain ↑2 instead of ↑1." The same shape as Bureaucrat above - a
+// Putting Others Before Yourself (MLP CRB, Spirit of Generosity, 5th level, p.74): an assist gives
+// ↑2 rather than ↑1. The same shape as Bureaucrat above - a
 // passive upgrade to the skill half, applied at bank time - just to the AMOUNT rather than adding
 // an Edge, so the two stack naturally for anyone holding both.
 const PUTTING_OTHERS_BEFORE_YOURSELF_ID = "Compendium.essence20.mlp_crb.Item.ZZTzjEEMljWoVJu6";
 
 // Better Together (A Jump Through Time, ORANGE Ranger Role Perk, 5th level, p.33 - the ledger
-// previously filed this under Purple Ranger, corrected 2026-09-15 against the real RAW): "when you
-// choose to Lend Assistance to an ally who has a lower base Skill Ranks than you do in the
-// applicable Skill, your action gives them ↑2 instead of the normal ↑1. This increased bonus
-// becomes ↑3 at 13th Level." Note the gate is STRICTLY lower, narrower than the base action's own
-// "at least as many levels" (which allows equal ranks) - an equal-rank assist still works, it just
+// previously filed this under Purple Ranger, corrected 2026-09-15 against the real RAW): assisting an
+// ally with fewer base Ranks in the Skill gives ↑2 instead of ↑1, ↑3 from 13th level. Note the gate
+// is STRICTLY lower, narrower than the base action's own at-least-as-many rule (which allows equal ranks) - an equal-rank assist still works, it just
 // doesn't get the upgrade. Not to be confused with Through the Shattered Grid's own same-named
 // Influence Perk, a completely different bonded-ally mechanic.
 const BETTER_TOGETHER_JTT_ID = "Compendium.essence20.jump_through_time.Item.8ZGmg1hrNDmbO1B7";
 
-// Many Minds Make Light Work (Dark Skies Over Equestria, Influence Perk, p.17): "As long as you're
-// trained in Persuasion, you can Lend Assistance to your allies on any Skill Test you have at
-// least one Skill Rank in from 50 feet away." The 50ft is already the base action's own radius, so
-// the real mechanical content is the BYPASS: it lifts RAW's own "at least as many levels as their
-// ally" gate entirely, letting a less-skilled character still assist, as long as they're trained
+// Many Minds Make Light Work (Dark Skies Over Equestria, Influence Perk, p.17): trained in Persuasion,
+// the holder may assist from 50 feet on any test they have a Rank in. The 50ft is already the base
+// action's own radius, so the real mechanical content is the BYPASS: it lifts RAW's own
+// at-least-the-ally's-Ranks gate entirely, letting a less-skilled character still assist, as long as they're trained
 // in Persuasion and have at least one rank in the skill being assisted.
 const MANY_MINDS_MAKE_LIGHT_WORK_ID = "Compendium.essence20.dark_skies_over_equestria.Item.D24JO5W03Amwwvzy";
 
@@ -143,24 +133,21 @@ const MANY_MINDS_MAKE_LIGHT_WORK_ID = "Compendium.essence20.dark_skies_over_eque
 // grant (dice.mjs skips clearing it on consumption). Its id stays below only for the Lend Assistance button.
 const THOSE_WHO_KNOW_TEACH_ID = "Compendium.essence20.mlp_crb.Item.Xi0qQqfZQJh0MBTu";
 
-// Lackey (Decepticon Directive, Influence Perk, p.27): "You are completely accustomed to following
-// orders, allowing any character you perceive as able to give you commands to Lend Assistance to
-// you from any distance, as long as you can receive their believable verbal command to perform the
-// task." Unlike every other Perk in this file, this one is held by the RECIPIENT, not the
+// Lackey (Decepticon Directive, Influence Perk, p.27): anyone the holder takes orders from can
+// assist them from any distance, as long as the order can reach them. Unlike every other Perk in this file, this one is held by the RECIPIENT, not the
 // assister - it lifts the action's own 50ft radius for assists aimed at the holder. Both of RAW's
-// qualifiers ("you perceive as able to give you commands", "believable verbal command") are
+// qualifiers (who counts as a commander, whether the order is believable) are
 // unenforceable narrative framing, dropped the same way as Bits To Spare/Truthseeker's own.
 const LACKEY_ID = "Compendium.essence20.decepticon_directive.Item.dXZpwsbvn6Jdgpsn";
 
 // (Armchair General's +↑1 in combat is its Assist rule, and its weapon-type Qualification its Use rule - rules/conv17-split2.test.js.)
 
 // Technological Assistance (Quartermaster's Guide to Gear, Tech Officer Focus, 17th level, p.22):
-// "you can Lend Assistance as a Free action. However, allies can only take advantage of this for
-// Driving, Targeting, or Technology Skill Tests." Read as: the Free-action Lend Assistance only
+// Lend Assistance as a Free action, usable by allies only on Driving, Targeting or Technology. Read as: the Free-action Lend Assistance only
 // helps with those three Skills - an assist with anything else still costs its usual Standard
 // action. So it is an action-economy discount (an ActionCost rule on the item), offered when Lend
 // Assistance is paid for and asked, since only the player knows which Skill the ally is about to
-// roll. The ordinary "at least as many ranks as your ally" gate still applies. (It used to be
+// roll. The ordinary at-least-the-ally's-Ranks gate still applies. (It used to be
 // built as a lift of that rank gate on those three Skills, which the book doesn't say.)
 const TECHNOLOGICAL_ASSISTANCE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.7b01zSdekhUugIod";
 
@@ -204,7 +191,7 @@ export const LEND_ASSISTANCE_PERK_IDS = [
 /**
  * Whether the assisting actor may help this ally with this skill.
  *
- * The base rule is RAW's "at least as many levels in a given skill as their ally", counted by
+ * The base rule is RAW's at-least-the-ally's-Ranks test, counted by
  * getSkillRanks (shifts above untrained plus a Specialization). Two Perks lift that gate - Many
  * Minds Make Light Work and Ship's Crew - and two Hang-Ups on the ALLY refuse it outright -
  * Conniving, and Greenshirt unless the assister is a Greenshirt too. See each id's own comment.
@@ -311,8 +298,8 @@ async function bankSkillAssistBonus(actor, ally, skill) {
   /* The one hard prerequisite in the action (plus the Perks that move it). Refused rather than
      warned-and-allowed, because unlike the duration and range clauses this one decides whether
      the grant exists at all. */
-  // Assist rules with effect "pay" (rules/plugins/picks/cross-item-picks.mjs) - BFF: "If you aren't qualified to Lend
-  // Assistance ... you can spend a Friendship Point to Lend Assistance anyway."
+  // Assist rules with effect "pay" (rules/plugins/picks/cross-item-picks.mjs) - BFF: a Friendship Point lets an
+  // unqualified assister help anyway.
   const payment = !canAssistWithSkill(actor, ally, skill) ? ruleAssistPayment(actor, ally, skill) : null;
   if (payment) {
     if (await payForAssist(actor, ally, payment)) {

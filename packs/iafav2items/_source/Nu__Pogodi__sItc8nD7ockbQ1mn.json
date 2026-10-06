@@ -11,11 +11,13 @@
       {"type":"Qualification","label":"Nu, Pogodi! (Qualified: Acclimating upgrade)","upgrades":[{"any":["item:id:HSmtPttbJvaNy5Tf","item:data:name=acclimating"]}]},
       {"type":"Use","label":"Pick your two-handed Limited weapon (Nu, Pogodi!)","steps":[{"do":"pickGrant","record":true,"key":"chosen","max":1,"legacy":"flags.essence20.q1Chosen","title":"Pick a Limited weapon that needs 2 hands","from":{"type":"weapon","availabilities":["limited"],"tags":["item:hasAttack:item:data:system.numHands=2"]}}]},
       {"type":"Qualification","label":"Nu, Pogodi! (Qualified: your chosen two-handed weapon)","access":"qualified","items":[{"any":["item:type:weapon","item:type:armor"]},"item:pickedSource:chosen"]},
-      {"type":"RollModifier","label":"Nu, Pogodi! (↑1 on Driving, with Ranks)","stack":"vehicleQualification","upshift":1,"when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:aerial","vehicle:moves:ground"]},{"any":["self:skill:driving>=d2","self:data:system.skills.driving.isSpecialized"]}]}
+      {"type":"RollModifier","label":"Nu, Pogodi! (↑1 on Driving, with Ranks)","stack":"vehicleQualification","upshift":1,"when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:aerial","vehicle:moves:ground"]},{"any":["self:skill:driving>=d2","self:data:system.skills.driving.isSpecialized"]}]},
+      {"type":"Use","label":"Remove a Condition (Free, once per mission)","cost":{"action":"free"},"limit":{"per":"mission"},"steps":[{"do":"pick","key":"nuPogodiCondition","from":"conditions","exclude":["defeated"],"prompt":"E20.RulesExtConvC18.NuPogodiWhichCondition","beforeCost":true},{"do":"removeCondition","to":"self","condition":"{choice.nuPogodiCondition}"},{"do":"chat","text":"{name} shrugs off a Condition."}]},
+      {"type":"Use","label":"Swap seats (Free, Driving DIF 10)","cost":{"action":"free"},"when":["vehicle:crew"],"steps":[{"do":"pick","key":"nuPogodiSeat","from":"seatmates","prompt":"E20.Q1SwapPrompt","beforeCost":true},{"do":"roll","skill":"driving","dif":10,"onSuccess":[{"do":"swapSeats","seat":"nuPogodiSeat"},{"do":"chat","text":"{lang.Q1Swapped}"}],"onFail":[{"do":"chat","text":"{lang.Q1SwapFailed}"}]}]}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: Cold Resistance. Automatic: Qualified with Standard weapons, the Acclimating upgrade, and Land and Air vehicles. Use button: pick your two-handed Limited weapon, swap vehicle seats, or clear a Condition once per mission.</p>"
+      "notes": "<p>Active Effect: Cold Resistance. Automatic: Qualified with Standard weapons, the Acclimating upgrade, and Land and Air vehicles. Use button: pick your two-handed Limited weapon; while riding in a vehicle, swap seats with another rider (Free action, DIF 10 Driving test); or remove one Condition other than Defeated from yourself (Free action, once per mission).</p><p>Left to the table: whether the other rider is willing to swap.</p>"
     },
     "originalId": "",
     "description": "",

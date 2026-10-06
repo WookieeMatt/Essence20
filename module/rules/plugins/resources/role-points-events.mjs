@@ -57,4 +57,4 @@ export function enemiesStanding(actor) {
     && !token.actor.statuses?.has?.('defeated'));
 }
 
-registerTag('self:enemiesStanding', (rest, ctx) => enemiesStanding(ctx?.self));
+registerTag('self:enemiesStanding', (rest, ctx) => enemiesStanding(ctx?.self), { phrase: ['an enemy is still standing', 'no enemy is left standing'] });

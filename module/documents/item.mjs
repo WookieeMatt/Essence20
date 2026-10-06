@@ -23,7 +23,7 @@ import { betterShift, updateRoleCache } from "../util/utils.mjs";
 import { placeAoeTemplate } from "../mechanics/combat/aoe-targeting.mjs";
 import { ruleAreaExclusions, ruleBeforeArea } from "../rules/plugins/combat/before-area.mjs";
 import { ruleAttackChoice } from "../rules/plugins/combat/attack-choice.mjs";
-import { actorHasPerk } from "../mechanics/characters/perks.mjs";
+import { ruleAttackSkill } from "../rules/plugins/rolls/attack-skill-substitution.mjs";
 import { importedDescription } from "../importers/book-descriptions-store.mjs";
 import { pickMindBeamEffect } from "../items/magic/mind-beam.mjs";
 import { isBlockMagicActive } from "../items/magic/block-magic.mjs";
@@ -33,20 +33,6 @@ import { runPreCast } from "../rules/plugins/picks/pre-cast.mjs";
 import { ruleAvailabilitySteps } from "../rules/plugins/resources/availability-shift.mjs";
 
 const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
-
-// Brutal Might (Enigma of Combination, Pugilist Focus, Warrior, 3rd level, p.38): "any of your
-// attacks that normally use the Might Skill can use your Brawn Skill instead." A genuine SKILL
-// SUBSTITUTION for the roll itself - not a shift-delta like Cunning Plan/How Strange! (those
-// convert a shift-list-position difference into a bonus on the SAME already-chosen skill) - so it
-// has to happen here, at the earliest point a weaponEffect's own classification skill is read,
-// before shift/shiftUp/shiftDown/isSpecialized are ever looked up. "Can" is read as "always does,
-// when held and the weapon's own skill is Might" (same idiom as Psychological Warfare's own
-// Evasion-Defense substitution) - not offered as a checkbox, since there's no situation where a
-// Pugilist would prefer the worse of the two. this.system.classification.skill itself is left
-// untouched (still reads 'might' for anything else that inspects the weaponEffect Item directly,
-// e.g. dice.mjs's own Brutal-Might Edge check, which needs to know the ORIGINAL skill to avoid
-// matching an unrelated genuine Brawn attack).
-const BRUTAL_MIGHT_ID = "Compendium.essence20.enigma_of_combination.Item.l0STCEYBuPMYfzSt";
 
 // Obscuring Matrix (Enigma of Combination, Armor Upgrade, p.57) - see _prepareArmorBonuses's own
 // comment for the Grappled/Immobilized/Prone/Restrained negation these two ids gate.
@@ -264,8 +250,8 @@ export class Essence20Item extends Item {
    * The traits this weapon or armor effectively has: its own, plus every trait its attached
    * upgrades grant, minus every trait they take away.
    *
-   * Upgrades that REMOVE a trait are rare but real - Ammo Feeder (GI Joe CRB p.151) is "Weapon
-   * with the Reload trait / The weapon loses the Reload trait", and Factions in Action Vol. 2
+   * Upgrades that REMOVE a trait are rare but real - Ammo Feeder (GI Joe CRB p.151) takes Reload
+   * off a weapon that has it, and Factions in Action Vol. 2
    * p.96 has one that drops Mounted. Removal is applied last, so an upgrade that takes a trait
    * away beats one that grants it; that is the order the fiction implies (the modification is
    * physical) and it makes the result independent of the order upgrades happen to be attached.
@@ -436,8 +422,7 @@ export class Essence20Item extends Item {
     let armorBonusEvasion  = this.system.bonusEvasion;
 
     // Obscuring Matrix (Enigma of Combination, Armor Upgrade, p.57, Basic +2/Advanced +4 Evasion):
-    // "this bonus is negated while the wearer has the Grappled, Immobilized, Prone, or Restrained
-    // Condition." Checked here, per-upgrade, rather than as a blanket zero on the whole item's
+    // the bonus is lost while the wearer is Grappled, Immobilized, Prone or Restrained. Checked here, per-upgrade, rather than as a blanket zero on the whole item's
     // Evasion bonus - only THIS upgrade's own contribution is negated, not any other armorBonus
     // Upgrade sharing the same armor.
     const wearerStatuses = this.actor?.statuses;
@@ -766,8 +751,7 @@ export class Essence20Item extends Item {
           }
         }
 
-        // Salvaged (Ferocious Fighters p.36): "The weapon is immediately and permanently destroyed if
-        // you fumble an attack." Marked destroyed rather than deleted, so nothing is lost by accident;
+        // Salvaged (Ferocious Fighters p.36): a Fumbled attack destroys the weapon for good. Marked destroyed rather than deleted, so nothing is lost by accident;
         // it can no longer attack.
         if (parentWeapon?.flags?.essence20?.destroyed) {
           ui.notifications.warn(game.i18n.format('E20.WeaponDestroyed', { name: parentWeapon.name }));
@@ -969,8 +953,9 @@ export class Essence20Item extends Item {
       let weaponDataset = {};
       // A detonated bomb rolls its planter's Technology (items/attacks/planted-bombs.mjs).
       const baseSkill = dataset.skillOverride ?? parentWeapon?.flags?.essence20?.attackSkill ?? this.system.classification.skill;
-      // Brutal Might - see BRUTAL_MIGHT_ID's own comment above.
-      const skill = baseSkill == 'might' && actorHasPerk(roller, BRUTAL_MIGHT_ID) ? 'brawn' : baseSkill;
+      // A SkillSubstitution stage: attack rule (Brutal Might's Brawn for Might - rules/plugins/rolls/attack-skill-substitution.mjs),
+      // before the Skill's shifts are read.
+      const skill = ruleAttackSkill(roller, this, baseSkill);
       // Targeting System (GI Joe CRB p.172): the driver fires it "using the vehicle's Targeting for
       // the Skill Test".
       const skillSource = childRoller && usesVehicleTargeting(this.actor, this._dice._getParentWeapon(this.actor, this))
@@ -1034,8 +1019,7 @@ export class Essence20Item extends Item {
         await requireReload(roller, parentWeapon);
       }
 
-      // Empty the Mag (GI Joe CRB, Vanguard, p.109): "After using this ability, you must reload your
-      // weapon before you can use it again" - whether or not the weapon has the Reload trait.
+      // Empty the Mag (GI Joe CRB, Vanguard, p.109): the weapon must be reloaded before its next use - whether or not the weapon has the Reload trait.
       if (!weaponRollResult?.cancelled && weaponRollResult?.emptiedMag) {
         await requireReload(roller, parentWeapon);
       }

@@ -2,32 +2,29 @@ import { applyDamage } from "../combat/combat.mjs";
 import { getMegaformParticipants } from "./megaform-participants.mjs";
 
 /**
- * Megaform damage distribution (Power Rangers Core Rulebook, p.142): "Each Combiner participant
- * possesses its own Health. When the Megaform suffers damage, divide the damage equally
- * (rounding up; minimum 1) between all Combiner participants, unless the attacker voluntarily
- * takes a Snag to focus the attack on a specific Combiner participant." A participant already at
- * 0 Health "no longer takes any damage away from the other participants when attacked" (same
- * page) - excluded from the split entirely, not given a $0 share that still counts toward the
+ * Megaform damage distribution (Power Rangers Core Rulebook, p.142): each participant keeps its own
+ * Health, and damage to the Megaform is split evenly among them (rounded up, at least 1 each) unless
+ * the attacker takes a Snag to aim at one participant. A participant already at 0 Health stops
+ * soaking any share (same page) - excluded from the split entirely, not given a $0 share that still counts toward the
  * participant total. This is the entry point a Megaform actor needs instead of the ordinary
  * applyDamage(): even though a Megaform has a real system.health (Essence20Actor#
  * _prepareMegaformData computes it from its participants, same as its Defenses/Movement), RAW
  * doesn't pool damage against that single value - it always distributes across the linked
  * participants below, so applyDamage() is never called on the Megaform actor itself.
  *
- * Grounding (A Jump Through Time, p.84): "always reduces Electric damage by 1 (minimum of 1)
- * before distribution to its component Zords" - applied to the incoming total before dividing, if
+ * Grounding (A Jump Through Time, p.84): Electric damage drops by 1 (not below 1) before it is
+ * split - applied to the incoming total before dividing, if
  * any active participant holds it (the immunity half of Grounding is handled separately, as a
  * computed system.immunities.emp flag in actor.mjs).
  *
- * The "attacker voluntarily takes a Snag to focus" half is a choice that belongs on the original
+ * The attacker's take-a-Snag-to-focus option is a choice that belongs on the original
  * attack roll, which has already resolved by the time a GM clicks Apply Damage on the chat card -
  * approximated as a GM confirmation at apply-time (did the attacker actually take that Snag?)
  * rather than a live Roll Options Dialog toggle, the same "confirm after the fact" idiom
  * chat.mjs#onApplyDamage already uses for Sudden Death/Just a Graze/Hard Corps.
  *
- * Compensation (A Jump Through Time, p.84): "the team can move two damage from other Zords to
- * this Zord... doesn't reduce the total damage applied to the Megaform, but allows lower Health
- * Zords to avoid Defeat" - a voluntary post-split reassignment, offered as a follow-up prompt only
+ * Compensation (A Jump Through Time, p.84): the team may shift two damage from other Zords onto this
+ * one - same total, but it can save a low-Health Zord from Defeat - a voluntary post-split reassignment, offered as a follow-up prompt only
  * when a still-active participant holds it and there's more than one recipient to move damage
  * from/to.
  */

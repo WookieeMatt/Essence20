@@ -93,4 +93,4 @@ registerStep('hideTokens', async (step, ctx) => {
 });
 
 /** `damage:resisted` - the damage a takesDamage Trigger answers is of a type the actor already resists. */
-registerTag('damage:resisted', (rest, ctx) => (ctx.damageType ? !!ctx.self?.system?.resistances?.[ctx.damageType] : null));
+registerTag('damage:resisted', (rest, ctx) => (ctx.damageType ? !!ctx.self?.system?.resistances?.[ctx.damageType] : null), { phrase: ['you already resist the damage', "you don't resist the damage"] });

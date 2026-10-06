@@ -38,6 +38,15 @@
       "tooltipDirection": "LEFT"
     },
     {
+      "id": "itemRules",
+      "app": "character",
+      "tab": "effects",
+      "selector": "section[data-tab=\"effects\"] [data-actor-rules]",
+      "title": "E20.Tours.Effects.ItemRules.Title",
+      "content": "E20.Tours.Effects.ItemRules.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
       "id": "toggle",
       "app": "character",
       "tab": "effects",

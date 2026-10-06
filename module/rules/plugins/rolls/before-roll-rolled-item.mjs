@@ -51,4 +51,4 @@ registerTag('roll:firstRow', (rest, ctx) => {
   }
 
   return rest == 'failure' ? !first.success : rest == 'success' ? !!first.success : null;
-});
+}, { phrase: arg => (arg == 'failure' ? ['the first result failed', 'the first result succeeded'] : ['the first result succeeded', 'the first result failed']) });

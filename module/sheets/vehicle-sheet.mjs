@@ -17,7 +17,7 @@ export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
         { id: "main", group: 'primary', label: "E20.TabMain" },
         { id: "actions", group: 'primary', label: "E20.TabActions" },
         { id: "passengers", group: 'primary', label: "E20.TabCrew" },
-        { id: "effects", group: 'primary', label: "E20.TabEffects" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
         { id: "notes", group: 'primary', label: "E20.TabNotes" },
 
       ],

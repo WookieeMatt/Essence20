@@ -2,12 +2,9 @@ import { actorHasZordFeature } from "../../mechanics/vehicles/zord-features.mjs"
 import { getVehicleDriver } from "../../mechanics/combat/combat.mjs";
 
 /**
- * Warrior Mode (PR CRB, Zord Feature, p.140): "The Zord can shift into a different fighting form
- * by spending 3 of its Ranger's Personal Power, changing from its animal, mythological, or other
- * shape into that of a gigantic humanoid fighting form. When it does so, it makes the following
- * adjustments: Now is considered a Towering Size combatant; Grants ↑2 to Initiative Skill Tests;
- * Melee attacks deal 1 additional damage while in Warrior Mode; Warrior Mode lasts until the Zord
- * is involved in a Combiner Megaform or is subject to Recall for Repairs."
+ * Warrior Mode (PR CRB, Zord Feature, p.140): for 3 of its Ranger's Personal Power the
+ * Zord takes a giant humanoid form - Towering Size, ↑2 on Initiative, +1 melee damage - until it
+ * joins a Combiner Megaform or is Recalled for Repairs.
  *
  * Modeled as a plain toggle flag, the same idiom items/attacks/combat-stance.mjs's own declare/check
  * functions already establish for a declared, flag-tracked state - simpler here since there's no

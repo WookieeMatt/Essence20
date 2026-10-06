@@ -2,13 +2,9 @@ import { getMegaformParticipants } from "./megaform-participants.mjs";
 import { ruleJoinDieSteps } from "../../rules/plugins/zords/join-die.mjs";
 
 /**
- * The Combiner join timer (PR CRB, "The Combiner Zord Feature", p.139): "Much like how a Zord will
- * not answer the call to battle unless it is for a worthy adversary, the Zords will not combine
- * into a Megaform without a suitably worthy foe to battle. To determine whether or not a foe is
- * worthy, the collective Zords must have already been in a combat scene for a standard length of
- * 1d6+1 game rounds before they are ready to combine into their Megaform. Each participant in the
- * Megaform rolls a separate amount of time, with the highest roll result setting when the
- * combination will take place (at the end of that round)."
+ * The Combiner join timer (PR CRB, "The Combiner Zord Feature", p.139): Zords only combine against a
+ * worthy foe, which means having fought for 1d6+1 rounds first; each participant rolls its own
+ * timer and the highest decides, combining at the end of that round.
  *
  * This existed nowhere in the codebase - linking a Zord to a Megaform combined it instantly - which
  * also left Fast Modulation (below) with no die to reduce, and so no way to do anything at all.

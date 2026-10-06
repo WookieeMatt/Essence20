@@ -1,11 +1,10 @@
 import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 /**
- * Lightning Speed (MLP CRB, Virtuoso Utility spell, p.139): "You experience a burst of speed...
- * Target any creature within range. That creature doubles all their Movement rates for the
- * duration of the spell."
+ * Lightning Speed (MLP CRB, Virtuoso Utility spell, p.139): a creature in range has every Movement
+ * doubled for the spell's duration.
  *
- * Same "flat-DIF non-Attack cast, apply a flag to whichever token is targeted on success" shape as
+ * Same flat-DIF non-Attack cast, flag-the-targeted-token-on-success shape as
  * Fluttery Wings/Healing Bandages/Enchant. Read live in
  * documents/actor.mjs#_prepareMovement as a final `*= 2` on every movement type, the same
  * doubling shape Warrior Rush/Quantum Master already established for a self-buff, just granted by

@@ -4,12 +4,10 @@ import { ruleCoatingCost, ruleKeepsVialOnFumble } from "../../rules/plugins/reso
 /**
  * Poisons put on weapons, and changing what a poison is (Cobra Codex, p.92-97).
  *
- * "Contact poisons can be applied to a weapon or one round of ammunition as a Standard action. Make
- * a Science Skill Test against the Availability DIF of the poison you're attempting to apply"
- * (p.93, Table 3-1): a Critical Success applies it without using the vial up, a success applies it
- * and uses the vial, a failure does nothing, a Fumble wastes the vial. "If you successfully applied
- * the poison to the weapon or ammunition, your next attack with that weapon, if successful, deals
- * not just one of the weapon's normal effects, but also the effect of the applied poison."
+ * Applying a contact poison to a weapon or one round of ammunition is a Standard action and a Science
+ * test against the poison's Availability DIF (p.93, Table 3-1): a Critical Success applies it without
+ * using the vial up, a success applies it and uses the vial, a failure does nothing, a Fumble wastes
+ * the vial. Once applied, the next hit with the weapon adds the poison's effect to the weapon's own.
  *
  * The coating is a flag on the weapon holding the poison's effect, so the vial can be used up and
  * the coating still knows what it does. The next attack with the weapon wipes it; a hit also offers
@@ -17,14 +15,12 @@ import { ruleCoatingCost, ruleKeepsVialOnFumble } from "../../rules/plugins/reso
  *
  * - Poisonous, Intoxicate (a cheaper action) and Poison Tipped (a Fumble keeps the vial) are their items' own
  *   PoisonCoating rules (rules/plugins/resources/poison-coating-rule.mjs).
- * - Poison Chemistry (6th level, p.49): "As a Standard action, you can change the state of a poison
- *   (contact, ingested, or inhaled) you have in your hand."
- * - Poison Prodigy (20th level, p.50): "As a Standard action, you can change the type of a poison
- *   you have in your hand to any other, including poisons of harder availability. As a Move action,
- *   you can add a weapon upgrade to a poison as long as it meets the prerequisites."
- * - Hacker (General Perk, p.80): "your poisons affect only robots and targets with the Computerized
- *   Trait... for each poison you requisition, you choose whether it's a typical poison or a hacker
- *   poison." A hacker poison is marked on the poison itself.
+ * - Poison Chemistry (6th level, p.49): a Standard action switches a poison in hand between
+ *   contact, ingested and inhaled.
+ * - Poison Prodigy (20th level, p.50): a Standard action turns a poison in hand into any other, even
+ *   a harder-to-get one; a Move action adds a weapon upgrade to it if it qualifies.
+ * - Hacker (General Perk, p.80): each requisitioned poison is either ordinary or a hacker poison
+ *   that only affects robots and Computerized targets. A hacker poison is marked on the poison itself.
  */
 
 const COATING_FLAG = 'poisonCoating';

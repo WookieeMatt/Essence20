@@ -8,6 +8,7 @@ import { contextFor, evaluate } from "../../predicate.mjs";
 import { resolveValue } from "../../formula.mjs";
 import { multiplierEntries } from "../zords/megaform-finisher.mjs";
 import { rulesOfType } from "../../index.mjs";
+import { sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 // Round 15 (dice): CardDamage {add} - a flat amount added to the row's own damage while the card is built, right after
 // the stage-card multipliers (no note - the number on the row changes, so later doublings such as Empty the Mag count it).
@@ -23,8 +24,6 @@ const HIT_MULTIPLIER = RULE_TYPES.HitMultiplier;
 if (HIT_MULTIPLIER && !HIT_MULTIPLIER.params.stage) {
   HIT_MULTIPLIER.params.stage = { kind: 'enum', options: ['card'] };
 }
-
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 
 /**
  * Multiply the damage of each damaging row with a target by the roller's `stage: "card"` HitMultiplier rules whose

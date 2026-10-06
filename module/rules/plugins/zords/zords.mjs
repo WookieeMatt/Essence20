@@ -63,14 +63,14 @@ registerTag('item:heldBy', (rest, ctx) => {
   const uuid = ctx.item.uuid ?? null;
   const source = sourceOf(ctx.item) ?? uuid;
   return itemsOf(actor).some(item => sourceOf(item) == source || sourceOf(item) == uuid);
-});
+}, { phrase: (arg, w) => [`the ${w.humanize(arg.replace(/^picked:/, '')).toLowerCase()} you picked already has {who}`, `the ${w.humanize(arg.replace(/^picked:/, '')).toLowerCase()} you picked doesn't have {who}`] });
 
 registerTag('target:userOwns', (rest, ctx) => {
   const user = globalThis.game?.user;
   return !!ctx.other && (!!user?.isGM || !!ctx.other.isOwner || !!ctx.other.testUserPermission?.(user, 'OWNER'));
-});
+}, { phrase: ['you own {who}', "you don't own {who}"] });
 
-registerTag('self:hasDriver', (rest, ctx) => !!driverOf(ctx.self));
+registerTag('self:hasDriver', (rest, ctx) => !!driverOf(ctx.self), { phrase: ['{who} {has} a driver', '{who} {has} no driver'] });
 
 const holderFor = ctx => (ctx.holder && ctx.holder !== ctx.self ? ctx.holder : holderOf(ctx.ruleItem));
 
@@ -78,7 +78,7 @@ registerTag('self:drivenByHolder', (rest, ctx) => {
   const holder = holderFor(ctx);
   const driver = driverOf(ctx.self);
   return !!holder && !!driver && (driver === holder || driver.uuid == holder.uuid);
-});
+}, { phrase: ['its owner drives {who}', "its owner doesn't drive {who}"] });
 
 /** Whether `actor` carries mark `key` set by `setter` (a shared or a per-setter mark). */
 export function markedBy(actor, key, setter) {
@@ -91,11 +91,11 @@ export function markedBy(actor, key, setter) {
   return mark?.by == setter.uuid && markOf(actor, key);
 }
 
-registerTag('self:markedByHolder', (rest, ctx) => markedBy(ctx.self, rest, holderFor(ctx)));
+registerTag('self:markedByHolder', (rest, ctx) => markedBy(ctx.self, rest, holderFor(ctx)), { phrase: ['its owner put the {arg} mark on {who}', "its owner didn't put the {arg} mark on {who}"] });
 registerTag('vehicle:markedByMe', (rest, ctx) => {
   const crewed = crewing(ctx.self);
   return !!crewed && markedBy(crewed.vehicle, rest, ctx.self);
-});
+}, { phrase: ['you put the {arg} mark on the vehicle you crew', "you didn't put the {arg} mark on the vehicle you crew"] });
 
 registerTag('self:specializedAtLeast', (rest, ctx) => {
   const [skill, die] = rest.split(':');
@@ -107,7 +107,10 @@ registerTag('self:specializedAtLeast', (rest, ctx) => {
 
   return Object.values(ctx.self?.system?.skills?.[skill]?.specializations ?? {})
     .some(spec => list.indexOf(spec?.shift) >= 0 && list.indexOf(spec.shift) <= need);
-});
+}, { phrase: (arg, w) => {
+  const [skill, die] = arg.split(':');
+  return [`{who} {has} a ${w.skillName(skill)} Specialization at ${die} or better`, `{who} {has} no ${w.skillName(skill)} Specialization at ${die} or better`];
+} });
 
 registerTag('movement', (rest, ctx) => {
   if (ctx.movementType === undefined) {
@@ -119,7 +122,7 @@ registerTag('movement', (rest, ctx) => {
   }
 
   return ctx.movementType == rest;
-}, { family: 'situation', param: 'movementTag' });
+}, { family: 'situation', param: 'movementTag', phrase: (arg, w) => (arg == 'has' ? ['you have that Movement', "you don't have that Movement"] : [`for ${w.humanize(arg)} Movement`, `except for ${w.humanize(arg)} Movement`]) });
 
 /* -------------------------------------------- */
 /*  Recipients, steps, refs                      */
@@ -172,7 +175,7 @@ export function zordOwners(zord) {
 }
 
 /**
- * "You may only ever have one of your Zords active in a given scene." Checked as a Zord is summoned (zord-summon.mjs
+ * Only one of a Ranger's Zords may be active in a scene. Checked as a Zord is summoned (zord-summon.mjs
  * writes zordSummonReadyRound): a second Zord of the same owner in the same scene is refused. The owner's
  * zord1ActiveZord flag remembers which Zord this scene's is.
  * @returns {Boolean} false to cancel the summon.

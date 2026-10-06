@@ -4,8 +4,8 @@ import { itemsOf } from "../shared/item-lookups.mjs";
 /**
  * Equipment Training and Qualification Perks (qualify2 slice).
  *
- * G.I. Joe CRB p.72/80: "You can requisition any battledress and weapons you are trained in ... You
- * can access any equipment you are Qualified in without requisitioning it." In this system that is
+ * G.I. Joe CRB p.72/80: trained gear can be requisitioned, and Qualified gear is available without
+ * requisitioning. In this system that is
  * Requisition (mechanics/resources/requisition.mjs), which asks two hooks the qualify1 slice added:
  *   essence20.requisitionAccess (actor, item, out)        out.access 'qualified'|'trained'|'none'|'unknown'
  *   essence20.requisitionAvailability (actor, item, out)  out.availability, the tier the DIF is read from

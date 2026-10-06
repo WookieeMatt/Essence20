@@ -1,7 +1,7 @@
 /**
  * High-Density (Factions in Action Vol. 2, New Weapon Traits, p.92; also granted by the High
- * Density weapon upgrade, p.93): "Upon a successful Attack, you can make a second Attack against a
- * different target within a 10ft line from the first target (↓1)."
+ * Density weapon upgrade, p.93): after a hit, a second Attack at ↓1 on another target within a
+ * 10ft line of the first.
  *
  * Reactive - it only exists once the first Attack has hit - so it is a post-roll chat button
  * (chat.mjs#addHighDensityButton), the same shape as Frenzied Attack. Clicking it rolls the same

@@ -10,20 +10,9 @@
  * "whose is this?" without an import loop.
  */
 
+import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
+
 export const COMPANION_FLAG = 'companionOf';
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items.contents) ? items.contents : (typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-}
 
 export function hasSourced(actor, uuid) {
   return itemsOf(actor).some(item => sourceOf(item) == uuid);

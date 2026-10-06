@@ -143,7 +143,7 @@ describe("onApplyDamage", () => {
   }
 
   // Places targetActor and allyActor on a scene distanceFeet apart, sharing a Disposition -
-  // the minimal canvas.tokens/canvas.grid fixture findEligibleProtector() (items/defenses/interpose-attack.mjs)
+  // the minimal canvas.tokens/canvas.grid fixture the protector lookup (rules/plugins/combat/applying-damage.mjs)
   // needs, same technique interpose.test.js's own setScene() establishes.
   function setNearbyAlly(targetActor, allyActor, distanceFeet) {
     const targetToken = targetActor.getActiveTokens()[0];

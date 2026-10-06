@@ -1,7 +1,6 @@
 /**
- * Group Skill Tests (GI JOE CRB p.125, PR CRB p.90, TF CRB p.105, MLP CRB p.114, WTNV p.16):
- * "everyone in the group attempts the Skill Test ... against the same DIF. If half or more PCs
- * succeed, the group succeeds."
+ * Group Skill Tests (GI JOE CRB p.125, PR CRB p.90, TF CRB p.105, MLP CRB p.114, WTNV p.16): each
+ * member rolls against one shared DIF, and the group passes when at least half the PCs do.
  *
  * - Started from the Party sheet (or game.essence20.groupSkillTest()): a Skill, a DIF, a leader and
  *   who takes part. It posts one card with a Roll button per participant and a Resolve button.
@@ -13,6 +12,7 @@
  */
 
 import { addGroupTestBonuses } from "../../rules/plugins/rolls/group-test-bonus.mjs";
+import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 
 const uuid = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 export const GROUP = {
@@ -24,14 +24,8 @@ export const GROUP = {
 const RESULT_FLAG = 'groupTest';
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
 function has(actor, id) {
-  const items = actor?.items;
-  const list = Array.isArray(items?.contents) ? items.contents : (items && typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-  return list.some(item => sourceOf(item) == id);
+  return itemsOf(actor).some(item => sourceOf(item) == id);
 }
 
 function resolve(id) {
@@ -171,8 +165,7 @@ export function groupBonuses(actor, test) {
 
   for (const id of test.participants) {
     const other = resolve(id);
-    // Community Spirit (WTNV p.30): "one ally of your choosing gains an Edge on the associated Skill
-    // Test. If that character succeeds, you gain ↑1 on your Skill Test."
+    // Community Spirit (WTNV p.30): one chosen ally gets Edge; if they succeed, the holder gets ↑1.
     const spirit = other?.flags?.essence20?.communitySpirit;
     if (spirit?.id == test.id && spirit.ally == actor.uuid) {
       out.edge = true;
@@ -184,8 +177,8 @@ export function groupBonuses(actor, test) {
       out.labels.push(T('E20.CommunitySpirit'));
     }
 
-    // Create Chaos (Cobra Codex, General Perk): "If your chosen Skill Test beats the DIF ..., all your
-    // allies in the scene gain Edge on their Skill Test."
+    // Create Chaos (Cobra Codex, General Perk): if the swapped-in test beats the DIF, every ally in
+    // the scene gets Edge.
     const chaos = resultOf(other, test);
     if (other?.uuid != actor.uuid && chaos?.chaos && chaos.chaosSuccess) {
       out.edge = true;
@@ -253,8 +246,8 @@ export async function onGroupButton(message, button) {
       await actor.setFlag('essence20', 'communitySpirit', { id: test.id, ally });
     }
   } else if (perk == 'priorExperience') {
-    // Prior Experience (Beneath the Helmet, Grid Power, p.57): "By spending 1 Power, you can turn one
-    // failure in a Group Skill Test into a success."
+    // Prior Experience (Beneath the Helmet, Grid Power, p.57): 1 Power turns one Group Skill Test
+    // failure into a success.
     const failed = tally(test).rows.filter(r => r.rolled && !r.success && !r.chaos).map(r => ({ value: r.id, label: r.name }));
     const target = await chooseSelect(T('E20.PriorExperience'), T('E20.PriorExperiencePrompt'), failed);
     const power = actor.system?.powers?.personal;
@@ -265,7 +258,7 @@ export async function onGroupButton(message, button) {
       ui.notifications.warn(T('E20.NoPower', { name: actor.name }));
     }
   } else if (perk == 'createChaos') {
-    // "you can choose to fail the test and instead roll a skill of your choice."
+    // Fail the group test on purpose and roll a Skill of one's own choosing instead.
     const skill = await chooseSelect(T('E20.CreateChaos'), T('E20.CreateChaosPrompt'),
       Object.entries(CONFIG.E20.skills).map(([value, label]) => ({ value, label: T(label) })));
     if (skill) {

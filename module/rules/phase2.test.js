@@ -302,7 +302,7 @@ describe('Trigger rules', () => {
     expect(validateRule({ type: 'Trigger', event: 'turnStart', steps: [{ do: 'heal' }] })).toEqual([]);
     expect(validateRule({ type: 'Trigger', event: 'teatime', steps: [] })[0]).toMatch(/event must be one of/);
     expect(summarizeRule({ type: 'Trigger', event: 'afterRoll', outcome: 'crit', when: ['skill:might'], steps: [{ do: 'heal' }], limit: { per: 'round' } }))
-      .toBe('When you roll (crit), on might tests: heal, 1/round');
+      .toBe('When you roll (crit), on Might tests: heal, 1/round');
     expect(summarizeRule({ type: 'Trigger', event: 'turnStart', steps: [] })).toBe('When your turn starts: ');
   });
 

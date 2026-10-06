@@ -1,5 +1,6 @@
 import { creatureTagsOf } from "../mechanics/characters/creature-tags.mjs";
 import { isExpired } from "./expiry.mjs";
+import { sourceOf } from "../items/shared/item-lookups.mjs";
 
 /**
  * The `when` condition language for item rules (docs/RULES_ENGINE_PLAN.md §5.1).
@@ -95,10 +96,6 @@ function itemTraits(item) {
   // Its own traits and its weapon's, with what attached upgrades add (itemAndUpgradeTraits, derived data).
   const lists = [item?.system?.traits, item?.system?.itemAndUpgradeTraits, parent?.system?.traits, parent?.system?.itemAndUpgradeTraits];
   return new Set(lists.flatMap(list => (Array.isArray(list) ? list : [])).map(lower));
-}
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 }
 
 function hasItem(actor, uuid) {
@@ -214,13 +211,60 @@ const EXTRA_TAGS = new Map();
  * Add a tag. `name` is a new family ("megaform") or a family plus its first word ("item:weaponType"); `fn(rest, ctx)`
  * answers true / false / null, `rest` being what follows the name's colon. A new family needs `meta` for the
  * validator and the editor ({family: 'roll' | 'item' | 'self' | 'target' | 'situation', param?}).
+ * `meta.phrase` is how the Rules tab reads the tag out (rules/describe-when.mjs): a clause, or [clause, negated clause],
+ * or `(arg, words) => either` (null hands the tag on to the core reading). Clauses are filled in: {arg} is what follows
+ * the name, as words ({raw} as written, {name} as an item's name), and {who} / {is} / {isnt} / {has} / {hasnt} /
+ * {poss} / {its} / {s} follow whoever the tag asks about ("you are", "the target is"). A bare clause is led by "if",
+ * and by "unless" when negated with no negated clause; one starting "on" / "in" / "with" ... stands as it is. Any
+ * tag may carry one - a self: one also reads target: and holder: tags of the same name.
  */
 export function registerTag(name, fn, meta = null) {
   EXTRA_TAGS.set(name, fn);
+  const { phrase, ...rest } = meta ?? {};
+  if (phrase) {
+    TAG_PHRASES.set(name, phrase);
+  }
+
   const family = name.split(':')[0];
   if (!TAGS[family]) {
-    TAGS[family] = meta ?? { family: 'situation', param: 'text', optionalParam: true };
+    TAGS[family] = rest.family ? rest : { family: 'situation', param: 'text', optionalParam: true, ...rest };
   }
+}
+
+const TAG_PHRASES = new Map();
+
+/** Gives an already-registered tag its reading (registerTag's meta.phrase), for a tag registered without one. */
+export function registerTagPhrase(name, phrase) {
+  if (phrase) {
+    TAG_PHRASES.set(name, phrase);
+  }
+}
+
+/** The names every plug-in registered (the Rules tab's tests and the inventory script read them). */
+export function registeredTags() {
+  return [...EXTRA_TAGS.keys()];
+}
+
+/**
+ * A plug-in tag's own reading (registerTag's meta.phrase) and the text after its name, or null when it gave none.
+ * `tag` has no `not:` prefix. An actor tag (self: / target: / holder:) falls back on the same name in the others.
+ * @param {String} tag
+ * @returns {{phrase: String|Array|Function, arg: String, name: String}|null}
+ */
+export function tagPhrase(tag) {
+  const text = String(tag ?? '');
+  const separator = text.indexOf(':');
+  const family = separator < 0 ? text : text.slice(0, separator);
+  const rest = separator < 0 ? '' : text.slice(separator + 1);
+  const sub = rest.split(/[:<>=!~]/)[0];
+  const actor = ['self', 'target', 'holder'];
+  const names = [`${family}:${sub}`, ...(actor.includes(family) ? actor.map(other => `${other}:${sub}`) : [])];
+  const name = names.find(one => TAG_PHRASES.has(one) && EXTRA_TAGS.has(one));
+  if (name && sub) {
+    return { phrase: TAG_PHRASES.get(name), arg: rest.slice(sub.length).replace(/^:/, ''), name };
+  }
+
+  return TAG_PHRASES.has(family) ? { phrase: TAG_PHRASES.get(family), arg: rest, name: family } : null;
 }
 
 export const CHECK_NAMES = [

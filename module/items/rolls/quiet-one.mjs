@@ -1,7 +1,6 @@
 /**
- * The Quiet One (Factions in Action Vol. 2, Dreadnok General Perk, p.63; prerequisite: Infiltration +d6): "If, since your
- * last turn, an ally operated a vehicle or attacked with a weapon without the Silent trait, you can spend a Free action to
- * gain an Edge on Infiltration Skill Tests this turn."
+ * The Quiet One (Factions in Action Vol. 2, Dreadnok General Perk, p.63; prerequisite: Infiltration +d6): if an ally drove a
+ * vehicle or attacked with a non-Silent weapon since the holder's last turn, a Free action gives Edge on Infiltration this turn.
  *
  * The Use and its Edge are rules on the Perk (rules/conv15-banked.test.js): offered while a combatant on the holder's side
  * carries this round's "noisy action" stamp (`combat:ally:target:stamped:quietOneNoisyActionThisRound`). This file is the

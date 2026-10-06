@@ -71,8 +71,8 @@ registerTag('roll:skillNoBetterThan', (rest, ctx) => {
   const other = list.indexOf(skills[rest]?.shift);
   const rolled = list.indexOf(skills[ctx.rolledSkill]?.shift);
   return other != -1 && rolled != -1 && other <= rolled;
-});
+}, { phrase: (arg, w) => [`your ${w.skillName(arg)} is no better than the rolled Skill`, `your ${w.skillName(arg)} is better than the rolled Skill`] });
 
 // self:uuidIsVar:<key> - the run's @var.<key> is this actor's uuid (rollSeen's @var.assistedBy - Misled: "the roll I
 // assisted").
-registerTag('self:uuidIsVar', (rest, ctx) => !!ctx.self?.uuid && String(ctx.vars?.[rest] ?? '') == ctx.self.uuid);
+registerTag('self:uuidIsVar', (rest, ctx) => !!ctx.self?.uuid && String(ctx.vars?.[rest] ?? '') == ctx.self.uuid, { phrase: ['{who} {is} the one stored as {arg}', '{who} {isnt} the one stored as {arg}'] });

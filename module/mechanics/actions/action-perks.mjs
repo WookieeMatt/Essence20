@@ -6,9 +6,10 @@ import { summonKindOf } from "../companions/summons.mjs";
 import { teamKindOf } from "./team-actions.mjs";
 import { isBondUse } from "../companions/bonded-partners.mjs";
 import { CMD } from "./commands.mjs";
+import { sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 
 // Issue Command and Loyal Minions' Use button (mechanics/actions/commands.mjs).
-const isCommandUse = item => (item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == CMD.issueCommand;
+const isCommandUse = item => sourceOf(item) == CMD.issueCommand;
 import { canUseKit, kitUseKind } from "../resources/kits.mjs";
 import { canUseRider, isRiderUse } from "../combat/rider-uses.mjs";
 import { canUseGrant, imperfectionOf, isGrantUse } from "../resources/grant-uses.mjs";
@@ -31,14 +32,14 @@ import { contextFor, evaluate } from "../../rules/predicate.mjs";
  *
  * Three shapes, one table each:
  *
- * 1. COST_RULES - "you may X as a Free action instead of a Standard action". Matched against what
+ * 1. COST_RULES - Perks that make some action cheaper (a Free action instead of a Standard one). Matched against what
  *    is being spent (a named action's key, or a kind such as 'attack' or 'conversion'). A rule the
  *    system can verify on its own applies automatically; one that depends on the fiction ("an
  *    action related to Kindness", "a Contingency that will be used to Attack") is OFFERED in a
  *    small dialog, and the player says whether it applies. Picking "normal cost" there is always
  *    possible, because using a once-per-turn discount on the wrong action would waste it.
  *
- * 2. ATTACK_RULES - "you can attack twice, instead of once, when you take the Attack action".
+ * 2. ATTACK_RULES - Perks that let one Attack action make two (or more) attacks.
  *    The first qualifying attack pays for the Attack action; the rest ride on it for free (see
  *    action-economy.mjs#consumeForItem).
  *
@@ -140,11 +141,11 @@ const kind = (...kinds) => ctx => kinds.includes(ctx?.kind);
 const always = to => () => to;
 
 export const COST_RULES = [
-  // A Hint of Independence's Slow Conversion (Decepticon Directive, Table 2-11): "Converting Modes takes
-  // an entire turn's worth of your actions."
+  // A Hint of Independence's Slow Conversion (Decepticon Directive, Table 2-11): converting takes a
+  // whole turn's actions.
   { id: 'slowConversion', has: actor => imperfectionOf(actor)?.n == 6, matches: kind('conversion'), to: always('wholeTurn') },
-  // Favorite Command (Animal Perk): "You can Command your animal pet to perform this Skill as a Move
-  // action instead of a Standard action." An Attack pet is "Commanded to Attack as a Move action".
+  // Favorite Command (Animal Perk): commanding the pet in the chosen Skill is a Move action, not a
+  // Standard one (for an Attack pet, commanding it to Attack).
   { id: 'favoriteCommand', has: actor => commandIsMove(actor), matches: named('commandPet'), to: always('move'), ask: 'E20.ActionPerkAskFavoriteCommand' },
   // (BFF's Free-action assist is an ActionCost rule on the Perk, limit key bffAssist - rules/conv15-items2.test.js.)
   // (Accelerate Conversion's Free-action Conversion is an ActionCost rule on the Perk, after its Use marks accelerateConvert.)
@@ -566,10 +567,6 @@ function useFor(item) {
 
 export function isActionPerkUse(item) {
   return !!useFor(item);
-}
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 }
 
 function usesKey(use) {

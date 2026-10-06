@@ -2,6 +2,7 @@ import { lineOf } from "../../../mechanics/resources/game-lines.mjs";
 import { contextFor, evaluate, registerTag } from "../../predicate.mjs";
 import { itemsFor, recipients, registerStep, runSteps } from "../../steps.mjs";
 import { escape } from "../shared/chat-speaker-helpers.mjs";
+import { sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * Granting compendium entries the way the sheet's drop handlers do (round 15, uses):
@@ -27,9 +28,8 @@ import { escape } from "../shared/chat-speaker-helpers.mjs";
  */
 
 const listOf = collection => collection?.contents ?? (collection ? [...collection] : []);
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 
-registerTag('item:line', (rest, ctx) => (ctx.item ? lineOf(ctx.item.uuid ?? sourceOf(ctx.item)) == rest : false));
+registerTag('item:line', (rest, ctx) => (ctx.item ? lineOf(ctx.item.uuid ?? sourceOf(ctx.item)) == rest : false), { phrase: ['{who} {is} from the {arg} line', '{who} {isnt} from the {arg} line'] });
 
 registerTag('item:folderName', (rest, ctx) => {
   const wanted = String(rest ?? '').toLowerCase();
@@ -42,11 +42,11 @@ registerTag('item:folderName', (rest, ctx) => {
   const folders = globalThis.game?.packs?.get?.(`essence20.${pack}`)?.folders;
   const folder = folders?.get?.(typeof entry.folder == 'string' ? entry.folder : entry.folder?.id);
   return String(folder?.name ?? '').toLowerCase() == wanted;
-});
+}, { phrase: ['{who} {is} in the {raw} folder', '{who} {isnt} in the {raw} folder'] });
 
-registerTag('item:nameOfOwned', (rest, ctx) => !!ctx.item?.name && listOf(ctx.self?.items).some(item => item.type == rest && item.name == ctx.item.name));
+registerTag('item:nameOfOwned', (rest, ctx) => !!ctx.item?.name && listOf(ctx.self?.items).some(item => item.type == rest && item.name == ctx.item.name), { phrase: ['you already own one of that name ({arg})', "you don't own one of that name ({arg})"] });
 
-registerTag('item:isVar', (rest, ctx) => !!ctx.item && !!ctx.vars?.[rest] && (ctx.item.uuid == ctx.vars[rest] || sourceOf(ctx.item) == ctx.vars[rest]));
+registerTag('item:isVar', (rest, ctx) => !!ctx.item && !!ctx.vars?.[rest] && (ctx.item.uuid == ctx.vars[rest] || sourceOf(ctx.item) == ctx.vars[rest]), { phrase: ['{who} {is} the stored {arg} item', '{who} {isnt} the stored {arg} item'] });
 
 async function grantsOf(ctx) {
   return ctx.grantHelpers ?? import("../../../mechanics/resources/grants.mjs");

@@ -2,6 +2,7 @@ import { hostOf, rulesOfType } from "../../rules/index.mjs";
 import { contextFor, evaluate } from "../../rules/predicate.mjs";
 import { resolveValue } from "../../rules/formula.mjs";
 import { applyItemStage } from "../../rules/plugins/effects/item-modifier-stage.mjs";
+import { idOf, sourceOf } from "../shared/item-lookups.mjs";
 /**
  * Weapon Upgrades that change the weapon they're attached to.
  *
@@ -62,13 +63,7 @@ const FIREBALL = 'Compendium.essence20.cobra_codex.Item.20lv1ecNs4ORVwWu';
 /*  Lookups                                     */
 /* -------------------------------------------- */
 
-export function idOf(uuid) {
-  return String(uuid ?? '').split('.').pop();
-}
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-}
+export { idOf };
 
 /**
  * The Upgrade Items attached to a weapon (on its actor, carrying the weapon's id as parentId).
@@ -112,8 +107,8 @@ export function parentWeaponOf(effect) {
 }
 
 /**
- * The element a weapon deals once chosen: its own choice ("When receiving an Element weapon for a
- * mission, you must first choose the type of element the weapon uses", GI Joe CRB p.207), an
+ * The element a weapon deals once chosen: its own choice (an Element weapon's element is picked when
+ * it is issued for a mission, GI Joe CRB p.207), an
  * Elemental Projector's choice, or none.
  * @returns {?String}   A damage type key of ELEMENTS.
  */
@@ -241,8 +236,7 @@ export function applyToEffect(system, effect) {
     }
   }
 
-  // Fireball (Cobra Codex p.59): Fire weapons' "main effect gains a 5-foot radius Blast area of
-  // effect."
+  // Fireball (Cobra Codex p.59): a Fire weapon's main effect becomes a 5-foot radius Blast.
   if (actorHas(actor, FIREBALL) && (weapon.system?.traits ?? []).includes('fire') && damaging
     && !(system.radius > 0) && primaryEffect(weapon)?.id == effect.id) {
     set('shape', 'circle');
@@ -250,7 +244,7 @@ export function applyToEffect(system, effect) {
   }
 
   // (Swift's extra target, Deadly's +1 damage and Lingering's +1 turn are ItemModifier rules on those upgrades.)
-  // Cold gained: "If the weapon already has a Stun effect, increase the Stun effect by 1" (p.207).
+  // Cold gained: an existing Stun effect goes up by 1 (p.207).
   if (system.damageType == 'stun' && gainedElementTraits(weapon).includes('cold') && !effect.flags?.essence20?.generatedKey) {
     set('damageValue', (system.damageValue ?? 0) + 1);
   }
@@ -331,8 +325,7 @@ export function desiredGeneratedEffects(weapon) {
     add(want.key, want.label, want.changes);
   }
 
-  // Laser (p.207): "Laser weapons gain Stun 1 as an alternate effect, and can be used to Spot targets
-  // as an alternate effect." Only for a GAINED Laser trait - printed laser weapons already list both.
+  // Laser (p.207): Stun 1 and Spot as alternate effects. Only for a GAINED Laser trait - printed laser weapons already list both.
   // (Tracer Rounds' Spot is its rule, under the same key.)
   const gained = gainedElementTraits(weapon);
   if (gained.includes('laser')) {
@@ -343,14 +336,13 @@ export function desiredGeneratedEffects(weapon) {
     add('laserStun', i18n('E20.DamageStun'), { damageType: 'stun', damageValue: 1, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
   }
 
-  // Cold (p.207): "Cold weapons add Stun 1 as an alternate effect of the weapon. If the weapon
-  // already has a Stun effect, increase the Stun effect by 1" - the second half is applyToEffect.
+  // Cold (p.207): Stun 1 as an alternate effect, or +1 to a Stun effect it already has - the second
+  // half is applyToEffect.
   if (gained.includes('cold') && !existingTypes.includes('stun')) {
     add('coldStun', i18n('E20.DamageStun'), { damageType: 'stun', damageValue: 1, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
   }
 
-  // Sonic (p.207): "Sonic weapons gain an alternative effect identical to the weapon's primary
-  // effect, but it targets Willpower with a ↓2."
+  // Sonic (p.207): an alternate copy of the primary effect aimed at Willpower, at ↓2.
   if (gained.includes('sonic')) {
     add('sonic', `${primary.name} - ${i18n('E20.DefenseWillpower')}`, { defenseType: 'willpower', shiftDown: (base.shiftDown ?? 0) + 2 });
   }
@@ -464,7 +456,7 @@ async function doSync(actor) {
       }
     }
 
-    // Modular weapons: "the weapon counts as both the upgraded weapon and the chosen weapon" - the
+    // Modular weapons: the weapon counts as itself and as the chosen weapon - the
     // chosen weapon's own effects become this one's alternates.
     for (const { upgrade, uuid } of modularChoices(weapon)) {
       const chosen = await fromUuid(uuid);

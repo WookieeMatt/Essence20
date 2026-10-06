@@ -5,9 +5,8 @@ import { say as post } from "../shared/chat-lines.mjs";
 import { crashProtectionOf } from "../../rules/plugins/combat/immunity-readers.mjs";
 
 /**
- * Roll Cage (GI JOE CRB, Mechanized Infantry Focus, 7th level, p.81): "if your vehicle crashes, you
- * and any passengers take no damage. If your vehicle explodes, you and all passengers exit safely and
- * only suffer 1 damage." (Peerless Pilot's automatic emergency disembark is its AutoDisembark rule.)
+ * Roll Cage (GI JOE CRB, Mechanized Infantry Focus, 7th level, p.81): driver and passengers take no
+ * crash damage, and if the vehicle explodes they get out safely with only 1 damage. (Peerless Pilot's automatic emergency disembark is its AutoDisembark rule.)
  *
  * mechanics/vehicles/vehicle-defeat.mjs runs a vehicle's defeat as one awaited sequence on one client: the
  * vehicle is marked Defeated, then it either crashes (system.crashed, crash and disembark damage) or

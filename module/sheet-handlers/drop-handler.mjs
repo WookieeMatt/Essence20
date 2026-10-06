@@ -195,8 +195,8 @@ export async function _onUpgradeDrop(upgrade, actor, dropFunc) {
   if (actor.type == 'companion' && actor.system.type == 'drone' && upgrade.system.type == 'drone') {
     return dropFunc();
   } else if (actor.type == 'vehicle' && upgrade.system.type == 'drone' && ['ridingRig', 'jetPack'].includes(actor.flags?.essence20?.personalVehicle)) {
-    // Riding Rig / Skybound (Cobra Codex p.60, 65): "you can requisition Drone Upgrades for it if it meets
-    // all other prerequisites of the Upgrade."
+    // Riding Rig / Skybound (Cobra Codex p.60, 65): Drone Upgrades can be requisitioned for it when it
+    // meets their other prerequisites.
     return dropFunc();
   } else if (actor.system.canTransform && upgrade.system.type == 'armor') {
     return _onTransformerArmorUpgradeDrop(upgrade, actor, dropFunc);
@@ -301,8 +301,8 @@ export async function onDropActor(data, actorSheet) {
       _selectVehicleLocation(droppedActor, targetActor);
       dropIsValid = true;
     } else if (droppedActor.type == 'zord') {
-      // Carrier (PR CRB, Zord Feature, p.136): "holds up to five Vehicular Scale Zords and their Crew
-      // inside itself" (mechanics/actions/team-actions.mjs).
+      // Carrier (PR CRB, Zord Feature, p.136): carries up to five Vehicular-Scale Zords and their
+      // Crew (mechanics/actions/team-actions.mjs).
       const { carrierCapacityLeft, TEAM } = await import("../mechanics/actions/team-actions.mjs");
       const isCarrier = targetActor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == TEAM.carrier);
       if (isCarrier && carrierCapacityLeft(targetActor) > 0) {

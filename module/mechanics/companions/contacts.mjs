@@ -1,14 +1,14 @@
 import { getMissionEpoch, getSceneEpoch, getUses, markUsed } from "../resources/scene-clock.mjs";
 import { ruleContactAllegiance } from "../../rules/plugins/resources/contact-allegiance.mjs";
+import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 
 /**
  * Contacts (Field Guide to Action & Adventure p.153-155, Hawk's Personnel Files p.6-7, Enigma of
  * Combination p.39).
  *
- * "Summon Contact: Once per scene as a Standard action, you can call on an available Contact. Your
- * group can use your Contact starting this turn. The Contact remains available until the end of the
- * scene or until they run out of Allegiance Points." "Contacts only regain Allegiance Points after the
- * mission, at which point they regain all their Allegiance Points."
+ * Summon Contact (Field Guide p.153-155): a Standard action, once a scene; the whole group can use the
+ * Contact from that turn until the scene ends or its Allegiance Points run out. Allegiance Points only
+ * come back, all of them, once the mission is over.
  *
  * - A Contact is an NPC with system.isContact, listed on a PC's Contacts tab. Its Allegiance Points
  *   (system.allegiancePoints) are what it starts a mission with; what is left is kept in
@@ -16,9 +16,8 @@ import { ruleContactAllegiance } from "../../rules/plugins/resources/contact-all
  * - Summon, on the Contacts tab, posts a card with a button per Contact Perk (a perk of type
  *   'contact', costing system.allegianceCost). Anyone at the table spends from it.
  * - flags.essence20.contactRules on the Contact says how often it may be called (a Trusted Contact
- *   "once per day", Networker's "once per Mission"), and whether calling it costs a Story Point
- *   (Enigma of Combination: "Activating a Contact Perk requires the character with access to it to
- *   expend a Story Point").
+ *   once a day, Networker's once a Mission), and whether calling it costs a Story Point
+ *   (Enigma of Combination p.39: a Contact Perk costs its user a Story Point).
  * - The Perks: Networker (and its Hang-Up), Trusted Contact, Contact Connection, International
  *   Network, Contact: Nebulan Technician, Contact: Combiner Team, Fortified Bond, Worthy Contact,
  *   Lasting Alliances, Hometown Hero, Emissary, Devious Alliance, Learned from the Best.
@@ -43,19 +42,6 @@ export const CONTACT = {
 };
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items.contents) ? items.contents : (typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-}
 
 const has = (actor, id) => itemsOf(actor).some(item => sourceOf(item) == id);
 const count = (actor, id) => itemsOf(actor).filter(item => sourceOf(item) == id).length;
@@ -253,8 +239,8 @@ function callsLeft(contact, summoner) {
  * @param {Actor} contact
  * @param {Object} [options]
  * @param {Function} [options.pay]
- * @param {Boolean} [options.again]   Worthy Contact's second call: "The Contact regains all of their
- *   Allegiance Points when you call them again."
+ * @param {Boolean} [options.again]   Worthy Contact's second call, which refills the Contact's
+ *   Allegiance Points.
  * @returns {Promise<ChatMessage|null>}
  */
 export async function summonContact(summoner, contact, { pay = async () => true, again = false } = {}) {
@@ -287,10 +273,8 @@ export async function summonContact(summoner, contact, { pay = async () => true,
   }
 
   // What they arrive with: the pool left this mission - or, on a mission's first call, the full
-  // starting pool, doubled by Fortified Bond ("Double their starting Allegiance Points when you
-  // summon them") - plus Contact Connection's "when you summon Contacts ... they gain an additional
-  // Allegiance Point" and Hometown Hero's "Your Contacts from your hometown gain +1 Allegiance Point
-  // when called".
+  // starting pool, doubled by Fortified Bond - plus Contact Connection's +1 Allegiance Point on a
+  // summon and Hometown Hero's +1 for hometown Contacts.
   const fresh = stateOf(contact).mission != getMissionEpoch() || stateOf(contact).left == null;
   const fortified = fresh && (summoner.flags?.essence20?.fortifiedBond == contact.uuid);
   let left = again ? startingAllegiance(contact) : allegianceLeft(contact) + (fortified ? startingAllegiance(contact) : 0);
@@ -428,9 +412,8 @@ async function askName(title, value) {
 }
 
 const HANDLERS = {
-  // Networker (Ferocious Fighters, Influence Perk, p.8): "You gain a Contact that you can summon during
-  // missions ... once per Mission ... This Contact has 3 Allegiance Points and 3 Contact Perks, which
-  // you and your GM must clearly define". Hang-Up: "only 2 Allegiance Points and 2 Contact Perks."
+  // Networker (Ferocious Fighters, Influence Perk, p.8): a Contact callable once a Mission, with 3
+  // Allegiance Points and 3 Contact Perks agreed with the GM. Hang-Up: 2 and 2 instead.
   async networker(owner, item) {
     if (madeBy(owner, item).length) {
       ui.notifications.info(T('E20.ContactAlreadyMade'));
@@ -446,9 +429,8 @@ const HANDLERS = {
     }, item);
     return contact ? T('E20.ContactMade', { name: owner.name, contact: contact.name }) : null;
   },
-  // Trusted Contact (Field Guide p.72): "a Contact that you can call on once per day. This Contact has
-  // 3 Allegiance Points and 1 Contact Perk ... You can take this General Perk multiple times, gaining an
-  // additional use per day and an additional Contact Perk each time."
+  // Trusted Contact (Field Guide p.72): a Contact callable once a day, 3 Allegiance Points and 1
+  // Contact Perk; each extra pick adds a daily use and a Contact Perk.
   async trustedContact(owner, item) {
     const uses = count(owner, CONTACT.trustedContact);
     const existing = madeBy(owner, item)[0];
@@ -466,9 +448,8 @@ const HANDLERS = {
     const contact = name && await createContact(owner, { name, allegiance: 3, rules: { window: 'day', uses }, perks: [{ name: T('E20.ContactPerkBlank', { n: 1 }), cost: 1 }] }, item);
     return contact ? T('E20.ContactMade', { name: owner.name, contact: contact.name }) : null;
   },
-  // Contact Connection (Field Guide p.66): "At 5th level, you gain a Contact that you can call on once
-  // per Mission ... This Contact gains 3 Contact Perks. You gain an additional Contact at 9th and 14th
-  // levels".
+  // Contact Connection (Field Guide p.66): a once-a-Mission Contact with 3 Contact Perks at 5th level,
+  // and another at 9th and at 14th.
   async contactConnection(owner, item) {
     const level = Number(owner.system?.level) || 1;
     const allowed = [5, 9, 14].filter(l => level >= l).length;
@@ -485,8 +466,8 @@ const HANDLERS = {
     }, item);
     return contact ? T('E20.ContactMade', { name: owner.name, contact: contact.name }) : null;
   },
-  // International Network (Intercontinental Adventures p.99): "you can spend a Story Point to instantly
-  // gain them as a temporary Contact you can call on once per mission."
+  // International Network (Intercontinental Adventures p.99): a Story Point makes them a temporary
+  // once-a-mission Contact on the spot.
   async internationalNetwork(owner, item) {
     const { canSpendForActor, spendForActor } = await import("../resources/story-points.mjs");
     if (!canSpendForActor?.(owner)) {
@@ -517,8 +498,8 @@ const HANDLERS = {
     }, item);
     return contact ? T('E20.ContactMade', { name: owner.name, contact: contact.name }) : null;
   },
-  // Contact: Combiner Team (Enigma of Combination p.40): "The number of Allegiance Points this Contact
-  // has and their Contact Perks depend upon the team." Asked.
+  // Contact: Combiner Team (Enigma of Combination p.40): its Allegiance Points and Contact Perks vary
+  // by team. Asked.
   async combinerTeam(owner, item) {
     const answer = await foundry.applications.api.DialogV2.wait({
       window: { title: item.name },
@@ -538,8 +519,8 @@ const HANDLERS = {
     const contact = await createContact(owner, { name: answer.name, allegiance: answer.ap, rules: { window: 'mission', uses: 1, storyPoint: true } }, item);
     return contact ? T('E20.ContactMade', { name: owner.name, contact: contact.name }) : null;
   },
-  // Fortified Bond (Ferocious Fighters p.9): "Choose one of your Contacts. Double their starting
-  // Allegiance Points when you summon them."
+  // Fortified Bond (Ferocious Fighters p.9): one chosen Contact starts each summon with double
+  // Allegiance Points.
   async fortifiedBond(owner, item) {
     const contact = await pickContact(owner, item);
     if (!contact) {
@@ -549,8 +530,8 @@ const HANDLERS = {
     await owner.setFlag('essence20', 'fortifiedBond', contact.uuid);
     return T('E20.FortifiedBondChosen', { name: owner.name, contact: contact.name });
   },
-  // Worthy Contact (Ferocious Fighters p.9): "Once per mission, you summon a Contact a second time. The
-  // Contact regains all of their Allegiance Points when you call them again."
+  // Worthy Contact (Ferocious Fighters p.9): once a mission, a second call of a Contact, which refills
+  // its Allegiance Points.
   async worthyContact(owner, item, pay) {
     if (getUses(owner, 'worthyContact', 'mission') >= 1) {
       ui.notifications.warn(T('E20.OncePerMission'));
@@ -565,9 +546,8 @@ const HANDLERS = {
 
     return null;
   },
-  // Lasting Alliances (Ferocious Fighters, Peacekeeper 20th, p.14): "after the end of a scene in which you
-  // summoned a Contact, roll a DIF 15 Culture Skill Test. On a success, that Contact regains 2
-  // Allegiance Points, and you can call on them one additional time during this mission."
+  // Lasting Alliances (Ferocious Fighters, Peacekeeper 20th, p.14): after a scene with a summoned
+  // Contact, a DIF 15 Culture test; success gives it 2 Allegiance Points back and one more call this mission.
   async lastingAlliance(owner, item) {
     const contact = await pickContact(owner, item, c => stateOf(c).summoned?.by == owner.uuid);
     if (!contact) {
@@ -586,12 +566,12 @@ const HANDLERS = {
     await contact.setFlag('essence20', 'contactRules', { ...rules, extraCalls: { mission: getMissionEpoch(), count: extra + 1 } });
     return T('E20.LastingAllianceDone', { name: owner.name, contact: contact.name });
   },
-  // Emissary (Ferocious Fighters, Peacekeeper 3rd): "you gain Edge on Skill Tests to gain Contacts."
-  // Devious Alliance: "You can use Deception when you attempt to gain a Contact." The test itself.
+  // Emissary (Ferocious Fighters, Peacekeeper 3rd): Edge on tests to gain Contacts. Devious Alliance:
+  // Deception may be used for that test. The test itself.
   emissary: (owner, item) => gainContactTest(owner, item),
   deviousAlliance: (owner, item) => gainContactTest(owner, item),
-  // Learned from the Best (Hawk's Personnel Files p.174): "You gain one of the Perks from your
-  // Contact's Threat stat block."
+  // Learned from the Best (Hawk's Personnel Files p.174): take one Perk from the Contact's Threat
+  // stat block.
   async learnedFromTheBest(owner, item) {
     if (item.flags?.essence20?.granted) {
       ui.notifications.info(T('E20.GrantAlready'));

@@ -1,9 +1,7 @@
 /**
- * Environmental Expertise (GI Joe CRB, Ranger base, 1st/9th/18th level, p.90): "When subject to
- * the conditions of your environment of expertise, you gain several benefits: You ignore the
- * penalties for moving through Rough Terrain in your environment of expertise. You gain an Edge
- * on non-combat Skill Tests in your environment of expertise, and all of your attacks in your
- * environment of expertise are considered Specialized."
+ * Environmental Expertise (GI Joe CRB, Ranger base, 1st/9th/18th level, p.90): in the environment
+ * of expertise, Rough Terrain costs nothing extra, non-combat tests have Edge, and attacks count as
+ * Specialized.
  *
  * "Environment of expertise" (which specific environment(s) the actor picked) is recorded via the
  * existing `hasChoice: true, choiceType: "environments"` mechanism, onto the actor's own

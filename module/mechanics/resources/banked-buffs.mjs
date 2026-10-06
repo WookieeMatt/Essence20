@@ -9,7 +9,6 @@ import {
 import {
   activateEmotionalMastery, activateTeamSpirit, EMOTIONAL_MASTERY_ID, TEAM_SPIRIT_ID,
 } from "../../items/resources/emotional-mastery.mjs";
-import { applyNuPogodiCondition, canUseNuPogodiCondition } from "../../items/healing/nu-pogodi.mjs";
 import { ENERGY_AFFINITY_ID, onEnergyAffinityUse } from "../../items/attacks/energy-affinity.mjs";
 
 // Psycho Assault (Finster's Monster-Matic Cookbook, all 6 Psycho Paths, 5th level) - see
@@ -28,7 +27,8 @@ import { ENERGY_AFFINITY_ID, onEnergyAffinityUse } from "../../items/attacks/ene
 // rules/conv16-b.test.js.)
 
 // (Metallikato's Multiple Targets on / off, Rise Again's +5 Defense and Righteous Heart's banked Resistance are Use rules on
-// their Perks - rules/conv17-Split1.test.js. Ninja Power's on / off switch is its items/movement/ninja-power-jump.mjs Use.)
+// their Perks - rules/conv17-Split1.test.js. Ninja Power's activation, jump and switch off are its own rules -
+// rules/conv18-convC.test.js.)
 
 // (Timeline Anomaly's Initiative swap is a Use rule on its item - rules/conv10-slD10.test.js.)
 
@@ -37,13 +37,10 @@ import { ENERGY_AFFINITY_ID, onEnergyAffinityUse } from "../../items/attacks/ene
 // (Powerful Suggestions, Data Bridge - with Think Tank's per-ally borrow - and Misery Loves Company are their Perks' own
 // rules - rules/conv16-b.test.js.)
 
-// Nu, Pogodi!'s own condition-removal clause (Factions in Action Vol. 2, Oktober Guard Faction
-// Perk, p.68) - see items/healing/nu-pogodi.mjs's own doc comment. No Power cost, once per encounter
-// (approximating "once per mission").
-const NU_POGODI_ID = "Compendium.essence20.intercontinental_adventures.Item.sItc8nD7ockbQ1mn";
+// (Nu, Pogodi!'s Condition removal and seat swap are Use rules on the Perk - rules/conv18-convC.test.js.)
 
 /**
- * "Bank a bonus now, spend it on a Skill Test you haven't rolled yet" Perks - Think On It and
+ * Bank-a-bonus-now, spend-it-on-a-later-test Perks - Think On It and
  * Plan of Action share this exact shape (see perks.mjs's own bankPendingBonus/getPendingBonus/
  * clearPendingBonus), but until now nothing on the actor sheet let a player actually trigger
  * one - every other Perk automated in this system either fires off an existing roll/attack
@@ -53,8 +50,8 @@ const NU_POGODI_ID = "Compendium.essence20.intercontinental_adventures.Item.sItc
  * bonus once clicked.
  *
  * Alpha Strike (Renegade/Door-Kicker Focus, 3rd level, p.98) was originally scoped alongside
- * these two, but its own text - "you can Alpha Strike IF you are attacking an enemy within your
- * reach or within 20 feet... when you USE Alpha Strike, you gain an Edge..." - ties the choice to
+ * these two, but its own rule - usable only while attacking an enemy within reach or 20 feet, and
+ * its Edge comes as it is used - ties the choice to
  * the moment of a qualifying attack roll, not a standalone Free/Move action taken independent of
  * one. That's a Roll Options Dialog checkbox (the same shape Quiet as the Grave's own
  * applyDamageDouble toggle already uses), not a sheet "Use" button - a genuinely different UI
@@ -135,10 +132,6 @@ export function canUsePerk(item) {
 
   // (Patch Up is its Perk's own Use rules - rules/conv15-items1.test.js.)
 
-  if (sourceId == NU_POGODI_ID) {
-    return canUseNuPogodiCondition(actor);
-  }
-
   return false;
 }
 
@@ -201,16 +194,6 @@ export async function onPerkUse(item) {
   }
 
   // Environmental Expertise, Read the Land and Adaptation switch the same flag through Use rules on their items now.
-
-  if (sourceId == NU_POGODI_ID) {
-    const removed = await applyNuPogodiCondition(actor);
-    if (removed) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
 }
 
 /**

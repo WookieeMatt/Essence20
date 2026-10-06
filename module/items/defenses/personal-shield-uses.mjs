@@ -8,10 +8,9 @@ import { say as post } from "../shared/chat-lines.mjs";
 import { roundStamp } from "../shared/turn-stamps.mjs";
 
 /**
- * Personal Shield (GI JOE CRB, Vanguard, p.108): "The shield can be activated once per encounter,
- * and activating the shield requires a Standard action. ... Once activated, the shield lasts for 1
- * minute or until it is subjected to EMP damage. A damaged or out of power shield can be repaired or
- * recharged with a one hour Technology Skill Test against a DIF 12 + half your Vanguard level".
+ * Personal Shield (GI JOE CRB, Vanguard, p.108): once an encounter, a Standard action raises it for
+ * a minute or until EMP hits it; an hour and a Technology test at DIF 12 + half the Vanguard level
+ * repairs or recharges it.
  * Table 5-28 gives the uses (2, 3 at 3rd, 4 at 6th, 5 at 11th, 6 at 17th, unlimited at 20th).
  *
  * The Toughness/Evasion bonus is the Role Points item's own defenseBonus, switched by the sheet's

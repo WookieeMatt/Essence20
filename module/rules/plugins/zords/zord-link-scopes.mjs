@@ -118,11 +118,20 @@ registerTag('megaform', (rest, ctx) => {
   }
 
   return null;
-}, { family: 'situation', param: 'megaformTag' });
+}, { family: 'situation', param: 'megaformTag', phrase: arg => {
+  const [what, kind] = arg.split(':');
+  const form = kind == 'combiner' ? 'a Combiner form' : kind == 'zord' ? 'a Megazord' : 'a Megaform';
+  return {
+    in: [`you are part of ${form}`, `you aren't part of ${form}`], is: [`you are ${form}`, `you aren't ${form}`],
+    participantAttack: ["the Megaform rolls one of its participants' attacks", "the Megaform doesn't roll a participant's attack"],
+    holderAttack: ["the Megaform rolls its owner's own attack", "the Megaform doesn't roll its owner's attack"],
+    generated: ['the attack was made on the Megaform', "the attack wasn't made on the Megaform"],
+  }[what] ?? null;
+} });
 
 const holdsTrait = (actor, type) => itemsOf(actor).some(item => item.type == 'megaformTrait' && item.system?.type == type);
-registerTag('self:megaformTrait', (rest, ctx) => holdsTrait(ctx.self, rest));
-registerTag('target:megaformTrait', (rest, ctx) => (ctx.other ? holdsTrait(ctx.other, rest) : false));
+registerTag('self:megaformTrait', (rest, ctx) => holdsTrait(ctx.self, rest), { phrase: ['{who} {has} a {arg} Megaform Trait', '{who} {has} no {arg} Megaform Trait'] });
+registerTag('target:megaformTrait', (rest, ctx) => (ctx.other ? holdsTrait(ctx.other, rest) : false), { phrase: ['{who} {has} a {arg} Megaform Trait', '{who} {has} no {arg} Megaform Trait'] });
 
 /* -------------------------------------------- */
 /*  Zord ownership tags                          */
@@ -131,16 +140,16 @@ registerTag('target:megaformTrait', (rest, ctx) => (ctx.other ? holdsTrait(ctx.o
 registerTag('vehicle:ownZord', (rest, ctx) => {
   const crewed = crewing(ctx.self);
   return !!crewed && crewed.vehicle.type == 'zord' && ownsZord(ctx.self, crewed.vehicle);
-});
+}, { phrase: ['you drive your own Zord', "you aren't in your own Zord"] });
 
 registerTag('self:ownedByHolder', (rest, ctx) => {
   const holder = ctx.holder && ctx.holder !== ctx.self ? ctx.holder : holderOf(ctx.ruleItem);
   return !!holder && ownsZord(holder, ctx.self);
-});
+}, { phrase: ["{who} {is} one of its owner's Zords", "{who} {isnt} one of its owner's Zords"] });
 
-registerTag('self:ownsZordOnCanvas', (rest, ctx) => ownedZords(ctx.self).some(zord => (zord.getActiveTokens?.() ?? []).length > 0));
+registerTag('self:ownsZordOnCanvas', (rest, ctx) => ownedZords(ctx.self).some(zord => (zord.getActiveTokens?.() ?? []).length > 0), { phrase: ['one of {poss} Zords is on the map', 'none of {poss} Zords is on the map'] });
 
-registerTag('self:advancedRole', (rest, ctx) => !!itemsOf(ctx.self).find(item => item.type == 'role')?.system?.isAdvanced);
+registerTag('self:advancedRole', (rest, ctx) => !!itemsOf(ctx.self).find(item => item.type == 'role')?.system?.isAdvanced, { phrase: ['{who} {has} an Advanced Role', '{who} {hasnt} an Advanced Role'] });
 
 /* -------------------------------------------- */
 /*  Companions                                   */
@@ -152,9 +161,9 @@ export function commandedThisRound(actor, combat = globalThis.game?.combat) {
   return !!command && !!combat && command.combatId == combat.id && command.round == combat.round;
 }
 
-registerTag('self:commanded', (rest, ctx) => commandedThisRound(ctx.self, ctx.combat ?? undefined));
-registerTag('target:commanded', (rest, ctx) => (ctx.other ? commandedThisRound(ctx.other, ctx.combat ?? undefined) : false));
-registerTag('holder:commanded', (rest, ctx) => commandedThisRound(ctx.holder ?? ctx.self, ctx.combat ?? undefined));
+registerTag('self:commanded', (rest, ctx) => commandedThisRound(ctx.self, ctx.combat ?? undefined), { phrase: ['{who} {was} Commanded this round', '{who} {wasnt} Commanded this round'] });
+registerTag('target:commanded', (rest, ctx) => (ctx.other ? commandedThisRound(ctx.other, ctx.combat ?? undefined) : false), { phrase: ['{who} {was} Commanded this round', '{who} {wasnt} Commanded this round'] });
+registerTag('holder:commanded', (rest, ctx) => commandedThisRound(ctx.holder ?? ctx.self, ctx.combat ?? undefined), { phrase: ['{who} {was} Commanded this round', '{who} {wasnt} Commanded this round'] });
 
 registerTag('companion', (rest, ctx) => {
   const [what, type] = rest.split(':');
@@ -163,7 +172,10 @@ registerTag('companion', (rest, ctx) => {
   }
 
   return null;
-}, { family: 'situation', param: 'companionTag' });
+}, { family: 'situation', param: 'companionTag', phrase: (arg, w) => {
+  const [what, type] = arg.split(':');
+  return what == 'uncommanded' ? [`one of your ${type ? `${w.humanize(type)} ` : ''}companions wasn't Commanded this round`, `every ${type ? `${w.humanize(type)} ` : ''}companion of yours was Commanded this round`] : null;
+} });
 
 /* -------------------------------------------- */
 /*  Recipients and pick sources                  */

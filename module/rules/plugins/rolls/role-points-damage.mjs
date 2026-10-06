@@ -30,7 +30,7 @@ registerTag('self:activeRolePoints', (rest, ctx) => {
   const points = activeRolePoints(ctx.self);
   const tags = String(rest ?? '').split('&').filter(Boolean);
   return !!points && (!tags.length || evaluate(tags, contextFor({ ...ctx, item: points })) === true);
-});
+}, { phrase: (arg, w) => (arg ? [`{poss} Role Points are active and ${w.items(arg.split('&'))}`, `{poss} Role Points aren't active or don't match`] : ['{poss} Role Points are active', "{poss} Role Points aren't active"]) });
 
 registerTag('roll:rolePointsDamage', (rest, ctx) => {
   if (!ctx.dialog) {
@@ -42,7 +42,7 @@ registerTag('roll:rolePointsDamage', (rest, ctx) => {
   }
 
   return rest == 'own' ? !!ctx.ruleItem && rolePointsOf(ctx.self)?.id == ctx.ruleItem.id : true;
-});
+}, { phrase: arg => (arg == 'own' ? ["the roll spends this item's Role Points for damage", "the roll doesn't spend this item's Role Points for damage"] : ['the roll spends Role Points for damage', "the roll doesn't spend Role Points for damage"]) });
 
 const SWITCH = RULE_TYPES.DialogSwitch;
 SWITCH.params.sneakAttackMultiplier ??= { kind: 'formula' };

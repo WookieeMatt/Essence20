@@ -152,7 +152,7 @@ describe('events', () => {
 
   test('new events are valid and read out', () => {
     expect(validateRule({ type: 'Trigger', event: 'conditionGained', when: ['self:status:frightened'], steps: [] })).toEqual([]);
-    expect(summarizeRule({ type: 'Trigger', event: 'hit', outcome: 'crit', steps: [{ do: 'applyCondition' }] })).toBe('When an attack or spell hits (crit): applyCondition');
+    expect(summarizeRule({ type: 'Trigger', event: 'hit', outcome: 'crit', steps: [{ do: 'applyCondition' }] })).toBe('When an attack or spell hits (crit): apply condition');
   });
 });
 

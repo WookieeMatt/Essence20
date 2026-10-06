@@ -44,6 +44,17 @@
     "complete": "Essence20 System Migration to version {version} completed!"
   },
   "E20": {
+    "RulesExtConvC18": {
+      "NuPogodiWhichCondition": "Remove which Condition?"
+    },
+    "RulesExtConvB18": {
+      "RenegadeCommanderGiven": "{name} unleashes {target}: Reckless Abandon for the rest of the scene.",
+      "ZeoCrystalInserted": "{name} inserts the Zeo crystal: {where}.",
+      "StoryPointsExpired": "{count} unspent Story Point(s) granted for this combat are lost."
+    },
+    "RulesExtConvA18": {
+      "TauntBlocked": "{name} must attack {holder} (Stand Behind Me!) - target {holder} to attack."
+    },
     "RulesExtSplit217": {
       "NoSpecialization": "You have no Specialization in those Skills.",
       "KitPrompt": "Choose the Specialization for the kit.",
@@ -317,6 +328,31 @@
       "full": "The system applies this item's rules for you. The notes say how.",
       "partial": "Some of this item's rules are applied for you; the notes say what's left to the table.",
       "manual": "This item's rules are left to the table; the notes say why."
+    },
+    "ActorRules": {
+      "Intro": "Everything acting on this sheet: Active Effects first (conditions, area effects and timed effects kept apart from the always-on ones), then the rules its items give it.",
+      "EffectsHeading": "Active Effects",
+      "RulesHeading": "Rules from items",
+      "Group": {
+        "Conditions": "Conditions",
+        "Area": "Area Effects",
+        "Temporary": "Temporary Effects",
+        "Passive": "Always On",
+        "Inactive": "Inactive Effects"
+      },
+      "Remaining": "Remaining",
+      "Timed": "Timed",
+      "Permanent": "Permanent",
+      "UntilRemoved": "Until removed",
+      "WhileInArea": "While in the area",
+      "Suppressed": "Not applying right now",
+      "NoEffects": "None.",
+      "NoRules": "No item on this sheet gives it any rules.",
+      "OpenItem": "Open the item this comes from",
+      "DeleteOnItem": "This effect belongs to an item. Switch it off here, or delete it from the item.",
+      "AttachedTo": "Attached to",
+      "On": "On",
+      "Off": "Off"
     },
     "Rules": {
       "Tab": "Rules",
@@ -1121,19 +1157,10 @@
     "Pr1SizeShiftLarger": "Larger (+1 Size, +2 Health, +1 Strength)",
     "Pr1SizeShiftSmaller": "Smaller (-1 Size, +10ft Movement, +1 Speed)",
     "Pr1SpectrumShiftedOther": "Spectrum Shifted: {role} has no fixed row in Table 2-16 - an Advanced Spectrum Ranger takes any two General Perks, and a non-Ranger keeps the Perks of a core Ranger row of their choice. {name} kept their 1st-3rd level Role Perks; adjust by hand.",
-    "Pr1TauntBlocked": "{name} must attack {taunter} (Stand Behind Me!) - target {taunter} to attack.",
-    "Pr1TauntButton": "Roll DIF 14 Alertness",
-    "Pr1TauntCard": "{taunter} dares {name} to attack them (Stand Behind Me!). {name} must make them the target of their attacks unless they succeed on a DIF 14 Alertness Skill Test.",
-    "Pr1TauntForced": "{name} can only attack {taunter} (Stand Behind Me!).",
-    "Pr1TauntResisted": "{name} shakes off {taunter}'s taunt.",
     "Pr1TimeDisplacedFlavor": "Continuum Anomaly check, one die larger for Time Displaced ({formula}): {band}",
     "Pr1TimeDisplacedLine": "The GM rolls a Continuum Anomaly check for {name} (Time Displaced: one die larger).",
     "Pr1WarheadPick": "Warhead Magazines: damage type {n} of 3",
-    "Pr3NinjaPrompt": "Leap now, or switch Ninja Power off?",
-    "Pr3NinjaJump": "Ninja jump (20 ft, Free)",
-    "Pr3NinjaOff": "Switch Ninja Power off",
     "Pr3NinjaJumped": "{name} makes a Ninja Power jump (up to 20 ft - move the token). Attacks against them this round suffer ↓1.",
-    "Pr3NinjaJumpSource": "Ninja Power jump ({name})",
     "Pr3NinjaOnLine": "{name} activates Ninja Power.",
     "Pr3NinjaOffLine": "{name} lets Ninja Power go.",
     "Pr3PowerHealPrompt": "Spend Power to heal damage, or to remove a negative Condition?",
@@ -1547,10 +1574,7 @@
     },
     "Mlp2ResearchDone": "Essential Research has been used 3 times today.",
     "Mlp2AskReturnInKind": "Return In Kind: Lend Assistance back as a Free action?",
-    "Q1RemoveCondition": "Remove a Condition",
-    "Q1SwapSeats": "Swap seats",
     "Q1WhichUse": "What do you want to do?",
-    "Q1SwapNoVehicle": "You aren't riding in a vehicle.",
     "Q1SwapPrompt": "Swap positions with whom?",
     "Q1SwapFailed": "{name} fails to swap positions.",
     "Q1Swapped": "{name} swaps positions with {other}.",
@@ -1824,12 +1848,8 @@
     "PowermasterEmpty": "The module is empty (or not linked).",
     "PriorExperience": "Prior Experience",
     "PriorExperiencePrompt": "Whose failure becomes a success?",
-    "RenegadeCommanderArmor": "{name} is wearing more than Light armor.",
     "RenegadeCommanderEffect": "Reckless Abandon ({name})",
     "RenegadeCommanderGiven": "{name} unleashes {ally}: Reckless Abandon for the scene.",
-    "RenegadeCommanderNeedsOwner": "{name}'s player needs to accept - ask them to apply it.",
-    "RenegadeCommanderNoUses": "{name} has no Reckless Abandon uses left today.",
-    "RenegadeCommanderPick": "Who fights with Reckless Abandon?",
     "RigNone": "{name} has no Riding Rig.",
     "RightHands": {
       "bodyArmor": "Body Armor Segment",
@@ -3470,7 +3490,6 @@
     "ExplosiveAftershockPronePenalty": "Prone and -1 on all actions",
     "ExplosiveAftershockDeafenedPenalty": "Deafened and -1 on all actions",
     "NotInEnvironmentOfExpertise": "This scene's terrain isn't one of your environments of expertise. Spend an Adaptation Point (or use Read The Land) first to use it here.",
-    "ZeoCrystalBoostPickOptionTitle": "Zeo Crystal Boost",
     "ZeoCrystalBoostPickOptionLabel": "Insert the crystal into",
     "ZeoCrystalBoostMorpher": "Your Morpher (upshift 1 unarmed, +1 all Defenses)",
     "ZeoCrystalBoostWeapon": "Your Power Weapon (+1 Energy damage)",
@@ -3650,8 +3669,6 @@
     "PersonalHeirloomPickLabel": "Weapon to designate as your Heirloom",
     "PrimalMovementNoNewType": "You already have every Movement type in Bot Mode - there's no new one for Primal Movement to grant.",
     "RollDialogObserverSnagSubstitution": "Suffer this instead of the Snag",
-    "EltarianMettlePickConditionTitle": "Eltarian Mettle",
-    "EltarianMettlePickConditionLabel": "Remove which Condition",
     "DigDeepBenefitDamage": "Ignore 1 damage (suffer Snag until the end of your next turn)",
     "VersatileProtectionResistance": "Resistance",
     "VersatileProtectionImmunity": "Immunity",
@@ -4742,12 +4759,16 @@
           "Content": "Toughness reads <strong>15</strong> for the demo character, but only thirteen of that is directly from the character. Two points of it come from an effect, and the tour will show you where next."
         },
         "EffectsTab": {
-          "Title": "The Effects Tab",
-          "Content": "Everything currently acting on the character.\nThe demo has one, <strong>Field Adrenaline</strong> — the source of those two points of Toughness."
+          "Title": "The Rules Tab",
+          "Content": "Everything currently acting on the character, including the effects its items carry.\nThe demo has one, <strong>Field Adrenaline</strong> — the source of those two points of Toughness."
         },
         "Categories": {
-          "Title": "Temporary, Passive, Inactive",
-          "Content": "Effects sort themselves by how they behave.\n<strong>Temporary</strong> ones have a duration and expire. <strong>Passive</strong> ones simply apply. <strong>Inactive</strong> ones are switched off but kept."
+          "Title": "Temporary, Always On, Inactive",
+          "Content": "Effects sort themselves by how they behave.\n<strong>Conditions</strong> and <strong>Area Effects</strong> get groups of their own while there is one, and <strong>Temporary</strong> ones show the time they have left. <strong>Always On</strong> ones simply apply. <strong>Inactive</strong> ones are switched off but kept."
+        },
+        "ItemRules": {
+          "Title": "Rules from Items",
+          "Content": "Below the effects is a read-only list of the rules the character's items give it, one group per item.\nClick an item's name to open it — that is where its rules are edited."
         },
         "Toggle": {
           "Title": "Switching Off",

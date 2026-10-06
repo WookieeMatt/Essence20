@@ -11,8 +11,8 @@ import { carriedRules } from "../marks/rule-marks.mjs";
  *   action: "any"        every action that costs something - with `ask`, the player says whether this one is the kind
  *                        the item means ("an action related to <Spirit>", "related to your Cutie Mark")
  *   to: "downgrade"      one step cheaper: Standard -> Move, Move -> Free, Free -> no action at all
- *   limit.freeIsUnlimited  a Free action made free doesn't count against the limit (the Talents' "once per round ...
- *                        Free actions related to <Spirit> take no actions for you")
+ *   limit.freeIsUnlimited  a Free action made free doesn't count against the limit (the Talents: once a round,
+ *                        Free actions tied to the Spirit cost nothing)
  *   scope: "marked" + mark  the rule acts for whoever carries the holder's mark <key> (rules/plugins/marks/rule-marks.mjs),
  *                        not for the holder - Harmony Unleashed on the pony it targets. On the caster itself (a mark
  *                        it set on itself), a self rule with `self:markedByHolder:<key>` does it.

@@ -2,11 +2,9 @@ import { applyDamage } from "./combat.mjs";
 
 /**
  * Ongoing / Poison / Toxin (Cobra Codex, New Weapon Effects and Traits, p.93-94; Field Guide and
- * others echo the identical wording): "When an attack with the Ongoing trait successfully affects
- * its target, it affects them again every round at the end of their turn, for the listed amount of
- * time or until treated. If the effect is a Condition, the Condition continues for that amount of
- * time. If the effect is a type of damage, the damage recurs every subsequent round at end of the
- * affected creature's turn." Poison and Toxin both carry this same repeating half on top of their
+ * others echo the same rule): a successful Ongoing attack hits again at the end of each of the target's
+ * turns for the listed time or until treated - a Condition simply lasts that long, damage recurs
+ * each round. Poison and Toxin both carry this same repeating half on top of their
  * own narrative-only "causes the Poisoned Condition" clause - per explicit user direction, this
  * project has no Poisoned status of its own, so only the repeating-DAMAGE half is built here; the
  * Condition half stays exactly as narrative as it always was.

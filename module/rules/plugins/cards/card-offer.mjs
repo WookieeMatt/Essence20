@@ -87,7 +87,19 @@ export function cardTag(rest, ctx) {
   return null;
 }
 
-registerTag('card', cardTag, { family: 'situation', param: 'text' });
+registerTag('card', cardTag, { family: 'situation', param: 'text', phrase: (arg, w) => {
+  const [key, ...more] = arg.split(':');
+  const rest = more.join(':');
+  return {
+    failed: ['the roll failed', 'the roll succeeded'], fumble: ['the roll is a Fumble', "the roll isn't a Fumble"],
+    d20: rest ? [`the d20 shows ${rest}`, `the d20 doesn't show ${rest}`] : ['the roll has a d20', 'the roll has no d20'],
+    hasD20: ['the roll has a d20', 'the roll has no d20'], checks: ['the roll was against a DIF or Defense', "the roll wasn't against a DIF or Defense"],
+    skill: ['the roll is a Skill Test', "the roll isn't a Skill Test"], rerolled: ['the roll is a reroll', "the roll isn't a reroll"],
+    marked: [`the roll is marked ${w.humanize(rest)}`, `the roll isn't marked ${w.humanize(rest)}`],
+    holderPresent: ['its owner is in the scene', "its owner isn't in the scene"],
+    involves: [`the roll involves your ${w.humanize(rest).replace(/ Uuid$/, '')}`, `the roll doesn't involve your ${w.humanize(rest).replace(/ Uuid$/, '')}`],
+  }[key] ?? null;
+} });
 
 /* -------------------------------------------- */
 /*  The rule type                                */

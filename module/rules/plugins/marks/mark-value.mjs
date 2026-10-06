@@ -46,5 +46,5 @@ function markTextTag(actor, rest, ctx) {
   return match[2] == '=' ? same : texts.length > 0 && !same;
 }
 
-registerTag('target:markText', (rest, ctx) => markTextTag(ctx.other, rest, ctx));
-registerTag('self:markText', (rest, ctx) => markTextTag(ctx.self, rest, ctx));
+registerTag('target:markText', (rest, ctx) => markTextTag(ctx.other, rest, ctx), { phrase: (arg, w) => w.markText(arg) });
+registerTag('self:markText', (rest, ctx) => markTextTag(ctx.self, rest, ctx), { phrase: (arg, w) => w.markText(arg) });

@@ -630,13 +630,15 @@ describe("roll", () => {
     });
   });
 
-  describe("Brutal Might (Enigma of Combination, Pugilist Focus, 3rd level, p.38)", () => {
-    const BRUTAL_MIGHT_ID = "Compendium.essence20.enigma_of_combination.Item.l0STCEYBuPMYfzSt";
+  // Brutal Might is a SkillSubstitution stage: attack rule on the Perk (rules/conv18-convA.test.js); this checks the attack's
+  // dataset is built from the Skill such a rule picks.
+  describe("SkillSubstitution stage: attack (Brutal Might)", () => {
+    const BRAWN_FOR_MIGHT = { type: 'SkillSubstitution', stage: 'attack', from: 'might', to: 'brawn', mode: 'bestOf' };
 
-    function makeMightActor(perkIds = []) {
-      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+    function makeMightActor(rules = []) {
+      const items = rules.length ? [{ id: 'perk1', type: 'perk', name: 'Brutal Might', flags: {}, system: { rules } }] : [];
       items.get = jest.fn(() => undefined);
-      return {
+      const actor = {
         system: {
           skills: {
             might: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false },
@@ -645,10 +647,14 @@ describe("roll", () => {
         },
         items,
       };
+      items.forEach(item => {
+        item.parent = actor;
+      });
+      return actor;
     }
 
     test("rolls Brawn instead of Might when held", async () => {
-      const actor = makeMightActor([BRUTAL_MIGHT_ID]);
+      const actor = makeMightActor([BRAWN_FOR_MIGHT]);
       const item = makeItem('weaponEffect', { classification: { skill: 'might' } }, actor);
       item._dice.handleSkillItemRoll = jest.fn();
 
@@ -661,7 +667,7 @@ describe("roll", () => {
       );
     });
 
-    test("still rolls Might without the Perk, or leaves a non-Might skill alone with it", async () => {
+    test("still rolls Might without the rule, or leaves a non-Might skill alone with it", async () => {
       const noPerkActor = makeMightActor();
       const mightItem = makeItem('weaponEffect', { classification: { skill: 'might' } }, noPerkActor);
       mightItem._dice.handleSkillItemRoll = jest.fn();
@@ -670,7 +676,7 @@ describe("roll", () => {
         expect.objectContaining({ skill: 'might', shift: 'd8' }), noPerkActor, mightItem,
       );
 
-      const brawnActor = makeMightActor([BRUTAL_MIGHT_ID]);
+      const brawnActor = makeMightActor([BRAWN_FOR_MIGHT]);
       const brawnItem = makeItem('weaponEffect', { classification: { skill: 'brawn' } }, brawnActor);
       brawnItem._dice.handleSkillItemRoll = jest.fn();
       await brawnItem.roll({});

@@ -52,9 +52,8 @@ function bestGrantAmong(items, holder) {
 }
 
 /**
- * Used to the Dark (Cobra Codex, Saboteur Influence Perk, p.81): "You can see in darkness up to 30
- * feet as if it was dim light... If you can already see in darkness, such as from the Friend of
- * Darkness Commando Perk, you double the range you can see in the dark."
+ * Used to the Dark (Cobra Codex, Saboteur Influence Perk, p.81): darkness within 30 feet counts as
+ * dim light, or an existing darkvision range (Friend of Darkness, say) doubles.
  *
  * The doubling had nothing to double until Friend of Darkness/Night Eyes were built (2026-09-15) -
  * before that, no other item in any pack granted darkness vision, so this clause was dead text. It

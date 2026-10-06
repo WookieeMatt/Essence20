@@ -2,6 +2,8 @@
  * Small shared helpers for group E's plug-ins (module/rules/ext/e/). Plain Node safe.
  */
 
+import { sourceOf } from "../../../items/shared/item-lookups.mjs";
+
 /** A RulesExtE string (lang fragment), or the key with its data when there's no translation. */
 export function T(key, data = null) {
   const i18n = globalThis.game?.i18n;
@@ -30,12 +32,13 @@ export function listOf(collection) {
   return collection?.contents ?? (collection && typeof collection[Symbol.iterator] == 'function' ? [...collection] : []);
 }
 
+// Not item-lookups.mjs#itemsOf: a plain array is handed back as-is (that one copies it).
 export const itemsOf = actor => listOf(actor?.items);
 
 export const worldActors = () => listOf(globalThis.game?.actors);
 
-/** An item's book source (or the item it acts as). */
-export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
+/** An item's book source (or the item it acts as) - item-lookups.mjs's, re-exported. */
+export { sourceOf };
 
 export const getProperty = (object, key) => String(key).split('.').reduce((at, part) => (at === null || at === undefined ? at : at[part]), object);
 

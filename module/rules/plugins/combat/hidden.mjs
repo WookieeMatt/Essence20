@@ -36,8 +36,8 @@ export async function setHidden(actor, hidden) {
   }
 }
 
-registerTag('self:hidden', (rest, ctx) => (ctx.self ? isHidden(ctx.self) : null));
-registerTag('target:hidden', (rest, ctx) => (ctx.other ? isHidden(ctx.other) : false));
+registerTag('self:hidden', (rest, ctx) => (ctx.self ? isHidden(ctx.self) : null), { phrase: ['{who} {is} Hidden', '{who} {isnt} Hidden'] });
+registerTag('target:hidden', (rest, ctx) => (ctx.other ? isHidden(ctx.other) : false), { phrase: ['{who} {is} Hidden', '{who} {isnt} Hidden'] });
 
 registerStep('hide', async (step, ctx) => {
   for (const actor of recipients(step, ctx)) {

@@ -5,6 +5,8 @@
  * does (which would loop back round to action-perks.mjs).
  */
 
+import { sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
+
 const uuid = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 
 export const COMP = {
@@ -51,10 +53,6 @@ const USE_KINDS = new Set([
 ]);
 
 const BY_SOURCE = Object.fromEntries(Object.entries(COMP).filter(([kind]) => USE_KINDS.has(kind)).map(([kind, id]) => [id, kind]));
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
 
 export function companionKindOf(item) {
   return BY_SOURCE[sourceOf(item)] ?? null;

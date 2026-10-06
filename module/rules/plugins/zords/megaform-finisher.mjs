@@ -127,12 +127,12 @@ registerTag('item:styleChoice', (rest, ctx) => {
 
   const style = pickedChoice(rest, ctx);
   return !style || style == (ctx.item.system?.classification?.style == 'melee' ? 'melee' : 'ranged');
-});
+}, { phrase: ['{who} match{es} the attack style you picked', '{who} {doesnt} match the attack style you picked'] });
 
 registerTag('target:resistsChoice', (rest, ctx) => {
   const type = pickedChoice(rest, ctx) ?? ctx.item?.system?.damageType;
   return !!ctx.other && !!type && !!ctx.other.system?.resistances?.[type];
-});
+}, { phrase: ['{who} resist{s} the damage type you picked', '{who} {doesnt} resist the damage type you picked'] });
 
 /* -------------------------------------------- */
 /*  rollEach, participantPilots                  */

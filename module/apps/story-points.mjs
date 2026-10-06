@@ -362,8 +362,8 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   /**
-   * The spends that are pure narrative: "Gain temporary access to a minor piece of equipment or
-   * tool useful in the scene" and "Get a clue when stumped" (GI Joe CRB p.127; PR p.91 keeps
+   * The spends that are pure narrative: a handy minor piece of equipment for the scene, and a
+   * clue when stuck (GI Joe CRB p.127; PR p.91 keeps
    * the equipment one, MLP p.118 calls the clue "a hint"). Nothing to automate but the point
    * and the announcement - which is still worth having, so the pool the table sees is right.
    * @param {PointerEvent} event
@@ -384,8 +384,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   /**
-   * Grid Power bloom (PR CRB p.91): "The Power Rangers team can spend 1 Story Point per team
-   * member to cause a Grid Power bloom, generating 1d2 Personal Power for each team member."
+   * Grid Power bloom (PR CRB p.91): one Story Point per team member, 1d2 Personal Power for each.
    * The team is the primary Party's roster; the cost and the gains follow from it. Each gain is
    * capped at that member's own maximum (mechanics/resources/story-points.mjs#gridPowerBloomResults).
    */

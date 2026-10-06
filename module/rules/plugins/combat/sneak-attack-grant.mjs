@@ -18,6 +18,9 @@ import { registerRuleType } from "../../types.mjs";
  *                   then the biggest number).
  *   anyCircumstance Sneak Attack applies whatever the circumstances (Sudden Strike), with `cost: {storyPoints: N}`
  *                   paid and `limit` counted only when it was needed - when the ordinary checks would have failed.
+ *   bypass          (round 18, convC) the attack is a sneak attack whatever its weapon, range, Edge or allies - still
+ *                   once a round and never against a target immune to sneak attack damage, and free (Perfect Disguise,
+ *                   while the disguise is on). `reason`: the Roll Options line it shows (an E20. key or text).
  */
 registerRuleType('SneakAttackGrant', {
   params: {
@@ -27,6 +30,8 @@ registerRuleType('SneakAttackGrant', {
     anyCircumstance: { kind: 'bool' },
     cost: { kind: 'object' },
     limit: { kind: 'object' },
+    bypass: { kind: 'bool' },
+    reason: { kind: 'string' },
   },
   scopes: ['self'],
   validate: rule => {
@@ -60,7 +65,7 @@ function holds(actor, entry, weaponEffect) {
  * @returns {{qualifies: Boolean, range: (Number|'weapon'|'unlimited'|undefined)}}   range undefined when no rule sets one.
  */
 export function sneakAttackWeaponGrants(actor, weaponEffect) {
-  const entries = rulesOfType(actor, 'SneakAttackGrant').filter(entry => !entry.rule.anyCircumstance && holds(actor, entry, weaponEffect));
+  const entries = rulesOfType(actor, 'SneakAttackGrant').filter(entry => !entry.rule.anyCircumstance && !entry.rule.bypass && holds(actor, entry, weaponEffect));
   const qualifies = entries.some(({ rule }) => rule.qualifies !== false);
   const ranges = entries.map(({ rule }) => rule.range).filter(range => range !== undefined);
   let range;
@@ -83,6 +88,16 @@ export function sneakAttackWeaponGrants(actor, weaponEffect) {
 export function anyCircumstanceGrant(actor) {
   return rulesOfType(actor, 'SneakAttackGrant').find(entry => entry.rule.anyCircumstance
     && usesLeft(actor, entry.rule, entry.item, entry.index) > 0 && holds(actor, entry, null)) ?? null;
+}
+
+/**
+ * The actor's first `bypass` grant whose `when` / `items` hold for this attack (round 18, convC), or null.
+ * @param {Actor} actor
+ * @param {Item} weaponEffect
+ * @returns {?{rule: Object, item: Item, index: Number}}
+ */
+export function bypassGrant(actor, weaponEffect) {
+  return rulesOfType(actor, 'SneakAttackGrant').find(entry => entry.rule.bypass && holds(actor, entry, weaponEffect)) ?? null;
 }
 
 /** The Story Points an "any circumstance" grant costs (0 for none). */

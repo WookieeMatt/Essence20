@@ -47,5 +47,5 @@ function inHolderZone(actor, key, ctx) {
   return zonesOf(holder).some(zone => zone.key == key && !isExpired(zone) && whollyInZone(bounds, zone));
 }
 
-registerTag('zone:self', (rest, ctx) => inHolderZone(ctx?.self, rest, ctx), { family: 'roll', param: 'key' });
-registerTag('zone:target', (rest, ctx) => inHolderZone(ctx?.other, rest, ctx));
+registerTag('zone:self', (rest, ctx) => inHolderZone(ctx?.self, rest, ctx), { family: 'roll', param: 'key', phrase: ["you stand wholly inside its owner's {arg} zone", "you aren't wholly inside its owner's {arg} zone"] });
+registerTag('zone:target', (rest, ctx) => inHolderZone(ctx?.other, rest, ctx), { phrase: ["the target stands wholly inside its owner's {arg} zone", "the target isn't wholly inside its owner's {arg} zone"] });

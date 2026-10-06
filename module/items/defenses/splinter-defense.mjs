@@ -1,9 +1,9 @@
 import { roleValueChange } from "../../sheet-handlers/role-handler.mjs";
 
 /**
- * Splinter Defense (Across the Stars, Gold Ranger, 18th level, p.53): "Any creature that hits you
- * with a melee Attack automatically suffers an Initiative penalty equal to your Hardened Armor
- * bonus... once per target per combat" - "target" here is the ATTACKER being penalized (the same
+ * Splinter Defense (Across the Stars, Gold Ranger, 18th level, p.53): a melee hit on the holder
+ * costs the attacker Initiative equal to the Hardened Armor bonus, once per target per combat -
+ * "target" here is the ATTACKER being penalized (the same
  * creature can't be docked twice by the same Gold Ranger in one combat), not the Gold Ranger
  * themselves.
  *

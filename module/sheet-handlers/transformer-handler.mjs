@@ -37,8 +37,7 @@ export async function onTransform(actor) {
   const altModes = actor.items.documentsByType.altMode;
   const isTransformed = actor.system.isTransformed;
 
-  // Converting is a Standard action (TF CRB p.111: Quick Change makes "that sequence require a Free
-  // action to enact instead of a Standard action"). Charged only in combat; a player who backs out
+  // Converting is a Standard action (TF CRB p.111: Quick Change makes it a Free action). Charged only in combat; a player who backs out
   // of the "how do you pay?" question hasn't converted.
   if (altModes.length || isTransformed) {
     const paid = await spend(actor, 'standard', {

@@ -78,8 +78,8 @@ registerRuleType('MegaformMirror', {
 export const MIRROR_FLAG = 'zord1MirrorOf';
 
 // A weapon's own attack (a weaponEffect attached to a weapon).
-registerTag('item:attachedAttack', (rest, ctx) => ctx.item?.type == 'weaponEffect' && !!ctx.item.flags?.essence20?.parentId);
-registerTag('target:combinerForm', (rest, ctx) => isCombinerForm(ctx.other));
+registerTag('item:attachedAttack', (rest, ctx) => ctx.item?.type == 'weaponEffect' && !!ctx.item.flags?.essence20?.parentId, { phrase: ["{who} {is} a weapon's own attack", "{who} {isnt} a weapon's own attack"] });
+registerTag('target:combinerForm', (rest, ctx) => isCombinerForm(ctx.other), { phrase: ['{who} {is} a Combiner form', '{who} {isnt} a Combiner form'] });
 
 /** What a Megaform should be carrying from its participants' MegaformMirror rules: [{key, item}]. */
 export function desiredMirrors(megaform) {

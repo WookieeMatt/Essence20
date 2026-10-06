@@ -12,10 +12,8 @@ import { hasActiveEnvironmentalExpertise } from "./environmental-expertise.mjs";
  * Same isSuppressed hook mechanics/characters/morph-gated-effects.mjs already established for "while Morphed"
  * effects (Foundry v14's ActiveEffect#isSuppressed reads `this.system.isSuppressed`) - generalized
  * here rather than duplicated, since Taking Point (GI Joe CRB, Predator Focus, 6th level, p.93:
- * "you gain +1 to Alertness, Initiative, and Survival, or +2 if you are in your environment of
- * expertise") shipped with its own extra +1-in-environment Active Effect already authored and
- * disabled, with nothing to ever enable it - the same "static AE can't be conditioned on a
- * runtime state" gap Environmental Armor's own doc comment (dice.mjs) already names, just solved
+ * +1 to Alertness, Initiative and Survival, +2 in the environment of expertise) shipped with its own extra +1-in-environment Active Effect already authored and
+ * disabled, with nothing to ever enable it - the same static-AE-can't-follow-runtime-state gap Environmental Armor's own doc comment (dice.mjs) already names, just solved
  * here via suppression instead of a live dice.mjs check, since this bonus is a plain skill
  * shiftUp with no attack-roll pipeline to hook into.
  */

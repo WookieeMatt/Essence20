@@ -1,7 +1,6 @@
 /**
- * Powered Plating (A Jump Through Time, Orange Ranger, Modified Shell I option, p.32): "While
- * Morphed, you may spend up to 4 Personal Power to add +1 armor bonus per Power spent to your
- * Toughness Defense until you are no longer Morphed."
+ * Powered Plating (A Jump Through Time, Orange Ranger, Modified Shell I option, p.32): while
+ * Morphed, up to 4 Personal Power, each +1 armor Toughness until unmorphing.
  *
  * Unlike every other "spend a resource, gain a bonus" Perk in this project, the SPEND amount is
  * itself a player choice (1-4, capped by what they can actually afford) rather than a fixed or

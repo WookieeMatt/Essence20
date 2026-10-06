@@ -3,17 +3,15 @@ import { findPerk } from "../../mechanics/characters/perks.mjs";
 import { postPerkUseChatCard } from "../../mechanics/characters/perks.mjs";
 
 /**
- * Energy Affinity (Decepticon Directive, Elementalist Focus, 1st level, p.53-54): "You've focused
- * on one specific wavelength of energy. Choose one Element type from the following list: Acid,
- * Cold, Electric, Electromagnetic, Energy, Fire, Laser, and Sonic." The choice itself is a plain
+ * Energy Affinity (Decepticon Directive, Elementalist Focus, 1st level, p.53-54): one chosen Element
+ * type (Acid, Cold, Electric, Electromagnetic, Energy, Fire, Laser or Sonic). The choice itself is a plain
  * choiceType:'elementDamageType' pick (system.choice), same shape as Adapted Wavelength/Ninja
  * Power - "Energy" (the generic, unscoped Element type) has no separate key of its own to choose,
  * same as every other elementDamageType-choiceType Perk (see E20.elementDamageTypes' own doc
  * comment for why the generic catch-all isn't offered).
  *
- * "By spending an Energon Point as a Free action, all your melee or ranged attacks (choose one)
- * inflict your chosen type of damage and gain the related trait (including any special
- * properties) for the remainder of the scene." This is the second, standalone mechanism this file
+ * An Energon Point and a Free action turn either all melee or all ranged attacks into the chosen
+ * type, with its trait and properties, for the rest of the scene. This is the second, standalone mechanism this file
  * builds: a manual "Use" activation (mechanics/resources/banked-buffs.mjs#onPerkUse, the same click-to-trigger
  * idiom every other manually-activated Perk in this project already uses) that spends 1 Energon
  * Point and, for the rest of the current scene (mechanics/resources/scene-clock.mjs), overrides the damageType

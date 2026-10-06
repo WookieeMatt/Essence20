@@ -3,14 +3,12 @@ import { registrySnapshot } from '../../mechanics/item-hooks.mjs';
 import { changed, IDS, setChanged, teamOf } from "../shared/resource-team-lookups.mjs";
 import { has, isItem } from "../shared/item-lookups.mjs";
 import { ENERGON_CAP_EXTRAS, grantTemp, revokeTemp, revokeUpdate, tempGrants } from '../../mechanics/resources/temporary-resources.mjs';
-import { bodyOfEnergySplit, bodyOfEnergyUnmorph } from '../resources/body-of-energy.mjs';
 import { isRestUpdate } from '../../mechanics/resources/energon-spend-checkpoint.mjs';
 import { repairBonusHeld } from '../resources/repair-progress-bonus-energon.mjs';
 import { addictionDie, feedDarkEnergonCraving } from '../resources/dark-energon-addiction-attack.mjs';
 import {
   applyDarkEnergonDefenses, darkEnergonRerolls, pointsPerDose, strainOf, strainSources, synthEnPayer,
 } from '../resources/energon-strains.mjs';
-import { weImproviseForfeit } from '../resources/we-improvise-continuum-anomalies.mjs';
 import { essenceDamage, healStress } from '../../mechanics/combat/mlp-stress.mjs';
 import { spellsToShare } from '../magic/circle-of-magical-friends.mjs';
 import '../index.mjs';
@@ -58,8 +56,8 @@ beforeEach(() => {
 describe('common', () => {
   test('item identity never matches an empty uuid', () => {
     expect(isItem({ flags: {} }, '')).toBe(false);
-    expect(isItem(item(IDS.weImprovise), IDS.weImprovise)).toBe(true);
-    expect(has(actor([item(IDS.weImprovise)]), IDS.weImprovise)).toBe(true);
+    expect(isItem(item(IDS.darkEnergon), IDS.darkEnergon)).toBe(true);
+    expect(has(actor([item(IDS.darkEnergon)]), IDS.darkEnergon)).toBe(true);
     expect(has(actor([]), undefined)).toBe(false);
   });
 
@@ -121,13 +119,7 @@ describe('temporary resources', () => {
 
 // Motor Pool Connections is the Perk's own Use rule (rules/conv15-items2.test.js).
 
-describe('Personal Power', () => {
-  test('Body of Energy keeps Health at 1 until the pool is gone', () => {
-    expect(bodyOfEnergySplit(3, 4, 5)).toEqual({ health: 1, power: 1 });
-    expect(bodyOfEnergySplit(3, 1, 5)).toEqual({ health: 0, power: 0 });
-    expect(bodyOfEnergyUnmorph(3, 6, 10, 4)).toEqual({ health: 4, power: 4 });
-  });
-});
+// Body of Energy is its Perk's own HealthOverflow and unmorph Trigger rules (rules/conv18-convB.test.js).
 
 describe('Energon strains', () => {
   test('Dark Energon raises Toughness and Evasion while held', () => {
@@ -183,13 +175,7 @@ describe('Dark Energon (Decepticon Directive p.80)', () => {
   });
 });
 
-describe('Story Point riders', () => {
-  test('We Improvise forfeits the unspent grants', () => {
-    expect(weImproviseForfeit({ granted: 2, spent: 1 }, 5)).toBe(1);
-    expect(weImproviseForfeit({ granted: 2, spent: 3 }, 5)).toBe(0);
-    expect(weImproviseForfeit({ granted: 3, spent: 0 }, 1)).toBe(1);
-  });
-});
+// (We Improvise's forfeit is the storyPointsExpire step - rules/engine18-convB.test.js.)
 
 describe('My Little Pony', () => {
   test('Stress healing heals Health', async () => {

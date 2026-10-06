@@ -569,3 +569,39 @@ import "./book/followups.mjs";
 // untilOf: user - the crew member using a vehicle's Use (Electronic Countermeasures).
 import "./book/followups2.mjs";
 // ---- Book check (follow-ups 2) - end ----
+// ---- Round 18 (convC - docs/rules-batches/slConvC18.md) - start ----
+// Pick source seatmates, step swapSeats (Nu, Pogodi!'s seat swap). (SneakAttackGrant bypass is an edit in
+// combat/sneak-attack-grant.mjs.)
+import "./picks/seat-swap.mjs";
+// ---- Round 18 (convC) - end ----
+// ---- Round 18 (convA - docs/rules-batches/slConvA18.md) - start ----
+// Rule type ConditionHalving (Gallantry's halved Frightened), through steps.mjs#registerConditionDuration.
+import "./effects/condition-halving.mjs";
+// SkillSubstitution stage: attack, read by documents/item.mjs (Brutal Might).
+import "./rolls/attack-skill-substitution.mjs";
+// applyingDamage redirectTo, asked by chat.mjs#onApplyDamage (Impenetrable Armor).
+import "./combat/self-redirect.mjs";
+// BeforeRoll scope marked (Stand Behind Me!'s attack block).
+import "./rolls/marked-before-roll.mjs";
+// HitRider stage: late + replace, read by target-riders.mjs#attackRiders (Concentrated Fire).
+import "./combat/late-hit-rider.mjs";
+// Rule type HeldUse, read by nanomite-uses.mjs#resetDailyPowerUses (Dominate).
+import "./resources/held-uses.mjs";
+// ---- Round 18 (convA) - end ----
+// ---- Round 18 (convB - docs/rules-batches/slConvB18.md) - start ----
+// Rule type HealthOverflow, a damage modifier after the reductions (Body of Energy).
+import "./combat/health-overflow.mjs";
+// Ref @rolePointsBonus (Renegade Commander's Bonus Health). (addEffect until + the timed-effect sweep are edits in
+// effects/rule-effects.mjs and rules/triggers.mjs; updateActor notSpent in rules/steps.mjs.)
+import "./resources/role-points-bonus-ref.mjs";
+// Rule type PowerGate, read by mechanics/characters/power-use.mjs#canUsePower (Zeo Crystal Boost once per scene).
+import "./resources/power-gate.mjs";
+// Link scope drivenMegaform, tag megaform:everyDriver (Zeo Crystal Boost's team Megazord clause).
+import "./zords/driven-megaform.mjs";
+// Step storyPointsExpire - granted Story Points taken back at combat end unless spent (We Improvise).
+import "./resources/expiring-story-points.mjs";
+// Rule type SummonArrival, written with the Zord's summon-timer write (Megafauna).
+import "./zords/summon-arrival.mjs";
+// Step buildSorcerousPower - the Sorcery builder dialog as a Use step (Sorcery).
+import "./picks/sorcery-builder-step.mjs";
+// ---- Round 18 (convB) - end ----

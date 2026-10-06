@@ -1,6 +1,7 @@
 // Book check, follow-ups (docs/rules-batches/book-followups.md): pieces the rulebook readings needed.
 import { registerSceneAdvanced, registerTurnStart } from "../../../mechanics/item-hooks.mjs";
 import { registerTag } from "../../predicate.mjs";
+import { itemsOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * - Tag `item:usesItem:<uuid or id>` - the roll is made with that item: the rolled item is it, or belongs to it (a
@@ -19,7 +20,6 @@ import { registerTag } from "../../predicate.mjs";
 
 export const OOC_CONDITION_FLAG = 'oocConditionExpiry';
 
-const itemsOf = actor => actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
 const lookup = uuid => {
   try {
     return uuid ? globalThis.fromUuidSync?.(uuid, { strict: false }) ?? null : null;
@@ -52,7 +52,7 @@ export function usesItem(item, ref, dataset = null) {
   return same(parent) || (!!parentId && String(ref).split('.').pop() == parentId);
 }
 
-registerTag('item:usesItem', (rest, ctx) => usesItem(ctx?.item, rest, ctx?.dataset ?? null));
+registerTag('item:usesItem', (rest, ctx) => usesItem(ctx?.item, rest, ctx?.dataset ?? null), { phrase: ['the roll uses {name}', "the roll doesn't use {name}"] });
 
 /**
  * Before items are removed by a rule (expiry, or with the item that granted them): every Alteration among them takes

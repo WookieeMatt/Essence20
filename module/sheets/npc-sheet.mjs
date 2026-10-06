@@ -40,7 +40,7 @@ export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
         { id: "actions", group: 'primary', label: "E20.TabActions" },
         { id: "contact", group: 'primary', label: "E20.TabContact" },
         { id: "altmode", group: 'primary', label: "E20.TabAltMode" },
-        { id: "effects", group: 'primary', label: "E20.TabEffects" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
         { id: "notes", group: 'primary', label: "E20.TabNotes" },
       ],
       initial: "npc",

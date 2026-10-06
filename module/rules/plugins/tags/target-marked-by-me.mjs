@@ -5,4 +5,4 @@ import { evaluateTag, registerTag } from "../../predicate.mjs";
  * Rules naturally write it under the target: family, where it used to fall through to an unknown answer (null), so
  * a RollModifier using it turned into an unticked dialog switch and conditions using it never held.
  */
-registerTag('target:markedByMe', (rest, ctx) => evaluateTag(`markedByMe:${rest}`, ctx));
+registerTag('target:markedByMe', (rest, ctx) => evaluateTag(`markedByMe:${rest}`, ctx), { phrase: ['you put the {arg} mark on {who}', "you didn't put the {arg} mark on {who}"] });

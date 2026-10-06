@@ -18,7 +18,7 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
         { id: "zords", group: 'primary', label: "E20.TabZords" },
         { id: "contacts", group: 'primary', label: "E20.TabContacts" },
         { id: "background", group: 'primary', label: "E20.TabBackground" },
-        { id: "effects", group: 'primary', label: "E20.TabEffects" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
       ],
       initial: "skills",
     },

@@ -206,7 +206,7 @@ registerHitRider(negateRider);
 registerTag('target:ruleHolder', (rest, ctx) => {
   const holder = ctx.holder ?? ctx.ruleItem?.parent ?? null;
   return !!ctx.other && !!holder && (ctx.other === holder || (!!holder.uuid && ctx.other.uuid == holder.uuid));
-});
+}, { phrase: ['{who} {is} its owner', '{who} {isnt} its owner'] });
 
 // self:allyOfHolder - this actor is on the same side as the rule's holder (token dispositions), and isn't it.
 registerTag('self:allyOfHolder', (rest, ctx) => {
@@ -219,7 +219,7 @@ registerTag('self:allyOfHolder', (rest, ctx) => {
   const mine = disposition(ctx.self);
   const theirs = disposition(holder);
   return mine !== null && theirs !== null && mine == theirs;
-});
+}, { phrase: ["{who} {is} on its owner's side", "{who} {isnt} on its owner's side"] });
 
 /** The actors (world, and unlinked tokens on the canvas) carrying `setter`'s mark under `key` (any copy). */
 export function markedBy(setter, key) {
@@ -238,7 +238,7 @@ export function markedBy(setter, key) {
 
 // @marking.<key> - how many creatures carry this actor's <key> mark (Cage's prisoners); self:marking:<key> - some do.
 registerRef('marking', (key, scope) => (scope.actor ? markedBy(scope.actor, key).length : 0));
-registerTag('self:marking', (rest, ctx) => !!ctx.self && markedBy(ctx.self, rest).length > 0);
+registerTag('self:marking', (rest, ctx) => !!ctx.self && markedBy(ctx.self, rest).length > 0, { phrase: ['{who} {has} put the {arg} mark on someone', '{who} {has} the {arg} mark on no one'] });
 
 /**
  * pickMarked {key, prompt?} - choose one of the creatures carrying this actor's <key> mark (a lone one is taken).
@@ -309,4 +309,7 @@ registerTag('self:movedSince', (rest, ctx) => {
   const feet = movedSince(ctx.self, match[1]);
   const want = Number(match[3]);
   return { '>=': feet >= want, '<=': feet <= want, '>': feet > want, '<': feet < want, '=': feet == want }[match[2]];
-});
+}, { phrase: (arg, w) => {
+  const match = /^([\w-]+)(>=|<=|>|<|=)(\d+)$/.exec(arg);
+  return match ? [`{who} moved ${w.comparison(match[2], match[3])} ft since ${w.humanize(match[1])}`, `{who} moved ${w.comparison({ '>=': '<', '<=': '>', '>': '<=', '<': '>=', '=': '!=' }[match[2]], match[3])} ft since ${w.humanize(match[1])}`] : null;
+} });

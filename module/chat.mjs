@@ -28,7 +28,7 @@ import {
 import { getGameLine } from "./settings.js";
 import { claimConsummatePerformer } from "./items/resources/consummate-performer.mjs";
 import { canOfferHighDensityFollowUp, hasDifferentTarget, rollHighDensityFollowUp } from "./items/attacks/high-density.mjs";
-import { findEligibleProtector } from "./items/defenses/interpose-attack.mjs";
+import { ruleSelfRedirect, takeSelfRedirect } from "./rules/plugins/combat/self-redirect.mjs";
 import { applyMegaformDamage } from "./mechanics/vehicles/megaform-damage.mjs";
 import { handleVehicleZeroHealthTransition } from "./mechanics/vehicles/vehicle-defeat.mjs";
 
@@ -143,8 +143,8 @@ async function rerollMessage(message, config) {
   // die's own size changes - so it re-rolls the whole test from its formula instead, with the
   // shift applied. See mechanics/rolls/reroll.mjs#upshiftFormula.
   //
-  // A skill-dice-only upshift grant (I've Done this Before?: "when you roll a 1 on a Skill Die you
-  // may reroll the Skill Die and gain ↑1") needs a matching Skill Die first, and keeps the original
+  // A skill-dice-only upshift grant (I've Done this Before?: a Skill Die showing 1 may be
+  // rerolled one size up) needs a matching Skill Die first, and keeps the original
   // d20 - only the Skill Die is re-rolled, one size up.
   let rerolled;
   if (config.shiftUp > 0) {
@@ -588,14 +588,15 @@ export async function onApplyDamage(message, button) {
     return;
   }
 
-  // Taking the hit for someone - Impenetrable Armor (items/defenses/interpose-attack.mjs) first, else the item rules'
+  // Taking the hit for someone - the one hit's own redirectTo rule (Impenetrable Armor -
+  // rules/plugins/combat/self-redirect.mjs) first, else the item rules'
   // applyingDamage protectors (Interpose, Body Shield, Heroic Sacrifice, Golden Guardian, Stand By Me -
   // rules/plugins/combat/applying-damage.mjs); only one is offered. Same "auto-detect eligibility, human confirms" shape
   // as Just a Graze/Didn't Even Feel It/Hard Corps below, but resolved FIRST and against the redirect, not a reduction -
   // a confirmed swap here reassigns `target` itself, so every check below (including applyDamage() itself) naturally runs
   // against the protector instead. Then the applyingDamage Triggers of whoever it lands on (Fe-BURN!) may change the damage.
   if (damage > 0) {
-    const redirect = findEligibleProtector(target);
+    const redirect = ruleSelfRedirect(target, attacker);
     if (redirect) {
       const confirmation = await foundry.applications.api.DialogV2.wait({
         window: { title: game.i18n.localize('E20.DamageRedirectConfirmTitle') },
@@ -609,6 +610,7 @@ export async function onApplyDamage(message, button) {
       });
 
       if (confirmation == 'confirm') {
+        await takeSelfRedirect(redirect);
         target = redirect.protector;
       }
     }

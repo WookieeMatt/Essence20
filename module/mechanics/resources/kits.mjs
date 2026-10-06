@@ -6,28 +6,24 @@ import { ruleCarryExemption, ruleKitModifier, ruleScroungeOffset } from "../../r
 import { ruleKitOptions, ruleKitSkill, runKitOption } from "../../rules/plugins/resources/kit-options.mjs";
 import { ruleKitUses } from "../../rules/plugins/resources/kit-uses.mjs";
 import { ruleCarryMultiplier } from "../../rules/plugins/combat/subsystem-readers.mjs";
+import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 
 /**
  * Kits (GI Joe CRB p.159-160, TF CRB p.133, Quartermaster's Guide p.42-47, Cobra Codex p.90-92,
  * WTNV Citizen's Guide p.70-71).
  *
- * "STANDARD KIT (CONSUMABLE) Prerequisites: d4 in the Specialization's parent Skill. You can attempt
- * Skill Tests that call for this specialization's Standard kit without a Snag. You can attempt Skill
- * Tests that call for this Specialization's Limited kit with ↓1 instead of a Snag, and Skill Tests
- * that call for this Specialization's Restricted kit with ↓3 instead of a Snag. You can take 10
- * minutes and consume this kit to gain temporary Specialization in this kit's Specialization for 1
- * minute, or gain ↑1 for 1 minute ... if you are already specialized." Limited (d6): no Snag up to
- * Limited, ↓2 for Restricted, consumed for 1 hour of Specialization or Edge. Restricted (d8): no Snag,
- * and "temporary Specialization in this kit's Specialization for the duration of this Mission, or an
- * Edge" - it isn't used up.
+ * In short: Standard (needs d4 in the parent Skill) removes the Snag on Standard-kit tests and turns
+ * it into ↓1 for Limited and ↓3 for Restricted; 10 minutes and the kit buy a minute of temporary
+ * Specialization (↑1 if already specialized). Limited (d6): no Snag up to Limited, ↓2 for Restricted,
+ * used up for an hour of Specialization or Edge. Restricted (d8): no Snag, and Specialization or Edge
+ * for the whole Mission without being used up.
  *
  * - A kit's tier, Skill and Specialization come from its flags.essence20.kit when set (a generic
  *   kit, or a re-specialized one), otherwise from its name ("Limited Infiltration (Burglary) Kit").
  * - A roll that calls for a kit says so in the Roll Options Dialog ("Kit required"); the best kit
  *   the roller carries decides the Snag or ↓ (kitRequirement, applied by target-riders.mjs).
  * - Using one up leaves it spent (flags.essence20.kitSpent) rather than deleting it, because
- *   "By scrounging, you can replenish a kit" (Quartermaster's Guide p.21): "A Standard Kit requires a
- *   base DIF of 5 to replenish. A Limited Kit requires a base DIF of 10".
+ *   scrounging can refill it (Quartermaster's Guide p.21: base DIF 5 for Standard, 10 for Limited).
  * - What using one up gives is kept on the actor as a boost (flags.essence20.kitBoosts), read when
  *   they roll that Skill.
  */
@@ -48,19 +44,17 @@ export const KIT = {
 const NOT_KITS = new Set([KIT.medKit, KIT.automatedRepairKit, KIT.personnelMunitionsPack, KIT.wristCommunicator]);
 
 export const TIERS = ['standard', 'limited', 'restricted'];
-// Prototype and Theoretical Kits (Quartermaster's Guide p.41) sit above Restricted: "Prerequisites:
-// d10 [d12] in the Specialization's parent Skill ... temporary Specialization in this kit's
-// Specialization for the duration of this mission, or Edge" - a Restricted kit's benefit, one or two
-// tiers up.
+// Prototype and Theoretical Kits (Quartermaster's Guide p.41) sit above Restricted: d10 / d12 in the
+// parent Skill, and a Restricted kit's benefit, one or two tiers up.
 const TIER_RANK = [...TIERS, 'prototype', 'theoretical'];
 const ESSENCE_KITS = { strength: 'strength', speed: 'speed', smarts: 'smarts', social: 'social' };
 // Prerequisites: Standard d4, Limited d6, Restricted d8, Prototype d10, Theoretical d12 in the parent
 // Skill; an Essence Kit d2.
 const PREREQUISITE = { standard: 'd4', limited: 'd6', restricted: 'd8', prototype: 'd10', theoretical: 'd12', essence: 'd2' };
 
-// Skill Kits (Quartermaster's Guide p.41): "Choose a Skill when you requisition this kit. You do not
-// suffer Snag for having no Ranks in this Skill". Basic: "No Ranks in [its] Skill", Standard;
-// Advanced: "No more than d2 Ranks", Limited, and can be used up for ↑1 for 1 minute.
+// Skill Kits (Quartermaster's Guide p.41): pick a Skill on requisition; no Snag for having no Ranks in
+// it. Basic: for no Ranks, Standard; Advanced: up to d2 Ranks, Limited, and can be used up for ↑1 for
+// 1 minute.
 const BASIC_SKILL_KIT = uuid('quartermasters_guide_to_gear', 'gRxcVy1mS18jyWtx');
 const ADVANCED_SKILL_KIT = uuid('quartermasters_guide_to_gear', 'hSUVWDrRgUHcr5mm');
 const SKILL_KITS = {
@@ -69,16 +63,14 @@ const SKILL_KITS = {
 };
 
 // Kits tied to more than one Skill. Restricted Wild Animal Survival Kit (Operation Cold Iron p.39):
-// "Prerequisites: +d8 in Animal Handling or Survival", and it covers "a Restricted Kit related to
-// Animal Handling and Survival specialties".
+// needs d8 in Animal Handling or Survival, and counts as a Restricted kit for both.
 const WILD_ANIMAL_SURVIVAL_KIT = uuid('operation_cold_iron', 'EI7uvXnVEv0eK1C7');
 const MULTI_SKILL_KITS = {
   [WILD_ANIMAL_SURVIVAL_KIT]: { tier: 'restricted', skills: ['animalHandling', 'survival'] },
 };
 
-// My Little Pony kits (MLP CRB, Kits optional rule): "If you have the right kit for what you want
-// to do, you are fine ... if you don't have the right kit you suffer Snag". No tiers, no
-// prerequisite, and nothing to use up - each only names its Skill.
+// My Little Pony kits (MLP CRB, Kits optional rule): without the right kit the roll takes a Snag.
+// No tiers, no prerequisite, and nothing to use up - each only names its Skill.
 const MLP_KITS = Object.fromEntries(Object.entries({
   RX3EOYSX1c9H1xcA: ['performance'], // Art
   rwtVdKzYShQvE6AG: ['culture'], // Baking
@@ -101,23 +93,6 @@ export function kitSkills(kit) {
 
 const BOOSTS_FLAG = 'kitBoosts';
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  if (Array.isArray(items.contents)) {
-    return items.contents;
-  }
-
-  return typeof items[Symbol.iterator] == 'function' ? [...items] : [];
-}
 
 function has(actor, id) {
   return itemsOf(actor).some(item => sourceOf(item) == id);
@@ -255,9 +230,9 @@ export function activeKits(actor) {
       kits.push({ item, ...info });
     }
 
-    // Utility Adjustment / Efficacy Adjustment (Cobra Codex p.85-86): "Gain the benefits of a
-    // Standard [Limited] Kit." Kitted Purpose (TF CRB p.74): "when your Mini-Con is docked to you, you
-    // gain the benefits of a Limited Kit of a Specialty associated with their purpose."
+    // Utility Adjustment / Efficacy Adjustment (Cobra Codex p.85-86): counts as a Standard (Limited)
+    // Kit. Kitted Purpose (TF CRB p.74): a docked Mini-Con counts as a Limited Kit for a Specialization
+    // of its purpose.
     const virtual = item.flags?.essence20?.virtualKit;
     if (virtual && !virtual.spent && (sourceOf(item) != KIT.kittedPurpose || kittedPurposeDocked(actor, virtual))) {
       kits.push({ item, tier: virtual.tier, skill: virtual.skill, spec: virtual.spec, essence: null });
@@ -281,7 +256,7 @@ function kittedPurposeDocked(actor, virtual) {
 }
 
 /**
- * A Skill Kit: "You do not suffer Snag for having no Ranks in this Skill when making Skill Tests."
+ * A Skill Kit: no Snag for having no Ranks in its Skill.
  * Read by roll-dialog.mjs#_isUntrainedSnag.
  * @param {Actor} actor
  * @param {String} skill
@@ -292,8 +267,8 @@ export function skillKitNoUntrainedSnag(actor, skill) {
 }
 
 /**
- * Restricted Wild Animal Survival Kit (Operation Cold Iron p.39): its holder may "use Animal
- * Handling or Survival to make Persuasion Skill Tests against animals". Offered by dice.mjs as a
+ * Restricted Wild Animal Survival Kit (Operation Cold Iron p.39): its holder may persuade animals
+ * with Animal Handling or Survival. Offered by dice.mjs as a
  * Roll Options Dialog choice on a Persuasion roll whose target reads as an animal (or with no
  * target, where the player says who they're persuading).
  * @param {Actor} actor
@@ -334,10 +309,8 @@ export function kitRequirement(actor, skill, spec, needed, { bump = 0 } = {}) {
   };
 
   for (const kit of activeKits(actor)) {
-    // An Essence Kit (Quartermaster's Guide p.42): "You can attempt Skill Tests that call for an
-    // Essence Kit without Snag. If a Skill Test calls for a kit with the Specialization tied to the
-    // Essence of this kit ..., you can attempt that Skill Test with ↓2 and Skill Tests that call for
-    // this Specialization's Limited Kit with ↓4."
+    // An Essence Kit (Quartermaster's Guide p.42): no Snag where an Essence Kit is called for; for a
+    // kit of a Specialization under that Essence, ↓2 instead of the Snag (↓4 for its Limited kit).
     if (kit.essence) {
       if (needed == 'essence') {
         better({ snag: false, shiftDown: 0, kit });
@@ -424,17 +397,16 @@ export async function removeBoost(actor, id) {
 
 /**
  * Shifts, Edge and Specialization from kits for a roll of this Skill: boosts from kits used up,
- * and a carried Restricted kit ("temporary Specialization ... for the duration of this Mission, or an
- * Edge ... if you are already specialized"). Imaginary Corn's Strength ↑1 rides here too.
+ * and a carried Restricted kit (Specialization for the Mission, or Edge if already Specialized).
+ * Imaginary Corn's Strength ↑1 rides here too.
  * @param {Actor} actor
  * @param {String} skill
  * @param {?String} spec
  * @param {Boolean} specialized   Whether the roll is already Specialized.
  *
- * Prototype and Theoretical Kits (Quartermaster's Guide p.41) add: "If you gain Snag from another
- * source on this test that would negate its Edge, ignore the Snag" (ignoreSnagOnEdge, only when
- * the kit is giving its Edge), and the Theoretical Kit's "any negative dice shifts are reduced to
- * only one step" (maxShiftDown 1, whenever the kit is in use). dice.mjs applies both right before
+ * Prototype and Theoretical Kits (Quartermaster's Guide p.41) add: a Snag that would cancel the
+ * kit's Edge is ignored (ignoreSnagOnEdge, only when the kit is giving its Edge), and the Theoretical
+ * Kit caps downshifts at one step (maxShiftDown 1, whenever the kit is in use). dice.mjs applies both right before
  * the shifts resolve.
  * @returns {{sources: Array<Object>, specialize: Boolean, consumes: Array<String>,
  *   ignoreSnagOnEdge: Boolean, maxShiftDown: ?Number}}
@@ -559,9 +531,8 @@ async function pickSpecialization(title, skillHint = null) {
  */
 async function consumeKit(actor, item, info, pay, { virtual = false } = {}) {
   let tier = info.tier;
-  // Handy Scrounger (Quartermaster's Guide, p.30): "Whenever you use a Kit, attempt a Skill Test with the
-  // same DIF as if you were scrounging refills for it ... On a success, treat the Kit as if it were one
-  // degree better."
+  // Handy Scrounger (Quartermaster's Guide, p.30): using a Kit, a test at its scrounging DIF; success
+  // makes the Kit count one tier better.
   if (!info.essence && !info.skillKit && TIER_RANK.indexOf(tier) < 2 && ruleKitModifier(actor, 'upgradeRoll')
     && (await rollTest(actor, info.skill ?? 'survival', scroungeDif(actor, tier))).success) {
     tier = TIERS[Math.min(2, TIERS.indexOf(tier) + 1)];
@@ -574,11 +545,10 @@ async function consumeKit(actor, item, info, pay, { virtual = false } = {}) {
   const label = item.name;
   const target = { skill: info.skill, spec: info.spec, essence: info.essence };
   if (info.skillKit) {
-    // Advanced Skill Kit: "consume this kit to gain ↑1 for 1 minute on Skill Tests of this kit's Skill."
+    // Advanced Skill Kit: used up for a minute of ↑1 on its Skill.
     await addBoost(actor, { ...target, spec: null, mode: 'shiftUp', kind: 'rounds', rounds: 10, label });
   } else if (info.essence) {
-    // Essence Kit: "gain temporary Specialization in one Specialization associated with this kit's
-    // Essence for 1 Skill Test, or gain ↑1 for 1 Skill Test if you are already Specialized".
+    // Essence Kit: one test of temporary Specialization under its Essence, or ↑1 if already Specialized.
     await addBoost(actor, { ...target, skill: null, mode: 'specialize', fallback: 'shiftUp', oneTest: true, kind: 'untilUsed', label });
   } else if (tier == 'standard') {
     await addBoost(actor, { ...target, mode: 'specialize', fallback: 'shiftUp', kind: 'rounds', rounds: 10, label });
@@ -588,15 +558,14 @@ async function consumeKit(actor, item, info, pay, { virtual = false } = {}) {
     await addBoost(actor, { ...target, mode: 'specialize', fallback: 'edge', kind: 'scene', label });
   }
 
-  // The Alterations' kit: "then you lose the ongoing benefits of the kit until you sleep for 6 hours."
+  // The Alterations' kit: once used, its benefit is gone until 6 hours' sleep.
   if (virtual) {
     await item.setFlag('essence20', 'virtualKit', { ...item.flags.essence20.virtualKit, spent: true });
     return T('E20.KitUsed', { name: actor.name, kit: label });
   }
 
-  // Stretching Resources (Quartermaster's Guide, p.31): "Whenever you would consume a Kit ..., attempt a
-  // second Skill Test with the same DIF as if you were scrounging refills for it. On a success, the Kit
-  // is not consumed."
+  // Stretching Resources (Quartermaster's Guide, p.31): before a Kit is used up, a test at its
+  // scrounging DIF; success keeps it.
   if (ruleKitModifier(actor, 'keepRoll') && (await rollTest(actor, info.skill ?? 'survival', scroungeDif(actor, info.tier))).success) {
     return T('E20.KitUsedKept', { name: actor.name, kit: label });
   }
@@ -669,8 +638,8 @@ export async function useKit(actor, item, pay) {
   }
 
   if (what == 'specialize') {
-    // Kitted Out (Cobra Codex p.51): "you can spend 1 minute customizing one of your kits, changing the
-    // Specialization of the kit to another specialization of the same skill." The same choice sets up
+    // Kitted Out (Cobra Codex p.51): a minute's work moves a kit to another Specialization of the same
+    // Skill. The same choice sets up
     // a generic kit.
     const picked = info.skillKit ? await pickSkill(item.name) : await pickSpecialization(item.name, info.skill);
     if (!picked) {
@@ -689,8 +658,8 @@ export async function useKit(actor, item, pay) {
 /* -------------------------------------------- */
 
 /**
- * Take Mine (MLP CRB, Spirit of Generosity, 13th level, p.75): "when a friend uses one of your
- * consumable items, the item's effect doubles if they use it this round." An item handed over by
+ * Take Mine (MLP CRB, Spirit of Generosity, 13th level, p.75): a consumable handed to a friend has
+ * double effect if they use it the same round. An item handed over by
  * someone holding Take Mine is marked (onItemGiven); its effect doubles for the rest of that round.
  */
 export function takeMineMultiplier(actor, item) {
@@ -835,7 +804,7 @@ export async function applyDialogKits(actor, options, { skill, spec = null, cons
   const result = kitRequirement(actor, skill, spec, needed);
   options.shiftDown = (options.shiftDown ?? 0) + result.shiftDown;
   if (result.snag) {
-    // "Without the right kit, the Skill Test has a Snag" - an Edge and a Snag cancel out.
+    // No right kit, a Snag - an Edge and a Snag cancel out.
     if (options.edge) {
       options.edge = false;
     } else {
@@ -918,8 +887,7 @@ export async function restKits(actor) {
 }
 
 /**
- * Carrying capacity as a share of body weight (PR CRB Table 6-1: "Unskilled 10% ... D2 25% ... D4 50%
- * ... D6 75% ... D8 Equal to Body Weight ... D10 Half-Again (150%) ... D12 Double Body Weight").
+ * Carrying capacity as a share of body weight, by Brawn Rank (PR CRB Table 6-1).
  * (Competitive Strength's +2 Ranks and Loader's Alt Mode ↑2 are BrawnRequirement carryingOnly rules; Growth Boost's doubling
  * while Morphed is a CarryCapacity rule.)
  * @param {Actor} actor
@@ -938,9 +906,8 @@ export function carryPercent(actor) {
 }
 
 /**
- * Bomber (Cobra Codex, Saboteur, 6th level, p.51): "you can carry up to 6 explosives on you. This is
- * in addition to the normal limit of 6 hands of equipment." Medicine Cabinet (Poisoner, 6th level,
- * p.49): the same for "6 doses of poison". The hands those take that don't count.
+ * Bomber (Cobra Codex, Saboteur, 6th level, p.51): 6 explosives carried on top of the usual 6 hands
+ * of equipment. Medicine Cabinet (Poisoner, 6th level, p.49): the same for 6 doses of poison. The hands those take that don't count.
  * @param {Actor} actor
  * @param {Array<{item: Item, hands: Number}>} carried
  * @returns {Number}

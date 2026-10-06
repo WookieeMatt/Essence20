@@ -20,9 +20,8 @@ import { ruleFormSpec, ruleFormUuids } from "../../rules/plugins/zords/form-perk
 /**
  * Form General Perks - "[Form]" Perks that change what a Ranger's Morph gives them.
  *
- * Across the Stars (p.69-71): "You can spend 1 Personal Power when you activate the 'It's Morphin
- * Time!' Spectrum Role feature to unlock..." and "You may only have one Form General Perk active at a
- * time." A Jump Through Time's Forms (Ranger Operator p.55, Time Force p.56) replace the Morpher
+ * Across the Stars (p.69-71): a Form is unlocked for 1 Personal Power when It's Morphin Time! is
+ * used, and only one Form Perk can be active at once. A Jump Through Time's Forms (Ranger Operator p.55, Time Force p.56) replace the Morpher
  * outright, so they cost nothing; Beneath the Helmet's Beast Morpher (p.51) "is connected to It's
  * Morphin Time!". So: when a Ranger Morphs and holds any Form, they pick which one (or none) and pay
  * its cost; the active Form lives in the actor flag `zord1Form` and ends when they de-Morph.
@@ -312,20 +311,18 @@ function feetBetween(a, b) {
 }
 
 function dinoRollSources(actor, target, { item, rolledSkill, isAttack } = {}, sources, consumes) {
-  // Aura Reading: "You have an Edge on your Alertness (Perception) Skill Tests, and any type of
-  // disguise or invisibility has no effect on your test."
+  // Aura Reading: Edge on Alertness (Perception), and disguise or invisibility doesn't fool it.
   if (rolledSkill == 'alertness' && dinoState(actor, 'auraReading')) {
     sources.push({ id: 'zord1AuraReading', label: T('Zord1DinoAuraReading'), edge: true });
   }
 
-  // Camouflage: "creatures attempting to notice you suffer Snag on Alertness (Perception) Skill Tests".
-  // Invisibility: "creatures making Alertness (Perception) Skill Tests notice you have a Snag".
+  // Camouflage and Invisibility: a Snag on Alertness (Perception) to notice the holder.
   if (target && rolledSkill == 'alertness' && !dinoState(actor, 'auraReading')
     && (dinoState(target, 'camouflage') || dinoState(target, 'invisibility'))) {
     sources.push({ id: 'zord1Camouflage', label: T('Zord1DinoHidden', { name: target.name }), snag: true });
   }
 
-  // Shield Propulsion (jump): "granting you an Edge and a specialty on your Athletics Skill Test."
+  // Shield Propulsion (jump): Edge and Specialization on the Athletics test.
   if (rolledSkill == 'athletics' && dinoState(actor, 'shieldPropulsionJump')) {
     sources.push({ id: 'zord1Propulsion', label: T('Zord1DinoShieldPropulsion'), edge: true });
     consumes.push({ ext: 'zord1Dino', actorUuid: actor.uuid, power: 'shieldPropulsionJump' });
@@ -392,7 +389,7 @@ function dinoDerived(actor) {
   }
 }
 
-/** Shield Projection: "+5 to your defense... If anyone is within 5 feet of you, then your defense bonus also applies to them." */
+/** Shield Projection: +5 to the holder's Defense, shared with anyone within 5 feet. */
 export function dinoDefenseAdjust(attacker, defender, defenseType) {
   if (!['toughness', 'evasion'].includes(defenseType) || !defender) {
     return 0;
@@ -533,8 +530,7 @@ export async function activateDinoPower(actor, perk, power, { pay = async () => 
     return false;
   }
 
-  // Replication: "You may spend an extra Personal Power to either create an additional hologram or to
-  // make all holograms 'solid'."
+  // Replication: one more Personal Power adds a hologram or makes them all solid.
   let cost = 1;
   if (power == 'replication') {
     const extra = await choose(label, T('Zord1DinoReplicationPrompt'), [['1', T('Zord1DinoReplicationOne')], ['2', T('Zord1DinoReplicationTwo')]]);
@@ -547,7 +543,7 @@ export async function activateDinoPower(actor, perk, power, { pay = async () => 
 
   switch (power) {
   case 'auraReading':
-    // "The psychometry ends at the end of your next turn after activating it."
+    // Psychometry lasts until the end of the holder's next turn.
     {
       const stamp = untilNextTurnStamp(actor, getSceneEpoch());
       await setDino(actor, power, stamp.untilTurn == null ? stamp : { ...stamp, untilTurn: stamp.untilTurn + 1 });

@@ -44,8 +44,8 @@ for (const scope of ['bondPartner', 'bondHolder']) {
   }
 }
 
-registerTag('self:bondLinked', (rest, ctx) => !!bondOf(ctx?.self)?.linked);
-registerTag('self:bondHolder', (rest, ctx) => sameActor(bondOf(ctx?.self)?.holder, ctx?.self));
+registerTag('self:bondLinked', (rest, ctx) => !!bondOf(ctx?.self)?.linked, { phrase: ['{poss} Bond is linked', "{poss} Bond isn't linked"] });
+registerTag('self:bondHolder', (rest, ctx) => sameActor(bondOf(ctx?.self)?.holder, ctx?.self), { phrase: ['{who} hold{s} the Bond', '{who} {doesnt} hold the Bond'] });
 
 registerTag('roll:bondAllySpecialized', (rest, ctx) => {
   const skill = ctx?.rolledSkill;
@@ -55,7 +55,7 @@ registerTag('roll:bondAllySpecialized', (rest, ctx) => {
 
   const fields = bondedAlly(ctx.self)?.system?.skills?.[skill];
   return !!fields && (!!fields.isSpecialized || Object.values(fields.specializations ?? {}).some(entry => entry?.name));
-});
+}, { phrase: ['your bonded ally is Specialized in the Skill', "your bonded ally isn't Specialized in the Skill"] });
 
 registerTag('roll:bondPairTrained', (rest, ctx) => {
   const skill = ctx?.rolledSkill;
@@ -67,4 +67,4 @@ registerTag('roll:bondPairTrained', (rest, ctx) => {
   const trained = actor => order.indexOf(actor?.system?.skills?.[skill]?.shift ?? 'd20') <= order.indexOf('d2');
   const ally = bondedAlly(ctx.self);
   return !!ally && trained(ctx.self) && trained(ally);
-});
+}, { phrase: ['you and your bonded ally are both trained in the Skill', "you and your bonded ally aren't both trained in the Skill"] });

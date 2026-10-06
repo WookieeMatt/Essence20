@@ -8206,6 +8206,224 @@
   color: var(--color-level-error, #c0392b);
 }
 
+.essence20 .tab.effects .e20-actor-rules {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 0.5rem;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.25rem 0.5rem 0.5rem;
+  color: var(--e20-theme-text-color);
+  /* -------------------------------------------- */
+  /*  Active Effects                               */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Rules from items (read-only)                 */
+  /* -------------------------------------------- */
+}
+.essence20 .tab.effects .e20-actor-rules img.item-image {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  max-width: 28px;
+  object-fit: contain;
+  border: none;
+  margin: 0;
+}
+.essence20 .tab.effects .e20-actor-rules > .items-list {
+  flex: none;
+  min-height: 0;
+  padding-top: 0;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rules-intro,
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rules-empty {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rules-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0.35rem 0 0;
+  padding: 0 0 0.2rem;
+  border: none;
+  border-bottom: 1px solid var(--e20-theme-border-color);
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--e20-theme-text-color);
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rules-count {
+  font-size: 0.75rem;
+  font-weight: normal;
+  padding: 0 0.4rem;
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 999px;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+}
+.essence20 .tab.effects .e20-actor-rules .e20-rule-type {
+  flex: none;
+  font-size: 0.7rem;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+}
+.essence20 .tab.effects .e20-actor-rules .e20-rule-summary {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-rule-source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  cursor: pointer;
+  color: inherit;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-rule-source-link:hover {
+  color: var(--e20-theme-accent);
+  text-decoration: underline;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-group .effect-name i {
+  margin-right: 0.3rem;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-group.is-transient {
+  border-left: 3px solid var(--e20-theme-accent);
+  padding-left: 0.3rem;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-entry {
+  align-items: center;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-entry.is-transient {
+  border-left: 3px solid var(--e20-theme-accent);
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-entry.is-disabled, .essence20 .tab.effects .e20-actor-rules .e20-effect-entry.is-suppressed {
+  opacity: 0.6;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-entry .effect-name {
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-entry .effect-duration i {
+  color: var(--e20-theme-accent);
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 0.1rem;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-text h4 {
+  overflow-wrap: anywhere;
+}
+.essence20 .tab.effects .e20-actor-rules .effect-summaries {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.8rem;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-statuses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-status {
+  font-size: 0.7rem;
+  padding: 0 0.35rem;
+  border: 1px solid var(--e20-theme-accent);
+  border-radius: 3px;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-note {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+}
+.essence20 .tab.effects .e20-actor-rules .e20-effect-empty {
+  list-style: none;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+}
+.essence20 .tab.effects .e20-actor-rules .effect-control.is-placeholder {
+  opacity: 0.45;
+  cursor: help;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-sources {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-source {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 4px;
+  background: var(--e20-theme-panel-bg);
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-source-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-source-name {
+  font-weight: bold;
+  overflow-wrap: anywhere;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-host {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.2rem 0.4rem;
+  list-style: none;
+  font-size: 0.85rem;
+  border-top: 1px solid var(--e20-theme-border-color);
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule:first-child {
+  border-top: none;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule::before, .essence20 .tab.effects .e20-actor-rules .e20-actor-rule::marker {
+  content: none;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule.is-situational .e20-rule-summary {
+  font-style: italic;
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule.is-linked .e20-rule-type {
+  color: var(--e20-theme-accent);
+}
+.essence20 .tab.effects .e20-actor-rules .e20-actor-rule-state {
+  flex: none;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  padding: 0 0.35rem;
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 3px;
+}
+
 .essence20 select {
   color: var(--e20-theme-text-color);
 }

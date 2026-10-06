@@ -127,7 +127,7 @@ registerStep('givePersonalPoints', async (step, ctx) => {
 registerEvent('personalPointUnspent');
 registerEvent('storyPointNarrative');
 
-registerTag('target:sameType', (rest, ctx) => (ctx.other ? !!ctx.self && ctx.other.type == ctx.self.type : false));
+registerTag('target:sameType', (rest, ctx) => (ctx.other ? !!ctx.self && ctx.other.type == ctx.self.type : false), { phrase: ['{who} {is} the same kind of creature as you', '{who} {isnt} the same kind of creature as you'] });
 
 /** An actor's turn ended: personalPointUnspent for whoever listens, then its points tick down. */
 export async function personalPointsTurnEnd(actor) {

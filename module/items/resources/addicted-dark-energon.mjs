@@ -8,16 +8,11 @@ import { onHook } from "../shared/hooks-and-clients.mjs";
 /*  Addicted (Dark Energon) (Decepticon Directive p.80) */
 /* ============================================ */
 
-// "At the start of each day, the Dark Energon makes an attack against the user's Willpower (at the
-// same skill level that caused the Hang-Up). If it fails, the user staves off the hunger for the day;
-// on a success, the user needs to consume Dark Energon that day or all standard Energon Point
-// expenditures are doubled in cost. A Dark Energon addict that hasn't consumed Dark Energon within 24
-// hours after being successfully attacked by the addiction takes 1 Smarts and 1 Social Essence damage
-// and continues to take the same damage each subsequent 24 hours until they consume Dark Energon (no
-// additional attack needed). ... When a Dark Energon user is reduced to 1 Smarts or Social Essence,
-// they begin randomly attacking enemies and allies alike in a berserk rage ... Dark Energon addiction
-// can be treated with a successful DIF 20 Science (Medicine) Skill Test that requires a week of
-// counseling and treatment."
+// In short (Decepticon Directive): each day the addiction attacks the user's Willpower at the level
+// that caused the Hang-Up. A hit means Dark Energon must be taken that day or standard Energon costs
+// double; 24 hours without it after a hit costs 1 Smarts and 1 Social Essence damage, again every 24
+// hours until they use it. At 1 Smarts or Social the user goes berserk. A week of treatment and a
+// DIF 20 Science (Medicine) test cures it.
 //
 // No calendar exists, so the Hang-Up's Use button carries the day: New Day (the attack, or the
 // withdrawal damage), Consumed Dark Energon, and Treatment. While craving, every drop in standard

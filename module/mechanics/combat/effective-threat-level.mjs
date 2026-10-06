@@ -10,10 +10,9 @@ import { onHook } from "../../items/shared/hooks-and-clients.mjs";
 /*  Effective Threat Level (Finster's Monster-Matic Cookbook p.11) */
 /* ============================================ */
 
-// "separate the highest Threat Level creature from the group, then add half (always round up) of the
-// total Threat Level of the group to that Threat's TL ... three Cogs (TL3) and Lightning Bot (TL5)
-// would be Threat Level 10 (5+[3+3+3]/2)." "when ... there are TL0 Threats present, they count as a
-// single TL for each set of these Threats numerically equal to the number of player characters."
+// Effective Threat Level: the highest TL in the group plus half (rounded up) of the rest's total -
+// e.g. TL5 with three TL3s makes 10. TL0 Threats count as one TL per group of them equal in size
+// to the number of player characters.
 export function effectiveThreatLevel(levels, playerCount) {
   const tls = (levels ?? []).map(Number).filter(Number.isFinite);
   const zeros = tls.filter(tl => tl <= 0).length;

@@ -5,8 +5,8 @@ import { registerRuleType } from "../../types.mjs";
 import { crewing } from "../shared/zord-crew-lookups.mjs";
 
 /**
- * Round 15 (items2) - rule EvasiveManeuvers {} (Fly In The Future: "You may halve the speed of your Aerial vehicle,
- * which forces all attacks against it to target its Evasion Defense instead of Toughness"). With `scope: "vehicle"` a
+ * Round 15 (items2) - rule EvasiveManeuvers {} (Fly In The Future: halving an Aerial vehicle's speed
+ * makes every attack on it target Evasion instead of Toughness). With `scope: "vehicle"` a
  * crew member's rule reaches the vehicle they ride (rules/links.mjs). While one holds, an Aerial vehicle (Aerial base
  * speed above 0) flies evasively: documents/actor.mjs halves its Aerial Movement (rounded down, after Lightning Speed)
  * and dice.mjs turns a Toughness-targeted attack against it to Evasion (RollModifier immune: evasiveManeuvers lifts it).
@@ -33,7 +33,7 @@ export function ruleEvasiveManeuvers(actor) {
   return entries.some(({ rule, item, holder }) => evaluate(rule.when, contextFor({ self: actor, holder, ruleItem: item })) === true);
 }
 
-registerTag('self:crewsAerial', (rest, ctx) => aerial(crewing(ctx?.self)?.vehicle));
+registerTag('self:crewsAerial', (rest, ctx) => aerial(crewing(ctx?.self)?.vehicle), { phrase: ['{who} crew{s} a flying vehicle', '{who} {doesnt} crew a flying vehicle'] });
 
 globalThis.Hooks?.on?.('updateItem', item => {
   const actor = item?.parent;

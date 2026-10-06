@@ -1,5 +1,6 @@
 import { registerRollSources } from "../../mechanics/item-hooks.mjs";
 import { ruleBrawnBonus } from "../../rules/plugins/effects/brawn-requirement.mjs";
+import { itemsOf } from "../shared/item-lookups.mjs";
 
 /**
  * Armor rules for the data1 slice of the Item Review (Reinforced Shell's Alt Mode / Bot Mode split is its upgrade's own
@@ -8,15 +9,6 @@ import { ruleBrawnBonus } from "../../rules/plugins/effects/brawn-requirement.mj
  */
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items) ? items : (items.contents ?? [...items]);
-}
 
 /* -------------------------------------------- */
 /*  Brawn requirement                            */
@@ -45,8 +37,7 @@ export function brawnRequirementBonus(actor) {
 
 /**
  * How many die sizes of Brawn the actor lacks for this armor's printed Brawn requirement - GI Joe
- * CRB, Brawn (p.117): "If you don't meet the equipment's Brawn requirement, you suffer a ↓1 shift
- * when using it for each die size you don't possess." Tanker Armor (Brawn d2) and Marauder Armor
+ * CRB, Brawn (p.117): ↓1 while using the gear for every die size of Brawn short. Tanker Armor (Brawn d2) and Marauder Armor
  * (Brawn d4) print theirs in Table 8-5 (p.154-155); armor has no requirements field, so the pack
  * carries it as flags.essence20.brawnRequirement.
  * @param {Actor} actor
@@ -64,7 +55,7 @@ export function brawnShortfall(actor, armor) {
 }
 
 /**
- * Worn battledress the actor is too weak for. "When using it" for armor is read as the physical
+ * Worn battledress the actor is too weak for. "Using" armor is read as the physical
  * actions it encumbers: Strength- and Speed-based Skill Tests and every attack. Each armor is its
  * own dialog line, so a GM who reads it more narrowly can untick it.
  */

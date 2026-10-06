@@ -29,8 +29,8 @@ function anyStatus(actor, rest) {
   return !!actor && [...(actor.statuses ?? [])].some(status => !except.has(status));
 }
 
-registerTag('self:status', (rest, ctx) => anyStatus(ctx.self, rest));
-registerTag('target:status', (rest, ctx) => (/^any(:|$)/.test(String(rest ?? '')) ? (ctx.other ? anyStatus(ctx.other, rest) : false) : undefined));
+registerTag('self:status', (rest, ctx) => anyStatus(ctx.self, rest), { phrase: (arg, w) => (/^any(:|$)/.test(arg) ? (arg.length > 4 ? [`{who} {is} ${arg.slice(4).split('|').map(w.humanize).join(' or ')}`, `{who} {isnt} ${arg.slice(4).split('|').map(w.humanize).join(' or ')}`] : ['{who} {has} a Condition', '{who} {has} no Condition']) : null) });
+registerTag('target:status', (rest, ctx) => (/^any(:|$)/.test(String(rest ?? '')) ? (ctx.other ? anyStatus(ctx.other, rest) : false) : undefined), { phrase: (arg, w) => (/^any(:|$)/.test(arg) ? (arg.length > 4 ? [`{who} {is} ${arg.slice(4).split('|').map(w.humanize).join(' or ')}`, `{who} {isnt} ${arg.slice(4).split('|').map(w.humanize).join(' or ')}`] : ['{who} {has} a Condition', '{who} {has} no Condition']) : null) });
 
 const listOf = collection => collection?.contents ?? (collection ? [...collection] : []);
 
@@ -44,9 +44,9 @@ registerTag('item:primaryAttack', (rest, ctx) => {
 
   const first = listOf(owner.items).find(item => item.type == 'weaponEffect' && item.flags?.essence20?.parentId == parentId);
   return !!first && (first === attack || first.id == attack.id);
-});
+}, { phrase: ["{who} {is} its weapon's first attack", "{who} {isnt} its weapon's first attack"] });
 
-registerTag('roll:entry', (rest, ctx) => (ctx.entry ? !!ctx.entry[rest] : null));
+registerTag('roll:entry', (rest, ctx) => (ctx.entry ? !!ctx.entry[rest] : null), { phrase: ['the entry used is {arg}', "the entry used isn't {arg}"] });
 
 // self:sourced:<16-char id>:<path>=<value> / !=<value> - the actor's copy of that book item has (or hasn't) that value at
 // <path> (Secondary Tech reading Primary Tech's flags.essence20.techChoice). No copy, or nothing stored: = is false and
@@ -61,4 +61,7 @@ registerTag('self:sourced', (rest, ctx) => {
   const stored = copy ? match[2].split('.').reduce((value, key) => (value === null || value === undefined ? value : value[key]), copy) : undefined;
   const same = stored !== undefined && stored !== null && String(stored) == match[4];
   return match[3] == '=' ? same : !same;
-});
+}, { phrase: (arg, w) => {
+  const match = /^([A-Za-z0-9]{16}):([\w.]+?)(!=|=)(.*)$/.exec(arg);
+  return match ? [`your ${w.itemName(match[1])}'s ${w.pathName(match[2]).toLowerCase()} is ${match[3] == '!=' ? 'not ' : ''}${w.humanize(match[4])}`, `your ${w.itemName(match[1])}'s ${w.pathName(match[2]).toLowerCase()} is ${match[3] == '!=' ? '' : 'not '}${w.humanize(match[4])}`] : null;
+} });

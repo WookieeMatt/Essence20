@@ -98,4 +98,4 @@ registerStep('attackEach', async (step, ctx) => {
   branches: ['pay'],
 });
 
-registerTag('self:canSpendStoryPoints', (rest, ctx) => (ctx.self ? canAfford({ storyPoints: true }, 1, { actor: ctx.self }) : null));
+registerTag('self:canSpendStoryPoints', (rest, ctx) => (ctx.self ? canAfford({ storyPoints: true }, 1, { actor: ctx.self }) : null), { phrase: ['{who} can spend a Story Point', "{who} can't spend a Story Point"] });

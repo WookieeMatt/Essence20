@@ -2,10 +2,9 @@ import { applyTimedCondition } from "./timed-status.mjs";
 import { applyDamage } from "./combat.mjs";
 
 /**
- * Effects every creature caught in them has to test against - "must succeed at a DIF 15 Brawn Skill
- * Test or be knocked prone" (Bellowbreath, Knights of Canterlot p.49), "must pass a Athletics or
- * Acrobatics Skill Test or be knocked Prone" (Power Quake, PR CRB p.100), "DIF 15 Alertness Skill
- * Test or slip gently into slumber" (Lullaby, p.50).
+ * Effects every creature caught in them has to test against - DIF 15 Brawn or Prone (Bellowbreath,
+ * Knights of Canterlot p.49), Athletics or Acrobatics or Prone (Power Quake, PR CRB p.100), DIF 15
+ * Alertness or fall asleep (Lullaby, p.50).
  *
  * The caster's side posts one chat card listing everyone caught, each with a button that rolls that
  * creature's own Skill Test. Whoever owns the creature (or the GM) presses it; dice.mjs hands the

@@ -84,7 +84,14 @@ registerTag('recent', (rest, ctx) => {
   }
 
   return null;
-}, { family: 'situation', param: 'text' });
+}, { family: 'situation', param: 'text', phrase: (arg, w) => {
+  const [kind, value] = arg.split(':');
+  return {
+    sideHigher: [`an ally rolled higher on the same Skill in the last ${value || 5} minutes`, `no ally rolled higher on the same Skill in the last ${value || 5} minutes`],
+    selfLower: [`you rolled lower on the same Skill in the last ${value || 5} minutes`, `you didn't roll lower on the same Skill in the last ${value || 5} minutes`],
+    hostile: [`someone not on your side rolled ${w.skillName(value)} recently`, `nobody against you rolled ${w.skillName(value)} recently`],
+  }[kind] ?? null;
+} });
 
 /** The lowest total an opposing creature posted for that Skill recently (latest 100 messages, 30 minutes), or null. */
 export function lowestHostile(actor, skill, messages = null, now = Date.now()) {

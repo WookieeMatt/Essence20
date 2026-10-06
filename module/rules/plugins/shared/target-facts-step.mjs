@@ -2,6 +2,7 @@
 // module/rules/plugins/index.mjs.
 import { registerRef } from "../../formula.mjs";
 import { registerStep } from "../../steps.mjs";
+import { itemsOf } from "../../../items/shared/item-lookups.mjs";
 
 const localize = key => globalThis.game?.i18n?.localize?.(key) ?? key;
 const format = (key, data) => {
@@ -11,7 +12,6 @@ const format = (key, data) => {
 };
 
 const DEFENSES = ['toughness', 'evasion', 'willpower', 'cleverness'];
-const itemsOf = actor => actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
 
 /** A list of names, or the "none" word. */
 const listOrNone = names => (names.length ? names.join(', ') : format('None', {}));

@@ -121,7 +121,7 @@ for (const [name, fn] of Object.entries({
 // Story Point costs and gains in rule steps go through the same helpers as the hand-written ones.
 setStoryPointHelpers({ canSpendForActor, canWriteStoryPoints, poolFor, requestStoryPointGrant, spendForActor });
 import { decorateSocialCard, onGroupResultChanged } from "./items/social/social-cards.mjs";
-import { endSceneTeamEffects, onMorphChanged } from "./mechanics/actions/team-actions.mjs";
+import { onMorphChanged } from "./mechanics/actions/team-actions.mjs";
 import { onInitiativeRolled } from "./mechanics/actions/commands.mjs";
 import { allegianceLeft, isContactAvailable } from "./mechanics/companions/contacts.mjs";
 import { dismissSceneSummons } from "./mechanics/companions/summons.mjs";
@@ -951,7 +951,7 @@ Hooks.on("updateActor", (actor, changed, options, userId) => {
   }
 });
 
-// The First Rule Of Soldiering: "when you roll for Initiative, you can Issue a Command for free"
+// The First Rule Of Soldiering: a free Issue Command on the Initiative roll
 // (mechanics/actions/commands.mjs).
 Hooks.on("updateCombatant", (combatant, changed, options, userId) => {
   if (userId == game.user.id && changed?.initiative != null && combatant.actor) {
@@ -1118,8 +1118,7 @@ for (const hookName of ["combatTurn", "combatRound"]) {
 
       // (Expanded Mysticism's Quicken ends with a turnEnd Trigger on its Perk.)
 
-      // Friendship Circle (MLP CRB) - "until the end of the pony who formed the Friendship
-      // Circle's next turn". Same ending-actor idiom; items/social/friendship-circle.mjs decides.
+      // Friendship Circle (MLP CRB) - lasts to the end of its former's next turn. Same ending-actor idiom; items/social/friendship-circle.mjs decides.
       expireCircleAtTurnEnd(endingActor, combat);
 
       // Ongoing / Poison / Toxin (Cobra Codex, New Weapon Effects and Traits, p.93-94) - see
@@ -1250,12 +1249,9 @@ Hooks.on("renderRegionBehaviorConfig", (app, html) => {
 // scene - see mechanics/world/environment-hazards.mjs.
 Hooks.on("essence20.sceneAdvanced", () => {
   // Scene-long summons: capsule vehicles, Battlizers, Toxo-Zombies and summoned allies
-  // (mechanics/companions/summons.mjs), and Renegade Commander's grant (mechanics/actions/team-actions.mjs).
+  // (mechanics/companions/summons.mjs). (Renegade Commander's grant is a timed addEffect, swept by the rules.)
   if (game.users.activeGM?.isSelf) {
     dismissSceneSummons();
-    for (const actor of game.actors ?? []) {
-      endSceneTeamEffects(actor);
-    }
   }
 
   if (game.users.activeGM?.isSelf) {

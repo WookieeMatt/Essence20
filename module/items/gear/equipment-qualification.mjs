@@ -3,10 +3,9 @@ import { onHook } from "../shared/hooks-and-clients.mjs";
 import { ruleQualifiedUpgrade } from "../../rules/adapter.mjs";
 
 /**
- * Equipment Training and Qualification from Perks - "In addition to your Role's Equipment Training
- * and Qualifications, you are Qualified in..." (G.I. Joe CRB p.72/80: "You can requisition any
- * battledress and weapons you are trained in ... You can access any equipment you are Qualified in
- * without requisitioning it").
+ * Equipment Training and Qualification from Perks - extra Qualifications on top of the Role's own
+ * (G.I. Joe CRB p.72/80: trained gear can be requisitioned; Qualified gear is available without
+ * requisitioning).
  *
  * What it does in this system is Requisition (mechanics/resources/requisition.mjs): a Qualified item is taken
  * with no Skill Test and no attempt spent. A weapon carries no weapon-type field, so the Role
@@ -117,7 +116,7 @@ export function onRequisitionAvailability(actor, item, out) {
 // Operators, Ultra-Secret Strike Force, The Glory of Cobra-La) and all of Cobra-La's Snags (weapons,
 // vehicles and battledress that aren't Biomechanical) are their own item rules now.
 
-/** Wired at load by ./qualification-setup.mjs. (Nu, Pogodi!'s seat swap is ../vehicles/nu-pogodi-seat-swap.mjs.) */
+/** Wired at load by ./qualification-setup.mjs. (Nu, Pogodi!'s seat swap is a Use rule on the Perk.) */
 export function registerQualification() {
   onHook('essence20.requisitionAvailability', onRequisitionAvailability);
 }

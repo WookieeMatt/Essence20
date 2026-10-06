@@ -18,7 +18,7 @@ export function lowestInitiativeTag(rest, ctx) {
   return list.every(c => c === mine || !c?.actor || c.initiative == null || c.initiative >= mine.initiative);
 }
 
-registerTag('combat:lowestInitiative', lowestInitiativeTag);
+registerTag('combat:lowestInitiative', lowestInitiativeTag, { phrase: ['you have the lowest Initiative', "you don't have the lowest Initiative"] });
 
 /** `combat:currentRolled` - whoever is acting now in the current combat has an Initiative (so @initiative.afterCurrent means something). */
 export function currentRolledTag(rest, ctx) {
@@ -27,4 +27,4 @@ export function currentRolledTag(rest, ctx) {
   return current?.initiative != null;
 }
 
-registerTag('combat:currentRolled', currentRolledTag);
+registerTag('combat:currentRolled', currentRolledTag, { phrase: ['the current combatant has rolled Initiative', "the current combatant hasn't rolled Initiative"] });

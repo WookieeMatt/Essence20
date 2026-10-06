@@ -71,9 +71,9 @@ registerPickSource('allySpecializations', (step, ctx) => {
   return [...byName.entries()].map(([name, skills]) => ({ value: skills.join('|'), label: name }));
 });
 
-registerTag('self:allySpecializations', (rest, ctx) => allySpecializations(ctx?.self).length > 0);
+registerTag('self:allySpecializations', (rest, ctx) => allySpecializations(ctx?.self).length > 0, { phrase: ['an ally has a Specialization to share', 'no ally has a Specialization to share'] });
 
-registerTag('skill:in', (rest, ctx) => (ctx?.rolledSkill === undefined ? null : String(rest ?? '').split('|').includes(ctx.rolledSkill)));
+registerTag('skill:in', (rest, ctx) => (ctx?.rolledSkill === undefined ? null : String(rest ?? '').split('|').includes(ctx.rolledSkill)), { phrase: (arg, w) => [`on ${arg.split('|').map(w.skillName).join(' or ')} tests`, `except on ${arg.split('|').map(w.skillName).join(' or ')} tests`] });
 
 /** Whether the actor holds a live banked bonus under that key. */
 export function hasBankKey(actor, key) {
@@ -85,13 +85,13 @@ export function bankKeySideCount(actor, key) {
   return (hasBankKey(actor, key) ? 1 : 0) + alliesOf(actor).filter(ally => hasBankKey(ally, key)).length;
 }
 
-registerTag('self:bankKey', (rest, ctx) => hasBankKey(ctx?.self, rest));
-registerTag('target:bankKey', (rest, ctx) => hasBankKey(ctx?.other, rest));
-registerTag('self:sideBankKey', (rest, ctx) => sideOf(ctx?.self).some(actor => hasBankKey(actor, rest)));
+registerTag('self:bankKey', (rest, ctx) => hasBankKey(ctx?.self, rest), { phrase: ['{who} {has} {arg} banked', '{who} {hasnt} {arg} banked'] });
+registerTag('target:bankKey', (rest, ctx) => hasBankKey(ctx?.other, rest), { phrase: ['{who} {has} {arg} banked', '{who} {hasnt} {arg} banked'] });
+registerTag('self:sideBankKey', (rest, ctx) => sideOf(ctx?.self).some(actor => hasBankKey(actor, rest)), { phrase: ['someone on your side has {arg} banked', 'nobody on your side has {arg} banked'] });
 registerTag('self:sideStatus', (rest, ctx) => {
   const statuses = String(rest ?? '').split('|').filter(Boolean);
   return sideOf(ctx?.self).some(actor => statuses.some(status => actor.statuses?.has?.(status)));
-});
+}, { phrase: (arg, w) => [`someone on your side is ${arg.split('|').map(w.humanize).join(' or ')}`, `nobody on your side is ${arg.split('|').map(w.humanize).join(' or ')}`] });
 
 /* -------------------------------------------- */
 /*  moveCondition                                */

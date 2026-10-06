@@ -2,11 +2,9 @@ import { clearPendingBonus, getPendingBonus } from "../../mechanics/characters/p
 
 /**
  * Voice of Primus (Enigma of Combination, General Perk, p.41, prerequisite Huge Size or larger):
- * "First, you can be heard clearly, if you wish, up to a half a mile away. Second, you can attempt
- * a DIF 12 Persuasion Skill Test to Lend Assistance to any ally that can hear your voice. Finally,
- * as a Standard action, you can attempt an Intimidation or Performance Skill Test against a
- * target's Willpower Defense. On a success, you deal 1 Psychic damage or impose the Frightened
- * Condition on them for 2d2 rounds."
+ * heard clearly up to half a mile; a DIF 12 Persuasion test to Lend Assistance to any ally in
+ * earshot; and a Standard action Intimidation or Performance test against Willpower that deals 1
+ * Psychic damage or Frightens for 2d2 rounds.
  *
  * "You can be heard clearly up to half a mile away" is pure narrative (no range-of-hearing
  * mechanic to hook) - it's already effectively covered anyway, since activateLendAssistance's own

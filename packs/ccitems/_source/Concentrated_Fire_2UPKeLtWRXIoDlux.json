@@ -6,7 +6,10 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"BeforeArea","label":"Concentrated Fire","options":["single"],"dataset":"concentratedFire","when":[{"any":["weapon:trait:fire","item:data:system.damageType=fire"]}]}
+      {"type":"BeforeArea","label":"Concentrated Fire","options":["single"],"dataset":"concentratedFire","when":[{"any":["weapon:trait:fire","item:data:system.damageType=fire"]}]},
+      {"type":"RollModifier","snag":true,"when":["attack","roll:dataset:concentratedFire","target:data:system.immunities.fire"]},
+      {"type":"CritOnD2","when":["attack","roll:dataset:concentratedFire"]},
+      {"type":"HitRider","stage":"late","replace":true,"when":["roll:dataset:concentratedFire","item:damageType:fire","target:data:system.immunities.fire"],"option":{"damage":"@var.damage","damageType":"fire","key":"concentratedFire","ignoreImmunity":true}}
     ],
     "automation": {
       "status": "full",

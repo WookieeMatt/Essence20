@@ -1,5 +1,6 @@
 import { registerChatButton, registerChatDecorator } from "../item-hooks.mjs";
 import { hasSourced, worldActors } from "../companions/companion-link.mjs";
+import { findSourced, itemsOf, sourceOf } from "../../items/shared/item-lookups.mjs";
 
 /**
  * The reaction engine - "react to an attack in flight" and "react to someone else's roll".
@@ -31,22 +32,13 @@ const REACTIONS = [];
 /*  Small readers                                */
 /* -------------------------------------------- */
 
-/** Compendium uuid of an item (sourceId or compendiumSource). */
-export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-}
-
-export function itemsOf(actor) {
-  return actor?.items?.contents ?? [...(actor?.items ?? [])];
-}
+// sourceOf / itemsOf / findSourced are items/shared/item-lookups.mjs's, re-exported for the callers
+// that import them from here.
+export { findSourced, itemsOf, sourceOf };
 
 /** Whether the actor holds an item sourced from uuid (any type). Guards an undefined uuid. */
 export function holds(actor, uuid) {
   return !!uuid && !!actor && hasSourced(actor, uuid);
-}
-
-export function findSourced(actor, uuid) {
-  return uuid ? itemsOf(actor).find(item => sourceOf(item) == uuid) ?? null : null;
 }
 
 /**

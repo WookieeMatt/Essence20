@@ -6,7 +6,7 @@ import { registerRuleType } from "../../types.mjs";
 /**
  * Round 15 (items2): rule DriverlessEssence {essence} - a vehicle or Zord with no one driving counts that as the Essence
  * Score behind its driver-borrowed Defenses (Willpower / Cleverness - mechanics/combat/combat.mjs#getDefenseValue's
- * usesDrivers branch): Relic Key's "a default Smarts and Social of 3 when ... no crew is currently driving". Several:
+ * usesDrivers branch): Relic Key's Smarts and Social of 3 while nobody drives. Several:
  * the highest. None: null (the code's own defaults, then "can't be affected").
  */
 registerRuleType('DriverlessEssence', {

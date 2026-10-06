@@ -1,14 +1,14 @@
 import { isExpired } from "../../expiry.mjs";
+import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * Group B plug-ins (round 10): small shared helpers. Plain Node safe - Foundry globals are only read inside functions.
  */
 
 export const listOf = collection => collection?.contents ?? (collection && typeof collection[Symbol.iterator] == 'function' ? [...collection] : []);
-export const itemsOf = actor => listOf(actor?.items);
+export { itemsOf, sourceOf };
 export const worldActors = () => listOf(globalThis.game?.actors);
 export const num = value => Number(value) || 0;
-export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 
 export function resolve(uuid) {
   try {

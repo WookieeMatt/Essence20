@@ -1,9 +1,8 @@
 import { TSafe as T } from "../shared/item-lang.mjs";
 
 /**
- * Standard Issue (PR CRB, p.103): "You and every Power Ranger receives the same basic equipment: a
- * Power Morpher, a Wrist Communicator, a Power Suit, a Blade Blaster, and a second Power Weapon of a
- * type defined by your Role." The package item grants the three fixed pieces; the suit style and
+ * Standard Issue (PR CRB, p.103): every Ranger's kit - Power Morpher, Wrist Communicator, Power Suit,
+ * Blade Blaster, and a Role-specific second Power Weapon. The package item grants the three fixed pieces; the suit style and
  * the Role's Power Weapon are choices, asked for once the package lands on the actor.
  *
  * (Unique Weapon, the Green Ranger's: Survivor's d20 at Smarts 0 is the Perk's own essenceChanged Trigger. Unique

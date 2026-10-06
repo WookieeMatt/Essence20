@@ -1,7 +1,6 @@
 /**
- * Repair Progress, 10 minutes or less (Cobra/Con Fusion, Table 1-1, p.10): "All PCs, including
- * G.I. Joes, gain 1 bonus Energon Point. This can exceed their normal Energon point maximum, but
- * once spent, can't be regained." Kept as a Perk (the adventure's rewards are). Adding the Perk
+ * Repair Progress, 10 minutes or less (Cobra/Con Fusion, Table 1-1, p.10): every PC, G.I. Joes
+ * too, gets 1 bonus Energon Point that may go over the maximum and is gone once spent. Kept as a Perk (the adventure's rewards are). Adding the Perk
  * gives the point; the point is the one above the maximum, so it is spent the moment Energon
  * drops from over the maximum, after which the Perk marks itself spent. A Rest (which caps Energon
  * at the maximum) leaves an unspent bonus point in place. The item that gives the point is the one with a BonusEnergon rule

@@ -82,8 +82,8 @@ export function isPuttyOrTenga(actor) {
 }
 
 /**
- * Monster Hunter's "non-humanoid (defined as something with more than two legs, two arms, and a
- * number of heads that do not equal one, but does not include robots/vehicles)".
+ * Monster Hunter's non-humanoid: more than two legs or arms, or other than one head, robots and
+ * vehicles excepted.
  */
 export function isNonHumanoid(actor) {
   return hasAny(actor, ['non-humanoid', 'nonhumanoid', 'monster']) && !isMechanical(actor);

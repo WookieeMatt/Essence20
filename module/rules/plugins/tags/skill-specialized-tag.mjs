@@ -16,4 +16,4 @@ export function skillSpecializedTag(rest, ctx) {
   return !!ctx.self.system?.skills?.[ctx.rolledSkill]?.isSpecialized;
 }
 
-registerTag('roll:skillSpecialized', skillSpecializedTag);
+registerTag('roll:skillSpecialized', skillSpecializedTag, { phrase: ['you are Specialized in the Skill', "you aren't Specialized in the Skill"] });

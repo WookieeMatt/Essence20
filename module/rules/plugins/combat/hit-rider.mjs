@@ -151,7 +151,8 @@ function hostMatches(ruleItem, rolled) {
 function applyEntry(entry, hit) {
   const { rule, item: ruleItem, holder, index } = entry;
   const { attacker, target, result, rolled, facts, note, mode } = hit;
-  if ((rule.on ?? 'attack') != mode || ((rule.scope ?? 'self') == 'host' && !hostMatches(ruleItem, rolled))) {
+  // stage: late - read at the end of the hit instead (rules/plugins/combat/late-hit-rider.mjs).
+  if ((rule.on ?? 'attack') != mode || rule.stage == 'late' || ((rule.scope ?? 'self') == 'host' && !hostMatches(ruleItem, rolled))) {
     return;
   }
 

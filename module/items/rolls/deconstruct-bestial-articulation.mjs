@@ -6,11 +6,9 @@
  * - Broad Understanding and Applied Science (Scientist, p.79) are rules on their pack items.
  * - Cage and Diversion are rules on their items (rules/conv10-slC10.test.js).
  * - Duke It Out (p.91) is rules on its pack item (a Use and the Edge against the creature that refused).
- * - Deconstruct (p.81): "Weapon: The attacker suffers a Snag using this weapon unless it's subject to
- *   a DIF 10 Technology Skill Test to repair it."
+ * - Deconstruct (p.81): the weapon attacks with a Snag until a DIF 10 Technology test repairs it.
  * - Bestial Articulation (Monstrosity Alt Mode, Decepticon Directive p.37, Technorganic Secrets p.41):
- *   "You must use body parts not designed for articulation or precision, such as mouths, claws, or
- *   hooves, to perform certain tasks. Whenever this applies, you suffer a penalty of ↓ 1." Which tasks
+ *   ↓1 on tasks done with mouths, claws or hooves instead of hands. Which tasks
  *   is a table call, so it's a switch while converted into a Monstrosity Alt Mode.
  * - Arrogant (Enigma of Combination, Hang-Up) is a BeforeRoll rule on its item (rules/conv10-slC10.test.js).
  */

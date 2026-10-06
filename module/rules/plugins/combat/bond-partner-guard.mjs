@@ -40,13 +40,13 @@ registerTag('target:inHolderReach', (rest, ctx) => {
   const holder = ctx?.holder;
   const distance = holder && ctx?.other ? feetBetween(holder, ctx.other) : null;
   return distance !== null && distance <= reachOf(holder);
-});
+}, { phrase: ["{who} {is} within its owner's reach", "{who} {isnt} within its owner's reach"] });
 
 registerTag('self:nearHolder', (rest, ctx) => {
   const holder = ctx?.holder;
   const distance = holder && ctx?.self && !sameActor(holder, ctx.self) ? feetBetween(holder, ctx.self) : null;
   return distance !== null && distance <= Number(rest);
-});
+}, { phrase: ['{who} {is} within {ft} of its owner', '{who} {isnt} within {ft} of its owner'] });
 
 if (!SCOPES.includes('bondPartnerIncoming')) {
   SCOPES.push('bondPartnerIncoming');

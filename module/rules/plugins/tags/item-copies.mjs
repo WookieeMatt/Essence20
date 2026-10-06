@@ -30,8 +30,8 @@ function copyTag(rest, ctx, others) {
   return answers.some(answer => answer === true);
 }
 
-registerTag('rule:copy', (rest, ctx) => copyTag(rest, ctx, false));
-registerTag('rule:otherCopy', (rest, ctx) => copyTag(rest, ctx, true));
+registerTag('rule:copy', (rest, ctx) => copyTag(rest, ctx, false), { phrase: (arg, w) => [`there's a copy of this item where ${w.items([arg])}`, `there's no copy of this item where ${w.items([arg])}`] });
+registerTag('rule:otherCopy', (rest, ctx) => copyTag(rest, ctx, true), { phrase: (arg, w) => [`there's another copy of this item where ${w.items([arg])}`, `there's no other copy of this item where ${w.items([arg])}`] });
 
 registerRef('copiesWith', (key, scope) => {
   const parts = String(key ?? '').split('.');
@@ -67,4 +67,4 @@ export function calcTag(rest, ctx) {
   return compare(Number(value), match[2], Number(match[3]));
 }
 
-registerTag('calc', calcTag, { family: 'situation', param: 'text' });
+registerTag('calc', calcTag, { family: 'situation', param: 'text', phrase: (arg, w) => w.formula(arg) });

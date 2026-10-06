@@ -12,9 +12,9 @@ import { T } from "../shared/item-lang.mjs";
 
 export const IRON_BRAVADO = "Compendium.essence20.pr_crb.Item.8bmqJ7hyOAcVNB1Y";
 
-// Iron Bravado (A Jump Through Time, Black Spectrum Modification, p.45): "As a Free action, you may
-// spend 1 Personal Power to make all allies within 30 feet of you immune to all the same conditions
-// you are at that time until the beginning of your next turn." Kept on the holder (the allies'
+// Iron Bravado (A Jump Through Time, Black Spectrum Modification, p.45): a Free action and 1 Personal
+// Power share the holder's current Condition immunities with allies within 30 feet until the
+// holder's next turn. Kept on the holder (the allies'
 // sheets needn't be written) and enforced in preCreateActiveEffect, the same place essence20.mjs
 // refuses a Condition to an immune actor.
 const SHARE_FLAG = 'ironBravadoShare';

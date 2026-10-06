@@ -80,7 +80,8 @@ registerTag('card:flag', (rest, ctx) => {
 
   const value = message.flags?.essence20?.[rest];
   return value !== undefined && value !== null && value !== false && value !== '';
-});
+}, { phrase: (arg, w) => ({ isMelee: ['the roll is melee', "the roll isn't melee"], targetUuid: ['the roll has a target', 'the roll has no target'] }[arg]
+  ?? [`the roll is marked ${w.humanize(arg).toLowerCase()}`, `the roll isn't marked ${w.humanize(arg).toLowerCase()}`]) });
 
 registerRecipient('cardTarget', (match, ctx) => {
   const target = lookup(ctx.offerMessage?.flags?.essence20?.targetUuid);

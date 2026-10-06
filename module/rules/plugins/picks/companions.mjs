@@ -72,7 +72,20 @@ registerTag('link', (rest, ctx) => {
   case 'selfAdjacentToHolder': return isAdjacent(holderOf(ctx), ctx.self);
   default: return null;
   }
-}, { family: 'roll', param: 'text' });
+}, { family: 'roll', param: 'text', phrase: (arg, w) => {
+  const [what, kind, extra] = arg.split(':');
+  const type = kind ? `${w.humanize(kind)} ` : '';
+  return {
+    hasCompanion: [`{who} {has} a ${type}companion`, `{who} {has} no ${type}companion`],
+    pair: ['you and the target are a companion and its owner', "you and the target aren't a companion and its owner"],
+    ownCompanion: [`the target is one of your ${type}companions`, `the target isn't one of your ${type}companions`],
+    rolledAgainst: [`your ${kind == 'owner' ? 'owner' : 'partner'} already ${extra == 'attack' ? 'attacked' : 'rolled against'} the target this round`, `your ${kind == 'owner' ? 'owner' : 'partner'} hasn't ${extra == 'attack' ? 'attacked' : 'rolled against'} the target this round`],
+    deployedThisRound: [`its owner deployed a ${type}companion this round`, `its owner hasn't deployed a ${type}companion this round`],
+    holderDeployed: ["its owner isn't docked", 'its owner is docked'],
+    targetAdjacentToHolder: ['the target is next to its owner', "the target isn't next to its owner"],
+    selfAdjacentToHolder: ['you are next to its owner', "you aren't next to its owner"],
+  }[what] ?? null;
+} });
 
 registerRecipient(/^companions(?::(\w+))?$/, (match, ctx) => companionsOf(ctx.actor, { type: match[1] || null }));
 registerRecipient(/^firstCompanion:(\w+)$/, (match, ctx) => companionsOf(ctx.actor, { type: match[1] }).slice(0, 1));

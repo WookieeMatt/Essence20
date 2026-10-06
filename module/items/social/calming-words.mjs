@@ -1,10 +1,8 @@
 /**
- * Calming Words (Enigma of Combination, Counselor Focus, Scientist, 3rd level, p.34): "If you
- * spend at least 30 minutes with a sentient being and succeed at a Persuasion Skill Test versus
- * their Willpower or Cleverness Defense, the target receives Resistance to Psychic damage and any
- * attacks that would impose the Frightened or Mesmerized conditions for the next 24 hours. In
- * addition, you can spend a Free action and an Energon Point to attempt the same Skill Test to
- * remove the Frightened or Mesmerized Conditions from a target."
+ * Calming Words (Enigma of Combination, Counselor Focus, Scientist, 3rd level, p.34): after half an
+ * hour together, a Persuasion test against Willpower or Cleverness gives the target 24 hours of
+ * Resistance to Psychic damage and to Frightened / Mesmerized attacks; a Free action and an Energon
+ * Point let the same test clear those Conditions.
  *
  * Two distinct triggers sharing one roll (Persuasion vs. a chosen Defense), resolved via a single
  * up-front picker (action + Defense) rather than two separate "Use" buttons: "Soothe" (the 30-

@@ -21,8 +21,9 @@ import {
   onDeleteActiveEffect,
   onEditActiveEffect,
   onToggleActiveEffect,
-  prepareActiveEffectCategories,
 } from "../mechanics/characters/active-effect-controls.mjs";
+import { summarizeEffect } from "../mechanics/characters/effect-catalog.mjs";
+import { actorRulesContext } from "../rules/actor-view.mjs";
 import { applySystemActorsColorCssVariables, applySystemColorCssVariables } from "../util/system-color.mjs";
 import { getNumActions } from "../mechanics/actions/action-counts.mjs";
 import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../items/defenses/personal-shield.mjs";
@@ -91,6 +92,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       inlineEdit: this.#onInlineEdit,
       itemCreate: this.#onItemCreate,
       openCompendiumBrowser: this.#onOpenCompendiumBrowser,
+      openRuleSource: this.#onOpenRuleSource,
       startingEssences: this.#onStartingEssences,
       itemDelete: this.#onItemDelete,
       itemEdit: this.#onItemEdit,
@@ -622,8 +624,13 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     return context;
   }
 
+  /**
+   * The Rules tab (PART id "effects"): the actor's Active Effects - its own and its items' - grouped
+   * so conditions, area effects and timed ones stand apart from the always-on ones, then a read-only
+   * summary of its items' rules (rules/actor-view.mjs).
+   */
   async _prepareEffectsContext(context) {
-    context.effects = prepareActiveEffectCategories(this.document.effects);
+    Object.assign(context, actorRulesContext(this.document, { summarize: summarizeEffect }));
     return context;
   }
 
@@ -1012,6 +1019,13 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onItemEdit(event);
   }
 
+  /** The Rules tab's source links: open the item an effect or rule comes from. */
+  static async #onOpenRuleSource(event, target) {
+    event.preventDefault();
+    const item = target.dataset.uuid ? await fromUuid(target.dataset.uuid) : null;
+    item?.sheet?.render(true);
+  }
+
   static #onPerkUse(event, target) {
     onPerkUseClick(target, this);
   }
@@ -1193,8 +1207,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   /**
-   * "Alternatively, a character may trade in a Standard action for two Free actions"
-   * (GI Joe CRB p.193) - see mechanics/actions/action-economy.mjs#tradeStandardForFree.
+   * A Standard action swapped for two Free actions (GI Joe CRB p.193) - see mechanics/actions/action-economy.mjs#tradeStandardForFree.
    */
   static async #onActionTradeForFree() {
     await tradeStandardForFree(this.actor);

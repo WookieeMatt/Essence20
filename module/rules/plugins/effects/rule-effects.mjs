@@ -1,3 +1,4 @@
+import { isValidUntil, stampFor } from "../../expiry.mjs";
 import { formulaError, resolveValue } from "../../formula.mjs";
 import { recipients, registerStep } from "../../steps.mjs";
 import { listOf, localize, read, write } from "../shared/copy-and-data-helpers.mjs";
@@ -5,7 +6,8 @@ import { listOf, localize, read, write } from "../shared/copy-and-data-helpers.m
 /**
  * Group H: Active Effects made by a rule, and a value kept to be put back later.
  *
- *   addEffect {changes: [{key, value, mode?}], name?, img?, on?: item | actor, to?, flags?}
+ *   addEffect {changes: [{key, value, mode?}], name?, img?, on?: item | actor, to?, flags?, until?}
+ *       (round 18: `until` - any rule duration, with on: actor - the effect is deleted when it runs out.)
  *       An Active Effect with those changes - on the rule's own item (on: item, the default: it transfers to the actor
  *       and goes with the item) or on each recipient (on: actor). `value` is a formula (@var.penalty, -@var.x), stored
  *       as its number; `mode` defaults to 2 (add). A key holding `{movement}` is repeated for every Movement type the
@@ -71,13 +73,18 @@ registerStep('addEffect', async (step, ctx) => {
 
   for (const holder of holders) {
     const actor = onItem ? ctx.actor : holder;
+    // until (round 18, convB): an effect on a recipient runs out like a timed item (rules/expiry.mjs - swept by
+    // rules/triggers.mjs#sweepExpired); an E20. name is formatted with {name} (the run's actor) and the run's vars.
+    const expiry = step.until && !onItem ? { rulesExpiry: { until: step.until, stamp: stampFor(step.until, undefined, ctx.actor) } } : null;
+    const rawName = fill(step.name ?? ctx.item?.name ?? '', ctx);
+    const plainName = localize(rawName);
     const data = {
-      name: localize(fill(step.name ?? ctx.item?.name ?? '', ctx)) || ctx.item?.name || '',
+      name: (plainName.includes('{') ? localize(rawName, { ...ctx.vars, name: ctx.actor?.name ?? '' }) : plainName) || ctx.item?.name || '',
       img: step.img ?? ctx.item?.img ?? 'icons/svg/aura.svg',
       disabled: false,
       changes: effectChanges(step, ctx, actor),
       ...(onItem ? { transfer: true } : {}),
-      ...(step.flags ? { flags: { essence20: fillFlags(step.flags, ctx) } } : {}),
+      ...(step.flags || expiry ? { flags: { essence20: { ...(step.flags ? fillFlags(step.flags, ctx) : {}), ...(expiry ?? {}) } } } : {}),
     };
     await write(holder, 'createEmbeddedDocuments', ['ActiveEffect', [data]]);
   }
@@ -86,6 +93,7 @@ registerStep('addEffect', async (step, ctx) => {
     ...(Array.isArray(step.changes) && step.changes.length && step.changes.every(change => change?.key) ? [] : [`${where}: addEffect needs changes (each with a key)`]),
     ...(Array.isArray(step.changes) ? step.changes.map(change => formulaError(change?.value ?? 0) && `${where}: addEffect value: ${formulaError(change.value)}`).filter(Boolean) : []),
     ...(['item', 'actor', undefined].includes(step.on) ? [] : [`${where}: addEffect on must be item or actor`]),
+    ...(step.until === undefined || (step.on == 'actor' && isValidUntil(step.until)) ? [] : [`${where}: addEffect until needs on: actor and a rule duration`]),
   ],
 });
 

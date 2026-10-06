@@ -24,8 +24,8 @@ export function ownsZordTag(rest, ctx) {
   return ownedZords(ctx?.self).length > 0;
 }
 
-registerTag('self:holdsActive', holdsActiveTag);
-registerTag('self:ownsZord', ownsZordTag);
+registerTag('self:holdsActive', holdsActiveTag, { phrase: ['{poss} {name} is active', "{poss} {name} isn't active"] });
+registerTag('self:ownsZord', ownsZordTag, { phrase: ['{who} own{s} a Zord', '{who} {doesnt} own a Zord'] });
 
 // to: "ownZord" - the first Zord listed on the actor's sheet (combat.mjs#getOwnedZord - Zord Alterations' "your Zord");
 // "ownZords" (zord-link-scopes.mjs) reaches every one.

@@ -1,6 +1,5 @@
 import { jest } from '@jest/globals';
 
-let ats;
 let spectrum;
 let registry;
 
@@ -10,26 +9,6 @@ const item = (type, source, extra = {}) => ({
   flags: { core: { sourceId: source ?? null }, essence20: extra.flags ?? {} }, effects: [],
   update: jest.fn(async () => {}),
 });
-const actor = (type, items = [], system = {}, extra = {}) => {
-  const a = {
-    id: extra.id ?? `a${++n}`, uuid: extra.uuid ?? `Actor.a${n}`, name: extra.name ?? type, type, items, system,
-    statuses: new Set(extra.statuses ?? []), flags: { essence20: { ...(extra.flags ?? {}) } },
-    getFlag: (scope, key) => a.flags.essence20[key],
-    setFlag: jest.fn(async (scope, key, value) => {
-      a.flags.essence20[key] = value;
-    }),
-    unsetFlag: jest.fn(async (scope, key) => {
-      delete a.flags.essence20[key];
-    }),
-    update: jest.fn(async () => {}),
-    getActiveTokens: () => extra.tokens ?? [],
-  };
-  items.forEach(i => {
-    i.parent = a;
-  });
-  a.items.get = id => items.find(i => i.id == id);
-  return a;
-};
 
 beforeAll(async () => {
   global.Hooks = { on: jest.fn(), once: jest.fn(), callAll: jest.fn() };
@@ -47,7 +26,6 @@ beforeAll(async () => {
   };
   global.foundry = { utils: { randomID: () => 'r', deepClone: x => JSON.parse(JSON.stringify(x)) }, applications: { api: {} } };
   global.fromUuidSync = uuid => global.game.actors.find(a => a.uuid == uuid) ?? null;
-  ats = { ...(await import('../attacks/stand-behind-me-taunt.mjs')) };
   spectrum = await import('../../mechanics/characters/spectrum-shifted.mjs');
   registry = (await import('../../mechanics/item-hooks.mjs')).registrySnapshot();
 });
@@ -69,7 +47,8 @@ test('every module registers its Use buttons', () => {
   expect(registry.uses.map(u => u.id)).not.toContain('pr1-warhead-magazines');
   // Overdrive is the Feature's own rules (module/rules/conv10-slA10.test.js).
   expect(registry.uses.map(u => u.id)).not.toContain('pr1-overdrive');
-  expect(Object.keys(registry.chatButtons)).toEqual(expect.arrayContaining(['pr1TauntTest']));
+  // Stand Behind Me!'s taunt card is the Perk's own rules (module/rules/conv18-convA.test.js).
+  expect(Object.keys(registry.chatButtons)).not.toContain('pr1TauntTest');
 });
 
 // Mobile Headquarters is the Feature's own rules: SkillDie (module/rules/conv11-slF11.test.js) and the scene allies'
@@ -79,18 +58,6 @@ test('every module registers its Use buttons', () => {
 // items' own rules (module/rules/conv17-split2.test.js); the Movement / Resistance half too (module/rules/conv5-slA5.test.js).
 
 // Power Flux is the Feature's own Trigger rule (module/rules/conv7-slA7.test.js).
-
-test('Stand Behind Me! blocks an attack on anyone but the taunter', () => {
-  global.game.combat = { id: 'c1', round: 2 };
-  const taunter = actor('playerCharacter', [], {}, { flags: { standBehindMeActive: { combatId: 'c1', round: 2 } } });
-  const foe = actor('npc', [], {}, { flags: { pr1Taunted: { by: taunter.uuid, combatId: 'c1', round: 2, resisted: false } } });
-  global.game.actors = [taunter, foe];
-  const attack = item('weaponEffect');
-  expect(ats.tauntBlocks(foe, attack, [actor('playerCharacter')])).toBe(taunter);
-  expect(ats.tauntBlocks(foe, attack, [taunter])).toBeNull();
-  foe.flags.essence20.pr1Taunted.resisted = true;
-  expect(ats.tauntBlocks(foe, attack, [])).toBeNull();
-});
 
 // Be an Example is its Origin Benefit's own Use rule (rules/conv15-items2.test.js).
 

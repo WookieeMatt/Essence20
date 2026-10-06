@@ -9,8 +9,8 @@ import { writeDoc } from "../shared/relayed-writes.mjs";
  * Skills the attacker is better at - are SkillSubstitution rules on each weapon effect now, scope
  * item, so a vehicle's crew rolling them swaps too.)
  * - The Psycho Weapons' Alternate Effects (Finster's Monster-Matic Cookbook, Table 5-8, p.303):
- *   Axe/Blade "Shove 10ft away (↓)", Sword "Halve Movement values (round up) of target until end of
- *   their next turn", Trident "Disarm target of 1 wielded weapon (↓)". (The Staff's "Trip" rides on
+ *   Axe/Blade a 10ft shove, Sword halving the target's Movement until its next turn ends, Trident
+ *   disarming one weapon. (The Staff's Trip rides on
  *   data1's generic onHitStatus flag; the Slinger's Impaired is the Impaired damage type.)
  */
 
@@ -74,7 +74,7 @@ export async function psychoAlternatePostRoll(actor, results, checkContext, { hi
 registerPostRoll(psychoAlternatePostRoll);
 
 /**
- * "Halve Movement values (round up) of target until end of their next turn" - read off the live
+ * The Sword's halved Movement (rounded up) until the target's next turn ends - read off the live
  * mark (target-riders.mjs's riderMarks, same expiry rules).
  */
 export function halveMovementDerived(actor) {

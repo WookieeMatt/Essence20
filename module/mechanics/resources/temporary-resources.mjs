@@ -4,8 +4,8 @@
  * plus .value, so it can exceed the normal maximum); this file records each grant on the actor
  * and takes it back when its duration ends.
  *
- * Got To Get Tough (GI Joe CRB, Officer, 2nd level, p.85): "This temporary Health lasts for the
- * entire scene, until they take damage, or until you are Defeated." The grant is made by
+ * Got To Get Tough (GI Joe CRB, Officer, 2nd level, p.85): the temporary Health lasts the scene,
+ * until the ally takes damage, or until the Officer is Defeated. The grant is made by
  * items/healing/got-to-get-tough.mjs, which records it here (see the integration patch).
  *
  * Together We Stand (Enigma of Combination) grants through here from its item rule (rules/plugins/resources/temp-resource-step.mjs tempResource).

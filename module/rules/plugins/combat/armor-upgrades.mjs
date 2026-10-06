@@ -28,8 +28,8 @@ export function armorUpgradeBonuses(actor, defenseType) {
     .filter(value => value > 0);
 }
 
-registerTag('self:hasArmorUpgrade', (rest, ctx) => armorUpgradeBonuses(ctx.self, rest).length > 0);
-registerTag('target:hasArmorUpgrade', (rest, ctx) => (ctx.other ? armorUpgradeBonuses(ctx.other, rest).length > 0 : false));
+registerTag('self:hasArmorUpgrade', (rest, ctx) => armorUpgradeBonuses(ctx.self, rest).length > 0, { phrase: ['{who} {has} an armor upgrade to {arg}', '{who} {hasnt} an armor upgrade to {arg}'] });
+registerTag('target:hasArmorUpgrade', (rest, ctx) => (ctx.other ? armorUpgradeBonuses(ctx.other, rest).length > 0 : false), { phrase: ['{who} {has} an armor upgrade to {arg}', '{who} {hasnt} an armor upgrade to {arg}'] });
 
 if (RULE_TYPES.DialogSwitch) {
   RULE_TYPES.DialogSwitch.params.ignoreArmorUpgrades ??= { kind: 'bool' };

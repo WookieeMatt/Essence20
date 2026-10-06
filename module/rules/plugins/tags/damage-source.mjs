@@ -25,7 +25,7 @@ function appliedCard(actor) {
   return globalThis.game?.messages?.get?.(applied.messageId)?.flags?.essence20 ?? null;
 }
 
-registerTag('damage:style', (rest, ctx) => (inDamageCheck(ctx) ? !!rest && String(appliedCard(ctx.self)?.attackStyle ?? '') == rest : null));
+registerTag('damage:style', (rest, ctx) => (inDamageCheck(ctx) ? !!rest && String(appliedCard(ctx.self)?.attackStyle ?? '') == rest : null), { phrase: ['the damage came from an attack with the {arg} style', "the damage didn't come from an attack with the {arg} style"] });
 
 registerTag('damage:elementOrEnergy', (rest, ctx) => {
   if (!inDamageCheck(ctx)) {
@@ -34,4 +34,4 @@ registerTag('damage:elementOrEnergy', (rest, ctx) => {
 
   const traits = appliedCard(ctx.self)?.attackTraits;
   return ELEMENT_TYPES.includes(ctx.damageType) || (Array.isArray(traits) ? traits : []).some(trait => ELEMENT_TRAITS.includes(trait));
-});
+}, { phrase: ['the damage is elemental or energy', "the damage isn't elemental or energy"] });

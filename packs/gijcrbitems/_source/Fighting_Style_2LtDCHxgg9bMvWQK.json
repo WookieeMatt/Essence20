@@ -12,11 +12,12 @@
       {"type":"Defense","label":"Fighting Style: Careful (in cover)","defense":"toughness","amount":2,"when":["rule:data:system.choice=careful","self:status:cover"]},
       {"type":"Defense","label":"Fighting Style: Careful (in cover)","defense":"evasion","amount":2,"when":["rule:data:system.choice=careful","self:status:cover"]},
       {"type":"Defense","label":"Fighting Style: Defense (wearing armor)","defense":"toughness","amount":1,"when":["rule:data:system.choice=defense","self:wearing>=non"]},
-      {"type":"Defense","label":"Fighting Style: Defense (wearing armor)","defense":"evasion","amount":1,"when":["rule:data:system.choice=defense","self:wearing>=non"]}
+      {"type":"Defense","label":"Fighting Style: Defense (wearing armor)","defense":"evasion","amount":1,"when":["rule:data:system.choice=defense","self:wearing>=non"]},
+      {"type":"Trigger","label":"Trigger Happy (Frightened on beating Willpower)","event":"afterRoll","outcome":"any","when":["rule:data:system.choice=triggerHappy","check:multipleTargetsWeapon"],"steps":[{"do":"targetRowsBeating","defense":"willpower"},{"do":"applyCondition","condition":"frightened","to":"targets","until":"endOfNextTurn","untilOf":"recipient"}]}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>On the sheet: choose your style (you can change it later). Akimbo is a Roll Options Dialog switch; Careful, Close Quarters Battle, Defense, Long Shot and Trigger Happy apply on their own.</p>"
+      "notes": "<p>On the sheet: choose your style (you can change it later). Akimbo is a Roll Options Dialog switch; Careful, Close Quarters Battle, Defense, Long Shot and Trigger Happy apply on their own: Trigger Happy leaves each target whose Willpower your Multiple Targets attack's total also reaches Frightened until the end of its next turn.</p>"
     },
     "originalId": "",
     "description": "",

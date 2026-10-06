@@ -1,12 +1,11 @@
 /**
  * Essence damage and Defense damage.
  *
- * Essence damage (GI Joe CRB p.207, TF CRB p.161): "Some attacks and effects don't deal damage to
- * Health, but instead reduce a character's Essence Points." It is what an Essence's current value
+ * Essence damage (GI Joe CRB p.207, TF CRB p.161): some attacks lower Essence rather than Health. It is what an Essence's current value
  * sits below its max - environment-hazards.mjs#applyEssenceDamage takes the point, EMT Crash Course
- * gives it back. This file reads that gap as a number (Headache, WTNV Citizen's Guide p.47: "deal
- * additional Psychic damage equal to your current Essence damage") and heals it (Uninterrupted
- * Break, Quartermaster's Guide p.28: "All allies heal 1 point of Essence damage").
+ * gives it back. This file reads that gap as a number (Headache, WTNV Citizen's Guide p.47: extra
+ * Psychic damage equal to the current Essence damage) and heals it (Uninterrupted Break,
+ * Quartermaster's Guide p.28: allies heal 1 Essence damage).
  *
  * Defense damage is the Transformers version of the crit-rider upgrades - Bewildering "deals 1
  * damage to the target's Cleverness", Maiming to Evasion, Surgical to Toughness, Traumatic to

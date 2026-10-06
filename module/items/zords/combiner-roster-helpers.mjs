@@ -3,6 +3,7 @@
  * Light module - imports nothing heavy (see the extension registry's import-cycle rule).
  */
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
+import { sourceOf } from "../shared/item-lookups.mjs";
 
 const C = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 
@@ -37,8 +38,9 @@ export const ZORD2 = {
   // Transformers
 };
 
-export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
+export { sourceOf };
 
+// Not item-lookups.mjs#itemsOf: a plain array is handed back as-is (that one copies it).
 export function itemsOf(actor) {
   const items = actor?.items;
   if (!items) {

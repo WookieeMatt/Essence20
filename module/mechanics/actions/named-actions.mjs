@@ -31,8 +31,7 @@ import { activateLendAssistance } from "./lend-assistance.mjs";
  *                 the item schema already carries `contingencyTrigger` for the Perks that set
  *                 one, but a generic Contingency has nowhere to put it yet.
  * - useASkill     Rolls whichever skill the player wants, which is what the Skills tab already
- *                 does. Its one mechanical addition - "for every enemy adjacent to you, your Skill
- *                 Test suffers an automatic down 1 shift" - depends on counting adjacent enemies,
+ *                 does. Its one mechanical addition - ↓1 per adjacent enemy - depends on counting adjacent enemies,
  *                 which needs a token on a scene and a reach calculation.
  * - move          Nothing to do: moving the token is the action.
  * - freeAction    Deliberately generic - the catch-all for the printed list of minor interactions
@@ -57,9 +56,8 @@ export const DEFENDING_STATUS = 'defending';
 /**
  * Take the Defend action.
  *
- * "After announcing a Defend action, all attacks against you from adversaries and effects you can
- * see suffer a Snag on their Attack Skill Test. This benefit lasts until the beginning of your
- * next turn." (GI Joe CRB p.196)
+ * Defend (GI Joe CRB p.196): until the defender's next turn, attacks from foes and effects they can
+ * see have a Snag.
  *
  * The Snag itself is applied by the attacker's own roll - dice.mjs#_getAutomaticCombatModifiers
  * reads this status off the target. It is cleared at the start of this actor's next turn by
@@ -84,9 +82,8 @@ async function defend(actor) {
 /**
  * Take the Aim action.
  *
- * "A Ranged weapon-specific Free action is Aiming, which grants a up-1 shift on a single ranged
- * attack test as long as you don't use Movement between your Aim and your attack." (GI Joe CRB
- * p.193)
+ * Aim (GI Joe CRB p.193): a ranged-only Free action giving ↑1 on the next ranged attack, as long as
+ * the aimer doesn't move in between.
  *
  * Three constraints, all of them enforced elsewhere because that is where the information is:
  * the shift is ranged-only and applied by dice.mjs; the aim is spent by the shot (item.mjs#roll);
@@ -102,13 +99,12 @@ async function aim(actor) {
 }
 
 /**
- * Take the Hide action: "you make a Infiltration Skill Test. Your numerical result on this Skill
- * Test sets the Difficulty for other creatures' Alertness Skill Tests to notice you." (GI Joe CRB
- * p.196)
+ * Take the Hide action (GI Joe CRB p.196): an Infiltration test whose total becomes the DIF of
+ * others' Alertness tests to spot the hider.
  *
  * The roll is the whole of it. Nothing stores the result as a live Difficulty, because the same
- * page makes ending it a judgement call - "your Hide benefit ends if you attack, make sufficient
- * noise, move out of cover... or move more than half of your Movement" - and a stored number that
+ * page makes ending it a judgement call - attacking, enough noise, leaving cover or moving more than
+ * half the Movement all end it - and a stored number that
  * silently outlives the cover it was rolled behind is worse than a number on a chat card.
  *
  * @param {Actor} actor
@@ -121,9 +117,8 @@ async function hide(actor) {
 }
 
 /**
- * Take the Search the Area action: "Make an Alertness Skill Test. The GM compares the result of
- * this Skill Test to the Infiltration scores of any hidden foes, or the Difficulty the GM sets for
- * clues, secrets, and so on." (GI Joe CRB p.197)
+ * Take the Search the Area action (GI Joe CRB p.197): an Alertness test the GM compares against
+ * hidden foes' Infiltration or a DIF for clues and secrets.
  *
  * @param {Actor} actor
  * @returns {Promise<Object>}
@@ -165,9 +160,8 @@ async function rollActionSkill(actor, skill) {
 }
 
 /**
- * Take the Sprint action: "The Sprint action is nothing more than a way to cross more ground
- * quickly during your turn. By taking a Standard action to Sprint, you may move up to double
- * your full Movement." (GI Joe CRB p.197)
+ * Take the Sprint action (GI Joe CRB p.197): a Standard action to move up to twice the full
+ * Movement.
  *
  * Nothing moves here - Sprint only raises the distance a Move action is allowed to cover. The
  * allowance itself lives in mechanics/combat/token-movement.mjs, where the drag ruler and the movement

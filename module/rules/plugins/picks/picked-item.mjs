@@ -41,4 +41,9 @@ registerTag('rule:pickedItem', (rest, ctx) => {
 
   const tags = more.join(':').split('&').filter(Boolean);
   return tags.every(tag => evaluateTag(tag, { ...ctx, item }) === true);
-});
+}, { phrase: (arg, w) => {
+  const [key, ...more] = arg.split(':');
+  const tags = more.join(':').split('&').filter(Boolean);
+  const picked = `the ${w.humanize(key).toLowerCase()} you picked`;
+  return tags.length ? [`${picked} is an item where ${w.items(tags)}`, `${picked} isn't an item where ${w.items(tags)}`] : [`you picked a ${w.humanize(key).toLowerCase()}`, `you haven't picked a ${w.humanize(key).toLowerCase()}`];
+} });

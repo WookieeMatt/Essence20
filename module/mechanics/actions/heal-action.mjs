@@ -20,9 +20,8 @@ export const HEAL_ACTION = 'o2Heal';
 export const restoreDif = amount => 5 + (5 * amount);
 
 /**
- * GI Joe CRB p.210: "as a Standard action, Science Skill Tests can restore Health to living
- * creatures, and Technology Skill Tests can restore Health to machines (including robots) if they
- * are a target within your reach." The skills this actor may heal with right now.
+ * GI Joe CRB p.210: a Standard action heals a target within reach - Science for living creatures,
+ * Technology for machines and robots. The skills this actor may heal with right now.
  */
 export function healSkills(actor, { inCombat = !!game.combat } = {}) {
   const skills = ['science', 'technology'];
@@ -101,8 +100,7 @@ export async function healAction(actor) {
     }
 
     await target.toggleStatusEffect?.('poisoned', { active: false });
-    // CureNote rules - Proper Protection: "When you help an ally recover from disease or poison, a successful Skill
-    // Test upgrades to a critical success."
+    // CureNote rules - Proper Protection: helping an ally past disease or poison, a success counts as a Critical.
     const notes = ruleCureNotes(actor);
     const crit = notes ? ` ${notes}` : '';
     return { message: T('O2PoisonCured', { name: actor.name, target: target.name }) + crit };

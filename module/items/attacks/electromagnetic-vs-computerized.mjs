@@ -22,8 +22,8 @@ export function isWorn(upgrade) {
 }
 
 /**
- * GI Joe CRB p.207: Electromagnetic effects "are ↑3 against computers, computerized vehicles,
- * characters with computerized equipment, and robots, but ↓3 against all other targets." dice.mjs
+ * GI Joe CRB p.207: Electromagnetic effects get ↑3 against computers, Computerized vehicles,
+ * characters in computerized gear and robots, ↓3 against everything else. dice.mjs
  * reads only the Computerized vehicle trait, so a character in computerized gear or with cybernetic
  * parts (or a robot) was getting the ↓3.
  */

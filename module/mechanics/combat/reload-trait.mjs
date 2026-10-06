@@ -4,8 +4,8 @@ import { ruleSkipsReload } from "../../rules/plugins/combat/reload-skip.mjs";
 /**
  * Reload (GI Joe CRB, Weapon Effects and Traits, p.147; the identical wording recurs in every
  * core rulebook's own Weapon Traits list, e.g. Transformers CRB, Power Rangers Across the Stars,
- * Welcome to Night Vale Citizen's Guide): "Reloading this weapon is complicated. After firing this
- * weapon, you must spend a Move action to reload it before you can use it again."
+ * Welcome to Night Vale Citizen's Guide): after each shot the weapon needs a Move action to reload
+ * before it can fire again.
  *
  * Modelled as a per-weapon Item flag ('needsReload') rather than a numeric ammo count - RAW never
  * gives a Reload-trait weapon a shot count, just a binary "loaded or not" state. A weapon starts
@@ -62,9 +62,8 @@ export async function clearWeaponReload(weapon) {
 }
 
 /**
- * Burst-Fire (Quartermaster's Guide to Gear p.33): "Weapons with this trait count as pistols for
- * purposes of the Snap Shots General Perk... If fired more than once during the same round, this
- * weapon counts as if it had the Reload trait for the turn." The pistol-classification half isn't
+ * Burst-Fire (Quartermaster's Guide to Gear p.33): counts as a pistol for Snap Shots, and firing it
+ * twice in a round gives it Reload for that turn. The pistol-classification half isn't
  * built - this codebase has never automated Snap Shots itself (no PERK_ID constant for it exists
  * anywhere), so there is nothing to plug that classification into yet.
  *

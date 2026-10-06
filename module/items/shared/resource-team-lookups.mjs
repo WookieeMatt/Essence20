@@ -12,13 +12,11 @@ const C = pack => `Compendium.essence20.${pack}.Item.`;
 
 // (Motor Pool Connections, Beast Mode, the three Mutations and Camper went: nothing read their entries.)
 export const IDS = {
-  bodyOfEnergy: `${C('across_the_stars')}L2X2rIz2frulSajQ`,
   darkEnergon: `${C('decepticon_directive')}MO8ijgRUmLXcYnbL`,
   primalEnergon: `${C('decepticon_directive')}1mTrbliJVJvIl1qk`,
   redEnergon: `${C('decepticon_directive')}EzAE0hdxbgKtffKB`,
   synthEn: `${C('decepticon_directive')}SgYkXSFLiLT8hjMP`,
   addictedDarkEnergon: `${C('decepticon_directive')}e3c7wuCA7JQS7rTA`,
-  weImprovise: `${C('transformers_one_sourcebook')}qnRFb2A0sLpSg2sL`,
   circleOfMagicalFriends: `${C('mlp_crb')}Evg7HVLPles0X9DM`,
 };
 

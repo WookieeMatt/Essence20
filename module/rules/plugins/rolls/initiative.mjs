@@ -105,8 +105,8 @@ registerRef('initiative', (key, scope) => {
   return initiativeOf(actor) ?? 0;
 });
 
-registerTag('self:initiative', (rest, ctx) => (globalThis.game?.combat ? initiativeOf(ctx.self) !== null : false));
-registerTag('target:initiative', (rest, ctx) => (ctx.other && globalThis.game?.combat ? initiativeOf(ctx.other) !== null : false));
+registerTag('self:initiative', (rest, ctx) => (globalThis.game?.combat ? initiativeOf(ctx.self) !== null : false), { phrase: ['{who} {has} rolled Initiative', '{who} {havent} rolled Initiative'] });
+registerTag('target:initiative', (rest, ctx) => (ctx.other && globalThis.game?.combat ? initiativeOf(ctx.other) !== null : false), { phrase: ['{who} {has} rolled Initiative', '{who} {havent} rolled Initiative'] });
 
 registerRecipient('protectedTarget', (match, ctx) => {
   const uuid = ctx.actor?.getFlag?.('essence20', 'protectedTargetUuid') ?? ctx.actor?.flags?.essence20?.protectedTargetUuid;

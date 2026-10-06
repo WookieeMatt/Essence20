@@ -6,19 +6,12 @@ import { canSpendForActor, getStoryPointsActor, spendForActor } from "../../mech
 /**
  * Friendship Circle (MLP CRB, every Spirit Role at 1st level, p.73/77/81):
  *
- * > "Once per scene, a pony in your group can spend a Friendship Point as a Standard action to
- * > form a Friendship Circle. All other ponies in your group can spend a Friendship Point to
- * > immediately move up to their current movement to get within 30 feet of the pony who formed
- * > the Friendship Circle. It's OK if the Friendship Circle isn't actually a circle. Everypony
- * > who spent a Friendship point to join the Friendship Circle shares the following pool of
- * > bonuses: ↑1 on a Skill Test per Pony in the Friendship Circle; Heal 1 damage per Pony in
- * > the Friendship Circle; Lend Assistance to anypony in the Friendship Circle as a Free action
- * > once per pony in the Friendship Circle. Everypony can take from this pool of bonuses
- * > equally, or the bonuses can be split unevenly. These bonuses last until the end of the pony
- * > who formed the Friendship Circle's next turn."
+ * In short: once a scene a pony spends a Friendship Point and a Standard action to form it; the
+ * others may each pay a point to move up to their Movement to within 30 feet and join. Members share
+ * three pools, each one per pony - ↑1 on a Skill Test, 1 Health healed, a Free-action Lend Assistance
+ * - split however they like, until the end of the former's next turn.
  *
- * Best Friendship Circle (Spirit of Loyalty, 17th level, p.91): "your group can form a
- * Friendship Circle twice per scene."
+ * Best Friendship Circle (Spirit of Loyalty, 17th level, p.91): twice a scene instead.
  *
  * The Circle is a thing the GROUP has, so it lives on the primary Party actor - the same
  * document that holds the Friendship Points it is paid from - as a flag every client can read and
@@ -30,9 +23,9 @@ import { canSpendForActor, getStoryPointsActor, spendForActor } from "../../mech
  *    and the three pools are all real.
  *  - The Standard action to form it is announced, not charged: this system's action economy
  *    charges actions where the sheet's own controls take them, and a tracker button is not one.
- *  - "move up to their current movement to get within 30 feet" is the joiner's own business.
+ *  - The joiner's move to within 30 feet is their own business.
  *    Tokens are not moved and distance is not checked; the chat line says what they did.
- *  - "until the end of the pony who formed the Circle's next turn" IS enforced in combat, from
+ *  - The end-of-the-former's-next-turn limit IS enforced in combat, from
  *    the turn-end hook in essence20.mjs; outside combat the Circle ends with the scene.
  *
  * The pure decisions - what forming and joining and drawing do to the record, when it has

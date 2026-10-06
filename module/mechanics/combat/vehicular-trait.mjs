@@ -2,8 +2,7 @@ import { getMode, isBlocking } from "../actions/action-economy.mjs";
 
 /**
  * Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148; identical wording recurs in every core
- * rulebook's own Weapon Traits list): "This weapon is too unwieldy for a soldier and can only be
- * mounted on a vehicle."
+ * rulebook's own Weapon Traits list): too unwieldy for a soldier; vehicle-mounted only.
  *
  * An equip/attack ELIGIBILITY restriction (which actor TYPE may use this weapon at all), not a
  * combat modifier - so it hangs off the same world-setting strictness this system already uses

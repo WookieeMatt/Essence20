@@ -664,7 +664,8 @@ describe('Psychological Sway', () => {
 });
 
 describe('Perfect Disguise', () => {
-  test('switched on once per encounter (free to switch off); Edge on attacks; ended by being seen attacking', async () => {
+  // Round 18 (convC, book check): once per mission, and the end after an attack is asked (rules/conv18-convC.test.js).
+  test('switched on once per mission (free to switch off); Edge on attacks; ended by being seen attacking', async () => {
     const spy = makeActor('Spy', FILES.perfectDisguise);
     global.game.combat = { id: 'c1', started: true, round: 1, turn: 0, turns: [], combatants: { contents: [] } };
     const perk = itemNamed(spy, 'Perfect Disguise');
@@ -677,7 +678,7 @@ describe('Perfect Disguise', () => {
     expect(useAvailable(perk, perk.system.rules[on], on)).toBe(false);
     spy.flags.essence20.perfectDisguiseActive = true;
     const foe = makeActor('Foe', [], { disposition: -1 });
-    await fireTriggers(spy, 'afterRoll', { roll: { item: attackOf({ id: 'w' }), isAttack: true, targetCount: 1 }, outcome: 'success', facts: { results: [{ success: true, targetUuid: foe.uuid }] } });
+    await fireTriggers(spy, 'afterRoll', { roll: { item: attackOf({ id: 'w' }), isAttack: true, targetCount: 1 }, outcome: 'success', facts: { results: [{ success: true, targetUuid: foe.uuid }] }, prompt: async () => true });
     expect(spy.flags.essence20.perfectDisguiseActive).toBe(false);
   });
 });

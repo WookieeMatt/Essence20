@@ -44,8 +44,8 @@ registerApplyDialog(async (actor, options, ctx = {}) => {
 });
 
 /*
- * Hidden In Plain Sight (Transformers CRB, Infiltrator Focus, 5th level, p.85): "you can Hide, even
- * if you do not have cover, darkness, or another effect that limits the vision of observers." The
+ * Hidden In Plain Sight (Transformers CRB, Infiltrator Focus, 5th level, p.85): Hide works without cover,
+ * darkness or anything else blocking observers' view. The
  * Hide action above never checks for cover, so this is always satisfied; nothing to gate.
  *
  * Attacking while Hidden ends it, then fires brokeHiding with the attack's targets - Pop Out's Trigger

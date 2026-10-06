@@ -2,7 +2,6 @@ import { jest } from '@jest/globals';
 import { canUsePower, onPowerUse } from './power-use.mjs';
 
 const SPEED_BOOST_ID = "Compendium.essence20.pr_crb.Item.CDbaCheOK2rUsqli";
-const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
 
 // jest.setup.js's own global.Roll stub has no .evaluate() (only used by tests that don't roll
 // dice) - this file keeps a real fake with one for the Powers that roll.
@@ -43,30 +42,7 @@ describe('onPowerUse', () => {
 
   // (Chrono-File Access is a powerUsed Trigger on the Power - rules/conv17-perm.test.js.)
 
-  test('recognizes Zeo Crystal Boost, prompts for an option, activates it, and posts a chat card', async () => {
-    const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
-    const actor = { ...makeActor(), getFlag: jest.fn(() => undefined), setFlag: jest.fn() };
-    global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('morpher') };
-    const item = { name: 'Zeo Crystal Boost', flags: { core: { sourceId: ZEO_CRYSTAL_BOOST_ID } } };
-
-    await onPowerUse(actor, item);
-
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'zeoCrystalBoostOption', 'morpher');
-    expect(global.ChatMessage.create).toHaveBeenCalled();
-  });
-
-  test('recognizes Zeo Crystal Boost but does nothing once already used this scene', async () => {
-    const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
-    const actor = { ...makeActor(), getFlag: jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 })), setFlag: jest.fn() };
-    global.game.combat = { id: 'combat1' };
-    const item = { name: 'Zeo Crystal Boost', flags: { core: { sourceId: ZEO_CRYSTAL_BOOST_ID } } };
-
-    await onPowerUse(actor, item);
-
-    expect(actor.setFlag).not.toHaveBeenCalled();
-    expect(global.ChatMessage.create).not.toHaveBeenCalled();
-    delete global.game.combat;
-  });
+  // (Zeo Crystal Boost is its Power's own PowerGate / powerUsed Trigger rules - rules/conv18-convB.test.js.)
 
   // Bug fix 2026-10-06: Codename Jolt used to toggle Augmented Combat's own flag, so switching one switched both.
   test('recognizes Monster... Grow!, toggles it on the current target, and posts a chat card', async () => {
@@ -105,17 +81,15 @@ describe('canUsePower', () => {
     expect(canUsePower(item)).toBe(true);
   });
 
-  test("delegates to canUseZeoCrystalBoost for Zeo Crystal Boost", () => {
-    const actor = { getFlag: jest.fn(() => undefined) };
+  test("asks the Power's own PowerGate rules", () => {
+    const actor = { flags: { essence20: {} } };
     const item = {
-      type: 'power', system: { canActivate: true }, parent: actor,
-      flags: { core: { sourceId: ZEO_CRYSTAL_BOOST_ID } },
+      type: 'power', system: { canActivate: true, rules: [{ type: 'PowerGate', when: ['not:self:data:flags.essence20.spent'] }] }, parent: actor,
     };
-    global.game.combat = { id: 'combat1' };
 
     expect(canUsePower(item)).toBe(true);
 
-    actor.getFlag = jest.fn(() => ({ epoch: 1, window: 'encounter', count: 1 }));
+    actor.flags.essence20.spent = true;
     expect(canUsePower(item)).toBe(false);
   });
 });

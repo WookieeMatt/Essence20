@@ -3,6 +3,7 @@ import { isItemActive, ruleStacks, rulesOf } from "../../index.mjs";
 import { rulesSourceOf } from "../../inherit.mjs";
 import { contextFor, evaluate, interpolate } from "../../predicate.mjs";
 import { RULE_TYPES } from "../../types.mjs";
+import { itemsOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * ItemModifier `stage: "item"` (round 15, systems - docs/rules-batches/slSystems15.md): the change is made inside the
@@ -87,11 +88,6 @@ const OPS = ['add', 'set', 'multiply', 'max', 'min', 'step'];
 
     return errors;
   };
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  return Array.isArray(items?.contents) ? items.contents : items && typeof items[Symbol.iterator] == 'function' ? [...items] : [];
 }
 
 /** The actor's live stage-item ItemModifier rules, by priority (fresh: items prepare before the actor's rule index). */

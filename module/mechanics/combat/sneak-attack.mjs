@@ -1,19 +1,16 @@
-import { isPerfectDisguiseActive } from "../../items/social/perfect-disguise.mjs";
-const PERFECT_DISGUISE_ID = "Compendium.essence20.gi_joe_crb.Item.ELktMVNYsiBPTX2c";
-import { actorHasPerk, findPerk, hasUsedThisRound, markUsedThisRound } from "../characters/perks.mjs";
+import { findPerk, hasUsedThisRound, markUsedThisRound } from "../characters/perks.mjs";
 import { roleValueChange } from "../../sheet-handlers/role-handler.mjs";
 import { canWriteStoryPoints, hasStoryPointsAvailable, requestStoryPointSpend } from "../resources/story-points.mjs";
 import { isKnownOutsideEnvironmentOfExpertise, meetsEnvironmentOfExpertise } from "../world/environmental-expertise.mjs";
 // Every Trick in the Book's "no sneak attack damage" is a SneakAttackImmunity rule on its pack item.
 import { ruleSneakAttackImmune } from "../../rules/plugins/combat/immunity-readers.mjs";
 // Everything's a Weapon, Never Heard It Coming, Focused Charge and Sudden Strike are SneakAttackGrant rules on their pack items.
-import { anyCircumstanceGrant, grantStoryPointCost, recordGrantUse, sneakAttackWeaponGrants } from "../../rules/plugins/combat/sneak-attack-grant.mjs";
+import { anyCircumstanceGrant, bypassGrant, grantStoryPointCost, recordGrantUse, sneakAttackWeaponGrants } from "../../rules/plugins/combat/sneak-attack-grant.mjs";
 
 /**
  * GI Joe CRB p.72 - the Commando Role's Sneak Attack Perk:
- * "Once per turn, when using a silent weapon to attack a target within 20 feet, and you have an
- * Edge on the attack or an ally also within 20 feet of the target, you deal additional damage
- * once per turn. The amount of extra damage is shown on the Commando Role chart."
+ * once a turn, a silent-weapon attack on a target within 20 feet deals extra damage (per the
+ * Commando Role table) when the attack has Edge or an ally is also within 20 feet of the target.
  *
  * The damage amount itself already lives on the Commando role's granted "Sneak Attack Damage"
  * rolePoints Item (bonus.type: "damageBonus", the correct per-level progression already modeled
@@ -38,8 +35,8 @@ const SNEAK_ATTACK_DAMAGE_ID = `${GI_JOE_CRB}Mrmbqza0XxVpKj6U`;
 
 // The "Sneak Attack" Perk itself (as opposed to Sneak Attack Damage above) is flavor text with no
 // mechanical effect of its own - EXCEPT that this exact compendium Item is shared verbatim by both
-// Commando's own base grant and Ranger/Predator's Focus grant (p.93: "you deal additional damage
-// on a successful hit equal to the sneak attack of a Commando of your Ranger level"). Since a
+// Commando's own base grant and Ranger/Predator's Focus grant (p.93: extra damage on a hit as for
+// a Commando of the Ranger's level). Since a
 // Ranger has no Sneak Attack Damage Role Points Item of their own (their Role Points resource is
 // Adaptation Points, unrelated), hasPredatorSneakAttack() below has to distinguish "granted via
 // Predator" from "granted via Commando" by which parent Item actually granted this actor's own
@@ -68,8 +65,8 @@ export function isSneakAttackDamageItem(rolePoints) {
 
 /**
  * The actor's own current Sneak Attack damage bonus, for Perks that reference it OUTSIDE the
- * normal weaponEffect damage-bonus flow (e.g. Sabotage, Cobra Codex p.83: "Your Technology Skill
- * Tests to disable machines gain shiftUp equal to your Sneak Attack damage"). Reads the exact same
+ * normal weaponEffect damage-bonus flow (e.g. Sabotage, Cobra Codex p.83: Technology
+ * tests to disable machines get ↑ equal to the Sneak Attack damage). Reads the exact same
  * system.bonus.value field dice.mjs's own weaponEffect flow already reads for the ordinary Sneak
  * Attack damage bonus, so this always agrees with whatever the player sees on their own sheet -
  * not a separate startingValue/increaseLevels computation of its own.
@@ -229,13 +226,12 @@ export function checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack, {
     return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonEligible'), viaSuddenStrike: true };
   }
 
-  // Perfect Disguise (GI Joe CRB, Spy, 10th level, p.76): "Your attacks against targets fooled by
-  // your imitation gain an Edge and are sneak attacks." Still once a round, and never against a
-  // target that can't take sneak attack damage at all.
+  // A SneakAttackGrant {bypass} rule (Perfect Disguise while the disguise is on): a sneak attack whatever the weapon,
+  // range, Edge or allies. Still once a round, and never against a target that can't take sneak attack damage at all.
+  const bypass = bypassGrant(actor, weaponEffect);
   const fooledTarget = game.user?.targets?.first?.()?.actor;
-  if (isPerfectDisguiseActive(actor) && actorHasPerk(actor, PERFECT_DISGUISE_ID)
-    && !(fooledTarget && ruleSneakAttackImmune(fooledTarget)) && !hasUsedThisRound(actor, SNEAK_ATTACK_ROUND_FLAG)) {
-    return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonDisguise') };
+  if (bypass && !(fooledTarget && ruleSneakAttackImmune(fooledTarget)) && !hasUsedThisRound(actor, SNEAK_ATTACK_ROUND_FLAG)) {
+    return { eligible: true, reason: game.i18n.localize(String(bypass.rule.reason || 'E20.SneakAttackReasonEligible')) };
   }
 
   const weapon = _getParentWeapon(actor, weaponEffect);
@@ -290,8 +286,7 @@ export function hasPredatorSneakAttack(actor) {
 }
 
 /**
- * "deal additional damage on a successful hit equal to the sneak attack of a Commando of your
- * Ranger level" (p.93) - the exact same progression as Sneak Attack Damage's own Role Points table
+ * Predator's Sneak Attack: extra damage on a hit as for a Commando of the Ranger's level (p.93) - the exact same progression as Sneak Attack Damage's own Role Points table
  * (startingValue 1, +1 at each of PREDATOR_SNEAK_ATTACK_LEVELS), computed directly off the
  * Ranger's own level via the same roleValueChange() helper _prepareHealth/_prepareDefenses already
  * use for every other Role Points-style level table, since a Ranger has no Sneak Attack Damage

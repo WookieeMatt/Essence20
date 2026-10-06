@@ -84,7 +84,7 @@ registerTag('form', (rest, ctx) => {
   }
 
   return null;
-}, { family: 'self', param: 'formTag' });
+}, { family: 'self', param: 'formTag', phrase: arg => ({ any: ['a Form is active', 'no Form is active'], active: ['this Form is active', "this Form isn't active"] }[arg] ?? null) });
 registerStep('formStart', async (step, ctx) => {
   const { activateForm } = await import("../../../items/forms/ranger-form-perks.mjs");
   const uuid = sourceOf(ctx.item);

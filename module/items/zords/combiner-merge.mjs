@@ -1,49 +1,39 @@
 /**
  * Merging into, and breaking out of, a Transformers Combiner form (The Enigma of Combination).
  *
- * Merging (p.43): "Matched Combiners: Each member of a Combiner duo or trio must spend 2 Energon
- * Points and a Standard action to begin the merging process. If, at the end of the round, all
- * component members are within Reach of at least one other component member, they begin the next
- * round in their combined form" - Gestalt Combiners the same at 3 Energon Points. "Outside of
- * combat, the characters need only spend the Energon Points listed." "NPCs: If one or more
- * Combiner-capable PCs merge with Combiner-capable NPCs, the PCs must spend a Story Point for each
- * NPC they are combining with (in addition to the normal Energon Point cost) each time they
- * combine."
+ * Merging (p.43), in short: each Matched Combiner member pays 2 Energon Points and a Standard action
+ * (Gestalt: 3); if every member ends the round within Reach of another, they start the next round
+ * combined. Out of combat only the Energon is paid. PCs merging with NPCs also pay a Story Point per
+ * NPC each time.
  *
  * A Use button on the Gestalt Combiner / Matched Combiner / Universal Component Perk charges all of
  * that and records the member as pending on the Combiner form (flags.essence20.zord2Merge); the GM
  * client checks Reach when the next round starts (the end of the merging round) and links everyone
  * into system.actors, adding what they spent to energonSpentToMerge (which already drives the form's
- * "half the number of Energon Points spent" pool in actor.mjs).
+ * half-of-what-was-spent pool in actor.mjs).
  *
- * - Efficient Combination (Component Ace, 3rd level, p.34): "it costs you only a Free action and 1
- *   Energon Point to become part of a Combiner form."
- * - Universal Component (General Perk, p.41): "You do not need to spend a Story Point to merge...
- *   You must still spend the Energon Points and Standard action to merge."
- * - Universal Receptors (Combiner feature, p.43): "When merging with Combiner-capable NPCs, you and
- *   your allies spend 1 fewer Story Point (to a minimum of 0)."
- * - Macro-Magnetic Linkage (armor upgrade, p.54): "Doubles your Reach for calculating how far you
- *   can be from another component being to merge into a combined form."
- * - Invigorating Connection (Component Ace, 6th level, p.34): "at the end of the round where you
- *   successfully merge into some kind of Combiner form, all component members of the Combiner form
- *   regain 1 Health. Only 1 Health can be regained in this way, no matter how many component
- *   members might possess this Focus Perk."
+ * - Efficient Combination (Component Ace, 3rd level, p.34): joining costs only a Free action and 1
+ *   Energon Point.
+ * - Universal Component (General Perk, p.41): no Story Point to merge; the Energon and Standard
+ *   action are still paid.
+ * - Universal Receptors (Combiner feature, p.43): merging with NPCs costs the group one Story Point
+ *   less (not below 0).
+ * - Macro-Magnetic Linkage (armor upgrade, p.54): Reach counts double for how far apart merging
+ *   components may be.
+ * - Invigorating Connection (Component Ace, 6th level, p.34): at the end of a successful merging
+ *   round every component regains 1 Health - once, however many hold the Perk.
  *
- * Breaking apart (p.45): "When more than half of a Combiner form's component members are no longer
- * active, the Combiner is Defeated and breaks apart into its component members, each falling Prone
- * within the space and Reach of the Defeated Combiner... all Energon Points remaining in a Combiner
- * form's pool are lost when it breaks apart!" Safe Release (Combiner feature, p.42): "When you are
- * forced to leave a Combiner form, no matter the reason, you do so with at least 1 Health... only
- * applies to Combiner forms of Gigantic Size or larger."
+ * Breaking apart (p.45): with more than half its components out of action, the Combiner is Defeated
+ * and splits, each component Prone within its space and Reach, and the form's leftover Energon is
+ * lost. Safe Release (Combiner feature, p.42): a forced exit always leaves at least 1 Health; Gigantic
+ * forms and up only.
  *
- * Core Body (Combiner feature, p.42): "When merged into your Combiner form, double your base Health
- * to calculate the component Health values of the combined form. This Combiner feature can only
- * apply to Combiner forms of Gigantic Size or larger." actor.mjs skipped it for Combiners; added
+ * Core Body (Combiner feature, p.42): base Health counts double for the component's share of the
+ * combined form; Gigantic forms and up only. actor.mjs skipped it for Combiners; added
  * here in derived data the same way _prepareMegaformZordData doubles a Megazord part's share.
  *
- * Gestalt Hunter (General Perk, p.39): "Instead of suffering Snag to target a specific component in
- * a Combined Form, you suffer ↓1." The base rule (p.44: "an attacker that tries to focus on one
- * component member suffers Snag on the attack") is a Roll Options Dialog checkbox whenever the
+ * Gestalt Hunter (General Perk, p.39): targeting one component of a Combined Form costs ↓1 instead of
+ * a Snag. The base rule (p.44: a Snag for singling out one component) is a Roll Options Dialog checkbox whenever the
  * target is a Megaform.
  */
 import {

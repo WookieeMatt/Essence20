@@ -1,8 +1,6 @@
 /**
  * GI Joe CRB p.94 - the Renegade Role's signature Reckless Abandon Role Points Item:
- * "While acting with Reckless Abandon, you gain the following benefits as long as you are
- * wearing light armor or no armor: You gain Upshift 2 on all Strength Skill Tests. You gain
- * Bonus Health as shown on the Role chart."
+ * while active and in light or no armor, ↑2 on Strength tests and bonus Health from the Role table.
  *
  * The Bonus Health half, the per-day Uses resource pool, and the Active/Activatable toggle
  * itself are ALL already fully generic - Reckless Abandon is an ordinary `healthBonus` Role
@@ -10,7 +8,7 @@
  * folds an active healthBonus grant's per-level value into health.max, exactly the same way
  * defenseBonus Role Points already worked before Personal Shield's own "already built" correction
  * this session. Only the conditional Strength Skill Test upshift below needed new code - nothing
- * generic reads "this Essence, while this specific Role Points item is Active, gated on armor."
+ * generic reads an Essence while one specific Role Points item is Active, gated on armor.
  *
  * Correction: this used to add the bonus as a flat +2 to the roll's numeric modifier instead of
  * 2 upshifts - the PDF's own up-shift glyph is lost by plain-text extraction (renders as blank

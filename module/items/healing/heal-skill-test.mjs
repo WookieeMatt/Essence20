@@ -1,8 +1,7 @@
 /**
  * Roll-a-Skill-Test-then-heal/Repair-by-the-chosen-amount primitive (Core Rules Combat chapter,
- * p.209-210): "as a Standard action, Science Skill Tests can restore Health to living creatures,
- * and Technology Skill Tests can restore Health to machines (including Cybertronians)... The DIF
- * of a Skill Test to restore Health is equal to 5 + 5 per Health you want to restore."
+ * p.209-210): a Standard action - Science heals the living, Technology repairs machines and
+ * Cybertronians - at DIF 5 + 5 per Health restored.
  *
  * This base mechanic already exists three times over, copy-pasted per-Perk with no shared code
  * (items/healing/i-ve-got-you.mjs, items/healing/regeneration.mjs, items/healing/mind-over-matter.mjs each have their

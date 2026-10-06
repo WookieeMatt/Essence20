@@ -6,11 +6,9 @@ import { T } from "../shared/item-lang.mjs";
 
 export const MIND_BEAM = "Compendium.essence20.mlp_crb.Item.gF8otV8Ag9axRp2Z";
 
-// Mind Beam (MLP CRB p.139-140): "When you Master Mind Beam, pick one of the following effects: Calm,
-// Confuse, Frighten, Impair, or Stunned. This is the default effect... You may use any of the other
-// effects of this spell instead but doing so increases the cost by ↓1." 3 rounds. "Calm: ... Social
-// Skill Tests against them gain ↑2. This effect breaks if they are harmed." "Confused: The target
-// forgets what they were doing and moves at random... They will not attack or harm other creatures."
+// Mind Beam (MLP CRB p.139-140): mastering it picks a default effect (Calm, Confuse, Frighten, Impair
+// or Stunned); the others cost ↓1 more. 3 rounds. Calm: ↑2 on Social tests against the target, broken
+// by harm. Confused: the target wanders at random and attacks no one.
 globalThis.Hooks?.once('setup', () => {
   const list = CONFIG.statusEffects;
   if (!Array.isArray(list)) {

@@ -1,7 +1,6 @@
 /**
- * Power Adaptation (Across the Stars, Silver Ranger, 9th/18th level, p.57): "Choose one of the
- * following improvements on Table 2-13: Power Adaptations to your Morphed form; each requires
- * Personal Power to activate." Unlike Grid Surge (a Use rule on its item), which picks fresh from
+ * Power Adaptation (Across the Stars, Silver Ranger, 9th/18th level, p.57): one Morphed-form
+ * improvement from Table 2-13, each switched on with Personal Power. Unlike Grid Surge (a Use rule on its item), which picks fresh from
  * every option on each use, this Perk is picked ONCE per instance (permanently, at level-up,
  * via the new `powerAdaptation` choiceType in sheet-handlers/perk-handler.mjs#setPerkValues,
  * recorded as this Perk item's own `system.choice`) - the player gets to activate/deactivate
@@ -10,8 +9,7 @@
  * Ranger pick this Perk twice (9th and 18th level), typically choosing two different abilities.
  *
  * All five named options are offered in the choice picker (even Fast Trigger, which has no
- * mechanical effect here) - the same "the Perk still exists and the resource still gets spent even
- * when the effect itself isn't automated" idiom Whatever Helps/Personal Sacrifice's own unautomated
+ * mechanical effect here) - the same keep-the-Perk-and-its-cost-even-when-unautomated idiom Whatever Helps/Personal Sacrifice's own unautomated
  * halves already established, rather than hiding an otherwise-legal RAW choice.
  *
  * Three options toggle an ongoing effect on/off (same on/off-switch shape as Power Boost -

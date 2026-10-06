@@ -34,7 +34,7 @@ export class Essence20PartyActorSheet extends Essence20BaseActorSheet {
         { id: "roster", group: 'primary', label: "E20.TabRoster" },
         { id: "requisition", group: 'primary', label: "E20.TabRequisition" },
         { id: "missionCritical", group: 'primary', label: "E20.TabMissionCritical" },
-        { id: "effects", group: 'primary', label: "E20.TabEffects" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
         { id: "notes", group: 'primary', label: "E20.TabNotes" },
       ],
       initial: "roster",

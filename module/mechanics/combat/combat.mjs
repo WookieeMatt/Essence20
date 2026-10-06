@@ -117,8 +117,7 @@ export function getOwnedZord(pilotActor) {
 export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignoreArmorPoints = 0, ignoreShield = false } = {}) {
   const defense = actor.system.defenses?.[defenseType];
 
-  // Responsive (GI Joe CRB, Vehicle Trait): "The vehicle can use the driver's Evasion against
-  // attacks instead of its own." A driver-value substitution like the Willpower/Cleverness
+  // Responsive (GI Joe CRB, Vehicle Trait): the vehicle may defend with its driver's Evasion. A driver-value substitution like the Willpower/Cleverness
   // usesDrivers redirect just below, but scoped to Evasion specifically and gated on this one
   // Vehicle Trait rather than being universal - only kicks in with an actual driver seated; RAW
   // has nothing to substitute without one, so this falls through to the vehicle's own normal
@@ -136,7 +135,7 @@ export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignor
       return getDefenseValue(driver, defenseType, { ignoreArmor, ignoreArmorPoints, ignoreShield });
     }
 
-    // DriverlessEssence rules (Relic Key's "a default Smarts and Social of 3 when ... no crew is currently driving"):
+    // DriverlessEssence rules (Relic Key's Smarts and Social of 3 while nobody drives):
     // run through the same base + essence + bonus + armor + shield shape _prepareDefenses() uses (this Defense's own
     // fields are still real and GM-editable even while unpiloted), substituting the rule's Essence for the missing one.
     const driverlessEssence = ruleDriverlessEssence(actor);
@@ -156,9 +155,8 @@ export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignor
 
   let value = defense?.total ?? defense?.value ?? 0;
 
-  // Ice Flechettes (Finster's Monster-Matic Cookbook, Path of Frost, 9th level, p.293): "On a
-  // Critical Success, the target loses all Defense bonuses provided by armor until the end of
-  // their next turn." Read live off the target's own 'armorStripped' status (applied via
+  // Ice Flechettes (Finster's Monster-Matic Cookbook, Path of Frost, 9th level, p.293): a Critical
+  // Success strips the target's armor Defense bonuses until the end of its next turn. Read live off the target's own 'armorStripped' status (applied via
   // applyTimedCondition, see dice.mjs's own isIceFlechettesAttempt comment) rather than a passed-
   // in option, since this has to apply to every subsequent roll against the target regardless of
   // who's attacking or whether they declared ignoreArmor themselves - same forced-recompute shape
@@ -219,9 +217,8 @@ export function getEffectiveLevel(actor) {
  * "Skill Ranks" - a number a few General Perks scale off of (Bulked Up Frame, Tactical
  * Gymnastics, both General Hawk's Personnel Files, p.174/177) that isn't tracked as its own field
  * anywhere in this system, but is fully derivable from data already on the actor. The GI Joe CRB's
- * own worked example makes the formula explicit: "if you have Brawn (Endurance) +d6*, you gain a
- * +4 deflective bonus to Toughness because you have 4 Skill Ranks in Brawn (three for Skill Die
- * and one for a Specialization)" - d20 (the untrained baseline) sits 3 rungs above d6 on
+ * own worked example makes the formula explicit: a Specialized d6 Brawn is 4 Ranks (three for the
+ * die, one for the Specialization), so +4 deflective Toughness - d20 (the untrained baseline) sits 3 rungs above d6 on
  * E20.skillShiftList, and the Specialization itself adds a 4th. Reuses the same
  * skillShiftList.indexOf delta this project's whole shift-substitution family (Cunning Plan, Ever
  * Vigilant, etc.) already computes shift differences with.
@@ -246,8 +243,8 @@ export function getSkillRanks(actor, skill) {
 
 /**
  * Applies damage to an actor, zeroing it out first if the actor is Immune to the given damage
- * type. Resistance does NOT reduce damage here (p.170: "that means that any form of that damage
- * always has a Snag when rolling tests to apply to the creature or object" - the halved-damage
+ * type. Resistance does NOT reduce damage here (p.170: tests to apply a resisted damage type always
+ * have a Snag - the halved-damage
  * clause only covers the no-roll-involved case, which never applies to this system's automated
  * attack/check pipeline, where the Snag is instead applied to the attack roll itself by
  * Dice#_getAutomaticCombatModifiers). Once a Resistant target is actually hit, the damage lands
@@ -337,7 +334,7 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
       await fireTriggers(actor, 'takesDamage', { damage: { amount, damageType }, roll: { damageType, damageAmount: amount } });
     }
 
-    // Stun (damage type): "the target is denied a Move action for the listed number of turns" -
+    // Stun (damage type): the target loses its Move action for that many turns -
     // unlike the Defeated toggle below, this one IS accurately turned back off once it should be
     // (see healStunAtTurnStart's own comment), since Stun's own value literally counts down the
     // remaining denied turns - there's no separate duration to lose track of here, just this same
@@ -349,8 +346,8 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
       await actor.toggleStatusEffect('cantTakeMoveActions', { active: true });
     }
 
-    // Stun (damage type): "if a creature suffers an amount of total Stun equal to the amount of
-    // Health the creature has left, they fall unconscious, Defeated." Compared against the
+    // Stun (damage type): total Stun reaching the creature's remaining Health knocks it out, Defeated.
+    // Compared against the
     // actor's own current Health (Stun never reduces Health itself, see the accumulator comment
     // above) right after the new total lands. Toggled ON only - same "grant, don't auto-revoke"
     // idiom this system already applies to every other status a Perk applies (Lock Down's
@@ -428,7 +425,7 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     await onOwnerDefeated(actor);
   }
 
-  // Powermaster: "If you are hit by Energy or Laser damage, the module regains 1 Energon Point"
+  // Powermaster: an Energy or Laser hit puts 1 Energon Point back in the module
   // (mechanics/companions/bonded-partners.mjs).
   if (amount > 0) {
     await onBondedHit(actor, damageType);

@@ -1222,24 +1222,7 @@ describe('Smashmouth Offense', () => {
   });
 });
 
-describe('Stand Behind Me!', () => {
-  test("1 Personal Power stamps the taunt the taunt reader keys on (this combat's round; nulls out of combat)", async () => {
-    const ranger = makeActor('Ranger', FILES.standBehindMe, { system: { isMorphed: true } });
-    scene(ranger);
-    const item = itemNamed(ranger, 'Stand Behind Me!');
-    global.game.combat = { id: 'c1', started: true, round: 3, turn: 1, turns: [], combatants: { contents: [] } };
-    await runUse(item, pay);
-    expect(ranger.system.powers.personal.value).toBe(2);
-    expect(ranger.flags.essence20.standBehindMeActive).toEqual({ combatId: 'c1', round: 3, turn: 1 });
-    const { tauntLive } = await import('../items/attacks/stand-behind-me-taunt.mjs');
-    expect(tauntLive(ranger.flags.essence20.standBehindMeActive)).toBe(true);
-    global.game.combat = null;
-    await runUse(item, pay);
-    expect(ranger.flags.essence20.standBehindMeActive).toEqual({ combatId: null, round: null, turn: null });
-    ranger.system.powers.personal.value = 0;
-    expect(useAvailable(item, item.system.rules[0], 0)).toBe(false);
-  });
-});
+// Stand Behind Me!'s Use, taunt card and attack block: module/rules/conv18-convA.test.js.
 
 describe('Grid Surge', () => {
   test('Temporary Construct: Edge on the next roll of a picked Skill, a newer one replacing it', async () => {

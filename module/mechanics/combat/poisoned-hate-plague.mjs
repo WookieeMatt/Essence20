@@ -22,8 +22,8 @@ const HEAL_BYPASS = 'd22PoisonBypass';
 /* -------------------------------------------- */
 
 /**
- * Poison damage (WTNV HG p.36; GI Joe CRB): "A long-term effect that causes the Poisoned Condition
- * as it causes damage."
+ * Poison damage (WTNV HG p.36; GI Joe CRB): a lasting effect - damage that also leaves the target
+ * Poisoned.
  */
 export async function poisonOnDamage(actor, dealt, damageType) {
   if (damageType != 'poison' || !(dealt > 0) || actor?.statuses?.has?.('poisoned')) {
@@ -34,8 +34,7 @@ export async function poisonOnDamage(actor, dealt, damageType) {
 }
 
 /**
- * Poisoned (WTNV HG p.48): "Poisoned characters are not able to recover damage or Essence Points
- * until the poison is removed." Any update that would raise Health while the Condition is on is held
+ * Poisoned (WTNV HG p.48): no recovering Health or Essence until the poison is gone. Any update that would raise Health while the Condition is on is held
  * at the current value (preUpdateActor). Pass {[HEAL_BYPASS]: true} in the update options to force it.
  * @returns {Boolean}   Whether the update was changed.
  */
@@ -73,8 +72,8 @@ onHook('preUpdateActor', (actor, changes, options, userId) => {
 
 /**
  * "For each day the poison persists, apply 1 additional damage." A Rest is the day's sleep: the
- * poisoned character heals nothing and takes 1 damage instead. "Treating the Poisoned Condition
- * requires a DIF 15 Science (Medicine) Skill Test that takes an hour" (p.37) - the Heal action's
+ * poisoned character heals nothing and takes 1 damage instead. Treating Poisoned is an hour and a
+ * DIF 15 Science (Medicine) test (p.37) - the Heal action's
  * poison mode (extensions/other2/medic.mjs).
  */
 export async function poisonOnRest(actor) {
@@ -104,8 +103,7 @@ onceHook('setup', () => {
 const infected = actor => !!actor?.statuses?.has?.(HATE_PLAGUE);
 
 /**
- * "All Social-based skills are made with a Snag. Athletics, Brawn, and Might Skill Tests are all
- * made with ↑2."
+ * Hate Plague: a Snag on Social Skills, ↑2 on Athletics, Brawn and Might.
  */
 export function hatePlagueRollSources(actor, target, { rolledSkill, rolledEssence } = {}) {
   const sources = [];
@@ -127,7 +125,7 @@ export function hatePlagueRollSources(actor, target, { rolledSkill, rolledEssenc
 
 registerRollSources((actor, target, ctx) => hatePlagueRollSources(actor, target, ctx));
 
-/** "...and Resistant to Psychic Damage." */
+/** Hate Plague: Resistance to Psychic damage. */
 export function hatePlagueDerived(actor) {
   if (infected(actor) && actor.system?.resistances) {
     actor.system.resistances.psychic = true;
@@ -136,7 +134,7 @@ export function hatePlagueDerived(actor) {
 
 registerDerived(hatePlagueDerived);
 
-/** "The victim has Immunity to the Frightened and Mesmerized conditions." */
+/** Hate Plague: Immune to Frightened and Mesmerized. */
 export function blocksCondition(actor, statuses) {
   return infected(actor) && statuses.some(status => ['frightened', 'mesmerized'].includes(status));
 }
@@ -153,8 +151,7 @@ onHook('preCreateActiveEffect', (effect) => {
 });
 
 /**
- * "The victim's unarmed attacks gain the following additional Alternate Effect: 'Target becomes
- * infected with Hate Plague.'" A hit with an unarmed attack puts a button on the card to take that
+ * The victim's unarmed attacks gain an Alternate Effect that passes Hate Plague on. A hit with an unarmed attack puts a button on the card to take that
  * effect instead.
  */
 export async function hatePlagueHit(actor, target, result, rider) {

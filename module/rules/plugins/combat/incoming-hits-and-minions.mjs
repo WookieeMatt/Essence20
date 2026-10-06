@@ -9,8 +9,7 @@ import { HIT_RIDER_SOURCES } from "./hit-rider.mjs";
 
 /**
  * - HitRider `scope: "incoming"` - the rule acts on hits that land on its HOLDER (any attacker): `self:` is the one who hit,
- *   `holder:` / `target:` the holder. "You reduce the damage dealt to you by minion ... enemies by 1" (Metallic Armor
- *   Power Up!) is `{type: HitRider, scope: incoming, note: -1, when: ["self:minion"]}` - the -1 noted on the hit, never
+ *   `holder:` / `target:` the holder. Metallic Armor Power Up!'s 1 less damage from minions is `{type: HitRider, scope: incoming, note: -1, when: ["self:minion"]}` - the -1 noted on the hit, never
  *   below what the hit deals (target-riders.mjs's damage-bonus note).
  * - Tags `self:minion` / `target:minion` - a minion: not a Player Character, and tagged minion / minions / foot soldier
  *   / footsoldier / foot-soldier / mook / grunt (mechanics/characters/creature-tags.mjs), or a Putty or Tenga.
@@ -39,8 +38,8 @@ export function isMinion(actor) {
   return MINION_TAGS.some(tag => tags.has(tag)) || !!isPuttyOrTenga(actor);
 }
 
-registerTag('self:minion', (rest, ctx) => (ctx?.self ? isMinion(ctx.self) : null));
-registerTag('target:minion', (rest, ctx) => (ctx?.other ? isMinion(ctx.other) : false));
+registerTag('self:minion', (rest, ctx) => (ctx?.self ? isMinion(ctx.self) : null), { phrase: ['{who} {is} a minion', '{who} {isnt} a minion'] });
+registerTag('target:minion', (rest, ctx) => (ctx?.other ? isMinion(ctx.other) : false), { phrase: ['{who} {is} a minion', '{who} {isnt} a minion'] });
 
 registerStep('activatePower', async (step, ctx) => {
   if (ctx.item?.type != 'power' || !ctx.actor) {

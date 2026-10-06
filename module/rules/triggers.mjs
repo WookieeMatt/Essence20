@@ -475,11 +475,19 @@ export async function sweepExpired(actor) {
     await actor.deleteEmbeddedDocuments('Item', ids);
   }
 
+  // Active Effects an addEffect step gave for a while (round 18, convB - Renegade Commander's scene-long grant).
+  const effects = (actor?.effects?.contents ?? [...(actor?.effects ?? [])])
+    .filter(effect => effect?.flags?.essence20?.rulesExpiry && isExpired(effect.flags.essence20.rulesExpiry)).map(effect => effect.id);
+  if (effects.length && actor.isOwner) {
+    await actor.deleteEmbeddedDocuments('ActiveEffect', effects);
+  }
+
   return ids;
 }
 
 function holdsTimedItems(actor) {
-  return (actor?.items?.contents ?? [...(actor?.items ?? [])]).some(item => item.flags?.essence20?.rulesExpiry);
+  return (actor?.items?.contents ?? [...(actor?.items ?? [])]).some(item => item.flags?.essence20?.rulesExpiry)
+    || (actor?.effects?.contents ?? [...(actor?.effects ?? [])]).some(effect => effect?.flags?.essence20?.rulesExpiry);
 }
 
 async function sweepWorld() {

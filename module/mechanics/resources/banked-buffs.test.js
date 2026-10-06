@@ -83,47 +83,4 @@ describe("onPerkUse", () => {
 
 // Fearsome Presence is a Use rule on its Perk (rules/conv10-slB10.test.js).
 
-describe("Nu, Pogodi!'s own condition-removal clause (Factions in Action Vol. 2, Oktober Guard Faction Perk, p.68)", () => {
-  const NU_POGODI_ID = "Compendium.essence20.intercontinental_adventures.Item.sItc8nD7ockbQ1mn";
-
-  function makeNuPogodiActor({ statuses = ['frightened'] } = {}) {
-    const flagStore = {};
-    return {
-      ...makeActor(),
-      statuses: new Set(statuses),
-      toggleStatusEffect: jest.fn(),
-      getFlag: jest.fn((scope, key) => flagStore[key]),
-      setFlag: jest.fn(async (scope, key, value) => {
-        flagStore[key] = value;
-      }),
-    };
-  }
-
-  beforeEach(() => {
-    global.ChatMessage.create.mockReset();
-    foundry.applications.api.DialogV2.wait.mockReset();
-    game.combat = { id: 'combat1' };
-  });
-
-  afterEach(() => {
-    game.combat = null;
-  });
-
-  test("canUsePerk is true when not yet used this encounter", () => {
-    expect(canUsePerk(makePerkItem({
-      sourceId: NU_POGODI_ID, actor: makeNuPogodiActor(),
-    }))).toBe(true);
-  });
-
-  test("removes the chosen Condition and notifies", async () => {
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('frightened');
-    const actor = makeNuPogodiActor({ statuses: ['frightened'] });
-    const item = makePerkItem({ sourceId: NU_POGODI_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('frightened', { active: false });
-    expect(global.ChatMessage.create).toHaveBeenCalled();
-    expect(canUsePerk(item)).toBe(false);
-  });
-});
+// Nu, Pogodi!'s Condition removal is a Use rule on its Perk (rules/conv18-convC.test.js).

@@ -126,7 +126,7 @@ function announce(key, actorName) {
  *   messages for one spend. Carried through the relay so the GM's client keeps quiet too.
  */
 export async function requestStoryPointSpend(actor, amount = 1, { pool = "story", announce: say = true } = {}) {
-  // A Ruthless Point is "a Story Point that only the character it was assigned to can use."
+  // A Ruthless Point is a Story Point only its assigned character may spend.
   if (personalStoryPoints(actor) >= amount && (await spendPersonalStoryPoint(actor, amount, say))) {
     return;
   }
@@ -356,8 +356,7 @@ const PLAYER_TYPES = ["playerCharacter", "companion"];
 /**
  * Which pool an actor draws on.
  *
- * "Both the players and the GM may always choose to spend their Story Points" (GI Joe CRB
- * p.127) - THEIR points. A Player Character spends the table's shared pool; an NPC, vehicle or
+ * Players and GM can each always spend their own Story Points (GI Joe CRB p.127) - THEIR points. A Player Character spends the table's shared pool; an NPC, vehicle or
  * Threat under the GM's hand spends the GM's own. An actor with no type at all (a bare test
  * double, or a chat card with no speaker) is taken to be a player's.
  * @param {?Actor} actor
@@ -410,9 +409,8 @@ export function spendForActor(actor, amount = 1, options = {}) {
 /**
  * Whether a Story Point can still buy +1 to a Defense AFTER the dice are rolled.
  *
- * GI Joe (p.127) and Transformers (p.105) offer "+5 to a Defense before dice are rolled, or +1
- * to a Defense after". Power Rangers (p.91) keeps only the +5 and says so - "must be spent
- * before die results are announced" - and My Little Pony (p.118) has only its scene-long +5.
+ * GI Joe (p.127) and Transformers (p.105) offer +5 to a Defense before the roll or +1 after it.
+ * Power Rangers (p.91) keeps only the +5, spent before results are announced, and My Little Pony (p.118) has only its scene-long +5.
  * A world with no line set gets the core-rules answer.
  * @param {string} line   From getGameLine().
  * @returns {boolean}
@@ -436,8 +434,8 @@ export function defenseBoostLastsScene(line) {
 /**
  * Whether this line lets a whole team spend for a Grid Power bloom.
  *
- * Power Rangers only (PR CRB p.91): "The Power Rangers team can spend 1 Story Point per team
- * member to cause a Grid Power bloom, generating 1d2 Personal Power for each team member."
+ * Power Rangers only (PR CRB p.91): one Story Point per team member triggers a Grid Power bloom,
+ * 1d2 Personal Power for each member.
  * @param {string} line   From getGameLine().
  * @returns {boolean}
  */

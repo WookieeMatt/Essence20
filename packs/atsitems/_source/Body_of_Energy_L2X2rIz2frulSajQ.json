@@ -6,11 +6,13 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Health into Power","when":["self:morphed","self:data:system.health.value>1","self:data:system.powers.personal.value<$system.powers.personal.max"],"steps":[{"do":"askNumber","var":"moved","prompt":"Move how much Health into Personal Power?","min":1,"max":"min(@actor.system.health.value - 1, @actor.system.powers.personal.max - @actor.system.powers.personal.value)"},{"do":"spend","resource":{"path":"system.health.value"},"amount":"@var.moved"},{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":"@var.moved"},{"do":"chat","text":"{name} turns {var.moved} Health into Personal Power."}]}
+      {"type":"Use","label":"Health into Power","when":["self:morphed","self:data:system.health.value>1","self:data:system.powers.personal.value<$system.powers.personal.max"],"steps":[{"do":"askNumber","var":"moved","prompt":"Move how much Health into Personal Power?","min":1,"max":"min(@actor.system.health.value - 1, @actor.system.powers.personal.max - @actor.system.powers.personal.value)"},{"do":"spend","resource":{"path":"system.health.value"},"amount":"@var.moved"},{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":"@var.moved"},{"do":"chat","text":"{name} turns {var.moved} Health into Personal Power."}]},
+      {"type":"HealthOverflow","label":"Body of Energy (Health and Personal Power are one pool)","into":"system.powers.personal.value","when":["self:morphed","not:damage:stun"]},
+      {"type":"Trigger","event":"unmorph","label":"Body of Energy: the pool splits on leaving Morph","when":["self:data:system.health.value>0"],"steps":[{"do":"setVar","key":"health","value":"min(floor((@actor.system.health.value + @actor.system.powers.personal.value) / 2), @actor.system.health.max)"},{"do":"setVar","key":"power","value":"min(floor((@actor.system.health.value + @actor.system.powers.personal.value) / 2), @actor.system.powers.personal.max)"},{"do":"updateActor","to":"self","set":{"system.health.value":"@var.health","system.powers.personal.value":"@var.power"},"notSpent":true},{"do":"chat","text":"{lang.ResBodyOfEnergyUnmorph}"}]}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic while Morphed: damage beyond your Health comes out of Personal Power. Use button: move Health into Personal Power. When you unmorph, both are reset to half the shared pool.</p>"
+      "notes": "<p>Automatic while Morphed: damage that would take your Health to 0 comes out of Personal Power first, leaving you at 1 Health until the shared pool is empty (Stun aside). Use button: move Health into Personal Power. When you leave Morph without being Defeated, Health and Personal Power each become half the shared pool.</p>"
     },
     "originalId": "",
     "description": "",

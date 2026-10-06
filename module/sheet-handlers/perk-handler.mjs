@@ -14,9 +14,9 @@ import { HEARTS_CALLING_ID, pickHeartsCallingOption } from "../items/resources/e
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
 const SPECTRUM_SHIFT_PERK_ID = "Compendium.essence20.pr_crb.Item.HxbEBJ3gXkTQqvxt";
 
-// Quantasaurus Rex (A Jump Through Time, Quantum Ranger Role Perk, 4th level, p.46): "your Quantum
-// Controller grants you control of the ancient Zord-beast... When actively piloting Quantasaurus
-// Rex, you cannot suffer Snags on Animal Handling or Driving Skill Tests." Same canHaveZord grant
+// Quantasaurus Rex (A Jump Through Time, Quantum Ranger Role Perk, 4th level, p.46): the Quantum
+// Controller gives command of the Zord, and piloting it means no Snags on Animal Handling or
+// Driving. Same canHaveZord grant
 // as ZORD_PERK_ID just above (this is textually the Quantum Ranger's own Zord Role Perk, not a
 // separate Zord Feature - it grants Zord access outright, no Additional Attack Type/Upgraded Zord
 // picker involved). The Snag-immunity half is the Perk's own rule.
@@ -261,8 +261,8 @@ async function grantIntegratedItem(actor, itemType, itemId) {
 
 /**
  * Grants a permanent copy of the given weapon Item, unless the actor already has one - the
- * shared logic behind Beatdown/Jackhammer's "always considered armed with an integrated X, even
- * if unarmed or your hands are full" grants.
+ * shared logic behind Beatdown/Jackhammer's always-armed-with-an-integrated-weapon grants (even
+ * empty-handed or with full hands).
  * @param {Actor} actor
  * @param {String} weaponId   A full compendium UUID for a weapon-type Item.
  */
@@ -403,8 +403,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
         [updateString]: updateValue,
       });
     } else if (selectionType == 'skills') {
-      // e.g. Expertise (GI Joe CRB p.72): "Choose two skills. You're an expert in each, gaining
-      // [2 upshifts] when using them." Corrected from an earlier version of this branch that
+      // e.g. Expertise (GI Joe CRB p.72): two chosen Skills, each with ↑2. Corrected from an earlier version of this branch that
       // wrote perk.system.value into the skill's flat .modifier instead - the PDF's own up-shift
       // glyph is lost by plain-text extraction (renders as blank space before the "2"), and it
       // got misread as a "+2" numeric bonus; the user, checking their own actor sheet against the
@@ -671,9 +670,8 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
       break;
 
     case 'altModeMovement':
-      // All-Terrain Alt Mode (Transformers CRB, General Perk, p.108): "Choose one of the
-      // following: Ground, Aerial, or Aquatic. Your Alt Mode movement of the chosen type
-      // increases by 20 feet." The compendium item ships all 3 bonuses as its own disabled
+      // All-Terrain Alt Mode (Transformers CRB, General Perk, p.108): +20ft to one chosen Alt Mode
+      // Movement - Ground, Aerial or Aquatic. The compendium item ships all 3 bonuses as its own disabled
       // Active Effects (one per movement type) - same "prompt, then enable the matching bundled
       // Active Effect" idiom as Increase (Essence)'s own Zord Feature picker (see
       // sheet-handlers/zord-feature-handler.mjs#onIncreaseEssenceDrop), applied to a Perk instead.
@@ -812,8 +810,8 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
     }
 
     case 'essence':
-      // Adaptable (MLP CRB, Earth Pony Origin Perk, p.33): "Pick one of your Essence Scores...
-      // once per scene, when using a Skill from that Essence, [treat it as Specialized]." Same
+      // Adaptable (MLP CRB, Earth Pony Origin Perk, p.33): once a scene, a Skill of one chosen
+      // Essence counts as Specialized. Same
       // shape as the 'skills' case above, just over the 4 real Essences instead - "any" is
       // excluded, it isn't a real Essence a Skill actually belongs to.
       prompt = game.i18n.localize("E20.SelectEssence");
@@ -1206,8 +1204,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
  * Shows the Role choice dialog for the Spectrum Shift Perk, offering every other Power
  * Rangers Role across every loaded compendium (so future sourcebooks' Roles are included).
  * Per the core rulebook (p.58), Spectrum Shift/the Advanced Ranger Spectrum is specifically a
- * Power Rangers mechanic - "this core rulebook details the rules for the Advanced Spectrum
- * Role of the White Ranger" for the Power Rangers line; other game versions (Transformers/My
+ * Power Rangers mechanic - the PR CRB's Advanced Spectrum Role (the White Ranger); other game versions (Transformers/My
  * Little Pony/G.I. Joe) don't have an equivalent, so this only applies when the Actor's
  * current Role is itself a Power Rangers one.
  * @param {Actor} actor The Actor taking the Spectrum Shift Perk

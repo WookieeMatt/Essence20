@@ -2,23 +2,17 @@
  * Attacks a Megaform gets from its parts, generated as real weapon/weaponEffect items on the
  * Megaform actor so they roll like any other attack:
  *
- * - Enhanced Melee/Ranged Attack (PR CRB, Megaform Traits, p.140): "an enhanced melee weapon or
- *   attack type that may only be used once per scene, but the attack inflicts three times the
- *   normal level of damage as this Zord's strongest melee attack with a damage type of your
- *   choice... doubles the attack's Reach" / ranged: "uses twice its Range". "If multiples of this
- *   benefit are chosen... the number of times it may be used per scene increases by 1."
- * - A Combiner form's basic attacks (Enigma of Combination, p.44): "at least two basic attacks: one
- *   unarmed strike and one ranged attack" - the unarmed strike from "a single component member's
- *   unarmed combat, ram, fly-by, or natural" attack, reach to the form's Size, damage "doubled (for
- *   Combiner duos or trios) or tripled (for Gestalt Combiners)"; the ranged one from "a weapon
- *   installed in their Integrated Hardpoints; this ranged attack's range and base damage is either
- *   doubled... or tripled".
- * - Enhanced Attack (Combiner feature, p.42): "Choose one of your current attacks to become enhanced
- *   while you are merged in a Combiner form, dealing twice as much damage. If the attack is used as
- *   one of the Combiner forms basic attacks, it deals 1 additional damage."
- * - Titan Hardpoint (Combiner feature, p.42-43): "Your Combiner Megaform manifests a specified
- *   Titan-class Weapon... and an External Titan Hardpoint to wield it. This Combiner feature only
- *   applies to Combiner forms of Gigantic Size or larger."
+ * - Enhanced Melee/Ranged Attack (PR CRB, Megaform Traits, p.140): once a scene, triple the damage of
+ *   the Zord's strongest melee attack in a chosen damage type, at double Reach (ranged: double Range);
+ *   each extra copy of the trait adds one use a scene.
+ * - A Combiner form's basic attacks (Enigma of Combination, p.44): at least an unarmed strike and a
+ *   ranged attack - the strike from one component's unarmed, ram, fly-by or natural attack, with the
+ *   form's Size as reach and damage doubled (duos, trios) or tripled (Gestalts); the ranged one from
+ *   a weapon in the Integrated Hardpoints, range and base damage doubled or tripled the same way.
+ * - Enhanced Attack (Combiner feature, p.42): one chosen attack deals double damage while merged,
+ *   +1 more if it is one of the form's basic attacks.
+ * - Titan Hardpoint (Combiner feature, p.42-43): the Combiner gets a chosen Titan-class Weapon and
+ *   an External Titan Hardpoint for it; Gigantic forms and up only.
  *
  * The generated items carry flags.essence20.zord2Gen (what made them) and zord2Sig (the inputs), so
  * a resync only replaces what actually changed. Once-per-scene use is enforced by zord2PerScene on
@@ -135,7 +129,7 @@ export function desiredAttacks(megaform, roster = rosterOf(megaform)) {
       return best;
     };
 
-    // "this unarmed strike's reach increases to that of the Combiner form's Size" - a reach multiplier
+    // The strike's reach grows to the Combiner form's Size - a reach multiplier
     // of 1 against the form's own (bigger) Size, which weapon-effect.mjs reads for totalReach.
     const strike = pick(isUnarmedish, 'strike', multiplier, 1);
     if (!strike) {

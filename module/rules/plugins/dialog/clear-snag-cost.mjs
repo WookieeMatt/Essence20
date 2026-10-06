@@ -5,8 +5,7 @@ import { RULE_TYPES } from "../../types.mjs";
 /**
  * DialogSwitch `clearSnagCost: free | move | standard` (round 15, uses) - ticked, and the roll has a Snag once the dialog
  * closes: that action is spent (in a combat; free outside one) and, when it could be, the Snag goes. With no Snag nothing is
- * paid. (Steady Hand: "when you would suffer Snag on an attack with an Adept Armament, you can spend a Free Action to roll
- * your Skill Test without Snag.") Give the switch a `key` (or another effect) so it validates.
+ * paid. (Steady Hand: a Free action clears a Snag on an Adept Armament attack.) Give the switch a `key` (or another effect) so it validates.
  */
 
 if (RULE_TYPES.DialogSwitch) {

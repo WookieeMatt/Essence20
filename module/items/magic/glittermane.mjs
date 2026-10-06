@@ -1,6 +1,5 @@
-// Glittermane (Knights of Canterlot, Superior Utility spell, p.46): "it makes you a little hard
-// to look at, and all attempts to target you with spells, ranged attacks or melee weapons suffer
-// ↓1." A self-only on/off flag (cast on the caster, same shape as Glow), consumed
+// Glittermane (Knights of Canterlot, Superior Utility spell, p.46): the sparkle makes the caster
+// hard to look at - ↓1 on spells, ranged attacks and melee weapons aimed at them. A self-only on/off flag (cast on the caster, same shape as Glow), consumed
 // reciprocally: whoever ATTACKS a Glittermane-active actor suffers ↓1, read directly in
 // dice.mjs#_getAutomaticCombatModifiers's per-target block, isAttack-gated (unlike Glow's own
 // unconditional Alertness check - Glittermane specifically names "spells, ranged attacks or melee

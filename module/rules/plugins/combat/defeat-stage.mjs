@@ -74,7 +74,7 @@ export function ownRenegadeTag(rest, ctx) {
   return renegadeOf(actor) === actor;
 }
 
-registerTag('self:ownRenegade', ownRenegadeTag);
+registerTag('self:ownRenegade', ownRenegadeTag, { phrase: ['{who} {is} {its} own Renegade', '{who} {isnt} {its} own Renegade'] });
 
 /* -------------------------------------------- */
 /*  An Essence about to drop to 0                */

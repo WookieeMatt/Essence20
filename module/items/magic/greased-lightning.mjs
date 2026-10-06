@@ -1,6 +1,5 @@
-// Greased Lightning (Knights of Canterlot, Elementary Enchantment spell, p.43): "This spell makes
-// the target creature slippery to the touch and unable to be held or restrained... All
-// Speed-related Skill Tests to go fast are upshift-1 for the duration." A flat on/off flag on
+// Greased Lightning (Knights of Canterlot, Elementary Enchantment spell, p.43): the target turns too
+// slippery to hold or restrain, with ↑1 on Speed tests to go fast for the duration. A flat on/off flag on
 // whichever actor was targeted by the cast (read directly in dice.mjs, the same generic per-actor
 // flag shape Hot To Trot/Fluttery Wings/Lightning Speed already established), covering 2 of the
 // spell's own 4 clauses:

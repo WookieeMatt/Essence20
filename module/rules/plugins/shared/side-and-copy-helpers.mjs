@@ -2,6 +2,8 @@
  * Group F plug-ins (round 11): shared helpers. Plain Node safe - Foundry globals are only read inside functions.
  */
 
+import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
+
 export function resolve(uuid) {
   try {
     return uuid ? globalThis.fromUuidSync?.(uuid, { strict: false }) ?? null : null;
@@ -12,8 +14,7 @@ export function resolve(uuid) {
 
 export const worldList = collection => collection?.contents ?? (collection ? [...collection] : []);
 export const worldActors = () => worldList(globalThis.game?.actors);
-export const itemsOf = actor => worldList(actor?.items);
-export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
+export { itemsOf, sourceOf };
 
 /** The last part of a book uuid - the 16-character compendium id. */
 export const shortId = uuid => String(uuid ?? '').split('.').pop();

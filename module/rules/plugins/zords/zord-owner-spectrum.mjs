@@ -25,4 +25,4 @@ export function spectrumOf(actor) {
 registerTag('self:ownerSpectrum', (rest, ctx) => {
   const colour = spectrumOf(zordOwner(ctx?.self));
   return String(rest).toLowerCase() == 'none' ? !colour : colour == String(rest).toLowerCase();
-});
+}, { phrase: arg => (arg.toLowerCase() == 'none' ? ["its owner's Ranger has no color", "its owner's Ranger has a color"] : ["its owner's Ranger color is {arg}", "its owner's Ranger color isn't {arg}"]) });

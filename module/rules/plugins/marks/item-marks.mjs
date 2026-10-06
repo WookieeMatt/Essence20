@@ -53,7 +53,7 @@ registerTag('item:marked', (rest, ctx) => {
   }
 
   return [item, parentOf(item)].some(one => one && !!itemMarks(one)[rest]);
-});
+}, { phrase: ['{who} carr{ies} the {arg} mark', '{who} {doesnt} carry the {arg} mark'] });
 
 /** The items an item-mark step means, on one actor. */
 async function itemsMeant(step, actor, ctx) {
@@ -200,4 +200,4 @@ registerTag('target:withinOrUnknown', (rest, ctx) => {
 
   const feet = feetBetween(ctx.self, ctx.other);
   return feet === null || feet <= Number(rest);
-});
+}, { phrase: ['{who} {is} within {ft} (or off the map)', '{who} {is} more than {ft} away'] });

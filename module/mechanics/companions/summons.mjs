@@ -1,6 +1,7 @@
 import { getSceneEpoch, getUses, markUsed } from "../resources/scene-clock.mjs";
 import { companionsOf, hasSourced, worldActors } from "./companion-link.mjs";
 import { registerRenegadeLookup } from "../../rules/plugins/combat/defeat-stage.mjs";
+import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 
 /**
  * Things summoned or carried along: personal vehicles (Shark Cycle, Galaxy Glider, Jet Jammer, the
@@ -10,10 +11,10 @@ import { registerRenegadeLookup } from "../../rules/plugins/combat/defeat-stage.
  * - A personal vehicle is a `vehicle` actor tied to its owner the way a companion is
  *   (mechanics/companions/companion-link.mjs). The first summon builds it from the book's stat block
  *   (VEHICLES below); later summons bring the same one back beside its owner.
- * - "you gain Edge on Driving Skill Tests when piloting it": personalVehicleEdge() is read when the
+ * - Edge on Driving while piloting it: personalVehicleEdge() is read when the
  *   crew rolls (mechanics/combat/target-riders.mjs#rollRiderSources).
- * - A Battlizer is its armor item. Its Use button summons it - "once per scene by paying the listed
- *   Personal Power cost and spending a Standard action while Morphed" - which equips it and gives its
+ * - A Battlizer is its armor item. Its Use button summons it - once a scene, a Standard action while
+ *   Morphed plus its Personal Power cost - which equips it and gives its
  *   attacks for the scene.
  */
 
@@ -44,19 +45,6 @@ export const SUMMON = {
 };
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items.contents) ? items.contents : (typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-}
 
 /* -------------------------------------------- */
 /*  Vehicle stat blocks                          */
@@ -105,9 +93,8 @@ export const VEHICLES = {
   jetPack: { name: 'Jet Pack', threatLevel: 2, size: 'common', health: 3, move: { aerial: 30 }, strength: 2, speed: 3, armor: 1,
     skills: { alertness: 'd4', brawn: 'd2', driving: 'd4', targeting: 'd2' }, traits: ['air', 'autopilot', 'multiPurpose', 'sensors', 'vehicle', 'vtol', 'wearable'],
     attacks: [attack('Flyby', 'driving', 1, 'blunt')] },
-  // Hitch A Ride (MLP CRB p.138): "large enough for you and 9 other Common sized creatures ... drives
-  // itself, has a d10 Driving Skill, is Specialized in Driving itself, and has a Ground and Aerial
-  // movement of 60ft." No Health or Defenses are given; these are the Shark Cycle's.
+  // Hitch A Ride (MLP CRB p.138): carries the caster and 9 more Common creatures, drives itself at d10
+  // Driving (Specialized), 60ft Ground and Aerial. No Health or Defenses are given; these are the Shark Cycle's.
   hitchARide: { name: 'Magical Ride', threatLevel: 1, size: 'huge', health: 6, move: { ground: 60, aerial: 60 }, strength: 4, speed: 5, armor: 0, passengers: 9,
     skills: { driving: 'd10' }, specialized: ['driving'], traits: ['air', 'autopilot', 'land', 'vehicle'], attacks: [] },
 };
@@ -209,7 +196,7 @@ async function placeNear(owner, actor) {
   return createViaGm('token', { actorUuid: actor.uuid, sceneId: canvas.scene.id, x: token.document.x + (token.document.width ?? 1) * size, y: token.document.y });
 }
 
-/** "It returns to its capsule-storage form at the end of the scene." Called on essence20.sceneAdvanced by the GM. */
+/** Scene-long summons go back into storage when the scene ends. Called on essence20.sceneAdvanced by the GM. */
 export async function dismissSceneSummons() {
   if (!game.user?.isGM) {
     return;
@@ -228,8 +215,8 @@ export async function dismissSceneSummons() {
       await actor.unsetFlag('essence20', 'summoned');
     }
 
-    // Toxo-Zombies: "Even if they survive the combat, your Toxo-Zombies are once again Defeated at the end
-    // of the scene." Summoned allies leave too.
+    // Toxo-Zombies drop back to Defeated when the scene ends, even if they lasted the fight. Summoned
+    // allies leave too.
     const zombie = actor.flags?.essence20?.sceneSummon;
     if (zombie != null && zombie != getSceneEpoch()) {
       await actor.delete();
@@ -266,8 +253,8 @@ export async function onRoundChange(combat) {
 }
 
 /**
- * "you gain Edge on Driving Skill Tests while using it" - Sharkcycle Rider, Jet Jammer, the Strata and
- * Vector Cycles; Galaxy Glider: "Edge on Acrobatics Skill Tests to pilot it".
+ * Edge on Driving while using it - Sharkcycle Rider, Jet Jammer, the Strata and Vector Cycles; Galaxy
+ * Glider: Edge on Acrobatics to pilot it.
  * @param {Actor} actor   The driver.
  * @param {String} skill
  * @returns {Boolean}
@@ -290,25 +277,22 @@ export function personalVehicleEdge(actor, skill, crewedVehicle) {
 /* -------------------------------------------- */
 
 export const BATTLIZERS = {
-  // Battle Warrior (Across the Stars p.85): "Personal Power Cost to Summon: 1 ... Golden Sword (Might or
-  // Finesse): Reach, 2 Sharp damage ... Battle Fire Saber (Might or Finesse): Range 5ft/10ft, 3 Fire
-  // damage; usable only once per scene".
+  // Battle Warrior (Across the Stars p.85): cost 1; Golden Sword 2 Sharp at Reach, Battle Fire Saber
+  // 3 Fire at 5/10ft once a scene.
   [SUMMON.battleWarrior]: { cost: 1, attacks: [attack('Golden Sword', 'might', 2, 'sharp'), attack('Battle Fire Saber', 'might', 3, 'fire', [5, 10], [], { usesPerScene: 1 })] },
-  // S.P.D. Battlizer: "Personal Power Cost to Summon: 1 ... Energy Sword (Finesse): Reach, 1 Energy damage".
+  // S.P.D. Battlizer: cost 1; Energy Sword 1 Energy at Reach.
   [SUMMON.spdBattlizer]: { cost: 1, attacks: [attack('Energy Sword', 'finesse', 1, 'energy')] },
-  // Red Fury Mode (Beneath the Helmet p.68): "Personal Power Cost to Summon: 1 ... Cheetah Claws (Might):
-  // Reach, 2 Sharp damage ... Every time this Battlizer is called, the wearer loses 1 Smarts Essence."
+  // Red Fury Mode (Beneath the Helmet p.68): cost 1; Cheetah Claws 2 Sharp at Reach; each summon costs
+  // the wearer 1 Smarts.
   [SUMMON.redFury]: { cost: 1, smartsLoss: 1, attacks: [attack('Cheetah Claws', 'might', 2, 'sharp')] },
-  // Triassic Battlizer: "Personal Power Cost to Summon: 3 ... effective reach of 100ft ... tripling their
-  // movement rates." Dragon Yo-yo, Forearm Blaster, Shoulder Cannons, Stretch Kick.
+  // Triassic Battlizer: cost 3; 100ft reach, movement tripled. Dragon Yo-yo, Forearm Blaster, Shoulder Cannons, Stretch Kick.
   [SUMMON.triassic]: { cost: 3, tripleMovement: true, attacks: [
     attack('Dragon Yo-yo', 'targeting', 2, 'energy', [40, 100]), attack('Forearm Blaster', 'targeting', 1, 'energy', [40, 100]),
     attack('Shoulder Cannons', 'targeting', 3, 'energy', [30, 120]), attack('Stretch Kick', 'might', 1, 'blunt', [100, 100]),
   ] },
-  // Quantum Mega Battle Armor (A Jump Through Time p.69): "Personal Power Cost to Summon: 5 ... Wing
-  // Blades (Might): Reach, (2 Sharp damage) Wing Blaster (Targeting): Range 50ft/120ft, (2 Energy
-  // damage) Energy Sword Time Strike (Might, 1/scene): Reach, (5 Energy damage) Critical Effect:
-  // Triples base damage instead of double ... Inaccurate". Its armor, Ground and Aerial Movement are
+  // Quantum Mega Battle Armor (A Jump Through Time p.69): cost 5; Wing Blades 2 Sharp at Reach, Wing
+  // Blaster 2 Energy at 50/120ft, and the once-a-scene Energy Sword Time Strike, 5 Energy at Reach,
+  // Inaccurate, tripling instead of doubling on a Critical. Its armor, Ground and Aerial Movement are
   // the armor item's own (equipped on summon). The Time Strike's "Anti-Armor" trait isn't defined in
   // A Jump Through Time; the only printed Anti-Armor is Across the Stars' Zord Feature (Anti-Tank,
   // Wrecker and an armor-shredding Critical Effect for a Zord attack), so it isn't mapped here.
@@ -344,8 +328,7 @@ export async function markBattlizerAttack(actor, weapon) {
 }
 
 /**
- * Summon a Battlizer: "once per scene by paying the listed Personal Power cost and spending a
- * Standard action while Morphed."
+ * Summon a Battlizer: once a scene, its Personal Power cost and a Standard action while Morphed.
  */
 export async function summonBattlizer(actor, armor, pay) {
   const spec = BATTLIZERS[sourceOf(armor)];
@@ -426,9 +409,8 @@ export async function dismissBattlizer(actor, armor) {
 /* -------------------------------------------- */
 
 /**
- * Necroscientist (Cobra Codex p.65): "As a Standard action, you can revive a Defeated organic creature
- * as a Toxo-Zombie (see page 180). Even if they survive the combat, your Toxo-Zombies are once again
- * Defeated at the end of the scene." The Toxo-Zombie's stat block (p.180): Health 5, 30ft, Strength 4,
+ * Necroscientist (Cobra Codex p.65): a Standard action raises a Defeated organic creature as a
+ * Toxo-Zombie, which is Defeated again when the scene ends. The Toxo-Zombie's stat block (p.180): Health 5, 30ft, Strength 4,
  * Speed 2, Smarts 3, Toughness 16 (Ballistic armor +2), Evasion 12, Willpower 13, Cleverness 11; Bite
  * (Might) +d6, Reach, 1 Sharp and Grapple.
  */
@@ -474,8 +456,8 @@ export async function reviveToxoZombie(actor, pay) {
 }
 
 /**
- * Allies From Below (Finster's Cookbook p.272): "Summons 3d4 Threat Levels worth of allied creatures as
- * a Standard action". The Threat Levels are rolled; the creatures are picked from the world's NPCs up
+ * Allies From Below (Finster's Cookbook p.272): a Standard action calls 3d4 Threat Levels of allied
+ * creatures. The Threat Levels are rolled; the creatures are picked from the world's NPCs up
  * to that total and placed beside the caster, leaving at the end of the scene.
  */
 export async function alliesFromBelow(actor) {
@@ -542,8 +524,8 @@ export function vehicleHands(actor) {
 // (Hard Target's +2 Health and Toughness in the Jet Pack are Defense / DerivedStat rules on the Perk.)
 
 /**
- * Racer Abandon (Cobra Codex p.61): "when driving a vehicle, including your Riding Rig, certain Renegade
- * Perks grant different effects". Rigged Rider (20th): "you gain both". Read by the Renegade Perks.
+ * Racer Abandon (Cobra Codex p.61): while driving (the Riding Rig too) some Renegade Perks work
+ * differently. Rigged Rider (20th): both versions apply. Read by the Renegade Perks.
  * @returns {{vehicle: Boolean, self: Boolean}}   Which of the two effects apply.
  */
 export function racerAbandonMode(actor, crewedVehicle) {
@@ -556,9 +538,8 @@ export function racerAbandonMode(actor, crewedVehicle) {
 
 /**
  * Whose Renegade Perks protect this actor. Racer Abandon moves Fortitude, Didn't Even Feel It and Not
- * Done Yet onto the vehicle its holder drives - "Fortitude: You reduce the amount of Damage your vehicle
- * suffers from any source by 1", "Not Done Yet: If your vehicle is Defeated, it drops to 1 Health
- * instead" - and Rigged Rider keeps them on the driver too.
+ * Done Yet onto the vehicle its holder drives - Fortitude takes 1 off all damage to the vehicle, Not
+ * Done Yet leaves a Defeated vehicle on 1 Health - and Rigged Rider keeps them on the driver too.
  * @param {Actor} actor   Who is taking the damage.
  * @returns {Actor|null}   Whose Perks to read, or null for none.
  */
@@ -591,8 +572,7 @@ export function renegadeHolderFor(actor) {
 registerRenegadeLookup(renegadeHolderFor);
 
 /**
- * Racer Abandon's Reckless Abandon: "You gain ↑2 on Driving Skill Tests instead of Strength Skill
- * Tests". Whether a driver's Strength ↑2 still applies, and whether their Driving gets it.
+ * Racer Abandon's Reckless Abandon: the ↑2 moves from Strength tests to Driving. Whether a driver's Strength ↑2 still applies, and whether their Driving gets it.
  */
 export function racerRecklessShifts(actor) {
   const driving = worldActors().some(v => v.type == 'vehicle' && Object.values(v.system?.actors ?? {})
@@ -622,13 +602,12 @@ async function spendPower(actor, amount) {
 }
 
 const HANDLERS = {
-  // Sharkcycle Rider (PR CRB p.101): "summon a Sharkcycle by spending 1 Power, teleporting it to
-  // anywhere within 30 feet of you."
+  // Sharkcycle Rider (PR CRB p.101): 1 Power brings the Sharkcycle to any spot within 30 feet.
   async sharkcycleRider(actor, item, pay) {
     return (await pay('standard')) && (await spendPower(actor, ONE_PP)) ? vehicleLine(actor, await summonVehicle(actor, 'sharkCycle', { grantor: item })) : null;
   },
-  // Summon Cycle (Finster's p.274): "DIF 12 Performance (Rituals) Skill Test in a 10-minute ritual to
-  // recreate the effects of the Shark Cycle Rider Grid Power for 1 hour."
+  // Summon Cycle (Finster's p.274): a 10-minute ritual and a DIF 12 Performance (Rituals) test give
+  // Shark Cycle Rider's effect for an hour.
   async summonCycle(actor, item) {
     const { rollTest } = await import("../resources/grants.mjs");
     const { success } = await rollTest(actor, 'performance', 12);
@@ -640,8 +619,7 @@ const HANDLERS = {
   async jetJammer(actor, item, pay) {
     return (await pay('standard')) && (await spendPower(actor, ONE_PP)) ? vehicleLine(actor, await summonVehicle(actor, 'jetJammer', { grantor: item })) : null;
   },
-  // Dino Raptor: "This costs 1 Personal Power and a Dino Raptor answers the call like a Zord, arriving
-  // within 3d2 game rounds."
+  // Dino Raptor: 1 Personal Power; it comes like a Zord, in 3d2 rounds.
   async dinoRaptor(actor, item, pay) {
     if (!(await pay('standard')) || !(await spendPower(actor, ONE_PP))) {
       return null;
@@ -650,15 +628,13 @@ const HANDLERS = {
     const roll = game.combat?.started ? (await new Roll('3d2').evaluate()).total : 0;
     return vehicleLine(actor, await summonVehicle(actor, 'dinoRaptor', { grantor: item, arrivalRounds: roll }));
   },
-  // Vector/Strata Cycle: "by spending 1 Personal Power ... It returns to its capsule-storage form at the
-  // end of the scene."
+  // Vector/Strata Cycle: 1 Personal Power; back into storage when the scene ends.
   async vectorStrataCycle(actor, item, pay) {
     const { chooseButtons } = await import("../resources/grants.mjs");
     const key = await chooseButtons(item.name, T('E20.CyclePick'), [['strataCycle', 'Strata Cycle'], ['vectorCycle', 'Vector Cycle']]);
     return key && (await pay('standard')) && (await spendPower(actor, ONE_PP)) ? vehicleLine(actor, await summonVehicle(actor, key, { grantor: item, until: 'scene' })) : null;
   },
-  // Time Jet: "Stored in a collapsed quantum state until 3 Personal Power are spent in any combination by
-  // you and your teammates". The card lets teammates chip in.
+  // Time Jet: needs 3 Personal Power, split any way across the team. The card lets teammates chip in.
   async timeJet(actor, item) {
     const { chooseButtons } = await import("../resources/grants.mjs");
     const own = await chooseButtons(item.name, T('E20.TimeJetHowMuch'), [['1', '1'], ['2', '2'], ['3', '3']]);
@@ -678,17 +654,16 @@ const HANDLERS = {
     });
     return null;
   },
-  // Hitch A Ride (MLP CRB p.138): "3 Spellcasting, 1 day, 20ft. You summon a magical vehicle".
+  // Hitch A Ride (MLP CRB p.138): a spell that conjures a magical vehicle.
   async hitchARide(actor, item) {
     return vehicleLine(actor, await summonVehicle(actor, 'hitchARide', { grantor: item }));
   },
-  // Riding Rig (Cobra Codex p.60): "You gain a Riding Rig as personal gear." Biker: "you gain the benefits
-  // of the Rigger Focus's Riding Rig Perk."
+  // Riding Rig (Cobra Codex p.60): a Riding Rig as personal gear. Biker: the Rigger Focus's Riding Rig
+  // Perk.
   ridingRig: (actor, item) => vehicleLine(actor, summonVehicle(actor, 'ridingRig', { grantor: item })),
   biker: (actor, item) => vehicleLine(actor, summonVehicle(actor, 'ridingRig', { grantor: item })),
   // (Rig Upgrade's due Drone Upgrades are a Use rule on the Perk - rules/conv16-b.test.js.)
-  // Skybound: "You gain a Jet Pack ... but without its Quad Blast 25mm Axial Machine Guns ... If your
-  // Jet Pack gets destroyed on a mission, you gain a new Jet Pack the following mission."
+  // Skybound: a Jet Pack minus its machine guns, replaced the mission after it is destroyed.
   skybound: (actor, item) => vehicleLine(actor, summonVehicle(actor, 'jetPack', { grantor: item })),
   // (Crashing From The Skies is a Use rule on the Perk - recipient personalVehicle:jetPack: rules/plugins/picks/personal-vehicle.mjs.)
   necroscientist: (actor, item, pay) => reviveToxoZombie(actor, pay),
@@ -696,8 +671,7 @@ const HANDLERS = {
     return (await pay('standard')) ? alliesFromBelow(actor) : null;
   },
   // (Accelerate Conversion is Use rules + an ActionCost rule on the Perk - step reduceTimer: rules/plugins/zords/reduce-timer.mjs.)
-  // Rally Guardians (Through the Shattered Grid p.72): "Your company of Guardians uses the same rules and
-  // statistics for Zords". A Zord actor for the company.
+  // Rally Guardians (Through the Shattered Grid p.72): the company of Guardians plays as a Zord. A Zord actor for the company.
   async rallyGuardians(actor, item) {
     if (companionsOf(actor).some(a => a.flags?.essence20?.guardians)) {
       ui.notifications.info(T('E20.GrantAlready'));

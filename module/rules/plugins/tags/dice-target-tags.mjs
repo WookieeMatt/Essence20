@@ -50,11 +50,11 @@ registerTag('target:statusFrom', (rest, ctx) => {
 
   return !!other.statuses?.has?.(rest) && effectsOf(other).some(effect => effect.statuses?.has?.(rest)
     && !!ctx.self?.uuid && effect.flags?.essence20?.conditionSource == ctx.self.uuid);
-});
+}, { phrase: ['{who} {is} {arg} by you', '{who} {isnt} {arg} by you'] });
 
 const rolledType = ctx => ctx.item?.system?.damageType ?? null;
-registerTag('target:resistsRolled', (rest, ctx) => !!(ctx.other && rolledType(ctx) && ctx.other.system?.resistances?.[rolledType(ctx)]));
-registerTag('target:immuneRolled', (rest, ctx) => !!(ctx.other && rolledType(ctx) && ctx.other.system?.immunities?.[rolledType(ctx)]));
+registerTag('target:resistsRolled', (rest, ctx) => !!(ctx.other && rolledType(ctx) && ctx.other.system?.resistances?.[rolledType(ctx)]), { phrase: ['{who} resist{s} the damage type', '{who} {doesnt} resist the damage type'] });
+registerTag('target:immuneRolled', (rest, ctx) => !!(ctx.other && rolledType(ctx) && ctx.other.system?.immunities?.[rolledType(ctx)]), { phrase: ['{who} {is} immune to the damage type', '{who} {isnt} immune to the damage type'] });
 
 registerTag('target:nearby', (rest, ctx) => {
   const match = /^(\d+):(.+)$/.exec(String(rest ?? ''));
@@ -73,7 +73,10 @@ registerTag('target:nearby', (rest, ctx) => {
 
     return evaluate(tags, contextFor({ ...ctx, other: actor })) === true;
   });
-});
+}, { phrase: (arg, w) => {
+  const match = /^(\d+):(.+)$/.exec(arg);
+  return match ? [w.facts(match[2].split('&'), `someone within ${match[1]} ft of {who}`), `nobody within ${match[1]} ft of {who} qualifies (${w.facts(match[2].split('&'), 'someone')})`] : null;
+} });
 
 registerTag('target:mostConditions', (rest, ctx) => {
   const other = ctx.other;
@@ -84,7 +87,7 @@ registerTag('target:mostConditions', (rest, ctx) => {
   const enemies = targetTagHelpers.getNearbyEnemyTokens(ctx.self, Infinity).map(token => token.actor).filter(Boolean);
   const most = Math.max(0, ...enemies.map(enemy => enemy.statuses?.size ?? 0));
   return (other.statuses?.size ?? 0) >= most;
-});
+}, { phrase: ['{who} {has} the most Conditions of your enemies', '{who} {hasnt} the most Conditions of your enemies'] });
 
 // skill:roleSkill - the rolled Skill is one of the actor's base Role's Skills (actor._getBaseRole().system.skills - Genius).
 registerTag('skill:roleSkill', (rest, ctx) => {
@@ -94,7 +97,7 @@ registerTag('skill:roleSkill', (rest, ctx) => {
 
   const skills = ctx.self._getBaseRole?.()?.system?.skills;
   return Array.isArray(skills) && skills.includes(ctx.rolledSkill);
-});
+}, { phrase: ["on your Role's Skills", "except on your Role's Skills"] });
 
 registerTag('holder:versusTarget', (rest, ctx) => {
   const holder = ctx.holder ?? ctx.self;
@@ -103,7 +106,7 @@ registerTag('holder:versusTarget', (rest, ctx) => {
   }
 
   return evaluate([`self:${rest}`], contextFor({ ...ctx, self: holder, other: ctx.other ?? null }));
-});
+}, { phrase: (arg, w) => w.facts([`holder:${arg}`]) });
 
 registerRecipient(/^nearestEnemies:(\d+)$/, (match, ctx) => {
   const actor = ctx.actor;

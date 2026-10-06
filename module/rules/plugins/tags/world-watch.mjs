@@ -34,8 +34,8 @@ for (const event of ['rollSeen', 'conditionSeen', 'rollMessage']) {
 /*  Tags                                         */
 /* -------------------------------------------- */
 
-registerTag('target:sideAlly', (rest, ctx) => (ctx.other ? sideAlly(ctx.self, ctx.other) : false));
-registerTag('target:sideEnemy', (rest, ctx) => (ctx.other ? sideEnemy(ctx.self, ctx.other) : false));
+registerTag('target:sideAlly', (rest, ctx) => (ctx.other ? sideAlly(ctx.self, ctx.other) : false), { phrase: ['{who} {is} on your side', '{who} {isnt} on your side'] });
+registerTag('target:sideEnemy', (rest, ctx) => (ctx.other ? sideEnemy(ctx.self, ctx.other) : false), { phrase: ['{who} {is} against you', '{who} {isnt} against you'] });
 
 /** The Emotional Mastery options active for an actor: its own, plus a Team Spirit grant the lender still has active. */
 export function activeEmotions(actor) {
@@ -55,7 +55,7 @@ export function activeEmotions(actor) {
 registerTag('self:emotion', (rest, ctx) => {
   const active = activeEmotions(ctx.self);
   return rest ? active.includes(rest) : active.length > 0;
-});
+}, { phrase: arg => (arg ? ['{who} feel{s} {arg}', "{who} {doesnt} feel {arg}"] : ['{who} feel{s} an Emotion', "{who} {doesnt} feel an Emotion"]) });
 
 registerPickSource('activeEmotions', (step, ctx) => [...new Set(activeEmotions(ctx.actor))].map(value => ({
   value,

@@ -39,8 +39,8 @@ export class VehicleActorData extends foundry.abstract.TypeDataModel {
       // Zords don't use this Vehicle Trait system the way ordinary vehicles do (they have their
       // own, separate Megaform/Zord Trait system instead - see megaform-trait.mjs).
       traits: makeVehicleTraitsSchema(),
-      // Shielded (Across the Stars p.87): "the first listed number of Attacks or damaging effects
-      // against this vessel suffer a Snag" each turn - the listed number.
+      // Shielded (Across the Stars p.87): the first N attacks or damaging effects on the vessel
+      // each turn take a Snag - N here.
       shieldedRating: makeInt(0),
       // Defeat of a Vehicle (GI Joe CRB, p.214-215): set by mechanics/vehicles/vehicle-defeat.mjs once this
       // Vehicle crashes (forced Prone/impassable terrain, or passing its 0-Health Brawn Test).

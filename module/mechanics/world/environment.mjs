@@ -179,10 +179,9 @@ export function getEnvironmentState(actorOrToken, { includeInterior = true } = {
 
 /**
  * The environment a Space Vessel's own Conditions turn its interior into (Across the Stars
- * p.25-26), or null when they don't: "Decompressed... their interior is treated as a
- * thin-atmosphere environment... a second time, the environment changes to a Vacuum or Void";
- * "Leaking... becomes a Toxic atmosphere with a toxicity rating of harmful... raised in lethality
- * by one level" per further Leaking. When both apply the worse one (INTERIOR_SEVERITY) wins.
+ * p.25-26), or null when they don't: Decompressed makes the interior a thin atmosphere, a Vacuum
+ * at the second stack; Leaking makes it a harmful Toxic atmosphere, one step deadlier per further
+ * Leaking. When both apply the worse one (INTERIOR_SEVERITY) wins.
  * @param {?Actor} vessel
  * @returns {?{environment: String, level: String}}
  */
@@ -360,8 +359,8 @@ export function refreshTerrainDependentActor(tokenDoc, changes) {
 }
 
 /**
- * Enviro-Sealed (Across the Stars, Armor Traits, p.85): "grants immunity to most environmental
- * conditions and grants Edge on all Skill Tests made to resist adverse situations." The automatic
+ * Enviro-Sealed (Across the Stars, Armor Traits, p.85): immune to most environmental conditions, and
+ * Edge on tests to resist adverse situations. The automatic
  * half this project CAN check for free - see dice.mjs's own "Enviro-Sealed" comment (next to
  * hasEnviroSealedEdge) for why this is scoped to "the current physical environment is non-normal"
  * rather than every possible adverse situation.

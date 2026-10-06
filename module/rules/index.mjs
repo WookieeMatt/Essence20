@@ -1,5 +1,6 @@
 import { RULE_TYPES } from "./types.mjs";
 import { rulesSourceOf } from "./inherit.mjs";
+import { itemsOf } from "../items/shared/item-lookups.mjs";
 
 /**
  * Reading an actor's rules (docs/RULES_ENGINE_PLAN.md §6, §8).
@@ -53,15 +54,6 @@ export function isItemActive(item) {
 export function hostOf(item) {
   const parentId = item?.flags?.essence20?.parentId;
   return parentId ? item.parent?.items?.get?.(parentId) ?? null : null;
-}
-
-function itemsOf(actor) {
-  const items = actor?.items;
-  if (Array.isArray(items?.contents)) {
-    return items.contents;
-  }
-
-  return items && typeof items[Symbol.iterator] == 'function' ? [...items] : [];
 }
 
 /**

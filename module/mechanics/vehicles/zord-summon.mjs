@@ -2,8 +2,8 @@ import { ruleSummonTimeBonus } from "../../rules/plugins/zords/summon-time-bonus
 
 /**
  * Call to Action (PR CRB, Zord Feature, p.136-137, auto-added to every Zord actor - see
- * documents/actor.mjs#_preCreate): "In 3d2 game rounds, the Zord arrives to the border of the
- * conflict, awaiting to be piloted by the Ranger that summoned it." This existed nowhere in the
+ * documents/actor.mjs#_preCreate): the Zord reaches the edge of the fight in 3d2 rounds, ready for
+ * its Ranger to pilot. This existed nowhere in the
  * codebase - a Zord dropped onto a Ranger's sheet was immediately pilotable, with no arrival delay
  * at all - which also left Enhanced Summoner (a SummonTimeBonus rule) with nothing to reduce.
  *

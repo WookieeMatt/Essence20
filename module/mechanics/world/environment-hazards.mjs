@@ -6,16 +6,16 @@ import { essenceWouldEmpty } from "../../rules/plugins/combat/defeat-stage.mjs";
  * Environmental damage over time and the protection against it (Across the Stars, "Exploring
  * Infinite Environments," p.23-25). What each environment does:
  *
- * - Corrosive Atmosphere: "Anything unprotected suffers 1 Acid damage at the end of the specified
- *   passage of time" (Table 1-11) - objects too, so Vehicles and Zords take it.
- * - Extreme Temperature: "imposing the Impaired Condition... will inflict 1 Fire or Cold damage after
- *   a determined amount of time passes" (Table 1-12). Impaired is dice.mjs's own automatic ↓1.
- * - Irradiated: "For each cumulative scene... inflict 1 Strength and Speed Essence damage."
- * - Thick/Thin Atmosphere: Impaired "unless a creature takes a Free action... or is wearing gear with
- *   breathing assistance" - dice.mjs's ↓1, which the player unticks on a turn they spent the Free
+ * - Corrosive Atmosphere: 1 Acid damage to anything unprotected per interval (Table 1-11) - objects
+ *   too, so Vehicles and Zords take it.
+ * - Extreme Temperature: Impaired, and 1 Fire or Cold damage per interval (Table 1-12). Impaired is
+ *   dice.mjs's own automatic ↓1.
+ * - Irradiated: 1 Strength and Speed Essence damage per cumulative scene.
+ * - Thick/Thin Atmosphere: Impaired, unless a Free action is spent steadying breath or breathing
+ *   gear is worn - dice.mjs's ↓1, which the player unticks on a turn they spent the Free
  *   action. Thick Atmosphere's Rough Terrain is mechanics/world/rough-terrain.mjs.
- * - Toxic Atmosphere: "1 Poison damage at the end of the specified unit of time" (Table 1-13).
- * - Vacuum or Void: "1 Strength, Speed, and Smarts Essence damage at the end of each turn."
+ * - Toxic Atmosphere: 1 Poison damage per interval (Table 1-13).
+ * - Vacuum or Void: 1 Strength, Speed and Smarts Essence damage at the end of each turn.
  *
  * Round-based damage is dealt at the end of the exposed creature's own turn (Essence20Combat
  * #_onEndTurn, which v14 runs once, on the active GM): an exposure counter on the actor counts the

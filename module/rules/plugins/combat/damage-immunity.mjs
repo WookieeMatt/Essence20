@@ -1,6 +1,7 @@
 import { rulesOfType } from "../../index.mjs";
 import { contextFor, evaluate } from "../../predicate.mjs";
 import { registerRuleType } from "../../types.mjs";
+import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * Round 17 (split2 - docs/rules-batches/slSplit217.md): rule type `DamageImmunity` - while `when` holds, damage of these
@@ -19,9 +20,6 @@ registerRuleType('DamageImmunity', {
   scopes: ['self'],
   validate: rule => ((Array.isArray(rule.damageTypes) && rule.damageTypes.length) || rule.choiceOf ? [] : ['needs damageTypes or choiceOf']),
 });
-
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-const itemsOf = actor => actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
 
 function covers(rule, actor, damageType) {
   if (Array.isArray(rule.damageTypes) && rule.damageTypes.includes(damageType)) {

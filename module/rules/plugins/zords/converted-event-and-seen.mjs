@@ -4,8 +4,8 @@ import { recipients, registerStep } from "../../steps.mjs";
 import { write } from "../shared/copy-and-data-helpers.mjs";
 
 /**
- * Round 15 (items2) - Unexpected Alternative's "an enemy who has seen you Convert into only one of your Alt Modes sees
- * you Convert into your other Alt Mode for the first time":
+ * Round 15 (items2) - Unexpected Alternative's trigger, an enemy who had only seen one Alt Mode seeing the other for
+ * the first time:
  *
  *   event converted      the actor now stands in an Alt Mode - it Converted (system.isTransformed turned on) or switched
  *                        Alt Mode while converted (system.altModeId changed); @var.altMode is the Alt Mode's id. Fired by

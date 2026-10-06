@@ -2,6 +2,7 @@ import { getSceneEpoch } from "../../../mechanics/resources/scene-clock.mjs";
 import { contextFor, evaluate } from "../../predicate.mjs";
 import { registerPickSource, registerStep } from "../../steps.mjs";
 import { write } from "../shared/chat-speaker-helpers.mjs";
+import { sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * Picking what others on the scene have, and a per-scene list of picks (round 15, uses - I Can Do That):
@@ -15,7 +16,6 @@ import { write } from "../shared/chat-speaker-helpers.mjs";
 
 const varText = (text, ctx) => String(text).replace(/\{var\.([\w-]+)\}/g, (match, key) => String(ctx.vars?.[key] ?? ''));
 const listOf = collection => collection?.contents ?? (collection ? [...collection] : []);
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 
 registerPickSource('canvasItems', (step, ctx) => {
   const all = Array.isArray(step.filter) ? step.filter : [];

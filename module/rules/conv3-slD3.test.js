@@ -9,6 +9,8 @@ import { fileURLToPath } from 'node:url';
  * printing {var.moved}. Each item is loaded from its pack source and must do what the removed code did.
  */
 
+// Body of Energy's pack rules use a plug-in rule type (HealthOverflow - round 18, convB).
+await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
 const { reactionOffers, pressReaction } = await import('./reactions.mjs');
 const { cardInfo } = await import('../mechanics/combat/reaction-engine.mjs');

@@ -6,4 +6,4 @@ import { registerTag } from "../../predicate.mjs";
  * live for the scene or the mission (Hybridization's Change Size).
  */
 
-registerTag('self:clockActive', (rest, ctx) => !!ctx.self && (isActiveForWindow(ctx.self, rest, 'scene') || isActiveForWindow(ctx.self, rest, 'mission')));
+registerTag('self:clockActive', (rest, ctx) => !!ctx.self && (isActiveForWindow(ctx.self, rest, 'scene') || isActiveForWindow(ctx.self, rest, 'mission')), { phrase: ['{poss} {arg} is active this scene', "{poss} {arg} isn't active"] });

@@ -5,11 +5,9 @@
  */
 import { registerQ1Relay } from "../shared/qualification-gm-relay.mjs";
 import { registerQualification } from "./equipment-qualification.mjs";
-import { registerNuPogodiSeatSwap } from "../vehicles/nu-pogodi-seat-swap.mjs";
 import { registerDarkEnergonAddiction } from "../resources/addicted-dark-energon.mjs";
 import { registerThreatLevelReadout } from "../../mechanics/combat/effective-threat-level.mjs";
 
-registerNuPogodiSeatSwap();
 registerQualification();
 registerDarkEnergonAddiction();
 registerThreatLevelReadout();

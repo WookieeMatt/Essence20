@@ -1,11 +1,10 @@
 import { worldActors } from "../companions/companion-link.mjs";
 import { getSceneEpoch } from "../resources/scene-clock.mjs";
+import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 
 /**
- * Issue Command (TF CRB, Field Commander, 1st level, p.64): "As a Move action, you can issue a
- * command, granting allies who follow your command ↑1 to a Skill Test or +1 bonus to a Defense based
- * on certain circumstances. You set the terms and the bonus allies receive. This bonus lasts until the
- * beginning of your next turn."
+ * Issue Command (TF CRB, Field Commander, 1st level, p.64): a Move action. The commander sets the terms;
+ * allies who follow them get ↑1 on a Skill Test or +1 to a Defense until the commander's next turn starts.
  *
  * - The Use button on Issue Command asks for the command: one of the book's common commands (Fire,
  *   Hold Your Fire, Hold The Line, What Is That?, It's a Trick) or a custom one (a Skill to boost, or a
@@ -38,14 +37,8 @@ const FLAG = 'issuedCommands';
 const BOOST_FLAG = 'commandBoosts';
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
 function has(actor, id) {
-  const items = actor?.items;
-  const list = Array.isArray(items?.contents) ? items.contents : (items && typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-  return list.some(item => sourceOf(item) == id);
+  return itemsOf(actor).some(item => sourceOf(item) == id);
 }
 
 /** The book's common commands. */
@@ -177,7 +170,7 @@ export function commandSources(actor, ctx = {}) {
         shiftUp: command.edge ? 0 : shift, shiftDown: 0, edge: !!command.edge, snag: false,
       });
     } else if (boost == 3 && command.penalty == 'unrelated') {
-      // Dubious Tactics: "↓1 to all Skill Tests not directly related to the command".
+      // Dubious Tactics: ↓1 on tests unrelated to the command.
       sources.push({ id: `command-penalty-${command.id}`, label: T('E20.DubiousTactics'), shiftUp: 0, shiftDown: 1, edge: false, snag: false });
     }
   }
@@ -253,13 +246,11 @@ export function buildCommand(commander, answer) {
     ? { kind: 'defense', defense: answer.defense, harmless: answer.harmless == 'yes' }
     : { kind: 'shift', match: 'skill', skill: answer.skill, harmless: answer.harmless == 'yes' };
   const target = base.vsTarget ? game.user?.targets?.first?.()?.actor : null;
-  // Minimize Casualties (TF CRB, Ambassador, 6th level): "when you Issue a Command in combat that does
-  // not involve harming any creatures, allies who meet the terms of the command receive double the
-  // benefits."
+  // Minimize Casualties (TF CRB, Ambassador, 6th level): a combat command that harms no one gives
+  // double benefits.
   const doubled = base.harmless && !!game?.combat && has(commander, CMD.minimizeCasualties);
-  // On My Mark (Enigma of Combination, Team Leader, 1st level): "If you perform the same action or act
-  // in the same way as your Command ... your allies following the Command gain +2 to the chosen
-  // Defense or roll the associated Skill Test with Edge."
+  // On My Mark (Enigma of Combination, Team Leader, 1st level): when the commander does what they
+  // ordered, followers get +2 to the Defense or Edge on the Skill Test instead.
   const onMark = answer.onMyMark == 'yes';
   const label = answer.label || (preset ? T(`E20.CommandPreset.${answer.preset}`) : base.kind == 'defense'
     ? T(CONFIG.E20.defenses[base.defense]) : T(CONFIG.E20.skills[base.skill]));
@@ -276,8 +267,8 @@ export function buildCommand(commander, answer) {
 }
 
 /**
- * Lead From the Rear (Decepticon Directive, 3rd level): "you can Issue a Command as a Free action if
- * there are no enemies closer to you than any of your allies."
+ * Lead From the Rear (Decepticon Directive, 3rd level): Issue Command is a Free action while every
+ * ally is nearer to the commander than any enemy.
  */
 export function isLeadingFromTheRear(commander) {
   const mine = commander?.getActiveTokens?.()?.[0];
@@ -307,8 +298,8 @@ async function issueCost(commander, { onInitiative = false } = {}) {
     return 'free';
   }
 
-  // Follow My Lead (TF CRB, Strategist, 3rd level): "you can Issue a Command as a Free action if you
-  // meet the terms of the Command."
+  // Follow My Lead (TF CRB, Strategist, 3rd level): a Free action when the commander meets the
+  // command's own terms.
   if (has(commander, CMD.followMyLead)) {
     const meets = await foundry.applications.api.DialogV2.confirm({
       window: { title: T('E20.CommandTitle') }, content: `<p>${T('E20.CommandFollowMyLead')}</p>`, rejectClose: false,
@@ -326,8 +317,8 @@ async function issueCost(commander, { onInitiative = false } = {}) {
  * @param {Actor} commander
  * @param {Object} [options]
  * @param {Function} [options.pay]   Spends the action; resolves false if blocked.
- * @param {Boolean} [options.onInitiative]   The First Rule Of Soldiering: "when you roll for
- *   Initiative, you can Issue a Command for free."
+ * @param {Boolean} [options.onInitiative]   The First Rule Of Soldiering: a free command on the
+ *   Initiative roll.
  * @returns {Promise<String|null>}   The chat line.
  */
 export async function issueCommand(commander, { pay = async () => true, onInitiative = false } = {}) {
@@ -346,7 +337,7 @@ export async function issueCommand(commander, { pay = async () => true, onInitia
     return null;
   }
 
-  // Complex Command: "Each command must have different terms and a different benefit."
+  // Complex Command: the two commands need different terms and benefits.
   if (commands.length == 2 && commands[0].label == commands[1].label) {
     commands.pop();
   }
@@ -379,9 +370,9 @@ async function postCommandCard(commander, commands) {
 }
 
 /**
- * An ally taking No Excuses ("each of your allies can spend an Energon Point to double the bonus") or
- * Dubious Tactics ("an ally can triple the bonus provided if they also accept a penalty you pick that
- * lasts until the end of your next turn") from the command's card. The ally is whoever the clicking
+ * An ally taking No Excuses (an Energon Point doubles their bonus) or Dubious Tactics (triple the
+ * bonus for a penalty the commander picks, until the end of the commander's next turn) from the
+ * command's card. The ally is whoever the clicking
  * user has selected or owns as their character.
  */
 export async function onCommandBoost(button) {

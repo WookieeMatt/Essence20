@@ -15,4 +15,4 @@ export function rollDamageTypeTag(rest, ctx) {
   return String(ctx.rollDamageType ?? '').toLowerCase() == String(rest ?? '').toLowerCase();
 }
 
-registerTag('roll:damageType', rollDamageTypeTag);
+registerTag('roll:damageType', rollDamageTypeTag, { phrase: ['the attack deals {arg} damage', "the attack doesn't deal {arg} damage"] });

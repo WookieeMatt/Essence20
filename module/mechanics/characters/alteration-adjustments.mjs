@@ -274,13 +274,11 @@ registerRollSources((actor, target, ctx) => {
 /*  Altered / Additional Alteration              */
 /* -------------------------------------------- */
 
-// Altered (Cobra Codex, Hydro-Viper variant Focus, p.53): "You gain a Standard Alteration that
-// increases an Essence Score at 1st level, and a Standard or Limited Alteration that increases an
-// Essence Score at 10th level... You ignore the costs of these Alterations."
-// Additional Alteration (p.53): "At 7th level, you gain Cybernetic Part or Engrafted Mutation... At
-// 15th level, you gain Enhanced Part or Evolving Mutation... At 18th level, you gain Optimized Part
-// or Outright Mutation... as a free General Perk... You also ignore the costs of these Alterations,
-// except for Essence Score costs."
+// Altered (Cobra Codex, Hydro-Viper variant Focus, p.53): a free Essence-raising Standard Alteration
+// at 1st level and a Standard or Limited one at 10th, their costs ignored.
+// Additional Alteration (p.53): free General Perks at 7th (Cybernetic Part / Engrafted Mutation),
+// 15th (Enhanced Part / Evolving Mutation) and 18th (Optimized Part / Outright Mutation), costs
+// ignored except Essence Score costs.
 const levelOf = actor => Number(actor?.system?.level) || 1;
 
 export function alteredBudget(actor) {

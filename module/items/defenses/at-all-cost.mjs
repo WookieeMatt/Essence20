@@ -1,10 +1,8 @@
 /**
- * At All Cost (Through the Shattered Grid, Magna Defender, 18th level, p.25): "Once per day, you
- * can fight beyond reaching 0 Health while Morphed. Instead of being Defeated or returning to your
- * normal form, you may continue to fight normally. During this time, when an enemy successfully
- * hits you, you lose Personal Power instead of Health. If, at any time during this Role Perk's
- * use, you reach 0 Personal Power, you immediately return to your normal form with 0 Health, with
- * the Conditions Unconscious and Defeated."
+ * At All Cost (Through the Shattered Grid, Magna Defender, 18th level, p.25): once a day, a Morphed
+ * holder at 0 Health keeps fighting instead of being Defeated or unmorphing; hits then cost Personal
+ * Power instead of Health, and at 0 Personal Power they drop to their normal form at 0 Health,
+ * Unconscious and Defeated.
  *
  * A plain on/off toggle (like Power Boost/Dig In) rather than a bank-now/consume-later flag - it
  * doesn't grant a bonus to a future roll, it changes how ALL of this actor's incoming damage

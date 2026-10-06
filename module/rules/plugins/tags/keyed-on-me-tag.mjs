@@ -27,4 +27,7 @@ export function keyedOnMe(rest, ctx) {
   }
 }
 
-registerTag('target:keyedOnMe', keyedOnMe);
+registerTag('target:keyedOnMe', keyedOnMe, { phrase: (arg, w) => {
+  const match = /^([\w.]+?)(>=|<=|>|<|=)(\d+)$/.exec(arg);
+  return match ? [`{poss} ${w.pathName(match[1])} about you is ${w.comparison(match[2], match[3])}`, `{poss} ${w.pathName(match[1])} about you is ${w.comparison({ '>=': '<', '<=': '>', '>': '<=', '<': '>=', '=': '!=' }[match[2]], match[3])}`] : null;
+} });

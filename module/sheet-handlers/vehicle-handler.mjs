@@ -3,15 +3,13 @@ import ChoicesSelector from "../apps/choices-selector.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
 import { markUsedThisEncounter } from "../mechanics/characters/perks.mjs";
 
-// Detachable (Across the Stars, p.104): "the Combiner participant can remove itself... roll its
-// Initiative Skill Test for the following Combat round, and become a separate combatant...
-// [but] may not reattach in the same scene." The "leave the Megaform" half needs no new code at
+// Detachable (Across the Stars, p.104): a participant may leave, roll Initiative for the next round
+// as its own combatant, and not rejoin that scene. The leaving half needs no new code at
 // all - it's the exact same removal onSystemActorsDelete already performs for any other reason a
 // GM might unlink an actor - so this only needs to flag that removal as a Detach (scoped to
-// "removed a Zord holding this trait from a Megaform while a combat is active," since that's the
-// only context RAW's "detach" action makes sense in) and, in drop-handler.mjs's own onDropActor,
-// refuse to re-add that same Zord to a Megaform while the flag is still set. "Incompatible with
-// the Core Body Megaform Trait" is a chargen-time build restriction rather than something with
+// a Zord with this trait removed from a Megaform during combat, the only context RAW's detach
+// makes sense in) and, in drop-handler.mjs's own onDropActor, refuse to re-add that same Zord to a
+// Megaform while the flag is still set. The trait's clash with Core Body is a chargen-time build restriction rather than something with
 // runtime combat consequences (worst case a GM builds a Zord RAW wouldn't technically allow, not
 // a crash or an exploit) - left as a GM-adjudicated build rule, not enforced in code here.
 export const DETACHED_THIS_SCENE_FLAG = 'detachedFromMegaformThisScene';

@@ -1,6 +1,7 @@
 // Rules-engine plug-ins, round 17 (perm - docs/rules-batches/slPerm17.md). Registered on import; see
 // module/rules/plugins/index.mjs. Plain Node safe.
 import { registerStep, registerTextRef } from "../../steps.mjs";
+import { itemsOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * Reports about a creature (Chrono-File Access):
@@ -13,11 +14,6 @@ import { registerStep, registerTextRef } from "../../steps.mjs";
  *   (the first target): a whole localized report in a `chat` step ("{lang.ChronoFileAccessResult}").
  * - defenseFacts (rules/plugins/combat/defense-facts.mjs) also keeps `{var.highestDefenseName}` / `@var.highestDefenseValue`.
  */
-
-const itemsOf = actor => {
-  const items = actor?.items;
-  return items?.contents ?? (items ? [...items] : []);
-};
 
 function localize(key, data = null) {
   const i18n = globalThis.game?.i18n;

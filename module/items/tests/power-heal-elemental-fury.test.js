@@ -3,63 +3,8 @@ import { jest } from '@jest/globals';
 const worldList = [];
 let nextRoll = 1;
 
-function makeItem(data) {
-  return {
-    id: data.id ?? Math.random().toString(36).slice(2, 10),
-    name: data.name ?? 'Item',
-    type: data.type ?? 'perk',
-    system: data.system ?? {},
-    flags: data.flags ?? {},
-    setFlag: jest.fn(async function (scope, key, value) {
-      this.flags[scope] ??= {};
-      this.flags[scope][key] = value;
-    }),
-  };
-}
-
-function makeActor(data = {}) {
-  const items = (data.items ?? []).map(makeItem);
-  const actor = {
-    uuid: data.uuid ?? `Actor.${Math.random().toString(36).slice(2, 10)}`,
-    id: data.id ?? 'a',
-    name: data.name ?? 'Actor',
-    type: data.type ?? 'playerCharacter',
-    system: data.system ?? {},
-    flags: data.flags ?? {},
-    statuses: new Set(data.statuses ?? []),
-    isOwner: true,
-    items: { contents: items, get: id => items.find(i => i.id == id) },
-    getActiveTokens: () => [],
-    prototypeToken: { disposition: 1 },
-    setFlag: jest.fn(async function (scope, key, value) {
-      this.flags[scope] ??= {};
-      this.flags[scope][key] = value;
-    }),
-    update: jest.fn(async function (changes) {
-      if ('system.powers.personal.value' in changes) {
-        this.system.powers.personal.value = changes['system.powers.personal.value'];
-      }
-    }),
-    createEmbeddedDocuments: jest.fn(async (type, docs) => docs.map(d => makeItem({ ...d, id: `new${items.length}` }))),
-    deleteEmbeddedDocuments: jest.fn(async () => []),
-    toggleStatusEffect: jest.fn(async () => {}),
-    getFlag(scope, key) {
-      return this.flags?.[scope]?.[key];
-    },
-  };
-  items.forEach(item => {
-    item.parent = actor;
-  });
-  return actor;
-}
-
-const src = uuid => ({ core: { sourceId: uuid } });
 let ext;
-let common;
 let crb;
-
-const sourcesFor = (actor, target, ctx) => ext.extRollSources(actor, target, ctx).sources;
-const useFor = item => ext.findExtUse(item);
 
 beforeAll(async () => {
   global.Hooks = { on: jest.fn(), once: jest.fn() };
@@ -93,9 +38,7 @@ beforeAll(async () => {
   global.fromUuidSync = uuid => worldList.find(a => a.uuid == uuid) ?? null;
 
   ext = await import('../../mechanics/item-hooks.mjs');
-  common = await import('../shared/pr-crb-ttsg-item-ids.mjs');
   crb = {
-    ...(await import('../movement/ninja-power-jump.mjs')),
     ...(await import('../gear/power-ranger-standard-issue.mjs')),
   };
 });
@@ -109,7 +52,8 @@ beforeEach(() => {
 describe('registration', () => {
   test('Use buttons and hooks are registered', () => {
     const ids = ext.registrySnapshot().uses.map(u => u.id);
-    expect(ids).toEqual(expect.arrayContaining(['pr3NinjaPower']));
+    // Ninja Power's jump / switch off are the Perk's own rules (module/rules/conv18-convC.test.js).
+    expect(ids).not.toContain('pr3NinjaPower');
     // Power Heal's Use (heal, or remove a Condition) is the Power's own Use rule (module/rules/conv17-split2.test.js).
     expect(ids).not.toContain('pr3PowerHealCondition');
     // Elemental Fury is the Zord Feature's own rules (rules/conv15-items2.test.js).
@@ -126,24 +70,6 @@ describe('registration', () => {
     expect(ids).not.toContain('pr3UniqueWeapon');
     expect(ids).not.toContain('pr3UniqueStore');
     expect(global.Hooks.on).toHaveBeenCalledWith('updateItem', expect.any(Function));
-  });
-
-  test('Use buttons match only their own items', () => {
-    const perk = makeItem({ flags: src(common.IDS.ninjaPower) });
-    expect(useFor(perk)?.id).toBe('pr3NinjaPower');
-    expect(useFor(makeItem({ flags: src('Compendium.essence20.pr_crb.Item.other') }))).toBeNull();
-    expect(useFor(makeItem({}))).toBeNull();
-  });
-});
-
-describe('Ninja Power jump', () => {
-  test('attacks against a jumper this round take the ↓1', () => {
-    global.game.combat = { id: 'c', round: 2, turn: 1 };
-    const target = makeActor({ flags: { essence20: { pr3NinjaJump: { combatId: 'c', round: 2, turn: 0 } } } });
-    const attacker = makeActor();
-    expect(sourcesFor(attacker, target, { isAttack: true }).find(s => s.id == 'ext-pr3NinjaJump')?.shiftDown).toBe(1);
-    global.game.combat.round = 3;
-    expect(sourcesFor(attacker, target, { isAttack: true }).find(s => s.id == 'ext-pr3NinjaJump')).toBeUndefined();
   });
 });
 

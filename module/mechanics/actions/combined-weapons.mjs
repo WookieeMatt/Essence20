@@ -1,15 +1,13 @@
 /**
- * Combined Weapons (PR CRB p.115; Across the Stars p.79 "Combined: Some weapons can combine into an
- * alternate form"): "As a team, all Rangers may spend their full action to move to the same area
- * (within 5 feet of at least 2 other Rangers) and combine their Power Weapons into one
- * supercharged weapon. ... The Power Blaster does Damage equal to the amount of Power Weapons it is
- * made of but only hits if over half of the team succeeds on their Skill Tests."
+ * Combined Weapons (PR CRB p.115; Across the Stars p.79, the Combined trait): the team spends full
+ * actions to gather (each within 5 feet of two others) and merge their Power Weapons; the result
+ * deals damage equal to the number of weapons in it, and hits only if over half the team succeeds.
  *
  * A Combined weapon's Use button (mechanics/actions/action-perks.mjs) runs combineWeapons(): pick who joins,
  * each spends a Full Action, and a chat card records the assembled weapon. Its Fire button has
  * every member roll their own weapon's attack against the targets; over half succeeding lands
  * damage equal to the number of weapons. An Engine Cell (A Jump Through Time p.73) powers the
- * combined RPM sidearms to "take double the normal listed number of Attacks with the combined form".
+ * combined RPM sidearms to make twice the listed number of Attacks.
  */
 
 const COMBINED_TRAIT = 'combined';

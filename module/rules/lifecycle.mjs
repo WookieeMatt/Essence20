@@ -1,6 +1,7 @@
 import { poolMax } from "./adapter.mjs";
 import { rulesOf, ruleState } from "./index.mjs";
 import { interpolate } from "./predicate.mjs";
+import { sourceOf } from "../items/shared/item-lookups.mjs";
 
 /**
  * What an item's rules do when it joins or leaves an actor (docs/RULES_ENGINE_PLAN.md §4):
@@ -14,10 +15,6 @@ import { interpolate } from "./predicate.mjs";
  */
 
 const T = (key, data) => (data ? game.i18n.format(`E20.Rules.${key}`, data) : game.i18n.localize(`E20.Rules.${key}`));
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-}
 
 /** The options a ChoiceSet offers: [{value, label}]. */
 export function choiceOptions(rule) {

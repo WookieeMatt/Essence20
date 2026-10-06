@@ -1,18 +1,13 @@
 import { hasUpgrade, UPGRADE } from "./weapon-upgrades.mjs";
 
 /**
- * Time, Proximity and Detonator Bombs (GI Joe CRB / PR CRB / TF CRB Weapon Upgrades): "This
- * explosive is planted instead of thrown ... Setting a bomb is a Standard action. ... When a bomb
- * detonates, whoever planted it makes a Technology (Explosives) Skill Test against anyone in the
- * bomb's blast radius. This does mean that if the person who set the bomb gets caught in the bomb's
- * blast radius, they attack themself."
+ * Time, Proximity and Detonator Bombs (GI Joe CRB / PR CRB / TF CRB Weapon Upgrades): planted, not
+ * thrown, as a Standard action. On detonation the planter rolls Technology (Explosives) against
+ * everyone in the blast radius - themselves included if they are caught in it.
  *
- * - Time Bomb: "designate a number of turns and an Initiative count ... On that Initiative count in
- *   that many turns, the time bomb detonates."
- * - Proximity Bomb: "Starting after the end of the turn the proximity bomb is set, if any time a
- *   character enters the bomb's area of effect, the proximity bomb detonates."
- * - Detonator Bomb: "The bomb triggers when someone ... presses a detonator button ... Using a
- *   detonator is a free action."
+ * - Time Bomb: set for a number of turns and an Initiative count, and goes off then.
+ * - Proximity Bomb: from the end of the turn it was set, goes off when anyone enters its area.
+ * - Detonator Bomb: goes off when the detonator is pressed, a Free action.
  *
  * Rolling a weapon effect whose weapon carries one of these plants it instead of attacking
  * (documents/item.mjs). A planted bomb is kept on the planter's own actor (flags.essence20.
@@ -159,8 +154,8 @@ export async function detonateBomb(actor, bombId) {
 }
 
 /**
- * Time Bombs coming due, on the active GM's client when a turn starts: "On that Initiative count in
- * that many turns, the time bomb detonates."
+ * Time Bombs coming due, on the active GM's client when a turn starts: each goes off at its set
+ * Initiative count after its set number of turns.
  * @param {Combat} combat
  */
 export async function checkTimeBombs(combat) {

@@ -36,9 +36,9 @@ registerTag('roll:rangeBand', (rest, ctx) => {
   }
 
   return null;
-});
+}, { phrase: arg => [`at ${arg} range`, `not at ${arg} range`] });
 
-registerTag('roll:longRangeSnagIgnored', (rest, ctx) => !!factsOf(ctx)?.longRangeSnagIgnored);
+registerTag('roll:longRangeSnagIgnored', (rest, ctx) => !!factsOf(ctx)?.longRangeSnagIgnored, { phrase: ['the long-range Snag is ignored', "the long-range Snag isn't ignored"] });
 
 const compare = (value, op, number) => ({ '>=': value >= number, '<=': value <= number, '>': value > number, '<': value < number, '=': value == number })[op];
 
@@ -46,7 +46,11 @@ registerTag('roll:elevationAbove', (rest, ctx) => {
   const match = /^(>=|<=|>|<|=)(-?\d+)$/.exec(String(rest ?? ''));
   const facts = factsOf(ctx);
   return !!match && !!facts && Number.isFinite(Number(facts.elevation)) && compare(Number(facts.elevation), match[1], Number(match[2]));
-});
+}, { phrase: (arg, w) => {
+  const match = /^(>=|<=|>|<|=)(-?\d+)$/.exec(arg);
+  const words = match && match[1] == '>' && match[2] == '0' ? 'higher than' : match ? `${w.comparison(match[1], match[2])} ft above` : '';
+  return match ? [`you are ${words} the target`, `you aren't ${words} the target`] : null;
+} });
 
 registerRuleType('WeaponRange', {
   params: { add: { kind: 'formula', required: true } },

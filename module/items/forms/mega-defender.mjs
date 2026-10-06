@@ -16,20 +16,15 @@ import { num } from "../shared/numbers.mjs";
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 
 /*
- * Mega Defender (Through the Shattered Grid, Magna Defender, p.24): "by expending 3 Personal Power
- * as a Standard action, you can have [the Torozord] channel and infuse you with Morphin Grid energy,
- * changing you into a Zord-like form known as the Mega Defender. ... You use the Strength and Speed
- * Essence Scores, Health, Defense bonuses, and type of movement of the Mega Defender form. ... you
- * remain in Mega Defender form until the scene's end or the form's Health falls to 0. When reduced
- * to 0 Health, you automatically return to your Morphed form with the same Health and Conditions you
- * had before." Stat block (p.38): Health 8, 40ft Ground, Strength 8, Speed 4, Toughness 18,
+ * Mega Defender (Through the Shattered Grid, Magna Defender, p.24): 3 Personal Power and a Standard
+ * action turn the Ranger into the Zord-like Mega Defender, using its Strength, Speed, Health, Defense
+ * bonuses and movement until the scene ends or its Health hits 0 - then back to the Morphed form as
+ * it was before. Stat block (p.38): Health 8, 40ft Ground, Strength 8, Speed 4, Toughness 18,
  * Evasion 14. Might/Targeting stay the Ranger's own ranks, which is how the actor already rolls.
  *
- * "Once the Torozord has answered your call and arrived at the conflict" - the form needs the
- * Ranger's Torozord (a Zord on their sheet) on the scene, and remembers which one. "While in this form,
- * you and the Torozord share actions. This means only one of you can Move and only one can take a
- * Standard action each turn. You may divide your Free actions as you see fit, using the highest
- * number of Free actions between you." They keep separate turns, so what one spends is pre-spent on
+ * The Torozord has to have arrived - the form needs the Ranger's Torozord (a Zord on their sheet) on
+ * the scene, and remembers which one. In the form the pair share one Move and one Standard action a
+ * turn, and split the larger of their two Free action counts as they like. They keep separate turns, so what one spends is pre-spent on
  * the partner's turn if it is still to come this round, and the one with fewer Free actions is topped
  * up to the other's at the start of their turn.
  */

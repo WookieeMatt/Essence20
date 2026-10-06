@@ -14,7 +14,7 @@ registerTag('team', (rest, ctx) => {
 
   return worldActors().some(actor => actor?.type == 'playerCharacter' && actor !== ctx.self && actor.uuid != ctx.self?.uuid
     && itemsOf(actor).some(item => sourceOf(item) == held[1] || item.uuid == held[1]));
-}, { family: 'situation', param: 'teamTag' });
+}, { family: 'situation', param: 'teamTag', phrase: (arg, w) => (arg.startsWith('holds:') ? [`another player character has ${w.itemName(arg.slice(6))}`, `no other player character has ${w.itemName(arg.slice(6))}`] : null) });
 
 registerTag('scene:tokenWithin', (rest, ctx) => {
   const match = /^(\d+):(.+)$/.exec(rest);
@@ -33,4 +33,7 @@ registerTag('scene:tokenWithin', (rest, ctx) => {
     const feet = feetBetween(ctx.self, other);
     return feet !== null && feet !== undefined && feet <= Number(match[1]) && tags.every(tag => evaluate([tag], { ...ctx, other }) === true);
   });
-});
+}, { phrase: (arg, w) => {
+  const match = /^(\d+):(.+)$/.exec(arg);
+  return match ? [w.facts(match[2].split('&'), `someone within ${match[1]} ft`), `nobody within ${match[1]} ft qualifies (${w.facts(match[2].split('&'), 'someone')})`] : null;
+} });

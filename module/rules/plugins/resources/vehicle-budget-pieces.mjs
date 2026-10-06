@@ -57,4 +57,4 @@ registerTag('item:upgradeCostAtMost', (rest, ctx) => {
 
   const most = resolveValue(rest, { actor: ctx.self, item: ctx.ruleItem, vars: ctx.vars ?? {} }, 0);
   return upgradeCost(entry.system?.availability) <= most;
-});
+}, { phrase: ['{poss} upgrade cost is within budget', '{poss} upgrade cost is over budget'] });

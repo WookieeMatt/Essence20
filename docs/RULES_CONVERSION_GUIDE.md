@@ -2706,3 +2706,189 @@ Tests: `module/rules/engine17-perm.test.js` (7 tests); the items in `module/rule
   using it - the seated crew member (system.actors) whose turn it is, else game.user.character when aboard, else (not as
   GM) the first crew member this user owns.
 - **`setToggle` honours `untilOf`** (it always stamped the holder before).
+
+## Engine features added 2026-10-07 (round 18, convA)
+
+All new plug-in files are imported in `rules/plugins/index.mjs`'s "Round 18 (convA)" block. New string:
+`E20.RulesExtConvA18.TauntBlocked`.
+
+### Condition durations
+
+- **Rule type `ConditionHalving {conditions: [status ids]}`** (`plugins/effects/condition-halving.mjs`): a listed
+  Condition that an `applyCondition` step puts on the holder lasts half as long.
+  - `rounds: N` becomes half of N, rounded up, and never less than 1.
+  - "Until the end of your next turn", when it counts the holder's own turns (`until: endOfNextTurn` with
+    `untilOf: recipient`), ends as that turn starts instead (`nextTurn`). The `...OrScene` spelling works the same way.
+  - A duration that counts someone else's turns is left alone.
+  - `when` is asked with self = the holder and target = the actor whose step applies the Condition.
+  - Gallantry: `{type: ConditionHalving, conditions: ["frightened"]}`.
+- **`steps.mjs#registerConditionDuration(fn)`**: `fn(recipient, condition, {until, rounds, untilActor}, ctx)` returns
+  `{until?, rounds?}`. The `applyCondition` step asks it for each recipient before it works out the timing, so the GM
+  relay gets the changed duration too. This is the hook `ConditionHalving` uses.
+
+### The attack's Skill
+
+- **SkillSubstitution `stage: "attack"`** (`plugins/rolls/attack-skill-substitution.mjs`): the Skill is swapped where
+  `documents/item.mjs` builds a weapon attack's roll, before the Skill's shift, ↑ / ↓ and Specialization are read from
+  the actor. `rules/adapter.mjs#applySkillSubstitution`, the later preRoll swap, skips these rules.
+  - `from` is the attack's own Skill (its classification Skill, or the weapon's or dataset's override).
+  - `mode: bestOf` swaps only when the `to` die is better.
+  - `when` sees the attack (`item:`, `weapon:`, `attack:melee`) and the first target.
+  - `ruleAttackSkill(actor, item, skill)` returns the Skill to roll.
+  - Brutal Might: `{stage: attack, from: might, to: brawn, mode: bestOf}`.
+
+### Damage landing on your own vehicle
+
+- **Trigger `{event: applyingDamage, redirectTo: <recipient>}`** (`plugins/combat/self-redirect.mjs`): a rule on the one
+  being hit. As a check card's Apply Damage is pressed, the hit may land on that recipient instead.
+  - `chat.mjs#onApplyDamage` asks it FIRST, with the usual damage-redirect question. While one is offered, the ally
+    protectors (`redirect: true`) aren't asked.
+  - `when`: self = the one hit, target = the attacker. A `limit` counts each confirmed redirect. `steps` (they can be
+    empty) run when the redirect is taken, with the attacker as target.
+  - `ruleSelfRedirect(target, attacker)` returns `{protector, ...}` or null; `takeSelfRedirect(redirect)` runs the steps
+    and counts the limit.
+  - The plain applyingDamage pass skips these rules.
+  - Impenetrable Armor: `{redirectTo: drivenVehicle, steps: []}`.
+
+### A mark that refuses rolls
+
+- **BeforeRoll `scope: "marked"` + `mark: "<key>"`** (`plugins/rolls/marked-before-roll.mjs`): the rule sits on the
+  setter's item. It is asked before the dialog of every roll made by a creature carrying the setter's `<key>` mark.
+  - `when` sees self = the roller, holder = the setter, target = the roller's first target, the rolled item and Skill,
+    and how many targets there are (`roll:targets=0`, `roll:anyTarget:<tags>`).
+  - `steps` run as the roller. `cancel: true` refuses the roll with `message`, which is an `E20.` key or text; `{name}`
+    is the roller and `{holder}` the setter.
+  - Stand Behind Me!: `{scope: marked, mark: standBehindMeForced, cancel: true, when: ["item:type:weaponEffect",
+    "self:markedByHolder:standBehindMe", {any: ["roll:targets=0", "roll:anyTarget:not:target:ruleHolder"]}]}`.
+
+### Late hit riders
+
+- **HitRider `stage: "late"` + `replace: true`** (`plugins/combat/late-hit-rider.mjs`): read at the end of a weapon
+  hit, in `target-riders.mjs#attackRiders` (`ruleLateHitRiders`).
+  - It comes after every other hit rider, Targetmaster and All Out Attack, and before the poison coating, the on-hit
+    Conditions and the Critical Success riders. `@var.damage` is the hit's damage by then.
+  - Only `option` is read at this stage. `replace: true` makes that option the hit's only Apply button: its own damage
+    goes, and so do the rules' Critical options.
+  - The usual HitRider pass skips stage-late rules.
+  - Concentrated Fire: `{stage: late, replace: true, when: ["roll:dataset:concentratedFire", "item:damageType:fire",
+    "target:data:system.immunities.fire"], option: {damage: "@var.damage", damageType: fire, key: concentratedFire,
+    ignoreImmunity: true}}`.
+
+### Uses a Rest can't give back
+
+- **Rule type `HeldUse {count?}`** (`plugins/resources/held-uses.mjs`): on a Power with daily uses. While `when` holds,
+  a Rest gives back all of the spent uses except `count` (a formula, default 1), and never holds more than were spent.
+  - `when` is asked of the Power's actor.
+  - Read by `mechanics/resources/nanomite-uses.mjs#resetDailyPowerUses` (`ruleHeldUses(actor, power)`).
+  - Dominate: `{when: ["self:marking:dominated"]}`. Remote Control's "until you relinquish control" has the same shape.
+
+Tests: `module/rules/engine18-convA.test.js` (8 tests); the items in `module/rules/conv18-convA.test.js` (17 tests).
+
+## Engine features added 2026-10-07 (round 18, convB)
+
+All new plug-in files are imported in `rules/plugins/index.mjs`'s "Round 18 (convB)" block.
+
+### Damage and resources
+
+- **Rule type `HealthOverflow {into, keep?}`** (`plugins/combat/health-overflow.mjs`) - Health and another stored number act
+  as one pool for damage. Damage that would take the holder's Health to 0 or below comes out of the resource at `into`
+  (a `system.` path) first. Health stays at `keep` (default 1) until the pool is gone, and then both are emptied. Damage
+  smaller than the Health left lands as usual. The resource is written with `{essence20Loss: true}` (a loss, not a spend).
+  - It is a damage modifier registered after the rules' reductions (DamageReduction, damageLanding...), so it shares out
+    what is left of the hit. It runs on whichever client applies the damage.
+  - `when` sees the holder and the damage (`damage:<type>`, `damage>=N`). The first rule whose `when` holds is used.
+  - Body of Energy: `{into: "system.powers.personal.value", when: ["self:morphed", "not:damage:stun"]}`.
+- **`updateActor {notSpent: true}`** (edit in `rules/steps.mjs`) - the write carries `{essence20Loss: true,
+  essence20Refund: true}`, so resourceSpent Triggers and the resource code's spend hooks skip it. Body of Energy's split on
+  leaving Morph uses it.
+- **Ref `@rolePointsBonus`** (`plugins/resources/role-points-bonus-ref.mjs`) - the bonus the actor's base Role Points item
+  grants: `system.bonus.value`, or `system.bonus.level20Value` at 20th level. `@rolePointsBonus.<name>` reads the Role Points
+  item of that name (`_` for a space). 0 with none. Renegade Commander hands its Bonus Health to the ally:
+  `{key: "system.health.bonus", value: "@rolePointsBonus"}`.
+
+### Timed Active Effects
+
+- **`addEffect {until}`** (edit in `plugins/effects/rule-effects.mjs`) - with `on: actor`, the effect is stamped with
+  `flags.essence20.rulesExpiry` (any rule duration, like a timed grant). The validator refuses `until` without `on: actor`.
+- **The timed-item sweep takes Active Effects too** (edit in `rules/triggers.mjs#sweepExpired`) - an actor's effects whose
+  `rulesExpiry` ran out are deleted at the same points timed items are (turn starts, scene changes, world-time changes; the
+  active GM). Renegade Commander's scene-long grant: `{do: addEffect, on: actor, to: target, until: scene, ...}`.
+- **An `addEffect` name with a placeholder is formatted** - an `E20.` name whose text holds `{...}` is formatted with
+  `{name}` (the run's actor) and the run's vars. A name without one is only localised, as before.
+
+### Powers
+
+- **Rule type `PowerGate {when}`** (`plugins/resources/power-gate.mjs`) - on a Power: its activation button (the sheet's
+  `canUsePower` helper, `mechanics/characters/power-use.mjs`) shows only while `when` holds (self = the Power's holder).
+  A Power whose own powerUsed Trigger has a limit gates on it with `self:limitUsed:<limit.key>:<per>`. Zeo Crystal Boost:
+  `{type: PowerGate, when: ["not:self:limitUsed:zeoCrystalBoost:encounter"]}` beside a powerUsed Trigger with
+  `limit: {per: encounter, key: zeoCrystalBoost}`.
+
+### Zords and Megaforms
+
+- **Link scope `drivenMegaform`** (`plugins/zords/driven-megaform.mjs`) - a rule on a character's item reaches every
+  Megazord (subtype megaformZord) that the Zord it drives is part of. Every rule type that takes `vehicle` takes it.
+  `stacks: false` counts one book item once, however many drivers hold it.
+- **Tag `megaform:everyDriver:<tags joined by &>`** (same file) - this actor is a Megazord with at least one Zord
+  participant, and every participant has a driver for whom the tags hold (asked as `self:`). Zeo Crystal Boost's team
+  clause: `megaform:everyDriver:self:data:flags.essence20.zeoCrystalBoostOption=megaformTeam`.
+- **Rule type `SummonArrival {set: {path: value}}`** (`plugins/zords/summon-arrival.mjs`) - on a Zord's item: whenever the
+  summon timer is written (`flags.essence20.zordSummonReadyRound`, by zord-summon.mjs or reduceTimer), these values ride on
+  that same write (preUpdateActor), so the Zord arrives in that state. `when` sees the Zord. Megafauna:
+  `{set: {"flags.essence20.zord1Megafauna": true}}`.
+
+### Story Points
+
+- **Step `storyPointsExpire {count?, message?}`** (`plugins/resources/expiring-story-points.mjs`) - after a
+  `grantStoryPoint`: those `count` points (a formula, default 1) belong to the running combat. Outside a combat it does
+  nothing.
+  - The step marks the actor (`flags.essence20.expiringStoryPointsGrant`, through the GM relay when needed). The active GM
+    books the mark on the Combat's ledger (`flags.essence20.expiringStoryPoints`: granted, spent, message).
+  - While the combat runs, every Story Point the team's pool loses counts as spent (spends count against these points
+    first, since they are the ones about to expire).
+  - When the combat is deleted, the points granted and not spent are taken off the pool (never more than it holds), and
+    `message` (an `E20.` key with `{count}`) is posted.
+  - We Improvise: `[{do: grantStoryPoint}, {do: storyPointsExpire, message: "E20.ResWeImproviseLost"}, ...]`.
+
+### Builders
+
+- **Step `buildSorcerousPower {}`** (`plugins/picks/sorcery-builder-step.mjs`) - opens the Sorcerous Power builder
+  (`items/magic/temper-tempest-sorcery-builder.mjs#buildSorcerousPower`, loaded lazily). The Power it describes is created
+  on the actor, with a warning when it goes over the Sorcerous budget, and the builder's line goes to the run's chat. A
+  cancelled dialog stops the run. The Sorcery Perk: `{type: Use, steps: [{do: buildSorcerousPower}]}`.
+
+## Engine features added 2026-10-07 (round 18, convC)
+
+Imported in `rules/plugins/index.mjs`'s "Round 18 (convC)" block. One new string: `E20.RulesExtConvC18.NuPogodiWhichCondition`.
+
+- **SneakAttackGrant `bypass: true` (+ `reason`)** (edit in `plugins/combat/sneak-attack-grant.mjs`, read by
+  `mechanics/combat/sneak-attack.mjs#checkSneakAttackEligibility` through `bypassGrant(actor, weaponEffect)`): while the
+  rule's `when` / `items` hold, the attack is a sneak attack whatever its weapon (Silent or not), range, Edge or allies.
+  It is still once a round and never against a target that takes no sneak attack damage (SneakAttackImmunity), and it
+  costs nothing. `reason` is the Roll Options line it shows (an `E20.` key or text; default "Conditions met"). Asked after
+  an `anyCircumstance` grant (Sudden Strike), before the ordinary checks; a bypass rule never widens the weapon / range
+  (sneakAttackWeaponGrants leaves it out). Perfect Disguise: `{type: SneakAttackGrant, bypass: true, reason:
+  "E20.SneakAttackReasonDisguise", when: ["self:data:flags.essence20.perfectDisguiseActive"]}`.
+- **Pick source `seatmates`** (`plugins/picks/seat-swap.mjs`): everyone else seated as a driver or passenger (with a
+  uuid) in the vehicle or Zord the actor rides in (`links.mjs#crewedBy`), by seat key, labelled "<name> (<role>)". Not
+  aboard, or alone: nothing to pick (the pick stops the run). `seatOf(actor)` - the vehicle, seat key and entry.
+- **Step `swapSeats {seat?: <pick key>}`** (same file): the actor and the rider in that seat trade `vehicleRole`s - the
+  seat is the pick stored under `seat` on the rule's item, else the run's `@var.picked`. Written through the GM relay
+  (`relayed-writes.mjs#updateRelayed`) when this user can't write the vehicle. Sets `{var.other}` (the other rider's
+  name). Not aboard / no such seat: stops the run. Nu, Pogodi!: `pick {from: seatmates, beforeCost: true}`, then
+  `roll {skill: driving, dif: 10, onSuccess: [swapSeats {seat}, chat "{lang.Q1Swapped}"], onFail: [...]}` with `cost:
+  {action: free}` and `when: ["vehicle:crew"]`.
+- No piece needed for the rest: the on / off pattern plus `morph` / `unmorph` Triggers (`prompt: true` for "spend 1
+  Power to activate it?"), a `mark {until: endOfRound, when: ["combat"]}` step and an incoming RollModifier reading
+  `self:marked:<key>` replace a hand-written "attacks against me this round" roll source.
+
+## Plain-English conditions (round 18, 2026-10-07)
+
+Rule summaries read `when` tags and formula amounts through `rules/describe-when.mjs` (`describeWhen`, `formulaWords`). A new tag must read as English - `describe-when.test.js` fails on raw tokens in any pack summary.
+
+`registerTag(name, fn, { phrase })`, where `phrase` is a clause, a `[clause, negated clause]` pair, or
+`(arg, w) => either` (return null to fall back on the core reading). Templates fill `{arg}` (as words), `{raw}`,
+`{name}` (an item's name from a uuid / id), `{ft}`, and `{who}` / `{is}` / `{isnt}` / `{has}` / `{hasnt}` / `{poss}` /
+`{its}` / `{s}` for whoever the tag asks about. A `self:` phrase also reads `target:` and `holder:` tags of the same name.
+`w` carries `humanize`, `itemName`, `pathName`, `comparison`, `skillName`, `items(tags, name?)`, `facts(tags, name?)`,
+`describe(tags)` and `formula(text)`. A tag registered elsewhere can get one later with `registerTagPhrase`.

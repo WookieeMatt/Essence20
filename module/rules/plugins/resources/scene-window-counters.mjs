@@ -35,9 +35,9 @@ export function windowUsed(actor, rest) {
   return getUses(actor, flag, window) >= (Number(count) || 1);
 }
 
-registerTag('self:windowUsed', (rest, ctx) => windowUsed(ctx.self, rest));
-registerTag('target:windowUsed', (rest, ctx) => windowUsed(ctx.other ?? null, rest));
-registerTag('holder:windowUsed', (rest, ctx) => windowUsed(ctx.holder ?? ctx.self, rest));
+registerTag('self:windowUsed', (rest, ctx) => windowUsed(ctx.self, rest), { phrase: (arg, w) => w.windowUsed(arg) });
+registerTag('target:windowUsed', (rest, ctx) => windowUsed(ctx.other ?? null, rest), { phrase: (arg, w) => w.windowUsed(arg) });
+registerTag('holder:windowUsed', (rest, ctx) => windowUsed(ctx.holder ?? ctx.self, rest), { phrase: (arg, w) => w.windowUsed(arg) });
 
 /** One more use (or `count` more) of `flag` in its window on `actor` (or, clear, the record gone). */
 export async function markWindow(actor, flag, window, { clear = false, count = 1 } = {}) {

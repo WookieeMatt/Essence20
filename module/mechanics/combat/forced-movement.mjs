@@ -8,8 +8,7 @@ import { needsGmRelay, relayToGm } from "../world/gm-relay.mjs";
  * - "you only push them up to the edge of the hazard" (Barreling Beam, MLP CRB p.136) is the table's
  * call, since a hazard is only whatever the GM says it is. Used by Explosive Aftershock ("You push
  * them 10 feet", GI Joe CRB p.81), Muzzle Punch (Quartermaster's Guide p.30), a Shove (GI Joe CRB
- * p.118, PR CRB p.110: "each successful effect moving the target directly away from you a distance
- * equal to your natural Reach"), Barreling Beam, Checkmate (GI Joe CRB p.87) and Teleporting Beam
+ * p.118, PR CRB p.110: each success pushes the target straight back by the shover's natural Reach), Barreling Beam, Checkmate (GI Joe CRB p.87) and Teleporting Beam
  * (MLP CRB p.138), which put the target on a chosen spot instead.
  *
  * A creature with a ForcedMovementChoice rule (Immovable Object, GI Joe CRB, Juggernaut, 20th level, p.112) may choose not

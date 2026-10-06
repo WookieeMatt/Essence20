@@ -33,5 +33,5 @@ function inRough(actor) {
   return roughLookup ? !!roughLookup(actor) : null;
 }
 
-registerTag('self:inRoughTerrain', (rest, ctx) => inRough(ctx?.self));
-registerTag('target:inRoughTerrain', (rest, ctx) => (ctx?.other ? inRough(ctx.other) : false));
+registerTag('self:inRoughTerrain', (rest, ctx) => inRough(ctx?.self), { phrase: ['{who} {is} in rough terrain', '{who} {isnt} in rough terrain'] });
+registerTag('target:inRoughTerrain', (rest, ctx) => (ctx?.other ? inRough(ctx.other) : false), { phrase: ['{who} {is} in rough terrain', '{who} {isnt} in rough terrain'] });

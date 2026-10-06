@@ -3,6 +3,8 @@
  * loaded lazily so these files import under plain Node (tests, scripts/check-rules.mjs).
  */
 
+import { sourceOf } from "../../../items/shared/item-lookups.mjs";
+
 /** Helpers the plug-ins read from the system's own modules, filled at init (tests set them directly). */
 export const lazy = {
   // mechanics/actions/action-economy.mjs#getLedger / setNextTurn
@@ -36,6 +38,7 @@ globalThis.Hooks?.once?.('setup', () => {
   loadLazy().catch(error => console.error('Essence20 | rules group C helpers failed to load', error));
 });
 
+// Not item-lookups.mjs#itemsOf: a plain array is handed back as-is (that one copies it).
 export function itemsOf(actor) {
   const items = actor?.items;
   if (Array.isArray(items?.contents)) {
@@ -49,9 +52,7 @@ export function itemsOf(actor) {
   return items && typeof items[Symbol.iterator] == 'function' ? [...items] : [];
 }
 
-export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-}
+export { sourceOf };
 
 export const lower = value => String(value ?? '').toLowerCase();
 

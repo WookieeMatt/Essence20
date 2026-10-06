@@ -1,9 +1,8 @@
 import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 /**
- * Fluttery Wings (MLP CRB, Elementary Aid spell, p.136): "You gift grounded creatures with
- * beautiful wings... The target creature grows wings like a butterfly, gaining 15ft Aerial
- * movement."
+ * Fluttery Wings (MLP CRB, Elementary Aid spell, p.136): the target grows butterfly wings,
+ * 15ft Aerial movement.
  *
  * Cast against the spell's own flat casting DIF (Elementary = Routine/10, entered manually the
  * same way every non-Attack spell cast already works - same shape as Healing Bandages/Enchant).

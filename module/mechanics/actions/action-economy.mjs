@@ -79,7 +79,7 @@ export function emptyLedger() {
     move: 0,
     free: 0,
     // Extra Free actions granted this turn by trading away the Standard action - Speed 2's
-    // "alternatively, a character may trade in a Standard action for two Free actions"
+    // A Standard action may be swapped for two Free actions
     // (CRB p.193). Tracked on the ledger rather than the actor because it's a per-turn choice.
     freeGranted: 0,
     // Extra Move/Standard actions granted THIS TURN by a one-shot Perk effect (e.g. Omega
@@ -349,8 +349,7 @@ export function getRemaining(actor) {
 }
 
 /**
- * Speed 2's explicit trade: "a character may trade in a Standard action for two Free actions"
- * (CRB p.193). Spends the Standard and grants two Free actions for the rest of this turn.
+ * Speed 2's explicit trade: a Standard action swapped for two Free actions (CRB p.193). Spends the Standard and grants two Free actions for the rest of this turn.
  *
  * Offered whenever the actor still has a Standard to give up, not just at Speed 2 - the rules
  * phrase it as an alternative to taking a Standard action, and nothing restricts it to that one
@@ -402,8 +401,8 @@ export async function setSprinting(actor, sprinting = true) {
  * is not the budget - it is that a single shot can only be aimed once. Two Aims with no shot in
  * between would otherwise read as a stacking bonus, which no printed Aim rule grants.
  *
- * (The Transformers CRB has its own exception - "you can choose to ignore one of the target's
- * Armor Upgrades for each Free action you spend Aiming" - which spends repeatedly against one
+ * (The Transformers CRB has its own exception - each Free action of Aiming ignores one of the
+ * target's Armor Upgrades - which spends repeatedly against one
  * shot. That is a TF-specific trade, not the general Aim rule, and would need its own option
  * rather than removing this gate.)
  *

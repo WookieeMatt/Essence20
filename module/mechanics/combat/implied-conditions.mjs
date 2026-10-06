@@ -3,9 +3,8 @@ import { T } from "../../items/shared/item-lang.mjs";
 import { say as post } from "../../items/shared/chat-lines.mjs";
 
 /**
- * Asleep and Defeated (GI Joe CRB, Conditions, p.225): "Sleeping characters are Prone and
- * Unconscious. They can be awoken with loud noise, an action, or by taking damage." / "Defeated
- * characters are Prone."
+ * Asleep and Defeated (GI Joe CRB, Conditions, p.225): sleepers are Prone and Unconscious
+ * (woken by noise, an action or damage); the Defeated are Prone.
  *
  * Both are defined by other Conditions, so the implied ones are added to the actor's live status
  * set in derived data - every `statuses.has('prone')` / `has('unconscious')` check in the system

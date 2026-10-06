@@ -14,4 +14,4 @@ registerTag('target:notBeyond', (rest, ctx) => {
 
   const feet = feetBetween(ctx.self, ctx.other);
   return feet === null || !Number.isFinite(feet) || feet <= Number(rest) + 0.5;
-});
+}, { phrase: ['{who} {is} no more than {ft} away', '{who} {is} more than {ft} away'] });

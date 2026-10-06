@@ -83,8 +83,8 @@ export function applyToVehicle(vehicle) {
 
 /**
  * Whether a vehicle weapon is fired with the vehicle's own Targeting rather than its crew member's:
- * "a driver can use this weapon as a Standard action, using the vehicle's Targeting for the Skill
- * Test" (GI Joe CRB p.172, Targeting System).
+ * the driver fires it as a Standard action with the vehicle's Targeting (GI Joe CRB p.172,
+ * Targeting System).
  */
 export function usesVehicleTargeting(vehicle, weapon) {
   return vehicle?.type == 'vehicle' && (!!vehicle.system?.traits?.targetingSystem
@@ -114,9 +114,8 @@ export function crewSources(actor, skill, _item) {
   // (Treads' and Hydraulic Bounce's Edge on Driving in Rough Terrain are RollModifier rules on them -
   // check:vehicleInRoughTerrain.)
 
-  // Instrument Array (Across the Stars p.87): "If at least one member of the vehicle's crew dedicates
-  // a Free action to scanning the instrument array every turn, the vehicle gains Edge on all
-  // Alertness Skill Tests."
+  // Instrument Array (Across the Stars p.87): Edge on the vehicle's Alertness while a crew member
+  // spends a Free action each turn on the scanners.
   if (skill == 'alertness' && vehicle.system?.traits?.instrumentArray) {
     sources.push({ id: 'instrumentArray', label: game.i18n.localize('E20.VehicleTraitInstrumentArray'), shiftUp: 0, shiftDown: 0, edge: true, snag: false });
   }
@@ -146,8 +145,8 @@ export function defenderSources(attacker, item, target, _context = {}) {
   // (Spiked's ↓1 and Energized Plating's ↓2 - or the damage when the attacker turns them down - are incoming
   // DialogSelect rules on those upgrades.)
 
-  // Shielded (Across the Stars p.87): "Each turn, the first listed number of Attacks or damaging
-  // effects against this vessel suffer a Snag." The number is the vehicle's shieldedRating (Shield
+  // Shielded (Across the Stars p.87): each turn, the first N attacks or damaging effects on the
+  // vessel take a Snag. The number is the vehicle's shieldedRating (Shield
   // Matrix's DerivedStat rule sets it on a Zord).
   const rating = Number(target.system?.shieldedRating) || (target.system?.traits?.shielded ? 1 : 0);
   if (rating && shieldedHitsThisTurn(target) < rating) {

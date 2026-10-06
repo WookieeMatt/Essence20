@@ -34,7 +34,7 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
       tabs: [
         { id: "main", group: 'primary', label: "Main"},
         { id: "actions", group: 'primary', label: "E20.TabActions" },
-        { id: "effects", group: 'primary', label: "Effects"},
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab"},
         { id: "notes", group: 'primary', label: "Notes"},
       ],
       initial: "main",

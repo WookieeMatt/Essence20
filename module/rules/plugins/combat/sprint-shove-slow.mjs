@@ -18,7 +18,7 @@ registerTag('self:sprinting', (rest, ctx) => {
   const combat = ctx.combat ?? globalThis.game?.combat;
   const combatant = ctx.self && combat?.getCombatantsByActor ? combat.getCombatantsByActor(ctx.self)?.[0] : null;
   return !!combatant?.getFlag?.('essence20', 'actions')?.sprinting;
-});
+}, { phrase: ['{who} {is} Sprinting', '{who} {isnt} Sprinting'] });
 
 registerStep('sprint', async (step, ctx) => {
   const { setSprinting } = await import("../../../mechanics/actions/action-economy.mjs");

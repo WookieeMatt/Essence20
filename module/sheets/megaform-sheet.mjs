@@ -8,7 +8,7 @@ export class Essence20MegaformActorSheet extends Essence20BaseActorSheet {
         { id: "main", group: 'primary', label: "E20.TabMain" },
         { id: "actions", group: 'primary', label: "E20.TabActions" },
         { id: "combiners", group: 'primary', label: "E20.TabCombiners" },
-        { id: "effects", group: 'primary', label: "E20.TabEffects" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
         { id: "notes", group: 'primary', label: "E20.TabNotes" },
       ],
       initial: "main",

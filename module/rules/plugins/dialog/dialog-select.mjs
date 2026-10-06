@@ -225,7 +225,7 @@ registerTag('roll:incoming', (rest, ctx) => {
   }
 
   return !!ctx.ext[`inKey:${rest}:${ctx.self.uuid}`];
-});
+}, { phrase: ['you ticked {arg} on the roll against you', "you didn't tick {arg} on the roll against you"] });
 
 /* -------------------------------------------- */
 /*  Switch extras: ignoreDownshift, specializeWhen, bonusDie; RollModifier bonus */
@@ -421,4 +421,4 @@ registerTag('roll:plainReach', (rest, ctx) => {
   const roller = ctx.roller ?? ctx.self;
   const reach = globalThis.CONFIG?.E20?.actorReach?.[roller?.system?.size];
   return !reach || !item.system?.totalReach || item.system.totalReach <= reach;
-});
+}, { phrase: ['on a melee attack at plain reach', 'except on a melee attack at plain reach'] });

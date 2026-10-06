@@ -80,4 +80,4 @@ registerTag('rule:firstCopy', (rest, ctx) => {
 
   const first = itemsOf(item.parent ?? ctx.self).find(other => sourceOf(other) == source);
   return !first || first === item || (!!first.id && first.id == item.id);
-});
+}, { phrase: ['this is your first copy of the item', "this isn't your first copy of the item"] });

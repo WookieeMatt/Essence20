@@ -77,8 +77,8 @@ export function bankedFrom(actor, uuid) {
   return ids.size > 0 && bankedEntries(actor).some(entry => ids.has(entry.source));
 }
 
-registerTag('self:bankedFrom', (rest, ctx) => bankedFrom(ctx?.self, rest));
-registerTag('target:bankedFrom', (rest, ctx) => (ctx?.other ? bankedFrom(ctx.other, rest) : null));
+registerTag('self:bankedFrom', (rest, ctx) => bankedFrom(ctx?.self, rest), { phrase: ['{who} {has} a bonus banked from {name}', '{who} {has} no bonus banked from {name}'] });
+registerTag('target:bankedFrom', (rest, ctx) => (ctx?.other ? bankedFrom(ctx.other, rest) : null), { phrase: ['{who} {has} a bonus banked from {name}', '{who} {has} no bonus banked from {name}'] });
 
 /**
  * Step `scaleBank {from: <uuid>, multiply, to?}` - the live banks the recipient's (default: the actor's) copy of that book

@@ -1,11 +1,10 @@
 import { getLedger, isTracking } from "../../mechanics/actions/action-economy.mjs";
 
 /**
- * Exo-Frame (Across the Stars, Armor Traits, p.85): "an exo-frame requires Driving Skill Tests to
- * perform Standard actions in the same turn as Move actions, with a DIF equal to the number of
- * feet moved divided by 5 (round up). Failure results in the wearer... falling Prone."
+ * Exo-Frame (Across the Stars, Armor Traits, p.85): a Standard action in a turn with a Move needs
+ * a Driving test at DIF feet-moved / 5 (rounded up); failing leaves the wearer Prone.
  *
- * "Feet moved" is read off the wearer's token: Foundry v14 records every waypoint of the turn's
+ * Feet moved is read off the wearer's token: Foundry v14 records every waypoint of the turn's
  * movement in TokenDocument#movementHistory (cleared at the start of each combat turn) and
  * measures it with measureMovementPath - the same measurement mechanics/combat/token-movement.mjs's Move-
  * action enforcement uses. Only meaningful on the wearer's own combat turn, since outside one the

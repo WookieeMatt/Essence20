@@ -3,6 +3,7 @@ import { ruleCriticalOptions } from "../../rules/adapter.mjs";
 import { ruleConditionRounds } from "../../rules/plugins/combat/condition-duration.mjs";
 import { ruleManeuverOption } from "../../rules/plugins/combat/maneuver-option.mjs";
 import { ruleSwapShrug } from "../../rules/plugins/combat/swap-shrug.mjs";
+import { ruleLateHitRiders } from "../../rules/plugins/combat/late-hit-rider.mjs";
 import { extDefenseAdjust, extRollSources, runConsumer, runHitRiders, runPostRoll } from "../item-hooks.mjs";
 import { socialDamageBonus, socialDefenseAdjust, socialRollSources } from "../../items/social/social-rolls.mjs";
 import { noteRolledAgainst } from "../companions/companions.mjs";
@@ -21,6 +22,7 @@ import { checkPrimaryQuarry } from "../../items/rolls/primary-quarry.mjs";
 import { RIDER, riderUseFor } from "./rider-uses.mjs";
 import { imperfectionOf } from "../resources/grant-uses.mjs";
 import { skillImmunityOverrideOf } from "../../rules/plugins/combat/subsystem-readers.mjs";
+import { sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
 
 /**
  * Per-target modifiers, on-hit riders and the Conditions that go with them - the Perks, weapons and
@@ -49,9 +51,7 @@ const ZONE_FLAG = 'riderZone';
 /*  Lookups                                     */
 /* -------------------------------------------- */
 
-export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
+export { sourceOf };
 
 /** Any item (not only a Perk) from the given compendium entry. */
 export function findSourced(actor, id) {
@@ -305,8 +305,8 @@ export function rollRiderSources(actor, target, ctx = {}) {
 
   // (Loader's Alt Mode shove ↑2 is a RollModifier rule on the Loader.)
 
-  // (Perfect Disguise's Edge on attacks, and its end once seen attacking, are rules on the Perk; its sneak attacks are
-  // mechanics/combat/sneak-attack.mjs's.)
+  // (Perfect Disguise's Edge on attacks, its end once seen attacking and its sneak attacks - a SneakAttackGrant bypass -
+  // are rules on the Perk.)
 
   // (Co-Dependent, Highly Effective and Flurry of Attacks are rules on their items.)
 
@@ -324,21 +324,16 @@ export function rollRiderSources(actor, target, ctx = {}) {
     return { sources, consumes };
   }
 
-  // A Hint of Independence's Weak-Willed (Decepticon Directive, Table 2-11): "All Deception and
-  // Persuasion Skill Tests that target you gain Edge."
+  // A Hint of Independence's Weak-Willed (Decepticon Directive, Table 2-11): Edge on any Deception or
+  // Persuasion aimed at the holder.
   if (['deception', 'persuasion'].includes(rolledSkill) && imperfectionOf(target)?.n == 8) {
     add('weakWilled', game.i18n.localize('E20.Imperfection.8'), { edge: true });
   }
 
-  // Concentrated Fire (Cobra Codex, Pyro, 6th level, p.58): "the attack treats Fire Immunity as Fire
-  // Resistance" - a Snag on the attack, and the damage lands (attackRiders).
-  if (isAttack && ctx.concentratedFire && target.system?.immunities?.fire) {
-    add('concentratedFire', nameOf(actor, RIDER.concentratedFire, 'Concentrated Fire'), { snag: true });
-  }
+  // (Concentrated Fire's Snag against a Fire-immune target is a RollModifier rule on the Perk.)
 
-  // All Out Attack (GI Joe CRB, General Perk, p.129): "enemies gain an equal number of upshifts to
-  // Attack you until the start of your next turn." Evasive Fighting (p.131): "force enemies to
-  // suffer the same number of downshifts when attacking you."
+  // All Out Attack (GI Joe CRB, General Perk, p.129): enemies get as many upshifts to attack the
+  // holder until their next turn. Evasive Fighting (p.131): enemies take as many downshifts instead.
   const stance = stanceOf(target);
   if (isAttack && stance.allOutAttack) {
     add('allOutAttack', nameOf(target, RIDER.allOutAttack, 'All Out Attack'), { shiftUp: stance.allOutAttack });
@@ -348,8 +343,7 @@ export function rollRiderSources(actor, target, ctx = {}) {
     add('evasiveFighting', nameOf(target, RIDER.evasiveFighting, 'Evasive Fighting'), { shiftDown: stance.evasiveFighting });
   }
 
-  // Mesmerized (GI Joe CRB p.225): "Any Social tests by the mesmerizer gain Edge on mesmerized
-  // characters."
+  // Mesmerized (GI Joe CRB p.225): the mesmerizer's Social tests on the mesmerized have Edge.
   if (isSocial && hasConditionFrom(target, 'mesmerized', actor)) {
     add('mesmerized', game.i18n.localize('E20.StatusMesmerized'), { edge: true });
   }
@@ -386,17 +380,16 @@ export function riderDefenseAdjust(actor, target, defenseType, ctx = {}) {
 
   // (On My Mark!'s -5 is an outgoing Defense rule - check:markTarget.)
 
-  // Suppressing Fire (GI Joe CRB, Heavy Gunner, 3rd level, p.111): "Any enemies who start their turn
-  // in that area or move into it have their Toughness and Evasion reduced by 5 until the start of
-  // your next turn."
+  // Suppressing Fire (GI Joe CRB, Heavy Gunner, 3rd level, p.111): enemies starting a turn in, or
+  // entering, the area lose 5 Toughness and Evasion until the gunner's next turn.
   if (['toughness', 'evasion'].includes(defenseType) && suppressingZonesOn(target).length) {
     adjust -= 5;
   }
 
   // (Make an Opening's penalty and Pinpoint's ignored upgrades - rules/plugins/combat/armor-upgrades.mjs.)
 
-  // A Hint of Independence's Vulnerability: "Choose a damage type, your Toughness Defense is halved
-  // (round up) to that damage."
+  // A Hint of Independence's Vulnerability: Toughness is halved (rounded up) against one chosen
+  // damage type.
   const imperfection = imperfectionOf(target);
   if (isAttack && defenseType == 'toughness' && imperfection?.n == 4 && imperfection.imperfectionType == item?.system?.damageType
     && Number.isFinite(ctx.difficulty)) {
@@ -410,27 +403,8 @@ export function riderDefenseAdjust(actor, target, defenseType, ctx = {}) {
 /*  Roll Options Dialog                          */
 /* -------------------------------------------- */
 
-/**
- * What the dialog offers. Merged into the roll's dataset.
- * @param {Actor} actor
- * @param {Item} item
- * @returns {Object}
- */
-export function riderDialogFlags(actor, item, dataset = {}) {
-  const flags = {};
-  if (!isWeaponEffect(item)) {
-    return flags;
-  }
-
-  // Concentrated Fire - "can score a Critical Success on the d2" (pickConcentratedArea).
-  if (dataset?.concentratedFire) {
-    flags.canCritD2 = true;
-  }
-
-  // (Pinpoint, Steady Hand and Make an Opening are DialogSwitch rules on their Perks.)
-
-  return flags;
-}
+// (Concentrated Fire's d2 Critical Success is a CritOnD2 rule on the Perk; Pinpoint, Steady Hand and Make an Opening are
+// DialogSwitch rules on their Perks.)
 
 // (The dialog's downshift choices - All Out Attack / Evasive Fighting, Make an Opening - are StanceSwitch / DialogSwitch
 // rules now.)
@@ -470,7 +444,6 @@ export function buildRiderContext(actor, item, dataset, options, consumes = []) 
     coating: coatingOf(weapon),
     // Disarming Shot's DialogSwitch (key disarmingShot) ticked - its disarm-on-hit and Critical discharge below.
     disarmingShot: (options?.ruleKeys ?? []).includes('disarmingShot'),
-    concentratedFire: !!dataset?.concentratedFire,
     allOutAttack: Number(options?.allOutAttackShifts) || 0,
     consumes,
     // Rule switches ticked for this roll (DialogSwitch key) - the roll:switch: tag.
@@ -532,8 +505,8 @@ export async function applyRollRiders(actor, results, checkContext, { isCrit = f
 
   // (Scapegoat's Hang-Up is a targeted Trigger rule: roll:entry:scapegoatSwapped.)
 
-  // A Hint of Independence's Stress Leak: "Choose an Element type, one random creature or object
-  // adjacent to you takes 1 damage of that type when you Fumble a Skill Test."
+  // A Hint of Independence's Stress Leak: on a Fumble, 1 damage of a chosen Element to a random
+  // adjacent creature or object.
   const leak = imperfectionOf(actor);
   if (isFumble && leak?.n == 3) {
     const { getAllNearbyTokens } = await import("./nearby-allies.mjs");
@@ -658,8 +631,7 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
       // Extensions (mechanics/item-hooks.mjs).
       await runHitRiders(actor, target, result, rider, { damageBonusNote, addRiderOption, isCrit, entry, checkContext });
 
-      // All Out Attack: "For each downshift you take, you deal 1 additional damage to a single
-      // target hit by the Attack."
+      // All Out Attack: +1 damage to one hit target per downshift taken.
       if (allOutAttackLeft) {
         damageBonusNote(result, allOutAttackLeft, nameOf(actor, RIDER.allOutAttack, 'All Out Attack'));
         allOutAttackLeft = 0;
@@ -667,8 +639,7 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
 
       // (Shaped Charges' double damage to objects and structures is a HitMultiplier rule.)
 
-      // Hacker (Cobra Codex p.80): "your poisons affect only robots and targets with the
-      // Computerized Trait."
+      // Hacker (Cobra Codex p.80): the poisons work only on robots and Computerized targets.
       if (rider.isPoison && rider.hackerPoison && !isMechanical(target)) {
         result.damageValue = null;
         result.criticalOptions = [];
@@ -677,16 +648,12 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
       }
     }
 
-    // A poison on the weapon (Cobra Codex p.93): "your next attack with that weapon, if successful,
-    // deals not just one of the weapon's normal effects, but also the effect of the applied poison."
-    if (rider.concentratedFire && result.damageValue && rider.damageType == 'fire' && target.system?.immunities?.fire) {
-      addRiderOption(result, {
-        key: 'concentratedFire', label: nameOf(actor, RIDER.concentratedFire, 'Concentrated Fire'),
-        damageValue: result.damageValue, damageType: 'fire', ignoreImmunity: true,
-      });
-      result.damageValue = null;
-    }
+    // The late HitRider rules, once the hit's damage is settled (Concentrated Fire's Fire Immunity as Resistance -
+    // rules/plugins/combat/late-hit-rider.mjs).
+    ruleLateHitRiders(actor, target, result, rider, { isCrit });
 
+    // A poison on the weapon (Cobra Codex p.93): the next hit with it adds the poison's effect to the
+    // weapon's own.
     if (rider.coating?.damageValue && poisonAffects(rider.coating, target)) {
       addRiderOption(result, {
         key: 'poison', label: rider.coating.name, damageValue: rider.coating.damageValue, damageType: rider.coating.damageType,
@@ -701,9 +668,8 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
       critRiders(actor, target, result, rider);
     }
 
-    // Disarming Shot (Hawk's Personnel Files, p.174): "On a success, you knock the weapon out of
-    // their hand. It lands at their feet. On a Critical Success, the weapon also goes off,
-    // automatically affecting the creature."
+    // Disarming Shot (Hawk's Personnel Files, p.174): a hit knocks the weapon to the target's feet; on
+    // a Critical Success it also fires into its holder.
     if (rider.disarmingShot) {
       const weapon = await disarm(actor, target, { maxHands: 1, source: nameOf(actor, RIDER.disarmingShot, 'Disarming Shot') });
       if (weapon) {
@@ -923,17 +889,13 @@ const SIZE_ORDER = () => Object.keys(CONFIG.E20.actorSizes ?? {});
 export const BOWL_OVER_FLAG = 'bowlOver';
 
 /**
- * Push or Shove (GI Joe CRB p.118, PR CRB p.110): "they must spend a Standard action to do so when
- * they are adjacent. They must then perform a Might ... Skill Test, applying the following dice
- * shift modifiers: ↑1 for each Size Class larger you are than the target, ↓1 for each Size Class
- * smaller you are than the target... The Difficulty of this Skill Test is 12, with each successful
- * effect moving the target directly away from you a distance equal to your natural Reach ... or
- * knocking the target Prone. A critical failure on a Push attempt knocks you Prone at the point of
- * impact."
+ * Push or Shove (GI Joe CRB p.118, PR CRB p.110): a Standard action against an adjacent target - a
+ * DIF 12 Might test, ↑1 per Size Class bigger than the target and ↓1 per Size Class smaller; each
+ * success pushes it back by the pusher's natural Reach or knocks it Prone, and a critical failure
+ * leaves the pusher Prone.
  *
- * Bowl-Over (PR CRB, General Perk, p.93): "When you Sprint, you can use a Free action to Push an
- * adjacent creature at any time along the action. If successful, targets of your Push are always
- * knocked Prone, if possible."
+ * Bowl-Over (PR CRB, General Perk, p.93): a Free-action Push on an adjacent creature at any point of
+ * a Sprint; a successful Push always knocks the target Prone where it can be.
  * @param {Actor} actor
  * @param {Object} [options]
  * @param {Boolean} [options.bowlOver]
@@ -1082,8 +1044,8 @@ export async function useRider(item, economy) {
     return startCoating(actor, economy);
     // (Poison Prodigy is a Use rule on its Perk.)
 
-  // Suppressing Fire (GI Joe CRB, Heavy Gunner, 3rd level, p.111): "As a Standard action, you set
-  // your suppressive fire area equal to the Multiple Targets area of your heavy weapon."
+  // Suppressing Fire (GI Joe CRB, Heavy Gunner, 3rd level, p.111): a Standard action lays the zone
+  // over the heavy weapon's Multiple Targets area.
   case 'suppressingFire':
     return placeSuppressingFire(actor, item, pay);
 
@@ -1148,15 +1110,14 @@ async function placeSuppressingFire(actor, item, pay) {
     return null;
   }
 
-  // "make a Targeting attack against the Willpower of any enemies who start their turn in that area
-  // or move into it" - the ones in it now.
+  // A Targeting attack on the Willpower of enemies in the zone - the ones in it now.
   await promptSuppressingAttack(actor, region);
   return game.i18n.format('E20.SuppressingFireOn', { name: actor.name });
 }
 
 /**
- * Offer the zone's owner the Willpower attack against whoever is in it. "If successful, the enemy is
- * frightened of you until the end of your next turn."
+ * Offer the zone's owner the Willpower attack against whoever is in it. A hit leaves the enemy
+ * Frightened of the gunner until the end of the gunner's next turn.
  * @param {Actor} owner
  * @param {RegionDocument} region
  * @param {Array<Actor>} [only]   Just these (the one who moved in, or started their turn there).
@@ -1236,8 +1197,8 @@ export async function resolveTargetedSpec(actor, spec, results) {
 
 /**
  * Whether the roll is against the actor's Primary Quarry - either of them with Secondary Mark.
- * All Too Predictable (Decepticon Directive, Tracker, 20th level, p.56): "once per turn, you may
- * reroll any single die in a Skill Test involving or targeting your Primary Mark."
+ * All Too Predictable (Decepticon Directive, Tracker, 20th level, p.56): once a turn, reroll one die
+ * on a test involving or targeting the Primary Mark.
  */
 export function isVsPrimaryQuarry(actor, target) {
   if (!target) {

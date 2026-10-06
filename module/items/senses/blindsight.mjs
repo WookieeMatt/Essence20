@@ -2,8 +2,7 @@
  * Blindsight - sensing at close range without sight, independent of the Blinded Condition.
  *
  * Built 2026-09-15 for Visionless Sight (Technorganic Secrets, Swimmer Bot Mode Origin Perk,
- * p.44): "While under the effects of the Blinded condition, you are still able to detect creatures
- * and objects within 10 feet of you as if you were not Blinded."
+ * p.44): even Blinded, creatures and objects within 10 feet are sensed as if not Blinded.
  *
  * CORRECTS THIS PROJECT'S OWN RECORDED BLOCKER, which read "E20.visionModes has no
  * blindsight-equivalent mode." That named the wrong mechanism: a vision MODE

@@ -6,11 +6,12 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"wouldBeDefeated","label":"Renegade Commander: drop to 1 Health","when":["self:data:system.level>=5"],"limit":{"per":"scene"},"steps":[{"do":"leaveAt","value":1}]}
+      {"type":"Trigger","event":"wouldBeDefeated","label":"Renegade Commander: drop to 1 Health","when":["self:data:system.level>=5"],"limit":{"per":"scene"},"steps":[{"do":"leaveAt","value":1}]},
+      {"type":"Use","label":"Renegade Commander: unleash an ally","cost":{"action":"standard","resource":{"rolePoints":true},"amount":1},"steps":[{"do":"pickAlly","includeSelf":true,"filter":[{"any":["not:target:self","self:data:system.level>=9"]},"not:target:wearing>=medium"]},{"do":"addEffect","on":"actor","to":"target","name":"E20.RenegadeCommanderEffect","until":"scene","changes":[{"key":"system.essenceShifts.strength.shiftUp","value":2},{"key":"system.health.bonus","value":"@rolePointsBonus"}]},{"do":"chat","text":"{lang.RulesExtConvB18.RenegadeCommanderGiven}"}]}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: spend a Reckless Abandon use to give an ally in Light or no armor its benefits for the scene (yourself too from 9th level). Automatic: from 5th level, once per scene, you drop to 1 Health instead of being Defeated.</p>"
+      "notes": "<p>Use button (Standard action): spend a Reckless Abandon use to give an ally in Light or no armor its Strength upshifts and Bonus Health for the rest of the scene (yourself too from 9th level). Automatic: from 5th level, once per scene, you drop to 1 Health instead of being Defeated.</p>"
     },
     "originalId": "",
     "description": "",

@@ -1,5 +1,6 @@
 // Rules-engine plug-ins, round 16 (part b - docs/rules-batches/slLeftB16.md): the strings of this part
 // (E20.RulesExtLeftB16.*) and two small helpers its plug-ins share. Plain Node safe.
+import { itemsOf } from "../../../items/shared/item-lookups.mjs";
 
 /** A string from the RulesExtLeftB16 block of the language file, or the key with its data. */
 export function T(key, data = null) {
@@ -23,8 +24,5 @@ export function localized(text, data = null) {
 
 export const escapeHtml = text => String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
-/** An actor's items as an array. */
-export function itemsOf(actor) {
-  const items = actor?.items;
-  return items?.contents ?? (items ? [...items] : []);
-}
+/** An actor's items as an array (items/shared/item-lookups.mjs's, re-exported). */
+export { itemsOf };

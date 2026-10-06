@@ -22,4 +22,4 @@ export function pointWithinTag(rest, ctx) {
   return globalThis.canvas.grid.measurePath([center, { x, y }]).distance <= Number(rest);
 }
 
-registerTag('self:pointWithin', pointWithinTag);
+registerTag('self:pointWithin', pointWithinTag, { phrase: ['{who} {is} within {ft} of the kept point', '{who} {is} more than {ft} from the kept point'] });

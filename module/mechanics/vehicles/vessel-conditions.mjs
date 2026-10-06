@@ -16,7 +16,7 @@ import { canSpendForActor, spendForActor } from "../resources/story-points.mjs";
  *   then disables hardpoint weapons (dice.mjs); Decompressed/Leaking change the interior
  *   environment for anyone aboard (mechanics/world/environment.mjs#getVesselInteriorEnvironment). Blanked
  *   and Jammed stay markers - there's no sensor or communications model for them to switch off.
- * - "Zords are Special... players and enemies cannot target Zords for the Vessel Conditions" -
+ * - Zords are special: Vessel Conditions normally can't be inflicted on them -
  *   blocked, with a GM override (shouldBlockZordVesselCondition).
  * - The ↓2 "attack a vessel system" option (canTargetVesselSystem) and its Critical Effect picker.
  * - Repairing a Space Vessel Condition (openVesselRepairDialog / resolveVesselRepair).
@@ -25,12 +25,10 @@ import { canSpendForActor, spendForActor } from "../resources/story-points.mjs";
 export const VESSEL_CONDITIONS = ["blanked", "compromised", "decompressed", "jammed", "leaking", "spunOut", "sputtering", "unstable"];
 export const STACKING_VESSEL_CONDITIONS = ["compromised", "decompressed", "leaking", "spunOut", "sputtering", "unstable"];
 
-// Spun-Out / Sputtering: "suffers an attack that adds the ... Condition again, the vessel becomes
-// Immobilized until repaired."
+// Spun-Out / Sputtering: a second stack leaves the vessel Immobilized until repaired.
 export const IMMOBILIZING_STACKS = 2;
 const IMMOBILIZING_CONDITIONS = ["spunOut", "sputtering"];
-// Unstable: "↓1 on all hardpoint weapons... a second time, the penalty increases to ↓2. Acquiring it
-// a third time renders the hardpoint weapons inoperable."
+// Unstable: ↓1 on hardpoint weapons, ↓2 at the second stack, and the third stack disables them.
 export const UNSTABLE_INOPERABLE_STACKS = 3;
 
 // Repair Difficulties (Table 1-14).
@@ -262,8 +260,7 @@ export function isZordLike(actor) {
 }
 
 /**
- * "Unless special circumstances occur, players and enemies cannot target Zords for the Vessel
- * Conditions above" - true when a status about to be created on a Zord is a Space Vessel Condition
+ * Vessel Conditions don't go on Zords barring special circumstances (Across the Stars p.25) - true when a status about to be created on a Zord is a Space Vessel Condition
  * and nobody chose to override it (the GM's HUD confirmation sets `_e20ZordVesselOverride` for the
  * duration of that one application).
  * @param {Actor} actor
@@ -351,7 +348,7 @@ export function canTargetVesselSystem({ item, attackerShift, targets }) {
 }
 
 /**
- * "Target must be an Aeronautical or zero-G vehicle of at least Huge size" - a Vehicle (never a
+ * The target has to be a Huge-or-bigger aeronautical or zero-G vehicle - a Vehicle (never a
  * Zord) with an air/aerospace/zero-G trait or Aerial Movement, Huge or larger.
  * @param {Actor} target
  * @returns {Boolean}
@@ -441,8 +438,8 @@ export function getRepairDifficulty({ spacewalk = false, stableOrbit = false, do
 
 /**
  * How many Condition types a repair clears: one on a success, plus one per additional Degree of
- * Success and one more for a Critical Success ("Any additional degrees of success or a critical
- * success can repair additional Space Vessel Conditions at a 1-to-1 ratio").
+ * Success and one more for a Critical Success (each extra degree, or a Critical, repairs one more
+ * Condition).
  * @param {{success: Boolean, multiplier: Number, isCrit: Boolean}} outcome
  * @returns {Number}
  */
@@ -596,8 +593,7 @@ export function getRepairCandidates(vessel) {
 }
 
 /**
- * "The repairing character(s) must be relevantly Specialized... spending a Story Point can make a
- * character temporarily Specialized in the Skill for this endeavor!" - warns when the repairer has
+ * Repairers need a relevant Specialization, which a Story Point can supply temporarily - warns when the repairer has
  * no Technology Specialization and offers the Story Point.
  * @param {Actor} repairer
  * @returns {Promise<Boolean>}   Whether the repair may go ahead.

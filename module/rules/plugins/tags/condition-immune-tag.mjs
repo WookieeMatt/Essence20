@@ -24,5 +24,5 @@ function immune(actor, condition) {
   return !!immunityHelpers.isImmune?.(actor, condition);
 }
 
-registerTag('target:immune', (rest, ctx) => immune(ctx?.other, rest));
-registerTag('self:immune', (rest, ctx) => immune(ctx?.self, rest));
+registerTag('target:immune', (rest, ctx) => immune(ctx?.other, rest), { phrase: ['{who} {is} immune to {arg}', '{who} {isnt} immune to {arg}'] });
+registerTag('self:immune', (rest, ctx) => immune(ctx?.self, rest), { phrase: ['{who} {is} immune to {arg}', '{who} {isnt} immune to {arg}'] });

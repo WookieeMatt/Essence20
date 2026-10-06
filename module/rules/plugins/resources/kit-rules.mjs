@@ -20,7 +20,7 @@ registerTag('item:firstAttack', (rest, ctx) => {
   const owner = weapon?.parent ?? ctx.self;
   const first = listOf(owner?.items).find(item => item.type == 'weaponEffect' && item.flags?.essence20?.parentId == weapon?.id);
   return !!first && evaluate(String(rest).split('&'), contextFor({ self: ctx.self, ruleItem: ctx.ruleItem, item: first })) === true;
-});
+}, { phrase: (arg, w) => [`its first attack is one where ${w.items(arg.split('&'))}`, `its first attack isn't one where ${w.items(arg.split('&'))}`] });
 
 registerRuleType('CarryExemption', {
   params: { items: { kind: 'strings', required: true }, max: { kind: 'number' } },

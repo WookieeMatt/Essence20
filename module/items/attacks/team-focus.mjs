@@ -1,9 +1,8 @@
 /**
- * Team Focus (Red Ranger, 9th/18th level, p.53): "You add a [+1, then +2 at 18th] to any melee
- * attack that targets a target that has already been attacked by your teammate since your last
- * turn."
+ * Team Focus (Red Ranger, 9th/18th level, p.53): +1 (+2 at 18th) on melee attacks against a
+ * target a teammate has attacked since the holder's last turn.
  *
- * "Since your last turn" is approximated at round granularity - the same accepted simplification
+ * The since-last-turn window is approximated at round granularity - the same accepted simplification
  * every other "since/until X" clause in this codebase already uses (Alpha Strike, Debilitating
  * Strike) - tracked here as "attacked by an ally THIS ROUND" rather than a precise per-roller
  * window relative to their own last turn. The flag is stamped on the TARGET (not the attacker,

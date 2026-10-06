@@ -2,6 +2,7 @@ import { isValidUntil, UNTIL } from "./expiry.mjs";
 import { formulaError, resolveValue } from "./formula.mjs";
 import { LIMIT_WINDOWS } from "./limits.mjs";
 import { contextFor, evaluate, interpolate, sideActorsWithin, unknownTags as unknownTagsOf, wieldedAttacks } from "./predicate.mjs";
+import { sourceOf as sourceOfItem } from "../items/shared/item-lookups.mjs";
 
 /**
  * The step language (docs/RULES_ENGINE_PLAN.md §5.5) - what a Use button or a Trigger does, as a
@@ -297,6 +298,20 @@ function untilActor(step, ctx, recipient) {
   return step.untilOf == 'recipient' ? recipient ?? ctx.actor : ctx.actor;
 }
 
+/**
+ * Round 18 (convA): `fn(recipient, condition, {until, rounds, untilActor}, ctx)` may change how long an applyCondition
+ * step's Condition lasts on one recipient, returning {until, rounds} (rules/plugins/effects/condition-halving.mjs -
+ * Gallantry's halved Frightened).
+ */
+const CONDITION_DURATIONS = [];
+export function registerConditionDuration(fn) {
+  CONDITION_DURATIONS.push(fn);
+}
+
+function conditionDurationFor(recipient, condition, spec, ctx) {
+  return CONDITION_DURATIONS.reduce((at, fn) => ({ ...at, ...(fn(recipient, condition, at, ctx) ?? {}) }), spec);
+}
+
 const PICK_FROM = ['skill', 'essence', 'damageType', 'ownedItem', 'ally', 'enemy', 'target', 'list', 'team', 'actors', 'targetItem'];
 
 /** What a pick step offers: [{value, label}]. */
@@ -384,9 +399,6 @@ function localizedText(text) {
   const i18n = globalThis.game?.i18n;
   return text.startsWith('E20.') && i18n?.localize ? i18n.localize(text) : text;
 }
-
-/** An item's book source (or the item it acts as). */
-const sourceOfItem = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
 
 /**
  * The items an item step acts on, on one actor. `item` picks them:
@@ -1004,8 +1016,10 @@ const HANDLERS = {
         update[path] = ranks[Math.min(top, Math.max(bottom, at + amountOf(value, ctx, 0, actor)))];
       }
 
+      // notSpent (round 18, convB): the write is a loss / refund, not a spend - resourceSpent Triggers and the
+      // resource slice's spend hooks skip it (Body of Energy's split on leaving Morph).
       if (Object.keys(update).length) {
-        await write(actor, 'update', [update]);
+        await write(actor, 'update', step.notSpent ? [update, { essence20Loss: true, essence20Refund: true }] : [update]);
       }
     }
   },
@@ -1187,11 +1201,13 @@ const HANDLERS = {
       // until: nextTurn | endOfNextTurn (+ untilOf) - ends with the holder's (or recipient's) next turn (book check
       // 2026-10-06, durations: timed-status.mjs#turnBoundTiming); not in the turn order: 1 round.
       let timing = null;
-      let roundsHere = rounds;
-      if (step.until) {
+      // A registered duration change for this recipient (registerConditionDuration - Gallantry's halving).
+      const lasts = conditionDurationFor(actor, condition, { until: step.until, rounds, untilActor: untilActor(step, ctx, actor) }, ctx);
+      let roundsHere = lasts.rounds;
+      if (lasts.until) {
         const { turnBoundTiming } = await import("../mechanics/combat/timed-status.mjs");
-        timing = typeof turnBoundTiming == 'function' ? turnBoundTiming(step.until, untilActor(step, ctx, actor)) : null;
-        roundsHere = timing || rounds ? rounds : 1;
+        timing = typeof turnBoundTiming == 'function' ? turnBoundTiming(lasts.until, lasts.untilActor) : null;
+        roundsHere = timing || lasts.rounds ? lasts.rounds : 1;
       }
 
       if (needsGmRelay(actor) && (roundsHere || timing)) {

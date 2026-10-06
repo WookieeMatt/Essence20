@@ -29,7 +29,10 @@ registerTag('self:specializationNamed', (rest, ctx) => {
   const [skill, ...text] = String(rest).split(':');
   const wanted = text.join(':').toLowerCase();
   return Object.values(ctx.self?.system?.skills?.[skill]?.specializations ?? {}).some(spec => String(spec?.name ?? '').toLowerCase().includes(wanted));
-});
+}, { phrase: (arg, w) => {
+  const [skill, ...text] = arg.split(':');
+  return [`{who} {has} a ${w.skillName(skill)} Specialization named like "${text.join(':')}"`, `{who} {has} no ${w.skillName(skill)} Specialization named like "${text.join(':')}"`];
+} });
 
 registerStep('kitBoost', async (step, ctx) => {
   const { addKitBoost } = await import("../../../mechanics/resources/kits.mjs");

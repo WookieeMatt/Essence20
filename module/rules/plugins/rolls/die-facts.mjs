@@ -19,7 +19,7 @@ import { registerRuleType, RULE_TYPES } from "../../types.mjs";
 
 const SHIFTS = () => globalThis.CONFIG?.E20?.skillShiftList ?? ['criticalSuccess', 'autoSuccess', '3d6', '2d8', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd20', 'autoFail', 'fumble'];
 
-registerTag('roll:baseDie', (rest, ctx) => (ctx.baseShift ? ctx.baseShift == rest : null));
+registerTag('roll:baseDie', (rest, ctx) => (ctx.baseShift ? ctx.baseShift == rest : null), { phrase: ['the Skill die starts at {raw}', "the Skill die doesn't start at {raw}"] });
 
 registerTag('roll:finalDie', (rest, ctx) => {
   const match = /^(<=|>=|<|>|=)(.+)$/.exec(String(rest ?? ''));
@@ -36,7 +36,11 @@ registerTag('roll:finalDie', (rest, ctx) => {
   }
 
   return { '<=': at >= want, '>=': at <= want, '<': at > want, '>': at < want, '=': at == want }[match[1]];
-});
+}, { phrase: (arg, w) => {
+  const match = /^(<=|>=|<|>|=)(.+)$/.exec(arg);
+  const words = match ? { '<=': `no better than ${match[2]}`, '>=': `at least ${match[2]}`, '<': `worse than ${match[2]}`, '>': `better than ${match[2]}`, '=': match[2] }[match[1]] : w.humanize(arg);
+  return [`the final Skill die is ${words}`, `the final Skill die isn't ${words}`];
+} });
 
 const SWITCH = RULE_TYPES.DialogSwitch;
 SWITCH.params.noCrit ??= { kind: 'bool' };

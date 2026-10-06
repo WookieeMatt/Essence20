@@ -26,8 +26,7 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
       classification: new fields.SchemaField({
         size: makeStrWithChoices(Object.keys(E20.weaponSizes), 'integrated'),
       }),
-      // "When receiving an Element weapon for a mission, you must first choose the type of element
-      // the weapon uses" (GI Joe CRB p.207). A damage type key of items/attacks/weapon-upgrades.mjs#ELEMENTS;
+      // An Element weapon's element is picked when it is issued for a mission (GI Joe CRB p.207). A damage type key of items/attacks/weapon-upgrades.mjs#ELEMENTS;
       // an effect printed as "Element" damage deals it (weapon-upgrades.mjs#applyToEffect).
       elementChoice: makeStrWithChoices(['acid', 'cold', 'electric', 'emp', 'fire', 'laser', 'sonic'], null),
       equipped: makeBool(true),
@@ -60,8 +59,8 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
       // compendium weapon's behavior unchanged.
       accurateMagnitude: makeInt(1),
       inaccurateMagnitude: makeInt(1),
-      // Defend (Across the Stars, Weapon Traits, p.79): "wielders add the listed bonus to the
-      // user's Evasion and Toughness Defenses against melee attacks." Same "magnitude field next
+      // Defend (Across the Stars, Weapon Traits, p.79): the wielder adds the trait's number to Evasion
+      // and Toughness against melee attacks. Same "magnitude field next
       // to a plain membership check" shape as accurateMagnitude/inaccurateMagnitude above - every
       // printed Defend weapon found so far is (1), so that's the default. defendRangedMagnitude is
       // null (grants nothing vs. ranged) unless a weapon's own printed value widens the trait to

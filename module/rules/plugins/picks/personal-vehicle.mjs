@@ -14,4 +14,4 @@ const personalVehicles = (owner, key) => companionsOf(owner).filter(actor => act
 
 registerRecipient(/^personalVehicle:([\w-]+)$/, (match, ctx) => personalVehicles(ctx.actor, match[1]).slice(0, 1));
 
-registerTag('self:personalVehicle', (rest, ctx) => (ctx.self && rest ? personalVehicles(ctx.self, rest).length > 0 : null));
+registerTag('self:personalVehicle', (rest, ctx) => (ctx.self && rest ? personalVehicles(ctx.self, rest).length > 0 : null), { phrase: ['{who} {has} a personal {arg}', '{who} {has} no personal {arg}'] });

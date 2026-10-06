@@ -548,8 +548,8 @@ export function threatFromActor(actor, { ruleset = null, gameLine = '' } = {}) {
 
 /**
  * The Field Guide's quick Perks (p.148) a builder can apply in one click. Each changes the stat
- * block directly where the book allows it ("if a Perk is self-explanatory, you can adjust the
- * Threat's stat block without listing it as a Perk").
+ * block directly where the book allows it (a self-explanatory Perk may just be folded into the
+ * stat block instead of listed).
  */
 export const QUICK_PERKS = ['health', 'size', 'movement', 'aquatic', 'aerial', 'climbing', 'damage', 'extraAttack', 'defense', 'immunity'];
 

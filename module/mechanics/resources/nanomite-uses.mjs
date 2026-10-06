@@ -1,8 +1,9 @@
 import { getUses, markUsed } from "./scene-clock.mjs";
+import { sourceOfOrUndefined as sourceIdOf } from "../../items/shared/item-lookups.mjs";
 
 /**
- * Nanomite powers (G.I. Joe, Quartermaster's Guide to Gear, "Nanomite Powers," p.92-94): "Unless
- * otherwise noted, nanomite powers within a character may be used twice a day." They cost no Personal
+ * Nanomite powers (G.I. Joe, Quartermaster's Guide to Gear, "Nanomite Powers," p.92-94): two uses a
+ * day each unless a power says otherwise. They cost no Personal
  * Power - unlike the Power Rangers Grid Powers they used to share a type with - and are limited by
  * uses instead.
  *
@@ -14,16 +15,14 @@ import { getUses, markUsed } from "./scene-clock.mjs";
  * Reprogrammable (+2 daily uses on each of the character's nanomite powers, per copy, under the
  * per-power ruling) is an ItemModifier rule on the Power: it raises each power's derived usesPer.
  *
- * Nanoflage (Chameleonite Focus): its Mimic power is "not limited to two uses of this Nanomite Power
- * per day, instead regenerating one use per scene" - one use a scene on the Scene Clock instead.
+ * Nanoflage (Chameleonite Focus): its Mimic power drops the two-a-day limit and gets back one use each
+ * scene instead - one use a scene on the Scene Clock.
  */
 
 const QGTG = "Compendium.essence20.quartermasters_guide_to_gear.Item.";
 export const NANOFLAGE_ID = `${QGTG}22p3l2vFsFZqfOET`;
 export const MIMIC_ID = `${QGTG}WI0QTzlWkEusSQqY`;
 const NANOFLAGE_MIMIC_FLAG = 'nanoflageMimicUsed';
-
-const sourceIdOf = (item) => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
 
 /**
  * A Nanoflage holder's Mimic: one use a scene instead of two a day.
@@ -107,13 +106,15 @@ export async function spendDailyUse(actor, power) {
 }
 
 /**
- * A Rest gives back every daily use. Called from the sheet's Rest/Recharge action.
+ * A Rest gives back every daily use - but those a HeldUse rule on the Power keeps tied up (Dominate while a victim
+ * carries its nanomites - rules/plugins/resources/held-uses.mjs). Called from the sheet's Rest/Recharge action.
  * @param {Actor} actor
  * @returns {Promise<Number>}   How many powers were reset.
  */
 export async function resetDailyPowerUses(actor) {
-  const updates = (actor?.items?.filter?.(item => item.type == 'power' && item.system?.usesSpent > 0) ?? [])
-    .map(item => ({ _id: item.id, 'system.usesSpent': 0 }));
+  const { ruleHeldUses } = await import("../../rules/plugins/resources/held-uses.mjs");
+  const updates = (actor?.items?.filter?.(item => item.type == 'power' && item.system?.usesSpent > ruleHeldUses(actor, item)) ?? [])
+    .map(item => ({ _id: item.id, 'system.usesSpent': ruleHeldUses(actor, item) }));
   if (updates.length) {
     await actor.updateEmbeddedDocuments('Item', updates);
   }

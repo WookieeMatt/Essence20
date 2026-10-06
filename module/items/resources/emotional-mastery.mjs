@@ -353,8 +353,8 @@ export async function clearEmotionalMasteryOnMorphOff(actor) {
 }
 
 /**
- * Heart's Calling (18th level): "Select one of your Emotional Mastery options. This option no
- * longer costs you Power to activate, and you can activate it even when you are not Morphed."
+ * Heart's Calling (18th level): one chosen Emotional Mastery option costs no Power and works
+ * unmorphed too.
  * Prompted once, at Perk-grant time, the same shape Speak Your Truth's own picker uses.
  * @param {Actor} actor
  */
@@ -366,9 +366,8 @@ export async function pickHeartsCallingOption(actor) {
 }
 
 /**
- * Team Spirit (9th level): "you can spend one Personal Power to apply your Emotional Mastery to
- * any ally within 30 feet when you activate it. Your allies can only benefit from one Team Spirit
- * at a time." Applies whichever of the caster's own currently-active options they choose (if more
+ * Team Spirit (9th level): for one Personal Power at activation, the Emotional Mastery also covers an
+ * ally within 30 feet; an ally can have only one Team Spirit at once. Applies whichever of the caster's own currently-active options they choose (if more
  * than one, via Adaptation) to the currently-targeted ally - stored as a live pointer back to the
  * caster (isEmotionalMasteryOptionActive re-checks the caster is still active every time, rather
  * than copying a snapshot that could go stale the moment the caster switches).
@@ -409,8 +408,8 @@ export async function activateTeamSpirit(actor) {
 }
 
 /**
- * Surprise: "Instead of rolling normally, you may set your place in the Initiative order
- * immediately after any other participant in the Combat scene's order." Dispatched as its own
+ * Surprise: instead of rolling, take the Initiative slot right after any other participant.
+ * Dispatched as its own
  * "Use" action rather than folded into prepareInitiativeRoll() (which always rolls) - same
  * Combatant#initiative write as Right Behind You (items/rolls/right-behind-you.mjs), just unscoped to
  * allies (RAW says "any other participant") and gated on Surprise being the active option instead
@@ -440,10 +439,9 @@ export async function activateEmotionalMasterySurprise(actor) {
 }
 
 /**
- * Distress: "Your Movement values increase by 10 feet whenever you begin your turn within 10
- * feet of an enemy." A live read in documents/actor.mjs#_prepareMovement (the same touch-point
- * Warrior Rush's own movement modifier already uses) rather than a turn-start hook - "whenever
- * you begin your turn" is approximated as "currently," the same "closest deterministic
+ * Distress: +10ft to every Movement when the turn starts within 10ft of an enemy. A live read in
+ * documents/actor.mjs#_prepareMovement (the same touch-point Warrior Rush's own movement modifier
+ * already uses) rather than a turn-start hook - the turn-start timing is approximated as "currently," the same "closest deterministic
  * approximation" idiom this project already accepts for Warrior Rush/Light Chassis's own
  * Initiative-adjacent live reads.
  * @param {Actor} actor

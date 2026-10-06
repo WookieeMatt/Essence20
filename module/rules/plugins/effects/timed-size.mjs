@@ -117,8 +117,8 @@ registerStep('sizeChange', async (step, ctx) => {
   ],
 });
 
-registerTag('self:sizeChanged', (rest, ctx) => (ctx.self ? sizeChangeLive(ctx.self, rest) : null));
-registerTag('target:sizeChanged', (rest, ctx) => (ctx.other ? sizeChangeLive(ctx.other, rest) : false));
+registerTag('self:sizeChanged', (rest, ctx) => (ctx.self ? sizeChangeLive(ctx.self, rest) : null), { phrase: ['{poss} size is changed by {arg}', "{poss} size isn't changed by {arg}"] });
+registerTag('target:sizeChanged', (rest, ctx) => (ctx.other ? sizeChangeLive(ctx.other, rest) : false), { phrase: ['{poss} size is changed by {arg}', "{poss} size isn't changed by {arg}"] });
 
 /** Every actor a timed size change could sit on: the world's actors and every scene's unlinked token actors. */
 export function sizeChangeCandidates() {

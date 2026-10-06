@@ -5,6 +5,8 @@
  * importing everything grants.mjs does (which would loop back round to action-perks.mjs).
  */
 
+import { sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
+
 // (A Hint of Independence and Personal Power Supply are Use rules on their Perks - rules/conv16-b.test.js,
 // rules/conv17-split3.test.js. Nothing is left here; a new grant Use goes in the table.)
 export const GRANT = {};
@@ -12,10 +14,6 @@ export const GRANT = {};
 const USE_KINDS = new Set([]);
 
 const BY_SOURCE = Object.fromEntries(Object.entries(GRANT).filter(([kind]) => USE_KINDS.has(kind)).map(([kind, id]) => [id, kind]));
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
 
 export function grantKindOf(item) {
   return BY_SOURCE[sourceOf(item)] ?? null;

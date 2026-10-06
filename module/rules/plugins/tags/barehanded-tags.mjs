@@ -1,4 +1,5 @@
 import { registerTag } from "../../predicate.mjs";
+import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * Round 15 (dice part): unarmed the way dice.mjs#_isUnarmedWeaponEffect reads it - an attack with no weapon behind it,
@@ -17,14 +18,10 @@ export const UNARMED_WEAPON_IDS = [
   "Compendium.essence20.wtnv_citizens_guide.Item.Cwd1FASmKXWiAFom",
 ];
 
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-
 /** Whether this weapon item is one of the printed unarmed "weapons". */
 export function isPrintedUnarmedWeapon(weapon) {
   return !!weapon && UNARMED_WEAPON_IDS.includes(sourceOf(weapon));
 }
-
-const itemsOf = actor => actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
 
 /** The weapon a weaponEffect belongs to (on its own actor), or null. */
 function parentWeapon(item, actor) {
@@ -47,12 +44,12 @@ export function isBarehandedAttack(item, actor = null) {
   return !weapon || isPrintedUnarmedWeapon(weapon);
 }
 
-registerTag('attack:barehanded', (rest, ctx) => (ctx.isAttack === false ? false : isBarehandedAttack(ctx.item, ctx.self)));
+registerTag('attack:barehanded', (rest, ctx) => (ctx.isAttack === false ? false : isBarehandedAttack(ctx.item, ctx.self)), { phrase: ['on barehanded attacks', 'except on barehanded attacks'] });
 
 // roll:dealsDamage - some row of the roll came with damage (afterRoll / hit Triggers: the card's rows). Unknown outside a
 // posted roll. (roll:damaging reads only the first row.)
-registerTag('roll:dealsDamage', (rest, ctx) => (Array.isArray(ctx.results) ? ctx.results.some(row => (Number(row?.damageValue) || 0) > 0) : null));
+registerTag('roll:dealsDamage', (rest, ctx) => (Array.isArray(ctx.results) ? ctx.results.some(row => (Number(row?.damageValue) || 0) > 0) : null), { phrase: ['the roll deals damage', 'the roll deals no damage'] });
 
 const holding = actor => (actor ? itemsOf(actor).some(item => item.type == 'weapon' && item.system?.equipped && !isPrintedUnarmedWeapon(item)) : null);
-registerTag('self:holdingWeapon', (rest, ctx) => holding(ctx.self));
-registerTag('target:holdingWeapon', (rest, ctx) => holding(ctx.other));
+registerTag('self:holdingWeapon', (rest, ctx) => holding(ctx.self), { phrase: ['{who} {is} holding a weapon', '{who} {isnt} holding a weapon'] });
+registerTag('target:holdingWeapon', (rest, ctx) => holding(ctx.other), { phrase: ['{who} {is} holding a weapon', '{who} {isnt} holding a weapon'] });

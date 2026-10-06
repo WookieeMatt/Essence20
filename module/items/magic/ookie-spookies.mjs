@@ -1,5 +1,5 @@
-// Ookie Spookies (Knights of Canterlot, Virtuoso Enchantment spell, p.50): "While you are not
-// invisible, you are harder to see, granting you Edge on any Skill Tests to sneak about." A
+// Ookie Spookies (Knights of Canterlot, Virtuoso Enchantment spell, p.50): even when not
+// invisible the caster is hard to see - Edge on sneaking. A
 // self-only on/off flag (same shape as Glow/Mystery Sense), read directly in dice.mjs#rollSkill's
 // self-status section as Edge on Infiltration (this system's own "sneak about" skill). The
 // "walk through walls/float through ceilings" clause (its own actual headline effect) isn't

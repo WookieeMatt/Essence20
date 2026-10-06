@@ -2,6 +2,7 @@ import { isExpired } from "../../expiry.mjs";
 import { rulesOfType } from "../../index.mjs";
 import { contextFor, evaluate } from "../../predicate.mjs";
 import { registerRuleType } from "../../types.mjs";
+import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * Round 16 (part a): rule type `AttackResistance {damageTypes}` - while `when` holds, the holder counts as resisting
@@ -32,9 +33,6 @@ registerRuleType('AttackResistance', {
 
 // The same list as mechanics/combat/combat.mjs ENERGY_DAMAGE_TYPES (kept here so this file stays light to import).
 const ENERGY_TYPES = new Set(['element', 'acid', 'cold', 'electric', 'emp', 'fire', 'laser', 'sonic']);
-
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-const itemsOf = actor => actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
 
 /** The holder's live (unexpired) mark under the key, or null. */
 function liveMark(actor, key) {

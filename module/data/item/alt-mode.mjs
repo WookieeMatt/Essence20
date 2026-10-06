@@ -27,9 +27,8 @@ export class AltModeItemData extends foundry.abstract.TypeDataModel {
       // setOriginValues copies whichever one was picked onto the actor on drop.
       botModeSize: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
       tokenImage: makeStr(null),
-      // Limited Articulation (TF CRB, several Alt Mode Chassis, e.g. p.51): "You cannot use
-      // Skills that require articulation or precision, such as Athletics and Finesse" while
-      // converted into this Alt Mode. Read off the actor's currently-active Alt Mode item by
+      // Limited Articulation (TF CRB, several Alt Mode Chassis, e.g. p.51): no precision
+      // Skills (Athletics, Finesse) while converted into this Alt Mode. Read off the actor's currently-active Alt Mode item by
       // dice.mjs's own rollSkill (see LIMITED_ARTICULATION_SKILLS' own comment there).
       limitedArticulation: makeBool(false),
     };

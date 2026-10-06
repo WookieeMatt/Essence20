@@ -1,8 +1,7 @@
 /**
- * Protected Target (GI Joe CRB, Bodyguard Focus, 1st level, p.110): "Once per combat, before
- * rolling Initiative, you may designate one character to be your protected target. The target
- * gains +1 Temporary Health from your protection and other benefits as you level up in this
- * Focus." "Other benefits as you level up" are this Focus's own later Perks (Protector's Shield's
+ * Protected Target (GI Joe CRB, Bodyguard Focus, 1st level, p.110): once a combat, before
+ * Initiative, one character becomes the protected target, with +1 Temporary Health and more as
+ * the Focus levels. The later benefits are this Focus's own later Perks (Protector's Shield's
  * crit immunity, Defender's Oath's Defeat prevention), which read getProtectedTargetUuid()
  * directly rather than duplicating this flag.
  *

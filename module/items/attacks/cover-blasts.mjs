@@ -8,9 +8,8 @@ import { num } from "../shared/numbers.mjs";
 import { writeDocResult as writeActor } from "../shared/relayed-writes.mjs";
 
 /*
- * Cover Grenade (TF CRB p.124) and every "Cover" effect: "Cover: A nonlethal blast that fills an
- * area with a smoke or other effect that blocks the senses, granting creatures behind the blast area
- * [Cover] for the listed number of turns." Throwing one posts a card; its button gives the Cover
+ * Cover Grenade (TF CRB p.124) and every "Cover" effect: a nonlethal smoke-style blast that gives
+ * Cover to creatures behind its area for the listed number of turns. Throwing one posts a card; its button gives the Cover
  * Condition, for that many rounds, to the tokens the clicking user has targeted (or selected).
  */
 registerApplyDialog(async (actor, options, ctx) => {

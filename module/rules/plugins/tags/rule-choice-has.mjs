@@ -14,4 +14,7 @@ registerTag('rule:choiceHas', (rest, ctx) => {
   }
 
   return Array.isArray(picked) ? picked.map(String).includes(value) : String(picked) == value;
-});
+}, { phrase: (arg, w) => {
+  const [key, ...more] = arg.split(':');
+  return [`you picked ${w.humanize(more.join(':'))} for ${w.humanize(key).toLowerCase()}`, `you didn't pick ${w.humanize(more.join(':'))} for ${w.humanize(key).toLowerCase()}`];
+} });

@@ -1,10 +1,9 @@
 import { onPowerUse } from "../../mechanics/characters/power-use.mjs";
 
 /**
- * Nanomite equipment (G.I. Joe, Quartermaster's Guide to Gear, "Nanomite Powers," p.92): "Nanomite
- * powers granted through equipment are usually single-use powers; once they are used, the equipment
- * becomes inert. When requisitioned, nanomite-generating equipment may instead have a number of uses
- * before the equipment becomes inert."
+ * Nanomite equipment (G.I. Joe, Quartermaster's Guide to Gear, "Nanomite Powers," p.92): gear-granted
+ * nanomite powers are usually single-use, leaving the gear inert, though requisitioned gear may
+ * carry several uses first.
  *
  * The book prints no such items - it's a rule for the GM's own gear. A gear item links one nanomite
  * Power (drop it on the gear's sheet) and carries a number of uses, 1 by default. Using it from the
