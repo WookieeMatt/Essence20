@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { TF3 } from '../shared/bot-alt-mode-readers.mjs';
+import { TF3 } from "../shared/tf-crb-tf-one-item-ids.mjs";
 import {
   tf3RollSources, UNEXPECTED_FLAG,
 } from '../rolls/unexpected-alternative.mjs';

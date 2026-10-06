@@ -82,7 +82,7 @@ global.Roll = class Roll {
 // modes this system's own content uses.
 global.ActiveEffect = class ActiveEffect {
   // Minimal stand-in for ActiveEffect.implementation.fromStatusEffect(id) (real Foundry builds a
-  // full effect document from CONFIG.statusEffects) - just enough for mechanics/characters/actor-token-helpers.mjs's
+  // full effect document from CONFIG.statusEffects) - just enough for mechanics/world/token-sync.mjs's
   // syncAutoBlindStatus/syncAutoImmobilizedStatus tests, which only need something with an
   // updateSource() to flag as auto-applied before createEmbeddedDocuments.
   static async fromStatusEffect() {

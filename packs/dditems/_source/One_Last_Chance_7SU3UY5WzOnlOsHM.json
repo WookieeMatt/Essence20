@@ -6,11 +6,11 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"CardOffer","label":"One Last Chance ({holder}): reroll every die","whose":"side","pressedBy":"roller","when":["card:failed","card:skill","not:card:rerolled","card:holderPresent"],"limit":{"per":"scene"},"reroll":{"target":"allDice"}}
+      {"type":"CardOffer","label":"One Last Chance ({holder}): reroll a die","whose":"side","pressedBy":"roller","when":["card:failed","card:skill","not:card:rerolled","card:holderPresent"],"limit":{"per":"scene"},"reroll":{"target":"anyDie"}}
     ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Chat card: once per scene, an ally's failed Skill Test card gets a button to reroll all its dice while you are in the scene. Left to the table: whether the test was made on your orders.</p>"
+      "notes": "<p>Chat card: once per scene, an ally's failed Skill Test card gets a button to reroll one of its dice, picked by the roller, while you are in the scene. Left to the table: whether the test was made on your orders.</p>"
     },
     "originalId": "",
     "description": "",

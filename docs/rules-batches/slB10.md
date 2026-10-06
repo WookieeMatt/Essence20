@@ -280,7 +280,7 @@ its pack source, asserting what the old tests did and more).
 - **Deleted:** `module/helpers/fearsome-presence.mjs` and its test (their only use was the activation), and
   `module/helpers/extensions/wtnv/wtnv.test.js` (it held only the Staggering Sway test).
 - `module/mechanics/combat/sneak-attack.mjs` (+ `.test.js` fixtures) - the three Every Trick checks ask `ruleSneakAttackImmune`.
-- `module/items/rolls/better-than-the-best-miss-immunity.mjs` - `ignoresMissEffects` reads MissImmunity rules; `takedownExpertChoice`, the two
+- `module/items/rolls/better-than-the-best.mjs` - `ignoresMissEffects` reads MissImmunity rules; `takedownExpertChoice`, the two
   ids and `GIJ_CRB` gone. `gij3/gij3.mjs` header comment; `gij3/gij3.test.js` (Seconds Between via a rule item; Takedown test gone).
 - `gij2/vehicles.mjs`, `gij2/shared.mjs`, `gij2/gij2.test.js`, `gij2/perks.mjs` (Fearsome Presence section, its helpers and imports).
 - `pr2/finster.mjs`, `pr2/common.mjs`, `pr2/pr2.test.js`; `pr1/ats.mjs`; `pr3/ttsg.mjs`, `pr3/common.mjs`.

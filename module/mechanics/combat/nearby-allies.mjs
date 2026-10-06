@@ -1,4 +1,5 @@
-import { betrayalSplits } from "../../items/social/betrayal-self-improvement.mjs";
+import { betrayalSplits } from "../../items/social/betrayal.mjs";
+import "../../items/magic/self-improvement.mjs"; // loaded with Betrayal, as one file was, so its registrations keep their place
 import { actorHasPerk } from "../characters/perks.mjs";
 
 /**

@@ -123,13 +123,13 @@ Derivatives' +1 Acid in weapon-upgrades.mjs - see slB10.)
 - `module/rules/plugins/combat/hit-rider.mjs` - imports `fillSwitch`; an option's damageType fills `{switch.<prefix>}`.
 - `module/mechanics/actions/hidden-state.mjs` - Pop Out / Telltale code, `observerDefense` and the Hidden helpers gone (now
   `ext/g/hidden.mjs`, `isHidden` re-exported); the postRoll ends Hidden and calls `fireBrokeHiding`.
-- `module/items/shared/turn-stamps-and-sides.mjs` - `O3.popOut`, `O3.telltaleSign` removed.
+- `module/items/shared/mlp-pr-tf-ids-and-skill-total.mjs` - `O3.popOut`, `O3.telltaleSign` removed.
 - `module/items/tests/hidden-state-mega-defender-zones.test.js` - the observerDefense test removed.
 - `module/items/rolls/time-displaced.mjs` - the Warhead section, its dialog / apply / hit-rider / createItem hooks and imports
   gone (the shared `clearPending` preRoll stays - misc.mjs's Primordial Power uses it).
-- `module/items/shared/crew-allies-turn-stamps.mjs` - `PR1.warheadMagazines`, `parentWeaponOf`, `isAreaAttack`, `payAction` removed.
+- `module/items/shared/pr-jtt-ats-item-ids.mjs` - `PR1.warheadMagazines`, `parentWeaponOf`, `isAreaAttack`, `payAction` removed.
 - `module/items/tests/lightspeed-spectrum-time-displaced.test.js` - the Warhead use id and `warheadChoices` test removed.
-- `module/items/forms/multimorph-rites.mjs` - `isArmorMatrix`, `extraMatrixToughness`, the matrix ids and the derived pass
+- `module/items/forms/multimorph.mjs` - `isArmorMatrix`, `extraMatrixToughness`, the matrix ids and the derived pass
   gone; `other1/other1.test.js` - its test removed.
 
 ## Unused strings

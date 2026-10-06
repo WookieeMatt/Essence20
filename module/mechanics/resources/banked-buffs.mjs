@@ -3820,7 +3820,7 @@ export async function onPerkUse(item) {
 
     await bankPendingBonus(actor, PENDING_DIG_DEEP_FLAG_KEY, { amount: 1 });
     // "a Snag on all Skill Tests until the end of your next turn" - a timed mark, not one banked Snag.
-    const { markDigDeepSnag } = await import("../../items/rolls/dig-deep-personal-vehicle-edges.mjs");
+    const { markDigDeepSnag } = await import("../../items/rolls/dig-deep-skill-snag.mjs");
     await markDigDeepSnag(actor, item);
     await markUsed(actor, DIG_DEEP_ENCOUNTER_FLAG, { window: digDeepWindow(sourceId) });
     postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));

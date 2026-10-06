@@ -46,7 +46,7 @@ function actor(items = [], system = {}, extra = {}) {
 describe('jtt', () => {
   let jtt;
   beforeAll(async () => {
-    jtt = await import('../movement/interspatial-pause-timeslide.mjs');
+    jtt = { ...(await import('../resources/unlucky-for-you-terror.mjs')), ...(await import('../defenses/interspatial-pause.mjs')) };
   });
 
   test('allFailed needs at least one compared result, all failed', () => {
@@ -127,7 +127,7 @@ describe('alterations', () => {
 describe('cobra gear', () => {
   let gear;
   beforeAll(async () => {
-    gear = await import('../attacks/electromagnetic-deflecting-weapons.mjs');
+    gear = { ...(await import('../attacks/electromagnetic-vs-computerized.mjs')), ...(await import('../defenses/deflecting-weapon.mjs')) };
   });
 
   test('computerized gear', () => {
@@ -157,7 +157,7 @@ describe('cobra gear', () => {
 describe('more', () => {
   let more;
   beforeAll(async () => {
-    more = await import('../forms/multimorph-rites.mjs');
+    more = await import('../forms/multimorph.mjs');
   });
 
   // Only the best Armor Matrix counting is an OnlyBest rule on each matrix (module/rules/conv11-slG11.test.js).

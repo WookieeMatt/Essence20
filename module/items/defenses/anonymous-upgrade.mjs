@@ -1,6 +1,7 @@
 import { registerRollSources } from "../../mechanics/item-hooks.mjs";
 import { hasSourced } from "../../mechanics/companions/companion-link.mjs";
-import { G1, T, wornUpgrade } from "../shared/cobra-codex-item-lookups.mjs";
+import { G1, wornUpgrade } from "../shared/cobra-codex-item-lookups.mjs";
+import { T } from "../shared/item-lang.mjs";
 
 /**
  * Cobra Codex gear: the Battledress upgrade Anonymous (Table 3-5, p.100-101). Uniform is an item rule (an incoming

@@ -1,9 +1,12 @@
 import {
   registerChatButton, registerPostRoll, registerTurnStart, registerUse,
 } from "../../mechanics/item-hooks.mjs";
-import {
-  FMMC, KOC, T, findSourced, isFrom, num, post, rollDif, targetedActors,
-} from "../shared/gm-relayed-item-writes.mjs";
+import { FMMC, KOC, rollDif } from "../shared/gm-relayed-item-writes.mjs";
+import { T } from "../shared/item-lang.mjs";
+import { findSourced, isFrom } from "../shared/item-lookups.mjs";
+import { num } from "../shared/numbers.mjs";
+import { say as post } from "../shared/chat-lines.mjs";
+import { targetedActors } from "../shared/sides.mjs";
 
 /**
  * Magic: Knights of Canterlot's Temper Tempest, and Finster's build-your-own Sorcerous Power (Table 4-1).

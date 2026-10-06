@@ -76,7 +76,10 @@ describe('decepticon', () => {
 describe('medic', () => {
   let med;
   beforeAll(async () => {
-    med = await import('../healing/heal-action-medic-gear.mjs');
+    med = {
+      ...(await import('../healing/medicine-kit.mjs')), ...(await import('../../mechanics/actions/heal-action.mjs')),
+      ...(await import('../healing/defibrillator.mjs')),
+    };
   });
 
   test('restore DIF', () => {
@@ -105,7 +108,10 @@ describe('medic', () => {
 describe('gij', () => {
   let gij;
   beforeAll(async () => {
-    gij = await import('../gear/support-upgrade-lending.mjs');
+    gij = {
+      ...(await import('../gear/support-upgrade-lending.mjs')), ...(await import('../social/delegate.mjs')),
+      ...(await import('../attacks/two-light-weapons.mjs')),
+    };
   });
 
   test('Support lends until the start of the next turn, Extended Support for the scene', () => {

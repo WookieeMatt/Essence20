@@ -1,6 +1,8 @@
 import { registerDerived, registerPostRoll } from "../../mechanics/item-hooks.mjs";
 import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
-import { T, escape, postLine, writeDoc } from "../shared/finster-item-lookups.mjs";
+import { T } from "../shared/item-lang.mjs";
+import { escapeMarkupAndApos as escape, sayParagraph as postLine } from "../shared/chat-lines.mjs";
+import { writeDoc } from "../shared/relayed-writes.mjs";
 
 /**
  * Weapon rules for the data21 slice. (The "Finesse or Might" weapons - roll whichever of the two

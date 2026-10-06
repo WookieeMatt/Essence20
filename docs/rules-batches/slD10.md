@@ -72,7 +72,8 @@ the last run, the other groups' work included).
   `defense: ask` or a number 1-4); **`explosion {radius, formula, saveSkills, saveDif, damageType, title}`** (damage
   rolled once, a plain save each for half); **`damageCard {actor, amount, damageType, title}`**; **`explodeVehicle
   {actor}`**.
-- **Banks and team grants** (rules/plugins/tags/small-steps-and-refs.mjs, alteration.mjs) - step **`bankDie {die, appliesWhen}`** (a bonus die
+- **Banks and team grants** (rules/plugins/rolls/bonus-dice-bank.mjs, resources/temp-resource-step.mjs, tags/team-combatants.mjs and the
+  other group D step / tag files rules/plugins/index.mjs lists in their place; alteration.mjs) - step **`bankDie {die, appliesWhen}`** (a bonus die
   for the next matching roll, moved into the More Heads slot before the dialog and back if another roll comes first; tag
   **`rule:bankedDie`**); step **`tempResource {kind: health | energon, amount, to, untilDamage?}`** (tracked temporary
   Health / Energon - amount worked out per recipient); recipient / ref **`teamCombatants`** (teammates in the running

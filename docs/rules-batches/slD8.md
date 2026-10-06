@@ -224,7 +224,7 @@ Marked **(permanent)** where it is effectively code for good.
 ## Edits outside my files
 
 None needed. Optional and comment-only: `module/dice.mjs` line 1308-1309 still says Fuel Efficient "rolls on every
-Energon spend, from the actor update hooks - items/resources/energon-spend-strains.mjs". It could read "...rolls on
+Energon spend, from the actor update hooks - items/resources/energon-strains.mjs". It could read "...rolls on
 every Energon spend - its item's own resourceSpent Trigger rule." `module/dice.test.js`'s Fuel Efficient
 `describe.skip` block is dead and could go.
 

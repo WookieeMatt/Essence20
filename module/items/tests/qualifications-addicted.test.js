@@ -1,11 +1,10 @@
 import { jest } from '@jest/globals';
-import { Q1, Q1_UPGRADE, handleQ1Relay, itemsFrom } from '../shared/qualification-gm-relay.mjs';
+import { handleQ1Relay, itemsFrom, Q1, Q1_UPGRADE } from "../shared/qualification-gm-relay.mjs";
 import {
   effectiveAvailability, isQualifiedUpgrade, onRequisitionAvailability,
 } from '../gear/equipment-qualification.mjs';
-import {
-  combatThreatSummary, effectiveThreatLevel, onAddictPreUpdate,
-} from '../resources/addicted-threat-level.mjs';
+import { onAddictPreUpdate } from '../resources/addicted-dark-energon.mjs';
+import { combatThreatSummary, effectiveThreatLevel } from '../../mechanics/combat/effective-threat-level.mjs';
 import { registrySnapshot } from '../../mechanics/item-hooks.mjs';
 import '../gear/qualification-setup.mjs';
 

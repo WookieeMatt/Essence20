@@ -1,4 +1,4 @@
-import { suppressesFumbleStoryPoint } from "./ally-trigger-reactions.mjs";
+import { suppressesFumbleStoryPoint } from "./agency-hang-up.mjs";
 
 /**
  * Plugs into the small array scratchpad integration/react-patch.cjs adds to a core file: dice.mjs

@@ -1018,7 +1018,7 @@ describe('Hearty Meal', () => {
   });
 
   test('the heal action: Culture or Performance out of combat, once per mission', async () => {
-    const { healSkills } = await import('../items/healing/heal-action-medic-gear.mjs');
+    const { healSkills } = await import('../mechanics/actions/heal-action.mjs');
     const { spendActionSkill } = await import('./plugins/rolls/action-skills.mjs');
     const cook = makeActor([packItem(FILES.heartyMeal)]);
     expect(healSkills(cook, { inCombat: false })).toEqual(['science', 'technology', 'culture', 'performance']);

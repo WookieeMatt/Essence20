@@ -29,7 +29,7 @@ private helpers). rollSkill (regA / regB) was not touched; items whose behaviour
 
 | Item | Converted | Stays code, and why |
 |---|---|---|
-| Seconds Between Click & Boom | The Snag on attacks against the holder's Evasion: incoming RollModifier `snag`, `when: [attack, defense:evasion]` (`SECONDS_BETWEEN_CLICK_AND_BOOM_ID` removed from dice.mjs) | The "a miss has no effect" half is in `items/rolls/better-than-the-best-miss-immunity.mjs` (outside this region), unchanged. |
+| Seconds Between Click & Boom | The Snag on attacks against the holder's Evasion: incoming RollModifier `snag`, `when: [attack, defense:evasion]` (`SECONDS_BETWEEN_CLICK_AND_BOOM_ID` removed from dice.mjs) | The "a miss has no effect" half is in `items/rolls/better-than-the-best.mjs` (outside this region), unchanged. |
 | Exterminator | The ↑1: RollModifier `upshift: 1`, `when: [attack, {any: [target:data:system.size=common, target:data:system.size=small]}, target:sizeDiff<=-1]` | The `exterminatorEligible` flag (read by rollSkill as `rollContext.smallerTarget` for the Reroll condition) - removing it needs a rollSkill edit and a "this roll matched rule X" hand-off. |
 
 ## Behaviour differences

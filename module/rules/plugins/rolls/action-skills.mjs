@@ -5,7 +5,7 @@ import { recordUse, usesLeft } from "../../limits.mjs";
 
 /**
  * `ActionSkills` {action, skills, limit?} (round 10, group C) - more Skills a named action may be rolled with: `heal`,
- * the "restore Health with a Skill Test" action (items/healing/heal-action-medic-gear.mjs#healSkills). While `when` holds
+ * the "restore Health with a Skill Test" action (mechanics/actions/heal-action.mjs#healSkills). While `when` holds
  * and the limit has a use left, the action offers `skills` too; picking one of them uses the limit up. Hearty Meal.
  *
  * Kept light on imports: medic.mjs reads it.

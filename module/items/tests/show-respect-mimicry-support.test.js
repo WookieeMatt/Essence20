@@ -1,10 +1,16 @@
 import { jest } from '@jest/globals';
-import { TF1, favoriteWeaponOf, isDefeated, sourceOf } from '../shared/condition-damage-buttons.mjs';
+import { favoriteWeaponOf, isDefeated, TF1 } from "../shared/condition-damage-buttons.mjs";
+import { sourceOfOrUndefined as sourceOf } from "../shared/item-lookups.mjs";
 import {
   COMBAT_USES, respectTurnEnd, respectTurnStart, tf1CombatPostRoll,
 } from '../attacks/show-respect.mjs';
-import { SUPPORT_USES, mimicrySizeOk, sizeClass } from '../forms/chassis-mimicry-support-perks.mjs';
+import { GLITCH_USE } from '../social/they-called-it-a-glitch.mjs';
+import { MIMICRY_USE, mimicrySizeOk, sizeClass } from '../forms/alt-mode-mimicry.mjs';
+import { DRONE_USE } from '../forms/drone-copied-origin.mjs';
+import { SOLID_ENERGON_USE } from '../resources/solid-state-energon.mjs';
 import { registrySnapshot } from '../../mechanics/item-hooks.mjs';
+
+const SUPPORT_USES = [GLITCH_USE, MIMICRY_USE, DRONE_USE, SOLID_ENERGON_USE];
 
 const owned = (uuid, extra = {}) => ({
   id: extra.id ?? uuid.slice(-6), name: extra.name ?? 'Thing', type: extra.type ?? 'perk', system: extra.system ?? {},

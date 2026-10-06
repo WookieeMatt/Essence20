@@ -1,27 +1,11 @@
 /**
- * Team-wide Grid Science/Grid Tech choices and the Graphite Ranger capstone: Instructor's legacy students
- * (Beneath the Helmet, Aqua Ranger, p.41-42) and Graphite Ranger Prime (Beneath the Helmet, p.48). Primal Rage,
- * Bend Physics, Instructor and Aim Apparatus (PR CRB, p.38) are their items' own rules.
+ * Instructor's legacy students (Beneath the Helmet, Aqua Ranger, p.41-42): the one reader left for students taught
+ * before the rules version. (Primal Rage, Bend Physics, Instructor and Aim Apparatus (PR CRB, p.38) are their items'
+ * own rules. Movement rules at stage derivedHook are registered by rules/plugins/effects/derived-hook-movement.mjs.)
  */
-import { registerDerived } from "../../mechanics/item-hooks.mjs";
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
-import { applyDerivedHookMovement } from "../../rules/plugins/effects/derived-hook-movement.mjs";
-import {
-  PR2, itemsOf, sourceOf,
-} from "../shared/ranger-leftover-item-ids.mjs";
-
-/* -------------------------------------------- */
-/*  Movement rules at this place                 */
-/* -------------------------------------------- */
-
-// Movement rules at stage derivedHook apply here among the derived hooks - before the rules' own DerivedStats (Beneath
-// the Helmet's Bend Physics doubling, the Unique Weapon (Two-Handed Melee)'s -10 ft; Beast Morpher's Cheetah +20 is not
-// doubled). (A teammate prepared before the world loaded is prepared again once it has - rules/plugins/zords/zord-timing-hooks.mjs.)
-registerDerived(applyDerivedHookMovement);
-
-/* -------------------------------------------- */
-/*  Instructor                                   */
-/* -------------------------------------------- */
+import { PR2 } from "../shared/ranger-leftover-item-ids.mjs";
+import { itemsOfAny as itemsOf, sourceOf } from "../shared/item-lookups.mjs";
 
 // Instructor (p.41) is the Perk's own rules now: the Smarts Skill pick (an `added` Trigger, and the
 // Use if it was skipped - legacy: the old flag's skill), the ↑1 on it, the Use that marks a picked

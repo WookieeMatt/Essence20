@@ -37,7 +37,10 @@ const { hitRiderOnAttack } = await import('./plugins/combat/hit-rider.mjs');
 const { derivedMovement } = await import('./plugins/effects/derived-stages.mjs');
 const { ruleFormSpec, ruleFormUuids } = await import('./plugins/zords/form-perks.mjs');
 const { ruleIgnoresDrawback } = await import('./plugins/rolls/ignore-drawback.mjs');
-const { damageReduction, initiativeEdgeFor, massShiftUsed, offerGrantDouble } = await import('./plugins/combat/damage-reduction-initiative-edge.mjs');
+const { initiativeEdgeFor } = await import('./plugins/rolls/initiative-edge.mjs');
+const { offerGrantDouble } = await import('./plugins/resources/grant-double.mjs');
+const { damageReduction } = await import('./plugins/combat/damage-reduction.mjs');
+const { massShiftUsed } = await import('./plugins/zords/mass-shift-event.mjs');
 const perks = await import('../mechanics/characters/perks.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');

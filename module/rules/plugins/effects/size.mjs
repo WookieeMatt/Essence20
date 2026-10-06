@@ -1,14 +1,14 @@
 import { registerDerived, registerRollSources } from "../../../mechanics/item-hooks.mjs";
-import { isActiveForWindow } from "../../../mechanics/resources/scene-clock.mjs";
 import { ruleLabel, rulesOfType } from "../../index.mjs";
-import { contextFor, evaluate, isStatic, registerTag } from "../../predicate.mjs";
+import { contextFor, evaluate, isStatic } from "../../predicate.mjs";
 import { resolveValue } from "../../formula.mjs";
 import { registerStep } from "../../steps.mjs";
 import { registerRuleType } from "../../types.mjs";
-import { T, driverOf, itemsOf, sourceOf, write } from "../shared/zord-crew-lookups.mjs";
+import { T, driverOf, itemsOf, rememberChoice as remember, sourceOf, write } from "../shared/zord-crew-lookups.mjs";
 
 /**
- * Group A: size classes as data.
+ * Group A: size classes as data. (Group A's askChoiceText step is dialog/ask-choice-text-step.mjs and its
+ * self:clockActive tag tags/clock-active-tag.mjs, registered right after this file.)
  *
  * - Rule type `Size` {steps?, set?, atLeast?, atMost?, ladder?, min?, max?}: the actor's derived size (system.size),
  *   worked out after the other derived data. In order: every `steps` rule moves it along its ladder (by priority,
@@ -19,16 +19,12 @@ import { T, driverOf, itemsOf, sourceOf, write } from "../shared/zord-crew-looku
  * - Steps `shiftSize` {steps, ladder?, min?, max?, record?} (the stored size, on every recipient; `record`: the size
  *   before is kept on the rule's item under rules.choices.<record>, once) and `restoreSize` {record, legacy?} (puts the
  *   recorded size back and forgets it; `legacy`: an older flag on the item that held it).
- * - Step `askChoiceText` {key, prompt?} - the player types a text, kept on the rule's item (rules.choices.<key>, read back
- *   with {choice.<key>}) and as @var / {var.<key>}. Cancelled or empty: the run stops.
  * - Rule type `ArmorAccommodation` {level: limited | restricted}: putting on armor without an Alteration Accommodation
  *   upgrade of that level (Restricted also covers Limited) is refused (Enlarged / Shrunk).
  * - Rule type `SizeMatrixCancel` (on a driver): an attacker smaller than the vehicle they drive loses the Size Class
  *   Combat Adjustment Matrix upshifts when the rule's `when` holds (defense: the attacked Defense, target: the attacker)
  *   - a ↓ source on the attacker's roll for the matrix's shift (Big Rigger, Bigger Rigger). Only the first one by
  *   priority counts.
- * - Tag `self:clockActive:<flag>` - a Scene Clock window flag (mechanics/resources/scene-clock.mjs) is live for the scene or the
- *   mission (Hybridization's Change Size).
  */
 
 export const FULL_SIZES = ['small', 'common', 'large', 'long', 'huge', 'extended', 'gigantic', 'extended2', 'towering', 'extended3', 'titanic'];
@@ -134,11 +130,6 @@ registerDerived(sizeDerived);
 
 const choiceOf = (item, key) => item?.flags?.essence20?.rules?.choices?.[key];
 
-async function remember(item, key, value) {
-  await write(item, 'update', [{ [`flags.essence20.rules.choices.${key}`]: value }]);
-  globalThis.foundry?.utils?.setProperty?.(item, `flags.essence20.rules.choices.${key}`, value);
-}
-
 registerStep('shiftSize', async (step, ctx) => {
   const { recipients } = await import("../../steps.mjs");
   const steps = Math.round(resolveValue(step.steps ?? 0, { actor: ctx.actor, item: ctx.item, vars: ctx.vars }, 0));
@@ -179,32 +170,6 @@ registerStep('restoreSize', async (step, ctx) => {
     delete ctx.item.flags.essence20.rules.choices[step.record];
   }
 }, { errors: (step, where) => (step.record ? [] : [`${where}: restoreSize needs record`]) });
-
-registerStep('askChoiceText', async (step, ctx) => {
-  const key = String(step.key ?? '');
-  const text = ctx.askText ? await ctx.askText(step, ctx) : await promptText(step, ctx);
-  if (!key || !text || !String(text).trim()) {
-    return false;
-  }
-
-  const value = String(text).trim();
-  ctx.vars[key] = value;
-  if (ctx.item) {
-    await remember(ctx.item, key, value);
-  }
-}, { errors: (step, where) => (step.key ? [] : [`${where}: askChoiceText needs a key`]) });
-
-async function promptText(step, ctx) {
-  const escape = text => String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
-  const { DialogV2 } = globalThis.foundry.applications.api;
-  return DialogV2.prompt({
-    window: { title: ctx.item?.name ?? '' },
-    classes: ['essence20', 'e20-window'],
-    content: `<div class="form-group"><label>${escape(step.prompt ?? '')}</label><input type="text" name="text" autofocus></div>`,
-    ok: { callback: (event, button) => button.form.elements.text.value },
-    rejectClose: false,
-  });
-}
 
 /* -------------------------------------------- */
 /*  Armor accommodation                          */
@@ -287,11 +252,5 @@ registerRollSources((actor, target, ctx) => {
   const cancel = sizeMatrixCancel(actor, target, ctx.dataset?.defenseType ?? ctx.item?.system?.defenseType);
   return { sources: cancel ? [{ id: 'rulesSizeMatrixCancel', label: cancel.label, shiftDown: cancel.shift }] : [] };
 });
-
-/* -------------------------------------------- */
-/*  Tags                                         */
-/* -------------------------------------------- */
-
-registerTag('self:clockActive', (rest, ctx) => !!ctx.self && (isActiveForWindow(ctx.self, rest, 'scene') || isActiveForWindow(ctx.self, rest, 'mission')));
 
 export { sourceOf };

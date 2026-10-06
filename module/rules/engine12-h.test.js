@@ -20,7 +20,10 @@ const { resolveValue } = await import('./formula.mjs');
 const { calcTag } = await import('./plugins/tags/item-copies.mjs');
 const { fill } = await import('./plugins/effects/rule-effects.mjs');
 const { ruleIgnoresDrawback } = await import('./plugins/rolls/ignore-drawback.mjs');
-const { damageReduction, grantDoubleRule, initiativeEdge, initiativeEdgeFor, massShiftUsed, offerGrantDouble } = await import('./plugins/combat/damage-reduction-initiative-edge.mjs');
+const { initiativeEdge, initiativeEdgeFor } = await import('./plugins/rolls/initiative-edge.mjs');
+const { grantDoubleRule, offerGrantDouble } = await import('./plugins/resources/grant-double.mjs');
+const { damageReduction } = await import('./plugins/combat/damage-reduction.mjs');
+const { massShiftUsed } = await import('./plugins/zords/mass-shift-event.mjs');
 const common = await import('./plugins/shared/copy-and-data-helpers.mjs');
 
 let nextId = 1;

@@ -1,6 +1,6 @@
 import { spend } from "../mechanics/actions/action-economy.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
-import { checkIsLocked } from "../mechanics/characters/actor-token-helpers.mjs";
+import { checkIsLocked } from "../util/sheet-lock.mjs";
 import { onPerkUse } from "../mechanics/resources/banked-buffs.mjs";
 import { onAlterationDelete } from "./alteration-handler.mjs";
 import { deleteAttachmentsForItem, setEntryAndAddItem } from "./attachment-handler.mjs";

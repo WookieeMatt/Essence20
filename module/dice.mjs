@@ -1,4 +1,5 @@
-import { betterThanTheBestMultiplier, ignoresMissEffects } from "./items/rolls/better-than-the-best-miss-immunity.mjs";
+import { betterThanTheBestMultiplier } from "./items/rolls/better-than-the-best.mjs";
+import { ignoresMissEffects } from "./items/defenses/miss-effect-immunity.mjs";
 import { ruleIgnoresDrawback } from "./rules/plugins/rolls/ignore-drawback.mjs";
 import { extDialogToggles, extSpecializes, runApplyDialog, runConsumer, runPreRoll } from "./mechanics/item-hooks.mjs";
 import { battlizerAttackUsedUp, markBattlizerAttack, racerRecklessShifts } from "./mechanics/companions/summons.mjs";
@@ -969,7 +970,7 @@ const DECEPTICON_DIRECTIVE = "Compendium.essence20.decepticon_directive.Item.";
 const DONT_UNDERESTIMATE_ME_ID = "Compendium.essence20.beneath_the_helmet.Item.IIGUmCKw8O8QogvE";
 const DONT_UNDERESTIMATE_ME_SCENE_FLAG = 'dontUnderestimateMeUsedThisScene';
 
-// Covering Fire (Transformers CRB, Gunner base, 2nd level, p.68) - items/rolls/dig-deep-personal-vehicle-edges.mjs.
+// Covering Fire (Transformers CRB, Gunner base, 2nd level, p.68) - items/rolls/dig-deep-skill-snag.mjs.
 
 // Worth A Shot (Transformers CRB, Gunner base, 9th level, p.69): "once per scene other than
 // combat, you can use a ballistic weapon as a Standard Kit of a Specialization of your choice,
@@ -1494,11 +1495,11 @@ const MIGHT_MAKES_RIGHT_ID = "Compendium.essence20.decepticon_directive.Item.lIi
 // skillRollOptions.isSpecialized; "when that Specialization comes into play" (the specific
 // flavor, e.g. "Survival (Desert)") is dropped the same unenforceable-narrative-qualifier way
 // Specialist's own "must already be Specialized" precondition already is.
-// Built as a Roll Options Dialog switch in items/rolls/dig-deep-personal-vehicle-edges.mjs.
+// Built as a Roll Options Dialog switch in items/rolls/dig-deep-skill-snag.mjs.
 
 // Maximal (Technorganic Secrets, Influence Perk, p.26) - same shape as Dinobot just above,
 // restricted to Persuasion/Science/Technology instead.
-// Built as a Roll Options Dialog switch in items/rolls/dig-deep-personal-vehicle-edges.mjs.
+// Built as a Roll Options Dialog switch in items/rolls/dig-deep-skill-snag.mjs.
 
 // Predacon (Technorganic Secrets, Influence Perk, p.27): same choice-Edge shape as Dinobot/Maximal
 // above, restricted to Intimidation only - plus its own second clause: "If you Intimidate a foe
@@ -1686,7 +1687,7 @@ const ITS_RIGHT_THERE_ID = `${WTNV_CITIZENS_GUIDE}PHg5CJEy13v6G7a1`;
 
 // University Days (General Perk, p.53): "you may determine your Free actions with your Smarts
 // Essence instead of your Speed Essence." Verbatim identical shape to Quick Thinker (MLP CRB) -
-// see mechanics/characters/actor-token-helpers.mjs#getNumActions, extended to also check this Perk.
+// see mechanics/world/token-sync.mjs#getNumActions, extended to also check this Perk.
 
 // Static Electricity (General Perk, p.51, Weird +d6 prereq): "+2 Evasion and your Movement speed
 // is 35 feet." The +2 Evasion half is a compendium Active Effect; the flat-35ft Movement half
@@ -3477,10 +3478,10 @@ export class Dice {
 
     // Now You Don't (Transformers CRB, General Perk, p.110) - see its own check in
     // Object Alt Mode (Transformers CRB, General Perk, p.110): Edge on hiding/blending/eavesdropping
-    // tests - a Roll Options Dialog switch in items/rolls/dig-deep-personal-vehicle-edges.mjs.
+    // tests - a Roll Options Dialog switch in items/rolls/dig-deep-skill-snag.mjs.
 
     // Dinobot / Maximal / Predacon: Edge "when that Specialization comes into play" - a Roll Options
-    // Dialog switch on the chosen Skill, on by default for a Specialization roll (items/rolls/dig-deep-personal-vehicle-edges.mjs).
+    // Dialog switch on the chosen Skill, on by default for a Specialization roll (items/rolls/dig-deep-skill-snag.mjs).
 
     // Omega Enhancement's own Power Mode - see items/forms/omega-enhancement.mjs's own doc comment.
     // "Edge on Might Skill Tests" while active.
@@ -10802,7 +10803,7 @@ export class Dice {
         noFactorDisguiseBroken = true;
       }
 
-      // Better than the Best - items/rolls/better-than-the-best-miss-immunity.mjs. Before Consistent, so a
+      // Better than the Best - items/rolls/better-than-the-best.mjs. Before Consistent, so a
       // Critical Success the player gave up stays given up.
       multiplier = betterThanTheBestMultiplier(actor, roll, multiplier);
 
@@ -10825,7 +10826,7 @@ export class Dice {
       // Trigger Happy - an independent compare against the same roll total, not gated on
       // `success` above (RAW: "...in addition to their Toughness or Evasion").
       // Seconds Between Click & Boom - a miss against the holder's Evasion has no effect at all
-      // (items/rolls/better-than-the-best-miss-immunity.mjs).
+      // (items/rolls/better-than-the-best.mjs).
       const missHasNoEffect = !success && !!entry.targetUuid && ignoresMissEffects(entry.targetUuid, entry.defenseType);
       const frightened = checkContext.triggerHappy && entry.targetUuid && entry.willpowerDifficulty != null
         && !missHasNoEffect && computeMultiplier(roll.total, entry.willpowerDifficulty) > 0;
@@ -12931,7 +12932,7 @@ export class Dice {
     }
 
     // Covering Fire (Transformers CRB, Gunner base, 2nd level, p.68): a miss marks the target until
-    // the end of its next turn - items/rolls/dig-deep-personal-vehicle-edges.mjs.
+    // the end of its next turn - items/rolls/dig-deep-skill-snag.mjs.
 
     // Try, Try Again - see TRY_TRY_AGAIN_ID's own comment above. Banks itself on ANY failed Skill
     // Test of a given skill (the same "none of the compared entries succeeded" whole-roll failure

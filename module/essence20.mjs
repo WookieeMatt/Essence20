@@ -29,9 +29,9 @@ import { isDecepticonNemesis, isNemesisInScene } from "./items/rolls/nemesis-dec
 import { isMultipleTargetsWeapon } from "./mechanics/combat/multiple-targets.mjs";
 import { favoriteWeaponOf } from "./items/shared/condition-damage-buttons.mjs";
 import { isPersonalShieldActive } from "./items/defenses/personal-shield.mjs";
-import { hasComputerizedGear } from "./items/attacks/electromagnetic-deflecting-weapons.mjs";
+import { hasComputerizedGear } from "./items/attacks/electromagnetic-vs-computerized.mjs";
 import { isNonMystical } from "./items/magic/mystic-non-mystical.mjs";
-import { hasMedicineKit } from "./items/healing/heal-action-medic-gear.mjs";
+import { hasMedicineKit } from "./items/healing/medicine-kit.mjs";
 import { shapeOf as mlpShapeOf } from "./items/forms/pony-shape-shifting.mjs";
 import { isDsoeDisguiseActive } from "./items/magic/disguise-spell.mjs";
 import { grappleEscapeSkills } from "./mechanics/combat/grappled-snag.mjs";
@@ -182,7 +182,9 @@ import { syncSourcebookOwnership } from "./util/compendium-browser.mjs";
 import { E20 } from "./util/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./util/enrichers.mjs";
 import { preloadHandlebarsTemplates } from "./util/templates.mjs";
-import { applyVisionToTokens, getNumActions, syncAutoBlindStatus, syncAutoImmobilizedStatus } from "./mechanics/characters/actor-token-helpers.mjs";
+import { applyVisionToTokens } from "./mechanics/world/token-sync.mjs";
+import { getNumActions } from "./mechanics/actions/action-counts.mjs";
+import { syncAutoBlindStatus, syncAutoImmobilizedStatus } from "./mechanics/combat/linked-status-sync.mjs";
 import { canUsePerk, hasItemUse } from "./mechanics/resources/banked-buffs.mjs";
 import { canUsePower } from "./mechanics/characters/power-use.mjs";
 import { getWeaponEffectDamages } from "./mechanics/combat/damage-display.mjs";
@@ -1085,7 +1087,7 @@ for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiv
     /* Status toggles (Asleep, Unconscious, etc.) apply as ActiveEffects on the actor rather than
        Item changes, so they need their own hook to trigger the vision-grant push. syncAutoBlindStatus
        additionally keeps the real "blinded" status in sync with Asleep/Unconscious, reusing
-       Foundry's own working Blind vision-block instead of reinventing it (see mechanics/characters/actor-token-helpers.mjs
+       Foundry's own working Blind vision-block instead of reinventing it (see mechanics/world/token-sync.mjs
        for why sight.enabled=false alone doesn't actually block a token's perception). This create/
        delete's its own ActiveEffect, which re-fires this same hook - safe since both functions are
        idempotent no-ops once the actor's state already matches. */

@@ -108,9 +108,9 @@ export async function activateMassShift(actor) {
   }
 
   await markUsedThisScene(actor, MASS_SHIFT_SCENE_FLAG);
-  // Item rules listening for it (Hybridization counts the use against its daily Mass Shift uses - rules/plugins/combat/damage-reduction-initiative-edge.mjs).
+  // Item rules listening for it (Hybridization counts the use against its daily Mass Shift uses - rules/plugins/zords/mass-shift-event.mjs).
   try {
-    const { massShiftUsed } = await import("../../rules/plugins/combat/damage-reduction-initiative-edge.mjs");
+    const { massShiftUsed } = await import("../../rules/plugins/zords/mass-shift-event.mjs");
     await massShiftUsed(actor);
   } catch (error) {
     console.error('Essence20 | massShiftUsed Triggers failed', error);

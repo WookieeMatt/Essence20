@@ -1,16 +1,17 @@
-import { registerEvent, registerRuleType, RULE_TYPES } from "../../types.mjs";
-import { LINK_HOLDERS, rulesOfType } from "../../index.mjs";
+import { registerRuleType } from "../../types.mjs";
+import { rulesOfType } from "../../index.mjs";
 import { contextFor, evaluate, interpolate } from "../../predicate.mjs";
-import { linkedEntries, registerLinkScope } from "../../links.mjs";
-import { allied, worldActors } from "../shared/team-and-availability-helpers.mjs";
+import { linkedEntries } from "../../links.mjs";
+import { worldActors } from "../shared/team-and-availability-helpers.mjs";
 
 /**
- * Group E's rule types (round 10), each read by a hand-written registry the system already had:
+ * Group E's rule types (round 10) read by a hand-written registry the system already had, joined at `setup`
+ * (installTypes, called from picks/picks-and-grants-setup.mjs):
  *   HazardProtection     environment-hazards.mjs ENVIRONMENT_PROTECTORS (Weather Gear, Acclimating)
  *   RoughTerrainImposer  rough-terrain.mjs ROUGH_TERRAIN_IMPOSERS (Misguide)
  *   MultipleTargets      multiple-targets.mjs MULTIPLE_TARGETS_GRANTS (Plow)
- *   KitPrerequisite      the essence20.kitPrerequisite hook (kits.mjs - Good To Go, Training Through Familiarity)
- * plus the `alliesAnywhere` link scope (Inspirational Leader) and the `equipmentBroke` Trigger event (Junker).
+ * Group E's other hand-wired pieces are resources/kit-prerequisite.mjs (KitPrerequisite), rolls/allies-anywhere-scope.mjs
+ * (the alliesAnywhere link scope) and ./equipment-broke.mjs (the equipmentBroke Trigger event).
  */
 
 /* -------------------------------------------- */
@@ -99,74 +100,8 @@ export function ruleMultipleTargets(actor, item) {
 }
 
 /* -------------------------------------------- */
-/*  KitPrerequisite                              */
-/* -------------------------------------------- */
-
-registerRuleType('KitPrerequisite', {
-  params: { mode: { kind: 'enum', required: true, options: ['lower', 'waive'] }, tiers: { kind: 'strings' }, skipEssenceKits: { kind: 'bool' } },
-  scopes: ['self'],
-});
-
-/**
- * The essence20.kitPrerequisite hook (kits.mjs#meetsKitPrerequisite: out.need is the Skill die a kit asks for):
- * `lower` takes it one Rank lower, never past d2 (Good To Go); `waive` drops it (d20 - Training Through Familiarity).
- * `tiers` limits it to kits of those tiers; `skipEssenceKits` leaves Essence kits alone.
- */
-export function ruleKitPrerequisite(actor, info, out) {
-  if (!out?.need) {
-    return;
-  }
-
-  const list = globalThis.CONFIG?.E20?.skillShiftList ?? [];
-  const live = rulesOfType(actor, 'KitPrerequisite', 'self').filter(({ rule, item }) => (!Array.isArray(rule.tiers) || !rule.tiers.length || rule.tiers.includes(info?.tier))
-    && !(rule.skipEssenceKits && info?.essence) && evaluate(rule.when, contextFor({ self: actor, ruleItem: item })) === true);
-  for (let i = live.filter(entry => entry.rule.mode == 'lower').length; i > 0; i--) {
-    const index = list.indexOf(out.need);
-    const d2 = list.indexOf('d2');
-    if (index >= 0 && (d2 < 0 || index < d2)) {
-      out.need = list[index + 1];
-    }
-  }
-
-  if (live.some(entry => entry.rule.mode == 'waive')) {
-    out.need = 'd20';
-  }
-}
-
-/* -------------------------------------------- */
-/*  alliesAnywhere scope                         */
-/* -------------------------------------------- */
-
-/**
- * Scope alliesAnywhere: the rule reaches every other actor on the holder's side, anywhere (token dispositions on the
- * canvas, else Player Character or not - react/core.mjs#areAllies), the holder being a world actor.
- */
-registerLinkScope('alliesAnywhere', actor => [...LINK_HOLDERS].map(id => globalThis.game?.actors?.get?.(id)).filter(holder => holder && allied(holder, actor)));
-for (const type of ['RollModifier']) {
-  if (!RULE_TYPES[type].scopes.includes('alliesAnywhere')) {
-    RULE_TYPES[type].scopes.push('alliesAnywhere');
-  }
-}
-
-/* -------------------------------------------- */
-/*  equipmentBroke                               */
-/* -------------------------------------------- */
-
-registerEvent('equipmentBroke');
-
-/** Run every world actor's equipmentBroke Triggers (a weapon / armor / shield broke, or a vehicle was destroyed). */
-export async function equipmentBroke(item = null) {
-  const { fireTriggers } = await import("../../triggers.mjs");
-  for (const actor of worldActors().filter(other => rulesOfType(other, 'Trigger').some(entry => entry.rule.event == 'equipmentBroke'))) {
-    await fireTriggers(actor, 'equipmentBroke', { roll: item ? { item } : {} });
-  }
-}
-
-/* -------------------------------------------- */
 /*  Wiring                                       */
 /* -------------------------------------------- */
-
-const HEALTH_BEFORE = 'e20ExtEHealthBefore';
 
 export function installTypes() {
   const Hooks = globalThis.Hooks;
@@ -182,25 +117,4 @@ export function installTypes() {
     const multiple = await import("../../../mechanics/combat/multiple-targets.mjs");
     multiple.MULTIPLE_TARGETS_GRANTS?.push(ruleMultipleTargets);
   });
-  Hooks.on('essence20.kitPrerequisite', ruleKitPrerequisite);
-
-  // equipmentBroke, on the client that made the change: a weapon / armor / shield flagged broken (Desperate Parry),
-  // or a vehicle / Zord / Megaform brought to 0 Health.
-  Hooks.on('updateItem', (item, changes, options, userId) => {
-    if (userId == globalThis.game?.user?.id && globalThis.foundry?.utils?.getProperty?.(changes, 'flags.essence20.broken') === true
-      && ['weapon', 'armor', 'shield'].includes(item.type)) {
-      equipmentBroke(item).catch(error => console.error('Essence20 | equipmentBroke failed', error));
-    }
-  });
-  Hooks.on('preUpdateActor', (actor, changes, options) => {
-    options[HEALTH_BEFORE] = actor.system?.health?.value ?? null;
-  });
-  Hooks.on('updateActor', (actor, changes, options, userId) => {
-    const health = globalThis.foundry?.utils?.getProperty?.(changes, 'system.health.value');
-    if (userId == globalThis.game?.user?.id && ['vehicle', 'zord', 'megaform'].includes(actor.type)
-      && health !== undefined && Number(health) <= 0 && (options?.[HEALTH_BEFORE] ?? 1) > 0) {
-      equipmentBroke().catch(error => console.error('Essence20 | equipmentBroke failed', error));
-    }
-  });
 }
-

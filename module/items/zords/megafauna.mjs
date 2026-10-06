@@ -1,6 +1,8 @@
 import { registerDerived, registerPreRoll, registerUse } from "../../mechanics/item-hooks.mjs";
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
-import { T, ats, findSourced, flagOf, sourceOf } from "../shared/personal-power-allies.mjs";
+import { TSafe as T } from "../shared/item-lang.mjs";
+import { ats } from "../shared/personal-power-and-ranger-weapons.mjs";
+import { findSourcedAny as findSourced, flagOf, sourceOf } from "../shared/item-lookups.mjs";
 
 /**
  * Zord-side Features: Megafauna (Across the Stars, Zord Feature, p.103) - the Zord's beast form.

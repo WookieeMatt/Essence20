@@ -1,6 +1,10 @@
 import { registerAfterDamage, registerChatButton, registerTurnStart } from "../../mechanics/item-hooks.mjs";
 import { getUses, markUsed } from "../../mechanics/resources/scene-clock.mjs";
-import { G2, T, hasItem, itemsOf, post, roundStamp, sourceOf } from "../shared/gij-crb-item-lookups.mjs";
+import { G2 } from "../shared/gij-crb-item-lookups.mjs";
+import { TFull as T } from "../shared/item-lang.mjs";
+import { has as hasItem, itemsOf, sourceOf } from "../shared/item-lookups.mjs";
+import { say as post } from "../shared/chat-lines.mjs";
+import { roundStamp } from "../shared/turn-stamps.mjs";
 
 /**
  * Personal Shield (GI JOE CRB, Vanguard, p.108): "The shield can be activated once per encounter,

@@ -86,7 +86,7 @@ beforeAll(async () => {
   global.canvas = null;
 
   ext = await import('../../mechanics/item-hooks.mjs');
-  common = await import('../shared/personal-power-allies.mjs');
+  common = await import('../shared/turn-stamps.mjs');
   formState = await import('../forms/ranger-form-state.mjs');
   forms = await import('../forms/ranger-form-perks.mjs');
   slots = await import('../zords/megafauna.mjs');

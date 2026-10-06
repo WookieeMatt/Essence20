@@ -2,9 +2,11 @@ import {
   registerChatButton, registerPostRoll, registerPreRoll, registerTurnEnd, registerTurnStart, registerUse,
 } from "../../mechanics/item-hooks.mjs";
 import { getNearbyEnemyTokens } from "../../mechanics/combat/nearby-enemies.mjs";
-import {
-  TF1, T, firstTarget, has, nameOf, onDamageButton, safe, say, tokenOf,
-} from "../shared/condition-damage-buttons.mjs";
+import { firstTarget, onDamageButton, safe, TF1 } from "../shared/condition-damage-buttons.mjs";
+import { T } from "../shared/item-lang.mjs";
+import { has, nameOf } from "../shared/item-lookups.mjs";
+import { sayParagraph as say } from "../shared/chat-lines.mjs";
+import { tokenOf } from "../shared/sides.mjs";
 
 /**
  * Decepticon Directive combat Perks and gear: the Show Respect Hang-Up. (Focused Blast, Target-Rich Environment and the

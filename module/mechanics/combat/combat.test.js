@@ -693,7 +693,7 @@ describe("applyDamage", () => {
 
       await applyDamage(actor, 3, 'fire');
 
-      // The Resistance is scene-long and for the Morphed form only (mechanics/characters/actor-token-helpers.mjs#grantSceneResistance).
+      // The Resistance is scene-long and for the Morphed form only (mechanics/world/token-sync.mjs#grantSceneResistance).
       expect(actor.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.powers.personal.value': 1 }));
       expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'sceneResistances.fire', expect.objectContaining({ window: 'scene', morphedOnly: true }));
       expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'gridElementalAdaptationUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });

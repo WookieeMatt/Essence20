@@ -3,9 +3,10 @@ import {
 } from "../item-hooks.mjs";
 import { hasSourced } from "../companions/companion-link.mjs";
 import { getSceneEpoch } from "../resources/scene-clock.mjs";
-import {
-  CC, T, actorsInPlay, addToDefense, isFrom, itemsOf, post, safeSetFlag,
-} from "../../items/shared/power-pay-safe-writes.mjs";
+import { actorsInPlay, addToDefense, CC, post } from "../../items/shared/pay-power-and-actors-in-play.mjs";
+import { T } from "../../items/shared/item-lang.mjs";
+import { isFrom, itemsOf } from "../../items/shared/item-lookups.mjs";
+import { setFlagRelayed as safeSetFlag } from "../../items/shared/relayed-writes.mjs";
 
 /**
  * Cobra Codex Alterations used in ways the drop handler (sheet-handlers/alteration-handler.mjs)

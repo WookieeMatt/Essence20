@@ -28,7 +28,7 @@ jest.unstable_mockModule('./mechanics/combat/forced-movement.mjs', () => ({
   }),
 }));
 const restored = [];
-jest.unstable_mockModule('./items/healing/heal-action-medic-gear.mjs', () => ({
+jest.unstable_mockModule('./mechanics/actions/heal-action.mjs', () => ({
   restoreHealth: jest.fn(async (healer, target, amount) => restored.push({ healer: healer.name, target: target.name, amount })),
 }));
 const stamped = [];

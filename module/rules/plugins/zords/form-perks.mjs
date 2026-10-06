@@ -1,7 +1,7 @@
 import { rulesOf } from "../../index.mjs";
-import { contextFor, evaluate, feetBetween, registerTag } from "../../predicate.mjs";
+import { contextFor, evaluate, registerTag } from "../../predicate.mjs";
 import { resolveValue } from "../../formula.mjs";
-import { itemsFor, recipients, registerStep, runSteps } from "../../steps.mjs";
+import { registerStep } from "../../steps.mjs";
 import { registerRuleType } from "../../types.mjs";
 import { flagOf, itemsOf, sourceOf } from "../shared/zord-crew-lookups.mjs";
 
@@ -13,11 +13,10 @@ import { flagOf, itemsOf, sourceOf } from "../shared/zord-crew-lookups.mjs";
  *   the gear it hands over for the duration (grants). items/forms/ranger-form-perks.mjs's Morph prompt, activation and
  *   de-Morph clean-up read it (ruleFormSpec / ruleFormUuids) - one Form active at a time, kept in flags.essence20.zord1Form.
  * - Steps `formStart` (activate the rule's own item's Form) and `formEnd` (end the active Form).
- * - Tags `form:active` (the rule's item is the active Form), `form:any` (some Form is active), `target:notBeyond:<ft>`
- *   (the other party is no farther than that - off the canvas counts as near enough).
- * - Steps `rollAs` {to, skill, dif, snag?, onSuccess?, onFail?} (each recipient rolls the Skill Test; its branch runs
- *   with that recipient as the target) and `transformInto` {item} (convert into the Alt Mode the item selector finds -
- *   `choice:<key>` after a pick).
+ * - Tags `form:active` (the rule's item is the active Form), `form:any` (some Form is active).
+ *
+ * Group A's tag target:notBeyond and steps rollAs / transformInto, which used to sit here, are
+ * tags/target-not-beyond.mjs, rolls/roll-as-step.mjs and ./transform-into-step.mjs (registered right after this file).
  */
 
 registerRuleType('Form', {
@@ -86,18 +85,6 @@ registerTag('form', (rest, ctx) => {
 
   return null;
 }, { family: 'self', param: 'formTag' });
-
-// target:notBeyond:<ft> - the other party isn't farther away than that (off the canvas counts as near enough - the old
-// "warn only when measured too far" checks: Ninja Storm's blasts).
-registerTag('target:notBeyond', (rest, ctx) => {
-  if (!ctx.other) {
-    return false;
-  }
-
-  const feet = feetBetween(ctx.self, ctx.other);
-  return feet === null || !Number.isFinite(feet) || feet <= Number(rest) + 0.5;
-});
-
 registerStep('formStart', async (step, ctx) => {
   const { activateForm } = await import("../../../items/forms/ranger-form-perks.mjs");
   const uuid = sourceOf(ctx.item);
@@ -108,34 +95,3 @@ registerStep('formEnd', async (step, ctx) => {
   const { endForm } = await import("../../../items/forms/ranger-form-perks.mjs");
   await endForm(ctx.actor);
 });
-
-registerStep('rollAs', async (step, ctx) => {
-  const { rollTest } = await import("../../../mechanics/resources/grants.mjs");
-  const saved = ctx.targets;
-  for (const roller of recipients({ ...step, to: step.to ?? 'target' }, ctx)) {
-    const dif = Math.round(resolveValue(step.dif ?? 10, { actor: ctx.actor, item: ctx.item, vars: ctx.vars, other: roller }, 10));
-    const result = await rollTest(roller, step.skill, dif, step.snag ? { snag: true } : {});
-    ctx.vars.lastRoll = result;
-    ctx.targets = [roller];
-    const branch = result?.success ? step.onSuccess : step.onFail;
-    if (Array.isArray(branch) && !(await runSteps(branch, ctx))) {
-      ctx.targets = saved;
-      return false;
-    }
-  }
-
-  ctx.targets = saved;
-}, {
-  errors: (step, where) => (step.skill ? [] : [`${where}: rollAs needs a skill`]),
-  branches: ['onSuccess', 'onFail'],
-});
-
-registerStep('transformInto', async (step, ctx) => {
-  const [mode] = itemsFor(step, ctx.actor, ctx).filter(item => item.type == 'altMode');
-  if (!mode || typeof ctx.actor?.transform != 'function') {
-    return false;
-  }
-
-  await ctx.actor.transform(mode.uuid);
-  ctx.vars.mode = mode.name;
-}, { errors: (step, where) => (step.item ? [] : [`${where}: transformInto needs an item`]) });

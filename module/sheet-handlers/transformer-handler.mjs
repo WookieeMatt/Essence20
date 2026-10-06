@@ -1,6 +1,6 @@
 import { spend } from "../mechanics/actions/action-economy.mjs";
 import TransformOptionSelector from "../apps/transform-option-selector.mjs";
-import { changeTokenImage, resizeTokens } from "../mechanics/characters/actor-token-helpers.mjs";
+import { changeTokenImage, resizeTokens } from "../mechanics/world/token-sync.mjs";
 import { warnMissingStateImage } from "../mechanics/characters/morph-state.mjs";
 import { triggerModeAttachmentCheck } from "../items/forms/mode-attachment.mjs";
 

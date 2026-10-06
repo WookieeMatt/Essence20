@@ -5,7 +5,7 @@
  */
 import { registerSceneAdvanced } from "../../mechanics/item-hooks.mjs";
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
-import { isActiveGm } from "../shared/ranger-leftover-item-ids.mjs";
+import { isActiveGmById as isActiveGm } from "../shared/hooks-and-clients.mjs";
 
 /* -------------------------------------------- */
 /*  Nemesis Drain                                */

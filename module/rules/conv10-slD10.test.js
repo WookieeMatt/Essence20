@@ -44,7 +44,11 @@ const { fireTriggers, runUse } = await import('./triggers.mjs');
 const { setStoryPointHelpers } = await import('./steps.mjs');
 const story = await import('./plugins/resources/personal-story-points.mjs');
 const cards = await import('./plugins/cards/card-offer.mjs');
-const misc = await import('./plugins/tags/small-steps-and-refs.mjs');
+const misc = {
+  ...(await import('./plugins/combat/spend-actions-and-turn-queue.mjs')), ...(await import('./plugins/rolls/retry-and-recast.mjs')),
+  ...(await import('./plugins/rolls/bonus-dice-bank.mjs')), ...(await import('./plugins/tags/team-combatants.mjs')),
+  ...(await import('./plugins/effects/hardpoint-use.mjs')), ...(await import('./plugins/combat/stance-switch.mjs')),
+};
 const { pressRuleButton } = await import('./buttons.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -437,7 +441,7 @@ describe('roll-card offers', () => {
     expect(cards.offersFor(card(mate))).toHaveLength(0);
   });
 
-  test("One Last Chance: an ally's failed Skill Test (not a reroll), once per scene, every die", async () => {
+  test("One Last Chance: an ally's failed Skill Test (not a reroll), once per scene, a die the roller picks", async () => {
     const holder = makeActor('Holder', FILES.oneLastChance);
     const ally = makeActor('Ally');
     const foe = makeActor('Foe', [], { type: 'npc' });
@@ -454,8 +458,12 @@ describe('roll-card offers', () => {
     global.canvas.scene.tokens = [];
     const [offer] = cards.offersFor(failed);
     global.Roll = rollClass();
+    // Closing the die picker: nothing happens and the scene's use isn't spent.
+    applyReroll.mockImplementationOnce(async () => false);
+    expect(await press(failed, offer)).toBe(false);
+    expect(cards.offersFor(failed)).toHaveLength(1);
     await press(failed, offer);
-    expect(applyReroll.mock.calls[0][1]).toMatchObject({ target: 'allDice' });
+    expect(applyReroll.mock.calls.at(-1)[1]).toMatchObject({ mode: 'all', target: 'anyDie' });
     expect(cards.offersFor(failed)).toHaveLength(0);
   });
 

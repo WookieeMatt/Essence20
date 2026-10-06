@@ -40,7 +40,7 @@ const { rebuildIndex } = await import('./index.mjs');
 const { ruleQualifiedUpgrade, ruleRequisitionAccess } = await import('./adapter.mjs');
 const { runUse, useAvailable } = await import('./triggers.mjs');
 const { legacyChoiceUpdates } = await import('./legacy-choices.mjs');
-const { QUALIFY_USE } = await import('../items/gear/equipment-qualification.mjs');
+const { NU_POGODI_USE: QUALIFY_USE } = await import('../items/vehicles/nu-pogodi-seat-swap.mjs');
 const { effectiveAvailability, isQualifiedUpgrade } = await import('../items/gear/qualification-perks.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');

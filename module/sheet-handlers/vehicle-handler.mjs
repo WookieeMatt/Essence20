@@ -1,4 +1,4 @@
-import { checkIsLocked } from "../mechanics/characters/actor-token-helpers.mjs";
+import { checkIsLocked } from "../util/sheet-lock.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
 import { markUsedThisEncounter } from "../mechanics/characters/perks.mjs";

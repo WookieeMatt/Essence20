@@ -15,7 +15,8 @@
  * - Arrogant (Enigma of Combination, Hang-Up) is a BeforeRoll rule on its item (rules/conv10-slC10.test.js).
  */
 import { registerRollSources } from "../../mechanics/item-hooks.mjs";
-import { T, parentWeaponOf } from "../shared/weapon-target-lookups.mjs";
+import { T } from "../shared/item-lang.mjs";
+import { parentWeaponOf } from "../shared/tf-technorganic-enigma-item-ids.mjs";
 
 export const DECONSTRUCTED = 'tf2Deconstructed';
 /* -------------------------------------------- */

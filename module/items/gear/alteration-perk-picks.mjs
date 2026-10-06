@@ -1,7 +1,8 @@
 import { registerUse } from "../../mechanics/item-hooks.mjs";
-import {
-  CC, G1, T, isFrom, itemsOf, post, sourceOf,
-} from "../shared/cobra-codex-item-lookups.mjs";
+import { CC, G1 } from "../shared/cobra-codex-item-lookups.mjs";
+import { T } from "../shared/item-lang.mjs";
+import { isFrom, itemsOf, sourceOf } from "../shared/item-lookups.mjs";
+import { say as post } from "../shared/chat-lines.mjs";
 
 /**
  * Cobra Codex Perks and Hang-Ups: Cybernetic Part and its sibling Alteration Perks. (Demolition Artist /

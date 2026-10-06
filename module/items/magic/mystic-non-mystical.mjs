@@ -1,4 +1,5 @@
-import { D21, itemsOf, sourceOf } from "../shared/finster-item-lookups.mjs";
+import { D21 } from "../shared/finster-item-ids.mjs";
+import { itemsOf, sourceOf } from "../shared/item-lookups.mjs";
 
 /**
  * Finster's Monster-Matic Cookbook's new rules (p.7) - Larger Than Life's Reach is its item's own rule

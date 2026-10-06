@@ -49,9 +49,12 @@ beforeAll(async () => {
   };
   global.foundry = { utils: { randomID: () => 'r', deepClone: x => JSON.parse(JSON.stringify(x)) }, applications: { api: {} } };
   global.fromUuidSync = uuid => global.game.actors.find(a => a.uuid == uuid) ?? null;
-  common = await import('../shared/crew-allies-turn-stamps.mjs');
+  common = await import('../shared/pr-jtt-ats-item-ids.mjs');
   jtt = await import('../rolls/time-displaced.mjs');
-  ats = await import('../zords/lightspeed-swat-features.mjs');
+  ats = {
+    ...(await import('../rolls/be-an-example.mjs')), ...(await import('../zords/lightspeed-boost.mjs')),
+    ...(await import('../attacks/stand-behind-me-taunt.mjs')),
+  };
   spectrum = await import('../../mechanics/characters/spectrum-shifted.mjs');
   registry = (await import('../../mechanics/item-hooks.mjs')).registrySnapshot();
 });

@@ -1,5 +1,6 @@
 import { registerAfterDamage, registerDerived } from "../item-hooks.mjs";
-import { T, post } from "../../items/shared/cobra-codex-item-lookups.mjs";
+import { T } from "../../items/shared/item-lang.mjs";
+import { say as post } from "../../items/shared/chat-lines.mjs";
 
 /**
  * Asleep and Defeated (GI Joe CRB, Conditions, p.225): "Sleeping characters are Prone and

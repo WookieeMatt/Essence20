@@ -744,6 +744,6 @@ None. No behaviour changed.
 
 ### Files touched outside the slice
 
-- None. Only `module/items/shared/turn-stamps-and-sides.mjs` changed (the dead key), plus this file.
+- None. Only `module/items/shared/mlp-pr-tf-ids-and-skill-total.mjs` changed (the dead key), plus this file.
 - No tests were added or removed (nothing converted, and the dead key had no test). No `lang/en.json` strings became
   unused. `extensions/index.mjs` is unchanged.

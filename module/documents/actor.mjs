@@ -18,7 +18,9 @@ import { Dice } from "../dice.mjs";
 import { isUnableToAct } from "../mechanics/actions/action-economy.mjs";
 import { E20 } from "../util/config.mjs";
 import { RollDialog } from "../mechanics/rolls/roll-dialog.mjs";
-import { getNumActions, resizeTokens, sceneResistancesOf } from "../mechanics/characters/actor-token-helpers.mjs";
+import { getNumActions } from "../mechanics/actions/action-counts.mjs";
+import { resizeTokens } from "../mechanics/world/token-sync.mjs";
+import { sceneResistancesOf } from "../mechanics/world/scene-resistances.mjs";
 import { syncMorphState } from "../mechanics/characters/morph-state.mjs";
 import { actorHasPerk, findPerk } from "../mechanics/characters/perks.mjs";
 import { getBlindsightRange } from "../items/senses/blindsight.mjs";
@@ -524,7 +526,7 @@ export class Essence20Actor extends Actor {
       return;
     }
 
-    /* The per-Speed counts come from mechanics/characters/actor-token-helpers.mjs#getNumActions, which already existed to
+    /* The per-Speed counts come from mechanics/world/token-sync.mjs#getNumActions, which already existed to
        drive the sheet's own "1M, 1S, 1F" readout. Deriving them a second time here was a mistake:
        it silently disagreed with that readout for any actor whose Speed .max and .value differ,
        and for the Perks that move Free actions off Speed entirely (Quick Thinker and University
@@ -559,7 +561,7 @@ export class Essence20Actor extends Actor {
     const counts = !speedEssence
       ? { free: 0, movement: 1, standard: 1 }
       : hasUnsurprising
-        // Same Speed-derived formula getNumActions uses (mechanics/characters/actor-token-helpers.mjs), against the
+        // Same Speed-derived formula getNumActions uses (mechanics/world/token-sync.mjs), against the
         // level-capped speed above rather than the actor's real one.
         ? { free: Math.max(0, speed - 2), movement: speed > 0 ? 1 : 0, standard: speed > 1 ? 1 : 0 }
         : getNumActions(this);
@@ -833,7 +835,7 @@ export class Essence20Actor extends Actor {
    * Also sets this.system.visionSuppressed for the Asleep/Unconscious statuses, so a sleeping
    * actor doesn't get a bonus grant from equipped Night Vision Goggles etc. while unconscious.
    * This does NOT block a token's vision outright - actually blacking out perception for
-   * Asleep/Unconscious is handled by syncAutoBlindStatus() (mechanics/characters/actor-token-helpers.mjs) applying the
+   * Asleep/Unconscious is handled by syncAutoBlindStatus() (mechanics/world/token-sync.mjs) applying the
    * real "blinded" status, which reuses Foundry's own CONFIG.specialStatusEffects.BLIND
    * handling (see essence20.mjs) rather than trying to force TokenDocument.sight.enabled off
    * directly, which does not actually block perception.
@@ -867,7 +869,7 @@ export class Essence20Actor extends Actor {
 
   /**
    * Resistances granted "for the rest of the scene" (Hardened Armor, Elemental Adaptation) - see
-   * mechanics/characters/actor-token-helpers.mjs#grantSceneResistance. Additive only, like Fireproof above.
+   * mechanics/world/token-sync.mjs#grantSceneResistance. Additive only, like Fireproof above.
    */
   _prepareSceneResistances() {
     if (!this.system.resistances) {

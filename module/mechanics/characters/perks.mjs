@@ -285,7 +285,7 @@ export async function markUsedThisScene(actor, flagKey, count = 1) {
  */
 /**
  * Whether the granter doubles what they grant an ally: the granter's GrantDouble rules (This, I Command - asked,
- * and its damage dealt on a yes; rules/plugins/combat/damage-reduction-initiative-edge.mjs). `kind` is upshift or actions; `what` names it in the prompt.
+ * and its damage dealt on a yes; rules/plugins/resources/grant-double.mjs). `kind` is upshift or actions; `what` names it in the prompt.
  * @param {Actor} granter
  * @param {Actor} ally
  * @param {String} kind
@@ -297,7 +297,7 @@ export async function offerGrantDouble(granter, ally, kind, what) {
     return false;
   }
 
-  const { offerGrantDouble: offer } = await import("../../rules/plugins/combat/damage-reduction-initiative-edge.mjs");
+  const { offerGrantDouble: offer } = await import("../../rules/plugins/resources/grant-double.mjs");
   return offer(granter, ally, kind, what);
 }
 

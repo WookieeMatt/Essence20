@@ -75,7 +75,7 @@ registerStep('actAs', async (step, ctx) => {
 
 registerStep('healAction', async (step, ctx) => {
   const amount = Math.max(0, Math.round(resolveValue(step.amount ?? 1, { actor: ctx.actor, item: ctx.item, vars: ctx.vars }, 1)));
-  const { restoreHealth } = await import("../../../items/healing/heal-action-medic-gear.mjs");
+  const { restoreHealth } = await import("../../../mechanics/actions/heal-action.mjs");
   for (const actor of recipients(step, ctx)) {
     await restoreHealth(ctx.actor, actor, amount);
     ctx.chat.push(T('Restored', { name: escape(actor.name), amount }));

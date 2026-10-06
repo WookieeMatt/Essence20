@@ -7,7 +7,7 @@
  *
  * CORRECTS THIS PROJECT'S OWN RECORDED BLOCKER, which read "E20.visionModes has no
  * blindsight-equivalent mode." That named the wrong mechanism: a vision MODE
- * (TokenDocument#sight.visionMode, which mechanics/characters/actor-token-helpers.mjs#applyVisionToTokens already writes) is
+ * (TokenDocument#sight.visionMode, which mechanics/world/token-sync.mjs#applyVisionToTokens already writes) is
  * useless here, because Foundry disables sight-based perception wholesale under
  * CONFIG.specialStatusEffects.BLIND - the exact status this Perk is defined against. The right
  * hook is a DETECTION mode, which this system had never touched at all.

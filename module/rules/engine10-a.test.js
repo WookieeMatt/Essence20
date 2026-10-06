@@ -75,7 +75,10 @@ const { pickPerkFrom } = await import('../mechanics/resources/grants.mjs');
 const megaformExt = await import('./plugins/zords/megaform.mjs');
 const sizeExt = await import('./plugins/effects/size.mjs');
 const zordsExt = await import('./plugins/zords/zords.mjs');
-const hooksExt = await import('./plugins/zords/zord-timing-hooks.mjs');
+const hooksExt = {
+  ...(await import('./plugins/zords/zord-timing-hooks.mjs')), ...(await import('./plugins/picks/known-options.mjs')),
+  ...(await import('./plugins/rolls/before-roll-and-group-test-events.mjs')), ...(await import('./plugins/effects/derived-hook-movement.mjs')),
+};
 const formsExt = await import('./plugins/zords/form-perks.mjs');
 const linksExt = await import('./plugins/zords/zord-link-scopes.mjs');
 

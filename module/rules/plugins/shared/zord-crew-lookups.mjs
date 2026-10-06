@@ -114,6 +114,12 @@ export async function write(doc, method, args) {
   return doc[method](...args);
 }
 
+/** Keep a value on a rule's item (flags.essence20.rules.choices.<key>) - written, and set on this copy at once. */
+export async function rememberChoice(item, key, value) {
+  await write(item, 'update', [{ [`flags.essence20.rules.choices.${key}`]: value }]);
+  globalThis.foundry?.utils?.setProperty?.(item, `flags.essence20.rules.choices.${key}`, value);
+}
+
 /** A localized RulesExtA string (E20.RulesExtA.<key>), or the key when there's no game (tests). */
 export function T(key, data) {
   const i18n = globalThis.game?.i18n;

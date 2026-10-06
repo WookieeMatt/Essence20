@@ -1,5 +1,5 @@
 import { promptVehicleUpgradeChoice } from "../mechanics/vehicles/vehicle-upgrades.mjs";
-import { checkIsLocked } from "../mechanics/characters/actor-token-helpers.mjs";
+import { checkIsLocked } from "../util/sheet-lock.mjs";
 import { createId, parseId } from "../util/utils.mjs";
 import { onAlterationDrop } from "./alteration-handler.mjs";
 import { _attachItem, onAttachmentDrop, onAttachableParentDrop, onEquipmentPackageDrop } from "./attachment-handler.mjs";

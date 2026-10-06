@@ -12,9 +12,12 @@ global.Hooks = {
 
 const { registrySnapshot } = await import('../../mechanics/item-hooks.mjs');
 const core = await import('../../mechanics/combat/reaction-engine.mjs');
-await import('../defenses/attack-card-reactions.mjs');
-const { TRIG, suppressesFumbleStoryPoint } = await import('../social/ally-trigger-reactions.mjs');
-const { FORM, sharedImmunity } = await import('../defenses/standing-state-reactions.mjs');
+await import('../../mechanics/rolls/roll-dataset-snag.mjs');
+const { AGENCY, suppressesFumbleStoryPoint } = await import('../social/agency-hang-up.mjs');
+await import('../social/secret-helper-resolve-success.mjs');
+const { IRON_BRAVADO, sharedImmunity } = await import('../defenses/iron-bravado-shared-immunity.mjs');
+await import('../defenses/cyborg-essence-damage.mjs');
+await import('../magic/mind-beam-calm-confused.mjs');
 await import('../social/agency-fumble-hook.mjs');
 
 function flagged(obj) {
@@ -182,7 +185,7 @@ describe('late Snag', () => {
 
 describe('triggers', () => {
   test('Agency drops the Fumble Story Point only for its own skill', () => {
-    const agent = makeActor('age', [item(TRIG.agencyHangUp, { type: 'hangUp' }), item(TRIG.agencyPerk, { system: { choice: 'technology' } })]);
+    const agent = makeActor('age', [item(AGENCY.hangUp, { type: 'hangUp' }), item(AGENCY.perk, { system: { choice: 'technology' } })]);
     expect(suppressesFumbleStoryPoint(agent, 'technology')).toBe(true);
     expect(suppressesFumbleStoryPoint(agent, 'might')).toBe(false);
     expect(suppressesFumbleStoryPoint(makeActor('x'), 'technology')).toBe(false);
@@ -194,7 +197,7 @@ describe('triggers', () => {
 
 describe('forms', () => {
   test('Iron Bravado shares immunity with the listed allies', () => {
-    const giver = makeActor('giv', [item(FORM.ironBravado)]);
+    const giver = makeActor('giv', [item(IRON_BRAVADO)]);
     giver.flags.essence20 = { ironBravadoShare: { conditions: ['frightened'], allies: ['Actor.ally'], combatId: null } };
     global.game.actors = [giver];
     expect(sharedImmunity({ uuid: 'Actor.ally' }, 'frightened')).toBe(giver);

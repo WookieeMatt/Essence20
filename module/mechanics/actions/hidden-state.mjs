@@ -10,7 +10,8 @@
  * ends it ("your Hide benefit ends if you attack") and fires the brokeHiding event (Pop Out).
  */
 import { registerApplyDialog, registerDialogToggles, registerPostRoll } from "../item-hooks.mjs";
-import { T, num } from "../../items/shared/turn-stamps-and-sides.mjs";
+import { T } from "../../items/shared/item-lang.mjs";
+import { num } from "../../items/shared/numbers.mjs";
 import { ruleHideBonus } from "../../rules/plugins/combat/immunity-readers.mjs";
 import { fireBrokeHiding, isHidden, setHidden } from "../../rules/plugins/combat/hidden.mjs";
 

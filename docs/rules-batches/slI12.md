@@ -152,7 +152,7 @@ like it would do it. Temper Tempest's storm (other2/magic.mjs) is that spell's o
 - `module/items/magic/temper-tempest-sorcery-builder.mjs` (+ `other2.test.js`): `tempestDamage` through `castHitDamage`.
 - `module/items/rolls/unexpected-alternative.mjs`, `uses.mjs`, `common.mjs` (+ `tf3.test.js`): Ladder's toggle, apply-dialog, Use,
   flag and constant gone.
-- `module/items/forms/alt-mode-attacks-mode-lock.mjs`, `common.mjs`, `uses.mjs` (+ `tf2.test.js`): We Are One!'s sync gone.
+- `module/items/forms/mode-lock-energon-flush.mjs`, `common.mjs`, `uses.mjs` (+ `tf2.test.js`): We Are One!'s sync gone.
 - `module/items/gear/qualification-perks.mjs`, `common.mjs` (+ `qualify2.test.js`): Weapon Enthusiast gone.
 - `module/items/forms/pony-shape-shifting.mjs`: Brilliant Sight's darkvision and its constant gone.
 - `module/items/magic/friendship-is-mystical.mjs`: the Mystical Understanding Use, its rest handler and constant gone;

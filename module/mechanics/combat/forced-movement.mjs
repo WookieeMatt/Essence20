@@ -55,7 +55,7 @@ async function moveTokenTo(token, center) {
  */
 export async function resistsForcedMovement(actor) {
   // Bullbar (TF CRB p.134): "Bot Mode: You're immune to effects that would shove you." Derived by
-  // items/forms/alt-mode-attacks-mode-lock.mjs.
+  // items/forms/mode-lock-energon-flush.mjs.
   if (actor?.system?.tf2ShoveImmune) {
     ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),

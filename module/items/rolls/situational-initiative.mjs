@@ -1,6 +1,5 @@
-import {
-  S2, FLAG, T, findById, has, sameSide,
-} from "../shared/situation-checks.mjs";
+import { findById, FLAG, has, S2, sameSide } from "../shared/situation-checks.mjs";
+import { T } from "../shared/item-lang.mjs";
 
 /**
  * Initiative-time situational rules. dice.mjs#prepareInitiativeRoll calls every INITIATIVE_EXTENSIONS

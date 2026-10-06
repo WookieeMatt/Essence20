@@ -129,7 +129,10 @@ const { rebuildIndex } = await import('./index.mjs');
 const { legacyPaths } = await import('./legacy-choices.mjs');
 const { linkedEntries } = await import('./links.mjs');
 await import('./plugins/index.mjs');
-const eTypes = await import('./plugins/combat/hazard-terrain-targets.mjs');
+const eTypes = {
+  ...(await import('./plugins/combat/hazard-terrain-targets.mjs')), ...(await import('./plugins/resources/kit-prerequisite.mjs')),
+  ...(await import('./plugins/combat/equipment-broke.mjs')),
+};
 const eDerived = await import('./plugins/effects/derived-stages.mjs');
 const eLegacy = await import('./plugins/marks/legacy-marks.mjs');
 const { skillsFor, recordedEntries } = await import('./plugins/tags/actor-state-tags.mjs');

@@ -1,6 +1,7 @@
 import { registerChatButton, registerHitRider } from "../../mechanics/item-hooks.mjs";
 import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
-import { say, T } from "../shared/item-lookups-hook-wrappers.mjs";
+import { say } from "../shared/chat-lines.mjs";
+import { T } from "../shared/item-lang.mjs";
 
 /**
  * The Enigma of Combination weapons whose Special line needed code: Assault Claw and Primeon Blade. (The

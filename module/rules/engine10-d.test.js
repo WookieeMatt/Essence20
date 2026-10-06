@@ -24,7 +24,11 @@ const spellcost = await import('./plugins/resources/spell-cost.mjs');
 const initiative = await import('./plugins/rolls/initiative.mjs');
 const contest = await import('./plugins/rolls/contest.mjs');
 const canvasExt = await import('./plugins/combat/canvas-points.mjs');
-const misc = await import('./plugins/tags/small-steps-and-refs.mjs');
+const misc = {
+  ...(await import('./plugins/combat/spend-actions-and-turn-queue.mjs')), ...(await import('./plugins/rolls/retry-and-recast.mjs')),
+  ...(await import('./plugins/rolls/bonus-dice-bank.mjs')), ...(await import('./plugins/tags/team-combatants.mjs')),
+  ...(await import('./plugins/effects/hardpoint-use.mjs')), ...(await import('./plugins/combat/stance-switch.mjs')),
+};
 const items = await import('./plugins/marks/item-marks.mjs');
 const blast = await import('./plugins/combat/rigs-and-blasts.mjs');
 

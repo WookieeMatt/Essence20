@@ -19,7 +19,8 @@
  * pr1-patch.cjs) and calls afterSpectrumShifted() once the Role skill die has been reset. The kept
  * pools are frozen at the table's value: they no longer grow with the old Role's level table.
  */
-import { T, postLine } from "../../items/shared/crew-allies-turn-stamps.mjs";
+import { TSafe as T } from "../../items/shared/item-lang.mjs";
+import { postLine } from "../../items/shared/chat-lines.mjs";
 
 const norm = name => String(name ?? '').toLowerCase().replace(/[^a-z0-9]/g, '');
 

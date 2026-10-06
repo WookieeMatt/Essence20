@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 
 global.Hooks = { on: jest.fn() };
 
-const { D21 } = await import('../shared/finster-item-lookups.mjs');
+const { D21 } = await import('../shared/finster-item-ids.mjs');
 const { psychoRiderOf, halveMovementDerived, HALVE_KIND } = await import('../attacks/psycho-weapon-riders.mjs');
 const { isNonMystical } = await import('../magic/mystic-non-mystical.mjs');
 

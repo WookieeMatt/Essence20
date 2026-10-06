@@ -153,9 +153,10 @@ None.
 - `module/dice.mjs` - imports `ruleIgnoresDrawback` (rules/plugins/rolls/ignore-drawback.mjs) for the Limited Articulation check (was
   zord2/snag.mjs).
 - `module/mechanics/rolls/roll-dialog.mjs` - the Steady Hands check and its import removed (it's a rule's `immune: untrainedSnag`).
-- `module/items/forms/mass-shift.mjs` - `activateMassShift` fires `massShiftUsed` (a guarded dynamic import of rules/plugins/combat/damage-reduction-initiative-edge.mjs).
+- `module/items/forms/mass-shift.mjs` - `activateMassShift` fires `massShiftUsed` (a guarded dynamic import of rules/plugins/combat/damage-reduction.mjs, now only a re-export of
+  rules/plugins/zords/mass-shift-event.mjs).
 - `module/mechanics/characters/perks.mjs` - `offerThisICommand` / `THIS_I_COMMAND_ID` replaced by `offerGrantDouble(granter, ally, kind, what)`
-  (a dynamic import of rules/plugins/combat/damage-reduction-initiative-edge.mjs); `bankPendingBonus` calls it with `upshift` and `E20.RulesExtH.Upshift`.
+  (a dynamic import of rules/plugins/resources/grant-double.mjs); `bankPendingBonus` calls it with `upshift` and `E20.RulesExtH.Upshift`.
 - `module/mechanics/actions/action-economy.mjs` - `grantActionsThisTurn` calls `offerGrantDouble(..., 'actions', ...)`;
   `action-economy.test.js` - the This, I Command test's officer item carries the GrantDouble rule.
 - `module/helpers/this-i-command.test.js` - deleted (its checks are in conv12-slH12.test.js).

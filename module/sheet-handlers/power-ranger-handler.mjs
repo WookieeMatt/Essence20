@@ -1,4 +1,4 @@
-import { changeTokenImage } from "../mechanics/characters/actor-token-helpers.mjs";
+import { changeTokenImage } from "../mechanics/world/token-sync.mjs";
 import { payForMorph, warnMissingStateImage } from "../mechanics/characters/morph-state.mjs";
 import { activatePowerInfusion } from "../items/rolls/power-infusion.mjs";
 import { applyBoostedVigor } from "../items/healing/phantom-focus.mjs";

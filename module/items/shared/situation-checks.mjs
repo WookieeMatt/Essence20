@@ -1,13 +1,15 @@
 /**
- * Shared lookups for the situational2 extension (items/rolls/situational-perks.mjs):
+ * Shared lookups for the situational2 extension (items/rolls/competitive.mjs):
  * the items it automates, "does this actor hold/wear it", and the situation checks - terrain,
  * water, land, darkness, StrexCorp - each answering true, false, or null ("nothing on
  * the scene says"), so a roll can apply a known situation automatically and offer a dialog
  * checkbox for an unknown one.
  *
  * The heavier helpers (environment.mjs, vessel lookups) are filled into `deps` at init by
- * situational2.mjs with dynamic imports, so this file imports nothing that can loop back.
+ * situational2.mjs with dynamic imports, so this file imports nothing that can loop back. The item
+ * readers live in item-lookups.mjs.
  */
+import { idOf, itemsOf, sourceOf } from "./item-lookups.mjs";
 
 // Several of these ids exist in more than one pack (the MLP CRB clothing and the PR Weatherproof are
 // copies of the GI Joe CRB entries), so items are matched by their compendium _id, not the full uuid.
@@ -28,23 +30,6 @@ export const deps = {
   getEnvironment: () => 'normal',
   getSceneEpoch: () => 0,
 };
-
-export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
-
-export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? '';
-}
-
-export const idOf = value => String(value ?? '').split('.').pop();
-
-export function itemsOf(actor) {
-  const items = actor?.items;
-  if (Array.isArray(items?.contents)) {
-    return items.contents;
-  }
-
-  return items && typeof items[Symbol.iterator] == 'function' ? [...items] : [];
-}
 
 /**
  * The actor's item copied from the given compendium _id, optionally of one type. A Hang-Up ignored

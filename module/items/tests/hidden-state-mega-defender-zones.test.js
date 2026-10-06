@@ -76,7 +76,7 @@ describe('other3 loads', () => {
 describe('mlp', () => {
   let m;
   beforeAll(async () => {
-    m = await import('../social/betrayal-self-improvement.mjs');
+    m = { ...(await import('../social/betrayal.mjs')), ...(await import('../magic/self-improvement.mjs')) };
   });
 
   test('Self Improvement raises the Essence, its Defenses and the Skill for the scene', () => {
@@ -128,7 +128,10 @@ describe('hide', () => {
 describe('pr', () => {
   let p;
   beforeAll(async () => {
-    p = await import('../forms/mega-defender.mjs');
+    p = {
+      ...(await import('../social/better-together.mjs')), ...(await import('../attacks/guardian-blast.mjs')),
+      ...(await import('../forms/mega-defender.mjs')), ...(await import('../defenses/metallic-armor-minions-and-ending.mjs')),
+    };
   });
 
   test('Guardian Blast is a Group Skill Test', () => {
@@ -203,7 +206,10 @@ describe('pr', () => {
 describe('tf', () => {
   let t;
   beforeAll(async () => {
-    t = await import('../attacks/attack-zones-scramble-field.mjs');
+    t = {
+      ...(await import('../attacks/again-and-again.mjs')), ...(await import('../defenses/perfect-placement.mjs')),
+      ...(await import('../gear/scramble-field-generator.mjs')),
+    };
   });
 
   test('Again and Again shifts ↓1 then ↓3', () => {
@@ -228,8 +234,8 @@ describe('tf', () => {
 // Metallic Armor Power Up's one Use button: switches the Power on, or ends it while it's on.
 test('Metallic Armor Power Up: one Use that switches it on or ends it', async () => {
   const { findExtUse } = await import('../../mechanics/item-hooks.mjs');
-  const { O3 } = await import('../shared/turn-stamps-and-sides.mjs');
-  await import('../forms/mega-defender.mjs');
+  const { O3 } = await import('../shared/mlp-pr-tf-ids-and-skill-total.mjs');
+  await import('../defenses/metallic-armor-minions-and-ending.mjs');
   const actor = { flags: { essence20: {} } };
   const power = { type: 'power', system: { canActivate: true }, flags: { core: { sourceId: O3.metallicArmor } }, parent: actor };
   const use = findExtUse(power);

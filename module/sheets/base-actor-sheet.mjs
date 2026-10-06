@@ -23,7 +23,8 @@ import {
   onToggleActiveEffect,
   prepareActiveEffectCategories,
 } from "../mechanics/characters/active-effect-controls.mjs";
-import { applySystemActorsColorCssVariables, applySystemColorCssVariables, getNumActions } from "../mechanics/characters/actor-token-helpers.mjs";
+import { applySystemActorsColorCssVariables, applySystemColorCssVariables } from "../util/system-color.mjs";
+import { getNumActions } from "../mechanics/actions/action-counts.mjs";
 import {
   needsShieldModulationChoice, pickShieldModulationDamageType, setShieldModulationDamageType,
 } from "../items/defenses/shield-modulation.mjs";

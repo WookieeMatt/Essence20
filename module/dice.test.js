@@ -18282,7 +18282,7 @@ describe("rollSkill", () => {
       });
     });
 
-    // Moved to items/resources/energon-spend-strains.mjs (every Energon spend, not just this one).
+    // Moved to items/resources/energon-strains.mjs (every Energon spend, not just this one).
     describe("Energon Efficiency (Decepticon Directive, Cybertronian Perk, p.62)", () => {
       const ENERGON_EFFICIENCY_ID = "Compendium.essence20.decepticon_directive.Item.ZtRBGtnV5HCA7zhl";
 

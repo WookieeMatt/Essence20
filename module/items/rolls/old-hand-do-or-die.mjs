@@ -1,4 +1,4 @@
-import { itemsOf } from "../shared/qualification-item-lookups.mjs";
+import { itemsOf } from "../shared/item-lookups.mjs";
 
 /**
  * Old Hand (G.I. Joe: Hawk's Personnel Files) - the Do Or Die bonus die's size, for Wild Idea. (Do Or Die's own

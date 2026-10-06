@@ -10,7 +10,7 @@
  * (Mutant Beast's second Alt Mode is an item rule - rules/conv10-slE10.test.js.)
  */
 import { registerUse } from "../../mechanics/item-hooks.mjs";
-import { T } from "../shared/weapon-target-lookups.mjs";
+import { T } from "../shared/item-lang.mjs";
 import { DECONSTRUCTED } from "../rolls/deconstruct-bestial-articulation.mjs";
 
 async function grants() {

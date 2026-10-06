@@ -14,7 +14,10 @@
  */
 import { registerUse } from "../../mechanics/item-hooks.mjs";
 import { getUses, markUsed } from "../../mechanics/resources/scene-clock.mjs";
-import { IDS, T, isItem, worldActors } from "../shared/resource-team-lookups.mjs";
+import { IDS } from "../shared/resource-team-lookups.mjs";
+import { T } from "../shared/item-lang.mjs";
+import { isItem } from "../shared/item-lookups.mjs";
+import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 
 export const MOTOR_POOL_BUDGET = 3;
 export const UPGRADE_COST = { automatic: 1, standard: 1, limited: 2, restricted: 5, prototype: 7, unique: 7, theoretical: 10 };

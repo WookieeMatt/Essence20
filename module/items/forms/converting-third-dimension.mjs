@@ -1,7 +1,10 @@
 import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
-import {
-  areEnemies, esc, flagOf, holds, say, SCOPE, stampNow, T, TF3,
-} from "../shared/bot-alt-mode-readers.mjs";
+import { areEnemies } from "../shared/sides.mjs";
+import { escapeMarkup as esc, say } from "../shared/chat-lines.mjs";
+import { flagOf, has as holds } from "../shared/item-lookups.mjs";
+import { SCOPE, TF3 } from "../shared/tf-crb-tf-one-item-ids.mjs";
+import { stampNow } from "../shared/turn-stamps.mjs";
+import { T } from "../shared/item-lang.mjs";
 import { UNEXPECTED_FLAG } from "../rolls/unexpected-alternative.mjs";
 
 /**

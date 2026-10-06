@@ -220,7 +220,7 @@ Use, `PARTNERED_RULE`), `fix3-tf/tf-fixes.mjs` (the influence switches, the Expe
 
 ## Batch slB, slice tf2: `module/helpers/extensions/tf2/`
 
-**Scope:** every item in the `TF2` id table of `module/items/shared/weapon-target-lookups.mjs` (Technorganic Secrets,
+**Scope:** every item in the `TF2` id table of `module/items/shared/tf-technorganic-enigma-item-ids.mjs` (Technorganic Secrets,
 The Enigma of Combination, Transformers Core Rulebook), plus every other place in `module/` that uses those ids.
 Outside the slice, only `mechanics/combat/rider-uses.mjs` uses an id from the table (the G.I. JOE printings of All Out Attack
 and Evasive Fighting, which are not tf2 items). Several of these items already carry rules from earlier rounds

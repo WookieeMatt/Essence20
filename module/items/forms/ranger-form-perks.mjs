@@ -5,10 +5,16 @@ import {
 import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 import { FORM_FLAG, activeForm, isFormActive } from "./ranger-form-state.mjs";
+import { TSafe as T } from "../shared/item-lang.mjs";
 import {
-  T, bth, findSourced, flagOf, giveEdge, isBladeBlaster, isPowerWeapon, isStampLive, itemsOf,
-  parentWeaponOf, postLine, sourceOf, spendPower, untilNextTurnStamp, writeActor,
-} from "../shared/personal-power-allies.mjs";
+  bth, giveEdge, isBladeBlaster, isPowerWeapon, parentWeaponOf, spendPower,
+} from "../shared/personal-power-and-ranger-weapons.mjs";
+import {
+  findSourcedAny as findSourced, flagOf, itemsOfAny as itemsOf, sourceOf,
+} from "../shared/item-lookups.mjs";
+import { isStampLive, untilNextTurnStamp } from "../shared/turn-stamps.mjs";
+import { postLine } from "../shared/chat-lines.mjs";
+import { writeDoc as writeActor } from "../shared/relayed-writes.mjs";
 import { ruleFormSpec, ruleFormUuids } from "../../rules/plugins/zords/form-perks.mjs";
 
 /**

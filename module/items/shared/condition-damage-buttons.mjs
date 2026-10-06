@@ -1,8 +1,11 @@
 /**
- * Shared bits for the Decepticon Directive / Technorganic Secrets slice (tf1): item ids, lookups,
- * and the small "apply a Condition / offer a damage button" helpers the Use buttons share. Light
- * imports only - anything heavy is imported inside a function.
+ * Shared bits for the Decepticon Directive / Technorganic Secrets slice (tf1): item ids and the
+ * small "offer a damage button / pick / roll" helpers the Use buttons share. Light imports only -
+ * anything heavy is imported inside a function. The generic lookups, lang, chat and token helpers
+ * live in item-lookups.mjs, item-lang.mjs, chat-lines.mjs and sides.mjs.
  */
+import { T } from "./item-lang.mjs";
+import { findSourced } from "./item-lookups.mjs";
 
 const dd = id => `Compendium.essence20.decepticon_directive.Item.${id}`;
 
@@ -19,25 +22,6 @@ export const TF1 = {
   favoriteWeapon: dd('emaXxo2XzoHMoNCe'),
 };
 
-export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
-
-export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
-export function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items.contents) ? items.contents : (typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-}
-
-export const itemOf = (actor, uuid) => (uuid ? itemsOf(actor).find(i => sourceOf(i) == uuid) ?? null : null);
-export const has = (actor, uuid) => !!itemOf(actor, uuid);
-export const nameOf = (actor, uuid, fallback) => itemOf(actor, uuid)?.name ?? fallback;
-
 export function safe(fn, fallback = null) {
   try {
     return fn();
@@ -46,15 +30,7 @@ export function safe(fn, fallback = null) {
   }
 }
 
-export async function say(actor, content) {
-  return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<p>${content}</p>` });
-}
-
-export function tokenOf(actor) {
-  return actor?.getActiveTokens?.()?.[0] ?? null;
-}
-
-export function feetBetween(a, b) {
+function feetBetween(a, b) {
   if (!a || !b || !canvas?.grid) {
     return Infinity;
   }
@@ -77,22 +53,6 @@ export function firstTarget() {
 
 export function isDefeated(actor) {
   return !!actor?.statuses?.has?.('defeated') || (Number(actor?.system?.health?.value) <= 0 && actor?.system?.health?.max > 0);
-}
-
-/** A Condition on someone else, relayed through the GM when the user can't write to them. */
-export async function applyCondition(target, status, rounds = 0) {
-  if (!target) {
-    return;
-  }
-
-  const { needsGmRelay, relayToGm } = await import("../../mechanics/world/gm-relay.mjs");
-  if (needsGmRelay(target)) {
-    await relayToGm(target, 'toggleStatusEffect', [status, { active: true }]);
-    return;
-  }
-
-  const { applyTimedCondition } = await import("../../mechanics/combat/timed-status.mjs");
-  await applyTimedCondition(target, status, rounds);
 }
 
 /** A chat button that applies damage to one creature when clicked (the GM usually does). */
@@ -134,7 +94,7 @@ export async function rollTest(actor, skill, dif) {
 
 /** The Favorite Weapon Perk's chosen weapon (items/attacks/favorite-weapon.mjs keeps it on system.choice). */
 export function favoriteWeaponOf(actor) {
-  const perk = itemOf(actor, TF1.favoriteWeapon);
+  const perk = findSourced(actor, TF1.favoriteWeapon);
   const choice = perk?.system?.choice;
   return choice ? actor.items?.get?.(choice) ?? null : null;
 }

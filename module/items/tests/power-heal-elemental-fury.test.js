@@ -95,7 +95,11 @@ beforeAll(async () => {
 
   ext = await import('../../mechanics/item-hooks.mjs');
   common = await import('../shared/pr-crb-ttsg-item-ids.mjs');
-  crb = await import('../healing/power-heal-ninja-standard-issue.mjs');
+  crb = {
+    ...(await import('../movement/ninja-power-jump.mjs')),
+    ...(await import('../healing/power-heal-condition.mjs')),
+    ...(await import('../gear/power-ranger-standard-issue.mjs')),
+  };
   ttsg = await import('../zords/elemental-fury.mjs');
 });
 

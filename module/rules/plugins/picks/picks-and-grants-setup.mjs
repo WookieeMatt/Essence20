@@ -3,9 +3,14 @@
 import "./pick-and-loop-steps.mjs";
 import "../tags/actor-state-tags.mjs";
 import { installTypes } from "../combat/hazard-terrain-targets.mjs";
+import { installKitPrerequisite } from "../resources/kit-prerequisite.mjs";
+import "../rolls/allies-anywhere-scope.mjs";
+import { installEquipmentBroke } from "../combat/equipment-broke.mjs";
 import { installDerived } from "../effects/derived-stages.mjs";
 import { installLegacy } from "../marks/legacy-marks.mjs";
 
 installTypes();
+installKitPrerequisite();
+installEquipmentBroke();
 installDerived();
 installLegacy();

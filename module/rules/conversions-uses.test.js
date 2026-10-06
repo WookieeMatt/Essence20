@@ -2572,7 +2572,7 @@ test("Impulsive: rolling Initiative banks one ↓1 for the next Skill Test", asy
 /* tonight batch (mechanics/resources/grants.mjs): Skin Tempering x3 and Zeta Skin Transplant (flags alterationWorn), Integrated
    Basic/Advanced Weapon (integrated + flags droneWeapon) and Safety First (system availability) as once-ever pickGrant
    Uses with overrides; S.P.D. Asset as a once-ever choose Use; and the plain Alt Mode chassis' "get the attack back" Use
-   (was items/forms/alt-mode-attacks-mode-lock.mjs's tf2AltModeAttacks button). */
+   (was items/forms/mode-lock-energon-flush.mjs's tf2AltModeAttacks button). */
 
 const TONIGHT_ROWS = [
   { uuid: 'T.scopeS', type: 'upgrade', name: 'Scope', system: { availability: 'standard', type: 'weapon' } },
@@ -3703,7 +3703,7 @@ describe('slB2 other2', () => {
 
   beforeAll(async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { hasMedicineKit } = await import('../items/healing/heal-action-medic-gear.mjs');
+    const { hasMedicineKit } = await import('../items/healing/medicine-kit.mjs');
     registerCheck('medicineKit', actor => hasMedicineKit(actor));
   });
 

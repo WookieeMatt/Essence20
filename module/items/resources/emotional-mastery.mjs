@@ -233,10 +233,10 @@ async function applyShynessStatusToggle(actor, activeOptions) {
 
 /**
  * The options this actor knows (Emotional Range's KnownOptions rule, topped up by asking), or null for all of them -
- * rules/plugins/zords/zord-timing-hooks.mjs, loaded when asked.
+ * rules/plugins/picks/known-options.mjs, loaded when asked (so it keeps its own place in the rules registration order).
  */
 async function knownOptions(actor) {
-  const { ensureKnownOptions } = await import("../../rules/plugins/zords/zord-timing-hooks.mjs");
+  const { ensureKnownOptions } = await import("../../rules/plugins/picks/known-options.mjs");
   return ensureKnownOptions(actor, 'emotionalMastery');
 }
 

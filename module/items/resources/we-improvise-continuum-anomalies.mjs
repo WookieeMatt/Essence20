@@ -13,7 +13,11 @@
  * Time Displaced (pr1/jtt.mjs) reads them. History Buff's one-die-smaller check is its item's own Use rule
  * (rules/conv10-slC10.test.js).
  */
-import { IDS, onHook, T, changed, has, isActiveGm, num } from "../shared/resource-team-lookups.mjs";
+import { changed, IDS } from "../shared/resource-team-lookups.mjs";
+import { isActiveGm, onHook } from "../shared/hooks-and-clients.mjs";
+import { T } from "../shared/item-lang.mjs";
+import { has } from "../shared/item-lookups.mjs";
+import { num } from "../shared/numbers.mjs";
 
 /* -------------------------------------------- */
 /*  We Improvise                                 */

@@ -1,6 +1,6 @@
 import EffectWizard from "../../apps/effect-wizard.mjs";
 import { summarizeEffect } from "./effect-catalog.mjs";
-import { checkIsLocked } from "./actor-token-helpers.mjs";
+import { checkIsLocked } from "../../util/sheet-lock.mjs";
 
 /**
  * Manage Active Effect instances through the Actor Sheet via effect control buttons.

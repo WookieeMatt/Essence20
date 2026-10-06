@@ -13,7 +13,9 @@
  *   options from the picks and a HitRider - module/rules/ext/g/).
  */
 import { registerUse } from "../../mechanics/item-hooks.mjs";
-import { PR1, T, isItem } from "../shared/crew-allies-turn-stamps.mjs";
+import { PR1 } from "../shared/pr-jtt-ats-item-ids.mjs";
+import { TSafe as T } from "../shared/item-lang.mjs";
+import { isItem } from "../shared/item-lookups.mjs";
 
 /* -------------------------------------------- */
 /*  Mobile Headquarters                          */
@@ -21,7 +23,7 @@ import { PR1, T, isItem } from "../shared/crew-allies-turn-stamps.mjs";
 
 // Mobile Headquarters is the Feature's own rules: the holder's Initiative Edge and its Megaform's best component
 // Initiative are SkillDie rules (module/rules/plugins/rolls/skill-die.mjs); the other allied vehicles and Zords in the scene get
-// theirs from an InitiativeEdge rule read at Initiative (module/rules/plugins/combat/damage-reduction-initiative-edge.mjs).
+// theirs from an InitiativeEdge rule read at Initiative (module/rules/plugins/combat/damage-reduction.mjs).
 
 /* -------------------------------------------- */
 /*  Overdrive                                    */

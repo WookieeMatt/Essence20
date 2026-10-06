@@ -4353,7 +4353,7 @@ test('Tooth and Claw (both printings): ↑1 on unarmed attacks in Alt Mode, once
 
 /* tonight batch (2026-10-02): Beatdown, Jackhammer and Shadow Morph [Form] give their weapon by a Grant rule (it now
    arrives with its own attacks, lifecycle#attachGrantedChildren), and so do the Alt Modes whose printed special
-   attack needs no change (items/forms/alt-mode-attacks-mode-lock.mjs keeps the Charger, the Monolith and the chassis that ask). */
+   attack needs no change (items/forms/mode-lock-energon-flush.mjs keeps the Charger, the Monolith and the chassis that ask). */
 
 const TONIGHT_WEAPONS = {
   ram: 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m',
@@ -8392,7 +8392,7 @@ describe('slC2 gij2', () => {
 
   beforeAll(async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { hasComputerizedGear } = await import('../items/attacks/electromagnetic-deflecting-weapons.mjs');
+    const { hasComputerizedGear } = await import('../items/attacks/electromagnetic-vs-computerized.mjs');
     registerCheck('computerizedGear', actor => hasComputerizedGear(actor));
   });
 
@@ -8489,7 +8489,7 @@ describe('slD2 other1', () => {
 
   beforeAll(async () => {
     const { registerCheck } = await import('./predicate.mjs');
-    const { hasComputerizedGear } = await import('../items/attacks/electromagnetic-deflecting-weapons.mjs');
+    const { hasComputerizedGear } = await import('../items/attacks/electromagnetic-vs-computerized.mjs');
     registerCheck('computerizedGear', actor => hasComputerizedGear(actor));
   });
 

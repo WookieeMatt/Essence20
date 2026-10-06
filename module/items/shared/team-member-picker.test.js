@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { pickSelfOrTeamMember } from './team-member-picker.mjs';
+import { pickSelfOrTeamMember } from "./team-member-picker.mjs";
 
 function makeActor(uuid, name, type = 'playerCharacter') {
   return { uuid, name, type };

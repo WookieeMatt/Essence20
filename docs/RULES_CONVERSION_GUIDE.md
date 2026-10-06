@@ -993,7 +993,7 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
 
 - **CardOffer rules** (rules/plugins/cards/card-offer.mjs) - a button on posted roll cards, offered by an item to its holder or to
   others: `{type: CardOffer, label, whose: self | party | side | any, pressedBy: roller | holderOwner | gm, when?,
-  pool?: {mark: key}, limit?, counter?: {per}, cost?: {resource, amount}, reroll?: {target: d20 | allDice | formula,
+  pool?: {mark: key}, limit?, counter?: {per}, cost?: {resource, amount}, reroll?: {target: d20 | allDice | anyDie (the presser picks one die, before anything is paid) | formula,
   keep: new | choose}, addDie?: {faces}, steps?}`.
   - `whose`: the holder's own cards; `party` - the holder's and the primary Party roster's; `side` - another actor of
     the holder's kind (player-like or not); `any`.
@@ -1054,7 +1054,8 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
   `defense: ask` or a number 1-4); **`explosion {radius, formula, saveSkills, saveDif, damageType, title}`** (damage
   rolled once, a plain save each for half); **`damageCard {actor, amount, damageType, title}`**; **`explodeVehicle
   {actor}`**.
-- **Banks and team grants** (rules/plugins/tags/small-steps-and-refs.mjs, alteration.mjs) - step **`bankDie {die, appliesWhen}`** (a bonus die
+- **Banks and team grants** (rules/plugins/rolls/bonus-dice-bank.mjs, resources/temp-resource-step.mjs, tags/team-combatants.mjs and the
+  other group D step / tag files rules/plugins/index.mjs lists in their place; alteration.mjs) - step **`bankDie {die, appliesWhen}`** (a bonus die
   for the next matching roll, moved into the More Heads slot before the dialog and back if another roll comes first; tag
   **`rule:bankedDie`**); step **`tempResource {kind: health | energon, amount, to, untilDamage?}`** (tracked temporary
   Health / Energon - amount worked out per recipient); recipient / ref **`teamCombatants`** (teammates in the running
@@ -1116,7 +1117,8 @@ Tests: `module/rules/engine10-a.test.js` (32 tests).
   came with damage); `self:` / `holder:onRecordedScene:<path>`; `self:itemEffect:<uuid>:<change key>` (that book item's copy has an
   enabled effect changing the key).
 - **Formula ref** `@alliesWearing.<compendium id>.<ft>` - allies within range (the system's ally count) wearing that upgrade.
-- **Rule types** read by the hand-written registries (rules/plugins/combat/hazard-terrain-targets.mjs, joined at `setup`):
+- **Rule types** read by the hand-written registries (rules/plugins/combat/hazard-terrain-targets.mjs, joined at `setup`;
+  KitPrerequisite is rules/plugins/resources/kit-prerequisite.mjs):
   - `HazardProtection {categories?, environments?}` - environment-hazards.mjs ENVIRONMENT_PROTECTORS; `{choice.x}` in
     environments reads a pick (an unmade pick covers nothing); labelled with the item's name.
   - `RoughTerrainImposer {}` - rough-terrain.mjs ROUGH_TERRAIN_IMPOSERS; `when` is asked with self = the holder and target = the

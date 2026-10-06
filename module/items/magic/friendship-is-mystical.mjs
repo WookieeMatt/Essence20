@@ -1,17 +1,16 @@
-import {
-  registerSceneAdvanced, registerUse,
-} from "../../mechanics/item-hooks.mjs";
-import { worldActors } from "../../mechanics/companions/companion-link.mjs";
+import { registerUse } from "../../mechanics/item-hooks.mjs";
+import { TFull as T } from "../shared/item-lang.mjs";
+import { sourceOfOrUndefined as sourceOf } from "../shared/item-lookups.mjs";
+import { updateRelayed } from "../shared/relayed-writes.mjs";
 
 /**
- * My Little Pony Core Rulebook, Knights of Canterlot and Story of the Seasons items: Acute Sense, the Hang-Ups (Bad with
- * People, Jarring, Wanderlust), Friendship Is Mystical, Competitor, and Bestow Expertise's scene limit. (Thick Skin's
- * Defense picks are a Use rule on the Perk - rules/conv10-slE10.test.js.) (Mystical Understanding's Refocus, Essential
- * Research and Magically Fit In are a Use, a RollModifier and a rest Trigger on the Perk - rules/conv12-slI12.test.js.)
- * (Extra Effective Spell, Long Lasting Spell, Spellcosting and Reactionary are rules on their items -
- * rules/conv10-slD10.test.js.)
- * (Waterrunning and Something Is Off are rules on their items - rules/conv10-slC10.test.js.)
- * (Wheel Excited's vehicle pick and Screech's attack are their own item rules now.)
+ * Friendship Is Mystical (My Little Pony Core Rulebook): the Use button that spends the holder's Mystical Points on
+ * a targeted friend. (Bestow Expertise's scene limit is ./bestow-expertise-scene-expiry.mjs. Thick Skin's Defense
+ * picks are a Use rule on the Perk - rules/conv10-slE10.test.js. Mystical Understanding's Refocus, Essential
+ * Research and Magically Fit In are a Use, a RollModifier and a rest Trigger on the Perk - rules/conv12-slI12.test.js.
+ * Extra Effective Spell, Long Lasting Spell, Spellcosting and Reactionary are rules on their items -
+ * rules/conv10-slD10.test.js. Waterrunning and Something Is Off are rules on their items - rules/conv10-slC10.test.js.
+ * Wheel Excited's vehicle pick and Screech's attack are their own item rules now.)
  */
 
 const pack = (p, id) => `Compendium.essence20.${p}.Item.${id}`;
@@ -19,12 +18,6 @@ const mlp = id => pack('mlp_crb', id);
 export const MLP2 = {
   friendshipIsMystical: mlp('jCh9Z1Nhb6SeiapO'),
 };
-
-const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
 
 function mysticalPoints(actor) {
   return actor?._getBaseRolePoints?.() ?? null;
@@ -69,8 +62,7 @@ const USES = [
       const choice = await chooseButtons(item.name, T('E20.Mlp2FriendPrompt', { friend: friend.name }), [
         ['fitIn', T('E20.Mlp2FitIn')], ['fortify', T('E20.Mlp2Fortify')], ['heal', T('E20.Mlp2Heal')],
       ]);
-      const { needsGmRelay, relayToGm } = await import("../../mechanics/world/gm-relay.mjs");
-      const write = (changes) => (needsGmRelay(friend) ? relayToGm(friend, 'update', [changes]) : friend.update(changes));
+      const write = changes => updateRelayed(friend, changes);
       if (choice == 'fitIn') {
         const skill = await select(item.name, T('E20.Mlp2PickSkill'), Object.entries(CONFIG.E20.skills).map(([value, l]) => ({ value, label: T(l) })));
         if (!skill || !(await spendMystical(actor, 1))) {
@@ -115,21 +107,3 @@ const USES = [
 /* -------------------------------------------- */
 
 USES.forEach(registerUse);
-
-// Bestow Expertise (MLP CRB p.137) lasts the scene: the Specializations it gave go when the GM starts a
-// new one.
-registerSceneAdvanced(async () => {
-  for (const actor of worldActors()) {
-    const bestowed = actor.flags?.essence20?.bestowedExpertise ?? [];
-    if (!bestowed.length) {
-      continue;
-    }
-
-    const updates = { 'flags.essence20.bestowedExpertise': [] };
-    for (const { skill, key } of bestowed) {
-      updates[`system.skills.${skill}.specializations.${key}`] = new foundry.data.operators.ForcedDeletion();
-    }
-
-    await actor.update(updates);
-  }
-});

@@ -1,12 +1,17 @@
+import { registerDerived } from "../../../mechanics/item-hooks.mjs";
+
 /**
- * Group A: Movement rules at stage `derivedHook`, applied where a hand-written slice calls them among the derived hooks
- * (items/social/instructor-legacy-students.mjs - before the rules' own DerivedStats). Imports nothing, so a slice can load it early;
- * rules/plugins/zords/zord-timing-hooks.mjs hands in the rules' Movement stages once the engine has loaded.
+ * Group A: Movement rules at stage `derivedHook`, applied among the derived hooks - before the rules' own DerivedStats
+ * (Beneath the Helmet's Bend Physics doubling, the Unique Weapon (Two-Handed Melee)'s -10 ft; Beast Morpher's Cheetah
+ * +20 is not doubled). items/index.mjs loads this file at the place among the item files where the registration
+ * belongs. It imports only the (import-free) extension registry, so it can load early;
+ * rules/plugins/effects/derived-hook-stage.mjs hands in the rules' Movement stages once the engine has loaded. (A
+ * teammate prepared before the world loaded is prepared again once it has - ./team-rules-ready-reset.mjs.)
  */
 
 let stagesOf = null;
 
-/** rules/adapter.mjs#ruleMovementStages, handed in by rules/plugins/zords/zord-timing-hooks.mjs. */
+/** rules/adapter.mjs#ruleMovementStages, handed in by rules/plugins/effects/derived-hook-stage.mjs. */
 export function setMovementStages(fn) {
   stagesOf = fn;
 }
@@ -31,3 +36,5 @@ export function applyMovementStage(actor, name) {
 export function applyDerivedHookMovement(actor) {
   applyMovementStage(actor, 'derivedHook');
 }
+
+registerDerived(applyDerivedHookMovement);

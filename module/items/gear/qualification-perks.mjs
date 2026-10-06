@@ -2,7 +2,7 @@ import { registerPreRoll, registerSpecializes } from "../../mechanics/item-hooks
 import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 import { ruleQualifiedUpgrade } from "../../rules/adapter.mjs";
-import { itemsOf } from "../shared/qualification-item-lookups.mjs";
+import { itemsOf } from "../shared/item-lookups.mjs";
 
 /**
  * Equipment Training and Qualification Perks (qualify2 slice).

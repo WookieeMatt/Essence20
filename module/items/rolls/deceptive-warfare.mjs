@@ -1,7 +1,7 @@
 import { registerUse } from "../../mechanics/item-hooks.mjs";
-import {
-  sourceOf, T, TF3,
-} from "../shared/bot-alt-mode-readers.mjs";
+import { sourceOf } from "../shared/item-lookups.mjs";
+import { T } from "../shared/item-lang.mjs";
+import { TF3 } from "../shared/tf-crb-tf-one-item-ids.mjs";
 
 /**
  * Use buttons for the tf3 slice (Transformers CRB / Transformers One Sourcebook). Holographic Doubles,

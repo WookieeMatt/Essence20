@@ -1,4 +1,4 @@
-import { checkIsLocked } from "../mechanics/characters/actor-token-helpers.mjs";
+import { checkIsLocked } from "../util/sheet-lock.mjs";
 import { slugifySpecializationName, titleCaseSpecializationName } from "../util/utils.mjs";
 
 /**

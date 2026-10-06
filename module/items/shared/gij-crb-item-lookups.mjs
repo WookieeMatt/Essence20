@@ -1,7 +1,9 @@
 /**
  * Shared bits for the gij2 slice (G.I. JOE Roleplaying Game Core Rulebook items): the compendium
- * ids it keys on and a few small item/chat helpers.
+ * ids it keys on and the Perk-use chat-card reader. The generic item, lang, chat and stamp helpers
+ * live in item-lookups.mjs, item-lang.mjs, chat-lines.mjs and turn-stamps.mjs.
  */
+import { findSourced } from "./item-lookups.mjs";
 
 export const GIJ = id => `Compendium.essence20.gi_joe_crb.Item.${id}`;
 
@@ -19,43 +21,6 @@ export const G2 = {
   aegis: GIJ('0ZTjZ36gN74889am'),
 };
 
-export const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-
-export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-}
-
-export function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items.contents) ? items.contents : (typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-}
-
-/** Every item on the actor carrying this compendium source, of any type. */
-export function allSourced(actor, uuid) {
-  return uuid ? itemsOf(actor).filter(item => sourceOf(item) == uuid) : [];
-}
-
-export function findSourced(actor, uuid) {
-  return allSourced(actor, uuid)[0] ?? null;
-}
-
-export function hasItem(actor, uuid) {
-  return !!findSourced(actor, uuid);
-}
-
-/** A plain chat card spoken by the actor. */
-export async function post(actor, content, extra = {}) {
-  return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content, ...extra });
-}
-
-export function escape(text) {
-  return foundry?.utils?.escapeHTML ? foundry.utils.escapeHTML(String(text ?? '')) : String(text ?? '');
-}
-
 /**
  * The speaking actor and its item when a chat message is mechanics/characters/perks.mjs#postPerkUseChatCard's
  * "{perk} used on {actor}." for this compendium item - how a follow-up reminder recognises a Perk
@@ -72,10 +37,4 @@ export function perkUseCard(message, uuid) {
 
   const expected = game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name });
   return String(message.content ?? '').trim() == expected ? { actor, item } : null;
-}
-
-/** The combat round stamp used for "until" windows. */
-export function roundStamp() {
-  const combat = game?.combat;
-  return combat ? { combatId: combat.id, round: combat.round } : { combatId: null, round: null };
 }

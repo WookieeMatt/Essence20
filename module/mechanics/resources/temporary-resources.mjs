@@ -8,10 +8,12 @@
  * entire scene, until they take damage, or until you are Defeated." The grant is made by
  * items/healing/got-to-get-tough.mjs, which records it here (see the integration patch).
  *
- * Together We Stand (Enigma of Combination) grants through here from its item rule (rules/plugins/tags/small-steps-and-refs.mjs tempResource).
+ * Together We Stand (Enigma of Combination) grants through here from its item rule (rules/plugins/resources/temp-resource-step.mjs tempResource).
  */
 import { registerAfterDamage, registerSceneAdvanced } from "../item-hooks.mjs";
-import { num, worldActors, writeActor } from "../../items/shared/resource-team-lookups.mjs";
+import { num } from "../../items/shared/numbers.mjs";
+import { worldActors } from "../companions/companion-link.mjs";
+import { updateRelayedWithOptions as writeActor } from "../../items/shared/relayed-writes.mjs";
 
 export const TEMP_FLAG = 'resTempGrants';
 

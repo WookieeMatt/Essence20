@@ -17,7 +17,8 @@ import { escape, listOf, say, speakerOf, T, worldActors, write } from "../shared
  *
  * {type: CardOffer, label, whose: self | party | side | any, pressedBy: roller | holderOwner | gm,
  *  when?: [tags], pool?: {mark: key}, limit?: {per, max}, counter?: {per}, cost?: {resource, amount},
- *  reroll?: {target: d20 | allDice | formula, keep: new | choose}, addDie?: {faces}, steps?: [...]}
+ *  reroll?: {target: d20 | allDice | anyDie | formula, keep: new | choose}, addDie?: {faces}, steps?: [...]}
+ *  (anyDie: the presser picks one die; closing the picker costs nothing - the die is picked before paying)
  *
  * Labels fill {count} (what's left in the pool), {cost} and {die}; formulas read @var.used (this rule's uses
  * in its counter / limit window so far).
@@ -98,8 +99,8 @@ function offerErrors(rule) {
     errors.push('a CardOffer needs reroll, addDie or steps');
   }
 
-  if (rule.reroll && !['d20', 'allDice', 'formula'].includes(rule.reroll.target ?? 'd20')) {
-    errors.push('reroll.target must be d20, allDice or formula');
+  if (rule.reroll && !['d20', 'allDice', 'anyDie', 'formula'].includes(rule.reroll.target ?? 'd20')) {
+    errors.push('reroll.target must be d20, allDice, anyDie or formula');
   }
 
   if (rule.reroll && !['new', 'choose'].includes(rule.reroll.keep ?? 'new')) {
@@ -314,11 +315,17 @@ export function offersFor(message, actors = worldActors(), user = globalThis.gam
 
 const lookup = uuid => (uuid ? globalThis.fromUuidSync?.(uuid, { strict: false }) ?? null : null);
 
-/** A reroll of the card's own roll as a fresh check card (d20 / all dice). */
-async function rerollCheck(message, target, label) {
+/** The card's own roll with the reroll applied, not posted yet; null if it didn't happen (anyDie: no die picked). */
+async function rerolledCopy(message, target) {
   const { applyReroll } = await import("../../../mechanics/rolls/reroll.mjs");
   const rerolled = globalThis.Roll.fromData(message.rolls[0].toJSON());
-  if (!(await applyReroll(rerolled, { mode: 'all', target, recursive: false, values: [] }))) {
+  return (await applyReroll(rerolled, { mode: 'all', target, recursive: false, values: [] })) ? rerolled : null;
+}
+
+/** A reroll of the card's own roll as a fresh check card (d20 / all dice / a die the presser picks). */
+async function rerollCheck(message, target, label, prepared = null) {
+  const rerolled = prepared ?? await rerolledCopy(message, target);
+  if (!rerolled) {
     return null;
   }
 
@@ -426,6 +433,12 @@ export async function pressOffer(message, { holderUuid, itemId, index }, user = 
   }
 
   const { rule } = offer;
+  // anyDie: the presser picks the die before anything is paid or counted - closing the picker costs nothing.
+  const prepared = rule.reroll?.target == 'anyDie' ? await rerolledCopy(message, 'anyDie') : null;
+  if (rule.reroll?.target == 'anyDie' && !prepared) {
+    return false;
+  }
+
   const amount = costOf(rule, holder, item, offer.index);
   if (!(await affordable(rule, holder, item, amount)) || !(await pay(rule, holder, item, amount))) {
     if (rule.cost?.resource?.gmStoryPoints) {
@@ -452,7 +465,7 @@ export async function pressOffer(message, { holderUuid, itemId, index }, user = 
   if (rule.reroll) {
     const target = rule.reroll.target ?? 'd20';
     const roll = target == 'formula' ? await rerollFormula(message, rule.reroll.keep ?? 'new', holder, rule.reroll.keep == 'choose' ? item?.name ?? '' : T('Rerolled', { name: holder.name, item: item?.name ?? '' }))
-      : await rerollCheck(message, target, title);
+      : await rerollCheck(message, target, title, prepared);
     total = roll ? Number(roll.total) : null;
   } else if (rule.addDie) {
     total = Number((await addDie(message, dieOf(rule, holder, item), holder))?.total) || null;

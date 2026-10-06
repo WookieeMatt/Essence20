@@ -61,7 +61,8 @@ items (`conv5-slC5`, `conv7-slC7`, `conv8-slC8`, `conv8-slE8`, `conv9-slE9`, `co
   came with damage); `self:` / `holder:onRecordedScene:<path>`; `self:itemEffect:<uuid>:<change key>` (that book item's copy has an
   enabled effect changing the key).
 - **Formula ref** `@alliesWearing.<compendium id>.<ft>` - allies within range (the system's ally count) wearing that upgrade.
-- **Rule types** read by the hand-written registries (rules/plugins/combat/hazard-terrain-targets.mjs, joined at `setup`):
+- **Rule types** read by the hand-written registries (rules/plugins/combat/hazard-terrain-targets.mjs, joined at `setup`;
+  KitPrerequisite is rules/plugins/resources/kit-prerequisite.mjs):
   - `HazardProtection {categories?, environments?}` - environment-hazards.mjs ENVIRONMENT_PROTECTORS; `{choice.x}` in
     environments reads a pick (an unmade pick covers nothing); labelled with the item's name.
   - `RoughTerrainImposer {}` - rough-terrain.mjs ROUGH_TERRAIN_IMPOSERS; `when` is asked with self = the holder and target = the

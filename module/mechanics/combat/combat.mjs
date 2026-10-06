@@ -23,7 +23,7 @@ import { getMegaformParticipants } from "../vehicles/megaform-participants.mjs";
 import { deactivateShynessOnDamage } from "../../items/resources/emotional-mastery.mjs";
 import { deactivatePhantomOnDamage } from "../../items/senses/phantom.mjs";
 import { consumeSelfPreservationImmunity } from "../../items/defenses/self-preservation.mjs";
-import { grantSceneResistance } from "../characters/actor-token-helpers.mjs";
+import { grantSceneResistance } from "../world/scene-resistances.mjs";
 
 // Relic Key (PR CRB p.140, prerequisite Auxiliary Zord) - see getDefenseValue's own doc comment
 // below for the Willpower/Cleverness default this grants while unpiloted.
@@ -302,7 +302,7 @@ const HARDENED_ARMOR_EXCLUDED_TYPES = ['blunt', 'sharp'];
 /**
  * Hardened Armor's own Resistance-after-hit clause (see HARDENED_ARMOR_ID's own comment above):
  * once this actor actually suffers real damage of a given type, they become Resistant to that
- * type for the rest of the scene (mechanics/characters/actor-token-helpers.mjs#grantSceneResistance - folded into
+ * type for the rest of the scene (mechanics/world/token-sync.mjs#grantSceneResistance - folded into
  * system.resistances, read by dice.mjs's own target-status Snag check, until the Scene Clock
  * starts a new scene) - a no-op if they already are.
  * @param {Actor} actor

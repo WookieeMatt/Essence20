@@ -1,4 +1,4 @@
-import { ignoresMissEffects } from "../../items/rolls/better-than-the-best-miss-immunity.mjs";
+import { ignoresMissEffects } from "../../items/defenses/miss-effect-immunity.mjs";
 import {
   ENVIRONMENT_EFFECT_PREFIX, ENVIRONMENT_REGION_BEHAVIOR_TYPE, getSceneEnvironment, isInRoughTerrain,
   ROUGH_TERRAIN_EFFECT,
@@ -367,7 +367,7 @@ export async function applyWreckerRoughTerrain(actor, results, checkContext) {
     }
 
     const target = await fromUuid(result.targetUuid);
-    // Seconds Between Click & Boom - items/rolls/better-than-the-best-miss-immunity.mjs.
+    // Seconds Between Click & Boom - items/rolls/better-than-the-best.mjs.
     if (ignoresMissEffects(target, weaponEffect.system?.defenseType)) {
       continue;
     }

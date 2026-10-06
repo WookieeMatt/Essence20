@@ -1,5 +1,8 @@
 import { registerChatButton, registerTurnStart, registerUse } from "../../mechanics/item-hooks.mjs";
-import { G2, T, escape, post, sourceOf } from "../shared/gij-crb-item-lookups.mjs";
+import { G2 } from "../shared/gij-crb-item-lookups.mjs";
+import { TFull as T } from "../shared/item-lang.mjs";
+import { escapeHtml as escape, say as post } from "../shared/chat-lines.mjs";
+import { sourceOf } from "../shared/item-lookups.mjs";
 
 /**
  * Artillery Support (GI JOE CRB, Gear, p.163): "Calling in an air strike requires a full turn, and

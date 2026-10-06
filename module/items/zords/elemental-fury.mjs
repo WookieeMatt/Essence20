@@ -3,9 +3,11 @@ import {
 } from "../../mechanics/item-hooks.mjs";
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 import { getUses, markUsed } from "../../mechanics/resources/scene-clock.mjs";
-import {
-  IDS, T, applyStatus, escapeHtml, isItem, itemsOf,
-} from "../shared/pr-crb-ttsg-item-ids.mjs";
+import { IDS } from "../shared/pr-crb-ttsg-item-ids.mjs";
+import { TSafe as T } from "../shared/item-lang.mjs";
+import { applyStatus } from "../shared/relayed-writes.mjs";
+import { escapeMarkup as escapeHtml } from "../shared/chat-lines.mjs";
+import { isItem, itemsOfAny as itemsOf } from "../shared/item-lookups.mjs";
 
 /**
  * Through the Shattered Grid pieces of the pr3 slice. Each rule is quoted above its code.

@@ -88,7 +88,7 @@ export async function pressRuleButton(message, user = globalThis.game?.user) {
   const targets = (data.targets ?? []).map(lookup).filter(Boolean);
   const ctx = stepContext({ actor, item: lookup(data.itemUuid), targets });
   Object.assign(ctx.vars, data.vars ?? {});
-  // The card itself, for steps that act on it (rules/plugins/tags/small-steps-and-refs.mjs claimCard).
+  // The card itself, for steps that act on it (rules/plugins/cards/claim-card-step.mjs claimCard).
   ctx.buttonMessage = message;
   const finished = await runSteps(data.steps ?? [], ctx);
   if (data.once !== false && data.usedWhenDone && finished !== false) {

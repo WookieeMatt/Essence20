@@ -1,18 +1,21 @@
 import { jest } from '@jest/globals';
 import { registrySnapshot } from '../../mechanics/item-hooks.mjs';
-import { IDS, changed, has, isItem, setChanged, teamOf } from '../shared/resource-team-lookups.mjs';
+import { changed, IDS, setChanged, teamOf } from "../shared/resource-team-lookups.mjs";
+import { has, isItem } from "../shared/item-lookups.mjs";
 import { ENERGON_CAP_EXTRAS, grantTemp, revokeTemp, revokeUpdate, tempGrants } from '../../mechanics/resources/temporary-resources.mjs';
 import { toWealthTest } from '../resources/wealth-tests.mjs';
 import { budgetLeft, upgradeCost } from '../vehicles/motor-pool-connections.mjs';
-import { bodyOfEnergySplit, bodyOfEnergyUnmorph } from '../../mechanics/resources/personal-power-spend.mjs';
+import { bodyOfEnergySplit, bodyOfEnergyUnmorph } from '../resources/body-of-energy.mjs';
+import { isRestUpdate } from '../../mechanics/resources/energon-spend-checkpoint.mjs';
+import { repairBonusHeld } from '../resources/repair-progress-bonus-energon.mjs';
+import { addictionDie, feedDarkEnergonCraving } from '../resources/dark-energon-addiction-attack.mjs';
 import {
-  addictionDie, applyDarkEnergonDefenses, darkEnergonRerolls, feedDarkEnergonCraving, isRestUpdate, pointsPerDose, repairBonusHeld, strainOf, strainSources, synthEnPayer,
-} from '../resources/energon-spend-strains.mjs';
+  applyDarkEnergonDefenses, darkEnergonRerolls, pointsPerDose, strainOf, strainSources, synthEnPayer,
+} from '../resources/energon-strains.mjs';
 import { beastModePackages } from '../forms/beast-mode-tiers.mjs';
 import { anomalyBand, weImproviseForfeit } from '../resources/we-improvise-continuum-anomalies.mjs';
-import {
-  essenceDamage, healStress, spellsToShare,
-} from '../healing/stress-zap-apple-jam.mjs';
+import { essenceDamage, healStress } from '../../mechanics/combat/mlp-stress.mjs';
+import { spellsToShare } from '../magic/circle-of-magical-friends.mjs';
 import '../index.mjs';
 import { getRerollConfigs } from "../../mechanics/rolls/reroll.mjs";
 

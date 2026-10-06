@@ -43,7 +43,10 @@ const { COMBAT_USES } = await import('../items/attacks/show-respect.mjs');
 // slB10: Comms Assault's armor-ignoring is an ignoreArmor Defense rule on the Perk (rules/plugins/combat/ignore-armor.mjs).
 const { ignoreArmorAdjust } = await import('./plugins/combat/ignore-armor.mjs');
 const COMMS_MARK = 'tf1CommsAssault';
-const { SUPPORT_USES } = await import('../items/forms/chassis-mimicry-support-perks.mjs');
+const SUPPORT_USES = [
+  (await import('../items/social/they-called-it-a-glitch.mjs')).GLITCH_USE, (await import('../items/forms/alt-mode-mimicry.mjs')).MIMICRY_USE,
+  (await import('../items/forms/drone-copied-origin.mjs')).DRONE_USE, (await import('../items/resources/solid-state-energon.mjs')).SOLID_ENERGON_USE,
+];
 const { USES: TF3_USES } = await import('../items/rolls/deceptive-warfare.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');

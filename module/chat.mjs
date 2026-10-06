@@ -8,7 +8,7 @@ import { E20 } from "./util/config.mjs";
 import {
   _isCritIsFumble, applyDamage, buildCheckChatData, getSecondaryDamageForButton, toughEnoughDamage,
 } from "./mechanics/combat/combat.mjs";
-import { computeSystemColorVars } from "./mechanics/characters/actor-token-helpers.mjs";
+import { computeSystemColorVars } from "./util/system-color.mjs";
 import {
   actorHasHangUp, actorHasPerk, hasUsedThisEncounter, hasUsedThisRound, hasUsedThisTurn,
   markUsedThisEncounter, markUsedThisRound, markUsedThisTurn,
@@ -1304,7 +1304,7 @@ export const hideDifficultyForNonGm = function (message, html) {
 
 // Outlines a chat card in the speaking Actor's own system.color, the same
 // --e20-system-color mechanism the actor sheet's e20-border-accent trim already uses
-// (mechanics/characters/actor-token-helpers.mjs) - unset when the actor has no color chosen (or there's no actor at all,
+// (mechanics/world/token-sync.mjs) - unset when the actor has no color chosen (or there's no actor at all,
 // e.g. a GM-only message), leaving the card on its default themed border.
 // Called on the renderChatMessageHTML hook.
 export const applyChatMessageSystemColor = function (message, html) {

@@ -198,7 +198,7 @@ Also still skipped, unchanged from regC:
 
 | Item | Still code because |
 |---|---|
-| Seconds Between Click & Boom | The "a miss has no effect" half is in `items/rolls/better-than-the-best-miss-immunity.mjs`, outside this region. |
+| Seconds Between Click & Boom | The "a miss has no effect" half is in `items/rolls/better-than-the-best.mjs`, outside this region. |
 | Exterminator | The `exterminatorEligible` flag that rollSkill reads for the Reroll condition. A rule can't hand "this roll matched rule X" to the reroll. |
 
 ## What would unblock the most

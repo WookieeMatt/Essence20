@@ -3,7 +3,8 @@ import { ZORD2, megaformsContaining } from '../zords/combiner-roster-helpers.mjs
 import { desiredAttacks, scaledEffect, strongest, countGeneratedUse, perSceneExhausted } from '../zords/megaform-attacks.mjs';
 import { applyFocus, coreBodyDerived, focusToggles, mergeCost, mergeReach, storyPointCost, tokenGap } from '../zords/combiner-merge.mjs';
 import { ineligibleZords, spectrumOf } from '../zords/zord-feature-picks.mjs';
-import { roughRegionsAt } from '../gear/dozer-blade-shinobi.mjs';
+import { roughRegionsAt } from '../gear/dozer-blade.mjs';
+import '../defenses/shinobi-of-the-63rd-hexagram.mjs';
 import { zord2WeaponUnusable } from '../attacks/shield-mode-unusable-weapons.mjs';
 import { registrySnapshot } from '../../mechanics/item-hooks.mjs';
 
@@ -40,7 +41,7 @@ beforeEach(() => {
 
 test('every module registers with the extension registry', () => {
   const reg = registrySnapshot();
-  expect(reg.uses.map(u => u.id)).toEqual(expect.arrayContaining(['zord2-megaform-trait', 'zord2-combiner-merge', 'zord2-zord-features', 'zord2-gear-modes']));
+  expect(reg.uses.map(u => u.id)).toEqual(expect.arrayContaining(['zord2-megaform-trait', 'zord2-combiner-merge', 'zord2-zord-features', 'zord2-dozer-blade', 'zord2-shinobi']));
   // Hybridization is the Perk's own rules (module/rules/conv12-slH12.test.js).
   expect(reg.uses.map(u => u.id)).not.toContain('zord2-hybridization');
   expect(reg.costRules.some(r => r.id == 'zord2FastShift')).toBe(false);

@@ -207,7 +207,10 @@ const { pressRuleButton } = await import('./buttons.mjs');
 const { ruleRollSources, ruleRequisitionAccess, ruleSpecializes, ruleDialogSwitches, applyRuleSwitches, ruleMovement, ruleSurpriseModes } = await import('./adapter.mjs');
 const { validateRule } = await import('./types.mjs');
 const { registerCheck, setWorldLookups } = await import('./predicate.mjs');
-const eTypes = await import('./plugins/combat/hazard-terrain-targets.mjs');
+const eTypes = {
+  ...(await import('./plugins/combat/hazard-terrain-targets.mjs')), ...(await import('./plugins/resources/kit-prerequisite.mjs')),
+  ...(await import('./plugins/combat/equipment-broke.mjs')),
+};
 const eDerived = await import('./plugins/effects/derived-stages.mjs');
 const eLegacy = await import('./plugins/marks/legacy-marks.mjs');
 

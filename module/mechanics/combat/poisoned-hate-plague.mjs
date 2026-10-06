@@ -1,7 +1,9 @@
 import {
   registerAfterDamage, registerChatButton, registerDerived, registerHitRider, registerRest, registerRollSources,
 } from "../item-hooks.mjs";
-import { onceHook, onHook, say, T } from "../../items/shared/item-lookups-hook-wrappers.mjs";
+import { onceHook, onHook } from "../../items/shared/hooks-and-clients.mjs";
+import { say } from "../../items/shared/chat-lines.mjs";
+import { T } from "../../items/shared/item-lang.mjs";
 
 /**
  * Two Conditions: Poisoned (Welcome to Night Vale Host Guide p.48) and the Hate Plague (Transformers

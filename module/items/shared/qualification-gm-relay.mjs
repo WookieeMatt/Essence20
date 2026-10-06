@@ -1,7 +1,9 @@
 /**
  * Shared bits for the qualify1 extension modules: item identity, the compendium ids this slice
- * automates, and a tiny GM relay for writes to an actor the clicking user doesn't own.
+ * automates, and a tiny GM relay for writes to an actor the clicking user doesn't own. sourceOf,
+ * idOf and the lang helper live in item-lookups.mjs and item-lang.mjs.
  */
+import { idOf, sourceOf } from "./item-lookups.mjs";
 
 export const Q1 = {
   // Cobra Codex, Firestarter Ranger, 10th level, p.58
@@ -19,16 +21,6 @@ export const Q1 = {
 export const Q1_UPGRADE = {
   silencer: 'rSP76BWjYaifJLIZ',
 };
-
-
-export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-}
-
-/** The trailing 16-char _id of a compendium uuid (or the id itself). */
-export function idOf(uuid) {
-  return uuid ? String(uuid).split('.').pop() : null;
-}
 
 /** The actor's items that came from this compendium uuid (or bare _id, any pack). */
 export function itemsFrom(actor, uuidOrId) {
@@ -49,18 +41,9 @@ export function itemsFrom(actor, uuidOrId) {
   });
 }
 
-export function itemFrom(actor, uuidOrId) {
-  return itemsFrom(actor, uuidOrId)[0] ?? null;
-}
-
+/** Whether the actor holds an item from this compendium uuid (or bare _id, any pack). */
 export function has(actor, uuidOrId) {
   return itemsFrom(actor, uuidOrId).length > 0;
-}
-
-export const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-
-export function escape(text) {
-  return foundry?.utils?.escapeHTML ? foundry.utils.escapeHTML(String(text ?? '')) : String(text ?? '');
 }
 
 /* -------------------------------------------- */

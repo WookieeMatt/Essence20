@@ -2534,7 +2534,7 @@ describe("_prepareActions", () => {
 });
 
 describe("_prepareActions agrees with getNumActions", () => {
-  /* The budget used to be derived here a second time, independently of mechanics/characters/actor-token-helpers.mjs#
+  /* The budget used to be derived here a second time, independently of mechanics/world/token-sync.mjs#
      getNumActions - the helper that already drove the sheet's own "1M, 1S, 1F" readout. The two
      silently disagreed whenever Speed's .max and .value differed, so the sheet showed one number
      beside a different set of pips. Live testing caught it; these pin the agreement. */

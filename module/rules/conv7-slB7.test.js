@@ -6,7 +6,7 @@ import { rebuildIndex } from './index.mjs';
 import { ruleDefenseAdjust, ruleRequisitionAccess, ruleRollSources } from './adapter.mjs';
 import { registerCheck, setWorldLookups } from './predicate.mjs';
 import { fireTriggers, runUse, useAvailable, useRulesOf } from './triggers.mjs';
-import { TF1, favoriteWeaponOf } from '../items/shared/condition-damage-buttons.mjs';
+import { favoriteWeaponOf, TF1 } from "../items/shared/condition-damage-buttons.mjs";
 
 /**
  * Slice round 7, part slB7 (tf1, tf2, tf3, fix3-tf, other2): items converted from hand-written code to

@@ -27,7 +27,7 @@ beforeAll(async () => {
   global.Hooks = { on: jest.fn(), once: jest.fn(), callAll: jest.fn() };
   global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
   ({ G2 } = await import('../shared/gij-crb-item-lookups.mjs'));
-  perks = await import('../social/grandmaster-tactics-perks.mjs');
+  perks = { ...(await import('../rolls/nose-for-trouble.mjs')), ...(await import('../social/queens-gambit.mjs')) };
   shield = await import('../defenses/personal-shield-uses.mjs');
   reckless = await import('../resources/reckless-abandon-end.mjs');
   vehicles = await import('../vehicles/roll-cage.mjs');

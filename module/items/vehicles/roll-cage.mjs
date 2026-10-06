@@ -1,5 +1,6 @@
 import { registerDamageModifier } from "../../mechanics/item-hooks.mjs";
-import { T, post } from "../shared/gij-crb-item-lookups.mjs";
+import { TFull as T } from "../shared/item-lang.mjs";
+import { say as post } from "../shared/chat-lines.mjs";
 // Roll Cage is a CrashProtection rule on its pack item (rules/plugins/combat/immunity-readers.mjs).
 import { crashProtectionOf } from "../../rules/plugins/combat/immunity-readers.mjs";
 

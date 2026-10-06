@@ -12,7 +12,12 @@
  * and go when Beast Mode is switched off (the flag cleared) or when the scene ends.
  */
 import { registerSceneAdvanced } from "../../mechanics/item-hooks.mjs";
-import { IDS, onHook, T, changed, has, isActiveGm, num, worldActors } from "../shared/resource-team-lookups.mjs";
+import { changed, IDS } from "../shared/resource-team-lookups.mjs";
+import { isActiveGm, onHook } from "../shared/hooks-and-clients.mjs";
+import { T } from "../shared/item-lang.mjs";
+import { has } from "../shared/item-lookups.mjs";
+import { num } from "../shared/numbers.mjs";
+import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 
 const GRANT_FLAG = 'beastModeGrantedItemId';
 const EXTRA_FLAG = 'beastModeExtraIds';

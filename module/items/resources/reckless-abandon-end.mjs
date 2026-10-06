@@ -1,5 +1,9 @@
 import { registerAfterDamage, registerTurnStart } from "../../mechanics/item-hooks.mjs";
-import { G2, T, hasItem, itemsOf, post, roundStamp, sourceOf } from "../shared/gij-crb-item-lookups.mjs";
+import { G2 } from "../shared/gij-crb-item-lookups.mjs";
+import { TFull as T } from "../shared/item-lang.mjs";
+import { has as hasItem, itemsOf, sourceOf } from "../shared/item-lookups.mjs";
+import { say as post } from "../shared/chat-lines.mjs";
+import { roundStamp } from "../shared/turn-stamps.mjs";
 
 /**
  * Reckless Abandon (GI JOE CRB, Renegade, p.96): "You cannot use kits while fighting with Reckless

@@ -1,8 +1,8 @@
 import { registerRollSources } from "../../mechanics/item-hooks.mjs";
 import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
-import {
-  flagOf, nameOf, stampOpen, TF3,
-} from "../shared/bot-alt-mode-readers.mjs";
+import { flagOf, nameOf } from "../shared/item-lookups.mjs";
+import { stampOpen } from "../shared/turn-stamps.mjs";
+import { TF3 } from "../shared/tf-crb-tf-one-item-ids.mjs";
 
 /**
  * Transformers CRB / Transformers One Sourcebook - the Roll Options Dialog's automatic sources for the tf3 slice

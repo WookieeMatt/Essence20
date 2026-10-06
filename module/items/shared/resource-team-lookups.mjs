@@ -1,10 +1,12 @@
 /**
- * Shared bits for the "resource" extension slice (Item Review 2026-09-28): item identity, the
- * compendium uuids this slice keys on, and small Foundry wrappers every module here needs.
+ * Shared bits for the "resource" extension slice (Item Review 2026-09-28): the compendium uuids
+ * this slice keys on, the Party-roster team reader and the update-diff readers. The generic item,
+ * lang, chat, relayed-write, number and hook helpers live in item-lookups.mjs, item-lang.mjs,
+ * chat-lines.mjs, relayed-writes.mjs, numbers.mjs and hooks-and-clients.mjs.
  *
  * Nothing in this file imports a heavy module - see mechanics/item-hooks.mjs's import-cycle note.
  */
-import { hasSourced, worldActors } from "../../mechanics/companions/companion-link.mjs";
+import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 
 const C = pack => `Compendium.essence20.${pack}.Item.`;
 
@@ -28,68 +30,6 @@ export const IDS = {
   camper: `${C('knights_of_canterlot')}dMEFcqcain5oS2mJ`,
 };
 
-export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? '';
-}
-
-/** Whether an item is (a copy of) the given compendium item. Never matches an empty uuid. */
-export function isItem(item, uuid) {
-  const source = sourceOf(item);
-  return !!source && !!uuid && source == uuid;
-}
-
-/** Whether the actor carries any item (Perk, Hang-Up, gear...) copied from the uuid. */
-export function has(actor, uuid) {
-  return !!uuid && hasSourced(actor, uuid);
-}
-
-export function itemsOf(actor) {
-  const items = actor?.items;
-  if (!items) {
-    return [];
-  }
-
-  return Array.isArray(items.contents) ? items.contents : (typeof items[Symbol.iterator] == 'function' ? [...items] : []);
-}
-
-export function findItem(actor, uuid) {
-  return itemsOf(actor).find(item => isItem(item, uuid)) ?? null;
-}
-
-export function countItems(actor, uuid) {
-  return itemsOf(actor).filter(item => isItem(item, uuid)).length;
-}
-
-export { worldActors };
-
-export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
-
-/** A plain chat line spoken by the actor. */
-export async function say(actor, content) {
-  return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content });
-}
-
-/** Whether this client should run a GM-side sweep (exactly one client does). */
-export function isActiveGm() {
-  const active = game.users?.activeGM;
-  return active ? !!active.isSelf : !!game.user?.isGM;
-}
-
-/**
- * Update an actor this user may not own, through the GM when needed.
- * @param {Actor} actor
- * @param {Object} update
- * @param {Object} [options]
- */
-export async function writeActor(actor, update, options = {}) {
-  const { needsGmRelay, relayToGm } = await import("../../mechanics/world/gm-relay.mjs");
-  if (needsGmRelay(actor)) {
-    return relayToGm(actor, 'update', [update, options]);
-  }
-
-  return actor.update(update, options);
-}
-
 /** The Party actors this actor is on the roster of. */
 export function partiesOf(actor) {
   return worldActors().filter(party => party.type == 'party'
@@ -106,16 +46,6 @@ export function teamOf(actor) {
   }
 
   return [...seen.values()].filter(Boolean);
-}
-
-export function targetedActors() {
-  return [...(game.user?.targets ?? [])].map(token => token.actor).filter(Boolean);
-}
-
-/** Reads a numeric path off an actor, 0 when missing. */
-export function num(value) {
-  const n = Number(value);
-  return Number.isFinite(n) ? n : 0;
 }
 
 /**
@@ -158,9 +88,4 @@ export function setChanged(changes, path, value) {
   }
 
   node[keys.at(-1)] = value;
-}
-
-/** Hooks.on, when there is a Hooks (not under Jest). */
-export function onHook(name, fn) {
-  return globalThis.Hooks?.on?.(name, fn);
 }

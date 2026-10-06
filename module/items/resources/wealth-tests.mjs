@@ -17,7 +17,10 @@
  * Wealth skill here, carrying the skill's own shifts with it (the Requisition call passes none).
  */
 import { registerPreRoll } from "../../mechanics/item-hooks.mjs";
-import { IDS, T, findItem, has, num } from "../shared/resource-team-lookups.mjs";
+import { IDS } from "../shared/resource-team-lookups.mjs";
+import { T } from "../shared/item-lang.mjs";
+import { findSourced as findItem, has } from "../shared/item-lookups.mjs";
+import { num } from "../shared/numbers.mjs";
 
 export function wealthSourceFor(actor) {
   return findItem(actor, IDS.moneyTalks) ?? findItem(actor, IDS.capableFreelancer);
