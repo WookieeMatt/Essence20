@@ -10,7 +10,10 @@
       {"type":"RollModifier","scope":"crew","edge":true,"when":["self:toggle:camo","skill:infiltration"]},
       {"type":"RollModifier","edge":true,"when":["self:type:vehicle","self:toggle:camo","skill:infiltration"]},
       {"type":"RollModifier","scope":"crew","downshift":2,"when":["self:toggle:camo",{"any":["skill:acrobatics","skill:driving","skill:finesse","skill:infiltration","skill:initiative","skill:targeting"]}]},
-      {"type":"RollModifier","downshift":2,"when":["self:type:vehicle","self:toggle:camo",{"any":["skill:acrobatics","skill:driving","skill:finesse","skill:infiltration","skill:initiative","skill:targeting"]}]}
+      {"type":"RollModifier","downshift":2,"when":["self:type:vehicle","self:toggle:camo",{"any":["skill:acrobatics","skill:driving","skill:finesse","skill:infiltration","skill:initiative","skill:targeting"]}]},
+      {"type":"Movement","label":"Camo Netting up: -10 ft Movement","movement":"ground","stage":"vehicle","op":"add","value":-10,"when":["self:type:vehicle","self:toggle:camo"]},
+      {"type":"Movement","label":"Camo Netting up: -10 ft Movement","movement":"aerial","stage":"vehicle","op":"add","value":-10,"when":["self:type:vehicle","self:toggle:camo"]},
+      {"type":"Movement","label":"Camo Netting up: -10 ft Movement","movement":"swim","stage":"vehicle","op":"add","value":-10,"when":["self:type:vehicle","self:toggle:camo"]}
     ],
     "automation": {
       "status": "full",

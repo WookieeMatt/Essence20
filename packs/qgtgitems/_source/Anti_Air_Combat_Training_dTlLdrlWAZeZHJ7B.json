@@ -5,6 +5,9 @@
   "_id": "dTlLdrlWAZeZHJ7B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Anti-Air Combat Training (ignore Evasive Maneuvers)","immune":["evasiveManeuvers"],"when":["attack"]}
+    ],
     "prerequisites": {"when":["self:skill:targeting>=d6"]},
     "automation": {
       "status": "full",

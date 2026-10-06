@@ -281,20 +281,21 @@ export async function rollVs(actor, skill, dif, extra = {}) {
 /**
  * One Skill Test against several creatures' Defense at once (Monster Form's "all creatures within
  * 10 feet"): targets them and rolls with that Defense.
- * @returns {Promise<Array<{targetUuid, success}>>}
+ * `extra` - more dataset flags for the roll (a rules step's stepDamage, isTakedown...).
+ * @returns {Promise<Array<{targetUuid, success, multiplier}>>}
  */
-export async function rollVsMany(actor, skill, actors, defenseType) {
+export async function rollVsMany(actor, skill, actors, defenseType, essenceOverride = null, extra = null) {
   const ids = actors.map(a => tokenOf(a)?.id).filter(Boolean);
   if (!ids.length) {
     return [];
   }
 
   canvas?.tokens?.setTargets?.(ids);
-  const essence = CONFIG.E20?.skillToEssence?.[skill] ?? 'strength';
-  const result = await actor?._dice?.rollSkill?.({ skill, essence, shiftUp: 0, shiftDown: 0, defenseType }, actor);
+  const essence = essenceOverride ?? CONFIG.E20?.skillToEssence?.[skill] ?? 'strength';
+  const result = await actor?._dice?.rollSkill?.({ ...(extra ?? {}), skill, essence, shiftUp: 0, shiftDown: 0, defenseType }, actor);
   clearTargets();
   const rows = result?.outcomes?.flatMap(outcome => outcome.results ?? []) ?? result?.results ?? [];
-  return rows.map(row => ({ targetUuid: row.targetUuid, success: !!row.success }));
+  return rows.map(row => ({ targetUuid: row.targetUuid, success: !!row.success, multiplier: Number(row.multiplier) || (row.success ? 1 : 0) }));
 }
 
 /* -------------------------------------------- */

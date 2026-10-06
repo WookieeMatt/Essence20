@@ -21,8 +21,10 @@ import { grantPerkOutright } from "../../sheet-handlers/perk-handler.mjs";
  * same honour-system drop this project applies to every other unverifiable qualifier. The picker
  * deliberately still offers everything rather than guessing at a filter, since a wrong filter would
  * hide legal choices rather than merely allow illegal ones.
+ *
+ * The Perk's own `added` Trigger runs it (the pickGeneralPerk step - rules/plugins/picks/general-perk-step.mjs); A Hint of
+ * Independence (mechanics/resources/grants.mjs) calls it too.
  */
-export const WHY_DO_I_KNOW_THAT_ID = "Compendium.essence20.across_the_stars.Item.ugJU6pzzWNesCn4f";
 
 /**
  * Every General Perk in an enabled sourcebook, minus the ones the actor already holds - offering a

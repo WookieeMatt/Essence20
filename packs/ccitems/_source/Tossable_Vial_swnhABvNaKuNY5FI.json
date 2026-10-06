@@ -5,6 +5,10 @@
   "_id": "swnhABvNaKuNY5FI",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Thrown long range 50 ft (Tossable Vial)","stacks":true,"items":["item:type:weaponEffect","item:onHost","not:item:data:system.range.value>0"],"path":"system.range.long","op":"set","value":50},
+      {"type":"ItemModifier","label":"Thrown range 20 ft (Tossable Vial)","stacks":true,"items":["item:type:weaponEffect","item:onHost","not:item:data:system.range.value>0"],"path":"system.range.value","op":"set","value":20}
+    ],
     "prerequisites": {"when":["host:data:system.isPoison",{"any":["host:data:system.poisonApplication.contact","host:data:system.poisonApplication.inhaled"]}]},
     "automation": {
       "status": "full",

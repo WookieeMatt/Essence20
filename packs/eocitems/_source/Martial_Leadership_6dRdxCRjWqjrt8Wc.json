@@ -5,6 +5,9 @@
   "_id": "6dRdxCRjWqjrt8Wc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Martial Leadership","steps":[{"do":"target","max":1},{"do":"rollVsEach","skill":"persuasion","defense":"cleverness","to":"target","onHit":[{"do":"choose","prompt":"What does {target} take on their next test?","options":[{"label":"↓1","steps":[{"do":"bank","downshift":1,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"]}]},{"label":"An Edge","steps":[{"do":"bank","edge":true,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"]}]}]}]}]}
+    ],
     "prerequisites": {"when":["self:skill:persuasion>=d4"]},
     "automation": {
       "status": "full",

@@ -5,6 +5,9 @@
   "_id": "RhSRS4n3dG9TQ92L",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Teleport the target (Teleporting Beam)","event":"hit","when":["item:own"],"steps":[{"do":"pickPoint","prompt":"Click the space to teleport the target to (within 60 ft)."},{"do":"moveTo","to":"target","maxRange":60}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: casting makes a Spellcasting attack; on a hit you click an empty space within 60 ft and the target is moved there.</p>"

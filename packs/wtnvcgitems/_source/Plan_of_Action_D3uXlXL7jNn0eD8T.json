@@ -5,6 +5,10 @@
   "_id": "D3uXlXL7jNn0eD8T",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Plan of Action","when":["not:self:hasItem:Compendium.essence20.gi_joe_crb.Item.j05tN97KZNzl5jTF"],"steps":[{"do":"pickAlly"},{"do":"bank","upshift":"max(1, @item.system.advances.currentValue)","to":"targets","grantDouble":true,"until":"combat","appliesWhen":["not:roll:initiative"]}]},
+      {"type":"Use","label":"Plan of Action (Inspiration: up to two allies)","when":["self:hasItem:Compendium.essence20.gi_joe_crb.Item.j05tN97KZNzl5jTF"],"steps":[{"do":"pickAlly","max":2},{"do":"bank","upshift":"max(1, @item.system.advances.currentValue) + 1","to":"targets","grantDouble":true,"until":"combat","appliesWhen":["not:roll:initiative"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Move action): an ally gets ↑1 on their next Skill Test.</p>"

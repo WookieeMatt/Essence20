@@ -5,6 +5,9 @@
   "_id": "GuardianBlast000",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Lead a Guardian Blast at the target","steps":[{"do":"target","max":1},{"do":"rememberTarget","var":"foe"},{"do":"setVar","key":"dif","value":"@target.system.defenses.evasion.total"},{"do":"checkAllies","prompt":"Who joins the Guardian Blast? Each spends their Standard action."},{"do":"spendAction","action":"standard"},{"do":"groupTest","skill":"targeting","dif":"@var.dif","cost":"standard","var":"blast"},{"do":"button","label":"Resolve the Guardian Blast","steps":[{"do":"groupTally","var":"blast"},{"do":"damage","to":"varActor:foe","amount":5,"damageType":"energy","when":["var:groupSuccess>=1"]},{"do":"chat","text":"Guardian Blast hits for 5 Energy damage.","when":["var:groupSuccess>=1"]},{"do":"chat","text":"Guardian Blast misses ({var.successes} of {var.participantCount} hit).","when":["var:groupSuccess<1"]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: pick who joins in; each rolls Targeting against the target's Evasion from the chat card and spends their Standard action. Resolve deals 5 Energy damage if at least half of them hit.</p><p>Left to the table: everyone moving within 5 ft of two allies.</p>"

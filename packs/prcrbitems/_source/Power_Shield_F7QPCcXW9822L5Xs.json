@@ -4,6 +4,9 @@
   "_id": "F7QPCcXW9822L5Xs",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Power Shield: switch the shield on","event":"powerUsed","when":["item:own"],"steps":[{"do":"setEffects","effects":[{"on":true}]},{"do":"chat","text":"{name} summons the Power Shield."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend 1 Power to switch on its effect for +2 Toughness while Morphed.</p><p>Left to the table: it should last until you de-Morph (the effect runs out after 10 rounds), and handing the shield to someone else.</p>"

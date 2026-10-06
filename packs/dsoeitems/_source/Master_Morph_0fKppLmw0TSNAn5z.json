@@ -5,6 +5,11 @@
   "_id": "0fKppLmw0TSNAn5z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Change shape (press again to change back)","steps":[{"do":"changeShape"}]},
+      {"type":"ShapeOption","kind":"skill","key":"morphSkill","label":"E20.Mlp1MorphSkill"},
+      {"type":"RollModifier","upshift":2,"when":["shape:skill:morphSkill"]}
+    ],
     "prerequisites": {"when":["ask:Ability to change shape"]},
     "automation": {
       "status": "full",

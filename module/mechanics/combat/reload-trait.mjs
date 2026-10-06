@@ -1,7 +1,5 @@
-import { RELOAD_TWICE, TRAIT_UPGRADE, weaponHasUpgrade } from "./weapon-traits.mjs";
-import { hasUpgrade, UPGRADE } from "../../items/attacks/weapon-upgrades.mjs";
-import { actorHasPerk } from "../characters/perks.mjs";
-import { getUses, markUsed } from "../resources/scene-clock.mjs";
+import { RELOAD_TWICE } from "./weapon-traits.mjs";
+import { ruleSkipsReload } from "../../rules/plugins/combat/reload-skip.mjs";
 
 /**
  * Reload (GI Joe CRB, Weapon Effects and Traits, p.147; the identical wording recurs in every
@@ -102,54 +100,18 @@ export async function markBurstFiredThisRound(weapon) {
   }
 }
 
-const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
-// Rapid Reload (GI Joe CRB, Infantry base, 3rd level, p.79): "reloading weapons with the Reload
-// trait is a Free action for you."
-export const RAPID_RELOAD_ID = `${GI_JOE_CRB}c0woQ6aEyVd4DBvA`;
-// Deep Magazines (GI Joe CRB, Heavy Ordnance Focus, 10th level, p.111): "ignore the first time you
-// would need to reload per combat."
-// The Transformers CRB's own Rapid Reload (Gunner, p.68) - the same rule under its own id.
-export const RAPID_RELOAD_TF_ID = "Compendium.essence20.tf_crb.Item.Vj0RpJmj7XNKXphR";
-export const DEEP_MAGAZINES_ID = `${GI_JOE_CRB}REVp8LHYJFOqQ597`;
-// Ammo Belt (GI Joe CRB and Transformers CRB, Weapon Upgrades): "Once per scene, reload this weapon
-// as a Free action instead of a Move action." The same _id in both books' packs.
-const AMMO_BELT_ITEM_ID = '92V9QrCXJYmY2p7O';
-const AMMO_BELT_USED_FLAG = 'ammoBeltUsedThisScene';
-const DEEP_MAGAZINES_USED_FLAG = 'deepMagazinesUsedThisCombat';
+// Rapid Reload (both printings), the Ammo Belt upgrade and the Bullpup upgrade are ActionCost {action: reload} rules on
+// their items now (rules/plugins/resources/action-kinds.mjs; documents/item.mjs passes the reload's cost context).
 
 /**
- * Whether a weapon carries an Ammo Belt upgrade - attached by hand, or printed on a pre-upgraded
- * weapon such as "Machine Gun (Ammo Belt)". Read off the weapon's own attachment entries.
- * @param {Item} weapon
- * @returns {Boolean}
- */
-export function hasAmmoBelt(weapon) {
-  return Object.values(weapon?.system?.items ?? {}).some(entry => entry?.type == 'upgrade'
-    && (String(entry.uuid ?? '').endsWith(`.${AMMO_BELT_ITEM_ID}`) || entry.name == 'Ammo Belt'))
-    // Bullpup (Intercontinental Adventures p.92): "You can reload this weapon once per scene as a
-    // Free action instead of a Move action" - the Ammo Belt's own benefit.
-    || hasUpgrade(weapon, UPGRADE.bullpup);
-}
-
-/**
- * What reloading this weapon costs this actor right now: a Free action with Rapid Reload, or with
- * the weapon's Ammo Belt if it hasn't been used this scene (which this then spends); otherwise the
- * usual Move action.
+ * What reloading this weapon costs this actor right now: the usual Move action (an ActionCost rule - Rapid Reload, Ammo
+ * Belt, Bullpup - may still make it cheaper when it's paid), or Free for a weapon whose own reload is.
  * @param {Actor} actor
  * @param {Item} weapon
  * @returns {Promise<{action: String, source: ?String}>}   action is 'free' or 'move'; source names
  *   what made it free, for the action-economy log.
  */
 export async function getReloadCost(actor, weapon) {
-  if (actorHasPerk(actor, RAPID_RELOAD_ID) || actorHasPerk(actor, RAPID_RELOAD_TF_ID)) {
-    return { action: 'free', source: 'Rapid Reload' };
-  }
-
-  if (hasAmmoBelt(weapon) && getUses(weapon, AMMO_BELT_USED_FLAG, 'scene') < 1) {
-    await markUsed(weapon, AMMO_BELT_USED_FLAG, { window: 'scene' });
-    return { action: 'free', source: 'Ammo Belt' };
-  }
-
   // A weapon whose own reload is a Free action (the MLP Bow, MLP CRB p.151).
   if (weapon?.flags?.essence20?.reloadAction == 'free') {
     return { action: 'free', source: game.i18n.localize('E20.WeaponTraitReload') };
@@ -171,16 +133,9 @@ export async function requireReload(actor, weapon) {
     return false;
   }
 
-  if (game.combat && actorHasPerk(actor, DEEP_MAGAZINES_ID) && getUses(actor, DEEP_MAGAZINES_USED_FLAG) < 1) {
-    await markUsed(actor, DEEP_MAGAZINES_USED_FLAG);
-    ui.notifications?.info(game.i18n.format('E20.DeepMagazinesSkippedReload', { name: actor?.name ?? '', weapon: weapon.name }));
-    return false;
-  }
-
-  // Extended Mag (Quartermaster's Guide p.34): "Once per scene, ignore the Reload trait."
-  if (weaponHasUpgrade(weapon, TRAIT_UPGRADE.extendedMag) && getUses(weapon, 'extendedMagUsed', 'scene') < 1) {
-    await markUsed(weapon, 'extendedMagUsed', { window: 'scene' });
-    ui.notifications?.info(game.i18n.format('E20.ExtendedMagSkippedReload', { weapon: weapon.name }));
+  // Deep Magazines (first reload per combat) and Extended Mag (once per scene per weapon) are ReloadSkip rules
+  // (rules/plugins/combat/reload-skip.mjs).
+  if (await ruleSkipsReload(actor, weapon)) {
     return false;
   }
 

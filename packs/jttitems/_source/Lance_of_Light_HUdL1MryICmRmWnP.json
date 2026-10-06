@@ -8,7 +8,9 @@
     "prerequisites": {"when":["ask:Defeated a Threat Level 8+ enemy"]},
     "rules": [
       {"type":"RollModifier","scope":"incoming","downshift":2,"when":["self:data:flags.essence20.lanceOfLightActive",{"any":["target:tag:dark dimension","target:tag:dark dimensions","target:tag:dark-dimension","target:tag:darkdimension","target:name~dark dimension","target:name~darkonda"]}]},
-      {"type":"Use","label":"Strike (1 Energy damage)","cost":{"action":"standard"},"when":["self:data:flags.essence20.lanceOfLightActive"],"steps":[{"do":"target","max":1,"beforeCost":true},{"do":"require","beforeCost":true,"check":["target:within:10"],"message":"The target must be within 10 ft."},{"do":"chat","text":"{name} strikes {target} for 1 Energy damage."},{"do":"button","who":"targets","label":"Apply 1 Energy damage","steps":[{"do":"damage","to":"target","amount":1,"damageType":"element"}]}]}
+      {"type":"Use","label":"Strike (1 Energy damage)","cost":{"action":"standard"},"when":["self:data:flags.essence20.lanceOfLightActive"],"steps":[{"do":"target","max":1,"beforeCost":true},{"do":"require","beforeCost":true,"check":["target:within:10"],"message":"The target must be within 10 ft."},{"do":"chat","text":"{name} strikes {target} for 1 Energy damage."},{"do":"button","who":"targets","label":"Apply 1 Energy damage","steps":[{"do":"damage","to":"target","amount":1,"damageType":"element"}]}]},
+      {"type":"Use","label":"Lance of Light on (2 Personal Power)","when":["not:self:data:flags.essence20.lanceOfLightActive"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":2},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.lanceOfLightActive":true}},{"do":"chat","text":"{name} summons the Lance of Light."}]},
+      {"type":"Use","label":"Lance of Light off","when":["self:data:flags.essence20.lanceOfLightActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.lanceOfLightActive":false}},{"do":"chat","text":"{name} dismisses the Lance of Light."}]}
     ],
     "automation": {
       "status": "partial",

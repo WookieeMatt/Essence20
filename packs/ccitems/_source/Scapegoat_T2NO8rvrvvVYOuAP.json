@@ -5,6 +5,9 @@
   "_id": "T2NO8rvrvvVYOuAP",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Hit after a Scapegoat swap: 1 Smarts damage (Scapegoat)","event":"targeted","outcome":"success","when":["roll:entry:scapegoatSwapped"],"steps":[{"do":"essenceDamage","essence":"smarts","amount":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: if your Scapegoat swap was used and the attack still hits, you take 1 Smarts Essence damage and a chat line says so.</p>"

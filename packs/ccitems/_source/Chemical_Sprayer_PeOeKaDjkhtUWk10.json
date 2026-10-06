@@ -5,6 +5,10 @@
   "_id": "PeOeKaDjkhtUWk10",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"15 ft cone (Chemical Sprayer)","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost"],"path":"system.shape","op":"set","value":"cone","slot":"element"},
+      {"type":"ItemModifier","label":"15 ft cone radius (Chemical Sprayer)","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost"],"path":"system.radius","op":"set","value":15,"slot":"element"}
+    ],
     "prerequisites": {"when":["host:data:system.isPoison",{"any":["host:data:system.poisonApplication.contact","host:data:system.poisonApplication.inhaled"]}]},
     "automation": {
       "status": "full",

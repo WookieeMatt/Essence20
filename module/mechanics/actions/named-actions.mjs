@@ -1,9 +1,8 @@
 import { extNamedAction } from "../item-hooks.mjs";
 import { E20 } from "../../util/config.mjs";
 import { setAiming, setBraced, setSprinting } from "./action-economy.mjs";
-import { ACTION_PERK_IDS, hasSourced } from "./action-perks.mjs";
+import { ruleBraceUntilMoved } from "../../rules/plugins/combat/brace-until-moved.mjs";
 import { activateLendAssistance } from "./lend-assistance.mjs";
-import { deactivateInvisibilityOnLendAssistance } from "../../items/senses/invisibility.mjs";
 
 /**
  * What the rules' own combat actions actually DO.
@@ -188,20 +187,14 @@ async function sprint(actor) {
  * grants and the picker.
  *
  * The one handler that can come back cancelled: it asks who is being helped, and an action that
- * helped nobody was never taken, so the caller hands the Standard action back - which is also why
- * Invisibility (Technorganic Secrets p.47, "...until you take the... Lend Assistance... action")
- * only clears on a real result, not a cancelled one: an action refunded was never actually taken.
+ * helped nobody was never taken, so the caller hands the Standard action back. (Invisibility ends on a real assist
+ * through its own lendAssistance Trigger rule.)
  *
  * @param {Actor} actor
  * @returns {Promise<Object>}
  */
 async function lendAssistance(actor) {
-  const result = await activateLendAssistance(actor);
-  if (!result.cancelled) {
-    await deactivateInvisibilityOnLendAssistance(actor);
-  }
-
-  return result;
+  return activateLendAssistance(actor);
 }
 
 /**
@@ -212,7 +205,8 @@ async function lendAssistance(actor) {
  * @returns {Promise<Object>}
  */
 async function brace(actor) {
-  const untilMoved = hasSourced(actor, ACTION_PERK_IDS.integratedBipod);
+  // BraceUntilMoved rules (Integrated Bipod): braced until the actor moves.
+  const untilMoved = ruleBraceUntilMoved(actor);
   await setBraced(actor, true, { untilMoved });
   return {
     message: game.i18n.format(untilMoved ? 'E20.ActionBraceBipodMessage' : 'E20.ActionBraceMessage', { name: actor.name }),

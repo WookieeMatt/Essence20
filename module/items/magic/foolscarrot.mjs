@@ -12,16 +12,12 @@
 // same "the concrete duration is tracked, an early-exit isn't" gap already accepted for Block
 // Magic's own Snag-alternative.
 
-import { activateForWindow, isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 const FOOLSCARROT_FLAG = 'foolscarrotActive';
 
 export function isFoolscarrotActive(actor) {
   return isActiveForWindow(actor, FOOLSCARROT_FLAG, 'scene');
-}
-
-export async function applyFoolscarrot(actor) {
-  await activateForWindow(actor, FOOLSCARROT_FLAG, 'scene');
 }
 
 export async function removeFoolscarrot(actor) {

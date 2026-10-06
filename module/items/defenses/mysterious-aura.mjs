@@ -1,6 +1,5 @@
 import { getNearbyAllyTokens } from "../../mechanics/combat/nearby-allies.mjs";
 import { getNearbyEnemyTokens } from "../../mechanics/combat/nearby-enemies.mjs";
-import { E20 } from "../../util/config.mjs";
 
 /**
  * Mysterious Aura (A Jump Through Time, White Spectrum Modification, replaces Follow Me!, p.45):
@@ -11,7 +10,8 @@ import { E20 } from "../../util/config.mjs";
  * - Protective: you and allies within 20ft gain +2 to one Defense of your choice.
  * - Resplendent: ranged Attacks against targets within 20ft of you suffer ↓1.
  *
- * A single {type, defenseChoice} actor flag (defenseChoice only meaningful for 'protective'),
+ * The Perk's Use rule spends the Power and writes a single {type, defenseChoice} actor flag (defenseChoice only
+ * meaningful for 'protective') - rules/conv15-banked.test.js. The flag is
  * cleared automatically on de-Morph the same way Boosted Vigor's own onMorph hook already clears
  * its Temporary Health. Each of the three effects is a live, non-consumed per-target/per-roll
  * check (can't touch _prepareDefenses directly - the user's own pending Health/Defense-math
@@ -28,64 +28,6 @@ const AURA_RADIUS_FEET = 20;
  */
 export function getMysteriousAura(actor) {
   return actor?.getFlag?.('essence20', AURA_FLAG) ?? null;
-}
-
-/**
- * Prompts for which aura to emit (and, for Protective, which Defense to boost).
- * @returns {Promise<{type: String, defenseChoice: String|null}|null>}   null if cancelled.
- */
-export async function pickMysteriousAura() {
-  const defenseOptions = Object.keys(E20.defenses)
-    .map(key => `<option value="${key}">${game.i18n.localize(E20.defenses[key])}</option>`).join('');
-  const chosen = await foundry.applications.api.DialogV2.wait({
-    window: { title: game.i18n.localize('E20.MysteriousAuraPickTitle') },
-    classes: ["window-app", "e20-window"],
-    content: `<div class="form-group"><label>${
-      game.i18n.localize('E20.MysteriousAuraPickTypeLabel')
-    }</label><select name="type">
-      <option value="imposing">${game.i18n.localize('E20.MysteriousAuraImposing')}</option>
-      <option value="protective">${game.i18n.localize('E20.MysteriousAuraProtective')}</option>
-      <option value="resplendent">${game.i18n.localize('E20.MysteriousAuraResplendent')}</option>
-    </select></div>
-    <div class="form-group"><label>${
-  game.i18n.localize('E20.MysteriousAuraPickDefenseLabel')
-}</label><select name="defenseChoice">${defenseOptions}</select></div>`,
-    modal: true,
-    buttons: [
-      {
-        label: game.i18n.localize('E20.DialogConfirmButton'),
-        action: 'confirm',
-        callback: (event, button) => ({
-          type: button.form.elements.type.value,
-          defenseChoice: button.form.elements.defenseChoice.value,
-        }),
-      },
-      { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-    ],
-  });
-
-  return chosen && chosen != 'cancel' ? chosen : null;
-}
-
-/**
- * Spends 1 Personal Power and prompts for (then banks) a new active aura, replacing any prior one.
- * @param {Actor} actor
- * @returns {Promise<Boolean>}
- */
-export async function activateMysteriousAura(actor) {
-  if (!(actor.system.powers?.personal?.value > 0)) {
-    ui.notifications.warn(game.i18n.localize('E20.RolePointsOverSpent'));
-    return false;
-  }
-
-  const choice = await pickMysteriousAura();
-  if (!choice) {
-    return false;
-  }
-
-  await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
-  await actor.setFlag('essence20', AURA_FLAG, choice);
-  return true;
 }
 
 /**

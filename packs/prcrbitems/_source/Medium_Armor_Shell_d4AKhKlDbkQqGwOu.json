@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Medium Armor Shell: Morphed Toughness from the new Armor Training","event":"added","steps":[{"do":"refreshMorphedToughness"}]},
+      {"type":"Trigger","label":"Medium Armor Shell: Morphed Toughness without it","event":"removed","steps":[{"do":"refreshMorphedToughness"}]}
+    ],
     "prerequisites": {"when":["self:trained:armors.light"]},
     "automation": {
       "status": "full",

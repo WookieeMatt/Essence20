@@ -5,6 +5,10 @@
   "_id": "tLAchrH1qQxk3CBJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Show Of Hands (no weapon, no unarmed attack this scene)","edge":true,"when":[{"any":["skill:deception","skill:intimidation","skill:persuasion"]},"self:itemCount:weapon:equipped<1","not:self:windowUsed:showOfHandsUnarmedAttackUsedThisScene:scene"]},
+      {"type":"Trigger","event":"afterRoll","outcome":"any","label":"Show Of Hands (an unarmed attack this scene)","when":["attack:barehanded"],"steps":[{"do":"markWindow","flag":"showOfHandsUnarmedAttackUsedThisScene","window":"scene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you have no weapon equipped and haven't made an Unarmed attack this scene, your Deception, Intimidation and Persuasion tests have Edge already selected in the Roll Options Dialog.</p>"

@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyFlutteryWings, getFlutteryWingsBonus, isFlutteryWingsActive } from './fluttery-wings.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { getFlutteryWingsBonus, isFlutteryWingsActive } from './fluttery-wings.mjs';
 
 function makeActor(flags = {}) {
   const flagStore = { ...flags };
@@ -22,7 +23,7 @@ describe("isFlutteryWingsActive / applyFlutteryWings", () => {
   test("false by default, true once applied", async () => {
     const actor = makeActor();
     expect(isFlutteryWingsActive(actor)).toBe(false);
-    await applyFlutteryWings(actor);
+    await activateForWindow(actor, 'flutteryWingsActive', 'scene');
     expect(isFlutteryWingsActive(actor)).toBe(true);
   });
 
@@ -30,7 +31,7 @@ describe("isFlutteryWingsActive / applyFlutteryWings", () => {
   // day" used to mean "forever, until someone manually clears it."
   test("clears once the scene ends", async () => {
     const actor = makeActor();
-    await applyFlutteryWings(actor);
+    await activateForWindow(actor, 'flutteryWingsActive', 'scene');
 
     global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
 
@@ -41,7 +42,7 @@ describe("isFlutteryWingsActive / applyFlutteryWings", () => {
 describe("getFlutteryWingsBonus", () => {
   test("+15 while active", async () => {
     const actor = makeActor();
-    await applyFlutteryWings(actor);
+    await activateForWindow(actor, 'flutteryWingsActive', 'scene');
     expect(getFlutteryWingsBonus(actor)).toBe(15);
   });
 

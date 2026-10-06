@@ -5,6 +5,9 @@
   "_id": "vXYDWGbhhIBOx1Ic",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Greased Lightning (target, else you, this scene)","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"markWindow","flag":"greasedLightningActive","window":"scene","to":"targetOrSelf"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Cast: on a success, the targeted creature (or you) can't be given Restrained or Grappled, and its Speed Skill Tests get ↑1, already counted in the Upshift number of its Roll Options Dialog, until the GM advances the scene.</p><p>Left to the table: Edge to escape a hold already in place, Snag on attempts to stop, and removing the ↑1 from Speed tests that aren't about going fast.</p>"

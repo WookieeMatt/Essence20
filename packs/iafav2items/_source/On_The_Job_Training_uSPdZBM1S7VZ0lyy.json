@@ -5,6 +5,9 @@
   "_id": "uSPdZBM1S7VZ0lyy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Gain another Origin Benefit (On-The-Job Training)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickChildEntry","parent":{"type":"origin","tags":["item:line:gij","not:item:nameOfOwned:origin"]},"childType":"perk","prompt":"Which Origin Benefit?"},{"do":"grantPerk","uuid":"{var.picked}"},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "prerequisites": {"when":["self:essence:smarts>=6"]},
     "automation": {
       "status": "full",

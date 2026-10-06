@@ -1,7 +1,7 @@
 /**
- * Power Rangers - Through the Shattered Grid's Mega Defender (Magna Defender). (Better Together, Guardian Blast and
- * the rest of Metallic Armor Power Up! are items/social/better-together.mjs, items/attacks/guardian-blast.mjs and
- * items/defenses/metallic-armor-minions-and-ending.mjs. The Void Touched Origin's Essence trade, the Solarix Shard and
+ * Power Rangers - Through the Shattered Grid's Mega Defender (Magna Defender). (Guardian Blast is its Perk's own rules;
+ * Metallic Armor Power Up! is its Power's own rules (rules/conv16-b.test.js); Better
+ * Together is its items' own rules. The Void Touched Origin's Essence trade, the Solarix Shard and
  * Follow Me! (PR CRB) are rules on their pack items.)
  */
 import {

@@ -5,6 +5,9 @@
   "_id": "1Xy3GpglIFAq3sqc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"NaturalTwenty","label":"A natural 20 succeeds (Critical on a success)"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a natural 20 on the d20 succeeds, and turns an ordinary success into a Critical Success.</p>"

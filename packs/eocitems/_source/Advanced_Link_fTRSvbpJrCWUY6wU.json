@@ -5,6 +5,9 @@
   "_id": "fTRSvbpJrCWUY6wU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Advanced Link","scope":"bondPartner","path":"system.health.max","value":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your bonded ally gains +1 Health. They assign their 2 Essence Increases (and Skills) on their own sheet.</p>"

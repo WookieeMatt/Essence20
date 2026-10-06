@@ -49,21 +49,6 @@ describe('armor rules', () => {
     expect(brawnShortfall(withPerk({ amount: 2 }), armor)).toBe(2);
     expect(brawnShortfall(withPerk({ ignore: true }), armor)).toBe(0);
   });
-
-  test('Reinforced Shell counts only in Alt Mode, and adds Stun in Bot Mode', async () => {
-    const { applyShellMode, shellStunBonus, REINFORCED_SHELL } = await import('../defenses/armor-brawn-reinforced-shell.mjs');
-    const shell = { id: 's', name: 'Shell', type: 'upgrade', flags: { core: { sourceId: REINFORCED_SHELL } }, system: { armorBonus: { value: 2 } } };
-    const actor = { items: items([shell]), system: { canTransform: true, isTransformed: false, defenses: { toughness: { total: 14, string: 'x' } } } };
-    applyShellMode(actor);
-    expect(actor.system.defenses.toughness.total).toBe(12);
-    actor.system.isTransformed = true;
-    applyShellMode(actor);
-    expect(actor.system.defenses.toughness.total).toBe(12);
-    expect(shellStunBonus(actor, { isUnarmed: true, damageType: 'stun' })).toBeNull();
-    actor.system.isTransformed = false;
-    expect(shellStunBonus(actor, { isUnarmed: true, damageType: 'stun' })).toBe(shell);
-    expect(shellStunBonus(actor, { isUnarmed: false, damageType: 'stun' })).toBeNull();
-  });
 });
 
 describe('weapon rules', () => {
@@ -114,8 +99,8 @@ describe('Dino Thunder', () => {
 
   test('powers, Boost pool, and paying', async () => {
     const { DINO, formPowersOf, boostPool, payFormPower, refillBoost, mimicOptions } = await import('../forms/dino-thunder-grid-powers.mjs');
-    const form = mkItem(DINO.form, { dinoThunderPower: 'triceraSkin' });
-    const extra = mkItem(DINO.extra, { dinoThunderPower: 'tRexSpeed' });
+    const form = mkItem(DINO.form, { zord1DinoPower: 'triceraSkin' });
+    const extra = mkItem(DINO.extra, { zord1DinoPower: 'tRexSpeed' });
     const boost = mkItem(DINO.boost);
     const actor = { id: 'a', name: 'A', type: 'playerCharacter', items: items([form, extra, boost]), system: { powers: { personal: { value: 1 } } } };
     actor.update = jest.fn(async () => {
@@ -133,7 +118,7 @@ describe('Dino Thunder', () => {
     await refillBoost(actor);
     expect(boostPool(actor)).toBe(3);
 
-    const mate = { id: 'b', name: 'B', type: 'playerCharacter', items: items([mkItem(DINO.form, { dinoThunderPower: 'pteraScream' })]) };
+    const mate = { id: 'b', name: 'B', type: 'playerCharacter', items: items([mkItem(DINO.form, { zord1DinoPower: 'pteraScream' })]) };
     global.game.actors = [actor, mate];
     expect(mimicOptions(actor).map(o => o.key)).toEqual(['triceraSkin', 'tRexSpeed', 'pteraScream']);
   });

@@ -627,12 +627,24 @@ export function toggleOf(item, key) {
  * @param {Item} ruleItem
  * @returns {String|null}
  */
+/** {sourced.<id>.<path>}: the value at <path> on the rule item's actor's copy of compendium item <id> (16 chars). */
+function sourcedValue(ruleItem, ref) {
+  const id = ref.slice(0, 16);
+  const owner = ruleItem?.parent ?? ruleItem?.actor ?? null;
+  const items = owner?.items?.contents ?? (owner?.items ? [...owner.items] : []);
+  const copy = items.find(item => String(sourceOf(item) ?? '').split('.').pop() == id);
+  return copy ? globalThis.foundry?.utils?.getProperty?.(copy, ref.slice(17)) : undefined;
+}
+
 export function interpolate(text, ruleItem) {
   let missing = false;
   // {choice.<key>} is a ChoiceSet pick; {item.choice} is the item's own system.choice (the pick made
   // through a Perk's built-in choice field, from before rules).
-  const filled = text.replace(/\{(choice\.[\w-]+|item\.choice)\}/g, (match, ref) => {
-    const value = ref == 'item.choice' ? ruleItem?.system?.choice : ruleItem?.flags?.essence20?.rules?.choices?.[ref.slice(7)];
+  // {sourced.<16-char id>.<path>} is a value on the actor's copy of that compendium item (Energy Affinity's
+  // system.choice, read by Self-Preservation's rules - round 15, items1).
+  const filled = text.replace(/\{(choice\.[\w-]+|item\.choice|sourced\.[A-Za-z0-9]{16}\.[\w.]+)\}/g, (match, ref) => {
+    const value = ref == 'item.choice' ? ruleItem?.system?.choice : ref.startsWith('sourced.') ? sourcedValue(ruleItem, ref.slice(8))
+      : ruleItem?.flags?.essence20?.rules?.choices?.[ref.slice(7)];
     if (value === undefined || value === null || value === '') {
       missing = true;
       return '';

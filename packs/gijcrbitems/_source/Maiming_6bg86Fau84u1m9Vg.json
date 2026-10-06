@@ -5,6 +5,9 @@
   "_id": "6bg86Fau84u1m9Vg",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"CriticalOption","essence":"speed","when":["item:onHost"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: on a Critical Success, the critical-effect choice offers 1 damage to the target's Speed. If Surgical is also attached, you pick which one applies.</p>"

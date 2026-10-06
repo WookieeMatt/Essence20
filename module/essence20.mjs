@@ -130,7 +130,6 @@ import { onKitCreated } from "./mechanics/resources/kits.mjs";
 import { sweepTemporary } from "./items/attacks/weapon-perk-uses.mjs";
 import { checkSuppressingEntry, decorateRiderCard, decorateSuppressCard, stampConditionSource } from "./mechanics/combat/target-riders.mjs";
 import { decorateSaveCard } from "./mechanics/combat/save-riders.mjs";
-import { decorateEngineCard } from "./items/vehicles/undo-engine.mjs";
 import { decorateCombinedCard } from "./mechanics/actions/combined-weapons.mjs";
 import { checkProximityBombs, decorateBombCard } from "./items/attacks/planted-bombs.mjs";
 // Import data models
@@ -177,7 +176,7 @@ import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import ThreatBuilder from "./apps/threat-builder.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./mechanics/characters/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
-import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addFlashyButton, addFrenziedAttackButton, addHighDensityButton, addOneUppingButton, addRerollButtons, addSecretHelperButton, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure, runChatDecorators } from "./chat.mjs";
+import { addConsummatePerformerButton, addDefenseBoostButton, addHighDensityButton, addRerollButtons, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure, runChatDecorators } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./util/compendium-browser.mjs";
 import { E20 } from "./util/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./util/enrichers.mjs";
@@ -190,19 +189,11 @@ import { canUsePower } from "./mechanics/characters/power-use.mjs";
 import { getWeaponEffectDamages } from "./mechanics/combat/damage-display.mjs";
 import { getSummonReadyRound, isSummonReady } from "./mechanics/vehicles/zord-summon.mjs";
 import { getVehicleDriver, healStunAtTurnStart } from "./mechanics/combat/combat.mjs";
-import { applyTimeToThinkEdge } from "./items/rolls/time-to-think.mjs";
 import { healRegeneratingShellAtTurnEnd, isPowerAdaptationActive } from "./items/forms/power-adaptation.mjs";
-import { healRapidRescueResponseAtRoundEnd } from "./items/zords/rapid-rescue-response.mjs";
-import { deactivateRushTheLineAtTurnEnd, isRushTheLineActive } from "./items/movement/rush-the-line.mjs";
-import { deactivateFrictionlessMovementAtTurnEnd, isFrictionlessMovementActive } from "./items/movement/frictionless-movement.mjs";
+import { isRushTheLineActive } from "./items/movement/rush-the-line.mjs";
+import { isFrictionlessMovementActive } from "./items/movement/frictionless-movement.mjs";
 import { applyOngoingEffectsAtTurnEnd } from "./mechanics/combat/ongoing-effects.mjs";
-import { deactivateExpandedMysticismQuickenAtTurnEnd } from "./items/magic/expanded-mysticism.mjs";
-import { deactivateSprinterBoostAtTurnEnd, isSprinterBoostActive } from "./items/movement/sprinter-boost.mjs";
-import { healUnbeatableAtTurnStart } from "./items/healing/unbeatable.mjs";
-import { applyBravado } from "./items/resources/bravado.mjs";
-import { applyHardCorpsDeferredDefeat } from "./items/defenses/hard-corps.mjs";
-import { applyNoFightingSnag } from "./items/rolls/no-fighting.mjs";
-import { payMetallicArmorMaintenance } from "./items/defenses/metallic-armor.mjs";
+import { isSprinterBoostActive } from "./items/movement/sprinter-boost.mjs";
 import { isImmuneToCondition } from "./mechanics/combat/condition-immunity.mjs";
 import { performPreLocalization } from "./util/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
@@ -888,17 +879,9 @@ Hooks.on("renderChatMessageHTML", (app, html) => {
     addRerollButtons,
     addDefenseBoostButton,
     addConsummatePerformerButton,
-    addSpiteButton,
-    addOneUppingButton,
-    addSecretHelperButton,
-    addSufferButton,
-    addFrenziedAttackButton,
     addHighDensityButton,
-    addExploitWeaknessButton,
-    addFlashyButton,
     decorateBombCard,
     decorateCombinedCard,
-    decorateEngineCard,
     decorateSaveCard,
     decorateRiderCard,
     // Group Skill Tests, Contacts, Issue Command, team cards - items/social/social-cards.mjs.
@@ -1118,14 +1101,7 @@ for (const hookName of ["combatTurn", "combatRound"]) {
     if (actor) {
       healStunAtTurnStart(actor);
 
-      // Metallic Armor Power Up! (Through the Shattered Grid, Grid Power, p.26) - "costs 1
-      // Personal Power at the start of each subsequent turn to maintain" - see
-      // payMetallicArmorMaintenance's own doc comment for what this does and doesn't cover.
-      payMetallicArmorMaintenance(actor);
-
-      // Unbeatable (GI Joe CRB, Renegade base, 11th level, p.97) - see
-      // healUnbeatableAtTurnStart's own doc comment.
-      healUnbeatableAtTurnStart(actor);
+      // (Metallic Armor Power Up!'s 1 Personal Power upkeep is a turnStart Trigger on the Power.)
     }
 
     // Power Adaptation - Regenerating Shell (Across the Stars, Silver Ranger, 9th/18th level,
@@ -1138,25 +1114,9 @@ for (const hookName of ["combatTurn", "combatRound"]) {
     if (endingActor) {
       healRegeneratingShellAtTurnEnd(endingActor);
 
-      // Rush the Line (Factions in Action Vol. 2, Renegade Focus, p.68) - see
-      // deactivateRushTheLineAtTurnEnd's own doc comment. Same "read combat.combatant BEFORE the
-      // update commits" idiom as Regenerating Shell just above.
-      deactivateRushTheLineAtTurnEnd(endingActor);
+      // (Rush the Line, Frictionless Movement and Sprinter end with turnEnd Triggers on their items.)
 
-      // Frictionless Movement (Technorganic Secrets, Mutant Beast Influence Perk, p.47) - see
-      // deactivateFrictionlessMovementAtTurnEnd's own doc comment. Same "read combat.combatant
-      // BEFORE the update commits" idiom as Rush the Line just above.
-      deactivateFrictionlessMovementAtTurnEnd(endingActor);
-
-      // Expanded Mysticism - Quicken (MLP CRB, Spirit of Magic, 9th level, p.95) - see
-      // items/magic/expanded-mysticism.mjs's own doc comment. Same "read combat.combatant BEFORE the
-      // update commits" idiom as Rush the Line/Frictionless Movement just above.
-      deactivateExpandedMysticismQuickenAtTurnEnd(endingActor);
-
-      // Sprinter (Technorganic Secrets, Hunter's Prowess Quadruped Origin choice, p.44) - see
-      // deactivateSprinterBoostAtTurnEnd's own doc comment. Same "read combat.combatant BEFORE the
-      // update commits" idiom as Frictionless Movement just above.
-      deactivateSprinterBoostAtTurnEnd(endingActor);
+      // (Expanded Mysticism's Quicken ends with a turnEnd Trigger on its Perk.)
 
       // Friendship Circle (MLP CRB) - "until the end of the pony who formed the Friendship
       // Circle's next turn". Same ending-actor idiom; items/social/friendship-circle.mjs decides.
@@ -1172,14 +1132,7 @@ for (const hookName of ["combatTurn", "combatRound"]) {
   });
 }
 
-/* R.R.R. (Rapid Rescue Response) (Across the Stars, Zord Feature, p.104) - "regain 1 Health at the
-   end of every round," with no "whose turn is it" scoping at all (unlike Regenerating Shell's own
-   per-TURN heal just above), so this is its own combatRound-only hook rather than joining the
-   combatTurn/combatRound loop above - see healRapidRescueResponseAtRoundEnd's own doc comment for
-   why it walks every Zord in the fight instead of a single ending actor. */
-Hooks.on("combatRound", (combat) => {
-  healRapidRescueResponseAtRoundEnd(combat);
-});
+/* (R.R.R. (Rapid Rescue Response)'s round-end heal for the Zord's crew is a roundStart Trigger on the Feature.) */
 
 /* Action economy: repaint every open actor sheet when the turn changes, so the header pip row
    reflects the new turn's budget.
@@ -1202,21 +1155,8 @@ Hooks.on("combatTurnChange", () => {
   }
 });
 
-/* Time To Think (MLP Magic, 3rd level) - see applyTimeToThinkEdge's own doc comment. Checked once,
-   when combat actually begins, by which point every combatant's Initiative should already be
-   set. */
-Hooks.on("combatStart", (combat) => {
-  applyTimeToThinkEdge(combat);
-
-  // Bravado (GI Joe CRB, Renegade base, 13th level, p.97) - see applyBravado's own doc comment.
-  applyBravado(combat);
-});
-
-/* Hard Corps (Sgt Slaughter Sourcebook, Marine Origin Benefit, p.8) - see
-   applyHardCorpsDeferredDefeat's own doc comment. deleteCombat (fired when a GM ends/deletes the
-   encounter) is this codebase's own first "combat has ended" signal - every other "until the end
-   of the scene" clause elsewhere in this project has so far just gone unenforced rather than
-   needing this. */
+/* deleteCombat (fired when a GM ends/deletes the encounter): things that end with the combat. (Hard Corps' debt is a
+   combatEnd Trigger on its item.) */
 Hooks.on("deleteCombat", (combat) => {
   // Every client hears the combat end; the active GM alone writes the results below, so no player
   // client tries (and fails) to update an actor it doesn't own, and nothing is written twice.
@@ -1231,12 +1171,7 @@ Hooks.on("deleteCombat", (combat) => {
     }
   }
 
-  applyHardCorpsDeferredDefeat(combat);
-
-  /* No Fighting?! (Knights of Canterlot, Fighter Influence Hang-Up, p.16) - see
-     items/rolls/no-fighting.mjs's own doc comment. Same "combat has ended" signal as Hard Corps
-     just above. */
-  applyNoFightingSnag(combat);
+  // (No Fighting?!'s Snag for the next Social test is a combatEnd Trigger rule on the Hang-Up.)
 
   /* Lingering Area of Effect regions whose duration is tied to the encounter rather than to a
      clock - "1 scene", plus any round-counting area that outlived the combat it was counting

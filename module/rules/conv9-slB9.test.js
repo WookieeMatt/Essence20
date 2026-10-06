@@ -39,15 +39,11 @@ const { costRulesFor } = await import('./actions.mjs');
 const { pressRuleButton } = await import('./buttons.mjs');
 const { legacyChoiceUpdates } = await import('./legacy-choices.mjs');
 const { runPostRoll, registrySnapshot } = await import('../mechanics/item-hooks.mjs');
-const { COMBAT_USES } = await import('../items/attacks/show-respect.mjs');
+// (The tf1 combat file - items/attacks/show-respect.mjs - is gone: Show Respect is its Hang-Up's rules, round 14.)
 // slB10: Comms Assault's armor-ignoring is an ignoreArmor Defense rule on the Perk (rules/plugins/combat/ignore-armor.mjs).
 const { ignoreArmorAdjust } = await import('./plugins/combat/ignore-armor.mjs');
 const COMMS_MARK = 'tf1CommsAssault';
-const SUPPORT_USES = [
-  (await import('../items/social/they-called-it-a-glitch.mjs')).GLITCH_USE, (await import('../items/forms/alt-mode-mimicry.mjs')).MIMICRY_USE,
-  (await import('../items/forms/drone-copied-origin.mjs')).DRONE_USE, (await import('../items/resources/solid-state-energon.mjs')).SOLID_ENERGON_USE,
-];
-const { USES: TF3_USES } = await import('../items/rolls/deceptive-warfare.mjs');
+// (Glitch, Mimicry, Drone and Solid-State Energon are their items' own rules now - rules/conv15-items2.test.js.)
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const fromPack = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8'));
@@ -191,7 +187,7 @@ beforeEach(() => {
 
 describe('Decepticon Directive roll-against-many Perks', () => {
   test('no Use buttons left in the slice for them', () => {
-    const ids = [...COMBAT_USES, ...SUPPORT_USES, ...TF3_USES].map(use => use.id);
+    const ids = registrySnapshot().uses.map(use => use.id);
     for (const id of ['tf1MakeAnExample', 'tf1BrutalDisplay', 'tf1CommsAssault', 'tf1FlexibleSwitch', 'tf3OneBotOverAnother']) {
       expect(ids).not.toContain(id);
     }

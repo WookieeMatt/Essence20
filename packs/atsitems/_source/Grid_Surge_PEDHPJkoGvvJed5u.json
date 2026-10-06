@@ -5,6 +5,9 @@
   "_id": "PEDHPJkoGvvJed5u",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Grid Surge","cost":{"resource":{"rolePoints":true},"amount":1},"steps":[{"do":"choose","beforeCost":true,"prompt":"Which Grid Surge?","options":[{"label":"Temporary Construct","steps":[{"do":"setVar","key":"opt","value":"construct"}]},{"label":"Toughness Boost","steps":[{"do":"setVar","key":"opt","value":"toughness"}]},{"label":"Reshape the Power Weapon","steps":[{"do":"setVar","key":"opt","value":"reshape"}]}]},{"do":"pick","key":"skill","from":"skill","beforeCost":true,"when":["var:opt=construct"],"prompt":"Edge on which Skill?"},{"do":"bank","to":"self","edge":true,"appliesWhen":["skill:{var.picked}"],"until":"combat","replace":true,"key":"construct","when":["var:opt=construct"]},{"do":"bank","to":"self","defense":"toughness","defenseBonus":1,"stackMax":3,"key":"toughness","until":"combat","appliesWhen":["self:morphed"],"when":["var:opt=toughness"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend a Grid Surge and pick an option. Temporary Construct gives Edge on your next roll with a chosen Skill; Toughness Boost adds +1 Toughness (up to +3) against the next attack while Morphed.</p><p>Left to the table: the full durations, reshaping your Power Weapon, and speeding up Zords.</p>"

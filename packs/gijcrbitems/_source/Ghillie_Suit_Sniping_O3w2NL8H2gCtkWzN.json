@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick the free sniper weapon and upgrade (Ghillie Suit Sniping)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"weapon","availabilities":["standard","limited","restricted"],"tags":["item:trait:sniper"]}},{"do":"updateItem","set":{"flags.essence20.granted":true}},{"do":"pickGrant","from":{"type":"upgrade","availabilities":["standard","limited","restricted"],"tags":["item:data:system.type=weapon"]}}]},
+      {"type":"Use","label":"Take a hidden prone position (Ghillie Suit Sniping)","when":["rule:data:flags.essence20.granted","combat:exists",{"any":["combat:round:0","combat:round:1"]}],"steps":[{"do":"pickPoint","prompt":"Click where you take position."},{"do":"moveTo","forced":false},{"do":"applyCondition","condition":"prone"},{"do":"applyCondition","condition":"invisible"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: the first use adds your chosen sniper weapon and upgrade (up to Restricted). After that, it moves your token to a spot you click and makes you Prone and hidden.</p><p>Left to the table: ignoring the Ghillie Suit's penalties (turn its penalty effect off).</p>"

@@ -6,7 +6,10 @@
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
     "rules": [
-      {"type":"DerivedStat","label":"Optimized Seating (passengers)","path":"system.crew.numPassengers","op":"multiply","value":2,"when":["self:type:vehicle"]}
+      {"type":"DerivedStat","label":"Optimized Seating (passengers)","path":"system.crew.numPassengers","op":"multiply","value":2,"when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Optimized Seating: -10 ft Movement","movement":"ground","stage":"vehicle","op":"add","value":-10,"when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Optimized Seating: -10 ft Movement","movement":"aerial","stage":"vehicle","op":"add","value":-10,"when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Optimized Seating: -10 ft Movement","movement":"swim","stage":"vehicle","op":"add","value":-10,"when":["self:type:vehicle"]}
     ],
     "prerequisites": {"when":["self:data:system.crew.numPassengers>=1"]},
     "automation": {

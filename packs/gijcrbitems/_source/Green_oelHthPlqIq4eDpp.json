@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"UntrainedSnagImmunity","label":"Green","limit":{"per":"scene","max":3},"priority":1}
+    ],
     "prerequisites": {"when":["self:level<=4"]},
     "automation": {
       "status": "partial",

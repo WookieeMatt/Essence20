@@ -7,7 +7,12 @@
   "system": {
     "rules": [
       {"type":"Trigger","event":"hit","outcome":"crit","label":"Bot Mode melee Critical Success: target Prone","when":["attack:melee","self:data:system.isTransformed=false"],"steps":[{"do":"applyCondition","condition":"prone","to":"target"}]},
-      {"type":"RollModifier","label":"Metallikato (Multiple Targets)","when":["attack:melee","self:data:system.isTransformed=false","self:data:flags.essence20.metallikatoMultipleTargetsActive"],"downshift":1}
+      {"type":"RollModifier","label":"Metallikato (Multiple Targets)","when":["attack:melee","self:data:system.isTransformed=false","self:data:flags.essence20.metallikatoMultipleTargetsActive"],"downshift":1},
+      {"type":"MultipleTargets","label":"Metallikato (Bot Mode melee: Multiple Targets)","when":["attack:melee","self:data:system.isTransformed=false","self:data:flags.essence20.metallikatoMultipleTargetsActive"]},
+      {"type":"DialogSwitch","label":"Metallikato: ignore armor (up to your Smarts)","key":"metallikatoIgnoreArmor","forget":true,"when":["attack:melee","self:data:system.isTransformed=false"]},
+      {"type":"Defense","label":"Metallikato (armor ignored, up to your Smarts)","defense":"toughness","mode":"ignoreArmor","outgoing":true,"lookup":true,"points":"@actor.system.essences.smarts.value","when":["roll:switch:metallikatoIgnoreArmor"]},
+      {"type":"Use","label":"Metallikato: Multiple Targets on","when":["not:self:data:flags.essence20.metallikatoMultipleTargetsActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.metallikatoMultipleTargetsActive":true}},{"do":"chat","text":"{name} gains Multiple Targets (2) with melee attacks, downshift 1."}]},
+      {"type":"Use","label":"Metallikato: Multiple Targets off","when":["self:data:flags.essence20.metallikatoMultipleTargetsActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.metallikatoMultipleTargetsActive":false}},{"do":"chat","text":"{name} no longer gains Multiple Targets (2) with melee attacks."}]}
     ],
     "prerequisites": {"when":[{"any":["self:skill:finesse>=d6","self:skill:might>=d6"]},"ask:A blades Specialization"]},
     "automation": {

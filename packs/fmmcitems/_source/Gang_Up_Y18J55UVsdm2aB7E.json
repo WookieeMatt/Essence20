@@ -5,6 +5,9 @@
   "_id": "Y18J55UVsdm2aB7E",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Gang Up","upshift":"@item.system.bonus.value","when":["attack","target:nearby:5:target:hasItem:Compendium.essence20.finster_s_monster_matic_cookbook.Item.qMvUP1yEtsSo6KDh"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your attacks against a target within 5ft of another Psycho Path character get the listed upshift (↑1, rising at 6th, 11th and 16th level), labelled Gang Up in the Roll Options Dialog.</p>"

@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Grant","label":"Cost of Sorcery","uuid":"Compendium.essence20.finster_s_monster_matic_cookbook.Item.BRpf0FNey5oDEvq3","skipIfOwned":true}
+      {"type":"Grant","label":"Cost of Sorcery","uuid":"Compendium.essence20.finster_s_monster_matic_cookbook.Item.BRpf0FNey5oDEvq3","skipIfOwned":true},
+      {"type":"Trigger","event":"added","label":"Sorcery taken at this level","steps":[{"do":"updateActor","to":"self","set":{"system.powers.sorcerous.levelTaken":"@actor.system.level"}}]},
+      {"type":"Trigger","event":"removed","label":"Sorcery removed","steps":[{"do":"updateActor","to":"self","set":{"system.powers.sorcerous.levelTaken":0}}]}
     ],
     "prerequisites": {"when":[{"any":["self:skill:culture>=d2","self:skill:performance>=d2"]},"ask:Arcane or Rituals Specialization"]},
     "automation": {

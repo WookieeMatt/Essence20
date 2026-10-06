@@ -5,17 +5,8 @@
  */
 import { itemsOf } from "./item-lookups.mjs";
 
-const C = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
-
-export const TF2 = {
-  // Technorganic Secrets
-  mutantBeast: C('technorganic_secrets', 'gkcyg7KWih6QAZlq'),
-  mutantBeastPerk: C('technorganic_secrets', 'R85uJNpYbXd9C9Eh'),
-  // The Enigma of Combination
-  notLikeThat: C('enigma_of_combination', 'OrK3XyNIyJcorMxp'),
-  // Transformers Core Rulebook
-  // Special-attack weapons the Technorganic Secrets Alt Modes print.
-};
+// (The TF2 id table went: nothing imported it - Mutant Beast, Not Like That, Like This! and the rest are their items' own
+// rules.)
 
 /** A weaponEffect's parent weapon, if it has one. */
 export function parentWeaponOf(actor, item) {

@@ -5,6 +5,11 @@
   "_id": "3ZJ8Pqbfhc0JqBPt",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","label":"Rocket fuel (Ground x2)","movement":"ground","op":"multiply","value":2,"stage":"afterGravity","when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Rocket fuel (Aerial x2)","movement":"aerial","op":"multiply","value":2,"stage":"afterGravity","when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Rocket fuel (Aquatic x2)","movement":"swim","op":"multiply","value":2,"stage":"afterGravity","when":["self:type:vehicle"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the vehicle's Movement rates are doubled.</p>"

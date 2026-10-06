@@ -1,55 +1,5 @@
 import { jest } from '@jest/globals';
-import { getVolleyShots, isVolleyActive, toggleVolley } from './volley.mjs';
-
-function makeActor({ active = false, power = 1, level = 1 } = {}) {
-  const flagStore = { volleyActive: active };
-  return {
-    system: { powers: { personal: { value: power } }, level },
-    getFlag: jest.fn((scope, key) => flagStore[key]),
-    setFlag: jest.fn(async (scope, key, value) => {
-      flagStore[key] = value;
-    }),
-    unsetFlag: jest.fn(async (scope, key) => {
-      delete flagStore[key];
-    }),
-    update: jest.fn(async ({ 'system.powers.personal.value': value }) => {
-      if (value !== undefined) {
-        power = value;
-      }
-    }),
-  };
-}
-
-describe("isVolleyActive / toggleVolley", () => {
-  test("switches on, spending 1 Power", async () => {
-    const actor = makeActor({ active: false, power: 1 });
-    expect(isVolleyActive(actor)).toBe(false);
-
-    const result = await toggleVolley(actor);
-
-    expect(result).toBe(true);
-    expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
-    expect(isVolleyActive(actor)).toBe(true);
-  });
-
-  test("switches off for free", async () => {
-    const actor = makeActor({ active: true });
-
-    const result = await toggleVolley(actor);
-
-    expect(result).toBe(false);
-    expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'volleyActive');
-  });
-
-  test("returns null without spending anything if unaffordable", async () => {
-    const actor = makeActor({ active: false, power: 0 });
-
-    const result = await toggleVolley(actor);
-
-    expect(result).toBeNull();
-    expect(actor.setFlag).not.toHaveBeenCalled();
-  });
-});
+import { getVolleyShots } from './volley.mjs';
 
 describe("getVolleyShots", () => {
   function makeVolleyShotsActor({ level = 1 } = {}) {

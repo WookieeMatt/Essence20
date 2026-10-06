@@ -5,6 +5,9 @@
   "_id": "HjbUGlyY8T9T4ZpH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Distraughter: no Move action on its next turn either","event":"hit","when":["roll:dataset:isLaughtracting"],"steps":[{"do":"grantNextTurn","block":["move"],"to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a creature your Laughtracting hits also can't take its Move action on its next turn.</p>"

@@ -37,16 +37,7 @@ beforeAll(() => {
   global.canvas = null;
 });
 
-const C = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 let seq = 0;
-function item(type, extra = {}) {
-  return {
-    id: extra.id ?? `i${seq++}`, name: extra.name ?? type, type,
-    flags: { ...(extra.source ? { core: { sourceId: extra.source } } : {}), essence20: { ...(extra.flags ?? {}) } },
-    system: extra.system ?? {},
-  };
-}
-
 function actor(items = [], system = {}, extra = {}) {
   const list = [...items];
   const a = {
@@ -67,7 +58,7 @@ describe('other3 loads', () => {
     const ids = registrySnapshot().uses.map(u => u.id);
     // Dabbler is an item rule (rules/conv10-slE10.test.js).
     expect(ids).not.toContain('o3Dabbler');
-    expect(ids).toEqual(expect.arrayContaining(['o3SelfImprovement', 'o3GuardianBlast', 'o3MegaDefender', 'o3Scramble', 'o3PerfectPlacement']));
+    expect(ids).toEqual(expect.arrayContaining(['o3MegaDefender']));
   });
 });
 
@@ -76,39 +67,27 @@ describe('other3 loads', () => {
 describe('mlp', () => {
   let m;
   beforeAll(async () => {
-    m = { ...(await import('../social/betrayal.mjs')), ...(await import('../magic/self-improvement.mjs')) };
+    m = { ...(await import('../social/betrayal.mjs')) };
   });
 
-  test('Self Improvement raises the Essence, its Defenses and the Skill for the scene', () => {
-    const a = actor([], {
-      essences: { strength: { max: 2, value: 2 } },
-      defenses: { toughness: { essence: 'strength', total: 12, string: '' }, evasion: { essence: 'speed', total: 11, string: '' } },
-      skills: { might: { shiftUp: 0 } },
-    }, { flags: { o3SelfImprovement: { epoch: 1, entries: [{ essence: 'strength', skill: 'might' }] } } });
-    m.applySelfImprovement(a);
-    expect(a.system.essences.strength.max).toBe(3);
-    expect(a.system.defenses.toughness.total).toBe(13);
-    expect(a.system.defenses.evasion.total).toBe(11);
-    expect(a.system.skills.might.shiftUp).toBe(1);
-  });
+  // Self Improvement is the spell's own rules (rules/conv15-items2.test.js).
 
-  test('a stale-scene Self Improvement does nothing', () => {
-    const a = actor([], { essences: { strength: { max: 2, value: 2 } } }, { flags: { o3SelfImprovement: { epoch: 0, entries: [{ essence: 'strength' }] } } });
-    m.applySelfImprovement(a);
-    expect(a.system.essences.strength.max).toBe(2);
-  });
-
-  test('Betrayal splits PCs until a heal lands', () => {
-    const traitor = actor([], {}, { uuid: 'Actor.traitor' });
-    const failed = actor([], {}, { uuid: 'Actor.failed', flags: { o3Betrayal: { assister: 'Actor.traitor', epoch: 1, at: 10 } } });
+  // The Hang-Up's rules set the mark and heal it (rules/conv17-perm.test.js); this is the reader.
+  test('Betrayal splits PCs while the betrayer carries a live betrayal mark', async () => {
+    const { stampFor } = await import('../../rules/expiry.mjs');
+    const traitor = actor([], {}, { uuid: 'Actor.traitor', flags: { ruleMarks: { betrayal: { by: 'Actor.traitor', until: 'scene', stamp: stampFor('scene') } } } });
+    const failed = actor([], {}, { uuid: 'Actor.failed' });
     const other = actor([], {}, { uuid: 'Actor.other' });
-    game.actors = [traitor, failed, other];
+    const npc = actor([], {}, { uuid: 'Actor.npc', type: 'npc' });
     expect(m.isBetrayed(traitor)).toBe(true);
     expect(m.betrayalSplits(other, traitor)).toBe(true);
+    expect(m.betrayalSplits(traitor, other)).toBe(true);
     expect(m.betrayalSplits(other, failed)).toBe(false);
-    other.flags.essence20.o3BetrayalHealed = { assister: 'Actor.traitor', epoch: 1, at: 20 };
+    expect(m.betrayalSplits(npc, traitor)).toBe(false);
+    traitor.flags.essence20.ruleMarks.betrayal.stamp = { epoch: -5 };
     expect(m.isBetrayed(traitor)).toBe(false);
-    game.actors = [];
+    delete traitor.flags.essence20.ruleMarks.betrayal;
+    expect(m.isBetrayed(traitor)).toBe(false);
   });
 });
 
@@ -129,15 +108,11 @@ describe('pr', () => {
   let p;
   beforeAll(async () => {
     p = {
-      ...(await import('../social/better-together.mjs')), ...(await import('../attacks/guardian-blast.mjs')),
-      ...(await import('../forms/mega-defender.mjs')), ...(await import('../defenses/metallic-armor-minions-and-ending.mjs')),
+      ...(await import('../forms/mega-defender.mjs')), ...(await import('../../rules/plugins/combat/incoming-hits-and-minions.mjs')),
     };
   });
 
-  test('Guardian Blast is a Group Skill Test', () => {
-    expect(p.guardianTally([{ success: true }, { success: false }], 2).success).toBe(true);
-    expect(p.guardianTally([{ success: true }, { success: false }, null], 3).success).toBe(false);
-  });
+  // Guardian Blast is its Perk's own rules (rules/conv15-items2.test.js).
 
   test('Mega Defender needs the Torozord on the scene, and pairs it with the Ranger', () => {
     const toro = { id: 'z1', uuid: 'Actor.z1', type: 'zord', name: 'Torozord', system: { actions: { free: { max: 3 } } } };
@@ -183,17 +158,7 @@ describe('pr', () => {
     expect(a.system.movement.aerial.total).toBe(0);
   });
 
-  test('Better Together pairs the chosen ally either way round', () => {
-    const b = actor([], {}, { uuid: 'Actor.b' });
-    const a = actor([item('perk', { source: C('through_the_shattered_grid', 'tOoyMHVtV6wjvlxd'), flags: { o3Partner: 'Actor.b' } })], {}, { uuid: 'Actor.a' });
-    expect(p.isPair(a, b)).toBe(true);
-    expect(p.isPair(b, a)).toBe(true);
-    expect(p.isPair(a, actor())).toBe(false);
-    game.actors = [a, b];
-    a.flags.essence20.o3BetterTogether = { with: 'Actor.b', epoch: 1, until: null };
-    expect(p.betterTogetherActive(b)).toBe(true);
-    game.actors = [];
-  });
+  // Better Together (Influence and Hang-Up) is its items' own rules (rules/conv15-items2.test.js).
 
   test('Minions are tagged NPCs or Putties', async () => {
     expect(await p.isMinion({ type: 'npc', name: 'Putty Patroller', system: {} })).toBe(true);
@@ -203,49 +168,7 @@ describe('pr', () => {
   });
 });
 
-describe('tf', () => {
-  let t;
-  beforeAll(async () => {
-    t = {
-      ...(await import('../attacks/again-and-again.mjs')), ...(await import('../defenses/perfect-placement.mjs')),
-      ...(await import('../gear/scramble-field-generator.mjs')),
-    };
-  });
+// (Again and Again and Again's ↓1 / ↓3 follow-ups are its Perk's rules now - rules/conv14-items2.test.js; Perfect Placement
+// and the Scramble Field Generator are their items' own rules - rules/conv15-items2.test.js.)
 
-  test('Again and Again shifts ↓1 then ↓3', () => {
-    expect(t.againShift(1)).toBe(1);
-    expect(t.againShift(2)).toBe(3);
-  });
-
-  test('Perfect Placement needs the whole token inside the square', () => {
-    const zone = { x: 250, y: 250 };
-    expect(t.whollyInside({ x: 150, y: 150, width: 100, height: 100 }, zone, 20)).toBe(true);
-    expect(t.whollyInside({ x: 450, y: 150, width: 100, height: 100 }, zone, 20)).toBe(false);
-  });
-
-  test('a Scrambled target rolls Alertness at ↓2', async () => {
-    const { extRollSources } = await import('../../mechanics/item-hooks.mjs');
-    const a = actor([], {}, { flags: { o3Scramble: { by: 'Actor.x', mode: 'alertness', epoch: 1 } } });
-    const out = extRollSources(a, null, { rolledSkill: 'alertness' });
-    expect(out.sources.some(s => s.id == 'ext-o3ScrambleAlertness' && s.shiftDown == 2)).toBe(true);
-  });
-});
-
-// Metallic Armor Power Up's one Use button: switches the Power on, or ends it while it's on.
-test('Metallic Armor Power Up: one Use that switches it on or ends it', async () => {
-  const { findExtUse } = await import('../../mechanics/item-hooks.mjs');
-  const { O3 } = await import('../shared/mlp-pr-tf-ids-and-skill-total.mjs');
-  await import('../defenses/metallic-armor-minions-and-ending.mjs');
-  const actor = { flags: { essence20: {} } };
-  const power = { type: 'power', system: { canActivate: true }, flags: { core: { sourceId: O3.metallicArmor } }, parent: actor };
-  const use = findExtUse(power);
-  expect(use?.id).toBe('o3MetallicArmorEnd');
-  expect(use.canUse(power)).toBe(true);
-
-  actor.flags.essence20.metallicArmorActive = true;
-  power.system.canActivate = false;
-  expect(use.canUse(power)).toBe(true);
-
-  actor.flags.essence20.metallicArmorActive = false;
-  expect(use.canUse(power)).toBe(false);
-});
+// (Metallic Armor Power Up's Use, upkeep and endings are its Power's rules - rules/conv16-b.test.js.)

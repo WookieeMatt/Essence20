@@ -3,20 +3,12 @@ import { parseId } from "../util/utils.mjs";
 import { onPowerUse } from "../mechanics/characters/power-use.mjs";
 import { spendDailyUse } from "../mechanics/resources/nanomite-uses.mjs";
 
-// Zeo Crystal Wielder (Through the Shattered Grid, Zeo Rangers Team Perk, p.27): "It costs you 1
-// less Personal Power to activate the Zeo Crystal Boost Grid Power."
-const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
-const ZEO_CRYSTAL_WIELDER_ID = "Compendium.essence20.through_the_shattered_grid.Item.lNCrjjiiUhI6ROal";
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-
-/** A fixed-cost Power's Personal Power cost for this actor, after discounts. */
-export function fixedPowerCost(actor, power) {
-  const cost = parseInt(power.system.powerCost) || 0;
-  if (sourceOf(power) == ZEO_CRYSTAL_BOOST_ID && actor?.items?.some(item => sourceOf(item) == ZEO_CRYSTAL_WIELDER_ID)) {
-    return Math.max(0, cost - 1);
-  }
-
-  return cost;
+/**
+ * A fixed-cost Power's Personal Power cost for this actor. Discounts are ItemModifier rules on the derived
+ * powerCost (Zeo Crystal Wielder's -1 on Zeo Crystal Boost).
+ */
+export function fixedPowerCost(_actor, power) {
+  return parseInt(power.system.powerCost) || 0;
 }
 
 /**

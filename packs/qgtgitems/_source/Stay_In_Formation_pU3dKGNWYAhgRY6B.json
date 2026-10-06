@@ -5,6 +5,9 @@
   "_id": "pU3dKGNWYAhgRY6B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Set your allies' Initiative behind yours","when":["combat:exists","self:initiative"],"limit":{"per":"encounter"},"steps":[{"do":"writeInitiative","to":"allies:100000","value":"max(1, @initiative - 1d4)"}]}
+    ],
     "prerequisites": {"when":["self:skill:initiative>=d6","self:skill:persuasion>=d6"]},
     "automation": {
       "status": "full",

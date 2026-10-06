@@ -161,23 +161,62 @@ describe('Forms', () => {
     expect(forms.dinoDamageModifier(actor, 4)).toBe(0);
     expect(forms.dinoDamageModifier(makeActor(), 4)).toBe(4);
   });
+
+  // Bug fix 2026-10-06: the Grid Powers' Uses paid and set a flag nothing read - they now run the Form's own activation.
+  test('Dino Thunder Boost / Extra activate the real Form powers (zord1Dino state), paying once from the Boost pool', async () => {
+    const grid = await import('../forms/dino-thunder-grid-powers.mjs');
+    const actor = makeActor({
+      system: { powers: { personal: { value: 2 } }, defenses: { toughness: { total: 12 } } },
+      items: [
+        { id: 'f', name: 'Dino Thunder', flags: { core: { sourceId: grid.DINO.form }, essence20: { zord1DinoPower: 'triceraSkin' } } },
+        { id: 'x', name: 'Extra', flags: { core: { sourceId: grid.DINO.extra }, essence20: { zord1DinoPower: 'intangibility' } } },
+        { id: 'b', name: 'Boost', flags: { core: { sourceId: grid.DINO.boost }, essence20: {} } },
+      ],
+    });
+    actor.setFlag = jest.fn(async function (scope, key, value) {
+      global.foundry.utils.setProperty(this.flags, `${scope}.${key}`, value);
+    });
+    actor.update = jest.fn(async function (changes) {
+      this.system.powers.personal.value = changes['system.powers.personal.value'];
+    });
+    const uses = ext.registrySnapshot().uses;
+    const boostUse = uses.find(use => use.id == 'd1DinoThunderBoost');
+    const extraUse = uses.find(use => use.id == 'd1DinoThunderExtra');
+    const [form, extra, boost] = actor.items.contents;
+    expect(boostUse.matches(boost)).toBe(true);
+    expect(extraUse.matches(extra)).toBe(true);
+
+    const pay = jest.fn(async () => true);
+    expect(await boostUse.run(boost, null, pay)).toContain('D1DinoActivated');
+    expect(Object.keys(actor.flags.essence20.zord1Dino)).toEqual(['triceraSkin', 'intangibility']);
+    expect(grid.boostPool(actor)).toBe(2);
+    expect(actor.system.powers.personal.value).toBe(2);
+    expect(actor.flags.essence20.d1DinoThunderActive).toBeUndefined();
+    forms.formDerived(actor);
+    expect(actor.system.defenses.toughness.total).toBe(17);
+    expect(forms.dinoDamageModifier(actor, 4)).toBe(0);
+    expect(global.Hooks.callAll).not.toHaveBeenCalledWith('essence20.dinoThunderActivated', expect.anything(), expect.anything(), expect.anything());
+
+    // With the pool empty the one Personal Power pays for both.
+    actor.flags.essence20.zord1Dino = {};
+    boost.flags.essence20.d1BoostPool = 0;
+    await extraUse.run(extra, null, pay);
+    expect(Object.keys(actor.flags.essence20.zord1Dino)).toEqual(['triceraSkin', 'intangibility']);
+    expect(actor.system.powers.personal.value).toBe(1);
+    expect(form.flags.essence20.zord1DinoPower).toBe('triceraSkin');
+  });
 });
 
 describe('Zord slots', () => {
-  test('Megafauna: essences and Animal Handling driving', () => {
-    const zord = makeActor({
-      type: 'zord', uuid: 'Actor.z',
-      items: [{ type: 'feature', name: 'Megafauna', flags: src(slots.ZS.megafauna) }],
-      flags: { essence20: { zord1Megafauna: true } },
-      system: { essences: { smarts: { value: null }, social: { value: null } }, defenses: { evasion: { total: 10 } }, actors: { d: { vehicleRole: 'driver', uuid: 'Actor.pilot' } } },
-    });
-    const pilot = makeActor({ uuid: 'Actor.pilot' });
-    worldList.push(zord, pilot);
-    slots.zordDerived(zord);
-    expect(zord.system.essences.smarts.value).toBe(3);
-    expect(zord.system.defenses.evasion.total).toBe(10);
-    const dataset = { skill: 'driving' };
-    slots.megafaunaPreRoll(pilot, dataset);
-    expect(dataset.skill).toBe('animalHandling');
+  // Megafauna's toggle, its Smarts / Social 3 and the pilot's Animal Handling are the Feature's own rules
+  // (module/rules/conv17-split2.test.js); arriving in form on summon stays here.
+  test('Megafauna: a summoned Zord arrives in Megafauna Form', () => {
+    const zord = makeActor({ type: 'zord', uuid: 'Actor.z', items: [{ type: 'feature', name: 'Megafauna', flags: src(slots.ZS.megafauna) }] });
+    const changes = { flags: { essence20: { zordSummonReadyRound: 3 } } };
+    slots.megafaunaOnSummon(zord, changes);
+    expect(changes.flags.essence20.zord1Megafauna).toBe(true);
+    const plain = { flags: { essence20: {} } };
+    slots.megafaunaOnSummon(zord, plain);
+    expect(plain.flags.essence20.zord1Megafauna).toBeUndefined();
   });
 });

@@ -5,6 +5,9 @@
   "_id": "QAOI7O3yVmmMpFEu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"As Above (ranged attack from higher ground)","edge":true,"when":["attack:ranged","roll:elevationAbove:>0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when your token's elevation is higher than your target's, your ranged attacks get Edge, shown as As Above next to Edge in the Roll Options Dialog.</p>"

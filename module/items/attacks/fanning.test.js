@@ -1,5 +1,5 @@
 import {
-  STORM_OF_LEAD_ID, adjustFanningShotShift, clampFanningShots, getFanningMaxShots, getFanningShotShifts, isFanningWeapon,
+  adjustFanningShotShift, clampFanningShots, getFanningMaxShots, getFanningShotShifts, isFanningWeapon,
 } from "./fanning.mjs";
 
 function makeActor(perkIds = []) {
@@ -22,16 +22,12 @@ describe("Fanning (X) (A Jump Through Time, New Weapon Traits, p.74)", () => {
       expect(getFanningMaxShots(makeActor(), makeWeapon(['fanning'], 2))).toBe(2);
     });
 
-    test("Storm of Lead adds 1 to X", () => {
-      expect(getFanningMaxShots(makeActor([STORM_OF_LEAD_ID]), makeWeapon(['fanning'], 2))).toBe(3);
-    });
-
     test("a Fanning weapon with no X recorded counts as X = 1", () => {
       expect(getFanningMaxShots(makeActor(), makeWeapon(['fanning'], null))).toBe(1);
     });
 
-    test("0 for a weapon without the trait, even with Storm of Lead", () => {
-      expect(getFanningMaxShots(makeActor([STORM_OF_LEAD_ID]), makeWeapon(['ballistic']))).toBe(0);
+    test("0 for a weapon without the trait", () => {
+      expect(getFanningMaxShots(makeActor(), makeWeapon(['ballistic']))).toBe(0);
       expect(getFanningMaxShots(makeActor(), null)).toBe(0);
     });
   });
@@ -53,7 +49,7 @@ describe("Fanning (X) (A Jump Through Time, New Weapon Traits, p.74)", () => {
       expect(getFanningShotShifts(3)).toEqual({ shiftUp: 0, shiftDown: 3 });
     });
 
-    test("Storm of Lead's ↑1 applies to the first shot only", () => {
+    test("a first-shot ↑ (FanningShots firstShotUpshift) applies to the first shot only", () => {
       expect(getFanningShotShifts(1, true)).toEqual({ shiftUp: 1, shiftDown: 1 });
       expect(getFanningShotShifts(2, true)).toEqual({ shiftUp: 0, shiftDown: 2 });
     });

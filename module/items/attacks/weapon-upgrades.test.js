@@ -2,8 +2,8 @@ import { jest } from '@jest/globals';
 import { existsSync, readdirSync, readFileSync } from 'fs';
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({ setEntryAndAddItem: jest.fn(async () => 'key1') }));
 const {
-  affectsGeneratedEffects, applyToEffect, applyToWeapon, chosenElement, desiredGeneratedEffects, gainedElementTraits,
-  getCritEssenceOptions, hasChronoTrigger, canSurge, syncGeneratedEffects, UPGRADE, WEAPON_PERK,
+  affectsGeneratedEffects, applyToEffect, chosenElement, desiredGeneratedEffects, gainedElementTraits,
+  syncGeneratedEffects, UPGRADE,
 } = await import('./weapon-upgrades.mjs');
 
 global.foundry = {
@@ -76,46 +76,24 @@ beforeEach(() => {
 });
 
 describe("the effect's own numbers", () => {
-  test("Scope doubles both ranges; Smart Scope multiplies them 1.5 and 2", () => {
-    const weapon = makeWeapon();
-    const effect = makeEffect();
-    makeActor([weapon, effect, upgrade(UPGRADE.scope, 'w1')]);
-    applyToEffect(effect.system, effect);
-    expect(effect.system.range).toEqual({ value: 200, long: 800 });
-    expect(effect.system.upgradeTouched).toEqual(expect.arrayContaining(['range.value', 'range.long']));
-
-    const smart = makeEffect();
-    makeActor([makeWeapon(), smart, upgrade(UPGRADE.smartScope, 'w1')]);
-    applyToEffect(smart.system, smart);
-    expect(smart.system.range).toEqual({ value: 150, long: 800 });
-  });
-
-  test("grips and Automated swap the skill; Swift adds a target; Deadly adds damage", () => {
-    const effect = makeEffect();
-    makeActor([makeWeapon(), effect, upgrade(UPGRADE.refinedGrip, 'w1'), upgrade(UPGRADE.swift, 'w1'), upgrade(UPGRADE.deadly, 'w1')]);
-    applyToEffect(effect.system, effect);
-    expect(effect.system.classification.skill).toBe('finesse');
-    expect(effect.system.numTargets).toBe(2);
-    expect(effect.system.damageValue).toBe(2);
-  });
-
-  test("Eruptive doubles a blast, Lingering lengthens Stun, a bomb's range becomes Reach", () => {
+  // (Scope, Aerodynamics, Swift, Deadly, Eruptive, Lingering, Tossable Vial and Chrono-Trigger are item rules:
+  // rules/conv14-systems.test.js.)
+  test("a bomb's range becomes Reach", () => {
     const blast = makeEffect('w1', { radius: 10, damageType: 'stun' });
-    makeActor([makeWeapon(), blast, upgrade(UPGRADE.eruptive, 'w1'), upgrade(UPGRADE.lingering, 'w1'), upgrade(UPGRADE.timeBomb, 'w1')]);
+    makeActor([makeWeapon(), blast, upgrade(UPGRADE.timeBomb, 'w1')]);
     applyToEffect(blast.system, blast);
-    expect(blast.system.radius).toBe(20);
-    expect(blast.system.damageValue).toBe(2);
+    expect(blast.system.radius).toBe(10);
     expect(blast.system.range.value).toBeNull();
     expect(blast.system.range.reachMultiplier).toBe(1);
   });
 
-  test("an Element weapon deals its chosen element; Rust Derivatives adds 1 Acid", () => {
+  // (Rust Derivatives' 1 Acid is its ItemModifier stage item rule - rules/conv17-Split1.test.js.)
+  test("an Element weapon deals its chosen element", () => {
     const weapon = makeWeapon('w1', { traits: ['element'], elementChoice: 'fire' });
     const effect = makeEffect('w1', { damageType: 'element' });
-    makeActor([weapon, effect, upgrade(UPGRADE.rustDerivatives, 'w1')]);
+    makeActor([weapon, effect]);
     applyToEffect(effect.system, effect);
     expect(effect.system.damageType).toBe('fire');
-    expect(effect.system.secondaryDamage).toEqual({ type: 'acid', value: 1 });
     expect(chosenElement(weapon)).toBe('fire');
   });
 
@@ -130,76 +108,11 @@ describe("the effect's own numbers", () => {
     expect(effect.system.damageType).toBe('cold');
   });
 
-  test("Scramble Wave rides 1 Electromagnetic on every attack, even unarmed", () => {
-    const effect = makeEffect(null);
-    effect.flags.essence20.parentId = null;
-    makeActor([effect, { type: 'perk', flags: { core: { sourceId: WEAPON_PERK.scrambleWave } } }]);
-    applyToEffect(effect.system, effect);
-    expect(effect.system.secondaryDamage).toEqual({ type: 'emp', value: 1 });
-  });
-
   test("no weapon, no changes", () => {
     const effect = makeEffect('gone');
     makeActor([effect]);
     applyToEffect(effect.system, effect);
     expect(effect.system.upgradeTouched).toEqual([]);
-  });
-});
-
-describe("Extended, Aerodynamics and Balanced Grip", () => {
-  test("Extended adds 1 to a Reach weapon's Reach modifier, and leaves a ranged-only effect alone", () => {
-    const melee = makeEffect('w1', { range: { value: null, long: null, reachMultiplier: 0 }, classification: { skill: 'might', style: 'melee' } });
-    makeActor([makeWeapon(), melee, upgrade(UPGRADE.extended, 'w1')]);
-    applyToEffect(melee.system, melee);
-    expect(melee.system.range.reachMultiplier).toBe(2);
-
-    const doubled = makeEffect('w1', { range: { value: null, long: null, reachMultiplier: 2 } });
-    makeActor([makeWeapon(), doubled, upgrade(UPGRADE.extended, 'w1')]);
-    applyToEffect(doubled.system, doubled);
-    expect(doubled.system.range.reachMultiplier).toBe(3);
-
-    const ranged = makeEffect();
-    makeActor([makeWeapon(), ranged, upgrade(UPGRADE.extended, 'w1')]);
-    applyToEffect(ranged.system, ranged);
-    expect(ranged.system.range.reachMultiplier).toBeUndefined();
-  });
-
-  test("Aerodynamics doubles both ranges", () => {
-    const effect = makeEffect('w1', { range: { value: 20, long: 50 } });
-    makeActor([makeWeapon(), effect, upgrade(UPGRADE.aerodynamics, 'w1')]);
-    applyToEffect(effect.system, effect);
-    expect(effect.system.range).toEqual({ value: 40, long: 100 });
-  });
-
-  test("Balanced Grip rolls Athletics", () => {
-    const effect = makeEffect('w1', { classification: { skill: 'might', style: 'melee' } });
-    makeActor([makeWeapon(), effect, upgrade(UPGRADE.balancedGrip, 'w1')]);
-    applyToEffect(effect.system, effect);
-    expect(effect.system.classification.skill).toBe('athletics');
-  });
-});
-
-describe("the weapon itself", () => {
-  test("Pill, Salve and Mist Form set how the poison is applied", () => {
-    for (const [id, form] of [[UPGRADE.pillForm, 'ingested'], [UPGRADE.salveForm, 'contact'], [UPGRADE.mistForm, 'inhaled']]) {
-      const poison = makeWeapon('w1', { isPoison: true, poisonApplication: { contact: true, ingested: false, inhaled: false } });
-      makeActor([poison, upgrade(id, 'w1')]);
-      applyToWeapon(poison);
-      expect(poison.system.poisonApplication).toEqual({ contact: form == 'contact', ingested: form == 'ingested', inhaled: form == 'inhaled' });
-    }
-  });
-
-  test("Microtech steps the size down and the hands with it; the Harness wields two-handed in one", () => {
-    const weapon = makeWeapon('w1', { effectiveSize: 'long', derivedHands: 2, hands: null });
-    makeActor([weapon, upgrade(UPGRADE.microtech, 'w1'), upgrade(UPGRADE.microtech, 'w1')]);
-    applyToWeapon(weapon);
-    expect(weapon.system.effectiveSize).toBe('sidearm');
-    expect(weapon.system.derivedHands).toBe(1);
-
-    const heavy = makeWeapon('w2', { effectiveSize: 'heavy', derivedHands: 2 });
-    makeActor([heavy, { type: 'perk', flags: { core: { sourceId: WEAPON_PERK.hyperkineticHarness } } }]);
-    applyToWeapon(heavy);
-    expect(heavy.system.derivedHands).toBe(1);
   });
 });
 
@@ -251,6 +164,22 @@ describe("granted alternate effects", () => {
     expect(affectsGeneratedEffects(perk)).toBe(true);
   });
 
+  // Round 17 (split1): was the hand-written WEAPON_PERK.fluidMotion entry.
+  test("Fluid Motion (a Perk's rule) gives Silent Martial Arts weapons a Maneuver alternate, unless they print one", () => {
+    const fists = makeWeapon('w1', { traits: ['silent', 'martialArts'] });
+    const loud = makeWeapon('w2', { traits: ['martialArts'] });
+    const printed = makeWeapon('w3', { traits: ['silent', 'martialArts'] });
+    const perk = { id: 'p1', type: 'perk', name: 'Fluid Motion', flags: { core: { sourceId: 'Compendium.essence20.intercontinental_adventures.Item.TESyOcJFtd9Qn9Tk' } }, system: { rules: packRules('TESyOcJFtd9Qn9Tk') } };
+    makeActor([fists, loud, printed, makeEffect('w1'), { ...makeEffect('w2'), id: 'e2' }, { ...makeEffect('w3'), id: 'e3' },
+      { ...makeEffect('w3', { damageType: 'maneuver' }), id: 'e4' }, perk]);
+    const maneuver = desiredGeneratedEffects(fists).find(w => w.key == 'fluidMotion');
+    expect(maneuver.changes).toEqual({ damageType: 'maneuver', damageValue: 1, shiftDown: 0, 'secondaryDamage.type': null, 'secondaryDamage.value': 0 });
+    expect(maneuver.name).toBe('E20.DamageManeuver (Rifle)');
+    expect(desiredGeneratedEffects(loud).find(w => w.key == 'fluidMotion')).toBeUndefined();
+    expect(desiredGeneratedEffects(printed).find(w => w.key == 'fluidMotion')).toBeUndefined();
+    expect(affectsGeneratedEffects(perk)).toBe(true);
+  });
+
   test("Strobe is skipped when the weapon already prints a Blinding effect", () => {
     const weapon = makeWeapon();
     const blinding = { ...makeEffect('w1', { damageType: 'blindingBlast' }), id: 'e9' };
@@ -287,14 +216,5 @@ describe("granted alternate effects", () => {
   });
 });
 
-describe("roll-time", () => {
-  test("crit upgrades offer their Essence; Surging needs element damage; Chrono-Trigger is found", () => {
-    const weapon = makeWeapon();
-    makeActor([weapon, upgrade(UPGRADE.bewildering, 'w1'), upgrade(UPGRADE.maiming, 'w1'), upgrade(UPGRADE.surging, 'w1'), upgrade(UPGRADE.chronoTrigger, 'w1')]);
-    // The Transformers versions damage a Defense (TF CRB p.129-131).
-    expect(getCritEssenceOptions(weapon).map(o => o.defense)).toEqual(['cleverness', 'evasion']);
-    expect(canSurge(weapon, { system: { damageType: 'fire' } })).toBe(true);
-    expect(canSurge(weapon, { system: { damageType: 'sharp' } })).toBe(false);
-    expect(hasChronoTrigger(weapon)).toBe(true);
-  });
-});
+// (The crit upgrades' Essence / Defense damage are CriticalOption rules - rules/conv15-systems.test.js; Surging is a DialogSwitch
+// rule - rules/conv16-LeftA.test.js.)

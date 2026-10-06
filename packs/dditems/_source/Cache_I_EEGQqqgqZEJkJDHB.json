@@ -5,6 +5,9 @@
   "_id": "EEGQqqgqZEJkJDHB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Call in a cache","limit":{"per":"encounter","max":"max(1, 2 * min(1, @owned.iyfXCEAkkoC8vODL), 3 * min(1, @owned.VMd10Qb4ByeCla5q))"},"steps":[{"do":"choose","auto":true,"options":[{"label":"Private Barter","when":["calc:@owned.mzOtnEnXRhCM0v9O>0","not:self:windowUsed:privateBarterUsedThisEncounter:encounter"],"steps":[{"do":"markWindow","flag":"privateBarterUsedThisEncounter","window":"encounter"},{"do":"chat","text":"Private Barter applies (one scene)."}]},{"label":"Cache","when":[{"any":["calc:@owned.mzOtnEnXRhCM0v9O<1","self:windowUsed:privateBarterUsedThisEncounter:encounter"]}],"steps":[]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: posts a chat card saying you've pulled something useful from your cache.</p><p>Left to the table: the GM decides what gear turns up and adds it; the button resets each encounter, so hold it to once per session.</p>"

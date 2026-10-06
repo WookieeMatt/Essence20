@@ -5,6 +5,10 @@
   "_id": "HGKHAbwZ43I564vd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Change back (Multimorph)","when":["rule:granted"],"steps":[{"do":"deleteItem","item":"granted","all":true},{"do":"chat","text":"{name} returns to their own shape."}]},
+      {"type":"Use","label":"Change shape (Multimorph)","when":["not:rule:granted"],"steps":[{"do":"choose","prompt":"Change shape how?","options":[{"label":"Two Origin Perks from two different Origins","steps":[{"do":"pickChildEntry","parent":{"type":"origin","tags":["item:pack:mlp_crb|knights_of_canterlot|dark_skies_over_equestria|in_a_jam|story_of_the_seasons","not:item:nameOfOwned:origin"]},"childType":"perk","var":"first","prompt":"Choose an Origin Perk:"},{"do":"pickChildEntry","parent":{"type":"origin","tags":["item:pack:mlp_crb|knights_of_canterlot|dark_skies_over_equestria|in_a_jam|story_of_the_seasons","not:item:nameOfOwned:origin","not:item:isVar:firstParent"]},"childType":"perk","var":"second","prompt":"Choose an Origin Perk:"},{"do":"grant","uuid":"{var.first}","until":"scene","flags":{"o1Multimorph":true}},{"do":"grant","uuid":"{var.second}","until":"scene","flags":{"o1Multimorph":true}}]},{"label":"One other Origin's Perk, keep Natural Shape","steps":[{"do":"pickChildEntry","parent":{"type":"origin","tags":["item:pack:mlp_crb|knights_of_canterlot|dark_skies_over_equestria|in_a_jam|story_of_the_seasons","not:item:nameOfOwned:origin"]},"childType":"perk","var":"first","prompt":"Choose an Origin Perk:"},{"do":"grant","uuid":"{var.first}","until":"scene","flags":{"o1Multimorph":true}}]}]}]}
+    ],
     "prerequisites": {"when":["ask:Ability to change shape"]},
     "automation": {
       "status": "full",

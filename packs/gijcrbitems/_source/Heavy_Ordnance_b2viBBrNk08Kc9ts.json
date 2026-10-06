@@ -5,6 +5,9 @@
   "_id": "b2viBBrNk08Kc9ts",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Heavy Ordnance (vehicle attacks vs vehicles or creatures your size or larger)","scope":"driven","edge":true,"when":["attack","self:type:vehicle",{"any":["target:type:vehicle","holder:versusTarget:sizeDiff<=0"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when a vehicle you're driving attacks another vehicle, or a creature your size or bigger, the attack gets an Edge, labelled Heavy Ordnance in the vehicle's Roll Options Dialog.</p>"

@@ -8,7 +8,9 @@
     "rules": [
       {"type":"Movement","movement":"aerial","stage":"base","op":"set","value":"5 + 5 * floor(@level / 5)","label":"Floating: Aerial Movement 5 ft + 5 per 5 levels","when":["check:gravityOptional"]},
       {"type":"DialogSwitch","label":"Jump (triple the result)","when":["skill:athletics"],"forget":true,"steps":[{"do":"setToggle","key":"jump","value":true,"until":"turnOrScene"}]},
-      {"type":"Trigger","label":"Gravity Optional: jump","event":"afterRoll","outcome":"any","when":["skill:athletics","self:toggle:jump"],"steps":[{"do":"setToggle","key":"jump","value":false},{"do":"chat","text":"{name}'s jump result {var.total} is tripled to {@var.total * 3}."}]}
+      {"type":"Trigger","label":"Gravity Optional: jump","event":"afterRoll","outcome":"any","when":["skill:athletics","self:toggle:jump"],"steps":[{"do":"setToggle","key":"jump","value":false},{"do":"chat","text":"{name}'s jump result {var.total} is tripled to {@var.total * 3}."}]},
+      {"type":"Use","label":"Floating on","when":["not:self:data:flags.essence20.gravityOptionalActive"],"limit":{"per":"encounter"},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.gravityOptionalActive":true}},{"do":"chat","text":"{name} floats (once per scene)."}]},
+      {"type":"Use","label":"Floating off","when":["self:data:flags.essence20.gravityOptionalActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.gravityOptionalActive":false}},{"do":"chat","text":"{name} stops floating."}]}
     ],
     "prerequisites": {"when":["self:hasType:focus:Blood Space War Veteran"]},
     "automation": {

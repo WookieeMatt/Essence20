@@ -1,5 +1,6 @@
 import { getSceneEpoch, getUses, markUsed } from "../resources/scene-clock.mjs";
 import { companionsOf, hasSourced, worldActors } from "./companion-link.mjs";
+import { registerRenegadeLookup } from "../../rules/plugins/combat/defeat-stage.mjs";
 
 /**
  * Things summoned or carried along: personal vehicles (Shark Cycle, Galaxy Glider, Jet Jammer, the
@@ -28,12 +29,9 @@ export const SUMMON = {
   hitchARide: uuid('mlp_crb', 'XGsSvbK8OOfI8Che'),
   ridingRig: uuid('cobra_codex', '5g0w2qL8O7EV3RJg'),
   biker: uuid('cobra_codex', '5clUVTBFl8JMpw8t'),
-  rigUpgrade: uuid('cobra_codex', 'FmJF8idUZpHAxIPM'),
   racerAbandon: uuid('cobra_codex', 'rNESO3bo1apEjd6p'),
   riggedRider: uuid('cobra_codex', 'UquFEmbtdvb08ipH'),
   skybound: uuid('cobra_codex', 'KlBjsk6QBMl8J90j'),
-  hardTarget: uuid('cobra_codex', 'ZV00Jdj5O9u3OC7F'),
-  crashingFromTheSkies: uuid('cobra_codex', '9CF0mXhOO0QNFc5n'),
   necroscientist: uuid('cobra_codex', 'Ze9reKJEEpzWYBxd'),
   alliesFromBelow: uuid('finster_s_monster_matic_cookbook', 'zCOrbOjtfagynf8Q'),
   battleWarrior: uuid('across_the_stars', 'yWsLaZOGVlaCXh1Y'),
@@ -41,13 +39,7 @@ export const SUMMON = {
   redFury: uuid('beneath_the_helmet', 'k7svIPp9YYkzjxwB'),
   triassic: uuid('beneath_the_helmet', 'sVYZLXhPZqdVhNax'),
   quantumMega: uuid('jump_through_time', 'WiaxmqhCQSYpJIeK'),
-  qRexPortal: uuid('jump_through_time', 'QRexPortalJTTxxx'),
-  assistedSummoning: uuid('jump_through_time', 'atPA5nGheYDzzmaZ'),
-  manifestedZord: uuid('through_the_shattered_grid', 'fNMbLGJk5RiSi49J'),
-  accelerateConversion: uuid('field_guide_action_adventure', 'fmDJTf8pXl0Hjnyw'),
   rallyGuardians: uuid('through_the_shattered_grid', 'FhQLam5IgFFIuzah'),
-  spiritsHost: uuid('through_the_shattered_grid', 'HQaLM23Y7hnKbLFQ'),
-  organicZord: uuid('beneath_the_helmet', 'UCy4agcbYPMWqG5N'),
   carrier: uuid('pr_crb', 'h1b0cjGJP1xqtfVv'),
 };
 
@@ -426,74 +418,8 @@ export async function dismissBattlizer(actor, armor) {
 /*  Zords                                        */
 /* -------------------------------------------- */
 
-/**
- * The faster ways a Zord can arrive, offered when it's summoned (mechanics/vehicles/zord-summon.mjs):
- * - Manifested Zord (Through the Shattered Grid p.33): "you may spend 4 Personal Power ... ready to pilot
- *   at the beginning of the following turn".
- * - Q-Rex Portal (Jump Through Time p.46): "By spending one Personal Power, you can summon your
- *   Quantasaurus Rex to arrive at the beginning of the next round."
- * - Assisted Summoning (Jump Through Time p.83): "you can spend a Standard action to coordinate with your
- *   team's support members ... This Zord arrives at the end of the following turn".
- * @returns {Array<{key, label, cost, rounds}>}
- */
-export function fastSummonOptions(pilot, zord) {
-  const options = [];
-  if (hasSourced(zord, SUMMON.manifestedZord)) {
-    options.push({ key: 'manifested', label: T('E20.ZordManifested'), power: 4, rounds: 1 });
-  }
-
-  if (hasSourced(pilot, SUMMON.qRexPortal)) {
-    options.push({ key: 'qRex', label: T('E20.ZordQRexPortal'), power: 1, rounds: 1 });
-  }
-
-  if (hasSourced(zord, SUMMON.assistedSummoning)) {
-    options.push({ key: 'assisted', label: T('E20.ZordAssisted'), action: 'standard', rounds: 1 });
-  }
-
-  return options;
-}
-
-/**
- * Accelerate Conversion (Field Guide p.70): "once per scene, you may reduce the time before you can
- * summon your Zord or before your team can combine into a Megaform by 2 rounds."
- */
-export async function accelerate(actor) {
-  if (getUses(actor, 'accelerateConversion', 'scene') >= 1) {
-    ui.notifications.warn(T('E20.OncePerScene'));
-    return null;
-  }
-
-  const options = [];
-  for (const entry of Object.values(actor.system?.actors ?? {})) {
-    const other = globalThis.fromUuidSync?.(entry?.uuid);
-    if (other?.flags?.essence20?.zordSummonReadyRound) {
-      options.push({ value: other.uuid, label: other.name, flag: 'zordSummonReadyRound' });
-    }
-  }
-
-  for (const megaform of worldActors().filter(a => a.type == 'megaform' && a.flags?.essence20?.combineReadyRound
-    && Object.values(a.system?.actors ?? {}).some(e => e?.uuid == actor.uuid))) {
-    options.push({ value: megaform.uuid, label: megaform.name, flag: 'combineReadyRound' });
-  }
-
-  if (!options.length) {
-    ui.notifications.warn(T('E20.AccelerateNothing'));
-    return null;
-  }
-
-  const { chooseSelect } = await import("../resources/grants.mjs");
-  const picked = options.length == 1 ? options[0].value : await chooseSelect(T('E20.AccelerateConversion'), T('E20.AcceleratePick'), options);
-  const option = options.find(o => o.value == picked);
-  const target = option ? await fromUuid(option.value) : null;
-  if (!target) {
-    return null;
-  }
-
-  const ready = Math.max(game.combat?.round ?? 0, Number(target.flags.essence20[option.flag]) - 2);
-  await target.setFlag('essence20', option.flag, ready);
-  await markUsed(actor, 'accelerateConversion', { window: 'scene' });
-  return T('E20.Accelerated', { name: target.name, round: ready });
-}
+// (The faster ways a Zord can arrive - Manifested Zord, Q-Rex Portal, Assisted Summoning - are SummonOption rules,
+// offered by mechanics/vehicles/zord-summon.mjs#rollSummonTimer: rules/plugins/zords/summon-option.mjs.)
 
 /* -------------------------------------------- */
 /*  Toxo-Zombies and summoned allies             */
@@ -613,18 +539,7 @@ export function vehicleHands(actor) {
   return hasSourced(actor, SUMMON.skybound) && vehiclesOf(actor, 'jetPack').length ? 2 : 0;
 }
 
-/**
- * Hard Target (Cobra Codex p.66): "When wearing your Jet Pack, you gain 2 Health, and +2 to your
- * Toughness." Wearing = crewing it.
- * @returns {{health: Number, defenses: Object}}
- */
-export function hardTargetBonus(actor, crewedVehicle) {
-  if (hasSourced(actor, SUMMON.hardTarget) && crewedVehicle?.flags?.essence20?.personalVehicle == 'jetPack') {
-    return { health: 2, defenses: { toughness: 2 } };
-  }
-
-  return { health: 0, defenses: {} };
-}
+// (Hard Target's +2 Health and Toughness in the Jet Pack are Defense / DerivedStat rules on the Perk.)
 
 /**
  * Racer Abandon (Cobra Codex p.61): "when driving a vehicle, including your Riding Rig, certain Renegade
@@ -671,6 +586,9 @@ export function renegadeHolderFor(actor) {
 
   return actor;
 }
+
+// The rules' renegadeVehicle scope and self:ownRenegade tag ask this (rules/plugins/combat/defeat-stage.mjs).
+registerRenegadeLookup(renegadeHolderFor);
 
 /**
  * Racer Abandon's Reckless Abandon: "You gain ↑2 on Driving Skill Tests instead of Strength Skill
@@ -768,80 +686,16 @@ const HANDLERS = {
   // of the Rigger Focus's Riding Rig Perk."
   ridingRig: (actor, item) => vehicleLine(actor, summonVehicle(actor, 'ridingRig', { grantor: item })),
   biker: (actor, item) => vehicleLine(actor, summonVehicle(actor, 'ridingRig', { grantor: item })),
-  // Rig Upgrade: "At 6th level, you gain a Standard Drone Upgrade ... At 10th level ... a Limited Drone
-  // Upgrade. At 17th level ... a Restricted Drone Upgrade." Picked onto the Rig as they become due.
-  async rigUpgrade(actor, item) {
-    const rig = vehiclesOf(actor, 'ridingRig')[0];
-    if (!rig) {
-      ui.notifications.warn(T('E20.RigNone', { name: actor.name }));
-      return null;
-    }
-
-    const level = Number(actor.system?.level) || 1;
-    const due = [[6, 'standard'], [10, 'standard'], [10, 'limited'], [17, 'standard'], [17, 'limited'], [17, 'restricted']].filter(([l]) => level >= l);
-    const taken = Number(item.flags?.essence20?.rigUpgrades) || 0;
-    if (taken >= due.length) {
-      ui.notifications.info(T('E20.GrantAlready'));
-      return null;
-    }
-
-    const { pickAndGrant } = await import("../resources/grants.mjs");
-    const got = await pickAndGrant(rig, item, item.name, { type: 'upgrade', availabilities: [due[taken][1]], matches: e => e.system?.type == 'drone' });
-    if (got) {
-      await item.setFlag('essence20', 'rigUpgrades', taken + 1);
-    }
-
-    return got ? T('E20.GrantGained', { name: rig.name, item: item.name, what: got.name }) : null;
-  },
+  // (Rig Upgrade's due Drone Upgrades are a Use rule on the Perk - rules/conv16-b.test.js.)
   // Skybound: "You gain a Jet Pack ... but without its Quad Blast 25mm Axial Machine Guns ... If your
   // Jet Pack gets destroyed on a mission, you gain a new Jet Pack the following mission."
   skybound: (actor, item) => vehicleLine(actor, summonVehicle(actor, 'jetPack', { grantor: item })),
-  // Crashing From The Skies: "your Jet Pack's Aerial Movement increases to 45 feet. Additionally, your Jet
-  // Pack now comes equipped with a Quad Blast 25mm Axial Machine Guns."
-  async crashingFromTheSkies(actor, item) {
-    const jetPack = vehiclesOf(actor, 'jetPack')[0];
-    if (!jetPack || item.flags?.essence20?.granted) {
-      ui.notifications.info(T(jetPack ? 'E20.GrantAlready' : 'E20.JetPackNone'));
-      return null;
-    }
-
-    await jetPack.update({ 'system.movement.aerial.base': 45 });
-    await jetPack.createEmbeddedDocuments('Item', vehicleItems({ attacks: [attack('Quad Blast 25mm Axial Machine Guns', 'targeting', 1, 'sharp', [40, 1600])] }));
-    await item.setFlag('essence20', 'granted', true);
-    return T('E20.GrantGained', { name: jetPack.name, item: item.name, what: 'Quad Blast 25mm Axial Machine Guns' });
-  },
+  // (Crashing From The Skies is a Use rule on the Perk - recipient personalVehicle:jetPack: rules/plugins/picks/personal-vehicle.mjs.)
   necroscientist: (actor, item, pay) => reviveToxoZombie(actor, pay),
   async alliesFromBelow(actor, item, pay) {
     return (await pay('standard')) ? alliesFromBelow(actor) : null;
   },
-  // Accelerate Conversion: "Once per scene, you may spend 1 Personal Power or Energon Point to Convert as a
-  // Free action if you are a Cybertronian. Additionally, once per scene, you may reduce the time before
-  // you can summon your Zord or before your team can combine into a Megaform by 2 rounds."
-  async accelerateConversion(actor, item) {
-    const { chooseButtons } = await import("../resources/grants.mjs");
-    const choice = await chooseButtons(item.name, T('E20.AcceleratePrompt'), [
-      ...(actor.system?.canTransform ? [['convert', T('E20.AccelerateConvert')]] : []), ['wait', T('E20.AccelerateWait')],
-    ]);
-    if (choice == 'wait') {
-      return accelerate(actor);
-    }
-
-    if (choice != 'convert' || getUses(actor, 'accelerateConvertPaid', 'scene') >= 1) {
-      return choice ? (ui.notifications.warn(T('E20.OncePerScene')), null) : null;
-    }
-
-    const energon = Number(actor.system?.energon?.normal?.value) || 0;
-    const power = Number(actor.system?.powers?.personal?.value) || 0;
-    if (energon < 1 && power < 1) {
-      ui.notifications.warn(T('E20.NoPower', { name: actor.name }));
-      return null;
-    }
-
-    await actor.update(energon >= 1 ? { 'system.energon.normal.value': energon - 1 } : { 'system.powers.personal.value': power - 1 });
-    await markUsed(actor, 'accelerateConvertPaid', { window: 'scene' });
-    await actor.setFlag('essence20', 'accelerateConvert', getSceneEpoch());
-    return T('E20.AccelerateConvertReady', { name: actor.name });
-  },
+  // (Accelerate Conversion is Use rules + an ActionCost rule on the Perk - step reduceTimer: rules/plugins/zords/reduce-timer.mjs.)
   // Rally Guardians (Through the Shattered Grid p.72): "Your company of Guardians uses the same rules and
   // statistics for Zords". A Zord actor for the company.
   async rallyGuardians(actor, item) {
@@ -863,16 +717,7 @@ const HANDLERS = {
 
     return company ? T('E20.GuardianCompanyRallied', { name: actor.name }) : null;
   },
-  // Organic Zord (Beneath the Helmet p.42): "enhance your or another Power Ranger's Zord with a Feature
-  // chosen from the Upgraded Zord features."
-  async organicZord(actor, item) {
-    const zords = worldActors().filter(a => a.type == 'zord' && a.isOwner);
-    const { chooseSelect, pickAndGrant } = await import("../resources/grants.mjs");
-    const picked = await chooseSelect(item.name, T('E20.OrganicZordPick'), zords.map(z => ({ value: z.uuid, label: z.name })));
-    const zord = picked ? await fromUuid(picked) : null;
-    const got = zord ? await pickAndGrant(zord, item, item.name, { type: 'feature' }) : null;
-    return got ? T('E20.GrantGained', { name: zord.name, item: item.name, what: got.name }) : null;
-  },
+  // (Organic Zord's pick-a-Zord-then-a-Feature is a Use rule on the Perk.)
 };
 
 async function vehicleLine(actor, vehiclePromise) {

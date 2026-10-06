@@ -1,85 +1,25 @@
-import { actorHasPerk, hasUsedThisEncounter, markUsedThisEncounter } from "../../mechanics/characters/perks.mjs";
-import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
+import { getUses } from "../../mechanics/resources/scene-clock.mjs";
+import { isExpired } from "../../rules/expiry.mjs";
 
 /**
- * Mark Target (Scout, 2nd level, p.84): "At the beginning of a scene (including Combat),
- * designate a creature you see or a specific individual you expect will be in the scene. You gain
- * +1 on Skill Tests related to that creature until the end of the scene."
+ * Mark Target (Scout, 2nd level, p.84): "At the beginning of a scene (including Combat), designate a creature you see or a
+ * specific individual you expect will be in the scene. You gain +1 on Skill Tests related to that creature until the end
+ * of the scene."
  *
- * No roll involved - "designate" is a plain declaration - so this is a sheet "Use" button
- * (wired the same way as banked-buffs.mjs's own controls) that marks whichever token is currently
- * targeted, rather than a dialog. Only one creature can be marked at a time here (Additional
- * Marks, which lets higher-level Scouts mark several individual creatures at once, isn't built -
- * a single-target flag has nothing to extend into a list without a real redesign).
+ * The designation is a Use rule on the Perk (rules/conv15-banked.test.js): a per-setter `markTarget` mark on the targeted
+ * creature until the scene ends, kept on the newest one only - or, with Additional Marks (Transformers CRB, Scout, 14th
+ * level, p.85: "up to five Mark Targets active at a time instead of one"), the newest five. This file is the reader the
+ * roll pipeline (dice.mjs), On My Mark (mechanics/combat/target-riders.mjs) and `check:markTarget` ask.
  */
 
-const MARK_TARGET_FLAG = 'markedTargetUuid';
-// "until the end of the scene": the scene each mark was made in. A mark (single or Additional
-// Marks list) from any other scene - or from before this stamp existed - no longer counts.
-const MARK_TARGET_SCENE_FLAG = 'markedTargetScene';
-
-function isMarkSceneCurrent(actor) {
-  return actor.getFlag?.('essence20', MARK_TARGET_SCENE_FLAG) === getSceneEpoch();
-}
-
-// Mark Everybot (Transformers CRB, Scout, 18th level, p.85): "once per day, you can use Mark
-// Target on every creature in a scene, even those who enter the scene later." Unlike Additional
-// Marks above, this doesn't need the single-target flag's own list redesign - "every creature,
-// including ones not here yet" is a scene-wide toggle, not a set of specific targets, so it's a
-// second, independent boolean flag OR'd into checkMarkTarget below. "Once per day" approximated
-// as "once per scene" (this project's own standard idiom, see items/rolls/trade-school.mjs's own doc
-// comment); reusing the SAME flag for both the once-per-day gate AND "is it currently active"
-// works because the two windows are identical here - RAW's own "until the end of the scene"
-// duration (inherited from Mark Target itself) is exactly the scene-clock encounter window
-// markUsedThisEncounter already stamps.
+// Mark Everybot (Transformers CRB, Scout, 18th level, p.85): "once per day, you can use Mark Target on every creature in a
+// scene, even those who enter the scene later." Its Use is a rule too - a markWindow on this flag; while the window is
+// live, every creature counts as marked.
 const MARK_EVERYBOT_ENCOUNTER_FLAG = 'markEverybotUsedThisEncounter';
 
-// Additional Marks (Transformers CRB, Scout, 14th level, p.85): "You can have up to five Mark
-// Targets active at a time instead of one." Rather than redesign MARK_TARGET_FLAG itself (which
-// every other Scout without this Perk still relies on being a single uuid), Additional Marks gets
-// its own list flag that markTarget appends to instead of overwriting when the Perk is held, and
-// checkMarkTarget OR's membership in that list into its normal single-target check.
-const ADDITIONAL_MARKS_ID = "Compendium.essence20.tf_crb.Item.sapOdu2VHIJLeZdE";
-const ADDITIONAL_MARKS_LIMIT = 5;
-const ADDITIONAL_MARKS_FLAG = 'additionalMarkedTargetUuids';
-
 /**
- * Marks the actor's currently-targeted token as their Mark Target designee. With Additional Marks
- * held, this instead adds the target to a list of up to ADDITIONAL_MARKS_LIMIT designees (the
- * oldest is dropped once the list is full) rather than replacing the single designee.
- * @param {Actor} actor
- * @returns {Promise<Boolean>}   False (and no flag set) if nothing is targeted.
- */
-export async function markTarget(actor) {
-  const targetActor = game.user.targets.first()?.actor;
-  if (!targetActor) {
-    ui.notifications.warn(game.i18n.localize('E20.MarkTargetNoTarget'));
-    return false;
-  }
-
-  const sameScene = isMarkSceneCurrent(actor);
-  await actor.setFlag('essence20', MARK_TARGET_SCENE_FLAG, getSceneEpoch());
-
-  if (actorHasPerk(actor, ADDITIONAL_MARKS_ID)) {
-    const existing = ((sameScene ? actor.getFlag?.('essence20', ADDITIONAL_MARKS_FLAG) : null) ?? [])
-      .filter((uuid) => uuid != targetActor.uuid);
-    existing.push(targetActor.uuid);
-    while (existing.length > ADDITIONAL_MARKS_LIMIT) {
-      existing.shift();
-    }
-
-    await actor.setFlag('essence20', ADDITIONAL_MARKS_FLAG, existing);
-    return true;
-  }
-
-  await actor.setFlag('essence20', MARK_TARGET_FLAG, targetActor.uuid);
-  return true;
-}
-
-/**
- * Whether the given target is the actor's own current Mark Target designee (or one of their
- * Additional Marks designees) - or, with Mark Everybot active, ANY target at all (see
- * MARK_EVERYBOT_ENCOUNTER_FLAG's own comment above).
+ * Whether the given target is one of the actor's own current Mark Target designees - or, with Mark Everybot active, ANY
+ * target at all.
  * @param {Actor} actor
  * @param {Actor} target
  * @returns {Boolean}
@@ -89,36 +29,10 @@ export function checkMarkTarget(actor, target) {
     return false;
   }
 
-  if (hasUsedThisEncounter(actor, MARK_EVERYBOT_ENCOUNTER_FLAG)) {
+  if (getUses(actor, MARK_EVERYBOT_ENCOUNTER_FLAG, 'encounter') > 0) {
     return true;
   }
 
-  if (!isMarkSceneCurrent(actor)) {
-    return false;
-  }
-
-  const markedUuid = actor.getFlag?.('essence20', MARK_TARGET_FLAG);
-  if (!!markedUuid && markedUuid == target.uuid) {
-    return true;
-  }
-
-  const additionalMarks = actor.getFlag?.('essence20', ADDITIONAL_MARKS_FLAG);
-  return Array.isArray(additionalMarks) && additionalMarks.includes(target.uuid);
-}
-
-/**
- * @param {Actor} actor
- * @returns {Boolean}
- */
-export function canUseMarkEverybot(actor) {
-  return !hasUsedThisEncounter(actor, MARK_EVERYBOT_ENCOUNTER_FLAG);
-}
-
-/**
- * Activates Mark Everybot for the rest of the scene - see MARK_EVERYBOT_ENCOUNTER_FLAG's own
- * comment above.
- * @param {Actor} actor
- */
-export async function activateMarkEverybot(actor) {
-  await markUsedThisEncounter(actor, MARK_EVERYBOT_ENCOUNTER_FLAG);
+  const mark = actor?.id ? target.flags?.essence20?.ruleMarks?.[`markTarget--${actor.id}`] : null;
+  return !!mark && mark.by == actor.uuid && !isExpired(mark);
 }

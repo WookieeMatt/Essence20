@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Ultimate Magna Defender","when":["attack:melee"]}
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Ultimate Magna Defender","when":["attack:melee"]},
+      {"type":"DamageModifier","label":"Ultimate Magna Defender","direction":"dealt","scaled":true,"amount":1,"scope":"formedBy","when":["attack:melee"]}
     ],
     "automation": {
       "status": "full",

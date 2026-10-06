@@ -5,6 +5,10 @@
   "_id": "1zreGdgegCeRjJPT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick one more Adept Armament (Steady Hand)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickMany","key":"adept","from":"ownedItem","itemType":"weapon","filter":["not:item:data:flags.essence20.adeptArmament"],"count":1,"prompt":"Choose a weapon as an Adept Armament."},{"do":"updateItem","item":"choice:adept","all":true,"set":{"flags.essence20.adeptArmament":true}},{"do":"updateItem","set":{"flags.essence20.granted":true}}]},
+      {"type":"DialogSwitch","label":"Steady Hand: a Free action to roll without the Snag","key":"steadyHand","forget":true,"clearSnagCost":"free","when":["attack","weapon:data:flags.essence20.adeptArmament"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when an Adept Armament attack would take a Snag, spend a Free action to drop it. Use button: pick one more Adept Armament.</p>"

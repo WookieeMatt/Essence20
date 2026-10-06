@@ -6,7 +6,6 @@ import { getPath, itemsOf, lazy, lower, sourceOf, targetedActors } from "../shar
  * Tags, checks and formula refs (round 10, group C).
  *
  * Checks (`check:<name>`):
- *   angrySnag               the rolled Skill is the one the Angry Hang-Up's Snag sits on this scene (items/rolls/angry-influence.mjs)
  *   contingencyLikely       off this actor's own turn in a combat, with a Contingency logged (the action-economy ledger)
  *   survivalSpecialization  a Survival Specialization's name matches the scene's terrain / environment (null: the
  *                           scene says nothing)
@@ -38,14 +37,6 @@ const addCheck = (name, fn) => {
 /* -------------------------------------------- */
 /*  Checks                                       */
 /* -------------------------------------------- */
-
-addCheck('angrySnag', (actor, option, ctx) => {
-  if (!ctx?.rolledSkill) {
-    return null;
-  }
-
-  return !!lazy.angrySnagSkill && lazy.angrySnagSkill(actor) == ctx.rolledSkill;
-});
 
 /** Off the actor's own turn in a combat, with a Contingency in its action-economy log. */
 export function looksLikeContingency(actor) {

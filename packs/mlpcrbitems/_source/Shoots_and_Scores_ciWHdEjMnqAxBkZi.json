@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"x2","label":"Shoots and Scores (Athletics Critical Success: +1 Friendship Point)","when":["skill:athletics"],"steps":[{"do":"grantStoryPoint"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a Critical Success on an Athletics test gains the group a Friendship Point.</p>"

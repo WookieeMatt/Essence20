@@ -5,6 +5,9 @@
   "_id": "mDG1CXQA04xKfONn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Backblast (switch on / off)","steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","filter":["item:hasAttack:item:data:system.radius>0"],"prompt":"Which weapon?","beforeCost":true},{"do":"mutateWeapon","onto":"choice:weapon","toggle":"backblast"},{"do":"chat","text":"Backblast on: half range, 1 Fire to everyone within 5 feet.","when":["rule:pickedItem:weapon:item:data:flags.essence20.mutation.backblast"]},{"do":"chat","text":"Backblast off: normal range.","when":["not:rule:pickedItem:weapon:item:data:flags.essence20.mutation.backblast"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: switch a blast weapon to half range. While on, each attack deals 1 Fire damage to creatures within 5 ft of you, or to you on a Fumble. Use again to switch it off.</p>"

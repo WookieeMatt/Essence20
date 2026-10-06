@@ -5,6 +5,9 @@
   "_id": "dSMZ5wMdu0Xq0VzX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"applyingDamage","redirect":true,"within":5,"priority":4,"label":"Golden Guardian (1 Personal Power: take the hit for an adjacent ally)","when":["self:data:system.powers.personal.value>=1"],"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"setTargets","to":"target","when":["calc:@owned.8mRJPvxLFVcf0egf>0"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic prompt: when an attack hits an adjacent ally, you can pay 1 Personal Power to take the hit and all its effects yourself.</p>"

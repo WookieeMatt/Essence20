@@ -10,10 +10,8 @@ export const Q1 = {
   // Decepticon Directive
   addictedDarkEnergon: 'Compendium.essence20.decepticon_directive.Item.e3c7wuCA7JQS7rTA',
   // G.I. Joe CRB
-  // Intercontinental Adventures
-  goodToGo: 'Compendium.essence20.intercontinental_adventures.Item.Yt3muowN1aALcqOj',
-  ninpoJoes: 'Compendium.essence20.intercontinental_adventures.Item.8oZYgik001Dxxxa6',
-  nothingPersonal: 'Compendium.essence20.intercontinental_adventures.Item.WsB4CydGzKF2g7Yi',
+  // Intercontinental Adventures (Good To Go, Ninpõ JOEs and Nothing Personal are their items' own rules plus dice.mjs's
+  // own ids - nothing read their entries here)
   nuPogodi: 'Compendium.essence20.intercontinental_adventures.Item.sItc8nD7ockbQ1mn',
 };
 

@@ -5,6 +5,10 @@
   "_id": "Z1OIoelOdyUdtyl7",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Choose the Standard shield this weapon counts as","when":["rule:data:flags.essence20.parentId","not:rule:granted"],"steps":[{"do":"pickGrant","from":{"type":"shield","availabilities":["standard"]},"system":{"active":false}},{"do":"linkToHost","name":"E20.O1DeflectingName","warn":"E20.O1DeflectingRaised"}]},
+      {"type":"Use","label":"Choose the Standard shield this weapon counts as","when":["rule:data:flags.essence20.parentId","not:rule:granted"],"steps":[{"do":"pickGrant","from":{"type":"shield","availabilities":["standard"]},"system":{"active":false}},{"do":"linkToHost","name":"E20.O1DeflectingName","warn":"E20.O1DeflectingRaised"}]}
+    ],
     "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","host:data:system.classification.size=long","host:data:system.classification.size=heavy"]}]},
     "automation": {
       "status": "full",

@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"hit","outcome":"x2","label":"Critical Success (Barreling Beam: knocked Prone)","when":["item:own"],"steps":[{"do":"applyCondition","condition":"prone","to":"target"}]}
+      {"type":"Trigger","event":"hit","outcome":"x2","label":"Critical Success (Barreling Beam: knocked Prone)","when":["item:own"],"steps":[{"do":"applyCondition","condition":"prone","to":"target"}]},
+      {"type":"Trigger","event":"hit","label":"Barreling Beam: pushed 15 ft","when":["item:own"],"steps":[{"do":"push","feet":15,"to":"target"}]}
     ],
     "automation": {
       "status": "full",

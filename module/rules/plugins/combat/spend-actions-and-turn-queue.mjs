@@ -9,18 +9,29 @@ import { stepAmount as amount } from "../shared/step-amount.mjs";
  * spendActions and queueTurnStart steps, and the turn-start hook that runs the queue.
  */
 
-// spendActions {action, count}: spend that many actions of a kind (in combat); stops when one can't be paid.
+// spendActions {action, count, atomic?}: spend that many actions of a kind (in combat); stops when one can't be paid
+// (atomic: giving back the ones it already spent).
 registerStep('spendActions', async (step, ctx) => {
   const count = Math.max(0, amount(step.count ?? 1, ctx, 1));
   if (!globalThis.game?.combat) {
     return;
   }
 
-  const { spend } = await import("../../../mechanics/actions/action-economy.mjs");
+  const { spend, refund } = await import("../../../mechanics/actions/action-economy.mjs");
+  const spent = [];
   for (let i = 0; i < count; i++) {
     const paid = await spend(ctx.actor, step.action ?? 'free', { source: ctx.item?.name ?? null });
     if (paid?.blocked) {
+      // atomic (round 16, part a): all or nothing - the ones already spent are given back (Get A Grip's two Free actions).
+      for (const spendId of step.atomic ? spent : []) {
+        await refund(ctx.actor, spendId);
+      }
+
       return false;
+    }
+
+    if (paid?.spendId) {
+      spent.push(paid.spendId);
     }
   }
 }, { errors: (step, where) => (step.action && !['free', 'move', 'standard'].includes(step.action) ? [`${where}: action must be free, move or standard`] : []) });

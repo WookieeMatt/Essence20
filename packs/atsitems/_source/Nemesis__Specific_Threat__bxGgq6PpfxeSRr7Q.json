@@ -4,7 +4,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"CardOffer","label":"Nemesis: reroll and choose which result to keep","whose":"self","pressedBy":"roller","when":["card:involves:flags.essence20.nemesisUuid"],"limit":{"per":"scene"},"reroll":{"target":"formula","keep":"choose"}}
+      {"type":"CardOffer","label":"Nemesis: reroll and choose which result to keep","whose":"self","pressedBy":"roller","when":["card:involves:flags.essence20.nemesisUuid"],"limit":{"per":"scene"},"reroll":{"target":"formula","keep":"choose"}},
+      {"type":"Use","label":"Declare your Nemesis","steps":[{"do":"target"},{"do":"rememberTarget","var":"nemesis"},{"do":"updateActor","to":"self","set":{"flags.essence20.nemesisUuid":"{var.nemesis}"}},{"do":"chat","text":"{name} declares {target} their Nemesis."}]},
+      {"type":"RollModifier","label":"Facing your Nemesis (Nemesis: ↑2)","upshift":2,"when":["not:roll:initiative","target:keptAt:flags.essence20.nemesisUuid"]}
     ],
     "prerequisites": {"when":["ask:Defeated a Threat Level 12+ enemy"]},
     "automation": {

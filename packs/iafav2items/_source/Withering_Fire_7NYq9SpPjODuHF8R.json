@@ -5,6 +5,10 @@
   "_id": "7NYq9SpPjODuHF8R",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Withering Fire (1 Story Point: a hit Frightens)","key":"witheringFire","forget":true,"cost":{"resource":{"storyPoints":true},"amount":1},"when":["attack","check:attackedByAlly"]},
+      {"type":"Trigger","event":"hit","label":"Withering Fire","when":["roll:switch:witheringFire"],"steps":[{"do":"applyCondition","condition":"frightened","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when your target was attacked by an ally this round, a switch to spend a Story Point so a hit leaves it Frightened.</p>"

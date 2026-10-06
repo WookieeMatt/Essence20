@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
-import { canUseGrant, GRANT, grantKindOf, isGrantUse } from './grant-uses.mjs';
-import { endOnFumble, essenceRedirect, grantCopy, imperfectionOf, kitAvailability, runGrant, temporary, thickSkullsShift } from './grants.mjs';
+import { canUseGrant, grantKindOf } from './grant-uses.mjs';
+import { endOnFumble, grantCopy, imperfectionOf, kitAvailability, temporary } from './grants.mjs';
 
 function flagged(obj) {
   obj.flags ??= {};
@@ -77,23 +77,14 @@ beforeEach(() => {
 describe("the Use table", () => {
   test("which items have a Use button, and when", () => {
     const actor = makeActor();
-    const quake = sourced(GRANT.riotGear);
-    quake.parent = actor;
-    expect(isGrantUse(quake)).toBe(true);
-    expect(grantKindOf(sourced(GRANT.kitbasher))).toBeNull();
-    expect(canUseGrant(quake)).toBe(false);
-    game.combat = { id: 'c', round: 1, turn: 0 };
-    expect(canUseGrant(quake)).toBe(true);
+    expect(grantKindOf(sourced('Compendium.essence20.gi_joe_crb.Item.az09yEPydnE1tBTj'))).toBeNull();
 
-    const once = sourced(GRANT.customGear);
-    once.parent = actor;
-    expect(canUseGrant(once)).toBe(true);
-    once.flags.essence20.granted = true;
-    expect(canUseGrant(once)).toBe(false);
-
-    const offense = sourced(GRANT.integratedOffense, { flags: { grantedCount: 5 } });
-    offense.parent = actor;
-    expect(canUseGrant(offense)).toBe(false);
+    // (A Hint of Independence's and Personal Power Supply's Uses are rules on the Perks now - rules/conv16-b.test.js,
+    // rules/conv17-split3.test.js.)
+    const supply = sourced('Compendium.essence20.field_guide_action_adventure.Item.Uy3t5KLbeGHv08ho');
+    supply.parent = actor;
+    expect(grantKindOf(supply)).toBeNull();
+    expect(canUseGrant(supply)).toBe(false);
   });
 });
 
@@ -104,15 +95,8 @@ describe("helpers", () => {
     expect(temporary('scene')).toEqual({ kind: 'scene', scene: 1 });
   });
 
-  test("Essence redirects, Thick Skulls and Imperfections are read off their items", () => {
-    const cordial = sourced(GRANT.cordial, { flags: { redirectFrom: 'speed' } });
-    const rough = sourced(GRANT.roughAndTakesNoGuff, { flags: { redirectFrom: 'speed' } });
-    const skulls = sourced(GRANT.thickSkulls, { flags: { toToughness: 2 } });
-    const hint = sourced(GRANT.hintOfIndependence, { flags: { imperfection: { n: 2 } } });
-    expect(essenceRedirect(makeActor([cordial]), { name: 'Explorer' }, 'speed')).toBe('social');
-    expect(essenceRedirect(makeActor([rough]), { name: 'Officer' }, 'speed')).toBe('strength');
-    expect(essenceRedirect(makeActor([rough]), { name: 'Infantry' }, 'speed')).toBe('speed');
-    expect(thickSkullsShift(makeActor([skulls]))).toBe(2);
+  test("Imperfections are read off the item that keeps one", () => {
+    const hint = sourced('Compendium.essence20.decepticon_directive.Item.TkzfZUNiGvv5iWDh', { flags: { imperfection: { n: 2 } } });
     expect(imperfectionOf(makeActor([hint]))).toEqual({ n: 2 });
   });
 
@@ -137,68 +121,5 @@ describe("helpers", () => {
     expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled();
     await endOnFumble(actor, weapon, { outcomes: [{ isFumble: true }] });
     expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('Item', ['w']);
-  });
-});
-
-describe("Use buttons", () => {
-  test("Rough and Takes No Guff switches its redirect on and off", async () => {
-    const rough = sourced(GRANT.roughAndTakesNoGuff);
-    makeActor([rough]);
-    await runGrant(rough, null);
-    expect(rough.flags.essence20.redirectFrom).toBe('speed');
-    await runGrant(rough, null);
-    expect(rough.flags.essence20.redirectFrom).toBeNull();
-  });
-
-  test("Thick Skulls records how many increases went to Toughness", async () => {
-    const skulls = sourced(GRANT.thickSkulls);
-    makeActor([skulls]);
-    foundry.applications.api.DialogV2.wait.mockResolvedValueOnce('2');
-    await runGrant(skulls, null);
-    expect(skulls.flags.essence20.toToughness).toBe(2);
-  });
-
-  test("Monstrous Attack makes a new unarmed attack, once", async () => {
-    const monstrous = sourced(GRANT.monstrousAttack, { name: 'Monstrous Attack' });
-    const actor = makeActor([monstrous]);
-    foundry.applications.api.DialogV2.wait.mockResolvedValueOnce('sharp');
-    await runGrant(monstrous, null);
-    const attack = actor.createEmbeddedDocuments.mock.calls[0][1][0];
-    expect(attack.type).toBe('weaponEffect');
-    expect(attack.system).toEqual(expect.objectContaining({ damageType: 'sharp', damageValue: 2, range: { reachMultiplier: 2 } }));
-    expect(monstrous.flags.essence20.granted).toBe(true);
-  });
-
-  test("Never Unarmed makes a Silent one-handed weapon for the scene", async () => {
-    const perk = sourced(GRANT.neverUnarmed);
-    const actor = makeActor([perk]);
-    foundry.applications.api.DialogV2.wait.mockResolvedValueOnce('finesse').mockResolvedValueOnce('blunt');
-    await runGrant(perk, null);
-    const [weapon] = actor.createEmbeddedDocuments.mock.calls[0][1];
-    expect(weapon.system.traits).toEqual(['silent']);
-    expect(weapon.flags.essence20.endsOnFumble).toBe(true);
-    expect(weapon.flags.essence20.temporary.kind).toBe('scene');
-    const [effect] = actor.createEmbeddedDocuments.mock.calls[1][1];
-    expect(effect.system.classification.skill).toBe('finesse');
-  });
-
-  test("a Torch lights the carrier's token and goes out again", async () => {
-    const torch = sourced(GRANT.torch, { type: 'gear' });
-    const actor = makeActor([torch]);
-    const token = { light: { bright: 0, dim: 0, angle: 360 }, update: jest.fn(async () => {}) };
-    actor.getActiveTokens = () => [{ document: token }];
-    await runGrant(torch, null);
-    expect(token.update).toHaveBeenCalledWith({ 'light.bright': 25, 'light.dim': 50, 'light.angle': 360 });
-    await runGrant(torch, null);
-    expect(token.update).toHaveBeenLastCalledWith({ 'light.bright': 0, 'light.dim': 0, 'light.angle': 360 });
-  });
-
-  test("Cordial remembers the chosen Essence", async () => {
-    const cordial = sourced(GRANT.cordial);
-    makeActor([cordial]);
-    foundry.applications.api.DialogV2.wait.mockResolvedValueOnce('strength');
-    await runGrant(cordial, null);
-    expect(cordial.flags.essence20.redirectFrom).toBe('strength');
-    expect(cordial.flags.essence20.granted).toBe(true);
   });
 });

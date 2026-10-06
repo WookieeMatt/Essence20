@@ -5,6 +5,10 @@
   "_id": "SYFScAH8lDshgLNM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Immortal Rebel Soul","event":"wouldBeDefeated","stage":"beforeAegis","priority":1,"limit":{"per":"encounter","key":"immortalRebelSoul"},"steps":[{"do":"leaveAt","value":1}]},
+      {"type":"Trigger","label":"Immortal Rebel Soul (Essence)","event":"essenceWouldEmpty","limit":{"per":"encounter","key":"immortalRebelSoul"},"steps":[{"do":"negateDamage"}]}
+    ],
     "prerequisites": {"when":["self:hasType:focus:StrexCorp Rebel"]},
     "automation": {
       "status": "partial",

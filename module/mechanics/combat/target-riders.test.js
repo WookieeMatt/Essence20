@@ -8,9 +8,9 @@ import { resolveSaveRoll } from './save-riders.mjs';
 import { coatingCost, coatingOf, isHackerPoison, poisonAffects, resolveCoatingRoll, wipeCoating } from '../../items/gear/poison-coating.mjs';
 import { canUseRider, isRiderUse, riderUseFor } from './rider-uses.mjs';
 import {
-  addMark, applyDialogRiders, applyRollRiders, armorUpgradeBonuses, buildRiderContext, disarm, fanaticCap, findMark, getMarks,
-  handleRiderButton, hasConditionFrom, isGremlinsMischiefActive, isVsPrimaryQuarry, isWreckingBallActive, noteRoller, onDamageDealt, removeMark,
-  RIDER, riderDefenseAdjust, riderDialogFlags, rollRiderSources, stampConditionSource, stanceOf, untilEndOfNextTurn, weaponUnusable,
+  addMark, applyRollRiders, buildRiderContext, disarm, findMark, getMarks,
+  handleRiderButton, hasConditionFrom, isVsPrimaryQuarry, noteRoller, removeMark,
+  RIDER, rollRiderSources, stampConditionSource, stanceOf, untilEndOfNextTurn, weaponUnusable,
   ablativeLossOf,
 } from './target-riders.mjs';
 
@@ -92,21 +92,7 @@ beforeEach(() => {
   global.ChatMessage = { create: jest.fn(), getSpeaker: jest.fn(() => ({})) };
 });
 
-describe("a vehicle's switched-on Radar Jammer", () => {
-  test("gives Technology tests within its radius a Snag", () => {
-    const roller = makeActor([], { id: 'r' });
-    const own = { center: { x: 0 }, actor: roller };
-    roller.getActiveTokens = () => [own];
-    const vehicle = { name: 'Jammer Truck', items: [], flags: { essence20: { jamming: 50 } } };
-    canvas.grid = { measurePath: ([a, b]) => ({ distance: Math.abs(a.x - b.x) }) };
-    canvas.tokens.placeables = [own, { center: { x: 40 }, actor: vehicle }];
-
-    expect(rollRiderSources(roller, null, { rolledSkill: 'technology' }).sources.some(s => s.id == 'rider-jammer' && s.snag)).toBe(true);
-    expect(rollRiderSources(roller, null, { rolledSkill: 'alertness' }).sources.some(s => s.id == 'rider-jammer')).toBe(false);
-    canvas.tokens.placeables[1].center.x = 60;
-    expect(rollRiderSources(roller, null, { rolledSkill: 'technology' }).sources.some(s => s.id == 'rider-jammer')).toBe(false);
-  });
-});
+// (A vehicle's switched-on Radar Jammer is an aura RollModifier rule on the upgrade now - rules/conv14-systems.test.js.)
 
 describe("creature tags", () => {
   test("typed tags, and what an actor's type implies", () => {
@@ -179,8 +165,8 @@ describe("poisons", () => {
     const poison = item('cobra_codex', 'poison1', { type: 'weapon', id: 'p1', system: { isPoison: true, quantity: 2 } });
     const weapon = item('gi_joe_crb', 'knife', { type: 'weapon', id: 'w1', system: {} });
     const effect = item('cobra_codex', 'fx', { type: 'weaponEffect', id: 'e1', flags: { parentId: 'p1' }, system: { damageValue: 1, damageType: 'poison' } });
-    const actor = makeActor([poison, weapon, effect, perk('Compendium.essence20.cobra_codex.Item.9kQxCeLIm10zB1h7')]);
-    expect(coatingCost(actor)).toBe('move');
+    const actor = makeActor([poison, weapon, effect]);
+    expect(coatingCost(actor)).toBe('standard');
     expect(isHackerPoison(poison)).toBe(false);
     expect(poisonAffects({ hacker: true }, makeActor())).toBe(false);
     expect(poisonAffects({ hacker: true }, makeActor([], { system: { creatureTags: 'robot' } }))).toBe(true);
@@ -196,9 +182,9 @@ describe("poisons", () => {
 describe("Use buttons", () => {
   test("which items get one", () => {
     const actor = makeActor();
-    const quake = perk(RIDER.gremlinsMischief);
+    const quake = perk(RIDER.suppressingFire);
     quake.parent = actor;
-    expect(riderUseFor(quake)).toBe('gremlinsMischief');
+    expect(riderUseFor(quake)).toBe('suppressingFire');
     expect(isRiderUse({ type: 'weapon', system: { isPoison: true, poisonApplication: { contact: true } }, flags: {} })).toBe(true);
     expect(canUseRider(quake)).toBe(true);
     expect(isRiderUse({ flags: {} })).toBe(false);
@@ -224,15 +210,15 @@ describe("marks, stances and Conditions", () => {
     expect(hasConditionFrom(target, 'frightened', { uuid: 'Actor.other' })).toBe(false);
   });
 
-  test("the dialog's downshifts, and the stance they leave", async () => {
-    const actor = makeActor([perk(RIDER.allOutAttack)]);
-    const options = { shiftDown: 0, allOutAttackShifts: 2, evasiveFightingShifts: 1, applyMakeAnOpening: true };
-    await applyDialogRiders(actor, options);
-    expect(options.shiftDown).toBe(5);
+  // (Make an Opening's dialog downshift is a DialogSwitch rule now - rules/conv15-uses.test.js.)
+  test("a stance read off its flag", async () => {
+    const actor = makeActor();
+    actor.flags.essence20.riderStance = { allOutAttack: 2, evasiveFighting: 1 };
     expect(stanceOf(actor)).toEqual({ allOutAttack: 2, evasiveFighting: 1 });
-    expect(riderDialogFlags(actor, { type: 'weaponEffect', system: { classification: { skill: 'might', style: 'melee' } }, flags: {} }).allOutAttackMax).toBe(5);
     expect(untilEndOfNextTurn(actor)).toEqual({});
   });
+
+  // (Pinpoint is a DialogSwitch rule now - rules/conv15-uses.test.js.)
 });
 
 describe("before the roll", () => {
@@ -245,56 +231,31 @@ describe("before the roll", () => {
     expect(ids).toEqual(expect.arrayContaining(['rider-allOutAttack', 'rider-evasiveFighting']));
   });
 
-  test("Defense changes: Energic Shields", () => {
-    const shields = perk(RIDER.energicShields);
-    shields.flags.essence20.riderChoice = 'fire';
-    const target = makeActor([shields], { system: { isMorphed: true } });
-    const robot = makeActor([], { system: { creatureTags: 'robot' } });
-    expect(riderDefenseAdjust(robot, target, 'toughness', { item: { system: { damageType: 'fire' } }, isAttack: true })).toBe(3);
-  });
-
-  test("Armor Upgrade bonuses on worn armor", () => {
-    const armor = item('gi_joe_crb', 'armor', { type: 'armor', id: 'ar', system: { equipped: true } });
-    const upgrade = item('gi_joe_crb', 'plate', { type: 'upgrade', id: 'up', flags: { parentId: 'ar' }, system: { type: 'armor', armorBonus: { defense: 'toughness', value: 2 } } });
-    expect(armorUpgradeBonuses(makeActor([armor, upgrade]), 'toughness')).toEqual([2]);
-  });
-
-  test("Fanatic caps a big downshift near a commander", () => {
-    const actor = makeActor([perk(RIDER.fanatic)]);
-    canvas.tokens.placeables = [{ actor: { system: { creatureTags: 'commander' }, items: [] }, document: { disposition: 1 } }];
-    expect(fanaticCap(actor, 0, 4).shiftUp).toBe(2);
-    expect(fanaticCap(actor, 0, 2)).toBeNull();
-  });
+  // (Armor Upgrade bonuses - rules/plugins/combat/armor-upgrades.mjs, rules/engine15-uses.test.js.)
 });
 
 describe("after the roll", () => {
-  test("Reveal Weakness adds damage; Ablative Matrix wears down on a crit", async () => {
+  // (Reveal Weakness's +1 is a HitRider rule now - rules/conv15-uses.test.js.)
+  test("an Ablative Matrix's loss is read off its flag", async () => {
     const attacker = makeActor();
     const ablative = item('enigma_of_combination', 'fuztUMiuiIXsk2sI', { type: 'upgrade', system: { armorBonus: { value: 5 } } });
     ablative._source = { system: { armorBonus: { value: 5 } } };
     const target = makeActor([ablative], { uuid: 'Actor.t' });
-    target.flags.essence20.riderMarks = [{ kind: 'revealWeakness', by: 'x' }];
     fromUuid.mockImplementation(async uuid => (uuid == 'Actor.t' ? target : uuid == 'Item.fx' ? { type: 'weaponEffect' } : null));
     const results = [{ targetUuid: 'Actor.t', success: true, damageValue: 2, multiplier: 1, criticalOptions: [] }];
     await applyRollRiders(attacker, results, { entries: [{}], riderContext: { itemUuid: 'Item.fx', consumes: [] } }, { isCrit: true });
-    expect(results[0].damageValue).toBe(3);
-    expect(ablativeLossOf(ablative)).toBe(1);
-  });
-
-  test("Headache offers its own Psychic damage button instead of adding to the punch", async () => {
-    const attacker = makeActor([perk(RIDER.headache)], { system: { essences: { strength: { max: 4, value: 2 } } } });
-    const target = makeActor([], { uuid: 'Actor.t' });
-    fromUuid.mockImplementation(async uuid => (uuid == 'Actor.t' ? target : uuid == 'Item.fx' ? { type: 'weaponEffect' } : null));
-    const results = [{ targetUuid: 'Actor.t', success: true, damageValue: 2, damageType: 'blunt', multiplier: 1, criticalOptions: [] }];
-    await applyRollRiders(attacker, results, { entries: [{}], riderContext: { itemUuid: 'Item.fx', consumes: [], isUnarmed: true } });
     expect(results[0].damageValue).toBe(2);
-    expect(results[0].riderOptions).toEqual([expect.objectContaining({ key: 'headache', damageValue: 2, damageType: 'psychic' })]);
+    expect(ablativeLossOf(ablative)).toBe(0);
+    ablative.flags.essence20.ablativeLoss = 2;
+    expect(ablativeLossOf(ablative)).toBe(2);
   });
 
   test("the rider context reads the dataset", () => {
-    const context = buildRiderContext(makeActor(), null, { riderSpec: '{"kind":"save"}', skill: 'brawn' }, { applyDisarmingShot: true });
+    // Disarming Shot is its DialogSwitch's key now (ruleKeys); the old applyDisarmingShot flag nothing sets is ignored.
+    const context = buildRiderContext(makeActor(), null, { riderSpec: '{"kind":"save"}', skill: 'brawn' }, { ruleKeys: ['disarmingShot'] });
     expect(context.spec).toEqual({ kind: 'save' });
     expect(context.disarmingShot).toBe(true);
+    expect(buildRiderContext(makeActor(), null, {}, { applyDisarmingShot: true }).disarmingShot).toBe(false);
   });
 
   test("card buttons: Defense damage and a mark", async () => {
@@ -304,13 +265,6 @@ describe("after the roll", () => {
     expect(await handleRiderButton({ speaker: {} }, { dataset: { rider: 'nextAttackSnag' } }, target)).toBe(true);
     expect(findMark(target, 'nextAttackSnag')).toBeTruthy();
     expect(await handleRiderButton({ speaker: {} }, { dataset: {} }, target)).toBe(false);
-  });
-
-  test("Shots Fired marks whoever was damaged", async () => {
-    const attacker = makeActor([perk(RIDER.shotsFired)]);
-    const target = makeActor([], { id: 't' });
-    await onDamageDealt(attacker, target, 1);
-    expect(findMark(target, 'shotsFired', attacker.uuid)).toBeTruthy();
   });
 
   test("a disarmed or dismantled weapon can't be used", async () => {
@@ -329,15 +283,7 @@ describe("after the roll", () => {
 });
 
 describe("turn switches", () => {
-  test("Gremlins' Mischief and Wrecking Ball last the turn", () => {
-    const actor = makeActor();
-    game.combat = { id: 'c', round: 1, turn: 2 };
-    actor.flags.essence20.gremlinsMischief = { combatId: 'c', round: 1, turn: 2 };
-    actor.flags.essence20.wreckingBall = { combatId: 'c', round: 1, turn: 1 };
-    expect(isGremlinsMischiefActive(actor)).toBe(true);
-    expect(isWreckingBallActive(actor)).toBe(false);
-  });
-
+  // (Wrecking Ball is a setToggle Use rule now - rules/conv15-uses.test.js.)
   test("Secondary Mark makes a second Primary Quarry", () => {
     const actor = makeActor([perk(RIDER.secondaryQuarry)]);
     actor.flags.essence20.secondaryQuarryUuid = 'Actor.q2';

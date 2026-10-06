@@ -1,5 +1,6 @@
 import { getNearbyAllyTokens } from "../combat/nearby-allies.mjs";
 import { ruleSenses } from "../../rules/adapter.mjs";
+import { itemSenseMultiplier } from "../../rules/plugins/effects/sense-multiplier.mjs";
 
 /**
  * Picks the vision grant an actor's items actually confer.
@@ -12,8 +13,6 @@ import { ruleSenses } from "../../rules/adapter.mjs";
  * simplification (see _prepareVision's own doc comment) rather than an oversight - reconciling two
  * different vision modes has no obvious right answer, and no RAW asks for it.
  */
-export const USED_TO_THE_DARK_ID = "Compendium.essence20.cobra_codex.Item.IYN4Bki5gbGXPkki";
-
 /**
  * Vision Focuser's own compendium id (PR CRB, Blue Ranger Grid Tech II pick, p.38) - see the
  * whileMorphed/teamWide fields' own doc comments in data/item/perk.mjs.
@@ -70,7 +69,8 @@ function bestGrantAmong(items, holder) {
  */
 export function getBestVisionGrant(actor) {
   let best = null;
-  let hasUsedToTheDark = false;
+  // Used to the Dark's doubling is a SenseMultiplier rule on it (rules/plugins/effects/sense-multiplier.mjs).
+  let multiplier = 1;
   let otherSources = 0;
 
   for (const item of actor?.items ?? []) {
@@ -87,9 +87,9 @@ export function getBestVisionGrant(actor) {
       continue;
     }
 
-    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-    if (sourceId == USED_TO_THE_DARK_ID) {
-      hasUsedToTheDark = true;
+    const multiplies = itemSenseMultiplier(item, actor);
+    if (multiplies) {
+      multiplier = Math.max(multiplier, multiplies);
     } else {
       otherSources += 1;
     }
@@ -125,8 +125,8 @@ export function getBestVisionGrant(actor) {
     }
   }
 
-  if (best && hasUsedToTheDark && otherSources > 0) {
-    best = { ...best, range: best.range * 2 };
+  if (best && multiplier > 1 && otherSources > 0) {
+    best = { ...best, range: best.range * multiplier };
   }
 
   return best;

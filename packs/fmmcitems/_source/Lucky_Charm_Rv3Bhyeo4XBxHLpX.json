@@ -5,6 +5,9 @@
   "_id": "Rv3Bhyeo4XBxHLpX",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Lucky Charm: DIF 12 Performance","event":"powerUsed","when":["item:own"],"steps":[{"do":"rollCheck","skill":"performance","essence":"social","shiftUp":0,"shiftDown":0,"dif":12,"onSuccess":[{"do":"updateItem","item":"self","set":{"system.reroll.enabled":true}}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: rolls the DIF 12 Performance test; on a success you get the Luck Perk's reroll of 1s on Skill dice.</p><p>Left to the table: switching the reroll off again at the end of the day.</p>"

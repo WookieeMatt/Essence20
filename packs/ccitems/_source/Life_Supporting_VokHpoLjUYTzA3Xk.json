@@ -5,6 +5,10 @@
   "_id": "VokHpoLjUYTzA3Xk",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Life Supporting","event":"wouldBeDefeated","stage":"beforeAegis","priority":2,"when":["rule:data:system.type=armor","not:rule:data:flags.essence20.parentId","not:rule:data:flags.essence20.lifeSupportingSpent"],"steps":[{"do":"leaveAt","value":1},{"do":"updateItem","item":"self","set":{"flags.essence20.lifeSupportingSpent":true}}]},
+      {"type":"Use","label":"Recharge Life Support (DIF 20 Technology)","when":["rule:data:flags.essence20.lifeSupportingSpent"],"steps":[{"do":"roll","skill":"technology","dif":20,"onSuccess":[{"do":"updateItem","item":"self","set":{"flags.essence20.lifeSupportingSpent":null}},{"do":"chat","text":"{name} recharges the Life Support."}],"onFail":[{"do":"chat","text":"{name} fails to recharge the Life Support."}]}]}
+    ],
     "prerequisites": {"when":["host:trait:computerized"]},
     "automation": {
       "status": "full",

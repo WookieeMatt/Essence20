@@ -5,6 +5,9 @@
   "_id": "uoNrrDfkqk5pKnwC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"PoisonCoating","label":"Intoxicate (coat a weapon as a Free action)","cost":"free"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: one step of training in poisons. Automatic: coating a weapon with a contact poison costs a Free action.</p>"

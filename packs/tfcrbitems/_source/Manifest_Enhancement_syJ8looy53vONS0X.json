@@ -5,6 +5,9 @@
   "_id": "syJ8looy53vONS0X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Manifest a weapon upgrade (Manifest Enhancement)","cost":{"action":"free"},"limit":{"per":"round"},"steps":[{"do":"pick","beforeCost":true,"key":"weapon","from":"ownedItem","itemType":"weapon","filter":["item:hasAttack:item:data:system.classification.style=melee"]},{"do":"choose","beforeCost":true,"auto":true,"options":[{"label":"Standard","when":["not:self:hasItem:Compendium.essence20.tf_crb.Item.doPXx4JM7nS998Ue","not:self:hasItem:Compendium.essence20.tf_crb.Item.ybrluGy9norsyiMm"],"steps":[{"do":"pickEntry","from":{"type":"upgrade","availabilities":["standard"],"tags":["item:data:system.type=weapon"]}}]},{"label":"Standard or Limited","when":["self:hasItem:Compendium.essence20.tf_crb.Item.doPXx4JM7nS998Ue","not:self:hasItem:Compendium.essence20.tf_crb.Item.ybrluGy9norsyiMm"],"steps":[{"do":"pickEntry","from":{"type":"upgrade","availabilities":["standard","limited"],"tags":["item:data:system.type=weapon"]}}]},{"label":"Up to Restricted","when":["self:hasItem:Compendium.essence20.tf_crb.Item.ybrluGy9norsyiMm"],"steps":[{"do":"pickEntry","from":{"type":"upgrade","availabilities":["standard","limited","restricted"],"tags":["item:data:system.type=weapon"]}}]}]},{"do":"fitUpgrade","uuid":"{var.picked}","onto":"choice:weapon","until":"endOfTurn"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per round, add a temporary Weapon Upgrade to a Melee weapon until the end of your turn, within the availability you can manifest.</p>"

@@ -5,17 +5,18 @@ import { setWorldLookups } from '../../rules/predicate.mjs';
 import {
   resolveEnvironmentEffect,
   applyWreckerOnAutoFail, applyWreckerRoughTerrain, buildRoughTerrainRegionData, createRoughTerrainRegion, getTerrainCostMultiplier,
-  getTokenFootprintShape, handleCreateRoughTerrainRequest, hasTakePointCover, ignoresRoughTerrain, isPiledriver,
-  makeEssence20TerrainData, offerPiledriverRoughTerrain, paysRoughTerrainCost, PILEDRIVER_ID, TAKE_POINT_ID,
+  getTokenFootprintShape, handleCreateRoughTerrainRequest, ignoresRoughTerrain,
+  makeEssence20TerrainData, paysRoughTerrainCost, placeRoughTerrainSpace,
 } from './rough-terrain.mjs';
 
-const perk = sourceId => ({ type: 'perk', flags: { core: { sourceId } } });
 // An item carrying its pack's rules (MovementAction), the way a character's copy does.
 let ruledId = 1;
 const ruled = (file, type = 'perk') => ({ id: `ruled${ruledId++}`, type, flags: {}, system: { rules: JSON.parse(readFileSync(`packs/${file}`, 'utf8')).system.rules } });
 setWorldLookups({ terrain: actor => getTerrain(actor) });
 
-const ENVIRONMENTAL_EXPERTISE_ID = "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ";
+const ENVIRONMENTAL_EXPERTISE = 'gijcrbitems/_source/Environmental_Expertise_EbbSUA2vSHyv3MjQ.json';
+// Take Point ignores Rough Terrain through its MovementAction rule (its Cover half: rules/conv15-other.test.js).
+const TAKE_POINT = 'tfcrbitems/_source/Take_Point_efPOy3Owf2XIAykS.json';
 const OVER_THE_CANDLESTICK = 'tsitems/_source/Over_the_Candlestick_zKngKkwDyNv2nnH5.json';
 const SEWER_TUNNELER = 'ghpfitems/_source/Sewer_Tunneler_gCbl6p64cEJjF2eJ.json';
 const URBAN_JUNGLE = 'ccitems/_source/Urban_Jungle_wIesQd7U5W2azAWY.json';
@@ -43,6 +44,7 @@ function makeActor({ items = [], terrain, transformed = false, type = 'character
     items,
     documentName: 'Actor',
     system: { isTransformed: transformed, ...system },
+    flags: { essence20: flags },
     getFlag: (scope, key) => flags[key],
   };
   const tokenDoc = makeTokenDoc({ terrain, actor });
@@ -57,17 +59,17 @@ describe("ignoresRoughTerrain", () => {
   });
 
   test("Take Point and Over the Candlestick ignore it unconditionally", () => {
-    expect(ignoresRoughTerrain(makeActor({ items: [perk(TAKE_POINT_ID)] }))).toBe(true);
+    expect(ignoresRoughTerrain(makeActor({ items: [ruled(TAKE_POINT)] }))).toBe(true);
     expect(ignoresRoughTerrain(makeActor({ items: [ruled(OVER_THE_CANDLESTICK)] }))).toBe(true);
   });
 
   test("Environmental Expertise ignores it in an environment of expertise", () => {
     const system = { environments: ['woodlands'] };
-    expect(ignoresRoughTerrain(makeActor({ items: [perk(ENVIRONMENTAL_EXPERTISE_ID)], terrain: 'woodlands', system }))).toBe(true);
-    expect(ignoresRoughTerrain(makeActor({ items: [perk(ENVIRONMENTAL_EXPERTISE_ID)], terrain: 'desert', system }))).toBe(false);
+    expect(ignoresRoughTerrain(makeActor({ items: [ruled(ENVIRONMENTAL_EXPERTISE)], terrain: 'woodlands', system }))).toBe(true);
+    expect(ignoresRoughTerrain(makeActor({ items: [ruled(ENVIRONMENTAL_EXPERTISE)], terrain: 'desert', system }))).toBe(false);
     // No terrain set: the manual toggle decides, as for every other Environmental Expertise benefit.
     expect(ignoresRoughTerrain(makeActor({
-      items: [perk(ENVIRONMENTAL_EXPERTISE_ID)], system, flags: { environmentalExpertiseActive: true },
+      items: [ruled(ENVIRONMENTAL_EXPERTISE)], system, flags: { environmentalExpertiseActive: true },
     }))).toBe(true);
   });
 
@@ -98,7 +100,7 @@ describe("ignoresRoughTerrain", () => {
 
 describe("paysRoughTerrainCost / getTerrainCostMultiplier", () => {
   const walker = { actor: makeActor() };
-  const ignorer = { actor: makeActor({ items: [perk(TAKE_POINT_ID)] }) };
+  const ignorer = { actor: makeActor({ items: [ruled(TAKE_POINT)] }) };
 
   test("walking pays, flying and teleporting don't, and neither does an actor who ignores it", () => {
     expect(paysRoughTerrainCost(walker, 'walk')).toBe(true);
@@ -141,7 +143,7 @@ describe("Environment Movement costs (Across the Stars p.24) and Sputtering (p.2
     expect(getTerrainCostMultiplier(terrain, walker, 'walk')).toBe(2);
     expect(getTerrainCostMultiplier(terrain, walker, 'fly')).toBe(2);
     expect(getTerrainCostMultiplier({ ...terrain, roughTerrain: true }, walker, 'walk')).toBe(2);
-    expect(getTerrainCostMultiplier(terrain, { actor: makeActor({ items: [perk(TAKE_POINT_ID)] }) }, 'walk')).toBe(1);
+    expect(getTerrainCostMultiplier(terrain, { actor: makeActor({ items: [ruled(TAKE_POINT)] }) }, 'walk')).toBe(1);
   });
 
   test("with no Environment Region, the scene's default environment applies; a Region's 'normal' overrides it", () => {
@@ -222,15 +224,6 @@ describe("makeEssence20TerrainData", () => {
     const a = new TerrainData({ difficulty: 1, roughTerrain: true });
     expect(a.equals(new TerrainData({ difficulty: 1, roughTerrain: true }))).toBe(true);
     expect(a.equals(new TerrainData({ difficulty: 1, roughTerrain: false }))).toBe(false);
-  });
-});
-
-describe("hasTakePointCover", () => {
-  test("in Cover while standing in Rough Terrain with Take Point", () => {
-    const actor = makeActor({ items: [perk(TAKE_POINT_ID)] });
-    expect(hasTakePointCover(actor, makeTokenDoc({ rough: true }))).toBe(true);
-    expect(hasTakePointCover(actor, makeTokenDoc({ rough: false }))).toBe(false);
-    expect(hasTakePointCover(makeActor(), makeTokenDoc({ rough: true }))).toBe(false);
   });
 });
 
@@ -384,14 +377,9 @@ describe("applyWreckerRoughTerrain", () => {
   });
 });
 
+// Piledriver's own Alt Mode / posted gate is its rule (rules/conv15-other.test.js); this is the placement it asks for.
 describe("Piledriver", () => {
-  test("isPiledriver matches by either source field", () => {
-    expect(isPiledriver({ flags: { core: { sourceId: PILEDRIVER_ID } } })).toBe(true);
-    expect(isPiledriver({ _stats: { compendiumSource: PILEDRIVER_ID } })).toBe(true);
-    expect(isPiledriver({ flags: {} })).toBe(false);
-  });
-
-  describe("offerPiledriverRoughTerrain", () => {
+  describe("placeRoughTerrainSpace", () => {
     const originalUser = game.user;
     const originalDialog = foundry.applications.api.DialogV2;
 
@@ -410,25 +398,23 @@ describe("Piledriver", () => {
       return scene;
     }
 
-    test("in Alt Mode, confirming and placing a space creates the Region", async () => {
+    const ask = { prompt: 'E20.RoughTerrainPiledriverPrompt', chat: 'E20.RoughTerrainPiledriverChat' };
+
+    test("confirming and placing a space creates the Region", async () => {
       const scene = setUp();
-      expect(await offerPiledriverRoughTerrain({ system: { isTransformed: true } }, { name: 'Piledriver' })).toBe(true);
+      expect(await placeRoughTerrainSpace({ system: { isTransformed: true } }, { name: 'Piledriver' }, ask)).toBe(true);
       expect(scene.createEmbeddedDocuments).toHaveBeenCalledWith('Region', [
         expect.objectContaining({ shapes: [{ type: 'rectangle', x: 5 }] }),
       ]);
       expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: 'E20.RoughTerrainPiledriverChat' }));
     });
 
-    test("does nothing outside Alt Mode, when declined, or when placement is cancelled", async () => {
-      let scene = setUp();
-      expect(await offerPiledriverRoughTerrain({ system: { isTransformed: false } }, { name: 'Piledriver' })).toBe(false);
-      expect(foundry.applications.api.DialogV2.confirm).not.toHaveBeenCalled();
-
-      scene = setUp({ confirmed: false });
-      expect(await offerPiledriverRoughTerrain({ system: { isTransformed: true } }, { name: 'Piledriver' })).toBe(false);
+    test("does nothing when declined, or when placement is cancelled", async () => {
+      let scene = setUp({ confirmed: false });
+      expect(await placeRoughTerrainSpace({ system: { isTransformed: true } }, { name: 'Piledriver' }, ask)).toBe(false);
 
       scene = setUp({ placed: null });
-      expect(await offerPiledriverRoughTerrain({ system: { isTransformed: true } }, { name: 'Piledriver' })).toBe(false);
+      expect(await placeRoughTerrainSpace({ system: { isTransformed: true } }, { name: 'Piledriver' }, ask)).toBe(false);
       expect(scene.createEmbeddedDocuments).not.toHaveBeenCalled();
       expect(ChatMessage.create).not.toHaveBeenCalled();
     });

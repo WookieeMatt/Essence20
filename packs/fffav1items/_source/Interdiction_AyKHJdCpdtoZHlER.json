@@ -5,6 +5,10 @@
   "_id": "AyKHJdCpdtoZHlER",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Interdiction, Defeat the target instead of dealing damage","key":"interdiction","noDamage":true,"limit":{"per":"encounter"},"forget":true,"when":["attack","target:levelDiff<0"]},
+      {"type":"Trigger","event":"hit","label":"Interdiction","when":["roll:switch:interdiction"],"steps":[{"do":"applyCondition","condition":"defeated","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per combat, a switch to Defeat a hit target whose Threat Level is below your level instead of dealing damage.</p>"

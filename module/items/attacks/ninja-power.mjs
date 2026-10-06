@@ -11,10 +11,9 @@
  * toggle alongside Morphing, not something auto-triggered by it, since this codebase has no hook
  * into the Morph action itself beyond onMorph's own handful of already-wired grants.
  *
- * Built: the +1 unarmed damage and Speed Edge (both gated on being Morphed, read live in
- * dice.mjs), plus the elemental-type choice for unarmed Finesse attacks (reusing the generic
- * elementDamageType choiceType and the Void Warrior/Blazing Strikes/Cryogenic Touch damage-type-
- * override chain already established there).
+ * Built: the +1 unarmed damage, the Speed Edge and the elemental-type choice for unarmed Finesse attacks are rules on
+ * the Perk (a DamageModifier, a RollModifier and a DamageType, all gated on being Morphed with this switch on). This
+ * file keeps the switch itself, flipped by items/movement/ninja-power-jump.mjs's Use.
  *
  * NOT built: the 20ft Free-action jump (narrative/unenforced, the same "spend the cost, narrate
  * the rest" idiom every other movement grant without real token-placement uses) and its own

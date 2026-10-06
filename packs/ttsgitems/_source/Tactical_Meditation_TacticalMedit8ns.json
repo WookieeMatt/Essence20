@@ -5,9 +5,13 @@
   "_id": "TacticalMedit8ns",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Tactical Meditation (↑2 Alertness / Initiative)","upshift":2,"stack":"tacticalMeditation","when":[{"any":["skill:alertness","roll:initiative"]}]},
+      {"type":"RollModifier","label":"Tactical Meditation (↑2 Alertness / Initiative)","scope":"aura","radius":10,"affects":"allies","stacks":false,"upshift":2,"stack":"tacticalMeditation","when":[{"any":["skill:alertness","roll:initiative"]}]}
+    ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: you, and allies whose tokens are within 10 ft of you, get ↑2 on Alertness and Initiative tests, already added to the Roll Options Dialog's Upshift box.</p><p>Left to the table: you can't be surprised.</p>"
+      "notes": "<p>Automatic: you, and allies whose tokens are within 10 ft of you, get ↑2 on Alertness and Initiative tests, listed by name in the Roll Options Dialog.</p><p>Left to the table: you can't be surprised.</p>"
     },
     "originalId": "",
     "description": "",

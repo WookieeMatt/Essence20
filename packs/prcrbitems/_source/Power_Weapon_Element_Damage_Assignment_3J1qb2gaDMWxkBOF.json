@@ -5,6 +5,14 @@
   "_id": "3J1qb2gaDMWxkBOF",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Black Ranger: psychic damage","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.damageType=energy","self:roleName:black"],"path":"system.damageType","op":"set","value":"psychic","slot":"element"},
+      {"type":"ItemModifier","label":"Blue Ranger: cold damage","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.damageType=energy","self:roleName:blue","not:self:roleName:black"],"path":"system.damageType","op":"set","value":"cold","slot":"element"},
+      {"type":"ItemModifier","label":"Green Ranger: poison damage","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.damageType=energy","self:roleName:green","not:self:roleName:black","not:self:roleName:blue"],"path":"system.damageType","op":"set","value":"poison","slot":"element"},
+      {"type":"ItemModifier","label":"Pink Ranger: double Energy damage","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.damageType=energy","self:roleName:pink","not:self:roleName:black","not:self:roleName:blue","not:self:roleName:green"],"path":"system.damageValue","op":"multiply","value":2,"slot":"element"},
+      {"type":"ItemModifier","label":"Red Ranger: fire damage","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.damageType=energy","self:roleName:red","not:self:roleName:black","not:self:roleName:blue","not:self:roleName:green","not:self:roleName:pink"],"path":"system.damageType","op":"set","value":"fire","slot":"element"},
+      {"type":"ItemModifier","label":"Yellow Ranger: stun damage","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.damageType=energy","self:roleName:yellow","not:self:roleName:black","not:self:roleName:blue","not:self:roleName:green","not:self:roleName:pink","not:self:roleName:red"],"path":"system.damageType","op":"set","value":"stun","slot":"element"}
+    ],
     "prerequisites": {"when":["host:trait:powerWeapon"]},
     "automation": {
       "status": "full",

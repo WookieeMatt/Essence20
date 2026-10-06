@@ -5,9 +5,13 @@
   "_id": "emaXxo2XzoHMoNCe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose your favorite weapon","steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","filter":["not:item:data:system.classification.size=integrated","item:hasAttack:item:data:system.numHands=2&item:data:system.classification.skill=targeting&not:item:data:system.shape"]},{"do":"updateItem","item":"self","set":{"system.choice":"{var.picked}"}}]},
+      {"type":"RollModifier","label":"Favorite Weapon","upshift":1,"when":["attack","check:favoriteWeaponRolled"]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: choose an eligible two-handed Targeting weapon as your favorite. Automatic: every attack with it gets ↑1, already counted in the Roll Options Dialog's starting ↑ total but not listed under its own name.</p>"
+      "notes": "<p>Use button: choose an eligible two-handed Targeting weapon as your favorite. Automatic: every attack with it gets ↑1, listed as Favorite Weapon in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",

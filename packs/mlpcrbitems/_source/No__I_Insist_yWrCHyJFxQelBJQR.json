@@ -5,6 +5,9 @@
   "_id": "yWrCHyJFxQelBJQR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"E20.LendAssistanceModeNextStandard","side":"give","effect":"nextTurnGrant","standard":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you Lend Assistance, you can choose to give your friend an extra Standard action on their next turn instead.</p>"

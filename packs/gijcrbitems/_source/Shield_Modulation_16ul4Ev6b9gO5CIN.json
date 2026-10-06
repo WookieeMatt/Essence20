@@ -5,6 +5,11 @@
   "_id": "16ul4Ev6b9gO5CIN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"rolePointsActivating","label":"Shield Modulation (choose a damage type)","when":["item:id:84JYgd6kZgY41wge"],"steps":[{"do":"pick","key":"damageType","from":"damageType","prompt":"Resist which damage type"}]},
+      {"type":"RollModifier","scope":"incoming","label":"Shield Modulation","snag":true,"when":["attack","check:personalShield","item:data:system.damageType={choice.damageType}"]},
+      {"type":"RollModifier","scope":"incomingAura","radius":10,"label":"Shield Modulation","snag":true,"when":["attack","check:personalShield","calc:@owned.ep0OFsU1QIuRpHeR>0","item:data:system.damageType={choice.damageType}"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: activating your Personal Shield asks for a damage type. You, and allies inside the shield when you have Shield Upgrade, resist that damage type while it's up.</p>"

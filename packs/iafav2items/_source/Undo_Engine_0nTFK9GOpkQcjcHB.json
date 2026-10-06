@@ -5,6 +5,9 @@
   "_id": "0nTFK9GOpkQcjcHB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Undo Engine","event":"hit","outcome":"x2","when":["attack","target:type:vehicle"],"steps":[{"do":"actAs","to":"operator","steps":[{"do":"roll","skill":"driving","dif":20,"onFail":[{"do":"updateActor","to":"target","set":{"flags.essence20.undoEngineMovementDisabled":true}},{"do":"button","label":"Restart the engines","intro":"{target}'s engines are down - Movement 0 until the driver restarts them.","who":"anyone","usedWhenDone":true,"steps":[{"do":"spendActionFor","action":"standard","to":"operator"},{"do":"updateActor","to":"target","set":{"flags.essence20.undoEngineMovementDisabled":false}}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when your attack on a vehicle is a Critical Success, its driver rolls DIF 20 Driving; on a failure the vehicle's Movement drops to 0. Chat card: the driver gets a button to restart the engines.</p>"

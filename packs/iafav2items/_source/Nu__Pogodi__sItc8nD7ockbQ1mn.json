@@ -10,7 +10,8 @@
       {"type":"Qualification","label":"Nu, Pogodi! (Qualified: Standard weapons)","access":"qualified","items":["item:type:weapon","item:availability<=standard"]},
       {"type":"Qualification","label":"Nu, Pogodi! (Qualified: Acclimating upgrade)","upgrades":[{"any":["item:id:HSmtPttbJvaNy5Tf","item:data:name=acclimating"]}]},
       {"type":"Use","label":"Pick your two-handed Limited weapon (Nu, Pogodi!)","steps":[{"do":"pickGrant","record":true,"key":"chosen","max":1,"legacy":"flags.essence20.q1Chosen","title":"Pick a Limited weapon that needs 2 hands","from":{"type":"weapon","availabilities":["limited"],"tags":["item:hasAttack:item:data:system.numHands=2"]}}]},
-      {"type":"Qualification","label":"Nu, Pogodi! (Qualified: your chosen two-handed weapon)","access":"qualified","items":[{"any":["item:type:weapon","item:type:armor"]},"item:pickedSource:chosen"]}
+      {"type":"Qualification","label":"Nu, Pogodi! (Qualified: your chosen two-handed weapon)","access":"qualified","items":[{"any":["item:type:weapon","item:type:armor"]},"item:pickedSource:chosen"]},
+      {"type":"RollModifier","label":"Nu, Pogodi! (↑1 on Driving, with Ranks)","stack":"vehicleQualification","upshift":1,"when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:aerial","vehicle:moves:ground"]},{"any":["self:skill:driving>=d2","self:data:system.skills.driving.isSpecialized"]}]}
     ],
     "automation": {
       "status": "full",

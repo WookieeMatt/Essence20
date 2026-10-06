@@ -5,6 +5,9 @@
   "_id": "BJpJWK7oDfw51Dxl",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Boarder (boarding a vehicle)","when":[{"any":["skill:athletics","skill:acrobatics"]}],"edge":true}
+    ],
     "prerequisites": {"when":["ask:Melee weapon"]},
     "automation": {
       "status": "partial",

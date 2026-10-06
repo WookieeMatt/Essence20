@@ -7,16 +7,15 @@
  *   who takes part. It posts one card with a Roll button per participant and a Resolve button.
  * - Each participant's result is kept on their own actor (flags.essence20.groupTest), so no one
  *   writes to another player's actor or to the card; the card reads them when it's drawn.
- * - The Perks that change one: Caretaker (Edge), Pay It Forward (↑1), Bowling Team (the leader's
- *   participants ↑1), Community Spirit (an ally's Edge, then your ↑1), Prior Experience (1 Power turns
+ * - The Perks that change one: GroupTestBonus rules (Caretaker's Edge, Pay It Forward's ↑1, Bowling Team: the
+ *   leader's participants ↑1), Community Spirit (an ally's Edge, then your ↑1), Prior Experience (1 Power turns
  *   a failure into a success) and Create Chaos (fail, roll another Skill, Edge for everyone).
  */
 
+import { addGroupTestBonuses } from "../../rules/plugins/rolls/group-test-bonus.mjs";
+
 const uuid = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 export const GROUP = {
-  caretaker: uuid('pr_crb', '4q2SPRzdbGosL62k'),
-  payItForward: uuid('pr_crb', 'M3pQgNMsU5hU5dMN'),
-  bowlingTeam: uuid('wtnv_citizens_guide', 'V11B4h7plsBAaq34'),
   communitySpirit: uuid('wtnv_citizens_guide', 'jUROXHqur5Sta05C'),
   priorExperience: uuid('beneath_the_helmet', 'xDoJhX0WmrbFdKhm'),
   createChaos: uuid('cobra_codex', '1Yho7fqBC8IfqHfN'),
@@ -166,24 +165,9 @@ async function refresh(message) {
  */
 export function groupBonuses(actor, test) {
   const out = { shiftUp: 0, edge: false, labels: [] };
-  // Caretaker (PR CRB, Influence, p.67): "You gain an Edge for all Medicine and Group Checks".
-  if (has(actor, GROUP.caretaker)) {
-    out.edge = true;
-    out.labels.push(T('E20.Caretaker'));
-  }
-
-  // Pay It Forward (Jump Through Time p.45): "You gain a ↑1 modifier to all Skill Tests that are part of
-  // a Group Test".
-  if (has(actor, GROUP.payItForward)) {
-    out.shiftUp += 1;
-    out.labels.push(T('E20.PayItForward'));
-  }
-
-  // Bowling Team (WTNV p.47): "all participants in a Group Skill Test gain ↑1 when you lead them."
-  if (has(resolve(test.leader), GROUP.bowlingTeam)) {
-    out.shiftUp += 1;
-    out.labels.push(T('E20.BowlingTeam'));
-  }
+  // GroupTestBonus rules - the roller's own (Caretaker's Edge, Pay It Forward's ↑1), and the leader's for everyone
+  // they lead (Bowling Team's ↑1) - rules/plugins/rolls/group-test-bonus.mjs.
+  addGroupTestBonuses(actor, resolve(test.leader), out);
 
   for (const id of test.participants) {
     const other = resolve(id);
@@ -235,6 +219,15 @@ export async function onGroupButton(message, button) {
     if (!actor?.isOwner) {
       ui.notifications.warn(T('E20.GroupTestNotYours'));
       return;
+    }
+
+    // A rule's test (rules/plugins/rolls/group-test-steps.mjs - Guardian Blast) may cost each participant but the
+    // leader an action to roll, in combat.
+    if (test.cost && game.combat && actor.uuid != test.leader) {
+      const { spend } = await import("../actions/action-economy.mjs");
+      if ((await spend(actor, test.cost, { source: T('E20.GroupTestTitle') }))?.blocked) {
+        return;
+      }
     }
 
     const success = await rollFor(actor, test);

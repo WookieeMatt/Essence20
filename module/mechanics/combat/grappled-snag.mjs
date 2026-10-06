@@ -1,5 +1,5 @@
 import { registerApplyDialog, registerDialogToggles } from "../item-hooks.mjs";
-import { getSceneEpoch } from "../resources/scene-clock.mjs";
+import { markOf } from "../../rules/predicate.mjs";
 
 /**
  * The Grappled condition's own penalty. Every core rulebook gives a Grappled target a Snag on all
@@ -55,17 +55,9 @@ export function grappledToggles(actor, { rolledSkill } = {}) {
 
 // Assault Claw (Enigma of Combination p.49): "Targets Grappled by this weapon suffer Snag to escape" -
 // so its grapple is a Snag on every roll, escape attempts included; the switch says so. The Claw's
-// Grapple hit marks the target for the scene (extensions/data22/weapons.mjs).
+// Grapple hit marks the target for the scene (a hit Trigger rule on the weapon: mark assaultClawGrapple).
 export function clawGrappled(actor) {
-  const mark = actor?.flags?.essence20?.d22AssaultClawGrapple;
-  let epoch = null;
-  try {
-    epoch = getSceneEpoch();
-  } catch {
-    epoch = null;
-  }
-
-  return !!mark && mark.scene == epoch;
+  return markOf(actor, 'assaultClawGrapple');
 }
 
 export function grappledApplyDialog(actor, options) {

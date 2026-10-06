@@ -1,8 +1,5 @@
-import { actorHas, TRAIT_PERK } from "../../mechanics/combat/weapon-traits.mjs";
 import { describeCost, spend } from "../../mechanics/actions/action-economy.mjs";
-
-// Ordnance Expert (GI Joe CRB Focus Perk): "You ignore the mounted trait on weapons."
-export const ORDNANCE_EXPERT = "Compendium.essence20.gi_joe_crb.Item.bB7Fiuu6BjIUlAgt";
+import { ruleIgnoresTrait } from "../../rules/plugins/combat/trait-ignore.mjs";
 
 /**
  * Mounted (GI Joe CRB, Weapon Effects and Traits, p.148; identical wording recurs in every core
@@ -23,13 +20,8 @@ export const ORDNANCE_EXPERT = "Compendium.essence20.gi_joe_crb.Item.bB7Fiuu6BjI
  * @returns {Boolean}
  */
 export function isMountedWeaponSetUp(weapon) {
-  // Snipe From The Hip (TF CRB, Sharpshooter, 17th level, p.70): "you ignore your Long Range Rifle's
-  // Mounted trait."
-  if (/long range rifle/i.test(weapon?.name ?? '') && actorHas(weapon?.parent, TRAIT_PERK.snipeFromTheHip)) {
-    return true;
-  }
-
-  if (actorHas(weapon?.parent, ORDNANCE_EXPERT)) {
+  // TraitIgnore rules (rules/plugins/combat/trait-ignore.mjs - Ordnance Expert, Snipe From The Hip's Long Range Rifle).
+  if (ruleIgnoresTrait(weapon?.parent, weapon, 'mounted')) {
     return true;
   }
 

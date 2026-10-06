@@ -192,17 +192,9 @@ export function warnMissingStateImage(actor, kind, altMode = null) {
 }
 
 /* Morphing's action cost. "As a standard action, you are enveloped with a stylized shell of Morphin
-   Grid energy" (Power Rangers CRB) - and the Rev Morpher (A Jump Through Time p.68) "allows the user
-   to Morph as a Move action". Only morphing in costs anything; nothing in the books charges for
-   powering down. */
-export const REV_MORPHER_ID = "Compendium.essence20.jump_through_time.Item.iOCPWtGFV7SpuP86";
-
-/** The action Morphing takes this actor: 'move' with a Rev Morpher, otherwise 'standard'. */
-export function morphActionType(actor) {
-  const items = actor?.items?.contents ?? [...(actor?.items ?? [])];
-  const hasRevMorpher = items.some(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == REV_MORPHER_ID);
-  return hasRevMorpher ? 'move' : 'standard';
-}
+   Grid energy" (Power Rangers CRB). Only morphing in costs anything; nothing in the books charges for
+   powering down. A cheaper Morph (the Rev Morpher's Move action) is an ActionCost {action: morph} rule -
+   the spend below passes the morph cost context (rules/plugins/resources/action-kinds.mjs). */
 
 /**
  * Charge the action for Morphing, when the action economy is tracking this actor. Returns false
@@ -216,8 +208,9 @@ export async function payForMorph(actor) {
     return true;
   }
 
-  const result = await economy.spend(actor, morphActionType(actor), {
+  const result = await economy.spend(actor, 'standard', {
     source: globalThis.game?.i18n?.localize?.('E20.MorphActionSource') ?? 'Morph',
+    context: { kind: 'morph' },
   });
   return !result?.blocked;
 }

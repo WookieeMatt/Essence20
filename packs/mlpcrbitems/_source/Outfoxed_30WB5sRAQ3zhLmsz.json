@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"miss","label":"Outfoxed","when":["skill:infiltration"],"steps":[{"do":"mark","key":"outfoxed","to":"target","perSetter":true}]},
+      {"type":"RollModifier","label":"Outfoxed","scope":"marked","mark":"outfoxed","edge":true,"when":["target:ruleHolder","not:roll:initiative"],"consumeMark":"outfoxed","consumeFrom":"roller"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you fail an Infiltration test against a creature, its next test targeting you gets Edge, labelled Outfoxed in its Roll Options Dialog.</p>"

@@ -5,6 +5,9 @@
   "_id": "YlihpNSSspqwfMv6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Quickbash equipment or an upgrade (Quickbash)","cost":{"action":"free"},"steps":[{"do":"choose","beforeCost":true,"prompt":"What are you making?","options":[{"label":"Equipment","steps":[{"do":"choose","prompt":"What are you making?","options":[{"label":"Weapon","steps":[{"do":"setVar","key":"mode","value":"equipment"},{"do":"pickEntry","from":{"type":"weapon","tags":["not:item:hasAttack:item:data:system.numHands>2"]}}]},{"label":"Gear","steps":[{"do":"setVar","key":"mode","value":"equipment"},{"do":"pickEntry","kitTier":true,"from":{"type":"gear"}}]}]}]},{"label":"Upgrade","steps":[{"do":"setVar","key":"mode","value":"upgrade"},{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon"},{"do":"pickEntry","from":{"type":"upgrade","tags":["item:data:system.type=weapon"]}}]}]},{"do":"roll","skill":"technology","dif":"@var.pickedDif","when":["var:mode=equipment"],"onSuccess":[{"do":"grant","uuid":"{var.picked}","until":"endOfTurn"}],"onCrit":[{"do":"grant","uuid":"{var.picked}","until":"endOfNextTurn"}],"onFail":[{"do":"chat","text":"{name}'s {var.pickedName} doesn't come together."}]},{"do":"roll","skill":"technology","dif":"@var.pickedDif","when":["var:mode=upgrade"],"onSuccess":[{"do":"fitUpgrade","uuid":"{var.picked}","onto":"choice:weapon","until":"endOfTurn"}],"onCrit":[{"do":"fitUpgrade","uuid":"{var.picked}","onto":"choice:weapon","until":"endOfNextTurn"}],"onFail":[{"do":"chat","text":"{name}'s {var.pickedName} doesn't come together."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free action): roll Technology against the availability of the equipment or upgrade you want. On a success you get it temporarily.</p>"

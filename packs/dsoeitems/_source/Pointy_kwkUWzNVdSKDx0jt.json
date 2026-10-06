@@ -5,6 +5,12 @@
   "_id": "kwkUWzNVdSKDx0jt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Manifest claws or teeth","when":["not:self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":true,"until":"combat"}]},
+      {"type":"Use","label":"Put them away","when":["self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":false}]},
+      {"type":"RollModifier","label":"Pointy","upshift":1,"when":["attack:unarmed","self:toggle:on"]},
+      {"type":"DamageType","label":"Pointy","to":"sharp","when":[{"any":["attack:unarmed","weapon:id:OU9rXvoKfXtcpvFy","weapon:id:Cwd1FASmKXWiAFom"]},"self:toggle:on"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: manifest claws or teeth; your unarmed attacks get ↑1 and deal Sharp damage until the combat ends.</p>"

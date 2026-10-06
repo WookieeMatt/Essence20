@@ -7,7 +7,8 @@
     "rules": [
       {"type":"DialogSwitch","label":"Setting or disarming a trap (Nose For Trouble: Edge)","edge":true},
       {"type":"Use","label":"Add an escape route","cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"chat","text":"{name} spends a Story Point to find an escape route; the GM describes it."}]},
-      {"type":"DialogSwitch","forget":true,"label":"Roll Streetwise for Initiative (Nose For Trouble)","when":["roll:initiative"],"useSkill":"streetwise"}
+      {"type":"DialogSwitch","forget":true,"label":"Roll Streetwise for Initiative (Nose For Trouble)","when":["roll:initiative"],"useSkill":"streetwise"},
+      {"type":"SkillSubstitution","label":"Searching (Nose For Trouble: Streetwise for Alertness)","from":"alertness","mode":"ask","options":["streetwise"],"clearSpecialized":true,"prompt":"E20.Gij2NoseStreetwisePrompt","when":["not:item:data:type","calc:@skill.streetwise.rank - @skill.alertness.rank > 0"]}
     ],
     "automation": {
       "status": "full",

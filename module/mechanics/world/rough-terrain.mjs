@@ -52,22 +52,15 @@ const ROUGH_ENVIRONMENTS = ['thickAtmosphere'];
 // Movement as if moving through Rough Terrain."
 const NON_GROUND_MOVEMENT_ACTIONS = ['fly', 'swim', 'burrow'];
 
-const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
-const TF_CRB = "Compendium.essence20.tf_crb.Item.";
-
-// Take Point (TF CRB, Outrider Origin Benefit, p.52): "You never suffer the negative effects of
-// Rough Terrain, and on any turn in which you end your move in Rough Terrain, you are considered to
-// be in Cover until the beginning of your next turn." The Cover half is hasTakePointCover below.
-export const TAKE_POINT_ID = `${TF_CRB}efPOy3Owf2XIAykS`;
+// (Take Point - TF CRB, Outrider Origin Benefit, p.52 - is item rules now: MovementAction ignoreRoughTerrain and a
+// Cover grant while self:inRoughTerrain.)
 // Over the Candlestick, Sewer Tunneler, Urban Jungle, Hard Tread Wheels, Clawed Feet and Feet Wet (sea
 // terrain) ignore Rough Terrain through MovementAction item rules on their packs (first entry below).
-// Environmental Expertise (GI Joe CRB, Ranger base, p.90): "You ignore the penalties for moving
-// through Rough Terrain in your environment of expertise." Read through
-// hasActiveEnvironmentalExpertise, so it follows the scene's terrain when one is set.
-const ENVIRONMENTAL_EXPERTISE_ID = `${GI_JOE_CRB}EbbSUA2vSHyv3MjQ`;
-// Piledriver (TF CRB, Alt Mode gear, p.135): "Alt Mode: As a Free action, you can change one space
-// within Reach of normal terrain into Rough Terrain."
-export const PILEDRIVER_ID = `${TF_CRB}e4VcKpeXMlHOBkPV`;
+// Environmental Expertise's "ignore the penalties for moving through Rough Terrain in your environment of expertise":
+// whoever an EnvironmentalExpertise item rule gives the benefits to (hasActiveEnvironmentalExpertise - it follows the
+// scene's terrain when one is set).
+// (Piledriver - TF CRB, Alt Mode gear, p.135 - is a `posted` Trigger with a placeRoughTerrain step, which calls
+// placeRoughTerrainSpace below.)
 
 // Vehicle Traits whose printed text is "...ignores Rough Terrain" (Heavy Wheels, 6-Wheel Drive -
 // Ferocious Fighters; All-Terrain wheels/tracks - Quartermaster's Guide to Gear, Sgt. Slaughter's
@@ -87,8 +80,6 @@ function _hasItemFrom(actor, sourceId) {
     item.flags?.core?.sourceId == sourceId || item._stats?.compendiumSource == sourceId || item?.flags?.essence20?.rulesSource == sourceId);
 }
 
-const isAltMode = actor => actor.system?.isTransformed === true;
-
 // Every "ignore Rough Terrain" grant this file knows how to check, each `{id, isActive?, anyItem?}`
 // or `{checkFn}` - the same table shape mechanics/combat/condition-immunity.mjs uses. Deliberately NOT here:
 // Aggressive / Wrecking Ball / Plow (ignore it only during one specific Story-Point / Sprint / Ram
@@ -100,11 +91,7 @@ export const ROUGH_TERRAIN_IMPOSERS = [];
 export const ROUGH_TERRAIN_IGNORERS = [
   // MovementAction item rules with ignoreRoughTerrain (rules/adapter.mjs#ruleMovement).
   { checkFn: actor => ruleMovement(actor).ignoreRoughTerrain },
-  // Wrecking Ball (GI Joe CRB, Juggernaut, 17th level, p.112): "You ignore Rough Terrain" for the
-  // Sprint it was bought for - mechanics/combat/target-riders.mjs.
-  { checkFn: actor => isWreckingBallFlagActive(actor) },
-  { id: ENVIRONMENTAL_EXPERTISE_ID, checkFn: hasActiveEnvironmentalExpertise },
-  { id: TAKE_POINT_ID },
+  { checkFn: hasActiveEnvironmentalExpertise },
   {
     checkFn: actor => actor.type == 'vehicle'
       && ROUGH_TERRAIN_IGNORING_VEHICLE_TRAITS.some(trait => actor.system?.traits?.[trait]),
@@ -116,15 +103,6 @@ export const ROUGH_TERRAIN_IGNORERS = [
  * @param {Actor} actor
  * @returns {Boolean}
  */
-/**
- * Wrecking Ball's flag, stamped for the turn it was used.
- */
-function isWreckingBallFlagActive(actor) {
-  const stamp = actor?.flags?.essence20?.wreckingBall;
-  const combat = game?.combat;
-  return !!stamp && !!combat && stamp.combatId == combat.id && stamp.round == combat.round && stamp.turn == combat.turn;
-}
-
 export function ignoresRoughTerrain(actor) {
   if (!actor) {
     return false;
@@ -195,18 +173,6 @@ export function resolveEnvironmentEffect(effects) {
   const rank = env => (ENVIRONMENT_MOVEMENT_COST[env] ?? 1) * 2 + (ROUGH_ENVIRONMENTS.includes(env) ? 1 : 0);
   environments.sort((a, b) => rank(b) - rank(a));
   return environments[0] ?? "";
-}
-
-/**
- * Take Point's Cover half (see TAKE_POINT_ID): a target holding it who's standing in Rough Terrain
- * counts as in Cover. "Ended your move there this turn, until your next turn" is read as "is in it
- * now" - the position a ranged attacker sees.
- * @param {Actor} targetActor
- * @param {Token|TokenDocument} [targetToken]
- * @returns {Boolean}
- */
-export function hasTakePointCover(targetActor, targetToken) {
-  return actorHasPerk(targetActor, TAKE_POINT_ID) && isInRoughTerrain(targetToken ?? targetActor);
 }
 
 /**
@@ -367,7 +333,7 @@ export async function applyWreckerRoughTerrain(actor, results, checkContext) {
     }
 
     const target = await fromUuid(result.targetUuid);
-    // Seconds Between Click & Boom - items/rolls/better-than-the-best.mjs.
+    // Seconds Between Click & Boom - items/defenses/miss-effect-immunity.mjs.
     if (ignoresMissEffects(target, weaponEffect.system?.defenseType)) {
       continue;
     }
@@ -413,40 +379,37 @@ export async function applyWreckerOnAutoFail(actor, item, targets) {
   return applyWreckerRoughTerrain(actor, results, { isAttack: true, itemUuid: item.uuid });
 }
 
-/**
- * Whether an Item is the Piledriver (see PILEDRIVER_ID).
- * @param {Item} item
- * @returns {Boolean}
- */
-export function isPiledriver(item) {
-  return item?.flags?.core?.sourceId == PILEDRIVER_ID || item?._stats?.compendiumSource == PILEDRIVER_ID || item?.flags?.essence20?.rulesSource == PILEDRIVER_ID;
-}
+const localized = text => (/^E20./.test(String(text ?? '')) ? game.i18n.localize(text) : String(text ?? ''));
 
 /**
- * Piledriver (see PILEDRIVER_ID): offered when the gear is posted to chat from the sheet (its only
- * sheet action) while the owner is in Alt Mode - asks whether to use it, then lets the player place
- * a one-space Rough Terrain area on the canvas. "Within Reach" is left to the player, as for any
- * placed area.
+ * One grid space of Rough Terrain, placed by the player on the viewed scene (the placeRoughTerrain rule step -
+ * Piledriver, posted from the sheet in Alt Mode): asks first when there's a `prompt`, then lets the player place a
+ * one-space Rough Terrain area. "Within Reach" is left to the player, as for any placed area.
  * @param {Actor} actor
- * @param {Item} item   The Piledriver gear item.
+ * @param {Item} item   The item doing it (the window title, the Region's name).
+ * @param {Object} [options]
+ * @param {String} [options.prompt]   An E20. key or text asked first.
+ * @param {String} [options.chat]     An E20. key or text ({name}, {item}) posted once it's placed.
  * @returns {Promise<Boolean>}   Whether a Region was requested.
  */
-export async function offerPiledriverRoughTerrain(actor, item) {
-  if (!isAltMode(actor ?? {}) || !canvas?.ready || !canvas.scene) {
+export async function placeRoughTerrainSpace(actor, item, { prompt = null, chat = null } = {}) {
+  if (!canvas?.ready || !canvas.scene) {
     return false;
   }
 
-  const confirmed = await foundry.applications.api.DialogV2.confirm({
-    window: { title: item.name },
-    content: `<p>${game.i18n.localize('E20.RoughTerrainPiledriverPrompt')}</p>`,
-  });
-  if (!confirmed) {
-    return false;
+  if (prompt) {
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: item?.name ?? '' },
+      content: `<p>${localized(prompt)}</p>`,
+    });
+    if (!confirmed) {
+      return false;
+    }
   }
 
   const gridSize = canvas.scene.grid.size;
   const placed = await canvas.regions.placeRegion({
-    name: item.name,
+    name: item?.name ?? '',
     shapes: [{ type: "rectangle", x: 0, y: 0, width: gridSize, height: gridSize, gridBased: true }],
   }, { create: false, allowRotation: false });
   if (!placed) {
@@ -454,11 +417,14 @@ export async function offerPiledriverRoughTerrain(actor, item) {
   }
 
   const shapes = placed.shapes.map(shape => (shape.toObject ? shape.toObject() : shape));
-  await createRoughTerrainRegion(canvas.scene, shapes, item.name);
+  await createRoughTerrainRegion(canvas.scene, shapes, item?.name ?? '');
   // Same chat record Wrecker posts, so the new Rough Terrain is announced rather than just appearing.
-  await ChatMessage.create({
-    speaker: ChatMessage.getSpeaker({ actor }),
-    content: game.i18n.format('E20.RoughTerrainPiledriverChat', { name: actor?.name ?? '', item: item.name }),
-  });
+  if (chat) {
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      content: /^E20./.test(chat) ? game.i18n.format(chat, { name: actor?.name ?? '', item: item?.name ?? '' }) : String(chat),
+    });
+  }
+
   return true;
 }

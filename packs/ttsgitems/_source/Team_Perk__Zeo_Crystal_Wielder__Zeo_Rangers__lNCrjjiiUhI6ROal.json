@@ -5,6 +5,9 @@
   "_id": "lNCrjjiiUhI6ROal",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Zeo Crystal Boost costs 1 less","items":["item:id:NiEaLWcx8N48fvvN","item:data:system.powerCost>0"],"path":"system.powerCost","op":"add","value":-1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: the Zeo Crystal Boost Grid Power, which costs you 1 less Personal Power to use.</p>"

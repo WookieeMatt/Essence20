@@ -5,6 +5,11 @@
   "_id": "u3KK0V30GXDdRPAY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Move a rank between two Skills","steps":[{"do":"pick","key":"down","from":"skills","notShift":["d2"],"prompt":"Which Skill gives up a rank?","legacy":"actor.flags.essence20.fastLearnerAllocation.decreaseSkill"},{"do":"pick","key":"up","from":"skills","notChoice":"down","prompt":"Which Skill gains it?","legacy":"actor.flags.essence20.fastLearnerAllocation.increaseSkill"}]},
+      {"type":"RollModifier","label":"Fast Learner","downshift":1,"when":["skill:{choice.down}","rule:data:flags.essence20.rules.choices.up","not:roll:initiative"]},
+      {"type":"RollModifier","label":"Fast Learner","upshift":1,"when":["skill:{choice.up}","rule:data:flags.essence20.rules.choices.down","not:roll:initiative"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spends your Standard action to move one rank from a skill to another skill (never down to untrained). It lasts until you use it again.</p>"

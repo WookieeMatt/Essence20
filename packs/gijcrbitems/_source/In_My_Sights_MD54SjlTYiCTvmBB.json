@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Spend your Move action too: an Edge instead of the Aim bonus (In My Sights)","edge":true,"replacesAim":true,"when":["roll:aimed"]}
+      {"type":"DialogSwitch","label":"Spend your Move action too: an Edge instead of the Aim bonus (In My Sights)","edge":true,"replacesAim":true,"when":["roll:aimed"]},
+      {"type":"SneakAttackGrant","label":"In My Sights: sniper weapons, to their own range","items":["weapon:trait:sniper"],"range":"weapon"}
     ],
     "automation": {
       "status": "partial",

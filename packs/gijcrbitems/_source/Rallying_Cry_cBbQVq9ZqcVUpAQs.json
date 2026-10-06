@@ -5,6 +5,10 @@
   "_id": "cBbQVq9ZqcVUpAQs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Allies within 60 ft gain Edge on attacks","steps":[{"do":"mark","key":"rallyingCry","to":"allies:60","until":"endOfNextRound","when":["combat"]}]},
+      {"type":"RollModifier","label":"Rallying Cry (Edge on attacks)","scope":"marked","mark":"rallyingCry","edge":true,"when":["attack"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (Free action): allies within 60 ft get an Edge on attacks until the end of your next turn.</p><p>Left to the table: the ten-ally limit, and whether they can see and hear you.</p>"

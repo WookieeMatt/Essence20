@@ -5,6 +5,9 @@
   "_id": "U4Ug6iUQC4Ehzs5l",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Equip your drone (Telemetry Data)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"require","check":["link:hasCompanion:drone"],"message":"{name} has no drone."},{"do":"grant","to":"firstCompanion:drone","uuid":"Compendium.essence20.gi_joe_crb.Item.XvqqYOHHpjRzb8T4","integrated":true},{"do":"grant","to":"firstCompanion:drone","uuid":"Compendium.essence20.gi_joe_crb.Item.AcNaNxZnyOfXv0f6","integrated":true,"when":["self:level>=15"]},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: gives your drone companion Night Vision Goggles, plus a Laser Designator from 15th level.</p>"

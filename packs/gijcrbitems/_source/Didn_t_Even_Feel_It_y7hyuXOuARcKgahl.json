@@ -5,6 +5,10 @@
   "_id": "y7hyuXOuARcKgahl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Didn't Even Feel It","event":"applyingDamage","stage":"reductions","priority":3,"prompt":true,"promptText":"E20.DidntEvenFeelItConfirmContent","when":["self:ownRenegade","self:recklessAbandon"],"limit":{"per":"encounter","key":"didntEvenFeelIt"},"steps":[{"do":"setVar","key":"damage","value":0},{"do":"setVar","key":"dropSecondary","value":1}]},
+      {"type":"Trigger","label":"Didn't Even Feel It (vehicle)","event":"applyingDamage","stage":"reductions","priority":3,"scope":"renegadeVehicle","prompt":true,"promptText":"E20.DidntEvenFeelItConfirmContent","when":["holder:recklessAbandon"],"limit":{"per":"encounter","key":"didntEvenFeelIt"},"steps":[{"do":"setVar","key":"damage","value":0},{"do":"setVar","key":"dropSecondary","value":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic, once per encounter: when damage is applied to you during Reckless Abandon, you're asked whether to reduce it to 0.</p>"

@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Size up the target","steps":[{"do":"target","max":1},{"do":"warn","text":"E20.RulesExtItems2.NotYourself","stop":true,"when":["target:self"]},{"do":"setVar","key":"level","value":"equal"},{"do":"setVar","key":"level","value":"superior","when":["calc:@versus.level>0"]},{"do":"setVar","key":"level","value":"inferior","when":["calc:@versus.level<0"]},{"do":"setVar","key":"toughness","value":"equal"},{"do":"setVar","key":"toughness","value":"superior","when":["calc:@versus.toughness>0"]},{"do":"setVar","key":"toughness","value":"inferior","when":["calc:@versus.toughness<0"]},{"do":"setVar","key":"evasion","value":"equal"},{"do":"setVar","key":"evasion","value":"superior","when":["calc:@versus.evasion>0"]},{"do":"setVar","key":"evasion","value":"inferior","when":["calc:@versus.evasion<0"]},{"do":"whisper","text":"{target} is your {var.level} in Threat Level, your {var.toughness} in Toughness and your {var.evasion} in Evasion."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: with a creature targeted, you and the GM are told whether its Threat Level, Toughness and Evasion are above, equal to or below yours.</p>"

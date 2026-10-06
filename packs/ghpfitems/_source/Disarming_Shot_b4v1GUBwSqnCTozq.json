@@ -5,6 +5,9 @@
   "_id": "b4v1GUBwSqnCTozq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Disarming Shot (↓3, aim for a 1-handed weapon in their hand)","downshift":3,"key":"disarmingShot","when":["attack","not:attack:melee"]}
+    ],
     "prerequisites": {"when":["self:skill:targeting>=d8"]},
     "automation": {
       "status": "full",

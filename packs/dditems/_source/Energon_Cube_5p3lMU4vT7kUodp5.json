@@ -5,6 +5,9 @@
   "_id": "5p3lMU4vT7kUodp5",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Take its Energon","when":["rule:data:system.quantity>0"],"steps":[{"do":"gainResource","resource":{"path":"system.energon.normal.value"},"amount":2,"overMax":true},{"do":"spendQuantity","item":"self","amount":1,"deleteAtZero":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: gain its 2 Energon Points at once; the cube is used up.</p>"

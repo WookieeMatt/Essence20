@@ -5,6 +5,13 @@
   "_id": "AaI58jYka8MfhIbc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"+1 to a Defense for this combat","when":["combat:exists"],"limit":{"per":"encounter"},"steps":[{"do":"pick","key":"defense","from":"defense","prompt":"Which Defense?"},{"do":"mark","key":"roar","to":"self","until":"combat"}]},
+      {"type":"Defense","label":"Roar!","defense":"toughness","mode":"addAfter","amount":1,"when":["self:marked:roar","rule:data:flags.essence20.rules.choices.defense=toughness"]},
+      {"type":"Defense","label":"Roar!","defense":"evasion","mode":"addAfter","amount":1,"when":["self:marked:roar","rule:data:flags.essence20.rules.choices.defense=evasion"]},
+      {"type":"Defense","label":"Roar!","defense":"willpower","mode":"addAfter","amount":1,"when":["self:marked:roar","rule:data:flags.essence20.rules.choices.defense=willpower"]},
+      {"type":"Defense","label":"Roar!","defense":"cleverness","mode":"addAfter","amount":1,"when":["self:marked:roar","rule:data:flags.essence20.rules.choices.defense=cleverness"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per combat): pick a Defense to get +1 for the rest of the combat.</p>"

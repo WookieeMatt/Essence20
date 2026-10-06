@@ -1,4 +1,5 @@
 import { isMechanical } from "../../mechanics/characters/creature-tags.mjs";
+import { ruleCoatingCost, ruleKeepsVialOnFumble } from "../../rules/plugins/resources/poison-coating-rule.mjs";
 
 /**
  * Poisons put on weapons, and changing what a poison is (Cobra Codex, p.92-97).
@@ -14,10 +15,8 @@ import { isMechanical } from "../../mechanics/characters/creature-tags.mjs";
  * the coating still knows what it does. The next attack with the weapon wipes it; a hit also offers
  * the poison's effect as a second button on the card (target-riders.mjs#applyRollRiders).
  *
- * - Poisonous (Commando Poisoner, p.49): "You can apply a contact poison to a weapon as a Move
- *   action." Intoxicate (10th level, p.50): "as a Free action."
- * - Poison Tipped (3rd level, p.49): "you no longer consume a dose of poison when you fumble
- *   applying it to a weapon or ammunition."
+ * - Poisonous, Intoxicate (a cheaper action) and Poison Tipped (a Fumble keeps the vial) are their items' own
+ *   PoisonCoating rules (rules/plugins/resources/poison-coating-rule.mjs).
  * - Poison Chemistry (6th level, p.49): "As a Standard action, you can change the state of a poison
  *   (contact, ingested, or inhaled) you have in your hand."
  * - Poison Prodigy (20th level, p.50): "As a Standard action, you can change the type of a poison
@@ -28,26 +27,8 @@ import { isMechanical } from "../../mechanics/characters/creature-tags.mjs";
  *   poison." A hacker poison is marked on the poison itself.
  */
 
-const CC = id => `Compendium.essence20.cobra_codex.Item.${id}`;
-export const POISON_PERK = {
-  poisonous: CC('9kQxCeLIm10zB1h7'),
-  intoxicate: CC('uoNrrDfkqk5pKnwC'),
-  poisonTipped: CC('Kgcm0HoMe5wuVfuv'),
-  poisonChemistry: CC('MOOrbfVEyGTDExfv'),
-  poisonProdigy: CC('qkvDR7I1tBwOyStY'),
-  hacker: CC('s56rG7h3is1WNpz2'),
-};
-
 const COATING_FLAG = 'poisonCoating';
 export const HACKER_POISON_FLAG = 'hackerPoison';
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-}
-
-function has(actor, uuid) {
-  return !!actor?.items?.some?.(item => sourceOf(item) == uuid);
-}
 
 export function poisonsOf(actor) {
   return (actor?.items?.contents ?? [...(actor?.items ?? [])]).filter(item => item.type == 'weapon' && item.system?.isPoison);
@@ -59,14 +40,10 @@ function effectsOf(actor, weapon) {
 }
 
 /**
- * What applying a contact poison costs this actor.
+ * What applying a contact poison costs this actor: a Standard action, or what its PoisonCoating rules make it.
  */
 export function coatingCost(actor) {
-  if (has(actor, POISON_PERK.intoxicate)) {
-    return 'free';
-  }
-
-  return has(actor, POISON_PERK.poisonous) ? 'move' : 'standard';
+  return ruleCoatingCost(actor) ?? 'standard';
 }
 
 /**
@@ -178,7 +155,7 @@ export async function resolveCoatingRoll(actor, spec, { success, isCrit, isFumbl
     });
   }
 
-  const usesVial = (success && !isCrit) || (isFumble && !has(actor, POISON_PERK.poisonTipped));
+  const usesVial = (success && !isCrit) || (isFumble && !ruleKeepsVialOnFumble(actor));
   if (usesVial) {
     await useVial(poison);
   }
@@ -205,141 +182,4 @@ export async function wipeCoating(weapon) {
   if (coatingOf(weapon) && !coatingOf(weapon).permanent) {
     await weapon.unsetFlag('essence20', COATING_FLAG);
   }
-}
-
-/**
- * Poison Chemistry: change a poison's state.
- * @param {Actor} actor
- * @returns {Promise<String|null>}
- */
-export async function changePoisonState(actor, economy) {
-  const poisons = poisonsOf(actor);
-  const poisonId = await pick(game.i18n.localize('E20.PoisonChemistryTitle'), game.i18n.localize('E20.PoisonCoatPickPoison'),
-    poisons.map(p => ({ value: p.id, label: p.name })));
-  if (!poisonId) {
-    return null;
-  }
-
-  const state = await pick(game.i18n.localize('E20.PoisonChemistryTitle'), game.i18n.localize('E20.PoisonChemistryPickState'),
-    Object.entries(CONFIG.E20.poisonApplications).map(([value, label]) => ({ value, label: game.i18n.localize(label) })));
-  if (!state) {
-    return null;
-  }
-
-  if (economy && game.combat) {
-    const paid = await economy.spend(actor, 'standard', { source: game.i18n.localize('E20.PoisonChemistryTitle') });
-    if (paid.blocked) {
-      return null;
-    }
-  }
-
-  const poison = actor.items.get(poisonId);
-  await poison.update({
-    'system.poisonApplication': Object.fromEntries(Object.keys(CONFIG.E20.poisonApplications).map(key => [key, key == state])),
-  });
-  return game.i18n.format('E20.PoisonChemistryDone', {
-    name: actor.name, poison: poison.name, state: game.i18n.localize(CONFIG.E20.poisonApplications[state]),
-  });
-}
-
-/**
- * Poison Prodigy: swap a poison for another from the compendiums, or (as a Move action) add an
- * upgrade to it - the upgrade is dropped onto the poison the usual way, so this only charges the
- * action.
- * @param {Actor} actor
- * @returns {Promise<String|null>}
- */
-export async function poisonProdigy(actor, economy) {
-  const mode = await foundry.applications.api.DialogV2.wait({
-    window: { title: game.i18n.localize('E20.PoisonProdigyTitle') },
-    classes: ["window-app", "e20-window"],
-    content: `<p>${game.i18n.localize('E20.PoisonProdigyPrompt')}</p>`,
-    buttons: [
-      { action: 'type', label: game.i18n.localize('E20.PoisonProdigyChangeType') },
-      { action: 'upgrade', label: game.i18n.localize('E20.PoisonProdigyAddUpgrade') },
-    ],
-    rejectClose: false,
-  });
-  if (!mode) {
-    return null;
-  }
-
-  if (mode == 'upgrade') {
-    if (economy && game.combat) {
-      const paid = await economy.spend(actor, 'move', { source: game.i18n.localize('E20.PoisonProdigyTitle') });
-      if (paid.blocked) {
-        return null;
-      }
-    }
-
-    return game.i18n.format('E20.PoisonProdigyUpgradeReady', { name: actor.name });
-  }
-
-  const held = poisonsOf(actor);
-  const poisonId = await pick(game.i18n.localize('E20.PoisonProdigyTitle'), game.i18n.localize('E20.PoisonCoatPickPoison'),
-    held.map(p => ({ value: p.id, label: p.name })));
-  if (!poisonId) {
-    return null;
-  }
-
-  const candidates = [];
-  for (const pack of game.packs ?? []) {
-    if (pack.metadata?.type != 'Item' || pack.metadata?.packageName != 'essence20') {
-      continue;
-    }
-
-    const index = await pack.getIndex({ fields: ['system.isPoison'] });
-    for (const entry of index) {
-      if (entry.type == 'weapon' && entry.system?.isPoison) {
-        candidates.push({ value: entry.uuid, label: entry.name });
-      }
-    }
-  }
-
-  const uuid = await pick(game.i18n.localize('E20.PoisonProdigyTitle'), game.i18n.localize('E20.PoisonProdigyPickNew'),
-    candidates.sort((a, b) => a.label.localeCompare(b.label)));
-  if (!uuid) {
-    return null;
-  }
-
-  if (economy && game.combat) {
-    const paid = await economy.spend(actor, 'standard', { source: game.i18n.localize('E20.PoisonProdigyTitle') });
-    if (paid.blocked) {
-      return null;
-    }
-  }
-
-  const old = actor.items.get(poisonId);
-  const replacement = await fromUuid(uuid);
-  if (!replacement) {
-    return null;
-  }
-
-  // Dropped through the sheet's own weapon handling so the new poison's effects come too.
-  const data = replacement.toObject();
-  data.system.quantity = 1;
-  const { onDropItem } = await import("../../sheet-handlers/drop-handler.mjs");
-  await onDropItem({ type: 'Item', uuid }, actor, async () => actor.createEmbeddedDocuments('Item', [data]));
-
-  await useVial(old);
-  return game.i18n.format('E20.PoisonProdigyChanged', { name: actor.name, from: old.name, to: replacement.name });
-}
-
-/**
- * Hacker: mark a poison as a hacker poison (or back).
- * @param {Actor} actor
- * @returns {Promise<String|null>}
- */
-export async function toggleHackerPoison(actor) {
-  const poisons = poisonsOf(actor);
-  const poisonId = await pick(game.i18n.localize('E20.HackerPoisonTitle'), game.i18n.localize('E20.PoisonCoatPickPoison'),
-    poisons.map(p => ({ value: p.id, label: `${p.name}${isHackerPoison(p) ? ` (${game.i18n.localize('E20.HackerPoisonMarked')})` : ''}` })));
-  if (!poisonId) {
-    return null;
-  }
-
-  const poison = actor.items.get(poisonId);
-  const now = !isHackerPoison(poison);
-  await poison.setFlag('essence20', HACKER_POISON_FLAG, now);
-  return game.i18n.format(now ? 'E20.HackerPoisonOn' : 'E20.HackerPoisonOff', { name: actor.name, poison: poison.name });
 }

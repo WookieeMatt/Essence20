@@ -5,6 +5,9 @@
   "_id": "OhOdfAu7b0lLDO82",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Arashikage Graduate","outcome":"allFailed","limit":{"per":"scene"},"when":["var:skill"],"steps":[{"do":"bank","label":"Arashikage Graduate","downshift":1,"appliesWhen":["not:roll:initiative"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic, once per scene: after you fail a Skill Test, your next Skill Test has ↓1 already added to the shift in the Roll Options Dialog.</p>"

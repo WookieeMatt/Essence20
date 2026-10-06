@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Defense","label":"Allies within 10 ft while Morphed (Pay It Forward: +1 Defenses)","defense":"any","amount":1,"scope":"aura","radius":10,"affects":"allies","stacks":false,"when":[{"any":["defense:toughness","defense:evasion","defense:willpower","defense:cleverness"]},"holder:morphed"]}
+      {"type":"Defense","label":"Allies within 10 ft while Morphed (Pay It Forward: +1 Defenses)","defense":"any","amount":1,"scope":"aura","radius":10,"affects":"allies","stacks":false,"when":[{"any":["defense:toughness","defense:evasion","defense:willpower","defense:cleverness"]},"holder:morphed"]},
+      {"type":"GroupTestBonus","label":"Pay It Forward","upshift":1}
     ],
     "automation": {
       "status": "partial",

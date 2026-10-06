@@ -9,6 +9,4 @@ export const TTSG = id => `Compendium.essence20.through_the_shattered_grid.Item.
 
 export const IDS = {
   ninjaPower: PR_CRB('wN5rjEQIJH68rWCd'),
-  powerHeal: PR_CRB('eiTUR08GXw03M21m'),
-  elementalFury: TTSG('larsGRE5U4ZOVxzw'),
 };

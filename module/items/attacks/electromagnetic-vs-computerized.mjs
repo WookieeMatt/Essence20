@@ -6,7 +6,7 @@ import { itemsOf, sourceOf } from "../shared/item-lookups.mjs";
 
 /**
  * Cobra Codex: Electromagnetic attacks against computerized gear. (The Deflecting Weapon upgrades are
- * items/defenses/deflecting-weapon.mjs. Shield Fighter, Onslaught, Poison Resistance, Dielectric, Insulator and
+ * item rules - rules/plugins/effects/linked-host.mjs. Shield Fighter, Onslaught, Poison Resistance, Dielectric, Insulator and
  * the Disenfranchised Hang-Up's Willpower check are item rules.)
  */
 export const O1_CC = {

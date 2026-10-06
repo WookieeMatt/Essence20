@@ -1,24 +1,21 @@
 import { betrayalSplits } from "../../items/social/betrayal.mjs";
-import "../../items/magic/self-improvement.mjs"; // loaded with Betrayal, as one file was, so its registrations keep their place
-import { actorHasPerk } from "../characters/perks.mjs";
+import { ruleAnyDispositionAllies } from "../../rules/plugins/combat/ally-filter.mjs";
+import { ruleAllyRangeMultiplier } from "../../rules/plugins/combat/ally-range.mjs";
 
 /**
  * Generic "nearby allies" lookup, generalizing the same scan already duplicated privately in
- * items/defenses/personal-shield.mjs#getShieldUpgradeBonus and items/social/enemy-number-one.mjs (which scans
- * for nearby ENEMIES instead - the same idiom, opposite disposition check). Foundry has no
+ * items/defenses/personal-shield.mjs#getShieldUpgradeBonus (and, for nearby ENEMIES, the same idiom with the
+ * opposite disposition check in nearby-enemies.mjs). Foundry has no
  * first-class "ally" concept of its own; every aura/ally-facing Perk automated in this system
  * keys off a token's own Disposition (set per-token on the scene) as the ally/enemy proxy, and
  * canvas.grid.measurePath for distance, same as everywhere else range gets measured in this file
  * tree (dice.mjs#_getDistanceFeet, etc.).
  */
 
-// Frenemy (MLP CRB, General Perk, p.124): "When you use an ability that targets 'a friend', you
-// can instead target any creature with it, even if you don't know them very well or you don't get
-// along." Every ally-targeting Perk in this codebase (Helping Hand, Field Repair, Lend Assistance,
-// and dozens more) already funnels through getNearbyAllyTokens below, so widening that ONE
-// function's own Disposition filter for a Frenemy holder - rather than teaching every individual
-// Perk about it - covers all of them at once.
-const FRENEMY_ID = "Compendium.essence20.mlp_crb.Item.N6Bs8to6G0QddMVK";
+// Frenemy (MLP CRB, General Perk, p.124) is an AllyFilter {anyDisposition} rule (rules/plugins/combat/ally-filter.mjs).
+// Every ally-targeting Perk in this codebase (Helping Hand, Field Repair, Lend Assistance, and dozens more) already
+// funnels through getNearbyAllyTokens below, so widening that ONE function's own Disposition filter for the holder -
+// rather than teaching every individual Perk about it - covers all of them at once.
 
 /**
  * Finds every OTHER token within radiusFeet of the given actor's own token, sharing the same
@@ -30,25 +27,22 @@ const FRENEMY_ID = "Compendium.essence20.mlp_crb.Item.N6Bs8to6G0QddMVK";
  * @param {Number} radiusFeet
  * @returns {Array<Token>}
  */
-const ALLY_AWARENESS_ID = "Compendium.essence20.tf_crb.Item.WzccenAOAQxiARf7";
-
 export function getNearbyAllyTokens(actor, radiusFeet) {
   const actorToken = actor?.getActiveTokens?.()?.[0];
   if (!actorToken || !canvas?.tokens || !canvas?.grid) {
     return [];
   }
 
-  const anyDisposition = actorHasPerk(actor, FRENEMY_ID);
+  const anyDisposition = ruleAnyDispositionAllies(actor);
 
-  // Ally Awareness (TF CRB, General Perk, p.84): "If an ally has an ability that affects allies within
-  // a certain range, you gain the benefits of that ability as long as you are within 5 times the
-  // range of the ability."
+  // AllyRangeMultiplier rules (Ally Awareness's 5 - rules/plugins/combat/ally-range.mjs): the ally holding one counts
+  // from that many times the range.
   return canvas.tokens.placeables.filter(token =>
     token !== actorToken && token.actor
     && (anyDisposition || token.document.disposition === actorToken.document.disposition)
     && !betrayalSplits(actor, token.actor)
     && canvas.grid.measurePath([token.center, actorToken.center]).distance
-      <= radiusFeet * (actorHasPerk(token.actor, ALLY_AWARENESS_ID) ? 5 : 1),
+      <= radiusFeet * ruleAllyRangeMultiplier(token.actor),
   );
 }
 
@@ -98,39 +92,7 @@ export function getHissColumnBonus(actor) {
   ).length;
 }
 
-// Colony Changeling (Dark Skies Over Equestria, Natural Shape choice, p.17): "another +1 bonus to
-// Evasion for every changeling from your colony next to you, up to +3 total."
-const COLONY_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.FRUWPAePJzm7Mlf0";
-const COLONY_CHANGELING_ADJACENCY_FEET = 5;
-const COLONY_CHANGELING_MAX_BONUS = 3;
-
-/**
- * Colony Changeling - see COLONY_CHANGELING_ID's own comment above. Same "scan
- * canvas.tokens.placeables for a qualifying nearby granter" idiom getHissColumnBonus just above
- * already establishes, but adjacency-scoped (5ft, the same "next to" proxy Bulwark's own
- * _hasNearbyBulwarkCover uses) rather than whole-battlefield, and matched by the Perk itself
- * (any other Colony Changeling, not just same-named copies) rather than actor identity - "from
- * your colony" is dropped as unenforceable (this codebase has no colony/hive-membership concept),
- * the same "closest available proxy" judgment call getHissColumnBonus's own "other H.I.S.S."
- * reading already makes. Recomputed fresh every prepareData pass, so it tracks other Colony
- * Changeling tokens entering/leaving adjacency automatically.
- * @param {Actor} actor
- * @returns {Number}   0-3.
- */
-export function getColonyChangelingEvasionBonus(actor) {
-  const actorToken = actor?.getActiveTokens?.()?.[0];
-  if (!actorToken || !canvas?.tokens || !canvas?.grid) {
-    return 0;
-  }
-
-  const nearbyCount = canvas.tokens.placeables.filter(token =>
-    token !== actorToken && token.actor
-    && actorHasPerk(token.actor, COLONY_CHANGELING_ID)
-    && canvas.grid.measurePath([token.center, actorToken.center]).distance <= COLONY_CHANGELING_ADJACENCY_FEET,
-  ).length;
-
-  return Math.min(nearbyCount, COLONY_CHANGELING_MAX_BONUS);
-}
+// (Colony Changeling's +1 Evasion per adjacent colony changeling is a Defense rule on the Perk - @tokensHolding.)
 
 /**
  * Prompts for which nearby ally/allies to bank a Perk's bonus on - defaults to whichever tokens

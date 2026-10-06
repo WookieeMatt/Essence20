@@ -5,6 +5,9 @@
   "_id": "1vrQxY1nzjMjeU7D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Uninterrupted Break","when":[{"any":["not:self:windowUsed:uninterruptedBreakHealUsedThisEncounter:encounter","not:self:windowUsed:uninterruptedBreakEssenceUsedThisEncounter:encounter","not:self:windowUsed:uninterruptedBreakStoryPointUsedThisEncounter:encounter"]}],"steps":[{"do":"choose","auto":true,"prompt":"Which benefit?","options":[{"label":"Everyone heals 2 Health","when":["not:self:windowUsed:uninterruptedBreakHealUsedThisEncounter:encounter"],"steps":[{"do":"heal","amount":2,"to":"allies+self:100000"},{"do":"markWindow","flag":"uninterruptedBreakHealUsedThisEncounter","window":"encounter"}]},{"label":"Everyone heals 1 Essence damage","when":["not:self:windowUsed:uninterruptedBreakEssenceUsedThisEncounter:encounter"],"steps":[{"do":"healEssence","amount":1,"to":"allies+self:100000"},{"do":"markWindow","flag":"uninterruptedBreakEssenceUsedThisEncounter","window":"encounter"}]},{"label":"The team gains a Story Point","when":["not:self:windowUsed:uninterruptedBreakStoryPointUsedThisEncounter:encounter"],"steps":[{"do":"gainResource","resource":{"storyPoints":true}},{"do":"markWindow","flag":"uninterruptedBreakStoryPointUsedThisEncounter","window":"encounter"}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: after the 10-minute break, pick a benefit: everyone heals 2 Health, everyone heals 1 Essence damage, or the team gains a Story Point.</p><p>Left to the table: each benefit is once a day; the button offers them again each scene.</p>"

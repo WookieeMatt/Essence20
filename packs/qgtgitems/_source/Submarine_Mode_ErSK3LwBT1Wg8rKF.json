@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
     "rules": [
-      {"type":"DerivedStat","label":"Submarine Mode (sealed)","path":"system.pressurized","op":"set","value":1,"when":["self:type:vehicle"]}
+      {"type":"DerivedStat","label":"Submarine Mode (sealed)","path":"system.pressurized","op":"set","value":1,"when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Submarine Mode: Aquatic Movement of its ground speed","movement":"swim","stage":"vehicleBase","op":"set","value":"@actor.system.movement.ground.total","when":["self:type:vehicle","not:movement:has","calc:@actor.system.movement.ground.total > 0"]},
+      {"type":"Movement","label":"Submarine Mode: Aquatic Movement of half its aerial speed","movement":"swim","stage":"vehicleBase","op":"set","value":"floor(@actor.system.movement.aerial.total / 2)","when":["self:type:vehicle","not:movement:has","calc:@actor.system.movement.ground.total <= 0"]}
     ],
     "prerequisites": {"when":[{"any":["self:data:system.traits.air","self:data:system.traits.land"]}]},
     "automation": {

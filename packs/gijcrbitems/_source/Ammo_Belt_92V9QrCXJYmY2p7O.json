@@ -5,6 +5,9 @@
   "_id": "92V9QrCXJYmY2p7O",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Ammo Belt","action":"reload","to":"free","when":["item:isHost","not:self:holdsActive:Compendium.essence20.gi_joe_crb.Item.c0woQ6aEyVd4DBvA","not:self:holdsActive:Compendium.essence20.tf_crb.Item.Vj0RpJmj7XNKXphR"],"limit":{"per":"scene"},"stacks":true}
+    ],
     "prerequisites": {"when":["host:trait:reload"]},
     "automation": {
       "status": "full",

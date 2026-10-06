@@ -5,6 +5,9 @@
   "_id": "tfRFV2g3gkug0l2a",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","action":"lendAssistance","to":"move","when":["self:actionLog:lendAssistance:standard>=1"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once you've spent your Standard action on Lend Assistance this round, another Lend Assistance costs only a Move action.</p>"

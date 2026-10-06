@@ -5,6 +5,12 @@
   "_id": "Ec3PMcI8WsCu2ivp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Turn Invisible","when":["not:self:toggle:on"],"limit":{"per":"encounter"},"steps":[{"do":"setToggle","key":"on","value":true},{"do":"applyCondition","condition":"invisible"}]},
+      {"type":"Use","label":"End Invisibility","when":["self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":false},{"do":"removeCondition","condition":"invisible"}]},
+      {"type":"Trigger","label":"Invisibility ends (attack)","event":"afterRoll","outcome":"any","when":["self:toggle:on","attack"],"steps":[{"do":"setToggle","key":"on","value":false},{"do":"removeCondition","condition":"invisible"}]},
+      {"type":"Trigger","label":"Invisibility ends (Lend Assistance)","event":"lendAssistance","when":["self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":false},{"do":"removeCondition","condition":"invisible"}]}
+    ],
     "prerequisites": {"when":["self:hasType:influence:Mutant Beast"]},
     "automation": {
       "status": "partial",

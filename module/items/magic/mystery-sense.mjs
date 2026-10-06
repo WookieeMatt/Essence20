@@ -1,4 +1,4 @@
-import { activateForWindow, isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 // Mystery Sense (Knights of Canterlot, Superior Enchantment spell, p.47): "gives you a +3 to your
 // Alertness, Infiltration, and Streetwise skills to try to find [a hidden clue]" for the spell's
@@ -14,10 +14,6 @@ const MYSTERY_SENSE_FLAG = 'mysterySenseActive';
 
 export function isMysterySenseActive(actor) {
   return isActiveForWindow(actor, MYSTERY_SENSE_FLAG, 'scene');
-}
-
-export async function applyMysterySense(actor) {
-  await activateForWindow(actor, MYSTERY_SENSE_FLAG, 'scene');
 }
 
 export async function removeMysterySense(actor) {

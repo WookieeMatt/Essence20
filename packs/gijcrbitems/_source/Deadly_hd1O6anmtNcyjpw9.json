@@ -5,6 +5,9 @@
   "_id": "hd1O6anmtNcyjpw9",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"+1 Sharp damage (Deadly)","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.damageType=sharp"],"path":"system.damageValue","op":"add","value":1}
+    ],
     "prerequisites": {"when":["host:trait:sharp"]},
     "automation": {
       "status": "full",

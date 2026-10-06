@@ -5,6 +5,10 @@
   "_id": "zvzta73A3ROyxv0J",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Attack that leaves out the Tank (Snag)","scope":"aura","radius":30,"affects":"enemies","stacks":false,"snag":true,"when":["attack","combat:exists","target:data:uuid","not:target:ruleHolder","not:self:markedByHolder:enemyNumberOne"]},
+      {"type":"Trigger","label":"Attacked the Tank this turn","event":"targeted","when":["attack","combat:exists"],"steps":[{"do":"mark","key":"enemyNumberOne","to":"target","until":"turnOrScene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic, in combat: an enemy within 30 ft of you takes a Snag on attacks against anyone but you, unless it has already attacked you this turn. The Snag is labelled Enemy Number One in its Roll Options Dialog.</p>"

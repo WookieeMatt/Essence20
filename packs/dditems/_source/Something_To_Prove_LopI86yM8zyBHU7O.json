@@ -5,6 +5,10 @@
   "_id": "LopI86yM8zyBHU7O",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"fumbled","label":"Something To Prove (a Fumble: ↓1 next round)","when":["combat:exists"],"steps":[{"do":"mark","key":"somethingToProve","to":"self","count":"@combat.round + 1","until":"throughNextRound"}]},
+      {"type":"RollModifier","label":"Something To Prove (↓1 the round after a Fumble)","downshift":1,"when":["self:marked:somethingToProve","calc:@mark.somethingToProve - @combat.round = 0"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: after you Fumble, your Skill Tests on your following turn take ↓1, labelled Something To Prove in the Roll Options Dialog.</p><p>Left to the table: whether your commander actually saw the Fumble.</p>"

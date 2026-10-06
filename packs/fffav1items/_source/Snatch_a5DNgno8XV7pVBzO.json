@@ -5,6 +5,10 @@
   "_id": "a5DNgno8XV7pVBzO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Snatch (a two-handed weapon)","downshift":1,"when":["item:data:system.damageType=maneuver","target:wielding:weapon:data:system.derivedHands>=2"]},
+      {"type":"ManeuverOption","label":"Snatch","option":"disarm"}
+    ],
     "prerequisites": {"when":["self:skill:finesse>=d4"]},
     "automation": {
       "status": "full",

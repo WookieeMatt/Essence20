@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
     "rules": [
-      {"type":"Grant","label":"Comes with a Recording Microphone","uuid":"Compendium.essence20.wtnv_citizens_guide.Item.ab9XMJpujnX7aRSS"}
+      {"type":"Grant","label":"Comes with a Recording Microphone","uuid":"Compendium.essence20.wtnv_citizens_guide.Item.ab9XMJpujnX7aRSS"},
+      {"type":"KitSkill","label":"Streetwise kit","skill":"streetwise"}
     ],
     "automation": {
       "status": "full",

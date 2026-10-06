@@ -1,19 +1,13 @@
-import { registerDerived, registerHitRider, registerRollSources } from "../../mechanics/item-hooks.mjs";
+import { registerRollSources } from "../../mechanics/item-hooks.mjs";
 import { ruleBrawnBonus } from "../../rules/plugins/effects/brawn-requirement.mjs";
 
 /**
- * Armor and armor-upgrade rules for the data1 slice of the Item Review:
+ * Armor rules for the data1 slice of the Item Review (Reinforced Shell's Alt Mode / Bot Mode split is its upgrade's own
+ * Defense and HitRider rules):
  * - Brawn requirements on battledress (Tanker Armor, Marauder Armor).
- * - Reinforced Shell's Alt Mode / Bot Mode split (Technorganic Secrets p.49).
  */
 
-export const REINFORCED_SHELL = "Compendium.essence20.technorganic_secrets.Item.GQt4IlyXGHCbLxNP";
-
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
-
-function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
-}
 
 function itemsOf(actor) {
   const items = actor?.items;
@@ -92,75 +86,3 @@ export function brawnRequirementSources(actor, ctx = {}) {
 }
 
 registerRollSources((actor, target, ctx) => ({ sources: brawnRequirementSources(actor, ctx) }));
-
-/* -------------------------------------------- */
-/*  Reinforced Shell                             */
-/* -------------------------------------------- */
-
-/**
- * Reinforced Shell (Technorganic Secrets, Armor Upgrades, p.49): "Alt Mode: Your shell acts as a
- * shield, providing +2 deflection bonus to Toughness. Bot Mode: Your shell enhances your close
- * combat capabilities. Increase your Unarmed Combat attack's Stun effect by 1."
- *
- * The pack carries the +2 as the upgrade's own armorBonus, which documents/actor.mjs#_prepareDefenses
- * counts in either mode (a loose alt-mode upgrade, or one attached to worn armor). This takes it back
- * out while the actor isn't transformed.
- * @returns {Item|null}   The counted shell, if any.
- */
-export function countedShell(actor) {
-  return itemsOf(actor).find(item => {
-    if (item.type != 'upgrade' || sourceOf(item) != REINFORCED_SHELL) {
-      return false;
-    }
-
-    const parentId = item.flags?.essence20?.parentId;
-    if (parentId) {
-      const parent = actor.items?.get?.(parentId);
-      return parent?.type == 'armor' && !!parent.system?.equipped;
-    }
-
-    return !!(actor.system?.canTransform || item.flags?.essence20?.alterationWorn);
-  }) ?? null;
-}
-
-export function applyShellMode(actor) {
-  const system = actor?.system;
-  const toughness = system?.defenses?.toughness;
-  if (!toughness || system.isTransformed || system.isMorphed) {
-    return;
-  }
-
-  const shell = countedShell(actor);
-  if (!shell) {
-    return;
-  }
-
-  const value = Number(shell.system?.armorBonus?.value) || 0;
-  if (!value) {
-    return;
-  }
-
-  toughness.total -= value;
-  if (typeof toughness.string == 'string') {
-    toughness.string += ` - ${value} (${T('E20.D1ShellBotMode', { name: shell.name })})`;
-  }
-}
-
-registerDerived(applyShellMode);
-
-/** Bot Mode: +1 to an Unarmed attack's Stun. */
-export function shellStunBonus(actor, rider) {
-  if (!rider?.isUnarmed || rider.damageType != 'stun' || actor?.system?.isTransformed) {
-    return null;
-  }
-
-  const shell = itemsOf(actor).find(item => item.type == 'upgrade' && sourceOf(item) == REINFORCED_SHELL);
-  return shell ?? null;
-}
-
-registerHitRider((actor, target, result, rider, tools) => {
-  const shell = shellStunBonus(actor, rider);
-  if (shell) {
-    tools.damageBonusNote(result, 1, shell.name);
-  }
-});

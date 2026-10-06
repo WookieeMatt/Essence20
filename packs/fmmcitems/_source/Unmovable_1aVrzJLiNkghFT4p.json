@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"incoming","when":["attack","item:damageType:maneuver","self:data:flags.essence20.unmovableActive"],"downshift":3}
+      {"type":"RollModifier","scope":"incoming","when":["attack","item:damageType:maneuver","self:data:flags.essence20.unmovableActive"],"downshift":3},
+      {"type":"Use","label":"Unmovable on (1 Personal Power)","when":["not:self:data:flags.essence20.unmovableActive"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.unmovableActive":true}},{"do":"chat","text":"{name} is rooted to the spot."}]},
+      {"type":"Use","label":"Unmovable off","when":["self:data:flags.essence20.unmovableActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.unmovableActive":false}},{"do":"chat","text":"{name} is no longer rooted."}]}
     ],
     "automation": {
       "status": "partial",

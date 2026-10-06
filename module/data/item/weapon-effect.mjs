@@ -4,9 +4,6 @@ import { E20 } from "../../util/config.mjs";
 import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { aoeSchema } from "../aoe-schema.mjs";
-import { isExtendedAttackActive } from "../../items/attacks/extended-attack.mjs";
-import { isMassShiftReachActive } from "../../items/forms/mass-shift.mjs";
-import { isAntlersReachActive } from "../../items/attacks/antlers.mjs";
 
 import { activation } from './templates/activation.mjs';
 import { item } from './templates/item.mjs';
@@ -68,7 +65,7 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       // purely cosmetic entries in the parent Weapon item's own `traits` array (a config label
       // with zero mechanical hook anywhere in this codebase). These two fields are the first real
       // mechanical hooks for them, built for "Design your own Attack" (A Jump Through Time,
-      // Purple Ranger's Unique Strike/Enhance Strike, p.37-39, see items/attacks/unique-strike.mjs) -
+      // Purple Ranger's Unique Strike/Enhance Strike, p.37-39 - their items' own rules) -
       // a freshly player-authored weaponEffect can now actually express either trait. Defaulting
       // to 0/false leaves every existing compendium weaponEffect completely unaffected; this pass
       // does NOT retroactively populate them onto the ~28 existing items whose own `traits` array
@@ -100,20 +97,7 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
         reachMultiplier = this.range.reachMultiplier;
       }
 
-      // Extended Attack - see items/attacks/extended-attack.mjs's own doc comment. Melee only, and
-      // doesn't stack with an already-doubled (or better) permanent reachMultiplier.
-      if (this.classification?.style == 'melee'
-        && (isExtendedAttackActive(this.parent.parent) || isMassShiftReachActive(this.parent.parent))) {
-        reachMultiplier = Math.max(reachMultiplier, 2);
-      }
-
-      // Antlers - see items/attacks/antlers.mjs's own doc comment. Unarmed only (no parent weapon Item,
-      // the same "no parentId flag" proxy dice.mjs#_getParentWeapon already uses for "unarmed"
-      // everywhere else in this codebase), doesn't stack past a flat double.
-      const isUnarmed = !this.parent.flags?.essence20?.parentId;
-      if (this.classification?.style == 'melee' && isAntlersReachActive(this.parent.parent, isUnarmed)) {
-        reachMultiplier = Math.max(reachMultiplier, 2);
-      }
+      // (Mass Shift's Reach option, Extended Attack and Antlers are ItemModifier rules on their items.)
 
       // Upgrades on the parent weapon - ranges, blasts, skill, targets, damage riders
       // (items/attacks/weapon-upgrades.mjs). Derived only; the paths it changed are listed in

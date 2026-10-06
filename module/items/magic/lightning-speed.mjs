@@ -1,4 +1,4 @@
-import { activateForWindow, isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 /**
  * Lightning Speed (MLP CRB, Virtuoso Utility spell, p.139): "You experience a burst of speed...
@@ -20,6 +20,3 @@ export function isLightningSpeedActive(actor) {
   return isActiveForWindow(actor, LIGHTNING_SPEED_FLAG, 'scene');
 }
 
-export async function applyLightningSpeed(targetActor) {
-  await activateForWindow(targetActor, LIGHTNING_SPEED_FLAG, 'scene');
-}

@@ -5,6 +5,9 @@
   "_id": "b1MNR5CPCitDTj4n",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Roll with the Punches","when":["not:rule:banked"],"limit":{"per":"encounter","max":"1 + min(1, floor(@level / 6))"},"steps":[{"do":"choose","prompt":"Which Defense do you double against the next attack?","options":[{"label":"Toughness","steps":[{"do":"bank","defense":"toughness","defenseMultiply":2,"until":"combat"}]},{"label":"Willpower","steps":[{"do":"bank","defense":"willpower","defenseMultiply":2,"until":"combat"}]},{"label":"Evasion","steps":[{"do":"bank","defense":"evasion","defenseMultiply":2,"until":"combat"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per combat (twice from 6th level), pick Toughness, Willpower or Evasion. The next attack against you that targets that Defense faces double its value, shown as the doubled difficulty on the attacker's chat card.</p>"

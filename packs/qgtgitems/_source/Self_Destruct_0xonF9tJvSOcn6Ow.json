@@ -5,6 +5,9 @@
   "_id": "0xonF9tJvSOcn6Ow",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Arm it","when":["self:type:vehicle"],"cost":{"action":"free"},"steps":[{"do":"scheduleNextRound","replace":true,"steps":[{"do":"applyCondition","condition":"defeated"},{"do":"explodeVehicle","actor":"{var.actorUuid}"}]},{"do":"chat","text":"{name}'s Self-Destruct is armed. It goes off on the arming crew member's next turn."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: a crew member arms it as a Free action; on that crew member's next turn the vehicle is Defeated and explodes.</p>"

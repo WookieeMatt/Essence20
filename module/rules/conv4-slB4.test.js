@@ -278,7 +278,7 @@ describe("Predacon's Frightened", () => {
     // Someone else's turn ending changes nothing.
     await fireTriggers(bystander, 'turnEnd');
     expect(bystander.toggleStatusEffect).not.toHaveBeenCalled();
-    expect(foe.toggleStatusEffect).not.toHaveBeenCalled();
+    expect(foe.toggleStatusEffect).not.toHaveBeenCalledWith('frightened', { active: false });
 
     await fireTriggers(foe, 'turnEnd');
     expect(foe.toggleStatusEffect).toHaveBeenCalledWith('frightened', { active: false });

@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","forget":true,"label":"Roll Deception for Initiative (Spoof)","when":["roll:initiative"],"useSkill":"deception"},
-      {"type":"DialogSwitch","forget":true,"label":"Roll Infiltration for Initiative (Spoof)","when":["roll:initiative"],"useSkill":"infiltration"}
+      {"type":"DialogSwitch","forget":true,"label":"Roll Deception for Initiative (Spoof)","key":"spoof","when":["roll:initiative"],"useSkill":"deception"},
+      {"type":"DialogSwitch","forget":true,"label":"Roll Infiltration for Initiative (Spoof)","key":"spoof","when":["roll:initiative"],"useSkill":"infiltration"}
     ],
     "automation": {
       "status": "partial",

@@ -5,6 +5,11 @@
   "_id": "EbbSUA2vSHyv3MjQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"EnvironmentalExpertise","label":"Environmental Expertise","when":[{"any":["self:inExpertiseTerrain","self:data:flags.essence20.environmentalExpertiseActive"]}]},
+      {"type":"Use","label":"Switch on","when":["not:self:data:flags.essence20.environmentalExpertiseActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.environmentalExpertiseActive":true}},{"do":"chat","text":"{name} is now in their environment of expertise."}]},
+      {"type":"Use","label":"Switch off","when":["self:data:flags.essence20.environmentalExpertiseActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.environmentalExpertiseActive":false}},{"do":"chat","text":"{name} is no longer in their environment of expertise."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: pick your environment of expertise. Automatic: while the scene's terrain matches, or you switch it on with the Use button, you ignore Rough Terrain, your Skill Tests that aren't attacks get an Edge (labelled Environmental Expertise in the Roll Options Dialog), and your attacks open with Specialized ticked.</p>"

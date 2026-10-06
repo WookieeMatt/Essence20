@@ -5,6 +5,9 @@
   "_id": "CUhsxOCugyHcEIRx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Basal Nano Infusion: a Standard nanomite power","event":"added","steps":[{"do":"pickGrant","from":{"type":"power","availabilities":["standard"],"tags":["item:data:system.type=nanomite"],"notOwned":true,"selectionLimit":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: pick a Standard nanomite power each time you take this Perk.</p>"
@@ -18,53 +21,10 @@
     "prerequisite": "",
     "selectionLimit": 10,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "perks",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 1,
-    "items": {
-      "ZWQI": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.uj9MrbSdm0CABElw",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "All-Around Vision",
-        "type": "power"
-      },
-      "Ja4P": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Qb0LifFSyfOCFIVd",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Create Weapon",
-        "type": "power"
-      },
-      "uPvS": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.NkK5eFAFW4ouUNmO",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Manipulate Portal",
-        "type": "power"
-      },
-      "i2IL": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.m4DwJmV39IELuT84",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Poison Immunity",
-        "type": "power"
-      },
-      "o4yx": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.H5T3CVuBMhllTfQp",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Portable Battery",
-        "type": "power"
-      },
-      "lvEK": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.HhdsBDcnI0Yjy0yM",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Remote Control",
-        "type": "power"
-      },
-      "eCtu": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.EOG8PH8fIJAVpbGY",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Reprogrammable",
-        "type": "power"
-      }
-    }
+    "items": {}
   },
   "effects": [],
   "sort": 0,

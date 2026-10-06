@@ -5,6 +5,10 @@
   "_id": "I4tkodAyDsVPSXCU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick the Essence (Cordial)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"pick","key":"essence","from":"list","options":[["strength","E20.EssenceStrength"],["speed","E20.EssenceSpeed"],["smarts","E20.EssenceSmarts"]],"legacy":"flags.essence20.redirectFrom"},{"do":"updateItem","set":{"flags.essence20.granted":true}}]},
+      {"type":"EssenceRedirect","label":"Cordial","from":"{choice.essence}","to":"social"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose Strength, Speed or Smarts. When your Role raises that Essence, the increase goes to Social instead.</p>"

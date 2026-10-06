@@ -1,8 +1,8 @@
 import { jest } from '@jest/globals';
 import {
   activeKits, applyDialogKits, canUseKit, carryPercent, extraCarriedHands, KIT, kitDialogFlags, kitInfo, kitRequirement, kitSources,
-  kitUseKind, loaderShieldToughness, loaderShoveBonus, meetsKitPrerequisite, protomatterReduce, restKits, runKitUse, scroungeDif,
-  skillKitNoUntrainedSnag, takeMineMultiplier, wildAnimalPersuasion,
+  kitUseKind, meetsKitPrerequisite, runKitUse, scroungeDif,
+  skillKitNoUntrainedSnag, takeMineMultiplier, useKit, wildAnimalPersuasion,
 } from './kits.mjs';
 
 function flagged(obj) {
@@ -37,7 +37,6 @@ const gear = (name, extra = {}) => flagged({
   flags: { ...(extra.source ? { core: { sourceId: extra.source } } : {}), essence20: { ...(extra.flags ?? {}) } },
   system: { gearType: 'kits', quantity: 1, ...(extra.system ?? {}) },
 });
-const perk = (source, name = 'Perk') => gear(name, { type: 'perk', source, system: {} });
 
 function makeActor(items = [], system = {}) {
   const list = [...items];
@@ -103,8 +102,6 @@ describe('prerequisites and requirements', () => {
     const actor = makeActor([], { skills: { infiltration: { shift: 'd4' } } });
     expect(meetsKitPrerequisite(actor, { tier: 'standard', skill: 'infiltration' })).toBe(true);
     expect(meetsKitPrerequisite(actor, { tier: 'limited', skill: 'infiltration' })).toBe(false);
-    expect(meetsKitPrerequisite(makeActor([perk('Compendium.essence20.gi_joe_crb.Item.az09yEPydnE1tBTj')], { skills: { infiltration: { shift: 'd20' } } }),
-      { tier: 'restricted', skill: 'infiltration' })).toBe(true);
   });
 
   test('the best kit decides the Snag or downshift', () => {
@@ -241,14 +238,42 @@ describe('boosts', () => {
     expect(kitSources(actor, 'athletics', 'Swimming', true).sources[0]).toMatchObject({ shiftUp: 1 });
   });
 
-  test('Reinforced Basics gives Standard kits three uses', async () => {
+  // Bug fix 2026-10-06: the change-Specialization choice was offered on every kit to everyone.
+  test("changing a set kit's Specialization needs Kitted Out; a generic kit can always be set up", async () => {
+    const offered = () => foundry.applications.api.DialogV2.wait.mock.calls.at(-1)?.[0]?.buttons.map(b => b.action) ?? [];
+    const climbing = gear('Restricted Climbing Kit');
+    makeActor([climbing], { skills: { athletics: { shift: 'd4' } } });
+    expect(await runKitUse(climbing, null)).toBeNull();
+    expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
+
+    const swimming = gear('Standard Athletics (Swimming) Kit');
+    // Kitted Out's KitModifier {respecialize} rule (rules/plugins/resources/kit-rules.mjs).
+    const kittedOut = { id: 'ko', type: 'perk', name: 'Kitted Out', flags: {}, system: { rules: [{ type: 'KitModifier', respecialize: true }] } };
+    makeActor([swimming, kittedOut], { skills: { athletics: { shift: 'd4' } } });
+    await runKitUse(swimming, null);
+    expect(offered()).toEqual(['consume', 'specialize']);
+
+    const generic = gear('Standard Kit');
+    makeActor([generic], { skills: { athletics: { shift: 'd4' } } });
+    await runKitUse(generic, null);
+    expect(offered()).toEqual(['consume', 'specialize']);
+  });
+
+  test('KitUses rules: Standard kits three uses (Reinforced Basics), other tiers one', async () => {
+    // Reinforced Basics' KitUses rule (rules/plugins/resources/kit-uses.mjs).
+    const basics = () => ({ id: 'rb', type: 'perk', name: 'Reinforced Basics', flags: {}, system: { rules: [{ type: 'KitUses', uses: 3, tiers: ['standard'] }] } });
     const kit = gear('Standard Athletics Kit');
-    makeActor([kit, perk(KIT.reinforcedBasics)], { skills: { athletics: { shift: 'd4' } } });
+    makeActor([kit, basics()], { skills: { athletics: { shift: 'd4' } } });
     await runKitUse(kit, null);
     expect(kit.flags.essence20.kitSpent).toBeUndefined();
     await runKitUse(kit, null);
     await runKitUse(kit, null);
     expect(kit.flags.essence20.kitSpent).toBe(true);
+
+    const limited = gear('Limited Athletics Kit');
+    makeActor([limited, basics()], { skills: { athletics: { shift: 'd6' } } });
+    await runKitUse(limited, null);
+    expect(limited.flags.essence20.kitSpent).toBe(true);
   });
 
   test('an Essence Kit boost lasts one test', async () => {
@@ -261,59 +286,14 @@ describe('boosts', () => {
     await applyDialogKits(actor, { kitRequired: 'none' }, { skill: 'brawn', consumes: boost.consumes });
     expect(kitSources(actor, 'brawn', null, true).sources).toEqual([]);
   });
-
-  test('Imaginary Corn gives ↑1 on Strength tests', async () => {
-    const corn = gear('Imaginary Corn', { source: KIT.imaginaryCorn, system: { gearType: 'other', quantity: 2 } });
-    const actor = makeActor([corn]);
-    await runKitUse(corn, null);
-    expect(corn.system.quantity).toBe(1);
-    expect(kitSources(actor, 'athletics', null, false).sources[0]).toMatchObject({ shiftUp: 1 });
-    expect(kitSources(actor, 'science', null, false).sources).toEqual([]);
-  });
 });
 
 describe('gear and Perks', () => {
   test('Use kinds', () => {
     expect(kitUseKind(gear('Standard Medicine Kit'))).toBe('kit');
-    expect(kitUseKind(gear('Med Kit', { source: KIT.medKit }))).toBe('medKit');
-    expect(kitUseKind(perk(KIT.crashSurvivor))).toBe('crashSurvivor');
+    // The Med Kit is a Use rule on its item now (rules/conv15-uses.test.js) - not a kit, no kit Use.
+    expect(kitUseKind(gear('Med Kit', { source: KIT.medKit }))).toBeNull();
     expect(kitUseKind(gear('Rope', { system: { gearType: 'tools' } }))).toBeNull();
-  });
-
-  test('Crash Survivor grants a Limited Driving (Air) kit usable without prerequisites', async () => {
-    const survivor = perk(KIT.crashSurvivor, 'Crash Survivor');
-    const actor = makeActor([survivor], { skills: { driving: { shift: 'd20' } } });
-    await runKitUse(survivor, null);
-    await runKitUse(survivor, null);
-    const kits = actor.items.filter(i => i.flags.essence20.grantedBy == survivor.id);
-    expect(kits.length).toBe(1);
-    expect(kitRequirement(actor, 'driving', 'Air', 'limited').snag).toBe(false);
-  });
-
-  test('Med Kit heals 1, or 2 with Medicine, over ten uses', async () => {
-    const kit = gear('Med Kit', { source: KIT.medKit, system: { gearType: 'medical' } });
-    const actor = makeActor([kit], { health: { value: 2, max: 6 }, skills: { science: { specializations: { medicine: { name: 'Medicine' } } } } });
-    await runKitUse(kit, null);
-    expect(actor.system.health.value).toBe(4);
-    expect(kit.flags.essence20.usesLeft).toBe(9);
-  });
-
-  test('Wrist Communicator runs out of charges until a rest', async () => {
-    const comm = gear('Wrist Communicator', { source: KIT.wristCommunicator, flags: { chargesUsed: 3 } });
-    const actor = makeActor([comm]);
-    expect(canUseKit(comm)).toBe(false);
-    await restKits(actor);
-    expect(canUseKit(comm)).toBe(true);
-  });
-
-  test('Protomatter Injection Layer takes 1 off the first three hits of 2+', async () => {
-    const layer = gear('Protomatter Injection Layer', { type: 'upgrade', source: KIT.protomatterInjectionLayer });
-    const actor = makeActor([layer]);
-    expect(await protomatterReduce(actor, 1)).toBe(1);
-    expect(await protomatterReduce(actor, 3)).toBe(2);
-    await protomatterReduce(actor, 2);
-    await protomatterReduce(actor, 2);
-    expect(await protomatterReduce(actor, 2)).toBe(2);
   });
 
   test('carrying capacity', () => {
@@ -321,34 +301,43 @@ describe('gear and Perks', () => {
     expect(carryPercent(makeActor([], { skills: { brawn: { shift: 'd8' } } }))).toBe(100);
     const packMule = { id: 'pm', type: 'perk', name: 'Pack Mule', flags: {}, system: { rules: [{ type: 'BrawnRequirement', amount: 2, carrying: true }] } };
     expect(carryPercent(makeActor([packMule], { skills: { brawn: { shift: 'd8' } } }))).toBe(200);
-    expect(carryPercent(makeActor([perk(KIT.competitiveStrength)], { skills: { brawn: { shift: 'd6' } } }))).toBe(150);
-    expect(carryPercent(makeActor([perk(KIT.growthBoost)], { isMorphed: true, skills: { brawn: { shift: 'd8' } } }))).toBe(200);
-  });
-
-  test('Loader: carry and shove in Alt Mode, shield in Bot Mode', () => {
-    const loader = gear('Loader', { source: KIT.loader, system: { gearType: 'tools' } });
-    const actor = makeActor([loader], { isTransformed: true });
-    expect(loaderShoveBonus(actor)).toBe(2);
-    expect(loaderShieldToughness(actor)).toBe(0);
-    loader.flags.essence20.loaderShield = true;
-    actor.system.isTransformed = false;
-    expect(loaderShoveBonus(actor)).toBe(0);
-    expect(loaderShieldToughness(actor)).toBe(1);
+    // Competitive Strength's BrawnRequirement carryingOnly rule: 2 Ranks higher for carrying.
+    const competitive = { id: 'cs', type: 'perk', name: 'Competitive Strength', flags: {}, system: { rules: [{ type: 'BrawnRequirement', amount: 2, carryingOnly: true }] } };
+    expect(carryPercent(makeActor([competitive], { skills: { brawn: { shift: 'd6' } } }))).toBe(150);
+    // Growth Boost's CarryCapacity rule doubles it while Morphed (round 17 - rules/conv17-split2.test.js).
+    const growthBoost = { id: 'gb', type: 'perk', name: 'Growth Boost', flags: {}, system: { rules: [{ type: 'CarryCapacity', multiply: 2, when: ['self:morphed'] }] } };
+    expect(carryPercent(makeActor([growthBoost], { isMorphed: true, skills: { brawn: { shift: 'd8' } } }))).toBe(200);
+    expect(carryPercent(makeActor([growthBoost], { isMorphed: false, skills: { brawn: { shift: 'd8' } } }))).toBe(100);
   });
 
   test('Bomber carries six explosives outside the hands', () => {
     const grenade = gear('Grenade', { type: 'weapon', system: { quantity: 8 } });
     const effect = gear('Grenade', { type: 'weaponEffect', flags: { parentId: grenade.id }, system: { classification: { style: 'explosive' } } });
-    const actor = makeActor([grenade, effect, perk(KIT.bomber)]);
+    const bomber = { id: 'bo', type: 'perk', name: 'Bomber', flags: {}, system: { rules: [{ type: 'CarryExemption', items: ['item:firstAttack:item:data:system.classification.style=explosive', 'not:item:data:system.isPoison'], max: 6 }] } };
+    const actor = makeActor([grenade, effect, bomber]);
     expect(extraCarriedHands(actor, [{ item: grenade, hands: 1 }])).toBe(6);
   });
 
   test('Handy Scrounger and Take Mine', () => {
     expect(scroungeDif(makeActor([]), 'limited')).toBe(10);
-    expect(scroungeDif(makeActor([perk(KIT.handyScrounger)]), 'standard')).toBe(0);
+    const scrounger = { id: 'hs', type: 'perk', name: 'Handy Scrounger', flags: {}, system: { rules: [{ type: 'KitModifier', scroungeDif: -5, upgradeRoll: true }] } };
+    expect(scroungeDif(makeActor([scrounger]), 'standard')).toBe(0);
+    expect(scroungeDif(makeActor([scrounger]), 'limited')).toBe(5);
     const corn = gear('Imaginary Corn', { flags: { givenBy: { actorUuid: 'Actor.other', scene: 1 } } });
     const actor = makeActor([corn]);
     expect(takeMineMultiplier(actor, corn)).toBe(2);
     expect(takeMineMultiplier(actor, gear('Imaginary Corn'))).toBe(1);
+  });
+});
+
+describe('setting up a generic kit', () => {
+  test('"Any Specialization" is a real choice, not a cancel', async () => {
+    CONFIG.E20.standardSpecializations = { gij: { infiltration: ['Burglary', 'Disguise'] } };
+    const kit = gear('Standard Infiltration Kit');
+    makeActor([kit]);
+    foundry.utils.escapeHTML = text => String(text);
+    foundry.applications.api.DialogV2.wait = jest.fn().mockResolvedValueOnce('specialize').mockResolvedValueOnce('');
+    expect(await useKit(kit.parent, kit, async () => true)).toBeTruthy();
+    expect(kit.flags.essence20.kit).toMatchObject({ skill: 'infiltration', spec: null });
   });
 });

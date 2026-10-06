@@ -5,6 +5,9 @@
   "_id": "e26WbtPYfNCm12LO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Copy a teammate's General Perk or Grid Power (I Can Do That)","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"pick","beforeCost":true,"key":"copied","prompt":"Which General Perk or Grid Power?","from":"canvasItems","anyOf":[["item:type:perk","item:data:system.type=general"],["item:type:power","item:data:system.type=grid"]]},{"do":"grant","uuid":"{var.picked}","until":"endOfNextTurnOrScene"},{"do":"addToSceneList","flag":"copiedAbilities","entry":"{var.picked}"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend a Personal Power to copy a General Perk or Grid Power from a teammate on the scene until the end of your next turn.</p>"

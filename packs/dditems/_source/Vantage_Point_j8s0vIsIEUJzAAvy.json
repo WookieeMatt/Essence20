@@ -5,6 +5,9 @@
   "_id": "j8s0vIsIEUJzAAvy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Vantage Point (30 ft above the target, or in the appraised area)","edge":true,"when":["attack:ranged",{"any":["roll:elevationAbove:>=30","check:inAppraisedArea"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Edge on ranged attacks from at least 30 ft above the target, or from the spot you picked on the map with Eye For Appraisal, labelled Vantage Point in the Roll Options Dialog.</p>"

@@ -5,6 +5,9 @@
   "_id": "fHmLPZ3K8AGgzANp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Gain Edge (Angry)","edge":true,"when":["essence:strength"],"limit":{"per":"encounter"},"forget":true,"steps":[{"do":"require","check":["self:holdsActive:Compendium.essence20.cobra_codex.Item.wGMyGbySdNSgPs8B"]},{"do":"pick","key":"angrySkill","from":"skills","essences":["smarts","social"],"notShift":["d20"],"prompt":"Suffer Snag on which skill"},{"do":"mark","key":"angrySnag","to":"self","until":"scene","text":"{choice.angrySkill}"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch for Edge on a Strength test, usable once per encounter.</p>"

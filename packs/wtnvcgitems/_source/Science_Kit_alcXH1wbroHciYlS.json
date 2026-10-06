@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
     "rules": [
-      {"type":"Grant","label":"Comes with a Lab Coat","uuid":"Compendium.essence20.wtnv_citizens_guide.Item.gDIWKiVdCNn5ViV0"}
+      {"type":"Grant","label":"Comes with a Lab Coat","uuid":"Compendium.essence20.wtnv_citizens_guide.Item.gDIWKiVdCNn5ViV0"},
+      {"type":"KitSkill","label":"Science kit","skill":"science"}
     ],
     "automation": {
       "status": "full",

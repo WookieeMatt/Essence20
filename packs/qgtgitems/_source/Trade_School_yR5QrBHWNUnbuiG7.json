@@ -5,6 +5,13 @@
   "_id": "yR5QrBHWNUnbuiG7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Coach an ally (their Technology rolls use your die for a scene)","limit":{"per":"encounter"},"steps":[{"do":"pickAlly"},{"do":"mark","key":"tradeSchoolPending","to":"target"}]},
+      {"type":"Trigger","label":"Trade School: the coaching starts at their first Technology roll","event":"beforeRoll","scope":"marked","mark":"tradeSchoolPending","when":["skill:technology","not:self:marked:tradeSchool"],"steps":[{"do":"mark","key":"tradeSchool","to":"self","until":"scene","by":"holder"}]},
+      {"type":"DieSubstitution","label":"Trade School (the coach's Technology die)","mode":"best","skills":["technology"],"dieOf":"holder","scope":"marked","mark":"tradeSchool","when":["skill:technology"]},
+      {"type":"RollModifier","label":"Trade School (the coach's Specialization)","specialize":true,"scope":"marked","mark":"tradeSchool","when":["skill:technology",{"any":["holder:data:system.skills.technology.isSpecialized","holder:specializedIn:technology"]}]},
+      {"type":"RollModifier","label":"Trade School (first Technology roll: Specialized)","specialize":true,"scope":"marked","mark":"tradeSchoolPending","consumeMark":"tradeSchoolPending","consumeFrom":"roller","when":["skill:technology"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: an ally you pick rolls your Technology die and Specialization instead of their own for the scene.</p><p>Left to the table: the once-per-day limit; the button allows it again each combat.</p>"

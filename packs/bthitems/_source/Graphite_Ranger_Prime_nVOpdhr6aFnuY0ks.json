@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"incoming","label":"Graphite Ranger Prime","when":["attack","combat","combat:round:1","self:morphed"],"snag":true}
+      {"type":"RollModifier","scope":"incoming","label":"Graphite Ranger Prime","when":["attack","combat","combat:round:1","self:morphed"],"snag":true},
+      {"type":"RollModifier","label":"Graphite Ranger Prime (attacks on Cleverness)","scope":"incoming","late":true,"snag":true,"when":["defense:cleverness"]}
     ],
     "automation": {
       "status": "partial",

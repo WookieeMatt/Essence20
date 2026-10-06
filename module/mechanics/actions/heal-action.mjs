@@ -1,22 +1,19 @@
 import { registerNamedAction } from "../item-hooks.mjs";
 import { ruleActionSkills, spendActionSkill } from "../../rules/plugins/rolls/action-skills.mjs";
-import { GIJ, rollDif } from "../../items/shared/gm-relayed-item-writes.mjs";
+import { rollDif } from "../../items/shared/gm-relayed-item-writes.mjs";
 import { T } from "../../items/shared/item-lang.mjs";
 import { feetBetween, firstTargetedActor as firstTarget } from "../../items/shared/sides.mjs";
-import { has } from "../../items/shared/item-lookups.mjs";
+import { ruleCureNotes } from "../../rules/plugins/combat/subsystem-readers.mjs";
+import { healBonuses, runHealBonusSteps } from "../../rules/plugins/resources/heal-bonus.mjs";
 
 /**
  * The Heal action: the Core Rules' "restore Health with a Skill Test" as an action anyone can take (on the Actions
- * tab), with the GI Joe Medic Perks that change it - I've Got You / Up And At 'Em's bonuses on a Defeated ally and
- * Proper Protection's critical success on curing poison. (Hearty Meal's Skills are an ActionSkills rule on its
+ * tab), with the GI Joe Medic Perks that change it - the healer's HealBonus rules (I've Got You / Up And At 'Em's
+ * bonuses on a Defeated ally - rules/plugins/resources/heal-bonus.mjs) and the healer's CureNote rules on curing poison
+ * (Proper Protection's critical success). (Hearty Meal's Skills are an ActionSkills rule on its
  * Perk; Peaceable's ↑1 on healing rolls and Proper Protection's immunities are rules on their pack items. The
- * medicine-kit reading is items/healing/medicine-kit.mjs; the Defibrillator is items/healing/defibrillator.mjs.)
+ * medicine-kit reading is items/healing/medicine-kit.mjs; the Defibrillator is its item's own rules.)
  */
-export const O2_MED = {
-  iveGotYou: GIJ('6wbY17kDGkxeGBPp'),
-  properProtection: GIJ('CUV2gVVGb7U7yU5J'),
-};
-
 export const HEAL_ACTION = 'o2Heal';
 
 /** RAW's DIF to restore Health: "5 + (5 per Health you want to restore)" (GI Joe CRB p.210). */
@@ -74,15 +71,12 @@ async function healDialog(actor, target) {
   }).then(result => (result && result != 'cancel' ? result : null));
 }
 
-/** Heal a target by `amount` - I've Got You / Up And At 'Em add their bonuses on a Defeated ally. */
+/** Heal a target by `amount` - the healer's HealBonus rules (I've Got You / Up And At 'Em on a Defeated ally) add theirs. */
 export async function restoreHealth(healer, target, amount) {
-  if (has(healer, O2_MED.iveGotYou)) {
-    const { applyIveGotYouHeal } = await import("../../items/healing/i-ve-got-you.mjs");
-    return applyIveGotYouHeal(target, amount, healer);
-  }
-
+  const bonuses = healBonuses(healer, target);
   const { applyHealSkillTestResult } = await import("../../items/healing/heal-skill-test.mjs");
-  return applyHealSkillTestResult(target, amount);
+  await applyHealSkillTestResult(target, amount + bonuses.reduce((sum, bonus) => sum + bonus.amount, 0));
+  await runHealBonusSteps(healer, target, bonuses);
 }
 
 export async function healAction(actor) {
@@ -107,9 +101,10 @@ export async function healAction(actor) {
     }
 
     await target.toggleStatusEffect?.('poisoned', { active: false });
-    // Proper Protection: "When you help an ally recover from disease or poison, a successful Skill
+    // CureNote rules - Proper Protection: "When you help an ally recover from disease or poison, a successful Skill
     // Test upgrades to a critical success."
-    const crit = has(actor, O2_MED.properProtection) ? ` ${T('O2ProperProtectionCrit')}` : '';
+    const notes = ruleCureNotes(actor);
+    const crit = notes ? ` ${notes}` : '';
     return { message: T('O2PoisonCured', { name: actor.name, target: target.name }) + crit };
   }
 

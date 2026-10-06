@@ -5,6 +5,10 @@
   "_id": "sdrLrrdWEM6LrD7W",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"AttackTraits","label":"Ram Cone (Alt Mode)","traits":["armorPiercing","antiTank"],"when":["self:transformed",{"any":["item:data:system.isRam","item:data:system.isFlyby","item:name~slam","item:name~bash"]}]},
+      {"type":"RollModifier","label":"Ram Cone","upshift":1,"when":["not:self:transformed","attack:unarmed","item:data:system.damageType=blunt","item:data:system.shiftDown>0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Alt Mode your Flyby, Ram and Slam attacks gain Anti-Tank and Armor Piercing; in Bot Mode your Blunt unarmed attack loses its ↓1.</p>"

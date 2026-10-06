@@ -1,11 +1,10 @@
 import { jest } from '@jest/globals';
 import {
   anyGeneralPerkChoices, gameLineOf, getAlreadyChosenExpertiseSkills,
-  grantDutyOfTheSilverArmorTraining, grantMetamorphosis,
   grantPerkEquipmentMap,
-  grantsAnyGeneralPerk, nanoInfusionAvailability, nanomitePowerChoices,
+  grantsAnyGeneralPerk,
   onMultiSkillPerkDrop, onPerkDelete, onPerkDrop,
-  setPerkAdvancesName, setPerkValues, setRoleVatiantPerks,
+  setPerkAdvancesName, setRoleVatiantPerks,
 } from "./perk-handler.mjs";
 
 function makePerk(type, currentValue) {
@@ -33,31 +32,6 @@ describe("setPerkAdvancesName", () => {
     const perk = makePerk('unknownType', 5);
     setPerkAdvancesName(perk, "Test Perk");
     expect(perk.update).toHaveBeenCalledWith({ name: "Test Perk (null)" });
-  });
-});
-
-describe("grantDutyOfTheSilverArmorTraining (Across the Stars, Silver Ranger, 7th level, p.57)", () => {
-  function makeActor(trained = {}) {
-    return {
-      system: { trained: { armors: { heavy: false, ultraHeavy: false, ...trained } } },
-      update: jest.fn(),
-    };
-  }
-
-  test("grants Heavy Armor training when the actor doesn't already have it", async () => {
-    const actor = makeActor({ heavy: false });
-
-    await grantDutyOfTheSilverArmorTraining(actor);
-
-    expect(actor.update).toHaveBeenCalledWith({ "system.trained.armors.heavy": true });
-  });
-
-  test("grants Ultra-Heavy Armor training instead when the actor already has Heavy", async () => {
-    const actor = makeActor({ heavy: true });
-
-    await grantDutyOfTheSilverArmorTraining(actor);
-
-    expect(actor.update).toHaveBeenCalledWith({ "system.trained.armors.ultraHeavy": true });
   });
 });
 
@@ -290,112 +264,7 @@ describe("grantPerkEquipmentMap (Perks whose compendium grant map IS the mechani
   });
 });
 
-describe("grantMetamorphosis (Dark Skies Over Equestria, General Perk, p.20)", () => {
-  const COLONY_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.FRUWPAePJzm7Mlf0";
-  const METAMORPHOSED_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.aD130X44xDxZ6o2U";
-
-  function makeActor(items = []) {
-    items.some = Array.prototype.some.bind(items);
-    items.find = Array.prototype.find.bind(items);
-    items.get = (id) => items.find(item => item._id === id);
-    return { items, update: jest.fn() };
-  }
-
-  beforeEach(() => {
-    // Metamorphosed Changeling really has its own hasChoice picker (2 of 6 benefits), but that
-    // dialog-opening tail is the same "non-blocking ChoicesSelector/MultiChoiceSelector render()"
-    // path this project's own tests never exercise end-to-end (see DUTY_OF_THE_SILVER_ID's own
-    // comment above) - `advances.canAdvance: false` and no `hasChoice` is enough for setPerkValues
-    // to fall through cleanly without crashing, so these tests can verify grantMetamorphosis's own
-    // swap logic (delete Colony Changeling, create-once Metamorphosed Changeling) in isolation.
-    global.Item = { create: jest.fn(async () => ({ system: { advances: { canAdvance: false } } })) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-  });
-
-  test("deletes Colony Changeling and grants Metamorphosed Changeling", async () => {
-    const colonyChangeling = {
-      type: 'perk',
-      flags: { core: { sourceId: COLONY_CHANGELING_ID } },
-      delete: jest.fn(),
-    };
-    const actor = makeActor([colonyChangeling]);
-
-    await grantMetamorphosis(actor);
-
-    expect(colonyChangeling.delete).toHaveBeenCalled();
-    expect(global.fromUuid).toHaveBeenCalledWith(METAMORPHOSED_CHANGELING_ID);
-    expect(global.Item.create).toHaveBeenCalledWith(
-      { uuid: METAMORPHOSED_CHANGELING_ID }, { parent: actor },
-    );
-  });
-
-  test("keeps the Infatuated Influence that Colony Changeling's Grant rule gave", async () => {
-    const colonyChangeling = { id: 'cc', type: 'perk', flags: { core: { sourceId: COLONY_CHANGELING_ID } }, delete: jest.fn() };
-    const infatuated = { id: 'inf', type: 'influence', flags: { essence20: { grantedBy: 'cc' } }, unsetFlag: jest.fn() };
-    const other = { id: 'x', type: 'perk', flags: {}, unsetFlag: jest.fn() };
-    const actor = makeActor([colonyChangeling, infatuated, other]);
-
-    await grantMetamorphosis(actor);
-
-    expect(infatuated.unsetFlag).toHaveBeenCalledWith('essence20', 'grantedBy');
-    expect(other.unsetFlag).not.toHaveBeenCalled();
-    expect(infatuated.unsetFlag.mock.invocationCallOrder[0]).toBeLessThan(colonyChangeling.delete.mock.invocationCallOrder[0]);
-  });
-
-  test("is a no-op deletion when the actor has no Colony Changeling", async () => {
-    const actor = makeActor([]);
-
-    await grantMetamorphosis(actor);
-
-    expect(global.Item.create).toHaveBeenCalledWith(
-      { uuid: METAMORPHOSED_CHANGELING_ID }, { parent: actor },
-    );
-  });
-
-  test("does nothing if the actor is already Metamorphosed", async () => {
-    const actor = makeActor([
-      { type: 'perk', flags: { core: { sourceId: METAMORPHOSED_CHANGELING_ID } } },
-    ]);
-
-    await grantMetamorphosis(actor);
-
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-});
-
-describe("setPerkValues - Combiner Specialization (Enigma of Combination, Component Ace Focus, 1st level, p.34)", () => {
-  const COMBINER_SPECIALIZATION_ID = "Compendium.essence20.enigma_of_combination.Item.mWyO6mHSMG4TVw3J";
-  const GESTALT_COMBINER_ID = "Compendium.essence20.enigma_of_combination.Item.a4BfJxhUC7hAhgdZ";
-  const MATCHED_COMBINER_ID = "Compendium.essence20.enigma_of_combination.Item.ZIJnA0z3Mrp8pfbd";
-
-  function makeActor(existingSourceId) {
-    const items = existingSourceId
-      ? [{ flags: { core: { sourceId: existingSourceId } }, _stats: {} }] : [];
-    return {
-      items,
-      system: { health: { bonus: 0 } },
-      update: jest.fn(),
-    };
-  }
-
-  test("grants +1 Health instead of a picker when Gestalt Combiner is already held", async () => {
-    const actor = makeActor(GESTALT_COMBINER_ID);
-    const perk = { uuid: COMBINER_SPECIALIZATION_ID, system: { hasChoice: true, choiceType: 'perks' } };
-
-    await setPerkValues(actor, perk);
-
-    expect(actor.update).toHaveBeenCalledWith({ 'system.health.bonus': 1 });
-  });
-
-  test("grants +1 Health instead of a picker when Matched Combiner is already held", async () => {
-    const actor = makeActor(MATCHED_COMBINER_ID);
-    const perk = { uuid: COMBINER_SPECIALIZATION_ID, system: { hasChoice: true, choiceType: 'perks' } };
-
-    await setPerkValues(actor, perk);
-
-    expect(actor.update).toHaveBeenCalledWith({ 'system.health.bonus': 1 });
-  });
-});
+// (Combiner Specialization's pick / +1 Health is an 'added' Trigger rule on the Perk - rules/conv14-systems.test.js.)
 
 describe("onPerkDrop", () => {
   function makeActor(skillShiftUp = 0) {
@@ -464,7 +333,7 @@ describe("onPerkDrop", () => {
         uuid: EXPERTISE_GIJ_ID,
         flags: { core: { sourceId: EXPERTISE_GIJ_ID } },
         system: {
-          hasChoice: true, value: 2, isRoleVariant: false, selectionLimit: 4,
+          hasChoice: true, value: 2, isRoleVariant: false, selectionLimit: 4, rules: [{ type: 'UniqueChoice' }],
           advances: { canAdvance: false },
         },
         update: jest.fn(),
@@ -555,7 +424,7 @@ describe("onPerkDrop", () => {
         uuid: EXPERTISE_GIJ_ID,
         flags: { core: { sourceId: EXPERTISE_GIJ_ID } },
         system: {
-          hasChoice: true, value: 2, isRoleVariant: false, selectionLimit: 4, numChoices: 2,
+          hasChoice: true, value: 2, isRoleVariant: false, selectionLimit: 4, numChoices: 2, rules: [{ type: 'UniqueChoice' }],
           advances: { canAdvance: false },
         },
         getFlag: (scope, key) => (key === 'parentId' ? parentId : key === 'collectionId' ? collectionId : undefined),
@@ -885,21 +754,21 @@ describe("getAlreadyChosenExpertiseSkills (GI Joe CRB, Commando base, 1st/7th le
     const actor = {
       items: [makeExpertiseInstance('athletics'), makeExpertiseInstance('stealth')],
     };
-    const perk = { flags: { core: { sourceId: EXPERTISE_GIJ_ID } }, system: { choice: null } };
+    const perk = { flags: { core: { sourceId: EXPERTISE_GIJ_ID } }, system: { choice: null, rules: [{ type: 'UniqueChoice' }] } };
 
     expect(getAlreadyChosenExpertiseSkills(actor, perk)).toEqual(['athletics', 'stealth']);
   });
 
   test("falls back to _stats.compendiumSource for an Actor-embedded copy", () => {
     const actor = { items: [makeExpertiseInstance('athletics', { viaFlags: false })] };
-    const perk = { flags: {}, _stats: { compendiumSource: EXPERTISE_GIJ_ID }, system: { choice: null } };
+    const perk = { flags: {}, _stats: { compendiumSource: EXPERTISE_GIJ_ID }, system: { choice: null, rules: [{ type: 'UniqueChoice' }] } };
 
     expect(getAlreadyChosenExpertiseSkills(actor, perk)).toEqual(['athletics']);
   });
 
   test("excludes the not-yet-chosen instance currently being configured", () => {
     const actor = { items: [makeExpertiseInstance('athletics'), makeExpertiseInstance(null)] };
-    const perk = { flags: { core: { sourceId: EXPERTISE_GIJ_ID } }, system: { choice: null } };
+    const perk = { flags: { core: { sourceId: EXPERTISE_GIJ_ID } }, system: { choice: null, rules: [{ type: 'UniqueChoice' }] } };
 
     expect(getAlreadyChosenExpertiseSkills(actor, perk)).toEqual(['athletics']);
   });
@@ -908,7 +777,7 @@ describe("getAlreadyChosenExpertiseSkills (GI Joe CRB, Commando base, 1st/7th le
     const actor = {
       items: [{ flags: { core: { sourceId: OTHER_SKILLS_PERK_ID } }, system: { choice: 'athletics' } }],
     };
-    const perk = { flags: { core: { sourceId: EXPERTISE_GIJ_ID } }, system: { choice: null } };
+    const perk = { flags: { core: { sourceId: EXPERTISE_GIJ_ID } }, system: { choice: null, rules: [{ type: 'UniqueChoice' }] } };
 
     expect(getAlreadyChosenExpertiseSkills(actor, perk)).toEqual([]);
   });
@@ -918,65 +787,6 @@ describe("getAlreadyChosenExpertiseSkills (GI Joe CRB, Commando base, 1st/7th le
     const perk = { flags: { core: { sourceId: OTHER_SKILLS_PERK_ID } }, system: { choice: null } };
 
     expect(getAlreadyChosenExpertiseSkills(actor, perk)).toEqual([]);
-  });
-});
-
-describe("Grid Tap (Beneath the Helmet, Grid Power, p.57)", () => {
-  const GRID_TAP_ID = "Compendium.essence20.beneath_the_helmet.Item.JKwabam49PLMVN28";
-  const GRID_TECH_I_ID = "Compendium.essence20.pr_crb.Item.R7HF3aSR3ZPURh1W";
-
-  function makeGridTechPerk(numChoices = 2) {
-    return {
-      uuid: GRID_TECH_I_ID,
-      flags: { core: { sourceId: GRID_TECH_I_ID } },
-      _stats: { compendiumSource: GRID_TECH_I_ID },
-      system: { hasChoice: false, isRoleVariant: false, advances: { canAdvance: false }, numChoices },
-      clone: jest.fn(function (changes) {
-        return { ...this, system: { ...this.system, numChoices: changes['system.numChoices'] } };
-      }),
-    };
-  }
-
-  function makeActor({ hasGridTap = true } = {}) {
-    const items = hasGridTap
-      ? [{ _id: 'gridTap1', type: 'power', flags: { core: { sourceId: GRID_TAP_ID } } }]
-      : [];
-    items.get = jest.fn((id) => items.find(i => i._id == id) ?? null);
-    return { update: jest.fn(), items };
-  }
-
-  test("bumps numChoices by 1 on a Grid Tech/Grid Science picker when the actor holds Grid Tap", async () => {
-    const perk = makeGridTechPerk(2);
-    const actor = makeActor({ hasGridTap: true });
-
-    await setPerkValues(actor, perk);
-
-    expect(perk.clone).toHaveBeenCalledWith({ 'system.numChoices': 3 });
-  });
-
-  test("doesn't bump numChoices without Grid Tap", async () => {
-    const perk = makeGridTechPerk(2);
-    const actor = makeActor({ hasGridTap: false });
-
-    await setPerkValues(actor, perk);
-
-    expect(perk.clone).not.toHaveBeenCalled();
-  });
-
-  test("doesn't bump numChoices on an unrelated Perk, even with Grid Tap", async () => {
-    const OTHER_ID = "Compendium.essence20.pr_crb.Item.someOtherPerk12345";
-    const perk = {
-      uuid: OTHER_ID,
-      flags: { core: { sourceId: OTHER_ID } },
-      _stats: { compendiumSource: OTHER_ID },
-      system: { hasChoice: false, isRoleVariant: false, advances: { canAdvance: false }, numChoices: 1 },
-      clone: jest.fn(),
-    };
-    const actor = makeActor({ hasGridTap: true });
-
-    await setPerkValues(actor, perk);
-
-    expect(perk.clone).not.toHaveBeenCalled();
   });
 });
 
@@ -1018,190 +828,15 @@ describe("Phantom Ship (Across the Stars, Phantom Ranger Role Perk, 1st level, p
   });
 });
 
-describe("Heavy/Medium/Ultra-Heavy Armor Shell (PR CRB, General Perks, p.95/97/98)", () => {
-  const HEAVY_ARMOR_SHELL_ID = "Compendium.essence20.pr_crb.Item.XVrOmc94bK9G9F5P";
-  const MEDIUM_ARMOR_SHELL_ID = "Compendium.essence20.pr_crb.Item.d4AKhKlDbkQqGwOu";
-  const ULTRA_HEAVY_ARMOR_SHELL_ID = "Compendium.essence20.pr_crb.Item.xBeEe7X1MBoo4cYW";
-
-  function makeShellPerk(sourceId) {
-    return {
-      uuid: sourceId,
-      flags: { core: { sourceId } },
-      _stats: { compendiumSource: sourceId },
-      system: { hasChoice: false, isRoleVariant: false, hasMorphedToughnessBonus: false, advances: { canAdvance: false } },
-    };
-  }
-
-  function makeActor(trained) {
-    return { update: jest.fn(), items: [], system: { level: 4, trained: { armors: trained } } };
-  }
-
-  test("setPerkValues recomputes the morphed Toughness bonus from the actor's Armor Training when Heavy Armor Shell is granted", async () => {
-    const actor = makeActor({ medium: true, heavy: true });
-    await setPerkValues(actor, makeShellPerk(HEAVY_ARMOR_SHELL_ID));
-    expect(actor.update).toHaveBeenCalledWith({
-      "system.canSetToughnessBonus": true,
-      "system.defenses.toughness.morphed": 4,
-    });
-  });
-
-  test("setPerkValues recomputes for Ultra-Heavy Armor Shell", async () => {
-    const actor = makeActor({ medium: true, heavy: true, ultraHeavy: true });
-    await setPerkValues(actor, makeShellPerk(ULTRA_HEAVY_ARMOR_SHELL_ID));
-    expect(actor.update).toHaveBeenCalledWith({
-      "system.canSetToughnessBonus": true,
-      "system.defenses.toughness.morphed": 6,
-    });
-  });
-
-  test("onPerkDelete re-derives the bonus from what Armor Training remains, instead of resetting to 0", async () => {
-    // Heavy Armor Shell just deleted - only the Role's own base Medium Training remains.
-    const actor = makeActor({ medium: true });
-    await onPerkDelete(actor, makeShellPerk(HEAVY_ARMOR_SHELL_ID));
-    expect(actor.update).toHaveBeenCalledWith({
-      "system.canSetToughnessBonus": true,
-      "system.defenses.toughness.morphed": 2,
-    });
-  });
-
-  test("onPerkDelete for Medium Armor Shell", async () => {
-    const actor = makeActor({ light: true });
-    await onPerkDelete(actor, makeShellPerk(MEDIUM_ARMOR_SHELL_ID));
-    expect(actor.update).toHaveBeenCalledWith({
-      "system.canSetToughnessBonus": true,
-      "system.defenses.toughness.morphed": 1,
-    });
-  });
-});
-
-describe("Sorcery / Cost of Sorcery (Finster's Monster-Matic Cookbook, p.271)", () => {
-  const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
-  const COST_OF_SORCERY_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.BRpf0FNey5oDEvq3";
-
-  function makePerk() {
-    return {
-      uuid: SORCERY_PERK_ID,
-      flags: { core: { sourceId: SORCERY_PERK_ID } },
-      _stats: { compendiumSource: SORCERY_PERK_ID },
-      system: { hasChoice: false, isRoleVariant: false, advances: { canAdvance: false }, items: {} },
-    };
-  }
-
-  test("setPerkValues sets sorcerous.levelTaken; Cost of Sorcery is left to Sorcery's Grant rule", async () => {
-    const actor = { update: jest.fn(), items: [], system: { level: 6 } };
-    global.Item = { create: jest.fn(async () => ({})) };
-    global.fromUuid = jest.fn(async (uuid) => ({ uuid }));
-
-    await setPerkValues(actor, makePerk());
-
-    expect(actor.update).toHaveBeenCalledWith({ "system.powers.sorcerous.levelTaken": 6 });
-    expect(global.fromUuid).not.toHaveBeenCalledWith(COST_OF_SORCERY_ID);
-    expect(global.Item.create).not.toHaveBeenCalled();
-  });
-
-  test("onPerkDelete resets sorcerous.levelTaken and removes the granted Cost of Sorcery", async () => {
-    const costOfSorcery = {
-      _id: 'cos1', flags: { core: { sourceId: COST_OF_SORCERY_ID } }, delete: jest.fn(), getFlag: jest.fn(() => null),
-    };
-    const items = [costOfSorcery];
-    items.get = jest.fn((id) => items.find(i => i._id == id) ?? null);
-    const actor = { update: jest.fn(), items, system: { level: 6 } };
-
-    await onPerkDelete(actor, makePerk());
-
-    expect(actor.update).toHaveBeenCalledWith({ "system.powers.sorcerous.levelTaken": 0 });
-    expect(costOfSorcery.delete).toHaveBeenCalled();
-  });
-
-  test("onPerkDelete leaves a Cost of Sorcery the Grant rule gave to that rule", async () => {
-    const costOfSorcery = {
-      _id: 'cos1', flags: { core: { sourceId: COST_OF_SORCERY_ID }, essence20: { grantedBy: 'sorcery1' } }, delete: jest.fn(), getFlag: jest.fn(() => null),
-    };
-    const items = [costOfSorcery];
-    items.get = jest.fn((id) => items.find(i => i._id == id) ?? null);
-    const actor = { update: jest.fn(), items, system: { level: 6 } };
-
-    await onPerkDelete(actor, makePerk());
-
-    expect(actor.update).toHaveBeenCalledWith({ "system.powers.sorcerous.levelTaken": 0 });
-    expect(costOfSorcery.delete).not.toHaveBeenCalled();
-  });
-
-  test("onPerkDelete doesn't error when Cost of Sorcery was already removed separately", async () => {
-    const items = [];
-    items.get = jest.fn(() => null);
-    const actor = { update: jest.fn(), items, system: { level: 6 } };
-    await expect(onPerkDelete(actor, makePerk())).resolves.not.toThrow();
-  });
-});
-
-describe("Basal / Intricate / Profound Nano Infusion - a nanomite power by Availability", () => {
-  const QGTG = "Compendium.essence20.quartermasters_guide_to_gear.Item.";
-  const BASAL_ID = `${QGTG}CUhsxOCugyHcEIRx`;
-  const INTRICATE_ID = `${QGTG}bbA0ayzoaeW6G6R5`;
-  const PROFOUND_ID = `${QGTG}su1NVWhDH3Zk7ma5`;
-
-  test("each Perk grants its own Availability, recognised by uuid or by source", () => {
-    expect(nanoInfusionAvailability({}, BASAL_ID)).toBe('standard');
-    expect(nanoInfusionAvailability({}, INTRICATE_ID)).toBe('limited');
-    expect(nanoInfusionAvailability({ _stats: { compendiumSource: PROFOUND_ID } }, 'Actor.a.Item.b')).toBe('restricted');
-    expect(nanoInfusionAvailability({}, 'Compendium.essence20.pr_crb.Item.other')).toBeNull();
-  });
-
-  describe("with compendium packs", () => {
-    const originalPacks = game.packs;
-
-    beforeEach(() => {
-      const nanomite = (id, name, availability, extra = {}) =>
-        ({ _id: id, name, type: 'power', system: { type: 'nanomite', availability, source: { book: 'QGtG' }, ...extra } });
-      const packs = [{
-        documentName: 'Item',
-        metadata: { id: 'essence20.quartermasters_guide_to_gear', label: 'QGtG' },
-        folder: { name: 'GI Joe' },
-        enabled: true,
-        getIndex: jest.fn(async () => [
-          nanomite('rm', 'Repair Machine', 'limited'),
-          nanomite('pr', 'Protection', 'limited'),
-          nanomite('sw', 'Swiftness', 'restricted'),
-          nanomite('rp', 'Reprogrammable', 'standard', { selectionLimit: 10 }),
-          nanomite('cw', 'Create Weapon', 'standard'),
-          { _id: 'gp', name: 'Morph Boost', type: 'power', system: { type: 'grid', availability: 'limited' } },
-        ]),
-      }];
-      packs.get = (id) => packs.find(pack => pack.metadata.id === id);
-      global.game.packs = packs;
-      global.game.settings.get.mockImplementation(() => 'roll');
-    });
-
-    afterEach(() => {
-      global.game.packs = originalPacks;
-    });
-
-    test("offers only nanomite powers of that Availability, not Grid Powers", async () => {
-      const choices = await nanomitePowerChoices({ items: [] }, 'limited');
-      expect(Object.values(choices).map(choice => choice.label).sort()).toEqual(['Protection', 'Repair Machine']);
-      expect(choices[`${QGTG}rm`]).toMatchObject({ uuid: `${QGTG}rm`, type: 'perks', group: 'GI Joe', detail: 'QGtG' });
-    });
-
-    test("leaves out a power already held, unless it may be taken again", async () => {
-      const actor = { items: [
-        { _stats: { compendiumSource: `${QGTG}cw` } },
-        { _stats: { compendiumSource: `${QGTG}rp` } },
-      ] };
-      const choices = await nanomitePowerChoices(actor, 'standard');
-      expect(Object.values(choices).map(choice => choice.label)).toEqual(['Reprogrammable']);
-    });
-  });
-});
-
 describe("Nobody Like Me - any General Perk", () => {
   const NOBODY_LIKE_ME_ID = "Compendium.essence20.pr_crb.Item.9nvRKN0A8N0EEXUl";
 
-  test("is recognised by uuid, and by source on a copy already on an actor", () => {
-    expect(grantsAnyGeneralPerk({}, NOBODY_LIKE_ME_ID)).toBe(true);
-    expect(grantsAnyGeneralPerk({ _stats: { compendiumSource: NOBODY_LIKE_ME_ID } }, 'Actor.a.Item.b')).toBe(true);
-    expect(grantsAnyGeneralPerk({ flags: { core: { sourceId: NOBODY_LIKE_ME_ID } } }, 'Actor.a.Item.b')).toBe(true);
-    expect(grantsAnyGeneralPerk({}, 'Compendium.essence20.pr_crb.Item.other')).toBe(false);
+  test("is recognised by its AnyGeneralPerkChoice rule, on the compendium item or a copy already on an actor", () => {
+    const rules = [{ type: 'AnyGeneralPerkChoice' }];
+    expect(grantsAnyGeneralPerk({ system: { rules } }, NOBODY_LIKE_ME_ID)).toBe(true);
+    expect(grantsAnyGeneralPerk({ _stats: { compendiumSource: NOBODY_LIKE_ME_ID }, system: { rules } }, 'Actor.a.Item.b')).toBe(true);
+    expect(grantsAnyGeneralPerk({ system: { rules: [{ type: 'AnyGeneralPerkChoice', disabled: true }] } }, NOBODY_LIKE_ME_ID)).toBe(false);
+    expect(grantsAnyGeneralPerk({ system: {} }, 'Compendium.essence20.pr_crb.Item.other')).toBe(false);
   });
 
   describe("with compendium packs", () => {

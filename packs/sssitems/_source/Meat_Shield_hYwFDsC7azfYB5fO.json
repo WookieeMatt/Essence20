@@ -5,6 +5,14 @@
   "_id": "hYwFDsC7azfYB5fO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch Meat Shield on","when":["not:self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":true}]},
+      {"type":"Use","label":"Switch Meat Shield off","when":["self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":false}]},
+      {"type":"Defense","label":"Meat Shield","defense":"toughness","mode":"addAfter","stack":"meatShield","amount":"2 * min(1, max(0, @level - 6)) + min(1, max(0, @level - 11)) + min(1, max(0, @level - 19))"},
+      {"type":"Defense","label":"Meat Shield","defense":"evasion","mode":"addAfter","stack":"meatShield","amount":"2 * min(1, max(0, @level - 6)) + min(1, max(0, @level - 11)) + min(1, max(0, @level - 19))"},
+      {"type":"Defense","label":"Meat Shield","defense":"toughness","mode":"addAfter","stack":"meatShield","amount":"(2 + min(8, max(0, floor((@level - 1) / 2)))) * (1 - min(1, max(0, @level - 19))) + 15 * min(1, max(0, @level - 19))","when":["self:toggle:on"]},
+      {"type":"Defense","label":"Meat Shield","defense":"evasion","mode":"addAfter","stack":"meatShield","amount":"(2 + min(8, max(0, floor((@level - 1) / 2)))) * (1 - min(1, max(0, @level - 19))) + 15 * min(1, max(0, @level - 19))","when":["self:toggle:on"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free action): a Toughness and Evasion bonus by level until your next turn, shared with allies in reach from 5th level. The permanent bonus from 7th level and the Resistance or immunity at 13th and 18th are applied too.</p>"

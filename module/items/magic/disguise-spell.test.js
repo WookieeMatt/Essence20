@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyDsoeDisguise, isDsoeDisguiseActive } from './disguise-spell.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { isDsoeDisguiseActive } from './disguise-spell.mjs';
 
 function makeActor() {
   const flagStore = {};
@@ -22,13 +23,13 @@ describe("isDsoeDisguiseActive / applyDsoeDisguise", () => {
   test("false by default, true once activated", async () => {
     const actor = makeActor();
     expect(isDsoeDisguiseActive(actor)).toBe(false);
-    await applyDsoeDisguise(actor);
+    await activateForWindow(actor, 'dsoeDisguiseActive', 'scene');
     expect(isDsoeDisguiseActive(actor)).toBe(true);
   });
 
   test("clears once the scene ends", async () => {
     const actor = makeActor();
-    await applyDsoeDisguise(actor);
+    await activateForWindow(actor, 'dsoeDisguiseActive', 'scene');
 
     global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
 

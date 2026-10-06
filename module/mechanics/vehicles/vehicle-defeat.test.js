@@ -266,7 +266,8 @@ describe("handleVehicleZeroHealthTransition", () => {
     const HEAVY_WATER_COOLANT_ID = "Compendium.essence20.operation_cold_iron.Item.e8WNnjzWGNWBd2UJ";
 
     function withHeavyWaterCoolant(vehicle) {
-      vehicle.items = [{ type: 'upgrade', flags: { core: { sourceId: HEAVY_WATER_COOLANT_ID } } }];
+      // Its pack rule, VehicleDefeat {brawnDif: 10} (rules/conv15-other.test.js checks it against the pack).
+      vehicle.items = [{ type: 'upgrade', flags: { core: { sourceId: HEAVY_WATER_COOLANT_ID } }, system: { rules: [{ type: 'VehicleDefeat', brawnDif: 10 }] } }];
       return vehicle;
     }
 

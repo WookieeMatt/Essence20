@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AnyGeneralPerkChoice","label":"Nobody Like Me: pick any General Perk"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>When added you pick any General Perk you qualify for, and it is added to your sheet.</p>"

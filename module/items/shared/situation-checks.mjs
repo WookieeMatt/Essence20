@@ -1,5 +1,5 @@
 /**
- * Shared lookups for the situational2 extension (items/rolls/competitive.mjs):
+ * Shared lookups for the situational2 extension:
  * the items it automates, "does this actor hold/wear it", and the situation checks - terrain,
  * water, land, darkness, StrexCorp - each answering true, false, or null ("nothing on
  * the scene says"), so a roll can apply a known situation automatically and offer a dialog
@@ -13,17 +13,6 @@ import { idOf, itemsOf, sourceOf } from "./item-lookups.mjs";
 
 // Several of these ids exist in more than one pack (the MLP CRB clothing and the PR Weatherproof are
 // copies of the GI Joe CRB entries), so items are matched by their compendium _id, not the full uuid.
-export const S2 = {
-  competitive: 'Vk2EFSSBfmunP5fk',
-  misplacedConfidence: 'LcKUw5rQd19ovk4I',
-  takeInAScene: 'gT6SEHJIK6ob0v7T',
-};
-
-export const FLAG = {
-  competitive: 's2CompetitiveSnag',
-  misplaced: 's2MisplacedConfidence',
-};
-
 /** Filled at init (situational2.mjs#loadDeps) - tests set them directly. */
 export const deps = {
   getTerrain: () => null,

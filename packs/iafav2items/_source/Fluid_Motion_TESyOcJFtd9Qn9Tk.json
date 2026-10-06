@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"ItemModifier","label":"No penalty on Maneuver (Fluid Motion)","items":["item:type:weaponEffect","item:damageType:maneuver","weapon:trait:silent","weapon:trait:martialArts"],"path":"system.shiftDown","op":"set","value":0}
+      {"type":"ItemModifier","label":"No penalty on Maneuver (Fluid Motion)","items":["item:type:weaponEffect","item:damageType:maneuver","weapon:trait:silent","weapon:trait:martialArts"],"path":"system.shiftDown","op":"set","value":0},
+      {"type":"AlternateEffect","label":"Fluid Motion: Maneuver","key":"fluidMotion","name":"E20.DamageManeuver","items":["item:trait:silent","item:trait:martialArts"],"unlessType":"maneuver","changes":{"damageType":"maneuver","damageValue":1,"shiftDown":0,"secondaryDamage.type":null,"secondaryDamage.value":0}}
     ],
     "automation": {
       "status": "full",

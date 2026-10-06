@@ -121,7 +121,8 @@ export async function runUse(item, pay, { pick = pickUse, ask = null } = {}) {
   }
 
   const action = rule.cost?.action;
-  if (action && action != 'none' && !(await pay(action))) {
+  // cost.kind: the named action this is (rouse...) - the action economy's cost changers read it (Rousing Presence).
+  if (action && action != 'none' && !(await pay(action, ...(rule.cost?.kind ? [{ kind: rule.cost.kind }] : [])))) {
     return null;
   }
 
@@ -180,13 +181,18 @@ async function post(actor, lines) {
  * @param {Object} [extra]   {roll: tag context, outcome, damage: {amount}, ask, prompt}
  * @returns {Promise<Object|null>}   The damage object, for wouldBeDefeated.
  */
-export async function fireTriggers(actor, event, { roll = {}, outcome = null, facts = null, damage = null, targets = [], ask = null, prompt = confirm, vars = null, skipItem = null } = {}) {
+export async function fireTriggers(actor, event, { roll = {}, outcome = null, facts = null, damage = null, targets = [], ask = null, prompt = confirm, vars = null, skipItem = null, only = null, once = null } = {}) {
   // An aura / party / vehicle Trigger fires for the actor it reaches, never for its holder; its
   // limit is the holder's ("once per encounter" for whoever holds the Perk).
   const own = rulesOfType(actor, 'Trigger').filter(entry => !LINK_SCOPES.includes(entry.rule.scope) && !entry.rule.watch).map(entry => ({ ...entry, holder: actor }));
   const reaching = linkedEntries(actor, 'Trigger');
   for (const { rule, item, index, holder } of [...own, ...reaching]) {
     if (rule.event != event || (skipItem && item === skipItem)) {
+      continue;
+    }
+
+    // only: a caller's own filter, asked as each Trigger comes up (wouldBeDefeated's stage, and "still would be Defeated").
+    if (only && !only(rule)) {
       continue;
     }
 
@@ -208,11 +214,26 @@ export async function fireTriggers(actor, event, { roll = {}, outcome = null, fa
       continue;
     }
 
+    // oncePerRoll (round 16, part a): a hit Trigger runs for the first hit of a roll that meets it, not for every hit.
+    if (rule.oncePerRoll && once) {
+      const key = `${holder?.uuid ?? ''}|${item?.id ?? ''}|${index}`;
+      if (once.has(key)) {
+        continue;
+      }
+
+      once.add(key);
+    }
+
     if (rule.prompt && !(await prompt(item, rule))) {
       continue;
     }
 
     const ctx = stepContext({ actor, item, rule, targets, damage, ask });
+    // The roll's rows, for steps that read them (the rowsBeating recipient - round 16, part a).
+    if (facts) {
+      ctx.facts = facts;
+    }
+
     // Numbers the event hands the steps (@var.margin for targeted).
     Object.assign(ctx.vars, vars ?? {});
     const finished = await runSteps(rule.steps, ctx);
@@ -341,17 +362,22 @@ function worldActors() {
 /**
  * Damage about to land: a hit that would Defeat runs `wouldBeDefeated`, whose steps may change it.
  * Called by combat.mjs at the head of its Defeat-save chain - after immunity and every reduction, so
- * a save only spends itself on a hit that really would Defeat.
+ * a save only spends itself on a hit that really would Defeat. `stage`: which of the chain's places this call is (a
+ * Trigger's own `stage`, default first - rules/plugins/combat/defeat-stage.mjs). Each Trigger runs only while the hit
+ * still would Defeat, so one save doesn't spend another.
  */
-export async function wouldBeDefeated(actor, amount, damageType, { isCrit = false } = {}) {
+export async function wouldBeDefeated(actor, amount, damageType, { isCrit = false, stage = 'first' } = {}) {
   const health = Number(actor?.system?.health?.value);
-  const watching = [...rulesOfType(actor, 'Trigger'), ...linkedEntries(actor, 'Trigger')].some(e => e.rule.event == 'wouldBeDefeated');
+  const atStage = rule => rule.event == 'wouldBeDefeated' && (rule.stage ?? 'first') == stage;
+  const watching = [...rulesOfType(actor, 'Trigger'), ...linkedEntries(actor, 'Trigger')].some(e => atStage(e.rule));
   if (damageType == 'stun' || !(health > 0) || amount < health || !watching) {
     return amount;
   }
 
   const damage = { amount, damageType };
-  await fireTriggers(actor, 'wouldBeDefeated', { damage, roll: { damageType, damageAmount: amount, damageCrit: !!isCrit } });
+  await fireTriggers(actor, 'wouldBeDefeated', {
+    damage, roll: { damageType, damageAmount: amount, damageCrit: !!isCrit }, only: rule => atStage(rule) && damage.amount >= health,
+  });
   return damage.amount;
 }
 
@@ -533,8 +559,14 @@ registerAfterDamage(async (actor, dealt, damageType, { newValue, wasAlreadyDefea
 registerPostRoll(async (actor, results, checkContext, extra = {}) => {
   const rider = extra.rider ?? checkContext?.riderContext ?? {};
   const item = rider.itemUuid ? globalThis.fromUuidSync?.(rider.itemUuid) ?? null : null;
-  const roll = { item, rolledSkill: rider.skill, isAttack: item?.type == 'weaponEffect', isMelee: rider.style == 'melee', switches: rider.switches ?? [], targetCount: (extra.hits ?? []).length, ...(rider.dataset ? { dataset: rider.dataset } : {}) };
-  const facts = { results: Array.isArray(results) ? results : [], isCrit: !!extra.isCrit, isFumble: !!extra.isFumble };
+  const roll = { item, rolledSkill: rider.skill, isAttack: item?.type == 'weaponEffect', isMelee: rider.style == 'melee', switches: rider.switches ?? [], targetCount: (extra.hits ?? []).length, ...(rider.dataset ? { dataset: rider.dataset } : {}),
+    // The Defense the roll was compared against (the first target's resolved one - defense: tags) and the damage type
+    // its card deals after every override (roll:damageType: - rules/plugins/tags/roll-damage-type-tag.mjs).
+    ...(checkContext?.defenseType ? { defenseType: checkContext.defenseType } : {}), rollDamageType: checkContext?.damageType ?? null,
+    // roll:edge - the roll was made with Edge (round 15, items2 - Terror's "a Skill Test you have Edge on").
+    ...(checkContext?.wasEdge === undefined ? {} : { edge: !!checkContext.wasEdge }) };
+  // entries: the check entries the rows were built from (their defenseType - the rowsBeating recipient).
+  const facts = { results: Array.isArray(results) ? results : [], isCrit: !!extra.isCrit, isFumble: !!extra.isFumble, entries: checkContext?.entries ?? [] };
   // @var.total: the roll's total (the first result's - every row shares the dice); @var.dif its DIF. A roll with
   // nothing to compare against (extra.open) has a total and no outcome - only outcome "any" Triggers hear it.
   const first = (Array.isArray(results) ? results : [])[0];
@@ -542,21 +574,29 @@ registerPostRoll(async (actor, results, checkContext, extra = {}) => {
   const dif = Number(first?.difficulty);
   await fireTriggers(actor, 'afterRoll', {
     roll, outcome: extra.open ? null : rollOutcome(results, extra), facts,
-    vars: { ...(Number.isFinite(total) ? { total } : {}), ...(Number.isFinite(dif) ? { dif } : {}), targets: (extra.hits ?? []).length, skill: rider.skill ?? '', itemUuid: item?.uuid ?? '' },
+    vars: { ...(Number.isFinite(total) ? { total } : {}), ...(Number.isFinite(dif) ? { dif } : {}), targets: (extra.hits ?? []).length, skill: rider.skill ?? '', itemUuid: item?.uuid ?? '',
+      // @var.crit: 1 on a Critical Success (a natural one), else 0.
+      crit: extra.isCrit ? 1 : 0 },
   });
 
   // Each target rolled against, hit or missed - its steps land on that target with `to: "target"`.
   // Any roll against a target's Defense counts: an attack, a spell, an Intimidation test...
   // (`attack` tags stay weapon-only; `item:own` / `skill:` narrow it down).
+  // oncePerRoll hit Triggers: the ones that have already run for this roll.
+  const once = new Set();
   for (const { target, hit, result } of extra.hits ?? []) {
     if (target) {
       const hitFacts = { results: [result ?? { success: !!hit }], isCrit: !!extra.isCrit, isFumble: !!extra.isFumble };
-      // @var.rolledItem: the attack rolled (a follow-up `attack` step with item: "rolled" makes it again).
-      await fireTriggers(actor, hit ? 'hit' : 'miss', { roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [target], facts: hitFacts, vars: rider.itemUuid ? { rolledItem: rider.itemUuid } : null });
+      // @var.rolledItem: the attack rolled (a follow-up `attack` step with item: "rolled" makes it again). @var.row: this
+      // target's row on the card, 0 for the first (round 16, part a - Growl's "the first row hit").
+      const row = Array.isArray(results) ? results.indexOf(result) : -1;
+      await fireTriggers(actor, hit ? 'hit' : 'miss', { roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [target], facts: hitFacts, vars: { ...(rider.itemUuid ? { rolledItem: rider.itemUuid } : {}), row }, once });
       // The defender's side: "an attack against you" - outcome success means it hit them; the target of its
       // steps is the attacker; @var.margin is how far the roll beat (or missed) the Defense.
       const margin = Number.isFinite(Number(result?.total)) && Number.isFinite(Number(result?.difficulty)) ? Number(result.total) - Number(result.difficulty) : 0;
-      await fireTriggers(target, 'targeted', { roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [actor], facts: hitFacts, vars: { margin } });
+      // entry: that target's check entry (dice.mjs) - the roll:entry:<key> tag reads its flags (Scapegoat's swap).
+      const entry = (checkContext?.entries ?? []).find(e => e?.targetUuid && e.targetUuid == target.uuid) ?? null;
+      await fireTriggers(target, 'targeted', { roll: entry ? { ...roll, entry } : roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [actor], facts: hitFacts, vars: { margin } });
     }
   }
 });
@@ -576,7 +616,8 @@ globalThis.Hooks?.on?.('deleteCombat', async (combat, options, userId) => {
 
   for (const combatant of combat.combatants ?? []) {
     if (combatant.actor) {
-      await fireTriggers(combatant.actor, 'combatEnd');
+      // @var.combatId: the combat that ended (round 16, part a - a mark keeping the combat it was set in: Hard Corps).
+      await fireTriggers(combatant.actor, 'combatEnd', { vars: { combatId: combat.id ?? '' } });
     }
   }
 });
@@ -697,14 +738,23 @@ export async function fireItemAdded(actor, item, options = {}) {
     }
 
     const ctx = stepContext({ actor, item, rule, targets: [], ask: options.ask ?? null });
-    await runSteps(rule.steps, ctx);
+    const finished = await runSteps(rule.steps, ctx);
     await post(actor, ctx.chat.length ? [`<strong>${ruleLabel(rule, item)}</strong>`, ...ctx.chat] : []);
+    // removeOnStop (an `added` Trigger that configures its item - rules/plugins/zords/drop-configure.mjs): a stopped run
+    // (a cancelled pick) takes the item off again, as a cancelled drop never added it.
+    if (finished === false && rule.removeOnStop && event == 'added') {
+      await item.delete?.();
+      return;
+    }
   }
 }
 
 /** A roll with nothing to compare against (dice.mjs): afterRoll Triggers with outcome "any", and @var.total. */
-export async function fireOpenRoll(actor, total, skill = null) {
-  await fireTriggers(actor, 'afterRoll', { roll: { rolledSkill: skill }, outcome: null, facts: { results: [], open: true }, vars: Number.isFinite(Number(total)) ? { total: Number(total) } : null });
+export async function fireOpenRoll(actor, total, skill = null, itemUuid = null) {
+  // The rolled item, when the roll had one (an attack rolled with no target - attack: / item: tags see it).
+  const item = itemUuid ? globalThis.fromUuidSync?.(itemUuid) ?? null : null;
+  const rolled = item ? { item, isAttack: item.type == 'weaponEffect', isMelee: item.system?.classification?.style == 'melee' } : {};
+  await fireTriggers(actor, 'afterRoll', { roll: { rolledSkill: skill, ...rolled }, outcome: null, facts: { results: [], open: true }, vars: Number.isFinite(Number(total)) ? { total: Number(total) } : null });
 }
 
 export { rollOutcome };

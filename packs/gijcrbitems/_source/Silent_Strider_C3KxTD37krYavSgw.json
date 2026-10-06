@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"incoming","when":["skill:alertness","self:data:flags.essence20.infiltratingActive"],"snag":true}
+      {"type":"RollModifier","scope":"incoming","when":["skill:alertness","self:data:flags.essence20.infiltratingActive"],"snag":true},
+      {"type":"Use","label":"Infiltrating on","when":["not:self:data:flags.essence20.infiltratingActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.infiltratingActive":true}},{"do":"chat","text":"{name} is Infiltrating."}]},
+      {"type":"Use","label":"Infiltrating off","when":["self:data:flags.essence20.infiltratingActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.infiltratingActive":false}},{"do":"chat","text":"{name} is no longer Infiltrating."}]}
     ],
     "automation": {
       "status": "full",

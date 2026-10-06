@@ -5,6 +5,9 @@
   "_id": "JF7xsi8GtT4bCfWm",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Ookie Spookies (you, this scene)","outcome":"success","when":["item:own"],"steps":[{"do":"markWindow","flag":"ookieSpookiesActive","window":"scene","to":"self"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Cast: on a success, your Infiltration tests open the Roll Options Dialog with Edge selected until the GM advances the scene.</p><p>Left to the table: walking through walls and floating through ceilings, and bringing up to three willing ponies along.</p>"

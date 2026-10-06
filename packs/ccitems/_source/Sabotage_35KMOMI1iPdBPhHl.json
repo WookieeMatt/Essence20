@@ -5,6 +5,9 @@
   "_id": "35KMOMI1iPdBPhHl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Sabotage (↑ your Sneak Attack damage on Technology)","upshift":"@sneakAttack","when":["skill:technology"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: every Technology Test gets ↑ equal to your Sneak Attack damage. It's already counted in the ↑ total when the Roll Options Dialog opens, but isn't listed under its own name.</p><p>Left to the table: lower the ↑ in the dialog when the test isn't about disabling a machine.</p>"

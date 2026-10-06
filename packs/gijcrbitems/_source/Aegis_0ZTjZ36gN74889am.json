@@ -5,6 +5,10 @@
   "_id": "0ZTjZ36gN74889am",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"wouldBeDefeated","stage":"aegis","label":"Stay at 1 Health (Reckless Abandon)","when":["self:recklessAbandon"],"steps":[{"do":"leaveAt","value":1},{"do":"mark","key":"aegisClamped","to":"self"}]},
+      {"type":"Trigger","event":"rolePointsDeactivated","label":"Reckless Abandon over: Defeated at 1 Health","when":["item:id:84d0XTJwKCYMJUgY","self:marked:aegisClamped"],"steps":[{"do":"unmark","key":"aegisClamped","to":"self"},{"do":"applyCondition","condition":"defeated","when":["self:data:system.health.value<=1"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while Reckless Abandon is on, dropping to 0 Health doesn't Defeat you (you stay at 1). If you are still at that point when Reckless Abandon ends, the Defeat lands then.</p>"

@@ -5,6 +5,11 @@
   "_id": "nAiUe1uZs6VzqtQY",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"+1 Sharp damage (Slashing Wings)","stage":"item","stacks":false,"items":["item:type:weaponEffect","item:data:system.isFlyby","item:data:system.damageType=sharp"],"path":"system.damageValue","op":"add","value":1,"slot":"start"},
+      {"type":"ItemModifier","label":"+1 to its Sharp extra damage (Slashing Wings)","stage":"item","stacks":false,"items":["item:type:weaponEffect","item:data:system.isFlyby","not:item:data:system.damageType=sharp","item:data:system.secondaryDamage.type=sharp"],"path":"system.secondaryDamage.value","op":"add","value":1,"slot":"start"},
+      {"type":"ItemModifier","label":"1 extra Sharp damage (Slashing Wings)","stage":"item","stacks":false,"items":["item:type:weaponEffect","item:data:system.isFlyby","not:item:data:system.damageType=sharp","not:item:data:system.secondaryDamage.type"],"path":"system.secondaryDamage","op":"set","value":{"type":"sharp","value":1},"slot":"start"}
+    ],
     "prerequisites": {"when":["self:data:system.traits.air","self:data:system.traits.flyBy"]},
     "automation": {
       "status": "full",

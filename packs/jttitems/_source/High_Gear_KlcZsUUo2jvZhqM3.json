@@ -6,7 +6,10 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"incoming","when":["attack:ranged","self:type:zord","self:data:flags.essence20.highGearActive"],"snag":true}
+      {"type":"RollModifier","scope":"incoming","when":["attack:ranged","self:type:zord","self:data:flags.essence20.highGearActive"],"snag":true},
+      {"type":"Use","label":"High Gear (1 Personal Power from the pilot)","when":["self:type:zord","not:self:data:flags.essence20.highGearActive"],"limit":{"per":"scene"},"steps":[{"do":"require","beforeCost":true,"check":["check:zordHasDriver"],"message":"{lang.HighGearNoDriver}"},{"do":"spendFrom","to":"driver","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"updateActor","to":"self","set":{"flags.essence20.highGearActive":true}},{"do":"chat","text":"{name} shifts into High Gear."}]},
+      {"type":"Use","label":"Leave High Gear","when":["self:type:zord","self:data:flags.essence20.highGearActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.highGearActive":false}},{"do":"chat","text":"{name} leaves High Gear."}]},
+      {"type":"Movement","label":"High Gear (Ground Movement doubled)","movement":"ground","stage":"adjust","op":"multiply","value":2,"when":["self:type:zord","self:data:flags.essence20.highGearActive"]}
     ],
     "automation": {
       "status": "partial",

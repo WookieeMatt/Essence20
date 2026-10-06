@@ -5,6 +5,9 @@
   "_id": "DQFDOrYUZmZZxmi1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Give an ally back a spent Perk use (1 Moxie Point)","steps":[{"do":"target","max":1},{"do":"warn","text":"E20.O2NeedAlly","stop":true,"when":["target:self"]},{"do":"setVar","key":"moxie","value":"@rolePoints.Moxie"},{"do":"warn","text":"E20.O2NoMoxie","stop":true,"when":["var:moxie<1","not:self:data:system.useUnlimitedResource"]},{"do":"refundUse","to":"target","prompt":"E20.O2DelegatePick","message":"E20.O2DelegateNothing"},{"do":"spend","resource":{"rolePoints":"Moxie"},"amount":1,"when":["not:self:data:system.useUnlimitedResource"]},{"do":"chat","text":"{name} spends a Moxie Point: {target} gets another use ({var.refunded})."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend a Moxie Point and pick one of an ally's already-used Perk uses to give back to them.</p>"

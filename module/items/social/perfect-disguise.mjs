@@ -20,11 +20,11 @@
  * no-op outside an active game.combat, the opposite of what a Perk about social interactions
  * (mostly a non-combat activity) actually needs - accepted here for the same reason, rather than
  * left unbuilt.
+ *
+ * The toggle (its once-per-encounter switch on), the Edge on attacks and the end on being seen attacking are rules on the
+ * Perk now (rules/conv17-split2.test.js); this keeps the reader mechanics/combat/sneak-attack.mjs asks.
  */
-import { hasUsedThisEncounter, markUsedThisEncounter } from "../../mechanics/characters/perks.mjs";
-
 const PERFECT_DISGUISE_FLAG = 'perfectDisguiseActive';
-const PERFECT_DISGUISE_ENCOUNTER_FLAG = 'perfectDisguiseUsedThisEncounter';
 
 /**
  * Whether the actor's disguise is currently switched on.
@@ -33,27 +33,4 @@ const PERFECT_DISGUISE_ENCOUNTER_FLAG = 'perfectDisguiseUsedThisEncounter';
  */
 export function isPerfectDisguiseActive(actor) {
   return !!actor.getFlag?.('essence20', PERFECT_DISGUISE_FLAG);
-}
-
-/**
- * Flips the disguise on/off. Turning it ON costs the once-per-encounter use (returns null,
- * spending nothing, if already used this encounter); turning it back OFF is free and doesn't
- * consume another use.
- * @param {Actor} actor
- * @returns {Promise<Boolean|null>}   The new state (true = now active), or null if activation
- *   couldn't be used again this encounter.
- */
-export async function togglePerfectDisguise(actor) {
-  const nowActive = !isPerfectDisguiseActive(actor);
-
-  if (nowActive) {
-    if (hasUsedThisEncounter(actor, PERFECT_DISGUISE_ENCOUNTER_FLAG)) {
-      return null;
-    }
-
-    await markUsedThisEncounter(actor, PERFECT_DISGUISE_ENCOUNTER_FLAG);
-  }
-
-  await actor.setFlag('essence20', PERFECT_DISGUISE_FLAG, nowActive);
-  return nowActive;
 }

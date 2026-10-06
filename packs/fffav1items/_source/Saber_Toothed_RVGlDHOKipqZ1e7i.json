@@ -5,6 +5,10 @@
   "_id": "RVGlDHOKipqZ1e7i",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Saber-Toothed (Sharp damage)","key":"saberToothed","downshift":1,"forget":true,"when":["attack:unarmed"]},
+      {"type":"DamageType","label":"Saber-Toothed","to":"sharp","when":["attack:unarmed","roll:switch:saberToothed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: your Unarmed attacks can take ↓1 to deal Sharp damage.</p>"

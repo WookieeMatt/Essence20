@@ -5,6 +5,10 @@
   "_id": "lcUcWMZxVUdLkycD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"dealtDamage","label":"Shots Fired","steps":[{"do":"mark","key":"shotsFired","to":"target","until":"endOfNextTurn","perSetter":true}]},
+      {"type":"RollModifier","label":"Shots Fired","edge":true,"when":[{"any":["skill:deception","skill:intimidation","skill:persuasion"]},"markedByMe:shotsFired"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: after you deal damage to a creature, your Deception, Intimidation and Persuasion tests against it (with it targeted) get Edge until the end of your next turn, labelled Shots Fired in the Roll Options Dialog.</p>"

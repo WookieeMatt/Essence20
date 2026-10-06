@@ -5,6 +5,9 @@
   "_id": "bB7Fiuu6BjIUlAgt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"TraitIgnore","label":"Ordnance Expert (ignore Mounted)","traits":["mounted"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Granted: the Speed increases as you level. Automatic: your Mounted weapons fire without being set up first.</p><p>Left to the table: counting your Brawn as ↑4 for weapon requirements, and the free Restricted heavy weapon at requisition.</p>"

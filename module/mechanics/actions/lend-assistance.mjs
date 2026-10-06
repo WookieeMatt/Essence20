@@ -1,20 +1,14 @@
-import { isCompanionPair, ownerOf } from "../companions/companion-link.mjs";
-import { isBff, onAssistedBff } from "../../items/social/best-friends-forever.mjs";
-// Command & Control (Decepticon Directive p.50) and Conniving (Cobra Codex p.28) - see their uses below.
-const COMMAND_AND_CONTROL_ID = "Compendium.essence20.decepticon_directive.Item.oPtLbnCPYyCSZIVU";
-const CONNIVING_PERK_ID = "Compendium.essence20.cobra_codex.Item.dJoVvMG3wjowbWJ8";
-import { getLendAssistanceGrantModes } from "./action-perks.mjs";
+import { payForAssist, ruleAssistPayment } from "../../rules/plugins/picks/cross-item-picks.mjs";
+// Those Who Know, Teach's lasting assist and Conniving's "roll it for you" are Assist rules (persist / rollFor).
+import { recordRollFor, rollForAvailable, rollForOffered, useAssistPersist } from "../../rules/plugins/rolls/assist-extras.mjs";
+import { ruleAssistGrantModes } from "../../rules/plugins/rolls/assist-next-turn.mjs";
 import { describeGrant, setNextTurn } from "./action-economy.mjs";
 import { E20 } from "../../util/config.mjs";
-import { registerUse } from "../item-hooks.mjs";
-import { actorHasPerk, bankPendingBonus, getUsesThisScene, markUsedThisScene } from "../characters/perks.mjs";
+import { bankPendingBonus } from "../characters/perks.mjs";
 import { getNearbyAllyTokens } from "../combat/nearby-allies.mjs";
 import { getSkillRanks } from "../combat/combat.mjs";
 import { ruleAssist } from "../../rules/adapter.mjs";
-import { canSpendForActor, spendForActor } from "../resources/story-points.mjs";
 import { clearVoiceOfPrimusAssistReady, hasVoiceOfPrimusAssistReady } from "../../items/social/voice-of-primus.mjs";
-import { hasRemoteOperationsReady } from "../../items/social/remote-operations.mjs";
-import { isBlockedByFunExhaustion } from "../../items/social/fun-exhaustion.mjs";
 
 /**
  * The Lend Assistance action (GI Joe CRB p.197).
@@ -74,39 +68,8 @@ export const LEND_ASSISTANCE_RANGE_FEET = 50;
 // grant - a caution worth keeping for same-name Perks generally, but not a substitute for looking.
 export const TEAM_PLAYER_TF_ID = "Compendium.essence20.tf_crb.Item.oWjvage64Y4KrWjw";
 
-// I Got You (Enigma of Combination, Team Leader Focus, 3rd level, p.30): "Starting at 3rd level,
-// you can always Lend Assistance to your teammates if they are within 60 feet of you." Grants
-// access to the action itself, same "this button is the only way to take it at all" reasoning
-// LEND_ASSISTANCE_PERK_IDS' own doc comment already gives for Bureaucrat/Teacher. The 60ft is
-// approximated as this file's own existing 50ft LEND_ASSISTANCE_RANGE_FEET (used for the
-// attack-assist target range check) rather than threading a second, per-Perk radius through
-// activateLendAssistance's whole dialog flow - a minor undercount, not a missed clause. The
-// separate once/round "spend 1 Energon Point for ↑1" clause is already built elsewhere
-// (mechanics/resources/banked-buffs.mjs's own BANKABLE_PERKS entry).
-export const I_GOT_YOU_ID = "Compendium.essence20.enigma_of_combination.Item.h8DuSX4N1buJb6uN";
-
-/**
- * I Got You holds two independent grants behind one "Use" button - the unconditional Lend
- * Assistance access above, and the pre-existing once/round "spend 1 Energon Point for ↑1" bankable
- * entry (mechanics/resources/banked-buffs.mjs's own BANKABLE_PERKS[I_GOT_YOU_ID]) - so a click asks which one is
- * meant, rather than one silently shadowing the other.
- * @returns {Promise<'assist'|'energon'|null>}
- */
-export async function pickIGotYouAction() {
-  const chosen = await foundry.applications.api.DialogV2.wait({
-    window: { title: game.i18n.localize('E20.IGotYouPickTitle') },
-    classes: ["window-app"],
-    modal: true,
-    content: `<p>${game.i18n.localize('E20.IGotYouPickPrompt')}</p>`,
-    buttons: [
-      { label: game.i18n.localize('E20.IGotYouPickAssist'), action: 'assist' },
-      { label: game.i18n.localize('E20.IGotYouPickEnergon'), action: 'energon' },
-      { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-    ],
-  });
-
-  return chosen == 'assist' || chosen == 'energon' ? chosen : null;
-}
+// (I Got You - Enigma of Combination, Team Leader Focus - is its item's own two Use rules: the Lend Assistance access
+// and the once/round Energon-for-↑1. Its id and the never-called pickIGotYouAction() picker went; audit fix 2026-10-07.)
 
 // Team Player (GI Joe CRB, General Perk, p.134): "When you spend a Standard action to Lend
 // Assistance in a combat, the action generates one Story Point if successful." Mechanically the
@@ -175,19 +138,10 @@ const BETTER_TOGETHER_JTT_ID = "Compendium.essence20.jump_through_time.Item.8ZGm
 // in Persuasion and have at least one rank in the skill being assisted.
 const MANY_MINDS_MAKE_LIGHT_WORK_ID = "Compendium.essence20.dark_skies_over_equestria.Item.D24JO5W03Amwwvzy";
 
-// Those Who Know, Teach (MLP CRB, Mentor Influence, p.53): "Three times per day, when you Lend
-// Assistance, the creature you assist gains the benefits of your help for the rest of the
-// scene/encounter instead of 1 Skill Test." A duration upgrade to the SKILL half (the combat
-// half's own Edge is already "until the beginning of your next turn," not "1 Skill Test", so RAW's
-// "instead of 1 Skill Test" only makes sense read against the skill half) - banked as a
-// `persistent` flag on the same pendingLendAssistanceShift grant rather than a separate one, so
-// consuming it stays a single read (same idiom Bureaucrat's own Edge piggybacks on that flag with).
-// dice.mjs skips clearing the flag on consumption when persistent is set, so it keeps matching
-// every one of the ally's own rolls of that skill until the bank naturally expires at encounter's
-// end (bankPendingBonus's own combatId stamp). "Three times per day" approximated as three times
-// per scene, this project's own standard idiom.
+// Those Who Know, Teach (MLP CRB, Mentor Influence, p.53) - its lasting Skill assist is an Assist {effect: persist}
+// rule (rules/plugins/rolls/assist-extras.mjs), banked as a `persistent` flag on the same pendingLendAssistanceShift
+// grant (dice.mjs skips clearing it on consumption). Its id stays below only for the Lend Assistance button.
 const THOSE_WHO_KNOW_TEACH_ID = "Compendium.essence20.mlp_crb.Item.Xi0qQqfZQJh0MBTu";
-const THOSE_WHO_KNOW_TEACH_SCENE_FLAG = 'thoseWhoKnowTeachUsedThisScene';
 
 // Lackey (Decepticon Directive, Influence Perk, p.27): "You are completely accustomed to following
 // orders, allowing any character you perceive as able to give you commands to Lend Assistance to
@@ -198,41 +152,7 @@ const THOSE_WHO_KNOW_TEACH_SCENE_FLAG = 'thoseWhoKnowTeachUsedThisScene';
 // unenforceable narrative framing, dropped the same way as Bits To Spare/Truthseeker's own.
 const LACKEY_ID = "Compendium.essence20.decepticon_directive.Item.dXZpwsbvn6Jdgpsn";
 
-// Armchair General (Field Guide to Action and Adventure, Envoy Origin benefit, p.65) - see
-// getAssistShiftUp's own comment below. Its other clause, "You are qualified in a weapon type of
-// your choice", is the Perk's Use button (pickArmchairGeneralWeapon below).
-const ARMCHAIR_GENERAL_ID = "Compendium.essence20.field_guide_action_adventure.Item.YPzpjKFz1yrwPHN6";
-const ARMCHAIR_WEAPON_FLAG = 'armchairGeneralWeapon';
-
-/**
- * Armchair General's weapon-type pick: marks the actor Qualified in one weapon type they aren't
- * already Qualified in, and remembers the pick on the Perk.
- * @param {Item} item   The Armchair General Perk.
- * @param {Function} [choose]   (title, prompt, [{value, label}]) => picked key; defaults to grants.mjs#chooseSelect.
- * @returns {Promise<String|null>}   The chat line, or null if nothing was picked.
- */
-export async function pickArmchairGeneralWeapon(item, choose = null) {
-  const actor = item.parent;
-  const qualified = actor?.system?.qualified?.weapons ?? {};
-  const options = Object.entries(E20.weaponTypes ?? {}).filter(([key]) => !qualified[key])
-    .map(([value, label]) => ({ value, label: game.i18n.localize(label) }));
-  const chooser = choose ?? (await import("../resources/grants.mjs")).chooseSelect;
-  const picked = await chooser(item.name, game.i18n.localize('E20.GrantPickLabel'), options);
-  if (!picked || !(picked in (E20.weaponTypes ?? {}))) {
-    return null;
-  }
-
-  await actor.update({ [`system.qualified.weapons.${picked}`]: true });
-  await item.setFlag('essence20', ARMCHAIR_WEAPON_FLAG, picked);
-  return game.i18n.format('E20.Pr3GrantedItem', { name: actor.name, item: game.i18n.localize(E20.weaponTypes[picked]), source: item.name });
-}
-
-registerUse({
-  id: 'armchairGeneralWeapon',
-  matches: item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == ARMCHAIR_GENERAL_ID,
-  canUse: item => !item.flags?.essence20?.[ARMCHAIR_WEAPON_FLAG],
-  run: item => pickArmchairGeneralWeapon(item),
-});
+// (Armchair General's +↑1 in combat is its Assist rule, and its weapon-type Qualification its Use rule - rules/conv17-split2.test.js.)
 
 // Technological Assistance (Quartermaster's Guide to Gear, Tech Officer Focus, 17th level, p.22):
 // "you can Lend Assistance as a Free action. However, allies can only take advantage of this for
@@ -269,20 +189,16 @@ export const LEND_ASSISTANCE_PERK_IDS = [
   // nothing stops a Lackey from also assisting someone else.
   LACKEY_ID,
   // Remote Operations is deliberately NOT included here, unlike every other entry above - its own
-  // "Use" button takes the DIF 10 Alertness Test (see items/social/remote-operations.mjs), a SEPARATE
-  // action from Lend Assistance itself per RAW ("attempt a... Skill Test to Lend Assistance", the
-  // same prerequisite-roll reading Voice of Primus's own assist half uses) - Lend Assistance is
-  // already reachable to everyone via mechanics/actions/named-actions.mjs once the bypass above is banked.
+  // Use rule takes the DIF 10 Alertness Test, a SEPARATE action from Lend Assistance itself per RAW
+  // ("attempt a... Skill Test to Lend Assistance", the same prerequisite-roll reading Voice of Primus's
+  // own assist half uses) - Lend Assistance is already reachable to everyone via
+  // mechanics/actions/named-actions.mjs once its Assist rule (anyRank while the mark lasts) applies.
   // Technological Assistance - see its own comment above.
   TECHNOLOGICAL_ASSISTANCE_ID,
   // Those Who Know, Teach only upgrades the skill half's duration (see its own comment above),
   // same "needs the button to matter" reasoning as Bureaucrat/Teacher.
   THOSE_WHO_KNOW_TEACH_ID,
-  // I Got You is deliberately NOT included here, unlike every other entry above - its "Use" button
-  // already does something else too (the pre-existing once/round Energon-for-↑1 bankable grant),
-  // so mechanics/resources/banked-buffs.mjs#onPerkUse handles it with its own dedicated pickIGotYouAction()
-  // dispatch instead of this shared list, to avoid the Lend Assistance branch silently shadowing
-  // the bankable one on every click.
+  // (I Got You isn't listed: its item's own Use rules grant its Lend Assistance access.)
 ];
 
 /**
@@ -318,20 +234,7 @@ export function canAssistWithSkill(actor, ally, skill) {
     return true;
   }
 
-  // Remote Operations - see hasRemoteOperationsReady's own comment above. Same bypass shape as
-  // Voice of Primus just above, but NOT consumed here - see remote-operations.mjs's own doc
-  // comment for why (RAW grants repeated assists "for the rest of this turn", not a single one).
-  if (hasRemoteOperationsReady(actor)) {
-    return true;
-  }
-
-  // Command & Control (Decepticon Directive, Mini-Con Focus, 6th level, p.50): "you and your Mini-Cons
-  // can Lend Assistance to each other as long as both parties involved are within 100 feet of each
-  // other and regardless of whether the one Lending Assistance is trained in the skill being
-  // attempted."
-  if (isCommandAndControlPair(actor, ally)) {
-    return true;
-  }
+  // (Command & Control is an Assist {effect: anyRank} rule on its Perk, scopes self and companion.)
 
   // Extension rank-gate bypasses, fn(actor, ally, skill) => Boolean (Inspirational Leader -
   // helpers/extensions/react).
@@ -349,15 +252,6 @@ export function canAssistWithSkill(actor, ally, skill) {
 }
 
 export const ASSIST_RANK_BYPASSES = [];
-
-function isCommandAndControlPair(actor, ally) {
-  const owner = actor?.type == 'companion' ? ownerOf(actor) : actor;
-  if (!owner || !actorHasPerk(owner, COMMAND_AND_CONTROL_ID) || !isCompanionPair(actor, ally)) {
-    return false;
-  }
-
-  return [actor, ally].some(a => a?.type == 'companion' && a.system?.type == 'miniCon');
-}
 
 /**
  * How big an upshift the skill half grants - normally 1, raised by Putting Others Before Yourself
@@ -417,17 +311,11 @@ async function bankSkillAssistBonus(actor, ally, skill) {
   /* The one hard prerequisite in the action (plus the Perks that move it). Refused rather than
      warned-and-allowed, because unlike the duration and range clauses this one decides whether
      the grant exists at all. */
-  // BFF (MLP CRB, Spirit of Loyalty, 3rd level): "If you aren't qualified to Lend Assistance, such as
-  // if you don't have any ranks in the skill being tested, you can spend a Friendship Point to Lend
-  // Assistance anyway."
-  if (!canAssistWithSkill(actor, ally, skill) && isBff(actor, ally) && canSpendForActor(actor)) {
-    const spend = await foundry.applications.api.DialogV2.confirm({
-      window: { title: game.i18n.localize('E20.LendAssistanceTitle') },
-      content: `<p>${game.i18n.format('E20.BffSpendToAssist', { ally: ally.name })}</p>`,
-      rejectClose: false,
-    });
-    if (spend) {
-      await spendForActor(actor, 1, { announce: false });
+  // Assist rules with effect "pay" (rules/plugins/picks/cross-item-picks.mjs) - BFF: "If you aren't qualified to Lend
+  // Assistance ... you can spend a Friendship Point to Lend Assistance anyway."
+  const payment = !canAssistWithSkill(actor, ally, skill) ? ruleAssistPayment(actor, ally, skill) : null;
+  if (payment) {
+    if (await payForAssist(actor, ally, payment)) {
       await bankPendingBonus(ally, LEND_ASSISTANCE_SHIFT_FLAG, {
         skill, shiftUp: getAssistShiftUp(actor, ally, skill), edge: getAssistEdge(actor), persistent: false, assisterUuid: actor.uuid ?? null,
       });
@@ -451,15 +339,9 @@ async function bankSkillAssistBonus(actor, ally, skill) {
     await clearVoiceOfPrimusAssistReady(actor);
   }
 
-  // Those Who Know, Teach - see THOSE_WHO_KNOW_TEACH_ID's own comment above. Checked (and its own
-  // 3/scene use marked) here rather than in getAssistShiftUp/getAssistEdge above, since unlike
-  // those two this one also consumes a limited resource rather than being a standing, free
-  // modifier.
-  const isPersistent = actorHasPerk(actor, THOSE_WHO_KNOW_TEACH_ID)
-    && getUsesThisScene(actor, THOSE_WHO_KNOW_TEACH_SCENE_FLAG) < 3;
-  if (isPersistent) {
-    await markUsedThisScene(actor, THOSE_WHO_KNOW_TEACH_SCENE_FLAG);
-  }
+  // Assist {effect: persist} rules (Those Who Know, Teach) - checked (and a use counted) here rather than in
+  // getAssistShiftUp/getAssistEdge above, since this one consumes a limited resource.
+  const isPersistent = await useAssistPersist(actor, ally, skill);
 
   await bankPendingBonus(ally, LEND_ASSISTANCE_SHIFT_FLAG, {
     skill,
@@ -568,22 +450,17 @@ async function pickAssistance(allies, targetName, grantModes = []) {
  * @returns {Promise<Object>}
  */
 export async function activateLendAssistance(actor) {
-  // An Assist rule refusing the helper outright, whatever the Skill (Treacherous's Hang-Up).
-  if (ruleAssist(actor, null, null).refused) {
-    ui.notifications.warn(game.i18n.format('E20.LendAssistanceTreacherous', { name: actor.name }));
+  // An Assist rule refusing the helper outright, whatever the Skill (Treacherous's Hang-Up; Fun Exhaustion's, with its
+  // own message).
+  const refusal = ruleAssist(actor, null, null);
+  if (refusal.refused) {
+    ui.notifications.warn(game.i18n.format(refusal.message ?? 'E20.LendAssistanceTreacherous', { name: actor.name }));
     return { cancelled: true };
   }
 
-  // Fun Exhaustion - see items/social/fun-exhaustion.mjs's own doc comment. "Cannot assist or be
-  // assisted by anyone else" - refused here for the assisting half; the being-assisted half is
-  // the candidate-list filter just below.
-  if (isBlockedByFunExhaustion(actor)) {
-    ui.notifications.warn(game.i18n.format('E20.LendAssistanceFunExhaustion', { name: actor.name }));
-    return { cancelled: true };
-  }
-
+  // Allies an Assist rule refuses whatever the Skill (Fun Exhaustion: "cannot ... be assisted by anyone else") aren't offered.
   const nearbyAllies = getNearbyAllyTokens(actor, Infinity).map(token => token.actor).filter(Boolean)
-    .filter(ally => !isBlockedByFunExhaustion(ally));
+    .filter(ally => !ruleAssist(actor, ally, null).refused);
   // An Assist rule letting the actor help themselves (One Pony Show).
   const allies = ruleAssist(actor, null, null).self ? [...nearbyAllies, actor] : nearbyAllies;
   if (!allies.length) {
@@ -607,11 +484,11 @@ export async function activateLendAssistance(actor) {
     }));
   }
 
-  const grantModes = getLendAssistanceGrantModes(actor);
-  // Conniving (Cobra Codex, Influence Perk, p.28): "Once per scene, when an ally offers to Lend
-  // Assistance to you, they can roll the Skill Test for you with your assistance ... Your ally suffers
-  // any negative consequence of failing the Skill Test." Offered when an ally holds it.
-  if (allies.some(ally => actorHasPerk(ally, CONNIVING_PERK_ID))) {
+  // Assist {effect: nextTurnGrant} rules (Here, Let Me; No, I Insist): an action on the friend's next turn instead.
+  const grantModes = ruleAssistGrantModes(actor);
+  // Assist {side: receive, effect: rollFor} rules (Conniving): the helper may roll the ally's test for them, with the
+  // ally's assistance. Offered when an ally holds one.
+  if (rollForOffered(allies, actor)) {
     grantModes.push({ mode: 'conniving', label: game.i18n.localize('E20.ConnivingMode') });
   }
 
@@ -668,9 +545,7 @@ export async function activateLendAssistance(actor) {
     return { cancelled: true };
   }
 
-  // That's What Best Friends Are For - a Friendship Point for a Standard-action assist to a BFF
-  // (items/social/best-friends-forever.mjs). BFF's own Free-action assist doesn't count.
-  await onAssistedBff(actor, ally, await wasFreeBffAssist(actor));
+  // (That's What Best Friends Are For's Friendship Point is a lendAssistance Trigger on the Perk.)
 
   return {
     message: game.i18n.format('E20.LendAssistanceSkillActivated', {
@@ -682,29 +557,25 @@ export async function activateLendAssistance(actor) {
 }
 
 /**
- * Conniving: the ally (the one offering help) rolls the Conniving holder's test, with the holder's
- * assistance. Once per scene for the holder.
+ * Conniving (an Assist rollFor rule): the ally (the one offering help) rolls the holder's test, with the holder's
+ * assistance - the rule's limit counted on the helper, per holder.
  */
 async function rollForConniving(actor, holder, skill) {
-  if (!actorHasPerk(holder, CONNIVING_PERK_ID) || getUsesThisScene(actor, `conniving.${holder.id}`) >= 1) {
+  const entry = rollForAvailable(actor, holder, skill);
+  if (!entry) {
     ui.notifications.warn(game.i18n.localize('E20.OncePerScene'));
     return { cancelled: true };
   }
 
-  await markUsedThisScene(actor, `conniving.${holder.id}`);
+  await recordRollFor(actor, holder, entry);
   const essence = E20.skillToEssence[skill] ?? 'smarts';
   await actor._dice?.rollSkill({ skill, essence, shiftUp: getAssistShiftUp(holder, actor, skill), shiftDown: 0 }, actor);
   return { message: game.i18n.format('E20.ConnivingRolled', { name: actor.name, holder: holder.name, skill: game.i18n.localize(E20.skills[skill] ?? skill) }) };
 }
 
-async function wasFreeBffAssist(actor) {
-  const { getLedger } = await import("./action-economy.mjs");
-  return (getLedger?.(actor)?.perkUses?.bffAssist ?? 0) > 0;
-}
-
 /**
- * The skill half on its own, from a shorter reach - Help Yourself's clone helps from 15 ft
- * (items/magic/help-yourself.mjs). Allies holding Lackey are offered at any distance, since that Perk
+ * The skill half on its own, from a shorter reach - Help Yourself's clone helps from 15 ft (the spell's
+ * lendAssistance {skillOnly} Use rule). Allies holding Lackey are offered at any distance, since that Perk
  * lets them be assisted from anywhere. No lendAssistance / assisted Triggers (Team Player's Story
  * Point): here the clone or pet acts, not the actor taking the action.
  * @param {Actor} actor

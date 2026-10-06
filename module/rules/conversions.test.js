@@ -3958,13 +3958,7 @@ test('High Gear: a Snag on ranged attacks at the Zord while active', () => {
   expect(ruleRollSources(roller, zord, { item: diceCAttack('blunt', 'projectile') }).sources).toEqual([]);
 });
 
-test('No Fighting?!: a Snag on a Social roll while banked', () => {
-  const file = 'kocitems/_source/No_Fighting___ddSnDksWfxPkekda.json';
-  expect(ruleRollSources(diceCDefender([file], { noFightingSnagPending: true }), null, { rolledEssence: 'social' }).sources)
-    .toEqual([expect.objectContaining({ snag: true, label: 'No Fighting?!' })]);
-  expect(ruleRollSources(diceCDefender([file], { noFightingSnagPending: true }), null, { rolledEssence: 'strength' }).sources).toEqual([]);
-  expect(ruleRollSources(diceCDefender([file], {}), null, { rolledEssence: 'social' }).sources).toEqual([]);
-});
+// (No Fighting?!'s Snag is a combatEnd mark now - rules/conv17-Split1.test.js.)
 
 test('Gallantry: Snarl / Predacon (in combat) Intimidation and Might Makes Right Persuasion against the holder take one Snag', () => {
   const target = holder(['gijcrbitems/_source/Gallantry_UIMocxFcGeJUm3D4.json']);
@@ -5393,7 +5387,8 @@ describe('move batch: Movement rules through _prepareMovement', () => {
   });
 
   test('Prowl: ground doubled with Environmental Expertise active (adjust stage)', async () => {
-    const expertise = { type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } } };
+    // Environmental Expertise with its own rules (round 15, items2: "having Environmental Expertise" is its EnvironmentalExpertise rule).
+    const expertise = { type: 'perk', name: 'Environmental Expertise', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } }, system: { rules: fromPack('gijcrbitems/_source/Environmental_Expertise_EbbSUA2vSHyv3MjQ.json').system.rules } };
     expect((await moveActor([MOVE.prowl, expertise], { flags: { environmentalExpertiseActive: true } })).ground.total).toBe(70);
     expect((await moveActor([expertise], { flags: { environmentalExpertiseActive: true } })).ground.total).toBe(35);
     expect((await moveActor([MOVE.prowl, expertise], { flags: { environmentalExpertiseActive: false } })).ground.total).toBe(35);
@@ -5863,6 +5858,8 @@ function misc7Holder(files, options = {}, extraItems = []) {
 
   actor.items.contents.push(...extraItems.map(item => ({ id: `c${nextId++}`, flags: {}, system: {}, parent: actor, ...item })));
   actor.items.find = fn => actor.items.contents.find(fn);
+  // The extra items' own rules too (round 15, items2 - Environmental Expertise's).
+  rebuildIndex(actor);
   return actor;
 }
 
@@ -5912,7 +5909,8 @@ test('Recon: Edge on Alertness, Survival and Initiative in the environment of ex
     global.canvas = undefined;
   }
 
-  const expertise = { type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } } };
+  // Environmental Expertise with its own rules (round 15, items2: "having Environmental Expertise" is its EnvironmentalExpertise rule).
+  const expertise = { type: 'perk', name: 'Environmental Expertise', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } }, system: { rules: fromPack('gijcrbitems/_source/Environmental_Expertise_EbbSUA2vSHyv3MjQ.json').system.rules } };
   const actor = misc7Holder(['gijcrbitems/_source/Recon_EDBn8zHJXkRFu2TT.json'], {}, [expertise]);
   const edges = ctx => ruleRollSources(actor, null, ctx).sources.filter(source => source.edge).length;
   actor.flags.essence20.environmentalExpertiseActive = true;
@@ -6139,7 +6137,8 @@ test('Tracker (Environmental): ↑2 on Survival in the environment of expertise'
     global.canvas = undefined;
   }
 
-  const expertise = { type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } } };
+  // Environmental Expertise with its own rules (round 15, items2: "having Environmental Expertise" is its EnvironmentalExpertise rule).
+  const expertise = { type: 'perk', name: 'Environmental Expertise', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } }, system: { rules: fromPack('gijcrbitems/_source/Environmental_Expertise_EbbSUA2vSHyv3MjQ.json').system.rules } };
   const actor = misc7Holder(['gijcrbitems/_source/Tracker__Environmental__mgvaFU9Kgr3awtfB.json'], {}, [expertise]);
   actor.flags.essence20.environmentalExpertiseActive = true;
   expect(regASources(actor, { rolledSkill: 'survival' })).toEqual([expect.objectContaining({ shiftUp: 2, label: 'Tracker (Environmental)' })]);
@@ -6397,7 +6396,8 @@ describe('regB: per-attack Defense rules', () => {
     const { hasActiveEnvironmentalExpertise } = await import('../mechanics/world/environmental-expertise.mjs');
     registerCheck('environmentalExpertise', hasActiveEnvironmentalExpertise);
     global.canvas = undefined;
-    const expertise = { type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } } };
+    // Environmental Expertise with its own rules (round 15, items2: "having Environmental Expertise" is its EnvironmentalExpertise rule).
+    const expertise = { type: 'perk', name: 'Environmental Expertise', flags: { core: { sourceId: 'Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ' } }, system: { rules: fromPack('gijcrbitems/_source/Environmental_Expertise_EbbSUA2vSHyv3MjQ.json').system.rules } };
     const actor = misc7Holder(['gijcrbitems/_source/Environmental_Armor_Vo5AfbJNfVGf24E0.json'], { system: sheet() }, [expertise]);
     actor.flags.essence20.environmentalExpertiseActive = true;
     expect(DEFENSES.map(defense => adjust(actor, defense))).toEqual([1, 1, 1, 1]);

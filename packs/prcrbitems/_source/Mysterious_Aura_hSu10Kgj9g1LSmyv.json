@@ -5,6 +5,9 @@
   "_id": "hSu10Kgj9g1LSmyv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Emit an aura","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"choose","beforeCost":true,"prompt":"Which aura?","options":[{"label":"Imposing","steps":[{"do":"setVar","key":"type","value":"imposing"}]},{"label":"Protective","steps":[{"do":"setVar","key":"type","value":"protective"}]},{"label":"Resplendent","steps":[{"do":"setVar","key":"type","value":"resplendent"}]}]},{"do":"pick","key":"defense","from":"list","beforeCost":true,"when":["var:type=protective"],"prompt":"Which Defense?","options":[["cleverness","E20.DefenseCleverness"],["evasion","E20.DefenseEvasion"],["toughness","E20.DefenseToughness"],["willpower","E20.DefenseWillpower"]]},{"do":"updateActor","to":"self","set":{"flags.essence20.mysteriousAuraActive.type":"{var.type}"}},{"do":"updateActor","to":"self","when":["var:type=protective"],"set":{"flags.essence20.mysteriousAuraActive.defenseChoice":"{var.picked}"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (while Morphed): spend 1 Personal Power to pick an aura (Imposing, Protective or Resplendent). It lasts until you de-Morph or pick another.</p>"

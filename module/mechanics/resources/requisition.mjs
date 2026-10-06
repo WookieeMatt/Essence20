@@ -1,16 +1,7 @@
 import { E20 } from "../../util/config.mjs";
-import { actorHasPerk, clearPendingBonus, getPendingBonus } from "../characters/perks.mjs";
 // RequisitionDif rules (Early Adopter's DIF -5 on Prototypical / Theoretical equipment) - rules/plugins/resources/requisition-dif.mjs.
 import { ruleRequisitionDif } from "../../rules/plugins/resources/requisition-dif.mjs";
-
-// Expert Guidance - see its own check next to rollRequisition's own comment below.
-const EXPERT_GUIDANCE_ID = "Compendium.essence20.intercontinental_adventures.Item.oUQUSWSj3JZ1tBR3";
-
-// Benefits of Command - see its own mechanics/resources/banked-buffs.mjs BANKABLE_PERKS entry for the RAW
-// text and Story-Point-spend/ally-picker dispatch. This is the one and only place the resulting
-// banked Edge actually gets consumed, since a Requisition Skill Test is the only thing it grants
-// Edge on.
-const PENDING_BENEFITS_OF_COMMAND_FLAG = 'pendingBenefitsOfCommand';
+import { ruleRequisitionShift } from "../../rules/plugins/resources/requisition-shift.mjs";
 
 /**
  * The Skill a Requisition Test for this item is rolled with (GI Joe CRB p.137-138): a weapon
@@ -136,34 +127,23 @@ export async function rollRequisition(member, item, pool) {
     return { granted: true, automatic: true };
   }
 
-  // Expert Guidance (Factions in Action Vol. 2, General Perk, p.94; prerequisite: Technology +d8):
-  // "You gain ↑2 on Skill Tests made to Requisition Theoretical equipment." Read directly off the
-  // item's own totalAvailability, the same field Technostalgic's own downshift keys on.
-  const expertGuidanceShiftUp = item.system.totalAvailability == 'theoretical'
-    && actorHasPerk(member, EXPERT_GUIDANCE_ID) ? 2 : 0;
-
-  // Benefits of Command - see PENDING_BENEFITS_OF_COMMAND_FLAG's own comment above.
-  const hasBenefitsOfCommandEdge = !!getPendingBonus(member, PENDING_BENEFITS_OF_COMMAND_FLAG);
+  // RequisitionShift rules (Expert Guidance: ↑2 for Theoretical equipment - rules/plugins/resources/requisition-shift.mjs),
+  // the roll's own starting shiftUp.
+  const requisitionShiftUp = ruleRequisitionShift(member, item);
 
   const outcome = await member.rollSkill({
     skill,
     essence: E20.skillToEssence[skill],
     dif,
-    shiftUp: expertGuidanceShiftUp,
+    shiftUp: requisitionShiftUp,
     shiftDown: 0,
-    edge: hasBenefitsOfCommandEdge,
     requisitionItemName: item.name,
   });
 
-  // Backing out of the roll dialog is not a Requisition - nothing is spent and nothing logged,
-  // and the banked Edge stays unspent for a future attempt (same "cancelling never consumes a
-  // banked bonus" idiom this project applies everywhere else).
+  // Backing out of the roll dialog is not a Requisition - nothing is spent and nothing logged (a banked Edge - Benefits
+  // of Command's rule bank, requisitionItemName - stays unspent too).
   if (outcome?.cancelled) {
     return { cancelled: true };
-  }
-
-  if (hasBenefitsOfCommandEdge) {
-    await clearPendingBonus(member, PENDING_BENEFITS_OF_COMMAND_FLAG);
   }
 
   // The attempt is spent either way: "Failure means your request was denied" (GI Joe CRB

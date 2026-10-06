@@ -5,6 +5,10 @@
   "_id": "2nI6ckZdiIKwtRqr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Power Bleed this turn","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"setToggle","key":"bleed","value":true,"until":"endOfTurn","when":["combat"]}]},
+      {"type":"Trigger","label":"Power Bleed","event":"hit","when":["attack","self:toggle:bleed"],"steps":[{"do":"updateActor","to":"target","add":{"system.powers.personal.value":-1},"min":0,"filter":["target:data:system.powers.personal"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spends 1 Personal Power. For the rest of your turn, each target you hit loses 1 Personal Power automatically.</p>"

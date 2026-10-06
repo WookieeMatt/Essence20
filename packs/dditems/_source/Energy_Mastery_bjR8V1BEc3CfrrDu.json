@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"RollModifier","label":"Energy Affinity attack (Energy Mastery: Edge)","edge":true,"when":["check:energyAffinityAttack"]},
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["check:energyAffinityAttack"]}
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["check:energyAffinityAttack"]},
+      {"type":"DamageImmunity","label":"Energy Mastery (Immunity to your Energy Affinity Element)","choiceOf":"Compendium.essence20.decepticon_directive.Item.DgFY0ZmAtClAobiA"}
     ],
     "automation": {
       "status": "full",

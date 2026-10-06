@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Wrestler","when":["attack","item:damageType:grapple"],"edge":true}
+      {"type":"RollModifier","label":"Wrestler","when":["attack","item:damageType:grapple"],"edge":true},
+      {"type":"Use","label":"Pin a Grappled creature (Prone)","steps":[{"do":"target","max":1},{"do":"require","check":["target:status:grappled"],"message":"The target must be Grappled."},{"do":"applyCondition","condition":"prone","to":"target"}]}
     ],
     "automation": {
       "status": "full",

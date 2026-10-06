@@ -1,6 +1,8 @@
 import { epochFor, getUses } from "../../../mechanics/resources/scene-clock.mjs";
 import { registerTag } from "../../predicate.mjs";
 import { recipients, registerStep } from "../../steps.mjs";
+import { resolveValue } from "../../formula.mjs";
+import { windowFlag } from "./vehicle-budget-pieces.mjs";
 import { write } from "../shared/side-and-copy-helpers.mjs";
 
 /**
@@ -13,6 +15,8 @@ import { write } from "../shared/side-and-copy-helpers.mjs";
  *         target:windowUsed:...  holder:windowUsed:...   mission window is at least n (default 1)
  *   step  markWindow {flag, window, to?, clear?}     count one more use on each recipient (a fresh window starts at 1);
  *                                                    `clear: true` forgets the record instead
+ *         Round 15 (items2 - Motor Pool Connections): `count` (a formula) counts that many at once, and the flag may read a
+ *         pick or a value ({choice.x} / {var.x} - plugins/resources/vehicle-budget-pieces.mjs#windowFlag).
  */
 
 export const WINDOWS = ['scene', 'encounter', 'mission'];
@@ -35,8 +39,8 @@ registerTag('self:windowUsed', (rest, ctx) => windowUsed(ctx.self, rest));
 registerTag('target:windowUsed', (rest, ctx) => windowUsed(ctx.other ?? null, rest));
 registerTag('holder:windowUsed', (rest, ctx) => windowUsed(ctx.holder ?? ctx.self, rest));
 
-/** One more use of `flag` in its window on `actor` (or, clear, the record gone). */
-export async function markWindow(actor, flag, window, { clear = false } = {}) {
+/** One more use (or `count` more) of `flag` in its window on `actor` (or, clear, the record gone). */
+export async function markWindow(actor, flag, window, { clear = false, count = 1 } = {}) {
   if (!actor) {
     return;
   }
@@ -46,16 +50,18 @@ export async function markWindow(actor, flag, window, { clear = false } = {}) {
     return;
   }
 
-  await write(actor, 'setFlag', ['essence20', flag, { epoch: epochFor(window), window, count: getUses(actor, flag, window) + 1 }]);
+  await write(actor, 'setFlag', ['essence20', flag, { epoch: epochFor(window), window, count: getUses(actor, flag, window) + count }]);
 }
 
 registerStep('markWindow', async (step, ctx) => {
+  const flag = /[{]/.test(String(step.flag)) ? windowFlag(step.flag, ctx) : String(step.flag);
+  const count = step.count === undefined ? 1 : Math.max(0, Math.round(resolveValue(step.count, { actor: ctx.actor, item: ctx.item, vars: ctx.vars }, 1)));
   for (const actor of recipients(step, ctx)) {
-    await markWindow(actor, String(step.flag), step.window ?? 'encounter', { clear: !!step.clear });
+    await markWindow(actor, flag, step.window ?? 'encounter', { clear: !!step.clear, count });
   }
 }, {
   errors: (step, where) => [
-    ...(typeof step.flag == 'string' && /^[\w-]+$/.test(step.flag) ? [] : [`${where}: markWindow needs a flag name`]),
+    ...(typeof step.flag == 'string' && /^[\w{}.-]+$/.test(step.flag) ? [] : [`${where}: markWindow needs a flag name`]),
     ...(step.clear || WINDOWS.includes(step.window ?? 'encounter') ? [] : [`${where}: markWindow window must be one of ${WINDOWS.join(', ')}`]),
   ],
 });

@@ -5,6 +5,9 @@
   "_id": "ZtRBGtnV5HCA7zhl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"rollEnergonSpent","label":"Energon Efficiency (your last Energon: 1d6, 5+ gives it back)","when":["var:before=1"],"steps":[{"do":"table","formula":"1d6","quiet":true,"rows":[{"min":5,"max":6,"steps":[{"do":"gainResource","resource":{"path":"system.energon.normal.value"},"amount":1}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you spend your last Energon Point, a d6 is rolled; on a 5 or 6 you get 1 Energon Point back.</p>"

@@ -5,6 +5,10 @@
   "_id": "3JCZlRjXovAMXmko",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Synaptic Linkage (Edge, once per scene)","edge":true,"forget":true,"when":["roll:bondPairTrained"],"limit":{"per":"scene"}},
+      {"type":"Use","label":"Pass a Condition to your bonded ally (once per scene)","when":["self:bonded"],"limit":{"per":"scene"},"steps":[{"do":"pick","key":"condition","from":"conditions","all":true,"exclude":["defeated","dead"]},{"do":"removeCondition","condition":"{choice.condition}"},{"do":"applyCondition","condition":"{choice.condition}","to":"bondedAlly"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per scene, Edge on a Skill Test where you and your bonded partner both have at least d2. Use button: once per scene, pass one of your Conditions to your partner.</p>"

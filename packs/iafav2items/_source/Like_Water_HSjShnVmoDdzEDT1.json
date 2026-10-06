@@ -5,6 +5,11 @@
   "_id": "HSjShnVmoDdzEDT1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"+2 Toughness or +2 Evasion this Combat","when":[{"any":["not:self:windowUsed:likeWaterToughnessActive:encounter","not:self:windowUsed:likeWaterEvasionActive:encounter"]}],"steps":[{"do":"choose","auto":true,"prompt":"Which Defense?","options":[{"label":"+2 Toughness","when":["not:self:windowUsed:likeWaterToughnessActive:encounter"],"steps":[{"do":"markWindow","flag":"likeWaterToughnessActive","window":"encounter"}]},{"label":"+2 Evasion","when":["not:self:windowUsed:likeWaterEvasionActive:encounter"],"steps":[{"do":"markWindow","flag":"likeWaterEvasionActive","window":"encounter"}]}]}]},
+      {"type":"Defense","label":"Like Water","defense":"toughness","mode":"addAfter","amount":2,"when":["self:windowUsed:likeWaterToughnessActive:encounter"]},
+      {"type":"Defense","label":"Like Water","defense":"evasion","mode":"addAfter","amount":2,"when":["self:windowUsed:likeWaterEvasionActive:encounter"]}
+    ],
     "prerequisites": {"when":["self:skill:finesse>=d10"]},
     "automation": {
       "status": "partial",

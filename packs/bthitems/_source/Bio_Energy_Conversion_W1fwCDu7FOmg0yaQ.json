@@ -5,6 +5,11 @@
   "_id": "W1fwCDu7FOmg0yaQ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Harness bio-energy for next round","steps":[{"do":"mark","key":"bioEnergyNow","to":"self","until":"endOfRound"},{"do":"mark","key":"bioEnergyNext","to":"self","until":"endOfNextRound"}]},
+      {"type":"RollModifier","label":"Bio-Energy Conversion (↑2)","upshift":2,"when":["attack","self:marked:bioEnergyNext","not:self:marked:bioEnergyNow"]},
+      {"type":"DamageModifier","label":"Bio-Energy Conversion","direction":"dealt","scaled":true,"amount":2,"when":["attack","self:marked:bioEnergyNext","not:self:marked:bioEnergyNow"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Standard action): on the Zord's next turn its attacks gain ↑2 and deal +2 damage.</p>"

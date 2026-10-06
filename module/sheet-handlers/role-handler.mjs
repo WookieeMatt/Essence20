@@ -4,10 +4,8 @@ import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
-import { onPerkDelete, onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
+import { onPerkDelete, onPerkDrop } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
-
-const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 
 /**
  * Performs a Spectrum Shift: retroactively swaps the Actor's current Role for a new one, per
@@ -579,12 +577,10 @@ export async function onRoleDrop(actor, role, dropFunc) {
   await _trainingUpdate(actor, 'weapons', 'trained', true, role);
   await _trainingUpdate(actor, 'armors', 'trained', true, role, true);
 
-  // Morphed toughness bonus updates
-  for (const item of actor.items) {
-    if ((item._stats?.compendiumSource ?? item.flags?.essence20?.rulesSource) == MORPHIN_TIME_PERK_ID) {
-      setMorphedToughnessBonus(actor);
-    }
-  }
+  // roleDropped Triggers - It's Morphin Time!'s Morphed Toughness follows the new Armor Training
+  // (rules/plugins/effects/role-dropped-event.mjs).
+  const { fireRoleDropped } = await import("../rules/plugins/effects/role-dropped-event.mjs");
+  await fireRoleDropped(actor);
 }
 
 /**

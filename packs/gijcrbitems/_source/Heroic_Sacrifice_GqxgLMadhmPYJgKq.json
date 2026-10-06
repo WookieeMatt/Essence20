@@ -5,6 +5,9 @@
   "_id": "GqxgLMadhmPYJgKq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"applyingDamage","redirect":true,"within":"2 * @actor.system.movement.ground.total","priority":3,"limit":{"per":"turn"},"label":"Heroic Sacrifice (Sprint over and take the hit)","steps":[]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic, once per turn: when damage is applied to an ally you could reach with a Sprint, the GM is offered to send it to you instead. Move your token next to them.</p>"

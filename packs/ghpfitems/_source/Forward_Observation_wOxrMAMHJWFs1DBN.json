@@ -5,6 +5,9 @@
   "_id": "wOxrMAMHJWFs1DBN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Forward Observation (DIF 15 Alertness)","steps":[{"do":"roll","skill":"alertness","dif":15,"onSuccess":[{"do":"pickAlly","within":30,"all":true,"includeSelf":true},{"do":"bank","upshift":1,"to":"targets","grantDouble":true,"until":"combat","appliesWhen":["not:roll:initiative"]}]}]}
+    ],
     "prerequisites": {"when":["ask:Alertness (Perception) Specialization"]},
     "automation": {
       "status": "partial",

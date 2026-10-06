@@ -6,7 +6,7 @@
   "img": "icons/svg/hazard.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Angry","snag":true,"when":["check:angrySnag"]}
+      {"type":"RollModifier","label":"Angry","snag":true,"when":["self:markText:angrySnag=$skill"]}
     ],
     "automation": {
       "status": "full",

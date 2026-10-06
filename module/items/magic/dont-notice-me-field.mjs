@@ -1,4 +1,4 @@
-import { activateForWindow, isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 /**
  * Don't-Notice-Me-Field (MLP CRB, Superior Enchantment spell, p.137): "The target of this spell
@@ -27,9 +27,4 @@ const DONT_NOTICE_ME_FIELD_FLAG = 'dontNoticeMeFieldActive';
 
 export function isDontNoticeMeFieldActive(actor) {
   return isActiveForWindow(actor, DONT_NOTICE_ME_FIELD_FLAG, 'scene');
-}
-
-export async function applyDontNoticeMeField(targetActor) {
-  await targetActor.toggleStatusEffect('invisible', { active: true });
-  await activateForWindow(targetActor, DONT_NOTICE_ME_FIELD_FLAG, 'scene');
 }

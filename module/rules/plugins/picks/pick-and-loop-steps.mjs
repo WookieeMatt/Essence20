@@ -1,4 +1,4 @@
-import { pickOptions, recipients, registerRecipient, registerStep, runSteps } from "../../steps.mjs";
+import { itemsFor, pickOptions, recipients, registerRecipient, registerStep, runSteps } from "../../steps.mjs";
 import { partyMates } from "../../links.mjs";
 import { contextFor, evaluate, unknownTags } from "../../predicate.mjs";
 import { isValidUntil } from "../../expiry.mjs";
@@ -65,12 +65,15 @@ async function pickEntry(step, ctx) {
   } else {
     const from = step.from ?? {};
     const tags = Array.isArray(from.tags) ? from.tags : [];
-    rows = await helpers.findItems({
-      type: from.type,
+    // Round 15 (items1): from.types - several item types in one list, by name (Welds, Rivets, and Ideas: gear and upgrades).
+    const types = Array.isArray(from.types) && from.types.length ? from.types : [from.type];
+    const found = await Promise.all(types.map(type => helpers.findItems({
+      type,
       availabilities: Array.isArray(from.availabilities) && from.availabilities.length ? from.availabilities : null,
       ...(Array.isArray(from.fields) && from.fields.length ? { fields: from.fields } : {}),
       matches: tags.length ? entry => evaluate(tags, contextFor({ self: ctx.actor, item: entry, ruleItem: ctx.item, vars: ctx.vars })) === true : null,
-    });
+    })));
+    rows = types.length > 1 ? found.flat().sort((a, b) => String(a.name ?? '').localeCompare(String(b.name ?? ''))) : found[0] ?? [];
   }
 
   let uuid = null;
@@ -89,7 +92,9 @@ async function pickEntry(step, ctx) {
 
   const source = await globalThis.fromUuid?.(uuid) ?? null;
   const doc = source ?? row;
-  const availability = doc.system?.availability ?? row.system?.availability ?? 'standard';
+  // kitTier: a kit (gear has no Availability) takes its tier from its name - "Limited Burglary Kit"
+  // (grants.mjs#kitAvailability, as Construct / Kitbash Equipment read it).
+  const availability = doc.system?.availability ?? row.system?.availability ?? (step.kitTier ? helpers.kitAvailability?.(doc.name ?? row.name) : null) ?? 'standard';
   ctx.vars[name] = uuid;
   ctx.vars[`${name}Name`] = doc.name ?? row.name ?? '';
   ctx.vars[`${name}Availability`] = availability;
@@ -111,7 +116,7 @@ async function pickEntry(step, ctx) {
 
 registerStep('pickEntry', pickEntry, {
   errors: (step, where) => [
-    ...(step.from?.type || step.children ? [] : [`${where}: pickEntry needs from.type or children`]),
+    ...(step.from?.type || step.from?.types?.length || step.children ? [] : [`${where}: pickEntry needs from.type (or from.types) or children`]),
     ...(step.from?.tags ? unknownTags(step.from.tags).map(tag => `${where}: unknown tag "${tag}" in from.tags`) : []),
     ...(step.var && !/^[\w-]+$/.test(step.var) ? [`${where}: var must be a plain name`] : []),
     ...(step.until && !isValidUntil(step.until) ? [`${where}: bad until`] : []),
@@ -292,12 +297,30 @@ registerStep('focus', async (step, ctx) => {
 /* -------------------------------------------- */
 
 /**
- * setEffects {effects: [{name?, changeKey?, on}]} - switch the rule's own item's Active Effects on or off. Each effect
+ * setEffects {effects: [{name?, changeKey?, on}], items?} - switch the rule's own item's Active Effects on or off. Each effect
  * takes the first entry that matches it (name contains `name`, its first change's key contains `changeKey`; an entry
  * with neither matches any); `on` is true / false or a list of tags. Effects no entry matches are left alone.
+ * `items` (round 15, items2 - Zord Ultra Mode): the actor's items that selector picks instead (type:feature - every
+ * Zord Feature it holds; an item step's `item`, all of them).
  */
 registerStep('setEffects', async (step, ctx) => {
-  const item = ctx.item;
+  if (step.items) {
+    for (const other of itemsFor({ item: step.items, all: true }, ctx.actor, ctx)) {
+      await setEffectsOn(other, step, ctx);
+    }
+
+    return;
+  }
+
+  await setEffectsOn(ctx.item, step, ctx);
+}, {
+  errors: (step, where) => (Array.isArray(step.effects) && step.effects.length
+    ? step.effects.flatMap((e, i) => (Array.isArray(e?.on) ? unknownTags(e.on).map(tag => `${where}.effects[${i}]: unknown tag "${tag}"`) : typeof e?.on == 'boolean' ? [] : [`${where}.effects[${i}]: on must be true, false or a list of tags`]))
+    : [`${where}: setEffects needs effects`]),
+});
+
+/** setEffects on one item: its Active Effects switched as the step's entries say (`on` tags see the rule's own item). */
+async function setEffectsOn(item, step, ctx) {
   const lower = text => String(text ?? '').toLowerCase();
   const updates = [];
   for (const effect of listOf(item?.effects)) {
@@ -309,18 +332,14 @@ registerStep('setEffects', async (step, ctx) => {
     }
 
     const on = typeof entry.on == 'boolean' ? entry.on
-      : evaluate(entry.on ?? [], contextFor({ self: ctx.actor, ruleItem: item, other: ctx.targets[0] ?? null, vars: ctx.vars })) === true;
+      : evaluate(entry.on ?? [], contextFor({ self: ctx.actor, ruleItem: ctx.item, other: ctx.targets[0] ?? null, vars: ctx.vars })) === true;
     updates.push({ _id: effect.id, disabled: !on });
   }
 
   if (updates.length) {
     await write(item, 'updateEmbeddedDocuments', ['ActiveEffect', updates]);
   }
-}, {
-  errors: (step, where) => (Array.isArray(step.effects) && step.effects.length
-    ? step.effects.flatMap((e, i) => (Array.isArray(e?.on) ? unknownTags(e.on).map(tag => `${where}.effects[${i}]: unknown tag "${tag}"`) : typeof e?.on == 'boolean' ? [] : [`${where}.effects[${i}]: on must be true, false or a list of tags`]))
-    : [`${where}: setEffects needs effects`]),
-});
+}
 
 /** unbank - take back every bonus this rule's item banked on the recipients (rules/bank.mjs). */
 registerStep('unbank', async (step, ctx) => {
@@ -345,7 +364,8 @@ registerStep('appendToName', async (step, ctx) => {
 
 /**
  * recordScene {path} - write {sceneId, terrain} for the scene the actor is on at `path` on the actor (Cartography
- * Suite's survey, read by self:onRecordedScene:<path>). Stops, saying so, when there's no scene.
+ * Suite's survey, read by self:onRecordedScene:<path>). Stops, saying so, when there's no scene. `quiet: true` (round 15,
+ * items2 - Help Yourself's clone) posts no "surveyed" line.
  */
 registerStep('recordScene', async (step, ctx) => {
   const scene = sceneOf(ctx.actor);
@@ -363,7 +383,9 @@ registerStep('recordScene', async (step, ctx) => {
   }
 
   await write(ctx.actor, 'update', [{ [String(step.path)]: { sceneId: scene.id, terrain } }]);
-  ctx.chat.push(T('SceneRecorded', { name: escape(ctx.actor?.name), scene: escape(scene.name) }));
+  if (!step.quiet) {
+    ctx.chat.push(T('SceneRecorded', { name: escape(ctx.actor?.name), scene: escape(scene.name) }));
+  }
 }, { errors: (step, where) => (/^flags\.[\w.-]+$/.test(String(step.path ?? '')) ? [] : [`${where}: recordScene needs a flags.<...> path`]) });
 
 /**
@@ -399,21 +421,41 @@ registerStep('grantTopRolePerks', async (step, ctx) => {
  * fitUpgrade {uuid, onto: choice:<key>, flags?} - a compendium upgrade made on the actor and attached to the owned
  * item a pick stored (attachment-handler.mjs#setEntryAndAddItem, the way dropping it on the item does). It is not
  * tied to the rule's item (no grantedBy): it stays when the item goes.
+ * Round 15 (uses): `onto: granted` - the item the run's last grant made (@var.granted - Weapon Forage's foraged weapon);
+ * `uuid` may be {var.<key>} (a pickEntry); `until` - a temporary attachment, the weapon-perk-uses.mjs#attachTemporaryUpgrade
+ * stamp its sweep removes (with the host's entry): endOfTurn ("turn"), endOfNextTurn ("nextTurn"), scene, untilUsed
+ * (gone after the host's next attack), rounds:N.
  */
+const FIT_UNTIL = { endOfTurn: 'turn', endOfNextTurn: 'nextTurn', scene: 'scene', untilUsed: 'untilUsed' };
+const fitUntilOf = until => (FIT_UNTIL[until] ? { kind: FIT_UNTIL[until] } : /^rounds:(\d+)$/.test(String(until ?? '')) ? { kind: 'rounds', rounds: Number(String(until).slice(7)) } : null);
+
 registerStep('fitUpgrade', async (step, ctx) => {
   const actor = ctx.actor;
   const key = /^choice:([\w-]+)$/.exec(String(step.onto ?? ''))?.[1];
   const id = key ? ctx.item?.flags?.essence20?.rules?.choices?.[key] : null;
-  const host = id ? itemsOf(actor).find(item => item.id == id || item.uuid == id) : null;
-  const source = host ? await globalThis.fromUuid?.(step.uuid) : null;
+  const granted = step.onto == 'granted' ? ctx.vars?.granted ?? null : null;
+  const host = granted ?? (id ? itemsOf(actor).find(item => item.id == id || item.uuid == id) : null);
+  const uuid = String(step.uuid ?? '').replace(/\{var\.([\w-]+)\}/g, (match, name) => String(ctx.vars?.[name] ?? ''));
+  const source = host ? await globalThis.fromUuid?.(uuid) : null;
   if (!host || !source) {
     ctx.chat.push(S('NoSuchItem', { name: escape(actor?.name) }));
     return false;
   }
 
+  if (step.until) {
+    const { attachTemporaryUpgrade } = await import("../../../items/attacks/weapon-perk-uses.mjs");
+    const made = await attachTemporaryUpgrade(host.parent ?? actor, host, uuid, { ...fitUntilOf(step.until), source: ctx.item?.name ?? '' });
+    if (!made) {
+      return false;
+    }
+
+    ctx.chat.push(T('Fitted', { item: escape(made.name ?? source.name), host: escape(host.name) }));
+    return;
+  }
+
   const data = source.toObject();
   delete data._id;
-  globalThis.foundry.utils.setProperty(data, 'flags.core.sourceId', step.uuid);
+  globalThis.foundry.utils.setProperty(data, 'flags.core.sourceId', uuid);
   globalThis.foundry.utils.setProperty(data, 'flags.essence20.parentId', host.id);
   for (const [path, value] of Object.entries(step.flags ?? {})) {
     globalThis.foundry.utils.setProperty(data, `flags.essence20.${path}`, value);
@@ -427,7 +469,12 @@ registerStep('fitUpgrade', async (step, ctx) => {
   }
 
   ctx.chat.push(T('Fitted', { item: escape(data.name), host: escape(host.name) }));
-}, { errors: (step, where) => (step.uuid && /^choice:[\w-]+$/.test(String(step.onto ?? '')) ? [] : [`${where}: fitUpgrade needs a uuid and onto: choice:<key>`]) });
+}, {
+  errors: (step, where) => [
+    ...(step.uuid && (step.onto == 'granted' || /^choice:[\w-]+$/.test(String(step.onto ?? ''))) ? [] : [`${where}: fitUpgrade needs a uuid and onto: choice:<key> or granted`]),
+    ...(step.until && !fitUntilOf(step.until) ? [`${where}: fitUpgrade until must be endOfTurn, endOfNextTurn, scene, untilUsed or rounds:N`] : []),
+  ],
+});
 
 
 /**

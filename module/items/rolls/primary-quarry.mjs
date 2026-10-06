@@ -7,7 +7,7 @@
  *
  * Same "plain designation flag + a Use button" shape as items/rolls/mark-target.mjs's own
  * MARK_TARGET_FLAG - the 1-hour research cost is unenforced narrative (this project's own
- * standard idiom for a time cost nothing tracks against, see items/rolls/trade-school.mjs), and "you
+ * standard idiom for a time cost nothing tracks against), and "you
  * gain upshift 1 on Skill Tests to track and find" is approximated as "any roll against the
  * designated creature", the exact same widening Mark Target's own doc comment in dice.mjs already
  * accepts for its nearly-identical "Skill Tests related to that creature" text - RAW explicitly
@@ -20,22 +20,6 @@
 
 const PRIMARY_QUARRY_FLAG = 'primaryQuarryUuid';
 const SECONDARY_MARK_ID = "Compendium.essence20.decepticon_directive.Item.GS8YX7V6rYJLnkfQ";
-
-/**
- * Designates the actor's currently-targeted token as their Primary Quarry.
- * @param {Actor} actor
- * @returns {Promise<Boolean>}   False (and no flag set) if nothing is targeted.
- */
-export async function designatePrimaryQuarry(actor) {
-  const targetActor = game.user.targets.first()?.actor;
-  if (!targetActor) {
-    ui.notifications.warn(game.i18n.localize('E20.PrimaryQuarryNoTarget'));
-    return false;
-  }
-
-  await actor.setFlag('essence20', PRIMARY_QUARRY_FLAG, targetActor.uuid);
-  return true;
-}
 
 /**
  * Whether the given target is the actor's currently-designated Primary Quarry.

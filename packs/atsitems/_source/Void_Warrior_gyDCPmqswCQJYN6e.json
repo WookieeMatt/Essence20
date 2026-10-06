@@ -5,6 +5,11 @@
   "_id": "gyDCPmqswCQJYN6e",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Void Warrior: on for the scene","event":"powerUsed","when":["item:own","not:self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":true,"until":"scene"},{"do":"chat","text":"{name}'s attacks deal Void damage."}]},
+      {"type":"DamageType","label":"Void Warrior (Void damage)","to":"void","when":["self:toggle:on","item:type:weaponEffect"]},
+      {"type":"Veto","label":"Void Warrior (no Personal Power regained)","on":"update","path":"system.powers.personal.value","change":"up","clamp":true,"message":"E20.ResVoidWarriorNoRegen","when":["self:toggle:on"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 Personal Power; for the rest of the scene your unarmed and weapon attacks deal Void damage, and you can't regain Personal Power while it lasts.</p>"

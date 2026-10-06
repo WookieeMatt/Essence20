@@ -5,6 +5,18 @@
   "_id": "S7Qs6bJOVkVFxlFu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch it on","when":["rule:data:system.choice=boostOfSpeed","not:self:data:flags.essence20.powerAdaptationActive.boostOfSpeed"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"updateActor","set":{"flags.essence20.powerAdaptationActive.boostOfSpeed":true}}]},
+      {"type":"Use","label":"Switch it off","when":["rule:data:system.choice=boostOfSpeed","self:data:flags.essence20.powerAdaptationActive.boostOfSpeed"],"steps":[{"do":"updateActor","set":{"flags.essence20.powerAdaptationActive.boostOfSpeed":false}}]},
+      {"type":"Use","label":"Switch it on","when":["rule:data:system.choice=crushingStrength","not:self:data:flags.essence20.powerAdaptationActive.crushingStrength"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"updateActor","set":{"flags.essence20.powerAdaptationActive.crushingStrength":true}}]},
+      {"type":"Use","label":"Switch it off","when":["rule:data:system.choice=crushingStrength","self:data:flags.essence20.powerAdaptationActive.crushingStrength"],"steps":[{"do":"updateActor","set":{"flags.essence20.powerAdaptationActive.crushingStrength":false}}]},
+      {"type":"Use","label":"Switch it on","when":["rule:data:system.choice=strikingHands","not:self:data:flags.essence20.powerAdaptationActive.strikingHands"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"updateActor","set":{"flags.essence20.powerAdaptationActive.strikingHands":true}}]},
+      {"type":"Use","label":"Switch it off","when":["rule:data:system.choice=strikingHands","self:data:flags.essence20.powerAdaptationActive.strikingHands"],"steps":[{"do":"updateActor","set":{"flags.essence20.powerAdaptationActive.strikingHands":false}}]},
+      {"type":"Use","label":"Switch it on","when":["rule:data:system.choice=fastTrigger","not:self:data:flags.essence20.powerAdaptationActive.fastTrigger"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":2},"steps":[{"do":"updateActor","set":{"flags.essence20.powerAdaptationActive.fastTrigger":true}}]},
+      {"type":"Use","label":"Switch it off","when":["rule:data:system.choice=fastTrigger","self:data:flags.essence20.powerAdaptationActive.fastTrigger"],"steps":[{"do":"updateActor","set":{"flags.essence20.powerAdaptationActive.fastTrigger":false}}]},
+      {"type":"Use","label":"Switch it on","when":["rule:data:system.choice=regeneratingShell","not:self:data:flags.essence20.powerAdaptationActive.regeneratingShell"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":2},"steps":[{"do":"updateActor","set":{"flags.essence20.powerAdaptationActive.regeneratingShell":true}}]},
+      {"type":"Use","label":"Switch it off","when":["rule:data:system.choice=regeneratingShell","self:data:flags.essence20.powerAdaptationActive.regeneratingShell"],"steps":[{"do":"updateActor","set":{"flags.essence20.powerAdaptationActive.regeneratingShell":false}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Pick an adaptation when you add it. Use button: pay its Personal Power to switch it on (speed, Athletics and Brawn, unarmed attacks, an extra ranged attack, or regeneration); switch it off when its time runs out.</p>"

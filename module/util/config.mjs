@@ -893,7 +893,7 @@ E20.actionTypesConsumingNextTurn = ['wholeTurn'];
 /* How hard the action economy is enforced, world-wide. 'track' is the default and not as a hedge:
    with the overwhelming majority of Perks carrying no authored action cost, shipping 'strict'
    would gate real abilities on absent data. It also matches the idiom this codebase already
-   settled on elsewhere - "visible marker, not hard enforcement" (see items/vehicles/undo-engine.mjs). */
+   settled on elsewhere - "visible marker, not hard enforcement". */
 E20.actionEconomyModes = {
   off: "E20.ActionEconomyModeOff",
   track: "E20.ActionEconomyModeTrack",

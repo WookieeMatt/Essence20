@@ -11,7 +11,8 @@
       {"type":"Qualification","label":"Oorah! (Qualified: Silent battledress upgrade)","upgrades":["item:type:upgrade","item:data:name=silent","item:data:system.type=armor"]},
       {"type":"RollModifier","label":"Oorah!","when":["skill:infiltration"],"edge":true},
       {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","target:notActed"]},
-      {"type":"Use","label":"Take Qualified gear","steps":[{"do":"choose","options":[{"label":"A Standard weapon","steps":[{"do":"pickGrant","from":{"type":"weapon","availabilities":["standard"]},"flags":{"qualified":true}}]},{"label":"Silent battledress upgrade","steps":[{"do":"grant","uuid":"Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU","flags":{"qualified":true}}]}]}]}
+      {"type":"Use","label":"Take Qualified gear","steps":[{"do":"choose","options":[{"label":"A Standard weapon","steps":[{"do":"pickGrant","from":{"type":"weapon","availabilities":["standard"]},"flags":{"qualified":true}}]},{"label":"Silent battledress upgrade","steps":[{"do":"grant","uuid":"Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU","flags":{"qualified":true}}]}]}]},
+      {"type":"RollModifier","label":"Oorah! (↑1 on Driving, with Ranks)","stack":"vehicleQualification","upshift":1,"when":["skill:driving","vehicle:driving","vehicle:moves:ground",{"any":["self:skill:driving>=d2","self:data:system.skills.driving.isSpecialized"]}]}
     ],
     "automation": {
       "status": "full",

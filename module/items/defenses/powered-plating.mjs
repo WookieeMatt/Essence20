@@ -15,56 +15,8 @@
  * #onMorph, right where Boosted Vigor's own Morph-time toggle already lives.
  */
 
+// Written by the Perk's own Use rule (a spend of 1-4 Personal Power, then an updateActor of @spent on this flag).
 const POWERED_PLATING_FLAG = 'poweredPlatingBonus';
-const MAX_AMOUNT = 4;
-
-/**
- * Prompts for how much Power (1 up to what's actually available, capped at 4) to spend.
- * @param {Number} maxAmount
- * @returns {Promise<Number|null>}   The chosen amount, or null if cancelled/invalid.
- */
-export async function pickPoweredPlatingAmount(maxAmount) {
-  const chosen = await foundry.applications.api.DialogV2.wait({
-    window: { title: game.i18n.localize('E20.PoweredPlatingPickAmountTitle') },
-    classes: ["window-app", "e20-window"],
-    content: `<div class="form-group"><label>${
-      game.i18n.localize('E20.PoweredPlatingPickAmountLabel')
-    }</label><input type="number" name="amount" min="1" max="${maxAmount}" value="1" /></div>`,
-    modal: true,
-    buttons: [
-      {
-        label: game.i18n.localize('E20.DialogConfirmButton'),
-        action: 'confirm',
-        callback: (event, button) => parseInt(button.form.elements.amount.value),
-      },
-      { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-    ],
-  });
-
-  return Number.isInteger(chosen) && chosen > 0 ? Math.min(chosen, maxAmount) : null;
-}
-
-/**
- * Prompts for an amount, spends that much Power, and banks the matching Toughness Defense bonus.
- * @param {Actor} actor
- * @returns {Promise<Boolean>}   False (nothing spent) if there was no Power to spend, or the
- *   picker was cancelled.
- */
-export async function activatePoweredPlating(actor) {
-  const maxAmount = Math.min(MAX_AMOUNT, actor.system.powers.personal.value);
-  if (maxAmount <= 0) {
-    return false;
-  }
-
-  const amount = await pickPoweredPlatingAmount(maxAmount);
-  if (!amount) {
-    return false;
-  }
-
-  await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - amount });
-  await actor.setFlag('essence20', POWERED_PLATING_FLAG, amount);
-  return true;
-}
 
 /**
  * The actor's own currently-banked Toughness Defense bonus, if still Morphed - 0 otherwise (also

@@ -5,6 +5,9 @@
   "_id": "YSK9hm3OkG6jKlAJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Supportive Friend (allies within 60 ft)","outcome":"anySucceeded","when":["skill:choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ","not:self:has:Extra Supportive Friend","not:self:has:Super Supportive Friend"],"steps":[{"do":"pickAlly","all":true,"within":60},{"do":"bank","to":"targets","replace":true,"label":"Supportive Friend","upshift":1,"grantDouble":true,"appliesWhen":["not:roll:initiative"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when you succeed at a test with your Empathy Skill, every friendly token within 60 ft gets ↑1 on its next Skill Test, labelled Supportive Friend in its Roll Options Dialog. Left to the table: dropping the bonus if it isn't used this turn.</p>"

@@ -22,7 +22,6 @@ import {
   hasGridPowerBloom,
   gridPowerBloomResults,
 } from './story-points.mjs';
-import { BATTLE_HARDENED_ID } from '../../items/resources/battle-hardened.mjs';
 
 /** The primary Party as the pool sees it. `update` writes through so a second read sees it. */
 function mockParty({ storyPoints = 3, gmPoints = 0, isOwner = false } = {}) {
@@ -196,32 +195,7 @@ describe("announce: false", () => {
   });
 });
 
-describe("Battle Hardened (GI Joe CRB, General Perk, p.130)", () => {
-  class FakeRoll {
-    constructor() {
-      this._total = FakeRoll.nextTotal;
-    }
-    async evaluate() {
-      return this;
-    }
-    get total() {
-      return this._total;
-    }
-  }
-
-  let originalRoll;
-  beforeAll(() => {
-    originalRoll = global.Roll;
-    global.Roll = FakeRoll;
-  });
-  afterAll(() => {
-    global.Roll = originalRoll;
-  });
-
-  function makeHolder() {
-    return { items: [{ type: 'perk', flags: { core: { sourceId: BATTLE_HARDENED_ID } } }] };
-  }
-
+describe("storyPointsPaid (Battle Hardened's refund is that event's Trigger - rules/conv15-items2.test.js)", () => {
   /** The answering GM, owning the Party, handling a relayed spend. */
   function asGm() {
     global.game.user = { isGM: true, id: 'gm1' };
@@ -229,43 +203,28 @@ describe("Battle Hardened (GI Joe CRB, General Perk, p.130)", () => {
     return mockParty({ storyPoints: 3, isOwner: true });
   }
 
-  test("refunds the spent point on a rolled 4", async () => {
-    const party = asGm();
-    global.fromUuid = jest.fn().mockResolvedValue(makeHolder());
-    FakeRoll.nextTotal = 4;
-
-    await handleStoryPointSpendRequest({
-      action: "spendStoryPoints", amount: 1, actorName: "Duke", actorUuid: "Actor.duke1",
-    });
-
-    expect(party.update).toHaveBeenNthCalledWith(1, { 'system.storyPoints': 2 });
-    expect(party.update).toHaveBeenNthCalledWith(2, { 'system.storyPoints': 3 });
-    expect(global.ChatMessage.create).toHaveBeenCalledTimes(2);
+  let calls;
+  beforeEach(() => {
+    calls = [];
+    global.Hooks.callAll = jest.fn((...args) => calls.push(args));
   });
 
-  test("doesn't refund on anything but a 4", async () => {
+  test("a relayed spend that goes through tells the spending actor's Triggers, with the amount and pool", async () => {
     const party = asGm();
-    global.fromUuid = jest.fn().mockResolvedValue(makeHolder());
-    FakeRoll.nextTotal = 1;
+    const duke = { name: 'Duke', uuid: 'Actor.duke1' };
+    global.fromUuid = jest.fn().mockResolvedValue(duke);
 
-    await handleStoryPointSpendRequest({
-      action: "spendStoryPoints", amount: 1, actorName: "Duke", actorUuid: "Actor.duke1",
-    });
+    await handleStoryPointSpendRequest({ action: "spendStoryPoints", amount: 2, actorName: "Duke", actorUuid: "Actor.duke1" });
 
-    expect(party.update).toHaveBeenCalledTimes(1);
-    expect(global.ChatMessage.create).toHaveBeenCalledTimes(1);
+    expect(party.update).toHaveBeenCalledWith({ 'system.storyPoints': 1 });
+    expect(calls).toContainEqual(['essence20.storyPointsPaid', duke, 2, 'story']);
   });
 
-  test("doesn't roll at all without the Perk", async () => {
-    const party = asGm();
-    global.fromUuid = jest.fn().mockResolvedValue({ items: [] });
-    FakeRoll.nextTotal = 4;
-
-    await handleStoryPointSpendRequest({
-      action: "spendStoryPoints", amount: 1, actorName: "Duke", actorUuid: "Actor.duke1",
-    });
-
-    expect(party.update).toHaveBeenCalledTimes(1);
+  test("a refused spend (not enough in the pool) tells nobody", async () => {
+    asGm();
+    global.fromUuid = jest.fn().mockResolvedValue({ name: 'Duke' });
+    await handleStoryPointSpendRequest({ action: "spendStoryPoints", amount: 5, actorName: "Duke", actorUuid: "Actor.duke1" });
+    expect(calls.filter(call => call[0] == 'essence20.storyPointsPaid')).toEqual([]);
   });
 
   test("doesn't crash without an actorUuid (an older/unrelated caller)", async () => {
@@ -276,19 +235,19 @@ describe("Battle Hardened (GI Joe CRB, General Perk, p.130)", () => {
 
     expect(global.fromUuid).not.toHaveBeenCalled();
     expect(party.update).toHaveBeenCalledTimes(1);
+    expect(calls.filter(call => call[0] == 'essence20.storyPointsPaid')).toEqual([]);
   });
 
-  // The refund lives in spend() itself, so a player who owns the Party - and spends without any
-  // relay - gets the same chance.
-  test("also refunds a Party owner's own direct spend", async () => {
-    const party = mockParty({ storyPoints: 3, isOwner: true });
-    global.fromUuid = jest.fn().mockResolvedValue(makeHolder());
-    FakeRoll.nextTotal = 4;
+  // Fired in spend() itself, so a player who owns the Party - and spends without any relay - gets the same chance.
+  test("also a Party owner's own direct spend", async () => {
+    mockParty({ storyPoints: 3, isOwner: true });
+    const duke = { name: 'Duke', uuid: 'Actor.duke1' };
+    global.fromUuid = jest.fn().mockResolvedValue(duke);
 
-    await requestStoryPointSpend({ name: 'Duke', uuid: 'Actor.duke1' }, 1);
+    await requestStoryPointSpend(duke, 1);
 
     expect(global.fromUuid).toHaveBeenCalledWith('Actor.duke1');
-    expect(party.update).toHaveBeenNthCalledWith(2, { 'system.storyPoints': 3 });
+    expect(calls).toContainEqual(['essence20.storyPointsPaid', duke, 1, 'story']);
   });
 });
 

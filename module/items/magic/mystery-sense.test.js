@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyMysterySense, isMysterySenseActive, removeMysterySense } from './mystery-sense.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { isMysterySenseActive, removeMysterySense } from './mystery-sense.mjs';
 
 function makeActor(flags = {}) {
   const flagStore = { ...flags };
@@ -26,7 +27,7 @@ describe("isMysterySenseActive / applyMysterySense / removeMysterySense", () => 
     const actor = makeActor();
     expect(isMysterySenseActive(actor)).toBe(false);
 
-    await applyMysterySense(actor);
+    await activateForWindow(actor, 'mysterySenseActive', 'scene');
     expect(isMysterySenseActive(actor)).toBe(true);
 
     await removeMysterySense(actor);
@@ -35,7 +36,7 @@ describe("isMysterySenseActive / applyMysterySense / removeMysterySense", () => 
 
   test("clears once the scene ends", async () => {
     const actor = makeActor();
-    await applyMysterySense(actor);
+    await activateForWindow(actor, 'mysterySenseActive', 'scene');
 
     global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
 

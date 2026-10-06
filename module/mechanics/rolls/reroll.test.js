@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import { readFileSync } from 'fs';
 
 import {
   applyReroll,
@@ -21,6 +22,7 @@ function makeActor({ flags = {}, system = {}, items = { documentsByType: { roleP
   return {
     system,
     items,
+    flags: store,
     update: jest.fn(async (changes) => changes),
     getFlag: jest.fn((scope, key) => store[scope]?.[key]),
     setFlag: jest.fn(async (scope, key, value) => {
@@ -474,11 +476,12 @@ describe("canMeetRerollCondition", () => {
   });
 
   describe("'inEnvironmentOfExpertise' (GI Joe CRB, Survivalist, Predator Focus, p.94)", () => {
-    const ENVIRONMENTAL_EXPERTISE_ID = "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ";
+    // The Perk's own EnvironmentalExpertise rule (rules/plugins/effects/environmental-expertise-rule.mjs).
+    const EE_RULES = JSON.parse(readFileSync('packs/gijcrbitems/_source/Environmental_Expertise_EbbSUA2vSHyv3MjQ.json', 'utf8')).system.rules;
 
     function makeExpertiseActor({ hasPerk = true, active = true } = {}) {
       const items = hasPerk
-        ? [{ type: 'perk', flags: { core: { sourceId: ENVIRONMENTAL_EXPERTISE_ID } } }] : [];
+        ? [{ id: 'ee', type: 'perk', flags: {}, system: { rules: EE_RULES } }] : [];
       return makeActor({ items, flags: { environmentalExpertiseActive: active } });
     }
 

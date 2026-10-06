@@ -5,6 +5,11 @@
   "_id": "34WtMHugUN7Wp5bP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Spend 1 Cheer Point: Cleverness against the next attack","cost":{"resource":{"rolePoints":"Cheer Points"},"amount":1},"steps":[{"do":"mark","key":"cleverMind","to":"self"}]},
+      {"type":"Defense","label":"Clever Mind (Cleverness instead)","defense":"any","mode":"instead","from":["cleverness"],"when":["self:marked:cleverMind","not:defense:cleverness"]},
+      {"type":"Trigger","event":"targeted","outcome":"any","label":"Clever Mind used","when":["self:marked:cleverMind","not:defense:cleverness"],"steps":[{"do":"unmark","key":"cleverMind","to":"self"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 Cheer Point; the next attack against you is checked against your Cleverness instead of the Defense it targeted.</p>"

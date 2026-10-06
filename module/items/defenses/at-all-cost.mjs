@@ -1,5 +1,3 @@
-import { hasUsedThisEncounter, markUsedThisEncounter } from "../../mechanics/characters/perks.mjs";
-
 /**
  * At All Cost (Through the Shattered Grid, Magna Defender, 18th level, p.25): "Once per day, you
  * can fight beyond reaching 0 Health while Morphed. Instead of being Defeated or returning to your
@@ -23,8 +21,8 @@ import { hasUsedThisEncounter, markUsedThisEncounter } from "../../mechanics/cha
  * auto-revert every Morphed Role already has via hasMorphedToughnessBonus, which this codebase
  * doesn't otherwise intercept in code either).
  */
+// The switch itself is the Perk's own Use rules (an updateActor on this flag, once per scene); combat.mjs reads it.
 const AT_ALL_COST_FLAG = 'atAllCostActive';
-const AT_ALL_COST_ENCOUNTER_FLAG = 'atAllCostUsedThisEncounter';
 
 /**
  * Whether At All Cost is currently converting this actor's incoming damage to Power loss.
@@ -33,36 +31,6 @@ const AT_ALL_COST_ENCOUNTER_FLAG = 'atAllCostUsedThisEncounter';
  */
 export function isAtAllCostActive(actor) {
   return !!actor.getFlag?.('essence20', AT_ALL_COST_FLAG);
-}
-
-/**
- * Whether the actor may switch At All Cost ON right now - Morphed, not already active, and
- * (approximating "once per day") not already used this scene.
- * @param {Actor} actor
- * @returns {Boolean}
- */
-export function canActivateAtAllCost(actor) {
-  return !!actor.system.isMorphed && !isAtAllCostActive(actor)
-    && !hasUsedThisEncounter(actor, AT_ALL_COST_ENCOUNTER_FLAG);
-}
-
-/**
- * Switches At All Cost on, marking the scene's own once-per-day use.
- * @param {Actor} actor
- */
-export async function activateAtAllCost(actor) {
-  await actor.setFlag('essence20', AT_ALL_COST_FLAG, true);
-  await markUsedThisEncounter(actor, AT_ALL_COST_ENCOUNTER_FLAG);
-}
-
-/**
- * Switches At All Cost back off manually (a Free action per RAW's own framing of "you may
- * continue to fight normally" as an ongoing choice, though RAW never explicitly names a way to end
- * it early other than the automatic Power-exhaustion revert below).
- * @param {Actor} actor
- */
-export async function deactivateAtAllCost(actor) {
-  await actor.unsetFlag('essence20', AT_ALL_COST_FLAG);
 }
 
 /**

@@ -5,6 +5,10 @@
   "_id": "woCTg4Lpk3KpsgtF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Allies gain Edge on attacks","limit":{"per":"encounter"},"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"mark","key":"shiningLeader","to":"allies:100000","filter":["target:data:system.isMorphed"],"until":"endOfNextRound","when":["combat"]}]},
+      {"type":"RollModifier","label":"Shining Leader (Edge on attacks)","scope":"marked","mark":"shiningLeader","edge":true,"when":["attack"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: while Morphed, spend 1 Personal Power, once per combat. Your allies' attacks then get Edge for the rest of this round and the next, labelled Shining Leader in their Roll Options Dialog.</p>"

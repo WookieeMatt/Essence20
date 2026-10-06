@@ -47,19 +47,3 @@ export async function pickEltarianMettleCondition(actor) {
 
   return chosen && chosen != 'cancel' ? chosen : null;
 }
-
-/**
- * Prompts for and removes one of the actor's own active Conditions.
- * @param {Actor} actor
- * @returns {Promise<String|null>}   The Condition actually removed, or null if there was nothing
- *   to remove or the picker was cancelled.
- */
-export async function applyEltarianMettle(actor) {
-  const condition = await pickEltarianMettleCondition(actor);
-  if (!condition) {
-    return null;
-  }
-
-  await actor.toggleStatusEffect(condition, { active: false });
-  return condition;
-}

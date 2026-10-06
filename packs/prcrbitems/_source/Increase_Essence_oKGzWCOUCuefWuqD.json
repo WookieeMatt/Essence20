@@ -5,6 +5,9 @@
   "_id": "oKGzWCOUCuefWuqD",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Increase (Essence)","event":"added","removeOnStop":true,"steps":[{"do":"choose","prompt":"Which Essence goes up by 2?","options":[{"label":"Strength","steps":[{"do":"setEffects","effects":[{"changeKey":"system.essences.strength.value","on":true}]},{"do":"notify","text":"E20.ZordFeatureIncreaseEssenceApplied","data":{"essence":"E20.EssenceStrength"}}]},{"label":"Speed","steps":[{"do":"setEffects","effects":[{"changeKey":"system.essences.speed.value","on":true}]},{"do":"notify","text":"E20.ZordFeatureIncreaseEssenceApplied","data":{"essence":"E20.EssenceSpeed"}}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>When added to a Zord you pick Strength or Speed, and that Essence goes up by 2.</p>"

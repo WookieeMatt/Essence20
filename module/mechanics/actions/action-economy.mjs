@@ -1,7 +1,7 @@
 import { E20 } from "../../util/config.mjs";
 import { isAutomated } from "./named-actions.mjs";
 import { canUsePerk, hasItemUse } from "../resources/banked-buffs.mjs";
-import { actorHasPerk, hasUsedThisTurn, offerGrantDouble } from "../characters/perks.mjs";
+import { hasUsedThisTurn, offerGrantDouble } from "../characters/perks.mjs";
 import {
   attackMatchesFilter, bindEconomy, describeAttack, getAttacksPerAction, recordRuleUse,
   resolveCost,
@@ -545,37 +545,18 @@ export function getCost(actionType) {
   return E20.actionTypeCosts[actionType] ?? {};
 }
 
-// Dodgy (MLP CRB, General Perk, p.123): "On any round where you do not move more than 5 feet you
-// may Defend as a Free action." No per-round distance-moved tracker exists anywhere in this
-// codebase to check the 5ft qualifier against (this file's own ledger tracks an ALLOWANCE
-// consumed, not a queryable "how far did I move this round"), so - same "grant the upside, skip
-// the unenforceable qualifier" idiom this project already accepts elsewhere (e.g. Something To
-// Prove) - Defend is simply Free for any Dodgy holder. Every printing carries the same clause
-// (GI JOE CRB, Transformers CRB, Power Rangers CRB, WTNV Citizen's Guide).
-export const DODGY_IDS = [
-  "Compendium.essence20.mlp_crb.Item.jwhdtCaq0MBotupG",
-  "Compendium.essence20.gi_joe_crb.Item.GQwhr14X9yXkAuWH",
-  "Compendium.essence20.tf_crb.Item.smkYh73IkfzNuQUl",
-  "Compendium.essence20.pr_crb.Item.HdgGywFzuxezzVGy",
-  "Compendium.essence20.wtnv_citizens_guide.Item.QAyXVlPBLs5yndGt",
-];
-
 /**
- * The actual action-cost type to spend for one of the rules' own named actions (Defend, Aim,
- * Sprint, ...) - CONFIG.E20.namedActions[key]'s own printed type, EXCEPT for a Perk-driven
- * override like Dodgy's above.
- * @param {Actor} actor
+ * The action-cost type to spend for one of the rules' own named actions (Defend, Aim, Sprint, ...) -
+ * CONFIG.E20.namedActions[key]'s own printed type. Perks that make one cheaper (Dodgy's Free Defend)
+ * are ActionCost item rules, applied by spend() through the cost options (mechanics/actions/action-perks.mjs).
+ * @param {Actor} _actor
  * @param {String} key   A key of E20.namedActions.
  * @returns {String|null}   null for an unrecognized key.
  */
-export function getNamedActionType(actor, key) {
+export function getNamedActionType(_actor, key) {
   const action = CONFIG.E20.namedActions[key];
   if (!action) {
     return null;
-  }
-
-  if (key == 'defend' && DODGY_IDS.some(id => actorHasPerk(actor, id))) {
-    return 'free';
   }
 
   return action.type;

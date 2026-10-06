@@ -14,7 +14,8 @@ import { resolveValue } from "../../formula.mjs";
  */
 
 registerRuleType('BrawnRequirement', {
-  params: { amount: { kind: 'formula' }, ignore: { kind: 'bool' }, carrying: { kind: 'bool' }, stack: { kind: 'string' } },
+  // carryingOnly (round 15, uses): the offset counts for carrying capacity only, not equipment requirements (Loader).
+  params: { amount: { kind: 'formula' }, ignore: { kind: 'bool' }, carrying: { kind: 'bool' }, carryingOnly: { kind: 'bool' }, stack: { kind: 'string' } },
   scopes: ['self'],
   validate: rule => (rule.amount !== undefined || rule.ignore ? [] : ['give an amount or ignore']),
 });
@@ -27,7 +28,7 @@ registerRuleType('BrawnRequirement', {
  */
 export function ruleBrawnBonus(actor, use = 'requirement') {
   const live = rulesOfType(actor, 'BrawnRequirement', 'self')
-    .filter(({ rule }) => use != 'carrying' || rule.carrying)
+    .filter(({ rule }) => (use != 'carrying' ? !rule.carryingOnly : rule.carrying || rule.carryingOnly))
     .filter(({ rule, item }) => evaluate(rule.when, contextFor({ self: actor, ruleItem: item, combat: null })) === true);
   if (use == 'requirement' && live.some(({ rule }) => rule.ignore)) {
     return Infinity;

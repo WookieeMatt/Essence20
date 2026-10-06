@@ -75,15 +75,16 @@ describe("useGearNanomitePower", () => {
   });
 
   test("spends a use, says so, and runs the Power's effect by its source", async () => {
-    // Repair Machine's effect banks an Edge on the holder (items/rolls/repair-machine.mjs).
-    fromUuid.mockResolvedValue({ name: 'Repair Machine', type: 'power', flags: {}, system: {} });
+    // The compendium Power's own powerUsed rules run for the holder (rules/plugins/resources/power-used.mjs).
+    const effect = { type: 'Trigger', event: 'powerUsed', when: ['item:own'], steps: [{ do: 'chat', text: '{name} fixes it.' }] };
+    fromUuid.mockResolvedValue({ name: 'Repair Machine', type: 'power', flags: {}, system: { rules: [effect] } });
     const actor = makeActor();
     const gear = makeGear({ uses: 2 });
 
     expect(await useGearNanomitePower(actor, gear)).toBe(true);
     expect(gear.system.nanomite.spent).toBe(1);
     expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: 'E20.NanomiteGearUsed' }));
-    expect(actor.setFlag).toHaveBeenCalled();
+    expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: expect.stringContaining('Duke fixes it.') }));
   });
 
   test("the last use leaves the gear inert, and it can't be used again", async () => {

@@ -9,6 +9,8 @@ import {
 } from './aoe-targeting.mjs';
 
 const BIGGER_BOOMS_ID = "Compendium.essence20.gi_joe_crb.Item.8oGpBcKAnhJaSqVD";
+// Bigger Booms' pack rule (rules/conv15-other.test.js checks it against the pack).
+const BIGGER_BOOMS_RULES = [{ type: 'AreaRadius', add: 10, items: ['item:data:system.classification.style=explosive'] }];
 
 // placeAoeTemplate/getTokensInShape/getTokensInRegion are live-canvas code (canvas.regions
 // .placeRegion's real placement gesture, a real CONFIG.Region.documentClass, real Token
@@ -55,7 +57,7 @@ describe("angleBetweenPoints", () => {
 describe("getEffectiveRadiusFeet", () => {
   function makeActor({ hasPerk = false } = {}) {
     const items = hasPerk
-      ? [{ type: 'perk', flags: { core: { sourceId: BIGGER_BOOMS_ID } } }]
+      ? [{ type: 'perk', flags: { core: { sourceId: BIGGER_BOOMS_ID } }, system: { rules: BIGGER_BOOMS_RULES } }]
       : [];
     return { items };
   }
@@ -83,7 +85,7 @@ describe("getEffectiveRadiusFeet", () => {
   });
 
   // Bring It All Down (Decepticon Directive, Demolitionist Focus, 20th level, p.57) - "Double the
-  // blast area of effect radius." See items/attacks/bring-it-all-down.mjs's own doc comment.
+  // blast area of effect radius." See rules/plugins/combat/attack-choice.mjs.
   test("defaults radiusMultiplier to 1 (no change) when omitted", () => {
     expect(getEffectiveRadiusFeet(makeActor(), makeEffect())).toBe(15);
   });

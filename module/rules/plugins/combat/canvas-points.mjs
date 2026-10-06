@@ -13,6 +13,8 @@ import { escape, T, worldActors, write } from "../shared/chat-speaker-helpers.mj
  *  - Step `placeZone {key, label?, half?, until?, modifier: {when, upshift?, downshift?, edge?, snag?}}` - a zone on the
  *    point (a square reaching `half` grid squares each way, default 1), kept on the actor; anyone rolling from inside
  *    a live zone whose modifier `when` holds (self: the roller) gets its shifts as a roll source.
+ *    Round 15 (items2 - Perfect Placement): `halfFeet` - the reach in feet instead (turned into squares by the scene's
+ *    grid); `replace: true` - the actor's earlier zones with that key go. A zone with no modifier adds no source.
  */
 
 /** Tokens whose centre is within `feet` of a point (the viewed scene). */
@@ -54,6 +56,12 @@ registerStep('pickPoint', async (step, ctx) => {
   }
 
   if (!point) {
+    // optional (round 16, part b): no point picked is fine - the run goes on with none kept (Eye For Appraisal's spot).
+    if (step.optional) {
+      Object.assign(ctx.vars, { pointX: '', pointY: '', pointScene: '' });
+      return;
+    }
+
     return false;
   }
 
@@ -78,12 +86,13 @@ registerStep('placeZone', async (step, ctx) => {
     return false;
   }
 
+  const gridFeet = Number(globalThis.canvas?.grid?.distance) || Number(globalThis.canvas?.dimensions?.distance) || 5;
   const zone = {
     key: step.key, label: step.label || ctx.item?.name || '', x: point.x, y: point.y, sceneId: globalThis.canvas?.scene?.id ?? null,
-    half: Number(step.half) || 1, modifier: step.modifier ?? {}, until: step.until ?? 'scene',
+    half: step.halfFeet !== undefined ? (Number(step.halfFeet) || 0) / gridFeet : Number(step.half) || 1, modifier: step.modifier ?? {}, until: step.until ?? 'scene',
     stamp: stampFor(step.until ?? 'scene', undefined, ctx.actor),
   };
-  const kept = zonesOf(ctx.actor).filter(other => !isExpired(other));
+  const kept = zonesOf(ctx.actor).filter(other => !isExpired(other) && !(step.replace && other.key == step.key));
   await write(ctx.actor, 'update', [{ [`flags.essence20.${ZONES}`]: [...kept, zone] }]);
   ctx.chat.push(escape(T('ZonePlaced', { name: ctx.actor?.name ?? '', zone: zone.label })));
 }, { errors: (step, where) => (step.key ? [] : [`${where}: placeZone needs a key`]) });
@@ -115,6 +124,10 @@ export function zoneSources(actor, target, roll = {}) {
       }
 
       const modifier = zone.modifier ?? {};
+      if (!modifier.upshift && !modifier.downshift && !modifier.edge && !modifier.snag) {
+        continue;
+      }
+
       if (evaluate(modifier.when ?? [], contextFor({ ...roll, self: actor, other: target })) !== true) {
         continue;
       }

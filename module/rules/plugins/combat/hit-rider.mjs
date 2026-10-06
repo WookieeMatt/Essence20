@@ -30,6 +30,8 @@ import { fillSwitch } from "../dialog/dialog-select-options.mjs";
  *   watch: "ally"       the rule acts on hits by OTHER actors on the holder's side (token disposition), the holder
  *                       anywhere in the world; one book item counts once however many hold it
  *   marked: <key>       the rule acts on hits by whoever carries that mark, set by the holder (mark step)
+ *   consumeMark: <key>  the hitter's own mark under that key is used up by the first hit the rule acts on (round 15,
+ *                       banked: a one-shot "+1 damage on your next damaging hit" - Smashmouth Offense)
  *
  * `when` sees the hit: item: (the rolled attack), weapon:, skill:, attack:melee, roll:switch:<key>,
  * roll:dataset:<key>, item:damageType:<type> (the attack's own type), target: (the one hit); self: is the one who
@@ -49,6 +51,7 @@ registerRuleType('HitRider', {
     siblings: { kind: 'object' },
     watch: { kind: 'enum', options: ['ally'] },
     marked: { kind: 'string' },
+    consumeMark: { kind: 'string' },
   },
   scopes: ['self', 'host'],
   validate: rule => [
@@ -77,9 +80,19 @@ function optionErrors(option, where) {
   return errors;
 }
 
+/**
+ * More places HitRider rules come from (round 15, uses): fn(attacker, target) => [{rule, item, index, holder}] - the
+ * companion scope (an owner's rule on its companions' hits) and markedTarget (hits on a creature carrying the holder's
+ * mark), rules/plugins/picks/companions.mjs and rules/plugins/marks/marked-target-hits.mjs. Rules of those scopes aren't
+ * the holder's own.
+ */
+export const HIT_RIDER_SOURCES = [];
+const OWN_SCOPES = ['self', 'host'];
+
 /** The HitRider rules that bear on a hit by `attacker`: its own, those of whoever marked it, and allies' watch rules. */
-export function hitRiderEntries(attacker) {
-  const own = rulesOfType(attacker, 'HitRider').filter(({ rule }) => !rule.watch && !rule.marked).map(entry => ({ ...entry, holder: attacker }));
+export function hitRiderEntries(attacker, target = null) {
+  const own = rulesOfType(attacker, 'HitRider').filter(({ rule }) => !rule.watch && !rule.marked && OWN_SCOPES.includes(rule.scope ?? 'self'))
+    .map(entry => ({ ...entry, holder: attacker }));
   const marked = [];
   for (const { key, mark } of marksOf(attacker)) {
     const setter = resolve(mark?.by);
@@ -112,7 +125,9 @@ export function hitRiderEntries(attacker) {
     }
   }
 
-  return [...own, ...marked, ...watching];
+  // Rules reaching the hit from elsewhere (HIT_RIDER_SOURCES).
+  const plugged = HIT_RIDER_SOURCES.flatMap(source => source(attacker, target) ?? []);
+  return [...own, ...marked, ...watching, ...plugged];
 }
 
 const noteOnAttack = tools => (result, amount, label) => tools.damageBonusNote(result, amount, label);
@@ -142,6 +157,11 @@ function applyEntry(entry, hit) {
 
   if (evaluate(rule.when, contextFor({ ...facts, self: attacker, holder, ruleItem, other: target })) !== true) {
     return;
+  }
+
+  // consumeMark: the hitter's mark this hit uses up (written once the hit's rules have all been read).
+  if (rule.consumeMark && attacker?.flags?.essence20?.ruleMarks?.[rule.consumeMark]) {
+    hit.consumed?.add(rule.consumeMark);
   }
 
   const vars = { damage: num(result.damageValue), base: num(rolled?.system?.damageValue) };
@@ -216,9 +236,14 @@ export function hitRiderOnAttack(attacker, target, result, rider = {}, tools = {
     item: rolled, rolledSkill: rider.skill, isAttack: true, isMelee: rider.style == 'melee', switches: rider.switches ?? [],
     dataset: rider.dataset, damageType: rider.damageType ?? result.damageType, isCrit: !!tools.isCrit,
   };
-  const hit = { attacker, target, result, rolled, facts, note: noteOnAttack(tools), mode: 'attack' };
-  for (const entry of hitRiderEntries(attacker)) {
+  const hit = { attacker, target, result, rolled, facts, note: noteOnAttack(tools), mode: 'attack', consumed: new Set() };
+  for (const entry of hitRiderEntries(attacker, target)) {
     applyEntry(entry, hit);
+  }
+
+  // A mark used up (consumeMark) - gone before the attack's next hit is read (attackRiders awaits each).
+  if (hit.consumed.size && attacker?.update) {
+    return attacker.update(Object.fromEntries([...hit.consumed].map(key => [`flags.essence20.ruleMarks.-=${key}`, null])));
   }
 }
 

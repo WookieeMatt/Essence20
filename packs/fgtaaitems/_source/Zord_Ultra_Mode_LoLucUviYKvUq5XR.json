@@ -3,6 +3,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Convert to Zord Ultra Mode (Standard action, 1 Personal Power)","limit":{"per":"scene"},"when":["self:morphed"],"cost":{"action":"standard","resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"mark","key":"zordUltraMode","to":"self","until":"scene"},{"do":"setEffects","items":"type:feature","effects":[{"on":["self:marked:zordUltraMode","calc:@actor.system.health.value>0"]}]},{"do":"chat","text":"{name} converts to Zord Ultra Mode: their Zord Features apply until the scene ends or they are Defeated."}]},
+      {"type":"Use","label":"Add a Zord Feature","steps":[{"do":"pickGrant","from":{"type":"feature","notOwned":true},"to":"self"}]},
+      {"type":"Trigger","event":"added","label":"Zord Ultra Mode","steps":[{"do":"setEffects","items":"type:feature","effects":[{"on":["self:marked:zordUltraMode","calc:@actor.system.health.value>0"]}]}]},
+      {"type":"Trigger","event":"itemAdded","label":"Zord Ultra Mode","when":["item:type:feature"],"steps":[{"do":"setEffects","items":"type:feature","effects":[{"on":["self:marked:zordUltraMode","calc:@actor.system.health.value>0"]}]}]},
+      {"type":"Trigger","event":"sceneStart","label":"Zord Ultra Mode","steps":[{"do":"setEffects","items":"type:feature","effects":[{"on":["self:marked:zordUltraMode","calc:@actor.system.health.value>0"]}]}]},
+      {"type":"Trigger","event":"droppedToZero","label":"Zord Ultra Mode ends","when":["var:resource=health","self:marked:zordUltraMode"],"steps":[{"do":"unmark","key":"zordUltraMode","to":"self"},{"do":"setEffects","items":"type:feature","effects":[{"on":["self:marked:zordUltraMode","calc:@actor.system.health.value>0"]}]}]}
+    ],
     "prerequisites": {"when":["self:canTransform","self:data:system.powers.personal.max>=1","ask:Role with a Zord Feature Perk","self:size>=large"]},
     "automation": {
       "status": "full",

@@ -5,6 +5,11 @@
   "_id": "fsy9G9z8cKe3kObg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Self-Preservation (Resistance to your Energy Affinity Element)","path":"system.resistances.{sourced.DgFY0ZmAtClAobiA.system.choice}","value":true},
+      {"type":"Use","label":"Self-Preservation (Immunity to the next hit of that Element)","cost":{"resource":{"path":"system.energon.normal.value"},"amount":1},"steps":[{"do":"mark","key":"selfPreservation","to":"self","until":"combat"},{"do":"chat","text":"{name} spends an Energon Point: Immune to the next hit of their Energy Affinity's damage type."}]},
+      {"type":"DamageReduction","label":"Self-Preservation (Immunity)","amount":999,"consumeMark":"selfPreservation","when":["damage:{sourced.DgFY0ZmAtClAobiA.system.choice}"],"quiet":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: Resistance to your Energy Affinity element. Use button: spend 1 Energon for Immunity to it, which stops the next hit of that type. Left to the table: further hits before your next turn.</p>"

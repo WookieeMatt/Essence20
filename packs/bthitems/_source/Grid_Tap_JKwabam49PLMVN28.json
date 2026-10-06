@@ -5,6 +5,9 @@
   "_id": "JKwabam49PLMVN28",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceCount","label":"Grid Tap (one more Grid Science / Grid Tech bonus)","add":1,"items":["Compendium.essence20.pr_crb.Item.R7HF3aSR3ZPURh1W","Compendium.essence20.pr_crb.Item.PIwAwPxbzH4hQ0WB","Compendium.essence20.pr_crb.Item.qZVu4bfVFOvcgzgo","Compendium.essence20.pr_crb.Item.dWfuzsqz30rZmX1G","Compendium.essence20.beneath_the_helmet.Item.C81ZIdSjyz5mSTkI","Compendium.essence20.beneath_the_helmet.Item.jNOwd35gE6Qrybdb","Compendium.essence20.beneath_the_helmet.Item.6wD6guZWDrVbsMHZ","Compendium.essence20.beneath_the_helmet.Item.sZacBgzLZjYd6ypy"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: whenever you gain a Grid Science or Grid Tech Perk while holding this, its picker offers one extra choice.</p>"

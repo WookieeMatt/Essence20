@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","action":"sprint","to":"free","limit":{"per":"turn","max":1,"key":"mobility"}},
+      {"type":"ActionCost","action":"hide","to":"free","limit":{"per":"turn","max":1,"key":"mobility"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic, once per turn: a Sprint or Hide costs you a Free action instead.</p>"

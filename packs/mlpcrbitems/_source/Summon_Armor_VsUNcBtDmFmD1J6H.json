@@ -5,6 +5,9 @@
   "_id": "VsUNcBtDmFmD1J6H",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Summon Armor (target, else you: +2 Toughness / Evasion this scene)","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"mark","key":"summonArmor","to":"targetOrSelf","until":"scene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: on a successful cast, your target (or you, with no target) gets +2 Toughness and Evasion for the scene.</p>"

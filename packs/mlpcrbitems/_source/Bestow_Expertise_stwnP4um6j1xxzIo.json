@@ -5,6 +5,10 @@
   "_id": "stwnP4um6j1xxzIo",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"PreCast","label":"Bestow Expertise: pick a Skill and name","steps":[{"do":"pick","key":"skill","from":"skill"},{"do":"askChoiceText","key":"name","prompt":"Specialization name"}]},
+      {"type":"Trigger","label":"Bestow Expertise","event":"afterRoll","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"grantSpecialization","skill":"{choice.skill}","name":"{choice.name}","to":"targetOrSelf","until":"scene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: pick a target and a Skill. They gain a Specialization in it, removed when the GM advances the scene.</p>"

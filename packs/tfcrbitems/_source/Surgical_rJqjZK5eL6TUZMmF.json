@@ -5,6 +5,9 @@
   "_id": "rJqjZK5eL6TUZMmF",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"CriticalOption","defense":"toughness","when":["item:onHost"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: on a critical hit with this weapon, a button deals 1 damage to the target's Toughness. If the weapon also has Maiming, you pick which one applies.</p>"

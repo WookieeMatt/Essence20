@@ -5,6 +5,10 @@
   "_id": "Ill7m9IwlyXY0FMe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Penetrating Aim (Aim to ignore 1 point of armor instead)","key":"penetratingAim","when":["attack","not:attack:melee"]},
+      {"type":"Defense","label":"Penetrating Aim (ignore 1 point of armor)","defense":"toughness","mode":"ignoreArmor","points":1,"outgoing":true,"when":["roll:switch:penetratingAim"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: a switch on ranged attacks to ignore 1 point of the target's armor bonus. Left to the table: giving up the Aim ↑1, and a second Aim for a second point.</p>"

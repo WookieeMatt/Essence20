@@ -5,6 +5,9 @@
   "_id": "IuQ0tsM2G99fQlSz",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Boost Initiative: +2 per Power spent","event":"powerUsed","when":["item:own","var:spent>0","self:initiative"],"steps":[{"do":"writeInitiative","to":"self","value":"@initiative + 2 * @var.spent","exact":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (in combat): spend any amount of Power; your Initiative goes up 2 per Power spent.</p>"

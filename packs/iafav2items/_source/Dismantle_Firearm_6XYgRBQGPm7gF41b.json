@@ -5,6 +5,9 @@
   "_id": "6XYgRBQGPm7gF41b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ManeuverOption","label":"Dismantle Firearm","option":"dismantle","when":[{"any":["item:trait:ballistic","item:trait:reload"]}]}
+    ],
     "prerequisites": {"when":["self:has:Snatch","self:skill:finesse>=d8"]},
     "automation": {
       "status": "full",

@@ -1,14 +1,13 @@
 import { jest } from '@jest/globals';
-import { addNightValeAnimalPerk, animalStats, canCommand, commandDif, commandIsMove, runCompanionUse, companionDefenseBonus, companionRollSources, droneStats, isDocked, linkedBonuses, miniConStats, ponyPetStats } from './companions.mjs';
+import { addNightValeAnimalPerk, animalStats, canCommand, commandDif, commandIsMove, companionRollSources, droneStats, isDocked, linkedBonuses, miniConStats, ponyPetStats } from './companions.mjs';
 import { COMP, isCompanionUse } from './companion-uses.mjs';
 import { companionsOf, isCompanionPair, ownerOf, worldActors } from './companion-link.mjs';
 import { buildCommand, commandDefenseBonus, commandSources, isLive, PRESETS } from '../actions/commands.mjs';
-import { bondBonuses, bondOf, bondRollSources, bondSpecializes, BOND, moduleEnergon } from './bonded-partners.mjs';
-import { BFF, bffsOf, coolerAvailable, isBff, leaveItToMeFailure } from '../../items/social/best-friends-forever.mjs';
-import { groupBonuses, GROUP, renderCard, tally } from '../rolls/group-tests.mjs';
+import { bondOf, bondRollSources, BOND, moduleEnergon } from './bonded-partners.mjs';
+import { groupBonuses, renderCard, tally } from '../rolls/group-tests.mjs';
 import { allegianceLeft, CONTACT, contactKindOf, isContact, startingAllegiance } from './contacts.mjs';
-import { BATTLIZERS, fastSummonOptions, hardTargetBonus, isBattlizer, personalVehicleEdge, racerAbandonMode, SUMMON, vehicleData, VEHICLES } from './summons.mjs';
-import { carrierCapacityLeft, rightHandsDefense, teamKindOf, TEAM } from '../actions/team-actions.mjs';
+import { BATTLIZERS, isBattlizer, personalVehicleEdge, racerAbandonMode, SUMMON, vehicleData, VEHICLES } from './summons.mjs';
+import { carrierCapacityLeft, teamKindOf, TEAM } from '../actions/team-actions.mjs';
 
 let nextId = 0;
 const item = (source, extra = {}) => ({
@@ -87,18 +86,19 @@ describe('pet and drone statistics', () => {
 
   test('command DIF by availability, Agreeable and the pony books', () => {
     expect(commandDif(actor({ type: 'companion', system: { availability: 'limited' } }))).toBe(10);
-    expect(commandDif(actor({ type: 'companion', system: { availability: 'restricted' }, items: [item(COMP.agreeableGij)] }))).toBe(10);
+    // Agreeable's PetCommand {difTier: -1} rule (rules/plugins/picks/pet-command.mjs).
+    expect(commandDif(actor({ type: 'companion', system: { availability: 'restricted' }, items: [{ id: 'ag', type: 'perk', name: 'Agreeable', flags: {}, system: { rules: [{ type: 'PetCommand', difTier: -1 }] } }] }))).toBe(10);
     expect(commandDif(actor({ type: 'companion', system: { availability: 'restricted' }, flags: { petBuild: { line: 'mlp' } } }))).toBe(10);
   });
 });
 
 describe('what owners and companions give each other', () => {
-  test('Tough Together, Linked Health and Reinforced Bond', () => {
-    const owner = actor({ uuid: 'Actor.o', items: [item(COMP.toughTogether)] });
+  test('Linked Health and Reinforced Bond', () => {
+    const owner = actor({ uuid: 'Actor.o', items: [] });
     const pet = actor({ uuid: 'Actor.p', type: 'companion', system: { type: 'pet' }, flags: { companionOf: 'Actor.o' } });
     const mini = actor({ uuid: 'Actor.m', type: 'companion', system: { type: 'miniCon' }, flags: { companionOf: 'Actor.o', miniCon: { docked: false, defenseShift: 2 } } });
     actors.push(owner, pet, mini);
-    expect(linkedBonuses(pet).health).toBe(1);
+    expect(linkedBonuses(pet).health).toBe(0);
     expect(linkedBonuses(mini).defenses.toughness).toBe(2);
     expect(linkedBonuses(owner).health).toBe(2);
     expect(linkedBonuses(owner).defenses.evasion).toBe(-2);
@@ -111,7 +111,6 @@ describe('what owners and companions give each other', () => {
     actors.push(owner, make(1), make(2));
     expect(linkedBonuses(owner).defenses.evasion).toBe(1);
     expect(companionRollSources(owner, null, { rolledSkill: 'alertness' }).map(s => s.id)).toContain('miniConHelper');
-    expect(companionDefenseBonus(owner, 'toughness')).toBe(0);
   });
 });
 
@@ -144,14 +143,13 @@ describe('Issue Command', () => {
 });
 
 describe('bonded partners', () => {
-  test('Advanced Link, Armored Connection and Bonded Proficiency', () => {
-    const partner = actor({ uuid: 'Actor.p', system: { skills: { science: { shift: 'd6', isSpecialized: true } } } });
-    const holder = actor({ uuid: 'Actor.h', items: [item(BOND.advancedLink), item(BOND.armoredConnection), item(BOND.bondedProficiency)], flags: { bond: { partner: 'Actor.p', linked: true } } });
+  // (Advanced / Perfect Link, Armored Connection and Bonded Proficiency are rules now - rules/conv15-other.test.js.)
+  test('the bond is found from either side; the Powermaster module starts full', () => {
+    const partner = actor({ uuid: 'Actor.p' });
+    const holder = actor({ uuid: 'Actor.h', flags: { bond: { partner: 'Actor.p', linked: true } } });
     actors.push(partner, holder);
     expect(bondOf(partner).holder).toBe(holder);
-    expect(bondBonuses(partner).health).toBe(1);
-    expect(bondBonuses(holder).defenses.toughness).toBe(2);
-    expect(bondSpecializes(holder, 'science')).toBe(true);
+    expect(bondOf(holder).partner).toBe(partner);
     expect(moduleEnergon(holder)).toBe(3);
   });
 
@@ -164,23 +162,16 @@ describe('bonded partners', () => {
   });
 });
 
-describe('BFFs', () => {
-  test('About Twenty-Percent Cooler and Leave It To Me', () => {
-    const friend = actor({ uuid: 'Actor.f', system: { skills: { might: { shift: 'd4' } } }, flags: { failedOnTurn: { skill: 'might', scene: 1, id: 'x' } } });
-    const pony = actor({ uuid: 'Actor.p', items: [item(BFF.bff), item(BFF.twentyPercentCooler), item(BFF.leaveItToMe)], flags: { bffs: ['Actor.f'] } });
-    actors.push(friend, pony);
-    expect(bffsOf(pony)).toEqual(['Actor.f']);
-    expect(isBff(pony, friend)).toBe(true);
-    expect(coolerAvailable(pony, 'might')).toBe(true);
-    expect(coolerAvailable(pony, 'alertness')).toBe(false);
-    expect(leaveItToMeFailure(pony, 'might')?.id).toBe('x');
-  });
-});
+// The BFF Perks are their own rules (rules/conv15-items2.test.js).
 
 describe('Group Skill Tests', () => {
   test('half or more succeed, and the Perks that help', () => {
-    const a = actor({ uuid: 'Actor.1', items: [item(GROUP.caretaker)], flags: { groupTest: { id: 't', success: true } } });
-    const b = actor({ uuid: 'Actor.2', items: [item(GROUP.bowlingTeam)], flags: { groupTest: { id: 't', success: false } } });
+    // Caretaker: its pack rule, GroupTestBonus {edge: true} (rules/conv17-split3.test.js checks the pack).
+    const caretaker = item('Compendium.essence20.pr_crb.Item.4q2SPRzdbGosL62k', { system: { rules: [{ type: 'GroupTestBonus', edge: true }] } });
+    const a = actor({ uuid: 'Actor.1', items: [caretaker], flags: { groupTest: { id: 't', success: true } } });
+    // Bowling Team: its pack rule, GroupTestBonus {upshift: 1, who: led} (rules/conv15-other.test.js checks the pack).
+    const bowlingTeam = item('Compendium.essence20.wtnv_citizens_guide.Item.V11B4h7plsBAaq34', { system: { rules: [{ type: 'GroupTestBonus', upshift: 1, who: 'led' }] } });
+    const b = actor({ uuid: 'Actor.2', items: [bowlingTeam], flags: { groupTest: { id: 't', success: false } } });
     actors.push(a, b);
     const test = { id: 't', skill: 'might', dif: 10, leader: 'Actor.2', participants: ['Actor.1', 'Actor.2'] };
     expect(tally(test)).toMatchObject({ successes: 1, done: true, success: true });
@@ -210,7 +201,7 @@ describe('summons', () => {
     expect(data.items.filter(i => i.type == 'weaponEffect').length).toBe(2);
   });
 
-  test('Battlizers, Edge while riding, Hard Target and Racer Abandon', () => {
+  test('Battlizers, Edge while riding and Racer Abandon', () => {
     expect(isBattlizer(item(SUMMON.triassic, { type: 'armor' }))).toBe(true);
     expect(BATTLIZERS[SUMMON.triassic].cost).toBe(3);
     // Quantum Mega Battle Armor (A Jump Through Time): 5 Personal Power, three attacks.
@@ -218,28 +209,19 @@ describe('summons', () => {
     expect(isBattlizer(item(SUMMON.quantumMega, { type: 'armor' }))).toBe(true);
     expect(BATTLIZERS[SUMMON.quantumMega].cost).toBe(5);
     expect(BATTLIZERS[SUMMON.quantumMega].attacks.map(a => a.name)).toEqual(['Wing Blades', 'Wing Blaster', 'Energy Sword Time Strike']);
-    const rider = actor({ uuid: 'Actor.r', items: [item(SUMMON.hardTarget), item(SUMMON.racerAbandon)] });
+    const rider = actor({ uuid: 'Actor.r', items: [item(SUMMON.racerAbandon)] });
     const cycle = actor({ type: 'vehicle', flags: { personalVehicle: 'sharkCycle', companionOf: 'Actor.r' } });
     expect(personalVehicleEdge(rider, 'driving', cycle)).toBe(true);
     expect(personalVehicleEdge(rider, 'might', cycle)).toBe(false);
-    const jetPack = actor({ type: 'vehicle', flags: { personalVehicle: 'jetPack' } });
-    expect(hardTargetBonus(rider, jetPack)).toEqual({ health: 2, defenses: { toughness: 2 } });
     expect(racerAbandonMode(rider, cycle)).toEqual({ vehicle: true, self: false });
-    const zord = actor({ type: 'zord', items: [item(SUMMON.manifestedZord)] });
-    expect(fastSummonOptions(rider, zord).map(o => o.key)).toEqual(['manifested']);
   });
 });
 
 describe('team Perks', () => {
-  test('Use kinds, Carrier capacity and In The Right Hands', () => {
-    expect(teamKindOf(item(TEAM.tryMe))).toBe('tryMe');
+  // (In The Right Hands is its item's own rules - rules/conv16-b.test.js.)
+  test('Use kinds and Carrier capacity', () => {
+    expect(teamKindOf(item(TEAM.letsBringEmTogether))).toBe('letsBringEmTogether');
     expect(carrierCapacityLeft(actor({ type: 'zord', system: { actors: { a: { type: 'zord' } } } }))).toBe(4);
-    const armor = actor({ uuid: 'Actor.arm', system: { isTransformed: true }, items: [item(TEAM.inTheRightHands)], flags: { rightHands: { kind: 'bodyArmor', wielder: 'Actor.w' } } });
-    const wearer = actor({ uuid: 'Actor.w' });
-    actors.push(armor, wearer);
-    expect(rightHandsDefense(wearer, 'toughness')).toBe(2);
-    expect(rightHandsDefense(armor, 'evasion')).toBe(2);
-    expect(rightHandsDefense(wearer, 'willpower')).toBe(0);
   });
 });
 
@@ -268,10 +250,6 @@ describe('Night Vale Community Adoption Center', () => {
 });
 
 describe('designated commanders and Favorite Command', () => {
-  function dialogAnswer(answer) {
-    global.foundry.applications = { api: { DialogV2: { wait: jest.fn(async ({ buttons }) => buttons[0].callback(null, { form: { elements: answer } })) } } };
-  }
-
   function withSetFlag(it) {
     it.setFlag = jest.fn(async (scope, key, value) => {
       it.flags.essence20[key] = value;
@@ -279,7 +257,7 @@ describe('designated commanders and Favorite Command', () => {
     return it;
   }
 
-  test('Backup Master / Extra Friend: the Use button designates who else may command the pet', async () => {
+  test('Backup Master / Extra Friend: the designee its Use rule stores may command the pet', async () => {
     const owner = actor({ uuid: 'Actor.owner', name: 'Owner' });
     const friend = actor({ uuid: 'Actor.friend', name: 'Friend' });
     for (const source of [COMP.backupMaster, COMP.extraFriend]) {
@@ -287,13 +265,9 @@ describe('designated commanders and Favorite Command', () => {
       const pet = actor({ uuid: 'Actor.pet', type: 'companion', system: { type: 'pet' }, flags: { companionOf: 'Actor.owner' }, items: [perk] });
       perk.parent = pet;
       actors.splice(0, actors.length, owner, friend, pet);
-      expect(isCompanionUse(perk)).toBe(true);
+      expect(isCompanionUse(perk)).toBe(false);
       expect(canCommand(friend, pet)).toBe(false);
-      dialogAnswer({ designee: { value: 'Actor.friend' } });
-
-      await runCompanionUse(perk, null);
-
-      expect(perk.flags.essence20.designee).toBe('Actor.friend');
+      perk.flags.essence20.designee = 'Actor.friend';
       expect(canCommand(friend, pet)).toBe(true);
       expect(canCommand(owner, pet)).toBe(true);
     }
@@ -311,11 +285,10 @@ describe('designated commanders and Favorite Command', () => {
     perk.system.choice = 'alertness';
     expect(commandIsMove(owner)).toBe(true);
 
-    // ...and so does the Use button's pick.
+    // ...and so does the Use rule's pick (flags.essence20.favoriteSkill).
     perk.system.choice = '';
-    dialogAnswer({ skill: { value: 'might' } });
-    await runCompanionUse(perk, null);
-    expect(perk.flags.essence20.favoriteSkill).toBe('might');
+    expect(commandIsMove(owner)).toBe(false);
+    perk.flags.essence20.favoriteSkill = 'might';
     expect(commandIsMove(owner)).toBe(true);
   });
 });

@@ -5,6 +5,9 @@
   "_id": "AAacA8jm6dyG0WEH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"initiativeRolling","label":"Roadside Assistant (+1 Bonus Health to your vehicle)","limit":{"per":"encounter"},"when":["vehicle:crew"],"steps":[{"do":"updateActor","to":"crewedVehicle","add":{"system.health.bonus":1}}]}
+    ],
     "prerequisites": {"when":["self:skill:driving>=d4","self:skill:technology>=d4"]},
     "automation": {
       "status": "partial",

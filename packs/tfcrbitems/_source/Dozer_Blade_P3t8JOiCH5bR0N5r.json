@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
     "rules": [
-      {"type":"Defense","defense":"toughness","amount":2,"when":["self:canTransform","not:self:transformed"]}
+      {"type":"Defense","defense":"toughness","amount":2,"when":["self:canTransform","not:self:transformed"]},
+      {"type":"Use","label":"Clear a square of Rough Terrain (Alt Mode)","when":["self:transformed"],"cost":{"action":"free"},"steps":[{"do":"require","beforeCost":true,"check":["self:onCanvas"],"message":"{lang.RulesExtSplit217.NeedsToken}"},{"do":"clearRoughTerrain"}]}
     ],
     "automation": {
       "status": "full",

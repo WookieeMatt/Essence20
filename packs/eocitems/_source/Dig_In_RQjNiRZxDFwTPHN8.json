@@ -7,7 +7,9 @@
   "system": {
     "rules": [
       {"type":"AimBonus","label":"Dig In: Aiming gives ↑2 while dug in","atLeast":2,"when":["self:data:flags.essence20.cannoneerDugIn"]},
-      {"type":"Cover","mode":"add","amount":1,"against":true,"label":"Dig In: Cover ↓1 more against it while dug in","when":["check:cannoneerDugIn"]}
+      {"type":"Cover","mode":"add","amount":1,"against":true,"label":"Dig In: Cover ↓1 more against it while dug in","when":["check:cannoneerDugIn"]},
+      {"type":"Use","label":"Dig In on","when":["not:self:data:flags.essence20.cannoneerDugIn"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.cannoneerDugIn":true}},{"do":"chat","text":"{name} digs in."}]},
+      {"type":"Use","label":"Dig In off","when":["self:data:flags.essence20.cannoneerDugIn"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.cannoneerDugIn":false}},{"do":"chat","text":"{name} is no longer dug in."}]}
     ],
     "automation": {
       "status": "partial",

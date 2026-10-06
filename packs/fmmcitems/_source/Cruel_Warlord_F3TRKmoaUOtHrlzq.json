@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Cruel Warlord","when":["attack","self:data:flags.essence20.monsterFormActive"]},
-      {"type":"Trigger","event":"afterRoll","outcome":"fumbled","label":"Fumble (Cruel Warlord: regain 2 Personal Power)","when":["self:data:system.powers.personal.max>0"],"steps":[{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":2}]}
+      {"type":"Trigger","event":"afterRoll","outcome":"fumbled","label":"Fumble (Cruel Warlord: regain 2 Personal Power)","when":["self:data:system.powers.personal.max>0"],"steps":[{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":2}]},
+      {"type":"Trigger","event":"takesDamage","label":"Psychic damage (Cruel Warlord: regain 2 Personal Power)","when":["damage:psychic","self:data:system.powers.personal.max>0"],"steps":[{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":2}]}
     ],
     "automation": {
       "status": "partial",

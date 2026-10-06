@@ -5,6 +5,9 @@
   "_id": "uX9x7VEUy4LCdVIg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"TraitIgnore","label":"Snipe From The Hip (Long Range Rifle)","traits":["mounted"],"items":["item:name~long range rifle"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Long Range Rifle can fire without being set up first.</p>"

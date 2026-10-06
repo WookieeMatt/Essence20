@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Heal 1 Health (DIF 12 Survival)","steps":[{"do":"target","min":0},{"do":"roll","skill":"survival","dif":12,"onSuccess":[{"do":"heal","amount":1,"to":"targetOrSelf"}]}]}
+    ],
     "prerequisites": {"when":["self:essence:social>=3"]},
     "automation": {
       "status": "partial",

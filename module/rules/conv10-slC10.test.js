@@ -207,7 +207,6 @@ beforeEach(() => {
     ...(global.foundry ?? {}),
     utils: { ...(global.foundry?.utils ?? {}), setProperty: setPath, getProperty: getPath, escapeHTML: s => s, randomID: () => `r${nextId++}` },
   };
-  lazy.angrySnagSkill = null;
   lazy.getLedger = null;
   lazy.getEnvironment = null;
   lazy.getTerrain = null;
@@ -239,22 +238,7 @@ test('the slC10 rules validate', () => {
 /*  Tags and checks                              */
 /* -------------------------------------------- */
 
-describe('Angry (Hang-Up): a Snag on the Skill picked this scene', () => {
-  test('the chosen Skill only, labelled Angry', () => {
-    const actor = makeActor([packItem(FILES.angry)]);
-    lazy.angrySnagSkill = () => 'deception';
-    expect(ruleRollSources(actor, null, { rolledSkill: 'deception' }).sources).toEqual([expect.objectContaining({ label: 'Angry', snag: true })]);
-    expect(ruleRollSources(actor, null, { rolledSkill: 'culture' }).sources).toEqual([]);
-    lazy.angrySnagSkill = () => null;
-    expect(ruleRollSources(actor, null, { rolledSkill: 'deception' }).sources).toEqual([]);
-  });
-
-  test('a Matured-ignored Hang-Up does nothing', () => {
-    const actor = makeActor([packItem(FILES.angry, { flags: { essence20: { maturedIgnored: true } } })]);
-    lazy.angrySnagSkill = () => 'deception';
-    expect(ruleRollSources(actor, null, { rolledSkill: 'deception' }).sources).toEqual([]);
-  });
-});
+// (Angry's Hang-Up - a Snag on the Skill the Perk's pick marked this scene - is tested in rules/conv16-LeftA.test.js.)
 
 describe('Fast Tracking: Edge on a Contingency attack with the Favorite Weapon', () => {
   const setup = () => {

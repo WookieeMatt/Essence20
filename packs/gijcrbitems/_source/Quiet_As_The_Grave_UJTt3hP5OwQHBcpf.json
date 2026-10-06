@@ -5,6 +5,9 @@
   "_id": "UJTt3hP5OwQHBcpf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Quiet as the Grave (double the Sneak Attack damage bonus)","key":"quietAsTheGrave","sneakAttackMultiplier":2,"limit":{"per":"round"},"when":["attack","self:activeRolePoints:item:id:Mrmbqza0XxVpKj6U"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch to double your sneak attack damage bonus, once per turn.</p>"

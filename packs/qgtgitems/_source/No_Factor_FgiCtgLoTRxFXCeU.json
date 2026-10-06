@@ -5,6 +5,11 @@
   "_id": "FgiCtgLoTRxFXCeU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","key":"noFactor","label":"No Factor (mark successfully-Deceived enemies as fooled)","forget":true,"when":["skill:deception"]},
+      {"type":"Trigger","event":"hit","label":"No Factor (fooled)","when":["roll:switch:noFactor"],"steps":[{"do":"mark","key":"noFactorFooled","to":"target","perSetter":true}]},
+      {"type":"SuccessToCrit","label":"No Factor (a success against the fooled is a Critical Success)","when":["target:markedByMe:noFactorFooled"],"steps":[{"do":"unmark","key":"noFactorFooled","to":"markedByMe:noFactorFooled","perSetter":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on a Deception roll in combat, a switch makes it the No Factor contest against your targets' Alertness. Enemies you beat are fooled; your next hit on one is a Critical Success, then every enemy sees through you.</p>"

@@ -5,6 +5,9 @@
   "_id": "zO84wFyLjE9y6FsH",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"But I Should Know That","outcome":"anyFailed","when":["skill:spellcasting"],"steps":[{"do":"bank","replace":true,"label":"But I Should Know That","snag":true,"appliesWhen":["not:roll:initiative"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you fail a Spellcasting test, your next Skill Test takes a Snag, listed as But I Should Know That next to Snag in its Roll Options Dialog.</p>"

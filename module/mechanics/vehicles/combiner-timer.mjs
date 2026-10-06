@@ -1,4 +1,5 @@
 import { getMegaformParticipants } from "./megaform-participants.mjs";
+import { ruleJoinDieSteps } from "../../rules/plugins/zords/join-die.mjs";
 
 /**
  * The Combiner join timer (PR CRB, "The Combiner Zord Feature", p.139): "Much like how a Zord will
@@ -19,31 +20,18 @@ import { getMegaformParticipants } from "./megaform-participants.mjs";
  * would break that ordinary workflow to enforce a rule the table can see and apply itself.
  */
 
-/** Reduction order for Fast Modulation, per its own "d6 to d4, d4 to d2" wording. */
+/** Reduction order for a JoinDie rule (Fast Modulation's "d6 to d4, d4 to d2"). */
 const COMBINE_DICE = ['d6', 'd4', 'd2'];
-const FAST_MODULATION_ID = "Compendium.essence20.pr_crb.Item.38bDkuZ73CmGBOSe";
 const COMBINE_READY_ROUND_FLAG = 'combineReadyRound';
 
 /**
- * Fast Modulation (PR CRB, Zord Feature, p.137, prerequisite Combiner): "This Zord is always ready
- * to take the next step... The Zord Feature speeds up how long the Zord must be in combat before it
- * can join with others using its Combiner feature. Each time this Zord Feature is chosen, the type
- * of die is reduced by one type (d6 to d4, d4 to d2, etc.) to a minimum of 1."
- *
- * Counts EVERY copy of the Feature the Zord holds, since RAW's own "each time this Zord Feature is
- * chosen" is explicitly repeatable - unlike the single-instance Features actorHasZordFeature is
- * built for, so this counts matching items itself rather than asking whether one exists. Past the
- * end of the die list the result is a flat 1 ("to a minimum of 1"), i.e. no roll at all.
+ * The Zord's join-time die: d6, made smaller by its JoinDie rules (Fast Modulation, PR CRB p.137 - every copy one type,
+ * rules/plugins/zords/join-die.mjs). Past the end of the die list the result is a flat 1, i.e. no roll at all.
  * @param {Actor} zord
  * @returns {String|null}   The die to roll, or null when reduced to a flat 1.
  */
 export function getCombineDie(zord) {
-  const reductions = Array.from(zord?.items ?? []).filter(item => {
-    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-    return item.type == 'feature' && sourceId == FAST_MODULATION_ID;
-  }).length;
-
-  return COMBINE_DICE[reductions] ?? null;
+  return COMBINE_DICE[ruleJoinDieSteps(zord)] ?? null;
 }
 
 /**
@@ -133,5 +121,3 @@ export function isCombineReady(megaformActor) {
 
   return (game.combat?.round ?? 0) >= readyRound;
 }
-
-export { FAST_MODULATION_ID };

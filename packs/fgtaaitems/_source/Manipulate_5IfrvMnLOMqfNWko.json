@@ -5,6 +5,9 @@
   "_id": "5IfrvMnLOMqfNWko",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Manipulate","steps":[{"do":"rollVsEach","skill":"persuasion","defense":"willpower","onHit":[{"do":"applyCondition","condition":"grappled","to":"target","rounds":1}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: rolls Persuasion against the target; on a success it is Grappled until the start of your next turn.</p><p>Left to the table: using Deception or Intimidation, or choosing shoved or tripped instead.</p>"

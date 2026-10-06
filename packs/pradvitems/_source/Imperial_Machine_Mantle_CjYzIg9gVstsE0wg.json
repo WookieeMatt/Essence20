@@ -5,6 +5,10 @@
   "_id": "CjYzIg9gVstsE0wg",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","defense":"toughness","amount":"ceil(@actor.system.defenses.toughness.armorShare * 0.5)","label":"Imperial Machine Mantle","when":["not:rule:data:flags.essence20.imperialMachineMantleBroken"]},
+      {"type":"Trigger","event":"criticallyHit","label":"Imperial Machine Mantle (falls to pieces)","when":["not:rule:data:flags.essence20.imperialMachineMantleBroken"],"steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.imperialMachineMantleBroken":true}},{"do":"chat","text":"{name}'s Imperial Machine Mantle falls to pieces."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: adds half your current armor bonus (rounded up) to Toughness. It breaks when you take damage from a Critical Success; the GM can repair it later.</p>"

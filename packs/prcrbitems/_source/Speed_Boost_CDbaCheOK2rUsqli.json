@@ -5,6 +5,10 @@
   "_id": "CDbaCheOK2rUsqli",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Speed Boost: Ground Movement effect on","event":"powerUsed","when":["item:own"],"steps":[{"do":"setEffects","effects":[{"changeKey":"system.movement.","on":true}]}]},
+      {"type":"Trigger","label":"Speed Boost: Edge on the next Initiative","event":"powerUsed","when":["item:own","not:rule:banked"],"steps":[{"do":"bank","edge":true,"appliesWhen":["roll:initiative"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +10 ft Ground Movement while Morphed. Use button: spend 1 Personal Power so your next Initiative roll opens the Roll Options Dialog with Edge already selected.</p>"

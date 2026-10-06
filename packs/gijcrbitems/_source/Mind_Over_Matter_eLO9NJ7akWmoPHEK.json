@@ -5,6 +5,9 @@
   "_id": "eLO9NJ7akWmoPHEK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Restore a target's Health","steps":[{"do":"target","max":1,"beforeCost":true},{"do":"choose","options":[{"label":"Intimidation","steps":[{"do":"askNumber","var":"n","min":1,"max":6,"prompt":"Health to attempt to restore"},{"do":"roll","skill":"intimidation","dif":"5 + 5 * @var.n","onSuccess":[{"do":"heal","amount":"@var.n","to":"target"},{"do":"removeCondition","condition":"defeated","to":"target"}]}]},{"label":"Persuasion","steps":[{"do":"askNumber","var":"n","min":1,"max":6,"prompt":"Health to attempt to restore"},{"do":"roll","skill":"persuasion","dif":"5 + 5 * @var.n","onSuccess":[{"do":"heal","amount":"@var.n","to":"target"},{"do":"removeCondition","condition":"defeated","to":"target"}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: heal an ally by rolling Intimidation or Persuasion instead of Science. Moving any Science (Medicine) ranks is up to you in the Skill Picker.</p>"

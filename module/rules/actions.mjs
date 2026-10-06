@@ -2,6 +2,7 @@ import { registerCostRuleProvider } from "../mechanics/item-hooks.mjs";
 import { resolveValue } from "./formula.mjs";
 import { ruleLabel, rulesOfType } from "./index.mjs";
 import { contextFor, evaluate } from "./predicate.mjs";
+import { ACTION_KEYS } from "./types.mjs";
 
 /**
  * ActionCost rules (docs/RULES_ENGINE_PLAN.md §4.9) - "you can Sprint as a Free action once per
@@ -21,8 +22,27 @@ import { contextFor, evaluate } from "./predicate.mjs";
 
 const KINDS = ['attack', 'item', 'conversion', 'shieldToggle'];
 
+/**
+ * Add a cost kind a plug-in passes as `context.kind` to the action economy's spend (reload, morph...): an ActionCost
+ * may then name it as its `action`.
+ */
+export function registerActionKind(name) {
+  if (!KINDS.includes(name)) {
+    KINDS.push(name);
+  }
+
+  if (!ACTION_KEYS.includes(name)) {
+    ACTION_KEYS.push(name);
+  }
+}
+
 /** Whether a cost context is the action this rule names. */
 export function actionMatches(rule, ctx = {}) {
+  // any: every action that costs something (a Talent's "an action related to <Spirit>" - the player is asked).
+  if (rule.action == 'any') {
+    return !!ctx;
+  }
+
   if (KINDS.includes(rule.action)) {
     return ctx.kind == rule.action;
   }
@@ -30,13 +50,15 @@ export function actionMatches(rule, ctx = {}) {
   return ctx.key == rule.action;
 }
 
+/** to: downgrade - one step cheaper (Standard -> Move, Move -> Free, Free -> none), as mechanics/actions/action-perks.mjs's Talents. */
+const DOWNGRADE = { standard: 'move', contingency: 'move', move: 'free', free: 'none' };
+
 /**
- * The actor's ActionCost rules as cost rules.
- * @param {Actor} actor
- * @returns {Array<Object>}
+ * One ActionCost rule as a cost rule, for the actor paying (its own rule, or one a mark carries onto it).
+ * limit.freeIsUnlimited: a Free action made free isn't counted against the limit.
  */
-export function costRulesFor(actor) {
-  return rulesOfType(actor, 'ActionCost').map(({ rule, item, index }) => ({
+export function costRuleFor(actor, { rule, item, index }) {
+  return {
     // limit.key: the counter it uses is that name (actionPerkDailyUses.<key> for a day limit - Sensitive spends the same).
     id: rule.limit?.key ? String(rule.limit.key) : `rule-${item.id}-${index}`,
     label: ruleLabel(rule, item),
@@ -44,10 +66,23 @@ export function costRulesFor(actor) {
     matches: ctx => actionMatches(rule, ctx) && evaluate(rule.when, contextFor({
       self: actor, ruleItem: item, item: ctx?.item ?? null, isAttack: ctx?.kind == 'attack' || !!ctx?.attack,
     })) !== false,
-    to: () => rule.to,
-    ...(rule.limit?.per ? { limit: { window: rule.limit.per, max: Math.max(1, Math.round(resolveValue(rule.limit.max ?? 1, { actor, item }, 1))) } } : {}),
+    to: type => (rule.to == 'downgrade' ? DOWNGRADE[type] ?? type : rule.to),
+    ...(rule.limit?.per ? { limit: {
+      window: rule.limit.per, max: Math.max(1, Math.round(resolveValue(rule.limit.max ?? 1, { actor, item }, 1))),
+      ...(rule.limit.freeIsUnlimited ? { freeIsUnlimited: true } : {}),
+    } } : {}),
     ...(rule.ask ? { ask: rule.ask } : {}),
-  }));
+  };
+}
+
+/**
+ * The actor's ActionCost rules as cost rules (its own - a `marked` one acts for whoever carries the mark:
+ * rules/plugins/resources/action-cost-any.mjs).
+ * @param {Actor} actor
+ * @returns {Array<Object>}
+ */
+export function costRulesFor(actor) {
+  return rulesOfType(actor, 'ActionCost').filter(({ rule }) => (rule.scope ?? 'self') == 'self').map(entry => costRuleFor(actor, entry));
 }
 
 registerCostRuleProvider(costRulesFor);

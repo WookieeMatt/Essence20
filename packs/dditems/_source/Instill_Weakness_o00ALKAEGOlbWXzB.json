@@ -5,6 +5,11 @@
   "_id": "o00ALKAEGOlbWXzB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","key":"instillWeakness","label":"Instill Weakness (spend 1 Energon Point on success)","forget":true,"when":["skill:technology","self:data:system.energon.normal.value>=1"]},
+      {"type":"Trigger","event":"hit","label":"Instill Weakness","when":["roll:switch:instillWeakness"],"steps":[{"do":"require","check":["self:data:system.energon.normal.value>=1"]},{"do":"pick","key":"damageType","from":"damageType","prompt":"Choose a damage type"},{"do":"spend","resource":{"path":"system.energon.normal.value"},"amount":1},{"do":"mark","key":"instillWeakness","to":"target","until":"scene","text":"{choice.damageType}"}]},
+      {"type":"RollModifier","scope":"markedTarget","mark":"instillWeakness","label":"Instill Weakness","edge":true,"when":["attack","target:markText:instillWeakness=$item.system.damageType"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: on a Technology test against a target's Evasion, a switch spends 1 Energon on a success and lets you pick a damage type; attacks of that type against the target get Edge for the scene. Left to the table: the special tool itself.</p>"

@@ -5,6 +5,10 @@
   "_id": "rqCybOrg7Bth48Pk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"damageLanding","label":"Cyborg (take the damage as Essence damage)","prompt":true,"promptText":"E20.ReactCyborgAsk","when":[{"any":["self:data:system.essences.strength.value>0","self:data:system.essences.speed.value>0","self:data:system.essences.smarts.value>0","self:data:system.essences.social.value>0"]}],"steps":[{"do":"takeAsEssence","prompt":"Which Essence takes the damage?"}]},
+      {"type":"Veto","on":"update","path":"system.health.value","change":"up","clamp":true,"message":"E20.ReactCyborgNoHeal","label":"Cyborg (no Health back while Essence is damaged)","when":["self:essenceDamaged"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you take damage the GM is asked whether to apply it as Essence damage instead. While you have Essence damage, your Health can't be healed.</p>"

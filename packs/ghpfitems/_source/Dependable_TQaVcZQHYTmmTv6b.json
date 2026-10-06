@@ -5,6 +5,9 @@
   "_id": "TQaVcZQHYTmmTv6b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"FlatD20","key":"dependable","priority":1,"label":"E20.RollDialogDependable","value":10,"limit":{"per":"scene","max":1},"both":{"label":"E20.RollDialogDependableBoth","uses":2}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per scene, a switch treats a d20 as a 10 without rolling it; with Edge or Snag, only one d20 is set and the other is rolled.</p>"

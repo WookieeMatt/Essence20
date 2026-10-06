@@ -5,6 +5,10 @@
   "_id": "cx6cVaHALQlwBrnD",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Move action: ↑1 on a Skill until the end of your turn","when":["combat"],"cost":{"action":"move"},"limit":{"per":"turn"},"steps":[{"do":"pick","key":"hud","from":"skill","beforeCost":true},{"do":"mark","key":"hud","to":"self","until":"endOfTurn"}]},
+      {"type":"RollModifier","label":"HUD","upshift":1,"when":["self:marked:hud","skill:{choice.hud}"]}
+    ],
     "prerequisites": {"when":["host:trait:computerized"]},
     "automation": {
       "status": "full",

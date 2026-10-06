@@ -2,9 +2,11 @@ import { jest } from '@jest/globals';
 import { existsSync, readdirSync, readFileSync } from 'fs';
 import {
   activateLendAssistance, canAssistWithSkill, getAssistEdge, getAssistShiftUp, LEND_ASSISTANCE_EDGE_FLAG,
-  LEND_ASSISTANCE_RANGE_FEET, LEND_ASSISTANCE_SHIFT_FLAG, lendAssistanceSkill, pickArmchairGeneralWeapon,
+  LEND_ASSISTANCE_RANGE_FEET, LEND_ASSISTANCE_SHIFT_FLAG, lendAssistanceSkill,
 } from './lend-assistance.mjs';
-import { findExtUse } from '../item-hooks.mjs';
+
+// The rules engine's plug-in tags (self:windowUsed - Fun Exhaustion's Assist rules).
+await import('../../rules/plugins/index.mjs');
 
 /**
  * An actor with a token on the canvas, since both the ally scan and the range check measure from
@@ -124,16 +126,23 @@ describe('who can be helped', () => {
     expect(content).not.toContain('Cobra');
   });
 
+  // Fun Exhaustion's two Assist refuse rules (its pack rules), read through the scene window Party Power marks.
+  const funExhausted = async actor => {
+    const rules = JSON.parse(readFileSync('packs/mlpcrbitems/_source/Fun_Exhaustion_FDd42qmdJBx0eTbE.json', 'utf8')).system.rules;
+    actor.items = [{ id: 'fe', type: 'hangUp', name: 'Fun Exhaustion', flags: {}, system: { rules } }];
+    await actor.setFlag('essence20', 'funExhaustionBlocked', { epoch: 1, window: 'scene', count: 1 });
+  };
+
   test('refuses outright for an actor blocked by Fun Exhaustion', async () => {
     const me = makeActor({ id: 'me' });
     const ally = makeActor({ id: 'ally', x: 10 });
     setWorld({ tokens: [me.token, ally.token] });
-    await me.actor.setFlag('essence20', 'funExhaustionBlocked', { epoch: 1 });
+    await funExhausted(me.actor);
 
     const outcome = await activateLendAssistance(me.actor);
 
     expect(outcome).toEqual({ cancelled: true });
-    expect(global.ui.notifications.warn).toHaveBeenCalled();
+    expect(global.ui.notifications.warn).toHaveBeenCalledWith(expect.stringContaining('LendAssistanceFunExhaustion'));
   });
 
   test('excludes an ally blocked by Fun Exhaustion from the candidate list', async () => {
@@ -141,7 +150,7 @@ describe('who can be helped', () => {
     const blockedAlly = makeActor({ id: 'blocked', name: 'Pinkie', x: 10 });
     const okAlly = makeActor({ id: 'ok', name: 'Rarity', x: 10 });
     setWorld({ tokens: [me.token, blockedAlly.token, okAlly.token] });
-    await blockedAlly.actor.setFlag('essence20', 'funExhaustionBlocked', { epoch: 1 });
+    await funExhausted(blockedAlly.actor);
     dialogResult = { allyId: 'ok', mode: 'skill', skill: 'might' };
 
     await activateLendAssistance(me.actor);
@@ -347,6 +356,7 @@ const TREACHEROUS_HANGUP_ID = "Compendium.essence20.tf_crb.Item.KwvsyHeuUqRbto9u
 describe('canAssistWithSkill', () => {
   beforeEach(() => setWorld());
 
+  // (Command & Control is an Assist rule now - rules/conv15-uses.test.js.)
   test('refuses an ally with the Conniving Hang-Up, whatever the ranks', () => {
     const { actor } = makeActor({ shift: 'd10' });
     const { actor: ally } = withItems(makeActor({ id: 'al', shift: 'd4' }), hangUp(CONNIVING_HANGUP_ID));
@@ -613,7 +623,8 @@ describe("Those Who Know, Teach (MLP CRB, Mentor Influence, p.53)", () => {
     expect(ally.actor.getFlag('essence20', LEND_ASSISTANCE_SHIFT_FLAG)).toEqual(
       expect.objectContaining({ shiftUp: 1, persistent: true }),
     );
-    expect(me.actor.getFlag('essence20', 'thoseWhoKnowTeachUsedThisScene')).toEqual(
+    // Counted under its Assist rule's own limit (rules/limits.mjs).
+    expect(me.actor.getFlag('essence20', `ruleUses.${me.actor.items[0].id}-0`)).toEqual(
       expect.objectContaining({ count: 1 }),
     );
   });
@@ -621,12 +632,10 @@ describe("Those Who Know, Teach (MLP CRB, Mentor Influence, p.53)", () => {
   test("stops banking persistent grants once the 3/scene cap is used up", async () => {
     const me = withItems(makeActor({ id: 'me', shift: 'd10' }), perk(THOSE_WHO_KNOW_TEACH_ID));
     setWorld();
-    me.actor.setFlag('essence20', 'thoseWhoKnowTeachUsedThisScene', { epoch: 1, window: 'scene', count: 3 });
+    const used = `ruleUses.${me.actor.items[0].id}-0`;
     const ally = makeActor({ id: 'al', x: 10, shift: 'd6' });
     setWorld({ tokens: [me.token, ally.token] });
-    me.actor.getFlag = (scope, key) => (
-      key == 'thoseWhoKnowTeachUsedThisScene' ? { epoch: 1, window: 'scene', count: 3 } : undefined
-    );
+    me.actor.getFlag = (scope, key) => (key == used ? { epoch: 1, window: 'scene', count: 3 } : undefined);
     dialogResult = { allyId: 'al', mode: 'skill', skill: 'might' };
 
     await activateLendAssistance(me.actor);
@@ -647,50 +656,5 @@ describe("Those Who Know, Teach (MLP CRB, Mentor Influence, p.53)", () => {
     expect(ally.actor.getFlag('essence20', LEND_ASSISTANCE_SHIFT_FLAG)).toEqual(
       expect.objectContaining({ persistent: false }),
     );
-  });
-});
-
-describe("Armchair General's weapon-type Qualification", () => {
-  const ARMCHAIR_GENERAL_ID = "Compendium.essence20.field_guide_action_adventure.Item.YPzpjKFz1yrwPHN6";
-
-  function makePerk(qualified = {}) {
-    const actor = { name: 'Envoy', system: { qualified: { weapons: qualified } }, update: jest.fn() };
-    const flags = { core: { sourceId: ARMCHAIR_GENERAL_ID }, essence20: {} };
-    return {
-      name: 'Armchair General', parent: actor, flags,
-      setFlag: jest.fn(async (scope, key, value) => {
-        flags.essence20[key] = value;
-      }),
-    };
-  }
-
-  beforeEach(() => {
-    global.game = { ...(global.game ?? {}), i18n: { localize: k => k, format: k => k } };
-  });
-
-  test("has a Use button until the pick is made", () => {
-    const perk = makePerk();
-    const use = findExtUse(perk);
-    expect(use?.id).toBe('armchairGeneralWeapon');
-    expect(use.canUse(perk)).toBe(true);
-    perk.flags.essence20.armchairGeneralWeapon = 'blunt';
-    expect(use.canUse(perk)).toBe(false);
-  });
-
-  test("offers only weapon types not already Qualified, and Qualifies the pick", async () => {
-    const perk = makePerk({ blunt: true });
-    const choose = jest.fn(async (title, prompt, rows) => rows.find(r => r.value == 'shotguns').value);
-
-    await pickArmchairGeneralWeapon(perk, choose);
-
-    expect(choose.mock.calls[0][2].some(r => r.value == 'blunt')).toBe(false);
-    expect(perk.parent.update).toHaveBeenCalledWith({ 'system.qualified.weapons.shotguns': true });
-    expect(perk.flags.essence20.armchairGeneralWeapon).toBe('shotguns');
-  });
-
-  test("does nothing when the dialog is closed", async () => {
-    const perk = makePerk();
-    expect(await pickArmchairGeneralWeapon(perk, async () => null)).toBeNull();
-    expect(perk.parent.update).not.toHaveBeenCalled();
   });
 });

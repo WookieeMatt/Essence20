@@ -5,6 +5,9 @@
   "_id": "teDcExlkzRTGTChr",
   "img": "systems/essence20/assets/icons/gear/hazmat-suit.svg",
   "system": {
+    "rules": [
+      {"type":"HazardProtection","label":"Gas mask (Toxic Atmosphere)","environments":["toxicAtmosphere"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: while equipped, ↓2 on Strength and Speed tests and immunity to Poison. It also counts as a gas mask against gas hazards. The +10 Toughness against Acid is a separate Active Effect; turn it on in the Effects tab when an Acid effect hits.</p><p>Left to the table: Disease immunity.</p>"

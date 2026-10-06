@@ -5,6 +5,9 @@
   "_id": "5T8ZrImJXHWqETnf",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"CriticalOption","essence":"social","when":["item:onHost"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: on a Critical Success with the weapon you can deal 1 Social Essence damage to the target.</p>"

@@ -5,6 +5,10 @@
   "_id": "2tPC2AgganNw2GgO",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the one you depend on (Co-Dependent)","steps":[{"do":"target","max":1},{"do":"pick","key":"bond","from":"target","auto":true,"legacy":"flags.essence20.riderChoice"}]},
+      {"type":"RollModifier","label":"Co-Dependent","downshift":1,"when":["scene:token:target:picked:bond&target:status:any:except=morphed|altMode|cover|totalCover|defending"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick your bonded person. Automatic: while they have a token in the scene and any Condition, your Skill Tests take ↓1, labelled Co-Dependent in the Roll Options Dialog.</p>"

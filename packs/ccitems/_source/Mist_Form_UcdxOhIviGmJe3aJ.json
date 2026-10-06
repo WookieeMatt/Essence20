@@ -5,6 +5,9 @@
   "_id": "UcdxOhIviGmJe3aJ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"A inhaled poison (Mist Form)","stage":"item","stacks":true,"items":["item:type:weapon","item:isHost","item:data:system.isPoison"],"path":"system.poisonApplication","op":"set","value":{"contact":false,"ingested":false,"inhaled":true},"priority":1}
+    ],
     "prerequisites": {"when":["host:data:system.isPoison","host:data:system.poisonType=poison",{"any":["host:data:system.poisonApplication.contact","host:data:system.poisonApplication.ingested"]}]},
     "automation": {
       "status": "full",

@@ -5,6 +5,10 @@
   "_id": "zbrr3W30rFTDTayX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Empty the Mag (on a hit, damage applies twice; reload after)","key":"emptyTheMag","when":["attack","not:attack:melee","weapon:trait:ballistic"]},
+      {"type":"HitMultiplier","label":"Empty the Mag (damage a second time)","stage":"late","multiply":2,"when":["roll:switch:emptyTheMag"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on a ranged Ballistic attack, a switch to apply the damage twice on a hit. The weapon then has to be reloaded before it can fire again.</p>"

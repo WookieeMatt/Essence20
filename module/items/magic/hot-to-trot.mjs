@@ -1,4 +1,4 @@
-import { activateForWindow, isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 // Hot To Trot (Knights of Canterlot, Elementary Enchantment spell, p.43): "This warmth increases
 // the pony's speed, allowing them to move 15ft further with each Movement action" for the spell's
@@ -12,10 +12,6 @@ const HOT_TO_TROT_FLAG = 'hotToTrotActive';
 
 export function isHotToTrotActive(actor) {
   return isActiveForWindow(actor, HOT_TO_TROT_FLAG, 'scene');
-}
-
-export async function applyHotToTrot(actor) {
-  await activateForWindow(actor, HOT_TO_TROT_FLAG, 'scene');
 }
 
 export async function removeHotToTrot(actor) {

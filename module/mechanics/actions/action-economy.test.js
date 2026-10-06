@@ -10,7 +10,7 @@ import {
   getCost,
   getLedger,
   getMode,
-  DODGY_IDS, getNamedActionType,
+  getNamedActionType,
   getRemaining,
   getSheetContext,
   grantActionsThisTurn,
@@ -242,8 +242,6 @@ describe("getCost", () => {
 });
 
 describe("getNamedActionType", () => {
-  const DODGY_ID = "Compendium.essence20.mlp_crb.Item.jwhdtCaq0MBotupG";
-
   beforeEach(() => {
     global.CONFIG = { E20: { namedActions: { defend: { label: 'E20.ActionDefend', type: 'standard' }, aim: { label: 'E20.ActionAim', type: 'free' } } } };
   });
@@ -251,27 +249,6 @@ describe("getNamedActionType", () => {
   test("returns the printed type by default", () => {
     expect(getNamedActionType(makeActor(), 'defend')).toBe('standard');
     expect(getNamedActionType(makeActor(), 'aim')).toBe('free');
-  });
-
-  test("Dodgy turns Defend into a Free action", () => {
-    const actor = makeActor({ items: [{ type: 'perk', flags: { core: { sourceId: DODGY_ID } } }] });
-    expect(getNamedActionType(actor, 'defend')).toBe('free');
-  });
-
-  test("every printing of Dodgy does it, not just MLP's", () => {
-    for (const id of DODGY_IDS) {
-      const actor = makeActor({ items: [{ type: 'perk', flags: { core: { sourceId: id } } }] });
-      expect(getNamedActionType(actor, 'defend')).toBe('free');
-    }
-
-    expect(DODGY_IDS).toEqual(expect.arrayContaining([
-      "Compendium.essence20.gi_joe_crb.Item.GQwhr14X9yXkAuWH", "Compendium.essence20.wtnv_citizens_guide.Item.QAyXVlPBLs5yndGt",
-    ]));
-  });
-
-  test("Dodgy doesn't affect any other named action", () => {
-    const actor = makeActor({ items: [{ type: 'perk', flags: { core: { sourceId: DODGY_ID } } }] });
-    expect(getNamedActionType(actor, 'aim')).toBe('free'); // already free, unaffected
   });
 
   test("returns null for an unrecognized key", () => {
@@ -1180,12 +1157,14 @@ describe("getActionsTabContext: where an item lands", () => {
    for with no further gate, which makes it the cheapest way to exercise the REAL predicate here
    rather than a stub. If that id ever moves, these fail - which is the point: this tab and the
    Perks tab's own Use button have to keep answering the same question. */
-const MARK_TARGET_SOURCE = 'Compendium.essence20.tf_crb.Item.T2mm6VmvcUxagsjc';
+// Team Player (TF): still a hand-written Use (banked-buffs.mjs#canUsePerk - the Lend Assistance button) - Mark Target and
+// Psychological Sway became item rules.
+const MARK_TARGET_SOURCE = 'Compendium.essence20.tf_crb.Item.oWjvage64Y4KrWjw';
 
 /**
  * A Perk canUsePerk recognises. `parent` is what it reads the actor off.
  */
-function activatablePerk(actor, { name = 'Mark Target', actionType = 'none' } = {}) {
+function activatablePerk(actor, { name = 'Psychological Sway', actionType = 'none' } = {}) {
   return {
     _id: 'p1',
     name,

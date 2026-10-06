@@ -5,6 +5,9 @@
   "_id": "6PsZqPUijt60ISlq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Flying Nuisance","steps":[{"do":"target","max":1},{"do":"choose","prompt":"Which Skill?","options":[{"label":"Acrobatics","steps":[{"do":"rollVsEach","skill":"acrobatics","defense":"evasion","to":"target","onHit":[{"do":"bank","snag":true,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"]}]}]},{"label":"Driving","steps":[{"do":"rollVsEach","skill":"driving","defense":"evasion","to":"target","onHit":[{"do":"bank","snag":true,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"]}]}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: roll Acrobatics or Driving against a target's Evasion as a Free action; on a success they take a Snag on their next test. Left to the table: that you flew past them.</p>"

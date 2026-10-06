@@ -5,6 +5,9 @@
   "_id": "pkAJxZG4ujXfdBem",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"ConditionDuration","label":"Impaired for 1d2 rounds","condition":"impaired","rounds":"1d2"}
+    ],
     "originalId": "",
     "actionType": "standard",
     "classification": {

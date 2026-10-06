@@ -5,6 +5,9 @@
   "_id": "5X4NOluWwc7fv497",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Psychoanalyst (a success deals Stun 2)","key":"psychoanalyst","forget":true,"syntheticDamage":{"value":2,"type":"stun"},"when":[{"any":["skill:science","skill:technology"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on a Science or Technology test against a target's Willpower or Cleverness, switch on Psychoanalyst; on a success the chat card applies Stun 2 to the target.</p>"

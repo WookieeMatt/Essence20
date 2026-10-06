@@ -1,4 +1,5 @@
-import { hasVehicleUpgrade, VU } from "./vehicle-upgrades.mjs";
+import { ruleVehicleDefeatDif } from "../../rules/plugins/zords/vehicle-defeat-dif.mjs";
+import { ruleExplosionSteps } from "../../rules/plugins/zords/explosion-step.mjs";
 import { applyDamage } from "../combat/combat.mjs";
 import { getAllNearbyTokens } from "../combat/nearby-allies.mjs";
 import { E20 } from "../../util/config.mjs";
@@ -34,30 +35,9 @@ const BRAWN_DIF = 14;
 const DISEMBARK_DIF = 13;
 const EXPLOSION_SAVE_DIF = 14;
 
-// Heavy Water Coolant (Operation Cold Iron, Vehicle Upgrade, p.49): "When this vehicle reaches 0
-// Health for any reason, the DIF of the Brawn Skill Test to avoid exploding is 10, rather than 14.
-// If the vehicle has ranks in the Brawn skill, it is considered specialized for this roll." Only
-// the DIF half is built - rollSkillTest() below is a flat total-vs-DIF background check with no
-// crit/fumble concept at all (see its own doc comment), so there's no "specialized" mechanic
-// (crit on a d2) for the "considered specialized" clause to actually change here.
-const HEAVY_WATER_COOLANT_ID = "Compendium.essence20.operation_cold_iron.Item.e8WNnjzWGNWBd2UJ";
-const HEAVY_WATER_COOLANT_BRAWN_DIF = 10;
-
-/**
- * Whether the given Vehicle actor has the Heavy Water Coolant Upgrade embedded directly on it -
- * see HEAVY_WATER_COOLANT_ID's own comment above. A Vehicle-type Upgrade attaches straight to the
- * Vehicle actor (sheet-handlers/drop-handler.mjs#_onUpgradeDrop), unlike an armor/weapon Upgrade,
- * which attaches to a piece of gear instead - so this can't reuse mechanics/characters/perks.mjs#actorHasPerk
- * (strictly `type == 'perk'`) or the weapon/armor system.items snapshot lookups.
- * @param {Actor} actor
- * @returns {Boolean}
- */
-function hasHeavyWaterCoolant(actor) {
-  return !!actor.items?.find(item =>
-    item.type == 'upgrade'
-    && (item.flags?.core?.sourceId == HEAVY_WATER_COOLANT_ID || item._stats?.compendiumSource == HEAVY_WATER_COOLANT_ID || item?.flags?.essence20?.rulesSource == HEAVY_WATER_COOLANT_ID),
-  );
-}
+// A lower explosion Brawn DIF (Heavy Water Coolant's 10) is a VehicleDefeat rule on the vehicle's own Upgrade
+// (rules/plugins/zords/vehicle-defeat-dif.mjs). Only the DIF is built - rollSkillTest() below is a flat total-vs-DIF
+// background check with no crit/fumble concept, so "considered specialized" has nothing to change here.
 
 /**
  * Rolls a single actor's own Skill (shift + modifier, no Edge/Snag/Roll-Options-Dialog - this is
@@ -140,14 +120,15 @@ async function emergencyDisembarkCrew(vehicleActor, vehicleCrashDamage) {
  * @param {Actor} actor
  * @returns {{radius: Number, formula: String}}
  */
-// Anti-Matter Reactor (Quartermaster's Guide p.61): "if the vehicle is ever Defeated, its explosion
-// damage increases by one die step."
+// A bigger explosion die (Anti-Matter Reactor's one step) is an ExplosionStep rule on the vehicle's own Upgrade
+// (rules/plugins/zords/explosion-step.mjs).
 const DIE_STEPS = ['2d2', '2d4', '2d6', '2d8', '2d10', '2d12'];
 
 function getExplosionProfile(actor) {
   const profile = baseExplosionProfile(actor);
-  if (hasVehicleUpgrade(actor, VU.antiMatterReactor)) {
-    profile.formula = DIE_STEPS[Math.min(DIE_STEPS.length - 1, DIE_STEPS.indexOf(profile.formula) + 1)] ?? profile.formula;
+  const steps = ruleExplosionSteps(actor);
+  if (steps > 0) {
+    profile.formula = DIE_STEPS[Math.min(DIE_STEPS.length - 1, DIE_STEPS.indexOf(profile.formula) + steps)] ?? profile.formula;
   }
 
   return profile;
@@ -274,7 +255,7 @@ export async function handleVehicleZeroHealthTransition(actor) {
     return;
   }
 
-  const brawnDif = hasHeavyWaterCoolant(actor) ? HEAVY_WATER_COOLANT_BRAWN_DIF : BRAWN_DIF;
+  const brawnDif = ruleVehicleDefeatDif(actor) ?? BRAWN_DIF;
   // Tiger Stripes (Ferocious Fighters p.30): "When a vehicle with Tiger Stripes reaches 0 Health, it
   // gains Edge on the Brawn Skill Test to avoid exploding." A crew member with Change Its Stripes
   // (p.12) makes any vehicle their unit is assigned count.

@@ -57,7 +57,6 @@ const src = uuid => ({ core: { sourceId: uuid } });
 let ext;
 let common;
 let crb;
-let ttsg;
 
 const sourcesFor = (actor, target, ctx) => ext.extRollSources(actor, target, ctx).sources;
 const useFor = item => ext.findExtUse(item);
@@ -97,10 +96,8 @@ beforeAll(async () => {
   common = await import('../shared/pr-crb-ttsg-item-ids.mjs');
   crb = {
     ...(await import('../movement/ninja-power-jump.mjs')),
-    ...(await import('../healing/power-heal-condition.mjs')),
     ...(await import('../gear/power-ranger-standard-issue.mjs')),
   };
-  ttsg = await import('../zords/elemental-fury.mjs');
 });
 
 beforeEach(() => {
@@ -112,7 +109,11 @@ beforeEach(() => {
 describe('registration', () => {
   test('Use buttons and hooks are registered', () => {
     const ids = ext.registrySnapshot().uses.map(u => u.id);
-    expect(ids).toEqual(expect.arrayContaining(['pr3NinjaPower', 'pr3PowerHealCondition', 'pr3ElementalFury']));
+    expect(ids).toEqual(expect.arrayContaining(['pr3NinjaPower']));
+    // Power Heal's Use (heal, or remove a Condition) is the Power's own Use rule (module/rules/conv17-split2.test.js).
+    expect(ids).not.toContain('pr3PowerHealCondition');
+    // Elemental Fury is the Zord Feature's own rules (rules/conv15-items2.test.js).
+    expect(ids).not.toContain('pr3ElementalFury');
     // Emissary's Gift is the Perk's own Use rule now (module/rules/conv10-slA10.test.js).
     expect(ids).not.toContain('pr3EmissarysGift');
     // Protector of Safehaven's gift, its mission-long marks and Roll Options switches are the Perk's own rules now.
@@ -146,38 +147,11 @@ describe('Ninja Power jump', () => {
   });
 });
 
-describe('Power Heal', () => {
-  test('lists only negative Conditions', () => {
-    const actor = makeActor({ statuses: ['morphed', 'prone', 'stunned', 'cover'] });
-    expect(crb.negativeStatuses(actor)).toEqual(['prone', 'stunned']);
-  });
-
-  test('its condition Use needs Morphed and Power', () => {
-    const actor = makeActor({ system: { isMorphed: true, powers: { personal: { value: 1 } } }, items: [{ type: 'power', flags: src(common.IDS.powerHeal) }] });
-    const item = actor.items.contents[0];
-    expect(useFor(item).canUse(item)).toBe(true);
-    actor.system.isMorphed = false;
-    expect(useFor(item).canUse(item)).toBe(false);
-  });
-});
-
 describe('Standard Issue', () => {
   test('notices the package landing on the Power Morpher', () => {
     const changes = { flags: { essence20: { equipmentPackage: { name: 'Power Ranger Standard Issue' } } } };
     expect(crb.isStandardIssueLanding({ name: 'Power Morpher' }, changes)).toBe(true);
     expect(crb.isStandardIssueLanding({ name: 'Blade Blaster' }, changes)).toBe(false);
     expect(crb.isStandardIssueLanding({ name: 'Power Morpher' }, {})).toBe(false);
-  });
-});
-
-describe('Through the Shattered Grid', () => {
-  test('Elemental Fury uses the strongest ranged attack', () => {
-    const zord = makeActor({ items: [
-      { type: 'weaponEffect', system: { damageValue: 3, classification: { style: 'energy' } } },
-      { type: 'weaponEffect', system: { damageValue: 5, classification: { style: 'melee' } } },
-      { type: 'weaponEffect', system: { damageValue: 4, classification: { style: 'ranged' } } },
-    ] });
-    expect(ttsg.strongestRanged(zord).system.damageValue).toBe(4);
-    expect(ttsg.FURY.fire.bonus).toBe(2);
   });
 });

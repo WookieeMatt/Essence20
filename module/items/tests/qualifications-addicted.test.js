@@ -78,8 +78,8 @@ describe('registration', () => {
 
 describe('common', () => {
   test('itemsFrom matches full uuid or bare id', () => {
-    const actor = makeActor([perk(Q1.ninpoJoes), { type: 'upgrade', flags: { core: { sourceId: `Compendium.essence20.tf_crb.Item.${Q1_UPGRADE.silencer}` } } }]);
-    expect(itemsFrom(actor, Q1.ninpoJoes)).toHaveLength(1);
+    const actor = makeActor([perk(Q1.nuPogodi), { type: 'upgrade', flags: { core: { sourceId: `Compendium.essence20.tf_crb.Item.${Q1_UPGRADE.silencer}` } } }]);
+    expect(itemsFrom(actor, Q1.nuPogodi)).toHaveLength(1);
     expect(itemsFrom(actor, Q1_UPGRADE.silencer)).toHaveLength(1);
     expect(itemsFrom(actor, null)).toEqual([]);
   });

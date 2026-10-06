@@ -5,6 +5,12 @@
   "_id": "F80nn3atqFJWhRWQ",
   "img": "systems/essence20/assets/icons/gear/white_noise_generator.svg",
   "system": {
+    "rules": [
+      {"type":"Toggle","key":"on","label":"Switched on","legacy":"flags.essence20.deviceOn"},
+      {"type":"Use","label":"Switch the White Noise Generator on or off","steps":[{"do":"setToggle","key":"on"},{"do":"chat","when":["self:toggle:on"],"text":"{name} switches on the White Noise Generator."},{"do":"chat","when":["not:self:toggle:on"],"text":"{name} switches off the White Noise Generator."}]},
+      {"type":"RollModifier","label":"White Noise Generator","scope":"aura","radius":30,"affects":"all","snag":true,"when":["skill:alertness","self:toggle:on"]},
+      {"type":"RollModifier","label":"White Noise Generator","snag":true,"when":["skill:alertness","self:toggle:on","self:onCanvas"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: switches the generator on or off. While it's on, anyone within 30 ft of it (you included) rolling Alertness takes a Snag, labelled White Noise Generator in their Roll Options Dialog.</p>"

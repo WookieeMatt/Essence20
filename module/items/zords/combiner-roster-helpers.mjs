@@ -23,22 +23,18 @@ export const ZORD2 = {
   // Power Rangers
   enhancedMeleeAttack: C('pr_crb', 'X6BPzpHr2cBq3jbt'),
   enhancedRangedAttack: C('pr_crb', 'lDHkwavMgjjDoy5U'),
-  warriorMode: C('pr_crb', 'RsrUlBazkPwpRfxi'),
+  // (Warrior Mode - warrior-mode.mjs keeps its own id -, Zord Feature, Assault Weapon and Zord Ultra Mode went: nothing
+  // read their entries here.)
   combiner: C('pr_crb', 'ZZMBVjmosr0VViMU'),
-  zordFeatureSlot: C('pr_crb', 'Zd2ZordFeatSlot1'),
   prCoreBody: C('pr_crb', 'Q1FIsjWqvosX8Diw'),
   prCoreDefenses: C('pr_crb', 'YcqEl6Q6QkoXhuTH'),
   prMove: C('pr_crb', '3TeQStgfP5kQZmeL'),
   layeredSystems: C('across_the_stars', 'rAC7xWiUVAqXJFMJ'),
-  assaultWeapon: C('jump_through_time', '89twbGGvy0Q698AL'),
-  zordUltraMode: C('field_guide_action_adventure', 'LoLucUviYKvUq5XR'),
   adaptableFutureTech: C('through_the_shattered_grid', '35qov21Mglyqxql1'),
   defenderTorozord: C('through_the_shattered_grid', '8GrSnFescEVUt1nn'),
   versatileCombiner: C('through_the_shattered_grid', 'XbRfajp9KwfzDG5c'),
   // G.I. Joe
-  shinobi: C('intercontinental_adventures', 'JFfMXY6aMxhDbKa6'),
   // Transformers
-  dozerBlade: C('tf_crb', 'P3t8JOiCH5bR0N5r'),
 };
 
 export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;

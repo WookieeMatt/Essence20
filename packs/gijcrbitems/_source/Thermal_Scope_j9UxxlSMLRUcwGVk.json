@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"host","label":"Thermal Scope (invisible target)","when":["attack","target:status:invisible"],"edge":true}
+      {"type":"RollModifier","scope":"host","label":"Thermal Scope (invisible target)","when":["attack","target:status:invisible"],"edge":true},
+      {"type":"Cover","label":"E20.UpgradeScopeSmoke","scope":"host","mode":"giveBack"}
     ],
     "automation": {
       "status": "full",

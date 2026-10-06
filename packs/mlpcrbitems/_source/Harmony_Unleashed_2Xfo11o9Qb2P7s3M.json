@@ -5,6 +5,11 @@
   "_id": "2Xfo11o9Qb2P7s3M",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Harmony Unleashed: the targeted pony (or yourself)","when":["combat:exists"],"steps":[{"do":"mark","key":"harmonyUnleashed","to":"targetOrSelf","until":"roundsThrough:3"},{"do":"chat","text":"Cutie Mark actions cost Free actions for 3 rounds."}]},
+      {"type":"ActionCost","scope":"marked","mark":"harmonyUnleashed","action":"any","to":"free","ask":"E20.ActionPerkAskCutieMark"},
+      {"type":"ActionCost","action":"any","to":"free","ask":"E20.ActionPerkAskCutieMark","when":["self:markedByHolder:harmonyUnleashed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: target the pony (or target no one to cast it on yourself). For 3 rounds that pony's Cutie Mark actions cost Free actions; they're asked if each action is related.</p>"

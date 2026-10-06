@@ -5,6 +5,9 @@
   "_id": "MhKwWyukMEdzsfRC",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Light or put out (Candlesprite Lantern)","steps":[{"do":"tokenLight","bright":10,"dim":20}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: switches a floating light on your token on and off.</p>"

@@ -5,6 +5,9 @@
   "_id": "OWVl8HRXBI7mwJ0j",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Forage for a weapon (Weapon Forage)","steps":[{"do":"require","check":["self:hasItem:Compendium.essence20.gi_joe_crb.Item.QXpG3NuwaFgbdc0x"],"message":"Weapon Forage needs the Forage Perk."},{"do":"choose","auto":true,"options":[{"label":"Standard","when":["not:self:level>=7"],"steps":[{"do":"pickEntry","from":{"type":"weapon","availabilities":["standard"],"tags":[]}}]},{"label":"Standard or Limited","when":["self:level>=7","not:self:level>=13"],"steps":[{"do":"pickEntry","from":{"type":"weapon","availabilities":["standard","limited"],"tags":[]}}]},{"label":"Up to Restricted","when":["self:level>=13"],"steps":[{"do":"pickEntry","from":{"type":"weapon","availabilities":["standard","limited","restricted"],"tags":[]}}]}]},{"do":"roll","skill":"survival","dif":"@var.pickedDif","edgeWhen":["self:hasItem:Compendium.essence20.ferocious_fighters.Item.2MvQyj4AUcr4QOtU"],"onSuccess":[{"do":"deleteItem","item":"where:item:data:flags.essence20.foraged&item:type:weapon","all":true},{"do":"grant","uuid":"{var.picked}","flags":{"foraged":true}},{"do":"choose","prompt":"Forage it with the Salvaged weapon upgrade?","options":[{"label":"Yes","steps":[{"do":"fitUpgrade","uuid":"Compendium.essence20.ferocious_fighters.Item.sA8GbXKPcRuPHzNt","onto":"granted"}]},{"label":"No","steps":[]}]}],"onFail":[{"do":"chat","text":"{name} finds nothing usable."}]}]}
+    ],
     "prerequisites": {"when":["self:hasType:perk:Forage"]},
     "automation": {
       "status": "full",

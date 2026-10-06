@@ -1,13 +1,16 @@
+import { readFileSync } from 'fs';
 import { isSuppressedOutOfEnvironment } from './environment-gated-effects.mjs';
 
-const ENVIRONMENTAL_EXPERTISE_ID = "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ";
+// The Perk's own EnvironmentalExpertise rule (rules/plugins/effects/environmental-expertise-rule.mjs).
+const EE_RULES = JSON.parse(readFileSync('packs/gijcrbitems/_source/Environmental_Expertise_EbbSUA2vSHyv3MjQ.json', 'utf8')).system.rules;
 
 function makeActor({ hasPerk = true, active = true } = {}) {
   const items = hasPerk
-    ? [{ type: 'perk', flags: { core: { sourceId: ENVIRONMENTAL_EXPERTISE_ID } } }] : [];
+    ? [{ id: 'ee', type: 'perk', flags: {}, system: { rules: EE_RULES } }] : [];
   return {
     documentName: 'Actor',
     items,
+    flags: { essence20: { environmentalExpertiseActive: active } },
     getFlag: (scope, key) => (scope == 'essence20' && key == 'environmentalExpertiseActive' ? active : undefined),
   };
 }

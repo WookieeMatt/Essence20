@@ -5,6 +5,9 @@
   "_id": "Qb0LifFSyfOCFIVd",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Grow a blade or a bludgeon","when":["calc:@item.system.usesPer - @item.system.usesSpent>0"],"steps":[{"do":"updateItem","item":"self","add":{"system.usesSpent":1}},{"do":"choose","options":[{"label":"Short blade","steps":[{"do":"grant","uuid":"Compendium.essence20.gi_joe_crb.Item.8lNIijY5XompKHH7","when":["calc:@owned.8lNIijY5XompKHH7<1"]}]},{"label":"Short bludgeon","steps":[{"do":"grant","uuid":"Compendium.essence20.gi_joe_crb.Item.ZNokHTRBa5aindap","when":["calc:@owned.ZNokHTRBa5aindap<1"]}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend a daily nanomite use to grow a Close Combat Blade or Bludgeoning weapon from your arm.</p><p>Left to the table: removing it at the end of the scene.</p>"

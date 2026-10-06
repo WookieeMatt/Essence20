@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Betrayal: the pony you assisted failed","event":"rollSeen","when":["self:uuidIsVar:assistedBy","var:firstFailed=1"],"steps":[{"do":"mark","key":"betrayal","to":"self","until":"scene"},{"do":"listNames","to":"target","var":"ally"},{"do":"setVar","key":"other","value":"{actor.name}"},{"do":"button","label":"{lang.O3BetrayalHeal}","intro":"{lang.O3BetrayalLine}","who":"anyone","runAs":"clicker","once":false,"steps":[{"do":"focus","to":"holder"},{"do":"notify","text":"E20.O3BetrayalNothing","stop":true,"when":["not:target:marked:betrayal"]},{"do":"notify","text":"E20.O3BetrayalNeedPc","level":"warn","stop":true,"when":["self:uuidIsVar:assistedBy"]},{"do":"notify","text":"E20.O3NoFriendshipPoint","level":"warn","stop":true,"when":["not:self:canSpendStoryPoints"]},{"do":"spend","resource":{"storyPoints":true},"amount":1},{"do":"unmark","key":"betrayal","to":"target"},{"do":"chat","text":"{lang.O3BetrayalHealed}"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: if someone you assist fails, you stop counting as an ally for the other PCs' Perks for the scene. Chat card: another PC can spend a Friendship Point to mend it.</p>"

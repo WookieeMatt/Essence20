@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Agreeable","scope":"incoming","when":["skill:animalHandling"],"upshift":1}
+      {"type":"RollModifier","label":"Agreeable","scope":"incoming","when":["skill:animalHandling"],"upshift":1},
+      {"type":"PetCommand","label":"Agreeable: ↑1 commanding this pet","upshift":1}
     ],
     "automation": {
       "status": "full",

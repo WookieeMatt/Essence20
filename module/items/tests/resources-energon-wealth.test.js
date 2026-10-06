@@ -3,8 +3,6 @@ import { registrySnapshot } from '../../mechanics/item-hooks.mjs';
 import { changed, IDS, setChanged, teamOf } from "../shared/resource-team-lookups.mjs";
 import { has, isItem } from "../shared/item-lookups.mjs";
 import { ENERGON_CAP_EXTRAS, grantTemp, revokeTemp, revokeUpdate, tempGrants } from '../../mechanics/resources/temporary-resources.mjs';
-import { toWealthTest } from '../resources/wealth-tests.mjs';
-import { budgetLeft, upgradeCost } from '../vehicles/motor-pool-connections.mjs';
 import { bodyOfEnergySplit, bodyOfEnergyUnmorph } from '../resources/body-of-energy.mjs';
 import { isRestUpdate } from '../../mechanics/resources/energon-spend-checkpoint.mjs';
 import { repairBonusHeld } from '../resources/repair-progress-bonus-energon.mjs';
@@ -12,8 +10,7 @@ import { addictionDie, feedDarkEnergonCraving } from '../resources/dark-energon-
 import {
   applyDarkEnergonDefenses, darkEnergonRerolls, pointsPerDose, strainOf, strainSources, synthEnPayer,
 } from '../resources/energon-strains.mjs';
-import { beastModePackages } from '../forms/beast-mode-tiers.mjs';
-import { anomalyBand, weImproviseForfeit } from '../resources/we-improvise-continuum-anomalies.mjs';
+import { weImproviseForfeit } from '../resources/we-improvise-continuum-anomalies.mjs';
 import { essenceDamage, healStress } from '../../mechanics/combat/mlp-stress.mjs';
 import { spellsToShare } from '../magic/circle-of-magical-friends.mjs';
 import '../index.mjs';
@@ -61,8 +58,8 @@ beforeEach(() => {
 describe('common', () => {
   test('item identity never matches an empty uuid', () => {
     expect(isItem({ flags: {} }, '')).toBe(false);
-    expect(isItem(item(IDS.camper), IDS.camper)).toBe(true);
-    expect(has(actor([item(IDS.camper)]), IDS.camper)).toBe(true);
+    expect(isItem(item(IDS.weImprovise), IDS.weImprovise)).toBe(true);
+    expect(has(actor([item(IDS.weImprovise)]), IDS.weImprovise)).toBe(true);
     expect(has(actor([]), undefined)).toBe(false);
   });
 
@@ -114,27 +111,15 @@ describe('temporary resources', () => {
 
   test('the Repair Progress bonus point counts as allowed extra', () => {
     expect(ENERGON_CAP_EXTRAS).toContain(repairBonusHeld);
-    expect(repairBonusHeld(actor([item(IDS.repairProgressEnergon)]))).toBe(1);
-    expect(repairBonusHeld(actor([item(IDS.repairProgressEnergon, { flags: { repairBonusSpent: true } })]))).toBe(0);
+    // The bonus point comes from an item with a BonusEnergon rule (Repair Progress's - rules/conv17-split2.test.js).
+    const bonus = extra => ({ ...item('Compendium.essence20.cobra_con_fusion.Item.rPbEnrg7Qx2Lm9Vd', extra), system: { rules: [{ type: 'BonusEnergon' }] } });
+    expect(repairBonusHeld(actor([bonus()]))).toBe(1);
+    expect(repairBonusHeld(actor([bonus({ flags: { repairBonusSpent: true } })]))).toBe(0);
+    expect(repairBonusHeld(actor([item('Compendium.essence20.cobra_con_fusion.Item.rPbEnrg7Qx2Lm9Vd')]))).toBe(0);
   });
 });
 
-describe('Wealth Tests', () => {
-  test('a Requisition roll becomes a Wealth Test with the Wealth skill shifts', () => {
-    const dataset = toWealthTest({ skill: 'targeting', essence: 'speed', shiftUp: 1, shiftDown: 0 }, { shiftUp: 0, shiftDown: 1 });
-    expect(dataset).toMatchObject({ skill: 'wealth', shiftUp: 1, shiftDown: 1, requisitionSkill: 'targeting' });
-    expect(dataset.essence).toBeUndefined();
-  });
-});
-
-describe('Motor Pool Connections', () => {
-  test('upgrade costs follow the availability table', () => {
-    expect(upgradeCost('standard')).toBe(1);
-    expect(upgradeCost('limited')).toBe(2);
-    expect(upgradeCost('restricted')).toBe(5);
-    expect(budgetLeft(actor(), { id: 'v' })).toBe(3);
-  });
-});
+// Motor Pool Connections is the Perk's own Use rule (rules/conv15-items2.test.js).
 
 describe('Personal Power', () => {
   test('Body of Energy keeps Health at 1 until the pool is gone', () => {
@@ -198,25 +183,11 @@ describe('Dark Energon (Decepticon Directive p.80)', () => {
   });
 });
 
-describe('Beast Mode', () => {
-  test('packages widen at 10th and 20th level', () => {
-    expect(beastModePackages(1)).toHaveLength(1);
-    expect(beastModePackages(10).map(([k]) => k)).toEqual(['engrafted1', 'engrafted2', 'evolving1']);
-    expect(beastModePackages(20)).toHaveLength(6);
-  });
-});
-
 describe('Story Point riders', () => {
   test('We Improvise forfeits the unspent grants', () => {
     expect(weImproviseForfeit({ granted: 2, spent: 1 }, 5)).toBe(1);
     expect(weImproviseForfeit({ granted: 2, spent: 3 }, 5)).toBe(0);
     expect(weImproviseForfeit({ granted: 3, spent: 0 }, 1)).toBe(1);
-  });
-
-  test('Continuum Anomaly result bands (History Buff\'s check is a rule now)', () => {
-    expect(anomalyBand(1)).toBe('none');
-    expect(anomalyBand(7)).toBe('lasting');
-    expect(anomalyBand(16)).toBe('cataclysmic');
   });
 });
 
@@ -242,11 +213,14 @@ describe('registration', () => {
   test('Use buttons match their items', () => {
     const uses = registrySnapshot().uses;
     const find = uuid => uses.find(use => use.matches(item(uuid)));
-    for (const uuid of [IDS.motorPool, IDS.darkEnergon, IDS.circleOfMagicalFriends]) {
+    for (const uuid of [IDS.darkEnergon, IDS.circleOfMagicalFriends]) {
       expect(find(uuid)).toBeTruthy();
     }
 
+    // (Motor Pool Connections and Camper no longer have IDS entries - nothing read them.)
+    expect(find('Compendium.essence20.quartermasters_guide_to_gear.Item.Lyb8wPzI0XUuwF3o')).toBeFalsy();
+
     // Camper is item rules (rules/conv10-slE10.test.js).
-    expect(find(IDS.camper)).toBeFalsy();
+    expect(find('Compendium.essence20.knights_of_canterlot.Item.dMEFcqcain5oS2mJ')).toBeFalsy();
   });
 });

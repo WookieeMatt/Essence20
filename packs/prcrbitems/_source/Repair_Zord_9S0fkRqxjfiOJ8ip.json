@@ -5,6 +5,9 @@
   "_id": "9S0fkRqxjfiOJ8ip",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Repair Zord: d2 per 2 Power spent","event":"powerUsed","when":["item:own"],"steps":[{"do":"require","check":["vehicle:driving"]},{"do":"actAs","to":"drivenVehicle","steps":[{"do":"choose","auto":true,"options":[{"label":"Combined","when":["megaform:in:zord"],"steps":[{"do":"require","check":["var:spent>=3"]},{"do":"focus","to":"megaform","filter":["not:target:combinerForm"]},{"do":"actAs","to":"target","steps":[{"do":"healShared","formula":"dice(floor((@var.spent - 1) / 2), 2)","to":"participants","filter":["target:type:zord"]}]},{"do":"chat","text":"The combined Zords regain {var.healed} Health in all."}]},{"label":"Alone","when":["not:megaform:in:zord"],"steps":[{"do":"require","check":["var:spent>=2"]},{"do":"updateActor","to":"self","add":{"system.health.value":"dice(floor(@var.spent / 2), 2)"},"max":"@recipient.system.health.max"}]}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (while driving your Zord): spend Power; the Zord heals d2 for every 2 Power spent.</p><p>Left to the table: the extra cost and dividing the healing when repairing a combined Megaform.</p>"

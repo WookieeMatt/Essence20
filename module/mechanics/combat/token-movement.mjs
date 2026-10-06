@@ -397,7 +397,7 @@ export async function consumeForMovement(token, movement) {
       + (movement.passed?.cost ?? 0)
       + (movement.pending?.cost ?? 0),
   };
-  // Third Dimension (TF CRB p.76) - items/forms/converting-third-dimension.mjs#onMovementUsed.
+  // Third Dimension (TF CRB p.76) - a MovementAction rule (rules/plugins/combat/since-type-change.mjs listens here).
   globalThis.Hooks?.callAll?.('essence20.movementUsed', actor, movement, usedOut);
   const used = usedOut.used;
   if (allowance === null || !Number.isFinite(used)) {

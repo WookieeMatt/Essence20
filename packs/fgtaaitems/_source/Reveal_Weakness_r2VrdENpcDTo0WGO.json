@@ -5,6 +5,10 @@
   "_id": "r2VrdENpcDTo0WGO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Reveal a weakness (Reveal Weakness)","cost":{"action":"standard"},"steps":[{"do":"target","beforeCost":true,"max":1},{"do":"mark","key":"revealWeakness","to":"target","until":"combat"}]},
+      {"type":"HitRider","label":"Reveal Weakness","scope":"markedTarget","mark":"revealWeakness","note":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a target; for the rest of the combat, hits against it deal +1 damage, shown on the chat card as \"Includes +1 from Reveal Weakness\".</p>"

@@ -10,9 +10,10 @@ import { actorHasPerk } from "../../mechanics/characters/perks.mjs";
  * The first clause ("immediately Move towards a newly-Defeated ally") is a reaction to a
  * Condition being applied to someone ELSE - the "an ally's own Health just crossed to 0" hook
  * this project has repeatedly flagged as missing (Fe-BURN!, Defender Step, Projectile Deflector,
- * etc.). This is that hook's first real use: mechanics/combat/combat.mjs#applyDamage calls
- * grantNotOnMyWatchReaction() below at the exact moment ANY actor's Health crosses from >0 to 0,
- * for both the Stun-crosses-remaining-Health branch and the ordinary Health-loss branch.
+ * etc.). The ordinary Health-loss case is the item's own droppedToZero watch Trigger (a button
+ * granting the Move); mechanics/combat/combat.mjs#applyDamage calls grantNotOnMyWatchReaction()
+ * below ONLY for the Stun-crosses-remaining-Health Defeat, which leaves Health alone and so never
+ * fires droppedToZero (audit fix 2026-10-07 - the Health branch used to call it too, a double).
  *
  * "You can see" has no visibility check to hook (same unenforceable-narrative-precondition idiom
  * already accepted throughout this project) - approximated as "anywhere on the scene," the same
@@ -38,7 +39,8 @@ export function hasDefeatedAllyInReach(actor) {
 }
 
 /**
- * Called from combat.mjs#applyDamage the moment defeatedActor's Health crosses from >0 to 0.
+ * Called from combat.mjs#applyDamage the moment a Stun hit Defeats defeatedActor (Stun reaching
+ * its remaining Health) - the Health-to-0 case is the item's droppedToZero Trigger.
  * Posts a chat prompt for every nearby ally holding Not On My Watch, letting that player know
  * they can now move their own token towards defeatedActor.
  * @param {Actor} defeatedActor The actor who was just Defeated.

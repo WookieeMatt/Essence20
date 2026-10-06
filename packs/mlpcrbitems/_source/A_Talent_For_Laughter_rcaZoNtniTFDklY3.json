@@ -5,6 +5,9 @@
   "_id": "rcaZoNtniTFDklY3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","action":"any","to":"downgrade","ask":"E20.ActionPerkAskLaughter","limit":{"per":"turn","max":1,"freeIsUnlimited":true}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per round, when you take an action you're asked whether it relates to Laughter. If it does, a Standard action costs a Move and a Move costs a Free; Free actions related to it cost nothing.</p>"

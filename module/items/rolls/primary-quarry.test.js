@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { checkPrimaryQuarry, designatePrimaryQuarry } from './primary-quarry.mjs';
+import { checkPrimaryQuarry } from './primary-quarry.mjs';
 
 global.game = {
   i18n: {
@@ -17,35 +17,6 @@ global.ui = {
     warn: jest.fn(),
   },
 };
-
-describe("designatePrimaryQuarry (Decepticon Directive p.55)", () => {
-  beforeEach(() => {
-    game.user.targets.first.mockReset();
-    ui.notifications.warn.mockClear();
-  });
-
-  test("sets the actor's flag to the currently-targeted token's actor uuid", async () => {
-    const actor = { setFlag: jest.fn() };
-    const targetActor = { uuid: 'Actor.target1' };
-    game.user.targets.first.mockReturnValue({ actor: targetActor });
-
-    const result = await designatePrimaryQuarry(actor);
-
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'primaryQuarryUuid', 'Actor.target1');
-    expect(result).toBe(true);
-  });
-
-  test("warns and does nothing when nothing is targeted", async () => {
-    const actor = { setFlag: jest.fn() };
-    game.user.targets.first.mockReturnValue(undefined);
-
-    const result = await designatePrimaryQuarry(actor);
-
-    expect(actor.setFlag).not.toHaveBeenCalled();
-    expect(ui.notifications.warn).toHaveBeenCalledWith('E20.PrimaryQuarryNoTarget');
-    expect(result).toBe(false);
-  });
-});
 
 describe("checkPrimaryQuarry", () => {
   test("true when the target's uuid matches the actor's Primary Quarry", () => {

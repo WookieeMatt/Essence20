@@ -5,6 +5,9 @@
   "_id": "YMC3WoSkJ11jrwUn",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Massive Mug of Mammoth Measurements","event":"afterRoll","outcome":"any","when":["item:own","roll:firstRow:success"],"steps":[{"do":"sizeChange","key":"sizePotion","set":"huge","until":"scene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll it from the sheet (uses its own Spellcasting die). On a success your size becomes Huge until the GM starts a new scene, then goes back to what it was. Your gear not growing with you is flavor.</p>"

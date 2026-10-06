@@ -5,6 +5,9 @@
   "_id": "lIiVbzESbPpV7Egu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Might Makes Right (Frightened)","outcome":"x2","when":["skill:persuasion"],"steps":[{"do":"applyCondition","condition":"frightened","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Persuasion also counts as a Strength Skill for you. Chat card: a Critical Success on Persuasion offers to make the targets Frightened.</p>"

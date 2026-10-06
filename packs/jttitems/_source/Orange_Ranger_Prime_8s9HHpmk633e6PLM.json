@@ -5,6 +5,10 @@
   "_id": "8s9HHpmk633e6PLM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Orange Ranger Prime","scope":"incoming","late":true,"snag":true,"when":["defense:cleverness"]},
+      {"type":"Use","label":"Orange Ranger Prime (regain 2d2 Personal Power)","limit":{"per":"encounter"},"steps":[{"do":"updateActor","to":"self","add":{"system.powers.personal.value":"2d2"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 to all four Defenses while Morphed. Automatic: an attack against your Cleverness gets a Snag added once its Roll Options Dialog closes, so it shows on the chat card. Use button: regain 2d2 Personal Power, once per scene.</p>"

@@ -5,6 +5,9 @@
   "_id": "dpxjT9eTAKcZuRXs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Spend Personal Power on enemies' Initiative","when":["combat:roundIs:1"],"steps":[{"do":"require","check":["self:initiative"]},{"do":"focus","to":"nearbyEnemies:1000000","filter":["target:initiative"]},{"do":"countTargets","var":"enemies"},{"do":"askNumber","var":"n","min":1,"max":"min(@actor.system.powers.personal.value, @var.enemies)","prompt":"Spend how many Personal Power (1 per enemy)?"},{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":"@var.n"},{"do":"writeInitiative","to":"self","value":"@initiative + 2 * @var.n","exact":true},{"do":"keepTargets","max":"@var.n"},{"do":"writeInitiative","to":"targets","value":"@initiative.recipient - 2","exact":true}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: Edge on Initiative. Use button (first round of combat): spend 1 Personal Power per enemy; your Initiative result goes up and each chosen enemy's goes down by 2 per Personal Power spent.</p><p>Left to the table: this score change stands in for the printed ↑1 and Snag.</p>"

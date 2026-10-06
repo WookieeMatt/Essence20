@@ -358,11 +358,13 @@ describe("_prepareRolePoints", () => {
 describe("_prepareTotalAvailability", () => {
   const FIELDTEST_ID = "Compendium.essence20.gi_joe_crb.Item.bPMgz1ct8T0kgQ6K";
 
+  // Fieldtest's pack rule: AvailabilityShift {steps: -1} (rules/plugins/resources/availability-shift.mjs; checked against the
+  // pack in rules/conv15-other.test.js).
   function makeActor({ hasPerk = true } = {}) {
     const perkItems = hasPerk
-      ? [{ type: 'perk', flags: { core: { sourceId: FIELDTEST_ID } } }]
+      ? [{ type: 'perk', flags: { core: { sourceId: FIELDTEST_ID } }, system: { rules: [{ type: 'AvailabilityShift', steps: -1 }] } }]
       : [];
-    return { items: { get: () => undefined, find: p => perkItems.find(p) } };
+    return { items: Object.assign(perkItems, { get: () => undefined }) };
   }
 
   describe("Fieldtest (GI Joe CRB, Technician, 13th level, p.104)", () => {
@@ -516,75 +518,18 @@ describe("roll", () => {
     expect(classFeature.update).toHaveBeenCalledWith({ ["system.uses.value"]: 2 });
   });
 
-  describe("Limited weapon effects (Turbo Thunder Cannon's Energy Attack, Wing Missile Salvo)", () => {
-    // Across the Stars Table 3-1.1 p.78: "Energy Attack: 1/Encounter, 4 Energy damage (↓2)".
-    const TURBO_THUNDER_CANNON_ENERGY_ATTACK_ID =
-      "Compendium.essence20.across_the_stars.Item.Wl7L2wcydXAw9Xei";
-
-    function makeLimitedEffectActor(usedFlags = {}) {
-      return {
-        system: {
-          skills: { targeting: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } },
-        },
-        items: Object.assign([], { get: jest.fn(() => undefined) }),
-        getFlag: jest.fn((scope, key) => (scope == 'essence20' ? usedFlags[key] : undefined)),
-        setFlag: jest.fn(async (scope, key, value) => {
-          usedFlags[key] = value;
-        }),
-      };
-    }
-
-    function makeLimitedEffectItem(actor) {
-      const item = makeItem('weaponEffect', {
-        classification: { skill: 'targeting' }, shiftDown: 2,
-      }, actor);
-      item.flags = { core: { sourceId: TURBO_THUNDER_CANNON_ENERGY_ATTACK_ID } };
-      item._dice.handleSkillItemRoll = jest.fn();
-      return item;
-    }
-
-    test("rolls normally and marks the flag used when not yet used this encounter", async () => {
-      const actor = makeLimitedEffectActor();
-      const item = makeLimitedEffectItem(actor);
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
-      expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'turboThunderCannonEnergyAttackUsedThisEncounter', expect.objectContaining({ count: 1 }),
-      );
-    });
-
-    test("blocks the roll and warns instead of marking it used again", async () => {
-      const actor = makeLimitedEffectActor({
-        turboThunderCannonEnergyAttackUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 },
-      });
-      const item = makeLimitedEffectItem(actor);
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
-      expect(global.ui.notifications.warn).toHaveBeenCalled();
-      expect(actor.setFlag).not.toHaveBeenCalled();
-    });
-
-    test("leaves an unrelated weaponEffect alone entirely", async () => {
-      const actor = makeLimitedEffectActor();
-      const item = makeItem('weaponEffect', { classification: { skill: 'targeting' }, shiftDown: 0 }, actor);
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
-      expect(actor.setFlag).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("Bring It All Down (Decepticon Directive, Demolitionist Focus, 20th level, p.57)", () => {
+  describe("an AttackChoice rule (Bring It All Down, Decepticon Directive, Demolitionist Focus, 20th level, p.57)", () => {
     const BRING_IT_ALL_DOWN_ID = "Compendium.essence20.decepticon_directive.Item.x4PS0cKR25og3lC0";
+    // Its rule (packs/dditems/_source/Bring_It_All_Down_x4PS0cKR25og3lC0.json) - option values are their places: 0 shiftUp,
+    // 1 radius, 2 damage, 3 armorPiercing.
+    const RULE = {
+      type: 'AttackChoice', when: ['item:type:weaponEffect', 'item:data:system.classification.style=explosive'],
+      options: [{ label: 'up', shiftUp: 2 }, { label: 'radius', radiusMultiplier: 2 }, { label: 'damage', damage: 2 }, { label: 'ap', armorPiercing: true }],
+    };
+    const NONE = { attackChoiceShiftUp: 0, attackChoiceDamage: 0, attackChoiceArmorPiercing: false };
 
     function makeBringItAllDownActor(perkIds = []) {
-      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+      const items = perkIds.map(perkId => ({ id: 'bring', name: 'Bring It All Down', type: 'perk', flags: { core: { sourceId: perkId } }, system: { rules: [RULE] } }));
       items.get = jest.fn(() => undefined);
       return {
         system: {
@@ -610,12 +555,12 @@ describe("roll", () => {
       const actor = makeBringItAllDownActor([BRING_IT_ALL_DOWN_ID]);
       const item = makeItem('weaponEffect', { classification: { skill: 'technology', style: 'explosive' } }, actor);
       item._dice.handleSkillItemRoll = jest.fn();
-      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('damage') };
+      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('2') };
 
       await item.roll({});
 
       expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ bringItAllDownEffect: 'damage' }), actor, item,
+        expect.objectContaining({ ...NONE, attackChoiceDamage: 2 }), actor, item,
       );
     });
 
@@ -630,7 +575,7 @@ describe("roll", () => {
 
       expect(waitMock).not.toHaveBeenCalled();
       expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ bringItAllDownEffect: null }), actor, item,
+        expect.objectContaining(NONE), actor, item,
       );
     });
 
@@ -645,7 +590,7 @@ describe("roll", () => {
 
       expect(waitMock).not.toHaveBeenCalled();
       expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ bringItAllDownEffect: null }), actor, item,
+        expect.objectContaining(NONE), actor, item,
       );
     });
 
@@ -656,7 +601,7 @@ describe("roll", () => {
         classification: { skill: 'technology', style: 'explosive' }, shape: 'circle', radius: 10,
       }, actor);
       item._dice.handleSkillItemRoll = jest.fn();
-      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('radius') };
+      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('1') };
 
       await item.roll({});
 
@@ -674,7 +619,7 @@ describe("roll", () => {
         classification: { skill: 'technology', style: 'explosive' }, shape: 'circle', radius: 10,
       }, actor);
       item._dice.handleSkillItemRoll = jest.fn();
-      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('shiftUp') };
+      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('0') };
 
       await item.roll({});
 
@@ -774,8 +719,9 @@ describe("roll", () => {
     const POWER_CONSERVATIONIST_ID = "Compendium.essence20.knights_of_canterlot.Item.75H9N2YqaSDUhiCQ";
     const POWER_MASTERY_ID = "Compendium.essence20.knights_of_canterlot.Item.qDsWwo5ipmzMMuO4";
 
+    // Both Perks carry a SpellCostDefer rule (their pack rule - rules/conv15-other.test.js checks it).
     function makeCasterActor(perkIds = [], priorDownshift = 0) {
-      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } }, system: { rules: [{ type: 'SpellCostDefer' }] } }));
       items.get = jest.fn(() => undefined);
       return {
         system: { skills: { spellcasting: { shift: 'd8', shiftDown: priorDownshift } } },
@@ -863,42 +809,43 @@ describe("roll", () => {
     });
   });
 
-  describe("Enchant (MLP CRB, Elementary Enchantment spell, p.136)", () => {
-    const ENCHANT_ID = "Compendium.essence20.mlp_crb.Item.afYeCCAX0o2Cwf2I";
-
-    function makeEnchantCasterActor() {
+  // Enchant, Bestow Expertise and Get To Know pick before rolling through their PreCast rules (rules/plugins/picks/pre-cast.mjs;
+  // the pack rules and what a successful cast does: rules/conv15-other.test.js).
+  describe("a spell's PreCast rule (Enchant, Bestow Expertise, Get To Know)", () => {
+    function makePickingCaster() {
       const items = [];
       items.get = jest.fn(() => undefined);
       return {
-        system: { skills: { spellcasting: { shift: 'd8', shiftDown: 0 } } },
+        system: { skills: { spellcasting: { shift: 'd8', shiftDown: 0 }, culture: { shift: 'd4' } } },
         items,
         update: jest.fn(),
       };
     }
 
-    function makeEnchantItem(actor) {
-      const item = makeItem('spell', { cost: 1, tier: 'elementary' }, actor);
-      item.flags = { core: { sourceId: ENCHANT_ID } };
+    function makePickingSpell(actor) {
+      const item = makeItem('spell', { cost: 1, tier: 'elementary', rules: [{ type: 'PreCast', steps: [{ do: 'pick', key: 'skill', from: 'skill' }] }] }, actor);
+      item.update = jest.fn(async () => {});
       item._dice.handleSkillItemRoll = jest.fn();
       return item;
     }
 
-    test("prompts for a Skill before rolling and threads the choice through", async () => {
-      const actor = makeEnchantCasterActor();
-      const item = makeEnchantItem(actor);
+    test("prompts before rolling and keeps the choice on the spell", async () => {
+      const actor = makePickingCaster();
+      const item = makePickingSpell(actor);
       global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('culture') };
+      global.foundry.utils.escapeHTML ??= text => String(text);
 
       await item.roll({});
 
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ isEnchantAttempt: true, enchantSkill: 'culture' }), actor, item,
-      );
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
+      expect(item.update).toHaveBeenCalledWith({ 'flags.essence20.rules.choices.skill': 'culture' });
     });
 
-    test("cancels the whole cast (no roll, no cost) when the picker is cancelled", async () => {
-      const actor = makeEnchantCasterActor();
-      const item = makeEnchantItem(actor);
+    test("cancels the whole cast (no roll, no cost) when the pick is cancelled", async () => {
+      const actor = makePickingCaster();
+      const item = makePickingSpell(actor);
       global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('cancel') };
+      global.foundry.utils.escapeHTML ??= text => String(text);
 
       await item.roll({});
 
@@ -906,19 +853,19 @@ describe("roll", () => {
       expect(actor.update).not.toHaveBeenCalled();
     });
 
-    test("doesn't prompt for an unrelated spell", async () => {
-      const actor = makeEnchantCasterActor();
+    test("doesn't prompt for a spell without one", async () => {
+      const actor = makePickingCaster();
       const item = makeItem('spell', { cost: 1, tier: 'elementary' }, actor);
-      item.flags = { core: { sourceId: "Compendium.essence20.mlp_crb.Item.unrelated" } };
       item._dice.handleSkillItemRoll = jest.fn();
+      global.foundry.applications.api.DialogV2 = { wait: jest.fn() };
 
       await item.roll({});
 
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ isEnchantAttempt: false, enchantSkill: null }), actor, item,
-      );
+      expect(global.foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
+      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
     });
   });
+
 
   // An area spell (system.shape set) places a real Region shape via mechanics/combat/aoe-targeting.mjs,
   // rather than each such spell carrying its own bespoke auto-targeting helper keyed on its
@@ -996,78 +943,6 @@ describe("roll", () => {
     });
   });
 
-  describe("Beam Volley (MLP CRB, Virtuoso Beam spell, p.138)", () => {
-    const BEAM_VOLLEY_ID = "Compendium.essence20.mlp_crb.Item.UhkhFqFDYjub1a8k";
-
-    test("auto-targets the closest enemies before rolling", async () => {
-      const actorToken = { document: { disposition: 1 }, center: { x: 0, y: 0 } };
-      const actor = {
-        system: { skills: { spellcasting: { shift: 'd8', shiftDown: 0 } } },
-        items: Object.assign([], { get: () => undefined }),
-        update: jest.fn(),
-        getActiveTokens: () => [actorToken],
-      };
-      const enemyToken = { id: 'enemy1', document: { disposition: -1 }, actor: {}, center: { x: 10, y: 0 } };
-      global.canvas = {
-        tokens: { placeables: [actorToken, enemyToken], setTargets: jest.fn() },
-        grid: { measurePath: () => ({ distance: 10 }) },
-      };
-      const item = makeItem('spell', { cost: 4, tier: 'virtuoso' }, actor);
-      item.flags = { core: { sourceId: BEAM_VOLLEY_ID } };
-      item._dice.handleSkillItemRoll = jest.fn();
-
-      await item.roll({});
-
-      expect(global.canvas.tokens.setTargets).toHaveBeenCalledWith(['enemy1']);
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalled();
-    });
-  });
-
-  describe("Bestow Expertise (MLP CRB, Superior Enchantment spell, p.137)", () => {
-    const BESTOW_EXPERTISE_ID = "Compendium.essence20.mlp_crb.Item.stwnP4um6j1xxzIo";
-
-    function makeBestowExpertiseCasterActor() {
-      const items = [];
-      items.get = jest.fn(() => undefined);
-      return {
-        system: { skills: { spellcasting: { shift: 'd8', shiftDown: 0 } } },
-        items,
-        update: jest.fn(),
-      };
-    }
-
-    test("prompts for a Skill and name before rolling and threads the choice through", async () => {
-      const actor = makeBestowExpertiseCasterActor();
-      const item = makeItem('spell', { cost: 2, tier: 'superior' }, actor);
-      item.flags = { core: { sourceId: BESTOW_EXPERTISE_ID } };
-      item._dice.handleSkillItemRoll = jest.fn();
-      global.foundry.applications.api.DialogV2 = {
-        wait: jest.fn().mockResolvedValue({ skill: 'culture', name: 'Ancient Lore' }),
-      };
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({
-          isBestowExpertiseAttempt: true, bestowExpertiseSkill: 'culture', bestowExpertiseName: 'Ancient Lore',
-        }), actor, item,
-      );
-    });
-
-    test("cancels the whole cast when the picker is cancelled", async () => {
-      const actor = makeBestowExpertiseCasterActor();
-      const item = makeItem('spell', { cost: 2, tier: 'superior' }, actor);
-      item.flags = { core: { sourceId: BESTOW_EXPERTISE_ID } };
-      item._dice.handleSkillItemRoll = jest.fn();
-      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('cancel') };
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
-      expect(actor.update).not.toHaveBeenCalled();
-    });
-  });
-
   describe("Mind Beam (MLP CRB, Virtuoso Beam spell, p.139)", () => {
     const MIND_BEAM_ID = "Compendium.essence20.mlp_crb.Item.gF8otV8Ag9axRp2Z";
 
@@ -1099,47 +974,6 @@ describe("roll", () => {
       const actor = makeMindBeamCasterActor();
       const item = makeItem('spell', { cost: 3, tier: 'virtuoso' }, actor);
       item.flags = { core: { sourceId: MIND_BEAM_ID } };
-      item._dice.handleSkillItemRoll = jest.fn();
-      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('cancel') };
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).not.toHaveBeenCalled();
-      expect(actor.update).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("Get To Know (Dark Skies Over Equestria, Elementary Utility spell, p.21)", () => {
-    const GET_TO_KNOW_ID = "Compendium.essence20.dark_skies_over_equestria.Item.pyRy1dFwuiJpAKj2";
-
-    function makeGetToKnowCasterActor() {
-      const items = [];
-      items.get = jest.fn(() => undefined);
-      return {
-        system: { skills: { spellcasting: { shift: 'd8', shiftDown: 0 } } },
-        items,
-        update: jest.fn(),
-      };
-    }
-
-    test("prompts for a Skill before rolling and threads the choice through", async () => {
-      const actor = makeGetToKnowCasterActor();
-      const item = makeItem('spell', { cost: 2, tier: 'elementary' }, actor);
-      item.flags = { core: { sourceId: GET_TO_KNOW_ID } };
-      item._dice.handleSkillItemRoll = jest.fn();
-      global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('culture') };
-
-      await item.roll({});
-
-      expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
-        expect.objectContaining({ isGetToKnowAttempt: true, getToKnowSkill: 'culture' }), actor, item,
-      );
-    });
-
-    test("cancels the whole cast when the picker is cancelled", async () => {
-      const actor = makeGetToKnowCasterActor();
-      const item = makeItem('spell', { cost: 2, tier: 'elementary' }, actor);
-      item.flags = { core: { sourceId: GET_TO_KNOW_ID } };
       item._dice.handleSkillItemRoll = jest.fn();
       global.foundry.applications.api.DialogV2 = { wait: jest.fn().mockResolvedValue('cancel') };
 

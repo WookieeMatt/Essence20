@@ -5,6 +5,10 @@
   "_id": "2qb5dV11qvWsN4xJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Deconstructionist (equipment gains Snag for 1 turn on success)","key":"deconstructionist","forget":true,"when":["skill:technology"]},
+      {"type":"Trigger","event":"hit","label":"Deconstructionist","when":["roll:switch:deconstructionist"],"steps":[{"do":"bank","to":"target","snag":true,"until":"combat","replace":true}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: on Technology tests, tick the Deconstructionist switch. Automatic: on a success against a targeted vehicle, its next test takes a Snag, shown as Deconstructionist next to Snag in its Roll Options Dialog.</p><p>Left to the table: setting up the contest or DIF, the Snag on equipment that isn't a vehicle, and skipping distraction ↓ when you disrupt equipment.</p>"

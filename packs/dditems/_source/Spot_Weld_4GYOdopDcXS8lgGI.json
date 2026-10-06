@@ -5,6 +5,9 @@
   "_id": "4GYOdopDcXS8lgGI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Spot Weld","cost":{"resource":{"path":"system.energon.normal.value"},"amount":1},"limit":{"per":"encounter"},"steps":[{"do":"target","min":0,"beforeCost":true},{"do":"countTargets","var":"aimed","beforeCost":true},{"do":"require","check":[{"any":["var:aimed=0","target:self","target:within:5"]}],"message":"Target yourself, or someone within 5 ft.","beforeCost":true},{"do":"roll","skill":"technology","dif":17,"snag":true,"when":["self:skill:technology>=d6",{"any":["var:aimed=0","target:self"]}],"onSuccess":[{"do":"heal","amount":2,"to":"targetOrSelf"}]},{"do":"roll","skill":"technology","dif":17,"when":["self:skill:technology>=d6","not:var:aimed=0","not:target:self"],"onSuccess":[{"do":"heal","amount":2,"to":"targetOrSelf"}]},{"do":"roll","skill":"technology","dif":12,"snag":true,"when":["not:self:skill:technology>=d6",{"any":["var:aimed=0","target:self"]}],"onSuccess":[{"do":"heal","amount":1,"to":"targetOrSelf"}]},{"do":"roll","skill":"technology","dif":12,"when":["not:self:skill:technology>=d6","not:var:aimed=0","not:target:self"],"onSuccess":[{"do":"heal","amount":1,"to":"targetOrSelf"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene, spend 1 Energon and roll DIF 12 Technology to heal 1 Health to a target in reach (DIF 17 for 2 Health with Technology d6+). Using it on yourself adds a Snag.</p>"

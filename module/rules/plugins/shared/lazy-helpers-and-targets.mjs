@@ -5,34 +5,30 @@
 
 /** Helpers the plug-ins read from the system's own modules, filled at init (tests set them directly). */
 export const lazy = {
-  // items/rolls/angry-influence.mjs#angrySnagSkill
-  angrySnagSkill: null,
   // mechanics/actions/action-economy.mjs#getLedger / setNextTurn
   getLedger: null,
   setNextTurn: null,
   // mechanics/world/environment.mjs#getEnvironment / getTerrain
   getEnvironment: null,
   getTerrain: null,
-  // items/attacks/favorite-weapon.mjs#getFavoriteWeaponItem
+  // items/shared/condition-damage-buttons.mjs#favoriteWeaponOf (the Favorite Weapon Perk's chosen weapon)
   favoriteWeapon: null,
   // mechanics/resources/scene-clock.mjs#getSceneEpoch
   getSceneEpoch: null,
 };
 
 export async function loadLazy() {
-  const [angry, economy, environment, favorite, clock] = await Promise.all([
-    import("../../../items/rolls/angry-influence.mjs"),
+  const [economy, environment, favorite, clock] = await Promise.all([
     import("../../../mechanics/actions/action-economy.mjs"),
     import("../../../mechanics/world/environment.mjs"),
-    import("../../../items/attacks/favorite-weapon.mjs"),
+    import("../../../items/shared/condition-damage-buttons.mjs"),
     import("../../../mechanics/resources/scene-clock.mjs"),
   ]);
-  lazy.angrySnagSkill = angry.angrySnagSkill;
   lazy.getLedger = economy.getLedger;
   lazy.setNextTurn = economy.setNextTurn;
   lazy.getEnvironment = (actor, options) => environment.getEnvironment(actor, options);
   lazy.getTerrain = actor => environment.getTerrain(actor);
-  lazy.favoriteWeapon = favorite.getFavoriteWeaponItem;
+  lazy.favoriteWeapon = favorite.favoriteWeaponOf;
   lazy.getSceneEpoch = clock.getSceneEpoch;
 }
 

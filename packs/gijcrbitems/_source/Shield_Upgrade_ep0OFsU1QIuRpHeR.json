@@ -5,6 +5,9 @@
   "_id": "ep0OFsU1QIuRpHeR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DefenseAura","label":"Shield Upgrade (your Personal Shield covers allies within 10 ft)","defenses":["toughness","evasion"],"radius":10,"bonus":"rolePoints","when":["check:personalShield"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while your Personal Shield is active, allies within 10 ft get its Defense bonus when they're attacked.</p>"

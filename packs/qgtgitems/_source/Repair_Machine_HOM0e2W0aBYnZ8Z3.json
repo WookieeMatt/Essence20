@@ -5,6 +5,9 @@
   "_id": "HOM0e2W0aBYnZ8Z3",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Repair Machine: Edge on the next Technology test","event":"powerUsed","when":["item:own"],"steps":[{"do":"bank","edge":true,"appliesWhen":["skill:technology"],"replace":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: your next Technology test gains Edge, for fixing the broken equipment. It uses one of its two daily uses.</p>"

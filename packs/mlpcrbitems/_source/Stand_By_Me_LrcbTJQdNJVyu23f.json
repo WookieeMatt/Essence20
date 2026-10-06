@@ -5,6 +5,10 @@
   "_id": "LrcbTJQdNJVyu23f",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","defense":"any","amount":1,"scope":"aura","radius":5,"affects":"allies","stacks":false,"label":"Stand By Me (+1 to your Defenses)","when":["not:target:self"]},
+      {"type":"Trigger","event":"applyingDamage","redirect":true,"within":5,"priority":5,"label":"Stand By Me (a Friendship Point: take the effect yourself)","when":["self:canSpendStoryPoints"],"steps":[{"do":"spend","resource":{"storyPoints":true},"amount":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a friend within 5 ft of you gets +1 to whichever Defense is attacked, added to the DIF on the attacker's chat card rather than to their sheet. When a friend beside you is targeted and you aren't, you're offered the chance to spend a Friendship Point and take the effect instead.</p>"

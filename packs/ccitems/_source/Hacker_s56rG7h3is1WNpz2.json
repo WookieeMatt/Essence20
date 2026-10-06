@@ -5,6 +5,9 @@
   "_id": "s56rG7h3is1WNpz2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Make a poison a hacker poison, or a typical one again (Hacker)","steps":[{"do":"pick","key":"poison","from":"ownedItem","itemType":"weapon","filter":["item:data:system.isPoison"],"prompt":"Poison"},{"do":"choose","auto":true,"options":[{"label":"Hacker poison","when":["not:rule:pickedItem:poison:item:data:flags.essence20.hackerPoison"],"steps":[{"do":"updateItem","item":"choice:poison","set":{"flags.essence20.hackerPoison":true}},{"do":"chat","text":"Now a hacker poison: it affects only robots and computerized targets."}]},{"label":"Typical poison","when":["rule:pickedItem:poison:item:data:flags.essence20.hackerPoison"],"steps":[{"do":"updateItem","item":"choice:poison","set":{"flags.essence20.hackerPoison":false}},{"do":"chat","text":"A typical poison again."}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: mark a poison as a hacker poison. It then only affects robots and computerized targets.</p>"

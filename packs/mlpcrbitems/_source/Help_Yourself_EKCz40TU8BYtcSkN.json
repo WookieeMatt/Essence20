@@ -5,6 +5,10 @@
   "_id": "EKCz40TU8BYtcSkN",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"success","label":"Help Yourself: the clone appears","when":["item:own"],"steps":[{"do":"recordScene","path":"flags.essence20.helpYourselfClone","quiet":true},{"do":"chat","text":"{name}'s helper clone appears for the scene."}]},
+      {"type":"Use","label":"The clone Lends Assistance (15 ft)","limit":{"per":"round"},"when":["self:onRecordedScene:flags.essence20.helpYourselfClone"],"steps":[{"do":"lendAssistance","skillOnly":true,"radius":15},{"do":"chat","text":"{name}'s clone Lends Assistance."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a successful cast summons your helper clone for the scene. Use button: once per round, the clone Lends Assistance to someone you pick within 15 ft.</p>"

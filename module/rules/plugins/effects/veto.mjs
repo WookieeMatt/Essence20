@@ -21,7 +21,7 @@ import { localize, marksOf, num, readPath, resolve } from "../shared/hit-rider-l
 
 registerRuleType('Veto', {
   params: {
-    on: { kind: 'enum', required: true, options: ['create', 'equip', 'update'] },
+    on: { kind: 'enum', required: true, options: ['create', 'equip', 'update', 'kitUse'] },
     items: { kind: 'object' },
     path: { kind: 'string' },
     change: { kind: 'enum', options: ['up', 'down', 'any'] },
@@ -68,9 +68,23 @@ function warn(rule, actor) {
 
 const holds = (entry, actor, extra = {}) => evaluate(entry.rule.when, contextFor({ ...extra, self: actor, holder: entry.holder, ruleItem: entry.item })) === true;
 
-/** The Veto that refuses this item on this actor (create / equip), or null. */
+/** The Veto that refuses this item on this actor (create / equip / kitUse), or null. */
 export function itemVeto(actor, item, on) {
   return vetoesFor(actor, on).find(entry => holds(entry, actor, { item }) && evaluate(entry.rule.items, contextFor({ self: actor, holder: entry.holder, ruleItem: entry.item, item })) === true) ?? null;
+}
+
+/**
+ * `on: "kitUse"` (round 15, items2): a kit's Use button (mechanics/resources/kits.mjs#runKitUse) is refused while the
+ * Veto's `when` holds (`items` optional - item: tags asked of the kit), with its message as a warning ("You cannot use
+ * kits while fighting with Reckless Abandon"). Returns true when refused.
+ */
+export function kitUseVetoed(actor, kit) {
+  const entry = itemVeto(actor, kit, 'kitUse');
+  if (entry) {
+    warn(entry.rule, actor);
+  }
+
+  return !!entry;
 }
 
 /** Whether a value moved the way a Veto watches for. */

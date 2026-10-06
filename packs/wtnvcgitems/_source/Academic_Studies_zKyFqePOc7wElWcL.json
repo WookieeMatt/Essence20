@@ -5,6 +5,10 @@
   "_id": "zKyFqePOc7wElWcL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SkillEssence","label":"Academic Studies (the chosen Skill is Smarts-based)","essence":"smarts","when":["skill:{item.choice}"]},
+      {"type":"FumbleStoryPoints","label":"Academic Studies (a Fumble with it adds 2 Story Points)","amount":2,"when":["skill:{item.choice}"]}
+    ],
     "prerequisites": {"when":["self:hasType:origin:Student"]},
     "automation": {
       "status": "full",

@@ -1,14 +1,12 @@
-import { registerChatButton, registerRoundStart } from "../../mechanics/item-hooks.mjs";
 import { deps } from "../shared/situation-checks.mjs";
-import { situationalInitiative, takeInASceneButton, misplacedConfidenceRound } from "./situational-initiative.mjs";
 
 /**
  * Situational items (Item Review "situational" group, slice 2) - rules that only apply in a place
  * (a town, the wild, the sea, a library, complete darkness), against someone (a StrexCorp agent, a
  * creature that attacked you, an ally who out-rolled you), or at the start of a fight (Surprise).
- * This wires the Initiative-time ones (Take in a Scene, Misplaced Confidence - ./situational-initiative.mjs) and
- * fills ../shared/situation-checks.mjs's readers at init; Competitive is ./competitive.mjs and the Region-change
- * refresh mechanics/world/position-rules-refresh.mjs.
+ * This fills ../shared/situation-checks.mjs's readers at init; the Region-change refresh is
+ * mechanics/world/position-rules-refresh.mjs. (Take in a Scene, Misplaced Confidence and Competitive are rules on their
+ * items - rules/conv15-items2.test.js.)
  *
  * Where the scene can answer (the GM-set terrain/environment - mechanics/world/environment.mjs - the scene's
  * darkness level, a target's name or creature tags), the rule applies by itself as a labelled roll
@@ -30,10 +28,7 @@ import { situationalInitiative, takeInASceneButton, misplacedConfidenceRound } f
  */
 
 /**
- * Loads the heavier helpers and joins the patched-in hook arrays: rough-terrain.mjs
- * ROUGH_TERRAIN_IGNORERS (situational1's patch), multiple-targets.mjs MULTIPLE_TARGETS_GRANTS and
- * dice.mjs INITIATIVE_EXTENSIONS (SCRATCH/integration/situational2-patch.cjs). Absent arrays are
- * skipped, so nothing breaks before the patches run.
+ * Loads the heavier helpers the situation checks read (environment, the scene clock, nearby allies).
  */
 export async function loadDeps() {
   const environment = await import("../../mechanics/world/environment.mjs");
@@ -43,13 +38,7 @@ export async function loadDeps() {
   deps.getSceneEpoch = clock.getSceneEpoch;
   const allies = await import("../../mechanics/combat/nearby-allies.mjs");
   deps.nearbyAllies = allies.getNearbyAllyTokens;
-
-  const dice = await import("../../dice.mjs");
-  dice.INITIATIVE_EXTENSIONS?.push(situationalInitiative);
 }
-
-registerRoundStart(misplacedConfidenceRound);
-registerChatButton('s2TakeInScene', takeInASceneButton);
 
 if (typeof Hooks != 'undefined') {
   Hooks.once?.('init', () => {

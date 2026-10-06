@@ -5,6 +5,9 @@
   "_id": "oq4wQuilR0aHwxso",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Barrage Attack: every other ranged weapon","when":["combat:exists"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"limit":{"per":"turn"},"steps":[{"do":"bonusAttack","count":"max(0, @rangedWeapons - 1)","cost":"none","only":"ranged","optional":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per turn, spend 1 Personal Power when the Zord makes a ranged attack to get a free ranged attack with each of its other ranged weapons.</p>"

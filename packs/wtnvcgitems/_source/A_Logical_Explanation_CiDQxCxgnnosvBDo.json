@@ -5,6 +5,9 @@
   "_id": "CiDQxCxgnnosvBDo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"A Logical Explanation","steps":[{"do":"rollVsEach","skill":"science","defense":"willpower","onHit":[{"do":"applyCondition","condition":"stunned","to":"target"}]}]}
+    ],
     "prerequisites": {"when":["self:hasType:focus:University of What It Is"]},
     "automation": {
       "status": "partial",

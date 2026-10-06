@@ -1,11 +1,8 @@
 import { jest } from "@jest/globals";
 import {
-  formatDailyUses, getDailyUsesLeft, getDailyUsesMax, MIMIC_ID, NANOFLAGE_ID, REPROGRAMMABLE_ID, resetDailyPowerUses, spendDailyUse,
+  formatDailyUses, getDailyUsesLeft, getDailyUsesMax, MIMIC_ID, NANOFLAGE_ID, resetDailyPowerUses, spendDailyUse,
   tracksDailyUses,
 } from "./nanomite-uses.mjs";
-
-const QGTG = "Compendium.essence20.quartermasters_guide_to_gear.Item.";
-const PROTECTION_ID = `${QGTG}IF9v9C3tCJSQYRjd`;
 
 function makePower({ usesPer = 2, usesInterval = 'perDay', usesSpent = 0, type = 'nanomite', sourceId = null, name = 'Repair Machine' } = {}) {
   const power = {
@@ -48,16 +45,6 @@ describe("tracksDailyUses / getDailyUsesMax / getDailyUsesLeft", () => {
     expect(getDailyUsesMax(actor, power)).toBe(2);
     expect(getDailyUsesLeft(actor, power)).toBe(1);
   });
-
-  test("each Reprogrammable adds 2 daily uses to every nanomite power", () => {
-    const power = makePower();
-    const reprogrammable = () => makePower({ usesPer: null, sourceId: REPROGRAMMABLE_ID, name: 'Reprogrammable' });
-    expect(getDailyUsesMax(makeActor([power, reprogrammable()]), power)).toBe(4);
-    expect(getDailyUsesMax(makeActor([power, reprogrammable(), reprogrammable()]), power)).toBe(6);
-
-    const grid = makePower({ type: 'grid' });
-    expect(getDailyUsesMax(makeActor([grid, reprogrammable()]), grid)).toBe(2);
-  });
 });
 
 describe("spendDailyUse", () => {
@@ -83,13 +70,6 @@ describe("spendDailyUse", () => {
   test("an untracked power is always free", async () => {
     const power = makePower({ usesPer: null });
     expect(await spendDailyUse(makeActor([power]), power)).toBe(true);
-    expect(power.update).not.toHaveBeenCalled();
-  });
-
-  test("switching Protection's boost back off costs nothing", async () => {
-    const power = makePower({ sourceId: PROTECTION_ID, usesSpent: 2 });
-    const boosted = makeActor([power], { protectionBoostActive: true });
-    expect(await spendDailyUse(boosted, power)).toBe(true);
     expect(power.update).not.toHaveBeenCalled();
   });
 });

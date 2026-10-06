@@ -5,6 +5,9 @@
   "_id": "hPUmdnAN0FjRaal3",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ReloadSkip","label":"Extended Mag","when":["item:isHost"],"limit":{"per":"scene"},"message":"E20.ExtendedMagSkippedReload","priority":1,"stacks":true}
+    ],
     "prerequisites": {"when":[{"any":["host:trait:burstFire","host:trait:reload"]}]},
     "automation": {
       "status": "full",

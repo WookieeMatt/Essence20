@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCount","label":"Quick Thinker","action":"free","essence":"smarts"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Free actions each turn come from Smarts minus 2 instead of Speed minus 2.</p>"

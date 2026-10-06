@@ -5,6 +5,9 @@
   "_id": "sA8GbXKPcRuPHzNt",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"A Fumble destroys the weapon (Salvaged)","event":"afterRoll","outcome":"fumbled","when":["item:onHost"],"steps":[{"do":"updateItem","item":"host","set":{"system.equipped":false,"flags.essence20.destroyed":true}},{"do":"chat","text":"{name}'s salvaged weapon falls apart."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: lowers the weapon's Availability by one step, and the weapon is destroyed if you fumble an attack with it.</p>"

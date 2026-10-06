@@ -5,6 +5,9 @@
   "_id": "iDbMl3SS6XnyADN2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Monster Form on or off","when":[{"any":["check:monsterForm","self:data:system.powers.personal.value>=3"]}],"steps":[{"do":"choose","auto":true,"options":[{"label":"Monster Form","when":["not:check:monsterForm","calc:@owned.vWie8Dy4u54sf1hy + @owned.4PbR4S3s83Coa0kL + @owned.GQ5aQWbjmaO9y00w + @owned.TEjkVjIEFEbRI736 + @owned.0ICOTyVDXK1i6l1S + @owned.rWoVOcNc3lXKDbhg>0","self:data:system.powers.personal.value>=3"],"steps":[{"do":"keepValue","path":"system.size","at":"flags.essence20.monsterFormPreviousSize"},{"do":"updateActor","to":"self","set":{"system.size":"large","flags.essence20.monsterFormActive":true},"add":{"system.powers.personal.value":-3,"system.health.bonus":2}},{"do":"chat","text":"{name} transforms into their Monster Form!"}]},{"label":"Ranger form","when":["check:monsterForm"],"steps":[{"do":"updateActor","to":"self","set":{"system.size":"common","flags.essence20.monsterFormActive":false,"flags.essence20.monsterGrowSelfActive":false},"add":{"system.health.bonus":"0 - 2 * min(1, @owned.vWie8Dy4u54sf1hy + @owned.4PbR4S3s83Coa0kL + @owned.GQ5aQWbjmaO9y00w + @owned.TEjkVjIEFEbRI736 + @owned.0ICOTyVDXK1i6l1S + @owned.rWoVOcNc3lXKDbhg)"}},{"do":"restoreValue","path":"system.size","from":"flags.essence20.monsterFormPreviousSize"},{"do":"updateItem","item":"self","set":{"flags.essence20.monsterFormPreviousSize":null}},{"do":"chat","text":"{name} reassumes their Ranger form."}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spends 3 Personal Power to enter your Path's Monster Form - Large Size, its Toughness bonus, +2 Health and ↑1 on its Skills. Chat card: your Path's reaction (burst or follow-up attack) is offered when it triggers, and Path of Stone gets its Resistances.</p><p>Left to the table: swapping to your Monster Form attacks.</p>"

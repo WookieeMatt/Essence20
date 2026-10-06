@@ -5,6 +5,9 @@
   "_id": "o6h9U6oeWfpXYOA4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Performance against a target","steps":[{"do":"target","max":1,"beforeCost":true},{"do":"choose","prompt":"Against which Defense","options":[{"label":"Willpower","steps":[{"do":"rollVsEach","skill":"performance","defense":"willpower","to":"target","onHit":[{"do":"damage","amount":1,"damageType":"blunt","to":"target"}]}]},{"label":"Cleverness","steps":[{"do":"rollVsEach","skill":"performance","defense":"cleverness","to":"target","onHit":[{"do":"damage","amount":1,"damageType":"blunt","to":"target"}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Standard action, roll Performance against your target's Willpower or Cleverness; on a success they take 1 damage.</p>"

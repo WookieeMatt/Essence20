@@ -5,9 +5,13 @@
   "_id": "jpu756uKYfydTu16",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Last Skill Test taken","event":"afterRoll","outcome":"any","steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.rules.choices.lastSkill":"{var.skill}"}}]},
+      {"type":"RollModifier","label":"Exemplary (Edge on the leader's last Skill)","scope":"aura","radius":100000,"affects":"allies","edge":true,"stack":"exemplary","when":["not:roll:initiative","skill:{choice.lastSkill}"]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the system remembers the last Skill you rolled. When an ally on the scene rolls that same Skill, their Roll Options Dialog opens with Edge already selected.</p>"
+      "notes": "<p>Automatic: the system remembers the last Skill you rolled. When an ally on the scene rolls that same Skill, their Roll Options Dialog lists an Edge from Exemplary.</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,6 +5,9 @@
   "_id": "t6ACZEOz99JWWHyg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Empty Hands (unarmed, wielding no weapon)","edge":true,"when":["attack:barehanded","not:self:holdingWeapon"]}
+    ],
     "prerequisites": {"when":[{"any":["self:skill:finesse>=d10","self:skill:might>=d10"]}]},
     "automation": {
       "status": "full",

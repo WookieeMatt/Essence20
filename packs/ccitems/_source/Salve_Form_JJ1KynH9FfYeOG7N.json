@@ -5,6 +5,9 @@
   "_id": "JJ1KynH9FfYeOG7N",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"A contact poison (Salve Form)","stage":"item","stacks":true,"items":["item:type:weapon","item:isHost","item:data:system.isPoison"],"path":"system.poisonApplication","op":"set","value":{"contact":true,"ingested":false,"inhaled":false},"priority":2}
+    ],
     "prerequisites": {"when":["host:data:system.isPoison","host:data:system.poisonType=poison",{"any":["host:data:system.poisonApplication.ingested","host:data:system.poisonApplication.inhaled"]}]},
     "automation": {
       "status": "full",

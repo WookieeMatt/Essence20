@@ -1,4 +1,4 @@
-import { actorHasPerk } from "../characters/perks.mjs";
+import { forcedMovementChoiceOf } from "../../rules/plugins/combat/subsystem-readers.mjs";
 import { needsGmRelay, relayToGm } from "../world/gm-relay.mjs";
 
 /**
@@ -12,14 +12,12 @@ import { needsGmRelay, relayToGm } from "../world/gm-relay.mjs";
  * equal to your natural Reach"), Barreling Beam, Checkmate (GI Joe CRB p.87) and Teleporting Beam
  * (MLP CRB p.138), which put the target on a chosen spot instead.
  *
- * Immovable Object (GI Joe CRB, Juggernaut, 20th level, p.112): "You may choose not to move when
- * subjected to forced movement." Asked of whoever is doing the moving, with staying put as the
- * default - nobody holding that Perk ever wants to be moved against their will.
+ * A creature with a ForcedMovementChoice rule (Immovable Object, GI Joe CRB, Juggernaut, 20th level, p.112) may choose not
+ * to move: asked of whoever is doing the moving, with staying put as the default.
  *
  * A token the user can't move goes through the GM relay, the same as every other write to a target.
  */
 
-export const IMMOVABLE_OBJECT_ID = "Compendium.essence20.gi_joe_crb.Item.QSHsA1peMncG196r";
 const MOVEMENT_PENALTY_FLAG = 'movementPenalty';
 
 function tokenOf(actor) {
@@ -49,7 +47,7 @@ async function moveTokenTo(token, center) {
 }
 
 /**
- * Whether the creature chooses to stay put (Immovable Object).
+ * Whether the creature chooses to stay put (a ForcedMovementChoice rule - Immovable Object).
  * @param {Actor} actor
  * @returns {Promise<Boolean>}
  */
@@ -64,7 +62,7 @@ export async function resistsForcedMovement(actor) {
     return true;
   }
 
-  if (!actorHasPerk(actor, IMMOVABLE_OBJECT_ID)) {
+  if (!forcedMovementChoiceOf(actor)) {
     return false;
   }
 

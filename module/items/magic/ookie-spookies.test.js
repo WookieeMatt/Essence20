@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyOokieSpookies, isOokieSpookiesActive, removeOokieSpookies } from './ookie-spookies.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { isOokieSpookiesActive, removeOokieSpookies } from './ookie-spookies.mjs';
 
 function makeActor(flags = {}) {
   const flagStore = { ...flags };
@@ -26,7 +27,7 @@ describe("isOokieSpookiesActive / applyOokieSpookies / removeOokieSpookies", () 
     const actor = makeActor();
     expect(isOokieSpookiesActive(actor)).toBe(false);
 
-    await applyOokieSpookies(actor);
+    await activateForWindow(actor, 'ookieSpookiesActive', 'scene');
     expect(isOokieSpookiesActive(actor)).toBe(true);
 
     await removeOokieSpookies(actor);
@@ -35,7 +36,7 @@ describe("isOokieSpookiesActive / applyOokieSpookies / removeOokieSpookies", () 
 
   test("clears once the scene ends", async () => {
     const actor = makeActor();
-    await applyOokieSpookies(actor);
+    await activateForWindow(actor, 'ookieSpookiesActive', 'scene');
 
     global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
 

@@ -1,5 +1,4 @@
 import { grappledApplyDialog, grappledToggles, grappleEscapeSkills } from './grappled-snag.mjs';
-import { getSceneEpoch } from '../resources/scene-clock.mjs';
 
 const actor = ({ grappled = true, version = null } = {}) => ({
   statuses: new Set(grappled ? ['grappled'] : []),
@@ -29,12 +28,12 @@ test('no switch when not Grappled', () => {
   expect(grappledToggles(actor({ grappled: false }), { rolledSkill: 'might' })).toEqual([]);
 });
 
-test('an Assault Claw grapple labels the switch for the Claw', () => {
+test('an Assault Claw grapple (its rule mark) labels the switch for the Claw', () => {
   const clawed = actor();
-  clawed.flags.essence20.d22AssaultClawGrapple = { scene: getSceneEpoch() };
+  clawed.flags.essence20.ruleMarks = { assaultClawGrapple: { by: 'Actor.x', until: null, stamp: null } };
   expect(toggle(clawed, { rolledSkill: 'athletics' })).toMatchObject({ label: 'E20.GrappledClawSnagToggle', value: true });
 
-  clawed.flags.essence20.d22AssaultClawGrapple.scene = -1;
+  clawed.flags.essence20.ruleMarks = {};
   expect(toggle(clawed, { rolledSkill: 'athletics' }).label).toBe('E20.GrappledSnagToggle');
 });
 

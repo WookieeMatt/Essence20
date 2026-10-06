@@ -6,7 +6,8 @@
   "img": "icons/svg/hazard.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","when":["essence:social","self:data:flags.essence20.noFightingSnagPending"],"snag":true}
+      {"type":"RollModifier","when":["essence:social","self:marked:noFighting"],"snag":true,"consumeMark":"noFighting"},
+      {"type":"Trigger","label":"No Fighting?! (a fight ended: Snag on the next Social test)","event":"combatEnd","steps":[{"do":"mark","key":"noFighting","to":"self"}]}
     ],
     "automation": {
       "status": "full",

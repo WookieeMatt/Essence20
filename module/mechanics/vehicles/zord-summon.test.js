@@ -30,8 +30,11 @@ afterEach(() => {
   global.canvas = undefined;
 });
 
+// Enhanced Summoner's pack rule, SummonTimeBonus {amount: 1, sceneAllies: true} (rules/conv15-other.test.js checks the pack).
+const RULES = { [ENHANCED_SUMMONER_ID]: [{ type: 'SummonTimeBonus', amount: 1, sceneAllies: true }] };
+
 function makePilot(perkIds = []) {
-  return { items: perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } })) };
+  return { items: perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } }, system: { rules: RULES[perkId] ?? [] } })) };
 }
 
 function makeZord() {

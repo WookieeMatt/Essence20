@@ -62,11 +62,6 @@ async function onSocialButton(message, button) {
     return onTeamPlayerTake(message);
   }
 
-  case 'tryMeAccept': {
-    const { onTryMeAccept } = await import("../../mechanics/actions/team-actions.mjs");
-    return onTryMeAccept(button);
-  }
-
   case 'combinedJoin': {
     const { onCombinedJoin } = await import("../../mechanics/actions/team-actions.mjs");
     return onCombinedJoin(button);

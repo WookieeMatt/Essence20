@@ -5,6 +5,11 @@
   "_id": "yk2MnBePZ5gxOEOj",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Take the close combat blade (Augur)","steps":[{"do":"require","check":["not:rule:granted"],"message":"{name} already has the blade."},{"do":"grant","uuid":"Compendium.essence20.tf_crb.Item.8lNIijY5XompKHH7","integrated":true,"name":"{sourced.yk2MnBePZ5gxOEOj.name|Augur} Blade","appendTraits":["armorPiercing"],"removeTraits":["silent"]}]},
+      {"type":"AttackTraits","label":"Augur (Alt Mode)","traits":["armorPiercing"],"when":["self:transformed",{"any":["item:data:system.isRam","item:data:system.isFlyby","item:name~bash"]}]},
+      {"type":"ItemModifier","label":"Augur (Alt Mode)","stage":"item","items":["item:type:weaponEffect",{"any":["item:data:system.isRam","item:data:system.isFlyby","item:name~bash"]}],"path":"system.damageType","op":"set","value":"sharp","when":["self:transformed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Alt Mode your Flyby, Ram and Bash attacks deal Sharp damage with Armor Piercing. Use button: adds the Bot Mode close combat blade.</p>"

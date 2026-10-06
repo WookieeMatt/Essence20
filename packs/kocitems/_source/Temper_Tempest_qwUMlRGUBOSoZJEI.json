@@ -5,6 +5,14 @@
   "_id": "qwUMlRGUBOSoZJEI",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"success","label":"Temper Tempest: the storm starts","when":["item:own","not:self:marked:temperTempest"],"steps":[{"do":"mark","key":"temperTempest","to":"self"},{"do":"postCard","key":"temperTempest","text":"E20.O2TempestRound"}]},
+      {"type":"Trigger","event":"turnStart","label":"Temper Tempest: the storm dissipates","when":["self:marked:temperTempest",{"any":["self:status:defeated","self:status:unconscious"]}],"steps":[{"do":"unmark","key":"temperTempest","to":"self"},{"do":"chat","text":"The storm above {name} dissipates."}]},
+      {"type":"Trigger","event":"turnStart","label":"Temper Tempest","when":["self:marked:temperTempest","not:self:status:defeated","not:self:status:unconscious"],"steps":[{"do":"postCard","key":"temperTempest","text":"E20.O2TempestRound"}]},
+      {"type":"CardButtons","card":"temperTempest","label":"Strike targeted (3 Energy)","steps":[{"do":"require","check":["self:marked:temperTempest"]},{"do":"target","max":3},{"do":"buttonCount","key":"struck","max":1},{"do":"damage","to":"targets","amount":3,"damageType":"element","asCastHit":true},{"do":"chat","text":"Lightning from {name}'s storm strikes for {var.damage} Energy damage."}]},
+      {"type":"CardButtons","card":"temperTempest","label":"Take 1 Stress (Health)","steps":[{"do":"require","check":["self:marked:temperTempest"]},{"do":"buttonCount","key":"stressed","max":1},{"do":"damage","to":"self","amount":1,"damageType":"special"}]},
+      {"type":"CardButtons","card":"temperTempest","label":"Calm Down (DIF 20 Alertness)","steps":[{"do":"require","check":["self:marked:temperTempest"]},{"do":"roll","skill":"alertness","dif":20,"onSuccess":[{"do":"unmark","key":"temperTempest","to":"self"},{"do":"chat","text":"The storm above {name} dissipates."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: a success starts the storm. Each of your turns a chat card offers Strike (up to 3 targets for 3 Energy), taking Stress, or a DIF 20 Alertness test to calm down. It ends when you are Defeated.</p>"

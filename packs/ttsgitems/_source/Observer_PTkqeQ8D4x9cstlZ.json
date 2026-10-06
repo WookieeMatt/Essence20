@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"incoming","when":["skill:technology","self:data:flags.essence20.observerDisguiseActive"],"snag":true}
+      {"type":"RollModifier","scope":"incoming","when":["skill:technology","self:data:flags.essence20.observerDisguiseActive"],"snag":true},
+      {"type":"Use","label":"Disguise on (1 Personal Power)","when":["not:self:data:flags.essence20.observerDisguiseActive"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.observerDisguiseActive":true}},{"do":"chat","text":"{name} activates the disguise."}]},
+      {"type":"Use","label":"Disguise off","when":["self:data:flags.essence20.observerDisguiseActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.observerDisguiseActive":false}},{"do":"chat","text":"{name} drops the disguise."}]}
     ],
     "automation": {
       "status": "full",

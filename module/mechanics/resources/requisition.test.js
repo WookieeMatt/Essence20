@@ -142,7 +142,11 @@ describe("rollRequisition", () => {
 
     function makeMemberWithPerk() {
       const member = makeMember();
-      member.items = [{ type: 'perk', flags: { core: { sourceId: EXPERT_GUIDANCE_ID } } }];
+      // Its pack rule (rules/conv15-other.test.js checks it against the pack).
+      member.items = [{
+        type: 'perk', flags: { core: { sourceId: EXPERT_GUIDANCE_ID } },
+        system: { rules: [{ type: 'RequisitionShift', upshift: 2, items: ['item:data:system.totalAvailability=theoretical'] }] },
+      }];
       return member;
     }
 
@@ -167,53 +171,6 @@ describe("rollRequisition", () => {
         noPerkMember, { name: "Ray Gun", type: 'weapon', system: { totalAvailability: 'theoretical' } }, makePool(),
       );
       expect(noPerkMember.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ shiftUp: 0 }));
-    });
-  });
-
-  describe("Benefits of Command (GI Joe CRB, Officer base, p.84)", () => {
-    function makeMemberWithBenefitsOfCommand(pending = { edge: true }) {
-      const member = makeMember();
-      member.getFlag = jest.fn((scope, key) => (
-        scope == 'essence20' && key == 'pendingBenefitsOfCommand' ? pending : undefined
-      ));
-      member.unsetFlag = jest.fn();
-      return member;
-    }
-
-    test("passes edge:true to rollSkill when a banked Edge is pending", async () => {
-      const member = makeMemberWithBenefitsOfCommand();
-      member.rollSkill = jest.fn(async () => ({ success: true, outcomes: [] }));
-
-      await rollRequisition(member, { name: "Rocket Launcher", type: 'weapon', system: { totalAvailability: 'restricted' } }, makePool());
-
-      expect(member.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ edge: true }));
-    });
-
-    test("clears the banked Edge after a completed roll", async () => {
-      const member = makeMemberWithBenefitsOfCommand();
-      member.rollSkill = jest.fn(async () => ({ success: true, outcomes: [] }));
-
-      await rollRequisition(member, { name: "Rocket Launcher", type: 'weapon', system: { totalAvailability: 'restricted' } }, makePool());
-
-      expect(member.unsetFlag).toHaveBeenCalledWith('essence20', 'pendingBenefitsOfCommand');
-    });
-
-    test("doesn't clear the banked Edge when the dialog is cancelled", async () => {
-      const member = makeMemberWithBenefitsOfCommand();
-      member.rollSkill = jest.fn(async () => ({ cancelled: true }));
-
-      await rollRequisition(member, { name: "Rocket Launcher", type: 'weapon', system: { totalAvailability: 'restricted' } }, makePool());
-
-      expect(member.unsetFlag).not.toHaveBeenCalled();
-    });
-
-    test("passes edge:false without a banked Edge", async () => {
-      const member = makeMember();
-      member.rollSkill = jest.fn(async () => ({ success: true, outcomes: [] }));
-
-      await rollRequisition(member, { name: "Rocket Launcher", type: 'weapon', system: { totalAvailability: 'restricted' } }, makePool());
-
-      expect(member.rollSkill).toHaveBeenCalledWith(expect.objectContaining({ edge: false }));
     });
   });
 

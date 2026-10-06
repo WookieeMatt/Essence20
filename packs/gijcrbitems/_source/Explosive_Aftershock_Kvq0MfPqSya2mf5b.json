@@ -5,6 +5,9 @@
   "_id": "Kvq0MfPqSya2mf5b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Explosive Aftershock","event":"afterRoll","outcome":"any","when":["attack","item:data:system.classification.style=explosive"],"steps":[{"do":"targetRowsBeating","defense":"toughness"},{"do":"pick","key":"aftershock","from":"list","prompt":"Choose two effects","options":[["prone,deafened","E20.ExplosiveAftershockProneDeafened"],["prone,penalty","E20.ExplosiveAftershockPronePenalty"],["deafened,penalty","E20.ExplosiveAftershockDeafenedPenalty"],["prone,push","E20.ExplosiveAftershockPronePush"],["deafened,push","E20.ExplosiveAftershockDeafenedPush"],["push,penalty","E20.ExplosiveAftershockPushPenalty"]]},{"do":"push","feet":10,"to":"targets","from":"self","when":["var:includes:picked:push"]},{"do":"applyCondition","condition":"prone","to":"targets","when":["var:includes:picked:prone"]},{"do":"applyCondition","condition":"deafened","to":"targets","when":["var:includes:picked:deafened"]},{"do":"bank","to":"targets","downshift":1,"until":"combat","when":["var:includes:picked:penalty"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: after an explosive attack, your roll is also checked against each target's Toughness. On a success you pick two: knock Prone, Deafen, push 10 ft, or ↓1 on their actions.</p>"

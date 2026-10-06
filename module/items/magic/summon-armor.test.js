@@ -1,22 +1,16 @@
-import { jest } from '@jest/globals';
-import { applySummonArmor, getSummonArmorDefenseBonus, isSummonArmorActive } from './summon-armor.mjs';
+import { getSummonArmorDefenseBonus, isSummonArmorActive } from './summon-armor.mjs';
 
+global.game = { combat: null };
+
+// Summon Armor / Shield's own rules mark the target summonArmor (rules/conv14-dice.test.js covers the casts).
 function makeActor({ active = false } = {}) {
-  const flagStore = { summonArmorActive: active };
-  return {
-    getFlag: jest.fn((scope, key) => flagStore[key]),
-    setFlag: jest.fn(async (scope, key, value) => {
-      flagStore[key] = value;
-    }),
-  };
+  return { flags: { essence20: active ? { ruleMarks: { summonArmor: { by: 'Actor.caster', until: null, stamp: null } } } : {} } };
 }
 
-describe("isSummonArmorActive / applySummonArmor", () => {
-  test("false by default, true once applied", async () => {
-    const actor = makeActor();
-    expect(isSummonArmorActive(actor)).toBe(false);
-    await applySummonArmor(actor);
-    expect(isSummonArmorActive(actor)).toBe(true);
+describe("isSummonArmorActive", () => {
+  test("false without the mark, true with it", () => {
+    expect(isSummonArmorActive(makeActor())).toBe(false);
+    expect(isSummonArmorActive(makeActor({ active: true }))).toBe(true);
   });
 });
 

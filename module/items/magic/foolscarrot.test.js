@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyFoolscarrot, isFoolscarrotActive, removeFoolscarrot } from './foolscarrot.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { isFoolscarrotActive, removeFoolscarrot } from './foolscarrot.mjs';
 
 function makeActor(flags = {}) {
   const flagStore = { ...flags };
@@ -26,7 +27,7 @@ describe("isFoolscarrotActive / applyFoolscarrot / removeFoolscarrot", () => {
     const actor = makeActor();
     expect(isFoolscarrotActive(actor)).toBe(false);
 
-    await applyFoolscarrot(actor);
+    await activateForWindow(actor, 'foolscarrotActive', 'scene');
     expect(isFoolscarrotActive(actor)).toBe(true);
 
     await removeFoolscarrot(actor);
@@ -35,7 +36,7 @@ describe("isFoolscarrotActive / applyFoolscarrot / removeFoolscarrot", () => {
 
   test("clears once the scene ends", async () => {
     const actor = makeActor();
-    await applyFoolscarrot(actor);
+    await activateForWindow(actor, 'foolscarrotActive', 'scene');
 
     global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
 

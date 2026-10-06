@@ -5,6 +5,9 @@
   "_id": "hd1O6anmtNcyjpw9",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"+1 damage (Deadly)","stacks":true,"items":["item:type:weaponEffect","item:onHost","not:item:data:_source.system.damageType=stun","not:item:data:_source.system.damageType=cover","not:item:data:_source.system.damageType=spot","not:item:data:_source.system.damageType=maneuver","not:item:data:_source.system.damageType=grapple","not:item:data:_source.system.damageType=intimidate","not:item:data:_source.system.damageType=knocProne","not:item:data:_source.system.damageType=blindingBlast","not:item:data:_source.system.damageType=frightened","not:item:data:_source.system.damageType=impaired","not:item:data:_source.system.damageType=mesmerized","not:item:data:_source.system.damageType=restrained","not:item:data:_source.system.damageType=unconscious","not:item:data:_source.system.damageType=modelock","not:item:data:_source.system.damageType=special","not:item:data:_source.system.damageType=deafened"],"path":"system.damageValue","op":"add","value":1}
+    ],
     "prerequisites": {"when":["host:trait:sharp"]},
     "automation": {
       "status": "full",

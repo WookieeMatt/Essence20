@@ -1,127 +1,21 @@
-import {
-  registerChatButton, registerPostRoll, registerTurnStart, registerUse,
-} from "../../mechanics/item-hooks.mjs";
-import { FMMC, KOC, rollDif } from "../shared/gm-relayed-item-writes.mjs";
+import { registerUse } from "../../mechanics/item-hooks.mjs";
+import { FMMC } from "../shared/gm-relayed-item-writes.mjs";
 import { T } from "../shared/item-lang.mjs";
-import { findSourced, isFrom } from "../shared/item-lookups.mjs";
+import { isFrom } from "../shared/item-lookups.mjs";
 import { num } from "../shared/numbers.mjs";
-import { say as post } from "../shared/chat-lines.mjs";
-import { targetedActors } from "../shared/sides.mjs";
 
 /**
- * Magic: Knights of Canterlot's Temper Tempest, and Finster's build-your-own Sorcerous Power (Table 4-1).
+ * Magic: Finster's build-your-own Sorcerous Power (Table 4-1). (Knights of Canterlot's Temper Tempest is the spell's
+ * own rules.)
  */
 export const O2_MAGIC = {
   sorcery: FMMC('xUBOE1s5pgVyUrwj'),
-  temperTempest: KOC('qwUMlRGUBOSoZJEI'),
-  fireball: KOC('zlERIywyKQNBQzs6'),
 };
-
-export const TEMPEST_FLAG = 'o2TemperTempest';
 
 // Thorn Warlord's Acid against Evasion is an outgoing Defense rule on the Perk (rules/conv10-slC10.test.js).
 
-// More Bang for your Buck (Knights of Canterlot, Elemental Mage Influence Perk, p.36): its +1 on a successful elemental
-// spell is a cast HitRider rule on the Perk (rules/plugins/combat/hit-rider.mjs); the storm's strikes below count as Temper
-// Tempest's cast hits (rules/plugins/combat/cast-hit-damage.mjs#castHitDamage), so the same rule adds its +1 there.
-
-/* -------------------------------------------- */
-/*  Temper Tempest                               */
-/* -------------------------------------------- */
-
-/**
- * Temper Tempest (Knights of Canterlot, Beam spell, p.51-52): "each round, you must select 3
- * targets, who are then each struck by lightning for 3 Energy damage. Every round you have this
- * spell active, it causes the caster 1 Stress ... If the caster is rendered unconscious
- * (defeated), the storm dissipates on its own ... When you want to end the spell must succeed at a
- * DIF 20 Alertness (Insight) Skill Test". A successful cast raises the storm; each of the caster's
- * turns posts the round's card.
- */
-export function tempestActive(actor) {
-  return !!actor?.flags?.essence20?.[TEMPEST_FLAG];
-}
-
-function tempestCard(actor) {
-  const uuid = actor.uuid;
-  return `${T('O2TempestRound', { name: actor.name })}
-    <button type="button" data-e20-ext="o2TempestStrike" data-actor-uuid="${uuid}">${T('O2TempestStrike')}</button>
-    <button type="button" data-e20-ext="o2TempestStress" data-actor-uuid="${uuid}">${T('O2TempestStress')}</button>
-    <button type="button" data-e20-ext="o2TempestCalm" data-actor-uuid="${uuid}">${T('O2TempestCalm')}</button>`;
-}
-
-registerPostRoll(async (actor, results, checkContext, { rider } = {}) => {
-  if (rider?.itemSource != O2_MAGIC.temperTempest || !(results ?? []).some(r => r.success) || tempestActive(actor)) {
-    return;
-  }
-
-  await actor.setFlag('essence20', TEMPEST_FLAG, { started: true });
-  await post(actor, tempestCard(actor));
-});
-
-registerTurnStart(async (actor) => {
-  if (!tempestActive(actor)) {
-    return;
-  }
-
-  if (actor.statuses?.has?.('defeated') || actor.statuses?.has?.('unconscious')) {
-    await actor.unsetFlag('essence20', TEMPEST_FLAG);
-    await post(actor, T('O2TempestEnds', { name: actor.name }));
-    return;
-  }
-
-  await post(actor, tempestCard(actor));
-});
-
-/** Lightning on up to three of the caster's targets: 3, then whatever the caster's cast HitRider rules add for the spell. */
-export async function tempestDamage(caster) {
-  const { castHitDamage } = await import("../../rules/plugins/combat/cast-hit-damage.mjs");
-  return castHitDamage(caster, findSourced(caster, O2_MAGIC.temperTempest), 3, 'element');
-}
-
-registerChatButton('o2TempestStrike', async (message, button) => {
-  const caster = await fromUuid(button.dataset.actorUuid);
-  if (!caster?.isOwner || !tempestActive(caster)) {
-    return;
-  }
-
-  const targets = targetedActors().slice(0, 3);
-  if (!targets.length) {
-    ui.notifications?.warn?.(T('O2NeedTarget'));
-    return;
-  }
-
-  const { applyDamage } = await import("../../mechanics/combat/combat.mjs");
-  const amount = await tempestDamage(caster);
-  for (const target of targets) {
-    await applyDamage(target, amount, 'element');
-  }
-
-  button.disabled = true;
-  await post(caster, T('O2TempestStruck', { name: caster.name, targets: targets.map(t => t.name).join(', '), amount }));
-});
-
-registerChatButton('o2TempestStress', async (message, button) => {
-  const caster = await fromUuid(button.dataset.actorUuid);
-  if (!caster || !tempestActive(caster)) {
-    return;
-  }
-
-  const { applyDamage } = await import("../../mechanics/combat/combat.mjs");
-  await applyDamage(caster, 1, 'special');
-  button.disabled = true;
-});
-
-registerChatButton('o2TempestCalm', async (message, button) => {
-  const caster = await fromUuid(button.dataset.actorUuid);
-  if (!caster?.isOwner || !tempestActive(caster)) {
-    return;
-  }
-
-  if ((await rollDif(caster, 'alertness', 20)).success) {
-    await caster.unsetFlag('essence20', TEMPEST_FLAG);
-    await post(caster, T('O2TempestEnds', { name: caster.name }));
-  }
-});
+// Temper Tempest (Knights of Canterlot, p.51-52) is the spell's own rules: the storm a mark, its round card a CardButtons card, the
+// lightning a damage step counted as the spell's cast hit (More Bang for your Buck's +1) - rules/conv15-items2.test.js.
 
 /* -------------------------------------------- */
 /*  Build a Sorcerous Power                      */

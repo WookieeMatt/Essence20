@@ -5,9 +5,14 @@
   "_id": "Wc1FJ5YDeTQS6XoE",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Summon the Mega-Weapon (5 Personal Power from the crew)","when":["self:type:zord","not:self:marked:megaWeapon"],"steps":[{"do":"spendPooled","to":"crew","path":"system.powers.personal.value","amount":5,"message":"E20.MegaWeaponCannotAfford"},{"do":"setVar","key":"attacks","value":"1d2 + 1"},{"do":"mark","key":"megaWeapon","to":"self","count":"@var.attacks"},{"do":"chat","text":"{name} calls its Mega-Weapon into being for {var.attacks} attacks, paid by {var.contributors}."}]},
+      {"type":"Trigger","event":"afterRoll","label":"Zord Mega-Weapon System","when":["self:marked:megaWeapon","item:data:flags.essence20.isMegaWeapon"],"steps":[{"do":"setVar","key":"left","value":"@mark.megaWeapon - 1"},{"do":"mark","key":"megaWeapon","to":"self","count":"@var.left","when":["var:left>=1"]},{"do":"unmark","key":"megaWeapon","to":"self","when":["var:left<1"]},{"do":"chat","text":"{name}'s Mega-Weapon fades back into the Morphin Grid.","when":["var:left<1"]}]},
+      {"type":"Trigger","event":"added","label":"Zord Mega-Weapon System: build the weapon","removeOnStop":true,"steps":[{"do":"choose","prompt":"E20.MegaWeaponPickStyle","options":[{"label":"E20.ZordFeatureAttackMelee","steps":[{"do":"setVar","key":"attackSkill","value":"might"},{"do":"setVar","key":"attackStyle","value":"melee"}]},{"label":"E20.ZordFeatureAttackRanged","steps":[{"do":"setVar","key":"attackSkill","value":"targeting"},{"do":"setVar","key":"attackStyle","value":"projectile"},{"do":"setVar","key":"rangeValue","value":50},{"do":"setVar","key":"rangeLong","value":120}]}]},{"do":"pick","key":"damageType","from":"damageType","prompt":"E20.ZordFeatureEnhancePickDamageType"},{"do":"createItem","unlinked":true,"knownTraits":true,"data":{"name":"E20.MegaWeaponName","type":"weapon","system":{"traits":["{var.picked}"]}},"children":[{"name":"E20.ZordFeatureAttackEffectName","nameData":{"name":"E20.MegaWeaponName"},"type":"weaponEffect","flags":{"essence20":{"isMegaWeapon":true}},"system":{"classification":{"skill":"{var.attackSkill}","style":"{var.attackStyle}"},"damageType":"{var.picked}","damageValue":5,"defenseType":"toughness","range":{"min":null,"reachMultiplier":1,"long":"{var.rangeLong}","value":"{var.rangeValue}"}}}]},{"do":"notify","text":"E20.MegaWeaponCreated"}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>On the sheet: a button in the Zord's sidebar has the crew pay 5 Personal Power between them to call the Zord's mega-weapon for 1d2+1 attacks. Its 5-damage weapon and damage type are set up when you add the Feature.</p>"
+      "notes": "<p>Use button on the Feature: the crew pay 5 Personal Power between them to call the Zord's mega-weapon for 1d2+1 attacks. Its 5-damage weapon and damage type are set up when you add the Feature.</p>"
     },
     "originalId": "",
     "description": "",

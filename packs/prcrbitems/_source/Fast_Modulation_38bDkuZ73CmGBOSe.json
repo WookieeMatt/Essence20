@@ -5,6 +5,9 @@
   "_id": "38bDkuZ73CmGBOSe",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"JoinDie","label":"Fast Modulation","steps":1,"stacks":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the Zord's combine timer uses a smaller die (d6 to d4 to d2) for each copy.</p>"

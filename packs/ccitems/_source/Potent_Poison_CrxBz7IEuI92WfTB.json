@@ -5,6 +5,9 @@
   "_id": "CrxBz7IEuI92WfTB",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Potent Poison (+1 Ongoing round)","items":["item:isHost"],"path":"system.ongoingDuration","op":"add","value":1,"stacks":true}
+    ],
     "prerequisites": {"when":["host:data:system.isPoison","host:data:system.poisonType=poison","host:trait:ongoing"]},
     "automation": {
       "status": "full",

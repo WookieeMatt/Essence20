@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Mode Attachment (choose the mode)","steps":[{"do":"choose","prompt":"Which Mode are you uncomfortable in?","options":[{"label":"Bot Mode","steps":[{"do":"updateItem","item":"self","set":{"system.choice":"botMode"}}]},{"label":"An Alt Mode","when":["self:itemCount:altMode>=1"],"steps":[{"do":"pick","key":"altMode","from":"ownedItem","itemType":"altMode","prompt":"Which Mode are you uncomfortable in?"},{"do":"updateItem","item":"self","set":{"system.choice":"{var.picked}"}}]}]}]},
+      {"type":"Trigger","event":"transforming","label":"Mode Attachment (Technology DIF 10 + half your level)","when":["var:mode={item.choice}"],"steps":[{"do":"roll","skill":"technology","dif":"10 + ceil(@level / 2)"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: choose the mode you are uncomfortable in. Automatic: converting into it rolls Technology against 10 + half your level.</p><p>Left to the table: on a failure, you don't change forms and lose the action.</p>"

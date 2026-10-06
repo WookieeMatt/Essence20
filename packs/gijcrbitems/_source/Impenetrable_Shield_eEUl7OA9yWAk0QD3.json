@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"incoming","label":"Personal Shield up (Impenetrable Shield: Resistant to all but EMP)","when":["attack","not:item:damageType:emp","check:personalShield"],"snag":true}
+      {"type":"RollModifier","scope":"incoming","label":"Personal Shield up (Impenetrable Shield: Resistant to all but EMP)","when":["attack","not:item:damageType:emp","check:personalShield"],"snag":true},
+      {"type":"DamageImmunity","label":"Personal Shield up (Impenetrable Shield: EMP Immunity)","damageTypes":["emp"],"when":["check:personalShield"]}
     ],
     "automation": {
       "status": "full",

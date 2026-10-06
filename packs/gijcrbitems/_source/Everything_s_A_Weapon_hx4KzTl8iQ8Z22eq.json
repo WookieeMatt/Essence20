@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SneakAttackGrant","label":"Everything's A Weapon"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Sneak Attack works with any weapon, not just Silent ones.</p>"

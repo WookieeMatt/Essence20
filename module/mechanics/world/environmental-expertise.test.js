@@ -1,10 +1,22 @@
 import { jest } from '@jest/globals';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
-  ENVIRONMENTAL_EXPERTISE_ID, getEnvironmentOfExpertiseSourceLabel, getExpertiseEnvironments,
+  getEnvironmentOfExpertiseSourceLabel, getExpertiseEnvironments,
   hasActiveEnvironmentalExpertise, isEnvironmentalExpertiseActive, isInEnvironmentOfExpertise,
-  isKnownOutsideEnvironmentOfExpertise, meetsEnvironmentOfExpertise, READ_THE_LAND_ID,
-  toggleEnvironmentalExpertise,
+  isKnownOutsideEnvironmentOfExpertise, meetsEnvironmentOfExpertise,
 } from './environmental-expertise.mjs';
+
+// The Perk and Read The Land carry the EnvironmentalExpertise rule (rules/plugins/effects/environmental-expertise-rule.mjs).
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+const rulesOf = file => JSON.parse(readFileSync(join(ROOT, 'packs', file), 'utf8')).system.rules;
+const ENVIRONMENTAL_EXPERTISE_ID = 'environmentalExpertise';
+const READ_THE_LAND_ID = 'readTheLand';
+const RULES = {
+  [ENVIRONMENTAL_EXPERTISE_ID]: rulesOf('gijcrbitems/_source/Environmental_Expertise_EbbSUA2vSHyv3MjQ.json'),
+  [READ_THE_LAND_ID]: rulesOf('iafav2items/_source/Read_the_Land_j8wVLLK4XvVEuP6F.json'),
+};
 
 /**
  * @param {Object} [options]
@@ -15,7 +27,7 @@ import {
 function makeActor({
   hasPerk = true, active = false, perkId = ENVIRONMENTAL_EXPERTISE_ID, terrain, environments = ['arctic'],
 } = {}) {
-  const items = hasPerk ? [{ type: 'perk', name: 'Environmental Expertise', flags: { core: { sourceId: perkId } } }] : [];
+  const items = hasPerk ? [{ id: perkId, type: 'perk', name: 'Environmental Expertise', flags: {}, system: { rules: RULES[perkId] } }] : [];
   const flagStore = { environmentalExpertiseActive: active };
   const scene = { getFlag: (scope, key) => (key == 'terrain' ? terrain : undefined) };
   const token = { regions: [], parent: scene };
@@ -24,6 +36,7 @@ function makeActor({
     getActiveTokens: () => (terrain === undefined ? [] : [token]),
     system: { environments },
     items,
+    flags: { essence20: flagStore },
     getFlag: jest.fn((scope, key) => flagStore[key]),
     setFlag: jest.fn(async (scope, key, value) => {
       flagStore[key] = value;
@@ -41,21 +54,7 @@ describe("isEnvironmentalExpertiseActive", () => {
   });
 });
 
-describe("toggleEnvironmentalExpertise", () => {
-  test("activates from inactive, and returns true", async () => {
-    const actor = makeActor({ active: false });
-    const result = await toggleEnvironmentalExpertise(actor);
-    expect(result).toBe(true);
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'environmentalExpertiseActive', true);
-  });
-
-  test("deactivates from active, and returns false", async () => {
-    const actor = makeActor({ active: true });
-    const result = await toggleEnvironmentalExpertise(actor);
-    expect(result).toBe(false);
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'environmentalExpertiseActive', false);
-  });
-});
+// (The Perk's own toggle is a pair of Use rules on it - rules/conv15-items2.test.js.)
 
 describe("hasActiveEnvironmentalExpertise", () => {
   test("true with the Perk and the toggle active", () => {

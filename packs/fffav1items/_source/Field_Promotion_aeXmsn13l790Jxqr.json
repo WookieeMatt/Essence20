@@ -5,6 +5,9 @@
   "_id": "aeXmsn13l790Jxqr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Lend an ally your Faction's Perks for the scene (Field Promotion)","cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"target","beforeCost":true,"max":1},{"do":"require","beforeCost":true,"check":["self:itemCount:faction>=1"],"message":"{name} has no Faction."},{"do":"grantEntries","of":"owned:faction","childType":"perk","notOwned":true,"until":"scene","to":"target"}]}
+    ],
     "prerequisites": {"when":["self:level>=6","self:count:faction>=1"]},
     "automation": {
       "status": "full",

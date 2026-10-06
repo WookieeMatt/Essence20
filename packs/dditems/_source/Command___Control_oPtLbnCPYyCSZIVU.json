@@ -5,6 +5,10 @@
   "_id": "oPtLbnCPYyCSZIVU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Mini-Con and partner lend help regardless of rank (Command & Control)","side":"give","effect":"anyRank","when":["link:pair",{"any":["self:data:system.type=miniCon","target:data:system.type=miniCon"]},"target:notBeyond:100"]},
+      {"type":"Assist","label":"Mini-Con and partner lend help regardless of rank (Command & Control)","scope":"companion","side":"give","effect":"anyRank","when":["link:pair",{"any":["self:data:system.type=miniCon","target:data:system.type=miniCon"]},"target:notBeyond:100"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Mini-Cons can Lend Assistance to you from up to 100 ft away, even in skills they aren't trained in.</p>"

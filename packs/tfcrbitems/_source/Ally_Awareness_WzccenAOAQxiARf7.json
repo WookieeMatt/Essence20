@@ -5,6 +5,10 @@
   "_id": "WzccenAOAQxiARf7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Remember an ally's advice (Ally Awareness)","cost":{"action":"free"},"limit":{"per":"scene"},"steps":[{"do":"pick","beforeCost":true,"key":"skill","from":"skill","prompt":"Which Skill?"},{"do":"lendAssist","skill":"{choice.skill}"}]},
+      {"type":"AllyRangeMultiplier","label":"Ally Awareness","multiply":5}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ally abilities that reach allies within a range reach you at five times that range. Use button: once per scene, gain Lend Assistance from an ally's remembered advice.</p>"

@@ -5,6 +5,9 @@
   "_id": "coGMtK50t3Ojeklx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Target every enemy in the area","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"setTargets","to":"nearbyEnemies:@item.system.advances.currentValue + 10 * (1 - min(1, @item.system.advances.currentValue))"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend 1 Personal Power to make one ranged attack against every enemy in the area; the area grows at 10th and 15th level.</p><p>Left to the table: placing the area anywhere in range; the system measures it around you.</p>"

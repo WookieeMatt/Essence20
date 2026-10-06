@@ -5,6 +5,9 @@
   "_id": "oVB4sfY5HHIEGTA3",
   "img": "systems/essence20/assets/icons/gear/torch.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Light or put out (Torch)","steps":[{"do":"tokenLight","bright":25,"dim":50}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: lights the carrier's token (25 ft bright, 50 ft dim light) and puts it out again.</p>"

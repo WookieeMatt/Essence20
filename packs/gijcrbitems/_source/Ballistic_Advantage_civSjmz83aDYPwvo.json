@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","when":["attack:ranged","weapon:trait:sniper"],"immune":["longRangeSnag"]}
+      {"type":"RollModifier","when":["attack:ranged","weapon:trait:sniper"],"immune":["longRangeSnag"]},
+      {"type":"SneakAttackGrant","label":"Ballistic Advantage: sniper weapons, any range","items":["weapon:trait:sniper"],"range":"unlimited"}
     ],
     "automation": {
       "status": "full",

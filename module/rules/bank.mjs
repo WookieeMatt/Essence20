@@ -41,9 +41,15 @@ export async function bankRollBonus(actor, data, write = (doc, method, args) => 
     until: data.until ?? null,
     stamp: stampFor(data.until, undefined, data.untilActor ?? actor),
     source: data.source ?? null,
+    // key: which of its item's banks this is (bank step replace / stackMax with key).
+    ...(data.key !== undefined ? { key: data.key } : {}),
   };
   if (data.defense) {
     Object.assign(entry, { defense: data.defense, defenseBonus: Number(data.defenseBonus) || 0, persist: !!data.persist });
+    // defenseMultiply: the Defense is multiplied against that attack instead (Roll With The Punches' "double it").
+    if (Number(data.defenseMultiply) > 0 && Number(data.defenseMultiply) != 1) {
+      entry.defenseMultiply = Number(data.defenseMultiply);
+    }
   }
 
   await write(actor, 'update', [{ [`flags.essence20.${FLAG}`]: [...bankedEntries(actor), entry] }]);
@@ -83,9 +89,27 @@ export function bankedSpecializes(actor, target, roll = {}) {
  * @returns {Promise<Number>}
  */
 export async function bankedDefense(defender, defenseType, attacker = null, write = (doc, method, args) => doc[method](...args)) {
+  return useBankedDefense(defender, defenseType, attacker, write, false);
+}
+
+/**
+ * The actor is attacked against this Defense: what its banked Defense multipliers (bank {defenseMultiply}) multiply it by,
+ * each used up by this attack unless it persists - read where the hand-written doubling was (dice.mjs, before the
+ * Defense additions). 1 when there's none.
+ * @returns {Promise<Number>}
+ */
+export async function bankedDefenseMultiplier(defender, defenseType, attacker = null, write = (doc, method, args) => doc[method](...args)) {
+  return useBankedDefense(defender, defenseType, attacker, write, true);
+}
+
+async function useBankedDefense(defender, defenseType, attacker, write, multiply) {
   const entries = bankedEntries(defender);
-  const used = entries.filter(entry => entry.defense && [entry.defense].flat().some(defense => defense == 'any' || defense == defenseType)
+  const used = entries.filter(entry => entry.defense && !!entry.defenseMultiply == multiply && [entry.defense].flat().some(defense => defense == 'any' || defense == defenseType)
     && evaluate(entry.when, contextFor({ self: defender, other: attacker, defenseType })) === true);
+  if (multiply && !used.length) {
+    return 1;
+  }
+
   if (!used.length) {
     return 0;
   }
@@ -96,7 +120,8 @@ export async function bankedDefense(defender, defenseType, attacker = null, writ
     await write(defender, 'update', [{ [`flags.essence20.${FLAG}`]: list }]);
   }
 
-  return used.reduce((total, entry) => total + (Number(entry.defenseBonus) || 0), 0);
+  return multiply ? used.reduce((product, entry) => product * (Number(entry.defenseMultiply) || 1), 1)
+    : used.reduce((total, entry) => total + (Number(entry.defenseBonus) || 0), 0);
 }
 
 /** A roll took a banked bonus: one use off, gone at zero. */

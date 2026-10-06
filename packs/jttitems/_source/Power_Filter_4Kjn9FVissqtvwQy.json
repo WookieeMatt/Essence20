@@ -5,6 +5,9 @@
   "_id": "4Kjn9FVissqtvwQy",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"targeted","label":"Power Filter (pilot regains 1 Personal Power)","when":["defense:toughness","roll:damageType:energy"],"steps":[{"do":"updateActor","to":"driver","add":{"system.powers.personal.value":1},"max":"@recipient.system.powers.personal.max","filter":["target:data:system.powers.personal"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when the Zord takes Energy damage or dodges it with Toughness, its pilot regains 1 Personal Power.</p>"

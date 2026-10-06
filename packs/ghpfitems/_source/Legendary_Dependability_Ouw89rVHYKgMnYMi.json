@@ -5,6 +5,10 @@
   "_id": "Ouw89rVHYKgMnYMi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"FlatD20","label":"Dependable twice per scene (Legendary Dependability)","of":"dependable","addUses":1},
+      {"type":"FlatD20","label":"Old Reliable at 15 (Legendary Dependability)","of":"oldReliable","upgrade":{"label":"E20.RollDialogLegendaryDependability","value":15,"cost":1,"limit":{"per":"scene"}}}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: when you use Old Reliable, a switch spends Moxie to set the d20 to 15 instead of 10, and Dependable can be used twice.</p><p>Left to the table: the once-per-day limit (the system counts per scene).</p>"

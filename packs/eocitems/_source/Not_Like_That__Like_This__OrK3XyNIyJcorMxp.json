@@ -5,6 +5,12 @@
   "_id": "OrK3XyNIyJcorMxp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CardOffer","label":"{holder}: Not Like That, Like This! (reroll)","whose":"any","pressedBy":"holderOwner","once":true,"when":["card:skill","not:target:self","target:notBeyond:60","not:card:rerolled"],"reroll":{"target":"allDice","keep":"new"},"steps":[{"do":"mark","key":"notLikeThat","to":"self","until":"combat","text":"{var.skill}","when":["combat:exists"]}]},
+      {"type":"Trigger","event":"turnStart","label":"Not Like That, Like This!","when":["self:marked:notLikeThat","not:self:marked:notLikeThatReminded"],"steps":[{"do":"mark","key":"notLikeThatReminded","to":"self","until":"combat"},{"do":"button","label":"Not possible: lose my Move action","intro":"{name} must attempt a {markSkill.notLikeThat} Skill Test this turn (Not Like That, Like This!).","steps":[{"do":"spendAction","action":"move"},{"do":"unmark","key":"notLikeThat","to":"self"},{"do":"unmark","key":"notLikeThatReminded","to":"self"},{"do":"chat","text":"{name} couldn't make the Skill Test and loses their Move action."}]}]},
+      {"type":"Trigger","event":"turnEnd","label":"Not Like That, Like This!","when":["self:marked:notLikeThatReminded"],"steps":[{"do":"unmark","key":"notLikeThat","to":"self"},{"do":"unmark","key":"notLikeThatReminded","to":"self"}]},
+      {"type":"Trigger","event":"afterRoll","outcome":"any","label":"Not Like That, Like This!","when":["self:marked:notLikeThat","self:markText:notLikeThat=$skill"],"steps":[{"do":"unmark","key":"notLikeThat","to":"self"},{"do":"unmark","key":"notLikeThatReminded","to":"self"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: a teammate's Skill Test card within 60 ft gets a reroll button. On your next turn you're reminded to test that Skill, with a button to lose your Move action if you can't.</p>"

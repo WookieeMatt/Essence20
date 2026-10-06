@@ -1,5 +1,4 @@
 import { runRest } from "../mechanics/item-hooks.mjs";
-import { restBff } from "../items/social/best-friends-forever.mjs";
 import { restBond } from "../mechanics/companions/bonded-partners.mjs";
 import { restContact } from "../mechanics/companions/contacts.mjs";
 import { restKits } from "../mechanics/resources/kits.mjs";
@@ -211,8 +210,7 @@ async function _applyRestBenefits(actor, completeMessageKey) {
   // ...and what kits and gear recharge overnight (mechanics/resources/kits.mjs).
   await restKits(actor);
 
-  // ...and About Twenty-Percent Cooler, a Powermaster's module, and daily Contacts.
-  await restBff(actor);
+  // ...and a Powermaster's module, and daily Contacts. (About Twenty-Percent Cooler's three a day are a rule limit per rest.)
   await restBond(actor);
   await restContact(actor);
   await runRest(actor);

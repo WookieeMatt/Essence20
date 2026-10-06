@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Dodgy","action":"defend","to":"free"}
+    ],
     "prerequisites": {"when":["self:essence:speed>=3"]},
     "automation": {
       "status": "partial",

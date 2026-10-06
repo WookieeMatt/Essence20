@@ -5,6 +5,9 @@
   "_id": "doF1rRuMXaeAPDTl",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Foolscarrot (target, else you, this scene)","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"markWindow","flag":"foolscarrotActive","window":"scene","to":"targetOrSelf"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Cast: on a success, the targeted creature (or you, if no one is targeted) takes ↓3 on every Skill Test until the GM advances the scene, already counted in the Downshift number of its Roll Options Dialog.</p><p>Left to the table: exempting tests to grab the illusion, and the test to shake it off early.</p>"

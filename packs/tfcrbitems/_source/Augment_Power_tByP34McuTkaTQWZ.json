@@ -5,6 +5,10 @@
   "_id": "tByP34McuTkaTQWZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"↑1 to an ally (once per turn)","limit":{"per":"turn","max":"1 + min(1, @owned.K3FNcAMjjek1UaJk)","key":"augmentPowerTurn"},"steps":[{"do":"pickAlly"},{"do":"bank","to":"target","upshift":"1 + min(1, @owned.K3FNcAMjjek1UaJk)","replace":true,"grantDouble":true,"appliesWhen":["not:roll:initiative"]}]},
+      {"type":"Use","label":"↑2 to an ally (once per combat)","limit":{"per":"encounter","max":"1 + min(1, @owned.K3FNcAMjjek1UaJk)","key":"augmentPowerCombat"},"steps":[{"do":"pickAlly"},{"do":"bank","to":"target","upshift":"2 * (1 + min(1, @owned.K3FNcAMjjek1UaJk))","replace":true,"grantDouble":true,"appliesWhen":["not:roll:initiative"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per turn, give an ally ↑1 on a Skill Test, or once per combat give them ↑2, as a Free action.</p>"

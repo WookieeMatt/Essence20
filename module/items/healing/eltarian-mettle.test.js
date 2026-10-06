@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { applyEltarianMettle, pickEltarianMettleCondition } from './eltarian-mettle.mjs';
+import { pickEltarianMettleCondition } from './eltarian-mettle.mjs';
 
 global.game = { i18n: { localize: (k) => k } };
 global.foundry = { applications: { api: { DialogV2: { wait: jest.fn() } } } };
@@ -35,36 +35,5 @@ describe("pickEltarianMettleCondition", () => {
     foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
     const actor = makeActor(['frightened']);
     expect(await pickEltarianMettleCondition(actor)).toBeNull();
-  });
-});
-
-describe("applyEltarianMettle", () => {
-  beforeEach(() => foundry.applications.api.DialogV2.wait.mockReset());
-
-  test("removes the chosen Condition", async () => {
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('frightened');
-    const actor = makeActor(['frightened']);
-
-    const removed = await applyEltarianMettle(actor);
-
-    expect(removed).toBe('frightened');
-    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('frightened', { active: false });
-  });
-
-  test("returns null and removes nothing with no active Conditions", async () => {
-    const actor = makeActor([]);
-    const removed = await applyEltarianMettle(actor);
-    expect(removed).toBeNull();
-    expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
-  });
-
-  test("returns null and removes nothing when cancelled", async () => {
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
-    const actor = makeActor(['frightened']);
-
-    const removed = await applyEltarianMettle(actor);
-
-    expect(removed).toBeNull();
-    expect(actor.toggleStatusEffect).not.toHaveBeenCalled();
   });
 });

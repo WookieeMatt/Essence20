@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Pressure Cooker","upshift":1,"when":["self:data:system.health.value<$system.health.max"]}
+      {"type":"RollModifier","label":"Pressure Cooker","upshift":1,"when":["self:data:system.health.value<$system.health.max"]},
+      {"type":"DialogSwitch","label":"Pressure Cooker: Edge (1 Moxie Point)","edge":true,"clearSnag":true,"cost":{"resource":{"rolePoints":"Moxie"},"amount":1},"when":["self:data:system.health.value=1"]}
     ],
     "automation": {
       "status": "full",

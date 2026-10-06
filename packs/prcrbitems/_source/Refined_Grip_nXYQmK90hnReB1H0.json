@@ -5,6 +5,9 @@
   "_id": "nXYQmK90hnReB1H0",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Attacks roll Finesse (Refined Grip)","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost"],"path":"system.classification.skill","op":"set","value":"finesse","priority":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon rolls Finesse instead of its normal Skill.</p>"

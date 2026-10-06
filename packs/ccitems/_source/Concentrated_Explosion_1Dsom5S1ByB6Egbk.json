@@ -5,6 +5,9 @@
   "_id": "1Dsom5S1ByB6Egbk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"BeforeArea","label":"Concentrated Explosion","options":["bigger","smaller","shape"],"when":["item:data:system.classification.style=explosive"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you attack with an explosive area, you are asked before placing it whether to make it 5 feet bigger or smaller, or change its shape.</p>"

@@ -5,6 +5,9 @@
   "_id": "Qdb9Jj4UAAE0YbhE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"success","label":"Rallying Cry (Surprise 1 enemy, 3 on a Critical Success)","when":["skill:performance","roll:dataset:dif=10","combat:roundIs:1"],"steps":[{"do":"target","min":0},{"do":"applyCondition","condition":"surprised","to":"targets","filter":["not:target:sameDisposition"],"first":"1 + 2 * @var.crit"}]}
+    ],
     "prerequisites": {"when":["self:hasType:role:Journalist"]},
     "automation": {
       "status": "partial",

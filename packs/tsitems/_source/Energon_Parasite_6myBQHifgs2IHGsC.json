@@ -5,6 +5,9 @@
   "_id": "6myBQHifgs2IHGsC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Drain Energon from a Defeated target","steps":[{"do":"target","max":1},{"do":"warn","text":"E20.EnergonParasiteNoTarget","stop":true,"when":["not:target:status:defeated"]},{"do":"setVar","key":"drain","value":"max(0, min(@target.system.energon.normal.value, @actor.system.essences.strength.value, @actor.system.essences.speed.value, @actor.system.essences.smarts.value, @actor.system.essences.social.value, @actor.system.energon.normal.max - @actor.system.energon.normal.value))"},{"do":"require","check":["var:drain>0"]},{"do":"updateActor","to":"target","add":{"system.energon.normal.value":"0 - @var.drain"}},{"do":"updateActor","add":{"system.energon.normal.value":"@var.drain"}},{"do":"chat","text":"{name} drains {var.drain} Energon from {target}."}]}
+    ],
     "prerequisites": {"when":["self:level>=2"]},
     "automation": {
       "status": "full",

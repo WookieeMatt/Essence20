@@ -1,7 +1,5 @@
 import { jest } from '@jest/globals';
-import {
-  perkAccess, tradeSchoolPreRoll, tradeSchoolSpecializes,
-} from '../gear/qualification-perks.mjs';
+import { perkAccess } from '../gear/qualification-perks.mjs';
 import { doOrDieDie, oldHandLevel } from '../rolls/old-hand-do-or-die.mjs';
 import { SESSION_GATED, carryGatedUses, isSessionReset, noteGatedUse, startNewSession } from '../../mechanics/resources/game-sessions.mjs';
 import { registrySnapshot } from '../../mechanics/item-hooks.mjs';
@@ -75,23 +73,6 @@ describe('requisition access', () => {
     expect(perkAccess(makeActor([]), weapon({ flags: { qualified: true } }))).toBe('qualified');
     expect(perkAccess(makeActor([]), weapon({ name: 'Combat Shotgun', system: { availability: 'limited' } }))).toBeNull();
   });
-});
-
-describe('Trade School, Enthusiast Hang-Up', () => {
-  test('Trade School lends the coach\'s Technology die for the scene', async () => {
-    const coach = makeActor([], { id: 'coach', system: { skills: { technology: { shift: 'd8', isSpecialized: true } } } });
-    const ally = makeActor([], { id: 'ally', flags: { pendingTradeSchool: { granterId: 'coach' } } });
-    game.actors = [coach, ally];
-    const dataset = { skill: 'technology', shift: 'd2' };
-    await tradeSchoolPreRoll(ally, dataset);
-    expect(dataset.shift).toBe('d8');
-    expect(tradeSchoolSpecializes(ally, 'technology')).toBe(true);
-    delete ally.flags.essence20.pendingTradeSchool;
-    const again = { skill: 'technology', shift: 'd2' };
-    await tradeSchoolPreRoll(ally, again);
-    expect(again.shift).toBe('d8');
-  });
-
 });
 
 describe('Old Hand', () => {

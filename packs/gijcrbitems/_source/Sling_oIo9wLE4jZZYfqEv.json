@@ -5,6 +5,9 @@
   "_id": "oIo9wLE4jZZYfqEv",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","action":"drawWeapon","to":"free","ask":"E20.ActionPerkAskMediumWeapon","always":true}
+    ],
     "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","host:data:system.classification.size=long"]}]},
     "automation": {
       "status": "full",

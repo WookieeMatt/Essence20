@@ -9,8 +9,9 @@ import { worldActors } from "./companion-link.mjs";
  * - The bond is kept on the Perk holder only (flags.essence20.bond = {partner, linked}), so nothing
  *   has to write to a partner the player may not own; bondOf() finds it from either side.
  * - What it gives: Headmaster Body's ↑1, Headmaster Head's ↓2 to attackers, Targetmaster's Edge and +1
- *   damage, Powermaster's module Energon, Synaptic Linkage, and the Bonded Master Focus (Hit Someone
- *   Your Own Size!, Advanced/Perfect Link, Bonded Proficiency, Armored Connection).
+ *   damage, Powermaster's module Energon. (Synaptic Linkage, Advanced / Perfect Link, Armored Connection, Bonded
+ *   Proficiency and the Bonded Master Focus's Hit Someone Your Own Size! are rules on their Perks, reaching the pair
+ *   through the bondPartner / bondHolder scopes - rules/plugins/picks/bond-link.mjs, rules/plugins/combat/bond-partner-guard.mjs).
  */
 
 const uuid = id => `Compendium.essence20.enigma_of_combination.Item.${id}`;
@@ -19,15 +20,8 @@ export const BOND = {
   headmasterHead: uuid('8Oicjt2r9oW1aycj'),
   powermaster: uuid('RUlNdBVlWqFvkYLv'),
   targetmaster: uuid('f1QCcxbjf3Y3kskE'),
-  synapticLinkage: uuid('3JCZlRjXovAMXmko'),
-  advancedLink: uuid('fTRSvbpJrCWUY6wU'),
-  perfectLink: uuid('i3yGBZd2y7jT1SWm'),
-  armoredConnection: uuid('V7yh8guXzkF1qqAK'),
-  bondedProficiency: uuid('ZMs9cLu6O89Lv7Oo'),
-  hitSomeoneYourOwnSize: uuid('zDeWS4koDbfN98hB'),
   transtectorRig: uuid('bdgThhk7atm9XMet'),
   rigReinforcement: uuid('Sof6OR5q1AnUaPDK'),
-  linkLock: uuid('0Ub2QRx8AcakJj97'),
 };
 
 const MAKERS = [BOND.headmasterBody, BOND.headmasterHead, BOND.powermaster, BOND.targetmaster];
@@ -58,7 +52,7 @@ function resolve(id) {
 }
 
 export function isBondUse(item) {
-  return MAKERS.includes(sourceOf(item)) || sourceOf(item) == BOND.synapticLinkage;
+  return MAKERS.includes(sourceOf(item));
 }
 
 /**
@@ -97,18 +91,12 @@ export function isLinked(actor) {
   return !!bondOf(actor)?.linked;
 }
 
-/** Holds a Perk on either side of a linked pair. */
-function pairHas(actor, id) {
-  const bond = bondOf(actor);
-  return !!bond && (has(bond.holder, id) || has(bond.partner, id));
-}
-
 /* -------------------------------------------- */
 /*  Use button                                   */
 /* -------------------------------------------- */
 
 /**
- * @param {Item} item   Headmaster Body/Head, Powermaster, Targetmaster, or Synaptic Linkage.
+ * @param {Item} item   Headmaster Body/Head, Powermaster or Targetmaster.
  * @param {Function} pay
  * @returns {Promise<String|null>}
  */
@@ -116,10 +104,6 @@ export async function runBondUse(item, pay) {
   const actor = item?.parent;
   if (!actor) {
     return null;
-  }
-
-  if (sourceOf(item) == BOND.synapticLinkage) {
-    return passCondition(actor, pay);
   }
 
   const bond = actor.flags?.essence20?.[FLAG];
@@ -236,85 +220,12 @@ export async function restBond(actor) {
   }
 }
 
-/* -------------------------------------------- */
-/*  Synaptic Linkage                             */
-/* -------------------------------------------- */
-
-/**
- * Synaptic Linkage: "once per scene at the beginning of your turn, you can pass one Condition you are
- * suffering from to your bonded being."
- */
-async function passCondition(actor, pay) {
-  const ally = bondedAlly(actor);
-  const { getUses, markUsed } = await import("../resources/scene-clock.mjs");
-  if (!ally || getUses(actor, 'synapticPass', 'scene') >= 1) {
-    ui.notifications.warn(T(ally ? 'E20.OncePerScene' : 'E20.BondNone'));
-    return null;
-  }
-
-  const statuses = [...(actor.statuses ?? [])].filter(s => !['defeated', 'dead'].includes(s));
-  const { chooseSelect } = await import("../resources/grants.mjs");
-  const status = await chooseSelect(T('E20.SynapticLinkage'), T('E20.SynapticPassPrompt'), statuses.map(s => ({
-    value: s, label: T(CONFIG.statusEffects?.find?.(e => e.id == s)?.name ?? s),
-  })));
-  if (!status || !(await pay(null))) {
-    return null;
-  }
-
-  await actor.toggleStatusEffect(status, { active: false });
-  await ally.toggleStatusEffect(status, { active: true });
-  await markUsed(actor, 'synapticPass', { window: 'scene' });
-  return T('E20.SynapticPassed', { name: actor.name, ally: ally.name, status: T(CONFIG.statusEffects?.find?.(e => e.id == status)?.name ?? status) });
-}
+// (Synaptic Linkage's pass of a Condition to the bonded ally is a Use rule on the Perk - recipient bondedAlly,
+// rules/plugins/picks/bonded-ally.mjs.)
 
 /* -------------------------------------------- */
 /*  What the bond gives                          */
 /* -------------------------------------------- */
-
-/**
- * Health and Defenses the bond adds, applied in documents/actor.mjs with the companion bonuses.
- * @param {Actor} actor
- * @returns {{health: Number, defenses: Object}}
- */
-export function bondBonuses(actor) {
-  const out = { health: 0, defenses: {} };
-  const bond = bondOf(actor);
-  if (!bond) {
-    return out;
-  }
-
-  const holder = bond.holder;
-  // Advanced Link / Perfect Link: "your bonded ally gains 2 Essence Increases (along with associated
-  // Skills) and +1 Health." The Essence Increases are the partner's to assign.
-  if (bond.partner.uuid == actor.uuid) {
-    out.health += (has(holder, BOND.advancedLink) ? 1 : 0) + (has(holder, BOND.perfectLink) ? 1 : 0);
-  }
-
-  // Armored Connection: "you and your bonded ally gain +2 to your Toughness Defenses while linked".
-  if (bond.linked && has(holder, BOND.armoredConnection)) {
-    out.defenses.toughness = (out.defenses.toughness ?? 0) + 2;
-  }
-
-  return out;
-}
-
-function tokenOf(actor) {
-  return actor?.getActiveTokens?.()?.[0] ?? null;
-}
-
-function distanceBetween(a, b) {
-  const ta = tokenOf(a);
-  const tb = tokenOf(b);
-  if (!ta || !tb || !canvas?.grid) {
-    return null;
-  }
-
-  return canvas.grid.measurePath([ta.center, tb.center]).distance;
-}
-
-function reachOf(actor) {
-  return 5 * Math.max(1, tokenOf(actor)?.document?.width ?? 1);
-}
 
 /**
  * Roll sources the bond gives - for mechanics/combat/target-riders.mjs#rollRiderSources.
@@ -352,69 +263,15 @@ export function bondRollSources(actor, target, { rolledSkill, isAttack, weaponId
       add('headmasterHead', T('E20.HeadmasterHead'), { shiftDown: 2 });
     }
 
-    // Hit Someone Your Own Size!: "all attacks that target your bonded ally when within your natural
-    // Reach suffer a ↓2 penalty."
-    const protector = targetBond && (targetBond.partner.uuid == target.uuid ? targetBond.holder : null);
-    if (protector && has(protector, BOND.hitSomeoneYourOwnSize) && protector.uuid != actor.uuid) {
-      const distance = distanceBetween(protector, target);
-      if (distance != null && distance <= reachOf(protector)) {
-        add('hitSomeoneYourOwnSize', T('E20.HitSomeoneYourOwnSize'), { shiftDown: 2 });
-      }
-    }
+    // (Hit Someone Your Own Size!'s ↓2 is a RollModifier rule on the Perk, scope bondPartnerIncoming.)
   }
 
   return sources;
 }
 
-/**
- * Hit Someone Your Own Size!: "when within 5 feet of you, your bonded ally can use your Toughness
- * Defense instead of their own." The better of the two.
- * @returns {Number}   How much to add to the defender's Toughness.
- */
-export function bondDefenseAdjust(defender, defense) {
-  if (defense != 'toughness') {
-    return 0;
-  }
-
-  const bond = bondOf(defender);
-  if (!bond || bond.partner.uuid != defender.uuid || !has(bond.holder, BOND.hitSomeoneYourOwnSize)) {
-    return 0;
-  }
-
-  const distance = distanceBetween(bond.holder, defender);
-  const mine = Number(defender.system?.defenses?.toughness?.total) || 0;
-  const theirs = Number(bond.holder.system?.defenses?.toughness?.total) || 0;
-  return distance != null && distance <= 5 && theirs > mine ? theirs - mine : 0;
-}
+// (Hit Someone Your Own Size!'s Toughness for a partner within 5 ft is a Defense rule on the Perk, mode holderBest.)
 
 /** Targetmaster: "it deals 1 additional damage of the appropriate type." */
 export function bondDamageBonus(actor, weaponId) {
   return isLinked(actor) && has(actor, BOND.targetmaster) && weaponId && actor.flags?.essence20?.targetmasterWeapon == weaponId ? 1 : 0;
-}
-
-/**
- * Bonded Proficiency: "you and your bonded ally can use each other's Skill Specializations while
- * linked." A roll in a Skill the ally is Specialized in is Specialized.
- */
-export function bondSpecializes(actor, skill) {
-  if (!isLinked(actor) || !pairHas(actor, BOND.bondedProficiency)) {
-    return false;
-  }
-
-  const skillData = bondedAlly(actor)?.system?.skills?.[skill];
-  return !!skillData && (skillData.isSpecialized || Object.values(skillData.specializations ?? {}).some(s => s?.name));
-}
-
-/**
- * Synaptic Linkage: "Once per scene, you gain Edge on any Skill Test in which both of you have at
- * least a d2 Skill Level." Offered in the Roll Options Dialog.
- */
-export function synapticEdgeAvailable(actor, skill) {
-  if (!has(actor, BOND.synapticLinkage)) {
-    return false;
-  }
-
-  const ally = bondedAlly(actor);
-  const trained = a => CONFIG.E20.skillShiftList.indexOf(a?.system?.skills?.[skill]?.shift ?? 'd20') <= CONFIG.E20.skillShiftList.indexOf('d2');
-  return !!ally && trained(actor) && trained(ally);
 }

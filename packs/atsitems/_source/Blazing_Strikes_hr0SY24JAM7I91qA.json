@@ -6,7 +6,10 @@
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
     "rules": [
-      {"type":"CriticalOption","label":"Next ally gains ↑2 against this foe","effect":"blazingStrikes","damageValue":2,"when":["attack:unarmed","self:data:flags.essence20.blazingStrikesActive"]}
+      {"type":"CriticalOption","label":"Next ally gains ↑2 against this foe","effect":"blazingStrikes","damageValue":2,"when":["attack:unarmed","self:data:flags.essence20.blazingStrikesActive"]},
+      {"type":"Trigger","event":"powerUsed","label":"Blazing Strikes (until the end of the scene)","when":["item:own","not:self:data:flags.essence20.blazingStrikesActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.blazingStrikesActive":true}},{"do":"chat","text":"{name}'s unarmed strikes blaze with Fire until the end of the scene."}]},
+      {"type":"DamageType","label":"Blazing Strikes (unarmed strikes deal Fire)","to":"fire","priority":-10,"when":["attack:barehanded","self:data:flags.essence20.blazingStrikesActive"]},
+      {"type":"Trigger","event":"sceneStart","label":"Blazing Strikes ends with the scene","when":["self:data:flags.essence20.blazingStrikesActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.blazingStrikesActive":false}}]}
     ],
     "automation": {
       "status": "full",

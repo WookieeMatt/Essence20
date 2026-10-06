@@ -5,6 +5,9 @@
   "_id": "m4iS0VQn9z8o6FWy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Ice Machine (Immobilized)","when":["roll:damageType:cold","target:status:stunned"],"steps":[{"do":"applyCondition","condition":"immobilized","to":"target"}]}
+    ],
     "prerequisites": {"when":["self:skill:survival>=d10"]},
     "automation": {
       "status": "full",

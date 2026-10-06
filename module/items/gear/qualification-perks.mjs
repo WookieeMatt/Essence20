@@ -1,6 +1,3 @@
-import { registerPreRoll, registerSpecializes } from "../../mechanics/item-hooks.mjs";
-import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
-import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 import { ruleQualifiedUpgrade } from "../../rules/adapter.mjs";
 import { itemsOf } from "../shared/item-lookups.mjs";
 
@@ -19,8 +16,6 @@ import { itemsOf } from "../shared/item-lookups.mjs";
 
 const TIERS = ['automatic', 'standard', 'limited', 'restricted', 'prototype', 'unique', 'theoretical', 'other'];
 const tierRank = tier => TIERS.indexOf(tier ?? 'standard');
-
-export const TRADE_SCHOOL_FLAG = 'q2TradeSchool';
 
 // (Hardware Training's Qualification and its Use button are item rules now, and so is all of Weapon Enthusiast: its
 // Use, its Qualification - rules/conv12-slI12.test.js - and its Hang-Up. Weapon types: rules/plugins/tags/checks-and-refs.mjs#weaponIsType.)
@@ -108,63 +103,14 @@ export function onRequisitionAvailability(actor, item, out) {
 }
 
 /* -------------------------------------------- */
-/*  Trade School - the whole scene               */
-/* -------------------------------------------- */
-
-// Trade School (Quartermaster's Guide p.22): "an ally of your choice can use your Technology Skill and
-// Specialization dice in place of their own for the duration of one scene." Its Use button
-// (mechanics/resources/banked-buffs.mjs / trade-school.mjs) banks `pendingTradeSchool` on the ally, which the
-// ally's next Technology roll consumes. The first time that roll happens this records the grant for
-// the rest of the scene, and every Technology roll that scene rolls the coach's die - and counts as
-// Specialized when the coach is Specialized in Technology.
-export function tradeSchoolCoach(actor) {
-  const record = actor?.getFlag?.('essence20', TRADE_SCHOOL_FLAG);
-  if (!record || record.scene !== getSceneEpoch()) {
-    return null;
-  }
-
-  return worldActors().find(other => other.id == record.granterId) ?? null;
-}
-
-export async function tradeSchoolPreRoll(actor, dataset) {
-  if (dataset?.skill != 'technology') {
-    return;
-  }
-
-  const pending = actor.getFlag?.('essence20', 'pendingTradeSchool');
-  if (pending?.granterId && actor.getFlag?.('essence20', TRADE_SCHOOL_FLAG)?.scene !== getSceneEpoch()) {
-    await actor.setFlag('essence20', TRADE_SCHOOL_FLAG, { granterId: pending.granterId, scene: getSceneEpoch() });
-  }
-
-  const coach = tradeSchoolCoach(actor);
-  const coachShift = coach?.system?.skills?.technology?.shift;
-  const list = CONFIG.E20.skillShiftList ?? [];
-  const mine = dataset.shift || actor.system?.skills?.technology?.shift || 'd20';
-  if (coachShift && list.indexOf(coachShift) >= 0 && (list.indexOf(mine) < 0 || list.indexOf(coachShift) < list.indexOf(mine))) {
-    dataset.shift = coachShift;
-  }
-}
-
-export function tradeSchoolSpecializes(actor, skill) {
-  if (skill != 'technology') {
-    return false;
-  }
-
-  const tech = tradeSchoolCoach(actor)?.system?.skills?.technology;
-  return !!tech && (!!tech.isSpecialized || Object.keys(tech.specializations ?? {}).length > 0);
-}
-
-/* -------------------------------------------- */
 /*  Registration                                 */
 /* -------------------------------------------- */
 
 // (Weapon Enthusiast's Use button - the slice's last one - is a Use rule on the Perk: rules/conv12-slI12.test.js.)
 export function registerQualifications() {
   // (Training Evolution's Specialization is RollModifier rules on the Perk - rules/conv10-slE10.test.js.)
-  registerSpecializes((actor, skill) => tradeSchoolSpecializes(actor, skill));
-  registerPreRoll(async (actor, dataset) => {
-    await tradeSchoolPreRoll(actor, dataset);
-  });
+  // (Trade School - the coach's Technology die and Specialization for the scene - is item rules on its Perk:
+  // rules/conv17-perm.test.js.)
   if (globalThis.Hooks?.on) {
     Hooks.on('essence20.requisitionAccess', onRequisitionAccess);
     Hooks.on('essence20.requisitionAvailability', onRequisitionAvailability);

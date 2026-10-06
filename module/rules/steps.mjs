@@ -52,6 +52,45 @@ export function registerRecipient(pattern, fn) {
   EXTRA_RECIPIENTS.push({ pattern, fn });
 }
 
+/**
+ * Add an item selector for the item steps' `item:` (round 15): `prefix` is a name ("host") or a prefix ending in ":"
+ * ("where:"); `fn(rest, actor, ctx, items)` returns the matching items of `actor` (rest: what follows the prefix).
+ */
+const ITEM_SELECTORS = [];
+export function registerItemSelector(prefix, fn) {
+  ITEM_SELECTORS.push({ prefix, fn });
+}
+
+/**
+ * Add how a pickGrant {viaDrop: true} of an item type is given (round 15): `fn(actor, uuid, {grantedBy, flags, system})`
+ * goes through that type's own drop handling (an Alteration's benefit / cost dialogs) and returns the created item, or
+ * null when nothing was made (the run then stops).
+ */
+const DROP_GRANTS = new Map();
+export function registerDropGrant(type, fn) {
+  DROP_GRANTS.set(type, fn);
+}
+
+/**
+ * Add a text placeholder `{<head>.<rest>}` for step texts (chat, updateItem / updateActor text, names...) (round 15):
+ * `fn(rest, ctx)` returns the text, or undefined to leave the placeholder as written.
+ */
+const TEXT_REFS = new Map();
+export function registerTextRef(head, fn) {
+  TEXT_REFS.set(head, fn);
+}
+
+function fillTextRefs(text, ctx) {
+  if (!TEXT_REFS.size || !String(text).includes('{')) {
+    return text;
+  }
+
+  return String(text).replace(/\{([A-Za-z]+)\.([^{}]+)\}/g, (match, head, rest) => {
+    const value = TEXT_REFS.has(head) ? TEXT_REFS.get(head)(rest, ctx) : undefined;
+    return value === undefined ? match : String(value);
+  });
+}
+
 /** Add a `pick from:` source. `fn(step, ctx)` returns [{value, label}]. */
 export function registerPickSource(name, fn) {
   if (!PICK_FROM.includes(name)) {
@@ -65,14 +104,40 @@ export function registerPickSource(name, fn) {
 export const CARD_STEPS = ['negateHit', 'lowerTotal', 'lateSnag', 'convertRows', 'rerollCard'];
 
 /**
+ * A created item's name: {choice.x} filled; an E20. key is localized, and with `nameData` ({key: text}, each an E20. key or
+ * text) formatted - "E20.ZordFeatureAttackEffectName" + {name: "E20.ZordFeatureAttackMelee"} (round 16, part b). The
+ * nameData key is taken off the data.
+ */
+function createdName(data, ctx) {
+  const name = interpolate(String(data.name), ctx.item) ?? String(data.name);
+  const extra = data.nameData && typeof data.nameData == 'object' ? data.nameData : null;
+  delete data.nameData;
+  const i18n = globalThis.game?.i18n;
+  if (!name.startsWith('E20.') || !i18n) {
+    return name;
+  }
+
+  const local = text => (String(text ?? '').startsWith('E20.') ? i18n.localize?.(String(text)) ?? String(text) : String(text ?? ''));
+  return extra ? i18n.format?.(name, Object.fromEntries(Object.entries(extra).map(([key, value]) => [key, local(value)]))) ?? name : local(name);
+}
+
+/** createItem `knownTraits`: system.traits keeps only the weapon traits the system knows (CONFIG.E20.weaponTraits). */
+function keepKnownTraits(data) {
+  const known = globalThis.CONFIG?.E20?.weaponTraits ?? {};
+  if (Array.isArray(data.system?.traits)) {
+    data.system.traits = data.system.traits.filter(trait => trait && Object.hasOwn(known, trait));
+  }
+}
+
+/**
  * A created item's children (createItem's `children`): each made on the actor with the host as its
  * parentId and the host's grantedBy / expiry, then entered in the host's system.items like an attached
  * item, so the sheet lists it under the host and removing the host takes it along.
  */
 async function createChildren(actor, host, children, hostFlags, ctx) {
   const datas = children.filter(child => child?.name && child?.type).map(child => {
-    const data = globalThis.foundry?.utils?.deepClone?.(child) ?? JSON.parse(JSON.stringify(child));
-    data.name = interpolate(String(data.name), ctx.item) ?? String(data.name);
+    const data = fillData(globalThis.foundry?.utils?.deepClone?.(child) ?? JSON.parse(JSON.stringify(child)), ctx);
+    data.name = createdName(data, ctx);
     for (const [key, value] of Object.entries({ parentId: host.id, grantedBy: hostFlags.grantedBy ?? null, rulesExpiry: hostFlags.rulesExpiry })) {
       if (value !== undefined) {
         globalThis.foundry?.utils?.setProperty?.(data, `flags.essence20.${key}`, value);
@@ -127,9 +192,38 @@ async function lowerCardTotal(step, ctx, total) {
  * {@mark.questions}, {@item.system.uses.value}) filled in. A missing pick leaves the text as written.
  */
 function fillText(text, ctx) {
-  return (interpolate(text, ctx.item) ?? text)
+  return fillTextRefs(interpolate(text, ctx.item) ?? text, ctx)
     .replace(/\{var\.([\w-]+)\}/g, (match, key) => String(ctx.vars?.[key] ?? ''))
-    .replace(/\{(@[^}]+)\}/g, (match, formula) => String(Math.round(resolveValue(formula, { actor: ctx.actor, item: ctx.item, vars: ctx.vars, other: ctx.targets?.[0] ?? null }, 0))));
+    // {rolled.<path>}: the rolled item, where the run has one (BeforeRoll - rules/plugins/rolls/before-roll-rolled-item.mjs).
+    .replace(/\{rolled\.([\w.-]+)\}/g, (match, path) => String(globalThis.foundry?.utils?.getProperty?.(ctx.rolled ?? {}, path) ?? ''))
+    .replace(/\{(@[^}]+)\}/g, (match, formula) => String(Math.round(resolveValue(formula, { actor: ctx.actor, item: ctx.item, vars: ctx.vars, other: ctx.targets?.[0] ?? null, rolled: ctx.rolled ?? null }, 0))));
+}
+
+/**
+ * createItem's data (and its children): every text with a {choice.<key>} / {var.<key>} / {@formula} filled (fillText). A text
+ * that is only one {var.<key>} or {choice.<key>} takes that value as it is - a number stays a number (an unset one is null) -
+ * so a designed weapon's fields can come from earlier picks (Unique Strike: its Skill, damage type, Range, Alternate Effect).
+ */
+function fillData(data, ctx) {
+  if (typeof data == 'string') {
+    const whole = /^\{(var|choice)\.([\w-]+)\}$/.exec(data);
+    if (whole) {
+      const value = whole[1] == 'var' ? ctx.vars?.[whole[2]] : ctx.item?.flags?.essence20?.rules?.choices?.[whole[2]];
+      return value === undefined || value === '' ? null : value;
+    }
+
+    return data.includes('{') ? fillText(data, ctx) : data;
+  }
+
+  if (Array.isArray(data)) {
+    return data.map(value => fillData(value, ctx));
+  }
+
+  if (data && typeof data == 'object') {
+    return Object.fromEntries(Object.entries(data).map(([key, value]) => [key, fillData(value, ctx)]));
+  }
+
+  return data;
 }
 
 /** The actor's wielded attacks, narrowed by a tag asked of each (as self:wielding:<tag>). */
@@ -144,6 +238,18 @@ function skillFor(step, ctx) {
   const skill = String(step.skill ?? '');
   if (skill == 'wielded' || skill.startsWith('wielded:')) {
     return wieldedFor(ctx.actor, skill.slice(8), ctx)[0]?.system?.classification?.skill ?? null;
+  }
+
+  // actor:<path> - a Skill named on the actor (system.originSkillsIncrease, the Origin Skill); choiceOf:<uuid> - the Skill
+  // chosen (system.choice) on the actor's copy of that book item (the Empathy Perk's pick). Null when there's none.
+  if (skill.startsWith('actor:')) {
+    return String(globalThis.foundry?.utils?.getProperty?.(ctx.actor, skill.slice(6)) ?? '') || null;
+  }
+
+  if (skill.startsWith('choiceOf:')) {
+    const uuid = skill.slice(9);
+    const items = ctx.actor?.items?.contents ?? (ctx.actor?.items ? [...ctx.actor.items] : []);
+    return items.find(item => sourceOfItem(item) == uuid || item.uuid == uuid)?.system?.choice || null;
   }
 
   // {var.<key>} too - a Skill an earlier step stored (a picked entry's Requisition Skill).
@@ -169,6 +275,12 @@ function essenceLabel(key) {
 
 /** Whose turns a step's `until` counts: the rule's holder, or (untilOf: "recipient") the one it lands on. */
 function untilActor(step, ctx, recipient) {
+  // untilOf: target - the run's first target's turns, whoever it lands on (Better Together: "until the end of your next
+  // turn" counted on the partner who assisted, for both marks).
+  if (step.untilOf == 'target') {
+    return ctx.targets?.[0] ?? ctx.actor;
+  }
+
   return step.untilOf == 'recipient' ? recipient ?? ctx.actor : ctx.actor;
 }
 
@@ -250,7 +362,14 @@ export function pickOptions(step, ctx) {
 
 async function askPick(step, options, ctx) {
   const { chooseSelect } = await import("../mechanics/resources/grants.mjs");
-  return chooseSelect(ctx.item?.name ?? '', escape(step.prompt ?? T('PickPrompt')), options);
+  // An E20. key prompt is localized (round 16, part b - A Hint of Independence's E20.ImperfectionPickType).
+  return chooseSelect(ctx.item?.name ?? '', escape(step.prompt ? localizedText(String(step.prompt)) : T('PickPrompt')), options);
+}
+
+/** A text that is an E20. key, localized (else as it is). */
+function localizedText(text) {
+  const i18n = globalThis.game?.i18n;
+  return text.startsWith('E20.') && i18n?.localize ? i18n.localize(text) : text;
 }
 
 /** An item's book source (or the item it acts as). */
@@ -285,11 +404,17 @@ export function itemsFor(step, actor, ctx) {
     found = items.filter(item => item.type == pick.slice(5));
   } else if (pick.startsWith('choice:')) {
     const id = own?.flags?.essence20?.rules?.choices?.[pick.slice(7)];
-    found = items.filter(item => id && (item.id == id || item.uuid == id));
+    // A pickMany stores a list: every item in it.
+    const ids = Array.isArray(id) ? id : [id];
+    found = items.filter(item => id && (ids.includes(item.id) || ids.includes(item.uuid)));
   } else if (pick == 'wielded' || pick.startsWith('wielded:')) {
     // The weapons the actor is wielding (wielded:<tag> - asked of each weapon's attacks, as self:wielding:<tag>).
     const ids = new Set(wieldedFor(actor, pick.slice(8), ctx).map(attack => attack.flags?.essence20?.parentId));
     found = items.filter(item => ids.has(item.id));
+  } else {
+    // A plug-in selector (registerItemSelector): "host", "where:<tags>"...
+    const plugged = ITEM_SELECTORS.find(({ prefix }) => (prefix.endsWith(':') ? pick.startsWith(prefix) : pick == prefix));
+    found = plugged ? plugged.fn(pick.slice(plugged.prefix.length), actor, ctx, items) ?? [] : [];
   }
 
   return step.all ? found : found.slice(0, 1);
@@ -301,6 +426,9 @@ const T = (key, data) => {
   const text = data ? i18n?.format?.(full, data) : i18n?.localize?.(full);
   return text && text != full ? text : `${key}${data ? ` ${JSON.stringify(data)}` : ''}`;
 };
+
+// The last mark `keep` order stamp handed out (step mark, keep: N).
+let markOrder = 0;
 
 const escape = text => String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
@@ -314,11 +442,10 @@ export function targetedActors() {
 export function recipients(step, ctx) {
   const list = baseRecipients(step, ctx);
   // filter: tags each recipient must meet, asked as the target (target:..., self: is the rule's actor).
-  if (!Array.isArray(step.filter) || !step.filter.length) {
-    return list;
-  }
-
-  return list.filter(other => evaluate(step.filter, contextFor({ self: ctx.actor, holder: ctx.actor, ruleItem: ctx.item, other })) === true);
+  const met = !Array.isArray(step.filter) || !step.filter.length ? list
+    : list.filter(other => evaluate(step.filter, contextFor({ self: ctx.actor, holder: ctx.actor, ruleItem: ctx.item, other })) === true);
+  // first: only the first N of them (a formula, after the filter) - "up to three enemies" (Rallying Cry).
+  return step.first === undefined ? met : met.slice(0, Math.max(0, amountOf(step.first, ctx, 0)));
 }
 
 function baseRecipients(step, ctx) {
@@ -597,7 +724,7 @@ export async function changeResource(resource, amount, ctx, { overMax = false } 
  */
 const amountOf = (value, ctx, fallback = 0, recipient = null) => {
   const dice = [];
-  const amount = Math.round(resolveValue(value, { actor: ctx.actor, item: ctx.item, vars: ctx.vars, other: ctx.targets?.[0] ?? null, recipient, dice, random: ctx.random }, fallback));
+  const amount = Math.round(resolveValue(value, { actor: ctx.actor, item: ctx.item, vars: ctx.vars, other: ctx.targets?.[0] ?? null, recipient, dice, random: ctx.random, rolled: ctx.rolled ?? null }, fallback));
   if (dice.length) {
     ctx.vars.rolled = dice.reduce((sum, roll) => sum + roll.total, 0);
     // quiet: the step's dice aren't told in chat (Fuel Efficient's d4s, with nothing to show when no 4 comes up).
@@ -627,10 +754,11 @@ async function pickAmount(step, ctx) {
   }
 
   const { DialogV2 } = foundry.applications.api;
+  const start = step.value === undefined ? min : Math.min(max, Math.max(min, Math.round(amountOf(step.value, ctx, min))));
   const value = await DialogV2.prompt({
     window: { title: ctx.item?.name ?? '' },
     classes: ['essence20', 'e20-window'],
-    content: `<p>${escape(step.prompt ?? T('HowMany'))}</p><input type="number" name="amount" min="${min}" max="${max}" value="${min}" autofocus>`,
+    content: `<p>${escape(step.prompt ?? T('HowMany'))}</p><input type="number" name="amount" min="${min}" max="${max}" value="${start}" autofocus>`,
     ok: { callback: (event, button) => Number(button.form.elements.amount.value) },
     rejectClose: false,
   });
@@ -714,15 +842,30 @@ const HANDLERS = {
       // actor whose maximum works out to 0, or one already above it, keeps what it has).
       const capped = Number.isFinite(max) && max > 0 ? Math.min(max, value + amount) : value + amount;
       const next = Math.max(value, capped);
+      const wasDefeated = !!actor.statuses?.has?.('defeated');
       await write(actor, 'update', [{ 'system.health.value': next }]);
+      // A real-Health heal brings the Defeated back, as the hand-written heal Skill Test does
+      // (items/healing/heal-skill-test.mjs#applyHealSkillTestResult).
+      if (wasDefeated && next > 0) {
+        await write(actor, 'toggleStatusEffect', ['defeated', { active: false }]);
+      }
+
       ctx.chat.push(T('Healed', { name: escape(actor.name), amount: next - value }));
     }
   },
 
   async damage(step, ctx) {
-    const amount = amountOf(step.amount ?? 1, ctx, 1);
+    let amount = amountOf(step.amount ?? 1, ctx, 1);
     // damageType may read a pick ({choice.<key>}) or a value stored in the run ({var.<key>}).
     const type = fillText(String(step.damageType ?? 'blunt'), ctx) || 'blunt';
+    // asCastHit (round 15, items2 - Temper Tempest's lightning): the damage counts as one of the rule item's (a spell's)
+    // cast hits - the actor's cast HitRider rules for it add their part (plugins/combat/cast-hit-damage.mjs).
+    if (step.asCastHit) {
+      const { castHitDamage } = await import("./plugins/combat/cast-hit-damage.mjs");
+      amount = await castHitDamage(ctx.actor, ctx.item, amount, type);
+      ctx.vars.damage = amount;
+    }
+
     const { applyDamage } = await import("../mechanics/combat/combat.mjs");
     for (const actor of recipients(step, ctx)) {
       if (actor.isOwner) {
@@ -870,8 +1013,25 @@ const HANDLERS = {
       return false;
     }
 
+    const skill = skillFor(step, ctx);
+    if (!skill) {
+      ctx.chat.push(T('NoWieldedSkill', { item: escape(ctx.item?.name) }));
+      return false;
+    }
+
     const { rollVsMany } = await import("../mechanics/combat/reaction-engine.mjs");
-    const rows = await rollVsMany(ctx.actor, skillFor(step, ctx), others, step.defense ?? 'toughness');
+    // essence: roll with that Essence instead of the Skill's own (an older Use rolled Intimidation as Social).
+    // damage {value, type}: the card carries Apply Damage buttons (x Degrees of Success) - dice.mjs's dataset.stepDamage;
+    // dataset: flags the roll carries (roll:dataset:<key> in Triggers - Takedown's isTakedown).
+    const extra = { ...(step.dataset && typeof step.dataset == 'object' ? step.dataset : {}) };
+    if (step.damage && typeof step.damage == 'object') {
+      extra.stepDamage = { value: amountOf(step.damage.value ?? 1, ctx, 1), type: fillText(String(step.damage.type ?? 'blunt'), ctx) || 'blunt' };
+    }
+
+    const more = Object.keys(extra).length ? [step.essence ?? null, extra] : step.essence ? [step.essence] : [];
+    // defense fills {var.x} / {choice.x} (round 16: a Defense chosen or worked out earlier in the run - Ground Suppression,
+    // Tech Specs' highest Defense).
+    const rows = await rollVsMany(ctx.actor, skill, others, fillText(String(step.defense ?? 'toughness'), ctx) || 'toughness', ...more);
     const saved = ctx.targets;
     ctx.vars.hits = 0;
     for (const other of others) {
@@ -882,7 +1042,9 @@ const HANDLERS = {
 
       ctx.vars.hits += row.success ? 1 : 0;
       ctx.targets = [other];
-      const branch = row.success ? step.onHit : step.onMiss;
+      // onDouble: a success by double the DIF or more (Degrees of Success x2+, the plain Skill Test's Critical Success)
+      // runs instead of onHit.
+      const branch = row.success && Number(row.multiplier) >= 2 && Array.isArray(step.onDouble) ? step.onDouble : row.success ? step.onHit : step.onMiss;
       if (Array.isArray(branch)) {
         await runSteps(branch, ctx);
       }
@@ -897,7 +1059,8 @@ const HANDLERS = {
     const { disarm } = await import("../mechanics/combat/target-riders.mjs");
     let dropped = 0;
     for (const other of recipients({ ...step, to: step.to ?? 'target' }, ctx)) {
-      const weapon = await disarm(ctx.actor, other, { maxHands: amountOf(step.maxHands ?? 2, ctx, 2), optional: !!step.optional, source: ctx.item?.name ?? '' });
+      // payFree (round 15): one Free action per hand of the weapon picked, paid before it drops (in a combat).
+      const weapon = await disarm(ctx.actor, other, { maxHands: amountOf(step.maxHands ?? 2, ctx, 2), optional: !!step.optional, payFree: !!step.payFree, source: ctx.item?.name ?? '' });
       if (weapon) {
         dropped++;
         ctx.chat.push(T('Disarmed', { name: escape(other.name), item: escape(weapon.name) }));
@@ -971,7 +1134,8 @@ const HANDLERS = {
     for (const actor of recipients(step, ctx)) {
       const combatant = (combat.combatants?.contents ?? [...(combat.combatants ?? [])]).find(c => c.actor === actor || c.actorId == actor.id);
       if (combatant) {
-        const value = amountOf(step.value ?? 0, ctx, 0);
+        // exact: the value as worked out, not rounded ("just after them" - their Initiative - 0.01).
+        const value = step.exact ? Number(resolveValue(step.value ?? 0, { actor: ctx.actor, item: ctx.item, vars: ctx.vars, other: ctx.targets?.[0] ?? null, recipient: actor }, 0)) || 0 : amountOf(step.value ?? 0, ctx, 0);
         await write(combatant, 'update', [{ initiative: value }]);
         ctx.chat.push(T('InitiativeSet', { name: escape(actor.name), value }));
       }
@@ -998,27 +1162,36 @@ const HANDLERS = {
 
   async applyCondition(step, ctx) {
     const rounds = amountOf(step.rounds ?? 0, ctx, 0);
+    // condition may read a pick or a run value, as removeCondition's does (round 17, split3 - Synaptic Linkage passes the
+    // Condition it took off).
+    const condition = fillText(String(step.condition ?? ''), ctx);
+    if (!condition) {
+      return;
+    }
+
     for (const actor of recipients(step, ctx)) {
       const { needsGmRelay, relayToGm } = await import("../mechanics/world/gm-relay.mjs");
       if (needsGmRelay(actor) && rounds) {
         // Through the GM with its rounds (react/core.mjs's status op runs applyTimedCondition there).
         const { gmDo } = await import("../mechanics/combat/reaction-engine.mjs");
-        await gmDo({ kind: 'status', uuid: actor.uuid, status: step.condition, rounds }, null, ctx.actor);
+        await gmDo({ kind: 'status', uuid: actor.uuid, status: condition, rounds }, null, ctx.actor);
       } else if (needsGmRelay(actor)) {
-        await relayToGm(actor, 'toggleStatusEffect', [step.condition, { active: true }]);
+        await relayToGm(actor, 'toggleStatusEffect', [condition, { active: true }]);
       } else {
         const { applyTimedCondition } = await import("../mechanics/combat/timed-status.mjs");
-        await applyTimedCondition(actor, step.condition, rounds);
+        await applyTimedCondition(actor, condition, rounds);
       }
 
-      ctx.chat.push(T('Condition', { name: escape(actor.name), condition: escape(step.condition) }));
+      ctx.chat.push(T('Condition', { name: escape(actor.name), condition: escape(condition) }));
     }
   },
 
   async removeCondition(step, ctx) {
+    // condition may read a pick ({choice.<key>} - a pick from: conditions) or a run value ({var.<key>}).
+    const condition = fillText(String(step.condition ?? ''), ctx);
     for (const actor of recipients(step, ctx)) {
-      if (actor.statuses?.has?.(step.condition)) {
-        await write(actor, 'toggleStatusEffect', [step.condition, { active: false }]);
+      if (condition && actor.statuses?.has?.(condition)) {
+        await write(actor, 'toggleStatusEffect', [condition, { active: false }]);
       }
     }
   },
@@ -1048,17 +1221,27 @@ const HANDLERS = {
     // itemUuid: the roll belongs to this Use's item, for afterRoll / hit Triggers' `item:own`.
     // In a Reaction (ctx.card) the DIF is flat: react/core.mjs#rollVs clears the user's targets first (dice.mjs compares
     // against targets before a flat DIF), and a cancelled roll stops the run, so nothing is spent or claimed.
-    const extra = { ...(edge ? { edge: true } : {}), ...(step.snag ? { snag: true } : {}), ...(ctx.item?.uuid ? { itemUuid: ctx.item.uuid } : {}) };
+    // essence: roll with that Essence instead of the Skill's own.
+    // dataset: flags the roll carries (roll:dataset:<key> - Brutal Verbalities' Rouse attempt).
+    // Dataset values fill {var.x} / {choice.x} as createItem's data does - a lone one keeps its value, a number stays a
+    // number (round 15: markedItemUuid - the item a repair test is about; Patch Up's patchUpAmount).
+    const extra = {
+      ...(step.dataset && typeof step.dataset == 'object' ? fillData(step.dataset, ctx) : {}),
+      ...(edge ? { edge: true } : {}), ...(step.snag ? { snag: true } : {}), ...(ctx.item?.uuid ? { itemUuid: ctx.item.uuid } : {}), ...(step.essence ? { essence: step.essence } : {}),
+      // downshift (round 16, part b): ↓ on the roll, a formula (Dominate's cumulative ↓1 per command so far).
+      ...(step.downshift !== undefined ? { shiftDown: Math.max(0, amountOf(step.downshift, ctx, 0)) } : {}),
+    };
     // open: an ordinary roll with no DIF of its own (against whoever is targeted, as from the sheet); then: steps after.
     if (step.open) {
       const openSkill = skillFor(step, ctx);
       const essence = globalThis.CONFIG?.E20?.skillToEssence?.[openSkill] ?? 'smarts';
-      // The Skill's own standing shifts and Specialized flag, as a sheet roll passes them.
+      // The Skill's own standing shifts and Specialized flag, as a sheet roll passes them - sheetShifts: false leaves them
+      // out (the hand-written "rollSkill({skill, shiftUp: 0, shiftDown: 0})" a Use button made - On Target).
       const fields = ctx.actor?.system?.skills?.[openSkill] ?? {};
-      const result = await ctx.actor?._dice?.rollSkill?.({
-        rollType: 'skill', skill: openSkill, essence, shift: fields.shift, shiftUp: fields.shiftUp ?? 0, shiftDown: fields.shiftDown ?? 0,
-        isSpecialized: fields.isSpecialized, ...extra,
-      }, ctx.actor);
+      const sheet = step.sheetShifts === false
+        ? { shiftUp: 0, shiftDown: 0 }
+        : { shift: fields.shift, shiftUp: fields.shiftUp ?? 0, shiftDown: fields.shiftDown ?? 0, isSpecialized: fields.isSpecialized };
+      const result = await ctx.actor?._dice?.rollSkill?.({ rollType: 'skill', skill: openSkill, essence, ...sheet, ...extra }, ctx.actor);
       if (!result || result.cancelled) {
         return false;
       }
@@ -1076,6 +1259,13 @@ const HANDLERS = {
       return false;
     }
 
+    // sheetShifts: true - the Skill's own standing shifts and Specialized flag come with the DIF roll too (a hand-written
+    // rollSkillTotal(actor, skill, {dif}) Use - the Scramble Field Generator's), as the open roll passes them.
+    if (step.sheetShifts === true) {
+      const fields = ctx.actor?.system?.skills?.[skill] ?? {};
+      Object.assign(extra, { shift: fields.shift, shiftUp: fields.shiftUp ?? 0, shiftDown: fields.shiftDown ?? 0, isSpecialized: fields.isSpecialized, rollType: 'skill' }, { ...extra });
+    }
+
     const result = ctx.card
       ? await (await import("../mechanics/combat/reaction-engine.mjs")).rollVs(ctx.actor, skill, dif, extra)
       : await rollTest(ctx.actor, skill, dif, extra);
@@ -1086,6 +1276,8 @@ const HANDLERS = {
     ctx.vars.lastRoll = result;
     // @var.rollTotal: the roll's total (Best-Laid Plans' pool size).
     ctx.vars.rollTotal = Number(result?.total) || 0;
+    // @var.multiplier: the Degrees of Success (0 on a failure) - "1 Health, multiplied on a high degree of success".
+    ctx.vars.multiplier = Number.isFinite(Number(result?.multiplier)) ? Number(result.multiplier) : (result?.success ? 1 : 0);
     const branch = result.crit && step.onCrit ? step.onCrit : result.success ? step.onSuccess : step.onFail;
     if (branch) {
       return runSteps(branch, ctx);
@@ -1116,7 +1308,12 @@ const HANDLERS = {
     }
 
     const options = pickOptions(step, ctx);
+    // optional (round 16, part b): nothing to pick, or a cancelled pick, leaves the choice unmade and the run goes on.
     if (!options.length) {
+      if (step.optional) {
+        return;
+      }
+
       ctx.chat.push(T('NothingToPick', { item: escape(own.name) }));
       return false;
     }
@@ -1125,7 +1322,7 @@ const HANDLERS = {
     const value = step.auto && options.length == 1 ? options[0].value : await (ctx.askPick ?? askPick)(step, options, ctx);
     const chosen = options.find(option => option.value == value);
     if (!chosen) {
-      return false;
+      return step.optional ? undefined : false;
     }
 
     await write(own, 'update', [{ [`flags.essence20.rules.choices.${key}`]: chosen.value }]);
@@ -1172,14 +1369,23 @@ const HANDLERS = {
     }
 
     for (const actor of recipients(step, ctx)) {
-      const data = globalThis.foundry?.utils?.deepClone?.(step.data) ?? JSON.parse(JSON.stringify(step.data));
-      globalThis.foundry?.utils?.setProperty?.(data, 'flags.essence20.grantedBy', ctx.item?.id ?? null);
+      const data = fillData(globalThis.foundry?.utils?.deepClone?.(step.data) ?? JSON.parse(JSON.stringify(step.data)), ctx);
+      // unlinked (round 16, part b): no grantedBy - the item (and its children) stays when the rule's item goes
+      // (Additional Attack Type's attack). knownTraits: only the weapon traits the system knows are kept.
+      if (!step.unlinked) {
+        globalThis.foundry?.utils?.setProperty?.(data, 'flags.essence20.grantedBy', ctx.item?.id ?? null);
+      }
+
+      if (step.knownTraits) {
+        keepKnownTraits(data);
+      }
+
       if (step.until) {
         const { stampFor } = await import("./expiry.mjs");
         globalThis.foundry?.utils?.setProperty?.(data, 'flags.essence20.rulesExpiry', { until: step.until, stamp: stampFor(step.until, undefined, untilActor(step, ctx, actor)) });
       }
 
-      data.name = interpolate(String(data.name), ctx.item) ?? String(data.name);
+      data.name = createdName(data, ctx);
       const created = await write(actor, 'createEmbeddedDocuments', ['Item', [data]]);
       const host = created?.[0] ?? null;
       ctx.vars.granted = host;
@@ -1191,10 +1397,20 @@ const HANDLERS = {
     }
   },
 
-  // Remove items (its own grants, a target's weapon...).
+  // Remove items (its own grants, a target's weapon...). keepGrants (round 15, systems): what the removed items granted
+  // stays - unlinked first, since removing a granting item takes its grants with it (Metamorphosis keeps Colony
+  // Changeling's Infatuated).
   async deleteItem(step, ctx) {
     for (const actor of recipients(step, ctx)) {
       const items = itemsFor(step, actor, ctx);
+      if (items.length && step.keepGrants) {
+        const ids = new Set(items.map(item => item.id));
+        const owned = actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
+        for (const granted of owned.filter(item => ids.has(item.flags?.essence20?.grantedBy))) {
+          await granted.unsetFlag?.('essence20', 'grantedBy');
+        }
+      }
+
       if (items.length) {
         await write(actor, 'deleteEmbeddedDocuments', ['Item', items.map(item => item.id)]);
         ctx.chat.push(T('ItemRemoved', { name: escape(actor.name), item: items.map(item => escape(item.name)).join(', ') }));
@@ -1208,8 +1424,27 @@ const HANDLERS = {
   // Change numbers or values on items: set {path: value} (a formula for numbers), add {path: formula}.
   async updateItem(step, ctx) {
     for (const actor of recipients(step, ctx)) {
-      for (const item of itemsFor(step, actor, ctx)) {
+      // parent: the selected items' weapons instead (a weaponEffect's parentId - Weapon Conversion's Inaccurate trait).
+      const selected = itemsFor(step, actor, ctx);
+      const items = step.parent ? selected.map(item => actor.items?.get?.(item.flags?.essence20?.parentId)).filter(Boolean) : selected;
+      for (const item of items) {
         const update = {};
+        // multiply: {path: factor} - the number there times the factor, rounded down; an empty value stays empty.
+        for (const [path, value] of Object.entries(step.multiply ?? {})) {
+          const current = globalThis.foundry?.utils?.getProperty?.(item, path);
+          if (current !== null && current !== undefined && current !== '') {
+            update[path] = Math.floor((Number(current) || 0) * Number(resolveValue(value, { actor: ctx.actor, item: ctx.item, vars: ctx.vars }, 1)));
+          }
+        }
+
+        // appendTraits: traits the item gains (system.traits), each once.
+        if (Array.isArray(step.appendTraits) && step.appendTraits.length) {
+          const traits = Array.isArray(item.system?.traits) ? item.system.traits : [];
+          if (step.appendTraits.some(trait => !traits.includes(trait))) {
+            update['system.traits'] = [...new Set([...traits, ...step.appendTraits])];
+          }
+        }
+
         for (const [path, value] of Object.entries(step.set ?? {})) {
           // Text fills {choice.x} / {var.x} / {@formula} (the rolled Skill stored for a later tag).
           update[path] = typeof value == 'number' || /^[\d@(]/.test(String(value)) ? amountOf(value, ctx, 0) : typeof value == 'string' ? fillText(value, ctx) : value;
@@ -1261,15 +1496,20 @@ const HANDLERS = {
       const data = source.toObject();
       delete data._id;
       globalThis.foundry.utils.setProperty(data, '_stats.compendiumSource', uuid);
-      globalThis.foundry.utils.setProperty(data, 'flags.essence20.grantedBy', ctx.item?.id ?? null);
+      // unlinked (round 15): the copy is the actor's own - not tied to the granting item, so it outlives it (Poison Prodigy).
+      if (!step.unlinked) {
+        globalThis.foundry.utils.setProperty(data, 'flags.essence20.grantedBy', ctx.item?.id ?? null);
+      }
+
       if (step.until) {
         const { stampFor } = await import("./expiry.mjs");
         globalThis.foundry.utils.setProperty(data, 'flags.essence20.rulesExpiry', { until: step.until, stamp: stampFor(step.until, undefined, untilActor(step, ctx, actor)) });
       }
 
-      // flags / system: values the granted copy carries (flags under flags.essence20).
+      // flags / system: values the granted copy carries (flags under flags.essence20). A flag's text is filled
+      // (round 15, items2 - "{ruleItem.id}" for the Drone chassis' parentId).
       for (const [path, value] of Object.entries(step.flags ?? {})) {
-        globalThis.foundry.utils.setProperty(data, `flags.essence20.${path}`, value);
+        globalThis.foundry.utils.setProperty(data, `flags.essence20.${path}`, typeof value == 'string' ? fillText(value, ctx) : value);
       }
 
       for (const [path, value] of Object.entries(step.system ?? {})) {
@@ -1286,7 +1526,8 @@ const HANDLERS = {
 
       // name: the copy's own name ({choice.<key>} reads a pick); integrated: a weapon becomes Integrated size.
       if (step.name) {
-        data.name = interpolate(String(step.name), ctx.item) ?? String(step.name);
+        // {var.<key>} too - a picked entry's name ("{var.pickedName} (Energon)", Manifest Melee Weapon).
+        data.name = fillText(String(step.name), ctx);
       }
 
       if (step.integrated) {
@@ -1299,8 +1540,15 @@ const HANDLERS = {
         data.system.traits = [...new Set([...data.system.traits, ...step.appendTraits])];
       }
 
+      // removeTraits (round 15): traits the copy loses (Augur's blade trades Silent for Armor Piercing).
+      if (Array.isArray(step.removeTraits) && Array.isArray(data.system?.traits)) {
+        data.system.traits = data.system.traits.filter(trait => !step.removeTraits.includes(trait));
+      }
+
       const created = await actor.createEmbeddedDocuments('Item', [data]);
       ctx.vars.granted = created?.[0] ?? null;
+      // {var.grantedId}: the copy's id, for a flag that points back at it (round 15, items2 - They Called It a Glitch!).
+      ctx.vars.grantedId = created?.[0]?.id ?? '';
       // A weapon / armor / shield arrives with its own attacks and upgrades.
       const { attachGrantedChildren } = await import("./lifecycle.mjs");
       await attachGrantedChildren(actor, created);
@@ -1311,30 +1559,54 @@ const HANDLERS = {
   async bank(step, ctx) {
     const { bankRollBonus } = await import("./bank.mjs");
     for (const actor of recipients(step, ctx)) {
-      // replace: this rule's item keeps one banked bonus on the actor - a new one takes the old one's place.
-      if (step.replace && ctx.item?.id) {
+      // replace: this rule's item keeps one banked bonus on the actor - a new one takes the old one's place. key: only its
+      // banks under that key (an item with two kinds of bank - Grid Surge's Edge and its Toughness Boost). stackMax (a
+      // formula): the Defense bonus of the bank it replaces is added to the new one, up to that much ("stacking to +3").
+      let stacked = 0;
+      if ((step.replace || step.stackMax !== undefined) && ctx.item?.id) {
         const { bankedEntries } = await import("./bank.mjs");
-        const kept = bankedEntries(actor).filter(entry => entry?.source != ctx.item.id);
+        const replaced = entry => entry?.source == ctx.item.id && (step.key === undefined || entry.key == step.key);
+        stacked = bankedEntries(actor).filter(replaced).reduce((sum, entry) => sum + (Number(entry.defenseBonus) || 0), 0);
+        const kept = bankedEntries(actor).filter(entry => !replaced(entry));
         await write(actor, 'update', [{ 'flags.essence20.ruleBank': kept }]);
       }
 
+      // grantDouble: upshifts banked on another actor first offer the granter's GrantDouble rules (the hand-written
+      // perks.mjs#bankPendingBonus `granter` - This, I Command doubling Augment Power's ↑).
+      let shiftUp = amountOf(step.upshift ?? 0, ctx, 0);
+      if (step.grantDouble && shiftUp > 0 && actor !== ctx.actor) {
+        const { offerGrantDouble } = await import("./plugins/resources/grant-double.mjs");
+        if (await offerGrantDouble(ctx.actor, actor, 'upshift', globalThis.game?.i18n?.format?.('E20.RulesExtH.Upshift', { n: shiftUp }) ?? `↑${shiftUp}`)) {
+          shiftUp *= 2;
+        }
+      }
+
+      // Each number worked out once (a rolled Defense bonus - @skillDie.acrobatics - is the one banked and the one told).
+      const shiftDown = amountOf(step.downshift ?? 0, ctx, 0);
+      const damage = amountOf(step.damage ?? 0, ctx, 0);
+      const ownBonus = step.defense ? amountOf(step.defenseBonus ?? 0, ctx, 0) : 0;
+      const defenseBonus = step.defense && step.stackMax !== undefined ? Math.min(amountOf(step.stackMax, ctx, 0), stacked + ownBonus) : ownBonus;
+      const defenseMultiply = step.defense && step.defenseMultiply !== undefined ? amountOf(step.defenseMultiply, ctx, 1) : 0;
       await bankRollBonus(actor, {
         label: step.label || ctx.item?.name,
-        shiftUp: amountOf(step.upshift ?? 0, ctx, 0),
-        shiftDown: amountOf(step.downshift ?? 0, ctx, 0),
+        shiftUp,
+        shiftDown,
         edge: !!step.edge,
         snag: !!step.snag,
         specialize: !!step.specialize,
-        damage: amountOf(step.damage ?? 0, ctx, 0),
+        damage,
         // {var.x} / {choice.x} in a tag are filled now (target:uuid:{var.foe} - "an attack against that target").
         when: (step.appliesWhen ?? []).map(tag => (typeof tag == 'string' && tag.includes('{var.') ? fillText(tag, ctx) : tag)),
         uses: amountOf(step.uses ?? 1, ctx, 1),
         until: step.until ?? null,
         source: ctx.item?.id ?? null,
+        ...(step.key !== undefined ? { key: String(step.key) } : {}),
         untilActor: untilActor(step, ctx, actor),
-        ...(step.defense ? { defense: step.defense, defenseBonus: amountOf(step.defenseBonus ?? 0, ctx, 0), persist: !!step.persist } : {}),
+        // defenseMultiply: that Defense is multiplied against the next attack instead (rules/bank.mjs#bankedDefenseMultiplier).
+        ...(step.defense ? { defense: step.defense, defenseBonus, persist: !!step.persist, ...(defenseMultiply ? { defenseMultiply } : {}) } : {}),
       }, write);
-      const bonus = [step.defense && `+${amountOf(step.defenseBonus ?? 0, ctx, 0)} ${step.defense == 'any' ? 'Defenses' : [step.defense].flat().join('/')}`, step.upshift && `↑${amountOf(step.upshift, ctx)}`, step.downshift && `↓${amountOf(step.downshift, ctx)}`, step.edge && 'Edge', step.snag && 'Snag', step.specialize && 'Specialized', step.damage && `+${amountOf(step.damage, ctx)} damage`].filter(Boolean).join(', ');
+      const defenses = step.defense == 'any' ? 'Defenses' : [step.defense].flat().join('/');
+      const bonus = [step.defense && (defenseMultiply ? `x${defenseMultiply} ${defenses}` : `+${defenseBonus} ${defenses}`), step.upshift && `↑${shiftUp}`, step.downshift && `↓${shiftDown}`, step.edge && 'Edge', step.snag && 'Snag', step.specialize && 'Specialized', step.damage && `+${damage} damage`].filter(Boolean).join(', ');
       ctx.chat.push(T('Banked', { name: escape(actor.name), bonus }));
     }
   },
@@ -1448,16 +1720,34 @@ const HANDLERS = {
     const helpers = ctx.grantHelpers ?? await import("../mechanics/resources/grants.mjs");
     const from = step.from ?? {};
     const tags = Array.isArray(from.tags) ? from.tags : [];
+    // notOwned: leave out what the recipient (the first one; else the actor) already holds - with selectionLimit, only
+    // once it holds as many copies as the entry's system.selectionLimit allows (Reprogrammable may be taken again).
+    const holder = from.notOwned ? recipients(step, ctx)[0] ?? ctx.actor : null;
+    const held = new Map();
+    const originals = new Set();
+    for (const owned of holder ?(holder.items?.contents ?? [...(holder.items ?? [])]) : []) {
+      const source = owned.flags?.core?.sourceId ?? owned._stats?.compendiumSource ?? owned.flags?.essence20?.rulesSource;
+      held.set(source, (held.get(source) ?? 0) + 1);
+      // byOriginalId (round 15): an Alteration's system.originalId (the id its drop recorded) counts as held too.
+      if (from.byOriginalId && owned.system?.originalId) {
+        originals.add(String(owned.system.originalId));
+      }
+    }
+
+    const free = entry => !holder || ((held.get(entry.uuid) ?? 0) < (from.selectionLimit ? Number(entry.system?.selectionLimit) || 1 : 1)
+      && !originals.has(String(entry.uuid).split('.').pop()));
+    const fields = [...(Array.isArray(from.fields) ? from.fields : []), ...(from.selectionLimit ? ['system.selectionLimit'] : [])];
     const rows = await helpers.findItems({
       type: from.type,
       availabilities: Array.isArray(from.availabilities) && from.availabilities.length ? from.availabilities : null,
       // from.fields: more index fields the tags read (system.tier, system.level...).
-      ...(Array.isArray(from.fields) && from.fields.length ? { fields: from.fields } : {}),
-      matches: tags.length ? entry => evaluate(tags, contextFor({ self: ctx.actor, item: entry, ruleItem: ctx.item })) === true : null,
+      ...(fields.length ? { fields } : {}),
+      matches: tags.length || holder ? entry => free(entry) && (!tags.length || evaluate(tags, contextFor({ self: ctx.actor, item: entry, ruleItem: ctx.item })) === true) : null,
     });
     const uuid = await helpers.pickOne(step.title || ctx.item?.name || '', rows);
+    // optional (round 15): a cancelled pick only skips this grant - the run goes on (Primary Tech's "can choose" upgrades).
     if (!uuid) {
-      return false;
+      return step.optional ? undefined : false;
     }
 
     // record: keep the pick on the rule's item (choices.<key>, a list - several picks build it up) instead of granting
@@ -1494,7 +1784,15 @@ const HANDLERS = {
         flags.rulesExpiry = { until: step.until, stamp: stampFor(step.until, undefined, untilActor(step, ctx, actor)) };
       }
 
-      const created = await helpers.grantCopy(actor, uuid, { grantedBy: ctx.item, integrated: !!step.integrated, flags, system: step.system ?? {} });
+      // viaDrop (round 15): through the item type's own drop handling (registerDropGrant); nothing made stops the run.
+      const viaDrop = step.viaDrop ? DROP_GRANTS.get(String(from.type ?? '')) : null;
+      const created = viaDrop
+        ? await viaDrop(actor, uuid, { grantedBy: ctx.item, flags, system: step.system ?? {} })
+        : await helpers.grantCopy(actor, uuid, { grantedBy: ctx.item, integrated: !!step.integrated, flags, system: step.system ?? {} });
+      if (viaDrop && !created) {
+        return false;
+      }
+
       // appendTraits: traits the copy gains once it's made (Field Trials' Temperamental upgrade).
       if (created && Array.isArray(step.appendTraits) && step.appendTraits.length) {
         await write(created, 'update', [{ 'system.traits': [...new Set([...(created.system?.traits ?? []), ...step.appendTraits])] }]);
@@ -1514,7 +1812,9 @@ const HANDLERS = {
   async bonusAttack(step, ctx) {
     const economy = ctx.economy ?? await import("../mechanics/actions/action-economy.mjs");
     const count = Math.max(0, amountOf(step.count ?? 1, ctx, 1));
-    const filter = Array.isArray(step.when) && step.when.length ? { when: step.when } : null;
+    // only: one of the action economy's own attack filters (action-perks.mjs#attackMatchesFilter - unarmed, melee...).
+    const named = typeof step.only == 'string' && step.only ? { [step.only]: true } : {};
+    const filter = Array.isArray(step.when) && step.when.length ? { ...named, when: step.when } : Object.keys(named).length ? named : null;
     let granted = 0;
     for (const actor of recipients(step, ctx)) {
       for (let i = 0; i < count; i++) {
@@ -1534,6 +1834,7 @@ const HANDLERS = {
   },
 
   // The player picks a number (within min-max); later steps read it as @var.<var>.
+  // value: the number the dialog starts on (a formula - @item.flags.essence20.x, kept from last time; round 15, items2).
   async askNumber(step, ctx) {
     const value = await pickAmount({ ...step, amount: { min: step.min ?? 1, max: step.max ?? step.min ?? 1 } }, ctx);
     if (value === null) {
@@ -1562,7 +1863,8 @@ const HANDLERS = {
 
     for (const actor of recipients(step, ctx)) {
       const mark = {
-        by: ctx.actor?.uuid ?? null, until: step.until ?? null, stamp: step.until ? stampFor(step.until, undefined, untilActor(step, ctx, actor)) : null,
+        // by: holder (round 17, perm) - set on the rule holder's behalf (a marked Trigger running on the carrier: Trade School).
+        by: (step.by == 'holder' ? ctx.item?.parent ?? ctx.actor : ctx.actor)?.uuid ?? null, until: step.until ?? null, stamp: step.until ? stampFor(step.until, undefined, untilActor(step, ctx, actor)) : null,
       };
       if (step.count !== undefined) {
         const old = actor.flags?.essence20?.ruleMarks?.[markKey];
@@ -1570,7 +1872,34 @@ const HANDLERS = {
         mark.count = running + amountOf(step.count, ctx, 1);
       }
 
+      // text: a word the mark keeps ({choice.x} / {var.x} filled) - target:markText:<key>=... reads it
+      // (rules/plugins/marks/mark-value.mjs).
+      if (step.text !== undefined) {
+        mark.text = fillText(String(step.text), ctx);
+      }
+
+      // keep: the order it was set in (the newest are kept) - strictly increasing, so two marks set in the same
+      // millisecond still have an order.
+      if (step.keep !== undefined) {
+        markOrder = Math.max(Date.now(), markOrder + 1);
+        mark.at = markOrder;
+      }
+
       await write(actor, 'update', [{ [`flags.essence20.ruleMarks.${markKey}`]: mark }]);
+      if (mark.at) {
+        globalThis.foundry?.utils?.setProperty?.(actor, `flags.essence20.ruleMarks.${markKey}`, mark);
+      }
+    }
+
+    // keep: N (a formula) - this actor's mark under the key stays on the newest N creatures only, the oldest come off
+    // ("up to five Mark Targets at a time": Additional Marks).
+    if (step.keep !== undefined && ctx.actor?.uuid) {
+      const keep = Math.max(1, amountOf(step.keep, ctx, 1));
+      const carriers = markedBy(ctx.actor, markKey).map(other => ({ other, at: Number(other.flags?.essence20?.ruleMarks?.[markKey]?.at) || 0 }))
+        .sort((a, b) => b.at - a.at);
+      for (const { other } of carriers.slice(keep)) {
+        await write(other, 'update', [{ [`flags.essence20.ruleMarks.-=${markKey}`]: null }]);
+      }
     }
   },
 
@@ -1705,7 +2034,9 @@ const HANDLERS = {
       }
 
       const { needsGmRelay, relayToGm } = await import("../mechanics/world/gm-relay.mjs");
-      await (needsGmRelay(actor) ? relayToGm(actor, 'update', [{ [path]: value }]) : actor.update({ [path]: value }));
+      // silent: no Morph / Alt Mode chat line, badge or status (the update option morph-state.mjs reads).
+      const args = step.silent ? [{ [path]: value }, { essence20: { silentState: true } }] : [{ [path]: value }];
+      await (needsGmRelay(actor) ? relayToGm(actor, 'update', args) : actor.update(...args));
     }
   },
 
@@ -1724,8 +2055,9 @@ async function askOption(step, options, ctx) {
     window: { title: ctx.item?.name ?? '' },
     classes: ['essence20', 'e20-window'],
     // The prompt names who it's for ({target}: a forEach step's member) and fills {choice} / {var}.
-    content: step.prompt ? `<p>${escape(fillText(String(step.prompt), ctx).replace(/\{target\}/g, ctx.targets[0]?.name ?? '').replace(/\{name\}/g, ctx.actor?.name ?? ''))}</p>` : '',
-    buttons: options.map((option, index) => ({ action: String(index), label: option.label ?? String(index + 1) })),
+    // An E20. key prompt or option label is localized (round 16, part b), so no book text needs to sit in pack data.
+    content: step.prompt ? `<p>${escape(fillText(localizedText(String(step.prompt)), ctx).replace(/\{target\}/g, ctx.targets[0]?.name ?? '').replace(/\{name\}/g, ctx.actor?.name ?? ''))}</p>` : '',
+    buttons: options.map((option, index) => ({ action: String(index), label: option.label ? localizedText(String(option.label)) : String(index + 1) })),
     rejectClose: false,
   });
   return result === null || result === undefined ? null : Number(result);
@@ -1805,15 +2137,23 @@ export function stepErrors(steps, path = 'steps') {
       errors.push(`${where}: rerollCard target must be d20, allDice, anyDie or skillDice`);
     }
 
-    if (step.do == 'spendAction' && step.action && !['free', 'move', 'standard'].includes(step.action)) {
-      errors.push(`${where}: spendAction's action must be free, move or standard`);
+    if (step.do == 'spendAction' && step.action && !['free', 'move', 'standard', 'fullAction'].includes(step.action)) {
+      errors.push(`${where}: spendAction's action must be free, move, standard or fullAction`);
     }
 
     if (step.do == 'rollVsEach' && !step.skill) {
       errors.push(`${where}: rollVsEach needs a skill`);
     }
 
-    for (const key of ['onHit', 'onMiss']) {
+    if (step.do == 'rollVsEach' && step.damage !== undefined && (typeof step.damage != 'object' || formulaError(step.damage.value ?? 1))) {
+      errors.push(`${where}: rollVsEach damage must be {value, type}`);
+    }
+
+    if (step.do == 'rollVsEach' && step.dataset !== undefined && (typeof step.dataset != 'object' || Array.isArray(step.dataset))) {
+      errors.push(`${where}: rollVsEach dataset must be an object of flags`);
+    }
+
+    for (const key of ['onHit', 'onMiss', 'onDouble']) {
       if (step.do == 'rollVsEach' && step[key] !== undefined) {
         errors.push(...stepErrors(step[key], `${where}.${key}`));
       }
@@ -1855,8 +2195,8 @@ export function stepErrors(steps, path = 'steps') {
       errors.push(`${where}: lowerTotal needs an amount${step.amount === undefined ? '' : ` (${formulaError(step.amount)})`}`);
     }
 
-    if (step.untilOf && !['holder', 'recipient'].includes(step.untilOf)) {
-      errors.push(`${where}: untilOf must be holder or recipient`);
+    if (step.untilOf && !['holder', 'recipient', 'target'].includes(step.untilOf)) {
+      errors.push(`${where}: untilOf must be holder, recipient or target`);
     }
 
     if (step.to && !['self', 'target', 'targets', 'targetOrSelf', 'party', 'party+others', 'team', 'team+others', 'combatAllies', 'combatAllies+self', 'partyActor'].includes(step.to)
@@ -1869,8 +2209,10 @@ export function stepErrors(steps, path = 'steps') {
       errors.push(`${where}: difDefense must be toughness, evasion, willpower or cleverness`);
     }
 
+    // A plug-in selector (registerItemSelector) is accepted too.
     if (['deleteItem', 'updateItem', 'spendQuantity'].includes(step.do) && step.item !== undefined
-      && !/^(self|granted|wielded(:.+)?|(source|type|choice):.+|name~.+)$/.test(String(step.item))) {
+      && !/^(self|granted|wielded(:.+)?|(source|type|choice):.+|name~.+)$/.test(String(step.item))
+      && !ITEM_SELECTORS.some(({ prefix }) => (prefix.endsWith(':') ? String(step.item).startsWith(prefix) : String(step.item) == prefix))) {
       errors.push(`${where}: item must be self, granted, source:<uuid>, name~<text>, type:<type> or choice:<key>`);
     }
 
@@ -1983,9 +2325,15 @@ export function stepErrors(steps, path = 'steps') {
       errors.push(`${where}: var must be a plain name`);
     }
 
-    for (const key of ['amount', 'dif', 'rounds', 'value', 'uses', 'upshift', 'downshift', 'min', 'max', 'defenseBonus', 'minLevel', 'maxLevel']) {
+    for (const key of ['amount', 'dif', 'rounds', 'value', 'uses', 'upshift', 'downshift', 'min', 'max', 'defenseBonus', 'defenseMultiply', 'minLevel', 'maxLevel', 'first', 'keep', 'stackMax']) {
       const objectAmount = key == 'amount' && step.do == 'spend' && step.amount && typeof step.amount == 'object';
-      const error = (key == 'value' && ['setToggle', 'setForm'].includes(step.do)) || objectAmount ? null : formulaError(step[key]);
+      // Not formulas: a setVar text value (the handler's own test - no leading digit / @ / ( / -, no call), and
+      // shiftSize's min / max (sizes: "huge").
+      const textVar = key == 'value' && step.do == 'setVar' && typeof step.value == 'string' && !/^[\d@(-]/.test(step.value) && !/\(/.test(step.value);
+      const sizeBound = ['min', 'max'].includes(key) && step.do == 'shiftSize';
+      // keep is a formula only on a mark (pickAlteration's keep is its own setting).
+      const otherKeep = key == 'keep' && step.do != 'mark';
+      const error = (key == 'value' && ['setToggle', 'setForm'].includes(step.do)) || objectAmount || textVar || sizeBound || otherKeep ? null : formulaError(step[key]);
       if (error) {
         errors.push(`${where}.${key}: ${error}`);
       }

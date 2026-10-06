@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import {
-  deactivatePhantomSuite, getPhantomSuiteEvasionBonus, isPhantomSuiteActive, togglePhantomSuite,
+  deactivatePhantomSuite, getPhantomSuiteEvasionBonus, isPhantomSuiteActive,
 } from './phantom-suite.mjs';
 
 const PHANTOM_SUITE_ID = "Compendium.essence20.across_the_stars.Item.fQgxo5c7tNOD2Q5K";
@@ -29,35 +29,6 @@ describe("isPhantomSuiteActive", () => {
 
   test("true once the flag is set", () => {
     expect(isPhantomSuiteActive(makeActor({ active: true }))).toBe(true);
-  });
-});
-
-describe("togglePhantomSuite", () => {
-  test("activates and spends 1 Personal Power when affordable", async () => {
-    const actor = makeActor({ power: 1 });
-    const result = await togglePhantomSuite(actor);
-
-    expect(result).toBe(true);
-    expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'phantomSuiteActive', true);
-  });
-
-  test("returns null and spends nothing when unaffordable", async () => {
-    const actor = makeActor({ power: 0 });
-    const result = await togglePhantomSuite(actor);
-
-    expect(result).toBeNull();
-    expect(actor.update).not.toHaveBeenCalled();
-    expect(actor.setFlag).not.toHaveBeenCalled();
-  });
-
-  test("deactivates for free", async () => {
-    const actor = makeActor({ active: true, power: 0 });
-    const result = await togglePhantomSuite(actor);
-
-    expect(result).toBe(false);
-    expect(actor.update).not.toHaveBeenCalled();
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'phantomSuiteActive', false);
   });
 });
 

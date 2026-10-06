@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"RollModifier","label":"The Promise of Riches (no untrained Snag driving)","when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:aerial","vehicle:moves:ground","vehicle:moves:swim"]}],"immune":["untrainedSnag"]},
-      {"type":"Qualification","label":"The Promise of Riches (Trained: Limited weapons and battledress)","access":"trained","items":[{"any":["item:type:weapon","item:type:armor"]},{"any":["item:data:system.availability=automatic","item:data:system.availability=standard","item:data:system.availability=limited"]}]}
+      {"type":"Qualification","label":"The Promise of Riches (Trained: Limited weapons and battledress)","access":"trained","items":[{"any":["item:type:weapon","item:type:armor"]},{"any":["item:data:system.availability=automatic","item:data:system.availability=standard","item:data:system.availability=limited"]}]},
+      {"type":"RollModifier","label":"The Promise of Riches (↑1 on Driving, with Ranks)","stack":"vehicleQualification","upshift":1,"when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:aerial","vehicle:moves:ground","vehicle:moves:swim"]},{"any":["self:skill:driving>=d2","self:data:system.skills.driving.isSpecialized"]}]}
     ],
     "automation": {
       "status": "full",

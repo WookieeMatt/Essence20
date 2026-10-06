@@ -77,7 +77,8 @@ export function hitMultiplierOnAttack(attacker, target, result, rider = {}, tool
     dataset: rider.dataset, damageType: rider.damageType ?? result.damageType, isCrit: !!tools.isCrit,
   };
   const seen = new Set();
-  for (const { rule, item, index, holder } of multiplierEntries(attacker)) {
+  // stage: card / late - multiplied on the card's rows instead (rules/plugins/combat/card-hit-multiplier.mjs).
+  for (const { rule, item, index, holder } of multiplierEntries(attacker).filter(entry => entry.rule.stage != 'card' && entry.rule.stage != 'late')) {
     const key = `${sourceOf(item) ?? item?.id}#${index}`;
     if (seen.has(key) || evaluate(rule.when, contextFor({ ...facts, self: attacker, holder, ruleItem: item, other: target })) !== true) {
       continue;

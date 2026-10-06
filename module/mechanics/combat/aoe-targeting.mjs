@@ -37,9 +37,8 @@
  */
 
 import { isLingering } from "../../data/duration-schema.mjs";
-import { actorHasPerk } from "../characters/perks.mjs";
+import { ruleAreaRadiusBonus } from "../../rules/plugins/combat/area-radius.mjs";
 
-const BIGGER_BOOMS_ID = "Compendium.essence20.gi_joe_crb.Item.8oGpBcKAnhJaSqVD";
 
 // GI Joe's own "Blast (Xft cone)" quality never states a cone's angular width - this system has
 // to pick one. 53 degrees is Foundry core's own long-standing default cone angle (originally
@@ -68,17 +67,14 @@ export function feetToPixels(feet) {
 
 /**
  * The effective AoE radius, in feet, for this item's placed shape - the base system.radius plus
- * Bigger Booms' own bonus (Artillery Focus, 3rd level, p.80): "your attacks with explosives
- * increases their Area of Effect by 10 feet." (Its other two clauses - a free explosive weapon
- * Qualification, and extra equipment-loadout hands - are Equipment Assignment phase grants, not a
- * roll.) The classification read is weaponEffect-only by nature; a spell or Power has no
+ * The placed radius: the item's own plus AreaRadius rules (Bigger Booms' +10 ft on explosive attacks). The classification read is weaponEffect-only by nature; a spell or Power has no
  * classification at all, so it optional-chains away to a plain base radius. Factored out as pure
  * math specifically so it can be unit tested, unlike the rest of placeAoeTemplate's own
  * live-canvas body - same reasoning as feetToPixels/angleBetweenPoints.
  *
  * `radiusMultiplier` is Bring It All Down's own "double the blast area of effect radius"
  * option (Decepticon Directive, Demolitionist Focus, 20th level, p.57 - see
- * items/attacks/bring-it-all-down.mjs's own doc comment) - applied to the TOTAL radius (base + Bigger
+ * its AttackChoice rule - rules/plugins/combat/attack-choice.mjs) - applied to the TOTAL radius (base + Bigger
  * Booms), matching RAW's own plain "double the blast area of effect radius" wording rather than
  * doubling only the base.
  * @param {Actor} actor
@@ -87,9 +83,8 @@ export function feetToPixels(feet) {
  * @returns {Number}
  */
 export function getEffectiveRadiusFeet(actor, item, radiusMultiplier = 1) {
-  const isExplosiveAttack = item.system.classification?.style == 'explosive';
-  const biggerBoomsBonusFeet = isExplosiveAttack && actorHasPerk(actor, BIGGER_BOOMS_ID) ? 10 : 0;
-  return ((item.system.radius || 0) + biggerBoomsBonusFeet) * radiusMultiplier;
+  // AreaRadius rules (Bigger Booms: +10 ft on explosive attacks - rules/plugins/combat/area-radius.mjs).
+  return ((item.system.radius || 0) + ruleAreaRadiusBonus(actor, item)) * radiusMultiplier;
 }
 
 /**
@@ -304,9 +299,9 @@ export function getTokensInRegion(region, exclude=null) {
 
 /**
  * Every token on the current scene caught by the given raw shape data. Exported (not just an
- * internal step of placeAoeTemplate below) because Mighty Strikes (items/attacks/mighty-strikes.mjs)
- * reuses this exact containment math for its own AUTOMATIC self-centered area - no placement
- * gesture involved at all.
+ * internal step of placeAoeTemplate below) because the rules' targetCircle step (Mighty Strikes -
+ * rules/plugins/rolls/before-roll-rolled-item.mjs) reuses this exact containment math for its own
+ * AUTOMATIC self-centered area - no placement gesture involved at all.
  * @param {Object} shapeData   A single Region shape data object, e.g.
  *   { type: 'circle', x, y, radius } or { type: 'cone', x, y, radius, angle, rotation }.
  * @returns {Array<Token>}

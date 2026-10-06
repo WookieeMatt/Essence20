@@ -5,6 +5,9 @@
   "_id": "JZgbPpDoFXctLBoH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Wind Whispers (+2 Evasion for you or a teammate)","steps":[{"do":"pick","key":"who","from":"team"},{"do":"updateActor","to":"picked:who","add":{"system.defenses.evasion.bonus":2}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained, pick yourself or a teammate; that character gains +2 Evasion.</p>"

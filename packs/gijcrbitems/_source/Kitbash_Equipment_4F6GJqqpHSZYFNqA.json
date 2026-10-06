@@ -5,6 +5,9 @@
   "_id": "4F6GJqqpHSZYFNqA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Kitbash a weapon or gear (Kitbash Equipment)","cost":{"action":"standard"},"steps":[{"do":"choose","beforeCost":true,"prompt":"What are you making?","options":[{"label":"Weapon","steps":[{"do":"pickEntry","from":{"type":"weapon","tags":["not:item:hasAttack:item:data:system.numHands>2"]}}]},{"label":"Gear","steps":[{"do":"pickEntry","kitTier":true,"from":{"type":"gear"}}]}]},{"do":"roll","skill":"technology","dif":"@var.pickedDif","onSuccess":[{"do":"grant","uuid":"{var.picked}","until":"rounds:10"}],"onCrit":[{"do":"grant","uuid":"{var.picked}","until":"rounds:20"}],"onFail":[{"do":"chat","text":"{name}'s {var.pickedName} doesn't come together."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spends your Standard action and rolls Technology against the item's availability. On a success you gain the equipment for a limited time.</p>"

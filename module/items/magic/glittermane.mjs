@@ -12,16 +12,12 @@
 // reads as expired once the GM starts a new scene - no sweep needed, and the spell can simply be
 // cast again next scene.
 
-import { activateForWindow, isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 const GLITTERMANE_FLAG = 'glittermaneActive';
 
 export function isGlittermaneActive(actor) {
   return !!actor?.getFlag && isActiveForWindow(actor, GLITTERMANE_FLAG, 'scene');
-}
-
-export async function applyGlittermane(actor) {
-  await activateForWindow(actor, GLITTERMANE_FLAG, 'scene');
 }
 
 export async function removeGlittermane(actor) {

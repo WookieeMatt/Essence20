@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Movement","movement":"all","stage":"adjust","op":"multiply","value":2,"label":"Active: every Movement doubled","when":["check:frictionlessMovement"]}
+      {"type":"Movement","movement":"all","stage":"adjust","op":"multiply","value":2,"label":"Active: every Movement doubled","when":["check:frictionlessMovement"]},
+      {"type":"Use","label":"Activate (once per scene)","limit":{"per":"encounter"},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.frictionlessMovementActive":true}},{"do":"chat","text":"{name}: Frictionless Movement - Movement doubled this turn."}]},
+      {"type":"Trigger","event":"turnEnd","label":"Frictionless Movement ends","when":["self:data:flags.essence20.frictionlessMovementActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.frictionlessMovementActive":false}}]}
     ],
     "prerequisites": {"when":["self:hasType:influence:Mutant Beast"]},
     "automation": {

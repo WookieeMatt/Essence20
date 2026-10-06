@@ -5,6 +5,11 @@
   "_id": "eWlflRHYAVB9p5Z0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Menacing Glare (1 Personal Power)","key":"menacingGlare","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"forget":true,"when":["skill:intimidation","not:roll:initiative"]},
+      {"type":"Trigger","event":"hit","label":"Menacing Glare","when":["roll:switch:menacingGlare"],"steps":[{"do":"choose","prompt":"Menacing Glare: which effect?","options":[{"label":"Snag on their next Skill Test","steps":[{"do":"bank","to":"target","label":"Menacing Glare","snag":true,"appliesWhen":["not:roll:initiative"]}]},{"label":"Edge on your next Skill Test against them","steps":[{"do":"mark","key":"menacingGlareEdge","to":"target","perSetter":true}]},{"label":"Frightened","steps":[{"do":"applyCondition","condition":"frightened","to":"target"}]}]}]},
+      {"type":"RollModifier","label":"Menacing Glare","edge":true,"when":["target:data:name","target:markedByMe:menacingGlareEdge","not:roll:initiative"],"consumeMark":"menacingGlareEdge","consumeFrom":"target"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on an Intimidation test, a switch spends 1 Personal Power. On a success against Willpower, pick one: a Snag on the target's next test, Edge on your next test against them, or Frightened.</p>"

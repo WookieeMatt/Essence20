@@ -5,6 +5,10 @@
   "_id": "eFsOmJPMyuUHhcQD",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Chrono-Trigger (Multiple Attacks)","scope":"host","stacks":true,"downshift":2,"when":["item:type:weaponEffect"]},
+      {"type":"AttackCount","label":"Chrono-Trigger (Multiple Attacks)","count":3,"when":["weapon:hasUpgrade:Compendium.essence20.jump_through_time.Item.eFsOmJPMyuUHhcQD"]}
+    ],
     "prerequisites": {"when":["host:data:system.classification.size=sidearm","ask:Ranged weapon"]},
     "automation": {
       "status": "full",

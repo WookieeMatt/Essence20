@@ -14,7 +14,7 @@
  * this used to be (RAW itself names no way to end it early, but "never" was still wrong for a
  * duration that RAW does bound).
  */
-import { activateForWindow, isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 const DSOE_DISGUISE_FLAG = 'dsoeDisguiseActive';
 
@@ -22,6 +22,3 @@ export function isDsoeDisguiseActive(actor) {
   return isActiveForWindow(actor, DSOE_DISGUISE_FLAG, 'scene');
 }
 
-export async function applyDsoeDisguise(targetActor) {
-  await activateForWindow(targetActor, DSOE_DISGUISE_FLAG, 'scene');
-}

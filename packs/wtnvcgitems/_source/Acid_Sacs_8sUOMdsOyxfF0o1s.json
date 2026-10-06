@@ -5,6 +5,10 @@
   "_id": "8sUOMdsOyxfF0o1s",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"HitRider","option":{"damage":1,"damageType":"acid","key":"acidSacs"},"when":["self:type:companion"]},
+      {"type":"HitRider","scope":"companion","option":{"damage":1,"damageType":"acid","key":"acidSacs"},"when":["self:data:system.type=pet","not:self:hasItem:Compendium.essence20.wtnv_citizens_guide.Item.8sUOMdsOyxfF0o1s"]}
+    ],
     "prerequisites": {"when":[{"any":["self:hasType:perk:Quills","self:hasType:perk:Serrated Tail"]}]},
     "automation": {
       "status": "full",

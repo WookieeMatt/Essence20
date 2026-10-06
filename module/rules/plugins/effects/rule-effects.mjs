@@ -10,7 +10,8 @@ import { listOf, localize, read, write } from "../shared/copy-and-data-helpers.m
  *       and goes with the item) or on each recipient (on: actor). `value` is a formula (@var.penalty, -@var.x), stored
  *       as its number; `mode` defaults to 2 (add). A key holding `{movement}` is repeated for every Movement type the
  *       actor has a base speed in (system.movement.{movement}.bonus). Keys and the name fill {choice.x} / {var.x}; the name may be an E20. key.
- *       `flags` are set under flags.essence20 on the effect (so removeEffects - or older code - can find it).
+ *       `flags` are set under flags.essence20 on the effect (so removeEffects - or older code - can find it); their text
+ *       values fill {choice.x} / {var.x} / {item.<path>} too (round 15, items2 - the granted item's id: "{var.grantedId}").
  *   removeEffects {flag, to?}
  *       Delete the recipients' Active Effects carrying flags.essence20.<flag>.
  *   keepValue {path, at}
@@ -48,6 +49,19 @@ function effectChanges(step, ctx, actor) {
   return out;
 }
 
+/** A flags object with its text values filled (nested objects too). */
+function fillFlags(value, ctx) {
+  if (typeof value == 'string') {
+    return fill(value, ctx);
+  }
+
+  if (value && typeof value == 'object' && !Array.isArray(value)) {
+    return Object.fromEntries(Object.entries(value).map(([key, inner]) => [key, fillFlags(inner, ctx)]));
+  }
+
+  return value;
+}
+
 registerStep('addEffect', async (step, ctx) => {
   const onItem = (step.on ?? 'item') == 'item';
   const holders = onItem ? (ctx.item ? [ctx.item] : []) : recipients(step, ctx);
@@ -63,7 +77,7 @@ registerStep('addEffect', async (step, ctx) => {
       disabled: false,
       changes: effectChanges(step, ctx, actor),
       ...(onItem ? { transfer: true } : {}),
-      ...(step.flags ? { flags: { essence20: { ...step.flags } } } : {}),
+      ...(step.flags ? { flags: { essence20: fillFlags(step.flags, ctx) } } : {}),
     };
     await write(holder, 'createEmbeddedDocuments', ['ActiveEffect', [data]]);
   }

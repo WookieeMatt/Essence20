@@ -11,21 +11,12 @@ import { itemsOf } from "./item-lookups.mjs";
 const C = pack => `Compendium.essence20.${pack}.Item.`;
 
 export const O3 = {
-  // My Little Pony CRB
-  betrayal: `${C('mlp_crb')}fhne6x3suULZL040`,
-  selfImprovement: `${C('mlp_crb')}COOAlcYNeoScFiAE`,
+  // My Little Pony CRB (Betrayal is its Hang-Up's own rules - round 17, perm)
   // Power Rangers
-  betterTogether: `${C('through_the_shattered_grid')}tOoyMHVtV6wjvlxd`,
-  guardianBlast: `${C('through_the_shattered_grid')}GuardianBlast000`,
   megaDefender: `${C('through_the_shattered_grid')}rZjP9CN55D5qKW0s`,
-  metallicArmor: `${C('through_the_shattered_grid')}LotTM0zOcCBLkki4`,
   // G.I. Joe
   // Transformers
-  scrambleField: `${C('technorganic_secrets')}cIki3qTlr4gZed5f`,
-  againAndAgain: `${C('enigma_of_combination')}EmL1IgnaX55NTMve`,
-  perfectPlacement: `${C('enigma_of_combination')}wueeFv0eN8eh7RbS`,
-  puissance: `${C('enigma_of_combination')}N8nkrj2hSrLv9NFP`,
-  // Pop Out and Telltale Sign are their items' own rules (module/rules/ext/g/).
+  // Again and Again and Again is its Perk's own rules (round 14). Pop Out and Telltale Sign are their items' own rules (module/rules/ext/g/).
 };
 
 /** The weapon a weaponEffect belongs to, if any. */

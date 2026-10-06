@@ -2,8 +2,8 @@ import { jest } from '@jest/globals';
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({ setEntryAndAddItem: jest.fn(async () => 'key1') }));
 jest.unstable_mockModule('./mechanics/combat/combat.mjs', () => ({ applyDamage: jest.fn(async () => 1) }));
 const {
-  afterMutatedAttack, attachTemporaryUpgrade, getHudSkill, getMutation, isExpired, isGridShellActive, resolveWeaponChangesAfterAttack,
-  runWeaponUse, spendUntilUsed, sweepTemporary, WEAPON_USE_IDS,
+  afterMutatedAttack, attachTemporaryUpgrade, getMutation, isExpired, isGridShellActive, resolveWeaponChangesAfterAttack,
+  spendUntilUsed, sweepTemporary,
 } = await import('./weapon-perk-uses.mjs');
 const { applyDamage } = await import('../../mechanics/combat/combat.mjs');
 const { bombKind, checkTimeBombs, detonateBomb, getPlantedBombs, plantBomb, tokensInBlast } = await import('./planted-bombs.mjs');
@@ -60,7 +60,6 @@ function makeActor(items = [], system = {}) {
 }
 
 const weapon = (id, extra = {}) => flagged({ id, type: 'weapon', name: `W-${id}`, system: { items: {}, classification: { size: 'long' } }, update: jest.fn(), ...extra });
-const rangedEffect = (parentId, system = {}) => ({ id: `fx-${parentId}`, type: 'weaponEffect', flags: { essence20: { parentId } }, system: { classification: { style: 'projectile' }, radius: 0, ...system } });
 
 let scene = 1;
 beforeEach(() => {
@@ -78,47 +77,15 @@ beforeEach(() => {
   global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
 });
 
-const economy = { spend: jest.fn(async () => ({ blocked: false })) };
-
 describe("mutations", () => {
-  test("Explosive Ammo spends a Free action and an Energon Point and gives the weapon a blast until a Fumble", async () => {
+  test("the one-shot parts of a mutation go after the next attack; a Fumble ends it all", async () => {
     const gun = weapon('g');
-    const actor = makeActor([gun, rangedEffect('g')]);
-    wait.mockResolvedValueOnce({ choice: 'g', extra: null });
-
-    const message = await runWeaponUse('explosiveAmmo', actor, { name: 'Explosive Ammo' }, economy);
-
-    expect(message).toBe('E20.WeaponUseMutated');
-    expect(actor.system.energon.normal.value).toBe(1);
-    expect(getMutation(gun)).toMatchObject({ explosiveAmmo: true, blastSet: 10 });
-
+    gun.flags.essence20 = { mutation: { explosiveAmmo: true, blastSet: 10, tripleNext: true, airburstNext: true, untilFumble: true } };
     await afterMutatedAttack(gun, false);
-    expect(getMutation(gun)).not.toBeNull();
+    expect(getMutation(gun)).toMatchObject({ explosiveAmmo: true, blastSet: 10, tripleNext: false, airburstNext: false });
     await afterMutatedAttack(gun, true);
     expect(getMutation(gun)).toBeNull();
-  });
-
-  test("Utility Loaders replaces the last adjustment; Firestorm is for one attack", async () => {
-    const gun = weapon('g');
-    const actor = makeActor([gun, rangedEffect('g')]);
-    wait.mockResolvedValueOnce({ choice: 'g' }).mockResolvedValueOnce({ choice: 'trait:wrecker' });
-    await runWeaponUse('utilityLoaders', actor, { name: 'Utility Loaders' }, economy);
-    expect(getMutation(gun)).toMatchObject({ addTraits: ['wrecker'], stunInstead: false });
-
-    gun.flags.essence20.mutation = { explosiveAmmo: true };
-    wait.mockResolvedValueOnce({ choice: 'g' });
-    await runWeaponUse('firestorm', actor, { name: 'Firestorm' }, economy);
-    expect(getMutation(gun).tripleNext).toBe(true);
-    await afterMutatedAttack(gun, false);
-    expect(getMutation(gun).tripleNext).toBe(false);
-  });
-
-  test("no Energon, no Explosive Ammo", async () => {
-    const gun = weapon('g');
-    const actor = makeActor([gun, rangedEffect('g')], { energon: { normal: { value: 0 } } });
-    wait.mockResolvedValueOnce({ choice: 'g' });
-    expect(await runWeaponUse('explosiveAmmo', actor, { name: 'Explosive Ammo' }, economy)).toBeNull();
-    expect(ui.notifications.warn).toHaveBeenCalled();
+    await afterMutatedAttack(weapon('h'), true);
   });
 
   test("Backblast burns everyone near - or the attacker on a Fumble; Airburst knocks down or Impairs", async () => {
@@ -172,23 +139,14 @@ describe("temporary upgrades", () => {
     expect(actor.deleteEmbeddedDocuments).toHaveBeenLastCalledWith('Item', ['trap']);
   });
 
-  test("HUD gives ↑1 to the chosen skill for the turn; the Grid shell lasts the scene", async () => {
+  test("the Grid shell is its Use rule's gridShell mark, for the scene", async () => {
     const actor = makeActor();
-    wait.mockResolvedValueOnce({ choice: 'might' });
-    await runWeaponUse('hud', actor, { name: 'HUD' }, economy);
-    expect(getHudSkill(actor)).toBe('might');
-    game.combat.turn = 2;
-    expect(getHudSkill(actor)).toBeNull();
-
-    actor.flags.essence20.gridShell = { scene: 1 };
+    expect(isGridShellActive(actor)).toBe(false);
+    actor.flags = { ...(actor.flags ?? {}), essence20: { ...(actor.flags?.essence20 ?? {}), ruleMarks: { gridShell: { by: actor.uuid, until: 'scene', stamp: { epoch: 1 } } } } };
     expect(isGridShellActive(actor)).toBe(true);
     scene = 2;
     expect(isGridShellActive(actor)).toBe(false);
     scene = 1;
-  });
-
-  test("the ids are the compendium's", () => {
-    expect(WEAPON_USE_IDS.knuckleUp).toContain('MViU1s9KdZ1A51Qe');
   });
 });
 

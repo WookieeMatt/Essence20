@@ -5,6 +5,9 @@
   "_id": "mnze6jJ6eSYbS8Pr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Free upgrades","steps":[{"do":"pick","key":"armor","from":"ownedItem","itemType":"armor","equipped":true,"auto":true,"prompt":"Which armor is your Battledress?"},{"do":"fitUpgrade","uuid":"Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU","onto":"choice:armor","when":["not:rule:pickedItem:armor:item:hasUpgrade:Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU"]},{"do":"fitUpgrade","uuid":"Compendium.essence20.gi_joe_crb.Item.ThXrre0RHTcr1BEp","onto":"choice:armor","when":["not:rule:pickedItem:armor:item:hasUpgrade:Compendium.essence20.gi_joe_crb.Item.ThXrre0RHTcr1BEp"]}]}
+    ],
     "prerequisites": {"when":["self:skill:infiltration>=d4"]},
     "automation": {
       "status": "partial",

@@ -1,7 +1,5 @@
 import { jest } from '@jest/globals';
-import {
-  declareDecepticonNemesis, isDecepticonNemesis, isNemesisInScene,
-} from './nemesis-decepticon.mjs';
+import { isDecepticonNemesis, isNemesisInScene } from './nemesis-decepticon.mjs';
 
 global.game = { i18n: { localize: (k) => k }, user: { targets: { first: jest.fn() } } };
 global.ui = { notifications: { warn: jest.fn() } };
@@ -18,24 +16,6 @@ beforeEach(() => {
   game.user.targets.first.mockReset();
   ui.notifications.warn.mockReset();
   fromUuidSync.mockReset();
-});
-
-describe("declareDecepticonNemesis", () => {
-  test("banks the targeted actor's uuid", async () => {
-    const actor = makeActor();
-    game.user.targets.first.mockReturnValue({ actor: { uuid: 'Actor.target1' } });
-
-    expect(await declareDecepticonNemesis(actor)).toBe(true);
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'decepticonNemesisUuid', 'Actor.target1');
-  });
-
-  test("warns and returns false without a target", async () => {
-    const actor = makeActor();
-    game.user.targets.first.mockReturnValue(undefined);
-
-    expect(await declareDecepticonNemesis(actor)).toBe(false);
-    expect(ui.notifications.warn).toHaveBeenCalled();
-  });
 });
 
 describe("isDecepticonNemesis", () => {

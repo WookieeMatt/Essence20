@@ -5,6 +5,12 @@
   "_id": "QRGflsYQcDN16l10",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Suggest a fate","steps":[{"do":"target"},{"do":"pick","key":"skill","from":"config","path":"skills","prompt":"Which of the target's Skills?"},{"do":"choose","prompt":"Will it excel amazingly, or catastrophically fail?","options":[{"label":"Excel","steps":[{"do":"unmark","key":"suggestFail","to":"target"},{"do":"mark","key":"suggestExcel","to":"target","text":"{var.picked}","until":"combat"}]},{"label":"Fail","steps":[{"do":"unmark","key":"suggestExcel","to":"target"},{"do":"mark","key":"suggestFail","to":"target","text":"{var.picked}","until":"combat"}]}]}]},
+      {"type":"RollModifier","label":"Powerful Suggestion (destined to fail)","scope":"marked","mark":"suggestFail","downshift":3,"when":["self:markText:suggestFail=$skill"]},
+      {"type":"MarkedRowOutcome","label":"Powerful Suggestion (destined to excel)","scope":"marked","mark":"suggestExcel","promote":true,"consume":"promoted","when":["self:markText:suggestExcel=$skill"]},
+      {"type":"MarkedRowOutcome","label":"Powerful Suggestion (proved wrong)","scope":"marked","mark":"suggestFail","consume":"x2","when":["self:markText:suggestFail=$skill"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: with a creature targeted, pick one of its Skills and whether it will excel or fail. Excel: its next success with that Skill becomes a Critical Success. Fail: its tests with that Skill take ↓3, already counted in the Downshift number of its Roll Options Dialog, until it rolls a Critical Success with that Skill.</p>"

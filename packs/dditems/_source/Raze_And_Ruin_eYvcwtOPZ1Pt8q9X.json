@@ -5,6 +5,10 @@
   "_id": "eYvcwtOPZ1Pt8q9X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"HitMultiplier","label":"Raze And Ruin (triple damage to Huge+ objects)","stage":"card","multiply":3,"when":["not:attack:melee","target:type:vehicle","target:size>=huge"]},
+      {"type":"HitMultiplier","label":"Raze And Ruin (double damage to Huge+ Immobilized creatures)","stage":"card","multiply":2,"when":["not:attack:melee","not:target:type:vehicle","target:status:immobilized","target:size>=huge"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your ranged hits deal triple damage to Huge or larger vehicles and double damage to Huge or larger Immobilized creatures; the chat card's damage button already shows the multiplied amount.</p><p>Left to the table: other objects, and multiplying extra damage from Size Matters.</p>"

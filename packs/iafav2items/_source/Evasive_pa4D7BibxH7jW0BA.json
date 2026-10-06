@@ -5,6 +5,9 @@
   "_id": "pa4D7BibxH7jW0BA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Evasive (Evasion when it's better)","defense":"any","mode":"best","early":true,"from":["evasion"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks against you use your Evasion whenever it's higher than the Defense they target.</p>"

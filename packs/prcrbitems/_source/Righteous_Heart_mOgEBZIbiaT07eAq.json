@@ -4,7 +4,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"ConditionImmunity","label":"Immune to frightened","conditions":["frightened"]}
+      {"type":"ConditionImmunity","label":"Immune to frightened","conditions":["frightened"]},
+      {"type":"Use","label":"Righteous Heart: Resistance to a chosen damage type","when":["self:morphed"],"steps":[{"do":"pick","key":"type","from":"damageType","prompt":"Resist which damage type?"},{"do":"mark","key":"righteousHeart","to":"self","text":"{choice.type}"}]},
+      {"type":"AttackResistance","label":"Righteous Heart (the chosen damage type, once)","fromMark":"righteousHeart","consumeMark":true}
     ],
     "automation": {
       "status": "full",

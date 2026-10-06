@@ -13,7 +13,10 @@ import { resolve, sideAlly, sideEnemy, worldActors } from "../shared/side-and-co
  *
  *   rollSeen       a check was rolled (any actor, posted on this client): @var.crit, @var.fumble (1 / 0), @var.failed
  *                  (it had rows and every one failed), @var.upshifted (the dialog closed with a net ↑1 or better),
- *                  @var.assisted (a Lend Assistance Edge / ↑ was waiting for the roll), @var.total
+ *                  @var.assisted (a Lend Assistance Edge / ↑ was waiting for the roll), @var.total, @var.skill (the
+ *                  rolled Skill, '' with none), @var.assistedBy (round 15, dice: the uuid of the assister whose Lend
+ *                  Assistance ↑ this roll used, '' with none - self:uuidIsVar:assistedBy, Misled), @var.firstFailed
+ *                  (round 17, perm: the first row failed - Betrayal)
  *   conditionSeen  an Active Effect with status ids landed on an actor (this user's change): @var.statuses (comma-joined
  *                  ids - var:includes:statuses:<id>), @var.condition (1 when one is a listed Condition)
  *   rollMessage    this user posted a chat message whose first roll has a d20 - on the speaker's actor only: @var.total
@@ -105,7 +108,7 @@ export function noteDialog(actor, options) {
   });
 }
 
-export async function rollSeen(actor, results, checkContext, { isCrit, isFumble, total } = {}) {
+export async function rollSeen(actor, results, checkContext, { isCrit, isFumble, total, rider = null } = {}) {
   const note = actor?.uuid ? dialogNotes.get(actor.uuid) : null;
   if (actor?.uuid) {
     dialogNotes.delete(actor.uuid);
@@ -121,8 +124,13 @@ export async function rollSeen(actor, results, checkContext, { isCrit, isFumble,
     crit: isCrit ? 1 : 0,
     fumble: isFumble ? 1 : 0,
     failed: rows.length > 0 && rows.every(result => result?.success === false) ? 1 : 0,
+    // firstFailed (round 17, perm): the first row failed (Betrayal's "they fail their Skill Test").
+    firstFailed: rows[0]?.success === false ? 1 : 0,
     upshifted: note?.upshifted ?? 0,
     assisted: note?.assisted ?? 0,
+    // @var.skill / {var.skill}: the rolled Skill ('' when none - round 15, items2: Leave It To Me).
+    skill: String((rider ?? checkContext?.riderContext)?.skill ?? ''),
+    assistedBy: String(checkContext?.lendAssistanceAssisterUuid ?? ''),
     ...(Number.isFinite(rolled) ? { total: rolled } : {}),
   });
 }

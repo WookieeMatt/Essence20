@@ -5,6 +5,9 @@
   "_id": "VXQ32nRPF4qEYTZR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCount","label":"Foot Soldier (Bot Mode)","action":"free","add":2,"when":["not:self:transformed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Bot Mode your Speed counts as 2 higher when working out your Free actions each turn.</p>"

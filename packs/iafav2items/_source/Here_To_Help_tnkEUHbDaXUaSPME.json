@@ -5,6 +5,10 @@
   "_id": "tnkEUHbDaXUaSPME",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Here To Help (first Lend Assistance)","action":"lendAssistance","to":"free","when":["self:actionLog:lendAssistance=0"]},
+      {"type":"ActionCost","label":"Here To Help (second Lend Assistance)","action":"lendAssistance","to":"move","when":["self:actionLog:lendAssistance=1"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your first Lend Assistance each turn costs a Free action, the second a Move action, and any after that the normal Standard action.</p>"

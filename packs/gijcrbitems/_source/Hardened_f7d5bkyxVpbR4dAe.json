@@ -5,6 +5,9 @@
   "_id": "f7d5bkyxVpbR4dAe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Reckless Abandon in Medium armor (Hardened: ↑2)","upshift":2,"when":["essence:strength","self:recklessAbandon","self:wearing:medium","not:self:wearing>=heavy",{"any":["not:vehicle:driving","not:vehicle:type:vehicle","not:self:hasItem:Compendium.essence20.cobra_codex.Item.rNESO3bo1apEjd6p","self:hasItem:Compendium.essence20.cobra_codex.Item.UquFEmbtdvb08ipH"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: you're trained in Medium armor. Automatic: you can use Reckless Abandon while wearing Medium armor.</p>"

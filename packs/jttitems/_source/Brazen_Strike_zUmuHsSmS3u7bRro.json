@@ -5,6 +5,9 @@
   "_id": "zUmuHsSmS3u7bRro",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"anySucceeded","label":"Brazen Strike (an unarmed hit that deals damage ends Frightened / Mesmerized)","when":["attack:barehanded","roll:dealsDamage"],"steps":[{"do":"removeCondition","condition":"frightened"},{"do":"removeCondition","condition":"mesmerized"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when your unarmed attack deals damage, Frightened and Mesmerized are removed from you.</p>"

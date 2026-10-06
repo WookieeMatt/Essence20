@@ -107,8 +107,8 @@ function offerErrors(rule) {
     errors.push('reroll.keep must be new or choose');
   }
 
-  if (rule.addDie && rule.addDie.faces === undefined) {
-    errors.push('addDie needs faces');
+  if (rule.addDie && rule.addDie.faces === undefined && !rule.addDie.skillDie) {
+    errors.push('addDie needs faces (or skillDie: true)');
   }
 
   for (const key of ['limit', 'counter']) {
@@ -136,7 +136,7 @@ registerRuleType('CardOffer', {
   params: {
     whose: { kind: 'enum', options: OFFER_WHOSE }, pressedBy: { kind: 'enum', options: OFFER_PRESSERS },
     pool: { kind: 'object' }, limit: { kind: 'object' }, counter: { kind: 'object' }, cost: { kind: 'object' },
-    reroll: { kind: 'object' }, addDie: { kind: 'object' }, steps: { kind: 'object' },
+    reroll: { kind: 'object' }, addDie: { kind: 'object' }, steps: { kind: 'object' }, once: { kind: 'boolean' },
   },
   scopes: ['self'],
   validate: offerErrors,
@@ -257,18 +257,44 @@ async function pay(rule, holder, item, amount) {
   return changeResource(resource, -amount, { actor: holder, item });
 }
 
-/** The die an addDie offer rolls, as "d4". */
-function dieOf(rule, holder, item) {
+/** The holder's own Skill Die in a Skill ("d4", "2d8"), or null when untrained (d20) or there's no Skill. */
+export function cardSkillDie(holder, skill) {
+  const shift = skill ? holder?.system?.skills?.[skill]?.shift : null;
+  return !shift || shift == 'd20' ? null : String(shift);
+}
+
+/** The key an offer's once-per-card claim is kept under on the card (flags.essence20.ruleOfferClaims). */
+const claimKeyOf = (holder, item, index) => `${String(holder?.uuid ?? '').replace(/\./g, '_')}|${item?.id ?? ''}|${index}`;
+
+/** Whether this holder has already pressed this once-per-card offer on the card. */
+export function offerClaimed(message, holder, item, index) {
+  return !!cardFlags(message).ruleOfferClaims?.[claimKeyOf(holder, item, index)];
+}
+
+/** Remember on the card that this holder pressed the offer (each holder answers a card once). */
+async function claimOffer(message, holder, item, index) {
+  await write(message, 'update', [{ [`flags.essence20.ruleOfferClaims.${claimKeyOf(holder, item, index)}`]: true }]);
+}
+
+/**
+ * The die an addDie offer rolls, as "d4" - or, with `skillDie: true`, the holder's own Skill Die in the card's Skill
+ * ("2d8" too; null when the holder is untrained in it or the card has no Skill - round 15, items2).
+ */
+function dieOf(rule, holder, item, message = null) {
+  if (rule.addDie?.skillDie) {
+    return cardSkillDie(holder, cardFlags(message).skill);
+  }
+
   return `d${Math.max(1, Math.round(resolveValue(rule.addDie?.faces ?? 2, { actor: holder, item }, 2)))}`;
 }
 
 /** Fill an offer label's {count}, {cost}, {die} and {holder}. */
-function labelOf(rule, holder, item, index) {
+function labelOf(rule, holder, item, index, message = null) {
   const text = rule.label || item?.name || '';
   const left = poolLeft(rule, holder);
   return text.replace(/\{count\}/g, Number.isFinite(left) ? String(left) : '')
     .replace(/\{cost\}/g, String(costOf(rule, holder, item, index)))
-    .replace(/\{die\}/g, rule.addDie ? dieOf(rule, holder, item) : '')
+    .replace(/\{die\}/g, rule.addDie ? dieOf(rule, holder, item, message) ?? '' : '')
     .replace(/\{holder\}/g, holder?.name ?? '');
 }
 
@@ -298,11 +324,17 @@ export function offersFor(message, actors = worldActors(), user = globalThis.gam
         continue;
       }
 
-      if (evaluate(rule.when, contextFor({ self: holder, holder, other: roller, ruleItem: item, card: message })) !== true) {
+      // once: each holder answers a card once; addDie skillDie: only with a Skill Die in the card's Skill (items2, round 15).
+      if ((rule.once && offerClaimed(message, holder, item, index)) || (rule.addDie?.skillDie && !dieOf(rule, holder, item, message))) {
         continue;
       }
 
-      found.push({ holder, item, index, rule, label: labelOf(rule, holder, item, index) });
+      // skill: is the card's Skill (round 15, items2).
+      if (evaluate(rule.when, contextFor({ self: holder, holder, other: roller, ruleItem: item, card: message, rolledSkill: cardFlags(message).skill || undefined })) !== true) {
+        continue;
+      }
+
+      found.push({ holder, item, index, rule, label: labelOf(rule, holder, item, index, message) });
     }
   }
 
@@ -373,7 +405,8 @@ export function rescore(oldTotal, bonus, checkResults, multiplierOf) {
 
 /** A bonus die added to the card's total: the new results, and damage for targets it now hits (or hits harder). */
 async function addDie(message, die, holder) {
-  const roll = await new globalThis.Roll(`1${die}`).evaluate();
+  // A Skill Die may be several dice already ("2d8").
+  const roll = await new globalThis.Roll(/^\d/.test(die) ? die : `1${die}`).evaluate();
   const { computeMultiplier } = await import("../../../mechanics/combat/combat.mjs");
   const flags = cardFlags(message);
   const results = rescore(message.rolls[0].total, roll.total, flags.checkResults, computeMultiplier);
@@ -459,6 +492,11 @@ export async function pressOffer(message, { holderUuid, itemId, index }, user = 
   }
 
   await drawFromPool(rule, holder);
+  // once: this holder has answered this card (round 15, items2).
+  if (rule.once) {
+    await claimOffer(message, holder, item, offer.index);
+  }
+
   const roller = speakerOf(message);
   const title = `${roller?.name ?? ''}: ${item?.name ?? ''}`;
   let total = null;
@@ -468,12 +506,13 @@ export async function pressOffer(message, { holderUuid, itemId, index }, user = 
       : await rerollCheck(message, target, title, prepared);
     total = roll ? Number(roll.total) : null;
   } else if (rule.addDie) {
-    total = Number((await addDie(message, dieOf(rule, holder, item), holder))?.total) || null;
+    total = Number((await addDie(message, dieOf(rule, holder, item, message), holder))?.total) || null;
   }
 
   if (Array.isArray(rule.steps) && rule.steps.length) {
     const ctx = stepContext({ actor: holder, item, rule, targets: roller ? [roller] : [] });
-    Object.assign(ctx.vars, { used, ...(total === null ? {} : { total }) });
+    // @var / {var.skill}: the card's Skill (round 15, items2).
+    Object.assign(ctx.vars, { used, skill: cardFlags(message).skill ?? '', ...(total === null ? {} : { total }) });
     ctx.card = null;
     ctx.offerMessage = message;
     await runSteps(rule.steps, ctx);

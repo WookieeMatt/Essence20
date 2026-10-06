@@ -5,6 +5,9 @@
   "_id": "EOG8PH8fIJAVpbGY",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Reprogrammable (+2 daily uses)","items":["item:type:power","item:data:system.type=nanomite","item:data:system.usesInterval=perDay","item:data:system.usesPer>0"],"path":"system.usesPer","op":"add","value":2,"stacks":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: each copy you have gives every one of your nanomite powers 2 more uses a day.</p>"

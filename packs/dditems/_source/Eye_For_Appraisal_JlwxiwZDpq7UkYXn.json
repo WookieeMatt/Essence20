@@ -5,6 +5,10 @@
   "_id": "JlwxiwZDpq7UkYXn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Appraise a target","limit":{"per":"scene"},"steps":[{"do":"target"},{"do":"pickPoint","optional":true,"prompt":"Pick the best spot to fire on the target from","when":["self:hasItem:Compendium.essence20.decepticon_directive.Item.j8s0vIsIEUJzAAvy"]},{"do":"mark","key":"appraisal","to":"target","count":"2d2","text":"{var.pointX},{var.pointY},{var.pointScene}"}]},
+      {"type":"RollModifier","label":"Eye for Appraisal","upshift":1,"when":["attack:ranged","markedByMe:appraisal"],"consumeMark":"appraisal","consumeFrom":"target","consumeCount":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (Free, once per scene): marks your targeted creature and rolls 2d2 in chat. That many of your next ranged attacks against it get ↑1, labelled Eye for Appraisal in the Roll Options Dialog. With Vantage Point you also pick the firing spot on the map.</p><p>Left to the table: rolling the DIF 12 Alertness Test before using the button, and the spotting-valuables option.</p>"

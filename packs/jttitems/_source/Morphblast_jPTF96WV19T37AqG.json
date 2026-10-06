@@ -5,6 +5,9 @@
   "_id": "jPTF96WV19T37AqG",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Morphblast: every enemy within 5 ft","event":"powerUsed","when":["item:own"],"steps":[{"do":"setTargets","to":"nearbyEnemies:5"},{"do":"rollCheck","skill":"athletics","essence":"strength","shiftUp":0,"shiftDown":0,"defense":"evasion","damage":{"value":1,"type":"element"}}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: right after you Morph, spend 1 Personal Power to attack every enemy within 5 feet for 1 Energy damage.</p><p>Left to the table: the attack rolls Athletics; use the printed 1d20+1d4 if your table prefers.</p>"

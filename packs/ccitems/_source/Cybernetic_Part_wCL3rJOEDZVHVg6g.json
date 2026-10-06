@@ -5,6 +5,10 @@
   "_id": "wCL3rJOEDZVHVg6g",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick a Standard Alteration (cybernetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["standard"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"cyberneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]},
+      {"type":"Use","label":"Pick a Standard Alteration (cybernetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["standard"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"cyberneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained (or via the Use button), pick a Standard Alteration you don't already have; it is added as a cybernetic part.</p>"

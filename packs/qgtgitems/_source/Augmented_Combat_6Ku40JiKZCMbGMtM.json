@@ -5,6 +5,10 @@
   "_id": "6Ku40JiKZCMbGMtM",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Augmented Combat: on / off","event":"powerUsed","when":["item:own"],"steps":[{"do":"setToggle","key":"on","value":"toggle"}]},
+      {"type":"RollModifier","label":"Augmented Combat (↑1)","upshift":1,"stack":"augmentedCombat","when":["self:toggle:on","item:type:weaponEffect"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: activating the nanomite power (one daily use) switches it on; press again to switch it off. While on, every attack you make gets ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p><p>Left to the table: ending it after 1 minute.</p>"

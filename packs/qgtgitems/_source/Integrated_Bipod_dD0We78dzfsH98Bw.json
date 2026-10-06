@@ -5,6 +5,9 @@
   "_id": "dD0We78dzfsH98Bw",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"BraceUntilMoved","always":true}
+    ],
     "prerequisites": {"when":["ask:Two-handed Targeting weapon"]},
     "automation": {
       "status": "full",

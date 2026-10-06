@@ -370,8 +370,7 @@ export async function clearPendingBonus(actor, flagKey) {
  * record in the log, visible to the GM and every player, rather than a ui.notifications toast only
  * the clicking user sees (and can easily miss, e.g. when an ally-targeted Perk silently no-ops
  * because there was nobody eligible to target - the toast was the only feedback either way). Every
- * "it worked" branch in mechanics/resources/banked-buffs.mjs#onPerkUse and
- * items/social/team-buffs.mjs#onTeamBuffPerkUse posts through here now instead of calling
+ * "it worked" branch in mechanics/resources/banked-buffs.mjs#onPerkUse posts through here now instead of calling
  * ui.notifications.info directly; the "you can't do that" warnings in those same files stay plain
  * toasts, since those are transient feedback for the clicking player only, not a record of
  * something that happened.

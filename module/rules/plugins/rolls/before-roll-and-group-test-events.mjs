@@ -1,5 +1,6 @@
 import { registerPreRoll } from "../../../mechanics/item-hooks.mjs";
 import { rulesOfType } from "../../index.mjs";
+import { linkedEntries } from "../../links.mjs";
 import { registerEvent } from "../../types.mjs";
 import { resolve } from "../shared/zord-crew-lookups.mjs";
 
@@ -16,7 +17,9 @@ registerEvent('beforeRoll');
 registerEvent('groupTestResult');
 
 registerPreRoll(async (actor, dataset, item) => {
-  if (!actor || !rulesOfType(actor, 'Trigger').some(entry => entry.rule.event == 'beforeRoll')) {
+  // A beforeRoll Trigger reaching the actor (a mark carrying it - Trade School, round 17) counts too.
+  const listens = entry => entry.rule.event == 'beforeRoll';
+  if (!actor || !(rulesOfType(actor, 'Trigger').some(listens) || linkedEntries(actor, 'Trigger').some(listens))) {
     return;
   }
 

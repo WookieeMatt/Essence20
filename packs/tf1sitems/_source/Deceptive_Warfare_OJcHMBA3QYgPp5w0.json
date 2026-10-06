@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"DialogSwitch","forget":true,"label":"Roll Deception for Initiative (Deceptive Warfare)","when":["roll:initiative"],"useSkill":"deception"},
-      {"type":"DialogSwitch","forget":true,"label":"Roll Infiltration for Initiative (Deceptive Warfare)","when":["roll:initiative"],"useSkill":"infiltration"}
+      {"type":"DialogSwitch","forget":true,"label":"Roll Infiltration for Initiative (Deceptive Warfare)","when":["roll:initiative"],"useSkill":"infiltration"},
+      {"type":"Use","label":"Reset your Initiative","when":["combat:exists"],"steps":[{"do":"require","beforeCost":true,"check":["self:combatant"],"message":"{lang.Tf3CombatOnly}"},{"do":"require","beforeCost":true,"check":["calc:@combat.round >= 2"],"message":"{lang.Tf3ResetFirstRound}"},{"do":"choose","prompt":"E20.Tf3ResetPrompt","options":[{"label":"E20.Tf3ResetTwoFree","steps":[{"do":"spendActions","action":"free","count":2,"atomic":true}]},{"label":"E20.Tf3ResetMove","steps":[{"do":"spendAction","action":"move"}]}]},{"do":"rollInitiative","to":"self","keepHigher":true}]}
     ],
     "automation": {
       "status": "full",

@@ -5,6 +5,10 @@
   "_id": "wGAWnAM5zUgcNP9c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Not Done Yet","event":"wouldBeDefeated","stage":"beforeAegis","priority":3,"when":["self:recklessAbandon","self:ownRenegade"],"limit":{"per":"encounter","key":"notDoneYet"},"steps":[{"do":"leaveAt","value":1}]},
+      {"type":"Trigger","label":"Not Done Yet (vehicle)","event":"wouldBeDefeated","stage":"beforeAegis","priority":3,"scope":"renegadeVehicle","when":["holder:recklessAbandon"],"limit":{"per":"encounter","key":"notDoneYet"},"steps":[{"do":"leaveAt","value":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while your Reckless Abandon is active, damage that would defeat you leaves you at 1 Health instead, once per encounter.</p>"

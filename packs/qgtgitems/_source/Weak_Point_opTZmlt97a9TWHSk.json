@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Weak Point","when":["attack",{"any":["item:damageType:blunt","item:damageType:sharp"]}]}
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Weak Point","when":["attack",{"any":["item:damageType:blunt","item:damageType:sharp"]}]},
+      {"type":"AttackTraits","label":"Weak Point (melee: Armor Piercing and Anti-Tank)","traits":["armorPiercing","antiTank"],"when":["item:type:weaponEffect","item:data:system.classification.style=melee"]}
     ],
     "automation": {
       "status": "full",

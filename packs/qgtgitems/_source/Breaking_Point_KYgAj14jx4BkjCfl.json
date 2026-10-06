@@ -5,6 +5,9 @@
   "_id": "KYgAj14jx4BkjCfl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Breaking Point","steps":[{"do":"target","max":1},{"do":"require","check":["target:type:vehicle"],"message":"Breaking Point needs a targeted vehicle."},{"do":"roll","skill":"technology","dif":"10 + @effectiveLevel.target","onSuccess":[{"do":"targetFacts"},{"do":"choose","prompt":"What do you learn about {target}?","options":[{"label":"Its Defenses","steps":[{"do":"chat","text":"{target}'s Defenses: {var.defenses}."}]},{"label":"Its Health","steps":[{"do":"chat","text":"{target}'s Health: {var.health} / {var.healthMax}."}]},{"label":"A Perk","steps":[{"do":"chat","text":"{target}'s Perks: {var.perks}."}]},{"label":"A Power","steps":[{"do":"chat","text":"{target}'s Powers: {var.powers}."}]},{"label":"A Hang-Up","steps":[{"do":"chat","text":"{target}'s Hang-Ups: {var.hangUps}."}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: when you attack equipment or a vehicle with a blade or bludgeon, roll Technology against 10 + its Threat Level and pick the detail you learn.</p>"

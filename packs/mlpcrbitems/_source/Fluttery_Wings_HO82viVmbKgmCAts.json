@@ -5,6 +5,9 @@
   "_id": "HO82viVmbKgmCAts",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Fluttery Wings (target, else you: +15 ft Aerial this scene)","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"markWindow","flag":"flutteryWingsActive","window":"scene","to":"targetOrSelf"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: on a successful cast, your target (or you, with no target) gains 15 ft Aerial Movement. Left to the table: it should last a day, but it ends with the scene.</p>"

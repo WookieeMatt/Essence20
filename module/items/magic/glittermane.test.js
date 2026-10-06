@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyGlittermane, isGlittermaneActive, removeGlittermane } from './glittermane.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { isGlittermaneActive, removeGlittermane } from './glittermane.mjs';
 
 function makeActor({ active = false } = {}) {
   const flagStore = { glittermaneActive: active };
@@ -19,7 +20,7 @@ describe("isGlittermaneActive / applyGlittermane / removeGlittermane", () => {
     const actor = makeActor();
     expect(isGlittermaneActive(actor)).toBe(false);
 
-    await applyGlittermane(actor);
+    await activateForWindow(actor, 'glittermaneActive', 'scene');
     expect(isGlittermaneActive(actor)).toBe(true);
 
     await removeGlittermane(actor);
@@ -36,7 +37,7 @@ describe("Glittermane's 1-scene duration", () => {
     const settings = { sceneClockScene: 1 };
     global.game = { settings: { get: (scope, key) => settings[key] } };
     const actor = makeActor();
-    await applyGlittermane(actor);
+    await activateForWindow(actor, 'glittermaneActive', 'scene');
     expect(isGlittermaneActive(actor)).toBe(true);
 
     settings.sceneClockScene = 2;

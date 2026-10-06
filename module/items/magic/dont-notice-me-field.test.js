@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyDontNoticeMeField, isDontNoticeMeFieldActive } from './dont-notice-me-field.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { isDontNoticeMeFieldActive } from './dont-notice-me-field.mjs';
 
 function makeActor(flags = {}) {
   const flagStore = { ...flags };
@@ -19,23 +20,17 @@ beforeEach(() => {
   };
 });
 
-describe("isDontNoticeMeFieldActive / applyDontNoticeMeField", () => {
+describe("isDontNoticeMeFieldActive (the spell rule sets the scene flag)", () => {
   test("false by default, true once applied", async () => {
     const actor = makeActor();
     expect(isDontNoticeMeFieldActive(actor)).toBe(false);
-    await applyDontNoticeMeField(actor);
+    await activateForWindow(actor, 'dontNoticeMeFieldActive', 'scene');
     expect(isDontNoticeMeFieldActive(actor)).toBe(true);
-  });
-
-  test("toggles the Invisible status", async () => {
-    const actor = makeActor();
-    await applyDontNoticeMeField(actor);
-    expect(actor.toggleStatusEffect).toHaveBeenCalledWith('invisible', { active: true });
   });
 
   test("clears once the scene ends", async () => {
     const actor = makeActor();
-    await applyDontNoticeMeField(actor);
+    await activateForWindow(actor, 'dontNoticeMeFieldActive', 'scene');
 
     global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
 

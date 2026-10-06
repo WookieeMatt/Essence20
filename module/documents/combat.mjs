@@ -1,19 +1,16 @@
 import { runRoundStart, runTurnEnd, runTurnStart } from "../mechanics/item-hooks.mjs";
 import { onCompanionTurnStart } from "../mechanics/companions/companions.mjs";
-import { onSpiritsHostTurn } from "../mechanics/actions/team-actions.mjs";
 import { onRoundChange } from "../mechanics/companions/summons.mjs";
 import { onTurnStartZones } from "../mechanics/combat/target-riders.mjs";
-import { checkSelfDestruct } from "../mechanics/vehicles/vehicle-upgrades.mjs";
+import { runScheduledNextRound } from "../rules/plugins/combat/next-round-schedule.mjs";
 import { sweepTemporary } from "../items/attacks/weapon-perk-uses.mjs";
 import { checkTimeBombs } from "../items/attacks/planted-bombs.mjs";
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../mechanics/rolls/roll-dialog.mjs";
-import { applyGotToGetTough } from "../items/healing/got-to-get-tough.mjs";
 import { advanceEncounter } from "../mechanics/resources/scene-clock.mjs";
 import { expireAoeRegions } from "../mechanics/combat/aoe-expiry.mjs";
 import { isTracking, resetTurn } from "../mechanics/actions/action-economy.mjs";
 import { DEFENDING_STATUS } from "../mechanics/actions/named-actions.mjs";
-import { applyVainglorious } from "../items/social/vainglorious.mjs";
 import { applyEnvironmentAtTurnEnd } from "../mechanics/world/environment-hazards.mjs";
 
 export class Essence20Combat extends Combat {
@@ -32,7 +29,6 @@ export class Essence20Combat extends Combat {
 
     for (let combatant of combatants) {
       if (await this._dice.prepareInitiativeRoll(combatant.actor)) {
-        await applyGotToGetTough(combatant.actor);
         await super.rollInitiative([combatant.id], options);
       }
     }
@@ -57,10 +53,6 @@ export class Essence20Combat extends Combat {
 
     if (isTracking()) {
       await resetTurn(combatant);
-      // Vainglorious (Transformers CRB p.43): forced Standard-action spend on the actor's first
-      // turn of this combat - see items/social/vainglorious.mjs for why it's per-combat rather than
-      // assumed to be round 1.
-      await applyVainglorious(combatant.actor);
     }
 
     /* "This benefit lasts until the beginning of your next turn" (GI Joe CRB p.196) - so the
@@ -81,16 +73,16 @@ export class Essence20Combat extends Combat {
     }
 
     await checkTimeBombs(this);
-    await checkSelfDestruct(this);
+    // Rule steps scheduled for a round later (scheduleNextRound - Self-Destruct's Use).
+    await runScheduledNextRound(this);
 
     // Suppressing Fire areas: gone at their owner's next turn, and an enemy starting a turn in
     // one is offered to its owner - mechanics/combat/target-riders.mjs.
     if (combatant?.actor) {
       await onTurnStartZones(combatant.actor);
-      // Companions (Artificial Intelligence, Constrictor, the tractor beam) and Spirit's Host -
-      // mechanics/companions/companions.mjs, mechanics/actions/team-actions.mjs. (Perch is a Trigger rule on its item.)
+      // Companions (Artificial Intelligence, Constrictor, the tractor beam) - mechanics/companions/companions.mjs.
+      // (Perch and Spirit's Host are Trigger rules on their items.)
       await onCompanionTurnStart(combatant.actor, this);
-      await onSpiritsHostTurn(combatant.actor);
     }
 
     // A vehicle called "like a Zord" turns up on its round (mechanics/companions/summons.mjs).

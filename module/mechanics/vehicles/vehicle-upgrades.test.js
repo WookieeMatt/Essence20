@@ -1,15 +1,31 @@
 import { jest } from '@jest/globals';
 import { existsSync, readdirSync, readFileSync } from 'fs';
 import {
-  applyToVehicle, applyToVehicleEffect, canUseDrivingForIntimidation, canUseVehicleUpgrade, crewSources, defenderSources,
-  getCrewedVehicle, isSealedAboard, jammingRadiusFeet, reduceVehicleDamage, spendDefenderSources,
-  useVehicleUpgrade, usesVehicleTargeting, vehicleWeaponTraits, VU,
+  defenderSources,
+  getCrewedVehicle, isSealedAboard, spendDefenderSources,
+  usesVehicleTargeting,
 } from './vehicle-upgrades.mjs';
 import {
   computerizedArmorEvasion, firesAsReinforced, hardpointBonus, ignoresDefend, integratedHardpointsPerWeapon, isGrownThreat,
-  lightArmorPenalty, noisyArmorPenalty, perkGrantedTraits, ramConeAltAttack, ramConeBotUnarmed, HARDPOINT_PERK, TRAIT_PERK,
+  noisyArmorPenalty, perkGrantedTraits, TRAIT_PERK,
 } from '../combat/weapon-traits.mjs';
 import { combineCandidates, fireCombinedWeapon, isCombinedWeapon } from '../actions/combined-weapons.mjs';
+
+// The pack items these tests load rules from (weapon-traits.mjs's old HARDPOINT_PERK table and TRAIT_PERK's
+// Demolisher / Fireball entries went - nothing in the module read them; audit fix 2026-10-07).
+const ITEM = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
+const RULED_PERK = {
+  demolisher: ITEM('cobra_codex', 'hn7emvM7M9GoSLAI'),
+  fireball: ITEM('cobra_codex', '20lv1ecNs4ORVwWu'),
+  weaponCustomizer: ITEM('intercontinental_adventures', 'UWEU7hfmtRxlkWJB'),
+};
+const HARDPOINT_PERK = {
+  armament: ITEM('tf_crb', 't5EC1a4cbtfwewd6'),
+  inCaseOfEmergency: ITEM('tf_crb', '4l9Oa6LLVheEdnFO'),
+  quickDraw: ITEM('tf_crb', 'p8DTLro2sc2kPYQl'),
+  gunRunner: ITEM('tf_crb', 'evgNyOBK1uA5qUVl'),
+  titanHardpointUpgrades: ITEM('enigma_of_combination', 'v8nLHZhmFTtsJ1zs'),
+};
 
 function flagged(obj) {
   obj.flags ??= {};
@@ -42,8 +58,6 @@ global.foundry = {
   applications: { api: { DialogV2: { wait: jest.fn() } } },
 };
 
-const vUpgrade = (id, extra = {}) => ({ type: 'upgrade', name: id, system: { type: 'vehicle' }, flags: { core: { sourceId: `Compendium.essence20.quartermasters_guide_to_gear.Item.${id}` }, ...extra.flags } });
-
 function makeVehicle(items = [], system = {}) {
   return flagged({
     id: 'v1', uuid: 'Actor.v1', type: 'vehicle', name: 'VAMP', items,
@@ -73,53 +87,28 @@ beforeEach(() => {
   global.CONFIG = { E20: { skillToEssence: { driving: 'speed', might: 'strength' }, damageTypes: {} } };
 });
 
+// Energy Resistant, Nitrogen-Enhanced Rocket Fuel, ECM, Afterburners, Double-Barrel, Spiked, the jammers and the other
+// switched-on upgrades are item rules now (rules/conv14-systems.test.js).
 describe("the vehicle's own numbers", () => {
-  test("a chosen resistance", () => {
-    const vehicle = makeVehicle([vUpgrade(VU.energyResistant, { flags: { essence20: { elementChoice: 'fire' } } })]);
-    applyToVehicle(vehicle);
-    expect(vehicle.system.resistances.fire).toBe(true);
-  });
-
-  test("Movement: rocket fuel doubles, Optimized Seating takes 10ft", () => {
-    const vehicle = makeVehicle([vUpgrade(VU.nitroFuel), vUpgrade(VU.optimizedSeating)]);
-    applyToVehicle(vehicle);
-    expect(vehicle.system.movement.ground.total).toBe(110);
-  });
-
-  test("ECM and Afterburners while switched on", async () => {
-    const vehicle = makeVehicle([vUpgrade(VU.ecm), vUpgrade(VU.afterburners)]);
-    vehicle.flags.essence20 = { ecmUntil: { combatId: 'c1', round: 2, turn: 0 }, afterburners: { combatId: 'c1', round: 1, turn: 0, type: 'ground' } };
-    applyToVehicle(vehicle);
-    expect(vehicle.system.defenses.toughness.total).toBe(15);
-    expect(vehicle.system.movement.ground.total).toBe(120);
-  });
-
-  test("Robust Ram adds a Sharp rider to the Ram; Double-Barrel makes a weapon Linked", () => {
-    const vehicle = makeVehicle([vUpgrade(VU.robustRam), vUpgrade(VU.doubleBarrel, { flags: { essence20: { weaponId: 'w1' } } })]);
-    const system = { isRam: true, damageType: 'blunt', damageValue: 2, secondaryDamage: { type: null, value: 0 } };
-    applyToVehicleEffect(system, vehicle, (path, value) => foundry.utils.setProperty(system, path, value));
-    expect(system.secondaryDamage).toEqual({ type: 'sharp', value: 1 });
-    expect(vehicleWeaponTraits({ id: 'w1', parent: vehicle })).toEqual(['linked']);
+  // (Optimized Seating's, Camo Netting's, the Biotech Performance Enhancer's and the Anti-Matter Reactor's Movement, and Treads'
+  // Edge, are item rules - rules/conv17-split3.test.js.)
+  // (Robust Ram's Sharp rider is an ItemModifier stage item rule - rules/conv15-systems.test.js.)
+  test("a weapon with the Targeting System trait fires with the vehicle's Targeting", () => {
+    const vehicle = makeVehicle([]);
     expect(usesVehicleTargeting(vehicle, { system: { traits: ['targetingSystem'] } })).toBe(true);
   });
 });
 
 describe("crew and defenders", () => {
-  test("a driver crews the vehicle; Kill Counter lends Driving", () => {
-    const vehicle = makeVehicle([vUpgrade(VU.killCounter)], {
+  // (Kill Counter's Driving for Intimidation is a crew DieSubstitution rule - rules/conv15-systems.test.js.)
+  test("a driver crews the vehicle", () => {
+    const vehicle = makeVehicle([], {
       actors: { a: { uuid: 'Actor.d', vehicleRole: 'driver' } },
     });
     game.actors = [vehicle];
     const driver = { uuid: 'Actor.d' };
 
     expect(getCrewedVehicle(driver).role).toBe('driver');
-    expect(canUseDrivingForIntimidation(driver)).toBe(true);
-  });
-
-  test("Treads give Edge on Driving in Rough Terrain only", () => {
-    const vehicle = makeVehicle([vUpgrade(VU.treads)]);
-    expect(crewSources(vehicle, 'driving', null, { inRoughTerrain: true }).map(s => s.edge)).toEqual([true]);
-    expect(crewSources(vehicle, 'driving', null)).toEqual([]);
   });
 
   test("Shielded counting", async () => {
@@ -132,12 +121,6 @@ describe("crew and defenders", () => {
     expect(defenderSources({}, shot, vehicle, { weaponTraits: ['computerized'] })).toEqual([]);
   });
 
-  test("Spiked costs a melee attacker ↓1 - or 1 Sharp if they turn it down", () => {
-    const vehicle = makeVehicle([vUpgrade(VU.spiked)]);
-    const [spiked] = defenderSources({}, { type: 'weaponEffect', system: { damageType: 'blunt', classification: { skill: 'might' } } }, vehicle, { melee: true });
-    expect(spiked).toMatchObject({ shiftDown: 1, declinedDamage: { value: 1, type: 'sharp' } });
-  });
-
   test("a sealed (pressurized) cabin keeps its crew from poison", () => {
     const vehicle = makeVehicle([], { actors: { a: { uuid: 'Actor.p' } }, pressurized: 1 });
     game.actors = [vehicle, makeVehicle([], { actors: { b: { uuid: 'Actor.q' } } })];
@@ -146,49 +129,7 @@ describe("crew and defenders", () => {
   });
 });
 
-describe("damage and Defeat", () => {
-  test("APS zeroes an Explosive hit once; Slat and Reactive take 1", async () => {
-    const vehicle = makeVehicle([vUpgrade(VU.activeProtection), vUpgrade(VU.slatArmor), vUpgrade(VU.reactiveArmor)]);
-    vehicle.getFlag = (s, k) => vehicle.flags?.[s]?.[k];
-    expect((await reduceVehicleDamage(vehicle, 3, { style: 'explosive' })).amount).toBe(0);
-    expect((await reduceVehicleDamage(vehicle, 3, { style: 'explosive' })).amount).toBe(1);
-    expect((await reduceVehicleDamage(vehicle, 3, { style: 'projectile', damageType: 'sharp' })).amount).toBe(3);
-  });
-});
-
-describe("Use buttons", () => {
-  test("Electronic Countermeasures spends a Move action and is once per encounter", async () => {
-    const vehicle = makeVehicle();
-    const ecm = { ...vUpgrade(VU.ecm), parent: vehicle };
-    vehicle.items.push(ecm);
-    vehicle.getFlag = (s, k) => foundry.utils.getProperty(vehicle.flags?.[s] ?? {}, k);
-    const spend = jest.fn(async () => ({ blocked: false }));
-
-    expect(canUseVehicleUpgrade(ecm)).toBe(true);
-    expect(await useVehicleUpgrade(ecm, { spend })).toBe('E20.VehicleUseEcm');
-    expect(spend).toHaveBeenCalledWith(vehicle, 'move', expect.anything());
-    expect(canUseVehicleUpgrade(ecm)).toBe(false);
-  });
-
-  test("Camo Netting switched on takes 10ft off Movement; Biotech adds 20ft Ground", () => {
-    const on = key => ({ flags: { essence20: { rules: { toggles: { [key]: true } } } } });
-    const vehicle = makeVehicle([vUpgrade(VU.camoNetting, on('camo'))]);
-    applyToVehicle(vehicle);
-    expect(vehicle.system.movement.ground.total).toBe(50);
-    const boosted = makeVehicle([vUpgrade(VU.biotechEnhancer, on('boost'))]);
-    applyToVehicle(boosted);
-    expect(boosted.system.movement.ground.total).toBe(80);
-  });
-});
-
-describe("jamming", () => {
-  test("a switched-on jammer reaches 50ft, Enhanced Radar Jamming a mile; off reaches nothing", () => {
-    expect(jammingRadiusFeet({ flags: { essence20: { jamming: 50 } } })).toBe(50);
-    expect(jammingRadiusFeet({ flags: { essence20: { jamming: 100 } } })).toBe(5280);
-    expect(jammingRadiusFeet({ flags: { essence20: { jamming: false } } })).toBe(0);
-    expect(jammingRadiusFeet(null)).toBe(0);
-  });
-});
+// (Nameplate is a Use rule + crew RollModifier - rules/conv15-systems.test.js.)
 
 describe("weapon and armor traits", () => {
   // A Perk built from its id carries that pack item's rules (WeaponTrait / Hardpoints), as a real copy inherits them.
@@ -208,9 +149,12 @@ describe("weapon and armor traits", () => {
   };
 
   test("Demolisher gives Wrecker, Fireball gives fire weapons Anti-Tank, a customized weapon is Temperamental", () => {
-    const actor = { items: [perkItem(TRAIT_PERK.demolisher), perkItem(TRAIT_PERK.fireball)] };
+    const actor = { items: [perkItem(RULED_PERK.demolisher), perkItem(RULED_PERK.fireball), perkItem(RULED_PERK.weaponCustomizer)] };
     const weapon = { parent: actor, name: 'Flamer', flags: { essence20: { customized: true } } };
     expect(perkGrantedTraits(weapon, ['fire'])).toEqual(['wrecker', 'antiTank', 'temperamental']);
+    // Bug fix 2026-10-06: the customized flag only counts while the holder has Weapon Customizer.
+    const noPerk = { items: [] };
+    expect(perkGrantedTraits({ parent: noPerk, name: 'Flamer', flags: { essence20: { customized: true } } }, ['fire'])).toEqual([]);
   });
 
   test("noisy armor, computerized armor, MLP Light and Heavy Armor", () => {
@@ -219,22 +163,19 @@ describe("weapon and armor traits", () => {
     // MLP armor carries its own printed penalty instead of the noisy-battledress one.
     expect(noisyArmorPenalty(actor)).toBe(2);
     expect(computerizedArmorEvasion(actor)).toBe(1);
-    expect(lightArmorPenalty(actor, 'initiative')).toBe(1);
-    expect(lightArmorPenalty(actor, 'might')).toBe(0);
 
+    // Their own ↓1 / ↓2 are RollModifier rules on the armor (rules/conv14-other.test.js).
     const heavy = { items: [armor([], 3, 0, TRAIT_PERK.mlpHeavyArmor)] };
     expect(noisyArmorPenalty(heavy)).toBe(0);
-    expect(lightArmorPenalty(heavy, 'infiltration')).toBe(2);
-    expect(lightArmorPenalty(heavy, 'acrobatics')).toBe(2);
   });
 
-  test("Ram Cone, Ignores Defend and Grown targets", () => {
-    const actor = { items: [perkItem(TRAIT_PERK.ramCone)], system: { isTransformed: true } };
-    expect(ramConeAltAttack(actor, { system: { isRam: true } })).toBe(true);
-    expect(ramConeBotUnarmed({ ...actor, system: { isTransformed: false } }, { type: 'weaponEffect', system: { damageType: 'blunt', shiftDown: 1 } }, null)).toBe(true);
+  // (Ram Cone is item rules now - rules/conv15-other.test.js.)
+  test("Ignores Defend and Grown targets", () => {
     expect(ignoresDefend({ flags: { core: { sourceId: 'Compendium.essence20.jump_through_time.Item.fp55vEQbwH92XrgI' } } })).toBe(true);
     expect(isGrownThreat({ getFlag: (s, k) => (k == 'normalFormId' ? 'x' : undefined) })).toBe(true);
   });
+
+  // (Augur's Armor Piercing - only Armor Piercing - is an AttackTraits rule now: rules/conv15-uses.test.js.)
 
   test("hardpoint Perks add slots, Titan Hardpoint Upgrades cost one more, Gun Runner reinforces ballistic weapons", () => {
     const actor = { items: [perkItem(HARDPOINT_PERK.armament), perkItem(HARDPOINT_PERK.quickDraw), perkItem(HARDPOINT_PERK.gunRunner), perkItem(HARDPOINT_PERK.titanHardpointUpgrades)] };

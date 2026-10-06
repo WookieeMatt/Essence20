@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Driving with no driver (Zord Sentience: ↑1)","upshift":1,"when":["self:type:zord","skill:driving","not:check:zordHasDriver","not:roll:dataset:isInitiative"]}
+      {"type":"RollModifier","label":"Driving with no driver (Zord Sentience: ↑1)","upshift":1,"when":["self:type:zord","skill:driving","not:check:zordHasDriver","not:roll:dataset:isInitiative"]},
+      {"type":"DriverlessEssence","label":"Zord Sentience (Essence 2 with no driver)","essence":2,"when":["self:type:zord"]}
     ],
     "automation": {
       "status": "full",

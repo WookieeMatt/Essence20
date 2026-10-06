@@ -5,6 +5,9 @@
   "_id": "0cGhuapOhkdwYC9G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Inspiring Words","when":["combat:exists","calc:@mark.inspiringWords<2"],"limit":{"per":"turn"},"steps":[{"do":"pickAlly"},{"do":"choose","prompt":"Inspire {target} how?","options":[{"label":"1 Temporary Health","steps":[{"do":"heal","temporary":true,"amount":1,"to":"target"}]},{"label":"Remove a Condition","steps":[{"do":"pick","key":"condition","from":"conditions","of":"target","exclude":["defeated"]},{"do":"removeCondition","condition":"{choice.condition}","to":"target"}]},{"label":"↑2 on their next Skill Test","steps":[{"do":"bank","upshift":2,"to":"target","grantDouble":true,"until":"combat","appliesWhen":["not:roll:initiative"]}]}]},{"do":"mark","key":"inspiringWords","to":"self","count":1,"add":true,"until":"combat"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button, twice per combat and once per turn: spend a Move action to give an ally 1 Temporary Health, remove one of their Conditions (not Defeated), or ↑2 on their next Skill Test.</p>"

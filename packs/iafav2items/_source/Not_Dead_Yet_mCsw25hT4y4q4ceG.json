@@ -5,6 +5,9 @@
   "_id": "mCsw25hT4y4q4ceG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"+1 temporary Health (+2 with CSTO Personnel nearby)","limit":{"per":"scene"},"steps":[{"do":"repeat","max":1,"steps":[{"do":"require","check":["not:self:windowUsed:notDeadYetEnhancedUsedThisEncounter:encounter"]},{"do":"pickAlly","all":true,"within":30,"filter":["target:hasType:origin:CSTO Personnel"]},{"do":"markWindow","flag":"notDeadYetEnhancedUsedThisEncounter","window":"encounter"},{"do":"updateActor","to":"self","add":{"system.health.bonus":1,"system.health.value":1}}]},{"do":"updateActor","to":"self","add":{"system.health.bonus":1,"system.health.value":1}}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: gain 1 temporary Health, once per scene, or 2 when another CSTO Personnel ally is within 30 feet.</p><p>Left to the table: holding the 2-Health version to once per adventure (the system only limits it per Combat).</p>"

@@ -5,6 +5,9 @@
   "_id": "z9ZMxCd5DZDHlDYL",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Future Vision: a reroll per Power spent","event":"powerUsed","when":["item:own","var:spent>0"],"steps":[{"do":"updateItem","item":"self","set":{"system.reroll.enabled":true,"system.reroll.maxUses":"@var.spent"}}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend up to 3 Personal Power; each gives one Skill test reroll this scene, offered as a chat card button.</p><p>Left to the table: turning a failed reroll into a Fumble.</p>"

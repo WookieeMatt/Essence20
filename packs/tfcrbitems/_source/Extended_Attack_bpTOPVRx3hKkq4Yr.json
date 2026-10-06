@@ -5,6 +5,10 @@
   "_id": "bpTOPVRx3hKkq4Yr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Extend or return your reach","steps":[{"do":"setToggle","key":"on"},{"do":"chat","text":"{name} extends their reach — their Melee weapons' Reach is doubled.","when":["self:toggle:on"]},{"do":"chat","text":"{name}'s Melee Reach returns to normal.","when":["not:self:toggle:on"]}]},
+      {"type":"ItemModifier","label":"Extended Attack (Melee Reach ×2)","items":["item:type:weaponEffect","item:data:system.classification.style=melee"],"path":"system.totalReach","op":"max","value":"@reach.size * 2","when":["self:toggle:on"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Move action, double the Reach of your Melee weapons until your next turn starts.</p>"

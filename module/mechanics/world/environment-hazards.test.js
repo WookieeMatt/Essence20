@@ -1,12 +1,8 @@
 import { jest } from "@jest/globals";
 import {
-  applyEnvironmentAtSceneEnd, applyEnvironmentAtTurnEnd, applyEssenceDamage, ENVIRONMENTAL_AEGIS_ID,
-  ENVIRONMENTALLY_SEALED_ID, getEnvironmentProtection, getSceneEndHazard, getTurnEndHazard, isImpairedByEnvironment,
+  applyEnvironmentAtSceneEnd, applyEnvironmentAtTurnEnd, applyEssenceDamage, getEnvironmentProtection, getSceneEndHazard, getTurnEndHazard, isImpairedByEnvironment,
   nextExposure, resolveHazard,
 } from "./environment-hazards.mjs";
-
-const GAS_MASK_ID = "Compendium.essence20.gi_joe_crb.Item.d089BSbVVaXWWTx6";
-const SCUBA_ID = "Compendium.essence20.mlp_crb.Item.cZpeYK7VoLJKGKL6";
 
 // A scene whose default environment (and level) is set by flag.
 function makeScene(environment, environmentLevel = "") {
@@ -44,10 +40,6 @@ function makeCreature({ scene = makeScene("normal"), type = "playerCharacter", i
   scene.tokens.push(tokenDoc);
   return actor;
 }
-
-const equipped = (type, sourceId, extra = {}) => ({
-  type, name: "Kit", system: { equipped: true, ...extra }, _stats: { compendiumSource: sourceId },
-});
 
 beforeEach(() => {
   ChatMessage.create.mockClear();
@@ -124,35 +116,7 @@ describe("getEnvironmentProtection", () => {
     expect(getEnvironmentProtection(actor, "vacuum")).toBeNull();
   });
 
-  test("Environmentally Sealed covers the breathing hazards, only while Morphed", () => {
-    const power = { type: "power", name: "Environmentally Sealed", _stats: { compendiumSource: ENVIRONMENTALLY_SEALED_ID } };
-    const morphed = makeCreature({ items: [power], system: { isMorphed: true } });
-    expect(getEnvironmentProtection(morphed, "vacuum")).toBe("Environmentally Sealed");
-    expect(getEnvironmentProtection(morphed, "toxicAtmosphere")).toBe("Environmentally Sealed");
-    expect(getEnvironmentProtection(morphed, "extremeHeat")).toBeNull();
-    expect(getEnvironmentProtection(makeCreature({ items: [power] }), "vacuum")).toBeNull();
-  });
-
-  test("Environmental Aegis also covers temperature while Morphed", () => {
-    const perk = { type: "perk", name: "Environmental Aegis", _stats: { compendiumSource: ENVIRONMENTAL_AEGIS_ID } };
-    const morphed = makeCreature({ items: [perk], system: { isMorphed: true } });
-    expect(getEnvironmentProtection(morphed, "extremeCold")).toBe("Environmental Aegis");
-    expect(getEnvironmentProtection(morphed, "thickAtmosphere")).toBe("Environmental Aegis");
-    expect(getEnvironmentProtection(morphed, "corrosiveAtmosphere")).toBeNull();
-  });
-
-  test("an equipped gas mask covers a Toxic Atmosphere only", () => {
-    const actor = makeCreature({ items: [equipped("gear", GAS_MASK_ID)] });
-    expect(getEnvironmentProtection(actor, "toxicAtmosphere")).toBe("Kit");
-    expect(getEnvironmentProtection(actor, "vacuum")).toBeNull();
-  });
-
-  test("Scuba Gear's breathing assistance covers Thick and Thin Atmosphere", () => {
-    const actor = makeCreature({ items: [equipped("gear", SCUBA_ID)] });
-    expect(getEnvironmentProtection(actor, "thinAtmosphere")).toBe("E20.EnvironmentProtectionBreathingGear");
-    expect(getEnvironmentProtection(actor, "thickAtmosphere")).toBe("E20.EnvironmentProtectionBreathingGear");
-    expect(getEnvironmentProtection(actor, "vacuum")).toBeNull();
-  });
+  // Environmentally Sealed, Environmental Aegis, the gas masks and Scuba Gear: rules/conv14-other.test.js.
 
   test("a machine only needs protecting from a Corrosive Atmosphere", () => {
     const ship = makeCreature({ type: "vehicle" });
@@ -169,7 +133,7 @@ describe("isImpairedByEnvironment", () => {
     expect(isImpairedByEnvironment(actor, "thickAtmosphere")).toBe(true);
     expect(isImpairedByEnvironment(actor, "vacuum")).toBe(false);
     expect(isImpairedByEnvironment(actor, "normal")).toBe(false);
-    expect(isImpairedByEnvironment(makeCreature({ items: [equipped("gear", SCUBA_ID)] }), "thinAtmosphere")).toBe(false);
+    expect(isImpairedByEnvironment(makeCreature({ items: [{ type: "armor", system: { equipped: true, traits: ["enviroSealed"] } }] }), "thinAtmosphere")).toBe(false);
   });
 });
 

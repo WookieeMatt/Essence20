@@ -5,6 +5,9 @@
   "_id": "4XblFV97cS63ueDM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Growing Smolder","steps":[{"do":"mark","key":"growingSmolder","to":"self","count":1,"filter":["not:rule:banked"]},{"do":"mark","key":"growingSmolder","to":"self","count":"min(3, @mark.growingSmolder + 1)","filter":["rule:banked"]},{"do":"bank","replace":true,"label":"Growing Smolder","upshift":"@mark.growingSmolder","damage":"@mark.growingSmolder","appliesWhen":["attack"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (once per turn): banks a cumulative ↑1 (up to ↑3) and +1 damage for your next attack. That attack's Upshift number in the Roll Options Dialog already includes it, and the chat card shows the damage as \"Includes +N from Growing Smolder\".</p><p>Left to the table: only using it on a turn when you made no attacks.</p>"

@@ -3,8 +3,9 @@
  * becoming a one-soldier fortress. Your movement becomes zero and you are immune to forced
  * movement and the Frightened Condition, and provide cover to allies adjacent to you."
  *
- * A plain on/off actor flag, the same "ongoing stance, no existing bank-now/consume-later shape
- * fits" idiom Dig In already established:
+ * A plain on/off actor flag (flags.essence20.bulwarkActive), switched by the Perk's own Use rule, which also carries the
+ * Frightened immunity (a ConditionImmunity rule), the Movement 0 and the Cover aura; this file keeps the check:bulwark
+ * reader. Before the rules:
  * - Movement zeroed in documents/actor.mjs#_prepareMovement, the same permitted movement-math
  *   touch-point Warrior Rush/Air Born/etc. already use.
  * - Frightened immunity via condition-immunity.mjs's own `isActive` escape hatch (same shape as
@@ -21,15 +22,4 @@ const BULWARK_FLAG = 'bulwarkActive';
 
 export function isBulwarkActive(actor) {
   return !!actor.getFlag?.('essence20', BULWARK_FLAG);
-}
-
-/**
- * Flips the actor's own planted stance. Returns the new state (true = now planted).
- * @param {Actor} actor
- * @returns {Promise<Boolean>}
- */
-export async function toggleBulwark(actor) {
-  const nowPlanted = !isBulwarkActive(actor);
-  await actor.setFlag('essence20', BULWARK_FLAG, nowPlanted);
-  return nowPlanted;
 }

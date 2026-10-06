@@ -5,6 +5,9 @@
   "_id": "362Yyjs1INvYufPN",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Gain an Animal Perk (Animalize)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickEntry","from":{"type":"perk","tags":[{"any":["item:folderName:pets","item:folderName:pet"]}]}},{"do":"grantPerk","uuid":"{var.picked}"},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick an animal Perk to gain.</p>"

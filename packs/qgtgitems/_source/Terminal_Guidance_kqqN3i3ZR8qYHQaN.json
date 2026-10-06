@@ -5,6 +5,9 @@
   "_id": "kqqN3i3ZR8qYHQaN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Self-destruct the drone into a target (Terminal Guidance)","cost":{"action":"standard"},"steps":[{"do":"require","beforeCost":true,"check":["link:hasCompanion:drone"],"message":"{name} has no drone."},{"do":"target","beforeCost":true},{"do":"actAs","to":"firstCompanion:drone","steps":[{"do":"damage","to":"target","amount":"ceil(@actor.system.health.value / 2)","damageType":"blunt"},{"do":"updateActor","set":{"system.health.value":0}},{"do":"applyCondition","condition":"defeated"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: your drone crashes into the targeted enemy, dealing damage equal to half its current Health (rounded up); the drone is destroyed.</p>"

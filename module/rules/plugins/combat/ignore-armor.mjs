@@ -1,5 +1,6 @@
 import { registerDefenseAdjust, registerDerived } from "../../../mechanics/item-hooks.mjs";
 import { isExpired } from "../../expiry.mjs";
+import { resolveValue } from "../../formula.mjs";
 import { rulesOfType } from "../../index.mjs";
 import { contextFor, evaluate } from "../../predicate.mjs";
 import { RULE_TYPES, registerRuleType } from "../../types.mjs";
@@ -14,7 +15,8 @@ import { T, itemsOf, num } from "../shared/hit-rider-lookups.mjs";
  *     target is already Armor Stripped (Flames of Hate);
  *   - "worn": Toughness' armor value plus every equipped armor's Toughness bonus (Comms Assault).
  * It's added beside the other per-attack Defense changes (mechanics/item-hooks.mjs registerDefenseAdjust), the same
- * plain subtraction the hand-written armor-ignoring code made.
+ * plain subtraction the hand-written armor-ignoring code made. `points` (round 15, dice - a formula) ignores only that
+ * many points of the share (Penetrating Aim: 1 of Toughness' armor bonus).
  *
  * Armor shred: the `shredArmor` step (ext/b/steps.mjs) leaves a counted `armorShred` mark; while it lasts the
  * carrier's Toughness loses that much, never more than its armor share (Morphed Toughness while Morphed, else
@@ -28,6 +30,7 @@ registerRuleType('Defense', {
     ...defense.params,
     mode: { ...defense.params.mode, options: [...new Set([...defense.params.mode.options, 'ignoreArmor'])] },
     armor: { kind: 'enum', options: ['defense', 'worn'] },
+    points: { kind: 'formula' },
   },
   validate: rule => [
     ...(defense.validate?.(rule) ?? []),
@@ -60,7 +63,8 @@ function armorShare(defender, defenseType, kind) {
 export function ignoreArmorAdjust(attacker, defender, defenseType, ctx = {}) {
   let total = 0;
   for (const { rule, item } of rulesOfType(attacker, 'Defense')) {
-    if (rule.mode != 'ignoreArmor' || !rule.outgoing || (rule.defense != 'any' && rule.defense != defenseType)) {
+    // lookup (round 17, split1 - plugins/combat/lookup-armor-points.mjs): taken off at the Defense lookup instead.
+    if (rule.mode != 'ignoreArmor' || !rule.outgoing || rule.lookup || (rule.defense != 'any' && rule.defense != defenseType)) {
       continue;
     }
 
@@ -69,7 +73,8 @@ export function ignoreArmorAdjust(attacker, defender, defenseType, ctx = {}) {
       continue;
     }
 
-    total -= armorShare(defender, defenseType, rule.armor ?? 'defense');
+    const share = armorShare(defender, defenseType, rule.armor ?? 'defense');
+    total -= rule.points === undefined ? share : Math.min(share, Math.max(0, Math.round(resolveValue(rule.points, { actor: attacker, item }, 0))));
   }
 
   return total;

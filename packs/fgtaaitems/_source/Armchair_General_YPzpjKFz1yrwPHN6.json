@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Assist","label":"Armchair General: +↑1 in combat","side":"give","effect":"boost","extra":1,"when":["combat"]}
+      {"type":"Assist","label":"Armchair General: +↑1 in combat","side":"give","effect":"boost","extra":1,"when":["combat"]},
+      {"type":"Use","label":"Weapon Qualification (Armchair General)","when":["not:rule:data:flags.essence20.rules.choices.armchairWeapon"],"steps":[{"do":"pick","key":"armchairWeapon","from":"config","path":"weaponTypes","exceptAt":"system.qualified.weapons","prompt":"E20.GrantPickLabel","legacy":"flags.essence20.armchairGeneralWeapon"},{"do":"updateActor","to":"self","set":{"system.qualified.weapons.{choice.armchairWeapon}":true}},{"do":"chat","text":"{name} is now Qualified in a weapon type of their choice."}]}
     ],
     "automation": {
       "status": "full",

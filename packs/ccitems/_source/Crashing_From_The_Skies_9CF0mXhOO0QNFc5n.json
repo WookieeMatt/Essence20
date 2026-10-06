@@ -5,6 +5,9 @@
   "_id": "9CF0mXhOO0QNFc5n",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Upgrade the Jet Pack (45 ft Aerial, Quad Blast 25mm guns)","steps":[{"do":"require","beforeCost":true,"check":["self:personalVehicle:jetPack"],"message":"{name} has no Jet Pack."},{"do":"require","beforeCost":true,"check":["not:rule:data:flags.essence20.granted"],"message":"{name}'s Jet Pack already has it."},{"do":"updateActor","to":"personalVehicle:jetPack","set":{"system.movement.aerial.base":45}},{"do":"createItem","to":"personalVehicle:jetPack","data":{"name":"Quad Blast 25mm Axial Machine Guns","type":"weapon","system":{"classification":{"size":"sidearm"},"availability":"standard","equipped":true,"hardpoint":{"type":"integrated"}}},"children":[{"name":"Quad Blast 25mm Axial Machine Guns","type":"weaponEffect","system":{"classification":{"skill":"targeting","style":"energy"},"damageType":"sharp","damageValue":1,"numTargets":1,"numHands":"0","range":{"value":40,"long":1600}}}]},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: your Jet Pack's Aerial movement becomes 45 feet and it gains its machine guns.</p>"

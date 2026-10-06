@@ -1,5 +1,9 @@
 import { jest } from '@jest/globals';
-import { getBestVisionGrant, USED_TO_THE_DARK_ID, VISION_FOCUSER_ID } from "./vision-grant.mjs";
+import { getBestVisionGrant, VISION_FOCUSER_ID } from "./vision-grant.mjs";
+
+// Used to the Dark's doubling is its pack rule, SenseMultiplier {multiply: 2} (rules/conv15-other.test.js checks the pack).
+const USED_TO_THE_DARK_ID = "Compendium.essence20.cobra_codex.Item.IYN4Bki5gbGXPkki";
+const USED_TO_THE_DARK_RULES = [{ type: 'SenseMultiplier', multiply: 2 }];
 
 const FRIEND_OF_DARKNESS_ID = "Compendium.essence20.gi_joe_crb.Item.NEBliN2pwDIEXcyv";
 const NIGHT_EYES_ID = "Compendium.essence20.gi_joe_crb.Item.KXS6M4RyxgjItogK";
@@ -11,7 +15,7 @@ function makeItem({
   return {
     type,
     flags: { core: { sourceId } },
-    system: { equipped, visionGrant: { enabled, mode, range, whileMorphed, teamWide } },
+    system: { equipped, visionGrant: { enabled, mode, range, whileMorphed, teamWide }, ...(sourceId == USED_TO_THE_DARK_ID ? { rules: USED_TO_THE_DARK_RULES } : {}) },
   };
 }
 
@@ -110,7 +114,7 @@ describe("getBestVisionGrant", () => {
           type: 'perk',
           flags: {},
           _stats: { compendiumSource: USED_TO_THE_DARK_ID },
-          system: { equipped: true, visionGrant: { enabled: true, mode: 'darkvision', range: 30 } },
+          system: { equipped: true, visionGrant: { enabled: true, mode: 'darkvision', range: 30 }, rules: USED_TO_THE_DARK_RULES },
         },
         makeItem({ sourceId: FRIEND_OF_DARKNESS_ID, range: 30 }),
       ]);

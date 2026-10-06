@@ -13,7 +13,8 @@ import { combatantOf, escape, listOf, T, worldActors, write } from "../shared/ch
  *    once (Foundry's r<=N on every d3-d12; the d20 and a d2 are left alone).
  *  - Trigger event `initiativeRolling` - fired from the Initiative roll itself (dice.mjs INITIATIVE_EXTENSIONS),
  *    after the Roll Options Dialog and before the formula is built.
- *  - Steps `rollInitiative {to}` (roll it again through the combat), `swapInitiative {requireLower?}` (with the first
+ *  - Steps `rollInitiative {to, keepHigher?}` (roll it again through the combat; keepHigher - a result that isn't higher
+ *    keeps the old one), `swapInitiative {requireLower?}` (with the first
  *    target), `distribute {to, total, prompt?, steps}` (share up to `total` points among the recipients - each
  *    recipient's steps run with it as the target and its share as @var.share).
  *  - Formula ref `@initiative` (this actor's Initiative in the running combat; @initiative.target - the first
@@ -58,14 +59,15 @@ registerDerived(initiativeRerollDerived);
 
 registerEvent('initiativeRolling');
 
-export async function initiativeRolling(actor) {
+export async function initiativeRolling(actor, options = null) {
   const { fireTriggers } = await import("../../triggers.mjs");
-  await fireTriggers(actor, 'initiativeRolling');
+  // The Initiative roll's ticked switch keys reach `roll:switch:<key>` (round 15: "Friendly" Fire after Spoof).
+  await fireTriggers(actor, 'initiativeRolling', { roll: { rolledSkill: actor?.system?.initiative?.skill, switches: options?.ruleKeys ?? [] } });
 }
 
 globalThis.Hooks?.once?.('init', async () => {
   const dice = await import("../../../dice.mjs");
-  dice.INITIATIVE_EXTENSIONS?.push(actor => initiativeRolling(actor));
+  dice.INITIATIVE_EXTENSIONS?.push((actor, options) => initiativeRolling(actor, options));
 });
 
 /* -------------------------------------------- */
@@ -78,7 +80,27 @@ export function initiativeOf(actor) {
   return value === null || value === undefined || !Number.isFinite(Number(value)) ? null : Number(value);
 }
 
+/**
+ * The Initiative that sorts a combatant straight after the one acting now: halfway to the next one, or 1 below the
+ * current one when it's last; null when the current one hasn't rolled (round 15, items2 - Queen's Gambit).
+ */
+export function initiativeAfterCurrent(combat = globalThis.game?.combat) {
+  const turns = combat?.turns ?? [];
+  const current = turns[combat?.turn ?? 0];
+  if (current?.initiative == null) {
+    return null;
+  }
+
+  const next = turns[(combat.turn ?? 0) + 1];
+  return next?.initiative != null ? (current.initiative + next.initiative) / 2 : current.initiative - 1;
+}
+
 registerRef('initiative', (key, scope) => {
+  // @initiative.afterCurrent: straight after whoever is acting now (writeInitiative with exact: true).
+  if (key == 'afterCurrent') {
+    return initiativeAfterCurrent() ?? 0;
+  }
+
   const actor = key == 'target' ? scope.other : key == 'recipient' ? scope.recipient : scope.actor;
   return initiativeOf(actor) ?? 0;
 });
@@ -112,8 +134,25 @@ registerStep('rollInitiative', async (step, ctx) => {
     return false;
   }
 
+  // keepHigher (round 17, split2 - Deceptive Warfare's reset): a new result that isn't higher puts the old one back.
+  const before = step.keepHigher ? new Map(ids.map(id => [id, Number(combat.combatants?.get?.(id)?.initiative)])) : null;
   await combat.rollInitiative(ids);
-  ctx.chat.push(escape(T('InitiativeRerolled', { name: recipients(step, ctx).map(actor => actor.name).join(', ') })));
+  if (!before) {
+    ctx.chat.push(escape(T('InitiativeRerolled', { name: recipients(step, ctx).map(actor => actor.name).join(', ') })));
+    return;
+  }
+
+  for (const [id, old] of before) {
+    const combatant = combat.combatants?.get?.(id);
+    const after = Number(combatant?.initiative);
+    const name = combatant?.actor?.name ?? combatant?.name ?? '';
+    if (Number.isFinite(old) && !(after > old)) {
+      await write(combatant, 'update', [{ initiative: old }]);
+      ctx.chat.push(escape(globalThis.game?.i18n?.format?.('E20.RulesExtSplit217.InitiativeKept', { name, before: old, after }) ?? name));
+    } else {
+      ctx.chat.push(escape(globalThis.game?.i18n?.format?.('E20.RulesExtSplit217.InitiativeMoved', { name, after }) ?? name));
+    }
+  }
 });
 
 // swapInitiative: this actor and the first target trade Initiative (requireLower: only with one who rolled lower).

@@ -5,6 +5,13 @@
   "_id": "3I9h6aspI3Cg0Fd0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the Essence (Genetic Decoding)","steps":[{"do":"pick","key":"essence","from":"essence","legacy":"flags.essence20.riderChoice"}]},
+      {"type":"CriticalOption","label":"Genetic Decoding (Strength)","essence":"strength","damageValue":1,"when":[{"any":["not:rule:data:flags.essence20.rules.choices.essence","rule:data:flags.essence20.rules.choices.essence=strength"]}]},
+      {"type":"CriticalOption","label":"Genetic Decoding (Speed)","essence":"speed","damageValue":1,"when":[{"any":["not:rule:data:flags.essence20.rules.choices.essence","rule:data:flags.essence20.rules.choices.essence=speed"]}]},
+      {"type":"CriticalOption","label":"Genetic Decoding (Smarts)","essence":"smarts","damageValue":1,"when":[{"any":["not:rule:data:flags.essence20.rules.choices.essence","rule:data:flags.essence20.rules.choices.essence=smarts"]}]},
+      {"type":"CriticalOption","label":"Genetic Decoding (Social)","essence":"social","damageValue":1,"when":[{"any":["not:rule:data:flags.essence20.rules.choices.essence","rule:data:flags.essence20.rules.choices.essence=social"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose an Essence. Chat card: your hits offer an alternate effect dealing 1 damage to that Essence.</p>"

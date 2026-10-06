@@ -7,7 +7,11 @@
   "system": {
     "rules": [
       {"type":"Use","label":"Boost for the scene","when":["self:type:vehicle"],"limit":{"per":"scene"},"steps":[{"do":"setToggle","key":"boost","value":true,"until":"scene"},{"do":"chat","text":"{name}'s Biotech Performance Enhancer: +20ft Ground, +10ft other Movement, +2 Evasion and +1 hardpoint damage for the scene."}]},
-      {"type":"Defense","defense":"evasion","amount":2,"when":["self:type:vehicle","self:toggle:boost"]}
+      {"type":"Defense","defense":"evasion","amount":2,"when":["self:type:vehicle","self:toggle:boost"]},
+      {"type":"Movement","label":"Biotech Performance Enhancer: +20 ft","movement":"ground","stage":"vehicle","op":"add","value":20,"when":["self:type:vehicle","self:toggle:boost","movement:has"]},
+      {"type":"Movement","label":"Biotech Performance Enhancer: +10 ft","movement":"aerial","stage":"vehicle","op":"add","value":10,"when":["self:type:vehicle","self:toggle:boost","movement:has"]},
+      {"type":"Movement","label":"Biotech Performance Enhancer: +10 ft","movement":"swim","stage":"vehicle","op":"add","value":10,"when":["self:type:vehicle","self:toggle:boost","movement:has"]},
+      {"type":"ItemModifier","label":"Biotech Performance Enhancer: +1 hardpoint damage","stage":"item","slot":"start","priority":-1,"items":["item:type:weaponEffect","not:item:data:system.isRam","not:item:data:system.isFlyby","not:item:data:system.damageType=stun","not:item:data:system.damageType=cover","not:item:data:system.damageType=spot"],"path":"system.damageValue","op":"add","value":1,"when":["self:type:vehicle","self:toggle:boost"]}
     ],
     "prerequisites": {"when":["ask:Ranger Operator"]},
     "automation": {

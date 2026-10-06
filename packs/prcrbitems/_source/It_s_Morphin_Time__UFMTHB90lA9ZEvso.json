@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"wouldBeDefeated","label":"It's Morphin Time!: demorph at 1 Health, unconscious","when":["self:morphed"],"steps":[{"do":"leaveAt","value":1},{"do":"setForm","form":"morphed","value":false},{"do":"applyCondition","condition":"unconscious"}]}
+      {"type":"Trigger","event":"wouldBeDefeated","label":"It's Morphin Time!: demorph at 1 Health, unconscious","when":["self:morphed"],"steps":[{"do":"leaveAt","value":1},{"do":"setForm","form":"morphed","value":false},{"do":"applyCondition","condition":"unconscious"}]},
+      {"type":"Trigger","event":"roleDropped","label":"It's Morphin Time!: Morphed Toughness follows the new Armor Training","steps":[{"do":"refreshMorphedToughness"}]}
     ],
     "automation": {
       "status": "partial",

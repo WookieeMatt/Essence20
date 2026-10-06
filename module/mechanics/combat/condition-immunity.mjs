@@ -1,10 +1,7 @@
 import { actorHasPerk } from "../characters/perks.mjs";
 import { getNearbyAllyTokens } from "./nearby-allies.mjs";
-import { isDugIn } from "../../items/defenses/dig-in.mjs";
-import { isBulwarkActive } from "../../items/defenses/bulwark.mjs";
 import { isGreasedLightningActive } from "../../items/magic/greased-lightning.mjs";
 import { isCalmingWordsBuffActive } from "../../items/social/calming-words.mjs";
-import { isIronBravadoFrightenedImmune } from "../../items/defenses/iron-bravado.mjs";
 import { ruleConditionImmune } from "../../rules/adapter.mjs";
 
 /**
@@ -19,9 +16,6 @@ import { ruleConditionImmune } from "../../rules/adapter.mjs";
  * get applied" in the first place.
  */
 
-const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
-const DECEPTICON_DIRECTIVE = "Compendium.essence20.decepticon_directive.Item.";
-
 // Perk -> the Conditions it grants immunity to, for the holder only. Each entry is a literal
 // transcription of a real "you are immune to the X, Y, and Z Conditions" grant - not a guess at
 // what a Perk might cover.
@@ -31,24 +25,8 @@ const DECEPTICON_DIRECTIVE = "Compendium.essence20.decepticon_directive.Item.";
 // Battlefield Titan's aura and Stalk (with check:outsideEnvironmentOfExpertise). What's left reads a
 // state the rules don't track.
 const CONDITION_IMMUNITY_PERKS = [
-  {
-    // Dig In (Decepticon Directive Raider, Siegemaster Focus, 10th level, p.64): "you're immune
-    // to the Prone Condition" - but only WHILE dug in (a toggled stance, see items/defenses/dig-in.mjs),
-    // unlike every other entry in this table which grants immunity unconditionally just for
-    // holding the Perk. `isActive` is the one entry-level escape hatch for that difference - every
-    // other entry implicitly has no `isActive` and is always considered active.
-    id: `${DECEPTICON_DIRECTIVE}9tIkV50YiO3xqxvi`,
-    conditions: ['prone'],
-    isActive: isDugIn,
-  },
-  {
-    // Bulwark (Tank Focus, 17th level, p.99): "immune to... the Frightened Condition" while
-    // planted (see items/defenses/bulwark.mjs's own doc comment) - same conditional-isActive shape as
-    // Dig In's own Prone immunity just above.
-    id: `${GI_JOE_CRB}7758n3XWOzhSjdOk`,
-    conditions: ['frightened'],
-    isActive: isBulwarkActive,
-  },
+  // (Dig In's Prone immunity while dug in and Bulwark's Frightened immunity while planted are ConditionImmunity rules on
+  // their Perks.)
   {
     // Greased Lightning (Knights of Canterlot, Elementary Enchantment spell, p.43) - see
     // items/magic/greased-lightning.mjs's own doc comment. A spell-granted temporary flag, not a
@@ -63,16 +41,6 @@ const CONDITION_IMMUNITY_PERKS = [
     // Lightning above - a roll-granted temporary buff, not a permanently-held Perk.
     checkFn: isCalmingWordsBuffActive,
     conditions: ['frightened', 'mesmerized'],
-  },
-  {
-    // Iron Bravado (PR CRB, Black Spectrum Modification, replaces Whatever We Need, p.45): "When
-    // you Attack an enemy, you become immune to the Frightened condition until the beginning of
-    // your next turn." A temporary, round-scoped immunity rather than an always-on grant like
-    // every other entry here - checkFn reads the flag dice.mjs#rollSkill stamps on any Attack
-    // (see items/defenses/iron-bravado.mjs's own doc comment), rather than a plain actorHasPerk + isActive
-    // check against current actor state.
-    checkFn: isIronBravadoFrightenedImmune,
-    conditions: ['frightened'],
   },
 ];
 

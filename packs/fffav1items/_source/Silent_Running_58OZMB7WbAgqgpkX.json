@@ -5,6 +5,9 @@
   "_id": "58OZMB7WbAgqgpkX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Free upgrades","steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","equipped":true,"auto":true,"prompt":"Which weapon gets the free upgrades?"},{"do":"fitUpgrade","uuid":"Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ","onto":"choice:weapon","when":["not:rule:pickedItem:weapon:item:hasUpgrade:Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ"]},{"do":"fitUpgrade","uuid":"Compendium.essence20.ferocious_fighters.Item.sHBEBigG2y63MSWL","onto":"choice:weapon","when":["not:rule:pickedItem:weapon:item:hasUpgrade:Compendium.essence20.ferocious_fighters.Item.sHBEBigG2y63MSWL"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: you lose Heavy armor training. Automatic: a Silencer and a Suppressor are added to your equipped weapon when you gain it.</p><p>Left to the table: the Silent trait on requisitioned battledress, and choosing two of the same upgrade.</p>"

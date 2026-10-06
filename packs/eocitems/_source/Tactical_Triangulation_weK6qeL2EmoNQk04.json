@@ -5,6 +5,9 @@
   "_id": "weK6qeL2EmoNQk04",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DataBridgeBonus","label":"Tactical Triangulation (↑ per Data Bridged ally on ranged attacks, max ↑3)","max":3}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you or a Data Bridged ally near you make a ranged attack while Data Bridged, it gets ↑1 per Data Bridged ally (up to ↑3), labelled Tactical Triangulation in the Roll Options Dialog.</p>"

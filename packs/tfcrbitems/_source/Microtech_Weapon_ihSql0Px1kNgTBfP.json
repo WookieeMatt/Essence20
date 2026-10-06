@@ -5,6 +5,9 @@
   "_id": "ihSql0Px1kNgTBfP",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"One size smaller (Microtech Weapon)","stage":"item","stacks":true,"items":["item:type:weapon","item:isHost"],"path":"system.effectiveSize","op":"step","value":-1,"ladder":"weaponSize"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: the weapon is one size step smaller for each copy.</p>"

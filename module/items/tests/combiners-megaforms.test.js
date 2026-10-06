@@ -2,9 +2,9 @@ import { jest } from '@jest/globals';
 import { ZORD2, megaformsContaining } from '../zords/combiner-roster-helpers.mjs';
 import { desiredAttacks, scaledEffect, strongest, countGeneratedUse, perSceneExhausted } from '../zords/megaform-attacks.mjs';
 import { applyFocus, coreBodyDerived, focusToggles, mergeCost, mergeReach, storyPointCost, tokenGap } from '../zords/combiner-merge.mjs';
-import { ineligibleZords, spectrumOf } from '../zords/zord-feature-picks.mjs';
-import { roughRegionsAt } from '../gear/dozer-blade.mjs';
-import '../defenses/shinobi-of-the-63rd-hexagram.mjs';
+import { ineligibleZords } from '../zords/zord-feature-picks.mjs';
+import { spectrumOf } from '../../rules/plugins/zords/zord-owner-spectrum.mjs';
+import { roughRegionsAt } from '../../rules/plugins/combat/clear-rough-terrain.mjs';
 import { zord2WeaponUnusable } from '../attacks/shield-mode-unusable-weapons.mjs';
 import { registrySnapshot } from '../../mechanics/item-hooks.mjs';
 
@@ -41,7 +41,10 @@ beforeEach(() => {
 
 test('every module registers with the extension registry', () => {
   const reg = registrySnapshot();
-  expect(reg.uses.map(u => u.id)).toEqual(expect.arrayContaining(['zord2-megaform-trait', 'zord2-combiner-merge', 'zord2-zord-features', 'zord2-dozer-blade', 'zord2-shinobi']));
+  expect(reg.uses.map(u => u.id)).toEqual(expect.arrayContaining(['zord2-megaform-trait', 'zord2-combiner-merge', 'zord2-zord-features']));
+  // Dozer Blade's terrain clearing and Shinobi's Defense pick are their items' own Use rules (module/rules/conv17-split2.test.js).
+  expect(reg.uses.map(u => u.id)).not.toContain('zord2-dozer-blade');
+  expect(reg.uses.map(u => u.id)).not.toContain('zord2-shinobi');
   // Hybridization is the Perk's own rules (module/rules/conv12-slH12.test.js).
   expect(reg.uses.map(u => u.id)).not.toContain('zord2-hybridization');
   expect(reg.costRules.some(r => r.id == 'zord2FastShift')).toBe(false);
@@ -176,7 +179,7 @@ test('spectrum and combine eligibility', () => {
 
 // Carapaced's +20 Ground and its pick are the Alt Mode items' own rules (module/rules/conv6-slA6.test.js).
 
-test('Dozer Blade finds single-square Rough Terrain under a point', () => {
+test("Dozer Blade's clearRoughTerrain step finds single-square Rough Terrain under a point", () => {
   const region = { id: 'r', behaviors: [{ system: { roughTerrain: true } }], shapes: [{ type: 'rectangle', x: 0, y: 0, width: 100, height: 100 }] };
   expect(roughRegionsAt({ regions: [region] }, { x: 50, y: 50 })).toEqual([region]);
   expect(roughRegionsAt({ regions: [region] }, { x: 150, y: 50 })).toEqual([]);

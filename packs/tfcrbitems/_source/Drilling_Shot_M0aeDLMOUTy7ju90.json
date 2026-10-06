@@ -5,6 +5,9 @@
   "_id": "M0aeDLMOUTy7ju90",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Drilling Shot (only the basic Defense, with your Long Range Rifle)","defense":"any","mode":"noArmor","outgoing":true,"when":["attack","weapon:id:8Hi76APCo9QRnbLE"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you attack with a Long Range Rifle, the target's Defense is worked out without its armor bonus, so the hit or miss on the chat card is judged against that lower number.</p>"

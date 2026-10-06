@@ -5,6 +5,11 @@
   "_id": "oTPW1JHgRPwmZtr8",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","when":["self:type:vehicle"],"cost":{"action":"move"},"limit":{"per":"encounter"},"steps":[{"do":"setToggle","key":"ecm","value":true,"until":"rounds:1","when":["combat"]},{"do":"chat","text":"{name}'s countermeasures are up: +5 Toughness and Evasion until this turn comes round again."}]},
+      {"type":"Defense","label":"Electronic Countermeasures","defense":"toughness","amount":5,"when":["self:type:vehicle","self:toggle:ecm"]},
+      {"type":"Defense","label":"Electronic Countermeasures","defense":"evasion","amount":5,"when":["self:type:vehicle","self:toggle:ecm"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per combat, as a Move action, the vehicle gets +5 Toughness and Evasion until that crew member's next turn.</p>"

@@ -1,5 +1,3 @@
-import { actorHasPerk } from "../../mechanics/characters/perks.mjs";
-
 /**
  * GI Joe CRB p.94 - the Renegade Role's signature Reckless Abandon Role Points Item:
  * "While acting with Reckless Abandon, you gain the following benefits as long as you are
@@ -23,21 +21,17 @@ import { actorHasPerk } from "../../mechanics/characters/perks.mjs";
 
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 const RECKLESS_ABANDON_ID = `${GI_JOE_CRB}84d0XTJwKCYMJUgY`;
-// Hardened (Tank Focus, 1st level): "You are trained in Medium armor, and can fight with Reckless
-// Abandon while in Medium armor" - extends the armor gate below from light-or-no-armor to also
-// allow Medium for actors with this Perk.
-const HARDENED_ID = `${GI_JOE_CRB}f7d5bkyxVpbR4dAe`;
+// The ↑2 on Strength Skill Tests in light or no armor is a RollModifier rule on the Role Points item itself (round 17,
+// rules/conv17-split2.test.js); Hardened (Tank Focus, 1st level) adds its own in Medium armor (rules/conv14-items2.test.js).
 
 /**
  * Whether the given Role Points Item is GI Joe's own Reckless Abandon grant specifically (not just
  * any healthBonus Role Points Item) - a plain sourceId check, independent of its current isActive
- * state. Exported for Aegis's own deactivation check in base-actor-sheet.mjs, which needs to know
- * WHICH item was just clicked before the click's own isActive flip is written (isRecklessAbandonActive
- * below would read the state that's about to become stale).
+ * state.
  * @param {Item} rolePoints
  * @returns {Boolean}
  */
-export function isRecklessAbandonItem(rolePoints) {
+function isRecklessAbandonItem(rolePoints) {
   if (!rolePoints) {
     return false;
   }
@@ -56,58 +50,4 @@ export function isRecklessAbandonItem(rolePoints) {
 export function isRecklessAbandonActive(actor) {
   const rolePoints = actor._getBaseRolePoints?.();
   return isRecklessAbandonItem(rolePoints) && !!rolePoints.system.isActive;
-}
-
-/**
- * The Strength Skill Test upshift (2) from an active Reckless Abandon, or 0 when inactive or when
- * the actor is wearing armor heavier than the rule allows (Medium armor is still allowed with
- * Hardened, Heavy/Ultra Heavy never qualify).
- * @param {Actor} actor
- * @returns {Number}
- */
-export function getRecklessAbandonStrengthShiftUp(actor) {
-  if (!isRecklessAbandonActive(actor)) {
-    return 0;
-  }
-
-  const equippedArmor = (actor.items?.documentsByType?.armor ?? []).filter(a => a.system.equipped);
-  const hasHardened = actorHasPerk(actor, HARDENED_ID);
-  const armorBlocksIt = equippedArmor.some(a => {
-    const classification = a.system.classification;
-    return classification == 'heavy' || classification == 'ultraHeavy'
-      || (classification == 'medium' && !hasHardened);
-  });
-
-  return armorBlocksIt ? 0 : 2;
-}
-
-// Aegis (Tank Focus, 20th level, p.99): "While fighting with Reckless Abandon, having 0 Health
-// doesn't cause you to be Defeated, and you are only defeated if you still have 0 Health at the
-// end of your Reckless Abandon." Two parts:
-// - AEGIS_CLAMPED_FLAG marks that a hit was about to reduce the actor to 0 Health while Reckless
-//   Abandon was active and Aegis held - see its own consumption in mechanics/combat/combat.mjs#applyDamage
-//   (the same "clamp newValue at 1 instead of 0" shape Immortal Rebel Soul/Defender's Oath already
-//   establish), set here so the deactivation check below knows to look.
-// - applyAegisDefeatCheck runs from base-actor-sheet.mjs's own Reckless Abandon Activate/Deactivate
-//   click (the same interception point Protector's Shield's own Temporary Health grant already
-//   hooks), right as it's being switched OFF - if the actor is still at the clamped Health (1, this
-//   codebase's floor) and the flag is set, Aegis's own protection has run out and the real Defeat
-//   finally lands.
-const AEGIS_ID = `${GI_JOE_CRB}0ZTjZ36gN74889am`;
-export const AEGIS_CLAMPED_FLAG = 'aegisClamped';
-
-/**
- * Called when Reckless Abandon is switched OFF - applies Aegis's own deferred Defeat check.
- * @param {Actor} actor
- * @returns {Promise<void>}
- */
-export async function applyAegisDefeatCheck(actor) {
-  if (!actorHasPerk(actor, AEGIS_ID) || !actor.getFlag?.('essence20', AEGIS_CLAMPED_FLAG)) {
-    return;
-  }
-
-  await actor.unsetFlag('essence20', AEGIS_CLAMPED_FLAG);
-  if (actor.system.health.value <= 1) {
-    await actor.toggleStatusEffect('defeated', { active: true });
-  }
 }

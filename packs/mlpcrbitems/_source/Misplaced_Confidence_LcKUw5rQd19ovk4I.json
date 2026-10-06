@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"roundStart","label":"Surprised for two rounds","when":["self:marked:misplacedConfidence"],"steps":[{"do":"applyCondition","condition":"surprised","when":["calc:@combat.round - @mark.misplacedConfidence <= 0","not:self:status:surprised"]},{"do":"removeCondition","condition":"surprised","when":["calc:@combat.round - @mark.misplacedConfidence > 0"]},{"do":"unmark","key":"misplacedConfidence","to":"self","when":["calc:@combat.round - @mark.misplacedConfidence > 0"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: if your Take in a Scene Alertness test fails, you stay Surprised through the second round instead of just the first.</p>"

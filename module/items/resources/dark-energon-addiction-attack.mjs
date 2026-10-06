@@ -7,6 +7,7 @@ import { T } from "../shared/item-lang.mjs";
 import { has } from "../shared/item-lookups.mjs";
 import { num } from "../shared/numbers.mjs";
 import { say } from "../shared/chat-lines.mjs";
+import { ruleAddictionSnag } from "../../rules/plugins/combat/subsystem-readers.mjs";
 
 const ADDICTION_LADDER = ['d6', 'd8', 'd10', 'd12', '2d8', '3d6'];
 const ADDICTION_FLAG = 'darkEnergonUses';
@@ -31,8 +32,9 @@ export async function darkEnergonAddiction(actor) {
   let hit = true;
   let total = '-';
   if (die != 'auto') {
-    // Word of Unicron (Decepticon Directive p.67): "Dark Energon addiction 'attacks' ... against you suffer Snag."
-    const snag = has(actor, 'Compendium.essence20.decepticon_directive.Item.liMchvrumE1wB8Rc');
+    // AddictionSnag rules - Word of Unicron (Decepticon Directive p.67): "Dark Energon addiction 'attacks' ... against you
+    // suffer Snag."
+    const snag = ruleAddictionSnag(actor);
     const roll = await new Roll(`${snag ? '2d20kl' : '1d20'} + ${die.startsWith('d') ? `1${die}` : die}`).evaluate();
     total = roll.total;
     hit = roll.total >= willpower;

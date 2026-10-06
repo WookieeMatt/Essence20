@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyLightningSpeed, isLightningSpeedActive } from './lightning-speed.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { isLightningSpeedActive } from './lightning-speed.mjs';
 
 function makeActor(flags = {}) {
   const flagStore = { ...flags };
@@ -22,13 +23,13 @@ describe("isLightningSpeedActive / applyLightningSpeed", () => {
   test("false by default, true once applied", async () => {
     const actor = makeActor();
     expect(isLightningSpeedActive(actor)).toBe(false);
-    await applyLightningSpeed(actor);
+    await activateForWindow(actor, 'lightningSpeedActive', 'scene');
     expect(isLightningSpeedActive(actor)).toBe(true);
   });
 
   test("clears once the scene ends", async () => {
     const actor = makeActor();
-    await applyLightningSpeed(actor);
+    await activateForWindow(actor, 'lightningSpeedActive', 'scene');
 
     global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
 

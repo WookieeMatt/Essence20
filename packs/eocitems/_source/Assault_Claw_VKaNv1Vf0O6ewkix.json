@@ -5,6 +5,9 @@
   "_id": "VKaNv1Vf0O6ewkix",
   "img": "systems/essence20/assets/icons/weapons/assault_claw.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Assault Claw grapple (Snag to escape)","when":["item:own","item:damageType:grapple"],"steps":[{"do":"mark","key":"assaultClawGrapple","to":"target","until":"scene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the main attack rolls Might for 1 Sharp damage. Hitting with the Grapple alternate effect gives the target the Grappled condition. For the rest of the scene, while it stays Grappled, every roll it makes, escape attempts included, opens with the \"Grappled by an Assault Claw: Snag\" switch already on in its Roll Options Dialog.</p>"

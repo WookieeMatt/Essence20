@@ -5,6 +5,12 @@
   "_id": "zdCIZOr6JOPGKUmL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Spend an Adaptation Point","cost":{"action":"free"},"limit":{"per":"rest","max":"min(1, max(0, ceil(@level / 2) - 1)) + min(1, max(0, ceil(@level / 2) - 3)) + min(1, max(0, ceil(@level / 2) - 6)) + min(1, max(0, ceil(@level / 2) - 9)) + min(1, max(0, ceil(@level / 2) - 12)) + min(1, max(0, ceil(@level / 2) - 15)) + min(1, max(0, ceil(@level / 2) - 18))"},"steps":[{"do":"choose","beforeCost":true,"options":[{"label":"Edge (non-attack tests)","when":["not:self:marked:urbanEdge"],"steps":[{"do":"setVar","key":"ability","value":"edge"}]},{"label":"Specialized attacks","when":["not:self:marked:urbanSpecialized"],"steps":[{"do":"setVar","key":"ability","value":"specialized"}]},{"label":"Ignore Rough Terrain","when":["not:self:marked:urbanRoughTerrain"],"steps":[{"do":"setVar","key":"ability","value":"roughTerrain"}]}]},{"do":"mark","key":"urbanEdge","to":"self","until":"scene","when":["var:ability=edge"]},{"do":"mark","key":"urbanSpecialized","to":"self","until":"scene","when":["var:ability=specialized"]},{"do":"mark","key":"urbanRoughTerrain","to":"self","until":"scene","when":["var:ability=roughTerrain"]}]},
+      {"type":"RollModifier","label":"Urban Jungle outside a city (Edge)","edge":true,"when":["not:attack","not:roll:initiative","self:marked:urbanEdge",{"any":["not:terrain:set","not:terrain:urban"]}]},
+      {"type":"RollModifier","label":"Urban Jungle outside a city (Specialized)","specialize":true,"when":["attack","self:marked:urbanSpecialized",{"any":["not:terrain:set","not:terrain:urban"]}]},
+      {"type":"MovementAction","label":"Urban Jungle outside a city (Rough Terrain)","ignoreRoughTerrain":true,"when":["self:marked:urbanRoughTerrain",{"any":["not:terrain:set","not:terrain:urban"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free): outside a city, spend a point from its pool to use one Urban Jungle benefit for the scene. The pool refills when you Rest.</p>"

@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyBlockMagic, isBlockMagicActive, removeBlockMagic } from './block-magic.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { isBlockMagicActive, removeBlockMagic } from './block-magic.mjs';
 
 function makeActor(flags = {}) {
   const flagStore = { ...flags };
@@ -26,7 +27,7 @@ describe("isBlockMagicActive / applyBlockMagic / removeBlockMagic", () => {
     const actor = makeActor();
     expect(isBlockMagicActive(actor)).toBe(false);
 
-    await applyBlockMagic(actor);
+    await activateForWindow(actor, 'blockMagicActive', 'scene');
     expect(isBlockMagicActive(actor)).toBe(true);
 
     await removeBlockMagic(actor);
@@ -35,7 +36,7 @@ describe("isBlockMagicActive / applyBlockMagic / removeBlockMagic", () => {
 
   test("clears once the scene ends", async () => {
     const actor = makeActor();
-    await applyBlockMagic(actor);
+    await activateForWindow(actor, 'blockMagicActive', 'scene');
 
     global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
 

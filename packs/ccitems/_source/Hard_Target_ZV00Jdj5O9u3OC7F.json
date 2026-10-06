@@ -5,6 +5,10 @@
   "_id": "ZV00Jdj5O9u3OC7F",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Hard Target (in the Jet Pack)","defense":"toughness","amount":2,"when":["vehicle:data:flags.essence20.personalVehicle=jetPack"]},
+      {"type":"DerivedStat","label":"Hard Target (in the Jet Pack)","path":"system.health.max","op":"add","value":2,"when":["vehicle:data:flags.essence20.personalVehicle=jetPack"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +2 Health and +2 Toughness while you are in your Jet Pack.</p>"

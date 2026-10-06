@@ -24,8 +24,7 @@ import { setFlagRelayed as safeSetFlag } from "../../items/shared/relayed-writes
 export const O1_ALT = {
   altered: CC('0wge61eXEfqDB0c1'),
   additionalAlteration: CC('nO9aJONDslWpuCuC'),
-  cyberneticPart: CC('wCL3rJOEDZVHVg6g'),
-  engraftedMutation: CC('zuR9YJ2Wy956VGGy'),
+  // (Cybernetic Part and Engrafted Mutation went: TIERS never lists them and nothing else read them.)
   enhancedPart: CC('eT4g9EfrFtvjMqWu'),
   evolvingMutation: CC('7cL4aUwJwqvbhYCz'),
   optimizedPart: CC('zGsTAngJ2HRdKPkz'),

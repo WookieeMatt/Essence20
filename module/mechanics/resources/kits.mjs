@@ -1,6 +1,11 @@
 import { companionsOf } from "../companions/companion-link.mjs";
 import { getSceneEpoch } from "./scene-clock.mjs";
 import { ruleBrawnBonus } from "../../rules/plugins/effects/brawn-requirement.mjs";
+import { ruleWaivesAllKitPrerequisites } from "../../rules/plugins/resources/kit-prerequisite.mjs";
+import { ruleCarryExemption, ruleKitModifier, ruleScroungeOffset } from "../../rules/plugins/resources/kit-rules.mjs";
+import { ruleKitOptions, ruleKitSkill, runKitOption } from "../../rules/plugins/resources/kit-options.mjs";
+import { ruleKitUses } from "../../rules/plugins/resources/kit-uses.mjs";
+import { ruleCarryMultiplier } from "../../rules/plugins/combat/subsystem-readers.mjs";
 
 /**
  * Kits (GI Joe CRB p.159-160, TF CRB p.133, Quartermaster's Guide p.42-47, Cobra Codex p.90-92,
@@ -29,39 +34,16 @@ import { ruleBrawnBonus } from "../../rules/plugins/effects/brawn-requirement.mj
 
 const uuid = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 export const KIT = {
-  falseFace: uuid('quartermasters_guide_to_gear', 'OGIfZabiFlcjwCaz'),
-  handyScrounger: uuid('quartermasters_guide_to_gear', 'uXV4DoOaLhrZmIkz'),
-  reinforcedBasics: uuid('quartermasters_guide_to_gear', '4HD4ibkT5hTdwlAW'),
-  stretchingResources: uuid('quartermasters_guide_to_gear', 'CJTtjWkUl7BhiaN4'),
-  bomber: uuid('cobra_codex', 'WW5PNoq6d3CBU3FC'),
-  medicineCabinet: uuid('cobra_codex', 'd5xmwJqcoXyhVIVK'),
-  crashSurvivor: uuid('cobra_codex', '5SKezm0w5KQbdSJ4'),
-  hearty: uuid('cobra_codex', '3Jh0J7IxLr6eF1uA'),
-  takeTheWheel: uuid('cobra_codex', 'EQK0bAGpmYkGPcRi'),
-  kittedOut: uuid('cobra_codex', 'f0GAXS72eKNLB6x1'),
   efficacyAdjustment: uuid('cobra_codex', '8pao5WMYv8zZNiw6'),
   utilityAdjustment: uuid('cobra_codex', 'sVFK8wa26RXzq8rC'),
-  forageFamiliarity: uuid('ferocious_fighters', '2MvQyj4AUcr4QOtU'),
-  weaponForage: uuid('ferocious_fighters', 'OWVl8HRXBI7mwJ0j'),
   medKit: uuid('pr_crb', 'UgggFXZqiyKxwMuA'),
   wristCommunicator: uuid('pr_crb', 'W7nXP8pOQaDJmZbT'),
-  growthBoost: uuid('jump_through_time', 'BVrwQKqvOdyNW0KR'),
-  competitiveStrength: uuid('jump_through_time', 'J0ljd1QnU9AgoWj6'),
-  loader: uuid('tf_crb', 'OVTDUJRI81VCrFZg'),
   kittedPurpose: uuid('tf_crb', 'YO5STToLRPYVnWBT'),
   personnelMunitionsPack: uuid('enigma_of_combination', 'CXenUI5l8c3WZNSw'),
-  protomatterInjectionLayer: uuid('enigma_of_combination', 'LjibCLhbxNxaQnrU'),
   automatedRepairKit: uuid('transformers_adventures', '2P2i605rHgNhm2FJ'),
   takeMine: uuid('mlp_crb', '7CrDN77ITR9IV2nB'),
-  imaginaryCorn: uuid('wtnv_citizens_guide', '2i8jWYZH14Cu30LO'),
-  wtnvMedicineKit: uuid('wtnv_citizens_guide', '3mgHGQRzVaKtwnWb'),
-  wtnvScienceKit: uuid('wtnv_citizens_guide', 'alcXH1wbroHciYlS'),
-  wtnvTravelReporterKit: uuid('wtnv_citizens_guide', 'gG1nTctk40oLyJJH'),
 };
 
-// Kitbasher (GI Joe CRB, Ranger Exposure, p.91): "You can forage for and use a kit, even if you do
-// not meet its prerequisite."
-const KITBASHER = uuid('gi_joe_crb', 'az09yEPydnE1tBTj');
 // Gear with "Kit" or "Pack" in its name that isn't a Specialization kit.
 const NOT_KITS = new Set([KIT.medKit, KIT.automatedRepairKit, KIT.personnelMunitionsPack, KIT.wristCommunicator]);
 
@@ -197,13 +179,11 @@ export function kitInfo(item) {
     }
   }
 
-  // Night Vale's named kits (Citizen's Guide p.70-71).
-  if (sourceOf(item) == KIT.wtnvMedicineKit) {
-    [skill, spec] = ['science', 'Medicine'];
-  } else if (sourceOf(item) == KIT.wtnvScienceKit) {
-    [skill, spec] = ['science', null];
-  } else if (sourceOf(item) == KIT.wtnvTravelReporterKit) {
-    [skill, spec] = ['streetwise', null];
+  // A KitSkill rule names the kit's Skill and Specialization (Night Vale's Medicine, Science and Travel Reporter kits,
+  // Citizen's Guide p.70-71 - rules/plugins/resources/kit-options.mjs).
+  const named = ruleKitSkill(item);
+  if (named) {
+    [skill, spec] = [named.skill, named.spec];
   }
 
   const source = sourceOf(item);
@@ -237,7 +217,8 @@ function rankIndex(shift) {
 
 /** "Prerequisites: d6 in Infiltration" and the like. */
 export function meetsKitPrerequisite(actor, info) {
-  if (info.simple || info.ignorePrerequisite || !info.skill || has(actor, KITBASHER)) {
+  // Kitbasher's KitPrerequisite {mode: waive, all: true} rule waives every prerequisite, a Skill Kit's too.
+  if (info.simple || info.ignorePrerequisite || !info.skill || ruleWaivesAllKitPrerequisites(actor, info)) {
     return true;
   }
 
@@ -424,6 +405,11 @@ export function kitBoostsOf(actor) {
   return Array.isArray(boosts) ? boosts.filter(isBoostLive) : [];
 }
 
+/** A used-up kit's lasting bonus on the actor - also the rules' kitBoost step (rules/plugins/resources/uses-kit-pieces.mjs). */
+export async function addKitBoost(actor, boost) {
+  return addBoost(actor, boost);
+}
+
 async function addBoost(actor, boost) {
   await actor.setFlag('essence20', BOOSTS_FLAG, [...kitBoostsOf(actor), { ...boost, ...turnStamp(), scene: getSceneEpoch(), id: foundry.utils.randomID?.() ?? String(Math.random()) }]);
 }
@@ -526,7 +512,8 @@ async function chooseSelect(title, prompt, options) {
       { action: 'cancel', label: T('E20.DialogCancelButton') },
     ],
     rejectClose: false,
-  }).then(result => (result && result != 'cancel' ? result : null));
+  // '' is a real choice ("Any Specialization"), not a cancel: only a closed / cancelled dialog answers null.
+  }).then(result => (result === null || result === undefined || result == 'cancel' ? null : result));
 }
 
 async function rollTest(actor, skill, dif, extra = {}) {
@@ -539,7 +526,8 @@ async function rollTest(actor, skill, dif, extra = {}) {
 /** "Scrounging": Standard DIF 5, Limited DIF 10; Handy Scrounger takes 5 off. */
 export function scroungeDif(actor, tier) {
   const base = tier == 'standard' ? 5 : 10;
-  return Math.max(0, base - (has(actor, KIT.handyScrounger) ? 5 : 0));
+  // KitModifier rules (Handy Scrounger's -5 - rules/plugins/resources/kit-rules.mjs).
+  return Math.max(0, base + ruleScroungeOffset(actor));
 }
 
 async function pickSkill(title) {
@@ -574,7 +562,7 @@ async function consumeKit(actor, item, info, pay, { virtual = false } = {}) {
   // Handy Scrounger (Quartermaster's Guide, p.30): "Whenever you use a Kit, attempt a Skill Test with the
   // same DIF as if you were scrounging refills for it ... On a success, treat the Kit as if it were one
   // degree better."
-  if (!info.essence && !info.skillKit && TIER_RANK.indexOf(tier) < 2 && has(actor, KIT.handyScrounger)
+  if (!info.essence && !info.skillKit && TIER_RANK.indexOf(tier) < 2 && ruleKitModifier(actor, 'upgradeRoll')
     && (await rollTest(actor, info.skill ?? 'survival', scroungeDif(actor, tier))).success) {
     tier = TIERS[Math.min(2, TIERS.indexOf(tier) + 1)];
   }
@@ -609,14 +597,13 @@ async function consumeKit(actor, item, info, pay, { virtual = false } = {}) {
   // Stretching Resources (Quartermaster's Guide, p.31): "Whenever you would consume a Kit ..., attempt a
   // second Skill Test with the same DIF as if you were scrounging refills for it. On a success, the Kit
   // is not consumed."
-  if (has(actor, KIT.stretchingResources) && (await rollTest(actor, info.skill ?? 'survival', scroungeDif(actor, info.tier))).success) {
+  if (ruleKitModifier(actor, 'keepRoll') && (await rollTest(actor, info.skill ?? 'survival', scroungeDif(actor, info.tier))).success) {
     return T('E20.KitUsedKept', { name: actor.name, kit: label });
   }
 
-  // Reinforced Basics (Quartermaster's Guide, p.17): "you get three uses out of Standard Kits instead of
-  // one."
+  // KitUses rules: more uses before the kit is spent (Reinforced Basics: Standard Kits three - rules/plugins/resources/kit-uses.mjs).
   const uses = (item.flags?.essence20?.kitUses ?? 0) + 1;
-  const allowed = info.tier == 'standard' && has(actor, KIT.reinforcedBasics) ? 3 : 1;
+  const allowed = ruleKitUses(actor, info.tier);
   await item.setFlag('essence20', 'kitUses', uses);
   if (uses >= allowed) {
     await item.setFlag('essence20', 'kitSpent', true);
@@ -646,13 +633,19 @@ export async function useKit(actor, item, pay) {
     choices.push(['scrounge', T('E20.KitScrounge')]);
   }
 
-  if (!info.essence) {
+  // Setting a kit's Specialization: a generic kit (no Specialization yet, or a Skill Kit with no Skill) is set up
+  // this way by anyone; changing one that's already set is Kitted Out's (Cobra Codex p.51), for its holder only.
+  const needsSetup = info.skillKit ? !info.skill : !info.spec;
+  if (!info.essence && (needsSetup || ruleKitModifier(actor, 'respecialize'))) {
     choices.push(['specialize', T('E20.KitSetSpecialization')]);
   }
 
-  const heal = HEAL_CONSUMABLES[sourceOf(item)];
-  if (heal && !spent) {
-    choices.unshift(['heal', T('E20.KitHeal', { amount: heal.amount })]);
+  // The kit's own KitOption rules (WTNV Medicine Kit's heal - rules/plugins/resources/kit-options.mjs), offered first.
+  const options = ruleKitOptions(actor, item);
+  choices.unshift(...options.map(option => [option.key, option.label]));
+
+  if (!choices.length) {
+    return null;
   }
 
   const what = choices.length == 1 ? choices[0][0] : await choose(item.name, T('E20.KitPrompt'), choices);
@@ -660,8 +653,9 @@ export async function useKit(actor, item, pay) {
     return consumeKit(actor, item, info, pay);
   }
 
-  if (what == 'heal') {
-    return healWith(actor, item, heal, pay);
+  const option = options.find(entry => entry.key == what);
+  if (option) {
+    return runKitOption(actor, item, option.rule, pay);
   }
 
   if (what == 'scrounge') {
@@ -694,12 +688,6 @@ export async function useKit(actor, item, pay) {
 /*  Consumables that heal or boost               */
 /* -------------------------------------------- */
 
-const HEAL_CONSUMABLES = {
-  // WTNV Medicine Kit (p.70): "You can consume this kit as a Standard action in combat to immediately
-  // heal 2 Health to yourself or an ally with no Skill Test."
-  [KIT.wtnvMedicineKit]: { amount: 2, cost: 'standard', spend: 'kit' },
-};
-
 /**
  * Take Mine (MLP CRB, Spirit of Generosity, 13th level, p.75): "when a friend uses one of your
  * consumable items, the item's effect doubles if they use it this round." An item handed over by
@@ -728,111 +716,16 @@ export async function onItemGiven(item, fromActor) {
   await item.setFlag('essence20', 'givenBy', { actorUuid: fromActor.uuid, ...turnStamp(), scene: getSceneEpoch() });
 }
 
-async function healWith(actor, item, heal, pay) {
-  const ally = game.user?.targets?.first?.()?.actor ?? actor;
-  if (heal.cost && !(await pay(heal.cost))) {
-    return null;
-  }
-
-  const amount = heal.amount * takeMineMultiplier(actor, item);
-  const health = ally.system?.health;
-  if (health) {
-    await ally.update({ 'system.health.value': Math.min(health.max ?? health.value + amount, (health.value ?? 0) + amount) });
-  }
-
-  if (heal.spend == 'kit') {
-    await item.setFlag('essence20', 'kitSpent', true);
-  } else if (heal.spend == 'uses') {
-    const left = (item.flags?.essence20?.usesLeft ?? heal.uses) - 1;
-    await item.setFlag('essence20', 'usesLeft', left);
-    if (left <= 0) {
-      await item.setFlag('essence20', 'kitSpent', true);
-    }
-  } else {
-    await useUp(item);
-  }
-
-  return T('E20.KitHealed', { name: actor.name, ally: ally.name, amount, kit: item.name });
-}
-
-async function useUp(item) {
-  const left = (item.system?.quantity ?? 1) - 1;
-  if (left > 0) {
-    await item.update({ 'system.quantity': left });
-  } else {
-    await item.delete();
-  }
-}
-
 /* -------------------------------------------- */
 /*  Perks and gear with a Use button             */
 /* -------------------------------------------- */
-
-const FREE_DRIVING_KIT = { crashSurvivor: 'Air', hearty: 'Sea', takeTheWheel: 'Land' };
 
 export const KIT_HANDLERS = {
   async kit(actor, item, pay) {
     return useKit(actor, item, pay);
   },
 
-  // Crash Survivor / Hearty / Take the Wheel (Cobra Codex p.70-77): "at the beginning of every mission,
-  // you gain a free Limited Driving (Air [Sea, Land]) Kit that you can use even if you don't meet the
-  // prerequisites." A fresh one replaces last mission's.
-  async crashSurvivor(actor, item) {
-    return freeDrivingKit(actor, item, FREE_DRIVING_KIT.crashSurvivor);
-  },
-  async hearty(actor, item) {
-    return freeDrivingKit(actor, item, FREE_DRIVING_KIT.hearty);
-  },
-  async takeTheWheel(actor, item) {
-    return freeDrivingKit(actor, item, FREE_DRIVING_KIT.takeTheWheel);
-  },
-
-  // False Face (Quartermaster's Guide, Spy, p.19): "you gain a free Standard Disguise Kit, which you
-  // can only use for yourself. Every odd-numbered level, you gain an additional Standard Disguise Kit
-  // ... At 3rd level, you can substitute a Limited Disguise Kit for two Standard Disguise Kits. At 6th
-  // level, you can substitute a Restricted Disguise Kit for two Limited Disguise Kits."
-  async falseFace(actor, item) {
-    const level = Number(actor.system?.level) || 1;
-    let points = Math.ceil(level / 2);
-    const old = itemsOf(actor).filter(i => i.flags?.essence20?.grantedBy == item.id);
-    if (old.length) {
-      await actor.deleteEmbeddedDocuments('Item', old.map(i => i.id));
-    }
-
-    const made = [];
-    while (points > 0) {
-      const options = [['standard', T('E20.KitStandard')]];
-      if (level >= 3 && points >= 2) options.push(['limited', T('E20.KitLimited')]);
-      if (level >= 6 && points >= 4) options.push(['restricted', T('E20.KitRestricted')]);
-      const tier = options.length == 1 ? 'standard' : await choose(item.name, T('E20.FalseFacePrompt', { points }), options);
-      if (!tier) {
-        break;
-      }
-
-      points -= { standard: 1, limited: 2, restricted: 4 }[tier];
-      made.push(await makeKit(actor, item, tier, 'deception', 'Disguise'));
-    }
-
-    return made.length ? T('E20.KitsGranted', { name: actor.name, count: made.length, item: item.name }) : null;
-  },
-
-  // Kitted Out (Cobra Codex, Saboteur, 17th level, p.51): "You gain a restricted Technology kit as
-  // Qualified gear. The kit is of a Technology Specialization of your choice when you gain it."
-  async kittedOut(actor, item) {
-    if (itemsOf(actor).some(i => i.flags?.essence20?.grantedBy == item.id)) {
-      ui.notifications.info(T('E20.KitAlreadyGranted'));
-      return null;
-    }
-
-    const picked = await pickSpecialization(item.name, 'technology');
-    if (!picked) {
-      return null;
-    }
-
-    const kit = await makeKit(actor, item, 'restricted', 'technology', picked.spec);
-    return kit ? T('E20.KitsGranted', { name: actor.name, count: 1, item: item.name }) : null;
-  },
+  // (Crash Survivor and Hearty are Use rules on their Perks; so is Take the Wheel's free Limited Driving (Land) Kit.)
 
   // Utility / Efficacy Adjustment and Kitted Purpose: choose the kit, and (for the Alterations) spend it.
   async utilityAdjustment(actor, item, pay) {
@@ -857,115 +750,8 @@ export const KIT_HANDLERS = {
     return T(current.docked ? 'E20.KittedPurposeUndocked' : 'E20.KittedPurposeDocked', { name: actor.name });
   },
 
-  // Med Kit (PR CRB p.120): "The kit has ten uses before its supplies must be replenished. As an action,
-  // you may expend one use of the kit heal 1 Damage, without needing to make a Science (Medicine)
-  // check. Users with Science (Medicine) may use the kit to heal 2 Damage."
-  async medKit(actor, item, pay) {
-    const medic = !!Object.values(actor.system?.skills?.science?.specializations ?? {}).some(s => /medicine/i.test(s?.name ?? ''));
-    if (item.flags?.essence20?.kitSpent) {
-      await item.update({ 'flags.essence20.kitSpent': false, 'flags.essence20.usesLeft': 10 });
-      return T('E20.MedKitRestocked', { name: actor.name });
-    }
+  // (Wrist Communicator is a Use rule on the item - pickPoint + moveTo, its chargesUsed count; restKits resets it.)
 
-    return healWith(actor, item, { amount: medic ? 2 : 1, cost: 'standard', spend: 'uses', uses: 10 }, pay);
-  },
-
-  // Automated Repair Kit (Beacon of Hope / Danger at Dinobot Island): "As a Standard Action, a
-  // Cybertronian can open the Automated Repair Kit, and the machinery inside immediately heals 2 Health
-  // without a Skill Test." It's consumed.
-  async automatedRepairKit(actor, item, pay) {
-    return healWith(actor, item, { amount: 2, cost: 'standard', spend: 'quantity' }, pay);
-  },
-
-  // Imaginary Corn (WTNV Citizen's Guide p.72): "↑1 on all Strength-based Skill Tests for one hour after
-  // being consumed."
-  async imaginaryCorn(actor, item) {
-    await addBoost(actor, { essence: 'strength', skill: null, mode: 'shiftUp', kind: 'scene', label: item.name, times: takeMineMultiplier(actor, item) });
-    await useUp(item);
-    return T('E20.ImaginaryCornEaten', { name: actor.name });
-  },
-
-  // Wrist Communicator (PR CRB p.120): three teleport charges, recharged over eight hours (a rest).
-  async wristCommunicator(actor, item) {
-    const used = item.flags?.essence20?.chargesUsed ?? 0;
-    if (used >= 3) {
-      ui.notifications.warn(T('E20.WristCommunicatorEmpty'));
-      return null;
-    }
-
-    const { pickCanvasPoint, placeActorAt } = await import("../combat/forced-movement.mjs");
-    const point = await pickCanvasPoint(T('E20.WristCommunicatorPick'));
-    if (!point) {
-      return null;
-    }
-
-    const token = actor.getActiveTokens?.()?.[0];
-    if (token) {
-      await token.document.update({ x: Math.round(point.x - token.w / 2), y: Math.round(point.y - token.h / 2) }, { animate: false });
-    } else {
-      await placeActorAt(actor, point);
-    }
-
-    await item.setFlag('essence20', 'chargesUsed', used + 1);
-    return T('E20.WristCommunicatorUsed', { name: actor.name, left: 2 - used });
-  },
-
-  // Personnel Munitions Pack (Enigma of Combination p.56): "all friendly characters within their Reach
-  // of its location may reload a weapon as a Free action. Roll 1d20 each time this kit is used; on a 1,
-  // this kit is consumed."
-  async personnelMunitionsPack(actor, item, pay) {
-    const ally = game.user?.targets?.first?.()?.actor ?? actor;
-    const { clearWeaponReload, weaponNeedsReload } = await import("../combat/reload-trait.mjs");
-    const weapons = itemsOf(ally).filter(i => i.type == 'weapon' && weaponNeedsReload(i));
-    const weaponId = await chooseSelect(item.name, T('E20.MunitionsPackPick', { name: ally.name }), weapons.map(w => ({ value: w.id, label: w.name })));
-    const weapon = ally.items.get(weaponId);
-    if (!weapon || !(await pay('free'))) {
-      return null;
-    }
-
-    const { needsGmRelay, relayToGm } = await import("../world/gm-relay.mjs");
-    if (needsGmRelay(weapon)) {
-      await relayToGm(weapon, 'unsetFlag', ['essence20', 'needsReload']);
-    } else {
-      await clearWeaponReload(weapon);
-    }
-
-    const roll = await new Roll('1d20').evaluate();
-    if (roll.total == 1) {
-      await useUp(item);
-      return T('E20.MunitionsPackEmptied', { name: ally.name, weapon: weapon.name });
-    }
-
-    return T('E20.MunitionsPackReloaded', { name: ally.name, weapon: weapon.name, roll: roll.total });
-  },
-
-  // Protomatter Injection Layer (Enigma of Combination p.55): "This upgrade can be replenished with an
-  // hour of repairs, a successful DIF 12 Technology Skill Test, and the expenditure of 2 Energon Points."
-  async protomatterInjectionLayer(actor, item) {
-    const energon = Number(actor.system?.energon?.normal?.value) || 0;
-    if (energon < 2) {
-      ui.notifications.warn(T('E20.ProtomatterNoEnergon'));
-      return null;
-    }
-
-    const { success } = await rollTest(actor, 'technology', 12);
-    if (!success) {
-      return T('E20.ProtomatterFailed', { name: actor.name });
-    }
-
-    await actor.update({ 'system.energon.normal.value': energon - 2 });
-    await item.setFlag('essence20', 'protomatterUsed', 0);
-    return T('E20.ProtomatterRefilled', { name: actor.name });
-  },
-
-  // Loader (TF CRB p.134): "Bot Mode: When you convert, you can choose to benefit from the same bonus you
-  // have in Alt Mode, or you can choose to use the loader as a shield which adds +1 Deflection to
-  // Toughness." Switches between the two.
-  async loader(actor, item) {
-    const shield = !item.flags?.essence20?.loaderShield;
-    await item.setFlag('essence20', 'loaderShield', shield);
-    return T(shield ? 'E20.LoaderShield' : 'E20.LoaderCarry', { name: actor.name });
-  },
 };
 
 const USE_BY_SOURCE = Object.fromEntries(Object.keys(KIT_HANDLERS).filter(kind => KIT[kind]).map(kind => [KIT[kind], kind]));
@@ -979,14 +765,6 @@ export function canUseKit(item) {
   const kind = kitUseKind(item);
   if (!kind || !item?.parent) {
     return false;
-  }
-
-  if (kind == 'wristCommunicator') {
-    return (item.flags?.essence20?.chargesUsed ?? 0) < 3;
-  }
-
-  if (kind == 'kittedOut') {
-    return !itemsOf(item.parent).some(i => i.flags?.essence20?.grantedBy == item.id);
   }
 
   // A My Little Pony kit has nothing to use up or set.
@@ -1010,8 +788,9 @@ export async function runKitUse(item, economy) {
     return null;
   }
 
-  const { kitsBlockedFor } = await import("../../items/resources/reckless-abandon-end.mjs");
-  if (kitsBlockedFor(actor)) {
+  // Veto {on: kitUse} rules (rules/plugins/effects/veto.mjs) - Reckless Abandon's "no kits".
+  const { kitUseVetoed } = await import("../../rules/plugins/effects/veto.mjs");
+  if (kitUseVetoed(actor, item)) {
     return null;
   }
 
@@ -1088,16 +867,6 @@ export async function onKitCreated(item) {
   }
 }
 
-async function freeDrivingKit(actor, item, medium) {
-  const old = itemsOf(actor).filter(i => i.flags?.essence20?.grantedBy == item.id);
-  if (old.length) {
-    await actor.deleteEmbeddedDocuments('Item', old.map(i => i.id));
-  }
-
-  const kit = await makeKit(actor, item, 'limited', 'driving', medium, { ignorePrerequisite: true });
-  return kit ? T('E20.KitsGranted', { name: actor.name, count: 1, item: item.name }) : null;
-}
-
 async function virtualKit(actor, item, tier, pay) {
   const current = item.flags?.essence20?.virtualKit;
   if (!current) {
@@ -1149,35 +918,10 @@ export async function restKits(actor) {
 }
 
 /**
- * Protomatter Injection Layer: "The first three times ... you suffer 2 or more damage from a single
- * source, the damage is reduced by 1." Called by mechanics/combat/combat.mjs#applyDamage.
- * @param {Actor} actor
- * @param {Number} amount
- * @returns {Promise<Number>}
- */
-export async function protomatterReduce(actor, amount) {
-  if (amount < 2) {
-    return amount;
-  }
-
-  const layer = itemsOf(actor).find(i => sourceOf(i) == KIT.protomatterInjectionLayer
-    && (!i.flags?.essence20?.parentId || actor.items?.get?.(i.flags.essence20.parentId)?.system?.equipped !== false)
-    && (i.flags?.essence20?.protomatterUsed ?? 0) < 3);
-  if (!layer) {
-    return amount;
-  }
-
-  await layer.setFlag('essence20', 'protomatterUsed', (layer.flags?.essence20?.protomatterUsed ?? 0) + 1);
-  return amount - 1;
-}
-
-/**
  * Carrying capacity as a share of body weight (PR CRB Table 6-1: "Unskilled 10% ... D2 25% ... D4 50%
  * ... D6 75% ... D8 Equal to Body Weight ... D10 Half-Again (150%) ... D12 Double Body Weight").
- * Competitive Strength (A Jump Through Time, p.54): "Your Brawn is considered to be 2 Skill Ranks
- * higher for determining how much you can carry." Loader (TF CRB p.134, Alt Mode): "Your Brawn counts
- * as ↑2 when calculating your Carrying Capacity". Growth Boost (A Jump Through Time, p.33): "You
- * double the weight you can commonly carry" while Morphed.
+ * (Competitive Strength's +2 Ranks and Loader's Alt Mode ↑2 are BrawnRequirement carryingOnly rules; Growth Boost's doubling
+ * while Morphed is a CarryCapacity rule.)
  * @param {Actor} actor
  * @returns {Number}   A percentage of body weight.
  */
@@ -1185,24 +929,12 @@ export function carryPercent(actor) {
   const ladder = ['d20', 'd2', 'd4', 'd6', 'd8', 'd10', 'd12'];
   const percent = [10, 25, 50, 75, 100, 150, 200];
   let rank = Math.max(0, ladder.indexOf(actor?.system?.skills?.brawn?.shift ?? 'd20'));
-  if (has(actor, KIT.competitiveStrength)) {
-    rank += 2;
-  }
-
-  // BrawnRequirement rules with carrying: true (Pack Mule - rules/plugins/effects/brawn-requirement.mjs).
+  // BrawnRequirement rules with carrying / carryingOnly (Pack Mule, Loader, Competitive Strength - rules/plugins/effects/brawn-requirement.mjs).
   rank += ruleBrawnBonus(actor, 'carrying');
 
-  const loader = itemsOf(actor).find(i => sourceOf(i) == KIT.loader);
-  if (loader && (actor?.system?.isTransformed || !loader.flags?.essence20?.loaderShield)) {
-    rank += 2;
-  }
-
   let value = percent[Math.min(rank, percent.length - 1)] + Math.max(0, rank - (percent.length - 1)) * 50;
-  if (has(actor, KIT.growthBoost) && actor?.system?.isMorphed) {
-    value *= 2;
-  }
-
-  return value;
+  // CarryCapacity rules multiply it (Growth Boost x2 while Morphed - rules/plugins/combat/subsystem-readers.mjs).
+  return value * ruleCarryMultiplier(actor);
 }
 
 /**
@@ -1214,32 +946,6 @@ export function carryPercent(actor) {
  * @returns {Number}
  */
 export function extraCarriedHands(actor, carried) {
-  let freed = 0;
-  const effectStyle = weapon => itemsOf(actor).find(e => e.type == 'weaponEffect' && e.flags?.essence20?.parentId == weapon.id)?.system?.classification?.style;
-  if (has(actor, KIT.bomber)) {
-    freed += Math.min(6, carried.filter(c => effectStyle(c.item) == 'explosive' && !c.item.system?.isPoison)
-      .reduce((sum, c) => sum + c.hands * Math.max(1, c.item.system?.quantity ?? 1), 0));
-  }
-
-  if (has(actor, KIT.medicineCabinet)) {
-    freed += Math.min(6, carried.filter(c => c.item.system?.isPoison)
-      .reduce((sum, c) => sum + c.hands * Math.max(1, c.item.system?.quantity ?? 1), 0));
-  }
-
-  return freed;
-}
-
-/**
- * Loader's Might ↑2 "to shove objects and creatures", and Competitive Strength's Brawn critical on the
- * d2, for dice.mjs.
- */
-export function loaderShoveBonus(actor) {
-  const loader = itemsOf(actor).find(i => sourceOf(i) == KIT.loader);
-  return loader && (actor?.system?.isTransformed || !loader.flags?.essence20?.loaderShield) ? 2 : 0;
-}
-
-/** Loader used as a shield in Bot Mode: "+1 Deflection to Toughness". */
-export function loaderShieldToughness(actor) {
-  const loader = itemsOf(actor).find(i => sourceOf(i) == KIT.loader);
-  return loader && !actor?.system?.isTransformed && loader.flags?.essence20?.loaderShield ? 1 : 0;
+  // CarryExemption rules (Bomber, Medicine Cabinet - rules/plugins/resources/kit-rules.mjs).
+  return ruleCarryExemption(actor, carried);
 }

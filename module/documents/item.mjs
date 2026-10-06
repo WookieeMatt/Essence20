@@ -1,14 +1,13 @@
 import { runSpellCost } from "../mechanics/item-hooks.mjs";
 import { endOnFumble } from "../mechanics/resources/grants.mjs";
-import { ablativeLossOf, pickConcentratedArea, weaponUnusable } from "../mechanics/combat/target-riders.mjs";
+import { ablativeLossOf, weaponUnusable } from "../mechanics/combat/target-riders.mjs";
 import { wipeCoating } from "../items/gear/poison-coating.mjs";
-import { usesVehicleTargeting, vehicleWeaponTraits } from "../mechanics/vehicles/vehicle-upgrades.mjs";
-import { applyAugur, perkGrantedTraits, TRAIT_UPGRADE, weaponHasUpgrade } from "../mechanics/combat/weapon-traits.mjs";
+import { usesVehicleTargeting } from "../mechanics/vehicles/vehicle-upgrades.mjs";
+import { perkGrantedTraits } from "../mechanics/combat/weapon-traits.mjs";
 import { bombKind, plantBomb } from "../items/attacks/planted-bombs.mjs";
 import { resolveWeaponChangesAfterAttack } from "../items/attacks/weapon-perk-uses.mjs";
 import { affectsGeneratedEffects, applyToWeapon as applyUpgradesToWeapon, chosenElement, ELEMENTS, syncGeneratedEffects } from "../items/attacks/weapon-upgrades.mjs";
 import { applyDamage } from "../mechanics/combat/combat.mjs";
-import { onPowerUsed } from "../mechanics/actions/action-perks.mjs";
 import { Dice } from "../dice.mjs";
 import { ensureSourceIndex, inheritedRules, rulesSnapshotToStrip } from "../rules/inherit.mjs";
 import { RollDialog } from "../mechanics/rolls/roll-dialog.mjs";
@@ -21,30 +20,18 @@ import { addOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
 import { betterShift, updateRoleCache } from "../util/utils.mjs";
 import { placeAoeTemplate } from "../mechanics/combat/aoe-targeting.mjs";
-import { applyShapedCharges } from "../items/attacks/shaped-charges.mjs";
-import { pickBringItAllDownEffect } from "../items/attacks/bring-it-all-down.mjs";
-import { applyHorseshoesAndHandgrenades } from "../items/attacks/horseshoes-and-handgrenades.mjs";
-import { applyMightyStrikes } from "../items/attacks/mighty-strikes.mjs";
-import { applyNoNeedToAim } from "../items/attacks/no-need-to-aim.mjs";
+import { ruleAreaExclusions, ruleBeforeArea } from "../rules/plugins/combat/before-area.mjs";
+import { ruleAttackChoice } from "../rules/plugins/combat/attack-choice.mjs";
 import { actorHasPerk } from "../mechanics/characters/perks.mjs";
-import { pickEnchantSkill } from "../items/magic/enchant.mjs";
 import { importedDescription } from "../importers/book-descriptions-store.mjs";
-import { autoTargetBeamVolley } from "../items/magic/beam-volley.mjs";
-import { pickBestowExpertise } from "../items/magic/bestow-expertise.mjs";
 import { pickMindBeamEffect } from "../items/magic/mind-beam.mjs";
-import { pickGetToKnowSkill } from "../items/magic/get-to-know.mjs";
 import { isBlockMagicActive } from "../items/magic/block-magic.mjs";
-import { consumeMegaWeaponAttack } from "../items/zords/zord-mega-weapon.mjs";
-import { isPiledriver, offerPiledriverRoughTerrain } from "../mechanics/world/rough-terrain.mjs";
-import {
-  canRollLimitedWeaponEffect, isLimitedWeaponEffect, markLimitedWeaponEffectUsed,
-} from "../items/attacks/limited-weapon-effects.mjs";
+import { firePosted } from "../rules/plugins/effects/rough-terrain-space.mjs";
+import { ruleDefersSpellCost } from "../rules/plugins/resources/spell-cost-defer.mjs";
+import { runPreCast } from "../rules/plugins/picks/pre-cast.mjs";
+import { ruleAvailabilitySteps } from "../rules/plugins/resources/availability-shift.mjs";
 
-const KNIGHTS_OF_CANTERLOT = "Compendium.essence20.knights_of_canterlot.Item.";
 const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
-const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
-
-const FIELDTEST_ID = `${GI_JOE_CRB}bPMgz1ct8T0kgQ6K`;
 
 // Brutal Might (Enigma of Combination, Pugilist Focus, Warrior, 3rd level, p.38): "any of your
 // attacks that normally use the Might Skill can use your Brawn Skill instead." A genuine SKILL
@@ -65,45 +52,15 @@ const BRUTAL_MIGHT_ID = "Compendium.essence20.enigma_of_combination.Item.l0STCEY
 const OBSCURING_MATRIX_BASIC_ID = "Compendium.essence20.enigma_of_combination.Item.L8ZXz1h0DlCy85UC";
 const OBSCURING_MATRIX_ADVANCED_ID = "Compendium.essence20.enigma_of_combination.Item.HH4q8lx09mV2hhcv";
 
-// Enchant (MLP CRB, Elementary Enchantment spell, p.136) - see items/magic/enchant.mjs's own doc
-// comment. The one hardcoded per-spell-id check in this otherwise fully generic spell-cast
-// branch below, needed because the skill choice must be picked BEFORE the roll (nothing else in
-// this codebase intercepts a spell cast pre-roll the way onPowerUse does for Grid/Sorcerous
-// Powers).
-const ENCHANT_ID = `${MLP_CRB}afYeCCAX0o2Cwf2I`;
-
-// Beam Volley (MLP CRB, Virtuoso Beam spell, p.138) - see items/magic/beam-volley.mjs's own doc
-// comment. Auto-targets the 3 nearest enemies before the roll fires (no picker, so no
-// early-return-on-cancel like Enchant). Explosive Beam used to sit alongside it here; its own
-// "15ft diameter circle" is a real AoE shape, so it now carries system.shape/radius and goes
-// through mechanics/combat/aoe-targeting.mjs like any other area spell. Beam Volley's "3 targets in range"
-// is Multiple Targets, not an area, so it stays a bespoke auto-targeter.
-const BEAM_VOLLEY_ID = `${MLP_CRB}UhkhFqFDYjub1a8k`;
-
-// Bestow Expertise (MLP CRB, Superior Enchantment spell, p.137) - see
-// items/magic/bestow-expertise.mjs's own doc comment. A third per-spell-id pre-roll hook, alongside
-// Enchant's own - picks the Skill AND the new Specialization's own free-typed name before rolling.
-const BESTOW_EXPERTISE_ID = `${MLP_CRB}stwnP4um6j1xxzIo`;
+// Beam Volley auto-targets the 3 nearest enemies through its own PreCast rule (setTargets to: nearestEnemies:3). Explosive
+// Beam's "15ft diameter circle" is a real AoE shape: it carries system.shape/radius and goes through
+// mechanics/combat/aoe-targeting.mjs like any other area spell.
 
 // Mind Beam (MLP CRB, Virtuoso Beam spell, p.139) - see items/magic/mind-beam.mjs's own doc comment.
-// A fifth per-spell-id pre-roll hook, alongside Enchant/Bestow Expertise's own - picks which
+// A per-spell-id pre-roll hook (Enchant, Bestow Expertise and Get To Know are PreCast rules now) - picks which
 // Condition this cast applies before the roll fires.
 const MIND_BEAM_ID = `${MLP_CRB}gF8otV8Ag9axRp2Z`;
 
-const DARK_SKIES_OVER_EQUESTRIA = "Compendium.essence20.dark_skies_over_equestria.Item.";
-
-// Get To Know (Dark Skies Over Equestria, Elementary Utility spell, p.21) - see
-// items/magic/get-to-know.mjs's own doc comment. A sixth per-spell-id pre-roll hook - picks the
-// related Skill before the roll fires.
-const GET_TO_KNOW_ID = `${DARK_SKIES_OVER_EQUESTRIA}pyRy1dFwuiJpAKj2`;
-
-// Power Conservationist / Power Mastery (General Perks, p.38): "delay the cost of casting the
-// spell until after you have cast it - your Spellcasting Skill Test is made before it is
-// reduced." Both read as the same deferral in this codebase's terms (this system has no separate
-// "augment cost" distinct from a spell's own system.cost to tell them apart) - see the spell-cast
-// branch below.
-const POWER_CONSERVATIONIST_ID = `${KNIGHTS_OF_CANTERLOT}75H9N2YqaSDUhiCQ`;
-const POWER_MASTERY_ID = `${KNIGHTS_OF_CANTERLOT}qDsWwo5ipmzMMuO4`;
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -284,9 +241,6 @@ export class Essence20Item extends Item {
       this._prepareTotalAvailability();
     }
 
-    // Augur's Sharp Flyby/Ram/Bash (mechanics/combat/weapon-traits.mjs).
-    applyAugur(this);
-
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
     } else if (this.type == 'weapon') {
@@ -442,15 +396,9 @@ export class Essence20Item extends Item {
         combined.push(ELEMENTS[element]);
       }
 
-      // Double-Barrel / Targeting System vehicle upgrades on the weapon they were set to.
-      for (const trait of vehicleWeaponTraits(this)) {
-        if (!combined.includes(trait)) {
-          combined.push(trait);
-        }
-      }
-
       // Traits a Perk gives the wielder's weapons - Demolisher, Big Lobber, Fireball, Weapon
-      // Customizer (mechanics/combat/weapon-traits.mjs).
+      // Customizer (mechanics/combat/weapon-traits.mjs); Double-Barrel's / Targeting System's on the
+      // vehicle weapon they were set to (WeaponTrait rules too).
       for (const trait of perkGrantedTraits(this, combined)) {
         if (!combined.includes(trait)) {
           combined.push(trait);
@@ -593,12 +541,11 @@ export class Essence20Item extends Item {
       }
     }
 
-    // Fieldtest (GI Joe CRB, Technician, 13th level, p.104): "you treat the availability of
-    // equipment and upgrades as one step more available." "Stacks with the benefits of Secondary
-    // Tech" is moot for now - Secondary Tech itself is unbuilt (no item-grant mechanism exists to
-    // hand out its own bonus gear yet).
-    if (this.actor && actorHasPerk(this.actor, FIELDTEST_ID)) {
-      totalAvailability = this._stepAvailability(totalAvailability, -1);
+    // AvailabilityShift rules on the owner's items (Fieldtest: one step more available -
+    // rules/plugins/resources/availability-shift.mjs).
+    const availabilitySteps = this.actor ? ruleAvailabilitySteps(this) : 0;
+    if (availabilitySteps) {
+      totalAvailability = this._stepAvailability(totalAvailability, availabilitySteps);
     }
 
     this.system.totalAvailability = totalAvailability;
@@ -789,6 +736,8 @@ export class Essence20Item extends Item {
           const reloadSpend = await spend(roller, reloadCost.action, {
             source: reloadCost.source ? `${parentWeapon.name} (${reloadCost.source})` : parentWeapon.name,
             bypass: dataset.bypassEconomy,
+            // ActionCost {action: reload} (Rapid Reload, Ammo Belt) - rules/plugins/resources/action-kinds.mjs.
+            context: { kind: 'reload', item: parentWeapon },
           });
           if (reloadSpend.blocked) {
             if (!reloadSpend.cancelled) {
@@ -910,11 +859,9 @@ export class Essence20Item extends Item {
         content: await foundry.applications.handlebars.renderTemplate(template, templateData),
       });
 
-      // Piledriver - posting it is the gear's only sheet action; see
-      // mechanics/world/rough-terrain.mjs#offerPiledriverRoughTerrain (Alt Mode only).
-      if (this.type == 'gear' && isPiledriver(this)) {
-        await offerPiledriverRoughTerrain(this.actor, this);
-      }
+      // The item's own `posted` Triggers (Piledriver - posting it is the gear's only sheet action: in Alt Mode, a space of
+      // Rough Terrain - rules/plugins/effects/rough-terrain-space.mjs).
+      await firePosted(this.actor, this);
     } else if (this.type == 'perk') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -932,9 +879,6 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'power') {
-      // Relentless Blows and the like - a Power that grants attacks (mechanics/actions/action-perks.mjs).
-      await onPowerUsed(childRoller || this.actor, this);
-
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
       const rollMode = game.settings.get('core', 'rollMode');
@@ -972,65 +916,49 @@ export class Essence20Item extends Item {
         return;
       }
 
-      // Once-per-encounter weapon effects (Turbo Thunder Cannon's Energy Attack, Wing Missile
-      // Salvo) - see items/attacks/limited-weapon-effects.mjs's own doc comment. Checked before any of
+      // An item rule's early BeforeRoll refusal (the once-per-encounter weapon effects: Turbo Thunder Cannon's
+      // Energy Attack, Wing Missile Salvo - rules/plugins/rolls/early-before-roll.mjs). Checked before any of
       // the pre-roll work below, refunding the action economy spend just like a cancelled roll,
       // so a blocked attack never costs the actor their turn.
-      const weaponEffectSourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource;
-      if (isLimitedWeaponEffect(weaponEffectSourceId) && !canRollLimitedWeaponEffect(roller, weaponEffectSourceId)) {
+      const { earlyRollRefusal } = await import("../rules/plugins/rolls/early-before-roll.mjs");
+      if (earlyRollRefusal(roller, this, dataset) !== null) {
         if (spent?.spendId) {
           await refund(roller, spent.spendId);
         }
 
-        ui.notifications.warn(game.i18n.format('E20.LimitedWeaponEffectAlreadyUsed', { name: this.name }));
         return;
       }
 
-      // Bring It All Down (Decepticon Directive, Demolitionist Focus, 20th level, p.57) - see
-      // items/attacks/bring-it-all-down.mjs's own doc comment. Resolved before AoE placement (rather
-      // than as a Roll Options Dialog checkbox like most declared-intent Perks) because its own
-      // radius-doubling option has to be known before the shape is even placed. A no-op prompt on
-      // a non-explosive attack or without the Perk - see pickBringItAllDownEffect's own gate.
-      const bringItAllDownEffect = await pickBringItAllDownEffect(roller, this);
+      // An AttackChoice rule's pick (Bring It All Down - rules/plugins/combat/attack-choice.mjs): asked before AoE
+      // placement (rather than as a Roll Options Dialog checkbox) because a radius option has to be known before the
+      // shape is even placed. No prompt when no rule applies to this attack.
+      const attackChoice = await ruleAttackChoice(roller, this);
 
       // Area of Effect (GitHub #824) - see mechanics/combat/aoe-targeting.mjs's own doc comment. Only
       // Blast/AoE-shaped attacks (system.shape set) trigger this; an ordinary single-target or
       // Multiple-Targets attack rolls exactly as it always has, targets chosen by hand as usual.
-      // Concentrated Explosion / Concentrated Fire - mechanics/combat/target-riders.mjs#pickConcentratedArea.
-      const concentrated = await pickConcentratedArea(roller, this);
+      // Concentrated Explosion / Concentrated Fire - BeforeArea rules (rules/plugins/combat/before-area.mjs).
+      const concentrated = await ruleBeforeArea(roller, this);
       if (concentrated?.single) {
-        dataset = { ...dataset, concentratedFire: true };
+        dataset = { ...dataset, ...concentrated.dataset };
         const first = game.user.targets.first();
         canvas.tokens?.setTargets?.(first ? [first.id] : []);
       }
 
       if (this.system.shape && !concentrated?.single) {
-        let aoeTokens = await placeAoeTemplate(roller, this, {
-          radiusMultiplier: bringItAllDownEffect == 'radius' ? 2 : 1,
+        const aoeTokens = await placeAoeTemplate(roller, this, {
+          radiusMultiplier: attackChoice.radiusMultiplier,
           radiusDeltaFeet: concentrated?.radiusDeltaFeet ?? 0,
           shapeOverride: concentrated?.shape ?? null,
         });
 
-        // Shaped Charges (Artillery Focus, 7th level, p.81) - see its own doc comment. Runs
-        // before Horseshoes and Handgrenades below so an excluded target dodges that flat-damage
-        // tax too, not just the attack roll itself.
-        aoeTokens = await applyShapedCharges(roller, this, aoeTokens);
-
-        // Horseshoes and Handgrenades (Artillery Focus, 18th level, p.82) - see its own doc
-        // comment. Reuses whatever's left of the AoE shape's own catch (after Shaped Charges'
-        // exclusions above), applied unconditionally before the attack roll itself even happens.
-        await applyHorseshoesAndHandgrenades(roller, this, aoeTokens);
+        // Shaped Charges - a BeforeArea exclude rule. It re-targets what remains, so the roll (and BeforeRoll rules such as
+        // Horseshoes and Handgrenades' flat damage) sees it.
+        await ruleAreaExclusions(roller, this, aoeTokens);
       }
 
-      // Mighty Strikes (Blitzer Focus, 17th level, p.98) - see its own doc comment. Independent
-      // of system.shape entirely (a Might melee weapon never has one set) - targets everyone
-      // within the attacker's own reach automatically, no click required.
-      await applyMightyStrikes(roller, this);
-
-      // No Need to Aim (Vanguard base, 20th level, p.111) - see its own doc comment. Also
-      // independent of system.shape - a Multiple Targets attack targets normally via ordinary
-      // Foundry targeting, not a placed shape.
-      await applyNoNeedToAim(roller, this);
+      // Mighty Strikes and No Need to Aim are BeforeRoll rules on their own items (they set / damage the
+      // targets just before the Roll Options Dialog).
 
       let weaponDataset = {};
       // A detonated bomb rolls its planter's Technology (items/attacks/planted-bombs.mjs).
@@ -1058,30 +986,18 @@ export class Essence20Item extends Item {
         shiftUp: totalShiftUp,
         shiftDown,
         isSpecialized,
-        // Bring It All Down - see its own comment above. Read back in dice.mjs at the three sites
-        // matching RAW's other options (the shift computation, damageBonusValue, and the Armor
+        // The AttackChoice pick - read back in dice.mjs (the shift computation, damageBonusValue, and the Armor
         // Piercing/ignoreArmor recompute).
-        bringItAllDownEffect,
+        attackChoiceShiftUp: attackChoice.shiftUp,
+        attackChoiceDamage: attackChoice.damage,
+        attackChoiceArmorPiercing: attackChoice.armorPiercing,
       };
 
       const weaponRollResult = await this._rollWithRefund(weaponDataset, roller, spent);
-      if (isLimitedWeaponEffect(weaponEffectSourceId) && !weaponRollResult?.cancelled) {
-        await markLimitedWeaponEffectUsed(roller, weaponEffectSourceId);
-      }
 
-      // Zord Mega-Weapon System (PR CRB, Zord Feature, p.139): "lasts for 1d2+1 attacks (hit or
-      // miss)" - counted here, as the attack is rolled, precisely because a miss still spends one.
-      await consumeMegaWeaponAttack(roller, this);
+      // (Zord Mega-Weapon System's "1d2+1 attacks (hit or miss)" is counted by an afterRoll Trigger on the Feature.)
 
-      // Salvaged - a Fumble (natural 1 and a failed test) destroys the weapon.
-      if (parentWeapon && weaponRollResult && !weaponRollResult.cancelled && weaponHasUpgrade(parentWeapon, TRAIT_UPGRADE.salvaged)
-        && (weaponRollResult.outcomes ?? []).some(outcome => outcome?.isFumble)) {
-        await parentWeapon.update({ 'system.equipped': false, 'flags.essence20.destroyed': true });
-        await ChatMessage.create({
-          speaker: ChatMessage.getSpeaker({ actor: roller }),
-          content: game.i18n.format('E20.WeaponSalvagedDestroyed', { name: roller.name, weapon: parentWeapon.name }),
-        });
-      }
+      // (Salvaged's Fumble is an afterRoll Trigger rule on the upgrade.)
 
       // Weapons changed for a while (items/attacks/weapon-perk-uses.mjs): Backblast's 1 Fire to everyone
       // within 5 feet (or the attacker, on a Fumble), Airburst's Prone/Impaired, one-use traps, and
@@ -1146,9 +1062,8 @@ export class Essence20Item extends Item {
             await addOngoingEffect(targetActor, {
               damageValue: result.damageValue,
               damageType: result.damageType,
-              // Potent Poison (Cobra Codex p.97): "Increase the duration of the poison's Ongoing effect
-              // by 1 round."
-              roundsRemaining: parentWeapon.system.ongoingDuration + (weaponHasUpgrade(parentWeapon, TRAIT_UPGRADE.potentPoison) ? 1 : 0),
+              // Potent Poison's extra round is an ItemModifier rule on the upgrade (derived ongoingDuration).
+              roundsRemaining: parentWeapon.system.ongoingDuration,
               sourceName: parentWeapon.name,
             });
           }
@@ -1201,39 +1116,23 @@ export class Essence20Item extends Item {
         return;
       }
 
-      // Power Conservationist / Power Mastery (Knights of Canterlot, General Perks, p.38) - see
-      // POWER_CONSERVATIONIST_ID's own comment above. The roll itself uses only the downshift
-      // already lingering from an earlier cast - THIS spell's own cost is applied to
-      // system.skills.spellcasting.shiftDown afterward instead (still below), so it doesn't
-      // affect the Skill Test being made to cast it.
-      const deferCost = actorHasPerk(this.actor, POWER_CONSERVATIONIST_ID)
-        || actorHasPerk(this.actor, POWER_MASTERY_ID);
+      // SpellCostDefer rules (Power Conservationist / Power Mastery - rules/plugins/resources/spell-cost-defer.mjs). The
+      // roll itself uses only the downshift already lingering from an earlier cast - THIS spell's own cost is applied to
+      // system.skills.spellcasting.shiftDown afterward instead (still below), so it doesn't affect the Skill Test being
+      // made to cast it.
+      const deferCost = ruleDefersSpellCost(this.actor, this);
       const shiftDown = deferCost ? priorDownshift : priorDownshift + castingCost;
 
-      // Enchant - see ENCHANT_ID's own comment above. Picked before the roll so a cancelled cast
-      // spends nothing.
+      // The spell's own PreCast rules (Enchant's / Get To Know's Skill, Bestow Expertise's Skill and name -
+      // rules/plugins/picks/pre-cast.mjs). Picked before the roll so a cancelled cast spends nothing.
+      if (!(await runPreCast(this.actor, this))) {
+        return;
+      }
+
       const sourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource;
-      const enchantSkill = sourceId == ENCHANT_ID ? await pickEnchantSkill() : null;
-      if (sourceId == ENCHANT_ID && !enchantSkill) {
-        return;
-      }
-
-      if (sourceId == BEAM_VOLLEY_ID) {
-        autoTargetBeamVolley(this.actor);
-      }
-
-      const bestowExpertiseChoice = sourceId == BESTOW_EXPERTISE_ID ? await pickBestowExpertise() : null;
-      if (sourceId == BESTOW_EXPERTISE_ID && !bestowExpertiseChoice) {
-        return;
-      }
 
       const mindBeamEffect = sourceId == MIND_BEAM_ID ? await pickMindBeamEffect() : null;
       if (sourceId == MIND_BEAM_ID && !mindBeamEffect) {
-        return;
-      }
-
-      const getToKnowSkill = sourceId == GET_TO_KNOW_ID ? await pickGetToKnowSkill() : null;
-      if (sourceId == GET_TO_KNOW_ID && !getToKnowSkill) {
         return;
       }
 
@@ -1255,14 +1154,7 @@ export class Essence20Item extends Item {
         shift,
         skill,
         shiftDown,
-        isEnchantAttempt: !!enchantSkill,
-        enchantSkill,
-        isBestowExpertiseAttempt: !!bestowExpertiseChoice,
-        bestowExpertiseSkill: bestowExpertiseChoice?.skill ?? null,
-        bestowExpertiseName: bestowExpertiseChoice?.name ?? null,
         mindBeamEffect,
-        isGetToKnowAttempt: !!getToKnowSkill,
-        getToKnowSkill,
       };
 
       await this._rollWithRefund(spellDataset, this.actor, spent);

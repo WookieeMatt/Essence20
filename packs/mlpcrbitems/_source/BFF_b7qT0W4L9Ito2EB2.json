@@ -5,6 +5,11 @@
   "_id": "b7qT0W4L9Ito2EB2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose your BFFs","steps":[{"do":"pickMany","key":"bffs","from":"team","notSelf":true,"count":"max(1, @actor.system.essences.social.max)","record":true,"legacy":"actor.flags.essence20.bffs","prompt":"Your BFFs (up to your Social Essence)"}]},
+      {"type":"ActionCost","label":"Lend Assistance to a BFF as a Free action","action":"lendAssistance","to":"free","ask":"E20.ActionPerkAskBff","limit":{"per":"turn","key":"bffAssist"},"when":["picked:b7qT0W4L9Ito2EB2:bffs"]},
+      {"type":"Assist","label":"Spend a Friendship Point to assist a BFF unqualified","side":"give","effect":"pay","cost":{"resource":{"storyPoints":true},"amount":1},"prompt":"E20.BffSpendToAssist","when":["target:pickedBy:b7qT0W4L9Ito2EB2:bffs"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose your BFFs (up to your Social score). Automatic: once per round you can Lend Assistance to a BFF as a Free action, and a Friendship Point lets you assist when you aren't qualified.</p>"

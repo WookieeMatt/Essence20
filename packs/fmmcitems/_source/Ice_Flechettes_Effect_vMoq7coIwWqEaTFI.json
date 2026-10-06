@@ -5,6 +5,9 @@
   "_id": "vMoq7coIwWqEaTFI",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Ice Flechettes: armor stripped","outcome":"x2","when":["item:own"],"steps":[{"do":"applyCondition","condition":"armorStripped","rounds":1,"to":"target"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: rolls Targeting against one target's Toughness for 2 Cold damage.</p><p>Left to the table: removing the target's armor Defense bonuses on a Critical Success.</p>"

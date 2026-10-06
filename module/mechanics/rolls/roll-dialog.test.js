@@ -86,98 +86,94 @@ describe("_isUntrainedSnag", () => {
     });
   });
 
-  describe("Green (Transformers CRB, General Perk, p.109)", () => {
-    const GREEN_ID = "Compendium.essence20.tf_crb.Item.7t0TYx5BMrEHg1BE";
+  // Green is an UntrainedSnagImmunity rule on each printing now (rules/plugins/rolls/untrained-snag-immunity.mjs); its uses
+  // are counted under the rule's own limit (flags.essence20.ruleUses.<item id>-0).
+  function greenRules(file) {
+    return JSON.parse(readFileSync(`packs/${file}`, 'utf8')).system.rules;
+  }
 
-    function makeGreenActor({ combat = { id: 'combat1' }, stored } = {}) {
-      game.combat = combat;
-      return {
-        ...makeActor([GREEN_ID]),
-        getFlag: jest.fn(() => stored),
-        setFlag: jest.fn(),
-      };
-    }
+  function makeGreenActor(file, { combat = null, stored } = {}) {
+    game.combat = combat;
+    return {
+      items: [{ id: 'green', type: 'perk', flags: {}, system: { rules: greenRules(file) } }],
+      getFlag: jest.fn((scope, key) => (key == 'ruleUses.green-0' ? stored : undefined)),
+      setFlag: jest.fn(),
+    };
+  }
+
+  describe("Green (Transformers CRB, General Perk, p.109)", () => {
+    const FILE = 'tfcrbitems/_source/Green_7t0TYx5BMrEHg1BE.json';
+    const inCombat = { id: 'combat1' };
 
     afterEach(() => {
       game.combat = null;
     });
 
     test("false (suppressed) with uses remaining, and marks the count used", async () => {
-      const actor = makeGreenActor({ stored: { epoch: 1, window: 'encounter', count: 1 } });
+      const actor = makeGreenActor(FILE, { combat: inCombat, stored: { epoch: 1, window: 'encounter', count: 1 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
 
       expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'greenUsesThisEncounter', { epoch: 1, window: 'encounter', count: 2 },
+        'essence20', 'ruleUses.green-0', { epoch: 1, window: 'encounter', count: 2 },
       );
     });
 
     test("true once all 3 uses this combat are spent", async () => {
-      const actor = makeGreenActor({ stored: { epoch: 1, window: 'encounter', count: 3 } });
+      const actor = makeGreenActor(FILE, { combat: inCombat, stored: { epoch: 1, window: 'encounter', count: 3 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(true);
       expect(actor.setFlag).not.toHaveBeenCalled();
     });
 
     test("resets to 0 uses when the stored count is from a different Combat", async () => {
-      const actor = makeGreenActor({ stored: { epoch: 0, window: 'encounter', count: 3 } });
+      const actor = makeGreenActor(FILE, { combat: inCombat, stored: { epoch: 0, window: 'encounter', count: 3 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
       expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'greenUsesThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
+        'essence20', 'ruleUses.green-0', { epoch: 1, window: 'encounter', count: 1 },
       );
     });
 
     test("unconstrained (always false) outside of combat", async () => {
-      const actor = makeGreenActor({ combat: null, stored: { epoch: 1, window: 'encounter', count: 3 } });
+      const actor = makeGreenActor(FILE, { stored: { epoch: 1, window: 'encounter', count: 3 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
       expect(actor.setFlag).not.toHaveBeenCalled();
     });
-
   });
 
   // Green (GI Joe CRB, General Perk, p.131) - unlike the Transformers CRB printing above, RAW here
-  // reads "Three times per mission," a strictly wider window than a single encounter - see
-  // GREEN_GIJ_ID's own comment in roll-dialog.mjs. Tracked with the scene counter instead, and
-  // available outside of combat too.
+  // reads "Three times per mission," a strictly wider window than a single encounter. Tracked with
+  // the scene counter instead, and available outside of combat too.
   describe("Green (GI Joe CRB, General Perk, p.131)", () => {
-    const GREEN_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.oelHthPlqIq4eDpp";
-
-    function makeGreenActor({ combat = null, stored } = {}) {
-      game.combat = combat;
-      return {
-        ...makeActor([GREEN_GIJ_ID]),
-        getFlag: jest.fn(() => stored),
-        setFlag: jest.fn(),
-      };
-    }
+    const FILE = 'gijcrbitems/_source/Green_oelHthPlqIq4eDpp.json';
 
     afterEach(() => {
       game.combat = null;
     });
 
     test("false (suppressed) with uses remaining outside of combat, and marks the count used", async () => {
-      const actor = makeGreenActor({ stored: { epoch: 1, window: 'scene', count: 1 } });
+      const actor = makeGreenActor(FILE, { stored: { epoch: 1, window: 'scene', count: 1 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
 
       expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'greenUsesThisScene', { epoch: 1, window: 'scene', count: 2 },
+        'essence20', 'ruleUses.green-0', { epoch: 1, window: 'scene', count: 2 },
       );
     });
 
     test("also works with an active combat", async () => {
-      const actor = makeGreenActor({ combat: { id: 'combat1' }, stored: { epoch: 1, window: 'scene', count: 1 } });
+      const actor = makeGreenActor(FILE, { combat: { id: 'combat1' }, stored: { epoch: 1, window: 'scene', count: 1 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(false);
       expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'greenUsesThisScene', { epoch: 1, window: 'scene', count: 2 },
+        'essence20', 'ruleUses.green-0', { epoch: 1, window: 'scene', count: 2 },
       );
     });
 
     test("true once all 3 uses this mission (scene) are spent", async () => {
-      const actor = makeGreenActor({ stored: { epoch: 1, window: 'scene', count: 3 } });
+      const actor = makeGreenActor(FILE, { stored: { epoch: 1, window: 'scene', count: 3 } });
 
       expect(await rollDialog._isUntrainedSnag({ shift: 'd20' }, actor)).toBe(true);
       expect(actor.setFlag).not.toHaveBeenCalled();

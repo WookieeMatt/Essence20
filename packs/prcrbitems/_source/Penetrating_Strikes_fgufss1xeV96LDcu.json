@@ -5,6 +5,10 @@
   "_id": "fgufss1xeV96LDcu",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Penetrating Strikes: on for 10 rounds","event":"powerUsed","when":["item:own","not:self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":true,"until":"rounds:10"},{"do":"chat","text":"{name}'s Martial Arts attacks ignore armor."}]},
+      {"type":"Defense","label":"Penetrating Strikes (ignores armor)","defense":"any","mode":"noArmor","outgoing":true,"when":["self:toggle:on","item:type:weaponEffect","weapon:trait:martialArts"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 Power; for 10 rounds your Martial Arts attacks ignore armor bonuses to Toughness. It ends on its own (or when the Combat ends), and can then be used again.</p>"

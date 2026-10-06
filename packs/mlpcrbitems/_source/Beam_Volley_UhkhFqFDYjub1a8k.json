@@ -5,6 +5,9 @@
   "_id": "UhkhFqFDYjub1a8k",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"PreCast","label":"Beam Volley (targets the 3 nearest enemies)","steps":[{"do":"setTargets","to":"nearestEnemies:3"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Cast: automatically targets the three nearest enemies and makes one Spellcasting attack against them. Each hit takes 2 Energy damage.</p><p>Left to the table: choosing three different targets in range.</p>"
@@ -25,7 +28,9 @@
     },
     "isSpecialized": false,
     "range": "Line of Sight",
-    "tier": "virtuoso"
+    "tier": "virtuoso",
+    "damageValue": 2,
+    "damageType": "element"
   },
   "effects": [],
   "sort": 0,

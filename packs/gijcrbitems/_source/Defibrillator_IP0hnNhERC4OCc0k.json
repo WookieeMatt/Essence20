@@ -5,6 +5,10 @@
   "_id": "IP0hnNhERC4OCc0k",
   "img": "systems/essence20/assets/icons/gear/defibrilate.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Defibrillator (a Defeated character)","cost":{"action":"standard"},"when":["not:self:marked:defibrillating"],"steps":[{"do":"target","min":1,"max":1,"beforeCost":true},{"do":"require","check":["target:status:defeated"],"message":"Target a Defeated character first.","beforeCost":true},{"do":"heal","to":"target","amount":1,"when":["not:combat:exists"]},{"do":"chat","text":"{name}'s Defibrillator brings {target} back with 1 Health.","when":["not:combat:exists"]},{"do":"spendQuantity","item":"self","amount":1,"deleteAtZero":true,"when":["not:combat:exists"]},{"do":"mark","key":"defibrillating","to":"self","until":"combat","count":"@combat.round + 6","when":["combat:exists"]},{"do":"mark","key":"defibrillated","to":"target","perSetter":true,"until":"combat","when":["combat:exists"]},{"do":"chat","text":"{name} starts the Defibrillator on {target} - it takes effect at the start of round {@combat.round + 6}.","when":["combat:exists"]}]},
+      {"type":"Trigger","event":"roundStart","label":"Defibrillator (six rounds run)","when":["self:marked:defibrillating","calc:@combat.round - @mark.defibrillating>=0"],"steps":[{"do":"heal","to":"markedByMe:defibrillated","filter":["target:status:defeated"],"amount":1},{"do":"unmark","key":"defibrillated","to":"markedByMe:defibrillated","perSetter":true},{"do":"unmark","key":"defibrillating","to":"self"},{"do":"spendQuantity","item":"self","amount":1,"deleteAtZero":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: target a Defeated character. In combat they get 1 Health back after 6 rounds; outside combat it's immediate. The Defibrillator is used up.</p>"

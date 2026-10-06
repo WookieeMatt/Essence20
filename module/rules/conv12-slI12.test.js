@@ -169,7 +169,7 @@ const { legacyChoiceUpdates } = await import('./legacy-choices.mjs');
 const { pickedRerollGrants, legacyRerollEffects } = await import('./plugins/rolls/ally-and-picked-scopes.mjs');
 const { runPostRoll } = await import('../mechanics/item-hooks.mjs');
 const { requisitionDif } = await import('../mechanics/resources/requisition.mjs');
-const { tempestDamage } = await import('../items/magic/temper-tempest-sorcery-builder.mjs');
+const { castHitDamage } = await import('./plugins/combat/cast-hit-damage.mjs');
 const { getCostOptions, recordRuleUse, resetDailyActionPerkUses } = await import('../mechanics/actions/action-perks.mjs');
 await import('./actions.mjs');
 
@@ -226,9 +226,10 @@ describe('More Bang for your Buck: Temper Tempest\'s storm', () => {
   test('the storm\'s lightning is 3, 4 with More Bang (its cast HitRider read for the spell)', async () => {
     const tempest = () => makeItem({ name: 'Temper Tempest', type: 'spell', flags: { core: { sourceId: BOOK.temperTempest } } });
     const plain = makeActor([tempest()]);
-    expect(await tempestDamage(plain)).toBe(3);
+    // The storm's strike is a damage {asCastHit} step on the spell (rules/conv15-items2.test.js).
+    expect(await castHitDamage(plain, plain.items.find(item => item.name == 'Temper Tempest'), 3, 'element')).toBe(3);
     const mage = makeActor([packItem('moreBang'), tempest()]);
-    expect(await tempestDamage(mage)).toBe(4);
+    expect(await castHitDamage(mage, mage.items.find(item => item.name == 'Temper Tempest'), 3, 'element')).toBe(4);
   });
 
   test('its cast bonus still lands on a Fireball row (unchanged), and not on a non-elemental spell', async () => {

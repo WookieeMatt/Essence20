@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"NoFumbleStoryPoint","label":"No Story Point for a Fumble in the agency Skill","when":["skill:choiceOf:Compendium.essence20.across_the_stars.Item.bGKG7artYs7uHHz4"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a Fumble on your agency's Skill (the Skill chosen on the Agency Perk) does not give you a Story Point.</p>"

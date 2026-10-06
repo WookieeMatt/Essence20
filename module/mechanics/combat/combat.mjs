@@ -1,394 +1,41 @@
-import { registerUse, runAfterDamage, runDamageModifiers } from "../item-hooks.mjs";
-import { renegadeHolderFor } from "../companions/summons.mjs";
+import { runAfterDamage, runDamageModifiers } from "../item-hooks.mjs";
 import { isCarried } from "../actions/team-actions.mjs";
 import { onOwnerDefeated } from "../companions/companions.mjs";
 import { onBondedHit } from "../companions/bonded-partners.mjs";
-import { protomatterReduce } from "../resources/kits.mjs";
 import { isSealedAboard } from "../vehicles/vehicle-upgrades.mjs";
-import {
-  actorHasPerk, clearPendingBonus, findPerk, getPendingBonus, hasUsedThisEncounter, markUsedThisEncounter,
-} from "../characters/perks.mjs";
-import { isPersonalShieldActive } from "../../items/defenses/personal-shield.mjs";
-import { PENDING_ELEMENTAL_SHIELD_FLAG_KEY } from "../../items/social/team-buffs.mjs";
+import { consumeDamageShield } from "../../rules/plugins/combat/damage-shield.mjs";
 import { isWisdomOfTheEldersActive } from "../../items/forms/wisdom-of-the-elders.mjs";
 import { applyAtAllCostDamage, isAtAllCostActive } from "../../items/defenses/at-all-cost.mjs";
-import { grantGridElementalAdaptationResistance } from "../../items/defenses/grid-elemental-adaptation.mjs";
-import { AEGIS_CLAMPED_FLAG, isRecklessAbandonActive } from "../../items/rolls/reckless-abandon.mjs";
 import { E20 } from "../../util/config.mjs";
 import { applyEssenceAttack, isEssenceDamageType } from "./essence-attack.mjs";
-import { isMonsterFormActive } from "../../items/forms/monster-morph.mjs";
 import { grantNotOnMyWatchReaction } from "../../items/defenses/not-on-my-watch.mjs";
-import { actorHasZordFeature } from "../vehicles/zord-features.mjs";
+import { ruleDriverlessEssence } from "../../rules/plugins/zords/driverless-essence.mjs";
+import { ruleDamageImmune } from "../../rules/plugins/combat/damage-immunity.mjs";
 import { getMegaformParticipants } from "../vehicles/megaform-participants.mjs";
 import { deactivateShynessOnDamage } from "../../items/resources/emotional-mastery.mjs";
-import { deactivatePhantomOnDamage } from "../../items/senses/phantom.mjs";
-import { consumeSelfPreservationImmunity } from "../../items/defenses/self-preservation.mjs";
-import { grantSceneResistance } from "../world/scene-resistances.mjs";
 
-// Relic Key (PR CRB p.140, prerequisite Auxiliary Zord) - see getDefenseValue's own doc comment
-// below for the Willpower/Cleverness default this grants while unpiloted.
-const PR_CRB = "Compendium.essence20.pr_crb.Item.";
-const RELIC_KEY_ID = `${PR_CRB}uSlClAv3oJjf54pa`;
+// (Relic Key's Willpower / Cleverness default while unpiloted is a DriverlessEssence rule on the Feature -
+// rules/plugins/zords/driverless-essence.mjs, read in getDefenseValue below.)
 
-// Zord Sentience (Beneath the Helmet, Zord Feature, p.72, prerequisite Energem Infusion): "The
-// Zord has a default Smarts and Social of 2 when no crew is currently driving." Same
-// unpiloted-default-Essence shape as Relic Key just above, a lower flat value - see
-// getDefenseValue's own doc comment below. The reciprocal "Driving (Autopilot) Skill gains ↑1"
-// half lives in dice.mjs instead (a Skill Test shift, not a Defense).
-const BENEATH_THE_HELMET = "Compendium.essence20.beneath_the_helmet.Item.";
-const ZORD_SENTIENCE_ID = `${BENEATH_THE_HELMET}idhVrfBIKELsl3OW`;
+// (Zord Sentience's Essence 2 while unpiloted is a DriverlessEssence rule on the Feature too; Impenetrable Shield's EMP
+// Immunity and Energy Mastery's Immunity to its Energy Affinity Element are DamageImmunity rules, read below
+// (rules/plugins/combat/damage-immunity.mjs); Life Supporting's recharge is a Use rule on the Upgrade.)
 
-// Flame Warlord (Finster's Monster-Matic Cookbook, 20th level) - its own "while in Monster Form,
-// reduce incoming damage" clause is built here, see getWarlordDamageReduction's own doc comment
-// below. (Frost and Stone Warlord's reductions are their items' own DamageModifier rules; the other
-// 3 Warlords - Cruel/Thorn/Venom - have no damage-reduction clause of their own, their own built
-// pieces live in dice.mjs instead.)
-const FMMC = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.";
-const FLAME_WARLORD_ID = `${FMMC}TPrNnDxBKHIajafY`;
+// (The Warlords' incoming-damage reductions - Flame, Frost and Stone - are their items' own DamageModifier rules.)
 
-/**
- * Flame Warlord (Finster's Monster-Matic Cookbook, 20th level, p.288): a flat incoming-damage
- * reduction while in Monster Form - non-Element damage is reduced by 1, subtracted from the
- * incoming value before Immunity/Resistance processing.
- * @param {Actor} actor
- * @param {String} damageType
- * @returns {Number}
- */
-function getWarlordDamageReduction(actor, damageType) {
-  if (!isMonsterFormActive(actor)) {
-    return 0;
-  }
-
-  if (actorHasPerk(actor, FLAME_WARLORD_ID) && !ENERGY_DAMAGE_TYPES.has(damageType)) {
-    return 1;
-  }
-
-  return 0;
-}
-
-// Aegis (GI Joe CRB, Tank Focus, 20th level, p.99) - see its own doc comment in
-// reckless-abandon.mjs. Checked here alongside Defender's Oath/Immortal Rebel Soul's identical
-// "clamp newValue at 1 instead of 0" shape.
-const AEGIS_ID = "Compendium.essence20.gi_joe_crb.Item.0ZTjZ36gN74889am";
-// Not Done Yet - see its own check near AEGIS_ID's identical-shaped clamp below.
-const NOT_DONE_YET_ID = "Compendium.essence20.gi_joe_crb.Item.wGAWnAM5zUgcNP9c";
-
-const IMPENETRABLE_SHIELD_ID = "Compendium.essence20.gi_joe_crb.Item.eEUl7OA9yWAk0QD3";
-
-// We are the Coinless (Through the Shattered Grid, Coinless Resistance Origin Benefit, p.20) - see
-// findCoinlessRescuers's own doc comment below.
-const WE_ARE_THE_COINLESS_ID = "Compendium.essence20.through_the_shattered_grid.Item.DRHPP4jmrjNa53ZA";
-
-/**
- * We are the Coinless (Through the Shattered Grid, Origin Benefit, p.20): "Whenever another member
- * of your team would be Defeated in a scene, you may instead spend 1 Personal Power to have that
- * member return to 1 Health and gain the Impaired Condition for the remainder of the scene."
- *
- * Same ally-held Defeat-prevention scan as findWeAllGoHomeHolder just above, with three real
- * differences taken straight from RAW rather than copied across:
- * - RAW says "ANOTHER member of your team", so unlike We All Go Home this deliberately has NO self
- *   case - the holder can't rescue themselves with it.
- * - The limit is the Personal Power cost, not a frequency cap: RAW states no once-per-scene/
- *   encounter gate at all, so there's no flag here. A holder with the Power to spare can do this
- *   repeatedly, which is what the text actually says.
- * - RAW never gates this on the rescuer's own state, so a Defeated holder isn't excluded (unlike
- *   Defender's Oath, whose own text does say "and you aren't Defeated"). Left faithful rather than
- *   tightened on a guess.
- * "Can see"/range is not a factor here either - RAW scopes it to the team, not a distance - so this
- * matches on disposition alone, the same team proxy mechanics/combat/nearby-allies.mjs already uses.
- * @param {Actor} actor   The actor about to be reduced to 0 Health.
- * @returns {Array<Actor>}   Teammates who hold the Perk and can afford the 1 Power.
- */
-function findCoinlessRescuers(actor) {
-  const actorToken = actor.getActiveTokens?.()?.[0];
-  if (!actorToken || !canvas?.tokens) {
-    return [];
-  }
-
-  const rescuers = [];
-  for (const token of canvas.tokens.placeables) {
-    if (token === actorToken || !token.actor || token.document.disposition !== actorToken.document.disposition) {
-      continue;
-    }
-
-    if (actorHasPerk(token.actor, WE_ARE_THE_COINLESS_ID)
-      && (token.actor.system?.powers?.personal?.value ?? 0) >= 1 && !rescuers.includes(token.actor)) {
-      rescuers.push(token.actor);
-    }
-  }
-
-  return rescuers;
-}
-
-/**
- * "You MAY instead spend 1 Personal Power": asks whether one of the eligible teammates spends it
- * (and which), rather than draining a holder's Power unasked.
- * @param {Actor} actor   The actor about to be Defeated.
- * @param {Array<Actor>} rescuers
- * @returns {Promise<Actor|null>}   The teammate who spends it, or null if nobody does.
- */
-async function askCoinlessRescuer(actor, rescuers) {
-  const choice = await foundry.applications.api.DialogV2.wait({
-    window: { title: findPerk(rescuers[0], WE_ARE_THE_COINLESS_ID)?.name ?? 'We are the Coinless' },
-    classes: ["window-app", "e20-window"],
-    buttons: [
-      ...rescuers.map((rescuer, i) => ({
-        action: `rescuer${i}`, label: game.i18n.format('E20.WeAreTheCoinlessRescue', { rescuer: rescuer.name, actor: actor.name }),
-      })),
-      { action: 'decline', label: game.i18n.localize('E20.DialogCancelButton') },
-    ],
-    rejectClose: false,
-  });
-  const index = String(choice ?? '').startsWith('rescuer') ? Number(String(choice).slice('rescuer'.length)) : -1;
-  return rescuers[index] ?? null;
-}
-
-// Immortal Rebel Soul (WTNV Citizen's Guide, Soldier Role, StrexCorp Rebel Focus, p.46) - see its
-// own check below.
-const IMMORTAL_REBEL_SOUL_ID = "Compendium.essence20.wtnv_citizens_guide.Item.SYFScAH8lDshgLNM";
-
-
-// Life Supporting (Cobra Codex, Restricted Battledress Upgrade, p.101): "If you would be Defeated
-// after being reduced to 0 Health, you immediately regain 1 Health. You can't use Life Support
-// again until you succeed at a DIF 20 Technology Skill Test that takes 10 minutes." Same self-
-// clamp-to-1-Health shape as Renegade Commander just above ("regain 1 Health" and "drop to 1
-// Health instead" land on the same actor state from 0), but this is a worn armor Upgrade Item, not
-// a Perk - actorHasPerk can't see it, so this checks for the real Upgrade Item directly (the same
-// "unattached armor-type Upgrade, by sourceId" gate Static Slide Inhibitor's own check in dice.mjs
-// already establishes). Once it has fired, the Upgrade stays spent (LIFE_SUPPORTING_SPENT_FLAG on
-// the Upgrade) until its Use button's DIF 20 Technology Skill Test succeeds.
-const LIFE_SUPPORTING_ID = "Compendium.essence20.cobra_codex.Item.VokHpoLjUYTzA3Xk";
-export const LIFE_SUPPORTING_SPENT_FLAG = 'lifeSupportingSpent';
-const LIFE_SUPPORTING_RECHARGE_DIF = 20;
-
-const isLifeSupporting = item => item?.type == 'upgrade'
-  && (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == LIFE_SUPPORTING_ID;
-
-/**
- * The worn Life Supporting Upgrade that is ready to fire, if any - see LIFE_SUPPORTING_ID's own
- * comment above.
- * @param {Actor} actor
- * @returns {Item|undefined}
- */
-function readyLifeSupporting(actor) {
-  return actor.items?.find?.(item => isLifeSupporting(item) && item.system?.type == 'armor'
-    && !item.getFlag?.('essence20', 'parentId') && !item.flags?.essence20?.[LIFE_SUPPORTING_SPENT_FLAG]);
-}
-
-/**
- * Life Supporting's recharge: "You can't use Life Support again until you succeed at a DIF 20
- * Technology Skill Test that takes 10 minutes."
- * @param {Item} item   The spent Life Supporting Upgrade.
- * @param {Function} [rollTest]   (actor, skill, dif) => {success}; defaults to grants.mjs#rollTest.
- * @returns {Promise<String>}   The chat line.
- */
-export async function rechargeLifeSupporting(item, rollTest = null) {
-  const actor = item.parent;
-  const roll = rollTest ?? (await import("../resources/grants.mjs")).rollTest;
-  const { success } = await roll(actor, 'technology', LIFE_SUPPORTING_RECHARGE_DIF);
-  if (!success) {
-    return game.i18n.format('E20.O1EmulatorNotRecharged', { name: actor.name, item: item.name });
-  }
-
-  await item.unsetFlag('essence20', LIFE_SUPPORTING_SPENT_FLAG);
-  return game.i18n.format('E20.O1EmulatorRecharged', { name: actor.name, item: item.name });
-}
-
-registerUse({
-  id: 'lifeSupportingRecharge',
-  matches: isLifeSupporting,
-  canUse: item => !!item.flags?.essence20?.[LIFE_SUPPORTING_SPENT_FLAG],
-  run: item => rechargeLifeSupporting(item),
-});
-
-
-// Elemental Shield (Beneath the Helmet, Aqua Ranger, 9th/18th level, p.42) - see
-// team-buffs.mjs's own doc comment on PENDING_ELEMENTAL_SHIELD_FLAG_KEY. "Energy weapon" is this
-// project's own established equivalence of PR's "Energy" display term with the Element damage-type
-// family (see the Element/Energy reclassification pass's own doc comments) - 'element' itself plus
-// its enumerated sub-types confirmed by the Weapon Effects and Traits page (Acid/Cold/Electric/
-// Electromagnetic/Fire/Laser/Sonic). Poison and Psychic are real, but RAW-distinct, damage types -
-// not part of the Element family - so they're deliberately excluded here.
+// "Energy" damage: this project's own established equivalence of PR's "Energy" display term with the Element damage-type
+// family (see the Element/Energy reclassification pass's own doc comments) - 'element' itself plus its enumerated
+// sub-types confirmed by the Weapon Effects and Traits page (Acid/Cold/Electric/Electromagnetic/Fire/Laser/Sonic).
+// Poison and Psychic are real, but RAW-distinct, damage types - not part of the Element family - so they're
+// deliberately excluded here.
 export const ENERGY_DAMAGE_TYPES = new Set(['element', 'acid', 'cold', 'electric', 'emp', 'fire', 'laser', 'sonic']);
 
-/**
- * Elemental Shield's own "ignore N Energy damage from your next attack by an energy weapon"
- * clause - a one-shot reduction against the next ENERGY hit this actor actually takes, consumed
- * (and cleared) the moment it applies. Only consumes the banked flag when it would actually do
- * something (amount > 0 and the damage type qualifies), so an already-zeroed hit (Immune, a 0
- * roll) doesn't waste the grant for nothing.
- * @param {Actor} actor
- * @param {String} damageType
- * @param {Number} amount   The damage about to be applied, after Immunity has already zeroed it.
- * @returns {Promise<Number>}   The (possibly reduced) amount, floored at 0.
- */
-async function consumeElementalShieldReduction(actor, damageType, amount) {
-  if (amount <= 0 || !ENERGY_DAMAGE_TYPES.has(damageType)) {
-    return amount;
-  }
+// (Hardened Armor's Resistance after a non-Blunt / Sharp hit is a takesDamage Trigger with a grantResistance step on the
+// Perk - rules/plugins/combat/grant-resistance.mjs.)
 
-  const pending = getPendingBonus(actor, PENDING_ELEMENTAL_SHIELD_FLAG_KEY);
-  if (!pending) {
-    return amount;
-  }
-
-  await clearPendingBonus(actor, PENDING_ELEMENTAL_SHIELD_FLAG_KEY);
-  return Math.max(0, amount - pending.amount);
-}
-
-// Dig Deep (WTNV Citizen's Guide, General Perk, p.47): "Once per scene, you can ignore 1 damage,
-// but you suffer a Snag on all Skill Tests until the end of your next turn." Two independent
-// banks from one click (see its own dispatch in banked-buffs.mjs) - this one-shot damage
-// reduction (any damage type, unlike Elemental Shield's Energy-only scope) consumed here, and an
-// unscoped Snag consumed in dice.mjs's own self-status section (same shape as Through the
-// Arches). "Until the end of your next turn" is approximated as "the next matching roll," this
-// project's usual duration idiom for a short window.
-export const PENDING_DIG_DEEP_FLAG_KEY = 'pendingDigDeep';
-
-/**
- * Dig Deep's own "ignore 1 damage" clause - see PENDING_DIG_DEEP_FLAG_KEY's own comment above.
- * @param {Actor} actor
- * @param {Number} amount   The damage about to be applied, after every earlier reduction.
- * @returns {Promise<Number>}   The (possibly reduced) amount, floored at 0.
- */
-async function consumeDigDeepReduction(actor, amount) {
-  if (amount <= 0) {
-    return amount;
-  }
-
-  const pending = getPendingBonus(actor, PENDING_DIG_DEEP_FLAG_KEY);
-  if (!pending) {
-    return amount;
-  }
-
-  await clearPendingBonus(actor, PENDING_DIG_DEEP_FLAG_KEY);
-  return Math.max(0, amount - pending.amount);
-}
-
-// Energy Mastery (Decepticon Directive, Elementalist Focus, 20th level, p.54): "you gain Edge on
-// attack Skill Tests with any weapon that deals damage of any of your chosen Elements and those
-// attacks inflict +1 damage. In addition, you gain Immunity to damage of the type you originally
-// chose for Energy Affinity." The Edge/+1-damage half lives in dice.mjs (a roll-time grant, same
-// shape as every other qualifying-attack check there); this constant/function only cover the
-// Immunity half, applied live in applyDamage() below (the same isEmpImmuneViaShield idiom just
-// below already establishes) rather than a persisted system.immunities write, since it's derived
-// from the Perk + Energy Affinity's own choice rather than a standalone toggle. "Any of your
-// chosen Elements" collapses to the single Energy Affinity choice - Energy Connection's own
-// Additional Energy Types option (a second chosen Element) isn't built, see ENERGY_CONNECTION_ID's
-// own comment in dice.mjs.
-const ENERGY_AFFINITY_ID = "Compendium.essence20.decepticon_directive.Item.DgFY0ZmAtClAobiA";
-const ENERGY_MASTERY_ID = "Compendium.essence20.decepticon_directive.Item.bjR8V1BEc3CfrrDu";
-
-/**
- * Energy Mastery's Immunity half - see ENERGY_MASTERY_ID's own comment above.
- * @param {Actor} actor
- * @param {String} damageType
- * @returns {Boolean}
- */
-function isEnergyMasteryImmune(actor, damageType) {
-  return actorHasPerk(actor, ENERGY_MASTERY_ID) && !!damageType
-    && findPerk(actor, ENERGY_AFFINITY_ID)?.system.choice == damageType;
-}
-
-// Hardened Armor (Across the Stars, Gold Ranger, 1st level, p.52) - this is the `perk`-type item
-// (the scaling Toughness-defense half is a separate, already-automated `rolePoints` sub-item read
-// generically by actor.mjs#_prepareDefenses, unrelated to this constant). "After suffering a
-// damage type other than Blunt or Sharp, you gain Resistance to that damage type... for the
-// remainder of the scene." See applyDamage's own grantHardenedArmorResistance call below.
-const HARDENED_ARMOR_ID = "Compendium.essence20.across_the_stars.Item.LVyy4985HSSKCnGs";
-// The two damage types RAW excludes from Hardened Armor's own Resistance grant.
-const HARDENED_ARMOR_EXCLUDED_TYPES = ['blunt', 'sharp'];
-
-/**
- * Hardened Armor's own Resistance-after-hit clause (see HARDENED_ARMOR_ID's own comment above):
- * once this actor actually suffers real damage of a given type, they become Resistant to that
- * type for the rest of the scene (mechanics/world/token-sync.mjs#grantSceneResistance - folded into
- * system.resistances, read by dice.mjs's own target-status Snag check, until the Scene Clock
- * starts a new scene) - a no-op if they already are.
- * @param {Actor} actor
- * @param {String} damageType
- * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
- */
-async function grantHardenedArmorResistance(actor, damageType, amount) {
-  if (amount > 0 && !HARDENED_ARMOR_EXCLUDED_TYPES.includes(damageType)
-    && actorHasPerk(actor, HARDENED_ARMOR_ID) && !actor.system.resistances?.[damageType]) {
-    await grantSceneResistance(actor, damageType);
-  }
-}
-
-// Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99): "when you are subjected to a non-attack
-// effect against your Toughness, the effect suffers a Snag. If the effect still meets or exceeds
-// your Toughness defense, you have resistance to the damage." The Snag is the item's own incoming
-// rule (system.rules); the resistance halves that effect's own damage, see toughEnoughDamage
-// below.
-const TOUGH_ENOUGH_ID = "Compendium.essence20.gi_joe_crb.Item.RoIa80w6EAZR0uFP";
-
-/**
- * Tough Enough's "you have resistance to the damage" for the effect that just met the holder's
- * Toughness: that effect's own damage, not every later hit of its type. Its roll is already made,
- * so Resistance's no-roll form applies - "the damage is automatically halved (round up)" (GI JOE
- * CRB p.170). Called by chat.mjs's Apply Damage handler on a non-attack effect against Toughness,
- * before the damage is applied.
- * @param {Actor} actor   The target.
- * @param {Number} damage
- * @returns {Number}   The damage to apply.
- */
-export function toughEnoughDamage(actor, damage) {
-  return damage > 0 && actorHasPerk(actor, TOUGH_ENOUGH_ID) ? Math.ceil(damage / 2) : damage;
-}
-
-// Cruel Warlord (Finster's Monster-Matic Cookbook, 20th level, p.284): "Whenever you... suffer
-// Psychic damage, you regain 2 Personal Power." (The "Fumble a Skill Test" half lives in
-// dice.mjs's own _rollSkillHelper instead, right where isFumble is already computed.)
-const CRUEL_WARLORD_ID = `${FMMC}F3TRKmoaUOtHrlzq`;
-
-/**
- * Cruel Warlord's own reactive Personal Power regen on taking Psychic damage - see
- * CRUEL_WARLORD_ID's own comment above. Same applyDamage()-hook shape as Sensitive.
- * @param {Actor} actor
- * @param {String} damageType
- * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
- */
-async function grantCruelWarlordPsychicRegen(actor, damageType, amount) {
-  if (amount > 0 && damageType == 'psychic' && actorHasPerk(actor, CRUEL_WARLORD_ID) && actor.system.powers?.personal) {
-    const newValue = Math.min(actor.system.powers.personal.max, actor.system.powers.personal.value + 2);
-    await actor.update({ 'system.powers.personal.value': newValue });
-  }
-}
-
-// Supreme Guardian (Through the Shattered Grid, Guardian of Eltar, 20th level, p.73) - bullet 3:
-// "Whenever you take Energy damage, you may roll a d20. If the roll is 10 or above, you regain 1
-// Eltarian Tech Point." (Bullet 1 - the AoE Blind-on-Morph - lives in items/attacks/supreme-guardian.mjs
-// and dice.mjs's own post-hit processing; bullet 2 - spend Eltarian Tech for bonus melee Power
-// Weapon damage - lives in dice.mjs. See that file's own doc comment for all 3 bullets together.)
-const SUPREME_GUARDIAN_ID = "Compendium.essence20.through_the_shattered_grid.Item.wrBndkBQoKkn3dLy";
-
-/**
- * Supreme Guardian's own passive Eltarian Tech regen - see SUPREME_GUARDIAN_ID's own comment
- * above. "You may roll" is approximated as an automatic roll, the same "a passive grant is always
- * exercised" idiom this project already applies to every other automatic check with no real
- * downside to rolling (a player declining a free chance at a resource regen is a vanishingly
- * unlikely edge case, not worth a confirmation prompt on every single Energy hit taken).
- * @param {Actor} actor
- * @param {String} damageType
- * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
- */
-async function grantSupremeGuardianTechRegen(actor, damageType, amount) {
-  if (amount <= 0 || !ENERGY_DAMAGE_TYPES.has(damageType) || !actorHasPerk(actor, SUPREME_GUARDIAN_ID)) {
-    return;
-  }
-
-  const eltarianTech = actor._getBaseRolePoints?.();
-  if (!eltarianTech) {
-    return;
-  }
-
-  const roll = await new Roll('1d20').evaluate();
-  if (roll.total >= 10) {
-    const newValue = Math.min(eltarianTech.system.resource.max, eltarianTech.system.resource.value + 1);
-    await eltarianTech.update({ 'system.resource.value': newValue });
-  }
-}
+// (Tough Enough's Resistance to a non-attack effect against Toughness is a CardResistance rule, read by chat.mjs's Apply
+// Damage; Cruel Warlord's 2 Personal Power on Psychic damage and Supreme Guardian's Eltarian Tech on Energy damage are
+// takesDamage Triggers on those Perks.)
 
 /**
  * Finds the actor currently driving the given vehicle/Zord, via its own system.actors crew map
@@ -490,25 +137,16 @@ export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignor
       return getDefenseValue(driver, defenseType, { ignoreArmor, ignoreArmorPoints, ignoreShield });
     }
 
-    // Relic Key (PR CRB p.140): "The Zord has a default Smarts and Social of 3 when the Relic
-    // Key is present but no crew is currently driving." Run through the same base + essence +
-    // bonus + armor + shield shape _prepareDefenses() uses (this Defense's own fields are still
-    // real and GM-editable even while unpiloted), substituting 3 for the missing Essence Score.
-    if (actor.type == 'zord' && actorHasZordFeature(actor, RELIC_KEY_ID)) {
-      const RELIC_KEY_ESSENCE = 3;
-      return (defense.base ?? 0) + RELIC_KEY_ESSENCE + (defense.bonus ?? 0)
+    // DriverlessEssence rules (Relic Key's "a default Smarts and Social of 3 when ... no crew is currently driving"):
+    // run through the same base + essence + bonus + armor + shield shape _prepareDefenses() uses (this Defense's own
+    // fields are still real and GM-editable even while unpiloted), substituting the rule's Essence for the missing one.
+    const driverlessEssence = ruleDriverlessEssence(actor);
+    if (driverlessEssence !== null) {
+      return (defense.base ?? 0) + driverlessEssence + (defense.bonus ?? 0)
         + (defense.armor ?? 0) + (defense.shield ?? 0);
     }
 
-    // Zord Sentience - see ZORD_SENTIENCE_ID's own comment above. Identical shape to Relic Key,
-    // just a lower default Essence Score.
-    if (actor.type == 'zord' && actorHasZordFeature(actor, ZORD_SENTIENCE_ID)) {
-      const ZORD_SENTIENCE_ESSENCE = 2;
-      return (defense.base ?? 0) + ZORD_SENTIENCE_ESSENCE + (defense.bonus ?? 0)
-        + (defense.armor ?? 0) + (defense.shield ?? 0);
-    }
-
-    // No driver, no Relic Key/Zord Sentience: RAW says this effect only affects the vehicle "if
+    // No driver, no DriverlessEssence rule (Relic Key, Zord Sentience): RAW says this effect only affects the vehicle "if
     // it has a driver" - i.e. it doesn't apply at all while driverless, not that it trivially
     // succeeds.
     // This system has no "this Defense can't be targeted at all" concept to enforce that
@@ -627,12 +265,8 @@ export function getSkillRanks(actor, skill) {
  * attack roll instead, see dice.mjs's own target-status checks), immunity zeroes damage after a
  * hit, the same as the actor's own permanent system.immunities below, just conditional on the
  * shield being switched on rather than always-on.
- * Hardened Armor (Across the Stars, Gold Ranger, 1st level, p.52): once real damage of a given
- * type actually lands here, see grantHardenedArmorResistance's own doc comment above for the
- * Resistance-after-hit grant this function calls on the way out.
- * Elemental Shield (Beneath the Helmet, Aqua Ranger, 9th/18th level, p.42): a banked "ignore N
- * Energy damage" grant is consumed against the incoming amount right after Immunity has already
- * zeroed it if applicable - see consumeElementalShieldReduction's own doc comment above.
+ * Item rules' damage shields (rules/plugins/combat/damage-shield.mjs - Elemental Shield's "ignore N Energy damage") are
+ * consumed against the incoming amount right after Immunity has already zeroed it if applicable.
  * Supreme Guardian (Through the Shattered Grid, Guardian of Eltar, 20th level, p.73): once real
  * Energy damage actually lands here, see grantSupremeGuardianTechRegen's own doc comment above for
  * the passive Eltarian Tech Point regen chance this function calls on the way out, alongside
@@ -640,12 +274,8 @@ export function getSkillRanks(actor, skill) {
  * At All Cost (Through the Shattered Grid, Magna Defender, 18th level, p.25): while active, a
  * non-stun hit's Health loss is diverted to Personal Power loss instead - see
  * applyAtAllCostDamage's own doc comment in items/defenses/at-all-cost.mjs.
- * Dig Deep (WTNV Citizen's Guide, General Perk, p.47): a banked "ignore 1 damage" grant (any
- * damage type) is consumed right after Elemental Shield's own reduction - see
- * consumeDigDeepReduction's own doc comment above.
- * Flame Warlord (Finster's Monster-Matic Cookbook, 20th level): a flat non-Element reduction
- * while in Monster Form - see getWarlordDamageReduction's own
- * doc comment above.
+ * Dig Deep (every printing): its "ignore 1 damage" is a DamageReduction rule now (consumeMark digDeep), read in
+ * runDamageModifiers.
  * @param {Actor} actor
  * @param {Number} damageValue
  * @param {String} damageType
@@ -653,10 +283,10 @@ export function getSkillRanks(actor, skill) {
  *   Health the actor had left when damageType isn't 'stun'.
  */
 export async function applyDamage(actor, damageValue, damageType, isCrit = false, { ignoreImmunity = false, source = null } = {}) {
-  // Not On My Watch - see grantNotOnMyWatchReaction's own doc comment. Captured before any of
+  // Not On My Watch (Stun branch) and onOwnerDefeated (Health branch) - captured before any of
   // this function's own mutations, the same "read Defeated status once, up front" idiom
   // chat.mjs#onApplyDamage's own wasAlreadyDefeated already uses - both branches below only fire
-  // the reaction on a genuine NEW transition into Defeated, not on every subsequent hit against
+  // on a genuine NEW transition into Defeated, not on every subsequent hit against
   // an actor who was already at 0 Health (the Stun branch's own newStunValue >= health.value
   // check, in particular, would otherwise re-trigger on literally every later Stun dealt to an
   // already-Defeated actor, since 0 Health makes that comparison trivially true again).
@@ -686,22 +316,13 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     damageValue = Math.max(0, damageValue - 1);
   }
 
-  // Flame Warlord - see getWarlordDamageReduction's own doc comment above.
-  damageValue = Math.max(0, damageValue - getWarlordDamageReduction(actor, damageType));
-
-  const isEmpImmuneViaShield = damageType == 'emp' && isPersonalShieldActive(actor)
-    && actorHasPerk(actor, IMPENETRABLE_SHIELD_ID);
   // Pressurized Cabin / Submarine Mode: "The sealed compartment grants immunity to Poison and
   // Disease" to everyone aboard (mechanics/vehicles/vehicle-upgrades.mjs).
   const sealedFromPoison = damageType == 'poison' && isSealedAboard(actor);
-  let amount = (!ignoreImmunity && (actor.system.immunities?.[damageType] || isEmpImmuneViaShield || isEnergyMasteryImmune(actor, damageType) || sealedFromPoison)) ? 0 : damageValue;
-  amount = (await consumeSelfPreservationImmunity(actor, damageType)) ? 0 : amount;
-  // Protomatter Injection Layer - mechanics/resources/kits.mjs.
-  amount = await protomatterReduce(actor, amount);
-  // Extensions (mechanics/item-hooks.mjs).
+  let amount = (!ignoreImmunity && (actor.system.immunities?.[damageType] || ruleDamageImmune(actor, damageType) || sealedFromPoison)) ? 0 : damageValue;
+  // Extensions (mechanics/item-hooks.mjs) - Protomatter Injection Layer's DamageReduction rule among them.
   amount = await runDamageModifiers(actor, amount, damageType, { isCrit, ignoreImmunity });
-  amount = await consumeElementalShieldReduction(actor, damageType, amount);
-  amount = await consumeDigDeepReduction(actor, amount);
+  amount = await consumeDamageShield(actor, damageType, amount);
 
   if (damageType == 'stun') {
     const newStunValue = actor.system.stun.value + amount;
@@ -737,17 +358,17 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
       await actor.toggleStatusEffect('defeated', { active: true });
 
       if (!wasAlreadyDefeated) {
+        // Not On My Watch: its item's droppedToZero Trigger only hears Health reaching 0, and a Stun Defeat leaves
+        // Health alone - so this Stun-path prompt is the Perk's one remaining code path (no double).
         await grantNotOnMyWatchReaction(actor);
+        // The dealer's defeatedEnemyStun Triggers (rules/plugins/combat/stun-defeat-event.mjs - CBRN Defender).
+        const { stunDefeated } = await import("../../rules/plugins/combat/stun-defeat-event.mjs");
+        await stunDefeated(actor, source);
       }
     }
 
-    await grantHardenedArmorResistance(actor, damageType, amount);
-    await grantGridElementalAdaptationResistance(actor, damageType, amount);
-    await grantSupremeGuardianTechRegen(actor, damageType, amount);
-    await grantCruelWarlordPsychicRegen(actor, damageType, amount);
     if (amount > 0) {
       await deactivateShynessOnDamage(actor);
-      await deactivatePhantomOnDamage(actor);
     }
 
     return amount;
@@ -772,69 +393,33 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     newValue = Math.max(0, previousValue - await wouldBeDefeated(actor, amount, damageType, { isCrit }));
   }
 
-  // Immortal Rebel Soul (WTNV Citizen's Guide, Soldier Role, StrexCorp Rebel Focus, p.46): "Once
-  // per investigation, when you would be Defeated due to your Health... dropping to 0, it stays
-  // at 1 instead." Approximated as once per scene (this project's usual idiom for a
-  // session/investigation-scoped resource). The "...or an Essence Score dropping to 0" half lives
-  // with the Essence point itself, environment-hazards.mjs#applyEssenceDamage, sharing this use.
-  if (newValue <= 0 && amount > 0 && actorHasPerk(actor, IMMORTAL_REBEL_SOUL_ID)
-    && !hasUsedThisEncounter(actor, 'immortalRebelSoulUsedThisEncounter')) {
-    newValue = 1;
-    await markUsedThisEncounter(actor, 'immortalRebelSoulUsedThisEncounter');
+  // wouldBeDefeated Triggers at stage beforeAegis (rules/plugins/combat/defeat-stage.mjs), in their priority order:
+  // Immortal Rebel Soul, Life Supporting, Not Done Yet (on the Renegade the hit's Perks belong to - Racer Abandon's
+  // vehicle through scope renegadeVehicle).
+  if (newValue <= 0 && amount > 0) {
+    const { wouldBeDefeated } = await import("../../rules/triggers.mjs");
+    newValue = Math.max(0, previousValue - await wouldBeDefeated(actor, amount, damageType, { isCrit, stage: 'beforeAegis' }));
   }
 
-  // Life Supporting - see LIFE_SUPPORTING_ID's own comment above. A once-per-scene Defeat save,
-  // but spent until its recharge test succeeds rather than per scene.
-  const lifeSupporting = newValue <= 0 && amount > 0 ? readyLifeSupporting(actor) : null;
-  if (lifeSupporting) {
-    newValue = 1;
-    await lifeSupporting.setFlag('essence20', LIFE_SUPPORTING_SPENT_FLAG, true);
+  // wouldBeDefeated Triggers at stage aegis (rules/plugins/resources/role-points-events.mjs): Aegis keeps the Reckless
+  // Abandon holder at 1 Health and marks it.
+  if (newValue <= 0 && amount > 0) {
+    const { wouldBeDefeated } = await import("../../rules/triggers.mjs");
+    newValue = Math.max(0, previousValue - await wouldBeDefeated(actor, amount, damageType, { isCrit, stage: 'aegis' }));
   }
 
-  // Not Done Yet (GI Joe CRB, Renegade base, 5th level, p.97, built 2026-09-12): "While in
-  // Reckless Abandon, if you would be defeated, you may choose to drop to 1 Health instead. You
-  // can use this ability once per Reckless Abandon." Same once-per-encounter Health clamp shape
-  // Immortal Rebel Soul/Do Not Go Quietly already establish - "once per Reckless Abandon" is
-  // approximated as "once per encounter" (this codebase's widest existing scope, and Reckless
-  // Abandon is realistically activated at most once per fight anyway), gated on the toggle
-  // actually being active via isRecklessAbandonActive.
-  const renegade = renegadeHolderFor(actor);
-  if (newValue <= 0 && amount > 0 && renegade && actorHasPerk(renegade, NOT_DONE_YET_ID) && isRecklessAbandonActive(renegade)
-    && !hasUsedThisEncounter(renegade, 'notDoneYetUsedThisEncounter')) {
-    newValue = 1;
-    await markUsedThisEncounter(renegade, 'notDoneYetUsedThisEncounter');
-  }
-
-  // Aegis - see AEGIS_CLAMPED_FLAG's own doc comment in reckless-abandon.mjs.
-  if (newValue <= 0 && amount > 0 && actorHasPerk(actor, AEGIS_ID) && isRecklessAbandonActive(actor)) {
-    newValue = 1;
-    await actor.setFlag('essence20', AEGIS_CLAMPED_FLAG, true);
-  }
-
-  // We are the Coinless - see findCoinlessRescuers's own doc comment above. Checked LAST in this
-  // whole chain deliberately: every other entry above either costs nothing or spends the victim's
-  // OWN resource, so a teammate's Personal Power is only ever spent once the victim has no
-  // self-rescue of their own left. Since this spends a DIFFERENT player's resource and RAW says
-  // "you may", it asks first (askCoinlessRescuer) and announces whose Power paid for it.
-  const coinlessRescuers = newValue <= 0 && amount > 0 ? findCoinlessRescuers(actor) : [];
-  if (coinlessRescuers.length) {
-    const coinlessRescuer = await askCoinlessRescuer(actor, coinlessRescuers);
-    if (coinlessRescuer) {
-      newValue = 1;
-      const { needsGmRelay, relayToGm } = await import("../world/gm-relay.mjs");
-      const spend = { 'system.powers.personal.value': coinlessRescuer.system.powers.personal.value - 1 };
-      await (needsGmRelay(coinlessRescuer) ? relayToGm(coinlessRescuer, 'update', [spend]) : coinlessRescuer.update(spend));
-      await actor.toggleStatusEffect('impaired', { active: true });
-      ui.notifications.info(game.i18n.format('E20.WeAreTheCoinlessRescue', {
-        rescuer: coinlessRescuer.name, actor: actor.name,
-      }));
-    }
+  // wouldBeDefeated Triggers at stage last - checked LAST in this whole chain deliberately: a teammate's resource
+  // (We are the Coinless's Personal Power, an aura Trigger on the teammate) is only ever spent once the victim has no
+  // self-rescue of their own left.
+  if (newValue <= 0 && amount > 0) {
+    const { wouldBeDefeated } = await import("../../rules/triggers.mjs");
+    newValue = Math.max(0, previousValue - await wouldBeDefeated(actor, amount, damageType, { isCrit, stage: 'last' }));
   }
 
   await actor.update({ 'system.health.value': newValue });
 
+  // (Not On My Watch's Health-to-0 offer is its item's droppedToZero watch Trigger - not called from here.)
   if (newValue <= 0 && !wasAlreadyDefeated) {
-    await grantNotOnMyWatchReaction(actor);
     // Emergency Deployment and Docking - docked Mini-Cons deploy (mechanics/companions/companions.mjs).
     await onOwnerDefeated(actor);
   }
@@ -848,13 +433,8 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   // source: who dealt it (the chat card's speaker), for their dealtDamage / defeatedEnemy Triggers.
   await runAfterDamage(actor, previousValue - newValue, damageType, { newValue, previousValue, wasAlreadyDefeated, source });
 
-  await grantHardenedArmorResistance(actor, damageType, previousValue - newValue);
-  await grantGridElementalAdaptationResistance(actor, damageType, previousValue - newValue);
-  await grantSupremeGuardianTechRegen(actor, damageType, previousValue - newValue);
-  await grantCruelWarlordPsychicRegen(actor, damageType, previousValue - newValue);
   if (previousValue - newValue > 0) {
     await deactivateShynessOnDamage(actor);
-    await deactivatePhantomOnDamage(actor);
   }
 
   return previousValue - newValue;

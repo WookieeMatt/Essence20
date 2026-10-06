@@ -5,6 +5,9 @@
   "_id": "RoA7zBnU4Ke517k6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Build a weapon, armor upgrade or kit (Construct)","cost":{"action":"standard"},"steps":[{"do":"choose","beforeCost":true,"prompt":"What are you building?","options":[{"label":"Weapon","steps":[{"do":"pickEntry","from":{"type":"weapon"}}]},{"label":"Armor Upgrade","steps":[{"do":"pickEntry","from":{"type":"upgrade","tags":["item:data:system.type=armor"]}}]},{"label":"Kit","steps":[{"do":"pickEntry","kitTier":true,"from":{"type":"gear","tags":["item:data:system.gearType=kits"]}}]}]},{"do":"require","beforeCost":true,"check":[{"any":["self:hasItem:Compendium.essence20.tf_crb.Item.zFB2pS1PIJc6gzUE","self:data:system.energon.normal.value>=1"]}],"message":"Construct needs an Energon Point."},{"do":"roll","skill":"technology","dif":"@var.pickedDif","onSuccess":[{"do":"updateActor","when":["not:self:hasItem:Compendium.essence20.tf_crb.Item.zFB2pS1PIJc6gzUE"],"add":{"system.energon.normal.value":-1}},{"do":"grant","uuid":"{var.picked}"}],"onFail":[{"do":"chat","text":"{name}'s {var.pickedName} doesn't come together (no Energon spent)."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a Weapon, Armor Upgrade or Kit, spend 1 Energon and roll Technology against its Requisition Difficulty to build it.</p>"

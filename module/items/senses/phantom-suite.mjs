@@ -32,27 +32,6 @@ export function isPhantomSuiteActive(actor) {
 }
 
 /**
- * Flips Phantom Suite on/off. Turning it ON spends 1 Personal Power (returns null, spending
- * nothing, if the actor can't afford it); turning it back OFF (manually, or via
- * deactivatePhantomSuite below) is free.
- * @param {Actor} actor
- * @returns {Promise<Boolean|null>}
- */
-export async function togglePhantomSuite(actor) {
-  const nowActive = !isPhantomSuiteActive(actor);
-  if (nowActive) {
-    if (actor.system.powers.personal.value < 1) {
-      return null;
-    }
-
-    await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
-  }
-
-  await actor.setFlag('essence20', PHANTOM_SUITE_FLAG, nowActive);
-  return nowActive;
-}
-
-/**
  * Forces Phantom Suite off with no Power refund - called once a successful Evasion-compared
  * Attack actually lands on the holder (see this file's own doc comment above). A no-op if it
  * wasn't active in the first place.

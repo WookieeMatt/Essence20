@@ -1381,3 +1381,1061 @@ Tests: `module/rules/engine12-i.test.js` (12 tests).
   `roll:specialized`). Unknown (null) with no roller or no rolled Skill.
 
 Tests: `module/rules/engine13-j.test.js` (10 tests).
+
+## Engine features added 2026-10-06 (round 14, banked)
+
+- **`rollVsEach` / `roll` `essence`** (`rules/steps.mjs`): roll the Skill with that Essence instead of its own (the old Uses
+  rolled Intimidation as Social). `mechanics/combat/reaction-engine.mjs#rollVsMany` takes an optional 5th `essenceOverride`;
+  the argument is only passed when the step sets it, so existing callers and their tests are unchanged.
+- **`writeInitiative` `exact: true`**: writes the formula's value as-is (no rounding), evaluated per recipient.
+- **`setForm` `silent: true`**: updates with `{essence20: {silentState: true}}` (no morph chat line / badge), the way It's Time
+  did. The options object is only passed when `silent` is set.
+- **Recipient `nearbyEnemies:<ft>`** (`rules/plugins/combat/nearby-enemies-recipient.mjs`, imported last by
+  `rules/plugins/index.mjs`): every token in range whose disposition differs from the actor's, NEUTRAL ones included - the
+  `getNearbyEnemyTokens` set the old area Perks used. `enemies:<ft>` leaves neutral tokens out. Each actor once; the range may
+  be a formula.
+- **`pick` from `skills` with `notShift: [...]`** (`rules/plugins/tags/actor-state-tags.mjs`): leaves out Skills at those
+  shifts (Fast Learner's decrease can't pick a d2 Skill).
+
+## Engine features added 2026-10-06 (round 14, dice)
+
+- **DialogSwitch `noDamage: true`** (`rules/types.mjs`, `rules/adapter.mjs#applyRuleSwitches` -> `options.ruleNoDamage`):
+  ticked, the attack forgoes its damage - dice.mjs's `ruleForgoDamage` zeroes `checkContext.damageValue` and drops the
+  secondary damage, so the card has no damage, no Critical damage options (the old "forgo damage to ..." checkboxes:
+  Guardian Strikes, Stick In The Spokes, Interdiction). A switch with only `noDamage` is valid.
+- **A spending switch's `steps` see `@spent`** (`adapter.mjs#applyRuleSwitches` puts the amount in the steps' vars) -
+  Caution To The Wind banks `0 - @spent` on its Defenses.
+- **Post-roll Trigger facts** (`rules/triggers.mjs` registerPostRoll): the roll context of afterRoll / hit / miss /
+  targeted Triggers now carries `defenseType` (checkContext.defenseType - the Defense the roll was compared against, the
+  first target's resolved one; `defense:` tags read it) and `rollDamageType` (checkContext.damageType - the card's damage
+  type after every override, a spell's or synthetic test's too).
+  **Tag `roll:damageType:<type>`** (`rules/plugins/tags/roll-damage-type-tag.mjs`) reads it; null outside a posted roll.
+  (No existing rule used `defense:` in those events, so nothing else changed.)
+- **Tag `roll:autoDownshift`** (`rules/plugins/tags/roll-auto-downshift-tag.mjs`): the system's automatic modifiers put a
+  ↓ on this roll - dice.mjs hands `autoShiftDown: combatModifiers.shiftDown` to `extDialogToggles` and `runApplyDialog`
+  (so a switch gated on it is both offered and applied). Null where nobody said.
+- **Recipient `crewedVehicle`** (`rules/plugins/zords/crewed-vehicle-recipient.mjs`): the vehicle / Zord the actor crews,
+  any seat (zord-crew-lookups#crewing - the world scan `_getPilotedVehicle(actor)` made with no role).
+- **HitMultiplier `stage: "card"`** (`rules/plugins/combat/card-hit-multiplier.mjs#applyCardHitMultipliers`, called by
+  dice.mjs `_rollSkillHelper` right after `_applyImmovableObjectImmunity`): the row's damage is multiplied (no note) while
+  the card is built - before the post-pass flat adds and every hit rider, where the hand-written "double / triple damage
+  against X" Perks multiplied. `when` sees the roll's item, Skill, melee / ranged, switches and damage type, self = the
+  roller, target = the row's target; one book item's rule once per row. `megaform-finisher.mjs#hitMultiplierOnAttack`
+  skips `stage: card` rules.
+
+Tests: in `module/rules/conv14-dice.test.js` (the tag, recipient, multiplier and switch tests).
+
+## Engine features added 2026-10-06 (round 14, items1)
+
+- **BeforeRoll `early: true`** (`rules/plugins/rolls/early-before-roll.mjs`, imported last by `rules/plugins/index.mjs`): a
+  `{cancel: true, early: true}` BeforeRoll is checked when the item is used - `documents/item.mjs#roll`, before its Area of Effect
+  is placed or a pre-roll picker opens - and a refused use gets its action back (`refund` of the action-economy spend), with the
+  rule's `message` as a warning. Without `early`, a cancel happens inside the roll (the extensions' preRoll), after the action is
+  spent and the template placed, and nothing is refunded. The same rule is asked again there, so a roll that doesn't come through
+  `item.roll` (an `attack` step) is still refused. `earlyRollRefusal(actor, item, dataset)` returns the refusal's message, or
+  null. Used by the once-per-encounter weapon effects (the old `limited-weapon-effects.mjs` check sat at that same point).
+
+Also used, from the round-14 dice part (in progress beside this batch): tag **`roll:damageType:<type>`** (the card's damage type
+after every override - `rules/plugins/tags/roll-damage-type-tag.mjs`) for Painmonger, and the hit / targeted Triggers' `defense:`
+fact (`checkContext.defenseType`, rules/triggers.mjs) for Clever Mind. **If that part's triggers.mjs change is dropped, Painmonger
+and Clever Mind need it back.**
+
+## Engine features added 2026-10-06 (round 14, items2)
+
+- **Tag `self:holdsActive:<uuid>`** (`rules/plugins/tags/active-item-and-own-zord.mjs`) - the actor holds a copy of that
+  book item which counts for rules (`rules/index.mjs#isItemActive`: a Hang-Up a Matured Perk ignores doesn't). The
+  hand-written `actorHasHangUp` reading; `self:hasItem:<uuid>` counts any copy. (Laypony Terms on Reverse Engineer.)
+- **Tag `self:ownsZord`** - the actor lists a Zord on its sheet. **Recipient `ownZord`** - the first Zord listed there
+  (`combat.mjs#getOwnedZord`'s "your Zord"); `ownZords` still reaches every one. (Zord Alterations.)
+- **`bank {grantDouble: true}`** (rules/steps.mjs) - upshifts banked on another actor first offer the granter's
+  GrantDouble rules (`plugins/resources/grant-double.mjs#offerGrantDouble`), the same hook the hand-written
+  `perks.mjs#bankPendingBonus({granter})` calls; yes doubles the ↑. Opt-in, so earlier bank conversions are unchanged.
+- **`roll {open: true, sheetShifts: false}`** - the open roll without the Skill's standing shifts / Specialized flag, for
+  a hand-written `rollSkill({skill, shiftUp: 0, shiftDown: 0})` Use (On Target).
+- **SkillSubstitution `carryShifts: true`** (`plugins/dialog/dialog-select.mjs`, mode ask) - when the player picks
+  another Skill, its own sheet shifts (`system.skills.<skill>.shiftUp / shiftDown`) are added to the roll's - for a roll
+  made without them (a Requisition Test re-pointed at Wealth).
+- **Validator fix** (rules/steps.mjs#stepErrors): a `setVar` text value (the handler's own test: no leading digit / `@` /
+  `(` / `-`, no call) and `shiftSize`'s `min` / `max` (sizes such as `"huge"`) are no longer read as formulas. This also
+  clears the two check-rules errors Mind Over Matter's pack rules had.
+
+## Engine features added 2026-10-06 (round 14, systems)
+
+- **Pick source `ownedActors {actorType?}`** (`rules/plugins/picks/owned-actors.mjs`, imported last by
+  `rules/plugins/index.mjs`): every world actor this user may act for (its owner, or the GM), of that actor type; the
+  value is its uuid, so `to: picked:<key>` reaches it. Organic Zord's "your or another Ranger's Zord" (the old list was
+  the world Zords the user owns - `pick from: actors` lists everyone's).
+
+## Engine features added 2026-10-06 (round 14, uses)
+
+- **`KitPrerequisite {mode: waive, all: true}`** (`rules/plugins/resources/kit-prerequisite.mjs`, new export
+  `ruleWaivesAllKitPrerequisites(actor, info)`): every kit's prerequisite is waived, a Skill Kit's "No Ranks" too -
+  `kits.mjs#meetsKitPrerequisite` asks it before anything else (where the hand-written Kitbasher check sat). Plain
+  `waive` still only drops the Skill die through the `essence20.kitPrerequisite` hook. `tiers` / `skipEssenceKits` narrow
+  it as before.
+- **`pickEntry {kitTier: true}`** (`rules/plugins/picks/pick-and-loop-steps.mjs`): a compendium entry with no Availability
+  (gear) takes its tier from its name - "Limited Burglary Kit" is Limited (`grants.mjs#kitAvailability`) - for
+  `@var.pickedDif` / `pickedAvailability`. Opt-in: other `pickEntry` steps (Scavenger's gear) are unchanged.
+- **`grant {name}`** fills `{var.<key>}` and `{@formula}` too (it used `{choice.<key>}` only) - `"{var.pickedName}
+  (Energon)"` after a `pickEntry`.
+- **Item steps' `item: "choice:<key>"`** reads a list as well (a `pickMany`'s): every item in it, with `all: true`.
+
+## Engine features added 2026-10-07 (round 15, banked)
+
+### Rolling against creatures
+- **`rollVsEach` `damage`, `dataset` and `onDouble`** (`rules/steps.mjs`):
+  - `damage {value, type}` puts Apply Damage buttons on the card, multiplied by Degrees of Success. It travels as
+    `dataset.stepDamage`, one generic key in dice.mjs's synthetic-damage chain.
+  - `dataset {key: value}` adds flags to the roll, which Triggers read as `roll:dataset:<key>`. For example, Outwit's
+    `isOutwit` is read by Deceptive Warfare and Inundation.
+  - `onDouble` runs instead of `onHit` on a success of x2 Degrees or better.
+  - `mechanics/combat/reaction-engine.mjs#rollVsMany` takes an optional 6th `extra` dataset, and its rows now carry
+    `multiplier`. The extra arguments are passed only when a step sets them, so existing callers are unchanged.
+- **`skill: "actor:<path>"`** rolls the Skill named at that path on the actor. Menace and Distracting Offer use
+  `actor:system.originSkillsIncrease`. **`skill: "choiceOf:<uuid>"`** rolls the Skill picked on the actor's copy of that
+  item (Tender reads the Empathy pick). With no such Skill the run stops before rolling.
+- **`roll` `dataset`**: the same flag object, added to a plain `roll` step. Rouse uses `isRouseAttempt`, which Brutal
+  Verbalities reads.
+- **Tag `self:choiceOf:<uuid>`** (also `target:`; `plugins/tags/choice-of-tag.mjs`): true when the actor holds that item
+  with a pick made on it.
+- **Ref `@skillDie.<skill>`** (`plugins/rolls/skill-die-ref.mjs`): rolls the Skill's own die (d2 up to 3d6, d20 when
+  untrained), with no shifts. Like other formula dice, the roll is shown in the step's chat and uses `scope.random` in
+  tests. Hard Target and Resilience use it as `bank {defenseBonus: "@skillDie.acrobatics"}`; Surface Read uses it too.
+- **Rule type `SnagImmunity {}`** with `when` (`plugins/rolls/snag-immunity.mjs`): the roll can't suffer a Snag. It is
+  checked after the Roll Options Dialog and after every Snag the system adds, at the point where Time Traveler's code used
+  to clear it. This is later than RollModifier `immune: ["snag"]`. dice.mjs calls `ruleSnagImmune`.
+
+### Picking and reporting
+- **`pick from: conditions {of?: self | target, exclude?: [ids], all?: true}`** (`plugins/picks/condition-pick.mjs`) offers
+  the Conditions the actor (or the first target) has on now. They come in `CONFIG.E20.statusEffects` order; `all` offers
+  every status. Follow it with `removeCondition {condition: "{choice.<key>}"}`. `removeCondition` now fills
+  `{choice.x}` and `{var.x}`.
+- **Step `targetFacts {of?}`** (`plugins/shared/target-facts-step.mjs`) puts facts about the first target (or the actor)
+  into the run's vars:
+  - `{var.name}`, `{var.health}`, `{var.healthMax}`;
+  - `{var.hangUps}`, `{var.perks}`, `{var.powers}` (item names, comma-joined, or "none");
+  - `{var.resistances}` (immunities marked as immune);
+  - `{var.defenses}` and `{var.lowestDefense}`.
+
+  With no target, the run stops with a "needs a target" line. Studious Measures, Breaking Point and Study Weaknesses use it.
+- **Ref `@effectiveLevel.self | target`**: an NPC's or vehicle's Threat Level, otherwise the level.
+- **Step `keepTargets {max}`** (`plugins/picks/keep-targets-step.mjs`): the run's targets are cut to the first `max` (a
+  formula) - "the first N enemies in range". Below 1 the run stops. Bumper Crop and Entropic Sponge use it.
+- **Step `lendAssistance`** (`plugins/rolls/lend-assistance-step.mjs`) runs `activateLendAssistance` and puts its report in
+  chat. A cancelled assist stops the run (I Got You).
+
+### Who it acts on
+- **Recipient `pilotedVehicleOrTarget`** (`plugins/zords/piloted-vehicle-or-target.mjs`): the vehicle or Zord the actor
+  crews, else the first target if it is a vehicle. Use it with `focus`. Engine Override, Jury Rig and Improvise Armor use it.
+- **Tag `self:holdsItem:<item tags joined by &>`** (also `target:`; `plugins/picks/owned-item-steps.mjs`): the actor owns an
+  item that meets every one of those item tags.
+- **Step `flagItem {item, flag, exclusive?: [item tags], loneEffect?}`** sets `flags.essence20.<flag>` on the picked item.
+  - `exclusive` first takes the flag off the actor's other items that match those tags.
+  - `loneEffect` switches the item's single Active Effect off, and back on when the flag comes off.
+
+  Matured uses `maturedIgnored`, which the rules index and `findHangUp` already skip.
+- **`updateItem` `multiply`, `parent` and `appendTraits`**:
+  - `multiply {path: factor}` multiplies the number at that path and rounds down; empty values stay empty.
+  - `parent: true` acts on the picked weaponEffect's weapon.
+  - `appendTraits` adds traits, each one once.
+
+  Weapon Conversion uses all three.
+
+### Turn order and combat stamps
+- **Tags `self:stamped:<flag>[:round | :turn]`** (also `target:`; `plugins/tags/combat-stamps.mjs`): `flags.essence20.<flag>`
+  holds a `{combatId, round, turn}` stamp from the running combat, this round or this turn. The Quiet One uses
+  `combat:ally:target:stamped:quietOneNoisyActionThisRound`.
+- **Step `stamp {flag, to?}`** writes that stamp, with nulls out of combat. Stand Behind Me! uses it for the taunt flag its
+  reader keys on.
+- **Tag `target:turnNeighbour:up | down`** (also `self:`) is true when a combatant with rolled Initiative sits directly
+  above or below. **Ref `@turnOrder.up | down`** gives that combatant's Initiative. It is read for the step's recipient,
+  else the first target, else the actor. Work the Numbers uses
+  `writeInitiative {value: "@turnOrder.up + 0.01", exact: true}`.
+- **Ref `@combat.round` / `@combat.turn`** (`plugins/effects/round-durations.mjs`): 0 with no combat.
+
+### Durations (`plugins/effects/round-durations.mjs`)
+- **`until: "thisRound"`** lasts while the combat round stays the one it started in. Out of combat, it lasts until a combat
+  round is running (Engine Override).
+- **`until: "throughNextRound"`** lasts through the round after the one it started in, and never runs out out of combat
+  (Hup!, Jury Rig's Free mode).
+- **`until: "mapScene"`** lasts while the viewed scene (`game.scenes.current`) is the one it started on. Distracting Offer
+  uses it because the old code keyed on the map, not the Scene Clock.
+
+### Banks and marks
+- **`bank` `defenseMultiply`**: that Defense is multiplied against the next matching attack instead of added to. Read it with
+  `rules/bank.mjs#bankedDefenseMultiplier`; dice.mjs applies it where Roll With The Punches used to double the Defense.
+- **`bank` `key` and `stackMax`**:
+  - `replace: true, key: k` replaces only this item's banks under `k`, so one item can keep two kinds of bank (Grid
+    Surge's Edge and its Toughness Boost).
+  - `stackMax: N` adds the replaced bank's Defense bonus to the new one, up to N ("stacking to +3").
+  - Entries keep their `key`.
+- **Steps `splitBank` and `scaleBank`, tag `self:bankedFrom:<uuid>`** (`plugins/resources/bank-steps.mjs`):
+  - `splitBank` is a button step. It moves part of the ↑ this item banked on the first target to another ally the presser
+    picks (Plan of Action's Split).
+  - `scaleBank {from: <uuid>, multiply}` multiplies the live banks made by that book item (Stand Firm doubles Stalwart
+    Defense).
+  - `self:bankedFrom:<uuid>` is true while such a bank is live.
+- **`mark` `keep: N`** (a formula): the setter's mark under that key stays on the newest N creatures only. Mark Target uses
+  `keep: "1 + 4 * @owned.<Additional Marks id>"`. Order stamps always increase, so marks set in the same millisecond still
+  have an order.
+- **`DieSubstitution` `from: [dice]` and `consumeMark`** (`rules/adapter.mjs#ruleDieSubstitution`):
+  - `from` applies only when the roll starts at one of those dice.
+  - `consumeMark` means the roll uses up the roller's mark.
+
+  Ageless Knowledge uses `{mode: floor, die: d4, from: [d2], consumeMark}`.
+- **`HitRider` `consumeMark: <key>`** (`plugins/combat/hit-rider.mjs`): the first hit the rule acts on uses up the hitter's
+  own mark. This gives a one-shot "+1 damage on your next damaging hit" (Smashmouth Offense). `hitRiderOnAttack` returns
+  the write only when a mark was used.
+
+### Costs and movement
+- **Use `cost.kind`** (a name, only with `cost.action`): `pay()` receives `{kind}` so the action economy's cost changers can
+  read it. Rouse's `kind: "rouse"` gets Rousing Presence's discount. See `rules/triggers.mjs` and
+  `mechanics/actions/action-perks.mjs`.
+- **Movement `@recipient`**: a Movement rule's value can read the actor whose movement it is. Hup! uses
+  `@recipient.flags.essence20.ruleMarks.hupHup.count` on a marked rule.
+
+## Engine features added 2026-10-07 (round 15, dice)
+
+Story Points and Skills
+- **Step `grantStoryPoint {count?, pool?, optional?}`** (`rules/plugins/resources/grant-story-point.mjs`): adds `count`
+  (default 1) Story Points through `mechanics/resources/story-points.mjs#requestStoryPointGrant` (the owner writes, anyone
+  else relays to the GM). `pool`: `story` (default, the team's), `gm`, or `actor` (the actor's own - the GM's for a
+  Threat). With nobody able to write the pool the run stops quietly (so a limit isn't spent) unless `optional: true`.
+- **Rule type `FumbleStoryPoints {amount}`** (same file): dice.mjs's core "a Fumble adds a Story Point" adds `amount`
+  instead of 1 while `when` holds (the biggest amount wins).
+- **Rule type `SkillEssence {essence}`** (`rules/plugins/rolls/skill-essence.mjs`): the rolled Skill counts as that
+  Essence's for the roll (dice.mjs's rolledEssence).
+- **Rule type `EdgeOrShift {upshift}`** (`rules/plugins/rolls/edge-or-shift.mjs`): an Edge - or, when the roll already has
+  an Edge from elsewhere, `upshift` ↑ instead (Expert in Your Field).
+- **Rule type `EnergonSpendBonus {upshift, limit?}`** (`rules/plugins/rolls/energon-spend-bonus.mjs`): the dialog's "spend
+  1 Energon for ↑1" gives `upshift` more; the limit is spent only when it applies. **Trigger event `rollEnergonSpent`**
+  (same file): after that spend is paid from the actor's own pool; `@var.before` is the pool before it.
+- **`initiativeRolling` sees the Initiative roll's switches** (`rules/plugins/rolls/initiative.mjs`): the ticked switch
+  keys reach `roll:switch:<key>` there ("Friendly" Fire after Spoof).
+
+Attacks: bare hands, ranges, targets
+- **Tags `attack:barehanded`, `self:holdingWeapon` / `target:holdingWeapon`, `roll:dealsDamage`**
+  (`rules/plugins/tags/barehanded-tags.mjs`; `UNARMED_WEAPON_IDS` lives here now, dice.mjs imports it).
+- **Range facts** (`rules/plugins/tags/range-facts.mjs`): `roll:rangeBand:normal|long`, `roll:longRangeSnagIgnored`,
+  `roll:elevationAbove:<op>N` (dice.mjs's ranged block puts them on the dataset); **rule type `WeaponRange {add}`**.
+- **Checks `inAppraisedArea`, `attackedByAlly`** (`rules/plugins/tags/dice-checks.mjs`, helpers loaded at setup).
+- **Target tags** (`rules/plugins/tags/dice-target-tags.mjs`): `target:statusFrom:<id>` (a Condition this actor applied),
+  `target:resistsRolled`, `target:immuneRolled`, `target:nearby:<ft>:<tags&tags>`, `target:mostConditions`,
+  `skill:roleSkill`, `holder:versusTarget:<self tag>`; **recipient `to: nearestEnemies:<n>`** - the n enemy tokens
+  nearest the actor, any range, nearest first (Beam Volley's `PreCast` `setTargets`).
+- **Refs** (`rules/plugins/tags/dice-refs.mjs`): `@sneakAttack`, `@hardenedArmor`, `@volleyShots`, `@vehicle.size` /
+  `@vehicle.<path>` (the crewed vehicle); tags `roll:skillNoBetterThan:<skill>`, `self:uuidIsVar:<key>` (the run's
+  `@var.<key>` is this actor's uuid). **rollSeen's `@var.assistedBy`** (`rules/plugins/tags/world-watch.mjs`): the uuid
+  of the assister whose Lend Assistance ↑ the seen roll used (Misled).
+- **Tags `item:healthDamage` / `weapon:primariesNoDamage`** (`rules/plugins/tags/violent-tags.mjs`, which holds
+  `NON_DAMAGE_EFFECT_TYPES`): the rolled effect deals Health damage; its weapon's no-↓ effects deal none (Violent).
+- **Rule type `SizeMatrix {attackerSteps}`** (`rules/plugins/combat/size-matrix-steps.mjs`): the attacker counts N steps
+  bigger for the Size Class shift only. **Rule type `DataBridgeBonus {max}`** (`rules/plugins/combat/data-bridge-bonus.mjs`).
+
+The Skill die
+- **Die facts** (`rules/plugins/rolls/die-facts.mjs`): tags `roll:baseDie:<die>` and `roll:finalDie:<op><die>` (`<=d4`,
+  `>=d8`, `=d6` - by quality); DialogSwitch `noCrit: true` and `capDie: "d12"`; rule types `FumbleRange {upTo}`,
+  `DownshiftCap {max}`, `BonusPoolDie {skill}` (a Skill's die joins the kept-highest pool).
+- **Rule type `DownshiftCancel {amount, stack?, limit?}`** (`rules/plugins/rolls/downshift-cancel.mjs`): ↓ off the stacked
+  total before the dialog.
+- **Rule type `Multiplier {doubleMargin | critMultiplier | promote, limit?}`** (`rules/plugins/rolls/degree-multiplier.mjs`):
+  the rows' Degrees of Success.
+- **Rule type `CritDowngrade {prompt, steps?}`** (`rules/plugins/rolls/crit-downgrade.mjs`): when the dice show a Critical
+  Success the roller is asked `prompt`; yes, and the roll is a plain success (every row capped at x1), and `steps` run
+  once the card is done (Consistent: bank ↑1).
+
+Roll Options Dialog
+- **DialogSwitch `syntheticDamage {value, type}`** (`rules/plugins/dialog/switch-synthetic-damage.mjs`): a Skill Test
+  against a Defense carries that damage on its card.
+- **DialogSwitch `sneakAttackMultiplier`** and tags `self:activeRolePoints:<tags&>`, `roll:rolePointsDamage[:own]`
+  (`rules/plugins/rolls/role-points-damage.mjs`).
+- **DialogSwitch `tradeUpshifts: N`** with `spend: {max}` (`rules/plugins/rolls/upshift-trade.mjs`): the ↑ entered are
+  traded off the roll's settled ↑ total late in rollSkill (never more than it has) for 1 damage per N.
+- **DialogSwitch `clearPenalties: true`** (`rules/plugins/dialog/switch-clear-penalties.mjs`): the roll ends with no Snag
+  and no ↓, decided at the very end of the post-dialog chain (read by its ticked box).
+- **Switch / DialogSelect option keys dice.mjs understands** - `ignoreArmor` (every per-attack Defense value without its
+  armor bonus) and `rerollSkillDice` (the Skill dice rerolled once rolled). Driving Strike's DialogSelect uses them.
+
+Defenses
+- **Defense `early: true`** (+ `plus`, `key`) (`rules/plugins/combat/early-defense.mjs`): "use the better Defense" and early
+  adds, against the other Defense's per-attack value; a limit is spent only when it changed the number.
+- **Rule type `DefenseSwap {from, to}`** (`rules/plugins/combat/defense-swap.mjs`, on the attacker): a target that would use
+  `from` (`any` for every Defense) uses `to` - after TargetedDefense, before Superstructure. Immunity kinds
+  **`evasiveManeuvers`** (the target's Fly In The Future doesn't turn the attack onto Evasion) and **`voidArmorIgnore`**
+  (scope incoming: the Void trait doesn't ignore this actor's armor).
+- **Defense `ignoreArmor` + `points: N`** (`rules/plugins/combat/ignore-armor.mjs`): only N points of the armor share.
+- **Rule type `CritImmune`** (`rules/plugins/combat/crit-immune.mjs`; scope self or `aura`): the target's rows lose their
+  Critical options. **Tag `holder:check:<name>`**: a registered check asked of the holder.
+- **Rule type `SnagOrMiss {limit?}`** (`rules/plugins/combat/snag-or-miss.mjs`, on a defender): a roll against the holder
+  gets a Snag, or misses when it already has one; one use for both branches, spent once the roll goes ahead.
+- **RollModifier immunity kinds** (`rules/plugins/rolls/immunity-kinds.mjs` + `registerImmunityKind`): `reachDownshift`,
+  `grappleSizeDownshift`, `resistanceSnag`, `longRangeSnagForEdge`.
+
+Damage
+- **CardDamage {add}** (`rules/plugins/combat/card-hit-multiplier.mjs`): a flat add to the row right after the stage-card
+  multipliers. **HitMultiplier `stage: "late"`** (same file): every damaging row multiplied at the end of the card (where
+  Empty the Mag doubled); `megaform-finisher.mjs` skips stage late as it skips stage card.
+- **DamageModifier `exceptTypes`** (`rules/plugins/combat/damage-except-types.mjs`).
+- **Rule type `DamageFloor {floor}`** (`rules/plugins/combat/damage-floor.mjs`): the attack's own damageValue is at least
+  `floor` (not a listed bonus - Titan Body).
+- **Step `cureAll {to}`** (`rules/plugins/effects/cure-all.mjs`): full Health, every status off (Defeated too).
+- **Duration `until: "throughRoundPlus2"`** (`rules/plugins/effects/round-window.mjs`): rounds r..r+2 of the combat it
+  started in (a 3-round spell); never outside combat.
+
+## Engine features added 2026-10-07 (round 15, items1)
+
+All new plug-in files are imported in `rules/plugins/index.mjs`'s "Round 15 (items1)" block.
+
+### Rule types
+
+- **`FanningShots {extraShots, firstShotUpshift}`** (`combat/fanning-shots.mjs`) - adds Fanning shots and ↑ on the first fanned shot.
+  It is read by `items/attacks/fanning.mjs` (`getFanningMaxShots`, `getFanningFirstShotUpshift`). Storm of Lead.
+- **`TraitIgnore {traits: [mounted], items?}`** (`combat/trait-ignore.mjs`) - a weapon trait's drawback doesn't apply. `items` is
+  a list of item tags for the weapon. `ruleIgnoresTrait(actor, weapon, trait)` is read by `mounted-weapons.mjs`. Ordnance Expert.
+- **`SuccessToCrit {when, steps?}`** (`rolls/success-to-crit.mjs`) - a plain success against a target that meets `when` becomes a
+  Critical Success. This happens at dice.mjs's Unconscious bump. `steps` run once afterwards. No Factor.
+- **`PoisonCoating {cost: move | free, keepVialOnFumble}`** (`resources/poison-coating-rule.mjs`) - Poisonous, Intoxicate, Poison
+  Tipped.
+- **`HealBonus {amount, steps?}`** (`resources/heal-bonus.mjs`) - extra Health when the holder heals the way the Heal action does
+  (`heal-action.mjs#restoreHealth`). `when` sees `target:` as the one healed. I've Got You, Up And At 'Em.
+- **`TargetedDefense {defense}`** (`combat/targeted-defense.mjs`) - attacks against the holder use that Defense. Scramble.
+- **RollModifier `scope: "incomingAura"` + `radius`** (same file) - applies to rolls made against an ally near the holder. Shield
+  Modulation with Shield Upgrade.
+- **`ShapeOption {kind: skill | size, key?, label}`** (`effects/shape-change.mjs`) - a pick the shared Change Shape dialog offers.
+  - `skill`: a Skill kept in the shape under `key`.
+  - `size`: one size step per rule. Use `stacks: true` so each Perk copy counts.
+- **`AttackChoice {title, prompt, none, options: [{label, shiftUp | damage | armorPiercing | radiusMultiplier}]}`**
+  (`combat/attack-choice.mjs`) - one pick, asked as an attack is used, before its area template is placed (`documents/item.mjs`).
+  The pick reaches the template radius and dice.mjs's `attackChoiceShiftUp` / `attackChoiceDamage` / `attackChoiceArmorPiercing`.
+  `when` sees the rolled attack. Bring It All Down.
+- **`DefenseAura {defenses, radius, bonus: rolePoints | amount}`** (`combat/defense-aura.mjs`) - a bonus the holder lends to allies
+  in range. It goes inside every per-attack Defense value dice.mjs computes: the compared Defense, Over the Candlestick's swap,
+  and the early Defense rules' `valueOf`.
+  - `bonus: rolePoints`: the holder's base Role Points defense bonus for that Defense.
+  - With several holders in range, the best one counts.
+  - Shield Upgrade, with `check:personalShield`.
+
+### Trigger events
+
+- **`defeatedEnemyStun`** (`combat/stun-defeat-event.mjs`) - a Stun hit auto-Defeated someone. CBRN Defender.
+- **`allyTargeted` / `allyDefended`** (`combat/ally-reactions.mjs`):
+  - `allyTargeted` asks the target's allies before the roll. Trigger `promptText`; step `boostDefense {amount}`.
+  - `allyDefended` fires afterwards with `@var.outcome` set to hit / turned / missed. The attacker is its target.
+  - Defender Step, Retribution.
+- **`transforming`** (`@var.mode`) and **`rolePointsActivating`** (a stopped run cancels the activation)
+  (`effects/state-changes.mjs`) - Mode Attachment, Shield Modulation.
+- **`applyingDamage`** (`combat/applying-damage.mjs`) - damage about to land, in `chat.mjs#onApplyDamage`:
+  - `redirect: true, within, priority, limit` - an ally holding it may take the hit. Only the first by priority is asked.
+  - Plain Triggers on whoever it lands on can `setVar damage`, with `prompt` / `promptText` (`{name}`, `{amount}`, `{@formula}`).
+  - The `stage` Triggers on this event are rest-other's `applying-damage-stages.mjs`.
+  - Interpose, Body Shield, Heroic Sacrifice, Golden Guardian, Stand By Me, Fe-BURN!.
+- **`damageLanding`** (same file) - fires on the GM's client, as a damage modifier. Cyborg.
+- **`criticallyHit`** (`combat/critically-hit-event.mjs`) - a Critical Success's damage lands on the holder. It fires after the
+  reductions, whatever damage is left; the attacker is the target. Imperial Machine Mantle.
+
+### Steps
+
+- **`targetCircle {radius}`**, **`setDataset {key, data}`** (`rolls/before-roll-rolled-item.mjs`) - for BeforeRoll rules. BeforeRoll
+  steps also see the rolled item as `{rolled.<path>}`, `@rolled...` and `@var.rolledItem`.
+- **`mutateWeapon {onto: choice:<key>, set, toggle}`** and **`grantAttacks {uuid, until}`**, plus until **`untilUsed`**
+  (`combat/weapon-mutation.mjs`) - Explosive Ammo, Firestorm, Utility Loaders, Backblast, Airburst, Knuckle Up.
+- **`lendItem {item, to, onto, lasts}`** (`picks/lend-item.mjs`) - Support, Tech Support.
+- **`pickGeneralPerk`** (`picks/general-perk-step.mjs`) - Why Do I Know That?.
+- **`fireEvent {event}`**, **`grantResistance {damageType?, morphedOnly}`**, **`hideTokens {hidden}`** (`effects/state-changes.mjs`).
+- **`takeAsEssence {prompt}`**, **`unmorph`** (`combat/applying-damage.mjs`) - Cyborg, Fe-BURN!.
+- **`linkToHost {name?, warn?}`** (`effects/linked-host.mjs`) - the item a pickGrant just gave is linked to the rule item's host
+  weapon (`flags.essence20.linkedHost`).
+  - It is equipped exactly while the host is.
+  - An active shield going down is lowered and its Defense bonus cleared.
+  - It is deleted with the host.
+  - `warn` is shown before the host is rolled while the linked item is active.
+  - Deflecting Weapons.
+- **`changeShape {title?, prompt?}`** (`effects/shape-change.mjs`) - if shaped this scene, it changes back (and restores the
+  size). Otherwise it opens one dialog over every ShapeOption the actor has. The state stays `flags.essence20.mlpShape`, which
+  `check:shapeShifted` and the shape spells read.
+
+### Tags, refs and selectors
+
+- **`roll:firstRow:success|failure`** - Terrifying Presence.
+- **`self:` / `target:markText:<key>=<text|$item.path>`** and mark `text` (`marks/mark-value.mjs`) - Instill Weakness.
+- **`damage:resisted`** - the damage type is one the holder already resists.
+- **`shape:skill:<key>`** - the rolled Skill is the one the shape keeps under that key.
+- **`itemVar:<key>:<item tag>`** and item selector **`var:<key>`** (`gear/item-disruption.mjs`) - the item whose uuid
+  `@var.<key>` holds.
+- **`item:pack:<pack>|<pack>`** (`tags/item-pack-tag.mjs`) - the entry's system pack. Multimorph's MLP Origins:
+  `item:line:mlp` doesn't count Dark Skies over Equestria.
+- **`{sourced.<16-char id>.<path>}`** in rule text and tags (`predicate.mjs#interpolate`) - a value on the actor's copy of that
+  book item. Self-Preservation reads Energy Affinity's choice.
+- **`@actor.system.defenses.<d>.armorShare`** - the armor / Morphed share `_prepareDefenses` just added. Imperial Machine Mantle.
+
+### Mark effects on items
+
+Item mark effects (`markItem effects`, read by `gear/item-disruption.mjs`):
+- **`rollSnag`, `rollShiftDown`, `rollLabel`** - roll sources on rolls with the marked item (an attack's weapon counts) and on a
+  roll whose dataset names it as `markedItemUuid`.
+- **`inoperable`** - a warning before its attack is rolled.
+
+Technical Glitch, Some Assembly Required, Complete System Failure.
+
+### Core options
+
+- `recipients()` **`first`** (a formula, applied after `filter`).
+- **`fillData`**: createItem data and children, and `roll` step **`dataset`** values. A lone `{var.x}` / `{choice.x}` keeps its
+  value, so a number stays a number.
+- afterRoll Trigger **`@var.crit`**.
+- `mark` **`text`**.
+- DamageReduction **`consumeMark`**.
+- pickEntry **`from.types`**.
+- pickGrant **`viaDrop: true`** - through the type's drop handler, registered with `registerDropGrant(type, fn)`. The
+  `alteration` handler is `picks/drop-grant.mjs`, which uses `onAlterationDrop`. If nothing is made, the run stops.
+- pickGrant **`from.byOriginalId`** - an owned item's `system.originalId` counts as holding that entry.
+- `pickChildEntry` keeps **`@var.<var>Parent`**, so a second pick can be made from another parent (`not:item:isVar:<var>Parent`).
+
+## Engine features added 2026-10-07 (round 15, items2)
+
+Each entry below says what it does, where it lives and the item that needed it. The new plug-in files are imported at
+the end of `rules/plugins/index.mjs`, inside the "Round 15 (items2)" block.
+
+### Events
+
+- **`storyPointsPaid`** (`plugins/resources/story-points-paid-event.mjs`). Fired on the spending actor once the shared
+  pool has really gone down (story-points.mjs `spend()`). It sets `@var.amount` and `@var.pool`. Used by Battle Hardened.
+- **`rolePointsActivated` / `rolePointsDeactivated`** (`plugins/resources/role-points-events.mjs`). Fired when a Role
+  Points item's `system.isActive` turns on or off. The same file adds the tag `self:enemiesStanding` and a
+  `wouldBeDefeated` stage `aegis` (before `last`). Used by Reckless Abandon and Aegis.
+- **`skillTestPosted`** (`plugins/rolls/recent-rolls.mjs`). Fired on the active GM for every posted Skill Test card.
+  The card joins the recent-roll memory after its Triggers have run. Used by Competitive.
+- **`converted`** (`plugins/zords/converted-event-and-seen.mjs`). The actor now stands in an Alt Mode: it Converted, or
+  it changed Alt Mode while converted. It sets `@var.altMode`. Used by Unexpected Alternative.
+- **`hit`, `afterRoll` and `targeted` Triggers now see `roll:edge`**: whether the roll had Edge (dice.mjs
+  `checkContext.wasEdge`). Used by Terror.
+
+### Durations
+
+- **`registerUntil(name, {stamp, expired})`** (`expiry.mjs`). Plug-in durations for marks, banks and grants. Its first
+  use is `until: "calendarDay"` (`plugins/effects/calendar-day-duration.mjs`), which ends when the real-world date
+  changes. Used by Preventative Measures.
+- **`until: "endOfNextRoundOrScene"`** (`plugins/picks/cross-item-picks.mjs`). Used by Leave It To Me.
+- **Mark / bank `untilOf: "target"`**. The duration counts the target's turns, not the holder's.
+
+### Rule types
+
+- **NaturalTwenty** (`plugins/rolls/natural-twenty.mjs`). A kept natural 20 succeeds, and a success becomes a
+  Critical Success. dice.mjs reads it. Used by Better than the Best.
+- **NoFumbleStoryPoint** (`plugins/rolls/no-fumble-story-point.mjs`). A Fumble in that Skill gives no Story Point.
+  Used by Agency's Hang-Up.
+- **EnvironmentalExpertise {shareEnvironments?, scope: self | companion | driven}**
+  (`plugins/effects/environmental-expertise-rule.mjs`). "Has Environmental Expertise" is now this rule. dice.mjs,
+  environmental-expertise.mjs, rerolls and environment-gated effects all read it. The same file adds the tags
+  `self:inExpertiseTerrain` and `self:onHolderExpertiseTerrain`.
+- **DriverlessEssence {essence}** (`plugins/zords/driverless-essence.mjs`). A Zord or vehicle with no driver counts this
+  Essence for its driver-borrowed Defenses (combat.mjs `getDefenseValue`). Used by Relic Key.
+- **EvasiveManeuvers {}**, scope `vehicle` (`plugins/combat/evasive-maneuvers-rule.mjs`). An Aerial vehicle halves its
+  Aerial speed, and Toughness attacks against it target Evasion. documents/actor.mjs and dice.mjs read it. The vehicle's
+  old `evasiveManeuversActive` flag (Evasive Handling) still counts. The same file adds the tag `self:crewsAerial`.
+  Used by Fly In The Future.
+- **MovementAction `countSinceTypeChange: true`** (`plugins/combat/since-type-change.mjs`). Only the distance moved since
+  the last change of movement type counts against the speed. It listens on `essence20.movementUsed`. Used by Third
+  Dimension.
+- **CardOffer** (`plugins/cards/card-offer.mjs`):
+  - `when` sees the card's Skill (`skill:`), and its steps get `@var.skill` / `{var.skill}`.
+  - `addDie {skillDie: true}` rolls the holder's own Skill Die for the card's Skill. It is offered only when the holder
+    has one.
+  - `once: true` lets each holder answer a card once.
+  - Used by One-Upping, Not Like That Like This! and Secret Helper.
+- **Assist `effect: pay`** (`plugins/picks/cross-item-picks.mjs`). Used by BFF.
+  - It has `cost`, `prompt` and `message`, and `payForAssist` spends the cost (Story Points quietly).
+  - A refusing Assist rule's `message` reaches `ruleAssist` (adapter.mjs), and Lend Assistance leaves that ally out of
+    its list. Used by Fun Exhaustion.
+- **Veto `on: "kitUse"`** (`plugins/effects/veto.mjs`, kits.mjs `kitUseVetoed`). Used by Reckless Abandon.
+
+### Steps
+
+- **`listNames {to, filter, var, none}`** and **`whisper {text, to: user | owners}`**
+  (`plugins/cards/names-and-whisper.mjs`). Also in that file:
+  - the ref `@versus.<level|toughness|evasion|willpower|cleverness>`;
+  - the text refs `{markSkill.<key>}` and `{actor.<path>}`.
+- **`damageShield {amount, damageTypes, to, until}`** (`plugins/combat/damage-shield.mjs`). combat.mjs uses it up on
+  the next matching damage. Used by Elemental Shield.
+- **`spendPooled {to, path, amount, message}`** (`plugins/resources/spend-pooled.mjs`). One cost drawn from several
+  creatures in turn. It sets `@var.contributors`. Used by Zord Mega-Weapon System.
+- **`refundUse {to, prompt, message}`** (`plugins/resources/refund-use.mjs`). Gives back one of the recipient's spent
+  uses. That can be a Scene Clock count, a turn stamp or a rule limit. Used by Delegate.
+- **`recordSeen {flag, entry}`** (`plugins/zords/converted-event-and-seen.mjs`). A per-creature memory with
+  `@var.seenCount`, `seenNew` and `seenSwitched`.
+- **`undoEffect {flag, to, linkedItem, prompt}`** (`plugins/effects/flagged-effects.mjs`). Removes one flagged Active
+  Effect and its linked item. The same file adds the tags `self:hasEffectFlag:<flag>` and `target:hasEffectFlag:<flag>`.
+  Used by They Called It A Glitch!.
+- **`pickChassis {mode: origin | mimicry, flag}`** (`plugins/picks/chassis-picks.mjs`). Picks a Transformers chassis
+  by its Origin. The same file adds the text ref `{ruleItem.<path>}`. Used by Alt Mode Mimicry and Drone.
+- **`bestItem {type, where, by, keep, message}`** (`plugins/picks/best-item.mjs`). Copies values from the actor's
+  strongest matching item. The same file adds the tag `roll:crit`. Used by Elemental Fury.
+- **`groupTest {skill, dif, cost}`** and **`groupTally`** (`plugins/rolls/group-test-steps.mjs`). Group-tests.mjs uses a
+  test's `cost` for each participant other than the leader. The same file adds the recipient `varActor:<var>`. Used by
+  Guardian Blast.
+- **`windowCount {flag, window, var}`** (`plugins/resources/vehicle-budget-pieces.mjs`). The same file adds:
+  - the pick source `ownedVehicles`;
+  - the tag `item:upgradeCostAtMost:<formula>`.
+  Used by Motor Pool Connections.
+
+### Recipients, pick sources and tags
+
+- **Recipients**:
+  - `aroundSelf:<formula>` (`plugins/picks/around-self-recipient.mjs`);
+  - `crew` (`plugins/zords/crew-recipient.mjs`);
+  - `varActor:<var>` (in group-test-steps.mjs).
+- **Pick source `recipients {of}`** (`plugins/picks/recipient-pick-source.mjs`). Used by Queen's Gambit.
+- **Tags**:
+  - Turn order: `combat:lowestInitiative`, `combat:currentRolled`.
+  - Cross-item picks: `picked:<id>:<key>`, `target:pickedBy:<id>:<key>`, `target:skillDieAtLeast:<die>`,
+    `self:costRuleUsed:<id>`.
+  - Recent rolls: `recent:sideHigher:<min>`, `recent:selfLower:<min>`, `recent:hostile:<skill>`, and the ref
+    `@recent.lowestHostile.<skill>`.
+  - Terrain and choices: `terrain:picked:<key>`, `holder:choiceOf:<uuid>`.
+  - Sides: `self:sameSideAsHolder`, `target:sameSideAsHolder`.
+  - Position: `self:pointWithin:<ft>`, `zone:self:<key>`, `zone:target:<key>` (zones are a roll-time family, so a
+    Defense rule reading them is worked out per attack).
+  - Other parties: `target:keyedOnMe:<path><op><n>`, `target:immune:<condition>`, `self:immune:<condition>`,
+    `self:ownerSpectrum:<colour | none>`.
+- **Ref `@initiative.afterCurrent`** (rolls/initiative.mjs).
+
+### New options on existing steps
+
+- **`roll`**: `@var.multiplier`, and `sheetShifts: true`.
+- **`rollSeen`**: `@var.skill`.
+- **`markText`**: `$skill`.
+- **`moveTo`**: `snap: true`.
+- **`askNumber`**: `value`, a formula for the starting number.
+- **`grant`**:
+  - `flags` text is filled;
+  - it sets `@var.grantedId`.
+- **`addEffect`**: `flags` text is filled.
+- **`damage`**:
+  - `asCastHit: true` (through `cast-hit-damage.mjs`);
+  - it sets `@var.damage`.
+- **`damageCard`**: `to`, for one card with a button per recipient.
+- **`blast`**:
+  - `packets` and `missPackets`;
+  - `at: targets`;
+  - `excludeTargets`.
+- **`scheduleCard`**: `turnStarts`.
+- **`placeZone`**:
+  - `halfFeet`;
+  - `replace`;
+  - a zone with no modifier no longer adds an empty roll source.
+- **`markWindow`**:
+  - `count`;
+  - a filled flag (`windowFlag`).
+- **`setEffects`**: `items: <selector>`.
+- **`recordScene`**: `quiet`.
+- **`lendAssistance`**: `skillOnly` and `radius`.
+- **`spendAction`**: now allows `fullAction`.
+
+## Engine features added 2026-10-07 (round 15, rest-other)
+
+### Action economy
+- **ActionCost kinds `reload` and `morph`** (`plugins/resources/action-kinds.mjs`, new `rules/actions.mjs#registerActionKind(name)`
+  - adds a cost kind to `KINDS` and the ActionCost `action` options). documents/item.mjs passes `{kind: 'reload', item: <the
+  weapon>}` to the reload spend and morph-state.mjs#payForMorph `{kind: 'morph'}`, so `item:` tags read the weapon
+  (`item:isHost` - an upgrade's own weapon; the limit counts per rule item, so per weapon). Rapid Reload `{action: reload,
+  to: free}`, Ammo Belt `{..., when: [item:isHost], limit: {per: scene}, stacks: true}`, Rev Morpher `{action: morph, to: move}`.
+- **`ActionCount {action: free, essence? | add?}`** (`plugins/resources/action-count.mjs`) - action-counts.mjs#getNumActions:
+  Free actions from another Essence (an `essence` rule wins - the old else-if) or Speed + the summed `add`s.
+
+### Reloads, Sneak Attack, drawbacks, untrained Snag
+- **`ReloadSkip {limit, combatOnly?, message?}`** (`plugins/combat/reload-skip.mjs`) - reload-trait.mjs#requireReload skips a
+  required reload while the limit lasts; `when` sees the weapon as `item:`; `priority` orders several; `message` (E20. key,
+  {name} {weapon}) is an info toast.
+- **`SneakAttackGrant {items?, qualifies?, range?, anyCircumstance?, cost?, limit?}`** (`plugins/combat/sneak-attack-grant.mjs`) -
+  sneak-attack.mjs: `qualifies` (default true) a non-Silent weapon qualifies (`items` narrows, `weapon:` reads its weapon);
+  `range` ft | `weapon` | `unlimited` (the widest wins); `anyCircumstance` + `cost {storyPoints}` + `limit` - offered whatever
+  the circumstances, paid (sneak-attack.mjs#paySneakAttackGrant, from dice.mjs) only when the ordinary checks would have
+  failed. In My Sights would be `{items: [weapon:trait:sniper], range: weapon}`, Ballistic Advantage `range: unlimited`.
+- **IgnoreDrawback `temperamentalFumble`** (+ `limit`, `message`; `plugins/rolls/ignore-drawback.mjs#useIgnoredDrawback`) - a
+  Temperamental weapon's Fumble is only a failure; dice.mjs posts the rule's `message`.
+- **`UntrainedSnagImmunity {limit, freeOutOfCombat?}`** (`plugins/rolls/untrained-snag-immunity.mjs`) - a LIMITED lift of the
+  untrained Snag, asked last in roll-dialog.mjs#_isUntrainedSnag (after every unlimited lift), so its use is spent only when
+  it is what lifted the Snag. `freeOutOfCombat`: no combat - always, uncounted. (An unlimited lift stays RollModifier
+  `immune: [untrainedSnag]`.)
+
+### The Defeat-save chain and Essence to 0
+- **wouldBeDefeated `stage`** (`plugins/combat/defeat-stage.mjs` + `triggers.mjs#wouldBeDefeated {stage}`): `first` (default),
+  `beforeAegis` (where Immortal Rebel Soul, Life Supporting, Not Done Yet sat), `last` (after Aegis - We Are The Coinless).
+  combat.mjs#applyDamage calls the chain at each place. Each Trigger now runs only while the hit still would Defeat
+  (`fireTriggers {only}` - a new caller filter).
+- **Scope `renegadeVehicle`** (every rule type taking `vehicle`) - on a Renegade Perk: reaches the vehicle its holder drives while
+  Racer Abandon moves the Perk onto it (summons.mjs#renegadeHolderFor, handed in with `registerRenegadeLookup`). Tag
+  **`self:ownRenegade`** - the actor's own Renegade Perks protect it (not while Racer Abandon moved them, unless Rigged Rider).
+- **Event `essenceWouldEmpty`** (`@var.essence`) - environment-hazards.mjs#applyEssenceDamage is about to take an Essence to 0;
+  `negateDamage` keeps the point (Immortal Rebel Soul shares its Health half's limit through `limit.key`).
+
+### The chat card's Apply Damage
+- **applyingDamage `stage`** (`plugins/combat/applying-damage-stages.mjs#applyingDamageStage`; items1's unstaged applyingDamage
+  pass skips staged Triggers): `attacker` - on the attacker's items before anything else, the one hit as `target:`, the card's
+  facts as `roll:dataset:<key>`, `@var.handled` 1 = the hit is dealt with, no damage (Sudden Death); `reductions` - right
+  after the unstaged pass (Fortitude, Extra Plates, Didn't Even Feel It); `lateReductions` - after Hard Corps (Invincibility
+  Through Invisibility, Just a Graze). `priority` orders a stage; each runs while damage is left; `@var.damage` /
+  `@var.dropSecondary` as items1's; `prompt` + `promptText` ({name} = the one hit, {amount}); linked scopes reach (limit
+  on the holder - `renegadeVehicle`).
+
+### Casting, assisting, items and actors
+- **`SpellCostDefer {}`** (`plugins/resources/spell-cost-defer.mjs`) - the spell's Casting Cost lands after its Skill Test.
+- **`PreCast {steps}`** on a spell (`plugins/picks/pre-cast.mjs#runPreCast`, item.mjs's cast before the roll): a stopped run cancels
+  the cast (no roll, no cost). Step **`grantSpecialization {skill, name, to, until: scene}`** - a scene-long Specialization
+  (listed in flags.essence20.bestowedExpertise, swept by bestow-expertise-scene-expiry.mjs).
+- **Assist effects `persist` and `rollFor`** (+ `limit`; `plugins/rolls/assist-extras.mjs`) - lend-assistance.mjs: a lent Skill
+  assist lasts (persistent bank) while the limit lasts; a helper may roll the holder's test for them (`rollFor`, side
+  receive; its limit counted on the helper per holder).
+- **`AvailabilityShift {steps, items?}`** (`plugins/resources/availability-shift.mjs`) - owned items' totalAvailability, read off
+  the items themselves in item prepare (a new rule counts at once).
+- **`SenseMultiplier {multiply}`** (`plugins/effects/sense-multiplier.mjs`) - another darkvision source's best range multiplied;
+  the rule item's own visionGrant isn't that other source.
+- **`AreaRadius {add, items?}`** (`plugins/combat/area-radius.mjs`) - feet on the PLACED area radius (aoe-targeting.mjs), before
+  multipliers; the stored system.radius is untouched.
+- **`AllyFilter {anyDisposition: true}`** (`plugins/combat/ally-filter.mjs`) - nearby-allies.mjs#getNearbyAllyTokens counts every
+  token as the holder's ally.
+- **`AttackTraits {traits: [armorPiercing | antiTank]}`** (`plugins/combat/attack-traits.mjs`) - attacks matching `when` (weaponless
+  ones too) count as having those traits where dice.mjs reads them.
+- **`RequisitionShift {upshift, items?}`** (`plugins/resources/requisition-shift.mjs`) - the Requisition Test's own starting ↑.
+- **`GroupTestBonus {upshift?, edge?, who: self | led}`** (`plugins/rolls/group-test-bonus.mjs`) - group-tests.mjs#groupBonuses.
+- **`JoinDie {steps}`** (`plugins/zords/join-die.mjs`; `stacks: true` per copy) - the Combiner join die steps down (d6, d4, d2, 1).
+- **`VehicleDefeat {brawnDif}`** (`plugins/zords/vehicle-defeat-dif.mjs`) - the explosion Brawn DIF (the lowest).
+- **`SummonTimeBonus {amount, sceneAllies?}`** (`plugins/zords/summon-time-bonus.mjs`) - rounds off the rolled Zord arrival time
+  before SummonTime; `sceneAllies` - held by any same-Disposition token on the scene; the biggest only.
+- **Tags `self:inRoughTerrain` / `target:inRoughTerrain`** (`plugins/tags/rough-terrain-tag.mjs`; the lookup loads at `setup`).
+- **Event `posted`** (an item posted to chat from its sheet - item.mjs's gear branch, the item's own rules) and step
+  **`placeRoughTerrain {prompt?, chat?}`** (`plugins/effects/rough-terrain-space.mjs`; rough-terrain.mjs#placeRoughTerrainSpace).
+- **Bonded partners** (`plugins/picks/bond-link.mjs`): scopes **`bondPartner`** (the bond holder's rule reaches the partner) and
+  **`bondHolder`** (the partner's rule reaches the holder); tags `self:bondLinked`, `self:bondHolder`,
+  `roll:bondAllySpecialized`, `roll:bondPairTrained`.
+- **Drop-time configurator** (`plugins/zords/drop-configure.mjs`): Trigger **`removeOnStop: true`** on an `added` Trigger - a
+  stopped run deletes the item again (triggers.mjs#fireItemAdded); step **`adjustItem {item, onParent?, add?, multiply?,
+  atLeast?, set?, defaults?, addTraits?, required?, message?}`** - change the found items (`choice:<key>`) from their own
+  values (`{var.adjustedName}` / `{var.adjustedItemName}` after); step **`notify {text, data?, level?, stop?}`** - a toast
+  (E20. key formatted with filled data); tag **`self:hasItemWhere:<item tags joined by &>`**.
+
+## Engine features added 2026-10-07 (round 15, systems)
+
+All plug-ins are imported at the end of `rules/plugins/index.mjs`, in the "Round 15 (systems)" block.
+
+### Powers
+
+- **Trigger event `powerUsed`** (`resources/power-used.mjs`). It fires when a Power is used:
+  `mechanics/characters/power-use.mjs#onPowerUse` calls `firePowerUsed(actor, power, spent)` before its own
+  hand-written branches run.
+  - The roll's item is the Power, so `item:own` keeps a Trigger to its own Power.
+  - `@var.spent` is the Personal Power spent.
+  - The targets are the user's targets.
+  - A Power held by nanomite gear (not owned by the actor) runs only its own `powerUsed` Triggers, for the holder.
+- **Rule type `FreeUse {when}`** (same file). Switching off a Power that matches costs no daily use;
+  `mechanics/resources/nanomite-uses.mjs` asks `ruleUseIsFree(actor, power)`. Used for Protection, Reactive and
+  Augmented Combat while they are switched on.
+
+### Rolls and damage
+
+- **Step `rollCheck {skill, essence?, shiftUp?, shiftDown?, defense?, dif?, edge?, damage?, dataset?, onSuccess?, onFail?}`**
+  (`combat/roll-card-damage.mjs`). It runs a Skill Test through the sheet's own roll (`actor._dice.rollSkill`).
+  - `damage: {value, type}` puts Apply Damage buttons on the card, multiplied by Degrees of Success (dice.mjs reads
+    `dataset.stepDamage`).
+  - `dataset` holds plain flags for the roll.
+  - Then `onSuccess` or `onFail` runs.
+  - Used by Power Blast, Morphblast, Electric Discharge, Disintegrate, Lucky Charm and Regeneration's Skill Test.
+- **Defense `mode: noArmor`** (`combat/no-armor-defense.mjs`; needs `outgoing: true`). The attacked Defense is worked out
+  again without armor (Penetrating Strikes). dice.mjs asks `ruleNoArmor` where the old check was.
+- **CriticalOption `defense: <defense>`** (`combat/crit-defense-option.mjs`). One damage to that Defense, offered among
+  the crit options (Bewildering, Traumatic, Maiming, Surgical). `target-riders.mjs#critRiders` labels it.
+- **Cover `mode: giveBack`** (`combat/cover-give-back.mjs`, plus a case in `adapter.mjs#ruleCover`). The weapon's scope
+  gives back the Cover it took away (Smart / Thermal Scope).
+- **Tags `damage:style:<style>` and `damage:elementOrEnergy`** (`tags/damage-source.mjs`). They describe the attack card
+  the GM is applying damage from: its `attackStyle`, and whether its damage type or traits are Element / Energy. They are
+  meant for DamageReduction and takesDamage rules (the vehicle armors).
+
+### Items that change their weapon
+
+- **ItemModifier `stage: item`** (`effects/item-modifier-stage.mjs`). The rule runs inside the changed item's own
+  `prepareDerivedData` (`items/attacks/weapon-upgrades.mjs` calls `applyItemStage`), so derived fields such as hands,
+  reach and range are right before anything reads them.
+  - `slot` is `start`, `element` or `end`.
+  - The ops are `set` (a number, formula, text, bool or object; `{choice.x}` reads a pick), `add`, `multiply`, `max`,
+    `min`, and `step` with `ladder: weaponSize`. `step` moves the size and works the hands out again.
+  - Copies of the same upgrade stack (each copy is its own rule). The actor-level ItemModifier pass skips stage-item
+    rules.
+- **Rule key `always: true`** (`types.mjs` COMMON, `rules/index.mjs#collectRules`). A switched-off item (a stowed weapon
+  and its upgrades) keeps its `always` rules (Sling, Integrated Bipod). Every other upgrade rule on a stowed weapon is now
+  off.
+- **Rule type `BraceUntilMoved {when}`** (`combat/brace-until-moved.mjs`). Brace lasts until the actor moves
+  (Integrated Bipod). `named-actions.mjs` asks `ruleBraceUntilMoved`.
+
+### Action costs
+
+- **ActionCost `action: any` / `to: downgrade` / `limit.freeIsUnlimited` / scope `marked` + `mark`**
+  (`resources/action-cost-any.mjs`, plus `rules/actions.mjs#costRuleFor`).
+  - `downgrade` makes the action one step cheaper (standard to move, move to free).
+  - `freeIsUnlimited` takes the cap off its Free half (the Talents).
+  - A `marked` rule reaches whoever carries the setter's mark.
+  - Action kinds `personalShield`, `rouse`, `analyzeTarget` and `vehicleRepair` are added through
+    `registerActionKind`.
+  - New duration `roundsThrough:<1-10>`. Out of combat it lasts the scene.
+- **grantNextTurn `block: [kinds]` / `prespend: {free: n}`** (edit to `combat/defense-modes.mjs`). The recipient's next
+  turn can't take those actions, or starts with some already spent.
+- **Tag `self:actionLog:<named key | flag:key>[:standard|move|free]<op><n>` and ref `@ledger.<path>`**
+  (`tags/action-ledger.mjs`). They read the turn's action ledger (Here To Help, Desperate Times, Snap Shots, New Plan).
+- **Ref `@rangedWeapons`** (`combat/ranged-weapons-ref.mjs`). The number of ranged weapons the actor wields (Barrage
+  Attack).
+- **Assist `effect: nextTurnGrant {free?, move?, standard?}`** (`rolls/assist-next-turn.mjs`). Lend Assistance offers
+  these next-turn grants (Here, Let Me; No, I Insist). `lend-assistance.mjs` asks `ruleAssistGrantModes`.
+
+### Picks, steps and tags
+
+- **Step `askValue {var, prompt?}`** (`dialog/ask-value-step.mjs`). Asks for any number, decimals included.
+- **Tags `target:sameDisposition` and `self:roleName:<text>`** (`tags/same-disposition.mjs`).
+- **Step `healShared {formula, to, filter}`** (`resources/heal-shared-step.mjs`). One roll is shared evenly among the
+  recipients, at least 1 each; it sets `@var.healed` (Repair Zord).
+- **pickGrant `from.notOwned` / `from.selectionLimit`** (edit to `rules/steps.mjs`). These leave out entries the first
+  recipient already holds, or holds `selectionLimit` copies of (the Nano Infusions, Torozord Feature).
+- **bonusAttack `only: <filter key>`** (edit to `rules/steps.mjs`).
+- **Steps `morph {free?}` and `refreshMorphedToughness`** (`zords/morph-step.mjs`).
+  - `morph` runs the sheet's own Morph flow and stops when already Morphed (Rapid Morph).
+  - `refreshMorphedToughness` re-prepares the actor and works its Morphed Toughness bonus out again from the Armor
+    Training it has now (the Armor Shells, on `added` and `removed`).
+- **deleteItem `keepGrants: true`** (edit to `rules/steps.mjs`). What the removed items granted stays, unlinked first.
+- **grantPerk `runPicker: true`** (edit to `plugins/picks/entry-grants.mjs`). A newly granted Perk's own drop-time
+  picker (`setPerkValues`) runs (Metamorphosis).
+- **Rule types `UniqueChoice {}` and `AnyGeneralPerkChoice {}`** (`picks/unique-choice.mjs`). Both are read from the Perk
+  being set up.
+  - `UniqueChoice`: copies can't pick a Skill another copy already has (Expertise).
+  - `AnyGeneralPerkChoice`: its picker offers any General Perk from every enabled book (Nobody Like Me).
+- **Rule type `ChoiceCount {items, add}`** (`picks/choice-count.mjs`). The listed Perks' drop-time pickers offer more
+  picks (Grid Tap).
+- **Check `check:vehicleInRoughTerrain`** (`tags/vehicle-checks.mjs`). The token of the vehicle the actor crews (or is)
+  stands in Rough Terrain.
+- **Recipient `personalVehicle:<key>` and tag `self:personalVehicle:<key>`** (`picks/personal-vehicle.mjs`). The actor's
+  personal vehicle of that kind (Crashing From The Skies' Jet Pack).
+
+### Vehicles and Zords
+
+- **RollModifier scope `crewIncoming` and DieSubstitution scope `crew`** (`combat/crew-incoming.mjs`).
+  - `crewIncoming` is a vehicle's rule on rolls made against someone aboard it (Tinted Canopy).
+  - `crew` on a DieSubstitution reaches the rolls of the vehicle's crew (Kill Counter).
+- **Rule type `SummonOption {rounds, power?, action?}`** (`zords/summon-option.mjs`). A faster Zord arrival, offered in
+  `zord-summon.mjs#rollSummonTimer` instead of the 3d2 and paid when picked. It can sit on the summoner's item or on the
+  Zord's.
+- **Rule type `ExplosionStep {steps}`** (`zords/explosion-step.mjs`). A Defeated vehicle's explosion die is that many steps
+  bigger. With several rules, the biggest wins.
+- **Step `reduceTimer {by}`** (`zords/reduce-timer.mjs`). The actor picks a running Zord-summon or Megaform-combine timer,
+  and it comes `by` rounds sooner, never before the current round. With nothing running, it warns and the Use's limit is
+  not spent.
+
+## Engine features added 2026-10-07 (round 15, uses)
+
+All in their own plug-in files, imported in `rules/plugins/index.mjs`'s "Round 15 (uses)" block.
+
+### Steps
+
+- **`tokenLight {bright, dim, angle}`** (`effects/token-light.mjs`) - switches the carrier's token light on and off. The item
+  keeps `lit` and the light it replaced (`previousLight`), so turning it off restores that. Chat: `E20.LightOn` / `E20.LightOff`.
+- **`moveTo {to?, maxRange?, forced?, animate?, snap?}`** (`combat/move-to.mjs`) - each recipient's token goes to the point a
+  `pickPoint` step kept.
+  - `forced` (the default): through `forced-movement.mjs#placeActorAt` (Immovable Object, the GM relay).
+  - `forced: false`: the actor moves itself.
+  - `maxRange` (ft): a farther point is refused with a warning.
+  - `animate: false`: the token jumps.
+  - `snap` was added by items2.
+- **`refreshMorphedToughness`**, **`itemEffects {item, disabled}`** (`resources/uses-grant-pieces.mjs`) - re-work the Morphed
+  Toughness bonus; switch an item's Active Effects off or on (Multifaceted's set-aside Perk).
+- **`kitBoost {essence|skill, spec?, mode, kind, rounds?, times?}`** (`resources/uses-kit-pieces.mjs`) - the lasting roll bonus a
+  used-up kit leaves (`kits.mjs#addKitBoost`, now exported).
+- **`lendAssist {skill?, shiftUp?}`** - with `skill`: a banked Lend Assistance upshift for that Skill on each recipient. Without
+  `skill`: the usual Lend Assistance dialog.
+- **`recordTurnWeapon {flag}`** (`combat/turn-weapons.mjs`) - remembers this turn's weapons (Flurry of Attacks).
+- **`pickChildEntry`, `grantPerk {uuid, link}`, `grantEntries {of, childType, notOwned, until, to}`, `factionDrop`**
+  (`picks/entry-grants.mjs`) - grant compendium entries the way the sheet's drop handlers do (Perk / Origin / Faction drops).
+  `grantEntries` runs the grant with each recipient as the actor.
+- **`sprint`, `shove {bowlOver?}`, `slow {feet, to}`** (`combat/sprint-shove-slow.mjs`) - start a Sprint; the Maneuver shove
+  (Bowl-Over: push and Prone both); slow the recipients' next turn.
+- **`createCompanion {name, system?}`** + recipient **`created`** (`picks/create-companion.mjs`) - a new companion made by
+  `companions.mjs#createCompanion`: the owner's ownership, linked, through the GM. Later steps grant onto it with
+  `to: created` (Primary / Secondary Tech's drone).
+- **`addToSceneList {flag, entry}`** (`picks/canvas-items.mjs`) - keeps a pick on the actor for this scene, labelled as it
+  was offered (I Can Do That's `copiedAbilities`).
+
+### Recipients, selectors, pick sources and text
+
+- **Companion recipients** (`picks/companions.mjs`): `companions[:<type>]`, `firstCompanion:<type>`,
+  `selfOrCompanion:<type>`, `companionOwner`, `flagActor:<flag>`.
+- **Item selectors** - a new `steps.mjs#registerItemSelector(prefix, fn)` registry (the validator accepts registered
+  prefixes). In `picks/item-where.mjs`:
+  - `where:<tags&...>`
+  - `withAttached:<tags>`, `firstWithAttached:<tags>`
+  - `justGranted`
+  - `host`
+  - ref `@flagged.<flag>`
+- **Pick sources:**
+  - `specializations {skill}` (`uses-kit-pieces.mjs`)
+  - `canvasItems {filter?, anyOf?, self?}` - other tokens' items, one per book source, labelled "<actor>: <item>"
+  - `sceneList {flag}` (`canvas-items.mjs`)
+- **Text placeholders** - a new `steps.mjs#registerTextRef(head, fn)` registry, used by `fillText`.
+  `{sourced.<id>.<path>|default}` (`uses-grant-pieces.mjs`) reads a value on the actor's copy of a book item. It works
+  together with items1's no-default `{sourced...}` in `predicate.mjs#interpolate`.
+- **Refs:** `@takeMine` (`kits.mjs#takeMineMultiplier`), `@turnWeapons.<flag>`.
+
+### Tags
+
+- **`link:` family** (family "roll", in `picks/companions.mjs`):
+  - `hasCompanion`, `pair`, `ownCompanion`
+  - `rolledAgainst:partner|owner[:attack]`
+  - `deployedThisRound[:<type>]`, `holderDeployed`
+  - `targetAdjacentToHolder`, `selfAdjacentToHolder`
+- **Item tags:**
+  - `item:heldBySelf`, `item:entryOfOwned:<type>`
+  - `item:firstAttack:<tags&>`, `item:primaryAttack`
+  - `item:line:<line>`, `item:folderName:<name>`, `item:nameOfOwned:<type>`, `item:isVar:<key>`
+- **Actor and roll tags:**
+  - `check:markTarget`
+  - `self:` / `target:status:any[:except=a|b]`
+  - `roll:entry:<key>` - in a `targeted` Trigger, the defender's check entry. `triggers.mjs` now hands it over.
+  - `self:specializationNamed:<skill>:<text>`, `self:sprinting`
+  - `self:` / `target:hasArmorUpgrade:<defense>`
+  - `self:sourced:<id>:<path>=<value>` / `!=<value>` - a missing value makes `=` false and `!=` true, unlike a
+    `{sourced}` in the tag text.
+
+### Rule types
+
+| Rule type | What it does | Read by |
+|---|---|---|
+| `EssenceRedirect {from, to, roleName}` | Sends a Role's Essence increase to another Essence (Cordial, Rough and Takes No Guff) | `grants.mjs#essenceRedirect` |
+| `CarryExemption {items, max}` | Hands of gear carried outside the hands | `kits.mjs#extraCarriedHands` |
+| `KitModifier {scroungeDif, upgradeRoll, keepRoll, respecialize}` | Changes kit scrounging and use | `kits.mjs` (scroungeDif, consumeKit, useKit) |
+| `AllyRangeMultiplier {multiply}` | Multiplies ally range | `nearby-allies.mjs` |
+| `ShiftCap {maxDown}` | Caps the net downshift (Fanatic) | `dice.mjs` |
+| `PetCommand {difTier}` | Pet command difficulty tier | `companions.mjs#commandDif` |
+| `PartyRequisition {perMember}` | Requisition per party member | `actor.mjs` (Base Tech) |
+| `ArmorUpgradePenalty {mark, amount}` | Lowers the Armor Upgrades of a creature with the holder's mark: Toughness first, never below +0 (Make an Opening) | Plug-in's own `registerDefenseAdjust` |
+| `ManeuverOption {option: disarm \| dismantle}` | `disarm` adds Disarm to the Maneuver choice; `dismantle` lets a disarmed weapon matching `when` be pulled apart | `dice.mjs`; `target-riders.mjs#disarm` |
+| `ConditionDuration {condition, rounds}` | An attack's own on-hit Condition length; dice are rolled each hit | `target-riders.mjs#conditionRiders` |
+| `BeforeArea {options?, dataset?, exclude?}` | Before the template: bigger / smaller / shape / single (single sets a dataset key). After it: untick up to `exclude` (`skillDie` or a formula) caught tokens | `documents/item.mjs` |
+| `SwapShrug {from, to}` | A hit resisted with `to` instead of `from` drops its secondary damage and Conditions (Unstoppable Force) | `target-riders.mjs#attackRiders` |
+
+### Parameters on existing types and scopes
+
+- `DialogSwitch`: `clearSnagCost` (`dialog/clear-snag-cost.mjs`, via `registerApplyDialog`) and `ignoreArmorUpgrades`
+  (with `spend: {max}`, Pinpoint).
+- `HitRider`: scope `companion` and scope `markedTarget` + `mark` (`marks/marked-target-hits.mjs`). `Assist`: scope
+  `companion`. `hit-rider.mjs` gained `HIT_RIDER_SOURCES` and `hitRiderEntries(attacker, target)`, and its own entries
+  are now limited to the self / host scopes.
+
+### Engine edits to existing steps
+
+- `grant`: `removeTraits`, and `unlinked` (no `grantedBy` - the copy outlives the granting item: Poison Prodigy).
+- `pickGrant`: `optional` (a cancelled pick skips only that grant: Primary Tech's "can choose" upgrades).
+- `disarm`: `payFree` (a Free action per hand, paid as it's used).
+- `fitUpgrade` (`pick-and-loop-steps.mjs`): `onto: granted`, `uuid` with `{var.x}`, and `until`
+  (endOfTurn / endOfNextTurn / scene / untilUsed / rounds:N, mapped to `attachTemporaryUpgrade`'s kinds). Plus a validator.
+- `BrawnRequirement`: `carryingOnly`.
+- `DamageReduction`: `minDamage`, `counter {path, max}`, `quiet`.
+- New `mechanics/resources/game-lines.mjs#lineOf(uuid)`, moved out of `grants.mjs`, which imports it.
+
+## Engine features added 2026-10-07 (round 16, part a)
+
+All new plug-in files are imported in `rules/plugins/index.mjs`'s "Round 16 (part a)" block.
+
+### Flat d20 boxes
+
+- **Rule type `FlatD20`** (`rolls/flat-d20.mjs`) - "treat a d20 result as N without rolling it", as Roll Options Dialog
+  boxes decided after the dialog, once the Edge / Snag is settled. dice.mjs builds the d20 operand from
+  `ruleFlatD20(actor, options, roll)` (`_getd20Operand`'s flatD20Value / flatBothD20s).
+  - A box: `{key, label, value, priority?, limit?, cost?: {resource, amount}, costLabel?, lateWhen?, both?: {label, uses? |
+    cost?}}`. Offered while `when` holds, a use is left and the cost can be paid. `both` is a second box: with an Edge or a
+    Snag (not both), both d20s count as the value, using `uses` of the limit or paying `cost` more.
+  - A change from another item: `{of: <key>, addUses?, lateWhen?, upgrade?: {label, value, cost?, limit?}}`. `addUses`
+    widens the limit; its `lateWhen` must hold too (a Hang-Up's "only with an Edge"); `upgrade` is one more box (its value
+    instead, for `cost` more, while its own limit lasts).
+  - `lateWhen` is asked after the dialog (`roll:edge`, `roll:snag`). A box that can't apply then, or can't be paid in full,
+    does nothing and costs nothing, and the next ticked box (by `priority`) is tried. Cost and uses are spent only when a
+    box applies. Never on an Initiative roll. Labels may be E20. keys; a cost adds "(N <costLabel>)", "+N" on the extra
+    boxes.
+  - Dependable, its Hang-Up, Old Reliable, Legendary Dependability.
+
+### Dialog switches
+
+- **DialogSwitch `action` (+ `actionKind`), `baseDamageMultiply`, `backfireOn`** (`dialog/switch-action-cost.mjs`). dice.mjs
+  calls `applySwitchActions` where the old Surging / Analyze Target checkboxes spent their actions.
+  - `action: free | move | standard`: ticked, the action is spent as the roll is made; when the action economy refuses
+    it, the roll is cancelled. `actionKind` names it for the cost changers (`analyzeTarget` - Quick / Swift Study).
+  - `baseDamageMultiply: N`: the attack's own damage value (not its damage bonus) is multiplied.
+  - `backfireOn: N`: when any d20 of the roll shows N, the roller takes the roll's damage (dice.mjs, with the
+    E20.SurgingBackfire line).
+  - Analyze Target, Surging.
+
+### Roll facts and hit Triggers
+
+- **RollModifier `key`** (`rolls/once-per-roll.mjs`): whenever the modifier is listed on a roll (even switched off in the
+  dialog, as the old "this bonus was on the roll" check read it), the roll carries the key, so hit / miss / afterRoll
+  Triggers can ask `roll:switch:<key>`. adapter#ruleRollSources puts it on the source; dice.mjs merges the listed sources'
+  keys into the roll's ruleKeys. Growl's ↑, read by Get The Horns.
+- **RollModifier `consumeOwn`** (with `consumeMark`): the roll uses up only the copy of a perSetter mark that the
+  modifier's holder set (consumer `rulesMarkOwn`, spent before the roll like the other rule marks).
+- **Trigger `oncePerRoll: true`** (hit only): the Trigger runs for the first hit of a roll that meets its `when` and limit,
+  not for every target hit. `fireTriggers` takes a `once` set; triggers.mjs's hit loop hands one in per roll.
+- **hit / miss Triggers get `@var.row`**: the target's row on the card, 0 for the first (`var:row=0` - "the first row").
+- **Trigger steps see the roll's rows** (`ctx.facts`), and afterRoll facts carry the check `entries`.
+- **Step `targetRowsBeating {defense, required?}`** (`combat/rows-beating.mjs`): in an afterRoll Trigger, the run's targets
+  become the creatures rolled against whose plain `defense` (getDefenseValue) the total also meets. A miss on a creature
+  whose misses have no effect (MissImmunity) is left out. With none left, the run stops. Explosive Aftershock.
+
+### Timed size changes
+
+- **Step `sizeChange {key, steps? | set?, until? | rounds?, to?}`** (`effects/timed-size.mjs`): the stored size is written
+  (the token follows it) and the size before is kept at `flags.essence20.ruleSizeChanges.<key>`.
+  - One change per key: while one is live the step leaves it alone; one that ran out is put back first.
+  - `until` takes any rule duration. `rounds: N` counts combat rounds (to the same point in the turn order) and ends with
+    the combat; out of combat it lasts the encounter.
+  - The active GM puts expired changes back when a combat's turn or round changes, when a combat ends and when a new scene
+    starts (every world actor and every scene's unlinked token actors).
+  - **Tags `self:sizeChanged:<key>` / `target:sizeChanged:<key>`**: the change is live (read-time, so rules stop at once).
+  - Scarefying Appearance (`rounds: 10`), Massive Mug of Mammoth Measurements / Petite Pony's Shrink Drink (`set`, shared
+    key, `until: scene`).
+- **Tag `rule:choiceHas:<key>:<value>`** (`tags/rule-choice-has.mjs`): the rule item's pick under `key` (a list from
+  pickMany / pickEach, or one value) holds the value. Scarefying Appearance's benefits.
+
+### Defenses and resistance
+
+- **Defense `{mode: noArmor, outgoing: true, scope: markedTarget, mark}`** (`combat/marked-no-armor.mjs`): on the setter's
+  item. An attack on a creature carrying the setter's mark meets its Defense without armor. `when` is asked with self =
+  the attacker, holder = the setter, target = the marked creature (`self:sameSideAsHolder` - "you and your teammates").
+  dice.mjs asks `ruleMarkedNoArmor` where Exploit Weakness's recompute was. no-armor-defense.mjs leaves markedTarget rules
+  out of the attacker's own reading.
+- **Tag `card:flag:<key>`** (a CardOffer's card carries that flag) and **recipient `cardTarget`** (in a CardOffer's steps,
+  the card's `flags.essence20.targetUuid`). Exploit Weakness.
+- **Rule type `AttackResistance {damageTypes}`** (`combat/attack-resistance.mjs`): counts as Resistance for the attacker's
+  Resistance Snag only (and `roll:dataset:targetResists`), not as a `system.resistances` entry. Dispersion, with
+  `rule:data:system.active`.
+
+### Rerolls, counters, actions
+
+- **Steps `bankReroll {to?, upTo? | values?}` and `rerollLimit {reset?, max?, spend?}`** (`rolls/reroll-bank.mjs`):
+  - `bankReroll` writes the banked reroll charge dice.mjs reads (`flags.essence20.bankedReroll`: the next attack rerolls
+    those Skill dice faces; used up when an attack succeeds).
+  - `rerollLimit` checks, or with `spend` counts, the rule item's own reroll grant's use count (`item:<the item's uuid>`
+    in mechanics/rolls/reroll.mjs). So a Use and the item's reactive reroll button share "once per scene".
+  - Power Infusion.
+- **Step `keyedCount {flag, to?}`** (`resources/keyed-count.mjs`): one more on `flags.essence20.<flag>.<recipient uuid,
+  dots as dashes>` on the actor, the counter `@targetKeyed` / `target:keyedOnMe:` read. Analyze Target.
+- **`spendActions {atomic: true}`** (edit to `combat/spend-actions-and-turn-queue.mjs`): all or nothing - the actions
+  already spent are refunded when one is blocked. Get A Grip.
+- **`pick from: skills` `essences: [..]`** (edit to `tags/actor-state-tags.mjs#skillsFor`): Skills of any of those
+  Essences. Angry.
+
+### Combat end, Megaforms
+
+- **combatEnd Triggers get `@var.combatId`**, **markText `$var.<key>`** (edit to `marks/mark-value.mjs`) and **text
+  `{combat.id}`** (`shared/combat-id-text.mjs`): a mark that keeps the combat it was set in, settled when that combat
+  ends (`self:markText:<key>=$var.combatId`). Hard Corps.
+- **Megaform contributions** (`zords/megaform-contributions.mjs`), read by documents/actor.mjs and dice.mjs:
+  - `MegaformArmor {toughness?, evasion?, form?: megazord | combiner, replacesTrait?}`: a participant adds to the ARMOR
+    part of its Megaform's Defenses. `replacesTrait` stops a Megaform Trait's own type from adding anything by itself.
+    Formulas read the rule's item. Hardened Chassis, Armored Defense.
+  - `MegaformHold {}`: a Combiner form doesn't fall apart while the holder has Health. Keep IT Together!.
+  - `MegaformSpecializations {}`: the holder's Specializations merge into the Combiner form's Skills. Better As One.
+  - `EnergonDonor {}`: the holder pays the dialog's Energon ↑1 when the form has none (`energonDonor` /
+    `payEnergonDonor`). Better As One.
+
+## Engine features added 2026-10-07 (round 16, b)
+
+All new plug-in files are imported in `rules/plugins/index.mjs`'s "Round 16 (part b)" block. Strings are under
+`E20.RulesExtLeftB16.*`.
+
+### Durations (`plugins/effects/combat-round-durations.mjs`)
+
+- **`until: "combatRound"`** - while the combat the effect started in is the current one and its round is the same. Set
+  out of combat, it never counts. Ground Suppression's -5 ("until the start of your next turn", read at round
+  granularity).
+- **`until: "combatThroughNextRound"`** - the same combat, through the round after the one it started in. Tech Specs.
+
+### Banks, borrowed Specializations, Conditions (`plugins/resources/bank-keys-and-borrowing.mjs`)
+
+- **Pick source `allySpecializations`** - every Skill Specialization an ally on the scene holds (the system's ally count,
+  any range): value the Skill, label "<Specialization> (<Skill>) - <ally>". **`perAlly: true`** - one option per ally
+  (allies of the same name count as one), value every Skill they're Specialized in joined by "|". Data Bridge, Think Tank.
+- **Tags** `self:allySpecializations`; `skill:in:<a|b>` (the rolled Skill is one of them - `skill:in:{var.picked}` in a
+  bank's appliesWhen); `self:bankKey:<key>` / `target:bankKey:<key>` (a live bank under that `key`);
+  `self:sideBankKey:<key>` and `self:sideStatus:<a|b>` (the actor - with a token - or an ally on the scene).
+- **`hasBankKey(actor, key)` / `bankKeySideCount(actor, key)`** for hand-written readers: dice.mjs's DataBridgeBonus
+  (Tactical Triangulation) now asks for `key: dataBridge`.
+- **Step `moveCondition {conditions, from?, to?, toFilter?, title?, fromLabel?, toLabel?}`** - one dialog: which
+  (creature, Condition) pair among `from` (default the actor with a token and its allies) loses its Condition, and which
+  of `to` (narrowed by `toFilter`, asked as the target) gains it. Nothing to choose, a cancel or the same creature twice
+  stops the run. Misery Loves Company: `toFilter: ["target:bankKey:dataBridge"]`.
+
+### Defenses and targets (`plugins/combat/defense-facts.mjs`)
+
+- **Step `defenseFacts {of?}`** - the first target's (or the actor's) Defenses as an attack meets them
+  (combat.mjs#getDefenseValue): `{var.highestDefense}` (ties to the first in Toughness, Evasion, Willpower, Cleverness),
+  `{var.defenseValues}` ("Toughness 12, ..."), `{var.hangUpNames}` (or "none known"). No target: stops.
+- **`rollVsEach` `defense` fills `{var.x}` / `{choice.x}`** (rules/steps.mjs) - `defense: "{var.highestDefense}"`.
+- **Tag `target:amongUserTargets:<formula>`** - the other party is one of the first N of this user's targets. Danger
+  Close: `filter: ["not:target:amongUserTargets:@actor.system.essences.smarts.value * @owned.<Danger Close id>"]`.
+
+### Marks (`plugins/marks/counted-marks.mjs`, `plugins/rolls/marked-row-outcome.mjs`)
+
+- **RollModifier `consumeCount: true`** (with `consumeMark`) - the roll takes ONE off the mark's count; the mark goes when
+  it runs out. The consume (`rulesMarkOne`) is spent at roll time with the other rule consumes (dice.mjs,
+  target-riders.mjs). Eye For Appraisal's "next 2d2 ranged attacks".
+- **`inMarkedArea(attacker, target, token, key)`** - the mark keeps a point (`mark {text: "{var.pointX},{var.pointY},
+  {var.pointScene}"}`) and the attacker stands in the 20 x 20 ft square around it. `check:inAppraisedArea` reads it.
+- **`pickPoint {optional: true}`** - no point picked, the run goes on (empty point vars).
+- **Rule type `MarkedRowOutcome {promote?, consume: promoted | x2}`** (scope `marked` + `mark`) - on the carrier's own rows
+  (dice.mjs#_rollSkillHelper, after the Multiplier rules' early stage): `promote` turns a plain success into a Critical
+  Success; `consume` uses the carrier's mark up once a row was promoted / reached x2. Powerful Suggestion.
+
+### Picks, items, cards
+
+- **Recipient `companionFlagged:<flag>`**, tags **`self:companionFlagged:<flag>`** and **`item:mentions:<a|b>`** (name or
+  `system.prerequisite` contains one, hyphens counting as spaces) - `plugins/picks/flagged-companion-and-mentions.mjs`.
+  Rally Guardians Features.
+- **`createItem`** (rules/steps.mjs): `unlinked: true` (no grantedBy - it stays when the rule's item goes);
+  `knownTraits: true` (system.traits keeps only CONFIG.E20.weaponTraits keys); a name that is an `E20.` key is localized,
+  and `nameData: {key: text}` formats it (children too). Additional Attack Type.
+- **`choose`**: option labels and the prompt that are `E20.` keys are localized; **`pick`**: an `E20.` prompt is localized
+  and **`optional: true`** (nothing to pick or a cancel: the choice stays unmade, the run goes on);
+  **`pickGeneralPerk {optional: true}`**. A Hint of Independence.
+- **`roll {downshift}`** - ↓ on the roll, a formula (`@target.myMark.dominated`). **Tag `target:exists`**
+  (`plugins/tags/target-exists-tag.mjs`). Dominate.
+- **Step `placeBeside {to?}`** (`plugins/combat/place-beside.mjs`) - the recipients' tokens go just right of the actor's.
+  **`contest`**: `best: true` on a side rolls its best listed Skill (a tie to the first listed); `tieWins: true` gives a tie
+  to this actor. Try Me.
+
+### Turn-start schedule (`plugins/combat/next-round-schedule.mjs`)
+
+- **Step `scheduleNextRound {steps, replace?}`** - the steps run at the first turn start a round later at or past this
+  point in the turn order (or any turn of the round after), in the combat the run happened in; never when set out of
+  combat. `replace` - one per item. `{var.actorUuid}` when they run. `runScheduledNextRound(combat)` is called from
+  documents/combat.mjs#_onStartTurn (the active GM). Self-Destruct.
+
+### Hits, Powers, minions (`plugins/combat/incoming-hits-and-minions.mjs`)
+
+- **HitRider `scope: "incoming"`** - acts on hits landing on its holder (self: = the one who hit, holder: = the holder).
+- **Tags `self:minion` / `target:minion`** - not a Player Character and tagged minion / minions / foot soldier /
+  footsoldier / foot-soldier / mook / grunt, or a Putty or Tenga.
+- **Step `activatePower`** - the rule's own Power activated the sheet's way (power-handler.mjs#powerCost); the run then
+  stops quietly. Metallic Armor Power Up's Use (switch on, or end).
+
+### Kits (`plugins/resources/kit-options.mjs`, read by mechanics/resources/kits.mjs)
+
+- **`KitOption {label, cost?, steps}`** - another choice in the kit's own Use list, first, while `when` holds; the action is
+  paid, the steps run, their chat lines are the kit's message. WTNV Medicine Kit's heal.
+- **`KitSkill {skill, spec?}`** - the kit's Skill / Specialization where its name doesn't say (kitInfo).
+
+### Bonded partners (`plugins/combat/bond-partner-guard.mjs`)
+
+- **RollModifier `scope: "bondPartnerIncoming"`** - on the bond holder's item: rolls against its bonded partner by anyone
+  but the holder.
+- **Defense `mode: "holderBest"`** (scope `bondPartner`) - per attack, the partner meets the better of its own and the
+  holder's Defense.
+- **Tags `target:inHolderReach`** (5 ft per holder token width), **`self:nearHolder:<ft>`**. Hit Someone Your Own Size!
+
+### Engine edits
+
+- `rules/adapter.mjs#ruleDerived`: a linked always-on Defense rule's `when` now sees its `holder` (In The Right Hands'
+  `holder:transformed` on the wearer's sheet).
+- `rules/adapter.mjs` consumeMark: `consumeCount` -> `rulesMarkOne`.

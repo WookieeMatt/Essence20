@@ -5,6 +5,9 @@
   "_id": "8duLY5PjlpmbNkwK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Morphed teammates regain 1d2 Power","limit":{"per":"encounter"},"cost":{"resource":{"path":"system.powers.personal.value"},"amount":3},"steps":[{"do":"updateActor","to":"allies:100000","filter":["target:data:system.isMorphed"],"add":{"system.powers.personal.value":"1d2"}}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (while Morphed): spend 3 Personal Power; each Morphed teammate regains d2 Personal Power. It can't be used twice in one scene.</p><p>Left to the table: the once-per-day limit.</p>"

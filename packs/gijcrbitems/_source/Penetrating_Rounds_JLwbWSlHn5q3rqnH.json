@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Cover","mode":"ignore","label":"Ignores Cover with a shotgun or submachine gun","when":[{"any":["weapon:source:Compendium.essence20.gi_joe_crb.Item.2qW1YLopvjKyezNQ","weapon:source:Compendium.essence20.gi_joe_crb.Item.oJInlAgdYZzjH7bk"]}]}
+      {"type":"Cover","mode":"ignore","label":"Ignores Cover with a shotgun or submachine gun","when":[{"any":["weapon:source:Compendium.essence20.gi_joe_crb.Item.2qW1YLopvjKyezNQ","weapon:source:Compendium.essence20.gi_joe_crb.Item.oJInlAgdYZzjH7bk"]}]},
+      {"type":"AttackTraits","label":"Penetrating Rounds (shotgun or submachine gun: Armor Piercing)","traits":["armorPiercing"],"when":["item:type:weaponEffect",{"any":["weapon:source:Compendium.essence20.gi_joe_crb.Item.2qW1YLopvjKyezNQ","weapon:source:Compendium.essence20.gi_joe_crb.Item.oJInlAgdYZzjH7bk"]}]}
     ],
     "automation": {
       "status": "full",

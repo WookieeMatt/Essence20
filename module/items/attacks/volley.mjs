@@ -21,26 +21,6 @@ export function isVolleyActive(actor) {
 }
 
 /**
- * Toggles Volley - switching ON costs 1 Personal Power, switching back OFF is free.
- * @param {Actor} actor
- * @returns {Promise<Boolean|null>}   The new state, or null if switching ON was unaffordable.
- */
-export async function toggleVolley(actor) {
-  if (isVolleyActive(actor)) {
-    await actor.unsetFlag('essence20', VOLLEY_FLAG);
-    return false;
-  }
-
-  if (actor.system.powers.personal.value < 1) {
-    return null;
-  }
-
-  await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
-  await actor.setFlag('essence20', VOLLEY_FLAG, true);
-  return true;
-}
-
-/**
  * The actor's current Volley Shots value (Pink Ranger's own scaling "base" rolePoints item,
  * bonus.type "other" - not one of the generically-handled attackUpshift/damageBonus/healthBonus/
  * defenseBonus types dice.mjs/_prepareHealth/_prepareDefenses already read). Falls through to the

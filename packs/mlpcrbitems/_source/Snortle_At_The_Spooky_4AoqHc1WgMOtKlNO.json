@@ -5,6 +5,9 @@
   "_id": "4AoqHc1WgMOtKlNO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"End a mind-affecting Condition","steps":[{"do":"target"},{"do":"collect","to":"targets","filter":[{"any":["target:status:frightened","target:status:mesmerized"]}]},{"do":"countTargets","var":"cured"},{"do":"warn","text":"E20.SnortleNothingToCure","stop":true,"when":["var:cured<1"]},{"do":"focus","to":"target","when":["not:self:hasItem:Compendium.essence20.mlp_crb.Item.2LZ9H8bmrMECGHjA"]},{"do":"countTargets","var":"cured"},{"do":"spend","resource":{"rolePoints":"Cheer Points"},"amount":"@var.cured"},{"do":"removeCondition","to":"targets","condition":"mesmerized","filter":["not:target:status:frightened"]},{"do":"removeCondition","to":"targets","condition":"frightened"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Standard action, spend 1 Cheer Point to end Frightened or Mesmerized on your targeted friend.</p>"

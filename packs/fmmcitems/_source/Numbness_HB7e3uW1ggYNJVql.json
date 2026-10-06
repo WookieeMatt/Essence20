@@ -5,6 +5,21 @@
   "_id": "HB7e3uW1ggYNJVql",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Numbness (Stun Resistance)","path":"system.resistances.stun","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=1"]},
+      {"type":"DerivedStat","label":"Numbness (Psychic Resistance)","path":"system.resistances.psychic","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=6"]},
+      {"type":"DerivedStat","label":"Numbness (Blunt Resistance)","path":"system.resistances.blunt","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=12"]},
+      {"type":"DerivedStat","label":"Numbness (Element Resistance)","path":"system.resistances.element","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=18"]},
+      {"type":"DerivedStat","label":"Numbness (Acid Resistance)","path":"system.resistances.acid","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=18"]},
+      {"type":"DerivedStat","label":"Numbness (Cold Resistance)","path":"system.resistances.cold","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=18"]},
+      {"type":"DerivedStat","label":"Numbness (Electric Resistance)","path":"system.resistances.electric","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=18"]},
+      {"type":"DerivedStat","label":"Numbness (Emp Resistance)","path":"system.resistances.emp","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=18"]},
+      {"type":"DerivedStat","label":"Numbness (Fire Resistance)","path":"system.resistances.fire","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=18"]},
+      {"type":"DerivedStat","label":"Numbness (Laser Resistance)","path":"system.resistances.laser","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=18"]},
+      {"type":"DerivedStat","label":"Numbness (Sonic Resistance)","path":"system.resistances.sonic","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=18"]},
+      {"type":"DerivedStat","label":"Numbness (Energy Resistance)","path":"system.resistances.energy","value":true,"when":["calc:max(@level, @actor.system.threatLevel)>=18"]},
+      {"type":"AttackResistance","label":"Numbness (Stone Warlord's chosen damage type)","choiceOf":"Compendium.essence20.finster_s_monster_matic_cookbook.Item.QlFNI9fQZXqO5N2J"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you have Resistance to Stun, adding Psychic at 6th level, Blunt at 12th and Energy at 18th. Attacks of those types against you take a Snag, labelled Resistance in the attacker's Roll Options Dialog.</p>"

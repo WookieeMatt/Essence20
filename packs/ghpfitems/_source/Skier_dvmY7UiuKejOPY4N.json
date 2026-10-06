@@ -7,7 +7,9 @@
   "system": {
     "rules": [
       {"type":"Movement","movement":"ground","stage":"final","op":"add","value":10,"label":"Skiing: Ground Movement +10 ft","when":["check:skiing"]},
-      {"type":"Defense","label":"Skiing: +1 Evasion","defense":"evasion","amount":1,"when":["defense:evasion","check:skiing"]}
+      {"type":"Defense","label":"Skiing: +1 Evasion","defense":"evasion","amount":1,"when":["defense:evasion","check:skiing"]},
+      {"type":"Use","label":"Skiing on","when":["not:self:data:flags.essence20.isSkiingActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.isSkiingActive":true}},{"do":"chat","text":"{name} is skiing."}]},
+      {"type":"Use","label":"Skiing off","when":["self:data:flags.essence20.isSkiingActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.isSkiingActive":false}},{"do":"chat","text":"{name} stops skiing."}]}
     ],
     "prerequisites": {"when":["ask:Skiing or Arctic Specialization"]},
     "automation": {

@@ -13,12 +13,8 @@ global.Hooks = {
 const { registrySnapshot } = await import('../../mechanics/item-hooks.mjs');
 const core = await import('../../mechanics/combat/reaction-engine.mjs');
 await import('../../mechanics/rolls/roll-dataset-snag.mjs');
-const { AGENCY, suppressesFumbleStoryPoint } = await import('../social/agency-hang-up.mjs');
-await import('../social/secret-helper-resolve-success.mjs');
 const { IRON_BRAVADO, sharedImmunity } = await import('../defenses/iron-bravado-shared-immunity.mjs');
-await import('../defenses/cyborg-essence-damage.mjs');
 await import('../magic/mind-beam-calm-confused.mjs');
-await import('../social/agency-fumble-hook.mjs');
 
 function flagged(obj) {
   obj.flags ??= {};
@@ -184,13 +180,7 @@ describe('late Snag', () => {
 });
 
 describe('triggers', () => {
-  test('Agency drops the Fumble Story Point only for its own skill', () => {
-    const agent = makeActor('age', [item(AGENCY.hangUp, { type: 'hangUp' }), item(AGENCY.perk, { system: { choice: 'technology' } })]);
-    expect(suppressesFumbleStoryPoint(agent, 'technology')).toBe(true);
-    expect(suppressesFumbleStoryPoint(agent, 'might')).toBe(false);
-    expect(suppressesFumbleStoryPoint(makeActor('x'), 'technology')).toBe(false);
-  });
-
+  // Agency's Fumble Story Point is a NoFumbleStoryPoint rule on the Hang-Up (rules/conv15-items2.test.js).
   // Inspirational Leader, Junker and Revengeful are rules on their items (rules/conv10-slE10.test.js).
   // All For One is a droppedToZero Trigger on its Perk (rules/conv10-slD10.test.js).
 });

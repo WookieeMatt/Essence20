@@ -4,14 +4,13 @@
  *
  * We Improvise (Transformers One Sourcebook, p.15): "The first time you roll an Initiative Skill
  * Test in combat, add a Story Point to the team's pool. At the end of combat, any unspent Story
- * Points gained from this Perk are lost." dice.mjs adds the point and marks
+ * Points gained from this Perk are lost." The item's own rule adds the point and marks
  * flags.essence20.weImproviseUsedThisEncounter; this counts those grants and the pool's spends on
  * the Combat, and at the combat's end takes back the ones not spent (spends count against these
  * points first - they're the ones about to expire).
  *
- * The Continuum Anomaly risk dice and result bands (A Jump Through Time, Table 4-7 and p.113) live here too -
- * Time Displaced (pr1/jtt.mjs) reads them. History Buff's one-die-smaller check is its item's own Use rule
- * (rules/conv10-slC10.test.js).
+ * (The Continuum Anomaly checks - History Buff's one die smaller, Time Displaced's one die larger - are their items' own
+ * Use rules: rules/conv10-slC10.test.js, rules/conv17-split2.test.js.)
  */
 import { changed, IDS } from "../shared/resource-team-lookups.mjs";
 import { isActiveGm, onHook } from "../shared/hooks-and-clients.mjs";
@@ -88,19 +87,3 @@ onHook('deleteCombat', async (combat) => {
     await ChatMessage.create({ content: T('ResWeImproviseLost', { count: lost }) });
   }
 });
-
-/* -------------------------------------------- */
-/*  Continuum Anomalies                          */
-/* -------------------------------------------- */
-
-// Table 4-7: Risk Severity for Anomaly.
-export const RISK_DICE = { trivial: '1d2', small: '1d4', modest: '1d6', average: '1d8', high: '1d10', serious: '1d12', catastrophic: '2d8' };
-
-/** "2-5 Minor, 6-8 Lasting, 9-14 Major, 15-16 Cataclysmic" (a 1 creates none). */
-export function anomalyBand(total) {
-  if (total >= 15) return 'cataclysmic';
-  if (total >= 9) return 'major';
-  if (total >= 6) return 'lasting';
-  if (total >= 2) return 'minor';
-  return 'none';
-}

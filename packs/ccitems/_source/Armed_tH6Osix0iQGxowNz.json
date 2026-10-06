@@ -5,6 +5,9 @@
   "_id": "tH6Osix0iQGxowNz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Gain Weapon Training and pick three Adept Armaments (Armed)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"grant","uuid":"Compendium.essence20.gi_joe_crb.Item.rFnoQTbnYQX2tlMe","when":["not:self:hasItem:Compendium.essence20.gi_joe_crb.Item.rFnoQTbnYQX2tlMe"]},{"do":"pickMany","key":"adept","from":"ownedItem","itemType":"weapon","filter":["not:item:data:flags.essence20.adeptArmament"],"count":3,"prompt":"Choose up to 3 weapon(s) as Adept Armaments."},{"do":"updateItem","item":"choice:adept","all":true,"set":{"flags.essence20.adeptArmament":true}},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick your Weapon Training and Adept Armament choices; they are added to your sheet.</p>"

@@ -6,7 +6,11 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Perfect Disguise","when":[{"any":["skill:deception","skill:persuasion","skill:intimidation","skill:streetwise"]},"self:data:flags.essence20.perfectDisguiseActive","not:roll:dataset:isInitiative"],"edge":true}
+      {"type":"RollModifier","label":"Perfect Disguise","when":[{"any":["skill:deception","skill:persuasion","skill:intimidation","skill:streetwise"]},"self:data:flags.essence20.perfectDisguiseActive","not:roll:dataset:isInitiative"],"edge":true},
+      {"type":"Use","label":"Take on a disguise","when":["not:self:data:flags.essence20.perfectDisguiseActive"],"limit":{"per":"encounter"},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.perfectDisguiseActive":true}},{"do":"chat","text":"{name} takes on a perfect disguise."}]},
+      {"type":"Use","label":"Drop the disguise","when":["self:data:flags.essence20.perfectDisguiseActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.perfectDisguiseActive":false}},{"do":"chat","text":"{name} drops the disguise."}]},
+      {"type":"RollModifier","label":"Attacking in disguise (Perfect Disguise: Edge)","edge":true,"when":["attack","self:data:flags.essence20.perfectDisguiseActive"]},
+      {"type":"Trigger","event":"afterRoll","label":"Seen attacking (Perfect Disguise ends)","when":["attack","roll:targets>=1","self:data:flags.essence20.perfectDisguiseActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.perfectDisguiseActive":false}}]}
     ],
     "automation": {
       "status": "partial",

@@ -5,6 +5,9 @@
   "_id": "V6hbpi3LsDjyJXyW",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Hot to Trot (target, else you, this scene)","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"markWindow","flag":"hotToTrotActive","window":"scene","to":"targetOrSelf"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: on a success, the targeted creature (or you, if no one is targeted) gets +15 ft Ground Movement until the GM advances the scene.</p>"

@@ -49,6 +49,11 @@ function costErrors(cost) {
     errors.push('cost.action must be standard, move, free or none');
   }
 
+  // kind: the named action the cost is for (rouse...), handed to the action economy as its context.
+  if (cost.kind !== undefined && (typeof cost.kind != 'string' || !cost.action)) {
+    errors.push('cost.kind must be a name, with cost.action');
+  }
+
   if (cost.resource && !cost.resource.pool && !cost.resource.path && !cost.resource.storyPoints && !cost.resource.rolePoints) {
     errors.push('cost.resource needs pool, path, storyPoints or rolePoints');
   }
@@ -124,10 +129,12 @@ export const RULE_TYPES = {
   DialogSwitch: {
     // damage: added to the attack's own damage bonus when ticked (multiplied by Degrees of Success).
     // useSkill: roll that Skill's die instead (the shift difference, like "roll Deception instead of Initiative").
-    params: { ...SHIFT_PARAMS, default: { kind: 'bool' }, replacesAim: { kind: 'bool' }, cost: { kind: 'object' }, damage: { kind: 'formula' }, useSkill: { kind: 'string' }, forget: { kind: 'bool' }, spend: { kind: 'object' }, clearSnag: { kind: 'bool' }, key: { kind: 'string' }, steps: { kind: 'object' }, defaultWhen: { kind: 'strings' }, limit: { kind: 'object' } },
+    params: { ...SHIFT_PARAMS, default: { kind: 'bool' }, replacesAim: { kind: 'bool' }, cost: { kind: 'object' }, damage: { kind: 'formula' }, useSkill: { kind: 'string' }, forget: { kind: 'bool' }, spend: { kind: 'object' }, clearSnag: { kind: 'bool' }, key: { kind: 'string' }, steps: { kind: 'object' }, defaultWhen: { kind: 'strings' }, limit: { kind: 'object' },
+      // noDamage: ticked, the attack deals no damage at all (dice.mjs options.ruleNoDamage - "forgo the damage to ...").
+      noDamage: { kind: 'bool' } },
     scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => [
-      ...(['upshift', 'downshift', 'edge', 'snag', 'specialize', 'damage', 'replacesAim', 'useSkill', 'key', 'steps', 'clearSnag'].some(key => rule[key]) ? [] : ['changes nothing']),
+      ...(['upshift', 'downshift', 'edge', 'snag', 'specialize', 'damage', 'replacesAim', 'useSkill', 'key', 'steps', 'clearSnag', 'noDamage'].some(key => rule[key]) ? [] : ['changes nothing']),
       ...(rule.spend !== undefined && !rule.spend?.resource && rule.spend?.max === undefined ? ['spend needs a resource or a max'] : []),
       ...(rule.spend !== undefined && rule.cost !== undefined ? ['spend and cost can\'t both be set'] : []),
       ...(rule.steps !== undefined ? stepErrors(rule.steps) : []),
@@ -344,6 +351,9 @@ export const RULE_TYPES = {
       specialize: { kind: 'bool' },
       clearSnag: { kind: 'bool' },
       limit: { kind: 'object' },
+      // from: only when the roll starts at one of these dice; consumeMark: the roll it applies to uses up that mark.
+      from: { kind: 'strings' },
+      consumeMark: { kind: 'string' },
     },
     scopes: ['self', 'host'],
     validate: rule => [
@@ -440,10 +450,12 @@ export const RULE_TYPES = {
   },
   // Token movement (mechanics/world/rough-terrain.mjs, mechanics/combat/token-movement.mjs): ignore Rough Terrain, and
   // Push Yourself at more feet per Free action, or with no doubling cap.
+  // countSinceTypeChange (round 15, items2 - Third Dimension): a move counts only what was walked since the last
+  // change of Movement type against the current type's speed (rules/plugins/combat/since-type-change.mjs).
   MovementAction: {
-    params: { ignoreRoughTerrain: { kind: 'bool' }, pushFeet: { kind: 'formula' }, pushUnlimited: { kind: 'bool' } },
+    params: { ignoreRoughTerrain: { kind: 'bool' }, pushFeet: { kind: 'formula' }, pushUnlimited: { kind: 'bool' }, countSinceTypeChange: { kind: 'bool' } },
     scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
-    validate: rule => (rule.ignoreRoughTerrain || rule.pushFeet || rule.pushUnlimited ? [] : ['changes nothing']),
+    validate: rule => (rule.ignoreRoughTerrain || rule.pushFeet || rule.pushUnlimited || rule.countSinceTypeChange ? [] : ['changes nothing']),
   },
   // A number on other items the actor owns - each item the `items` tags match (tested as the rolled
   // item: item:type:weapon, item:source:<uuid>, item:data:system.x>0...). Never the rule's own item.
@@ -534,7 +546,8 @@ function cardStepErrors(steps) {
   return used.length ? [`${used.join(', ')} only work in a Reaction rule`] : [];
 }
 
-const COMMON = ['type', 'label', 'when', 'scope', 'priority', 'disabled', 'stacks', 'radius', 'affects'];
+// always: the rule counts even while its item doesn't (an unequipped weapon's upgrade - rules/index.mjs#collectRules).
+const COMMON = ['type', 'label', 'when', 'scope', 'priority', 'disabled', 'stacks', 'radius', 'affects', 'always'];
 
 /**
  * Everything wrong with one rule.

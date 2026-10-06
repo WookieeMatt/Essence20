@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Grant","label":"Infatuated","uuid":"Compendium.essence20.dark_skies_over_equestria.Item.2Kw4msw0l4j6fTOm","skipIfOwned":true}
+      {"type":"Grant","label":"Infatuated","uuid":"Compendium.essence20.dark_skies_over_equestria.Item.2Kw4msw0l4j6fTOm","skipIfOwned":true},
+      {"type":"Defense","label":"Colony Changeling (adjacent colony changelings)","defense":"evasion","amount":"min(3, @tokensHolding.FRUWPAePJzm7Mlf0.5)"}
     ],
     "automation": {
       "status": "full",

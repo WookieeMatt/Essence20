@@ -35,6 +35,8 @@ function makeZord(name, fastModulationCount = 0) {
     items: Array.from({ length: fastModulationCount }, () => ({
       type: 'feature',
       flags: { core: { sourceId: FAST_MODULATION_ID } },
+      // Its pack rule (rules/conv15-other.test.js checks it against the pack).
+      system: { rules: [{ type: 'JoinDie', steps: 1, stacks: true }] },
     })),
   };
 }

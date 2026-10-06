@@ -5,6 +5,9 @@
   "_id": "G3cypoJyLtlLogzO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SneakAttackGrant","label":"Sudden Strike","anyCircumstance":true,"cost":{"storyPoints":1},"limit":{"per":"encounter"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per combat, Sneak Attack is offered no matter the circumstances. The Story Point and the once-per-combat use are only spent when the attack needed this Perk to qualify, at the moment its damage is applied.</p>"

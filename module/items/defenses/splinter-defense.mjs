@@ -7,10 +7,9 @@ import { roleValueChange } from "../../sheet-handlers/role-handler.mjs";
  * creature can't be docked twice by the same Gold Ranger in one combat), not the Gold Ranger
  * themselves.
  *
- * Read/applied from dice.mjs's own post-hit processing (see checkContext.isMelee and the
- * SPLINTER_DEFENSE_ID check there) once a successful melee hit against the holder is confirmed.
+ * The penalty itself is a targeted Trigger rule on the Perk (round 15) - this file keeps the Hardened Armor bonus it
+ * reads (@hardenedArmor, rules/plugins/tags/dice-refs.mjs).
  */
-const SPLINTER_DEFENSE_FLAG = 'splinterDefenseAttackers';
 
 /**
  * The actor's current Hardened Armor bonus (Gold Ranger's own scaling Toughness rolePoints item,
@@ -31,30 +30,4 @@ export function getHardenedArmorBonus(actor) {
   }
 
   return rolePoints.system.bonus.startingValue + roleValueChange(actor.system.level, rolePoints.system.bonus.increaseLevels);
-}
-
-/**
- * Whether Splinter Defense should still trigger against this attacker this combat - true (and
- * marks it used) the first time a given attacker hits this actor in the current combat, false
- * (and does nothing) on any later hit from the same attacker before the combat ends.
- * @param {Actor} targetActor   The Splinter Defense holder who was just hit.
- * @param {String} attackerId   The attacking actor's own id.
- * @returns {Promise<Boolean>}
- */
-export async function checkAndMarkSplinterDefense(targetActor, attackerId) {
-  if (!game.combat) {
-    return false;
-  }
-
-  const stored = targetActor.getFlag?.('essence20', SPLINTER_DEFENSE_FLAG);
-  const attackerIds = stored?.combatId == game.combat.id ? stored.attackerIds : [];
-  if (attackerIds.includes(attackerId)) {
-    return false;
-  }
-
-  await targetActor.setFlag('essence20', SPLINTER_DEFENSE_FLAG, {
-    combatId: game.combat.id,
-    attackerIds: [...attackerIds, attackerId],
-  });
-  return true;
 }

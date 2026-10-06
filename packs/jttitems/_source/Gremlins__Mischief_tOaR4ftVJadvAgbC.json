@@ -5,6 +5,10 @@
   "_id": "tOaR4ftVJadvAgbC",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Unarmed strikes deal Electromagnetic damage this turn (Gremlins' Mischief)","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"require","beforeCost":true,"check":[{"any":["target:tag:robot","target:tag:robotic","target:tag:bot","target:tag:cybertronian","target:tag:android","target:tag:drone","target:tag:machine","target:tag:cog","target:tag:zord","target:tag:mechanical","target:tag:vehicle","target:tag:computerized"]}],"message":"Target a mechanical, robotic or computerized creature."},{"do":"setToggle","key":"gremlins","value":true,"until":"turnOrUntilCombat"},{"do":"chat","text":"{name}'s unarmed strikes deal Electromagnetic damage this turn."}]},
+      {"type":"DamageType","label":"Electromagnetic (Gremlins' Mischief)","to":"emp","when":["attack:unarmed","self:toggle:gremlins"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: your unarmed attacks deal Electromagnetic damage this turn.</p>"

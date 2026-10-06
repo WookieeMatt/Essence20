@@ -58,8 +58,7 @@ export async function activateConsummatePerformer(actor) {
 }
 
 /**
- * Sheet-button event wrapper for activateConsummatePerformer() - mirrors sheet-handlers/power-
- * ranger-handler.mjs#onActivatePowerInfusion's own shape.
+ * Sheet-button event wrapper for activateConsummatePerformer().
  * @param {Event} event
  */
 export async function onActivateConsummatePerformer(event) {

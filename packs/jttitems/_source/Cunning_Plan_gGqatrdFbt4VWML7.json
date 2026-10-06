@@ -5,6 +5,9 @@
   "_id": "gGqatrdFbt4VWML7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Cunning Plan, use the Cunning die (1 Personal Power)","useSkill":"roleSkillDie","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"forget":true,"when":["not:roll:initiative"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch to spend a Personal Power and roll your Cunning die in place of the Skill.</p>"

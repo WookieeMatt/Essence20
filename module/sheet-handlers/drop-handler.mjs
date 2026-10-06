@@ -1,4 +1,3 @@
-import { promptVehicleUpgradeChoice } from "../mechanics/vehicles/vehicle-upgrades.mjs";
 import { checkIsLocked } from "../util/sheet-lock.mjs";
 import { createId, parseId } from "../util/utils.mjs";
 import { onAlterationDrop } from "./alteration-handler.mjs";
@@ -208,13 +207,8 @@ export async function _onUpgradeDrop(upgrade, actor, dropFunc) {
     // directly to the Vehicle actor itself, not to a sub-item on its sheet the way an
     // armor/weapon Upgrade attaches to a piece of gear - embedded plainly, same as a Perk.
     // Energy Resistant, Energized Plating, Double-Barrel and Targeting System then ask their
-    // choice (mechanics/vehicles/vehicle-upgrades.mjs).
-    const created = await dropFunc();
-    if (created?.[0]) {
-      await promptVehicleUpgradeChoice(created[0]);
-    }
-
-    return created;
+    // choice (a pick step in their 'added' Trigger rules).
+    return dropFunc();
   } else {
     ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
     return false;

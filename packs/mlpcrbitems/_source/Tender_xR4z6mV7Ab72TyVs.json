@@ -5,6 +5,9 @@
   "_id": "xR4z6mV7Ab72TyVs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Tender","when":["self:choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ"],"steps":[{"do":"rollVsEach","skill":"choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ","defense":"willpower","onHit":[{"do":"bank","downshift":1,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: rolls your Empathy Skill against your target's Willpower. On a success their next Skill Test takes ↓1, labelled Tender in their Roll Options Dialog. Left to the table: keeping it on all their aggressive actions until someone is aggressive toward them or the scene ends.</p>"

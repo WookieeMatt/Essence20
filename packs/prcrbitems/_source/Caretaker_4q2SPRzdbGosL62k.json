@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Caretaker","when":["skill:science"],"edge":true}
+      {"type":"RollModifier","label":"Caretaker","when":["skill:science"],"edge":true},
+      {"type":"GroupTestBonus","label":"Caretaker","edge":true}
     ],
     "automation": {
       "status": "partial",

@@ -539,6 +539,8 @@ describe('Lance of Light (strike)', () => {
   }
 
   const strike = item => ({ rule: item.system.rules.find(rule => rule.type == 'Use'), index: item.system.rules.findIndex(rule => rule.type == 'Use') });
+  // The Lance's on / off are Use rules too (round 17, split3): press the Strike.
+  const pickStrike = { pick: async (item, available) => available.find(({ rule }) => rule.label.startsWith('Strike')) ?? null };
 
   test('only while summoned', () => {
     const { ranger } = setup({ active: false });
@@ -552,7 +554,7 @@ describe('Lance of Light (strike)', () => {
     const { ranger, foe } = setup();
     target(foe);
     const pay = jest.fn(async () => true);
-    await runUse(itemOf(ranger), pay);
+    await runUse(itemOf(ranger), pay, pickStrike);
     expect(pay).toHaveBeenCalledWith('standard');
     const [button] = ruleButtons();
     expect(button).toMatchObject({ who: 'targets', targets: [foe.uuid] });
@@ -563,9 +565,9 @@ describe('Lance of Light (strike)', () => {
     const far = setup({ x: 15 });
     target(far.foe);
     const pay = jest.fn(async () => true);
-    expect(await runUse(itemOf(far.ranger), pay)).toContain('within 10 ft');
+    expect(await runUse(itemOf(far.ranger), pay, pickStrike)).toContain('within 10 ft');
     target();
-    await runUse(itemOf(far.ranger), pay);
+    await runUse(itemOf(far.ranger), pay, pickStrike);
     expect(pay).not.toHaveBeenCalled();
     expect(ruleButtons()).toEqual([]);
   });

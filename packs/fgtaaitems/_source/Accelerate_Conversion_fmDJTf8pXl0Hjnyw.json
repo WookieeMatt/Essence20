@@ -5,6 +5,11 @@
   "_id": "fmDJTf8pXl0Hjnyw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Convert as a Free action (1 Energon or Personal Power)","limit":{"per":"scene"},"when":["self:data:system.canTransform"],"steps":[{"do":"choose","auto":true,"prompt":"Pay with what?","options":[{"label":"1 Energon","when":["self:data:system.energon.normal.value>=1"],"steps":[{"do":"spend","resource":{"path":"system.energon.normal.value"},"amount":1}]},{"label":"1 Personal Power","when":["not:self:data:system.energon.normal.value>=1","self:data:system.powers.personal.value>=1"],"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1}]}]},{"do":"mark","key":"accelerateConvert","to":"self","until":"scene"},{"do":"chat","text":"{name}'s next Conversion this scene is a Free action."}]},
+      {"type":"Use","label":"A Zord summon or Megaform combine 2 rounds sooner","limit":{"per":"scene"},"steps":[{"do":"reduceTimer","by":2}]},
+      {"type":"ActionCost","label":"Accelerate Conversion","action":"conversion","to":"free","limit":{"per":"scene","max":1},"when":["self:marked:accelerateConvert"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene): spend 1 Personal Power or Energon to convert as a Free action. The Zord summon and Megaform timers also offer a once-per-scene option to arrive 2 rounds sooner.</p>"

@@ -16,7 +16,7 @@ import { readChanges, resolveRollScopedChange, summarize } from "../characters/e
 // own source for it, so the effect isn't listed a second time. Recon (GI JOE CRB, Scout Focus,
 // p.94): its own rule (system.rules) gives the same Edge in the environment of expertise.
 // Ceremonial (Cobra Codex, armor upgrade, p.101): its Use button's ↑1 on Persuasion is listed as
-// its own source (items/defenses/anonymous-upgrade.mjs), so its old disabled "Persuasion Upshift"
+// its own source (the upgrade's Use rule), so its old disabled "Persuasion Upshift"
 // effect would let a player stack a second ↑1.
 const CODE_OFFERED_EFFECT_SOURCES = new Set([
   "Compendium.essence20.gi_joe_crb.Item.EDBn8zHJXkRFu2TT",

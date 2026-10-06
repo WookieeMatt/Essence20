@@ -5,6 +5,9 @@
   "_id": "uLtZ0zbfx0K4jcSK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Borrow a Specialization","limit":{"per":"turn"},"when":["self:allySpecializations"],"steps":[{"do":"choose","auto":true,"options":[{"label":"Data Bridge","when":["not:self:hasItem:Compendium.essence20.enigma_of_combination.Item.TklqajBQCS7jiwpC"],"steps":[{"do":"pick","key":"borrowed","from":"allySpecializations","prompt":"Borrow which Specialization?"}]},{"label":"Think Tank","when":["self:hasItem:Compendium.essence20.enigma_of_combination.Item.TklqajBQCS7jiwpC"],"steps":[{"do":"pick","key":"borrowed","from":"allySpecializations","perAlly":true,"prompt":"Borrow every Specialization of which ally?"}]}]},{"do":"bank","to":"allies+self:999999","specialize":true,"appliesWhen":["skill:in:{var.picked}"],"until":"combat","replace":true,"key":"dataBridge","label":"Data Bridge"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per turn as a Free action, borrow an ally's Specialization for your next matching roll and share it over the bridge. Left to the table: borrowing Languages.</p>"

@@ -1,4 +1,4 @@
-import { activateForWindow, isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 /**
  * Fluttery Wings (MLP CRB, Elementary Aid spell, p.136): "You gift grounded creatures with
@@ -20,10 +20,6 @@ const FLUTTERY_WINGS_BONUS_FEET = 15;
 
 export function isFlutteryWingsActive(actor) {
   return isActiveForWindow(actor, FLUTTERY_WINGS_FLAG, 'scene');
-}
-
-export async function applyFlutteryWings(targetActor) {
-  await activateForWindow(targetActor, FLUTTERY_WINGS_FLAG, 'scene');
 }
 
 export function getFlutteryWingsBonus(actor) {

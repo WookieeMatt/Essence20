@@ -1,44 +1,16 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import MultiChoiceSelector from "../apps/multi-choice-selector.mjs";
 import { E20 } from "../util/config.mjs";
-import { actorHasPower } from "../mechanics/characters/powers.mjs";
+import { ruleChoiceCountBonus } from "../rules/plugins/picks/choice-count.mjs";
+import { hasAnyGeneralPerkChoice, hasUniqueChoice } from "../rules/plugins/picks/unique-choice.mjs";
 import { createItemCopies, deleteAttachmentsForItem, setEntryAndAddItem } from "./attachment-handler.mjs";
 import { getVisibleItemPacks } from "../util/compendium-browser.mjs";
 import { performSpectrumShift } from "./role-handler.mjs";
 import { isPrincessPerk, removeSpellcastingUpshift } from "../items/magic/princess-perks.mjs";
-import { grantBlendInUpgrades } from "../items/senses/blend-in.mjs";
-import { grantSilentRunningUpgrades } from "../items/gear/silent-running.mjs";
-import { grantTorozordFeature } from "../items/zords/torozord-feature.mjs";
 import { HEARTS_CALLING_ID, pickHeartsCallingOption } from "../items/resources/emotional-mastery.mjs";
-import {
-  applyEnhanceStrike, ENHANCE_STRIKE_ID, grantUniqueStrike, UNIQUE_STRIKE_MELEE_ID, UNIQUE_STRIKE_RANGED_ID,
-} from "../items/attacks/unique-strike.mjs";
-import { applyZordAlteration, ZORD_ALTERATION_ID } from "../items/zords/zord-alteration.mjs";
-import { grantWindWhispersEvasion, WIND_WHISPERS_ID } from "../items/defenses/wind-whispers.mjs";
-import { grantSurvivalTrainingHealth, SURVIVAL_TRAINING_ID } from "../items/healing/survival-training.mjs";
-import { grantPrimalMovement, PRIMAL_MOVEMENT_ID } from "../items/movement/primal-movement.mjs";
-import { grantPrimalTools, PRIMAL_TOOLS_ID } from "../items/attacks/primal-tools.mjs";
-import { AQUA_ELEMENTAL_ADAPTATION_ID, grantAquaElementalAdaptation } from "../items/defenses/aqua-elemental-adaptation.mjs";
-import { activateWhyDoIKnowThat, WHY_DO_I_KNOW_THAT_ID } from "../items/gear/why-do-i-know-that.mjs";
 
-// Combiner Specialization (Enigma of Combination, Component Ace Focus, 1st level, p.34): "You gain
-// the Gestalt Combiner or Matched Combiner General Perk. If you already have either of these
-// Perks, you gain 1 additional Health instead." The picker itself is the generic 'perks' choiceType
-// switch case below, which already filters out whichever of the two the actor already holds - "you
-// already have either" therefore surfaces as BOTH being filtered out (an empty choices object),
-// which the generic hasChoice flow just below treats as an error (E20.NoChoicesError) rather than
-// this Perk's own documented fallback. Intercepted here, before that switch runs, so the +1 Health
-// grant replaces the error instead of the picker ever opening on nothing.
-const COMBINER_SPECIALIZATION_ID = "Compendium.essence20.enigma_of_combination.Item.mWyO6mHSMG4TVw3J";
-const GESTALT_COMBINER_ID = "Compendium.essence20.enigma_of_combination.Item.a4BfJxhUC7hAhgdZ";
-const MATCHED_COMBINER_ID = "Compendium.essence20.enigma_of_combination.Item.ZIJnA0z3Mrp8pfbd";
-
-const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
-// Cost of Sorcery (Finster's Monster-Matic Cookbook, p.271): the Hang-Up that comes with Sorcery.
-// Sorcery's own Grant rule adds it (and takes it away with the Perk); onPerkDelete still removes a
-// copy given before that rule existed (one with no grantedBy flag). The Fumble effect itself lives
-// in dice.mjs (see COST_OF_SORCERY_ID's own doc comment there).
-const COST_OF_SORCERY_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.BRpf0FNey5oDEvq3";
+// (Sorcery's levelTaken - set when it's added, cleared when it goes - and its Cost of Sorcery Grant are rules on the Perk:
+// rules/conv17-split2.test.js.)
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
 const SPECTRUM_SHIFT_PERK_ID = "Compendium.essence20.pr_crb.Item.HxbEBJ3gXkTQqvxt";
 
@@ -47,12 +19,11 @@ const SPECTRUM_SHIFT_PERK_ID = "Compendium.essence20.pr_crb.Item.HxbEBJ3gXkTQqvx
 // Rex, you cannot suffer Snags on Animal Handling or Driving Skill Tests." Same canHaveZord grant
 // as ZORD_PERK_ID just above (this is textually the Quantum Ranger's own Zord Role Perk, not a
 // separate Zord Feature - it grants Zord access outright, no Additional Attack Type/Upgraded Zord
-// picker involved). The Snag-immunity half lives in roll-dialog.mjs's own _isUntrainedSnag.
+// picker involved). The Snag-immunity half is the Perk's own rule.
 const QUANTASAURUS_REX_ID = "Compendium.essence20.jump_through_time.Item.sn5jhTf8sJqRFhKS";
 
-// Phantom Ship (Across the Stars, Phantom Ranger Role Perk, 1st level, p.62) - see
-// roll-dialog.mjs's own PHANTOM_SHIP_ID comment for the Snag-immunity half. This half is the
-// same canHaveZord grant ZORD_PERK_ID/QUANTASAURUS_REX_ID just above already establish.
+// Phantom Ship (Across the Stars, Phantom Ranger Role Perk, 1st level, p.62) - the Snag-immunity
+// half is the Perk's own rule. This half is the same canHaveZord grant ZORD_PERK_ID/QUANTASAURUS_REX_ID just above already establish.
 const PHANTOM_SHIP_ID = "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWPV88t";
 
 // Torozord (Through the Shattered Grid, Magna Defender Role Perk, 3rd level, p.24): "you become
@@ -60,166 +31,44 @@ const PHANTOM_SHIP_ID = "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWP
 // grant just above, never actually wired despite the compendium item existing bare since this
 // book was first built.
 const TOROZORD_ID = "Compendium.essence20.through_the_shattered_grid.Item.gx0xOFKcKOPyaUto";
-// Torozord Feature (Through the Shattered Grid, Magna Defender Role Perk, 6th/10th/14th/17th
-// level, p.25) - see items/zords/torozord-feature.mjs's own doc comment for the full mechanic. Also
-// never wired despite the compendium item existing; The_Magna_Defender's own system.items grant
-// map was additionally missing all 4 of this Perk's own level entries entirely (a genuine
-// authoring gap, corrected alongside this).
-const TOROZORD_FEATURE_ID = "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c";
+// (Torozord Feature's Zord Feature pick is its pack item's own added rule - pickGrant notOwned to: ownZord.)
 
-// Duty of the Silver (Across the Stars, Silver Ranger, 7th level, p.57): "you gain training in
-// Heavy Armor automatically, or Ultra-Heavy Armor if you already have Heavy." Only this half is
-// built - the "teleport to the nearest concentration of Power Rangers" clause has no target data
-// to resolve against, pure GM narration. Applied once, on drop, same shape as ZORD_PERK_ID's own
-// grant just above - pulled into its own small function (unlike ZORD_PERK_ID's inline update) so
-// it can be unit tested directly, since setPerkValues as a whole always falls through to
-// onPerkDrop's own much larger, drag-and-drop-UI-coupled tail and isn't practical to unit test
-// end-to-end.
-const DUTY_OF_THE_SILVER_ID = "Compendium.essence20.across_the_stars.Item.KhV5GeGIMJNWlWhr";
+// (Duty of the Silver's Heavy / Ultra-Heavy Armor training is an added Trigger rule on the Perk - rules/conv17-split3.test.js.)
 
-// Grid Tap (Beneath the Helmet, Grid Power, p.57) - see its own check next to the `hasChoice`
-// switch above. The 8 known Grid Science/Grid Tech pickers (PR CRB's own Blue Ranger Grid Tech
-// I-IV, Beneath the Helmet's Aqua Ranger Grid Science I-IV) - a fixed id list rather than a name
-// match, the same "match by compendium id, not display name" idiom every other Perk-identification
-// check in this file already uses.
-const GRID_TAP_ID = "Compendium.essence20.beneath_the_helmet.Item.JKwabam49PLMVN28";
-const GRID_SCIENCE_TECH_IDS = new Set([
-  "Compendium.essence20.pr_crb.Item.R7HF3aSR3ZPURh1W", // Grid Tech I
-  "Compendium.essence20.pr_crb.Item.PIwAwPxbzH4hQ0WB", // Grid Tech II
-  "Compendium.essence20.pr_crb.Item.qZVu4bfVFOvcgzgo", // Grid Tech III
-  "Compendium.essence20.pr_crb.Item.dWfuzsqz30rZmX1G", // Grid Tech IV
-  "Compendium.essence20.beneath_the_helmet.Item.C81ZIdSjyz5mSTkI", // Grid Science I
-  "Compendium.essence20.beneath_the_helmet.Item.jNOwd35gE6Qrybdb", // Grid Science II
-  "Compendium.essence20.beneath_the_helmet.Item.6wD6guZWDrVbsMHZ", // Grid Science III
-  "Compendium.essence20.beneath_the_helmet.Item.sZacBgzLZjYd6ypy", // Grid Science IV
-]);
+// (Grid Tap's extra Grid Science / Grid Tech pick is a ChoiceCount rule on it - rules/plugins/picks/choice-count.mjs.)
 
-// Ferocious Fighters (Factions in Action Vol 1) - 3 Faction Perks that should each grant a fixed
-// General Perk outright but ship with an empty items map (a real wiring gap the categorization
-// pass found, not a missing mechanism - the SAME grant-a-Perk-outright pattern this file already
-// uses for Duty of the Silver's training grant/Beatdown's weapon grant, just targeting another
-// Perk item this time). None of the 3 need a player CHOICE (each grants exactly one fixed thing),
-// so a dedicated function (matching Beatdown's own shape) is used instead of the hasChoice picker
-// mechanism, which would otherwise force an unnecessary "choose 1 of 1" confirmation dialog.
-const CHANGE_ITS_STRIPES_ID = "Compendium.essence20.ferocious_fighters.Item.8tz9aZSqmUntS20H";
-const BLEND_IN_ID = "Compendium.essence20.ferocious_fighters.Item.mnze6jJ6eSYbS8Pr";
-
-// Silent Running - see items/gear/silent-running.mjs's own doc comment.
-const SILENT_RUNNING_ID = "Compendium.essence20.ferocious_fighters.Item.58OZMB7WbAgqgpkX";
+// (Change Its Stripes grants Blend In with a Grant rule; Blend In's and Silent Running's free upgrades - and Combiner
+// Specialization's pick - are 'added' Trigger rules on those Perks: rules/conv14-systems.test.js.)
 
 // Expertise (GI Joe CRB, Commando base, 1st/7th level, p.72): "Choose two skills... You choose
 // two more skills at 7th level" - granted 4 separate times across Commando's own progression
-// table (system.selectionLimit: 4), each instance its own independent skill pick. See the
-// 'skills' choice case below for why picking the SAME skill across two of those instances is
-// now blocked specifically for this Perk.
-const EXPERTISE_GIJ_ID = "Compendium.essence20.gi_joe_crb.Item.F9kOLys1Iu4UOg22";
+// table (system.selectionLimit: 4), each instance its own independent skill pick. Its UniqueChoice
+// rule (rules/plugins/picks/unique-choice.mjs) blocks picking the SAME skill across two of those
+// instances - see the 'skills' choice case below.
 
-// Metamorphosis (Dark Skies Over Equestria, General Perk, p.20; prerequisite: Colony Changeling):
-// "You lose the Colony Changeling benefits of Natural Shape and can choose two Metamorphosed
-// Changeling benefits." Colony Changeling and Metamorphosed Changeling are the two mutually
-// exclusive sub-choices Natural Shape's own hasChoice picker offers at character creation (see
-// Natural_Shape's own items map) - this Perk is the one way to swap from one to the other after
-// the fact. The swap-out half (deleting Colony Changeling) has no other precedent in this project;
-// the swap-in half reuses Metamorphosed Changeling's own already-built hasChoice picker (2 of its
-// 6 named benefits) by feeding the freshly created copy back through setPerkValues, the same way
-// a nested 'perks' choice resolves at line ~694 above - so the player still gets prompted to pick
-// their two benefits, exactly as if they had chosen Metamorphosed Changeling from Natural Shape
-// directly. See grantMetamorphosis() below.
-const METAMORPHOSIS_ID = "Compendium.essence20.dark_skies_over_equestria.Item.bLtGPdoCPr9Ezgb8";
-const COLONY_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.FRUWPAePJzm7Mlf0";
-const METAMORPHOSED_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.aD130X44xDxZ6o2U";
+// (Metamorphosis swaps Colony Changeling for Metamorphosed Changeling with its own added Trigger rule - deleteItem
+// keepGrants + grantPerk runPicker.)
 
-// Heavy/Medium/Ultra-Heavy Armor Shell (PR CRB, General Perks, p.95/97/98): each raises the
-// holder's own Armor Training (system.trained.armors.*) via a plain compendium Active Effect, not
-// through a Role/Morphin Time drop - so unlike every OTHER path that changes Armor Training
-// (Role drop, Morphin Time itself), nothing here used to re-run setMorphedToughnessBonus, leaving
-// system.defenses.toughness.morphed stale at whatever it was computed as before this Perk was
-// added or removed. These don't set hasMorphedToughnessBonus (that flag means "IS a Morphin
-// Time-style Perk," not "changes Armor Training"), so they need their own explicit check here,
-// same hardcoded-ID idiom as this function's many other perkUuid branches.
-const HEAVY_ARMOR_SHELL_ID = "Compendium.essence20.pr_crb.Item.XVrOmc94bK9G9F5P";
-const MEDIUM_ARMOR_SHELL_ID = "Compendium.essence20.pr_crb.Item.d4AKhKlDbkQqGwOu";
-const ULTRA_HEAVY_ARMOR_SHELL_ID = "Compendium.essence20.pr_crb.Item.xBeEe7X1MBoo4cYW";
+// (The Heavy / Medium / Ultra-Heavy Armor Shells re-work the Morphed Toughness bonus from their own added / removed
+// rules - refreshMorphedToughness.)
 
 // Nobody Like Me (PR CRB, Oddball Origin Benefit, p.25): "choose any General Perk you meet the
 // prerequisites for". Its compendium item once listed the Power Rangers CRB's 42 by hand; the
-// choice is built from every enabled book instead - see anyGeneralPerkChoices().
-const NOBODY_LIKE_ME_ID = "Compendium.essence20.pr_crb.Item.9nvRKN0A8N0EEXUl";
-const ANY_GENERAL_PERK_IDS = new Set([NOBODY_LIKE_ME_ID]);
+// choice is built from every enabled book instead - see anyGeneralPerkChoices(). Its
+// AnyGeneralPerkChoice rule (rules/plugins/picks/unique-choice.mjs) says so.
 
-// Basal / Intricate / Profound Nano Infusion (Quartermaster's Guide to Gear, General Perks): "Gain a
-// permanent Standard / Limited / Restricted nanomite power." The choice is built from every enabled
-// book's nanomite Powers of that Availability (see nanomitePowerChoices), rather than a list kept by
-// hand on each Perk.
-const QGTG_ITEM = "Compendium.essence20.quartermasters_guide_to_gear.Item.";
-const NANO_INFUSION_AVAILABILITY = {
-  [`${QGTG_ITEM}CUhsxOCugyHcEIRx`]: 'standard',
-  [`${QGTG_ITEM}bbA0ayzoaeW6G6R5`]: 'limited',
-  [`${QGTG_ITEM}su1NVWhDH3Zk7ma5`]: 'restricted',
-};
+// (Basal / Intricate / Profound Nano Infusion's nanomite power picks are their pack items' own added rules - pickGrant
+// from nanomite Powers of that Availability, notOwned + selectionLimit: rules/conv15-systems.test.js.)
 
 /**
- * Whether this Perk offers any General Perk rather than a fixed list. Checked by source as well
- * as by uuid, so a copy already on an actor (Actor.x.Item.y) is recognised too.
+ * Whether this Perk offers any General Perk rather than a fixed list - its AnyGeneralPerkChoice rule, read from the
+ * Perk itself (the compendium item or a copy already on an actor).
  * @param {Item} perk
- * @param {String} perkUuid
+ * @param {String} [_perkUuid]
  * @returns {Boolean}
  */
-export function grantsAnyGeneralPerk(perk, perkUuid) {
-  return [perkUuid, perk.flags?.core?.sourceId, perk._stats?.compendiumSource, perk.flags?.essence20?.rulesSource]
-    .some(id => ANY_GENERAL_PERK_IDS.has(id));
-}
-
-/**
- * The nanomite power Availability a Nano Infusion Perk grants, or null for any other Perk. Checked
- * by source as well as by uuid, like grantsAnyGeneralPerk.
- * @param {Item} perk
- * @param {String} perkUuid
- * @returns {?String}   An E20.availabilities key.
- */
-export function nanoInfusionAvailability(perk, perkUuid) {
-  const id = [perkUuid, perk.flags?.core?.sourceId, perk._stats?.compendiumSource, perk.flags?.essence20?.rulesSource]
-    .find(candidate => NANO_INFUSION_AVAILABILITY[candidate]);
-  return id ? NANO_INFUSION_AVAILABILITY[id] : null;
-}
-
-/**
- * Every nanomite Power of one Availability in every enabled book, as choices keyed by uuid - the
- * same shape and the same books as anyGeneralPerkChoices. A Power the actor already has is left out
- * once they hold as many copies as its selectionLimit allows (Reprogrammable may be taken again).
- * @param {Actor} actor
- * @param {String} availability   An E20.availabilities key.
- * @returns {Promise<Object>}
- */
-export async function nanomitePowerChoices(actor, availability) {
-  const heldCounts = new Map();
-  for (const item of actor.items) {
-    const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-    heldCounts.set(sourceId, (heldCounts.get(sourceId) ?? 0) + 1);
-  }
-
-  const choices = {};
-  for (const pack of getVisibleItemPacks()) {
-    const index = await pack.getIndex({ fields: ["system.type", "system.availability", "system.selectionLimit", "system.source.book"] });
-    for (const entry of index) {
-      if (entry.type != 'power' || entry.system?.type != 'nanomite' || entry.system?.availability != availability) continue;
-
-      const uuid = `Compendium.${pack.metadata.id}.Item.${entry._id}`;
-      if ((heldCounts.get(uuid) ?? 0) >= (entry.system?.selectionLimit || 1)) continue;
-
-      choices[uuid] = {
-        chosen: false,
-        value: uuid,
-        label: entry.name,
-        uuid,
-        type: 'perks',
-        group: pack.folder?.name ?? pack.metadata.label,
-        detail: entry.system?.source?.book || pack.metadata.label,
-      };
-    }
-  }
-
-  return choices;
+export function grantsAnyGeneralPerk(perk, _perkUuid = null) {
+  return hasAnyGeneralPerkChoice(perk);
 }
 
 /**
@@ -268,13 +117,13 @@ export async function anyGeneralPerkChoices(actor) {
 }
 
 /**
- * Expertise (see EXPERTISE_GIJ_ID's own comment above) - the skills already chosen by another
+ * A UniqueChoice Perk (Expertise - see its comment above) - the skills already chosen by another
  * instance of this same Perk already on the actor, so the 'skills' choice-building case below can
  * exclude them from the picker. Pulled into its own small, directly-testable function (unlike the
  * inline "already taken" filter the 'perks' case above uses in place) since setPerkValues as a
- * whole isn't practically unit-testable end-to-end (see grantDutyOfTheSilverArmorTraining's own
- * comment for why). A no-op array for any Perk other than Expertise itself - this only narrows
- * Commando's own Expertise, not every 'skills'-choiceType Perk in this system.
+ * whole isn't practically unit-testable end-to-end (it always falls through to onPerkDrop's
+ * drag-and-drop-coupled tail). A no-op array for any Perk without a UniqueChoice rule - this only narrows
+ * those (Commando's own Expertise), not every 'skills'-choiceType Perk in this system.
  * @param {Actor} actor
  * @param {Item} perk   The Expertise instance currently being configured.
  * @returns {Array<String>}
@@ -286,19 +135,19 @@ export function getAlreadyChosenExpertiseSkills(actor, perk) {
   // grantItemEntry() has created the Item but hasn't yet called setFlag('core', 'sourceId', ...)
   // on it, so flags.core.sourceId can genuinely still be unset at that point.
   const perkSourceId = perk.flags?.core?.sourceId ?? perk._stats?.compendiumSource ?? perk?.flags?.essence20?.rulesSource ?? perk.uuid;
-  if (perkSourceId != EXPERTISE_GIJ_ID) {
+  if (!perkSourceId || !hasUniqueChoice(perk)) {
     return [];
   }
 
   return actor.items
-    .filter(item => (item.flags.core?.sourceId ?? item._stats.compendiumSource ?? item?.flags?.essence20?.rulesSource) == EXPERTISE_GIJ_ID)
+    .filter(item => (item.flags.core?.sourceId ?? item._stats.compendiumSource ?? item?.flags?.essence20?.rulesSource) == perkSourceId)
     .map(item => item.system.choice)
     .filter(Boolean);
 }
 
 /**
  * Handles a choiceType:'skills' Perk being granted via a single MultiChoiceSelector asking for
- * every skill at once (perk.system.numChoices > 1) - see EXPERTISE_GIJ_ID's own comment above for
+ * every skill at once (perk.system.numChoices > 1) - see Expertise's own comment above for
  * why this replaced the earlier "2 separate single-skill grants at the same level" shape.
  *
  * GENERALIZED 2026-09-15 from hardcoded-exactly-2 to any count: I've Done My Research (Beneath
@@ -372,12 +221,6 @@ export async function onMultiSkillPerkDrop(actor, perk, skills, dropFunc=null, p
 
     await onPerkDrop(actor, extraPerk, null, skill, 'skills', parentPerk);
   }
-}
-
-export async function grantDutyOfTheSilverArmorTraining(actor) {
-  await actor.update({
-    [actor.system.trained.armors.heavy ? "system.trained.armors.ultraHeavy" : "system.trained.armors.heavy"]: true,
-  });
 }
 
 /**
@@ -491,44 +334,6 @@ export async function grantPerkOutright(actor, perkId) {
 }
 
 /**
- * Metamorphosis - see METAMORPHOSIS_ID's own comment above. Deletes the actor's Colony Changeling
- * (if they have one - taking this Perk without it would already be blocked by its unenforced
- * narrative prerequisite, but this stays a no-op rather than erroring if that's ever bypassed),
- * then grants Metamorphosed Changeling and immediately routes it back through setPerkValues so its
- * own hasChoice picker (2 of 6 named benefits) opens for the player, exactly as it would if they'd
- * chosen it from Natural Shape directly.
- * @param {Actor} actor
- */
-export async function grantMetamorphosis(actor) {
-  const colonyChangeling = actor.items.find(item =>
-    item.type == 'perk'
-    && (item.flags?.core?.sourceId == COLONY_CHANGELING_ID || item._stats?.compendiumSource == COLONY_CHANGELING_ID || item?.flags?.essence20?.rulesSource == COLONY_CHANGELING_ID));
-  if (colonyChangeling) {
-    // Colony Changeling's Grant rule gave Infatuated; unlink it first so it stays when this goes
-    // (removing a granting item takes its grants with it - rules/lifecycle.mjs).
-    const grantedBy = colonyChangeling.id;
-    for (const granted of grantedBy ? actor.items.filter(item => item.flags?.essence20?.grantedBy == grantedBy) : []) {
-      await granted.unsetFlag('essence20', 'grantedBy');
-    }
-
-    await colonyChangeling.delete();
-  }
-
-  const alreadyMetamorphosed = actor.items.some(item =>
-    item.type == 'perk'
-    && (item.flags?.core?.sourceId == METAMORPHOSED_CHANGELING_ID
-      || item._stats?.compendiumSource == METAMORPHOSED_CHANGELING_ID
-      || item.flags?.essence20?.rulesSource == METAMORPHOSED_CHANGELING_ID));
-  if (alreadyMetamorphosed) {
-    return;
-  }
-
-  const metamorphosedChangeling = await fromUuid(METAMORPHOSED_CHANGELING_ID);
-  const created = await Item.create(metamorphosedChangeling, { parent: actor });
-  await setPerkValues(actor, created, null, null, METAMORPHOSED_CHANGELING_ID);
-}
-
-/**
  * Handle the dropping of a Perk onto an Actor
  * @param {Actor} actor The Actor receiving the Perk
  * @param {Perk} perk The Perk being dropped
@@ -553,7 +358,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   let newPerk = null;
   let currentRole = null;
 
-  // Commando's own Expertise (see EXPERTISE_GIJ_ID's own comment above and
+  // Commando's own Expertise (see its own comment above and
   // getAlreadyChosenExpertiseSkills's own doc comment): the 'skills' choice-BUILDING case already
   // excludes an already-chosen skill from the dropdown, but that filter is computed when each
   // dialog is first OPENED - and every Choices Selector dialog in this codebase is non-blocking
@@ -669,7 +474,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   }
 
   if (['environments', 'senses', 'movement', 'altModeMovement', 'skills', 'fightingStyle', 'field'].includes(selectionType)) {
-    // Commando's own Expertise (see EXPERTISE_GIJ_ID's own comment above and
+    // Commando's own Expertise (see its own comment above and
     // getAlreadyChosenExpertiseSkills's own doc comment): the 'skills' choice-BUILDING case
     // already excludes an already-chosen skill from the dropdown, but that filter is computed
     // when each dialog is first OPENED - and every Choices Selector dialog in this codebase is
@@ -683,7 +488,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     // first one's own choice has already been persisted via the update() below.
     if (selectionType == 'skills') {
       const perkSourceId = newPerk.flags?.core?.sourceId ?? newPerk._stats?.compendiumSource ?? newPerk?.flags?.essence20?.rulesSource;
-      if (perkSourceId == EXPERTISE_GIJ_ID && getAlreadyChosenExpertiseSkills(actor, newPerk).includes(selection)) {
+      if (perkSourceId && getAlreadyChosenExpertiseSkills(actor, newPerk).includes(selection)) {
         ui.notifications.error(game.i18n.localize('E20.ExpertiseDuplicateSkillError'));
         return;
       }
@@ -778,91 +583,30 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
  *   `perk` is already an Actor-embedded copy (e.g. granted via createItemCopies() during a
  *   Role/level-up grant) rather than the compendium document itself, since an embedded Item's
  *   own `.uuid` is an Actor-relative path and will never match the hardcoded compendium IDs
- *   below (SORCERY_PERK_ID etc.) on its own.
+ *   below (SPECTRUM_SHIFT_PERK_ID etc.) on its own.
  */
 export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null, sourceUuid=null) {
   const perkUuid = sourceUuid ?? perk.uuid;
-
-  // Combiner Specialization - see COMBINER_SPECIALIZATION_ID's own comment above. Checked (and
-  // returned out of) before the generic hasChoice picker below ever runs, since an empty choice
-  // list there is this Perk's own documented fallback, not an error.
-  if (perkUuid == COMBINER_SPECIALIZATION_ID) {
-    const alreadyHasEither = actor.items.some(item => {
-      const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-      return sourceId == GESTALT_COMBINER_ID || sourceId == MATCHED_COMBINER_ID;
-    });
-
-    if (alreadyHasEither) {
-      await actor.update({ 'system.health.bonus': (actor.system.health.bonus ?? 0) + 1 });
-      return;
-    }
-  }
-
-  // Why Do I Know That? - see items/gear/why-do-i-know-that.mjs's own doc comment. Prompts for any
-  // General Perk and grants it, the same drop-time resolution Change Its Stripes uses for its own
-  // fixed grant - the only difference being that the choice is open rather than predetermined.
-  if (perkUuid == WHY_DO_I_KNOW_THAT_ID) {
-    await activateWhyDoIKnowThat(actor);
-  }
 
   // Equipment a Perk declares in its own compendium grant map - see grantPerkEquipmentMap.
   // Unconditional and idempotent, so it runs alongside (not instead of) the per-ID chain below.
   await grantPerkEquipmentMap(actor, perk);
 
-  if (perkUuid == SORCERY_PERK_ID) {
-    // Cost of Sorcery itself comes from Sorcery's own Grant rule.
-    await actor.update ({
-      "system.powers.sorcerous.levelTaken": actor.system.level,
-    });
-  } else if (perkUuid == TOROZORD_FEATURE_ID) {
-    await grantTorozordFeature(actor, perk);
-  } else if (perkUuid == ZORD_ALTERATION_ID) {
-    await applyZordAlteration(actor);
-  } else if (perkUuid == WIND_WHISPERS_ID) {
-    await grantWindWhispersEvasion(actor);
-  } else if (perkUuid == SURVIVAL_TRAINING_ID) {
-    await grantSurvivalTrainingHealth(actor);
-  } else if (perkUuid == AQUA_ELEMENTAL_ADAPTATION_ID) {
-    await grantAquaElementalAdaptation(actor);
-  } else if (perkUuid == DUTY_OF_THE_SILVER_ID) {
-    await grantDutyOfTheSilverArmorTraining(actor);
-  } else if (perkUuid == CHANGE_ITS_STRIPES_ID || perkUuid == BLEND_IN_ID) {
-    // Change Its Stripes' Blend In Perk itself is a Grant rule; the armor upgrades stay here.
-    await grantBlendInUpgrades(actor);
-  } else if (perkUuid == SILENT_RUNNING_ID) {
-    await grantSilentRunningUpgrades(actor);
-  } else if (perkUuid == METAMORPHOSIS_ID) {
-    await grantMetamorphosis(actor);
-  } else if (perkUuid == PRIMAL_MOVEMENT_ID) {
-    await grantPrimalMovement(actor);
-  } else if (perkUuid == PRIMAL_TOOLS_ID) {
-    await grantPrimalTools(actor);
-  } else if (perkUuid == HEARTS_CALLING_ID) {
+  if (perkUuid == HEARTS_CALLING_ID) {
     await pickHeartsCallingOption(actor);
-  } else if (perkUuid == UNIQUE_STRIKE_MELEE_ID) {
-    await grantUniqueStrike(actor, false);
-  } else if (perkUuid == UNIQUE_STRIKE_RANGED_ID) {
-    await grantUniqueStrike(actor, true);
-  } else if (perkUuid == ENHANCE_STRIKE_ID) {
-    await applyEnhanceStrike(actor);
   } else if (perkUuid == SPECTRUM_SHIFT_PERK_ID) {
     return await _showSpectrumShiftDialog(actor, perk, dropFunc);
-  } else if (
-    perkUuid == HEAVY_ARMOR_SHELL_ID || perkUuid == MEDIUM_ARMOR_SHELL_ID || perkUuid == ULTRA_HEAVY_ARMOR_SHELL_ID
-  ) {
-    setMorphedToughnessBonus(actor);
   } else if (perk.system.hasMorphedToughnessBonus) {
     setMorphedToughnessBonus(actor);
   }
 
-  // Grid Tap (Beneath the Helmet, Grid Power, p.57): "Whenever you gain a Grid Science or Grid
-  // Tech Role Perk, you may choose an extra Grid Science or Grid Tech bonus." Re-clones the
-  // just-granted Grid Science/Tech picker with numChoices bumped by 1 BEFORE its own choice
-  // dialog is built below - a real Document#clone (not a plain-object spread) so every downstream
-  // read of perk.system/perk.uuid/etc. (the MultiChoiceSelector, onPerkDrop's own embedded-copy
-  // creation) still sees a fully-functional Item, just with one more pick on offer.
-  if (GRID_SCIENCE_TECH_IDS.has(perkUuid) && actorHasPower(actor, GRID_TAP_ID)) {
-    perk = perk.clone({ 'system.numChoices': perk.system.numChoices + 1 });
+  // ChoiceCount rules (Grid Tap's extra Grid Science / Grid Tech bonus): re-clones the Perk with numChoices raised BEFORE
+  // its own choice dialog is built below - a real Document#clone (not a plain-object spread) so every downstream read of
+  // perk.system/perk.uuid/etc. (the MultiChoiceSelector, onPerkDrop's own embedded-copy creation) still sees a
+  // fully-functional Item, just with more picks on offer.
+  const extraChoices = ruleChoiceCountBonus(actor, perkUuid);
+  if (extraChoices > 0) {
+    perk = perk.clone({ 'system.numChoices': perk.system.numChoices + extraChoices });
   }
 
   if (perk.system.hasChoice) {
@@ -985,16 +729,6 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
       if (grantsAnyGeneralPerk(perk, perkUuid)) {
         prompt = game.i18n.localize("E20.SelectGeneralPerk");
         Object.assign(choices, await anyGeneralPerkChoices(actor));
-        defaultGroup = gameLineOf(perkUuid);
-        break;
-      }
-
-      if (nanoInfusionAvailability(perk, perkUuid)) {
-        const availability = nanoInfusionAvailability(perk, perkUuid);
-        prompt = game.i18n.format("E20.SelectNanomitePower", {
-          availability: game.i18n.localize(E20.availabilities[availability]),
-        });
-        Object.assign(choices, await nanomitePowerChoices(actor, availability));
         defaultGroup = gameLineOf(perkUuid);
         break;
       }
@@ -1349,7 +1083,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
 
     case 'stoneWarlordDamageType':
       // Finster's Monster-Matic Cookbook, Path of Stone, Stone Warlord, 20th level, p.297 - see
-      // items/defenses/numbness.mjs's own doc comment. Same "no numeric field of its own, read directly
+      // read by Numbness's AttackResistance choiceOf rule. Same "no numeric field of its own, read directly
       // off system.choice" shape as elementDamageType just above.
       prompt = game.i18n.localize("E20.SelectStoneWarlordDamageType");
       for (const damageType of Object.keys(E20.stoneWarlordDamageTypes)) {
@@ -1449,7 +1183,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
         .sort(([, a], [, b]) => a.label.localeCompare(b.label)));
     }
 
-    // Expertise (GI Joe CRB, Commando base, 1st/7th level, p.72) - see EXPERTISE_GIJ_ID's own
+    // Expertise (GI Joe CRB, Commando base, 1st/7th level, p.72) - see its own
     // comment above. "Choose two skills" is now numChoices:2 on the compendium item itself (a
     // single MultiChoiceSelector asking for both at once), fixing the root cause of the
     // duplicate-skill race the guard above works around: 2 separate single-skill grants at the
@@ -1531,22 +1265,6 @@ async function _showSpectrumShiftDialog(actor, perk, dropFunc) {
  * @param {Perk} perk The perk
  */
 export async function onPerkDelete(actor, perk) {
-  if (perk.flags.core?.sourceId == SORCERY_PERK_ID || perk._stats.compendiumSource == SORCERY_PERK_ID || perk?.flags?.essence20?.rulesSource == SORCERY_PERK_ID ) {
-    await actor.update ({
-      "system.powers.sorcerous.levelTaken": 0,
-    });
-
-    // Only a copy from before Sorcery's Grant rule - a granted one (grantedBy) goes with the Perk
-    // through the rule itself (rules/lifecycle.mjs).
-    const costOfSorcery = actor.items.find(item => {
-      const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-      return sourceId == COST_OF_SORCERY_ID && !item.flags?.essence20?.grantedBy;
-    });
-    if (costOfSorcery) {
-      await costOfSorcery.delete();
-    }
-  }
-
   if (perk.flags.core?.sourceId == ZORD_PERK_ID || perk._stats.compendiumSource == ZORD_PERK_ID || perk?.flags?.essence20?.rulesSource == ZORD_PERK_ID ) {
     await actor.update ({
       "system.canHaveZord": false,
@@ -1569,18 +1287,6 @@ export async function onPerkDelete(actor, perk) {
     await actor.update ({
       "system.canHaveZord": false,
     });
-  }
-
-  if (
-    perk.flags.core?.sourceId == HEAVY_ARMOR_SHELL_ID || perk._stats.compendiumSource == HEAVY_ARMOR_SHELL_ID || perk?.flags?.essence20?.rulesSource == HEAVY_ARMOR_SHELL_ID
-    || perk.flags.core?.sourceId == MEDIUM_ARMOR_SHELL_ID || perk._stats.compendiumSource == MEDIUM_ARMOR_SHELL_ID || perk?.flags?.essence20?.rulesSource == MEDIUM_ARMOR_SHELL_ID
-    || perk.flags.core?.sourceId == ULTRA_HEAVY_ARMOR_SHELL_ID || perk._stats.compendiumSource == ULTRA_HEAVY_ARMOR_SHELL_ID || perk?.flags?.essence20?.rulesSource == ULTRA_HEAVY_ARMOR_SHELL_ID
-  ) {
-    // Re-derive from whatever Armor Training remains (e.g. dropping down from Heavy to the
-    // Role's own base Medium Training) rather than the hasMorphedToughnessBonus branch's own flat
-    // reset to 0 just below - that branch is for losing Morphin Time itself (no Armor Training
-    // concept applies at all anymore), not for losing one of several Armor Shells.
-    await setMorphedToughnessBonus(actor);
   }
 
   if (perk.system.hasMorphedToughnessBonus ) {

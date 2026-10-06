@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon, ORDNANCE_EXPERT } from './mounted-weapons.mjs';
+import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon } from './mounted-weapons.mjs';
 
 // spend() (mechanics/actions/action-economy.mjs) is run for real rather than module-mocked - see
 // sheet-handlers/attachment-handler.test.js's own note on why unstable_mockModule isn't used in
@@ -73,12 +73,6 @@ beforeEach(() => {
 describe("Mounted (GI Joe CRB, Weapon Effects and Traits, p.148)", () => {
   test("isMountedWeaponSetUp is false for a freshly-authored weapon", () => {
     expect(isMountedWeaponSetUp(makeWeapon())).toBe(false);
-  });
-
-  test("Ordnance Expert ignores the Mounted trait", () => {
-    const weapon = makeWeapon();
-    weapon.parent = { items: [{ flags: { core: { sourceId: ORDNANCE_EXPERT } } }] };
-    expect(isMountedWeaponSetUp(weapon)).toBe(true);
   });
 
   test("isMountedWeaponSetUp is false without a weapon", () => {

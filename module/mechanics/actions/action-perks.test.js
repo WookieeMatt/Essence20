@@ -5,13 +5,20 @@ import {
   setNextTurn, spend,
 } from './action-economy.mjs';
 import {
-  ACTION_PERK_IDS as P, attackMatchesFilter, canUseActionPerk, describeAttack, getAttacksPerAction, getCostOptions,
-  getLaughtractingBlock, getLendAssistanceGrantModes, getSecretHelperPenalty, onPowerUsed,
-  isHarmonyUnleashedActive, useActionPerk,
+  attackMatchesFilter, canUseActionPerk, describeAttack, getAttacksPerAction,
 } from './action-perks.mjs';
+
+// The pack items whose AttackCount rules these tests exercise (action-perks.mjs's old ACTION_PERK_IDS - nothing in
+// the module read them any more).
+const P = {
+  extraAttack: 'Compendium.essence20.gi_joe_crb.Item.aQjUa46mn4kHvsVO',
+  prExtraAttack: 'Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh',
+  bangBang: 'Compendium.essence20.tf_crb.Item.IYvmwPoPLXWPpSp5',
+};
 
 let idCounter = 0;
 const wait = jest.fn();
+const MOTOR_LANCER = "Compendium.essence20.intercontinental_adventures.Item.YaFY9NhcpZPXdvv0";
 
 global.foundry = {
   utils: {
@@ -130,88 +137,6 @@ beforeEach(() => {
 });
 
 describe("cost rules", () => {
-  test("Mobility makes one Sprint per turn a Free action, then Sprint costs its Standard again", async () => {
-    const actor = makeActor({ items: [sourced(P.mobility, 'Mobility')] });
-    setGame([actor]);
-
-    const first = await spend(actor, 'standard', { source: 'Sprint', context: { key: 'sprint' } });
-    expect(first.actionType).toBe('free');
-    expect(getLedger(actor).log[0].source).toBe('Sprint (Mobility)');
-    expect(getRemaining(actor).standard).toBe(1);
-
-    const second = await spend(actor, 'standard', { source: 'Sprint', context: { key: 'sprint' } });
-    expect(second.actionType).toBe('standard');
-    expect(getRemaining(actor).standard).toBe(0);
-  });
-
-  test("Here To Help: the first Lend Assistance is Free, the second a Move, the third a Standard", async () => {
-    const actor = makeActor({ items: [sourced(P.hereToHelp, 'Here To Help')] });
-    setGame([actor]);
-    const types = [];
-    for (let i = 0; i < 3; i++) {
-      types.push((await spend(actor, 'standard', { context: { key: 'lendAssistance' } })).actionType);
-    }
-
-    expect(types).toEqual(['free', 'move', 'standard']);
-  });
-
-  test("a fiction-dependent discount is offered, and the player's answer decides", async () => {
-    const actor = makeActor({ items: [sourced(P.talentForKindness, 'A Talent for Kindness')] });
-    setGame([actor]);
-
-    wait.mockResolvedValueOnce('offer0');
-    const discounted = await spend(actor, 'standard', { context: { kind: 'item' } });
-    expect(discounted.actionType).toBe('move');
-
-    // Once per round - the Standard->Move half is spent, so nothing is offered now.
-    const options = getCostOptions(actor, 'standard', { kind: 'item' }, getLedger(actor));
-    expect(options.offers).toHaveLength(0);
-
-    // ...but a related Free action still costs nothing, without limit.
-    expect(getCostOptions(actor, 'free', { kind: 'item' }, getLedger(actor)).offers[0].actionType).toBe('none');
-  });
-
-  test("choosing the normal cost keeps the discount for later", async () => {
-    // (Detail Oriented, which this used, is an ActionCost rule now - rules/conv12-slI12.test.js.)
-    const actor = makeActor({ items: [sourced(P.talented, 'Talented')] });
-    setGame([actor]);
-    wait.mockResolvedValueOnce('base');
-
-    const result = await spend(actor, 'standard', { context: { key: 'useASkill' } });
-
-    expect(result.actionType).toBe('standard');
-    expect(getCostOptions(actor, 'standard', { key: 'useASkill' }, getLedger(actor)).offers).toHaveLength(1);
-  });
-
-  test("closing the dialog takes no action at all", async () => {
-    const actor = makeActor({ items: [sourced(P.talentForKindness, 'A Talent for Kindness')] });
-    setGame([actor]);
-    wait.mockResolvedValueOnce(null);
-
-    const result = await spend(actor, 'contingency', { context: { key: 'contingency' } });
-
-    expect(result.blocked).toBe(true);
-    expect(result.cancelled).toBe(true);
-    expect(getLedger(actor).log).toHaveLength(0);
-  });
-
-  test("with prompts turned off, only the discounts the system can verify apply", () => {
-    const actor = makeActor({ items: [sourced(P.talentForKindness, 'A Talent for Kindness'), sourced(P.hereToHelp, 'Here To Help')] });
-    setGame([actor], { prompts: false });
-
-    const { auto, offers } = getCostOptions(actor, 'standard', { key: 'lendAssistance' }, getLedger(actor));
-    expect(offers).toHaveLength(0);
-    expect(auto.actionType).toBe('free');
-  });
-
-  test("Desperate Times: a Move action for Lend Assistance only after a Standard one this round", async () => {
-    const actor = makeActor({ items: [sourced(P.desperateTimes, 'Desperate Times')] });
-    setGame([actor]);
-
-    expect((await spend(actor, 'standard', { context: { key: 'lendAssistance' } })).actionType).toBe('standard');
-    expect((await spend(actor, 'standard', { context: { key: 'lendAssistance' } })).actionType).toBe('move');
-  });
-
   test("no Perk, no dialog and no change", async () => {
     const actor = makeActor();
     setGame([actor]);
@@ -301,11 +226,7 @@ describe("bonus attacks and the next turn", () => {
     expect(getRemaining(actor)).toEqual({ standard: 1, move: 1, free: 2 });
   });
 
-  test("Secret Helper's price: no Standard, or Subtle/Stealth Helper's lighter one", () => {
-    expect(getSecretHelperPenalty(makeActor())).toEqual({ block: ['standard'], prespend: {} });
-    expect(getSecretHelperPenalty(makeActor({ items: [sourced(P.subtleHelper)] }))).toEqual({ block: ['move'], prespend: {} });
-    expect(getSecretHelperPenalty(makeActor({ items: [sourced(P.stealthHelper)] }))).toEqual({ block: [], prespend: { free: 1 } });
-  });
+  // Secret Helper's price is grantNextTurn steps on its CardOffer rule (rules/conv15-items2.test.js).
 
   test("Stealth Helper's used-up Free action is pre-spent on the next turn", async () => {
     const actor = makeActor();
@@ -317,81 +238,12 @@ describe("bonus attacks and the next turn", () => {
     expect(getRemaining(actor).free).toBe(1);
   });
 
-  test("Laughtracting takes Free actions; Distraughter the Move too", () => {
-    expect(getLaughtractingBlock(makeActor())).toEqual(['free']);
-    expect(getLaughtractingBlock(makeActor({ items: [sourced(P.distraughter)] }))).toEqual(['free', 'move']);
-  });
-
-  test("Here, Let Me / No, I Insist add Lend Assistance modes", () => {
-    const actor = makeActor({ items: [sourced(P.hereLetMe), sourced(P.noIInsist)] });
-    setGame([actor]);
-    expect(getLendAssistanceGrantModes(actor).map(m => m.grant)).toEqual([{ move: 1 }, { standard: 1 }]);
-  });
 });
 
 describe("Use buttons", () => {
-  test("Motivate spends a Standard action and gives the targeted ally one now", async () => {
-    const perk = sourced(P.motivate, 'Motivate');
-    const officer = makeActor({ name: 'Hawk', items: [perk] });
-    perk.parent = officer;
-    const ally = makeActor({ name: 'Duke' });
-    setGame([officer, ally], { targets: [{ actor: ally }] });
-
-    expect(canUseActionPerk(perk)).toBe(true);
-    const message = await useActionPerk(perk);
-
-    expect(message).toBe('E20.ActionPerkUsedAlly');
-    expect(getRemaining(officer).standard).toBe(0);
-    expect(getRemaining(ally).standard).toBe(2);
-  });
-
-  test("Mobilize spends a Move action, not a Standard, and gives the ally a Move now", async () => {
-    const perk = sourced(P.mobilize, 'Mobilize');
-    const officer = makeActor({ name: 'Hawk', items: [perk] });
-    perk.parent = officer;
-    const ally = makeActor({ name: 'Duke' });
-    setGame([officer, ally], { targets: [{ actor: ally }] });
-    const before = getRemaining(officer);
-    const allyBefore = getRemaining(ally);
-
-    await useActionPerk(perk);
-
-    expect(getRemaining(officer).standard).toBe(before.standard);
-    expect(getRemaining(officer).move).toBe(before.move - 1);
-    expect(getRemaining(ally).move).toBe(allyBefore.move + 1);
-  });
-
-  test("Harmony Unleashed lands on the targeted pony, or the caster with nothing targeted", async () => {
-    const perk = sourced(P.harmonyUnleashed, 'Harmony Unleashed', 'spell');
-    const caster = makeActor({ name: 'Twilight', items: [perk] });
-    perk.parent = caster;
-    const pony = makeActor({ name: 'Applejack' });
-    setGame([caster, pony], { targets: [{ actor: pony }] });
-
-    await useActionPerk(perk);
-    expect(isHarmonyUnleashedActive(pony)).toBe(true);
-    expect(isHarmonyUnleashedActive(caster)).toBe(false);
-
-    const solo = sourced(P.harmonyUnleashed, 'Harmony Unleashed', 'spell');
-    const self = makeActor({ name: 'Rarity', items: [solo] });
-    solo.parent = self;
-    setGame([self]);
-    await useActionPerk(solo);
-    expect(isHarmonyUnleashedActive(self)).toBe(true);
-  });
-
-  test("an ally Perk needs an ally targeted", async () => {
-    const perk = sourced(P.mobilize, 'Mobilize');
-    const officer = makeActor({ items: [perk] });
-    perk.parent = officer;
-    setGame([officer]);
-
-    expect(await useActionPerk(perk)).toBeNull();
-    expect(ui.notifications.warn).toHaveBeenCalled();
-  });
-
   test("no Use button outside combat", () => {
-    const perk = sourced(P.motivate);
+    // Motor Lancer's switch (items/attacks/weapon-perk-uses.mjs) is a combat-only Use.
+    const perk = sourced(MOTOR_LANCER);
     perk.parent = makeActor();
     global.game = { combat: null };
     expect(canUseActionPerk(perk)).toBe(false);
@@ -408,78 +260,11 @@ describe("the second batch", () => {
     expect(getAttacksPerAction(actor, attackItem(actor, { style: 'melee', skill: 'might' })).count).toBe(2);
   });
 
-  test("Bullet Barrage fires every equipped ballistic weapon", () => {
-    const guns = ['a', 'b', 'c'].map(id => ({ ...weapon(id, ['ballistic']), system: { traits: ['ballistic'], equipped: true } }));
-    const actor = makeActor({ items: [...guns, sourced(P.bulletBarrage, 'Bullet Barrage')] });
-    expect(getAttacksPerAction(actor, attackItem(actor, { weapon: guns[0] })).count).toBe(3);
-  });
-
-  test("Ground and Pound: unarmed attacks become Free and are counted for the Downshift", async () => {
-    const perk = sourced(P.groundAndPound, 'Ground and Pound');
-    const actor = makeActor({ items: [perk] });
-    actor.toggleStatusEffect = jest.fn(async status => actor.statuses.add(status));
-    perk.parent = actor;
-    setGame([actor], { targets: [{ actor: makeActor({ name: 'Viper' }) }] });
-
-    await useActionPerk(perk);
-    expect(actor.statuses.has('prone')).toBe(true);
-
-    const punch = attackItem(actor, { style: 'melee', skill: 'might' });
-    await consumeForItem(punch);
-    await consumeForItem(punch);
-
-    expect(getLedger(actor).perkUses.groundAndPound).toBe(2);
-    expect(getLedger(actor).standard).toBe(1);
-  });
-
-  test("Barrage Attack gives one attack per other ranged weapon", async () => {
-    const feature = sourced(P.barrageAttack, 'Barrage Attack', 'feature');
-    const effects = ['x', 'y', 'z'].map(id => ({ id, type: 'weaponEffect', system: { classification: { style: 'energy' } }, flags: {} }));
-    const zord = makeActor({ items: [feature, ...effects], system: { powers: { personal: { value: 3 } } } });
-    feature.parent = zord;
-    setGame([zord]);
-
-    await useActionPerk(feature);
-
-    expect(getLedger(zord).bonusAttacks).toHaveLength(2);
-    expect(zord.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 2 });
-  });
 });
 
-describe("the last four", () => {
-  // Detail Oriented (three Finesse Use a Skill tests a day as a Move action) is an ActionCost rule now
-  // (rules/conv12-slI12.test.js).
-
-  test("Shoot, You Fools! gives every ally an attack that costs them nothing and stings on a miss", async () => {
-    const perk = sourced(P.shootYouFools, 'Shoot, You Fools!');
-    const baroness = makeActor({ name: 'Baroness', items: [perk] });
-    perk.parent = baroness;
-    const viper = makeActor({ name: 'Viper' });
-    const combatants = setGame([baroness, viper]);
-    game.combat.combatants = combatants;
-
-    const message = await useActionPerk(perk);
-
-    expect(message).toBe('E20.ActionPerkUsedAllies');
-    expect(getRemaining(baroness).standard).toBe(0);
-    const result = await consumeForItem(attackItem(viper));
-    expect(result.bonusAttack).toBe(true);
-    expect(result.psychicOnMiss).toBe(1);
-    expect(getRemaining(viper).standard).toBe(1);
-  });
-});
-
-describe("powers that grant attacks", () => {
-  test("Relentless Blows gives two free unarmed strikes", async () => {
-    const power = sourced(P.relentlessBlows, 'Relentless Blows', 'power');
-    const actor = makeActor({ items: [power] });
-    setGame([actor]);
-
-    expect(await onPowerUsed(actor, power)).toBe(true);
-    expect(getLedger(actor).bonusAttacks).toHaveLength(2);
-    expect(await onPowerUsed(actor, sourced('other', 'Other', 'power'))).toBe(false);
-  });
-});
+// Detail Oriented (three Finesse Use a Skill tests a day as a Move action) is an ActionCost rule now
+// (rules/conv12-slI12.test.js). Shoot, You Fools!, Motivate, Mobilize, Momentum, Mobility, Bullet Barrage and
+// Balance Your Enthusiasm are item rules too (rules/conv14-systems.test.js).
 
 describe("bracing", () => {
   test("Brace lasts the turn; a bipod brace lasts until the actor moves", async () => {
@@ -509,11 +294,28 @@ describe("bracing", () => {
 // A table entry naming an id it never defined used to match any item without a source (findSourced
 // with undefined) - Curb Your Enthusiasm was offered as a Move action to nearly everyone.
 describe("findSourced with no id", () => {
-  test("matches nothing, and Balance Your Enthusiasm needs its own Perk", async () => {
-    const { findSourced, ACTION_PERK_IDS } = await import("./action-perks.mjs");
+  test("matches nothing", async () => {
+    const { findSourced } = await import("./action-perks.mjs");
     const actor = { items: [{ name: 'Homebrew', flags: {} }] };
     expect(findSourced(actor, undefined)).toBeUndefined();
-    expect(ACTION_PERK_IDS.balanceYourEnthusiasm).toBe('Compendium.essence20.mlp_crb.Item.0oLVEe94tZ0drQTo');
-    expect(findSourced(actor, ACTION_PERK_IDS.balanceYourEnthusiasm)).toBeUndefined();
+  });
+});
+
+// Favorite Command's code entry (the pet's Perk) and the WTNV printing's own ActionCost rule (a commander holding it)
+// ask the same question for the same cost - only one offer may reach the player (audit fix 2026-10-07).
+describe("the same discount offered twice", () => {
+  test("two offers with the same question and the same cost become one", async () => {
+    const { getCostOptions } = await import("./action-perks.mjs");
+    const { registerCostRuleProvider } = await import("../item-hooks.mjs");
+    let on = true;
+    const twin = id => ({ id, label: id, has: () => true, matches: ctx => ctx?.key == 'commandPet', to: () => 'move', ask: 'E20.ActionPerkAskFavoriteCommand' });
+    registerCostRuleProvider(() => (on ? [twin('Favorite Command (rule)'), twin('Favorite Command (again)')] : []));
+    const actor = makeActor({ items: [] });
+    setGame([actor]);
+
+    const { offers } = getCostOptions(actor, 'standard', { key: 'commandPet' }, null);
+    on = false;
+    expect(offers.map(offer => offer.label)).toEqual(['Favorite Command (rule)']);
+    expect(offers[0].actionType).toBe('move');
   });
 });

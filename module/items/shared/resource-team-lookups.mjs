@@ -10,15 +10,8 @@ import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 
 const C = pack => `Compendium.essence20.${pack}.Item.`;
 
+// (Motor Pool Connections, Beast Mode, the three Mutations and Camper went: nothing read their entries.)
 export const IDS = {
-  motorPool: `${C('quartermasters_guide_to_gear')}Lyb8wPzI0XUuwF3o`,
-  moneyTalks: `${C('cobra_codex')}sAY8uesn2NTTcDqi`,
-  beastMode: `${C('cobra_codex')}o4lqILvsxyU3LhBS`,
-  engraftedMutation: `${C('cobra_codex')}zuR9YJ2Wy956VGGy`,
-  evolvingMutation: `${C('cobra_codex')}7cL4aUwJwqvbhYCz`,
-  outrightMutation: `${C('cobra_codex')}RcGUjeMpsNDFjwmL`,
-  capableFreelancer: `${C('intercontinental_adventures')}PTEnW3QDpejzj27c`,
-  repairProgressEnergon: `${C('cobra_con_fusion')}rPbEnrg7Qx2Lm9Vd`,
   bodyOfEnergy: `${C('across_the_stars')}L2X2rIz2frulSajQ`,
   darkEnergon: `${C('decepticon_directive')}MO8ijgRUmLXcYnbL`,
   primalEnergon: `${C('decepticon_directive')}1mTrbliJVJvIl1qk`,
@@ -27,7 +20,6 @@ export const IDS = {
   addictedDarkEnergon: `${C('decepticon_directive')}e3c7wuCA7JQS7rTA`,
   weImprovise: `${C('transformers_one_sourcebook')}qnRFb2A0sLpSg2sL`,
   circleOfMagicalFriends: `${C('mlp_crb')}Evg7HVLPles0X9DM`,
-  camper: `${C('knights_of_canterlot')}dMEFcqcain5oS2mJ`,
 };
 
 /** The Party actors this actor is on the roster of. */

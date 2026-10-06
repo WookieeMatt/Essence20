@@ -5,6 +5,11 @@
   "_id": "c3vKS59Bynt41oTk",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"+1 Sharp damage (Robust Ram)","stage":"item","stacks":false,"items":["item:type:weaponEffect","item:data:system.isRam","item:data:system.damageType=sharp"],"path":"system.damageValue","op":"add","value":1,"slot":"start"},
+      {"type":"ItemModifier","label":"+1 to its Sharp extra damage (Robust Ram)","stage":"item","stacks":false,"items":["item:type:weaponEffect","item:data:system.isRam","not:item:data:system.damageType=sharp","item:data:system.secondaryDamage.type=sharp"],"path":"system.secondaryDamage.value","op":"add","value":1,"slot":"start"},
+      {"type":"ItemModifier","label":"1 extra Sharp damage (Robust Ram)","stage":"item","stacks":false,"items":["item:type:weaponEffect","item:data:system.isRam","not:item:data:system.damageType=sharp","not:item:data:system.secondaryDamage.type"],"path":"system.secondaryDamage","op":"set","value":{"type":"sharp","value":1},"slot":"start"}
+    ],
     "prerequisites": {"when":[{"any":["self:data:system.traits.land","self:data:system.traits.sea"]},"self:data:system.traits.ram"]},
     "automation": {
       "status": "full",

@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import {
-  activateAtAllCost, applyAtAllCostDamage, canActivateAtAllCost, deactivateAtAllCost, isAtAllCostActive,
+  applyAtAllCostDamage, isAtAllCostActive,
 } from './at-all-cost.mjs';
 
 global.game = {
@@ -34,48 +34,6 @@ describe("isAtAllCostActive", () => {
 
   test("false when the flag isn't set", () => {
     expect(isAtAllCostActive(makeActor({ active: false }))).toBe(false);
-  });
-});
-
-describe("canActivateAtAllCost", () => {
-  test("true while Morphed, inactive, and not yet used this scene", () => {
-    expect(canActivateAtAllCost(makeActor())).toBe(true);
-  });
-
-  test("false when not Morphed", () => {
-    expect(canActivateAtAllCost(makeActor({ isMorphed: false }))).toBe(false);
-  });
-
-  test("false when already active", () => {
-    expect(canActivateAtAllCost(makeActor({ active: true }))).toBe(false);
-  });
-
-  test("false once already used this scene", () => {
-    game.combat = { id: 'combat1' };
-    expect(canActivateAtAllCost(makeActor({ usedThisEncounter: true }))).toBe(false);
-    game.combat = null;
-  });
-});
-
-describe("activateAtAllCost / deactivateAtAllCost", () => {
-  beforeEach(() => {
-    game.combat = { id: 'combat1' };
-  });
-  afterEach(() => {
-    game.combat = null;
-  });
-
-  test("activate sets the flag and marks the scene used", async () => {
-    const actor = makeActor();
-    await activateAtAllCost(actor);
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'atAllCostActive', true);
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'atAllCostUsedThisEncounter', expect.anything());
-  });
-
-  test("deactivate clears the flag", async () => {
-    const actor = makeActor({ active: true });
-    await deactivateAtAllCost(actor);
-    expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'atAllCostActive');
   });
 });
 

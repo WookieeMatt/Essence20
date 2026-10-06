@@ -58,7 +58,6 @@ const src = uuid => ({ core: { sourceId: uuid } });
 let ext;
 let common;
 let team;
-let finster;
 
 beforeAll(async () => {
   global.Hooks = { on: jest.fn(), once: jest.fn(), callAll: jest.fn() };
@@ -83,7 +82,6 @@ beforeAll(async () => {
   ext = await import('../../mechanics/item-hooks.mjs');
   common = await import('../shared/ranger-leftover-item-ids.mjs');
   team = await import('../social/instructor-legacy-students.mjs');
-  finster = await import('../defenses/nemesis-drain-expiry.mjs');
 });
 
 beforeEach(() => {
@@ -119,12 +117,3 @@ describe('Instructor / Graphite Prime', () => {
 
 // Dino Gem Integration / Energem Infusion are their items' own rules now (module/rules/conv5-slA5.test.js), and so is
 // Dino Drive Mode (module/rules/conv12-slH12.test.js).
-
-describe("Finster's", () => {
-  test('Nemesis Drain clears at the new scene', async () => {
-    const hit = makeActor({ flags: { essence20: { nemesisDrainPenaltyActive: true } } });
-    worldList.push(hit);
-    await finster.clearNemesisDrain();
-    expect(hit.flags.essence20.nemesisDrainPenaltyActive).toBeUndefined();
-  });
-});

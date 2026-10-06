@@ -5,6 +5,10 @@
   "_id": "soK9eLazbNwtVbLu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Size Matters (trade ↑ for +1 damage each, larger object)","spend":{"max":10},"tradeUpshifts":1,"when":["attack","not:attack:melee","target:type:vehicle","target:sizeDiff>=1"]},
+      {"type":"DialogSwitch","label":"Size Matters (trade ↑2 for +1 damage, larger creature)","spend":{"max":10},"tradeUpshifts":2,"when":["attack","not:attack:melee","not:target:type:vehicle","target:sizeDiff>=1"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on a ranged attack against something bigger than you, trade away ↑ for extra damage: 1 per ↑1 against vehicles, 1 per ↑2 against creatures.</p>"

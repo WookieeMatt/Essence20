@@ -12,7 +12,7 @@ import { getNearbyEnemyTokens } from "../../mechanics/combat/nearby-enemies.mjs"
  * shape fits that - this file is the new mechanism.
  *
  * Scope of this pass: this codebase has no slot-count enforcement anywhere (Perks, Powers, Focus
- * choices, Zord Features - see items/zords/torozord-feature.mjs's own note on this precedent), so
+ * choices, Zord Features - the Zord Feature picks are pickGrant rules with no slot count either), so
  * "note a number of options equal to your Emotional Range" isn't separately tracked here either -
  * the activation picker below simply offers all 12 named options, self-policed the same way
  * every other unenforced RAW budget in this project already is. What IS built is the actual

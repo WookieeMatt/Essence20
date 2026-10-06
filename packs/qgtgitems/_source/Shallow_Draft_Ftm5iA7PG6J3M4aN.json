@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
     "rules": [
-      {"type":"DerivedStat","path":"system.traits.amphibious","op":"set","value":1,"when":["self:type:vehicle"]}
+      {"type":"DerivedStat","path":"system.traits.amphibious","op":"set","value":1,"when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Shallow Draft: Ground Movement at least its Aquatic","movement":"ground","stage":"vehicleBase","op":"max","value":"@actor.system.movement.swim.total","when":["self:type:vehicle"]}
     ],
     "prerequisites": {"when":["self:data:system.traits.sea"]},
     "automation": {

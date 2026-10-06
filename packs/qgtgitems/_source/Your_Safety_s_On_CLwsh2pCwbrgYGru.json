@@ -5,6 +5,10 @@
   "_id": "CLwsh2pCwbrgYGru",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Your Safety's On","steps":[{"do":"rollVsEach","skill":"deception","defense":"cleverness","onHit":[{"do":"bank","snag":true,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"]}],"onDouble":[{"do":"mark","key":"yourSafetysOn","to":"target","until":"endOfNextRound","when":["combat:exists"]},{"do":"bank","snag":true,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"],"when":["not:combat:exists"]}]}]},
+      {"type":"RollModifier","label":"Your Safety's On","scope":"marked","mark":"yourSafetysOn","snag":true,"when":["attack"]}
+    ],
     "prerequisites": {"when":["self:skill:deception>=d2"]},
     "automation": {
       "status": "full",

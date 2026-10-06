@@ -18,16 +18,12 @@
 // tier/duration family as Hot To Trot/Foolscarrot above) is now tracked with the Scene Clock
 // (mechanics/resources/scene-clock.mjs) so it clears once the GM calls the scene rather than lingering.
 
-import { activateForWindow, isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 const GREASED_LIGHTNING_FLAG = 'greasedLightningActive';
 
 export function isGreasedLightningActive(actor) {
   return isActiveForWindow(actor, GREASED_LIGHTNING_FLAG, 'scene');
-}
-
-export async function applyGreasedLightning(actor) {
-  await activateForWindow(actor, GREASED_LIGHTNING_FLAG, 'scene');
 }
 
 export async function removeGreasedLightning(actor) {

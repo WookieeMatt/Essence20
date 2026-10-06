@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { applyBoostedVigor, hasPhantomFocusOption } from './phantom-focus.mjs';
+import { hasPhantomFocusOption } from './phantom-focus.mjs';
 
 const PHANTOM_FOCUS_ID = "Compendium.essence20.across_the_stars.Item.aXGMEoVsYSttOSHn";
 
@@ -29,22 +29,3 @@ describe("hasPhantomFocusOption", () => {
   });
 });
 
-describe("applyBoostedVigor", () => {
-  test("adds +3 health.bonus when about to Morph, with the Perk", async () => {
-    const actor = makeActor({ choices: ['boostedVigor'] });
-    await applyBoostedVigor(actor, true);
-    expect(actor.update).toHaveBeenCalledWith({ 'system.health.bonus': 3 });
-  });
-
-  test("removes 3 health.bonus when about to un-Morph, with the Perk", async () => {
-    const actor = makeActor({ choices: ['boostedVigor'], health: { value: 5, max: 10, bonus: 3 } });
-    await applyBoostedVigor(actor, false);
-    expect(actor.update).toHaveBeenCalledWith({ 'system.health.bonus': 0 });
-  });
-
-  test("does nothing without the Perk", async () => {
-    const actor = makeActor();
-    await applyBoostedVigor(actor, true);
-    expect(actor.update).not.toHaveBeenCalled();
-  });
-});

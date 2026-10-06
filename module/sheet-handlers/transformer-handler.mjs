@@ -2,7 +2,7 @@ import { spend } from "../mechanics/actions/action-economy.mjs";
 import TransformOptionSelector from "../apps/transform-option-selector.mjs";
 import { changeTokenImage, resizeTokens } from "../mechanics/world/token-sync.mjs";
 import { warnMissingStateImage } from "../mechanics/characters/morph-state.mjs";
-import { triggerModeAttachmentCheck } from "../items/forms/mode-attachment.mjs";
+import { fireTransforming } from "../rules/plugins/effects/state-changes.mjs";
 
 
 /**
@@ -100,7 +100,8 @@ export async function onTransformUuid(actor, altModeUuid=null) {
  * @private
  */
 async function _transformBotMode(actor) {
-  await triggerModeAttachmentCheck(actor, true);
+  // Item rules' transforming Triggers (Mode Attachment), before the change.
+  await fireTransforming(actor, 'botMode');
 
   const width = CONFIG.E20.tokenSizes[actor.system.size].width;
   const height = CONFIG.E20.tokenSizes[actor.system.size].height;
@@ -126,7 +127,7 @@ async function _transformBotMode(actor) {
  * @private
  */
 async function _transformAltMode(actor, altMode) {
-  await triggerModeAttachmentCheck(actor, false, altMode.id);
+  await fireTransforming(actor, altMode.id);
   warnMissingStateImage(actor, "altMode", altMode);
   const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
   const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;

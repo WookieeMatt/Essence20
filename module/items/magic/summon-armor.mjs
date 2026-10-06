@@ -1,4 +1,4 @@
-import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
+import { markOf } from "../../rules/predicate.mjs";
 /**
  * Summon Armor (MLP CRB, Superior Aid spell, p.138) / Summon Shield (MLP CRB, Elementary Aid
  * spell, p.136): "You encase a creature in a magical form fitting, protective shell... Target
@@ -17,33 +17,13 @@ import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
  * left as a live, non-consumed read - the same shape Stand By Me's own "for as long as an ally
  * stays adjacent" Defense bonus already establishes for an externally-granted buff.
  */
-const SUMMON_ARMOR_FLAG = 'summonArmorActive';
+// The spells' own afterRoll Trigger rules mark the target summonArmor - Summon Armor for the scene, Summon Shield through the
+// end of the next round in a running combat (the scene out of one).
+const SUMMON_ARMOR_MARK = 'summonArmor';
 const SUMMON_ARMOR_BONUS = 2;
 
-// Summon Armor lasts the scene; Summon Shield "for 2 rounds". A bare `true` from before this was
-// tracked still reads as active until the scene changes it.
 export function isSummonArmorActive(actor) {
-  const state = actor?.getFlag?.('essence20', SUMMON_ARMOR_FLAG);
-  if (!state) {
-    return false;
-  }
-
-  if (state === true) {
-    return true;
-  }
-
-  const combat = globalThis.game?.combat;
-  if (state.untilRound != null) {
-    return !!combat && combat.id == state.combatId && combat.round <= state.untilRound;
-  }
-
-  return state.scene == getSceneEpoch();
-}
-
-export async function applySummonArmor(targetActor, { rounds = null } = {}) {
-  const combat = globalThis.game?.combat;
-  const state = rounds && combat ? { combatId: combat.id, untilRound: combat.round + rounds - 1 } : { scene: getSceneEpoch() };
-  await targetActor.setFlag('essence20', SUMMON_ARMOR_FLAG, state);
+  return markOf(actor, SUMMON_ARMOR_MARK);
 }
 
 export function getSummonArmorDefenseBonus(actor, defenseType) {

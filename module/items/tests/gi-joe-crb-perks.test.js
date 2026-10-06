@@ -10,7 +10,7 @@ const actor = (items = [], extra = {}) => ({
   items: { contents: items, get: id => items.find(i => i.id == id) }, statuses: new Set(), setFlag: jest.fn(), unsetFlag: jest.fn(),
 });
 
-let perks, shield, reckless, vehicles, artillery, G2;
+let shield, vehicles, G2;
 
 beforeAll(async () => {
   global.game = { i18n: { localize: k => k, format: k => k }, user: { id: 'u', targets: new Set() }, actors: { get: () => null }, combat: null };
@@ -27,11 +27,8 @@ beforeAll(async () => {
   global.Hooks = { on: jest.fn(), once: jest.fn(), callAll: jest.fn() };
   global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
   ({ G2 } = await import('../shared/gij-crb-item-lookups.mjs'));
-  perks = { ...(await import('../rolls/nose-for-trouble.mjs')), ...(await import('../social/queens-gambit.mjs')) };
   shield = await import('../defenses/personal-shield-uses.mjs');
-  reckless = await import('../resources/reckless-abandon-end.mjs');
   vehicles = await import('../vehicles/roll-cage.mjs');
-  artillery = await import('../attacks/artillery-support.mjs');
 });
 
 beforeEach(() => {
@@ -41,15 +38,9 @@ beforeEach(() => {
   global.ui.notifications.warn.mockClear();
 });
 
-test('Nose For Trouble: Streetwise is offered when it is the better die', () => {
-  const nose = actor([item(G2.noseForTrouble)], { system: { skills: { streetwise: { shift: 'd6' }, alertness: { shift: 'd20' } } } });
-  expect(perks.streetwiseIsBetter(nose)).toBe(true);
-});
+// (Nose For Trouble's Streetwise-for-Alertness offer is a SkillSubstitution ask rule on the Perk - rules/conv17-split2.test.js.)
 
-test('Queen\'s Gambit slots an ally right after the current turn', () => {
-  expect(perks.initiativeAfterCurrent({ turn: 0, turns: [{ initiative: 20 }, { initiative: 10 }] })).toBe(15);
-  expect(perks.initiativeAfterCurrent({ turn: 1, turns: [{ initiative: 20 }, { initiative: 10 }] })).toBe(9);
-});
+// Queen's Gambit is its Perk's own rules (@initiative.afterCurrent - rules/engine15-items2.test.js).
 
 test('Personal Shield gates, spends and expires', async () => {
   const rp = item(G2.personalShield, { type: 'rolePoints', system: { isActive: false, resource: { value: 1, max: 2 } } });
@@ -69,37 +60,8 @@ test('Personal Shield gates, spends and expires', async () => {
   expect(rp.update).toHaveBeenCalledWith({ 'system.resource.value': 1 });
 });
 
-test('Reckless Abandon: no kits, and the minute', () => {
-  const rp = item(G2.recklessAbandon, { type: 'rolePoints', system: { isActive: true } });
-  const renegade = actor([rp], { flags: { [reckless.START_FLAG]: { combatId: 'c', round: 1 } } });
-  expect(reckless.kitsBlockedFor(renegade)).toBe(true);
-  expect(reckless.minuteIsUp(renegade, { id: 'c', round: 11 })).toBe(true);
-  expect(reckless.minuteIsUp(renegade, { id: 'c', round: 5 })).toBe(false);
-  rp.system.isActive = false;
-  expect(reckless.kitsBlockedFor(renegade)).toBe(false);
-});
-
-test('The Beat Goes On: Reckless Abandon survives no enemies left and being Defeated', async () => {
-  const { registrySnapshot } = await import('../../mechanics/item-hooks.mjs');
-  const rp = item(G2.recklessAbandon, { type: 'rolePoints', system: { isActive: true } });
-  const renegade = actor([rp, item(reckless.BEAT_GOES_ON)], { flags: { [reckless.START_FLAG]: { combatId: 'c', round: 1 } } });
-  renegade.isOwner = true;
-  const mine = { document: { disposition: 1, hidden: false }, actor: renegade };
-  renegade.getActiveTokens = () => [mine];
-  global.canvas = { tokens: { placeables: [mine] } };
-  expect(reckless.enemiesRemain(renegade)).toBe(false);
-
-  for (const fn of registrySnapshot().turnStart) {
-    await fn(renegade, { id: 'c', round: 3 });
-  }
-
-  for (const fn of registrySnapshot().afterDamage) {
-    await fn(renegade, 5, 'blunt', { newValue: 0 });
-  }
-
-  expect(rp.update).not.toHaveBeenCalled();
-  global.canvas = undefined;
-});
+// Reckless Abandon's end (a minute, no enemies, Defeated), its no-kits Veto and The Beat Goes On are rules on the Role
+// Points item (rules/conv15-items2.test.js).
 
 // Peerless Pilot's automatic disembark is its AutoDisembark rule (module/rules/conv10-slA10.test.js).
 test('Roll Cage', () => {
@@ -116,9 +78,4 @@ test('Roll Cage', () => {
   vehicles.RESOLVING.clear();
 });
 
-test('Artillery rows list the damage each token takes', () => {
-  const token = { id: 't', name: 'Viper', document: { uuid: 'Scene.s.Token.t' } };
-  const html = artillery.strikeRows([token], { t: false }, artillery.STRIKES.he);
-  expect(html).toContain('data-amount="1"');
-  expect(artillery.strikeRows([token], { t: true }, artillery.STRIKES.shrapnel)).toContain('data-amount="4"');
-});
+// Artillery Support is the gear's own Use rule (rules/conv15-items2.test.js).

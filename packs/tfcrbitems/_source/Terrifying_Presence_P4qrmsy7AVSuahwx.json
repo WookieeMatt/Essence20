@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"BeforeRoll","label":"Terrifying Presence (choose a rider)","when":["skill:intimidation","roll:dataset:defenseType=willpower","not:self:holdsActive:Compendium.essence20.gi_joe_crb.Item.Uw1jdm5GzW7Nk5Wi"],"steps":[{"do":"choose","prompt":"Terrifying Presence: apply which effect","options":[{"label":"None","steps":[]},{"label":"Inflict 1 additional damage","steps":[{"do":"setDataset","key":"stepDamage","data":{"value":1,"type":"psychic"}}]},{"label":"Inflict Frightened (flee for one round)","steps":[{"do":"setDataset","key":"terrifyingPresence","data":"frightened"}]},{"label":"Deal 1 Stun damage","steps":[{"do":"setDataset","key":"stepDamage","data":{"value":1,"type":"stun"}}]}]}]},
+      {"type":"Trigger","event":"afterRoll","label":"Terrifying Presence (Frightened)","when":["roll:dataset:terrifyingPresence=frightened","roll:firstRow:success","roll:targets>=1","not:self:holdsActive:Compendium.essence20.gi_joe_crb.Item.Uw1jdm5GzW7Nk5Wi"],"steps":[{"do":"target","min":0},{"do":"applyCondition","condition":"frightened","to":"target"}]}
+    ],
     "prerequisites": {"when":["self:skill:intimidation>=d6"]},
     "automation": {
       "status": "partial",

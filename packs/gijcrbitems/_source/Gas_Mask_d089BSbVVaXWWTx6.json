@@ -5,6 +5,9 @@
   "_id": "d089BSbVVaXWWTx6",
   "img": "systems/essence20/assets/icons/gear/gas-mask.svg",
   "system": {
+    "rules": [
+      {"type":"HazardProtection","label":"Gas mask (Toxic Atmosphere)","environments":["toxicAtmosphere"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic while equipped: protects you from a scene's Toxic Atmosphere.</p><p>Left to the table: gas attacks, the Move action to put it on, and changing filters.</p>"

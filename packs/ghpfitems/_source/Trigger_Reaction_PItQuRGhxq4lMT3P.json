@@ -5,6 +5,9 @@
   "_id": "PItQuRGhxq4lMT3P",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Science or Survival (DIF 5)","steps":[{"do":"choose","prompt":"Which Skill?","options":[{"label":"Science","steps":[{"do":"roll","skill":"science","dif":5}]},{"label":"Survival","steps":[{"do":"roll","skill":"survival","dif":5}]}]}]}
+    ],
     "prerequisites": {"when":[{"any":["self:skill:science>=d8","self:skill:survival>=d8"]}]},
     "automation": {
       "status": "partial",

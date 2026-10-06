@@ -5,6 +5,13 @@
   "_id": "InterspatialPaus",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Interspatial Pause","when":[{"any":["self:marked:interspatialPause","self:data:system.powers.personal.value>=3"]}],"steps":[{"do":"choose","auto":true,"options":[{"label":"End the pause","when":["self:marked:interspatialPause"],"steps":[{"do":"hideTokens","to":"markedByMe:interspatialPause","hidden":false},{"do":"unmark","key":"interspatialPause","to":"markedByMe:interspatialPause"},{"do":"chat","text":"The paused re-emerge into the timestream."}]},{"label":"Pause","when":["not:self:marked:interspatialPause"],"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":3},{"do":"mark","key":"interspatialPause","to":"allies+self:5"},{"do":"hideTokens","to":"markedByMe:interspatialPause","hidden":true},{"do":"chat","text":"{name} steps outside time with their adjacent allies."}]}]}]},
+      {"type":"Trigger","event":"turnStart","label":"Interspatial Pause ends","when":["self:marking:interspatialPause"],"steps":[{"do":"hideTokens","to":"markedByMe:interspatialPause","hidden":false},{"do":"unmark","key":"interspatialPause","to":"markedByMe:interspatialPause"},{"do":"chat","text":"The paused re-emerge into the timestream."}]},
+      {"type":"Trigger","event":"sceneStart","label":"Interspatial Pause ends","when":["self:marking:interspatialPause"],"steps":[{"do":"hideTokens","to":"markedByMe:interspatialPause","hidden":false},{"do":"unmark","key":"interspatialPause","to":"markedByMe:interspatialPause"}]},
+      {"type":"DamageModifier","direction":"taken","immune":true,"label":"Interspatial Pause (no damage)","when":["self:marked:interspatialPause"]},
+      {"type":"DamageModifier","direction":"taken","immune":true,"scope":"marked","mark":"interspatialPause","label":"Interspatial Pause (no damage)"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 3 Personal Power; you and allies within 5 feet vanish from the map and take no damage until your next turn starts. Use it again to return early.</p>"

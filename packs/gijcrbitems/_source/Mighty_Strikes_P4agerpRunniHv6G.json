@@ -5,6 +5,9 @@
   "_id": "P4agerpRunniHv6G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"BeforeRoll","label":"Mighty Strikes (everyone in Reach)","when":["attack:melee","item:data:system.classification.skill=might"],"steps":[{"do":"targetCircle","radius":"@rolled.system.totalReach"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Might melee attacks hit every enemy within your reach.</p>"

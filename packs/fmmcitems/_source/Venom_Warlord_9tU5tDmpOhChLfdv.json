@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Venom Warlord","when":["attack:unarmed"]}
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Venom Warlord","when":["attack:unarmed"]},
+      {"type":"Use","label":"Remove a Condition (1 Personal Power)","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"pick","key":"condition","from":"conditions","exclude":["defeated"],"beforeCost":true},{"do":"removeCondition","condition":"{choice.condition}"}]}
     ],
     "automation": {
       "status": "full",

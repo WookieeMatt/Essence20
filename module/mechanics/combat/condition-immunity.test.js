@@ -42,7 +42,6 @@ const AMBUSH_MASTER_ID = "Compendium.essence20.gi_joe_crb.Item.UYaPTaAQH5SDXxnz"
 const BATTLEFIELD_TITAN_ID = "Compendium.essence20.gi_joe_crb.Item.xsFS0pGQFx1w2qTd";
 const SHAPE_SHIFTER_ID = "Compendium.essence20.tf_crb.Item.Um9sT730VGgHPxLh";
 const INDOMITABLE_ID = "Compendium.essence20.tf_crb.Item.CXnb6i4d7XhkhFNr";
-const DIG_IN_ID = "Compendium.essence20.decepticon_directive.Item.9tIkV50YiO3xqxvi";
 const RIGHTEOUS_HEART_ID = "Compendium.essence20.pr_crb.Item.mOgEBZIbiaT07eAq";
 const MIND_OF_NO_MIND_ID = "Compendium.essence20.intercontinental_adventures.Item.edU8dyL3poLU6IuM";
 const GET_LOW_ID = "Compendium.essence20.technorganic_secrets.Item.rEoZEFQR2puQxpIW";
@@ -229,31 +228,6 @@ describe("isImmuneToCondition (Rapid Deployment Drills, Ferocious Fighters Force
   });
 });
 
-describe("isImmuneToCondition (Dig In, Decepticon Directive Raider Siegemaster Focus, 10th level) - gated on the toggled stance", () => {
-  function makeDigInActor({ perkIds = [], dugIn = false } = {}) {
-    const actor = makeActor(perkIds);
-    const flagStore = { digInActive: dugIn };
-    actor.getFlag = jest.fn((scope, key) => flagStore[key]);
-    return actor;
-  }
-
-  test("true for prone while holding the Perk AND dug in", () => {
-    expect(isImmuneToCondition(makeDigInActor({ perkIds: [DIG_IN_ID], dugIn: true }), 'prone')).toBe(true);
-  });
-
-  test("false for prone while holding the Perk but NOT dug in", () => {
-    expect(isImmuneToCondition(makeDigInActor({ perkIds: [DIG_IN_ID], dugIn: false }), 'prone')).toBe(false);
-  });
-
-  test("false without the Perk, even if the (unrelated) flag happens to be true", () => {
-    expect(isImmuneToCondition(makeDigInActor({ dugIn: true }), 'prone')).toBe(false);
-  });
-
-  test("false for a Condition not covered by Dig In, even while dug in", () => {
-    expect(isImmuneToCondition(makeDigInActor({ perkIds: [DIG_IN_ID], dugIn: true }), 'frightened')).toBe(false);
-  });
-});
-
 describe("isImmuneToCondition (Get Low, Technorganic Secrets Slitherer Origin Benefit, p.43) - gated on Alt Mode", () => {
   function makeGetLowActor({ perkIds = [], isTransformed = false } = {}) {
     const actor = makeActor(perkIds);
@@ -275,33 +249,6 @@ describe("isImmuneToCondition (Get Low, Technorganic Secrets Slitherer Origin Be
 
   test("false for a Condition not covered by Get Low, even in Alt Mode", () => {
     expect(isImmuneToCondition(makeGetLowActor({ perkIds: [GET_LOW_ID], isTransformed: true }), 'frightened')).toBe(false);
-  });
-});
-
-describe("isImmuneToCondition (Bulwark, GI Joe CRB Tank Focus, 17th level) - gated on the toggled stance", () => {
-  const BULWARK_ID = "Compendium.essence20.gi_joe_crb.Item.7758n3XWOzhSjdOk";
-
-  function makeBulwarkActor({ perkIds = [], planted = false } = {}) {
-    const actor = makeActor(perkIds);
-    const flagStore = { bulwarkActive: planted };
-    actor.getFlag = jest.fn((scope, key) => flagStore[key]);
-    return actor;
-  }
-
-  test("true for frightened while holding the Perk AND planted", () => {
-    expect(isImmuneToCondition(makeBulwarkActor({ perkIds: [BULWARK_ID], planted: true }), 'frightened')).toBe(true);
-  });
-
-  test("false for frightened while holding the Perk but NOT planted", () => {
-    expect(isImmuneToCondition(makeBulwarkActor({ perkIds: [BULWARK_ID], planted: false }), 'frightened')).toBe(false);
-  });
-
-  test("false without the Perk, even if the (unrelated) flag happens to be true", () => {
-    expect(isImmuneToCondition(makeBulwarkActor({ planted: true }), 'frightened')).toBe(false);
-  });
-
-  test("false for a Condition not covered by Bulwark, even while planted", () => {
-    expect(isImmuneToCondition(makeBulwarkActor({ perkIds: [BULWARK_ID], planted: true }), 'prone')).toBe(false);
   });
 });
 
@@ -407,26 +354,5 @@ describe("isImmuneToCondition (Battlefield Titan, Vanguard Focus, 9th level) - a
     canvas.tokens.placeables = [allyToken];
 
     expect(isImmuneToCondition(allyActor, 'frightened')).toBe(false);
-  });
-});
-
-describe("isImmuneToCondition (Iron Bravado, PR CRB Black Spectrum Modification, p.45) - checkFn, round-scoped flag", () => {
-  function makeIronBravadoActor({ active = false } = {}) {
-    const actor = makeActor();
-    const flagStore = { ironBravadoAttackedThisRound: active };
-    actor.getFlag = jest.fn((scope, key) => flagStore[key]);
-    return actor;
-  }
-
-  test("true for frightened while the post-Attack flag is active", () => {
-    expect(isImmuneToCondition(makeIronBravadoActor({ active: true }), 'frightened')).toBe(true);
-  });
-
-  test("false while inactive, even for the covered Condition", () => {
-    expect(isImmuneToCondition(makeIronBravadoActor({ active: false }), 'frightened')).toBe(false);
-  });
-
-  test("false for a Condition not covered by Iron Bravado, even while active", () => {
-    expect(isImmuneToCondition(makeIronBravadoActor({ active: true }), 'prone')).toBe(false);
   });
 });

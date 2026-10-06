@@ -1,7 +1,7 @@
 /**
  * Power Adaptation (Across the Stars, Silver Ranger, 9th/18th level, p.57): "Choose one of the
  * following improvements on Table 2-13: Power Adaptations to your Morphed form; each requires
- * Personal Power to activate." Unlike Grid Surge (items/resources/grid-surge.mjs), which picks fresh from
+ * Personal Power to activate." Unlike Grid Surge (a Use rule on its item), which picks fresh from
  * every option on each use, this Perk is picked ONCE per instance (permanently, at level-up,
  * via the new `powerAdaptation` choiceType in sheet-handlers/perk-handler.mjs#setPerkValues,
  * recorded as this Perk item's own `system.choice`) - the player gets to activate/deactivate
@@ -32,50 +32,17 @@
  * it's wired into essence20.mjs's existing combatTurn/combatRound hooks alongside Stun's own
  * per-turn heal, rather than the plain toggle shape the other four use.
  */
+// Switched by the Perk's own Use rules (an updateActor on this flag map per option, paying 1 or 2 Personal Power on).
 const POWER_ADAPTATION_FLAG = 'powerAdaptationActive';
-
-export const POWER_ADAPTATION_OPTIONS = {
-  boostOfSpeed: { cost: 1 },
-  crushingStrength: { cost: 1 },
-  strikingHands: { cost: 1 },
-  fastTrigger: { cost: 2 },
-  regeneratingShell: { cost: 2 },
-};
 
 /**
  * Whether the given Power Adaptation option is currently switched on for this actor.
  * @param {Actor} actor
- * @param {String} option   One of POWER_ADAPTATION_OPTIONS' own keys.
+ * @param {String} option   boostOfSpeed, crushingStrength, strikingHands, fastTrigger or regeneratingShell.
  * @returns {Boolean}
  */
 export function isPowerAdaptationActive(actor, option) {
   return !!actor.getFlag?.('essence20', POWER_ADAPTATION_FLAG)?.[option];
-}
-
-/**
- * Flips the given Power Adaptation option on/off for this actor. Turning it ON spends that
- * option's own Personal Power cost (returns null, spending nothing, if the actor can't afford it);
- * turning it back OFF is free, same shape as togglePowerBoost.
- * @param {Actor} actor
- * @param {String} option   One of POWER_ADAPTATION_OPTIONS' own keys.
- * @returns {Promise<Boolean|null>}   The new state (true = now active), or null if activation
- *   couldn't be afforded (nothing is changed in that case).
- */
-export async function togglePowerAdaptation(actor, option) {
-  const current = actor.getFlag?.('essence20', POWER_ADAPTATION_FLAG) ?? {};
-  const nowActive = !current[option];
-
-  if (nowActive) {
-    const cost = POWER_ADAPTATION_OPTIONS[option].cost;
-    if (actor.system.powers.personal.value < cost) {
-      return null;
-    }
-
-    await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - cost });
-  }
-
-  await actor.setFlag('essence20', POWER_ADAPTATION_FLAG, { ...current, [option]: nowActive });
-  return nowActive;
 }
 
 /**

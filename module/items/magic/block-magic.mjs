@@ -13,16 +13,12 @@
 // the spell" (1 scene) is now tracked with the Scene Clock (mechanics/resources/scene-clock.mjs) so it clears
 // once the GM calls the scene rather than being left applied until manually removed.
 
-import { activateForWindow, isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
 
 const BLOCK_MAGIC_FLAG = 'blockMagicActive';
 
 export function isBlockMagicActive(actor) {
   return isActiveForWindow(actor, BLOCK_MAGIC_FLAG, 'scene');
-}
-
-export async function applyBlockMagic(actor) {
-  await activateForWindow(actor, BLOCK_MAGIC_FLAG, 'scene');
 }
 
 export async function removeBlockMagic(actor) {

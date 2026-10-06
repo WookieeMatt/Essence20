@@ -5,6 +5,9 @@
   "_id": "YDOmBfuUnYFalIVY",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Hardpoints","label":"Reinforced Hardpoint","reinforced":true,"items":["item:isHost"],"stacks":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a weapon in this Integrated Hardpoint fires as if the Hardpoint were Reinforced.</p>"

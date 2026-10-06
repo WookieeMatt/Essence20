@@ -1,8 +1,10 @@
 import { jest } from '@jest/globals';
 import {
-  activateMysteriousAura, deactivateMysteriousAura, getMysteriousAura, getMysteriousAuraImposingPenalty,
-  getMysteriousAuraProtectiveBonus, hasNearbyResplendentAura, pickMysteriousAura,
+  deactivateMysteriousAura, getMysteriousAura, getMysteriousAuraImposingPenalty,
+  getMysteriousAuraProtectiveBonus, hasNearbyResplendentAura,
 } from './mysterious-aura.mjs';
+
+// The Use (Power, the aura picker) is a rule on the Perk - rules/conv15-banked.test.js.
 
 global.game = {
   i18n: { localize: (key) => key, format: (key) => key },
@@ -33,74 +35,6 @@ describe("getMysteriousAura", () => {
 
   test("null with nothing active", () => {
     expect(getMysteriousAura(makeActor())).toBeNull();
-  });
-});
-
-describe("pickMysteriousAura", () => {
-  test("returns the chosen type and Defense", async () => {
-    global.foundry = {
-      applications: {
-        api: {
-          DialogV2: {
-            wait: jest.fn(async ({ buttons }) => buttons[0].callback(null, {
-              form: { elements: { type: { value: 'protective' }, defenseChoice: { value: 'toughness' } } },
-            })),
-          },
-        },
-      },
-    };
-
-    const result = await pickMysteriousAura();
-    expect(result).toEqual({ type: 'protective', defenseChoice: 'toughness' });
-  });
-
-  test("null when cancelled", async () => {
-    global.foundry = { applications: { api: { DialogV2: { wait: jest.fn(async () => 'cancel') } } } };
-    expect(await pickMysteriousAura()).toBeNull();
-  });
-});
-
-describe("activateMysteriousAura", () => {
-  beforeEach(() => {
-    ui.notifications.warn.mockReset();
-  });
-
-  test("spends 1 Power and banks the chosen aura", async () => {
-    const actor = makeActor({ power: 1 });
-    global.foundry = {
-      applications: {
-        api: {
-          DialogV2: {
-            wait: jest.fn(async ({ buttons }) => buttons[0].callback(null, {
-              form: { elements: { type: { value: 'imposing' }, defenseChoice: { value: 'toughness' } } },
-            })),
-          },
-        },
-      },
-    };
-
-    const result = await activateMysteriousAura(actor);
-
-    expect(result).toBe(true);
-    expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'mysteriousAuraActive', { type: 'imposing', defenseChoice: 'toughness' });
-  });
-
-  test("warns and does nothing without Power to spend", async () => {
-    const actor = makeActor({ power: 0 });
-    const result = await activateMysteriousAura(actor);
-    expect(result).toBe(false);
-    expect(ui.notifications.warn).toHaveBeenCalled();
-  });
-
-  test("does nothing when the picker is cancelled, without spending", async () => {
-    const actor = makeActor({ power: 1 });
-    global.foundry = { applications: { api: { DialogV2: { wait: jest.fn(async () => 'cancel') } } } };
-
-    const result = await activateMysteriousAura(actor);
-
-    expect(result).toBe(false);
-    expect(actor.update).not.toHaveBeenCalled();
   });
 });
 

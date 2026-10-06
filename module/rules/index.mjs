@@ -102,12 +102,15 @@ export function collectRules(actor) {
   const seen = new Set();
   for (const item of itemsOf(actor)) {
     const rules = rulesOf(item);
-    if (!rules.length || !isItemActive(item)) {
+    if (!rules.length) {
       continue;
     }
 
+    // A switched-off item (an unequipped weapon, its upgrades) keeps only its `always: true` rules (Sling: drawing
+    // the stowed weapon it's on).
+    const active = isItemActive(item);
     rules.forEach((rule, index) => {
-      if (!rule || rule.disabled || !RULE_TYPES[rule.type]) {
+      if (!rule || rule.disabled || !RULE_TYPES[rule.type] || (!active && rule.always !== true)) {
         return;
       }
 

@@ -5,6 +5,11 @@
   "_id": "t8OnOh6dQ0FoWBsG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Sprint as a wrecking ball (Wrecking Ball)","when":["not:self:toggle:rolling"],"cost":{"action":"standard","resource":{"storyPoints":true},"amount":1},"steps":[{"do":"require","beforeCost":true,"check":["self:canSpendStoryPoints"],"message":"{name} has no Story Point to spend."},{"do":"sprint"},{"do":"setToggle","key":"rolling","value":true,"until":"turnOrUntilCombat"},{"do":"chat","text":"{name} sprints as a wrecking ball, ignoring Rough Terrain."}]},
+      {"type":"Use","label":"Bowl through the enemies moved through (Wrecking Ball)","when":["self:toggle:rolling"],"steps":[{"do":"target"},{"do":"rollVsEach","skill":"might","defense":"toughness","dataset":{"edge":true},"onHit":[{"do":"damage","to":"target","amount":2,"damageType":"blunt"},{"do":"applyCondition","to":"target","condition":"prone"}]}]},
+      {"type":"MovementAction","label":"Wrecking Ball","ignoreRoughTerrain":true,"when":["self:toggle:rolling","combat:exists"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend a Story Point to Sprint ignoring Rough Terrain. Press it again, targeting the enemies you moved through, to roll a Might attack with an Edge that knocks them Prone and deals 2 damage.</p><p>Left to the table: moving through enemies and walls, and flattening the terrain.</p>"

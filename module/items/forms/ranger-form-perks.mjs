@@ -417,9 +417,16 @@ export async function dinoAfterDamage(actor, dealt) {
   }
 }
 
-async function pickDinoPower(perk) {
+/**
+ * Asks which Dino Thunder power a Perk gives and stores it as flags.essence20.zord1DinoPower - on the Dino Thunder
+ * [Form] Perk, and on Extra Dino Thunder Form Power for the second power (module/items/forms/dino-thunder-grid-powers.mjs).
+ * @param {Item} perk
+ * @param {String[]} [exclude]   Powers not offered (the second power can't repeat the first).
+ */
+export async function pickDinoPower(perk, exclude = []) {
   const { chooseSelect } = await import("../../mechanics/resources/grants.mjs");
-  const picked = await chooseSelect(perk.name, T('Zord1DinoPrompt'), DINO_POWERS.map(value => ({ value, label: T(`Zord1Dino${value.capitalize()}`) })));
+  const picked = await chooseSelect(perk.name, T('Zord1DinoPrompt'), DINO_POWERS.filter(value => !exclude.includes(value))
+    .map(value => ({ value, label: T(`Zord1Dino${value.capitalize()}`) })));
   if (picked && DINO_POWERS.includes(picked)) {
     await perk.setFlag('essence20', 'zord1DinoPower', picked);
     if (picked == 'pteraScream') {
@@ -468,11 +475,31 @@ async function runDinoPower(item, economy, pay) {
     return power ? T('Zord1DinoChosen', { name: actor.name, power: T(`Zord1Dino${power.capitalize()}`) }) : null;
   }
 
+  return (await activateDinoPower(actor, item, power, { pay })) ? T('Zord1DinoUsed', { name: actor.name, power: T(`Zord1Dino${power.capitalize()}`) }) : null;
+}
+
+/**
+ * Switches one Dino Thunder power on for `actor` - its picks, action cost, Personal Power and effect. Used by the
+ * Form's own Use and by the Grid Powers built on it (Dino Thunder Boost, Extra Dino Thunder Form Power, White Ranger
+ * Extra Dino Thunder), which pay from the Boost pool / pay once for both powers through `spend`.
+ * @param {Actor} actor
+ * @param {Item} perk                 The Perk the power is on (Ptera Scream's weapon is granted by it).
+ * @param {String} power              One of DINO_POWERS.
+ * @param {Object} [opts]
+ * @param {Function} [opts.pay]       async (actionCost) => Boolean - the action economy payment.
+ * @param {Function} [opts.spend]     async (personalPower) => Boolean - defaults to spending Personal Power.
+ * @returns {Promise<Boolean>}        Whether the power went off.
+ */
+export async function activateDinoPower(actor, perk, power, { pay = async () => true, spend = n => spendPower(actor, n) } = {}) {
+  if (!DINO_POWERS.includes(power)) {
+    return false;
+  }
+
   const label = T(`Zord1Dino${power.capitalize()}`);
   if (power == 'pteraScream') {
-    await grantPteraScream(actor, item);
+    await grantPteraScream(actor, perk);
     ui.notifications.info(T('Zord1PteraUseWeapon'));
-    return null;
+    return false;
   }
 
   // Shield Propulsion picks its use first; the rest go straight to the spend.
@@ -480,7 +507,7 @@ async function runDinoPower(item, economy, pay) {
   if (power == 'shieldPropulsion') {
     variant = await choose(label, T('Zord1DinoPropulsionPrompt'), [['move', T('Zord1DinoPropulsionMove')], ['jump', T('Zord1DinoPropulsionJump')]]);
     if (!variant) {
-      return null;
+      return false;
     }
   }
 
@@ -490,7 +517,7 @@ async function runDinoPower(item, economy, pay) {
     const { pickCanvasPoint } = await import("../../mechanics/combat/forced-movement.mjs");
     point = await pickCanvasPoint(T('Zord1DinoPickPoint'));
     if (!point) {
-      return null;
+      return false;
     }
 
     // T-Rex Speed: "disappear and reappear in any area within 30 feet".
@@ -498,12 +525,12 @@ async function runDinoPower(item, economy, pay) {
     const dims = globalThis.canvas?.dimensions;
     if (power == 'tRexSpeed' && from && dims?.size && Math.hypot(point.x - from.x, point.y - from.y) / dims.size * (dims.distance ?? 5) > 30.5) {
       ui.notifications.warn(T('Zord1DinoTooFar'));
-      return null;
+      return false;
     }
   }
 
   if (!(await pay(actionCost))) {
-    return null;
+    return false;
   }
 
   // Replication: "You may spend an extra Personal Power to either create an additional hologram or to
@@ -514,8 +541,8 @@ async function runDinoPower(item, economy, pay) {
     cost = extra == '2' ? 2 : 1;
   }
 
-  if (!(await spendPower(actor, cost))) {
-    return null;
+  if (!(await spend(cost))) {
+    return false;
   }
 
   switch (power) {
@@ -557,7 +584,7 @@ async function runDinoPower(item, economy, pay) {
     break;
   }
 
-  return T('Zord1DinoUsed', { name: actor.name, power: label });
+  return true;
 }
 
 /* -------------------------------------------- */

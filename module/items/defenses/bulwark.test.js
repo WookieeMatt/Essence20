@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { isBulwarkActive, toggleBulwark } from './bulwark.mjs';
+import { isBulwarkActive } from './bulwark.mjs';
 
 function makeActor(planted = false) {
   const flagStore = { bulwarkActive: planted };
@@ -18,23 +18,5 @@ describe("isBulwarkActive", () => {
 
   test("true once the flag is set", () => {
     expect(isBulwarkActive(makeActor(true))).toBe(true);
-  });
-});
-
-describe("toggleBulwark", () => {
-  test("plants from unplanted, and returns true", async () => {
-    const actor = makeActor(false);
-    const result = await toggleBulwark(actor);
-    expect(result).toBe(true);
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'bulwarkActive', true);
-    expect(isBulwarkActive(actor)).toBe(true);
-  });
-
-  test("unplants from planted, and returns false", async () => {
-    const actor = makeActor(true);
-    const result = await toggleBulwark(actor);
-    expect(result).toBe(false);
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'bulwarkActive', false);
-    expect(isBulwarkActive(actor)).toBe(false);
   });
 });

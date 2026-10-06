@@ -78,7 +78,6 @@ describe('medic', () => {
   beforeAll(async () => {
     med = {
       ...(await import('../healing/medicine-kit.mjs')), ...(await import('../../mechanics/actions/heal-action.mjs')),
-      ...(await import('../healing/defibrillator.mjs')),
     };
   });
 
@@ -92,16 +91,9 @@ describe('medic', () => {
   });
 
   test('a carried Science (Medicine) kit counts as a medicine kit (check:medicineKit)', () => {
-    expect(med.hasMedicineKit(actor([item('perk', { source: med.O2_MED.properProtection })]))).toBe(false);
+    expect(med.hasMedicineKit(actor([item('perk', { source: 'Compendium.essence20.gi_joe_crb.Item.CUV2gVVGb7U7yU5J' })]))).toBe(false);
     const kit = item('gear', { name: 'Standard Science (Medicine) Kit', system: { gearType: 'kits' } });
     expect(med.hasMedicineKit(actor([kit]))).toBe(true);
-  });
-
-  test('Defibrillator runs six rounds', () => {
-    const record = { combatId: 'c', readyRound: 7 };
-    expect(med.defibrillatorReady(record, { id: 'c', round: 6 })).toBe(false);
-    expect(med.defibrillatorReady(record, { id: 'c', round: 7 })).toBe(true);
-    expect(med.defibrillatorReady(record, { id: 'd', round: 9 })).toBe(false);
   });
 });
 
@@ -109,7 +101,7 @@ describe('gij', () => {
   let gij;
   beforeAll(async () => {
     gij = {
-      ...(await import('../gear/support-upgrade-lending.mjs')), ...(await import('../social/delegate.mjs')),
+      ...(await import('../gear/support-upgrade-lending.mjs')),
       ...(await import('../attacks/two-light-weapons.mjs')),
     };
   });
@@ -133,24 +125,11 @@ describe('gij', () => {
     expect(weaponCopy.flags.essence20.parentId).toBe('w1');
   });
 
-  test('Delegate finds the ally\'s spent uses', () => {
-    game.combat = { id: 'c', round: 2, turn: 1 };
-    const ally = actor([], {}, {
-      flags: {
-        luckUsed: { epoch: 3, window: 'scene', count: 1 },
-        oldUse: { epoch: 1, window: 'scene', count: 1 },
-        turnUse: { combatId: 'c', round: 2, turn: 1 },
-        other: 'x',
-      },
-    });
-    expect(gij.refundableUses(ally).map(r => r.key)).toEqual(['luckUsed', 'turnUse']);
-    expect(gij.labelOf('luckUsedThisScene')).toBe('Luck Used This Scene');
-    game.combat = null;
-  });
+  // Delegate is its Perk's own Use rule (rules/conv15-items2.test.js).
 
   test('Gunport is a rule on the upgrade now (no export, no constant here)', () => {
     expect(gij.firingThroughGunport).toBeUndefined();
-    expect(gij.O2_GIJ.gunport).toBeUndefined();
+    expect(gij.O2_GIJ).toBeUndefined();
   });
 
   test('two light weapons', () => {
@@ -171,10 +150,7 @@ describe('magic', () => {
     magic = await import('../magic/temper-tempest-sorcery-builder.mjs');
   });
 
-  // More Bang's +1 on the storm is its cast HitRider rule now (rules/conv12-slI12.test.js).
-  test('the Temper Tempest storm strikes for 3', async () => {
-    expect(await magic.tempestDamage(actor([]))).toBe(3);
-  });
+  // Temper Tempest's storm is the spell's own rules (rules/conv15-items2.test.js).
 
   test('Sorcerous Power costs follow Table 4-1', () => {
     // Arcane Bolt: a basic Targeting attack - 1 point.

@@ -5,6 +5,9 @@
   "_id": "QXpG3NuwaFgbdc0x",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Forage for a kit (Forage)","steps":[{"do":"choose","auto":true,"options":[{"label":"Standard","when":["not:self:level>=7"],"steps":[{"do":"pickEntry","kitTier":true,"from":{"type":"gear","availabilities":["standard"],"tags":["item:data:system.gearType=kits"]}}]},{"label":"Standard or Limited","when":["self:level>=7","not:self:level>=13"],"steps":[{"do":"pickEntry","kitTier":true,"from":{"type":"gear","availabilities":["standard","limited"],"tags":["item:data:system.gearType=kits"]}}]},{"label":"Up to Restricted","when":["self:level>=13"],"steps":[{"do":"pickEntry","kitTier":true,"from":{"type":"gear","availabilities":["standard","limited","restricted"],"tags":["item:data:system.gearType=kits"]}}]}]},{"do":"roll","skill":"survival","dif":"@var.pickedDif","edgeWhen":["self:hasItem:Compendium.essence20.ferocious_fighters.Item.2MvQyj4AUcr4QOtU"],"onSuccess":[{"do":"deleteItem","item":"where:item:data:flags.essence20.foraged&item:type:gear","all":true},{"do":"grant","uuid":"{var.picked}","flags":{"foraged":true}}],"onFail":[{"do":"chat","text":"{name} finds nothing usable."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: roll Survival against a kit's difficulty to gain it (Standard, then Limited and Restricted at higher levels). A new forage replaces the last kit.</p>"

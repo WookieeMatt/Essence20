@@ -105,17 +105,26 @@ registerDefenseAdjust(lateDefenseAdjust);
 /*  grantNextTurn                                */
 /* -------------------------------------------- */
 
+const KINDS = ['free', 'move', 'standard'];
+
 registerStep('grantNextTurn', async (step, ctx) => {
   const setNextTurn = lazy.setNextTurn ?? (await import("../../../mechanics/actions/action-economy.mjs")).setNextTurn;
   const resolve = value => Math.max(0, Math.round(resolveValue(value ?? 0, { actor: ctx.actor, item: ctx.item, vars: ctx.vars, other: ctx.targets?.[0] ?? null }, 0)));
   const grant = Object.fromEntries(['free', 'move', 'standard'].map(kind => [kind, resolve(step[kind])]).filter(([, amount]) => amount > 0));
-  if (!Object.keys(grant).length) {
+  // block: kinds of action the recipients can't take on their next turn (Laughtracting's Free actions); prespend: how many of
+  // each are used up before it starts (round 15, systems - action-economy.mjs#setNextTurn's block / prespend).
+  const block = Array.isArray(step.block) ? step.block.filter(kind => KINDS.includes(kind)) : [];
+  const prespend = Object.fromEntries(Object.entries(step.prespend ?? {}).filter(([kind]) => KINDS.includes(kind)).map(([kind, value]) => [kind, resolve(value)]).filter(([, amount]) => amount > 0));
+  if (!Object.keys(grant).length && !block.length && !Object.keys(prespend).length) {
     return;
   }
 
   for (const actor of recipients(step, ctx)) {
-    await setNextTurn(actor, { grant }, ctx.item?.name ?? null);
+    await setNextTurn(actor, { grant, ...(block.length ? { block } : {}), ...(Object.keys(prespend).length ? { prespend } : {}) }, ctx.item?.name ?? null);
   }
 }, {
-  errors: (step, where) => (['free', 'move', 'standard'].some(kind => step[kind] !== undefined) ? [] : [`${where}: grantNextTurn needs free, move or standard`]),
+  errors: (step, where) => [
+    ...(['free', 'move', 'standard'].some(kind => step[kind] !== undefined) || step.block || step.prespend ? [] : [`${where}: grantNextTurn needs free, move, standard, block or prespend`]),
+    ...(step.block !== undefined && !(Array.isArray(step.block) && step.block.every(kind => KINDS.includes(kind))) ? [`${where}: block must list free, move or standard`] : []),
+  ],
 });

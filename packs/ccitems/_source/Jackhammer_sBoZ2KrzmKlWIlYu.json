@@ -6,7 +6,10 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Grant","label":"Power Tool","uuid":"Compendium.essence20.gi_joe_crb.Item.Jnjio1DtAx0QgE85","skipIfOwned":true}
+      {"type":"Grant","label":"Power Tool","uuid":"Compendium.essence20.gi_joe_crb.Item.Jnjio1DtAx0QgE85","skipIfOwned":true},
+      {"type":"Use","label":"Jackhammer: a weapon upgrade until the end of your turn","when":["combat:exists","calc:@level<10"],"cost":{"action":"free"},"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","prompt":"Which weapon?","beforeCost":true},{"do":"pickEntry","from":{"type":"upgrade","availabilities":["standard"],"fields":["system.type"],"tags":["item:data:system.type=weapon"]},"prompt":"Which upgrade?","beforeCost":true},{"do":"fitUpgrade","uuid":"{var.picked}","onto":"choice:weapon","until":"endOfTurn"}]},
+      {"type":"Use","label":"Jackhammer: a weapon upgrade until the end of your turn","when":["combat:exists","calc:@level>=10","calc:@level<17"],"cost":{"action":"free"},"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","prompt":"Which weapon?","beforeCost":true},{"do":"pickEntry","from":{"type":"upgrade","availabilities":["standard","limited"],"fields":["system.type"],"tags":["item:data:system.type=weapon"]},"prompt":"Which upgrade?","beforeCost":true},{"do":"fitUpgrade","uuid":"{var.picked}","onto":"choice:weapon","until":"endOfTurn"}]},
+      {"type":"Use","label":"Jackhammer: a weapon upgrade until the end of your turn","when":["combat:exists","calc:@level>=17"],"cost":{"action":"free"},"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","prompt":"Which weapon?","beforeCost":true},{"do":"pickEntry","from":{"type":"upgrade","availabilities":["standard","limited","restricted"],"fields":["system.type"],"tags":["item:data:system.type=weapon"]},"prompt":"Which upgrade?","beforeCost":true},{"do":"fitUpgrade","uuid":"{var.picked}","onto":"choice:weapon","until":"endOfTurn"}]}
     ],
     "automation": {
       "status": "full",

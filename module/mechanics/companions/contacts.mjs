@@ -1,4 +1,5 @@
 import { getMissionEpoch, getSceneEpoch, getUses, markUsed } from "../resources/scene-clock.mjs";
+import { ruleContactAllegiance } from "../../rules/plugins/resources/contact-allegiance.mjs";
 
 /**
  * Contacts (Field Guide to Action & Adventure p.153-155, Hawk's Personnel Files p.6-7, Enigma of
@@ -39,7 +40,6 @@ export const CONTACT = {
   hometownHero: uuid('field_guide_action_adventure', 'pJXbVsqZFoYgSBnZ'),
   contactConnection: uuid('field_guide_action_adventure', '9cASTw6nAfEr8B9B'),
   trustedContact: uuid('field_guide_action_adventure', 'jggXA81nelTSlRNV'),
-  gridlockAuthority: uuid('field_guide_action_adventure', 'EiS24nGsgSsroa16'),
 };
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
@@ -302,11 +302,8 @@ export async function summonContact(summoner, contact, { pay = async () => true,
     left += 1;
   }
 
-  // Gridlock Authority (Field Guide p.70): "civilian or government Contacts begin play with 1 extra
-  // Allegiance Point."
-  if (contact.flags?.essence20?.government && has(summoner, CONTACT.gridlockAuthority)) {
-    left += 1;
-  }
+  // ContactAllegiance rules (Gridlock Authority: civilian or government Contacts - rules/plugins/resources/contact-allegiance.mjs).
+  left += ruleContactAllegiance(summoner, contact);
 
   const { needsGmRelay, relayToGm } = await import("../world/gm-relay.mjs");
   const write = async (key, value) => (needsGmRelay(contact) ? relayToGm(contact, 'setFlag', ['essence20', key, value]) : contact.setFlag('essence20', key, value));

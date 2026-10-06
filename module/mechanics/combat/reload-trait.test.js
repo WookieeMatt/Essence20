@@ -1,6 +1,6 @@
 import {
-  clearWeaponReload, DEEP_MAGAZINES_ID, getReloadCost, hasAmmoBelt, hasBurstFiredThisRound, markBurstFiredThisRound,
-  markWeaponNeedsReload, RAPID_RELOAD_ID, requireReload, weaponNeedsReload,
+  clearWeaponReload, getReloadCost, hasBurstFiredThisRound, markBurstFiredThisRound, markWeaponNeedsReload, requireReload,
+  weaponNeedsReload,
 } from "./reload-trait.mjs";
 import { jest } from '@jest/globals';
 
@@ -95,15 +95,13 @@ describe("Burst-Fire (Quartermaster's Guide to Gear p.33)", () => {
   });
 });
 
-// The four reload rules layered on the flag above (GI Joe CRB): Rapid Reload and the Ammo Belt make
-// reloading a Free action, Deep Magazines skips the first reload each combat.
+// Rapid Reload, the Ammo Belt, Deep Magazines and Extended Mag are rules now (rules/conv15-other.test.js).
 describe("what a reload costs, and whether one is needed", () => {
-  const perk = (id) => ({ type: 'perk', flags: { core: { sourceId: id } } });
-  function makeActor(perkIds = []) {
+  function makeActor() {
     const flags = {};
     return {
       name: 'Flint',
-      items: perkIds.map(perk),
+      items: [],
       getFlag: (scope, key) => flags[key],
       setFlag: jest.fn(async (scope, key, value) => {
         flags[key] = value;
@@ -111,63 +109,13 @@ describe("what a reload costs, and whether one is needed", () => {
     };
   }
 
-  function ammoBeltWeapon() {
-    const weapon = makeWeapon();
-    weapon.name = 'Machine Gun';
-    weapon.system = { items: { a1: { type: 'upgrade', name: 'Ammo Belt', uuid: 'Compendium.essence20.gi_joe_crb.Item.92V9QrCXJYmY2p7O' } } };
-    return weapon;
-  }
-
-  let savedCombat;
-  beforeEach(() => {
-    savedCombat = game.combat;
-    ui.notifications.info = jest.fn();
-  });
-
-  afterEach(() => {
-    game.combat = savedCombat;
-  });
-
   test("a plain reload costs a Move action", async () => {
     expect(await getReloadCost(makeActor(), makeWeapon())).toEqual({ action: 'move', source: null });
-  });
-
-  test("Rapid Reload makes every reload a Free action", async () => {
-    const actor = makeActor([RAPID_RELOAD_ID]);
-    expect(await getReloadCost(actor, makeWeapon())).toEqual({ action: 'free', source: 'Rapid Reload' });
-    expect(await getReloadCost(actor, makeWeapon())).toEqual({ action: 'free', source: 'Rapid Reload' });
-  });
-
-  test("an Ammo Belt makes one reload a scene a Free action", async () => {
-    const weapon = ammoBeltWeapon();
-    expect(hasAmmoBelt(weapon)).toBe(true);
-    expect(hasAmmoBelt(makeWeapon())).toBe(false);
-    expect(await getReloadCost(makeActor(), weapon)).toEqual({ action: 'free', source: 'Ammo Belt' });
-    expect(await getReloadCost(makeActor(), weapon)).toEqual({ action: 'move', source: null });
   });
 
   test("requireReload flags the weapon", async () => {
     const weapon = makeWeapon();
     expect(await requireReload(makeActor(), weapon)).toBe(true);
     expect(weaponNeedsReload(weapon)).toBe(true);
-  });
-
-  test("Deep Magazines ignores the first reload in a combat, then reloads as normal", async () => {
-    game.combat = { id: 'c1', round: 1 };
-    const actor = makeActor([DEEP_MAGAZINES_ID]);
-    const weapon = makeWeapon();
-
-    expect(await requireReload(actor, weapon)).toBe(false);
-    expect(weaponNeedsReload(weapon)).toBe(false);
-    expect(ui.notifications.info).toHaveBeenCalled();
-
-    expect(await requireReload(actor, weapon)).toBe(true);
-    expect(weaponNeedsReload(weapon)).toBe(true);
-  });
-
-  test("Deep Magazines does nothing outside combat", async () => {
-    game.combat = null;
-    const weapon = makeWeapon();
-    expect(await requireReload(makeActor([DEEP_MAGAZINES_ID]), weapon)).toBe(true);
   });
 });

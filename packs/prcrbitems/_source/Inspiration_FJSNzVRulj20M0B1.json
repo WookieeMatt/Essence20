@@ -5,6 +5,9 @@
   "_id": "FJSNzVRulj20M0B1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"A bonus die for an ally","steps":[{"do":"pickAlly"},{"do":"bankDie","die":"1d1","to":"targets","when":["calc:@item.system.advances.currentValue<=1"]},{"do":"bankDie","die":"1d2","to":"targets","when":["calc:@item.system.advances.currentValue=2"]},{"do":"bankDie","die":"1d3","to":"targets","when":["calc:@item.system.advances.currentValue=3"]},{"do":"bankDie","die":"1d4","to":"targets","when":["calc:@item.system.advances.currentValue=4"]},{"do":"bankDie","die":"1d5","to":"targets","when":["calc:@item.system.advances.currentValue=5"]},{"do":"bankDie","die":"1d6","to":"targets","when":["calc:@item.system.advances.currentValue=6"]},{"do":"bankDie","die":"1d7","to":"targets","when":["calc:@item.system.advances.currentValue=7"]},{"do":"bankDie","die":"1d8","to":"targets","when":["calc:@item.system.advances.currentValue=8"]},{"do":"bankDie","die":"1d9","to":"targets","when":["calc:@item.system.advances.currentValue=9"]},{"do":"bankDie","die":"1d10","to":"targets","when":["calc:@item.system.advances.currentValue=10"]},{"do":"bankDie","die":"1d11","to":"targets","when":["calc:@item.system.advances.currentValue=11"]},{"do":"bankDie","die":"1d12","to":"targets","when":["calc:@item.system.advances.currentValue=12"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick an ally. A d4 (d6 once you've taken this Perk again, d8 at the third) is added to their next roll, shown in the dice on their chat card.</p>"

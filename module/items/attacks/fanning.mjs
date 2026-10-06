@@ -1,5 +1,5 @@
 import { E20 } from "../../util/config.mjs";
-import { actorHasPerk } from "../../mechanics/characters/perks.mjs";
+import { fanningShotRules } from "../../rules/plugins/combat/fanning-shots.mjs";
 
 /**
  * Fanning (X) (A Jump Through Time, New Weapon Traits, p.74): "may fire up to X Attacks in single
@@ -13,10 +13,8 @@ import { actorHasPerk } from "../../mechanics/characters/perks.mjs";
  * defendMagnitude. Every shot of the volley is its own Attack Skill Test with its own shift,
  * rolled by dice.mjs#rollSkill's repeat loop with a per-shot formula.
  *
- * Storm of Lead (A Jump Through Time, General Perk, p.56): "the X value is +1, and the first
- * Attack receives a ↑1 bonus."
+ * FanningShots rules (rules/plugins/combat/fanning-shots.mjs - Storm of Lead) add to X and give the first shot a ↑.
  */
-export const STORM_OF_LEAD_ID = "Compendium.essence20.jump_through_time.Item.Px86Wo4MyldPjl5X";
 
 /**
  * @param {Item} weapon
@@ -27,8 +25,8 @@ export function isFanningWeapon(weapon) {
 }
 
 /**
- * The most shots this actor can fan with this weapon: the weapon's own X, plus one for Storm of
- * Lead. A Fanning weapon with no X recorded (a homebrew item) counts as X = 1. 0 for anything that
+ * The most shots this actor can fan with this weapon: the weapon's own X, plus the actor's FanningShots
+ * rules' extraShots. A Fanning weapon with no X recorded (a homebrew item) counts as X = 1. 0 for anything that
  * isn't a Fanning weapon at all.
  * @param {Actor} actor
  * @param {Item} weapon
@@ -40,7 +38,7 @@ export function getFanningMaxShots(actor, weapon) {
   }
 
   const magnitude = Math.max(1, Number(weapon.system.fanningMagnitude) || 1);
-  return magnitude + (actorHasPerk(actor, STORM_OF_LEAD_ID) ? 1 : 0);
+  return magnitude + fanningShotRules(actor, weapon).extraShots;
 }
 
 /**
@@ -55,17 +53,27 @@ export function clampFanningShots(requested, maxShots) {
 }
 
 /**
- * The shift modifiers for one shot of the volley (1-based): ↓shotNumber, with Storm of Lead's ↑1
- * on the first shot only.
+ * The shift modifiers for one shot of the volley (1-based): ↓shotNumber, with the FanningShots rules'
+ * firstShotUpshift (Storm of Lead's ↑1) on the first shot only.
  * @param {Number} shotNumber
- * @param {Boolean} hasStormOfLead
+ * @param {Number|Boolean} firstShotUpshift   The first shot's ↑ (true counts as 1).
  * @returns {{shiftUp: Number, shiftDown: Number}}
  */
-export function getFanningShotShifts(shotNumber, hasStormOfLead = false) {
+export function getFanningShotShifts(shotNumber, firstShotUpshift = 0) {
   return {
-    shiftUp: hasStormOfLead && shotNumber == 1 ? 1 : 0,
+    shiftUp: shotNumber == 1 ? Number(firstShotUpshift) || 0 : 0,
     shiftDown: shotNumber,
   };
+}
+
+/**
+ * The first fanned shot's ↑ from the actor's FanningShots rules (Storm of Lead).
+ * @param {Actor} actor
+ * @param {?Item} [weapon]
+ * @returns {Number}
+ */
+export function getFanningFirstShotUpshift(actor, weapon = null) {
+  return fanningShotRules(actor, weapon).firstShotUpshift;
 }
 
 /**

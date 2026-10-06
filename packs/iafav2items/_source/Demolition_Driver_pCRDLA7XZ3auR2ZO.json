@@ -5,6 +5,9 @@
   "_id": "pCRDLA7XZ3auR2ZO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Demolition Driver (↓ for +damage)","scope":"driven","spend":{"max":3},"downshift":"@spent","damage":"@spent","when":["attack:ram","self:type:vehicle"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on a Ram attack, take ↓1 to ↓3 to deal that much extra damage on a hit.</p>"

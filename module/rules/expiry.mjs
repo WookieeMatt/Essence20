@@ -39,6 +39,19 @@ function roundsOf(until) {
   return match ? Number(match[1]) : 0;
 }
 
+/**
+ * Plug-in durations (module/rules/plugins/*): `stamp(combat, actor)` makes the stamp an effect starting now carries
+ * (it is kept as {custom: name, ...}); `expired(stamp, combat)` says whether it has run out.
+ */
+const EXTRA_UNTIL = new Map();
+export function registerUntil(name, { stamp, expired }) {
+  if (!UNTIL.includes(name)) {
+    UNTIL.push(name);
+  }
+
+  EXTRA_UNTIL.set(name, { stamp, expired });
+}
+
 /** Whether `until` is a duration this module knows. */
 export function isValidUntil(until) {
   return UNTIL.includes(until) || roundsOf(until) > 0 || secondsOf(until) > 0;
@@ -56,6 +69,10 @@ function turnIndexOf(combat, actor) {
 
 /** The stamp an effect starting now carries. */
 export function stampFor(until, combat = globalThis.game?.combat, actor = null) {
+  if (EXTRA_UNTIL.has(until)) {
+    return { ...EXTRA_UNTIL.get(until).stamp(combat, actor), custom: until };
+  }
+
   if (until == 'scene' || until == 'encounter' || until == 'mission') {
     return { epoch: epochFor(until) };
   }
@@ -119,6 +136,10 @@ export function isExpired(entry, combat = globalThis.game?.combat) {
   const stamp = entry.stamp;
   if (!stamp) {
     return false;
+  }
+
+  if (stamp.custom && EXTRA_UNTIL.has(stamp.custom)) {
+    return !!EXTRA_UNTIL.get(stamp.custom).expired(stamp, combat);
   }
 
   // Scene-long (also the out-of-combat fallback of turnOrScene / roundOrScene / rounds:N).

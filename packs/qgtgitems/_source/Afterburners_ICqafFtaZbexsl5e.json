@@ -5,6 +5,12 @@
   "_id": "ICqafFtaZbexsl5e",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","when":["self:type:vehicle"],"limit":{"per":"encounter"},"steps":[{"do":"choose","auto":true,"prompt":"Which Movement do the afterburners double?","options":[{"label":"E20.MovementGround","when":["self:data:system.movement.ground.total>0"],"steps":[{"do":"setToggle","key":"burnGround","value":true,"until":"endOfTurn","when":["combat"]},{"do":"chat","text":"{name}'s afterburners double its Ground Movement this turn."}]},{"label":"E20.MovementAerial","when":["self:data:system.movement.aerial.total>0"],"steps":[{"do":"setToggle","key":"burnAerial","value":true,"until":"endOfTurn","when":["combat"]},{"do":"chat","text":"{name}'s afterburners double its Aerial Movement this turn."}]},{"label":"E20.MovementSwim","when":["self:data:system.movement.swim.total>0"],"steps":[{"do":"setToggle","key":"burnAquatic","value":true,"until":"endOfTurn","when":["combat"]},{"do":"chat","text":"{name}'s afterburners double its Aquatic Movement this turn."}]}]}]},
+      {"type":"Movement","label":"Afterburners (Ground x2)","movement":"ground","op":"multiply","value":2,"stage":"afterGravity","when":["self:type:vehicle","self:toggle:burnGround"]},
+      {"type":"Movement","label":"Afterburners (Aerial x2)","movement":"aerial","op":"multiply","value":2,"stage":"afterGravity","when":["self:type:vehicle","self:toggle:burnAerial"]},
+      {"type":"Movement","label":"Afterburners (Aquatic x2)","movement":"swim","op":"multiply","value":2,"stage":"afterGravity","when":["self:type:vehicle","self:toggle:burnAquatic"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per combat, double one of the vehicle's Movement rates for the turn.</p>"

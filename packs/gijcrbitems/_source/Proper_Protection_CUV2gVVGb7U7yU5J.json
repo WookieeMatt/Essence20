@@ -8,7 +8,8 @@
     "rules": [
       {"type":"DerivedStat","label":"Poison immunity with a medicine kit (Proper Protection)","path":"system.immunities.poison","op":"set","value":1,"when":["check:medicineKit"]},
       {"type":"DerivedStat","label":"Disease immunity with a medicine kit (Proper Protection)","path":"system.immunities.disease","op":"set","value":1,"when":["check:medicineKit"]},
-      {"type":"ConditionImmunity","label":"Immune to poisoned with a medicine kit (Proper Protection)","conditions":["poisoned"],"when":["check:medicineKit"]}
+      {"type":"ConditionImmunity","label":"Immune to poisoned with a medicine kit (Proper Protection)","conditions":["poisoned"],"when":["check:medicineKit"]},
+      {"type":"CureNote","label":"Curing poison or disease (Proper Protection: a Critical Success)","text":"E20.O2ProperProtectionCrit"}
     ],
     "automation": {
       "status": "full",

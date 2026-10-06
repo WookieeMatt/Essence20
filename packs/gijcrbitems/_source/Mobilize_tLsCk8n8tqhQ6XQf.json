@@ -5,6 +5,9 @@
   "_id": "tLsCk8n8tqhQ6XQf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","when":["combat:exists"],"cost":{"action":"move"},"steps":[{"do":"target","max":1,"beforeCost":true},{"do":"warn","text":"E20.RulesExtSystems.NeedsAlly","stop":true,"when":["target:self"],"beforeCost":true},{"do":"warn","text":"E20.RulesExtSystems.AllyNotInCombat","stop":true,"when":["not:target:combatant"],"beforeCost":true},{"do":"grantActions","move":1,"to":"target"},{"do":"chat","text":"{name} grants {target} an immediate Move action."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Move action): give an ally you can see an immediate Move action.</p>"

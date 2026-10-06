@@ -5,6 +5,9 @@
   "_id": "efcjaYwJpsBUlVN3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DownshiftCap","label":"Advantageous Fighter (at most ↓2 on a melee attack with Edge)","max":2,"when":["attack:melee","roll:edge"]}
+    ],
     "prerequisites": {"when":[{"any":["self:skill:finesse>=d4","self:skill:might>=d4"]}]},
     "automation": {
       "status": "full",

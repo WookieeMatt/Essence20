@@ -5,6 +5,15 @@
   "_id": "2LtDCHxgg9bMvWQK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Akimbo (↑1 on your off-hand attack)","upshift":1,"when":["rule:data:system.choice=akimbo","attack","not:attack:melee"]},
+      {"type":"RollModifier","label":"Long Shot (no Snag past normal range)","immune":["longRangeSnag"],"when":["rule:data:system.choice=longShot"]},
+      {"type":"RollModifier","label":"Close Quarters Battle (no ↓1 for a ranged attack inside Reach)","immune":["reachDownshift"],"when":["rule:data:system.choice=closeQuartersBattle"]},
+      {"type":"Defense","label":"Fighting Style: Careful (in cover)","defense":"toughness","amount":2,"when":["rule:data:system.choice=careful","self:status:cover"]},
+      {"type":"Defense","label":"Fighting Style: Careful (in cover)","defense":"evasion","amount":2,"when":["rule:data:system.choice=careful","self:status:cover"]},
+      {"type":"Defense","label":"Fighting Style: Defense (wearing armor)","defense":"toughness","amount":1,"when":["rule:data:system.choice=defense","self:wearing>=non"]},
+      {"type":"Defense","label":"Fighting Style: Defense (wearing armor)","defense":"evasion","amount":1,"when":["rule:data:system.choice=defense","self:wearing>=non"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: choose your style (you can change it later). Akimbo is a Roll Options Dialog switch; Careful, Close Quarters Battle, Defense, Long Shot and Trigger Happy apply on their own.</p>"

@@ -5,6 +5,10 @@
   "_id": "rouaWvDWhwCB5XEO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Engine Override","steps":[{"do":"focus","to":"pilotedVehicleOrTarget"},{"do":"mark","key":"engineOverride","to":"target","until":"thisRound"},{"do":"chat","text":"{target} gets +15 ft Ground Movement this round."}]},
+      {"type":"Movement","label":"Engine Override","scope":"marked","mark":"engineOverride","movement":"ground","op":"add","value":15,"stage":"final"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Move action): the vehicle you're piloting or have targeted gets +15 ft Movement until your next turn.</p>"

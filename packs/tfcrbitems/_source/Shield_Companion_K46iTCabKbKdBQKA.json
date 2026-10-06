@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Shield Companion","scope":"owner","defense":"toughness","amount":1,"when":["holder:data:system.type=miniCon","link:holderDeployed","link:selfAdjacentToHolder"]},
+      {"type":"Defense","label":"Shield Companion","scope":"owner","defense":"evasion","amount":1,"when":["holder:data:system.type=miniCon","link:holderDeployed","link:selfAdjacentToHolder"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while this Mini-Con is deployed and adjacent to you, attacks against you are checked against your Toughness and Evasion +1. The bonus is added when you are attacked, so it doesn't show on your sheet.</p>"

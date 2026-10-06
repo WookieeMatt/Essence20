@@ -5,6 +5,11 @@
   "_id": "OSVtPXBdRmZ2C4PD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Growl","steps":[{"do":"target"},{"do":"require","check":["combat:exists"],"message":"Growl needs a combat."},{"do":"require","check":["not:target:markedByMe:growlTried"],"message":"Growl has already been used against that target this turn."},{"do":"mark","key":"growlTried","to":"target","perSetter":true,"until":"turnOrUntilCombat"},{"do":"roll","open":true,"sheetShifts":false,"skill":"intimidation","essence":"strength","dataset":{"defenseType":"willpower","isGrowl":true}}]},
+      {"type":"Trigger","label":"Growl","event":"hit","when":["roll:dataset:isGrowl","var:row=0"],"steps":[{"do":"mark","key":"growl","to":"target","perSetter":true,"exclusive":true,"until":"combat"}]},
+      {"type":"RollModifier","label":"Growl","key":"growl","upshift":1,"when":["attack","target:markedByMe:growl"],"consumeMark":"growl","consumeFrom":"target","consumeOwn":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: with a target selected, roll Intimidation against its Willpower. On a success your next attack against it gets ↑1, labelled Growl in the Roll Options Dialog. Once per target per turn.</p>"

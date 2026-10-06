@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Psychological Warfare (Evasion against Willpower / Cleverness)","defense":"any","mode":"best","early":true,"from":["evasion"],"when":[{"any":["defense:willpower","defense:cleverness"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks against your Willpower or Cleverness use your Evasion instead whenever it's higher.</p>"

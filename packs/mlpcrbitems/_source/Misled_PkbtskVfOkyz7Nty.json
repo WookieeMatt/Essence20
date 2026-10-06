@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"rollSeen","label":"Misled (the creature you assisted failed: ↓1 on their next Skill Test)","when":["var:failed=1","self:uuidIsVar:assistedBy"],"steps":[{"do":"bank","to":"target","downshift":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you Lend Assistance and your friend still fails, their next Skill Test takes ↓1, labelled Misled in their Roll Options Dialog.</p>"

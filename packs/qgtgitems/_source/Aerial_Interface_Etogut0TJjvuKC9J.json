@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Aerial Interface","when":["skill:driving","vehicle:driving","vehicle:moves:aerial"],"upshift":2}
+      {"type":"RollModifier","label":"Aerial Interface","when":["skill:driving","vehicle:driving","vehicle:moves:aerial"],"upshift":2},
+      {"type":"Defense","label":"Aerial Interface: your shield's Toughness on the vehicle","scope":"driven","defense":"toughness","amount":"@actor.system.activeShieldDefense.toughness","when":["self:type:vehicle",{"any":["self:data:system.movement.aerial.base>0","self:data:system.traits.air"]},"not:self:data:system.crashed","not:self:data:flags.essence20.undoEngineMovementDisabled","holder:data:system.activeShieldDefense.toughness"]},
+      {"type":"Defense","label":"Aerial Interface: your shield's Evasion on the vehicle","scope":"driven","defense":"evasion","amount":"@actor.system.activeShieldDefense.evasion","when":["self:type:vehicle",{"any":["self:data:system.movement.aerial.base>0","self:data:system.traits.air"]},"not:self:data:system.crashed","not:self:data:flags.essence20.undoEngineMovementDisabled","holder:data:system.activeShieldDefense.evasion"]}
     ],
     "automation": {
       "status": "partial",

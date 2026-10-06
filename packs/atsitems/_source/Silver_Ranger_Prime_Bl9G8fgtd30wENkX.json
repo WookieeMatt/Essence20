@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","combat:round:1"]}
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","combat:round:1"]},
+      {"type":"RollModifier","label":"Silver Ranger Prime (attacks on Willpower)","scope":"incoming","late":true,"snag":true,"when":["defense:willpower"]}
     ],
     "automation": {
       "status": "full",

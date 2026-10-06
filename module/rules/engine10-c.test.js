@@ -347,7 +347,7 @@ describe('Defense addAfter / instead; grantNextTurn', () => {
     const ally = actor();
     await runSteps([{ do: 'grantNextTurn', free: '1 + 1', to: 'target' }], stepContext({ actor: actor(), item: { name: 'Stand Tall' }, targets: [ally] }));
     expect(setNextTurn).toHaveBeenCalledWith(ally, { grant: { free: 2 } }, 'Stand Tall');
-    expect(stepErrors([{ do: 'grantNextTurn' }])).toEqual(['steps[0]: grantNextTurn needs free, move or standard']);
+    expect(stepErrors([{ do: 'grantNextTurn' }])).toEqual(['steps[0]: grantNextTurn needs free, move, standard, block or prespend']);
   });
 });
 
@@ -356,11 +356,8 @@ describe('Defense addAfter / instead; grantNextTurn', () => {
 /* -------------------------------------------- */
 
 describe('tags, checks and refs', () => {
-  test('checks: angrySnag, contingencyLikely, survivalSpecialization', () => {
+  test('checks: contingencyLikely, survivalSpecialization', () => {
     const angry = actor();
-    lazy.angrySnagSkill = () => 'deception';
-    expect(evaluateTag('check:angrySnag', contextFor({ self: angry, rolledSkill: 'deception' }))).toBe(true);
-    expect(evaluateTag('check:angrySnag', contextFor({ self: angry, rolledSkill: 'culture' }))).toBe(false);
     lazy.getLedger = () => ({ log: [{ namedKey: 'contingency' }] });
     game.combat = { combatant: { actor: { id: 'other' } } };
     expect(looksLikeContingency(angry)).toBe(true);

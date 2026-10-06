@@ -17,11 +17,8 @@
  * Vigor's own Temporary Health grant already establishes), so this only ever adds/removes the
  * exact 1 point it granted.
  */
-import { hasUsedThisEncounter, markUsedThisEncounter } from "../../mechanics/characters/perks.mjs";
-
+// Named by the Perk's own Use rule (an updateActor on this flag, once per encounter, moving the +1 Temporary Health).
 const PROTECTED_TARGET_FLAG = 'protectedTargetUuid';
-const PROTECTED_TARGET_ENCOUNTER_FLAG = 'protectedTargetUsedThisEncounter';
-const PROTECTED_TARGET_HEALTH_BONUS = 1;
 
 /**
  * The uuid of the actor's own current protected target, if any.
@@ -41,49 +38,4 @@ export function getProtectedTargetUuid(actor) {
 export function isProtectedTarget(actor, target) {
   const protectedUuid = getProtectedTargetUuid(actor);
   return !!protectedUuid && !!target?.uuid && protectedUuid == target.uuid;
-}
-
-/**
- * Whether the actor can still designate a protected target this encounter.
- * @param {Actor} actor
- * @returns {Boolean}
- */
-export function canDesignateProtectedTarget(actor) {
-  return !hasUsedThisEncounter(actor, PROTECTED_TARGET_ENCOUNTER_FLAG);
-}
-
-/**
- * Designates the actor's currently-targeted token as their protected target for the encounter,
- * granting +1 Temporary Health (and removing it from whoever was previously designated, if
- * anyone).
- * @param {Actor} actor
- * @returns {Promise<Boolean>}   False (and nothing changed) if nothing is targeted.
- */
-export async function designateProtectedTarget(actor) {
-  const targetActor = game.user.targets.first()?.actor;
-  if (!targetActor) {
-    ui.notifications.warn(game.i18n.localize('E20.MarkTargetNoTarget'));
-    return false;
-  }
-
-  const previousUuid = getProtectedTargetUuid(actor);
-  if (previousUuid && previousUuid != targetActor.uuid) {
-    const previousTarget = await fromUuid(previousUuid);
-    if (previousTarget) {
-      await previousTarget.update({
-        'system.health.bonus': Math.max(0, (previousTarget.system.health.bonus || 0) - PROTECTED_TARGET_HEALTH_BONUS),
-      });
-    }
-  }
-
-  await actor.setFlag('essence20', PROTECTED_TARGET_FLAG, targetActor.uuid);
-  await markUsedThisEncounter(actor, PROTECTED_TARGET_ENCOUNTER_FLAG);
-
-  if (previousUuid != targetActor.uuid) {
-    await targetActor.update({
-      'system.health.bonus': (targetActor.system.health.bonus || 0) + PROTECTED_TARGET_HEALTH_BONUS,
-    });
-  }
-
-  return true;
 }

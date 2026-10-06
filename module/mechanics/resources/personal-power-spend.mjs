@@ -7,8 +7,8 @@
  *   enemy, Body of Energy's damage) or `{essence20Refund: true}` (this file's own refunds).
  * - An increase is regaining Power.
  *
- * Item code joins it with registerBeforePowerWrite (may adjust the write - Void Warrior's no-regain,
- * items/resources/void-warrior-regain-block.mjs) and registerAfterPowerWrite (on the writing client - Body of
+ * Item code joins it with registerBeforePowerWrite (may adjust the write; Void Warrior's no-regain is a Veto rule on
+ * its pack item now) and registerAfterPowerWrite (on the writing client - Body of
  * Energy's split on leaving Morph, items/resources/body-of-energy.mjs).
  *
  * Inner Conservation, Power Efficiency (Through the Shattered Grid) and Dino Charged (Beneath the

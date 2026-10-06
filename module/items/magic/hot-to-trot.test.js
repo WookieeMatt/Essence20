@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyHotToTrot, isHotToTrotActive, removeHotToTrot } from './hot-to-trot.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { isHotToTrotActive, removeHotToTrot } from './hot-to-trot.mjs';
 
 function makeActor(flags = {}) {
   const flagStore = { ...flags };
@@ -26,7 +27,7 @@ describe("isHotToTrotActive / applyHotToTrot / removeHotToTrot", () => {
     const actor = makeActor();
     expect(isHotToTrotActive(actor)).toBe(false);
 
-    await applyHotToTrot(actor);
+    await activateForWindow(actor, 'hotToTrotActive', 'scene');
     expect(isHotToTrotActive(actor)).toBe(true);
 
     await removeHotToTrot(actor);
@@ -35,7 +36,7 @@ describe("isHotToTrotActive / applyHotToTrot / removeHotToTrot", () => {
 
   test("clears once the scene ends", async () => {
     const actor = makeActor();
-    await applyHotToTrot(actor);
+    await activateForWindow(actor, 'hotToTrotActive', 'scene');
 
     global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
 

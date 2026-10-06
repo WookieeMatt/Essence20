@@ -22,7 +22,6 @@ import { personalStoryPoints, spendPersonalStoryPoint } from "../../rules/plugin
  */
 
 import { getGameLine } from "../../settings.js";
-import { actorHasBattleHardened, rollBattleHardenedRefund } from "../../items/resources/battle-hardened.mjs";
 
 /**
  * The Party that holds the pool.
@@ -150,9 +149,8 @@ export async function requestStoryPointSpend(actor, amount = 1, { pool = "story"
     actorName: actor?.name,
     // Only sent when off: the default stays the payload every client already understands.
     ...(say ? {} : { announce: false }),
-    // Battle Hardened (GI Joe CRB, General Perk, p.130) - see items/resources/battle-hardened.mjs's own
-    // doc comment. Lets the GM-side handler resolve the actual spending actor after the spend
-    // commits, to check whether they hold that Perk - actorName alone was never enough.
+    // Lets the GM-side handler resolve the actual spending actor after the spend commits, for its
+    // storyPointsPaid Triggers (Battle Hardened) - actorName alone was never enough.
     actorUuid: actor?.uuid,
   });
 }
@@ -234,7 +232,7 @@ export async function handleStoryPointGrantRequest(data) {
  * @param {number} amount
  * @param {string} actorName
  * @param {boolean} [say]
- * @param {string} [actorUuid]   The spending actor, for Battle Hardened's refund.
+ * @param {string} [actorUuid]   The spending actor, for its storyPointsPaid Triggers (Battle Hardened's refund).
  */
 async function spend(amount, actorName, say = true, actorUuid = null) {
   const current = getStoryPoints();
@@ -251,16 +249,12 @@ async function spend(amount, actorName, say = true, actorUuid = null) {
     announce("E20.SptSpendRequestGranted", actorName);
   }
 
-  // Battle Hardened (GI Joe CRB, General Perk, p.130) - see items/resources/battle-hardened.mjs's own doc
-  // comment. Checked here rather than in the relay handler so a player who owns the Party gets
-  // the same chance as one whose spend is relayed to the GM.
+  // Item rules' storyPointsPaid Triggers (rules/plugins/resources/story-points-paid-event.mjs - Battle Hardened's
+  // refund). Fired here rather than in the relay handler so a player who owns the Party gets the same chance as one
+  // whose spend is relayed to the GM.
   const spendingActor = actorUuid ? await fromUuid(actorUuid) : null;
-  if (spendingActor && actorHasBattleHardened(spendingActor) && await rollBattleHardenedRefund()
-    && await setStoryPoints(getStoryPoints() + amount)) {
-    ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ user: game.user.id }),
-      content: game.i18n.format("E20.BattleHardenedRefund", { actorName: actorName ?? "?" }),
-    });
+  if (spendingActor) {
+    globalThis.Hooks?.callAll?.('essence20.storyPointsPaid', spendingActor, amount, 'story');
   }
 }
 

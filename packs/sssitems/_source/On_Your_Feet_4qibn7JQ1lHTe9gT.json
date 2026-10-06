@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"On Your Feet (Initiative: Edge)","when":["roll:initiative"],"edge":true}
+      {"type":"RollModifier","label":"On Your Feet (Initiative: Edge)","when":["roll:initiative"],"edge":true},
+      {"type":"RollModifier","label":"On Your Feet (an ally's: Initiative Edge)","scope":"aura","radius":100000,"affects":"allies","edge":true,"when":["roll:initiative"]}
     ],
     "automation": {
       "status": "full",

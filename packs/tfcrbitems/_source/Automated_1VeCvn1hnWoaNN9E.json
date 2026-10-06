@@ -5,6 +5,9 @@
   "_id": "1VeCvn1hnWoaNN9E",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Attacks roll Technology (Automated)","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost"],"path":"system.classification.skill","op":"set","value":"technology","priority":4}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: the weapon rolls Technology instead of its normal Skill and gains the Computerized trait.</p>"

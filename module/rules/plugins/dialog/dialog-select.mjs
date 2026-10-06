@@ -276,7 +276,12 @@ const SUBSTITUTION = RULE_TYPES.SkillSubstitution;
 SUBSTITUTION.params.mode.options.push('ask');
 SUBSTITUTION.params.options = { kind: 'strings' };
 SUBSTITUTION.params.prompt = { kind: 'string' };
-SUBSTITUTION.params.to = { ...SUBSTITUTION.params.to, required: false };
+// carryShifts (round 14): the picked Skill brings its own sheet shifts (system.skills.<skill>.shiftUp / shiftDown) onto the
+// roll - for a roll made without them (a Requisition Test re-pointed at Wealth: Money Talks, Capable Freelancer).
+SUBSTITUTION.params.carryShifts = { kind: 'bool' };
+// clearSpecialized (round 17, split2): the picked Skill is rolled without the rolled one's Specialization (Nose For Trouble).
+SUBSTITUTION.params.clearSpecialized = { kind: 'bool' };
+SUBSTITUTION.params.to ={ ...SUBSTITUTION.params.to, required: false };
 SUBSTITUTION.validate = rule => (rule.mode == 'ask'
   ? (Array.isArray(rule.options) && rule.options.length ? [] : ['ask needs options (the Skills offered)'])
   : (rule.to ? [] : ['to is required']));
@@ -311,6 +316,15 @@ export async function askSubstitution(actor, dataset, item) {
     if (picked && picked != dataset.skill) {
       dataset.skill = picked;
       dataset.essence = globalThis.CONFIG?.E20?.skillToEssence?.[picked] ?? dataset.essence;
+      if (rule.clearSpecialized) {
+        dataset.isSpecialized = false;
+      }
+
+      if (rule.carryShifts) {
+        const fields = actor.system?.skills?.[picked] ?? {};
+        dataset.shiftUp = (Number(dataset.shiftUp) || 0) + (Number(fields.shiftUp) || 0);
+        dataset.shiftDown = (Number(dataset.shiftDown) || 0) + (Number(fields.shiftDown) || 0);
+      }
     }
 
     return;
@@ -348,6 +362,11 @@ export async function beforeRoll(actor, dataset, item) {
 
     if (Array.isArray(rule.steps)) {
       const stepCtx = stepContext({ actor, item: ruleItem, rule, targets: targetedActors() });
+      // The rolled item: {rolled.<path>} in step text, @rolled.<path> in amounts, @var.rolledItem (its uuid).
+      stepCtx.rolled = item ?? null;
+      stepCtx.vars.rolledItem = item?.uuid ?? '';
+      // The roll's own dataset, for setDataset steps (rules/plugins/rolls/before-roll-rolled-item.mjs).
+      stepCtx.dataset = dataset;
       await runSteps(rule.steps, stepCtx);
       if (stepCtx.chat.length) {
         await globalThis.ChatMessage?.create?.({ speaker: globalThis.ChatMessage.getSpeaker?.({ actor }), content: stepCtx.chat.join('<br>') });

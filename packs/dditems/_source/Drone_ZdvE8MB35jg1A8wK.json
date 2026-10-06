@@ -5,6 +5,9 @@
   "_id": "ZdvE8MB35jg1A8wK",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Copy another Origin's chassis","when":["not:rule:data:flags.essence20.copiedOrigin"],"steps":[{"do":"pickChassis","mode":"origin"},{"do":"grant","uuid":"{var.chassis}","unlinked":true,"flags":{"parentId":"{ruleItem.id}"}},{"do":"updateActor","set":{"system.canTransform":true,"system.movement.ground.base":"@var.chassisGround","system.movement.aerial.base":"@var.chassisAerial","system.movement.swim.base":"@var.chassisSwim"}},{"do":"updateActor","when":["var:chassisBotSize"],"set":{"system.size":"{var.chassisBotSize}"}},{"do":"updateItem","set":{"flags.essence20.copiedOrigin":"{var.chassisOrigin}"}},{"do":"chat","text":"{name} is a Drone copy of the {var.chassisOriginName} chassis: {var.chassisName}."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick another Origin to copy; you take its Alt Mode, Bot Mode Movement and Size. Granted: A Hint of Independence and the Imperfection Perks it chooses between.</p>"

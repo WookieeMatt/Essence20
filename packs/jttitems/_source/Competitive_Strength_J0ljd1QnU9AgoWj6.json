@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"CritOnD2","label":"Competitive Strength: crit on the d2 on Brawn","when":["skill:brawn"]}
+      {"type":"CritOnD2","label":"Competitive Strength: crit on the d2 on Brawn","when":["skill:brawn"]},
+      {"type":"BrawnRequirement","label":"Competitive Strength: Brawn 2 Ranks higher for carrying","amount":2,"carryingOnly":true}
     ],
     "prerequisites": {"when":["self:skill:brawn>=d4"]},
     "automation": {

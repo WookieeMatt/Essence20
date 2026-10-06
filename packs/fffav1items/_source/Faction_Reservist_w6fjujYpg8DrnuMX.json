@@ -5,6 +5,9 @@
   "_id": "w6fjujYpg8DrnuMX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Use a Faction's benefits for the scene (Faction Reservist)","limit":{"per":"scene"},"steps":[{"do":"pickEntry","from":{"type":"faction"}},{"do":"grantEntries","of":"picked","childType":"perk","notOwned":true,"until":"scene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: gain another Faction's Faction Perks for the scene.</p>"

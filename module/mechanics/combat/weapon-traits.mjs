@@ -8,34 +8,22 @@ import { ruleFiresAsReinforced, ruleHardpoints, ruleWeaponTraits } from "../../r
  */
 
 const ID = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
+// (Demolisher, Big Lobber and Fireball's traits are WeaponTrait item rules - ruleWeaponTraits - so their ids went.)
 export const TRAIT_PERK = {
-  demolisher: ID('cobra_codex', 'hn7emvM7M9GoSLAI'),
-  bigLobber: ID('quartermasters_guide_to_gear', 'WlpUVVxAAOyeJxC3'),
-  fireball: ID('cobra_codex', '20lv1ecNs4ORVwWu'),
-  fieldTestExpert: ID('cobra_codex', 'bCNp9CxhKmIGifyY'),
-  snipeFromTheHip: ID('tf_crb', 'uX9x7VEUy4LCdVIg'),
-  ramCone: ID('decepticon_directive', 'sdrLrrdWEM6LrD7W'),
-  weaponCustomizer: ID('intercontinental_adventures', 'UWEU7hfmtRxlkWJB'),
   mlpLightArmor: ID('mlp_crb', '4M1CnapdbRIBl3It'),
   mlpHeavyArmor: ID('mlp_crb', 'B8RcQxof4JmlbEHE'),
 };
 
 // My Little Pony's armor prints its own downshift (MLP CRB p.152) in place of G.I. Joe's "not
-// Silent" Infiltration penalty - see lightArmorPenalty.
-const MLP_ARMOR_PENALTY = { [TRAIT_PERK.mlpLightArmor]: 1, [TRAIT_PERK.mlpHeavyArmor]: 2 };
+// Silent" Infiltration penalty - that downshift is a RollModifier rule on each armor now.
+const MLP_ARMOR = [TRAIT_PERK.mlpLightArmor, TRAIT_PERK.mlpHeavyArmor];
 
 // Items printed with "Ignores Defend" (A Jump Through Time, p.76-78).
 const IGNORES_DEFEND = ['fp55vEQbwH92XrgI', '4nZgPVgqJm7nWgZE'];
 // Items printed with "Reload ×2" (A Jump Through Time, p.78).
 export const RELOAD_TWICE = ['UvWORzyYZ6kXfySK', 'kThg2spvAa9rTepi'];
-// Upgrades: Extended Mag (Quartermaster's Guide p.34), Potent Poison (Cobra Codex p.97), Salvaged
-// (Ferocious Fighters p.36 - the only printing; Decepticon Directive's "Salvaged" Origin and Alt
-// Mode share the name only).
-export const TRAIT_UPGRADE = {
-  extendedMag: 'hPUmdnAN0FjRaal3',
-  potentPoison: 'CrxBz7IEuI92WfTB',
-  salvaged: ['sA8GbXKPcRuPHzNt'],
-};
+// (Upgrades: Salvaged's Fumble is an afterRoll Trigger on the upgrade, Potent Poison's extra round an ItemModifier rule,
+// Extended Mag's skipped reload a ReloadSkip rule.)
 
 function sourceOf(item) {
   return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? '';
@@ -47,18 +35,11 @@ export function actorHas(actor, uuid) {
   return !!actor?.items?.find?.(item => sourceOf(item) == uuid);
 }
 
-export function weaponHasUpgrade(weapon, ids) {
-  const list = [].concat(ids);
-  return !!weapon?.parent?.items?.find?.(item => item.type == 'upgrade' && item.flags?.essence20?.parentId == weapon.id
-    && list.includes(idOf(sourceOf(item))));
-}
-
 /**
  * The traits a Perk adds to a weapon: Demolisher (Cobra Codex p.68, "all weapons gain Wrecker"), Big
  * Lobber (Quartermaster's Guide p.28, thrown grenades gain Indirect), Fireball (Cobra Codex p.59,
  * "weapons you use with the Fire trait gain the Antitank trait"), and a weapon Weapon Customizer
- * was used on (Intercontinental Adventures p.64, "this gives your upgraded weapon the Temperamental
- * trait").
+ * was used on - all WeaponTrait rules.
  * @param {Item} weapon
  * @param {String[]} traits   Its traits so far.
  * @returns {String[]}   Traits to add.
@@ -70,45 +51,18 @@ export function perkGrantedTraits(weapon, traits) {
     return add;
   }
 
-  // Demolisher, Big Lobber and Fireball are WeaponTrait item rules (rules/adapter.mjs#ruleWeaponTraits).
+  // Demolisher, Big Lobber, Fireball and Weapon Customizer (a weapon it marked, while its holder has the Perk) are
+  // WeaponTrait item rules (rules/adapter.mjs#ruleWeaponTraits).
   add.push(...ruleWeaponTraits(actor, weapon, traits));
-
-  if (weapon.flags?.essence20?.customized) {
-    add.push('temperamental');
-  }
 
   return add;
 }
 
-/**
- * Ram Cone (Decepticon Directive, gear, p.76): in Alt Mode the Flyby, Ram and Slam attacks gain
- * Anti-Tank and Armor Piercing; in Bot Mode the unarmed Blunt attack loses its ↓1.
- */
-export function ramConeAltAttack(actor, item) {
-  return (actorHas(actor, TRAIT_PERK.ramCone) || actorHas(actor, AUGUR_ID)) && !!actor?.system?.isTransformed
-    && (item?.system?.isRam || item?.system?.isFlyby || /slam|bash/i.test(item?.name ?? ''));
-}
+// (Ram Cone - Decepticon Directive gear, p.76 - is item rules now: AttackTraits for its Alt Mode rams, a RollModifier for
+// the Bot Mode unarmed Blunt attack.)
 
-// Augur (Enigma of Combination, p.56): "Alt Mode: Your Flyby/Ram/Bash attacks inflict Sharp damage, no
-// longer need Movement to use, and gain the Armor Piercing Trait." The Armor Piercing half shares Ram
-// Cone's path above; the Sharp damage is set on the effect as it's prepared (documents/item.mjs).
-const AUGUR_ID = "Compendium.essence20.enigma_of_combination.Item.yk2MnBePZ5gxOEOj";
-
-export function applyAugur(effect) {
-  const actor = effect?.parent;
-  if (effect?.type != 'weaponEffect' || !actor?.system?.isTransformed || !actorHas(actor, AUGUR_ID)) {
-    return;
-  }
-
-  if (effect.system?.isRam || effect.system?.isFlyby || /bash/i.test(effect.name ?? '')) {
-    effect.system.damageType = 'sharp';
-  }
-}
-
-export function ramConeBotUnarmed(actor, item, parentWeapon) {
-  return actorHas(actor, TRAIT_PERK.ramCone) && !actor?.system?.isTransformed && item?.type == 'weaponEffect'
-    && !parentWeapon && item.system?.damageType == 'blunt' && (item.system?.shiftDown ?? 0) > 0;
-}
+// (Augur - Enigma of Combination gear, p.56 - is item rules: AttackTraits for its Alt Mode attacks' Armor Piercing, an
+// ItemModifier stage item for their Sharp damage, a Use for the blade.)
 
 /**
  * "Ignores Defend" - the printed rule on the Footman's Flail and Kusarigama.
@@ -158,7 +112,7 @@ export function isBallisticLongRange(actor, item, parentWeapon, targetToken) {
 export function noisyArmorPenalty(actor) {
   return (actor?.items ?? []).filter(item => item.type == 'armor' && item.system?.equipped
     && !item.system?.isPowerArmor && !(item.system?.traits ?? []).includes('silent')
-    && !MLP_ARMOR_PENALTY[sourceOf(item)])
+    && !MLP_ARMOR.includes(sourceOf(item)))
     .reduce((sum, armor) => sum + (Number(armor.system.totalBonusToughness) || 0) + (Number(armor.system.totalBonusEvasion) || 0), 0);
 }
 
@@ -171,30 +125,7 @@ export function computerizedArmorEvasion(target) {
     .reduce((sum, armor) => sum + (Number(armor.system.totalBonusEvasion) || 0), 0);
 }
 
-/**
- * My Little Pony's Light and Heavy Armor (MLP CRB p.152): a downshift of 1 (Light) or 2 (Heavy) on
- * "all Athletics, Acrobatics, Infiltration and Initiative Skill Tests" while worn.
- */
-export function lightArmorPenalty(actor, skill) {
-  if (!['athletics', 'acrobatics', 'infiltration', 'initiative'].includes(skill)) {
-    return 0;
-  }
-
-  return Math.max(0, ...(actor?.items ?? []).filter(item => item.type == 'armor' && item.system?.equipped)
-    .map(item => MLP_ARMOR_PENALTY[sourceOf(item)] ?? 0));
-}
-
-const TF = id => `Compendium.essence20.tf_crb.Item.${id}`;
-export const HARDPOINT_PERK = {
-  armament: TF('t5EC1a4cbtfwewd6'),
-  experiment: TF('EcSOADOOb3PZMolz'),
-  inCaseOfEmergency: TF('4l9Oa6LLVheEdnFO'),
-  fiercestAmongYou: TF('LZirSocExL40Ljya'),
-  quickDraw: TF('p8DTLro2sc2kPYQl'),
-  gunRunner: TF('evgNyOBK1uA5qUVl'),
-  titanHardpointUpgrades: ID('enigma_of_combination', 'v8nLHZhmFTtsJ1zs'),
-};
-const REINFORCED_HARDPOINT_UPGRADE = 'YDOmBfuUnYFalIVY';
+// (HARDPOINT_PERK went: nothing read it - every one of those Perks is a Hardpoints item rule, read below.)
 
 /**
  * Extra Hardpoints from Perks (TF CRB p.114 slots):
@@ -231,17 +162,6 @@ export function integratedHardpointsPerWeapon(actor) {
  */
 export function firesAsReinforced(actor, weapon) {
   return !!weapon?.system?.hardpoint?.reinforced
-    || weaponHasUpgrade(weapon, REINFORCED_HARDPOINT_UPGRADE)
-    // The Fiercest Among You and Gun Runner - Hardpoints item rules.
+    // The Reinforced Hardpoint upgrade, The Fiercest Among You and Gun Runner - Hardpoints item rules.
     || ruleFiresAsReinforced(actor, weapon);
-}
-
-const BOARDER = 'BJpJWK7oDfw51Dxl';
-
-/**
- * Boarder (Intercontinental Adventures, battledress upgrade, p.63): Edge on the test to board a
- * vehicle. Offered on Athletics and Acrobatics - set the radio back when it isn't a boarding test.
- */
-export function hasBoarder(actor) {
-  return !!actor?.items?.some?.(item => item.type == 'upgrade' && idOf(sourceOf(item)) == BOARDER);
 }

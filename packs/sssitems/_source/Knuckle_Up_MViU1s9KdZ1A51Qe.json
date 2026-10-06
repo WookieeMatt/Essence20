@@ -5,6 +5,9 @@
   "_id": "MViU1s9KdZ1A51Qe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Knuckle Up","when":["combat:exists"],"steps":[{"do":"pickEntry","from":{"type":"weapon","availabilities":["standard","limited","restricted"],"fields":["system.items"],"tags":["item:hasAttack:item:data:system.classification.style=melee"]},"prompt":"Which melee weapon's effects?"},{"do":"choose","prompt":"Duration (Hammer It Out)","when":["calc:@owned.umLteVFW35otffjg>0"],"options":[{"label":"Until the end of your turn","steps":[]},{"label":"Until the end of the scene (spends a Reckless Abandon use)","steps":[{"do":"setVar","key":"scene","value":1}]}]},{"do":"spendActions","action":"free","count":1,"when":["var:pickedAvailability=standard"]},{"do":"spendActions","action":"free","count":3,"when":["var:pickedAvailability=limited"]},{"do":"spendActions","action":"free","count":5,"when":["var:pickedAvailability=restricted"]},{"do":"setVar","key":"long","value":1,"when":["var:scene","calc:@rolePoints.Reckless_Abandon>0"]},{"do":"spend","resource":{"rolePoints":"Reckless Abandon"},"amount":1,"when":["var:long"]},{"do":"grantAttacks","uuid":"{var.picked}","until":"scene","when":["var:long"]},{"do":"grantAttacks","uuid":"{var.picked}","until":"endOfTurn","when":["not:var:long"]},{"do":"chat","text":"{name}'s unarmed attacks take on the effects of a {var.pickedName}."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a melee weapon and pay Free actions by its Availability (1, 3 or 5); your unarmed attacks gain its effects until the end of your turn.</p>"

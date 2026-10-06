@@ -1,4 +1,3 @@
-import { ownerOf } from "../companions/companion-link.mjs";
 /**
  * Environmental Expertise (GI Joe CRB, Ranger base, 1st/9th/18th level, p.90): "When subject to
  * the conditions of your environment of expertise, you gain several benefits: You ignore the
@@ -19,8 +18,10 @@ import { ownerOf } from "../companions/companion-link.mjs";
  *     GM hasn't tagged precisely.
  *   - No terrain set anywhere: exactly the old behavior - a plain on/off toggle (same shape as Dig
  *     In/Bulwark) the player switches themselves when they judge themselves to be in-environment.
- * Every "in your environment of expertise" Perk reads the same answer through this file
- * (hasActiveEnvironmentalExpertise for the ones that need the base Perk, meetsEnvironmentOfExpertise /
+ * Who has the benefits themselves is the item rules' EnvironmentalExpertise rule type
+ * (rules/plugins/effects/environmental-expertise-rule.mjs - on Environmental Expertise, Read The Land, and In Their
+ * Element for a pet). Every "in your environment of expertise" Perk reads the same answer through this file
+ * (hasActiveEnvironmentalExpertise for the ones that need the benefits, meetsEnvironmentOfExpertise /
  * isKnownOutsideEnvironmentOfExpertise for the rest): Environmental Armor, Prowl, Recon, Tracker,
  * Survivalist, Taking Point, Stalk, Natural Movement, Dirty Trick, Animal Gait.
  *
@@ -29,39 +30,14 @@ import { ownerOf } from "../companions/companion-link.mjs";
  */
 import { E20 } from "../../util/config.mjs";
 import { getTerrain } from "./environment.mjs";
-import { actorHasPerk } from "../characters/perks.mjs";
+import {
+  expertiseHelpers, ruleEnvironmentalExpertise, sharedExpertiseEnvironments,
+} from "../../rules/plugins/effects/environmental-expertise-rule.mjs";
 
-const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
-export const ENVIRONMENTAL_EXPERTISE_ID = `${GI_JOE_CRB}EbbSUA2vSHyv3MjQ`;
 const ENVIRONMENTAL_EXPERTISE_FLAG = 'environmentalExpertiseActive';
 
-// Guidance (Focus: Scout, 10th level, p.94): "as a Free action in your environment of expertise,
-// you can spend an Adaptation Point to grant an ally the benefits of your Environmental Expertise
-// until the beginning of your next turn." Dispatched via BANKABLE_PERKS in banked-buffs.mjs
-// (spendsRolePoint: true, target: 'ally') - banks this bare marker flag (no data payload needed),
-// read back in dice.mjs's own Environmental Expertise check alongside the toggle itself. "Until
-// the beginning of your next turn" is this project's usual "consumed on the very next roll"
-// approximation.
-export const GUIDANCE_ID = `${GI_JOE_CRB}yVxdYbSfMWfaDQZR`;
-export const PENDING_GUIDANCE_FLAG_KEY = 'pendingGuidance';
-
-// Read The Land (Factions in Action Vol. 2, Ranger Focus, p.68): "At the beginning of a mission,
-// choose an environment other than one of your Environments of Expertise. You may spend a Story
-// Point to gain the benefits of Environmental Expertise in that environment for the remainder of
-// a scene." It switches on the same toggle flag the base Perk uses, which is what grants the
-// benefits wherever the scene's terrain ISN'T one of your environments of expertise (see this
-// file's own top doc comment) - costing a Story Point to switch ON (free to switch back OFF, the
-// same "pay only to activate" idiom Power Boost/Power Adaptation's own toggles already
-// established). Which one environment it was bought for isn't recorded, so the flag covers any
-// terrain for the rest of the scene.
-export const READ_THE_LAND_ID = "Compendium.essence20.intercontinental_adventures.Item.j8wVLLK4XvVEuP6F";
-
-// Adaptation (GI Joe CRB, Ranger base, 2nd level, p.91): "you gain a pool of Adaptation Points. As
-// a Free action, you can spend an Adaptation Point to use one of your Environment Expertise or
-// environment exposure abilities outside of your environments of expertise." Same toggle/flag as
-// Read The Land above, just costing an Adaptation Point (the actor's own base rolePoints resource, same actor._getBaseRolePoints()
-// lookup Guidance/Heart of the Team already use) instead of a Story Point to switch ON.
-export const ADAPTATION_ID = `${GI_JOE_CRB}PmY8jGTiemnSdsHi`;
+// (Guidance's one-roll grant, Read The Land's and Adaptation's switches are Use rules on those items; the base Perk's
+// own toggle too. They all set the same toggle flag, or a guidance mark the Guidance item's rules read.)
 
 /**
  * @param {Actor} actor
@@ -72,38 +48,15 @@ export function isEnvironmentalExpertiseActive(actor) {
 }
 
 /**
- * @param {Actor} actor
- * @returns {Promise<Boolean>}   The new active state.
- */
-export async function toggleEnvironmentalExpertise(actor) {
-  const nowActive = !isEnvironmentalExpertiseActive(actor);
-  await actor.setFlag('essence20', ENVIRONMENTAL_EXPERTISE_FLAG, nowActive);
-  return nowActive;
-}
-
-/**
  * The environments of expertise the actor chose (E20.environments keys).
  * @param {Actor} actor
  * @returns {Array<String>}
  */
 export function getExpertiseEnvironments(actor) {
   const own = actor?.system?.environments ?? [];
-  const owner = inTheirElementOwner(actor);
-  return owner ? [...new Set([...own, ...(owner.system?.environments ?? [])])] : own;
-}
-
-// In Their Element (GI Joe CRB, Beastmaster, 6th level, p.92): "your pet gains the benefits of your
-// Environment Expertise and Environment Exposure in all of your environment of expertise."
-const IN_THEIR_ELEMENT_ID = `${GI_JOE_CRB}UkAgppAPli6yrImr`;
-
-/** The owner whose Environmental Expertise this pet shares, if any. */
-function inTheirElementOwner(actor) {
-  if (actor?.type != 'companion') {
-    return null;
-  }
-
-  const owner = ownerOf(actor);
-  return owner && actorHasPerk(owner, IN_THEIR_ELEMENT_ID) ? owner : null;
+  // An owner's companion-scoped EnvironmentalExpertise rule with shareEnvironments (In Their Element) adds theirs.
+  const shared = sharedExpertiseEnvironments(actor);
+  return shared.length ? [...new Set([...own, ...shared])] : own;
 }
 
 /**
@@ -148,20 +101,19 @@ export function isKnownOutsideEnvironmentOfExpertise(actor) {
 }
 
 /**
- * Whether this actor currently qualifies for Environmental Expertise's own bonuses - holds the
- * Perk (or Read The Land) AND meetsEnvironmentOfExpertise() above.
+ * Whether this actor currently has Environmental Expertise's own bonuses: one of the EnvironmentalExpertise rules
+ * reaching it holds (rules/plugins/effects/environmental-expertise-rule.mjs - on the Perk and Read The Land: in an
+ * environment of expertise or switched on; on In Their Element for a pet: the owner's switch or the pet's terrain).
  * @param {Actor} actor
  * @returns {Boolean}
  */
 export function hasActiveEnvironmentalExpertise(actor) {
-  const owner = inTheirElementOwner(actor);
-  if (owner) {
-    return actorHasPerk(owner, ENVIRONMENTAL_EXPERTISE_ID) && (isInEnvironmentOfExpertise(actor) === true || isEnvironmentalExpertiseActive(owner));
-  }
-
-  return (actorHasPerk(actor, ENVIRONMENTAL_EXPERTISE_ID) || actorHasPerk(actor, READ_THE_LAND_ID))
-    && meetsEnvironmentOfExpertise(actor);
+  return !!ruleEnvironmentalExpertise(actor);
 }
+
+// The rule type's terrain tag (self:inExpertiseTerrain) reads this file's terrain answer.
+expertiseHelpers.inEnvironment = (actor, ...terrain) => isInEnvironmentOfExpertise(actor, ...terrain);
+expertiseHelpers.terrainOf = actor => getTerrain(actor) ?? null;
 
 /**
  * The Roll Options Dialog source label for a bonus an "environment of expertise" Perk grants:

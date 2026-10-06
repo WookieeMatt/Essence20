@@ -5,6 +5,9 @@
   "_id": "3XV6tQfl7WVvjEKe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Deceptive Warfare (the Outwit deals 1 damage)","key":"deceptiveWarfare","forget":true,"syntheticDamage":{"value":1,"type":"psychic"},"when":["roll:dataset:isOutwit"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on an Outwit roll, a switch to also deal 1 damage to the target.</p>"

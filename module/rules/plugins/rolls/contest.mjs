@@ -10,6 +10,8 @@ import { escape, T } from "../shared/chat-speaker-helpers.mjs";
  *   otherwise each makes an ordinary Skill Test (the roll dialog, Edge when `edge`). When this user can't roll for the
  *   other side, a card asks its owner to roll (the button runs the rest). onWin / onLose run with the other side as the
  *   target; @var.mine / @var.theirs hold the totals.
+ *   Round 16 (part b - Try Me): `best: true` on a side (the step itself, or `against`) rolls that side's best listed Skill
+ *   (by its die; a tie to the first listed) in the ordinary roll; `tieWins: true` gives a tie to this actor instead.
  */
 
 const SHIFT_ORDER = ['d20', 'd2', 'd4', 'd6', 'd8', 'd10', 'd12', '2d8', '3d6'];
@@ -23,6 +25,17 @@ export function bestShift(actor, skills) {
   }
 
   return shifts.sort((a, b) => SHIFT_ORDER.indexOf(b) - SHIFT_ORDER.indexOf(a))[0];
+}
+
+/** The listed Skill with the best die (a tie goes to the first listed). */
+export function bestSkill(actor, skills) {
+  const order = globalThis.CONFIG?.E20?.skillShiftList ?? null;
+  const rank = skill => {
+    const shift = actor?.system?.skills?.[skill]?.shift ?? 'd20';
+    return Array.isArray(order) && order.length ? -order.indexOf(shift) : SHIFT_ORDER.indexOf(shift);
+  };
+
+  return skills.reduce((best, skill) => (rank(skill) > rank(best) ? skill : best), skills[0]);
 }
 
 /** A Skill die as plain dice: the d20 plus the die ("d6" -> "1d20 + 1d6"); untrained is the d20 alone. */
@@ -41,7 +54,8 @@ async function rollSide(actor, side, { plain = false, edge = false } = {}) {
     return Number(roll.total) || 0;
   }
 
-  const skill = skills[0];
+  // best: the side's best listed Skill by its die (a tie to the first listed) - round 16, part b.
+  const skill = side?.best ? bestSkill(actor, skills) : skills[0];
   const essence = globalThis.CONFIG?.E20?.skillToEssence?.[skill] ?? 'social';
   const result = await actor?._dice?.rollSkill?.({ skill, essence, shiftUp: 0, shiftDown: 0, ...(edge ? { edge: true } : {}) }, actor);
   if (!result || result.cancelled) {
@@ -53,7 +67,7 @@ async function rollSide(actor, side, { plain = false, edge = false } = {}) {
 
 /** Settle it: the result line, then the branch. */
 async function settle(step, ctx, other, mine, theirs) {
-  const won = mine > theirs;
+  const won = mine > theirs || (!!step.tieWins && mine == theirs);
   ctx.vars.mine = mine;
   ctx.vars.theirs = theirs;
   ctx.chat.push(escape(T(won ? 'ContestWon' : 'ContestLost', { name: ctx.actor?.name ?? '', target: other.name, mine, theirs })));
@@ -92,7 +106,7 @@ registerStep('contest', async (step, ctx) => {
   return runSteps([{
     do: 'button', who: 'targets', label: T('ContestRoll', { target: other.name }),
     intro: T('ContestAsk', { name: ctx.actor?.name ?? '', target: other.name, total: mine }),
-    steps: [{ do: 'contestAnswer', against: step.against, onWin: step.onWin, onLose: step.onLose }],
+    steps: [{ do: 'contestAnswer', against: step.against, onWin: step.onWin, onLose: step.onLose, ...(step.tieWins ? { tieWins: true } : {}) }],
   }], ctx);
 }, {
   errors: (step, where) => [

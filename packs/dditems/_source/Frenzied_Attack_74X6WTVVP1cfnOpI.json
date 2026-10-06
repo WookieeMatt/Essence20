@@ -5,6 +5,9 @@
   "_id": "74X6WTVVP1cfnOpI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Frenzied Attack","when":["attack:unarmed","roll:damaging","self:data:system.energon.normal.value>0"],"steps":[{"do":"button","label":"Frenzied Attack (spend an Energon Point for another unarmed attack)","steps":[{"do":"spend","resource":{"path":"system.energon.normal.value"},"amount":1},{"do":"grantActions","free":1,"to":"self"},{"do":"attack","item":"rolled"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: after an unarmed attack deals damage, a button lets you spend an Energon Point and a Free action to attack again; it keeps going while each attack connects.</p>"

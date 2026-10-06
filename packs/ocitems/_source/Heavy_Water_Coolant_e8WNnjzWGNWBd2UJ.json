@@ -5,6 +5,9 @@
   "_id": "e8WNnjzWGNWBd2UJ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"VehicleDefeat","label":"Heavy Water Coolant","brawnDif":10}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when the vehicle drops to 0 Health, its Brawn test to avoid exploding is DIF 10 instead of 14, and it counts as specialized if the vehicle has Brawn ranks.</p>"

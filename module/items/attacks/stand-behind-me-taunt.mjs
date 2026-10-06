@@ -1,7 +1,7 @@
 /**
  * Stand Behind Me! (Across the Stars, Gold Ranger, p.53): "force all enemies within 60 feet to make you the target
- * of their attacks unless they succeed on a DIF 14 Alertness Skill Test." mechanics/resources/banked-buffs.mjs
- * spends the Power and marks the taunt; here each enemy within 60ft gets a DIF 14 Alertness button at the start of
+ * of their attacks unless they succeed on a DIF 14 Alertness Skill Test." The Perk's Use rule spends the Power and
+ * stamps the taunt (step stamp, flag standBehindMeActive - rules/plugins/tags/combat-stamps.mjs); here each enemy within 60ft gets a DIF 14 Alertness button at the start of
  * its turn, and one that failed can't attack anyone else.
  */
 import { registerChatButton, registerPreRoll, registerTurnStart } from "../../mechanics/item-hooks.mjs";

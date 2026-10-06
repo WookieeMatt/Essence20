@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"sessionStart","label":"Everything is Inspiration (+1 Story Point each session)","when":["self:type:playerCharacter"],"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Story Point to the pool for the new session."}]}
+      {"type":"Trigger","event":"sessionStart","label":"Everything is Inspiration (+1 Story Point each session)","when":["self:type:playerCharacter"],"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Story Point to the pool for the new session."}]},
+      {"type":"Trigger","label":"Everything is Inspiration (a Story Point after a failed Skill Test, once a scene)","event":"afterRoll","outcome":"anyFailed","limit":{"per":"encounter"},"steps":[{"do":"grantStoryPoint"}]}
     ],
     "prerequisites": {"when":["self:hasType:origin:Hobbyist"]},
     "automation": {

@@ -4,7 +4,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Defense","label":"Heroic Intervention (ally within 5 ft: +1 Defenses)","defense":"any","amount":1,"when":["ally:within:5",{"any":["defense:toughness","defense:evasion","defense:willpower","defense:cleverness"]}]}
+      {"type":"Defense","label":"Heroic Intervention (ally within 5 ft: +1 Defenses)","defense":"any","amount":1,"when":["ally:within:5",{"any":["defense:toughness","defense:evasion","defense:willpower","defense:cleverness"]}]},
+      {"type":"Use","label":"A Story Point for the team (once per encounter)","limit":{"per":"encounter","key":"heroicInterventionPoint"},"steps":[{"do":"grantStoryPoint"}]},
+      {"type":"Use","label":"Move up to 15 ft (1 Personal Power)","when":["self:limitUsed:heroicInterventionPoint:encounter"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"chat","text":"{name} moves up to 15 ft to stand beside the fight."}]}
     ],
     "prerequisites": {"when":["self:level>=8"]},
     "automation": {

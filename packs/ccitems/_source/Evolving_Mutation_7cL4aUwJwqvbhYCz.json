@@ -5,6 +5,10 @@
   "_id": "7cL4aUwJwqvbhYCz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick a Limited Alteration (genetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["limited"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]},
+      {"type":"Use","label":"Pick a Limited Alteration (genetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["limited"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]}
+    ],
     "prerequisites": {"when":[{"any":["self:has:Engrafted Mutation","self:level>=8"]}]},
     "automation": {
       "status": "full",

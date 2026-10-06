@@ -12,12 +12,11 @@ import { worldActors } from "../../mechanics/companions/companion-link.mjs";
  *   Dino Thunder Power that you or your teammates have. If you choose a power that is not yours, then
  *   the Game Master may impose a Snag or a ↓1 on Skill Tests that involve those powers."
  *
- * Which Form power a character has is stored on their Dino Thunder [Form] Perk as
- * flags.essence20.dinoThunderPower (asked for the first time it's needed), the second one on the
- * Extra Dino Thunder Form Power item under the same flag. Activation records the active powers on
- * the actor (flags.essence20.d1DinoThunderActive, cleared on morphing) and calls the
- * `essence20.dinoThunderActivated` hook with (actor, powerKeys, {source}) so the Form powers' own
- * effects can be applied by whatever builds them.
+ * Which Form power a character has is the Dino Thunder [Form] Perk's own flags.essence20.zord1DinoPower (picked by
+ * ranger-form-perks.mjs#pickDinoPower when the Perk lands, or the first time it's needed); the second one is the
+ * same flag on the Extra Dino Thunder Form Power item. Activating goes through ranger-form-perks.mjs#activateDinoPower,
+ * the same code the Form's own Use runs, so the powers' effects (its flags.essence20.zord1Dino state) really apply -
+ * only the payment differs (the Boost pool first, one Personal Power for both powers).
  */
 
 const bth = id => `Compendium.essence20.beneath_the_helmet.Item.${id}`;
@@ -36,7 +35,10 @@ export const DINO_THUNDER_POWERS = [
 ];
 
 export const BOOST_POOL_MAX = 3;
-const ACTIVE_FLAG = 'd1DinoThunderActive';
+// The Form's own power flag (ranger-form-perks.mjs) - one flag for the Form Perk and the Extra power.
+const POWER_FLAG = 'zord1DinoPower';
+// The active powers' state, owned by ranger-form-perks.mjs.
+const STATE_FLAG = 'zord1Dino';
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 const powerLabel = key => T(`E20.D1DinoPower${key.charAt(0).toUpperCase()}${key.slice(1)}`);
@@ -61,8 +63,8 @@ export function findSourced(actor, uuid) {
 /** The actor's own Dino Thunder powers, primary first. */
 export function formPowersOf(actor) {
   const powers = [];
-  const primary = findSourced(actor, DINO.form)?.flags?.essence20?.dinoThunderPower;
-  const second = findSourced(actor, DINO.extra)?.flags?.essence20?.dinoThunderPower;
+  const primary = findSourced(actor, DINO.form)?.flags?.essence20?.[POWER_FLAG];
+  const second = findSourced(actor, DINO.extra)?.flags?.essence20?.[POWER_FLAG];
   for (const key of [primary, second]) {
     if (key && DINO_THUNDER_POWERS.includes(key) && !powers.includes(key)) {
       powers.push(key);
@@ -116,39 +118,64 @@ export async function payFormPower(actor, { boostAllowed = true } = {}) {
 /*  Picking and activating                       */
 /* -------------------------------------------- */
 
-async function pickPower(title, exclude = []) {
-  const { chooseSelect } = await import("../../mechanics/resources/grants.mjs");
-  const options = DINO_THUNDER_POWERS.filter(key => !exclude.includes(key)).map(key => ({ value: key, label: powerLabel(key) }));
-  return chooseSelect(title, T('E20.D1DinoPickPrompt'), options);
-}
+const formPerks = () => import("./ranger-form-perks.mjs");
 
-/** The Form Perk's own power, asked for (and stored) if it hasn't been chosen yet. */
+/** The Form Perk's own power, asked for (and stored) if it hasn't been chosen yet - the Form's own picker. */
 export async function ensurePrimaryPower(actor) {
   const form = findSourced(actor, DINO.form);
   if (!form) {
     return null;
   }
 
-  const current = form.flags?.essence20?.dinoThunderPower;
+  const current = form.flags?.essence20?.[POWER_FLAG];
   if (current) {
     return current;
   }
 
-  const chosen = await pickPower(form.name);
-  if (chosen) {
-    await form.setFlag('essence20', 'dinoThunderPower', chosen);
+  return (await (await formPerks()).pickDinoPower(form)) ?? null;
+}
+
+/**
+ * Switches the powers on through the Form's own activation (ranger-form-perks.mjs#activateDinoPower), paying the
+ * 1 Personal Power once for all of them: from the Boost pool when allowed, else Personal Power. A power's extra
+ * Personal Power (Replication's second point) is regular Personal Power.
+ * @param {Actor} actor
+ * @param {Array<{key: String, perk: Item}>} powers
+ * @param {Object} [opts]
+ * @param {Boolean} [opts.boostAllowed]
+ * @param {Function} [opts.pay]   The Use's action-economy payment.
+ * @returns {Promise<{activated: String[], paid: String|null}>}
+ */
+export async function activateDinoThunder(actor, powers, { boostAllowed = true, pay } = {}) {
+  const { activateDinoPower } = await formPerks();
+  const { spendPower } = await import("../shared/personal-power-and-ranger-weapons.mjs");
+  let paid = null;
+  const spend = async cost => {
+    if (!paid) {
+      paid = await payFormPower(actor, { boostAllowed });
+      if (!paid) {
+        ui.notifications?.warn(T('E20.D1DinoNoPower', { name: actor.name }));
+        return false;
+      }
+    }
+
+    return spendPower(actor, cost - 1);
+  };
+
+  const activated = [];
+  for (const { key, perk } of powers) {
+    if (await activateDinoPower(actor, perk, key, { pay, spend })) {
+      activated.push(key);
+    }
   }
 
-  return chosen ?? null;
+  return { activated, paid };
 }
 
-export async function activateDinoThunder(actor, powers, { source } = {}) {
-  await actor.setFlag('essence20', ACTIVE_FLAG, { powers, source: source ?? null });
-  Hooks.callAll('essence20.dinoThunderActivated', actor, powers, { source });
-}
-
+/** The Dino Thunder powers currently switched on (ranger-form-perks.mjs's zord1Dino state), or null. */
 export function activeDinoThunder(actor) {
-  return actor?.flags?.essence20?.[ACTIVE_FLAG] ?? null;
+  const state = actor?.flags?.essence20?.[STATE_FLAG];
+  return state && Object.keys(state).length ? state : null;
 }
 
 function paidNote(paid, actor) {
@@ -157,22 +184,26 @@ function paidNote(paid, actor) {
     : T('E20.D1DinoPaidPersonal', { left: personalPower(actor) });
 }
 
+/** The Perk each of the actor's own powers is on (Ptera Scream's weapon comes from it): [{key, perk}]. */
+export function ownPowerPerks(actor) {
+  return [DINO.form, DINO.extra].map(uuid => findSourced(actor, uuid))
+    .filter(perk => DINO_THUNDER_POWERS.includes(perk?.flags?.essence20?.[POWER_FLAG]))
+    .map(perk => ({ key: perk.flags.essence20[POWER_FLAG], perk }));
+}
+
 /** Both Form powers (or the one there is) for 1 Personal Power. */
-async function activateOwn(actor, source) {
+async function activateOwn(actor, pay) {
   const primary = await ensurePrimaryPower(actor);
   if (!primary) {
     return null;
   }
 
-  const powers = formPowersOf(actor);
-  const paid = await payFormPower(actor);
-  if (!paid) {
-    ui.notifications?.warn(T('E20.D1DinoNoPower', { name: actor.name }));
+  const { activated, paid } = await activateDinoThunder(actor, ownPowerPerks(actor), { pay });
+  if (!activated.length) {
     return null;
   }
 
-  await activateDinoThunder(actor, powers, { source });
-  return T('E20.D1DinoActivated', { name: actor.name, powers: powers.map(powerLabel).join(', ') }) + ' ' + paidNote(paid, actor);
+  return T('E20.D1DinoActivated', { name: actor.name, powers: activated.map(powerLabel).join(', ') }) + (paid ? ' ' + paidNote(paid, actor) : '');
 }
 
 // Dino Thunder Boost - activate the Form from the Boost pool (or Personal Power once it's empty).
@@ -180,7 +211,7 @@ registerUse({
   id: 'd1DinoThunderBoost',
   matches: item => sourceOf(item) == DINO.boost,
   canUse: item => !!findSourced(item.parent, DINO.form) && (boostPool(item.parent) > 0 || personalPower(item.parent) > 0),
-  run: async item => activateOwn(item.parent, 'boost'),
+  run: async (item, economy, pay) => activateOwn(item.parent, pay),
 });
 
 // Extra Dino Thunder Form Power - pick the second power once; after that the Use activates both.
@@ -188,24 +219,23 @@ registerUse({
   id: 'd1DinoThunderExtra',
   matches: item => sourceOf(item) == DINO.extra,
   canUse: item => !!findSourced(item.parent, DINO.form),
-  run: async item => {
+  run: async (item, economy, pay) => {
     const actor = item.parent;
-    if (!item.flags?.essence20?.dinoThunderPower) {
+    if (!item.flags?.essence20?.[POWER_FLAG]) {
       const primary = await ensurePrimaryPower(actor);
       if (!primary) {
         return null;
       }
 
-      const second = await pickPower(item.name, [primary]);
+      const second = await (await formPerks()).pickDinoPower(item, [primary]);
       if (!second) {
         return null;
       }
 
-      await item.setFlag('essence20', 'dinoThunderPower', second);
       return T('E20.D1DinoSecondChosen', { name: actor.name, power: powerLabel(second) });
     }
 
-    return activateOwn(actor, 'extra');
+    return activateOwn(actor, pay);
   },
 });
 
@@ -230,7 +260,7 @@ registerUse({
   id: 'd1DinoThunderWhiteRanger',
   matches: item => sourceOf(item) == DINO.whiteRanger,
   canUse: item => !!findSourced(item.parent, DINO.form) && (personalPower(item.parent) > 0 || boostPool(item.parent) > 0),
-  run: async item => {
+  run: async (item, economy, pay) => {
     const actor = item.parent;
     await ensurePrimaryPower(actor);
     const options = mimicOptions(actor);
@@ -242,16 +272,16 @@ registerUse({
       return null;
     }
 
-    // The Boost pool only pays for the character's own Form power.
+    // The Boost pool only pays for the character's own Form power. A mimicked power is used as the White Ranger's
+    // own (Ptera Scream's weapon is granted by this Perk).
     const own = option.owner.id == actor.id;
-    const paid = await payFormPower(actor, { boostAllowed: own });
-    if (!paid) {
-      ui.notifications?.warn(T('E20.D1DinoNoPower', { name: actor.name }));
+    const perk = own ? (ownPowerPerks(actor).find(entry => entry.key == option.key)?.perk ?? item) : item;
+    const { activated, paid } = await activateDinoThunder(actor, [{ key: option.key, perk }], { boostAllowed: own, pay });
+    if (!activated.length) {
       return null;
     }
 
-    await activateDinoThunder(actor, [option.key], { source: 'whiteRanger', from: option.owner.uuid });
-    return T('E20.D1DinoActivated', { name: actor.name, powers: powerLabel(option.key) }) + ' ' + paidNote(paid, actor)
+    return T('E20.D1DinoActivated', { name: actor.name, powers: powerLabel(option.key) }) + (paid ? ' ' + paidNote(paid, actor) : '')
       + (own ? '' : ' ' + T('E20.D1DinoMimicNote', { owner: option.owner.name }));
   },
 });
@@ -267,12 +297,16 @@ export async function refillBoost(actor) {
 
 registerRest(refillBoost);
 
-// "Both powers disappear when you morph."
+// Extra Dino Thunder Form Power: both powers end on morphing - the active powers' state is cleared.
 Hooks.on('updateActor', async (actor, changes, options, userId) => {
-  if (userId != game.user?.id || changes?.system?.isMorphed !== true || !activeDinoThunder(actor)) {
+  if (userId != game.user?.id || changes?.system?.isMorphed !== true || !findSourced(actor, DINO.extra) || !activeDinoThunder(actor)) {
     return;
   }
 
-  await actor.unsetFlag('essence20', ACTIVE_FLAG);
+  if (activeDinoThunder(actor).invisibility && actor.statuses?.has?.('invisible')) {
+    await actor.toggleStatusEffect('invisible', { active: false });
+  }
+
+  await actor.unsetFlag('essence20', STATE_FLAG);
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: T('E20.D1DinoEndsOnMorph', { name: actor.name }) });
 });

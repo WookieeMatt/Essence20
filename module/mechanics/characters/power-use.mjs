@@ -1,38 +1,7 @@
 import { postPerkUseChatCard } from "./perks.mjs";
 import { rollPowerAttack } from "./attack-powers.mjs";
-import { applySpeedBoost } from "../../items/movement/speed-boost.mjs";
-import { applyPowerShield } from "../../items/defenses/power-shield.mjs";
-import { activateFasterRegeneration } from "../../items/healing/faster-regeneration.mjs";
-import { activateBoostInitiative } from "../../items/rolls/boost-initiative.mjs";
-import { activateAugmentPowerWeapon } from "../../items/attacks/augment-power-weapon.mjs";
-import { activatePenetratingStrikes } from "../../items/attacks/penetrating-strikes.mjs";
-import { activateIlluminate } from "../../items/attacks/illuminate.mjs";
-import { activateRepairZord } from "../../items/healing/repair-zord.mjs";
-import { activatePowerHeal } from "../../items/healing/power-heal.mjs";
-import { activatePowerBlast } from "../../items/attacks/power-blast.mjs";
 import { activateZeoCrystalBoost, canUseZeoCrystalBoost, pickZeoCrystalBoostOption } from "../../items/attacks/zeo-crystal-boost.mjs";
-import { revealTargetChronoFile } from "../../items/senses/chrono-file-access.mjs";
-import { activateBlazingStrikes } from "../../items/attacks/blazing-strikes.mjs";
-import { activateVoidWarrior } from "../../items/attacks/void-warrior.mjs";
-import { activateMorphblast } from "../../items/attacks/morphblast.mjs";
-import { activateFutureVision } from "../../items/rolls/future-vision.mjs";
-import { activateMobileMode, pickMobileModeType } from "../../items/movement/mobile-mode.mjs";
-import { activateMetallicArmor } from "../../items/defenses/metallic-armor.mjs";
-import { toggleProtectionBoost } from "../../items/defenses/nanomite-protection.mjs";
-import { toggleReactiveBoost } from "../../items/defenses/reactive.mjs";
-import { toggleAugmentedCombat } from "../../items/attacks/augmented-combat.mjs";
-import { pickSwiftnessMovementType, toggleSwiftness } from "../../items/movement/swiftness.mjs";
-import { activateRepairMachine } from "../../items/rolls/repair-machine.mjs";
-import { activateElectricDischarge } from "../../items/attacks/electric-discharge.mjs";
-import { activateDisintegrate } from "../../items/attacks/disintegrate.mjs";
-import { activateRegenerationChoice } from "../../items/healing/regeneration.mjs";
-import { activateBolsterDefense } from "../../items/magic/bolster-defense.mjs";
-import { activateChronomanticPulse } from "../../items/magic/chronomantic-pulse.mjs";
 import { activateMonsterGrow } from "../../items/forms/monster-grow.mjs";
-import { activateLuckyCharm } from "../../items/magic/lucky-charm.mjs";
-import { activateCreateWeapon, CREATE_WEAPON_ID } from "../../items/attacks/create-weapon.mjs";
-import { activateChargeItUp, CHARGE_IT_UP_ID } from "../../items/attacks/charge-it-up.mjs";
-import { activateRapidMorph } from "../../items/forms/rapid-morph.mjs";
 
 /**
  * The Power-side equivalent of mechanics/resources/banked-buffs.mjs#canUsePerk - whether the sheet should show
@@ -93,6 +62,10 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
     return;
   }
 
+  // The Power's own rules: its powerUsed Triggers (rules/plugins/resources/power-used.mjs), @var.spent = amountSpent.
+  const { firePowerUsed } = await import("../../rules/plugins/resources/power-used.mjs");
+  await firePowerUsed(actor, item, amountSpent);
+
   // Attack Powers resolve generically, off their own schema, before the per-sourceId chain below -
   // see mechanics/characters/attack-powers.mjs. A Power that both attacks AND needs a bespoke effect would want
   // its own entry below instead; none of the printed ones do.
@@ -103,118 +76,6 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
   // A Power used straight from a compendium (nanomite equipment - items/gear/nanomite-gear.mjs) has no
   // source flags of its own, so the caller names it.
   const sourceId = sourceIdOverride ?? item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-
-  // Create Weapon - see items/attacks/create-weapon.mjs's own doc comment.
-  if (sourceId == CREATE_WEAPON_ID) {
-    const form = await activateCreateWeapon(actor);
-    if (form) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  // Charge It Up! - see items/attacks/charge-it-up.mjs's own doc comment.
-  if (sourceId == CHARGE_IT_UP_ID) {
-    const banked = await activateChargeItUp(actor);
-    if (banked) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  // Rapid Morph - see items/forms/rapid-morph.mjs's own doc comment.
-  if (sourceId == RAPID_MORPH_ID) {
-    const morphed = await activateRapidMorph(actor);
-    if (morphed) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == SPEED_BOOST_ID) {
-    const changed = await applySpeedBoost(actor, item);
-    if (changed) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == POWER_SHIELD_ID) {
-    const changed = await applyPowerShield(item);
-    if (changed) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == FASTER_REGENERATION_ID) {
-    const healAmount = await activateFasterRegeneration(actor);
-    if (healAmount != null) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PowerHealNotification', { perk: item.name, actor: actor.name, amount: healAmount }));
-    }
-
-    return;
-  }
-
-  if (sourceId == BOOST_INITIATIVE_ID) {
-    await activateBoostInitiative(actor, amountSpent);
-    return;
-  }
-
-  if (sourceId == AUGMENT_POWER_WEAPON_ID) {
-    const changed = await activateAugmentPowerWeapon(actor);
-    if (changed) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == PENETRATING_STRIKES_ID) {
-    const changed = await activatePenetratingStrikes(actor);
-    if (changed) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == ILLUMINATE_ID) {
-    const changed = await activateIlluminate(actor);
-    if (changed) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == REPAIR_ZORD_ID) {
-    const healAmount = await activateRepairZord(actor, amountSpent);
-    if (healAmount > 0) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PowerHealNotification', { perk: item.name, actor: actor.name, amount: healAmount }));
-    }
-
-    return;
-  }
-
-  if (sourceId == POWER_HEAL_ID) {
-    const result = await activatePowerHeal(actor, amountSpent, item.name);
-    if (result) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PowerHealNotification', { perk: item.name, actor: result.targetActor.name, amount: result.healAmount }));
-    }
-
-    return;
-  }
-
-  if (sourceId == POWER_BLAST_ID) {
-    await activatePowerBlast(actor, amountSpent);
-    return;
-  }
 
   if (sourceId == ZEO_CRYSTAL_BOOST_ID) {
     if (!canUseZeoCrystalBoost(actor)) {
@@ -230,131 +91,7 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
     return;
   }
 
-  if (sourceId == CHRONO_FILE_ACCESS_ID) {
-    const content = revealTargetChronoFile(actor);
-    if (content) {
-      postPerkUseChatCard(actor, content);
-    }
-
-    return;
-  }
-
-  if (sourceId == BLAZING_STRIKES_ID) {
-    const changed = await activateBlazingStrikes(actor);
-    if (changed) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == VOID_WARRIOR_ID) {
-    const changed = await activateVoidWarrior(actor);
-    if (changed) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == MORPHBLAST_ID) {
-    await activateMorphblast(actor);
-    return;
-  }
-
-  if (sourceId == FUTURE_VISION_ID) {
-    await activateFutureVision(item, amountSpent);
-    return;
-  }
-
-  if (sourceId == MOBILE_MODE_ID) {
-    const movementType = await pickMobileModeType();
-    if (movementType) {
-      await activateMobileMode(actor, movementType);
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == METALLIC_ARMOR_ID) {
-    const changed = await activateMetallicArmor(actor);
-    if (changed) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == PROTECTION_ID) {
-    await toggleProtectionBoost(actor);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == REACTIVE_ID) {
-    await toggleReactiveBoost(actor);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == AUGMENTED_COMBAT_ID || sourceId == CODENAME_JOLT_ID) {
-    await toggleAugmentedCombat(actor);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == SWIFTNESS_ID) {
-    const movementType = await pickSwiftnessMovementType();
-    if (movementType) {
-      await toggleSwiftness(actor, movementType);
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == REPAIR_MACHINE_ID) {
-    await activateRepairMachine(actor);
-    postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    return;
-  }
-
-  if (sourceId == ELECTRIC_DISCHARGE_ID) {
-    await activateElectricDischarge(actor);
-    return;
-  }
-
-  if (sourceId == DISINTEGRATE_ID) {
-    await activateDisintegrate(actor);
-    return;
-  }
-
-  // Dominate - see items/magic/dominate-nanomites.mjs's own doc comment.
-  if (sourceId == DOMINATE_ID) {
-    const { activateDominate } = await import("../../items/magic/dominate-nanomites.mjs");
-    await activateDominate(actor, item);
-    return;
-  }
-
-  if (sourceId == REGENERATION_ID) {
-    const activated = await activateRegenerationChoice(actor);
-    if (activated) {
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == BOLSTER_DEFENSE_ID) {
-    await activateBolsterDefense(actor);
-    return;
-  }
-
-  if (sourceId == CHRONOMANTIC_PULSE_ID) {
-    await activateChronomanticPulse(actor);
-    return;
-  }
+  // (Chrono-File Access's report is a powerUsed Trigger on the Power - rules/conv17-perm.test.js.)
 
   if (sourceId == MONSTER_GROW_ID) {
     const result = await activateMonsterGrow(actor);
@@ -364,55 +101,9 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
 
     return;
   }
-
-  if (sourceId == LUCKY_CHARM_ID) {
-    await activateLuckyCharm(actor, item);
-    return;
-  }
 }
 
-// Speed Boost (Power Rangers Core Rulebook, Grid Power, p.101): "you can spend 1 Power to gain Edge
-// on an Initiative Skill Test." The +10 Ground Movement while Morphed is passive, not bought - see
-// items/movement/speed-boost.mjs's own doc comment. Each activation (1 Power, already spent by the generic
-// click flow above) banks one Initiative Edge for dice.mjs#prepareInitiativeRoll to consume.
-const SPEED_BOOST_ID = "Compendium.essence20.pr_crb.Item.CDbaCheOK2rUsqli";
-const RAPID_MORPH_ID = "Compendium.essence20.jump_through_time.Item.NyO1qtj0dzZRPOSO";
-
-// The rest of the PR CRB's own Grid Power catalog (p.99-101) - see each helper file's own doc
-// comment for RAW text and mechanic shape. Wired 2026-09-10 alongside this file's own amountSpent
-// widening above.
-const POWER_SHIELD_ID = "Compendium.essence20.pr_crb.Item.F7QPCcXW9822L5Xs";
-const FASTER_REGENERATION_ID = "Compendium.essence20.pr_crb.Item.UsZ8twgjWJO5B3R4";
-const BOOST_INITIATIVE_ID = "Compendium.essence20.pr_crb.Item.IuQ0tsM2G99fQlSz";
-const AUGMENT_POWER_WEAPON_ID = "Compendium.essence20.pr_crb.Item.n7kXeiPmmdg55K1X";
-const PENETRATING_STRIKES_ID = "Compendium.essence20.pr_crb.Item.fgufss1xeV96LDcu";
-const ILLUMINATE_ID = "Compendium.essence20.pr_crb.Item.c6Kh8WrtHYfsXZmK";
-const REPAIR_ZORD_ID = "Compendium.essence20.pr_crb.Item.9S0fkRqxjfiOJ8ip";
-const POWER_HEAL_ID = "Compendium.essence20.pr_crb.Item.eiTUR08GXw03M21m";
-const POWER_BLAST_ID = "Compendium.essence20.pr_crb.Item.EeNQjO1VHh1SiNzy";
+// The Powers still dispatched here by compendium id (the rest are their items' own powerUsed rules).
 const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
-const CHRONO_FILE_ACCESS_ID = "Compendium.essence20.jump_through_time.Item.PDOUlIOgO7YoPVvm";
-const BLAZING_STRIKES_ID = "Compendium.essence20.across_the_stars.Item.hr0SY24JAM7I91qA";
-const VOID_WARRIOR_ID = "Compendium.essence20.across_the_stars.Item.gyDCPmqswCQJYN6e";
-const MORPHBLAST_ID = "Compendium.essence20.jump_through_time.Item.jPTF96WV19T37AqG";
-const FUTURE_VISION_ID = "Compendium.essence20.jump_through_time.Item.z9ZMxCd5DZDHlDYL";
-const MOBILE_MODE_ID = "Compendium.essence20.through_the_shattered_grid.Item.TO3TazEeI35FUOOU";
-const METALLIC_ARMOR_ID = "Compendium.essence20.through_the_shattered_grid.Item.LotTM0zOcCBLkki4";
-const PROTECTION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.IF9v9C3tCJSQYRjd";
-const REACTIVE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.toDyl8zb0XVvqPuj";
-const AUGMENTED_COMBAT_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.6Ku40JiKZCMbGMtM";
-// Codename Jolt: Augmented Combat Nanomite Infusion (Operation Snakebit, p.24) - textually the
-// same "↑1 on all attacks" toggle as Augmented Combat above, just Cobra's own nanomite-flavored
-// reprint (1 Power, once/scene per its own compendium fields - not separately enforced, same
-// "repeat click just toggles state" idiom Augmented Combat itself already accepts).
-const CODENAME_JOLT_ID = "Compendium.essence20.operation_snakebit.Item.Q7p4Mn6NN4BL7ARl";
-const SWIFTNESS_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.GBsBp9umblOcz7lu";
-const REPAIR_MACHINE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.HOM0e2W0aBYnZ8Z3";
-const ELECTRIC_DISCHARGE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.KeDQbX62owtITKDo";
-const DISINTEGRATE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.mVwWAgFyNUDfoUJQ";
-const DOMINATE_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.HwREY90wo09Hkdt1";
-const REGENERATION_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.312ubjCA7mCBDoea";
-const BOLSTER_DEFENSE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.HVOFIDBiXNckFaAP";
-const CHRONOMANTIC_PULSE_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.YjPFCWa3KxDIJXGW";
+// (Blazing Strikes is its Power's own powerUsed Trigger, DamageType and sceneStart rules - rules/conv17-split2.test.js.)
 const MONSTER_GROW_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.KR4KuZlalNywMvSb";
-const LUCKY_CHARM_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Rv3Bhyeo4XBxHLpX";

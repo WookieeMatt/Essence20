@@ -6,7 +6,10 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Grow!","when":["self:data:flags.essence20.monsterFormActive","self:data:flags.essence20.monsterGrowSelfActive"]}
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Grow!","when":["self:data:flags.essence20.monsterFormActive","self:data:flags.essence20.monsterGrowSelfActive"]},
+      {"type":"Use","label":"Grow! on or off","when":["check:monsterForm"],"steps":[{"do":"choose","auto":true,"options":[{"label":"Grow to Towering size","when":["not:self:data:flags.essence20.monsterGrowSelfActive"],"steps":[{"do":"keepValue","path":"system.size","at":"flags.essence20.growPreviousSize"},{"do":"updateActor","to":"self","set":{"system.size":"towering","flags.essence20.monsterGrowSelfActive":true}},{"do":"chat","text":"{name} grows to Towering size!"}]},{"label":"Shrink back down","when":["self:data:flags.essence20.monsterGrowSelfActive"],"steps":[{"do":"updateActor","to":"self","set":{"system.size":"large","flags.essence20.monsterGrowSelfActive":false}},{"do":"restoreValue","path":"system.size","from":"flags.essence20.growPreviousSize"},{"do":"updateItem","item":"self","set":{"flags.essence20.growPreviousSize":null}},{"do":"chat","text":"{name} shrinks back down."}]}]}]},
+      {"type":"Defense","label":"Grow! (+2 Toughness)","defense":"toughness","amount":2,"when":["defense:toughness","check:monsterForm","self:data:flags.essence20.monsterGrowSelfActive"]},
+      {"type":"Defense","label":"Grow! (+2 Evasion)","defense":"evasion","amount":2,"when":["defense:evasion","check:monsterForm","self:data:flags.essence20.monsterGrowSelfActive"]}
     ],
     "automation": {
       "status": "full",

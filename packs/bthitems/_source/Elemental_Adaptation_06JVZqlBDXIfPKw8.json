@@ -5,6 +5,9 @@
   "_id": "06JVZqlBDXIfPKw8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Elemental Adaptation (choose an element and who)","steps":[{"do":"pick","key":"element","from":"config","path":"elementDamageTypes"},{"do":"pick","key":"who","from":"team"},{"do":"flagList","flag":"aquaElementalAdaptations","add":"{choice.element}","to":"picked:who"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>When you add it you pick an element and a team member; that character ignores the element's extra damage.</p>"

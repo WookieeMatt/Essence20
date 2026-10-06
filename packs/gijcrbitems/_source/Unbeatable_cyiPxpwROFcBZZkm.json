@@ -5,6 +5,9 @@
   "_id": "cyiPxpwROFcBZZkm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Heal 1 at half Health (Unbeatable)","event":"turnStart","when":["not:self:status:defeated","self:data:system.health.value>0","calc:@actor.system.health.max - 2 * @actor.system.health.value >= 0"],"steps":[{"do":"updateActor","add":{"system.health.value":1},"max":"@recipient.system.health.max"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: at the start of your turn, if you're at half your Health or less (bonus Health included) and not Defeated, you heal 1.</p>"

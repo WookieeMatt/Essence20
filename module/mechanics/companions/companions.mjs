@@ -1,6 +1,7 @@
 import { COMP, companionKindOf, isOnceCompanionUse } from "./companion-uses.mjs";
 import { companionsOf, countSourced, hasSourced, linkCompanion, ownerOf, worldActors } from "./companion-link.mjs";
-import { getSceneEpoch, getUses, markUsed } from "../resources/scene-clock.mjs";
+import { getSceneEpoch } from "../resources/scene-clock.mjs";
+import { rulePetCommandTier, rulePetCommandUpshift } from "../../rules/plugins/picks/pet-command.mjs";
 
 /**
  * Companions: pets (GI JOE CRB p.163-168, MLP CRB p.154-157, WTNV Citizens' Guide p.73-75), drones
@@ -27,12 +28,9 @@ const ITEM = {
   animalWtnv: uuid('wtnv_citizens_guide', 'xNiPMhVMQQUzlRg8'),
   robot: uuid('gi_joe_crb', 'xV4nnjMxlb4dmyxo'),
   acuteSense: uuid('gi_joe_crb', 'WvjGJ5AcC0z07d0J'),
-  acuteSenseTf: uuid('tf_crb', 'rl8hs6ezb6VSDahM'),
   protectedTarget: uuid('gi_joe_crb', 'llnU5dWqYlfgLA5V'),
   bodyShield: uuid('gi_joe_crb', 'CBfLvmIWdbLuucts'),
   defendersOath: uuid('gi_joe_crb', 'LuQoEjHVOM8Yoc0Y'),
-  nightVisionGoggles: uuid('gi_joe_crb', 'XvqqYOHHpjRzb8T4'),
-  laserDesignator: uuid('gi_joe_crb', 'AcNaNxZnyOfXv0f6'),
   canineCannon: uuid('across_the_stars', 'x51EQgTwqoC7f5ua'),
 };
 
@@ -640,49 +638,12 @@ export function commandablePets(actor) {
   return [...own, ...others];
 }
 
-// Favorite Command: "Choose a Skill." Picked with the Perk's Use button (chooseFavoriteSkill) or, for
+// Favorite Command: "Choose a Skill." Picked with the Perk's Use rule (flags.essence20.favoriteSkill) or, for
 // a copy dropped onto the pet's sheet, the Perk's own Skill picker (system.choice).
 function favoriteSkill(pet) {
   const perk = itemsOf(pet).find(item => [COMP.favoriteCommandGij, COMP.favoriteCommandMlp, COMP.favoriteCommandWtnv].includes(sourceOf(item)));
   const choice = perk?.flags?.essence20?.favoriteSkill || perk?.system?.choice;
   return choice && choice != 'none' ? choice : null;
-}
-
-/**
- * Backup Master (GI JOE CRB) / Extra Friend (MLP CRB): "Designate a specific character, such as
- * another PC. That character can issue your animal pet Commands." The Use button stores the pick on
- * the Perk, where canCommand reads it.
- */
-async function designateCommander(pet, item) {
-  const owner = ownerOf(pet);
-  const options = worldActors().filter(a => a.type == 'playerCharacter' && a.uuid != owner?.uuid && a.uuid != pet.uuid)
-    .map(a => [a.uuid, a.name]);
-  if (!options.length) {
-    ui.notifications.warn(T('E20.GrantNothingToPick', { name: item.name }));
-    return null;
-  }
-
-  const answer = await buildForm(item.name, [{ name: 'designee', label: T('E20.GrantPickLabel'), options }]);
-  const picked = answer ? options.find(([uuid]) => uuid == answer.designee) : null;
-  if (!picked) {
-    return null;
-  }
-
-  await item.setFlag('essence20', 'designee', picked[0]);
-  return T('E20.G1ChoiceMade', { name: pet.name, perk: item.name, choice: picked[1] });
-}
-
-/** Favorite Command's "Choose a Skill", from its Use button. */
-async function chooseFavoriteSkill(pet, item) {
-  const options = Object.entries(CONFIG.E20.skills).map(([key, label]) => [key, T(label)]);
-  const answer = await buildForm(item.name, [{ name: 'skill', label: T('E20.PetCommandSkill'), options }]);
-  const picked = answer ? options.find(([key]) => key == answer.skill) : null;
-  if (!picked) {
-    return null;
-  }
-
-  await item.setFlag('essence20', 'favoriteSkill', picked[0]);
-  return T('E20.G1ChoiceMade', { name: pet.name, perk: item.name, choice: picked[1] });
 }
 
 /**
@@ -697,10 +658,8 @@ export function commandDif(pet) {
     return 10;
   }
 
-  let tier = Math.max(0, TIERS.indexOf(pet.system?.availability ?? 'standard'));
-  if (hasSourced(pet, COMP.agreeableGij)) {
-    tier = Math.max(0, tier - 1);
-  }
+  // PetCommand rules on the pet (Agreeable's one step - rules/plugins/picks/pet-command.mjs).
+  const tier = Math.max(0, Math.max(0, TIERS.indexOf(pet.system?.availability ?? 'standard')) + rulePetCommandTier(pet));
 
   return [0, 10, 15][tier];
 }
@@ -733,9 +692,9 @@ export async function commandPet(actor) {
 
   const drone = pet.system?.type == 'drone' && !hasSourced(pet, ITEM.animalGij);
   const { rollTest } = await import("../resources/grants.mjs");
-  // Agreeable (MLP): "Any Animal Handling Skill Test (by anyone) gains ↑1." A roll that targets the pet gets
-  // it from the Perk's own incoming RollModifier; commanding it need not target it, so it is added here.
-  const shiftUp = hasSourced(pet, COMP.agreeableMlp) ? 1 : 0;
+  // PetCommand rules' upshift on the pet (Agreeable, MLP: its incoming RollModifier covers rolls that target the pet;
+  // commanding it need not target it - rules/plugins/picks/pet-command.mjs).
+  const shiftUp = rulePetCommandUpshift(pet);
   const { success } = await rollTest(actor, drone ? 'technology' : 'animalHandling', commandDif(pet), { shiftUp });
   if (!success) {
     return { message: T('E20.PetCommandFailed', { name: actor.name, pet: pet.name }) };
@@ -755,29 +714,12 @@ export function commandIsMove(actor) {
 }
 
 /**
- * Artificial Intelligence (drone upgrade, GI JOE CRB p.169): "Any turn the drone is not issued a
- * Command, it issues itself a Command it has been issued previously as a Free action." Posted at the
- * drone's turn start.
+ * A companion's turn start: the Mini-Con tractor beam. (Artificial Intelligence's "it issues itself a Command" and
+ * Constrictor's squeeze are turnStart Trigger rules on their items.)
  */
-export async function onCompanionTurnStart(actor, combat) {
+export async function onCompanionTurnStart(actor, _combat) {
   if (actor?.type != 'companion') {
     return;
-  }
-
-  const command = actor.flags?.essence20?.[COMMAND_FLAG];
-  if (hasSourced(actor, COMP.artificialIntelligence) && command && command.round != combat?.round) {
-    ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: T('E20.DroneSelfCommand', { name: actor.name, command: command.label }) });
-  }
-
-  // Constrictor: "automatically deals 1 Blunt damage to a target it is grappling at the beginning of
-  // its turn." The grappled target is the one it last commanded or attacked with a grapple.
-  if (hasSourced(actor, COMP.constrictor)) {
-    const grappled = actor.flags?.essence20?.grappling ? await fromUuid(actor.flags.essence20.grappling) : null;
-    if (grappled?.statuses?.has?.('grappled')) {
-      const { applyDamage } = await import("../combat/combat.mjs");
-      await applyDamage(grappled, 1, 'blunt');
-      ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: T('E20.ConstrictorSqueeze', { name: actor.name, target: grappled.name }) });
-    }
   }
 
   // Emergency Deployment and Docking: "when one of your Mini-Cons is Defeated but you're not, a tractor
@@ -844,12 +786,7 @@ export function linkedBonuses(actor) {
   };
 
   if (actor?.type == 'companion') {
-    const owner = ownerOf(actor);
-    // Tough Together (GI JOE CRB, Beastmaster, 10th level): "you and your pet each gain 1 Health."
-    if (owner && hasSourced(owner, COMP.toughTogether)) {
-      out.health += 1;
-    }
-
+    // (Tough Together's pet Health is a DerivedStat rule with scope companion on the owner's Perk.)
     // Reinforced Bond: the Defense bonus the owner handed over on deploy.
     const shift = Number(actor.flags?.essence20?.miniCon?.defenseShift) || 0;
     for (const defense of shift ? ['toughness', 'evasion', 'willpower', 'cleverness'] : []) {
@@ -888,45 +825,17 @@ export function linkedBonuses(actor) {
 }
 
 /**
- * Roll sources from companions and owners - Pack Attack, Automatic Harmonics, Ambush Deployment,
- * a docked Mini-Con's Helper - for mechanics/combat/target-riders.mjs#rollRiderSources.
+ * Roll sources from companions and owners - a docked Mini-Con's Helper - for mechanics/combat/target-riders.mjs#rollRiderSources.
  * @param {Actor} actor   The roller.
  * @param {Actor|null} target
  * @param {Object} ctx   {rolledSkill, isAttack}
  * @returns {Array<Object>}   Sources {id, label, shiftUp, edge}.
  */
-export function companionRollSources(actor, target, { rolledSkill, isAttack } = {}) {
+export function companionRollSources(actor, target, { rolledSkill } = {}) {
   const sources = [];
   const add = (id, label, mods) => sources.push({ id, label, shiftUp: mods.shiftUp ?? 0, shiftDown: 0, edge: !!mods.edge, snag: false });
-  const owner = actor?.type == 'companion' ? ownerOf(actor) : actor;
-  const partners = actor?.type == 'companion' ? [owner, ...companionsOf(owner)].filter(a => a && a.uuid != actor.uuid) : companionsOf(actor);
-
-  // Pack Attack (GI JOE CRB, Beastmaster, 20th level): "when you and your pet attack the same target,
-  // you both gain an Edge on the attack Skill Test." The one attacking second sees the first's attack.
-  if (isAttack && target && owner && hasSourced(owner, COMP.packAttack) && partners.some(p => rolledAgainst(p, target, { attack: true }))) {
-    add('packAttack', T('E20.PackAttack'), { edge: true });
-  }
-
-  // Automatic Harmonics (Quartermaster's Guide p.21): "Once per combat ... when your drone uses a Skill
-  // Test against a target that you also rolled a Skill Test against during this round, the drone gains
-  // Edge."
-  if (actor?.type == 'companion' && actor.system?.type == 'drone' && target && owner && hasSourced(owner, COMP.automaticHarmonics)
-    && rolledAgainst(owner, target) && getUses(actor, 'automaticHarmonics', 'encounter') < 1) {
-    add('automaticHarmonics', T('E20.AutomaticHarmonics'), { edge: true, consume: 'automaticHarmonics' });
-    sources.at(-1).consume = 'automaticHarmonics';
-  }
-
-  // Ambush Deployment (TF CRB p.74): "if you deploy a Mini-Con in Combat, you and your Mini-Con ... gain
-  // an Edge on attacks targeting enemies adjacent to you." For the round it was deployed.
-  if (isAttack && target && owner && hasSourced(owner, COMP.ambushDeployment) && isAdjacent(owner, target)) {
-    const deployed = companionsOf(owner, { type: 'miniCon' }).some(m => {
-      const at = m.flags?.essence20?.miniCon?.deployedRound;
-      return !isDocked(m) && at && at.combatId == game.combat?.id && at.round == game.combat?.round;
-    });
-    if (deployed && (actor.uuid == owner.uuid || actor.system?.type == 'miniCon')) {
-      add('ambushDeployment', T('E20.AmbushDeployment'), { edge: true });
-    }
-  }
+  // (Pack Attack, Automatic Harmonics and Ambush Deployment are RollModifier rules on their Perks, scopes self and
+  // companion - the link: tags of rules/plugins/picks/companions.mjs.)
 
   // Helper (TF CRB p.75): "When docked with your Mini-Con, you get ↑1 on Skill Tests related to their
   // purpose."
@@ -934,36 +843,10 @@ export function companionRollSources(actor, target, { rolledSkill, isAttack } = 
     add('miniConHelper', T('E20.MiniConHelper'), { shiftUp: 1 });
   }
 
-  // Loyal Minions: the order just given.
-  if (actor?.type == 'companion' && actor.system?.type == 'miniCon') {
-    const order = owner?.flags?.essence20?.loyalMinions;
-    if (order && order.combatId == game.combat?.id && order.round == game.combat?.round) {
-      add('loyalMinions', T('E20.LoyalMinions'), { shiftUp: 1 });
-    }
-  }
-
   return sources;
 }
 
-/**
- * Defense bonuses that depend on where companions stand - Shield Companion - for
- * mechanics/combat/target-riders.mjs#riderDefenseAdjust.
- * @param {Actor} defender
- * @param {String} defense
- * @returns {Number}
- */
-export function companionDefenseBonus(defender, defense) {
-  if (!['toughness', 'evasion'].includes(defense) || defender?.type == 'companion') {
-    return 0;
-  }
-
-  // Shield Companion (Mini-Con Perk, TF CRB p.112): "This Mini-Con provides you with a +1 bonus to both
-  // Toughness and Evasion when you are adjacent to one another."
-  const shield = companionsOf(defender, { type: 'miniCon' }).some(m => !isDocked(m) && hasSourced(m, COMP.shieldCompanion) && isAdjacent(defender, m));
-  return shield ? 1 : 0;
-}
-
-function isAdjacent(a, b) {
+export function isAdjacent(a, b) {
   const ta = a?.getActiveTokens?.()?.[0];
   const tb = b?.getActiveTokens?.()?.[0];
   if (!ta || !tb || !canvas?.grid) {
@@ -1006,20 +889,13 @@ export async function noteRolledAgainst(actor, targets, isAttack) {
   await actor.setFlag('essence20', ROLLED_FLAG, { key, list: next });
 }
 
-function rolledAgainst(actor, target, { attack = false } = {}) {
+export function rolledAgainst(actor, target, { attack = false } = {}) {
   const record = actor?.flags?.essence20?.[ROLLED_FLAG];
   if (!record || record.key != roundKey()) {
     return false;
   }
 
   return record.list.some(entry => entry.uuid == target?.uuid && (!attack || entry.attack));
-}
-
-/** Mark a once-per-combat source used, when the roll it fed goes ahead. */
-export async function consumeCompanionSource(actor, key) {
-  if (key == 'automaticHarmonics') {
-    await markUsed(actor, 'automaticHarmonics', { window: 'encounter' });
-  }
 }
 
 /* -------------------------------------------- */
@@ -1050,96 +926,15 @@ const HANDLERS = {
   morphinPet: (owner, item) => grantPet(owner, item, { kind: 'animal', line: 'gij' }),
   roboticAnimalPet: (owner, item) => grantPet(owner, item, { kind: 'robotAnimal', line: 'gij' }),
 
-  // Assistant (Animal Perk): "As a Free action, you can Command your animal pet to use their Favorite
-  // Command to Lend Assistance." The pet lends it.
-  assistantGij: (pet, item, pay) => petAssist(pet, pay),
-  assistantMlp: (pet, item, pay) => petAssist(pet, pay),
-  backupMaster: (pet, item) => designateCommander(pet, item),
-  extraFriend: (pet, item) => designateCommander(pet, item),
-  favoriteCommandGij: (pet, item) => chooseFavoriteSkill(pet, item),
-  favoriteCommandMlp: (pet, item) => chooseFavoriteSkill(pet, item),
-  favoriteCommandWtnv: (pet, item) => chooseFavoriteSkill(pet, item),
+  // (Assistant is a Use rule on the Animal Perk: the lendAssist step. Night Vale's Favorite Command picks its Skill with a
+  // Use rule.)
 
   // Direct Control (Quartermaster's Guide p.21): "replace your Standard drone with a Limited drone. You
   // may choose one Standard upgrade as a free upgrade". Master Control Program: "a Restricted drone ...
   // up to two Standard or Limited upgrades".
   directControl: (owner, item) => raiseDrone(owner, item, 'limited', [['standard']]),
   masterControlProgram: (owner, item) => raiseDrone(owner, item, 'restricted', [['standard', 'limited'], ['standard', 'limited']]),
-  // Telemetry Data: "At 3rd level, your drone comes equipped with Night Vision Goggles ... At 15th
-  // level, it also comes equipped with a Laser Designator."
-  async telemetryData(owner, item) {
-    const drone = companionsOf(owner, { type: 'drone' })[0];
-    if (!drone) {
-      ui.notifications.warn(T('E20.DroneNone', { name: owner.name }));
-      return null;
-    }
-
-    const { grantCopy } = await import("../resources/grants.mjs");
-    const got = [await grantCopy(drone, ITEM.nightVisionGoggles, { grantedBy: item, integrated: true })];
-    if (level(owner) >= 15) {
-      got.push(await grantCopy(drone, ITEM.laserDesignator, { grantedBy: item, integrated: true }));
-    }
-
-    return T('E20.GrantGained', { name: drone.name, item: item.name, what: got.filter(Boolean).map(g => g.name).join(', ') });
-  },
-  // Terminal Guidance: "command your drone to charge into an enemy target and self-destruct. This
-  // destroys the drone and deals half of its current Health (round up) in damage".
-  async terminalGuidance(owner, item, pay) {
-    const drone = companionsOf(owner, { type: 'drone' })[0];
-    const target = game.user?.targets?.first?.()?.actor;
-    if (!drone || !target) {
-      ui.notifications.warn(T(drone ? 'E20.PickTarget' : 'E20.DroneNone', { name: owner.name }));
-      return null;
-    }
-
-    if (!(await pay('standard'))) {
-      return null;
-    }
-
-    const damage = Math.ceil((Number(drone.system?.health?.value) || 0) / 2);
-    const { applyDamage } = await import("../combat/combat.mjs");
-    await applyDamage(target, damage, 'blunt');
-    await drone.update({ 'system.health.value': 0 });
-    await drone.toggleStatusEffect?.('defeated', { active: true });
-    return T('E20.TerminalGuidance', { name: drone.name, target: target.name, damage });
-  },
-  // Buzz The Tower: "once per scene, when your drone moves past a space adjacent to an enemy ... it can
-  // make an Acrobatics, Deception, or Driving Skill Test against the target's Willpower or Cleverness.
-  // On a success, the target is flustered and suffers Snag on Skill Tests until the end of their next
-  // turn."
-  async buzzTheTower(owner, item) {
-    const drone = companionsOf(owner, { type: 'drone' })[0];
-    const target = game.user?.targets?.first?.()?.actor;
-    if (!drone || !target) {
-      ui.notifications.warn(T(drone ? 'E20.PickTarget' : 'E20.DroneNone', { name: owner.name }));
-      return null;
-    }
-
-    if (getUses(drone, 'buzzTheTower', 'scene') >= 1) {
-      ui.notifications.warn(T('E20.OncePerScene'));
-      return null;
-    }
-
-    const answer = await buildForm(item.name, [
-      { name: 'skill', label: T('E20.PetCommandSkill'), options: ['acrobatics', 'deception', 'driving'].map(s => [s, T(CONFIG.E20.skills[s])]) },
-      { name: 'defense', label: T('E20.Defense'), options: ['willpower', 'cleverness'].map(d => [d, T(CONFIG.E20.defenses[d])]) },
-    ]);
-    if (!answer) {
-      return null;
-    }
-
-    await markUsed(drone, 'buzzTheTower', { window: 'scene' });
-    const { rollTest } = await import("../resources/grants.mjs");
-    const dif = Number(target.system?.defenses?.[answer.defense]?.total) || 10;
-    const { success } = await rollTest(drone, answer.skill, dif);
-    if (!success) {
-      return T('E20.BuzzFailed', { name: drone.name, target: target.name });
-    }
-
-    const { addMark, untilEndOfNextTurn } = await import("../combat/target-riders.mjs");
-    await addMark(target, { kind: 'flustered', by: drone.uuid, label: item.name, ...untilEndOfNextTurn(target) });
-    return T('E20.BuzzHit', { name: drone.name, target: target.name });
-  },
+  // (Telemetry Data, Terminal Guidance and Buzz The Tower are Use rules on their Perks.)
 
   // R.I.C. (Across the Stars p.85): "a robotic S.P.D. companion ... up to 2 kits integrated in its
   // chassis ... the ability to transform into canine cannon mode". A Limited drone with the Canine
@@ -1202,17 +997,7 @@ const HANDLERS = {
 
     return result;
   },
-  // Enhanced Sensors (Mini-Con Perk): "This Mini-Con gains the Acute Senses General Perk."
-  async enhancedSensors(holder, item) {
-    const miniCon = holder.type == 'companion' ? holder : companionsOf(holder, { type: 'miniCon' })[0];
-    if (!miniCon) {
-      return null;
-    }
-
-    const { grantCopy } = await import("../resources/grants.mjs");
-    const got = await grantCopy(miniCon, ITEM.acuteSenseTf, { grantedBy: item });
-    return got ? T('E20.GrantGained', { name: miniCon.name, item: item.name, what: got.name }) : null;
-  },
+  // (Enhanced Sensors is a Use rule on the Mini-Con Perk.)
   // Additional Mini-Con (Decepticon Directive p.64): "another basic Mini-Con". Mini-Con Hub: "whenever
   // you choose the Additional Mini-Con General Perk, you gain two Mini-Cons instead of one."
   additionalMiniCon: (owner, item) => grantOnce(owner, item, () => grantMiniCon(owner, item, { count: hasSourced(owner, COMP.miniConHub) ? 2 : 1 })),
@@ -1221,24 +1006,6 @@ const HANDLERS = {
   miniConAffinity: (owner, item) => grantOnce(owner, item, () => grantMiniCon(owner, item, { count: 2 })),
   miniConHub: (owner, item, pay) => grantOnce(owner, item, () => grantMiniCon(owner, item), () => dockOrDeployTwo(owner, item, pay)),
   miniConMaster: (owner, item) => grantOnce(owner, item, () => grantMiniCon(owner, item)),
-  // Loyal Minions (20th): "spend a Free action to attempt a DIF 10 Intimidation (Command) or Persuasion
-  // (Leadership) Skill Test to tell your currently deployed Mini-Cons what to do. On a success, they
-  // gain ↑1 to all Skill Tests related to following those orders until the beginning of your next turn."
-  async loyalMinions(owner, item, pay) {
-    const { chooseButtons, rollTest } = await import("../resources/grants.mjs");
-    const skill = await chooseButtons(item.name, T('E20.LoyalMinionsPrompt'), [['intimidation', T('E20.SkillIntimidation')], ['persuasion', T('E20.SkillPersuasion')]]);
-    if (!skill || !(await pay('free'))) {
-      return null;
-    }
-
-    const { success } = await rollTest(owner, skill, 10);
-    if (!success) {
-      return T('E20.GrantFailed', { name: owner.name, item: item.name });
-    }
-
-    await owner.setFlag('essence20', 'loyalMinions', { combatId: game.combat?.id ?? null, round: game.combat?.round ?? null });
-    return T('E20.LoyalMinionsGiven', { name: owner.name });
-  },
   humanCompanion: (owner, item) => grantPerson(owner, item, 2, 'human'),
   alienCompanion: (owner, item) => grantPerson(owner, item, 1, 'human'),
 };
@@ -1291,22 +1058,6 @@ async function raiseDrone(owner, item, availability, upgrades) {
   }
 
   return T('E20.PetImproved', { name: owner.name, pet: drone.name, availability: T(`E20.Availability${availability.capitalize()}`) });
-}
-
-async function petAssist(pet, pay) {
-  const owner = ownerOf(pet) ?? pet;
-  if (!favoriteSkill(pet) && !hasSourced(pet, COMP.favoriteCommandGij) && !hasSourced(pet, COMP.favoriteCommandMlp) && !hasSourced(pet, COMP.favoriteCommandWtnv)) {
-    ui.notifications.warn(T('E20.PetNeedsFavorite', { name: pet.name }));
-    return null;
-  }
-
-  if (!(await pay('free'))) {
-    return null;
-  }
-
-  const { lendAssistanceSkill } = await import("../actions/lend-assistance.mjs");
-  const done = await lendAssistanceSkill(pet);
-  return done ? T('E20.PetAssisted', { name: owner.name, pet: pet.name }) : null;
 }
 
 /**

@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Take the Wheel (no untrained Snag, land)","when":["skill:driving","vehicle:driving","vehicle:moves:ground"],"immune":["untrainedSnag"]}
+      {"type":"RollModifier","label":"Take the Wheel (no untrained Snag, land)","when":["skill:driving","vehicle:driving","vehicle:moves:ground"],"immune":["untrainedSnag"]},
+      {"type":"Use","label":"This mission's free Limited Driving (Land) Kit","steps":[{"do":"deleteItem","item":"granted","all":true},{"do":"createItem","data":{"name":"Limited Driving (Land) Kit","type":"gear","system":{"gearType":"kits","quantity":1},"flags":{"essence20":{"kit":{"tier":"limited","skill":"driving","spec":"Land","essence":null},"ignorePrerequisite":true}}}}]}
     ],
     "automation": {
       "status": "full",

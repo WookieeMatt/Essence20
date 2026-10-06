@@ -5,6 +5,9 @@
   "_id": "ENRpxMCws91Ny19y",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Genius (Role Skills are Specialized)","specialize":true,"when":["skill:roleSkill"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you roll one of your Role's skills, the Roll Options Dialog opens with Specialized already ticked.</p>"

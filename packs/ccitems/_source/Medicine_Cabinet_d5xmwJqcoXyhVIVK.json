@@ -5,6 +5,9 @@
   "_id": "d5xmwJqcoXyhVIVK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CarryExemption","label":"Medicine Cabinet","items":["item:data:system.isPoison"],"max":6}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: up to six poison doses are carried without taking up your hands.</p>"

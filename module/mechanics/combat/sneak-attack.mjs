@@ -1,11 +1,13 @@
 import { isPerfectDisguiseActive } from "../../items/social/perfect-disguise.mjs";
 const PERFECT_DISGUISE_ID = "Compendium.essence20.gi_joe_crb.Item.ELktMVNYsiBPTX2c";
-import { actorHasPerk, findPerk, hasUsedThisEncounter, hasUsedThisRound, markUsedThisRound } from "../characters/perks.mjs";
+import { actorHasPerk, findPerk, hasUsedThisRound, markUsedThisRound } from "../characters/perks.mjs";
 import { roleValueChange } from "../../sheet-handlers/role-handler.mjs";
-import { canWriteStoryPoints, hasStoryPointsAvailable } from "../resources/story-points.mjs";
+import { canWriteStoryPoints, hasStoryPointsAvailable, requestStoryPointSpend } from "../resources/story-points.mjs";
 import { isKnownOutsideEnvironmentOfExpertise, meetsEnvironmentOfExpertise } from "../world/environmental-expertise.mjs";
 // Every Trick in the Book's "no sneak attack damage" is a SneakAttackImmunity rule on its pack item.
 import { ruleSneakAttackImmune } from "../../rules/plugins/combat/immunity-readers.mjs";
+// Everything's a Weapon, Never Heard It Coming, Focused Charge and Sudden Strike are SneakAttackGrant rules on their pack items.
+import { anyCircumstanceGrant, grantStoryPointCost, recordGrantUse, sneakAttackWeaponGrants } from "../../rules/plugins/combat/sneak-attack-grant.mjs";
 
 /**
  * GI Joe CRB p.72 - the Commando Role's Sneak Attack Perk:
@@ -33,26 +35,7 @@ import { ruleSneakAttackImmune } from "../../rules/plugins/combat/immunity-reade
 
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 const SNEAK_ATTACK_DAMAGE_ID = `${GI_JOE_CRB}Mrmbqza0XxVpKj6U`;
-const EVERYTHING_A_WEAPON_ID = `${GI_JOE_CRB}hx4KzTl8iQ8Z22eq`;
-const NEVER_HEARD_IT_COMING_ID = `${GI_JOE_CRB}jIUKR6chHdKQO2vr`;
-export const IN_MY_SIGHTS_ID = `${GI_JOE_CRB}MD54SjlTYiCTvmBB`;
-const BALLISTIC_ADVANTAGE_ID = `${GI_JOE_CRB}civSjmz83aDYPwvo`;
 
-const COBRA_CODEX = "Compendium.essence20.cobra_codex.Item.";
-
-// Focused Charge (Cobra Codex, Saboteur Focus, 3rd level, p.52): "You can sneak attack using
-// explosives and electromagnetic weapons, even if they aren't silent, as long as you meet all
-// other prerequisites of Sneak Attack." A third weapon-qualifier grant, same shape as Everything's
-// a Weapon/In My Sights/Ballistic Advantage above, just scoped to explosive-classification
-// weaponEffects or weapons carrying the 'electromagnetic' trait rather than any/sniper.
-const FOCUSED_CHARGE_ID = `${COBRA_CODEX}mQ0s9B2it1mqho3H`;
-
-// Sudden Strike (Cobra Codex, Commando Be Ruthless replacement Perk, p.50): "Once per combat, you
-// can spend a Story Point to gain the benefits of Sneak Attack regardless of the circumstances of
-// your attack." Bypasses every other eligibility check in checkSneakAttackEligibility() below,
-// once per combat - see its own use there.
-export const SUDDEN_STRIKE_ID = `${COBRA_CODEX}G3cypoJyLtlLogzO`;
-export const SUDDEN_STRIKE_ENCOUNTER_FLAG = 'suddenStrikeUsedThisEncounter';
 // The "Sneak Attack" Perk itself (as opposed to Sneak Attack Damage above) is flavor text with no
 // mechanical effect of its own - EXCEPT that this exact compendium Item is shared verbatim by both
 // Commando's own base grant and Ranger/Predator's Focus grant (p.93: "you deal additional damage
@@ -151,40 +134,10 @@ export async function markSneakAttackUsed(actor) {
 }
 
 /**
- * Debilitating Strike (16th level): "after hitting a target with your sneak attack, they suffer a
- * Snag on their first Skill Test or attack on their next turn." Called from
- * dice.mjs#_rollSkillHelper once a Sneak-Attack-boosted hit actually lands; consumed (checked and
- * cleared) from dice.mjs#_getAutomaticCombatModifiers the next time that target rolls anything.
- * Other Perks that give the same next-roll Snag (Shock and Awe, Watchful Eyes) pass their own name
- * as `label`, which is stored as the flag's value so the target's Roll Options Dialog can name the
- * right source (see debilitatedLabel below); with no label the flag stays a bare `true`.
- * @param {Actor} target
- * @param {String} [label]
- */
-export async function markDebilitated(target, label = null) {
-  await target.setFlag('essence20', 'debilitated', label || true);
-}
-
-/**
- * The label a 'debilitated' flag asks for, or the given fallback when it's a bare `true`.
- * @param {*} flag       The flag's value.
- * @param {String} fallback
- * @returns {String}
- */
-export function debilitatedLabel(flag, fallback) {
-  return typeof flag == 'string' && flag ? flag : fallback;
-}
-
-/**
  * Computes the effective weapon-qualifier and range cap for a Sneak Attack, folding in every
- * Focus Perk that extends those two things:
- * - Everything's a Weapon (12th level): any weapon qualifies, not just silent ones.
- * - In My Sights (Sniper Focus, 3rd level): a sniper-quality weapon also qualifies, and the range
- *   cap becomes that weapon's own effective range instead of the flat 20/60ft.
- * - Ballistic Advantage (Sniper Focus, 17th level): with a sniper-quality weapon, no range cap at
- *   all.
- * - Never Heard It Coming (Infiltrator Focus, 10th level): flat range cap 20ft -> 60ft (any
- *   qualifying weapon, not sniper-specific).
+ * Focus Perk that extends those two things (SneakAttackGrant rules - Everything's a Weapon: any
+ * weapon; Focused Charge: explosives / electromagnetic weapons; Never Heard It Coming: 60 ft; In My
+ * Sights: a sniper weapon, its own range; Ballistic Advantage: a sniper weapon, any range).
  * @param {Actor} actor
  * @param {Item|null} weapon   The weaponEffect's parent weapon, if any.
  * @param {Item} weaponEffect   The weaponEffect itself - system.range lives here, NOT on the
@@ -194,32 +147,14 @@ export function debilitatedLabel(flag, fallback) {
  */
 function _getWeaponQualifierAndRange(actor, weapon, weaponEffect) {
   const isSilentWeapon = !!weapon?.system.traits.includes('silent');
-  const isSniperWeapon = !!weapon?.system.traits.includes('sniper');
+  const grants = sneakAttackWeaponGrants(actor, weaponEffect);
+  const qualifies = isSilentWeapon || grants.qualifies;
 
-  const hasInMySights = isSniperWeapon && actorHasPerk(actor, IN_MY_SIGHTS_ID);
-  // Ballistic Advantage's own text ("you apply sneak attack at any range when attacking with a
-  // sniper weapon") grants the weapon-qualifier itself, not just the range cap - in practice a
-  // Sniper Focus character will already have In My Sights (3rd level) by the time they reach
-  // Ballistic Advantage (17th level), but this doesn't assume that prerequisite is present.
-  const hasBallisticAdvantage = isSniperWeapon && actorHasPerk(actor, BALLISTIC_ADVANTAGE_ID);
-  // Focused Charge - see FOCUSED_CHARGE_ID's own comment above. "Explosives" reads as the
-  // weaponEffect's own 'explosive' classification.style (the same field Trajectory's own
-  // explosive-weapon check already reads); "electromagnetic weapons" reads as the weapon's own
-  // 'electromagnetic' trait, the same trait-array shape 'silent'/'sniper' already use above.
-  const isExplosiveOrEmWeapon = weaponEffect?.system?.classification?.style == 'explosive'
-    || !!weapon?.system.traits.includes('electromagnetic');
-  const hasFocusedCharge = isExplosiveOrEmWeapon && actorHasPerk(actor, FOCUSED_CHARGE_ID);
-  const qualifies = isSilentWeapon
-    || hasInMySights
-    || hasBallisticAdvantage
-    || hasFocusedCharge
-    || actorHasPerk(actor, EVERYTHING_A_WEAPON_ID);
-
-  if (hasBallisticAdvantage) {
+  if (grants.range == 'unlimited') {
     return { qualifies, rangeCap: null };
   }
 
-  if (hasInMySights) {
+  if (grants.range == 'weapon') {
     // Correction: this used to read weapon.system.range (the parent weapon), which has no range
     // field at all and so always silently fell through to the flat 20ft fallback below - found
     // while implementing the general Range for Ranged Attacks rule (dice.mjs), which needed the
@@ -228,8 +163,42 @@ function _getWeaponQualifierAndRange(actor, weapon, weaponEffect) {
     return { qualifies, rangeCap: weaponRange };
   }
 
-  const rangeCap = actorHasPerk(actor, NEVER_HEARD_IT_COMING_ID) ? 60 : 20;
-  return { qualifies, rangeCap };
+  return { qualifies, rangeCap: typeof grants.range == 'number' ? grants.range : 20 };
+}
+
+/**
+ * The actor's "any circumstance" SneakAttackGrant (Sudden Strike) when it has a use left and its Story Point cost can
+ * be paid now, else null.
+ * @param {Actor} actor
+ * @returns {?Object}
+ */
+export function affordableSneakAttackGrant(actor) {
+  const grant = anyCircumstanceGrant(actor);
+  if (!grant) {
+    return null;
+  }
+
+  const cost = grantStoryPointCost(grant);
+  return !cost || (canWriteStoryPoints() && hasStoryPointsAvailable(cost)) ? grant : null;
+}
+
+/**
+ * Pay for the "any circumstance" grant an attack needed (dice.mjs, as its Sneak Attack Damage is applied): its Story
+ * Points, and one use of its limit. Nothing when none is affordable any more.
+ * @param {Actor} actor
+ */
+export async function paySneakAttackGrant(actor) {
+  const grant = affordableSneakAttackGrant(actor);
+  if (!grant) {
+    return;
+  }
+
+  const cost = grantStoryPointCost(grant);
+  if (cost) {
+    requestStoryPointSpend(actor, cost);
+  }
+
+  await recordGrantUse(actor, grant);
 }
 
 /**
@@ -245,16 +214,13 @@ function _getWeaponQualifierAndRange(actor, weapon, weaponEffect) {
  * @returns {{eligible: Boolean, reason: String}}
  */
 export function checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack, { ignoreSuddenStrike = false } = {}) {
-  // Sudden Strike - see SUDDEN_STRIKE_ID's own comment above. Bypasses every other check below
-  // ("regardless of the circumstances of your attack"), once per combat, while a Story Point is
-  // actually available to spend - the resource itself is the throttle, same as every other
-  // Story-Point-gated ability in this project. The actual spend + once-per-combat mark happens
-  // where Sneak Attack Damage is actually applied (dice.mjs, alongside markSneakAttackUsed), not
-  // here - this function only decides whether the Roll Options Dialog checkbox can be offered.
-  // viaSuddenStrike is set only when the ordinary checks would have failed, so dice.mjs spends the
-  // Story Point only when Sudden Strike was actually needed.
-  if (!ignoreSuddenStrike && actorHasPerk(actor, SUDDEN_STRIKE_ID) && !hasUsedThisEncounter(actor, SUDDEN_STRIKE_ENCOUNTER_FLAG)
-    && canWriteStoryPoints() && hasStoryPointsAvailable(1)) {
+  // Sudden Strike - a SneakAttackGrant {anyCircumstance, cost: {storyPoints}, limit} rule. Bypasses every other check
+  // below ("regardless of the circumstances of your attack") while its limit lasts and its Story Point is actually
+  // available to spend. The actual spend + limit happen where Sneak Attack Damage is actually applied (dice.mjs, through
+  // affordableSneakAttackGrant / paySneakAttackGrant below), not here - this function only decides whether the Roll
+  // Options Dialog checkbox can be offered. viaSuddenStrike is set only when the ordinary checks would have failed, so
+  // dice.mjs spends the Story Point only when Sudden Strike was actually needed.
+  if (!ignoreSuddenStrike && affordableSneakAttackGrant(actor)) {
     const ordinary = checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack, { ignoreSuddenStrike: true });
     if (ordinary.eligible) {
       return ordinary;

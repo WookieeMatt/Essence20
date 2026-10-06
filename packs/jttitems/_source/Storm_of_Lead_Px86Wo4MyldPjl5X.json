@@ -5,6 +5,9 @@
   "_id": "Px86Wo4MyldPjl5X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"FanningShots","label":"Storm of Lead (Fanning +1, first shot ↑1)","extraShots":1,"firstShotUpshift":1}
+    ],
     "prerequisites": {"when":["self:skill:targeting>=d4"]},
     "automation": {
       "status": "full",

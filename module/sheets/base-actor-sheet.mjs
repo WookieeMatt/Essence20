@@ -25,11 +25,7 @@ import {
 } from "../mechanics/characters/active-effect-controls.mjs";
 import { applySystemActorsColorCssVariables, applySystemColorCssVariables } from "../util/system-color.mjs";
 import { getNumActions } from "../mechanics/actions/action-counts.mjs";
-import {
-  needsShieldModulationChoice, pickShieldModulationDamageType, setShieldModulationDamageType,
-} from "../items/defenses/shield-modulation.mjs";
 import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../items/defenses/personal-shield.mjs";
-import { applyAegisDefeatCheck, isRecklessAbandonItem } from "../items/rolls/reckless-abandon.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { announceLevelChange, levelSnapshot } from "../mechanics/characters/level-announce.mjs";
 import { prepareSystemActors,
@@ -40,13 +36,10 @@ import { prepareSystemActors,
   onSystemActorsDelete,
   onVehicleRoleUpdate,
 } from "../sheet-handlers/vehicle-handler.mjs";
-import { onActivatePowerInfusion, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { actorHasZordFeature } from "../mechanics/vehicles/zord-features.mjs";
 import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../items/zords/warrior-mode.mjs";
-import { HIGH_GEAR_ID, isHighGearActive, toggleHighGear } from "../items/zords/high-gear.mjs";
-import { getMegaWeaponAttacksRemaining, MEGA_WEAPON_ID, summonMegaWeapon } from "../items/zords/zord-mega-weapon.mjs";
 import { onSummonZord } from "../mechanics/vehicles/zord-summon.mjs";
-import { onActivateSnortleAtTheSpooky } from "../items/healing/snortle-at-the-spooky.mjs";
 import { onActivateConsummatePerformer } from "../items/resources/consummate-performer.mjs";
 import {
   adjust, getNamedActionType, getSheetContext, isAiming, refund, spend, tradeStandardForFree,
@@ -83,8 +76,6 @@ import { treatOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
     actions: {
-      activatePowerInfusion: this.#onActivatePowerInfusion,
-      activateSnortleAtTheSpooky: this.#onActivateSnortleAtTheSpooky,
       activateConsummatePerformer: this.#onActivateConsummatePerformer,
       actionRestore: this.#onActionRestore,
       actionTradeForFree: this.#onActionTradeForFree,
@@ -124,7 +115,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       specializationDelete: this.#onSpecializationDelete,
       startSheetTour: this.#onStartSheetTour,
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
-      summonMegaWeapon: this.#onSummonMegaWeapon,
       summonZord: this.#onSummonZord,
       summonContact: this.#onSummonContact,
       systemActorOpen: this.#onSystemActorOpen,
@@ -136,7 +126,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       traitSelector: this.#onManageSelectTrait,
       transform: this.#onTransform,
       warriorMode: this.#onWarriorMode,
-      highGear: this.#onHighGear,
     },
     classes: ["essence20", "sheet", "actor", "theme-wrapper", "e20-window"],
     tag: 'form',
@@ -445,16 +434,13 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
           }
         }
 
-        // Shield Modulation (Vanguard base, 13th level) - "when you activate your shield, choose
-        // one damage type." See items/defenses/shield-modulation.mjs's own doc comment for why this has
-        // to intercept the plain Activate toggle instead of getting its own control.
-        if (activating && needsShieldModulationChoice(this.actor, item)) {
-          const damageType = await pickShieldModulationDamageType();
-          if (!damageType) {
+        // Item rules' rolePointsActivating Triggers (Shield Modulation's "when you activate your shield, choose one
+        // damage type" - rules/plugins/effects/state-changes.mjs): a stopped one (a cancelled pick) cancels the activation.
+        if (activating) {
+          const { rolePointsActivating } = await import("../rules/plugins/effects/state-changes.mjs");
+          if (!(await rolePointsActivating(this.actor, item))) {
             return;
           }
-
-          await setShieldModulationDamageType(this.actor, damageType);
         }
 
         // Protector's Shield (Bodyguard Focus, 10th level, p.110) - "While your shield is up, you
@@ -475,11 +461,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
           await applyProtectorsShieldHealthBonus(this.actor, activating);
         }
 
-        // Aegis (Tank Focus, 20th level, p.99) - see applyAegisDefeatCheck's own doc comment in
-        // reckless-abandon.mjs. Only meaningful when Reckless Abandon is being switched OFF.
-        if (isRecklessAbandonItem(item) && !activating) {
-          await applyAegisDefeatCheck(this.actor);
-        }
+        // (Aegis's deferred Defeat as Reckless Abandon switches off is a rolePointsDeactivated Trigger on the Perk.)
 
         await item.update({ 'system.isActive': activating });
       });
@@ -616,17 +598,9 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     context.hasWarriorMode = this.document.type == 'zord' && actorHasZordFeature(this.document, WARRIOR_MODE_ID);
     context.isWarriorModeActive = isWarriorModeActive(this.document);
 
-    // High Gear (A Jump Through Time, Zord Feature, p.83) - see items/zords/high-gear.mjs's own doc
-    // comment. Same "only show the toggle on a Zord that actually holds the Feature" shape as
-    // Warrior Mode above.
-    context.hasHighGear = this.document.type == 'zord' && actorHasZordFeature(this.document, HIGH_GEAR_ID);
-    context.isHighGearActive = isHighGearActive(this.document);
+    // (High Gear is a Use button on the Feature itself now.)
 
-    // Zord Mega-Weapon System - see items/zords/zord-mega-weapon.mjs. Same "only show the control on a
-    // Zord that actually holds the Feature" shape as Warrior Mode above; the remaining-attacks
-    // count doubles as the button's own summoned/not-summoned state.
-    context.hasMegaWeapon = this.document.type == 'zord' && actorHasZordFeature(this.document, MEGA_WEAPON_ID);
-    context.megaWeaponAttacksRemaining = getMegaWeaponAttacksRemaining(this.document);
+    // (Zord Mega-Weapon System's summon is a Use button on the Feature itself now.)
 
     return context;
   }
@@ -1076,10 +1050,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onSystemActorsDelete(event, this);
   }
 
-  static #onSummonMegaWeapon() {
-    summonMegaWeapon(this.document);
-  }
-
   static #onSummonZord(event, target) {
     onSummonZord(target, this.document);
   }
@@ -1098,14 +1068,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onMorph(this.document);
   }
 
-  static #onActivatePowerInfusion(event) {
-    onActivatePowerInfusion(event);
-  }
-
-  static #onActivateSnortleAtTheSpooky(event) {
-    onActivateSnortleAtTheSpooky(event);
-  }
-
   static #onActivateConsummatePerformer(event) {
     onActivateConsummatePerformer(event);
   }
@@ -1116,10 +1078,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onWarriorMode() {
     toggleWarriorMode(this.document);
-  }
-
-  static #onHighGear() {
-    toggleHighGear(this.document);
   }
 
   static #onInlineEdit(event) {
@@ -1181,8 +1139,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       return;
     }
 
-    // Dodgy (MLP CRB, General Perk, p.123) can turn Defend into a Free action - see
-    // mechanics/actions/action-economy.mjs#getNamedActionType's own doc comment.
+    // A Perk that makes it cheaper (Dodgy's Free Defend) is an ActionCost rule spend() applies below.
     const actionType = getNamedActionType(this.actor, key);
 
     /* One aim per shot. Aim is a Free action and a character may well have Free actions left,

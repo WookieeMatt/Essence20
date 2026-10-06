@@ -1,29 +1,26 @@
 import { zord2WeaponUnusable } from "../../items/attacks/shield-mode-unusable-weapons.mjs";
 import { ruleCriticalOptions } from "../../rules/adapter.mjs";
+import { ruleConditionRounds } from "../../rules/plugins/combat/condition-duration.mjs";
+import { ruleManeuverOption } from "../../rules/plugins/combat/maneuver-option.mjs";
+import { ruleSwapShrug } from "../../rules/plugins/combat/swap-shrug.mjs";
 import { extDefenseAdjust, extRollSources, runConsumer, runHitRiders, runPostRoll } from "../item-hooks.mjs";
-import { acidSacsDamage, consumeSocial, socialDamageBonus, socialDefenseAdjust, socialRollSources } from "../../items/social/social-rolls.mjs";
+import { socialDamageBonus, socialDefenseAdjust, socialRollSources } from "../../items/social/social-rolls.mjs";
 import { noteRolledAgainst } from "../companions/companions.mjs";
-import { noteFailure } from "../../items/social/best-friends-forever.mjs";
-import { loaderShoveBonus } from "../resources/kits.mjs";
-import { actorHasHangUp, actorHasPerk, bankPendingBonus, findPerk, getPendingBonus } from "../characters/perks.mjs";
-import { getSceneEpoch, markUsed } from "../resources/scene-clock.mjs";
+import { actorHasPerk, getPendingBonus } from "../characters/perks.mjs";
+import { getSceneEpoch } from "../resources/scene-clock.mjs";
 import { applyTimedCondition } from "./timed-status.mjs";
 import {
-  isImmuneToSkill, isMechanical, isObjectOrStructure,
+  isImmuneToSkill, isMechanical,
 } from "../characters/creature-tags.mjs";
-import { essenceDamageOf } from "./essence-damage.mjs";
-import { distanceFeet, pickCanvasPoint, placeActorAt, pushActor, slowNextTurn } from "./forced-movement.mjs";
-import { postSaveCard, resolveSaveRoll } from "./save-riders.mjs";
+import { distanceFeet, pushActor } from "./forced-movement.mjs";
+import { resolveSaveRoll } from "./save-riders.mjs";
 import {
-  changePoisonState, coatingOf, isHackerPoison, poisonAffects, poisonProdigy, resolveCoatingRoll, startCoating, toggleHackerPoison,
+  coatingOf, isHackerPoison, poisonAffects, resolveCoatingRoll, startCoating,
 } from "../../items/gear/poison-coating.mjs";
-import { checkMarkTarget } from "../../items/rolls/mark-target.mjs";
 import { checkPrimaryQuarry } from "../../items/rolls/primary-quarry.mjs";
 import { RIDER, riderUseFor } from "./rider-uses.mjs";
-import { GRANT } from "../resources/grant-uses.mjs";
-import { isPerfectDisguiseActive } from "../../items/social/perfect-disguise.mjs";
-import { isScarefyingAppearanceActive } from "../../items/magic/scarefying-appearance.mjs";
-import { jammingRadiusFeet } from "../vehicles/vehicle-upgrades.mjs";
+import { imperfectionOf } from "../resources/grant-uses.mjs";
+import { skillImmunityOverrideOf } from "../../rules/plugins/combat/subsystem-readers.mjs";
 
 /**
  * Per-target modifiers, on-hit riders and the Conditions that go with them - the Perks, weapons and
@@ -33,7 +30,7 @@ import { jammingRadiusFeet } from "../vehicles/vehicle-upgrades.mjs";
  * - rollRiderSources: the shifts/Edge/Snag a roll picks up from the target, the roller's own state
  *   and anything nearby, as labeled sources for the Roll Options Dialog;
  * - riderDefenseAdjust: what the target's Defense gains or loses for this attack;
- * - riderDialogFlags / applyDialogRiders: the voluntary downshift choices in the dialog;
+ * - riderDialogFlags: what the dialog shows for this attack (Concentrated Fire's d2 Critical);
  * - applyRollRiders: everything that happens once the dice have landed.
  * chat.mjs hands the card buttons it doesn't know to handleRiderButton, and the sheet's Use button
  * reaches the RIDER_USES table through mechanics/actions/action-perks.mjs.
@@ -43,14 +40,9 @@ import { jammingRadiusFeet } from "../vehicles/vehicle-upgrades.mjs";
 
 export { RIDER };
 
-// Word of Unicron (Decepticon Directive, General Perk, p.67) - Fanatic's "anyone with the Word of
-// Unicron General Perk". Matched by name, since the Perk may not be in a compendium of its own.
-const WORD_OF_UNICRON_NAME = 'word of unicron';
-
 const SOCIAL_SKILLS = ['animalHandling', 'deception', 'intimidation', 'performance', 'persuasion', 'streetwise', 'culture'];
 const MARKS_FLAG = 'riderMarks';
 const STANCE_FLAG = 'riderStance';
-const CHOICE_FLAG = 'riderChoice';
 const ZONE_FLAG = 'riderZone';
 
 /* -------------------------------------------- */
@@ -89,11 +81,6 @@ function parentWeaponOf(actor, item) {
 
 function isArea(item) {
   return !!(item?.system?.shape || item?.system?.radius > 0);
-}
-
-/** The Choice a Use button stored on an item (Energic Shields' damage type, and the like). */
-export function riderChoiceOf(item) {
-  return item?.flags?.essence20?.[CHOICE_FLAG] ?? null;
 }
 
 /* -------------------------------------------- */
@@ -240,15 +227,6 @@ export function stanceOf(actor) {
   return { allOutAttack: stance.allOutAttack ?? 0, evasiveFighting: stance.evasiveFighting ?? 0 };
 }
 
-async function setStance(actor, changes) {
-  const current = stanceOf(actor);
-  await actor.setFlag('essence20', STANCE_FLAG, {
-    allOutAttack: Math.max(current.allOutAttack, changes.allOutAttack ?? 0),
-    evasiveFighting: Math.max(current.evasiveFighting, changes.evasiveFighting ?? 0),
-    ...untilStartOfNextTurn(actor),
-  });
-}
-
 /* -------------------------------------------- */
 /*  Zones                                       */
 /* -------------------------------------------- */
@@ -314,31 +292,8 @@ export function rollRiderSources(actor, target, ctx = {}) {
   const sources = [];
   const consumes = [];
   const { item, rolledSkill, rolledEssence, isAttack } = ctx;
-  const damageType = ctx.damageType ?? item?.system?.damageType;
   const isSocial = rolledEssence == 'social' || SOCIAL_SKILLS.includes(rolledSkill);
   const add = (id, label, mods) => sources.push({ id: `rider-${id}`, label, shiftUp: 0, shiftDown: 0, edge: false, snag: false, ...mods });
-
-  // Jammer (GI Joe CRB p.161): "making wireless and radio signals suffer a Snag on any operation
-  // within a 30 foot radius." White Noise Generator: "causing a Snag to any audio-based Skill Tests
-  // in the area." Read as Technology tests (operating anything wireless) and Alertness tests
-  // (listening) made within 30 feet of a device that's switched on.
-  for (const device of activeDevicesNear(actor)) {
-    if (device.kind == 'jammer' && rolledSkill == 'technology') {
-      add('jammer', device.name, { snag: true });
-    }
-
-    if (device.kind == 'whiteNoise' && rolledSkill == 'alertness') {
-      add('whiteNoise', device.name, { snag: true });
-    }
-  }
-
-  // Co-Dependent (Enigma of Combination, Influence Hang-Up, p.25): "Anytime this person suffers from
-  // a condition (Defeated, Grappled, Unconscious, and the like) when in your line of sight, you
-  // suffer ↓1 to all Skill Tests." Line of sight is read as "on the scene".
-  const bond = coDependentPartner(actor);
-  if (bond && tokenOf(bond) && [...(bond.statuses ?? [])].some(status => !['morphed', 'altMode', 'cover', 'totalCover', 'defending'].includes(status))) {
-    add('coDependent', nameOf(actor, RIDER.coDependent, 'Co-Dependent'), { shiftDown: 1 });
-  }
 
   // Monster Hunter's Critical Effect landed on this roller: "Target suffers Snag on their next
   // Attack Skill Test."
@@ -348,48 +303,12 @@ export function rollRiderSources(actor, target, ctx = {}) {
     consumes.push({ actorUuid: actor.uuid, kind: 'nextAttackSnag' });
   }
 
-  // Enhanced Impact Points (A Jump Through Time, Morph shell feature, p.32): "Your Unarmed Strike
-  // Attacks can always choose to change their base damage to Blunt or Sharp without suffering any
-  // Alternate Effect penalties." A Blunt/Sharp alternate of the unarmed attack gets its ↓ back.
-  if (isAttack && !parentWeaponOf(actor, item) && ['blunt', 'sharp'].includes(damageType) && (item?.system?.shiftDown ?? 0) > 0
-    && actorHasPerk(actor, RIDER.enhancedImpactPoints) && actor.system?.isMorphed) {
-    add('enhancedImpactPoints', nameOf(actor, RIDER.enhancedImpactPoints, 'Enhanced Impact Points'), { shiftUp: item.system.shiftDown });
-  }
+  // (Loader's Alt Mode shove ↑2 is a RollModifier rule on the Loader.)
 
-  // Loader (TF CRB p.134, Alt Mode): "gain ↑2 on Might Skill Tests to shove objects and creatures".
-  if (ctx.isShove && loaderShoveBonus(actor)) {
-    add('loader', game.i18n.localize('E20.KitLoader'), { shiftUp: loaderShoveBonus(actor) });
-  }
+  // (Perfect Disguise's Edge on attacks, and its end once seen attacking, are rules on the Perk; its sneak attacks are
+  // mechanics/combat/sneak-attack.mjs's.)
 
-  // Perfect Disguise (GI Joe CRB, Spy, 10th level, p.76): "Your attacks against targets fooled by
-  // your imitation gain an Edge and are sneak attacks." Everyone is fooled while it holds; the
-  // first attack ends it (applyRollRiders), since "someone witnesses you attacking".
-  if (isAttack && actorHasPerk(actor, RIDER.perfectDisguise) && isPerfectDisguiseActive(actor)) {
-    add('perfectDisguise', nameOf(actor, RIDER.perfectDisguise, 'Perfect Disguise'), { edge: true });
-  }
-
-  // Adept Armaments (Cobra Codex, Trooper, p.52-53). Highly Effective (7th): "you gain ↑1 on Attack
-  // rolls when using a secondary effect of an Adept Armament." Flurry of Attacks (15th): "when you
-  // make multiple attacks on your turn, if each attack uses a different Adept Armament, you gain a
-  // cumulative ↑1 on each successive attack."
-  const adeptWeapon = isAttack ? parentWeaponOf(actor, item) : null;
-  if (adeptWeapon?.flags?.essence20?.adeptArmament) {
-    const siblings = (actor.items?.contents ?? [...(actor.items ?? [])]).filter(i => i.type == 'weaponEffect' && i.flags?.essence20?.parentId == adeptWeapon.id);
-    if (hasSourced(actor, GRANT.highlyEffective) && siblings[0] && siblings[0].id != item.id) {
-      add('highlyEffective', nameOf(actor, GRANT.highlyEffective, 'Highly Effective'), { shiftUp: 1 });
-    }
-
-    const flurry = flurryWeapons(actor).filter(id => id != adeptWeapon.id);
-    if (hasSourced(actor, GRANT.flurryOfAttacks) && flurry.length) {
-      add('flurryOfAttacks', nameOf(actor, GRANT.flurryOfAttacks, 'Flurry of Attacks'), { shiftUp: flurry.length });
-    }
-  }
-
-  // Buzz The Tower (Quartermaster's Guide p.21): "the target is flustered and suffers Snag on Skill
-  // Tests until the end of their next turn."
-  if (findMark(actor, 'flustered')) {
-    add('flustered', findMark(actor, 'flustered').label ?? 'Buzz The Tower', { snag: true });
-  }
+  // (Co-Dependent, Highly Effective and Flurry of Attacks are rules on their items.)
 
   // Companions, commands, bonded partners, BFFs and team Perks - items/social/social-rolls.mjs.
   const social = socialRollSources(actor, target, { item, rolledSkill, isAttack, isShove: ctx.isShove });
@@ -409,13 +328,6 @@ export function rollRiderSources(actor, target, ctx = {}) {
   // Persuasion Skill Tests that target you gain Edge."
   if (['deception', 'persuasion'].includes(rolledSkill) && imperfectionOf(target)?.n == 8) {
     add('weakWilled', game.i18n.localize('E20.Imperfection.8'), { edge: true });
-  }
-
-  // Intervene (Field Guide, p.65): the ally "gain[s] Resistance against the next attack dealing
-  // Blunt or Sharp damage that targets them."
-  if (isAttack && ['blunt', 'sharp'].includes(damageType) && findMark(target, 'intervene')) {
-    add('intervene', findMark(target, 'intervene').label ?? 'Intervene', { snag: true });
-    consumes.push({ actorUuid: target.uuid, kind: 'intervene' });
   }
 
   // Concentrated Fire (Cobra Codex, Pyro, 6th level, p.58): "the attack treats Fire Immunity as Fire
@@ -442,26 +354,6 @@ export function rollRiderSources(actor, target, ctx = {}) {
     add('mesmerized', game.i18n.localize('E20.StatusMesmerized'), { edge: true });
   }
 
-  // Worst Nightmare (Hawk's Personnel Files, p.174): "...or an Edge if the target is Frightened of
-  // you." The ↑1 half is in dice.mjs.
-  if (isAttack && actorHasPerk(actor, RIDER.worstNightmare) && hasConditionFrom(target, 'frightened', actor)) {
-    add('worstNightmareEdge', nameOf(actor, RIDER.worstNightmare, 'Worst Nightmare'), { edge: true });
-  }
-
-  // Shots Fired (Field Guide, p.68): "when you deal damage to a creature, you gain an Edge on
-  // Deception, Intimidation, and Persuasion Skill Tests against that creature until the end of
-  // your next turn."
-  if (['deception', 'intimidation', 'persuasion'].includes(rolledSkill) && findMark(target, 'shotsFired', actor.uuid)) {
-    add('shotsFired', nameOf(actor, RIDER.shotsFired, 'Shots Fired'), { edge: true });
-  }
-
-  // Snatch (Ferocious Fighters p.37): "Disarm attempts suffer ↓1 when targeting a two-handed weapon."
-  // Listed (and untickable) whenever a Maneuver is rolled at someone holding one.
-  if (damageType == 'maneuver' && actorHasPerk(actor, RIDER.snatch)
-    && heldWeapons(target, 9).some(w => (w.system?.derivedHands ?? w.system?.hands ?? 1) >= 2)) {
-    add('snatch', game.i18n.format('E20.SnatchTwoHanded', { perk: nameOf(actor, RIDER.snatch, 'Snatch') }), { shiftDown: 1 });
-  }
-
   // Blazing Strikes (Across the Stars, p.72): "Critical Effect: Next ally gains ↑2 against this foe."
   const blazing = getMarks(target).find(mark => mark.kind == 'blazingStrikes' && mark.by != actor.uuid);
   if (isAttack && blazing) {
@@ -472,83 +364,8 @@ export function rollRiderSources(actor, target, ctx = {}) {
   return { sources, consumes };
 }
 
-/**
- * Fanatic (Decepticon Directive, Influence Perk, p.25): "While in the presence of a Decepticon
- * commander or anyone with the Word of Unicron General Perk, you can't suffer greater than ↓2 on any
- * given Skill Test." "A Decepticon commander" is an ally tagged "commander" on the scene.
- * @param {Actor} actor
- * @param {Number} shiftUp
- * @param {Number} shiftDown
- * @returns {RiderSource|null}   The upshift that brings the net back to ↓2.
- */
-export function fanaticCap(actor, shiftUp, shiftDown) {
-  if (shiftDown - shiftUp <= 2 || !actorHasPerk(actor, RIDER.fanatic) || !leaderPresent(actor)) {
-    return null;
-  }
-
-  return {
-    id: 'rider-fanatic', label: nameOf(actor, RIDER.fanatic, 'Fanatic'),
-    shiftUp: shiftDown - shiftUp - 2, shiftDown: 0, edge: false, snag: false,
-  };
-}
-
-function leaderPresent(actor) {
-  const own = tokenOf(actor);
-  return (canvas?.tokens?.placeables ?? []).some(token => token !== own && token.actor
-    && (!own || token.document.disposition == own.document.disposition)
-    && (String(token.actor.system?.creatureTags ?? '').toLowerCase().includes('commander')
-      || token.actor.items?.some?.(item => item.type == 'perk' && item.name?.toLowerCase() == WORD_OF_UNICRON_NAME)));
-}
-
-function coDependentPartner(actor) {
-  const hangUp = findSourced(actor, RIDER.coDependent);
-  const bondUuid = riderChoiceOf(hangUp);
-  if (!bondUuid) {
-    return null;
-  }
-
-  return game.actors?.get?.(bondUuid.split('.').pop()) ?? canvas?.tokens?.placeables?.find(t => t.actor?.uuid == bondUuid)?.actor ?? null;
-}
-
-const DEVICE_RADIUS_FEET = 30;
-const DEVICE_FLAG = 'deviceOn';
-
-function activeDevicesNear(actor) {
-  const own = tokenOf(actor);
-  if (!own || !canvas?.tokens) {
-    return [];
-  }
-
-  const found = [];
-  for (const token of canvas.tokens.placeables) {
-    // A vehicle's switched-on Radar Jammer (50ft) or Enhanced Radar Jamming (1 mile) - helpers/
-    // vehicle-upgrades.mjs#jammingRadiusFeet. Same Technology Snag as a carried Jammer.
-    const jamming = jammingRadiusFeet(token.actor);
-    if (jamming && distanceFeet(token.center, own.center) <= jamming) {
-      found.push({ kind: 'jammer', name: token.actor.name });
-    }
-
-    for (const item of token.actor?.items ?? []) {
-      const kind = sourceOf(item) == RIDER.jammer ? 'jammer' : sourceOf(item) == RIDER.whiteNoise ? 'whiteNoise' : null;
-      if (kind && item.flags?.essence20?.[DEVICE_FLAG] && distanceFeet(token.center, own.center) <= DEVICE_RADIUS_FEET) {
-        found.push({ kind, name: item.name });
-      }
-    }
-  }
-
-  return found;
-}
-
-function flurryWeapons(actor) {
-  const stamp = actor?.flags?.essence20?.flurryTurn;
-  const combat = game?.combat;
-  return stamp && combat && stamp.combatId == combat.id && stamp.round == combat.round && stamp.turn == combat.turn ? stamp.weapons ?? [] : [];
-}
-
-/** A Hint of Independence's imperfection (Decepticon Directive, Table 2-11), kept on the Perk. */
-export function imperfectionOf(actor) {
-  return actor?.items?.find?.(i => sourceOf(i) == GRANT.hintOfIndependence)?.flags?.essence20?.imperfection ?? null;
-}
+/** A Hint of Independence's imperfection (Decepticon Directive, Table 2-11), kept on the Perk (grant-uses.mjs). */
+export { imperfectionOf };
 
 /* -------------------------------------------- */
 /*  The target's Defense                         */
@@ -559,7 +376,7 @@ export function imperfectionOf(actor) {
  * @param {Actor} actor   The roller.
  * @param {Actor} target
  * @param {String} defenseType
- * @param {Object} ctx   {item, isAttack, pinpoint, makeAnOpening}
+ * @param {Object} ctx   {item, isAttack}
  * @returns {Number}   Added to the difficulty.
  */
 export function riderDefenseAdjust(actor, target, defenseType, ctx = {}) {
@@ -567,14 +384,7 @@ export function riderDefenseAdjust(actor, target, defenseType, ctx = {}) {
   let adjust = target ? socialDefenseAdjust(actor, target, defenseType) + extDefenseAdjust(actor, target, defenseType, ctx) : 0;
   const { item, isAttack } = ctx;
 
-  // On My Mark! (Decepticon Directive, Demolitionist, 10th level, p.54): "any Contingency action you
-  // take (or arrange for) that targets a creature that you most recently designated with Mark
-  // Target treats that creature's Defenses as being 5 lower." A roll made off the roller's own turn
-  // is a Contingency.
-  if (actorHasPerk(actor, RIDER.onMyMark) && checkMarkTarget(actor, target) && game.combat
-    && game.combat.combatant?.actor?.id != actor.id) {
-    adjust -= 5;
-  }
+  // (On My Mark!'s -5 is an outgoing Defense rule - check:markTarget.)
 
   // Suppressing Fire (GI Joe CRB, Heavy Gunner, 3rd level, p.111): "Any enemies who start their turn
   // in that area or move into it have their Toughness and Evasion reduced by 5 until the start of
@@ -583,29 +393,7 @@ export function riderDefenseAdjust(actor, target, defenseType, ctx = {}) {
     adjust -= 5;
   }
 
-  // Make an Opening (Decepticon Directive, Beast Warrior, 17th level, p.58): "you reduce the bonus
-  // provided by that armor by 2 (to a minimum of +0 to a single Defense); this penalty lasts for
-  // the remainder of the scene."
-  const strip = findMark(target, 'armorStrip');
-  if (strip && strip.defense == defenseType) {
-    adjust -= Math.min(strip.amount, armorUpgradeBonuses(target, defenseType).reduce((a, b) => a + b, 0));
-  }
-
-  // Pinpoint (TF CRB, Sharpshooter, 9th level, p.60): "when you use the Aim action, instead of ↑1 on
-  // your shot, you can choose to ignore one of the target's Armor Upgrades for each Free action you
-  // spend Aiming." The biggest ones go first.
-  if (isAttack && ctx.pinpoint > 0) {
-    const bonuses = armorUpgradeBonuses(target, defenseType).sort((a, b) => b - a).slice(0, ctx.pinpoint);
-    adjust -= bonuses.reduce((a, b) => a + b, 0);
-  }
-
-  // Energic Shields (PR CRB, Morph shell feature, p.39): "Pick one type of non-physical (blunt or
-  // sharp) damage. While Morphed, you gain +3 Toughness to that type of damage."
-  const shields = findSourced(target, RIDER.energicShields);
-  if (isAttack && defenseType == 'toughness' && shields && target.system?.isMorphed
-    && riderChoiceOf(shields) && riderChoiceOf(shields) == item?.system?.damageType) {
-    adjust += 3;
-  }
+  // (Make an Opening's penalty and Pinpoint's ignored upgrades - rules/plugins/combat/armor-upgrades.mjs.)
 
   // A Hint of Independence's Vulnerability: "Choose a damage type, your Toughness Defense is halved
   // (round up) to that damage."
@@ -615,28 +403,7 @@ export function riderDefenseAdjust(actor, target, defenseType, ctx = {}) {
     adjust -= ctx.difficulty - Math.ceil(ctx.difficulty / 2);
   }
 
-  // Scarefying Appearance's "+2 Toughness" benefit (Knights of Canterlot p.51).
-  if (defenseType == 'toughness' && scarefyingBenefits(target).includes('toughness')) {
-    adjust += 2;
-  }
-
   return adjust;
-}
-
-/**
- * The Defense each of the target's Armor Upgrades adds to one Defense.
- * @param {Actor} actor
- * @param {String} defenseType
- * @returns {Array<Number>}
- */
-export function armorUpgradeBonuses(actor, defenseType) {
-  const equipped = new Set((actor?.items?.contents ?? [...(actor?.items ?? [])])
-    .filter(item => item.type == 'armor' && item.system?.equipped).map(item => item.id));
-  return (actor?.items?.contents ?? [...(actor?.items ?? [])])
-    .filter(item => item.type == 'upgrade' && item.system?.type == 'armor' && item.system?.armorBonus?.defense == defenseType
-      && (equipped.has(item.flags?.essence20?.parentId) || (!item.flags?.essence20?.parentId && actor.system?.canTransform)))
-    .map(item => Number(item.system.armorBonus.value) || 0)
-    .filter(value => value > 0);
 }
 
 /* -------------------------------------------- */
@@ -660,64 +427,13 @@ export function riderDialogFlags(actor, item, dataset = {}) {
     flags.canCritD2 = true;
   }
 
-  const skill = item.system?.classification?.skill;
-  const ownTurn = !game.combat || game.combat.combatant?.actor?.id == actor.id;
-  // All Out Attack / Evasive Fighting (GI Joe CRB p.129/131): "During your turn, you can voluntarily
-  // take downshifts on your Attacks with Might, Finesse, or Targeting."
-  if (ownTurn && ['might', 'finesse', 'targeting'].includes(skill)) {
-    if (actorHasPerk(actor, RIDER.allOutAttack)) {
-      flags.allOutAttackMax = 5;
-    }
-
-    if (actorHasPerk(actor, RIDER.evasiveFighting)) {
-      flags.evasiveFightingMax = 5;
-    }
-  }
-
-  // Pinpoint - see riderDefenseAdjust.
-  if (item.system?.classification?.style != 'melee' && actorHasPerk(actor, RIDER.pinpoint)) {
-    flags.pinpointMax = 3;
-  }
-
-  // Steady Hand (Cobra Codex, Trooper, 10th level, p.53): "when you would suffer Snag on an attack with
-  // an Adept Armament ... you can spend a Free Action to roll your Skill Test without Snag."
-  if (parentWeaponOf(actor, item)?.flags?.essence20?.adeptArmament && hasSourced(actor, GRANT.steadyHand)) {
-    flags.steadyHandAvailable = true;
-  }
-
-  // Make an Opening - "an unarmed combat attack at ↓2 against a target that has an armor upgrade
-  // installed."
-  const target = game.user?.targets?.first?.()?.actor;
-  if (!parentWeaponOf(actor, item) && actorHasPerk(actor, RIDER.makeAnOpening) && target
-    && ['toughness', 'evasion'].some(d => armorUpgradeBonuses(target, d).length)) {
-    flags.makeAnOpeningAvailable = true;
-  }
+  // (Pinpoint, Steady Hand and Make an Opening are DialogSwitch rules on their Perks.)
 
   return flags;
 }
 
-/**
- * The downshifts picked in the dialog. Called once the dialog closes.
- * @param {Actor} actor
- * @param {Object} options   The dialog's result (mutated).
- * @returns {Promise<void>}
- */
-export async function applyDialogRiders(actor, options) {
-  const allOut = Math.max(0, Number(options.allOutAttackShifts) || 0);
-  const evasive = Math.max(0, Number(options.evasiveFightingShifts) || 0);
-  options.shiftDown += allOut + evasive + (options.applyMakeAnOpening ? 2 : 0);
-  if (options.applySteadyHand && options.snag) {
-    const { spend } = await import("../actions/action-economy.mjs");
-    const paid = game.combat ? await spend(actor, 'free', { source: game.i18n.localize('E20.RollDialogSteadyHand') }) : { blocked: false };
-    if (!paid.blocked) {
-      options.snag = false;
-    }
-  }
-
-  if (allOut || evasive) {
-    await setStance(actor, { allOutAttack: allOut, evasiveFighting: evasive });
-  }
-}
+// (The dialog's downshift choices - All Out Attack / Evasive Fighting, Make an Opening - are StanceSwitch / DialogSwitch
+// rules now.)
 
 /* -------------------------------------------- */
 /*  After the roll                               */
@@ -752,10 +468,10 @@ export function buildRiderContext(actor, item, dataset, options, consumes = []) 
     isPoison: !!weapon?.system?.isPoison,
     hackerPoison: isHackerPoison(weapon),
     coating: coatingOf(weapon),
-    disarmingShot: !!options?.applyDisarmingShot,
+    // Disarming Shot's DialogSwitch (key disarmingShot) ticked - its disarm-on-hit and Critical discharge below.
+    disarmingShot: (options?.ruleKeys ?? []).includes('disarmingShot'),
     concentratedFire: !!dataset?.concentratedFire,
     allOutAttack: Number(options?.allOutAttackShifts) || 0,
-    makeAnOpening: !!options?.applyMakeAnOpening,
     consumes,
     // Rule switches ticked for this roll (DialogSwitch key) - the roll:switch: tag.
     switches: options?.ruleKeys ?? [],
@@ -779,13 +495,8 @@ export async function applyRollRiders(actor, results, checkContext, { isCrit = f
   noteRoller(actor);
 
   for (const consume of rider.consumes ?? []) {
-    if (consume.companionKey || consume.rightHandsShield || consume.leaveItToMe) {
-      await consumeSocial(consume);
-      continue;
-    }
-
     // Rule-banked bonuses were already spent when the roll was made (dice.mjs, next to clearPendingBonus).
-    if (['rulesBank', 'rulesLimit', 'rulesMark'].includes(consume.ext)) {
+    if (['rulesBank', 'rulesLimit', 'rulesMark', 'rulesMarkOwn', 'rulesMarkOne'].includes(consume.ext)) {
       continue;
     }
 
@@ -802,7 +513,7 @@ export async function applyRollRiders(actor, results, checkContext, { isCrit = f
 
   if (spec) {
     await resolveSpec(actor, spec, results, { isCrit, isFumble });
-    await resolveTargetedSpec(actor, spec, results, { isCrit });
+    await resolveTargetedSpec(actor, spec, results);
   }
 
   const hits = [];
@@ -815,23 +526,11 @@ export async function applyRollRiders(actor, results, checkContext, { isCrit = f
   }
 
   await skillImmunity(actor, hits, checkContext);
-  // Who rolled against whom this round (Pack Attack, Automatic Harmonics), and a BFF's failure (Leave It
-  // To Me) - mechanics/companions/companions.mjs, items/social/best-friends-forever.mjs.
+  // Who rolled against whom this round (Pack Attack, Automatic Harmonics) - mechanics/companions/companions.mjs. (A BFF's
+  // failure for Leave It To Me is a rollSeen Trigger on the Perk.)
   await noteRolledAgainst(actor, hits.map(h => h.target), !!rider.style);
-  if (rider.skill && (results ?? []).length && results.every(r => r.success === false)) {
-    await noteFailure(actor, rider.skill);
-  }
 
-  await scapegoatHangUp(hits);
-
-  // Flurry of Attacks counts the Adept Armaments used this turn.
-  const usedWeapon = rider.weaponId ? actor.items?.get?.(rider.weaponId) : null;
-  if (usedWeapon?.flags?.essence20?.adeptArmament && hasSourced(actor, GRANT.flurryOfAttacks) && game.combat) {
-    const list = flurryWeapons(actor);
-    if (!list.includes(usedWeapon.id)) {
-      await actor.setFlag('essence20', 'flurryTurn', { combatId: game.combat.id, round: game.combat.round, turn: game.combat.turn, weapons: [...list, usedWeapon.id] });
-    }
-  }
+  // (Scapegoat's Hang-Up is a targeted Trigger rule: roll:entry:scapegoatSwapped.)
 
   // A Hint of Independence's Stress Leak: "Choose an Element type, one random creature or object
   // adjacent to you takes 1 damage of that type when you Fumble a Skill Test."
@@ -852,7 +551,6 @@ export async function applyRollRiders(actor, results, checkContext, { isCrit = f
     await attackRiders(actor, hits, checkContext, rider, { isCrit, isFumble });
   }
 
-  await spellRiders(actor, hits, checkContext);
   await runPostRoll(actor, results, checkContext, { isCrit, isFumble, hits, rider });
 }
 
@@ -888,25 +586,25 @@ async function resolveSpec(actor, spec, results, { isCrit, isFumble }) {
 }
 
 /**
- * Fear Is Universal (Cobra Codex, Taskmaster, 10th level, p.57): "You can spend a Story Point to use
- * these skills on a creature normally immune to them, such as a robot." A creature immune to the
- * Skill rolled against it isn't affected unless that point is spent.
+ * A creature immune to the Skill rolled against it isn't affected - unless one of the roller's SkillImmunityOverride rules
+ * is paid for (Fear Is Universal's Story Point - rules/plugins/combat/subsystem-readers.mjs).
  */
 async function skillImmunity(actor, hits, checkContext) {
   const skill = checkContext?.riderContext?.skill;
   const immune = hits.filter(({ target, hit }) => hit && skill && isImmuneToSkill(target, skill));
   for (const { result, target } of immune) {
     let overcome = false;
-    if (actorHasPerk(actor, RIDER.fearIsUniversal)) {
+    const override = skillImmunityOverrideOf(actor, target);
+    if (override) {
       const { canSpendForActor, spendForActor } = await import("../resources/story-points.mjs");
-      if (canSpendForActor(actor, 1)) {
+      if (canSpendForActor(actor, override.storyPoints)) {
         overcome = await foundry.applications.api.DialogV2.confirm({
-          window: { title: nameOf(actor, RIDER.fearIsUniversal, 'Fear Is Universal') },
+          window: { title: override.item?.name ?? '' },
           content: `<p>${game.i18n.format('E20.FearIsUniversalPrompt', { name: target.name })}</p>`,
           rejectClose: false,
         });
         if (overcome) {
-          await spendForActor(actor, 1);
+          await spendForActor(actor, override.storyPoints);
         }
       }
     }
@@ -917,25 +615,6 @@ async function skillImmunity(actor, hits, checkContext) {
       result.damageValue = null;
       result.criticalOptions = [];
       result.riderNote = game.i18n.format('E20.SkillImmuneNote', { name: target.name });
-    }
-  }
-}
-
-/**
- * Scapegoat's Hang-Up (Cobra Codex p.33): "If you use your Scapegoat Influence Perk and the effect
- * still succeeds, you take 1 point of Essence damage to your Smarts."
- */
-async function scapegoatHangUp(hits) {
-  for (const { target, entry, hit } of hits) {
-    if (hit && entry?.scapegoatSwapped && actorHasHangUp(target, RIDER.scapegoatHangUp)) {
-      const { applyEssenceDamage } = await import("../world/environment-hazards.mjs");
-      const damaged = await applyEssenceDamage(target, ['smarts']);
-      if (damaged.length) {
-        await ChatMessage.create({
-          speaker: ChatMessage.getSpeaker({ actor: target }),
-          content: game.i18n.format('E20.CheckEssenceDamageApplied', { name: target.name, essence: game.i18n.localize(CONFIG.E20.essences?.smarts ?? 'smarts') }),
-        });
-      }
     }
   }
 }
@@ -952,7 +631,6 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
   };
 
   let allOutAttackLeft = rider.allOutAttack;
-  const headache = rider.isUnarmed && actorHasPerk(actor, RIDER.headache) ? essenceDamageOf(actor) : 0;
   const disarmed = [];
 
   for (const { result, target, entry, hit } of hits) {
@@ -960,25 +638,16 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
       continue;
     }
 
-    // Unstoppable Force (GI Joe CRB, Juggernaut, 10th level, p.112): "when wearing heavy or super
-    // heavy armor, if you use your Toughness to resist an attack against your Evasion, you do not
-    // suffer any additional penalties from using your Toughness (such as Conditions or additional
-    // damage effects)." Only the damage itself lands.
-    const shrugs = entry?.defenseType == 'toughness' && checkContext.suggestedDefenseType == 'evasion'
-      && actorHasPerk(target, RIDER.unstoppableForce)
-      && target.items?.some?.(item => item.type == 'armor' && item.system?.equipped && ['heavy', 'superHeavy', 'ultraHeavy'].includes(item.system?.classification));
+    // A SwapShrug rule on the target (Unstoppable Force: Toughness used against an Evasion attack, in heavy armor) -
+    // only the damage itself lands (rules/plugins/combat/swap-shrug.mjs).
+    const shrugs = !!ruleSwapShrug(target, entry?.defenseType, checkContext.suggestedDefenseType, actor);
     if (shrugs) {
       result.secondaryDamage = null;
       result.riderNote = localize('E20.UnstoppableForceNote', { name: target.name });
     }
 
     if (result.damageValue) {
-      // Reveal Weakness (Field Guide, p.68): "attacks that successfully target them deal +1 damage
-      // for the rest of combat."
-      const weakness = findMark(target, 'revealWeakness');
-      if (weakness) {
-        damageBonusNote(result, 1, weakness.label ?? 'Reveal Weakness');
-      }
+      // (Reveal Weakness's +1 is a HitRider rule, scope markedTarget.)
 
       // Targetmaster (Enigma of Combination p.41): "it deals 1 additional damage".
       const partnerDamage = socialDamageBonus(actor, rider.weaponId);
@@ -989,12 +658,6 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
       // Extensions (mechanics/item-hooks.mjs).
       await runHitRiders(actor, target, result, rider, { damageBonusNote, addRiderOption, isCrit, entry, checkContext });
 
-      // Acid Sacs (WTNV, Animal Perk): "Your pet's attacks deal 1 Acid damage in addition to their main
-      // weapon."
-      if (acidSacsDamage(actor)) {
-        addRiderOption(result, { key: 'acidSacs', label: localize('E20.AcidSacs'), damageValue: acidSacsDamage(actor), damageType: 'acid' });
-      }
-
       // All Out Attack: "For each downshift you take, you deal 1 additional damage to a single
       // target hit by the Attack."
       if (allOutAttackLeft) {
@@ -1002,18 +665,7 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
         allOutAttackLeft = 0;
       }
 
-      // Headache (WTNV Citizen's Guide, p.47): "you may deal additional Psychic damage equal to your
-      // current Essence damage with your unarmed melee attacks." Its own Psychic damage (not the
-      // punch's type), so a separate apply button like Acid Sacs' - "may" leaves it to the player.
-      if (headache) {
-        addRiderOption(result, { key: 'headache', label: nameOf(actor, RIDER.headache, 'Headache'), damageValue: headache, damageType: 'psychic' });
-      }
-
-      // Shaped Charges (GI Joe CRB, Artillery, 7th level, p.81): "your explosives deal double damage
-      // to objects and structures."
-      if (rider.style == 'explosive' && isObjectOrStructure(target) && actorHasPerk(actor, RIDER.shapedCharges)) {
-        damageBonusNote(result, result.damageValue, nameOf(actor, RIDER.shapedCharges, 'Shaped Charges'));
-      }
+      // (Shaped Charges' double damage to objects and structures is a HitMultiplier rule.)
 
       // Hacker (Cobra Codex p.80): "your poisons affect only robots and targets with the
       // Computerized Trait."
@@ -1049,18 +701,6 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
       critRiders(actor, target, result, rider);
     }
 
-    // Ablative Matrix (Enigma of Combination p.54): "this bonus is reduced by 1 each time the wearer
-    // is hit by a Critical Success attack Skill Test."
-    if (isCrit) {
-      await degradeAblative(target);
-    }
-
-    // Make an Opening: "If you succeed, you reduce the bonus provided by that armor by 2".
-    if (rider.makeAnOpening) {
-      const defense = armorUpgradeBonuses(target, 'toughness').length ? 'toughness' : 'evasion';
-      await addMark(target, { kind: 'armorStrip', by: actor.uuid, defense, amount: 2, sceneEpoch: getSceneEpoch(), label: nameOf(actor, RIDER.makeAnOpening, 'Make an Opening') });
-    }
-
     // Disarming Shot (Hawk's Personnel Files, p.174): "On a success, you knock the weapon out of
     // their hand. It lands at their feet. On a Critical Success, the weapon also goes off,
     // automatically affecting the creature."
@@ -1080,30 +720,7 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
       }
     }
 
-    // Disarming Shot (Decepticon Directive, Scavenger, 17th level, p.63): "when you successful hit a
-    // target with a ranged attack that inflicts at least 1 damage, you can spend a Free action to
-    // cause the target to drop one hand's worth of held equipment ... or two Free actions to cause
-    // the target to drop two hands' worth". The Free actions are paid as it's used.
-    if (rider.style != 'melee' && result.damageValue > 0 && actorHasPerk(actor, RIDER.disarmingShotDD)) {
-      await disarm(actor, target, { maxHands: 2, payFree: true, optional: true, source: nameOf(actor, RIDER.disarmingShotDD, 'Disarming Shot') });
-    }
-  }
-
-  // Intervene (Field Guide, p.65): "When an ally within line of sight of you makes an attack with a
-  // Stun or Maneuver effect, they gain Resistance against the next attack dealing Blunt or Sharp
-  // damage that targets them."
-  if (['stun', 'maneuver'].includes(rider.damageType)) {
-    const own = tokenOf(actor);
-    const intervener = (canvas?.tokens?.placeables ?? []).find(token => token.actor && token.actor.id != actor.id
-      && (!own || token.document.disposition == own.document.disposition) && actorHasPerk(token.actor, RIDER.intervene));
-    if (intervener) {
-      await addMark(actor, { kind: 'intervene', by: intervener.actor.uuid, combatId: game.combat?.id ?? null, label: nameOf(intervener.actor, RIDER.intervene, 'Intervene') });
-    }
-  }
-
-  // Perfect Disguise "stops working if someone witnesses you attacking".
-  if (isPerfectDisguiseActive(actor)) {
-    await actor.setFlag('essence20', 'perfectDisguiseActive', false);
+    // (Disarming Shot - Decepticon Directive - is a hit Trigger rule: disarm {payFree}.)
   }
 }
 
@@ -1111,32 +728,14 @@ async function attackRiders(actor, hits, checkContext, rider, { isCrit }) {
  * On-hit Conditions that come with the attack itself.
  */
 async function conditionRiders(actor, target, result, rider) {
-  // Artillery lobber (GI Joe CRB, Table 8-3.2, p.143): "1 Sharp Damage Blast (10ft radius) and
-  // Trip".
-  if (rider.itemSource == RIDER.artilleryLobberEffect) {
-    await target.toggleStatusEffect('prone', { active: true });
-  }
-
-  // Gyro-Gun (Enigma of Combination p.51): "Alternate Effects: Target is Impaired for 1d2 turns".
-  // Any other Impaired effect lasts until the end of the target's next turn.
+  // An Impaired effect lasts until the end of the target's next turn, unless the attack's own ConditionDuration rule says
+  // otherwise (Gyro-Gun Alternate Effect's 1d2 - rules/plugins/combat/condition-duration.mjs).
   if (rider.damageType == 'impaired') {
-    let rounds = 1;
-    if (rider.itemSource == RIDER.gyroGunAlternate) {
-      const roll = await new Roll('1d2').evaluate();
-      rounds = roll.total;
-    }
+    const item = rider.itemUuid ? globalThis.fromUuidSync?.(rider.itemUuid) ?? null : null;
+    const rounds = await ruleConditionRounds(item, 'impaired', 1);
 
     await applyTimedCondition(target, 'impaired', rounds);
     result.riderNote = [result.riderNote, game.i18n.format('E20.RiderImpairedFor', { name: target.name, rounds })].filter(Boolean).join(' ');
-  }
-
-  // Vine Bombs (Technorganic Secrets p.48): "On hit, the Vine Bombs grapple the target. Characters
-  // grappled can attempt escape against the Vine Bomb's 16 Toughness."
-  if (rider.itemSource == RIDER.vineBombsEffect) {
-    await target.toggleStatusEffect('grappled', { active: true });
-    await postSaveCard(actor, [target], {
-      title: game.i18n.localize('E20.VineBombsEscape'), skills: ['might', 'athletics'], dif: 16, status: 'grappled', removeOnSuccess: true,
-    });
   }
 }
 
@@ -1151,22 +750,13 @@ function critRiders(actor, target, result, rider) {
   const fromRules = ruleCriticalOptions(actor, target, item);
   own.push(...fromRules.options);
 
-  // Genetic Decoding (Cobra Codex, Test Subject, 17th level, p.65): "Choose an Essence Score. Your
-  // attacks gain an Alternate Effect that deals 1 damage to that Essence Score."
-  const decoding = findSourced(actor, RIDER.geneticDecoding);
-  if (decoding) {
-    const essences = riderChoiceOf(decoding) ? [riderChoiceOf(decoding)] : Object.keys(CONFIG.E20.essences ?? {}).filter(e => e != 'any');
-    for (const essence of essences) {
-      own.push({ key: `geneticDecoding-${essence}`, label: `${decoding.name} (${game.i18n.localize(CONFIG.E20.essences[essence])})`, damageValue: 1, damageType: 'special', essence });
-    }
-  }
-
   result.criticalOptions = [...(result.criticalOptions ?? []), ...own.map(option => ({
     ...option,
     damageTypeLabel: option.damageTypeLabel ?? (option.essence
       ? game.i18n.localize(CONFIG.E20.essences?.[option.essence] ?? option.essence)
-      : option.status ? game.i18n.localize(CONFIG.statusEffects?.find?.(s => s.id == option.status)?.name ?? option.status)
-        : game.i18n.localize(CONFIG.E20.damageTypes?.[option.damageType] ?? option.damageType)),
+      : option.defense ? game.i18n.localize(CONFIG.E20.defenses?.[option.defense] ?? option.defense)
+        : option.status ? game.i18n.localize(CONFIG.statusEffects?.find?.(s => s.id == option.status)?.name ?? option.status)
+          : game.i18n.localize(CONFIG.E20.damageTypes?.[option.damageType] ?? option.damageType)),
   }))];
 
   // A step is one more point of a damage option (never an Essence, Condition or effect one).
@@ -1196,24 +786,12 @@ function primaryEffectOf(actor, weapon) {
   return effects.find(effect => effect.system?.damageValue) ?? effects[0] ?? null;
 }
 
-const ABLATIVE = [RIDER.ablativeHeavy, RIDER.ablativeMedium, RIDER.ablativeLight];
-
-async function degradeAblative(target) {
-  for (const upgrade of target.items?.contents ?? [...(target.items ?? [])]) {
-    if (upgrade.type == 'upgrade' && ABLATIVE.includes(sourceOf(upgrade))) {
-      const lost = (upgrade.flags?.essence20?.ablativeLoss ?? 0) + 1;
-      if (lost <= (Number(upgrade._source?.system?.armorBonus?.value) || 0)) {
-        await upgrade.setFlag('essence20', 'ablativeLoss', lost);
-      }
-    }
-  }
-}
-
 /**
- * What an Ablative Matrix has left - read by documents/item.mjs when upgrades are prepared.
+ * What an Ablative Matrix has lost - read by documents/item.mjs when upgrades are prepared. The upgrade's own
+ * `targeted` Trigger rule counts it up on each Critical Success that hits its wearer.
  */
 export function ablativeLossOf(upgrade) {
-  return ABLATIVE.includes(sourceOf(upgrade)) ? (upgrade.flags?.essence20?.ablativeLoss ?? 0) : 0;
+  return Number(upgrade?.flags?.essence20?.ablativeLoss) || 0;
 }
 
 /* -------------------------------------------- */
@@ -1265,15 +843,13 @@ export async function disarm(actor, target, { maxHands = 2, payFree = false, opt
 
   await weapon.update({ 'system.equipped': false, 'flags.essence20.disarmed': true });
 
-  // Dismantle Firearm (Intercontinental Adventures, p.30): "When you successfully disarm a gun, you
-  // can choose to dismantle and damage it as a Free action... It is useless for the remainder of
-  // the Combat unless your opponent succeeds on a DIF 20 Technology Skill Test to put it back
-  // together."
+  // A ManeuverOption {option: dismantle} rule (Dismantle Firearm, for a gun): the weapon may be pulled apart instead -
+  // useless for the rest of the combat until a DIF 20 Technology test puts it back together (the chat button).
   let dismantled = false;
-  const isGun = (weapon.system?.traits ?? []).some(trait => ['ballistic', 'reload'].includes(trait));
-  if (isGun && actorHasPerk(actor, RIDER.dismantleFirearm)) {
+  const dismantler = ruleManeuverOption(actor, 'dismantle', weapon);
+  if (dismantler) {
     dismantled = await foundry.applications.api.DialogV2.confirm({
-      window: { title: nameOf(actor, RIDER.dismantleFirearm, 'Dismantle Firearm') },
+      window: { title: dismantler.name },
       content: `<p>${game.i18n.format('E20.DismantlePrompt', { weapon: weapon.name })}</p>`,
       rejectClose: false,
     });
@@ -1336,122 +912,8 @@ export function decorateRiderCard(message, html) {
   }
 }
 
-/* -------------------------------------------- */
-/*  Spells                                       */
-/* -------------------------------------------- */
-
-async function spellRiders(actor, hits, checkContext) {
-  const spell = checkContext?.spellSourceId;
-  if (!spell) {
-    return;
-  }
-
-  const success = checkContext.entries?.length ? hits.some(h => h.hit) : true;
-  const title = (await fromUuid(checkContext.riderContext?.itemUuid ?? ''))?.name ?? '';
-
-  // Barreling Beam (MLP CRB p.136): "On a success, you move your target up to 15ft away."
-  if (spell == RIDER.barrelingBeam) {
-    for (const { target, hit } of hits) {
-      if (hit) {
-        await pushActor(target, actor, 15);
-      }
-    }
-  }
-
-  // Teleporting Beam (MLP CRB p.138): "On a success, you move your target instantly to any space
-  // within range of your Beam without a creature or object in it." Range 60ft.
-  if (spell == RIDER.teleportingBeam) {
-    for (const { target, hit } of hits) {
-      if (!hit) {
-        continue;
-      }
-
-      const point = await pickCanvasPoint(game.i18n.format('E20.TeleportingBeamPick', { name: target.name }));
-      const own = tokenOf(actor);
-      if (point && (!own || distanceFeet(own.center, point) <= 60)) {
-        await placeActorAt(target, point);
-      } else if (point) {
-        ui.notifications.warn(game.i18n.localize('E20.TeleportingBeamOutOfRange'));
-      }
-    }
-  }
-
-  if (!success) {
-    return;
-  }
-
-  // Scarefying Appearance (p.51): "Threats of the same or smaller size categories as you gain the
-  // Frightened condition unless they can succeed at a DIF 14 Intimidation Skill Test. You can also
-  // pick two of the following benefits".
-  if (spell == RIDER.scarefyingAppearance) {
-    const { getNearbyEnemyTokens } = await import("./nearby-enemies.mjs");
-    const sizes = Object.keys(CONFIG.E20.actorSizes ?? {});
-    const own = sizes.indexOf(actor.system?.size);
-    const threats = getNearbyEnemyTokens(actor, Infinity).map(t => t.actor)
-      .filter(threat => own < 0 || sizes.indexOf(threat.system?.size) <= own);
-    await postSaveCard(actor, threats, { title, skills: ['intimidation'], dif: 14, status: 'frightened' });
-    await pickScarefyingBenefits(actor, title);
-  }
-}
-
-const SCAREFYING_FLAG = 'scarefyingBenefits';
-const SCAREFYING_CHOICES = ['toughness', 'claws', 'wings', 'might', 'intimidation'];
-
-async function pickScarefyingBenefits(actor, title) {
-  const boxes = SCAREFYING_CHOICES.map(key => `<label class="checkbox"><input type="checkbox" name="${key}" /> ${game.i18n.localize(`E20.ScarefyingBenefit.${key}`)}</label>`).join('<br>');
-  const picked = await foundry.applications.api.DialogV2.wait({
-    window: { title },
-    classes: ["window-app", "e20-window"],
-    content: `<p>${game.i18n.localize('E20.ScarefyingPickTwo')}</p>${boxes}`,
-    buttons: [{
-      action: 'ok', label: game.i18n.localize('E20.DialogConfirmButton'), default: true,
-      callback: (event, button) => SCAREFYING_CHOICES.filter(key => button.form.elements[key]?.checked).slice(0, 2),
-    }],
-    rejectClose: false,
-  });
-  if (!Array.isArray(picked) || !picked.length) {
-    return;
-  }
-
-  await actor.setFlag('essence20', SCAREFYING_FLAG, { picked, sceneEpoch: getSceneEpoch() });
-  await ChatMessage.create({
-    speaker: ChatMessage.getSpeaker({ actor }),
-    content: game.i18n.format('E20.ScarefyingPicked', { name: actor.name, benefits: picked.map(key => game.i18n.localize(`E20.ScarefyingBenefit.${key}`)).join(', ') }),
-  });
-}
-
-/**
- * The Scarefying Appearance benefits picked, while the spell lasts.
- * @param {Actor} actor
- * @returns {Array<String>}
- */
-export function scarefyingBenefits(actor) {
-  const stored = actor?.flags?.essence20?.[SCAREFYING_FLAG];
-  if (!stored || stored.sceneEpoch != getSceneEpoch() || !isScarefyingAppearanceActive(actor)) {
-    return [];
-  }
-
-  return stored.picked ?? [];
-}
-
-/**
- * Scarefying Appearance's "↑1 to Might, or an additional ↑1 to their Intimidation" benefits, as
- * sources for the roller's own tests.
- */
-export function scarefyingSources(actor, rolledSkill) {
-  const picked = scarefyingBenefits(actor);
-  const label = game.i18n.localize('E20.ScarefyingTitle');
-  const out = [];
-  if (picked.includes('might') && rolledSkill == 'might') {
-    out.push({ id: 'rider-scarefyingMight', label, shiftUp: 1, shiftDown: 0, edge: false, snag: false });
-  }
-
-  if (picked.includes('intimidation') && rolledSkill == 'intimidation') {
-    out.push({ id: 'rider-scarefyingIntimidation', label, shiftUp: 1, shiftDown: 0, edge: false, snag: false });
-  }
-
-  return out;
-}
+// (Spells: Barreling Beam's push and Teleporting Beam's move are hit Trigger rules on the spells - push / pickPoint + moveTo;
+// Scarefying Appearance's size, save card and benefits are its afterRoll Trigger and rules.)
 
 /* -------------------------------------------- */
 /*  Shoves                                       */
@@ -1593,18 +1055,6 @@ export async function handleRiderButton(message, button, target) {
   }
 }
 
-/**
- * Note a creature that was damaged - Shots Fired (Field Guide, p.68).
- * @param {Actor} attacker
- * @param {Actor} target
- * @param {Number} amount
- */
-export async function onDamageDealt(attacker, target, amount) {
-  if (amount > 0 && attacker && target && actorHasPerk(attacker, RIDER.shotsFired)) {
-    await addMark(target, { kind: 'shotsFired', by: attacker.uuid, ...untilEndOfNextTurn(attacker), label: nameOf(attacker, RIDER.shotsFired, 'Shots Fired') });
-  }
-}
-
 /* -------------------------------------------- */
 /*  Use buttons                                  */
 /* -------------------------------------------- */
@@ -1618,7 +1068,6 @@ export async function onDamageDealt(attacker, target, amount) {
 export async function useRider(item, economy) {
   const kind = riderUseFor(item);
   const actor = item.parent;
-  const target = game.user?.targets?.first?.()?.actor ?? null;
   const pay = async (cost) => {
     if (!cost || !game.combat || !economy) {
       return true;
@@ -1631,251 +1080,17 @@ export async function useRider(item, economy) {
   switch (kind) {
   case 'coat':
     return startCoating(actor, economy);
-  case 'poisonChemistry':
-    return changePoisonState(actor, economy);
-  case 'poisonProdigy':
-    return poisonProdigy(actor, economy);
-  case 'hacker':
-    return toggleHackerPoison(actor);
-
-    // Checkmate (GI Joe CRB, Grandmaster, 20th level, p.87): "as a Standard action, designate both a
-    // target and a space that target could reach with a Sprint. Make a Persuasion Skill Test against
-    // the target's Willpower. On a success, the target moves to the designated space."
-  case 'checkmate': {
-    if (!target) {
-      ui.notifications.warn(game.i18n.format('E20.ActionPerkNeedsTarget', { perk: item.name }));
-      return null;
-    }
-
-    const point = await pickCanvasPoint(game.i18n.format('E20.CheckmatePick', { name: target.name }));
-    if (!point || !(await pay('standard'))) {
-      return null;
-    }
-
-    await actor._dice?.rollSkill({
-      skill: 'persuasion', essence: 'social', shiftUp: 0, shiftDown: 0, defenseType: 'willpower',
-      riderSpec: JSON.stringify({ kind: 'checkmate', point, targetUuid: target.uuid }),
-    }, actor);
-    return null;
-  }
+    // (Poison Prodigy is a Use rule on its Perk.)
 
   // Suppressing Fire (GI Joe CRB, Heavy Gunner, 3rd level, p.111): "As a Standard action, you set
   // your suppressive fire area equal to the Multiple Targets area of your heavy weapon."
   case 'suppressingFire':
     return placeSuppressingFire(actor, item, pay);
 
-    // Wrecking Ball (GI Joe CRB, Juggernaut, 17th level, p.112): "You may spend a Story Point when
-    // you Sprint to gain the following effects: You ignore Rough Terrain... Make a Might attack with
-    // an Edge against any enemies you move through - if successful, they suffer two damage and are
-    // knocked prone."
-  case 'wreckingBall': {
-    // Once it's under way, the button rolls the attack against the enemies moved through
-    // (targeted).
-    if (isWreckingBallActive(actor)) {
-      if (!game.user?.targets?.size) {
-        ui.notifications.warn(game.i18n.format('E20.ActionPerkNeedsTarget', { perk: item.name }));
-        return null;
-      }
-
-      await actor._dice?.rollSkill({
-        skill: 'might', essence: 'strength', shiftUp: 0, shiftDown: 0, edge: true, defenseType: 'toughness',
-        riderSpec: JSON.stringify({ kind: 'wreckingBall' }),
-      }, actor);
-      return null;
-    }
-
-    const { canSpendForActor, spendForActor } = await import("../resources/story-points.mjs");
-    if (!canSpendForActor(actor, 1)) {
-      ui.notifications.warn(game.i18n.format('E20.ActionPerkNoStoryPoint', { perk: item.name }));
-      return null;
-    }
-
-    if (!(await pay('standard'))) {
-      return null;
-    }
-
-    await spendForActor(actor, 1);
-    const { setSprinting } = await import("../actions/action-economy.mjs");
-    await setSprinting(actor, true);
-    await actor.setFlag('essence20', 'wreckingBall', { combatId: game.combat?.id ?? null, round: game.combat?.round ?? null, turn: game.combat?.turn ?? null });
-    return game.i18n.format('E20.WreckingBallOn', { name: actor.name });
-  }
-
-  // Jammer / White Noise Generator - switched on and off.
-  case 'device': {
-    const on = !item.flags?.essence20?.[DEVICE_FLAG];
-    await item.setFlag('essence20', DEVICE_FLAG, on);
-    return game.i18n.format(on ? 'E20.DeviceOn' : 'E20.DeviceOff', { name: actor.name, device: item.name });
-  }
-
-  // Muzzle Punch (Quartermaster's Guide, General Perk, p.30): "As a Move action, you can make a
-  // Finesse or Might Skill Test against the Toughness of a creature within your reach, 'thumping'
-  // them with the muzzle of a two-handed ranged weapon you wield. On a success, that creature is
-  // forced 5 feet directly away from you, and their Movement is reduced by 5 feet on their next
-  // turn. On a Critical Success, both of these distances increase to 10 feet."
-  case 'muzzlePunch': {
-    if (!target || !withinFeet(actor, target, 10)) {
-      ui.notifications.warn(game.i18n.format('E20.ShoveNotAdjacent', { name: target?.name ?? '' }));
-      return null;
-    }
-
-    const hasGun = (actor.items?.contents ?? [...actor.items]).some(i => i.type == 'weapon' && i.system?.equipped !== false
-        && (i.system?.derivedHands ?? i.system?.hands ?? 1) >= 2
-        && (actor.items.contents ?? [...actor.items]).some(e => e.type == 'weaponEffect' && e.flags?.essence20?.parentId == i.id && e.system?.classification?.style != 'melee'));
-    if (!hasGun) {
-      ui.notifications.warn(game.i18n.localize('E20.MuzzlePunchNoWeapon'));
-      return null;
-    }
-
-    if (!(await pay('move'))) {
-      return null;
-    }
-
-    const skill = rankOf(actor, 'finesse') >= rankOf(actor, 'might') ? 'finesse' : 'might';
-    await actor._dice?.rollSkill({
-      skill, essence: skill == 'finesse' ? 'speed' : 'strength', shiftUp: 0, shiftDown: 0, defenseType: 'toughness',
-      riderSpec: JSON.stringify({ kind: 'muzzlePunch', targetUuid: target.uuid }),
-    }, actor);
-    return null;
-  }
-
-  // Reveal Weakness (Field Guide, p.68): "you can reveal their weakness as a Standard action. When
-  // you reveal a creature's weakness, attacks that successfully target them deal +1 damage for
-  // the rest of combat."
-  case 'revealWeakness': {
-    if (!target) {
-      ui.notifications.warn(game.i18n.format('E20.ActionPerkNeedsTarget', { perk: item.name }));
-      return null;
-    }
-
-    if (!(await pay('standard'))) {
-      return null;
-    }
-
-    await addMark(target, { kind: 'revealWeakness', by: actor.uuid, combatId: game.combat?.id ?? null, label: item.name });
-    return game.i18n.format('E20.RevealWeaknessDone', { name: actor.name, target: target.name });
-  }
-
-  // Energic Shields - "Pick one type of non-physical (blunt or sharp) damage."
-  case 'energicShields': {
-    const choice = await pickFrom(item.name, Object.entries(CONFIG.E20.damageTypes)
-      .filter(([key]) => ['acid', 'cold', 'electric', 'emp', 'fire', 'laser', 'sonic', 'poison', 'psychic', 'void', 'element'].includes(key))
-      .map(([value, label]) => ({ value, label: game.i18n.localize(label) })), riderChoiceOf(item));
-    if (!choice) {
-      return null;
-    }
-
-    await item.setFlag('essence20', CHOICE_FLAG, choice);
-    return game.i18n.format('E20.RiderChoiceSet', { name: actor.name, item: item.name, choice: game.i18n.localize(CONFIG.E20.damageTypes[choice]) });
-  }
-
-  // Energy Resistor (TF CRB, armor upgrade, p.132): "Choose an energy type. Weapons that deal damage
-  // of that energy type do not affect you."
-  case 'energyResistor': {
-    const choice = await pickFrom(item.name, ['acid', 'cold', 'electric', 'emp', 'fire', 'laser', 'sonic']
-      .map(value => ({ value, label: game.i18n.localize(CONFIG.E20.damageTypes[value]) })), riderChoiceOf(item));
-    if (!choice) {
-      return null;
-    }
-
-    await item.setFlag('essence20', CHOICE_FLAG, choice);
-    return game.i18n.format('E20.RiderChoiceSet', { name: actor.name, item: item.name, choice: game.i18n.localize(CONFIG.E20.damageTypes[choice]) });
-  }
-
-  // Genetic Decoding - "Choose an Essence Score."
-  case 'geneticDecoding': {
-    const choice = await pickFrom(item.name, Object.entries(CONFIG.E20.essences ?? {}).filter(([key]) => key != 'any')
-      .map(([value, label]) => ({ value, label: game.i18n.localize(label) })), riderChoiceOf(item));
-    if (!choice) {
-      return null;
-    }
-
-    await item.setFlag('essence20', CHOICE_FLAG, choice);
-    return game.i18n.format('E20.RiderChoiceSet', { name: actor.name, item: item.name, choice: game.i18n.localize(CONFIG.E20.essences[choice]) });
-  }
-
-  // Co-Dependent - "Choose a life-form to whom you are Binary Bonded, a teammate, or a similar
-  // being." The targeted token.
-  case 'coDependent': {
-    if (!target) {
-      ui.notifications.warn(game.i18n.format('E20.ActionPerkNeedsTarget', { perk: item.name }));
-      return null;
-    }
-
-    await item.setFlag('essence20', CHOICE_FLAG, target.uuid);
-    return game.i18n.format('E20.RiderChoiceSet', { name: actor.name, item: item.name, choice: target.name });
-  }
-
-  // Secondary Mark (Decepticon Directive, Tracker, 10th level, p.56): "you can choose two
-  // creatures to be your Primary Quarry with the same hour of research."
-  case 'secondaryQuarry': {
-    if (!target) {
-      ui.notifications.warn(game.i18n.format('E20.ActionPerkNeedsTarget', { perk: item.name }));
-      return null;
-    }
-
-    await actor.setFlag('essence20', 'secondaryQuarryUuid', target.uuid);
-    return game.i18n.format('E20.SecondaryQuarryDone', { name: actor.name, target: target.name });
-  }
-
-  // Ally Awareness (TF CRB, General Perk, p.84): "once per scene as a Free action, you can use the
-  // memory of advice an ally once gave you to gain the benefits of Lend Assistance."
-  case 'allyAwareness': {
-    const skill = await pickFrom(item.name, Object.entries(CONFIG.E20.skills ?? {})
-      .map(([value, label]) => ({ value, label: game.i18n.localize(label) })));
-    if (!skill || !(await pay('free'))) {
-      return null;
-    }
-
-    const { LEND_ASSISTANCE_SHIFT_FLAG } = await import("../actions/lend-assistance.mjs");
-    await bankPendingBonus(actor, LEND_ASSISTANCE_SHIFT_FLAG, { skill, shiftUp: 1, assisterUuid: actor.uuid });
-    await markUsed(actor, 'allyAwarenessAssist', { window: 'scene' });
-    return game.i18n.format('E20.AllyAwarenessDone', { name: actor.name });
-  }
-
-  case 'bowlOver': {
-    const { isSprinting } = await import("../actions/action-economy.mjs");
-    if (!isSprinting(actor)) {
-      ui.notifications.warn(game.i18n.localize('E20.BowlOverNotSprinting'));
-      return null;
-    }
-
-    if (!(await pay('free'))) {
-      return null;
-    }
-
-    await rollShove(actor, { bowlOver: true });
-    return null;
-  }
-
-  // Gremlins' Mischief (A Jump Through Time, p.57): "By spending 1 Personal Power when targeting a
-  // mechanical, robotic, or computerized target, all of your Unarmed strikes inflict
-  // Electromagnetic damage instead of their normal type until the end of your turn."
-  case 'gremlinsMischief': {
-    const available = Number(actor.system?.powers?.personal?.value) || 0;
-    if (!target || !isMechanical(target)) {
-      ui.notifications.warn(game.i18n.localize('E20.GremlinsNeedsMachine'));
-      return null;
-    }
-
-    if (available < 1) {
-      ui.notifications.warn(game.i18n.format('E20.ActionPerkNoPower', { name: actor.name }));
-      return null;
-    }
-
-    await actor.update({ 'system.powers.personal.value': available - 1 });
-    await actor.setFlag('essence20', 'gremlinsMischief', { combatId: game.combat?.id ?? null, round: game.combat?.round ?? null, turn: game.combat?.turn ?? null });
-    return game.i18n.format('E20.GremlinsOn', { name: actor.name });
-  }
-
+    // (Wrecking Ball, Muzzle Punch and Bowl-Over are Use rules on their Perks.)
   default:
     return null;
   }
-}
-
-function rankOf(actor, skill) {
-  const faces = Number(/d(\d+)/.exec(actor?.system?.skills?.[skill]?.shift ?? '')?.[1]);
-  return Number.isFinite(faces) ? faces : 0;
 }
 
 async function pickFrom(title, options, selected = null) {
@@ -1893,33 +1108,6 @@ async function pickFrom(title, options, selected = null) {
     ],
     rejectClose: false,
   }).then(result => (result && result != 'cancel' ? result : null));
-}
-
-/**
- * Whether Gremlins' Mischief is turning this actor's unarmed strikes Electromagnetic right now.
- */
-export function isGremlinsMischiefActive(actor) {
-  return isThisTurn(actor?.flags?.essence20?.gremlinsMischief);
-}
-
-/**
- * Whether Wrecking Ball is carrying this actor through Rough Terrain this turn.
- */
-export function isWreckingBallActive(actor) {
-  return isThisTurn(actor?.flags?.essence20?.wreckingBall);
-}
-
-function isThisTurn(stamp) {
-  const combat = game?.combat;
-  if (!stamp) {
-    return false;
-  }
-
-  if (!combat || stamp.combatId == null) {
-    return !combat && stamp.combatId == null;
-  }
-
-  return stamp.combatId == combat.id && stamp.round == combat.round && stamp.turn == combat.turn;
 }
 
 async function placeSuppressingFire(actor, item, pay) {
@@ -2022,10 +1210,9 @@ export function decorateSuppressCard(message, html) {
 }
 
 /**
- * What the Use-button rolls do once they land, per target: Checkmate, Muzzle Punch, Suppressing
- * Fire.
+ * What the Use-button rolls do once they land, per target: Suppressing Fire.
  */
-export async function resolveTargetedSpec(actor, spec, results, { isCrit }) {
+export async function resolveTargetedSpec(actor, spec, results) {
   for (const result of results ?? []) {
     if (!result.success || !result.targetUuid) {
       continue;
@@ -2036,25 +1223,9 @@ export async function resolveTargetedSpec(actor, spec, results, { isCrit }) {
       continue;
     }
 
-    if (spec.kind == 'checkmate') {
-      await placeActorAt(target, spec.point);
-    }
-
-    if (spec.kind == 'muzzlePunch') {
-      const feet = result.multiplier >= 2 || isCrit ? 10 : 5;
-      await pushActor(target, actor, feet);
-      await slowNextTurn(target, feet);
-    }
-
     if (spec.kind == 'suppress') {
       noteRoller(actor);
       await applyTimedCondition(target, 'frightened', 2);
-    }
-
-    if (spec.kind == 'wreckingBall') {
-      const { applyDamage } = await import("./combat.mjs");
-      await applyDamage(target, 2, 'blunt');
-      await target.toggleStatusEffect('prone', { active: true });
     }
   }
 }
@@ -2077,93 +1248,11 @@ export function isVsPrimaryQuarry(actor, target) {
     || (actorHasPerk(actor, RIDER.secondaryQuarry) && actor.getFlag?.('essence20', 'secondaryQuarryUuid') == target.uuid);
 }
 
-/**
- * Consistent (Cobra Codex, Silver Medal Syndrome Origin, p.46): "When you roll a Critical Success on
- * a Skill Test with a benefit for Critical Successes, you can choose to treat it as a regular
- * success and gain ↑1 on your next Skill Test."
- * @param {Actor} actor
- * @returns {Promise<Boolean>}   Whether the Critical Success is given up.
- */
-export async function askConsistent(actor) {
-  if (!actorHasPerk(actor, RIDER.consistent)) {
-    return false;
-  }
-
-  return !!(await foundry.applications.api.DialogV2.confirm({
-    window: { title: findPerk(actor, RIDER.consistent)?.name ?? 'Consistent' },
-    content: `<p>${game.i18n.localize('E20.ConsistentPrompt')}</p>`,
-    rejectClose: false,
-  }));
-}
+// (Consistent is a CritDowngrade rule on the Silver Medal Syndrome item - rules/plugins/rolls/crit-downgrade.mjs.)
 
 export { getPendingBonus };
 
-/* -------------------------------------------- */
-/*  Shaping an area                              */
-/* -------------------------------------------- */
-
-const AREA_SHAPES = ['circle', 'cone', 'line'];
-
-/**
- * Concentrated Explosion (Cobra Codex, Saboteur, 10th level, p.51): "When you use an explosive, you
- * can make the area of effect 5 feet larger or smaller, or change its shape (from a 10-foot cone
- * to a 10-foot blast, for example)."
- *
- * Concentrated Fire (Cobra Codex, Pyro, 6th level, p.58): "when attempting an Area of Effect or
- * Multiple Target attack with a weapon with the Fire trait, you can choose to target a single
- * creature instead. If you do, the attack treats Fire Immunity as Fire Resistance, and can score a
- * Critical Success on the d2."
- *
- * Asked before the area is placed, from documents/item.mjs.
- * @param {Actor} actor
- * @param {Item} effect   The weaponEffect being rolled.
- * @returns {Promise<{radiusDeltaFeet: Number, shape: ?String, single: Boolean}|null>}   null when
- *   there's nothing to ask, or the dialog was closed.
- */
-export async function pickConcentratedArea(actor, effect) {
-  const weapon = parentWeaponOf(actor, effect);
-  const explosive = effect?.system?.classification?.style == 'explosive' && effect.system?.shape
-    && actorHasPerk(actor, RIDER.concentratedExplosion);
-  const fire = (effect?.system?.shape || (effect?.system?.numTargets ?? 1) > 1)
-    && ((weapon?.system?.traits ?? []).includes('fire') || effect?.system?.damageType == 'fire')
-    && actorHasPerk(actor, RIDER.concentratedFire);
-  if (!explosive && !fire) {
-    return null;
-  }
-
-  const buttons = [{ action: 'normal', label: game.i18n.localize('E20.ConcentratedNormal'), default: true }];
-  if (explosive) {
-    buttons.push({ action: 'bigger', label: game.i18n.localize('E20.ConcentratedBigger') });
-    if ((effect.system.radius ?? 0) > 5) {
-      buttons.push({ action: 'smaller', label: game.i18n.localize('E20.ConcentratedSmaller') });
-    }
-
-    for (const shape of AREA_SHAPES.filter(s => s != effect.system.shape)) {
-      buttons.push({ action: `shape-${shape}`, label: game.i18n.format('E20.ConcentratedShape', { shape: game.i18n.localize(CONFIG.E20.aoeShapes?.[shape] ?? shape) }) });
-    }
-  }
-
-  if (fire) {
-    buttons.push({ action: 'single', label: game.i18n.localize('E20.ConcentratedSingle') });
-  }
-
-  const choice = await foundry.applications.api.DialogV2.wait({
-    window: { title: explosive ? nameOf(actor, RIDER.concentratedExplosion, 'Concentrated Explosion') : nameOf(actor, RIDER.concentratedFire, 'Concentrated Fire') },
-    classes: ["window-app", "e20-window"],
-    content: `<p>${game.i18n.localize('E20.ConcentratedPrompt')}</p>`,
-    buttons,
-    rejectClose: false,
-  });
-  if (!choice) {
-    return null;
-  }
-
-  return {
-    radiusDeltaFeet: choice == 'bigger' ? 5 : choice == 'smaller' ? -5 : 0,
-    shape: choice.startsWith('shape-') ? choice.slice(6) : null,
-    single: choice == 'single',
-  };
-}
+// (Concentrated Explosion / Concentrated Fire / Shaped Charges: BeforeArea rules - rules/plugins/combat/before-area.mjs.)
 
 /**
  * "Any enemies who ... move into it" - a token moved into someone's Suppressing Fire area. Run by the

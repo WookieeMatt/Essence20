@@ -8,7 +8,8 @@
     "rules": [
       {"type":"RollModifier","label":"Earth Defense Command Benefits (zero-G attack)","when":["attack","environment:zeroGravity"],"upshift":2},
       {"type":"RollModifier","label":"Earth Defense Command Benefits (Driving an aerial vehicle)","when":["skill:driving","not:self:type:vehicle","vehicle:driving","vehicle:type:vehicle","vehicle:data:system.movement.aerial.total>0"],"upshift":2},
-      {"type":"RollModifier","label":"Earth Defense Command Benefits (Driving an aerial vehicle)","when":["skill:driving","self:type:vehicle","self:data:system.movement.aerial.total>0"],"upshift":2}
+      {"type":"RollModifier","label":"Earth Defense Command Benefits (Driving an aerial vehicle)","when":["skill:driving","self:type:vehicle","self:data:system.movement.aerial.total>0"],"upshift":2},
+      {"type":"Use","label":"Space Kit (a free Limited Kit this mission)","limit":{"per":"mission"},"steps":[{"do":"makeKit","tier":"limited","skills":["driving","culture","science","technology"],"prompt":"E20.S1SpaceKitPrompt","none":"E20.S1SpaceKitNoSpec"},{"do":"chat","text":"{name} receives a free Limited {var.kit} kit for this mission."}]}
     ],
     "automation": {
       "status": "full",

@@ -5,6 +5,9 @@
   "_id": "PldYR4nBQ9zwjBVJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"E20.LendAssistanceModeNextMove","side":"give","effect":"nextTurnGrant","move":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you Lend Assistance, you can choose to give your friend an extra Move action on their next turn instead.</p>"

@@ -5,6 +5,10 @@
   "_id": "19odrVUOsp4dCiOV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Fortitude","event":"applyingDamage","stage":"reductions","priority":1,"when":["self:ownRenegade"],"steps":[{"do":"setVar","key":"damage","value":"max(0, @var.damage - 1)"}]},
+      {"type":"Trigger","label":"Fortitude (vehicle)","event":"applyingDamage","stage":"reductions","priority":1,"scope":"renegadeVehicle","steps":[{"do":"setVar","key":"damage","value":"max(0, @var.damage - 1)"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: all damage applied to you is reduced by 1.</p>"

@@ -2,7 +2,8 @@ import { registerAfterDamage, registerChatButton, registerTurnStart } from "../.
 import { getUses, markUsed } from "../../mechanics/resources/scene-clock.mjs";
 import { G2 } from "../shared/gij-crb-item-lookups.mjs";
 import { TFull as T } from "../shared/item-lang.mjs";
-import { has as hasItem, itemsOf, sourceOf } from "../shared/item-lookups.mjs";
+import { itemsOf, sourceOf } from "../shared/item-lookups.mjs";
+import { ruleDamageImmune } from "../../rules/plugins/combat/damage-immunity.mjs";
 import { say as post } from "../shared/chat-lines.mjs";
 import { roundStamp } from "../shared/turn-stamps.mjs";
 
@@ -121,11 +122,11 @@ registerTurnStart(async (actor, combat) => {
   }
 });
 
-// "until it is subjected to EMP damage" - the shield drops and needs its repair test. Impenetrable
-// Shield (18th level) grants immunity to EMP damage, which stops this too.
+// "until it is subjected to EMP damage" - the shield drops and needs its repair test. An EMP Immunity stops this too (Impenetrable
+// Shield's, 18th level, is a DamageImmunity rule on the Perk while the shield is up).
 registerAfterDamage(async (actor, dealt, damageType) => {
   if (damageType != 'emp' || !shieldOf(actor)?.system?.isActive || actor.system?.immunities?.emp
-    || hasItem(actor, G2.impenetrableShield)) {
+    || ruleDamageImmune(actor, 'emp')) {
     return;
   }
 

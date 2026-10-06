@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Word of Unicron","scope":"incoming","when":[{"any":["skill:persuasion","skill:deception"]},"not:target:hasItem:Compendium.essence20.decepticon_directive.Item.liMchvrumE1wB8Rc"],"downshift":2}
+      {"type":"RollModifier","label":"Word of Unicron","scope":"incoming","when":[{"any":["skill:persuasion","skill:deception"]},"not:target:hasItem:Compendium.essence20.decepticon_directive.Item.liMchvrumE1wB8Rc"],"downshift":2},
+      {"type":"AddictionSnag","label":"Word of Unicron (Snag on Dark Energon addiction attacks)"}
     ],
     "automation": {
       "status": "full",

@@ -5,6 +5,10 @@
   "_id": "xFMzM5pycDmmw4u3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"BeforeArea","label":"Shaped Charges: leave out caught targets","exclude":"skillDie","when":["item:data:system.classification.style=explosive"]},
+      {"type":"HitMultiplier","label":"Shaped Charges","multiply":2,"when":["item:data:system.classification.style=explosive",{"any":["target:tag:object","target:tag:structure","target:tag:building","target:tag:wall"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when your explosive attack catches tokens, you roll your skill die and may untarget up to that many of them. Your explosives also deal double damage to targets tagged as objects or structures.</p>"

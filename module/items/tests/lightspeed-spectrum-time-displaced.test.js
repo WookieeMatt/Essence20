@@ -1,9 +1,7 @@
 import { jest } from '@jest/globals';
 
-let jtt;
 let ats;
 let spectrum;
-let common;
 let registry;
 
 let n = 0;
@@ -49,12 +47,7 @@ beforeAll(async () => {
   };
   global.foundry = { utils: { randomID: () => 'r', deepClone: x => JSON.parse(JSON.stringify(x)) }, applications: { api: {} } };
   global.fromUuidSync = uuid => global.game.actors.find(a => a.uuid == uuid) ?? null;
-  common = await import('../shared/pr-jtt-ats-item-ids.mjs');
-  jtt = await import('../rolls/time-displaced.mjs');
-  ats = {
-    ...(await import('../rolls/be-an-example.mjs')), ...(await import('../zords/lightspeed-boost.mjs')),
-    ...(await import('../attacks/stand-behind-me-taunt.mjs')),
-  };
+  ats = { ...(await import('../attacks/stand-behind-me-taunt.mjs')) };
   spectrum = await import('../../mechanics/characters/spectrum-shifted.mjs');
   registry = (await import('../../mechanics/item-hooks.mjs')).registrySnapshot();
 });
@@ -66,10 +59,9 @@ beforeEach(() => {
 });
 
 test('every module registers its Use buttons', () => {
-  expect(registry.uses.map(u => u.id)).toEqual(expect.arrayContaining([
-    'pr1-time-displaced', 'pr1-be-an-example',
-    'pr1-lightspeed-boost',
-  ]));
+  // Time Displaced and Lightspeed Boost are their items' own Use rules (module/rules/conv17-split2.test.js).
+  expect(registry.uses.map(u => u.id)).not.toContain('pr1-time-displaced');
+  expect(registry.uses.map(u => u.id)).not.toContain('pr1-lightspeed-boost');
   expect(registry.uses.map(u => u.id)).not.toContain('pr1-advanced-dino-gem');
   // Tactical Size Shift is the Feature's own rules (module/rules/conv12-slH12.test.js).
   expect(registry.uses.map(u => u.id)).not.toContain('pr1-tactical-size-shift');
@@ -83,23 +75,8 @@ test('every module registers its Use buttons', () => {
 // Mobile Headquarters is the Feature's own rules: SkillDie (module/rules/conv11-slF11.test.js) and the scene allies'
 // InitiativeEdge (module/rules/conv12-slH12.test.js).
 
-test('Time Displaced rolls one die larger', () => {
-  expect(jtt.largerDie('1d8')).toBe('1d10');
-  expect(jtt.largerDie('2d8')).toBe('2d8');
-});
-
-// The Movement / Resistance half is the item's own rules now (module/rules/conv5-slA5.test.js).
-test('Lightspeed Boost: Evasion in flight', () => {
-  const zord = actor('zord', [
-    item('feature', common.PR1.lightspeedBoost, { flags: { pr1LightspeedBoost: { option: 'aeronautic' } } }),
-  ], {}, { tokens: [{ document: { elevation: 20 } }] });
-  expect(ats.lightspeedDefenseAdjust(zord, 'evasion')).toBe(2);
-  expect(ats.lightspeedDefenseAdjust(zord, 'toughness')).toBe(0);
-  // The picker button only until the pick is made (Pyrotechnic's button is then the item's own Use rule).
-  const use = registry.uses.find(u => u.id == 'pr1-lightspeed-boost');
-  expect(use.matches(item('feature', common.PR1.lightspeedBoost))).toBe(true);
-  expect(use.matches(item('feature', common.PR1.lightspeedBoost, { flags: { pr1LightspeedBoost: { option: 'pyrotechnic' } } }))).toBe(false);
-});
+// Time Displaced's larger Continuum Anomaly die and Lightspeed Boost's pick and its Evasion in flight / submerged are the
+// items' own rules (module/rules/conv17-split2.test.js); the Movement / Resistance half too (module/rules/conv5-slA5.test.js).
 
 // Power Flux is the Feature's own Trigger rule (module/rules/conv7-slA7.test.js).
 
@@ -115,13 +92,7 @@ test('Stand Behind Me! blocks an attack on anyone but the taunter', () => {
   expect(ats.tauntBlocks(foe, attack, [])).toBeNull();
 });
 
-test('Be an Example source', () => {
-  const a = actor('playerCharacter', [
-    item('perk', common.PR1.beAnExample, { name: 'Be an Example' }),
-  ], { isMorphed: true, originSkillsIncrease: 'culture', skills: { culture: {} } }, { flags: { pr1BeAnExample: { skill: 'culture' } } });
-  expect(ats.originSkillOf(a)).toBe('culture');
-  expect(ats.atsSources(a, null, { rolledSkill: 'culture' }).map(s => s.id)).toEqual(['pr1BeAnExample']);
-});
+// Be an Example is its Origin Benefit's own Use rule (rules/conv15-items2.test.js).
 
 // Enhanced Stealth's +10 ft is the item's own Movement rules now (module/rules/conv5-slA5.test.js); Genetic
 // Resonance is its SummonTime rule (module/rules/conv10-slA10.test.js).

@@ -70,10 +70,14 @@ async function stepsApi() {
   return { recipients: steps.recipients, fillTextFor };
 }
 
-registerPickSource('config', step => {
+// exceptAt (round 17, split2): leave out the keys the actor already has set at that path (system.qualified.weapons -
+// Armchair General's weapon type it isn't Qualified in yet).
+registerPickSource('config', (step, ctx) => {
   const table = getPath(globalThis.CONFIG?.E20 ?? {}, step.path) ?? {};
   const localize = key => globalThis.game?.i18n?.localize?.(key) ?? key;
-  return Object.entries(table && typeof table == 'object' ? table : {}).map(([value, label]) => ({ value, label: localize(typeof label == 'string' ? label : value) }));
+  const held = step.exceptAt ? getPath(ctx?.actor ?? {}, step.exceptAt) ?? {} : {};
+  return Object.entries(table && typeof table == 'object' ? table : {}).filter(([value]) => !held?.[value])
+    .map(([value, label]) => ({ value, label: localize(typeof label == 'string' ? label : value) }));
 });
 
 registerTag('holder:asOther', (rest, ctx) => {

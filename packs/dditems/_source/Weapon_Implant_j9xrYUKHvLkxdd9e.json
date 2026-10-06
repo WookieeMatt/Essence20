@@ -5,6 +5,11 @@
   "_id": "j9xrYUKHvLkxdd9e",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"success","label":"Weapon Implant (DIF 14: a standard weapon)","when":["skill:technology","var:dif=14"],"steps":[{"do":"target","min":0},{"do":"pickGrant","from":{"type":"weapon","availabilities":["standard"],"tags":["not:item:trait:consumable"],"fields":["system.traits"]},"to":"targetOrSelf"}]},
+      {"type":"Trigger","event":"afterRoll","outcome":"success","label":"Weapon Implant (DIF 18: a limited weapon)","when":["skill:technology","var:dif=18","calc:@owned.0XjyYHChhc0VStRn>0"],"steps":[{"do":"target","min":0},{"do":"pickGrant","from":{"type":"weapon","availabilities":["limited"],"tags":["not:item:trait:consumable"],"fields":["system.traits"]},"to":"targetOrSelf"}]},
+      {"type":"Trigger","event":"afterRoll","outcome":"success","label":"Weapon Implant (DIF 20: a restricted weapon)","when":["skill:technology","var:dif=20","calc:@owned.UavRPwxwYnLr4BHA>0"],"steps":[{"do":"target","min":0},{"do":"pickGrant","from":{"type":"weapon","availabilities":["restricted"],"tags":["not:item:trait:consumable"],"fields":["system.traits"]},"to":"targetOrSelf"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: roll DIF 14 Technology (higher tiers with Major Augments or Extensive Enhancements) and pick a non-Consumable weapon of that Availability to graft onto the targeted ally. Left to the table: the once-per-mission limit (the system allows once per scene).</p>"

@@ -5,6 +5,9 @@
   "_id": "tn3WTWH4n1Gel5sO",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Leech Siphons","outcome":"x2","when":["item:onHost"],"steps":[{"do":"updateActor","to":"target","add":{"system.energon.normal.value":-1},"filter":["target:data:system.energon.normal.value>0"]},{"do":"updateActor","to":"self","add":{"system.energon.normal.value":1}}]}
+    ],
     "prerequisites": {"when":["ask:Close Combat Blade"]},
     "automation": {
       "status": "partial",

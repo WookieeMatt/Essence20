@@ -5,6 +5,10 @@
   "_id": "yMihdpSe5ntjRN3R",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Scapegoat (Cleverness instead of Willpower)","defense":"willpower","mode":"best","early":true,"from":["cleverness"],"key":"scapegoat","limit":{"per":"scene","key":"scapegoat"}},
+      {"type":"Defense","label":"Scapegoat (Willpower instead of Cleverness)","defense":"cleverness","mode":"best","early":true,"from":["willpower"],"key":"scapegoat","limit":{"per":"scene","key":"scapegoat"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per scene, when an attack targets your Willpower or Cleverness and the other one is higher, the higher Defense is used instead. The attack's chat card shows the swapped Defense value.</p>"

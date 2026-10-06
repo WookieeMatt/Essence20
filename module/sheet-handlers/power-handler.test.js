@@ -1,5 +1,10 @@
 import { jest } from '@jest/globals';
-import { _powerCountUpdate, fixedPowerCost, powerCost } from "./power-handler.mjs";
+// The dispatch probe: onPowerUse fires the Power's own powerUsed rules (rules/plugins/resources/power-used.mjs).
+const firePowerUsed = jest.fn(async () => {});
+jest.unstable_mockModule('./rules/plugins/resources/power-used.mjs', () => ({ firePowerUsed, ruleUseIsFree: () => false }));
+const { _powerCountUpdate, fixedPowerCost, powerCost } = await import("./power-handler.mjs");
+
+beforeEach(() => firePowerUsed.mockClear());
 
 const SPEED_BOOST_ID = "Compendium.essence20.pr_crb.Item.CDbaCheOK2rUsqli";
 
@@ -20,8 +25,7 @@ function makeEffectsCollection(effects) {
   };
 }
 
-// Speed Boost is the dispatch probe here: activating it switches its own Ground Movement effect on
-// (see items/movement/speed-boost.mjs), which is what these tests observe.
+// A Speed Boost-shaped Power; the dispatch itself is observed through firePowerUsed.
 function makeEffect(disabled) {
   return { disabled, changes: [{ key: 'system.movement.ground.morphed' }], update: jest.fn(async function (data) {
     this.disabled = data.disabled;
@@ -82,7 +86,7 @@ describe("_powerCountUpdate", () => {
     await _powerCountUpdate(actor, 20, 'personal', 4, power);
 
     expect(actor.update).toHaveBeenCalledWith({ "system.powers.personal.value": 6 });
-    expect(ground.disabled).toBe(false);
+    expect(firePowerUsed).toHaveBeenCalledWith(actor, power, expect.any(Number));
   });
 
   test("does not dispatch when the spend is rejected (unaffordable)", async () => {
@@ -92,7 +96,7 @@ describe("_powerCountUpdate", () => {
 
     await _powerCountUpdate(actor, 10, 'personal', 5, power);
 
-    expect(ground.disabled).toBe(true);
+    expect(firePowerUsed).not.toHaveBeenCalled();
   });
 });
 
@@ -114,7 +118,7 @@ describe("powerCost", () => {
     await powerCost(actor, power);
 
     expect(actor.update).toHaveBeenCalledWith({ "system.powers.personal.value": 4 });
-    expect(ground.disabled).toBe(false);
+    expect(firePowerUsed).toHaveBeenCalledWith(actor, power, expect.any(Number));
   });
 
   // G.I. Joe nanomite powers: no Power points, two uses a day (mechanics/resources/nanomite-uses.mjs).
@@ -175,7 +179,7 @@ describe("powerCost", () => {
     await powerCost(actor, power);
 
     expect(actor.update).not.toHaveBeenCalled();
-    expect(ground.disabled).toBe(true);
+    expect(firePowerUsed).not.toHaveBeenCalled();
     expect(global.ui.notifications.error).toHaveBeenCalled();
   });
 
@@ -191,7 +195,7 @@ describe("powerCost", () => {
 
     await powerCost(actor, power);
 
-    expect(ground.disabled).toBe(false);
+    expect(firePowerUsed).toHaveBeenCalledWith(actor, power, expect.any(Number));
   });
 
   test("free-to-activate threat Power (no cost): the dedicated free-activation branch dispatches to onPowerUse with nothing to spend", async () => {
@@ -207,7 +211,7 @@ describe("powerCost", () => {
     await powerCost(actor, power);
 
     expect(actor.update).not.toHaveBeenCalled();
-    expect(ground.disabled).toBe(false);
+    expect(firePowerUsed).toHaveBeenCalledWith(actor, power, expect.any(Number));
   });
 
   // USER DECISION (2026-09-24): Sorcerous points (Finster's Monster-Matic Cookbook p.274) are a
@@ -236,7 +240,7 @@ describe("powerCost", () => {
       await powerCost(actor, power);
 
       expect(actor.update).not.toHaveBeenCalled();
-      expect(ground.disabled).toBe(false);
+      expect(firePowerUsed).toHaveBeenCalledWith(actor, power, expect.any(Number));
     });
 
     test("dispatches even when the actor's sorcerous value is 0 - powerCost is a build cost, not an affordability check", async () => {
@@ -252,7 +256,7 @@ describe("powerCost", () => {
       await powerCost(actor, power);
 
       expect(global.ui.notifications.error).not.toHaveBeenCalled();
-      expect(ground.disabled).toBe(false);
+      expect(firePowerUsed).toHaveBeenCalledWith(actor, power, expect.any(Number));
     });
 
     test("ignores hasVariableCost - never opens the PowerCostSelector spend flow", async () => {
@@ -268,20 +272,16 @@ describe("powerCost", () => {
       await powerCost(actor, power);
 
       expect(actor.update).not.toHaveBeenCalled();
-      expect(ground.disabled).toBe(false);
+      expect(firePowerUsed).toHaveBeenCalledWith(actor, power, expect.any(Number));
     });
   });
 });
 
 describe("fixedPowerCost", () => {
-  const BOOST = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
-  const WIELDER = "Compendium.essence20.through_the_shattered_grid.Item.lNCrjjiiUhI6ROal";
-  const power = (sourceId, powerCost = 2) => ({ flags: { core: { sourceId } }, system: { powerCost } });
-
-  test("Zeo Crystal Wielder makes Zeo Crystal Boost cost 1 less", () => {
-    const actor = { items: [{ flags: { core: { sourceId: WIELDER } } }] };
-    expect(fixedPowerCost(actor, power(BOOST))).toBe(1);
-    expect(fixedPowerCost({ items: [] }, power(BOOST))).toBe(2);
-    expect(fixedPowerCost(actor, power("Compendium.essence20.pr_crb.Item.other"))).toBe(2);
+  // Zeo Crystal Wielder's discount is an ItemModifier rule on the derived powerCost (rules/conv14-other.test.js).
+  test("is the Power's (derived) cost, 0 when unset", () => {
+    expect(fixedPowerCost({ items: [] }, { system: { powerCost: 2 } })).toBe(2);
+    expect(fixedPowerCost({ items: [] }, { system: { powerCost: '1' } })).toBe(1);
+    expect(fixedPowerCost({ items: [] }, { system: { powerCost: null } })).toBe(0);
   });
 });

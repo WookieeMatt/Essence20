@@ -8,9 +8,19 @@ import { registerRuleType } from "../../types.mjs";
  */
 
 registerRuleType('KitPrerequisite', {
-  params: { mode: { kind: 'enum', required: true, options: ['lower', 'waive'] }, tiers: { kind: 'strings' }, skipEssenceKits: { kind: 'bool' } },
+  params: { mode: { kind: 'enum', required: true, options: ['lower', 'waive'] }, tiers: { kind: 'strings' }, skipEssenceKits: { kind: 'bool' }, all: { kind: 'bool' } },
   scopes: ['self'],
 });
+
+/**
+ * `waive` with `all: true` (round 14, uses - Kitbasher): every kit's prerequisite is waived, a Skill Kit's "No Ranks"
+ * too - kits.mjs#meetsKitPrerequisite asks this before anything else. Plain `waive` only drops the Skill die (the hook below).
+ */
+export function ruleWaivesAllKitPrerequisites(actor, info) {
+  return rulesOfType(actor, 'KitPrerequisite', 'self').some(({ rule, item }) => rule.mode == 'waive' && rule.all
+    && (!Array.isArray(rule.tiers) || !rule.tiers.length || rule.tiers.includes(info?.tier)) && !(rule.skipEssenceKits && info?.essence)
+    && evaluate(rule.when, contextFor({ self: actor, ruleItem: item })) === true);
+}
 
 /**
  * The essence20.kitPrerequisite hook (kits.mjs#meetsKitPrerequisite: out.need is the Skill die a kit asks for):

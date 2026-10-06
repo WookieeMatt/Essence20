@@ -1,5 +1,6 @@
 import { jest } from '@jest/globals';
-import { applyGreasedLightning, isGreasedLightningActive, removeGreasedLightning } from './greased-lightning.mjs';
+import { activateForWindow } from '../../mechanics/resources/scene-clock.mjs';
+import { isGreasedLightningActive, removeGreasedLightning } from './greased-lightning.mjs';
 
 function makeActor(flags = {}) {
   const flagStore = { ...flags };
@@ -26,7 +27,7 @@ describe("isGreasedLightningActive / applyGreasedLightning / removeGreasedLightn
     const actor = makeActor();
     expect(isGreasedLightningActive(actor)).toBe(false);
 
-    await applyGreasedLightning(actor);
+    await activateForWindow(actor, 'greasedLightningActive', 'scene');
     expect(isGreasedLightningActive(actor)).toBe(true);
 
     await removeGreasedLightning(actor);
@@ -35,7 +36,7 @@ describe("isGreasedLightningActive / applyGreasedLightning / removeGreasedLightn
 
   test("clears once the scene ends", async () => {
     const actor = makeActor();
-    await applyGreasedLightning(actor);
+    await activateForWindow(actor, 'greasedLightningActive', 'scene');
 
     global.game.settings.get = jest.fn((scope, key) => (key === 'sceneClockScene' ? 2 : undefined));
 

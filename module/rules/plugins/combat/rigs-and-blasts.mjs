@@ -1,6 +1,6 @@
-import { registerRoundStart, registerTurnEnd } from "../../../mechanics/item-hooks.mjs";
+import { registerRoundStart, registerTurnEnd, registerTurnStart } from "../../../mechanics/item-hooks.mjs";
 import { resolveValue } from "../../formula.mjs";
-import { registerStep, runSteps, stepContext } from "../../steps.mjs";
+import { recipients, registerStep, runSteps, stepContext } from "../../steps.mjs";
 import { escape, T, worldActors, write } from "../shared/chat-speaker-helpers.mjs";
 import { tokensAround } from "./canvas-points.mjs";
 
@@ -8,18 +8,24 @@ import { tokensAround } from "./canvas-points.mjs";
  * Delayed cards, rigs and blasts around a canvas point (round 10, group D) - the pieces a rigged-to-explode Perk
  * needs. A point is the run's @var.pointX / @var.pointY / {var.pointScene} (canvas.mjs pickPoint).
  *
- *  - `scheduleCard {turnEnds?, rounds?, steps}` - in a combat, `steps` run later: once this actor's turn has ended
- *    `turnEnds` times (the current turn counts), or when round now + `rounds` starts; out of combat (or with neither
- *    set) they run now. The run's targets and values go with them.
+ *  - `scheduleCard {turnEnds?, turnStarts?, rounds?, steps}` - in a combat, `steps` run later: once this actor's turn has
+ *    ended `turnEnds` times (the current turn counts), when its turn has started `turnStarts` times from now (1: the
+ *    start of its next turn - round 15, items2, Artillery Support), or when round now + `rounds` starts; out of combat
+ *    (or with none set) they run now. The run's targets and values go with them.
  *  - `rig {var}` / `requireRig {var, message?}` / `endRig {var}` - a live "rig" on the actor, named by a fresh id kept in
  *    @var.<var>: cards that act on the same rig check it's still live and end it, so a second card for it does nothing.
  *  - `blast {radius, skill, defense: toughness | evasion | ask, damage, damageType, title}` - the actor's Skill Test
  *    (the roll dialog, the check card) against that Defense of every token around the point, then an Apply Damage
  *    button per creature it succeeded against (damage x Degrees of Success). Nobody there: says so.
+ *    Round 15 (items2 - Artillery Support): `packets: [{amount, type}]` - fixed damage instead (no Degrees of Success),
+ *    a button per packet for each creature hit, and `missPackets` for each it missed ("those who Defend"); `at:
+ *    targets` - the run's targets' tokens instead of those around the point; `excludeTargets: true` - leaves the
+ *    run's targets out of the area (a splash around them).
  *  - `explosion {radius, formula, saveSkills, saveDif, damageType, title}` - roll the damage once; each creature around
  *    the point makes a plain save (the best of the Skills - d20 + the die + its modifier) and takes half on a success;
  *    Apply Damage buttons for each.
- *  - `damageCard {actor, amount, damageType, title}` - an Apply Damage button for one actor ({var.x} a uuid).
+ *  - `damageCard {actor, amount, damageType, title}` - an Apply Damage button for one actor ({var.x} a uuid). With `to`
+ *    instead of `actor` (round 15, items2 - Solid-State Energon's blast): one card, a button for each recipient.
  *  - `explodeVehicle {actor}` - a vehicle or Zord explodes as itself (mechanics/vehicles/vehicle-defeat.mjs).
  */
 
@@ -37,14 +43,15 @@ registerStep('scheduleCard', async (step, ctx) => {
   const combat = globalThis.game?.combat;
   const rounds = step.rounds === undefined ? 0 : Math.max(0, Math.round(resolveValue(step.rounds, { actor: ctx.actor, item: ctx.item, vars: ctx.vars }, 0)));
   const turnEnds = Math.max(0, Number(step.turnEnds) || 0);
-  if (!combat || (!rounds && !turnEnds)) {
+  const turnStarts = Math.max(0, Number(step.turnStarts) || 0);
+  if (!combat || (!rounds && !turnEnds && !turnStarts)) {
     return runSteps(step.steps ?? [], ctx);
   }
 
   const entry = {
     id: globalThis.foundry?.utils?.randomID?.() ?? String(Date.now()), combatId: combat.id, itemUuid: ctx.item?.uuid ?? null,
     targets: ctx.targets.map(target => target.uuid), vars: plainVars(ctx.vars), steps: step.steps ?? [],
-    ...(turnEnds ? { turnEndsLeft: turnEnds } : { dueRound: (Number(combat.round) || 0) + rounds }),
+    ...(turnEnds ? { turnEndsLeft: turnEnds } : turnStarts ? { turnStartsLeft: turnStarts } : { dueRound: (Number(combat.round) || 0) + rounds }),
   };
   const list = Array.isArray(ctx.actor?.flags?.essence20?.[SCHEDULE]) ? ctx.actor.flags.essence20[SCHEDULE] : [];
   await write(ctx.actor, 'update', [{ [`flags.essence20.${SCHEDULE}`]: [...list, entry] }]);
@@ -89,6 +96,35 @@ export async function scheduledTurnEnd(actor, combat) {
   }
 }
 
+/** An actor's turn started: its turn-start-counted entries tick down; those at zero run. */
+export async function scheduledTurnStart(actor, combat) {
+  const list = actor?.flags?.essence20?.[SCHEDULE];
+  if (!Array.isArray(list) || !list.length || !combat) {
+    return;
+  }
+
+  const due = [];
+  const kept = [];
+  for (const entry of list) {
+    if (entry.turnStartsLeft === undefined || entry.combatId != combat.id) {
+      kept.push(entry);
+      continue;
+    }
+
+    const left = entry.turnStartsLeft - 1;
+    (left > 0 ? kept : due).push({ ...entry, turnStartsLeft: left });
+  }
+
+  if (!due.length && kept.every((entry, i) => entry === list[i])) {
+    return;
+  }
+
+  await actor.update({ [`flags.essence20.${SCHEDULE}`]: kept });
+  for (const entry of due) {
+    await runEntry(actor, entry);
+  }
+}
+
 /** A round started: round-counted entries that are due run. */
 export async function scheduledRoundStart(combat, actors = worldActors()) {
   for (const actor of actors) {
@@ -110,6 +146,7 @@ export async function scheduledRoundStart(combat, actors = worldActors()) {
 }
 
 registerTurnEnd((actor, combat) => scheduledTurnEnd(actor, combat));
+registerTurnStart((actor, combat) => scheduledTurnStart(actor, combat));
 registerRoundStart(combat => scheduledRoundStart(combat));
 
 /* -------------------------------------------- */
@@ -183,13 +220,13 @@ function tokensAt(ctx, radius) {
 
 registerStep('damageCard', async (step, ctx) => {
   const uuid = fill(step.actor, ctx);
-  const actor = uuid ? globalThis.fromUuidSync?.(uuid, { strict: false }) ?? null : null;
-  if (!actor) {
+  const actors = step.actor === undefined && step.to ? recipients(step, ctx) : [uuid ? globalThis.fromUuidSync?.(uuid, { strict: false }) ?? null : null].filter(Boolean);
+  if (!actors.length) {
     return;
   }
 
   const amount = Math.max(0, Math.round(resolveValue(step.amount ?? 1, { actor: ctx.actor, item: ctx.item, vars: ctx.vars }, 1)));
-  await postButtons(ctx, fill(step.title, ctx), [damageButtonHtml(actor, 'ruleDamage', amount, step.damageType ?? 'blunt')]);
+  await postButtons(ctx, fill(step.title, ctx), actors.map(actor => damageButtonHtml(actor, 'ruleDamage', amount, step.damageType ?? 'blunt')));
 });
 
 /** Ask Toughness or Evasion. */
@@ -212,7 +249,12 @@ registerStep('blast', async (step, ctx) => {
   }
 
   const title = fill(step.title, ctx) || ctx.item?.name || '';
-  const tokens = tokensAt(ctx, Number(step.radius) || 0);
+  const aimed = new Set(ctx.targets.map(target => target?.uuid).filter(Boolean));
+  const tokenActor = token => token?.actor ?? null;
+  const tokens = (step.at == 'targets'
+    ? ctx.targets.map(target => target?.token?.object ?? target?.getActiveTokens?.()?.[0] ?? null).filter(Boolean)
+    : tokensAt(ctx, Number(step.radius) || 0))
+    .filter(token => !step.excludeTargets || !aimed.has(tokenActor(token)?.uuid));
   if (!tokens.length) {
     await globalThis.ChatMessage?.create?.({ speaker: globalThis.ChatMessage.getSpeaker?.({ actor: ctx.actor }), content: `<p>${escape(T('BlastEmpty', { name: title }))}</p>` });
     return;
@@ -225,6 +267,23 @@ registerStep('blast', async (step, ctx) => {
   const results = (rolled?.outcomes ?? []).flatMap(outcome => outcome.results ?? []);
   const damage = Math.max(0, Math.round(resolveValue(step.damage ?? 1, { actor: ctx.actor, item: ctx.item, vars: ctx.vars }, 1)));
   const buttons = [];
+  if (Array.isArray(step.packets)) {
+    for (const [index, result] of results.entries()) {
+      const found = result.targetUuid ? await globalThis.fromUuid?.(result.targetUuid) : null;
+      const actor = found?.documentName == 'Token' ? found.actor : found;
+      const packets = result.success ? step.packets : step.missPackets ?? [];
+      if (!actor || !packets.length) {
+        continue;
+      }
+
+      const label = result.success ? actor.name : `${actor.name} (${localize('E20.RulesExtItems2.Defended')})`;
+      packets.forEach((packet, at) => buttons.push(damageButtonHtml(actor, `ruleBlast:${index}:${at}`, Math.max(0, Math.round(Number(packet.amount) || 0)), packet.type ?? 'blunt', label)));
+    }
+
+    await postButtons(ctx, title, buttons);
+    return;
+  }
+
   for (const [index, result] of results.entries()) {
     const target = result.success && result.targetUuid ? await globalThis.fromUuid?.(result.targetUuid) : null;
     const actor = target?.documentName == 'Token' ? target.actor : target;
@@ -234,7 +293,7 @@ registerStep('blast', async (step, ctx) => {
   }
 
   await postButtons(ctx, title, buttons);
-}, { errors: (step, where) => (step.radius === undefined ? [`${where}: blast needs a radius`] : []) });
+}, { errors: (step, where) => (step.radius === undefined && step.at != 'targets' ? [`${where}: blast needs a radius`] : []) });
 
 /** A plain save: the best of the Skills (d20 + the die + its modifier) against the DIF. */
 async function plainSave(actor, skills, dif) {

@@ -5,6 +5,9 @@
   "_id": "5GDpvzG3x2ZgrrQj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Bumper Crop (DIF 10 Intimidation)","steps":[{"do":"roll","skill":"intimidation","dif":10,"onSuccess":[{"do":"focus","to":"nearbyEnemies:30"},{"do":"keepTargets","max":"1 + floor((@var.rollTotal - 10) / 5)"},{"do":"bank","snag":true,"to":"targets","until":"combat","appliesWhen":["not:roll:initiative"]}]}]}
+    ],
     "prerequisites": {"when":["self:hasType:focus:Tiller"]},
     "automation": {
       "status": "full",

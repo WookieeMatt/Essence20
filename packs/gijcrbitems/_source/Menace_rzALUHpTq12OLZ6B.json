@@ -5,6 +5,9 @@
   "_id": "rzALUHpTq12OLZ6B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Menace (no Reach ↓ with a shotgun or SMG)","immune":["reachDownshift"],"when":["attack:ranged",{"any":["weapon:id:2qW1YLopvjKyezNQ","weapon:id:oJInlAgdYZzjH7bk"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: you take no penalty for using a shotgun or submachine gun within an enemy's reach.</p><p>Left to the table: your free Standard or Limited upgrade for that weapon at Requisition.</p>"

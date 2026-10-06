@@ -1,11 +1,11 @@
-import { actorHasPerk } from "../characters/perks.mjs";
+import { ruleSummonTimeBonus } from "../../rules/plugins/zords/summon-time-bonus.mjs";
 
 /**
  * Call to Action (PR CRB, Zord Feature, p.136-137, auto-added to every Zord actor - see
  * documents/actor.mjs#_preCreate): "In 3d2 game rounds, the Zord arrives to the border of the
  * conflict, awaiting to be piloted by the Ranger that summoned it." This existed nowhere in the
  * codebase - a Zord dropped onto a Ranger's sheet was immediately pilotable, with no arrival delay
- * at all - which also left Enhanced Summoner (below) with nothing to reduce.
+ * at all - which also left Enhanced Summoner (a SummonTimeBonus rule) with nothing to reduce.
  *
  * Same "roll a timer, store the ready round, GM/table enforces it" advisory shape
  * mechanics/vehicles/combiner-timer.mjs#rollCombineTimer already establishes for the sibling "Zords won't
@@ -14,36 +14,9 @@ import { actorHasPerk } from "../characters/perks.mjs";
  */
 const SUMMON_READY_ROUND_FLAG = 'zordSummonReadyRound';
 
-// Enhanced Summoner (PR CRB, Grid Tech I, p.38): "You and your Power Ranger team reduce the number
-// of rounds it takes to summon your Zords by -1 (minimum of 1)." A flat reduction to the ROLLED
-// TOTAL (unlike Fast Modulation's own die-step-down for the Combiner timer) - RAW gives no die to
-// downgrade here, just "-1 round." "You and your team" is read the same way every other
-// team-wide grant in this codebase reads it (We All Go Home, We Are the Coinless): held by the
-// summoning Ranger themselves, OR any nearby ally (same token disposition) - it doesn't stack
-// with multiple holders, since RAW states a flat -1, not -1 per holder.
-const ENHANCED_SUMMONER_ID = "Compendium.essence20.pr_crb.Item.pmA5wQDbc5oQk5Ak";
-
-/**
- * Whether the summoning Ranger (or a nearby ally) holds Enhanced Summoner - see
- * ENHANCED_SUMMONER_ID's own comment above. Same nearby-ally disposition scan
- * mechanics/combat/combat.mjs#findWeAllGoHomeHolder already establishes for a different team-wide grant.
- * @param {Actor} pilotActor
- * @returns {Boolean}
- */
-function hasEnhancedSummoner(pilotActor) {
-  if (actorHasPerk(pilotActor, ENHANCED_SUMMONER_ID)) {
-    return true;
-  }
-
-  const pilotToken = pilotActor?.getActiveTokens?.()?.[0];
-  if (!pilotToken || !canvas?.tokens) {
-    return false;
-  }
-
-  return canvas.tokens.placeables.some(token =>
-    token !== pilotToken && token.actor && token.document.disposition === pilotToken.document.disposition
-    && actorHasPerk(token.actor, ENHANCED_SUMMONER_ID));
-}
+// Enhanced Summoner (PR CRB, Grid Tech I, p.38) - "you and your team": a SummonTimeBonus {amount: 1, sceneAllies: true}
+// rule (rules/plugins/zords/summon-time-bonus.mjs): the summoner's own, or any same-Disposition token's on the scene;
+// it doesn't stack.
 
 /**
  * Rolls the Zord's own arrival timer (3d2, minus 1 with Enhanced Summoner, minimum 1) and stores it
@@ -64,12 +37,24 @@ export async function rollSummonTimer(pilotActor, zordActor) {
     return null;
   }
 
-  const roll = await new Roll('3d2').evaluate();
-  const reduction = hasEnhancedSummoner(pilotActor) ? 1 : 0;
-  // SummonTime rules - the summoner's (Unique Weapon (Small Melee) halves it), then the Zord's (Genetic Resonance) -
-  // rules/plugins/zords/zord-timing-hooks.mjs.
-  const { ruleSummonRounds } = await import("../../rules/plugins/zords/zord-timing-hooks.mjs");
-  const rounds = ruleSummonRounds(pilotActor, zordActor, Math.max(1, roll.total - reduction));
+  // A faster arrival the summoner picks instead of the roll - SummonOption rules (Manifested Zord, Q-Rex Portal,
+  // Assisted Summoning): rules/plugins/zords/summon-option.mjs.
+  const { pickSummonOption } = await import("../../rules/plugins/zords/summon-option.mjs");
+  const fast = await pickSummonOption(pilotActor, zordActor);
+  if (fast === false) {
+    return null;
+  }
+
+  let rounds = fast;
+  if (rounds === null) {
+    const roll = await new Roll('3d2').evaluate();
+    const reduction = ruleSummonTimeBonus(pilotActor);
+    // SummonTime rules - the summoner's (Unique Weapon (Small Melee) halves it), then the Zord's (Genetic Resonance) -
+    // rules/plugins/zords/zord-timing-hooks.mjs.
+    const { ruleSummonRounds } = await import("../../rules/plugins/zords/zord-timing-hooks.mjs");
+    rounds = ruleSummonRounds(pilotActor, zordActor, Math.max(1, roll.total - reduction));
+  }
+
   const readyRound = game.combat.round + rounds;
   await zordActor.setFlag('essence20', SUMMON_READY_ROUND_FLAG, readyRound);
 
@@ -127,5 +112,3 @@ export async function onSummonZord(target, pilotActor) {
   const zordActor = await fromUuid(zordUuid);
   await rollSummonTimer(pilotActor, zordActor);
 }
-
-export { ENHANCED_SUMMONER_ID };

@@ -5,6 +5,9 @@
   "_id": "PTEnW3QDpejzj27c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","label":"Wealth Test in place of a Requisition test","from":"*","mode":"ask","options":["wealth"],"carryShifts":true,"prompt":"E20.RulesExtItems2.WealthPrompt","when":["roll:dataset:requisitionItemName","not:skill:wealth"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you requisition, you're offered a Wealth test in place of the usual Requisition test.</p>"

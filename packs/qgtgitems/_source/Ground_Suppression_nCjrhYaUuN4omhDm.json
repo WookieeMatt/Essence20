@@ -5,6 +5,11 @@
   "_id": "nCjrhYaUuN4omhDm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Strafe an area","steps":[{"do":"choose","prompt":"Roll Driving against which Defense?","options":[{"label":"Toughness","steps":[{"do":"setVar","key":"defense","value":"toughness"}]},{"label":"Evasion","steps":[{"do":"setVar","key":"defense","value":"evasion"}]}]},{"do":"rollVsEach","skill":"driving","defense":"{var.defense}","to":"all:60","filter":["not:target:amongUserTargets:@actor.system.essences.smarts.value * @owned.FpwnwD7Pnl6uvLTZ"],"onHit":[{"do":"mark","key":"groundSuppressed","to":"target","until":"combatRound"}]}]},
+      {"type":"Defense","label":"Ground Suppression (-5 Toughness)","scope":"marked","mark":"groundSuppressed","early":true,"defense":"toughness","amount":-5},
+      {"type":"Defense","label":"Ground Suppression (-5 Evasion)","scope":"marked","mark":"groundSuppressed","early":true,"defense":"evasion","amount":-5}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: as a Standard action, pick Toughness or Evasion and roll Driving against everyone, friend or foe, in the strafing area. Those hit have -5 Toughness and Evasion until your next turn.</p><p>Left to the table: the strip's exact shape (a circle is used) and the vehicle being in motion.</p>"

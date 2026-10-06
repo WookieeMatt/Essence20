@@ -169,7 +169,7 @@ const essenceOf = key => globalThis.CONFIG?.E20?.skillToEssence?.[key] ?? null;
 const rankOf = (actor, key) => SKILL_RANKS.indexOf(actor?.system?.skills?.[key]?.shift ?? 'd20');
 
 /**
- * The Skills a `skills` spec allows, for this actor. {essence?, minShift?, maxShift?, exclude?: [..], also?: [..] (these
+ * The Skills a `skills` spec allows, for this actor. {essence?, essences?: [..], minShift?, maxShift?, exclude?: [..], also?: [..] (these
  * count whatever their Essence), sameEssenceAs?: <choice key> | {skill}, differentEssenceFrom?: <choice key>,
  * notChoice?: <choice key>, partner?: {the same spec, with sameEssence: true meaning the candidate's own Essence}} -
  * a candidate needs at least one partner Skill other than itself.
@@ -192,8 +192,18 @@ export function skillsFor(spec, actor, ruleItem, relativeTo = null) {
       return false;
     }
 
+    // notShift: leave out Skills whose die is exactly one of these (Fast Learner: never a d2 to give up).
+    if (Array.isArray(spec.notShift) && spec.notShift.includes(actor?.system?.skills?.[key]?.shift ?? 'd20')) {
+      return false;
+    }
+
     if (!also.includes(key)) {
       if (spec.essence && essenceOf(key) != spec.essence) {
+        return false;
+      }
+
+      // essences: one of several Essences (round 16, part a - Angry's Smarts- or Social-based Skill).
+      if (Array.isArray(spec.essences) && !spec.essences.includes(essenceOf(key))) {
         return false;
       }
 

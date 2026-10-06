@@ -1,5 +1,3 @@
-import { actorHasPerk } from "../../mechanics/characters/perks.mjs";
-
 /**
  * Team Focus (Red Ranger, 9th/18th level, p.53): "You add a [+1, then +2 at 18th] to any melee
  * attack that targets a target that has already been attacked by your teammate since your last
@@ -39,16 +37,15 @@ export async function markAttackedByAlly(attacker, target) {
 }
 
 /**
- * Whether the given actor's melee attack against target should get Team Focus's own shiftUp -
- * true when the target was already attacked this round by someone sharing the roller's own
- * disposition (an ally), other than the roller's own earlier attack.
- * @param {Actor} actor   The actor rolling (must hold the given Team Focus Perk).
+ * Whether the target was already attacked this round by someone sharing the roller's own
+ * disposition (an ally), other than the roller's own earlier attack - the rules engine's
+ * check:attackedByAlly (Team Focus's ↑, Withering Fire's offer - rules/plugins/tags/dice-checks.mjs).
+ * @param {Actor} actor   The actor rolling.
  * @param {Actor} target
- * @param {String} teamFocusId
  * @returns {Boolean}
  */
-export function checkTeamFocus(actor, target, teamFocusId) {
-  if (!game.combat || !target || !actorHasPerk(actor, teamFocusId)) {
+export function attackedByAllyThisRound(actor, target) {
+  if (!game.combat || !target || !actor) {
     return false;
   }
 

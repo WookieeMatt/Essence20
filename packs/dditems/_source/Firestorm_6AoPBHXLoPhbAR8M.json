@@ -5,6 +5,9 @@
   "_id": "6AoPBHXLoPhbAR8M",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Firestorm","when":["combat:exists"],"cost":{"action":"free","resource":{"path":"system.energon.normal.value"},"amount":1},"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","filter":["item:data:flags.essence20.mutation.explosiveAmmo"],"prompt":"Which weapon?","beforeCost":true},{"do":"mutateWeapon","onto":"choice:weapon","set":{"tripleNext":true}},{"do":"chat","text":"{name} readies a Firestorm: the next blast triples."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free, 1 Energon): a weapon already changed by Explosive Ammo triples its blast radius on its next attack.</p>"

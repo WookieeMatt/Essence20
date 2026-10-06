@@ -43,27 +43,6 @@ function actor(items = [], system = {}, extra = {}) {
   return a;
 }
 
-describe('jtt', () => {
-  let jtt;
-  beforeAll(async () => {
-    jtt = { ...(await import('../resources/unlucky-for-you-terror.mjs')), ...(await import('../defenses/interspatial-pause.mjs')) };
-  });
-
-  test('allFailed needs at least one compared result, all failed', () => {
-    expect(jtt.allFailed([])).toBe(false);
-    expect(jtt.allFailed([{ success: false }, { success: false }])).toBe(true);
-    expect(jtt.allFailed([{ success: false }, { success: true }])).toBe(false);
-  });
-
-  test('Interspatial Pause blocks damage', async () => {
-    const { registrySnapshot } = await import('../../mechanics/item-hooks.mjs');
-    const paused = actor([], {}, { flags: { o1InterspatialPause: { by: 'x' } } });
-    const mods = registrySnapshot().damageModifiers;
-    const results = await Promise.all(mods.map(fn => fn(paused, 4, 'blunt', {})));
-    expect(results).toContain(0);
-  });
-});
-
 describe('alterations', () => {
   let alt;
   beforeAll(async () => {
@@ -127,7 +106,7 @@ describe('alterations', () => {
 describe('cobra gear', () => {
   let gear;
   beforeAll(async () => {
-    gear = { ...(await import('../attacks/electromagnetic-vs-computerized.mjs')), ...(await import('../defenses/deflecting-weapon.mjs')) };
+    gear = await import('../attacks/electromagnetic-vs-computerized.mjs');
   });
 
   test('computerized gear', () => {
@@ -152,31 +131,4 @@ describe('cobra gear', () => {
   });
 
   // Onslaught is a HitRider rule now (rules/conv10-slB10.test.js).
-});
-
-describe('more', () => {
-  let more;
-  beforeAll(async () => {
-    more = await import('../forms/multimorph.mjs');
-  });
-
-  // Only the best Armor Matrix counting is an OnlyBest rule on each matrix (module/rules/conv11-slG11.test.js).
-  test('Multimorph offers other MLP Origins only', () => {
-    const rows = [
-      { uuid: 'Compendium.essence20.mlp_crb.Item.a', name: 'Pegasus', system: { items: { x: { type: 'perk', uuid: 'p' } } } },
-      { uuid: 'Compendium.essence20.mlp_crb.Item.b', name: 'Unicorn', system: { items: { x: { type: 'perk', uuid: 'q' } } } },
-      { uuid: 'Compendium.essence20.gi_joe_crb.Item.c', name: 'Brawler', system: { items: { x: { type: 'perk', uuid: 'r' } } } },
-    ];
-    const holder = actor([item('origin', { name: 'Unicorn' })]);
-    expect(more.otherOrigins(rows, holder).map(r => r.name)).toEqual(['Pegasus']);
-  });
-});
-
-test('the slice index registers its Use buttons', async () => {
-  await import('../index.mjs');
-  const { registrySnapshot } = await import('../../mechanics/item-hooks.mjs');
-  const ids = registrySnapshot().uses.map(u => u.id);
-  for (const id of ['o1InterspatialPause', 'o1Timeslide', 'o1Multimorph']) {
-    expect(ids).toContain(id);
-  }
 });

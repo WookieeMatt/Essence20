@@ -5,6 +5,9 @@
   "_id": "5T8ZrImJXHWqETnf",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"CriticalOption","defense":"cleverness","when":["item:onHost"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: on a Critical Success the weapon also deals 1 damage to the target's Cleverness. With Traumatic too, you choose which applies.</p>"

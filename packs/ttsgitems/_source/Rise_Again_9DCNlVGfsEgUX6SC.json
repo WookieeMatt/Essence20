@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"wouldBeDefeated","label":"Rise Again: stay at 1 Health while Morphed","when":["self:morphed","not:damage:crit"],"limit":{"per":"scene"},"steps":[{"do":"leaveAt","value":1}]}
+      {"type":"Trigger","event":"wouldBeDefeated","label":"Rise Again: stay at 1 Health while Morphed","when":["self:morphed","not:damage:crit"],"limit":{"per":"scene"},"steps":[{"do":"leaveAt","value":1}]},
+      {"type":"Use","label":"Rise Again: +5 to a Defense against the next attack","limit":{"per":"encounter"},"steps":[{"do":"choose","prompt":"Which Defense gains +5 against the next attack?","options":[{"label":"E20.DefenseCleverness","steps":[{"do":"bank","defense":"cleverness","defenseBonus":5}]},{"label":"E20.DefenseEvasion","steps":[{"do":"bank","defense":"evasion","defenseBonus":5}]},{"label":"E20.DefenseToughness","steps":[{"do":"bank","defense":"toughness","defenseBonus":5}]},{"label":"E20.DefenseWillpower","steps":[{"do":"bank","defense":"willpower","defenseBonus":5}]}]}]}
     ],
     "automation": {
       "status": "full",

@@ -5,6 +5,10 @@
   "_id": "cBiD2lBLRwnxu8Rx",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Range doubled (Scope)","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.range.value>0","item:data:_source.system.range.value>0"],"path":"system.range.value","op":"multiply","value":2},
+      {"type":"ItemModifier","label":"Long range doubled (Scope)","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.range.value>0","item:data:_source.system.range.value>0","item:data:system.range.long>0"],"path":"system.range.long","op":"multiply","value":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon's ranges are doubled.</p>"

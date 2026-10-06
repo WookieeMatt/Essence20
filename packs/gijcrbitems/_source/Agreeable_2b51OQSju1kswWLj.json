@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"PetCommand","label":"Agreeable","difTier":-1}
+    ],
     "prerequisites": {"when":["ask:A Limited or Restricted animal pet"]},
     "automation": {
       "status": "full",

@@ -5,6 +5,9 @@
   "_id": "dB5C6frDKWJKXVay",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Regain a Reckless Abandon use at combat start","event":"combatStart","when":["self:hasItem:Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY","calc:@rolePoints.Reckless_Abandon < 1"],"steps":[{"do":"gainResource","resource":{"rolePoints":"Reckless Abandon"},"amount":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when combat starts, if you have no Reckless Abandon uses left, you get one back.</p>"

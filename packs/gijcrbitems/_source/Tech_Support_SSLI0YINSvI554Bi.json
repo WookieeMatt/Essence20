@@ -5,6 +5,9 @@
   "_id": "SSLI0YINSvI554Bi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Tech Support (lend an Upgrade)","steps":[{"do":"target","beforeCost":true},{"do":"warn","text":"E20.O2NeedAlly","stop":true,"when":["target:self"],"beforeCost":true},{"do":"pick","key":"upgrade","from":"ownedItem","itemType":"upgrade","filter":["not:item:data:flags.essence20.temporary","not:item:data:flags.essence20.o2LentFrom"],"prompt":"Which Upgrade do you lend?","beforeCost":true},{"do":"choose","prompt":"Use it as:","when":["calc:@owned.1DZCpqOqYqVjFkoG>0"],"options":[{"label":"Free action - until your next turn","steps":[]},{"label":"Move action - for the scene","steps":[{"do":"setVar","key":"scene","value":1}]}],"beforeCost":true},{"do":"pick","key":"weapon","from":"targetItem","itemType":"weapon","when":["rule:pickedItem:upgrade:item:data:system.type=weapon"],"prompt":"Which of the ally's weapons gets it?","beforeCost":true},{"do":"spendAction","action":"free","when":["not:var:scene"]},{"do":"spendAction","action":"move","when":["var:scene"]},{"do":"lendItem","item":"choice:upgrade","onto":"choice:weapon","lasts":"nextTurnStart","when":["not:var:scene"]},{"do":"lendItem","item":"choice:upgrade","onto":"choice:weapon","lasts":"scene","when":["var:scene"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free action): lend a copy of one of your Upgrades to a targeted ally until the start of your next turn. Weapon upgrades go on the weapon they pick.</p>"

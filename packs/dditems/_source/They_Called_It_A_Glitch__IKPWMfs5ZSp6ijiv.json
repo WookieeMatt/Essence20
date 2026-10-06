@@ -5,6 +5,9 @@
   "_id": "IKPWMfs5ZSp6ijiv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Cybersurgery on the targeted ally","when":["not:combat:exists"],"steps":[{"do":"target","max":1},{"do":"warn","text":"E20.Tf1PickAlly","stop":true,"when":["target:self"]},{"do":"warn","text":"E20.Tf1GmApplies","stop":true,"when":["not:target:userOwns"]},{"do":"choose","auto":true,"prompt":"Operate on {target}, or reverse an earlier modification?","options":[{"label":"Operate (DIF 20 Technology)","steps":[{"do":"warn","text":"E20.RulesExtItems2.GlitchTooFrail","stop":true,"when":["calc:@target.system.health.max - 2<=1"]},{"do":"pickEntry","var":"perk","title":"General Perk to grant","from":{"type":"perk","fields":["system.type"],"tags":["item:data:system.type=general"]}},{"do":"setVar","key":"by","value":"{actor.uuid}"},{"do":"roll","skill":"technology","dif":20,"onSuccess":[{"do":"grant","to":"target","uuid":"{var.perk}","flags":{"tf1GlitchPerk":true}},{"do":"addEffect","on":"actor","to":"target","name":"{item.name}: {var.perkName}","changes":[{"key":"system.health.bonus","value":-2}],"flags":{"tf1Glitch":{"itemId":"{var.grantedId}","by":"{var.by}"}}},{"do":"chat","text":"{name}'s cybersurgery on {target} succeeds: -2 maximum Health, and {var.perkName}."}],"onFail":[{"do":"chat","text":"{name}'s cybersurgery on {target} fails."}]}]},{"label":"Reverse a modification","when":["target:hasEffectFlag:tf1Glitch"],"steps":[{"do":"undoEffect","to":"target","flag":"tf1Glitch","linkedItem":"itemId","prompt":"Which modification to reverse?"},{"do":"chat","text":"{name} reverses a modification on {target}."}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: target an ally and roll DIF 20 Technology; on a success they lose 2 maximum Health (Active Effect) and gain a General Perk you pick. A reverse option removes both.</p>"

@@ -4,6 +4,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Smashmouth Offense","cost":{"resource":{"storyPoints":true},"amount":1},"limit":{"per":"encounter"},"steps":[{"do":"mark","key":"smashmouth","to":"self","until":"combat"}]},
+      {"type":"HitRider","label":"Smashmouth Offense","note":1,"consumeMark":"smashmouth","when":["self:marked:smashmouth"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (once per combat): spend a Story Point before attacking; your next damaging hit deals +1 damage.</p><p>Left to the table: only using it when the hit won't Defeat the creature.</p>"

@@ -68,6 +68,8 @@ describe("hasDefeatedAllyInReach", () => {
   });
 });
 
+// The Stun-Defeat prompt only (combat.mjs#applyDamage's Stun branch); Health reaching 0 is the item's droppedToZero
+// watch Trigger, so a Health Defeat no longer calls this (combat.test.js covers both sides).
 describe("grantNotOnMyWatchReaction", () => {
   function makeHolderToken({ hasPerk = true, disposition = 1, distance = 5 } = {}) {
     const holderActor = {

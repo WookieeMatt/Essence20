@@ -47,7 +47,7 @@ import { T, escape, num, worldActors } from "../shared/hit-rider-lookups.mjs";
  *                                      GM applied to this actor (react/core.mjs#lastApplyContext).
  *
  * Events
- *  - patchedUp                         a successful Patch Up / Repair test (items/healing/patch-up.mjs): @var.amount is the
+ *  - patchedUp                         a successful Patch Up / Repair test (Patch Up's Use rule): @var.amount is the
  *                                      Health it restores, skill: the Skill, the patched creature the target.
  */
 

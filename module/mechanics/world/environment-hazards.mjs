@@ -1,8 +1,6 @@
-import { actorHasPerk, hasUsedThisEncounter, markUsedThisEncounter } from "../characters/perks.mjs";
 import { applyDamage } from "../combat/combat.mjs";
 import { DEFAULT_ENVIRONMENT, getEnvironmentState, hasEquippedEnviroSealedArmor } from "./environment.mjs";
-
-const IMMORTAL_REBEL_SOUL_ID = "Compendium.essence20.wtnv_citizens_guide.Item.SYFScAH8lDshgLNM";
+import { essenceWouldEmpty } from "../../rules/plugins/combat/defeat-stage.mjs";
 
 /**
  * Environmental damage over time and the protection against it (Across the Stars, "Exploring
@@ -61,46 +59,8 @@ export const ENVIRONMENT_PROTECTORS = [];
 // Actor types that are machines, not "living creatures" - only a Corrosive Atmosphere harms them.
 const OBJECT_ACTOR_TYPES = ['vehicle', 'zord', 'megaform', 'party'];
 
-const PR_CRB = "Compendium.essence20.pr_crb.Item.";
-const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
-// Environmentally Sealed (PR CRB, Grid Power): "While Morphed, you can survive indefinitely in toxic
-// atmospheres, a vacuum, or underwater. Additionally, you are immune to inhalation-based threats."
-export const ENVIRONMENTALLY_SEALED_ID = `${PR_CRB}v5ZJXRVnMiRaI4AU`;
-// Environmental Aegis (A Jump Through Time, Modified Shell): "you no longer breathe the air outside
-// your shell... you do not suffer any temperature-based negative effects" while Morphed.
-export const ENVIRONMENTAL_AEGIS_ID = "Compendium.essence20.jump_through_time.Item.jw8ggFiT6xdr0uMc";
-// Gas Mask (GI Joe CRB): "immunity to gas effects"; the NBC Protection Suit "comes with a gas mask";
-// the Knights of Canterlot Gasmask is the same gear.
-const GAS_MASK_IDS = [
-  `${GI_JOE_CRB}d089BSbVVaXWWTx6`,
-  `${GI_JOE_CRB}teDcExlkzRTGTChr`,
-  "Compendium.essence20.knights_of_canterlot.Item.m2LGzwoUL9LVbOp9",
-];
-// Scuba Gear (GI Joe CRB / MLP CRB, same id in both packs) - "gear with breathing assistance".
-const SCUBA_GEAR_ITEM_ID = "cZpeYK7VoLJKGKL6";
-
-/**
- * Whether an Item was copied from one of the given compendium entries.
- * @param {Item} item
- * @param {Array<String>} sourceIds
- * @returns {Boolean}
- * @private
- */
-function _isFrom(item, sourceIds) {
-  const source = item?._stats?.compendiumSource ?? item?.flags?.core?.sourceId ?? item?.flags?.essence20?.rulesSource;
-  return !!source && sourceIds.includes(source);
-}
-
-/**
- * Whether the actor has equipped gear matching the predicate.
- * @param {Actor} actor
- * @param {Function} predicate
- * @returns {Boolean}
- * @private
- */
-function _hasEquippedGear(actor, predicate) {
-  return !!actor?.items?.some?.(item => item.type == 'gear' && item.system?.equipped && predicate(item));
-}
+// Environmentally Sealed, Environmental Aegis (while Morphed), the gas masks and Scuba Gear are HazardProtection
+// item rules (rules/plugins/combat/hazard-terrain-targets.mjs), read through ENVIRONMENT_PROTECTORS above.
 
 /**
  * The environment's hazard, with its level resolved: a level that doesn't belong to this
@@ -158,31 +118,6 @@ export function getEnvironmentProtection(actor, environment) {
   const equippedArmor = actor.items?.filter?.(item => item.type == 'armor' && item.system?.equipped) ?? [];
   if (hasEquippedEnviroSealedArmor(equippedArmor)) {
     return game.i18n.localize('E20.ArmorTraitEnviroSealed');
-  }
-
-  const category = hazard.category;
-  if (actor.system?.isMorphed) {
-    const sealed = actor.items?.find?.(item => _isFrom(item, [ENVIRONMENTALLY_SEALED_ID]));
-    if (sealed && category == 'breathing') {
-      return sealed.name;
-    }
-
-    const aegis = actor.items?.find?.(item => _isFrom(item, [ENVIRONMENTAL_AEGIS_ID]));
-    if (aegis && (category == 'breathing' || category == 'temperature')) {
-      return aegis.name;
-    }
-  }
-
-  if (environment == 'toxicAtmosphere') {
-    const mask = actor.items?.find?.(item => item.type == 'gear' && item.system?.equipped && _isFrom(item, GAS_MASK_IDS));
-    if (mask) {
-      return mask.name;
-    }
-  }
-
-  if (['thickAtmosphere', 'thinAtmosphere'].includes(environment)
-    && _hasEquippedGear(actor, item => (item._stats?.compendiumSource ?? item.flags?.core?.sourceId ?? item?.flags?.essence20?.rulesSource ?? '').endsWith(`.Item.${SCUBA_GEAR_ITEM_ID}`))) {
-    return game.i18n.localize('E20.EnvironmentProtectionBreathingGear');
   }
 
   return null;
@@ -258,11 +193,9 @@ export async function applyEssenceDamage(actor, essences) {
   for (const essence of essences) {
     const value = actor.system?.essences?.[essence]?.value;
     if (typeof value == 'number' && value > 0) {
-      // Immortal Rebel Soul (WTNV Citizen's Guide, StrexCorp Rebel, p.37): "Once per investigation,
-      // when you would be Defeated due to your Health or an Essence Score dropping to 0, it stays at
-      // 1 instead." Shares the Health half's once-per-scene use (mechanics/combat/combat.mjs).
-      if (value == 1 && actorHasPerk(actor, IMMORTAL_REBEL_SOUL_ID) && !hasUsedThisEncounter(actor, 'immortalRebelSoulUsedThisEncounter')) {
-        await markUsedThisEncounter(actor, 'immortalRebelSoulUsedThisEncounter');
+      // essenceWouldEmpty Triggers (rules/plugins/combat/defeat-stage.mjs) may keep the last point - Immortal Rebel
+      // Soul's Essence half, sharing its Health half's use.
+      if (value == 1 && await essenceWouldEmpty(actor, essence)) {
         continue;
       }
 
