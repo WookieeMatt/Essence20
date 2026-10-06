@@ -48,7 +48,7 @@ test('ActionCost rules become cost rules in the action economy\'s shape', () => 
 test('valid and readable', () => {
   expect(validateRule({ type: 'ActionCost', action: 'sprint', to: 'free', limit: { per: 'turn', max: 1 } })).toEqual([]);
   expect(validateRule({ type: 'ActionCost', action: 'fly', to: 'free' })[0]).toMatch(/action must be one of/);
-  expect(validateRule({ type: 'ActionCost', action: 'hide', to: 'free', limit: { per: 'mission' } })).toEqual(['limit.per must be turn, scene or encounter']);
+  expect(validateRule({ type: 'ActionCost', action: 'hide', to: 'free', limit: { per: 'mission' } })).toEqual(['limit.per must be turn, scene, encounter or day']);
   expect(summarizeRule({ type: 'ActionCost', action: 'sprint', to: 'free', limit: { per: 'turn', max: 1 } })).toBe('Sprint costs a Free action, 1/turn');
   expect(summarizeRule({ type: 'ActionCost', action: 'drawWeapon', to: 'none' })).toBe('DrawWeapon costs no action');
 });

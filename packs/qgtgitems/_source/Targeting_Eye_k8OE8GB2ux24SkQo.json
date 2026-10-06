@@ -5,6 +5,13 @@
   "_id": "k8OE8GB2ux24SkQo",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch on the Targeting Eye","cost":{"action":"free"},"when":["not:self:marked:gij3TargetingEye"],"steps":[{"do":"mark","key":"gij3TargetingEye","to":"self","until":"endOfNextTurnOrScene"},{"do":"chat","text":"{name} switches on their Targeting Eye: projectile weapons count as Scoped; ↓1 on melee attacks and melee attacks against them gain ↑1 until the end of their next turn."}]},
+      {"type":"RollModifier","label":"Targeting Eye in use (melee attacks: ↓1)","when":["attack:melee","self:marked:gij3TargetingEye"],"downshift":1},
+      {"type":"RollModifier","scope":"incoming","label":"Targeting Eye in use (melee attacks against it: ↑1)","when":["attack:melee","self:marked:gij3TargetingEye"],"upshift":1},
+      {"type":"ItemModifier","label":"Targeting Eye (projectile Range x2, as Scoped)","when":["self:marked:gij3TargetingEye"],"items":["item:type:weaponEffect","item:data:system.classification.style=projectile","item:data:system.range.value>0","item:data:flags.essence20.parentId","not:item:hasUpgrade:Compendium.essence20.gi_joe_crb.Item.cBiD2lBLRwnxu8Rx","not:item:hasUpgrade:Compendium.essence20.pr_crb.Item.cBiD2lBLRwnxu8Rx"],"path":"system.range.value","op":"multiply","value":2},
+      {"type":"ItemModifier","label":"Targeting Eye (projectile long Range x2, as Scoped)","when":["self:marked:gij3TargetingEye"],"items":["item:type:weaponEffect","item:data:system.classification.style=projectile","item:data:system.range.value>0","item:data:flags.essence20.parentId","not:item:hasUpgrade:Compendium.essence20.gi_joe_crb.Item.cBiD2lBLRwnxu8Rx","not:item:hasUpgrade:Compendium.essence20.pr_crb.Item.cBiD2lBLRwnxu8Rx","item:data:system.range.long>0"],"path":"system.range.long","op":"multiply","value":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free action): until the end of your next turn, your projectile weapons count as Scoped (doubled range unless already Scoped), you take ↓1 on melee attacks, and melee attacks against you get ↑1.</p>"

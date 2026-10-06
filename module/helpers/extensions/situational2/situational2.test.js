@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 
 const src = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 
-let S2, FLAG, deps, mod, init;
+let FLAG, deps, mod, init;
 
 function makeItem(type, pack, id, extra = {}) {
   return { type, name: extra.name ?? id, flags: { core: { sourceId: src(pack, id) }, ...(extra.flags ?? {}) }, system: extra.system ?? {}, id: extra.itemId ?? id };
@@ -53,7 +53,7 @@ beforeAll(async () => {
   global.ui = { notifications: { warn: jest.fn() } };
   global.fromUuid = jest.fn(async () => null);
   global.fromUuidSync = jest.fn(() => null);
-  ({ S2, FLAG, deps } = await import('./common.mjs'));
+  ({ FLAG, deps } = await import('./common.mjs'));
   mod = await import('./situational2.mjs');
   init = await import('./initiative.mjs');
 });
@@ -78,60 +78,23 @@ describe('roll sources', () => {
     expect(sourcesOf(makeActor([hangUp]), null, { rolledSkill: 'conditioning', dataset: save })).toEqual([]);
   });
 
-  test('Seafarer: Edge swimming underwater; Hang-Up gives poison Edge vs holder on land', () => {
-    const actor = makeActor([makeItem('perk', 'quartermasters_guide_to_gear', 'vZjp9ncpzhgLIzSm')]);
-    deps.getEnvironment = () => 'underwater';
-    expect(sourcesOf(actor, null, { rolledSkill: 'athletics' })).toContain('s2-seafarerSwim');
-    deps.getEnvironment = () => 'normal';
-    expect(sourcesOf(actor, null, { rolledSkill: 'athletics' })).not.toContain('s2-seafarerSwim');
-
-    const sailor = makeActor([makeItem('hangUp', 'quartermasters_guide_to_gear', 'ahWxUG3w6KkfgUDw')]);
-    const poison = { type: 'weaponEffect', name: 'Venom Bite', system: { damageType: 'sharp' }, flags: {} };
-    expect(sourcesOf(makeActor(), sailor, { item: poison, isAttack: true })).toContain('s2-seafarerPoison');
-    deps.getTerrain = () => 'sea';
-    expect(sourcesOf(makeActor(), sailor, { item: poison, isAttack: true })).not.toContain('s2-seafarerPoison');
-    deps.getTerrain = () => null;
-    const save = { riderSpec: JSON.stringify({ kind: 'save', spec: { title: 'Toxic gas', damage: { value: 1, type: 'poison' } } }) };
-    expect(sourcesOf(sailor, null, { rolledSkill: 'conditioning', dataset: save })).toContain('s2-seafarerResist');
+  test('item rules that read where the token stands are refreshed on a Region change', () => {
+    const rules = when => ({ type: 'perk', flags: {}, system: { rules: [{ type: 'Movement', movement: 'swim', op: 'multiply', value: 2, when }] } });
+    expect(mod.hasPositionRules(makeActor([rules(['check:seaOrWetlands'])]))).toBe(true);
+    expect(mod.hasPositionRules(makeActor([rules([{ any: ['environment:outside:lowGravity'] }])]))).toBe(true);
+    expect(mod.hasPositionRules(makeActor([rules(['not:terrain:set'])]))).toBe(true);
+    expect(mod.hasPositionRules(makeActor([rules(['self:morphed'])]))).toBe(false);
+    expect(mod.hasPositionRules(makeActor([{ type: 'perk', flags: {}, system: { rules: [{ type: 'RollModifier', edge: true, when: ['terrain:sea'] }] } }]))).toBe(false);
+    expect(mod.hasPositionRules(makeActor([makeItem('perk', 'quartermasters_guide_to_gear', 'x')]))).toBe(false);
   });
 
-  test('Tritium Sights: ↑1 on attacks in complete darkness', () => {
-    const weapon = { id: 'w1', type: 'weapon', name: 'Rifle', flags: {}, system: {} };
-    const upgrade = makeItem('upgrade', 'quartermasters_guide_to_gear', 'dyNyzaagojOboB3y', { flags: { essence20: { parentId: 'w1' } }, itemId: 'u1' });
-    const effect = { type: 'weaponEffect', flags: { essence20: { parentId: 'w1' } }, system: {} };
-    const scene = { id: 's', name: 'Night', environment: { darknessLevel: 1 }, tokens: [] };
-    const token = { parent: scene };
-    const actor = makeActor([weapon, upgrade], { token });
-    expect(sourcesOf(actor, null, { item: effect, isAttack: true })).toContain('s2-tritium');
-    scene.environment.darknessLevel = 0.3;
-    expect(sourcesOf(actor, null, { item: effect, isAttack: true })).not.toContain('s2-tritium');
-    expect(mod.situational2Toggles(actor, { item: effect }).map(t => t.name)).toContain('s2Tritium');
-  });
-
-  test('Feet Wet: Edge on non-combat tests at sea; Ship Shape adds wetlands; attacks Specialized', () => {
-    const feetWet = makeItem('perk', 'quartermasters_guide_to_gear', '7u3xCPPjxJlI7c61');
-    const actor = makeActor([feetWet]);
-    deps.getTerrain = () => 'sea';
-    expect(sourcesOf(actor, null, { rolledSkill: 'alertness' })).toContain('s2-feetWet');
-    expect(mod.situational2Specializes(actor, 'targeting', { type: 'weaponEffect' })).toBe(true);
-    deps.getTerrain = () => 'wetlands';
-    expect(mod.isFeetWetActive(actor)).toBe(false);
-    actor.items.push(makeItem('perk', 'quartermasters_guide_to_gear', 'MejI6WIShcA0GdoW'));
-    expect(mod.isFeetWetActive(actor)).toBe(true);
-    expect(mod.ignoresRoughTerrainS2(actor)).toBe(true);
-  });
-
-  test('Forgiving: Edge on Empathy vs a logged aggressor, consumed', async () => {
+  test('Forgiving adds nothing here (item rules - rules/conv8-slC8.test.js)', () => {
     const empathy = makeItem('perk', 'mlp_crb', '7k1UXzSKyoV8EtXZ', { system: { choice: 'animalHandling' } });
     const forgiving = makeItem('perk', 'mlp_crb', '985JSL4ANRcKb1EX');
     const actor = makeActor([empathy, forgiving], { uuid: 'Actor.kind' });
     const brute = makeActor([], { uuid: 'Actor.brute' });
-    await mod.situational2PostRoll(brute, [], { isAttack: true }, { hits: [{ target: actor }] });
-    expect(actor.flags.essence20[FLAG.forgiving]).toEqual(['Actor.brute']);
-    const result = mod.situational2RollSources(actor, brute, { rolledSkill: 'animalHandling' });
-    expect(result.sources.map(s => s.id)).toContain('s2-forgiving');
-    expect(result.consumes[0]).toMatchObject({ ext: 's2Forgiving', aggressor: 'Actor.brute' });
-    expect(sourcesOf(actor, makeActor(), { rolledSkill: 'animalHandling' })).not.toContain('s2-forgiving');
+    expect(mod.situational2PostRoll).toBeUndefined();
+    expect(mod.situational2RollSources(actor, brute, { rolledSkill: 'animalHandling' })).toEqual({ sources: [], consumes: [] });
   });
 
   test('Competitive: an ally out-rolling you banks a Snag for the scene', async () => {
@@ -161,104 +124,25 @@ describe('roll sources', () => {
 describe('derived data and defenses', () => {
   const defenses = () => ({ toughness: { total: 10, string: '10' }, cleverness: { total: 10, string: '10' } });
 
-  test('Arctic Expedition clothes: +2 Toughness in the cold, not against creature attacks', () => {
+  test('the exposure clothes and Business are item rules now (rules/conv10-slC10.test.js)', () => {
     const actor = makeActor([makeItem('gear', 'mlp_crb', 'pWRpmsOcWIv9trHP', { name: 'Arctic', system: { equipped: true } })],
       { system: { defenses: defenses() } });
     deps.getEnvironment = () => 'extremeCold';
     mod.situational2Derived(actor);
-    expect(actor.system.defenses.toughness.total).toBe(12);
-    expect(mod.situational2DefenseAdjust(makeActor(), actor, 'toughness')).toBe(-2);
-    const warm = makeActor([makeItem('gear', 'mlp_crb', 'pWRpmsOcWIv9trHP', { system: { equipped: true } })], { system: { defenses: defenses() } });
-    deps.getEnvironment = () => 'normal';
-    mod.situational2Derived(warm);
-    expect(warm.system.defenses.toughness.total).toBe(10);
-  });
-
-  test('Desert Gear works in desert terrain', () => {
-    const actor = makeActor([makeItem('gear', 'wtnv_citizens_guide', 'tv0pOgALa608pw8i', { system: { equipped: true } })], { system: { defenses: defenses() } });
-    deps.getTerrain = () => 'desert';
-    mod.situational2Derived(actor);
-    expect(actor.system.defenses.toughness.total).toBe(12);
-  });
-
-  test('Business: +2 Cleverness against StrexCorp agents', () => {
-    const actor = makeActor([makeItem('gear', 'wtnv_citizens_guide', '6Vke4qKEaYjjRWQt', { system: { equipped: true } })]);
-    expect(mod.situational2DefenseAdjust(makeActor([], { name: 'StrexCorp Agent' }), actor, 'cleverness')).toBe(2);
-    expect(mod.situational2DefenseAdjust(makeActor([], { name: 'Cecil' }), actor, 'cleverness')).toBe(0);
-    expect(mod.situational2DefenseAdjust(makeActor([], { system: { creatureTags: 'strexcorp' } }), actor, 'cleverness')).toBe(2);
-  });
-
-  test("Shark's Fin doubles Ground and Aquatic Movement at sea", () => {
-    const actor = makeActor([makeItem('perk', 'quartermasters_guide_to_gear', 'c3tBbGzXDar3DA1E')],
-      { system: { movement: { ground: { total: 30 }, swim: { total: 30 }, aerial: { total: 0 } } } });
-    deps.getTerrain = () => 'sea';
-    mod.situational2Derived(actor);
-    expect(actor.system.movement.ground.total).toBe(60);
-    expect(actor.system.movement.swim.total).toBe(60);
-  });
-
-  test('Ship Shape: an aquatic vehicle driven by the holder moves half again', () => {
-    const driver = makeActor([makeItem('perk', 'quartermasters_guide_to_gear', 'MejI6WIShcA0GdoW')], { uuid: 'Actor.driver' });
-    global.fromUuidSync.mockImplementation(uuid => (uuid == 'Actor.driver' ? driver : null));
-    const boat = makeActor([], {
-      type: 'vehicle',
-      system: { actors: { d: { uuid: 'Actor.driver', vehicleRole: 'driver' } }, movement: { swim: { base: 50, total: 50 }, ground: { total: 0 } } },
-    });
-    mod.situational2Derived(boat);
-    expect(boat.system.movement.swim.total).toBe(75);
-    expect(mod.isFeetWetActive(boat)).toBe(true);
-  });
-
-  test('Cartography Suite: Move actions while Surprised on the surveyed scene', () => {
-    const scene = { id: 'sc', name: 'Canyon', tokens: [] };
-    const actor = makeActor([makeItem('perk', 'enigma_of_combination', 'l2dioJyakPropGEx')], {
-      statuses: ['surprised'], token: { parent: scene },
-      flags: { [FLAG.survey]: { sceneId: 'sc' } },
-      system: { actions: { move: { base: 1, bonus: 0, max: 0 } } },
-    });
-    mod.situational2Derived(actor);
-    expect(actor.system.actions.move.max).toBe(1);
-    actor.items.push(makeItem('perk', 'enigma_of_combination', 'CTt9gmibpffGC0N4'));
-    expect(mod.ignoresRoughTerrainS2(actor)).toBe(true);
-    actor.flags.essence20[FLAG.survey] = { sceneId: 'elsewhere' };
-    expect(mod.ignoresRoughTerrainS2(actor)).toBe(false);
-  });
-});
-
-describe('Plow', () => {
-  test('a Ram gains Multiple Targets and its turn ignores Rough Terrain', async () => {
-    const actor = makeActor([makeItem('perk', 'tf_crb', 'y7VBydpKD8O63C3b')]);
-    const ram = { type: 'weaponEffect', system: { isRam: true }, flags: {} };
-    expect(mod.plowMultipleTargets(actor, ram)).toBe(true);
-    expect(mod.plowMultipleTargets(actor, { type: 'weaponEffect', system: {}, flags: {} })).toBe(false);
-    game.combat = { id: 'c', round: 2, turn: 1 };
-    await mod.situational2PreRoll(actor, {}, ram);
-    expect(mod.isPlowRamActive(actor)).toBe(true);
-    game.combat = { id: 'c', round: 3, turn: 1 };
-    expect(mod.isPlowRamActive(actor)).toBe(false);
+    expect(actor.system.defenses.toughness.total).toBe(10);
+    expect(mod.situational2DefenseAdjust).toBeUndefined();
   });
 });
 
 describe('Uses', () => {
-  test('Cartography survey stamps the scene', async () => {
-    const scene = { id: 'sc', name: 'Canyon', tokens: [] };
-    const actor = makeActor([], { token: { parent: scene } });
-    const perk = makeItem('perk', 'enigma_of_combination', 'l2dioJyakPropGEx');
-    perk.parent = actor;
-    const use = mod.USES.find(u => u.matches(perk));
-    await use.run(perk);
-    expect(actor.flags.essence20[FLAG.survey]).toMatchObject({ sceneId: 'sc' });
-  });
-
-  test('Caltrops posts a crossing button', async () => {
+  test('Caltrops is an item rule now (rules/conv7-slC7.test.js)', () => {
     const gear = makeItem('gear', 'pr_crb', 'LN0w8SB1fHhidIVp');
-    const line = await mod.USES.find(u => u.matches(gear)).run(gear);
-    expect(line).toContain('data-e20-ext="s2Caltrops"');
+    expect(mod.USES.find(u => u.matches(gear))).toBeUndefined();
   });
 });
 
 describe('initiative', () => {
-  test('Amphibious Assault ↑1 in the water; Tracking Outfit ↑1 in the wild; Bookworm ↓1 in a library', async () => {
+  test('Bookworm, Amphibious Assault and Tracking Outfit add nothing here (item rules - conv5/conv7)', async () => {
     const actor = makeActor([
       makeItem('perk', 'quartermasters_guide_to_gear', 'X2atZm3eoIBJcwF6'),
       makeItem('gear', 'wtnv_citizens_guide', 'NHhNnkBBM29NpGpL', { system: { equipped: true } }),
@@ -268,15 +152,7 @@ describe('initiative', () => {
     deps.getTerrain = () => 'woodlands';
     const options = { shiftUp: 0, shiftDown: 0 };
     await init.situationalInitiative(actor, options);
-    expect(options).toMatchObject({ shiftUp: 2, shiftDown: 1 });
-  });
-
-  test("Shark's Fin lifts Surprise in the wetlands", async () => {
-    const actor = makeActor([makeItem('perk', 'quartermasters_guide_to_gear', 'c3tBbGzXDar3DA1E')],
-      { statuses: ['surprised'], system: { movement: { ground: { total: 60 } } } });
-    deps.getTerrain = () => 'wetlands';
-    await init.situationalInitiative(actor, { shiftUp: 0, shiftDown: 0 });
-    expect(actor.statuses.has('surprised')).toBe(false);
+    expect(options).toMatchObject({ shiftUp: 0, shiftDown: 0 });
   });
 
   test('Take in a Scene: DIF from the lowest hostile Infiltration roll', () => {
@@ -318,8 +194,4 @@ describe('initiative', () => {
     await init.resolveTakeInAScene(actor, true);
     expect(actor.statuses.has('surprised')).toBe(false);
   });
-});
-
-test('ids line up with the slice', () => {
-  expect(S2.caltrops).toBe('LN0w8SB1fHhidIVp');
 });

@@ -22,8 +22,11 @@ export function makeDefensesFields(name, essence, usesDrivers, base, armor = 0) 
   });
 }
 
+// `base` is what the sheet edits; `value` is worked out from it each prep, with the Features' Active Effects and item
+// rules on top (helpers/machine-essences.mjs). A Megaform's value comes from its Zords instead.
 export function makeEssencesFields(usesDrivers, init) {
   return new fields.SchemaField({
+    base: makeInt(init),
     usesDrivers: makeBool(usesDrivers),
     value: makeInt(init),
   });

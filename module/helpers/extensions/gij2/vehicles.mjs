@@ -1,18 +1,18 @@
 import { registerDamageModifier } from "../../extensions.mjs";
-import { G2, T, findSourced, hasItem, post } from "./shared.mjs";
+import { T, post } from "./shared.mjs";
+// Roll Cage is a CrashProtection rule on its pack item (rules/ext/b/readers.mjs).
+import { crashProtectionOf } from "../../../rules/ext/b/readers.mjs";
 
 /**
  * Roll Cage (GI JOE CRB, Mechanized Infantry Focus, 7th level, p.81): "if your vehicle crashes, you
  * and any passengers take no damage. If your vehicle explodes, you and all passengers exit safely and
- * only suffer 1 damage." Peerless Pilot (General Perk, p.132): "You may always automatically pass the
- * Skill Test to emergency disembark from a vehicle you are piloting."
+ * only suffer 1 damage." (Peerless Pilot's automatic emergency disembark is its AutoDisembark rule.)
  *
  * helpers/vehicle-defeat.mjs runs a vehicle's defeat as one awaited sequence on one client: the
  * vehicle is marked Defeated, then it either crashes (system.crashed, crash and disembark damage) or
  * explodes (Fire damage to everything near it). While that runs, the vehicle's crew is remembered
  * here; a crew member's damage is then waived (crash) or cut to 1 (explosion) when the vehicle's
- * driver holds Roll Cage. autoPassesDisembark is read by vehicle-defeat.mjs's disembark roll
- * (integration patch).
+ * driver holds Roll Cage.
  */
 
 const WINDOW_MS = 20000;
@@ -35,7 +35,7 @@ export function pilotsOf(vehicle) {
 }
 
 export function rollCageProtects(vehicle) {
-  return pilotsOf(vehicle).some(pilot => hasItem(pilot, G2.rollCage));
+  return pilotsOf(vehicle).some(pilot => !!crashProtectionOf(pilot));
 }
 
 function open(vehicle, mode) {
@@ -106,17 +106,9 @@ export function rollCageDamage(actor, amount, damageType) {
 registerDamageModifier((actor, amount, damageType) => {
   const next = rollCageDamage(actor, amount, damageType);
   if (next != amount) {
-    const pilot = [...RESOLVING.values()].map(w => w.vehicle).map(pilotsOf).flat().find(p => hasItem(p, G2.rollCage));
-    post(actor, T('E20.Gij2RollCage', { name: actor.name, perk: findSourced(pilot, G2.rollCage)?.name ?? 'Roll Cage', amount: next }));
+    const protector = [...RESOLVING.values()].map(w => w.vehicle).map(pilotsOf).flat().map(crashProtectionOf).find(Boolean);
+    post(actor, T('E20.Gij2RollCage', { name: actor.name, perk: protector?.name ?? 'Roll Cage', amount: next }));
   }
 
   return next;
 });
-
-/**
- * Peerless Pilot: a crew member automatically passes the emergency disembark test from a vehicle they
- * are piloting.
- */
-export function autoPassesDisembark(crewMember, vehicle) {
-  return hasItem(crewMember, G2.peerlessPilot) && pilotsOf(vehicle).some(p => p?.uuid == crewMember?.uuid);
-}

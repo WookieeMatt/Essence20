@@ -7,36 +7,11 @@ const tf = id => `Compendium.essence20.tf_crb.Item.${id}`;
 const tf1s = id => `Compendium.essence20.transformers_one_sourcebook.Item.${id}`;
 
 export const TF3 = {
-  holographicDoubles: tf('rWrU13LenH7mukyV'),
-  intensive: tf('lupxm8SNDLvbjoDt'),
-  irrefutableOrder: tf('fz3s9ay6oOPujwTh'),
-  ladder: tf('CjJGz1LLzFoveqZK'),
-  lastStand: tf('uXX6ZCaHlM4gErua'),
-  martyr: tf('3CyKdsMYYq0lGj06'),
   multiplication: tf('K3FNcAMjjek1UaJk'),
-  noEscape: tf('xxMeliFHeWYxtGVI'),
-  rollWithIt: tf('DWlnFrFC8GrjNKVf'),
-  rotorBlades: tf('jkZQIpL661klm5sP'),
-  stoic: tf('p9Obyw2krF0pks8D'),
-  synchUp: tf('gaDAXIEkSt0B25RZ'),
-  targetBreakdown: tf('aLdjHmWG171RCSpA'),
-  rightOfAll: tf('Ycrb7vHTOZ79nC9U'),
   thirdDimension: tf('4pyOcetfAuXZlXmH'),
-  towCable: tf('EVywnYUDjBfMcoWT'),
-  trainingThroughFamiliarity: tf('9XITV6O09Up8QiwL'),
-  unassuming: tf('uTYoRiuxClI5V9aV'),
   unexpectedAlternative: tf('UNe8N1eZWjWxDTIz'),
-  waterCannon: tf('FUOOqATSqU6habEt'),
-  whisperCampaign: tf('RO7n3LJmKQkcwZg1'),
   deceptiveWarfare: tf1s('OJcHMBA3QYgPp5w0'),
   oneBotOverAnother: tf1s('n5dNCOPVTsqLAapp'),
-};
-
-/** The weapons the Alt Mode Gear "counts as" (TF CRB p.122-125). */
-export const TF3_WEAPON = {
-  heavyBlade: tf('PFuzUrcYw14JRLf9'),
-  grappler: tf('8NfDRYoPVQJPGiVj'),
-  directedElementRifle: tf('jSjdGdieoUkT0nAf'),
 };
 
 export const SCOPE = 'essence20';
@@ -158,12 +133,6 @@ export async function writeActor(actor, changes) {
 export function parentWeapon(actor, effect) {
   const id = effect?.flags?.[SCOPE]?.parentId;
   return id ? itemsOf(actor).find(item => item.id == id) ?? null : null;
-}
-
-/** The gear item a generated weapon was made from, or null. */
-export function gearOfWeapon(actor, weapon) {
-  const by = flagOf(weapon, 'grantedBy');
-  return by ? itemsOf(actor).find(item => item.id == by) ?? null : null;
 }
 
 /** "Until the end of your next turn" as a combat stamp; outside combat, the scene. */

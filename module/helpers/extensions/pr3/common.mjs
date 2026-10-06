@@ -13,24 +13,9 @@ export const PR_CRB = id => `Compendium.essence20.pr_crb.Item.${id}`;
 export const TTSG = id => `Compendium.essence20.through_the_shattered_grid.Item.${id}`;
 
 export const IDS = {
-  megaformExpeditor: PR_CRB('NJfcNgMJYcatsTCB'),
   ninjaPower: PR_CRB('wN5rjEQIJH68rWCd'),
-  peerlessPilot: PR_CRB('dHDCKO4k7dlzyXbC'),
   powerHeal: PR_CRB('eiTUR08GXw03M21m'),
-  survivor: PR_CRB('YmSnQxVytktWfZTZ'),
-  uniqueWeapon: PR_CRB('TG2rarEjGgDeOsc5'),
-  uwRanged: PR_CRB('Pr3UniqWpnRanged'),
-  uwSmall: PR_CRB('Pr3UniqWpnSmallM'),
-  uwVersatile: PR_CRB('Pr3UniqWpnVersat'),
-  uwTwoHanded: PR_CRB('Pr3UniqWpnTwoHnd'),
   elementalFury: TTSG('larsGRE5U4ZOVxzw'),
-  emissarysGift: TTSG('L3ps91zsJJQl71cw'),
-  navigator: TTSG('nDx2XD6gD9lM37Bl'),
-  overload: TTSG('GNT0qv91JUTXfS0n'),
-  powerConstruct: TTSG('34CRvsE7ncW4kmE8'),
-  safehaven: TTSG('YJRejmHoASYm67lQ'),
-  restrainingGear: TTSG('rc6QWxHf76p5snE0'),
-  zordMount: TTSG('5IKuaL41Ebd4ll8i'),
 };
 
 /** Whether this item is (a copy of) the given compendium item. Guards undefined == undefined. */
@@ -50,11 +35,6 @@ export const escapeHtml = text => String(text ?? '').replace(/[&<>"]/g, c => ({ 
 export function turnStamp() {
   const combat = globalThis.game?.combat;
   return combat ? { combatId: combat.id, round: combat.round, turn: combat.turn } : null;
-}
-
-export function isThisTurn(stamp) {
-  const combat = globalThis.game?.combat;
-  return !!stamp && !!combat && stamp.combatId == combat.id && stamp.round == combat.round && stamp.turn == combat.turn;
 }
 
 export function isThisRound(stamp) {

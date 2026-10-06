@@ -135,7 +135,14 @@ export function collectRules(actor) {
 const INDEX = Symbol('essence20.rules');
 
 /** Scopes that reach another actor (rules/links.mjs). */
-const LINKED = ['crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'];
+const LINKED = ['crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'];
+
+/** A scope added by a plug-in (rules/links.mjs#registerLinkScope) reaches another actor too. */
+export function addLinkedScope(name) {
+  if (!LINKED.includes(name)) {
+    LINKED.push(name);
+  }
+}
 
 /**
  * Ids of actors holding a rule that reaches another actor - so rules/links.mjs can skip its world

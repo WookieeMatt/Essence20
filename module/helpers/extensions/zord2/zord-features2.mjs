@@ -1,19 +1,10 @@
 /**
  * Power Rangers Zord Features and Role Perks for the zord2 slice.
  *
- * - Warrior Mode (PR CRB, Zord Feature, p.140): "Now is considered a Towering Size combatant" - the
- *   last of its four adjustments (the rest live in helpers/warrior-mode.mjs). Applied to the Zord's
- *   derived Size while the Mode is on; Warrior Mode already ends the moment the Zord joins a
- *   Megaform, so the Combiner size math never sees it.
- * - Mesh Zord (Through the Shattered Grid, p.33-34): "Your Zord's size becomes Towering. Choose three
- *   Megaform Traits. Your Zord benefits from them at all times... it does not benefit twice from any
- *   Megaform Trait... the Megaform does not benefit from the Megaform Traits your Zord has due to
- *   Mesh Zord." The three picks are kept on the Feature (not as megaformTrait items, which a
- *   Megaform would aggregate) and applied to the Zord's own derived data.
- * - Power Matrix (TtSG p.34): "The Zord gains a reserve of 3 Personal Power that it or a pilot
- *   driving it can spend to use Zord Features. You may choose this Zord Feature up to three times."
- *   A Use button moves reserve Power to the driver for the Feature they're about to use; the
- *   reserve refills when the pilot rests.
+ * - Warrior Mode (PR CRB, Zord Feature, p.140): its Towering Size is the item's own Size rule (the rest
+ *   live in helpers/warrior-mode.mjs).
+ * - Mesh Zord and Power Matrix (TtSG p.33-34) are their items' own rules (module/rules/ext/a/ - three picks from
+ *   one list, DerivedStat / Defense / Size rules; the reserve drawn by the driver, refilled when the pilot rests).
  * - Versatile Combiner (TtSG p.35): "may combine into a Megaform with any Zord that lacks the
  *   Combiner Zord Feature without spending a Story Point. In addition, that Zord provides one of the
  *   following Megaform Trait benefits depending on its Ranger's spectrum: Black: Core Defenses;
@@ -43,153 +34,15 @@
  *   Zord is part of a Megaform (patch spec zord2-patch.cjs).
  */
 import {
-  registerAfterDamage, registerDerived, registerRest, registerSceneAdvanced, registerUse,
+  registerAfterDamage, registerSceneAdvanced, registerUse,
 } from "../../extensions.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import { activateForWindow, getUses, isActiveForWindow, markUsed } from "../../scene-clock.mjs";
 import {
-  chat, holds, isCombinerForm, itemsOf, megaformsContaining, rosterOf, sizeIndex, sourceOf, sourced, T, writeDoc, ZORD2,
+  holds, isCombinerForm, itemsOf, megaformsContaining, rosterOf, sourceOf, T, writeDoc, ZORD2,
 } from "./common.mjs";
 
 const flagOf = (doc, key) => doc?.flags?.essence20?.[key];
-
-/* -------------------------------------------- */
-/*  Warrior Mode, Mesh Zord (derived)            */
-/* -------------------------------------------- */
-
-export const MESH_FLAG = 'zord2MeshTraits';
-export const MESH_OPTIONS = ['coreBody', 'coreAbilityStrength', 'coreAbilitySpeed', 'coreDefenses', 'defender', 'layeredSystems', 'move', 'grounding'];
-
-function addDefense(system, type, amount, label) {
-  const defense = system.defenses?.[type];
-  if (!defense) return;
-  defense.total = (defense.total ?? 0) + amount;
-  if (typeof defense.string == 'string') {
-    defense.string += ` + ${amount} (${label})`;
-  }
-}
-
-export function zordDerived(actor) {
-  if (actor?.type != 'zord') return;
-  const system = actor.system;
-
-  if (flagOf(actor, 'warriorModeActive') && sizeIndex(system.size) < sizeIndex('towering')) {
-    system.size = 'towering';
-  }
-
-  const mesh = sourced(actor, ZORD2.meshZord)[0];
-  if (!mesh) return;
-  if (sizeIndex(system.size) < sizeIndex('towering')) {
-    system.size = 'towering';
-  }
-
-  const label = mesh.name;
-  const inMegaform = megaformsContaining(actor).some(m => !isCombinerForm(m));
-  const hasTrait = type => itemsOf(actor).some(i => i.type == 'megaformTrait' && i.system?.type == type);
-  for (const pick of flagOf(mesh, MESH_FLAG) ?? []) {
-    switch (pick) {
-    case 'coreBody':
-      // "if the Zord has the Combiner Zord Feature with the Core Body Megaform Trait and its Health
-      // is already doubled due to... Mesh Zord, it does not double again when combined" - the
-      // Megaform doubles its real Core Body trait, so the Zord's own doubling steps aside then.
-      if (!(inMegaform && hasTrait('coreBody')) && system.health) {
-        system.health.max = (system.health.max ?? 0) * 2;
-      }
-
-      break;
-    case 'coreAbilityStrength':
-      if (!inMegaform) system.essences.strength.value += 1;
-      addDefense(system, 'toughness', 1, label);
-      break;
-    case 'coreAbilitySpeed':
-      if (!inMegaform) system.essences.speed.value += 1;
-      addDefense(system, 'evasion', 1, label);
-      break;
-    case 'coreDefenses':
-      addDefense(system, 'toughness', 1, label);
-      addDefense(system, 'evasion', 1, label);
-      break;
-    case 'defender':
-      addDefense(system, 'toughness', 1, label);
-      break;
-    case 'layeredSystems':
-      if (system.health) system.health.max = (system.health.max ?? 0) + 3;
-      break;
-    case 'move':
-      if (system.movement?.ground) system.movement.ground.total = (system.movement.ground.total ?? 0) + 10;
-      break;
-    case 'grounding':
-      if (system.immunities) system.immunities.emp = true;
-      break;
-    }
-  }
-}
-
-registerDerived(zordDerived);
-
-async function pickMeshTraits(feature) {
-  const { chooseSelect } = await import("../../grants.mjs");
-  const picks = [];
-  for (let i = 0; i < 3; i++) {
-    const options = MESH_OPTIONS.filter(o => !picks.includes(o)).map(value => ({ value, label: T(`Zord2Mesh.${value}`) }));
-    const choice = await chooseSelect(feature.name, T('Zord2MeshPick', { n: i + 1 }), options);
-    if (!choice) return null;
-    picks.push(choice);
-  }
-
-  await feature.setFlag('essence20', MESH_FLAG, picks);
-  const zord = feature.parent;
-  if (picks.includes('coreBody') || picks.includes('layeredSystems')) {
-    // New maximum - start the Zord at it rather than looking freshly damaged.
-    zord.reset?.();
-    await zord.update({ 'system.health.value': zord.system.health.max });
-  }
-
-  return T('Zord2MeshChosen', { name: zord.name, picks: picks.map(p => T(`Zord2Mesh.${p}`)).join(', ') });
-}
-
-/* -------------------------------------------- */
-/*  Power Matrix                                 */
-/* -------------------------------------------- */
-
-export const MATRIX_FLAG = 'zord2PowerMatrixSpent';
-export const matrixMax = zord => 3 * Math.min(3, sourced(zord, ZORD2.powerMatrix).length);
-export const matrixReserve = zord => Math.max(0, matrixMax(zord) - (flagOf(zord, MATRIX_FLAG) ?? 0));
-
-async function drawFromMatrix(feature) {
-  const zord = feature.parent;
-  const reserve = matrixReserve(zord);
-  if (!reserve) {
-    ui.notifications.warn(T('Zord2PowerMatrixEmpty'));
-    return null;
-  }
-
-  const { getVehicleDriver } = await import("../../combat.mjs");
-  const driver = getVehicleDriver(zord);
-  if (!driver) {
-    ui.notifications.warn(T('Zord2PowerMatrixNoDriver'));
-    return null;
-  }
-
-  const { chooseSelect } = await import("../../grants.mjs");
-  const options = Array.from({ length: reserve }, (_, i) => ({ value: String(i + 1), label: String(i + 1) }));
-  const amount = Number(await chooseSelect(feature.name, T('Zord2PowerMatrixHowMuch', { reserve }), options));
-  if (!amount) return null;
-
-  const personal = driver.system?.powers?.personal ?? {};
-  await writeDoc(driver, 'update', { 'system.powers.personal.value': (personal.value ?? 0) + amount });
-  await zord.setFlag('essence20', MATRIX_FLAG, (flagOf(zord, MATRIX_FLAG) ?? 0) + amount);
-  return T('Zord2PowerMatrixDrawn', { zord: zord.name, driver: driver.name, amount, left: reserve - amount });
-}
-
-registerRest(async (actor) => {
-  for (const entry of Object.values(actor?.system?.actors ?? {})) {
-    const zord = entry?.type == 'zord' ? fromUuidSync(entry.uuid) : null;
-    if (zord && flagOf(zord, MATRIX_FLAG)) {
-      await writeDoc(zord, 'unsetFlag', 'essence20', MATRIX_FLAG);
-    }
-  }
-});
 
 /* -------------------------------------------- */
 /*  Versatile Combiner, Adaptable Future Tech    */
@@ -433,12 +286,9 @@ export async function repairCombinedMegaform(zord, amountSpent) {
 
 registerUse({
   id: 'zord2-zord-features',
-  matches: item => [ZORD2.meshZord, ZORD2.powerMatrix, ZORD2.zordUltraMode, ZORD2.defenderTorozord].includes(sourceOf(item)),
-  canUse: item => sourceOf(item) != ZORD2.powerMatrix || matrixReserve(item.parent) > 0,
+  matches: item => [ZORD2.zordUltraMode, ZORD2.defenderTorozord].includes(sourceOf(item)),
   run: async (item, economy, pay) => {
     const source = sourceOf(item);
-    if (source == ZORD2.meshZord) return pickMeshTraits(item);
-    if (source == ZORD2.powerMatrix) return drawFromMatrix(item);
     if (source == ZORD2.zordUltraMode) return useUltraMode(item, economy, pay);
     return useDefenderTorozord(item);
   },
@@ -450,9 +300,6 @@ export async function onCreateItem(item, options, userId) {
   const actor = item.parent;
   if (source == ZORD2.zordFeatureSlot) {
     await pickZordFeature(actor, item);
-  } else if (source == ZORD2.meshZord && actor.type == 'zord') {
-    const line = await pickMeshTraits(item);
-    if (line) await chat(actor, line);
   } else if (source == ZORD2.versatileCombiner && actor.type == 'zord') {
     await grantVersatileTrait(item);
   } else if (item.type == 'feature' && holds(actor, ZORD2.zordUltraMode)) {

@@ -5,6 +5,9 @@
   "_id": "Cnv01qtQwEdrUh8I",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Sharpcaster","event":"afterRoll","outcome":"allFailed","when":["item:type:spell","roll:targets>0"],"steps":[{"do":"button","label":"Sharpcaster: attack again at no cost","steps":[{"do":"recastFree","item":"{var.itemUuid}"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when a spell attack is cast successfully but misses, a button makes one more attack at no extra cost.</p>"

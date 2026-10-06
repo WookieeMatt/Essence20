@@ -34,19 +34,11 @@ export const ZORD2 = {
   zordUltraMode: C('field_guide_action_adventure', 'LoLucUviYKvUq5XR'),
   adaptableFutureTech: C('through_the_shattered_grid', '35qov21Mglyqxql1'),
   defenderTorozord: C('through_the_shattered_grid', '8GrSnFescEVUt1nn'),
-  meshZord: C('through_the_shattered_grid', '3b3GBTixZORshVzf'),
-  powerMatrix: C('through_the_shattered_grid', 'c9VPGmGTxQuilsYh'),
   versatileCombiner: C('through_the_shattered_grid', 'XbRfajp9KwfzDG5c'),
   // G.I. Joe
   shinobi: C('intercontinental_adventures', 'JFfMXY6aMxhDbKa6'),
   // Transformers
-  carapacedCommon: C('technorganic_secrets', 'aTevGfLML1dlbErs'),
-  carapacedLarge: C('technorganic_secrets', '2mSP6mVx0axvOlXf'),
-  rotaryBladeShield: C('technorganic_secrets', 'ixzkIrq0X9k57754'),
-  rotaryBladeWeapon: C('technorganic_secrets', '9OuJzchTaiJEMcff'),
   dozerBlade: C('tf_crb', 'P3t8JOiCH5bR0N5r'),
-  hybridization: C('tf_crb', 'R5SobOsimfa7mvdy'),
-  mercurialNature: C('tf_crb', 'G5LYO99aCFly6oq0'),
 };
 
 export const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;

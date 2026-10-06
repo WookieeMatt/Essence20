@@ -5,6 +5,9 @@
   "_id": "wuHnZ1qtGrd8il8a",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Clamp down","cost":{"action":"standard"},"steps":[{"do":"target","beforeCost":true,"max":1},{"do":"applyCondition","condition":"immobilized","rounds":1,"to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Put it on your pet. Use button (Standard action): the pet clamps onto its target, which is Immobilized until the end of its next turn.</p>"

@@ -6,7 +6,12 @@
     "prerequisites": {"when":["self:level>=12"]},
     "rules": [
       {"type":"RollModifier","scope":"incoming","label":"Resists Cold and Energy (Solar Power: Snag)","snag":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.4ksM4tGqdjuyPSj1","item:type:weaponEffect",{"any":["item:data:system.damageType=element","item:data:system.damageType=acid","item:data:system.damageType=cold","item:data:system.damageType=electric","item:data:system.damageType=emp","item:data:system.damageType=fire","item:data:system.damageType=laser","item:data:system.damageType=sonic"]}]},
-      {"type":"DialogSwitch","label":"Seeing through illusions or noticing the Void (Solar Power: Edge)","edge":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.4ksM4tGqdjuyPSj1","skill:alertness"]}
+      {"type":"DialogSwitch","label":"Seeing through illusions or noticing the Void (Solar Power: Edge)","edge":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.4ksM4tGqdjuyPSj1","skill:alertness"]},
+      {"type":"HitRider","label":"Solar Power","note":1,"damageTypeFrom":"flags.essence20.zord1Form.element","when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.4ksM4tGqdjuyPSj1","weapon:trait:powerWeapon","not:weapon:name~Blaster"]},
+      {"type":"HitRider","label":"Solar Power","option":{"damage":1,"damageType":"fire"},"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.4ksM4tGqdjuyPSj1","weapon:type:weapon",{"any":["not:weapon:trait:powerWeapon","weapon:name~Blaster"]},{"any":["weapon:name~Blaster","skill:targeting"]}]},
+      {"type":"Form","label":"Solar Power (1 Personal Power when you Morph)","cost":1,"element":true,"swaps":[]},
+      {"type":"Use","label":"Unlock this Form (1 Personal Power)","when":["self:type:playerCharacter","self:morphed","not:form:active"],"steps":[{"do":"formStart"}]},
+      {"type":"Use","label":"End this Form","when":["self:type:playerCharacter","form:active"],"steps":[{"do":"formEnd"},{"do":"chat","text":"{name} ends the Form."}]}
     ],
     "automation": {
       "status": "full",

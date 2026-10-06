@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Contested against someone's Weird (Gluten-Tolerant: ↓1)","downshift":1}
+      {"type":"DialogSwitch","label":"Contested against someone's Weird (Gluten-Tolerant: ↓1)","downshift":1},
+      {"type":"Veto","on":"create","label":"Can't take Weird (Gluten-Tolerant)","items":["item:id:RO0a3eX8MIo5g1Tv"],"message":"{name} is Gluten-Tolerant and can't take the Weird Perk."}
     ],
     "automation": {
       "status": "full",

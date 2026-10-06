@@ -5,6 +5,10 @@
   "_id": "T7nfBj9GjUHz8alo",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Time Strike (1 Personal Power)","key":"o1TimeStrike","forget":true,"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"when":["item:type:weaponEffect","self:morphed","weapon:name~chrono saber"]},
+      {"type":"HitRider","label":"Time Strike (second Chrono Saber)","note":"@var.base","siblings":{"label":"Time Strike: {effect}"},"when":["roll:switch:o1TimeStrike"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on a Chrono Saber attack while Morphed, a switch that pays 1 Personal Power. On a hit it adds your second saber's base damage, and chat buttons offer the other saber effects as extra riders.</p>"

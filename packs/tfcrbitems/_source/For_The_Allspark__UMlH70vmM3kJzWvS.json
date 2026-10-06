@@ -5,7 +5,8 @@
   "system": {
     "rules": [
       {"type":"RollModifier","label":"For The Allspark!","when":["skill:infiltration","self:transformed"],"upshift":1},
-      {"type":"DialogSwitch","label":"Your Alt Mode fits the environment (For The Allspark!: ↑1)","when":["skill:infiltration","self:transformed"],"upshift":1}
+      {"type":"DialogSwitch","label":"Your Alt Mode fits the environment (For The Allspark!: ↑1)","when":["skill:infiltration","self:transformed"],"upshift":1},
+      {"type":"Trigger","event":"initiativeRolled","label":"Roll Out (convert as Initiative is rolled)","when":[{"any":["combat:round:0","combat:round:1"]},"self:canTransform","not:self:transformed","not:self:status:surprised","not:self:status:modeLock","self:itemCount:altMode>=1"],"steps":[{"do":"pick","key":"rollOutMode","from":"ownedItem","itemType":"altMode","prompt":"Roll Out: convert to an Alt Mode before combat begins, without spending an action."},{"do":"transformInto","item":"choice:rollOutMode"},{"do":"chat","text":"{name} rolls out in {var.mode}."}]}
     ],
     "automation": {
       "status": "partial",

@@ -7,7 +7,9 @@
   "system": {
     "rules": [
       {"type":"MovementAction","label":"Ignores Rough Terrain in the city","ignoreRoughTerrain":true,"when":["terrain:urban"]},
-      {"type":"DialogSwitch","forget":true,"label":"Roll Streetwise instead (Urban Jungle)","when":["skill:survival"],"useSkill":"streetwise"}
+      {"type":"DialogSwitch","forget":true,"label":"Roll Streetwise instead (Urban Jungle)","when":["skill:survival"],"useSkill":"streetwise"},
+      {"type":"RollModifier","label":"Urban Jungle (non-attack tests in the city)","when":["not:attack","not:roll:initiative","terrain:set","terrain:urban"],"edge":true},
+      {"type":"RollModifier","label":"Urban Jungle (attacks in the city are Specialized)","when":["attack","terrain:set","terrain:urban"],"specialize":true}
     ],
     "automation": {
       "status": "full",

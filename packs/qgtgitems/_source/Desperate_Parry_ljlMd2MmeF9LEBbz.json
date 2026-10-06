@@ -5,6 +5,11 @@
   "_id": "ljlMd2MmeF9LEBbz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Set the Contingency","cost":{"action":"free"},"limit":{"per":"turn","max":1},"steps":[{"do":"setToggle","key":"armed","value":true,"until":"combat"},{"do":"chat","text":"{name} sets a Contingency."}]},
+      {"type":"Trigger","event":"turnStart","when":["self:toggle:armed"],"steps":[{"do":"setToggle","key":"armed","value":false}]},
+      {"type":"Reaction","outcome":"hit","when":["attack:melee",{"any":["not:combat:exists","self:toggle:armed"]},"self:wielding"],"steps":[{"do":"choose","prompt":"Parry with which Skill?","options":[{"label":"Acrobatics","steps":[{"do":"setToggle","key":"armed","value":false},{"do":"roll","skill":"acrobatics","dif":"@var.total","onSuccess":[{"do":"negateHit"},{"do":"chat","text":"{name} parries the attack - the parrying weapon breaks."},{"do":"updateItem","item":"wielded","set":{"system.equipped":false,"flags.essence20.broken":true}}]}]},{"label":"Finesse","steps":[{"do":"setToggle","key":"armed","value":false},{"do":"roll","skill":"finesse","dif":"@var.total","onSuccess":[{"do":"negateHit"},{"do":"chat","text":"{name} parries the attack - the parrying weapon breaks."},{"do":"updateItem","item":"wielded","set":{"system.equipped":false,"flags.essence20.broken":true}}]}]}]}]}
+    ],
     "prerequisites": {"when":["self:essence:speed>=4"]},
     "automation": {
       "status": "full",

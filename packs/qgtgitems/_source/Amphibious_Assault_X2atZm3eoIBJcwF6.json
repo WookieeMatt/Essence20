@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"Movement","movement":"swim","stage":"adjust","op":"set","value":"max(@actor.system.movement.swim.total, @actor.system.movement.ground.total) + 15","label":"Aquatic Movement +15 ft over the better option","when":["self:data:system.movement.swim.base>0"]},
-      {"type":"Movement","movement":"swim","stage":"adjust","op":"set","value":"@actor.system.movement.ground.total","label":"Aquatic Movement equal to Ground","when":["not:self:data:system.movement.swim.base>0"]}
+      {"type":"Movement","movement":"swim","stage":"adjust","op":"set","value":"@actor.system.movement.ground.total","label":"Aquatic Movement equal to Ground","when":["not:self:data:system.movement.swim.base>0"]},
+      {"type":"RollModifier","label":"Initiative in the water (Amphibious Assault: ↑1)","when":["roll:initiative","check:inWater"],"upshift":1}
     ],
     "automation": {
       "status": "full",

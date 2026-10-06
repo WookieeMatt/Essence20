@@ -5,6 +5,10 @@
   "_id": "5IKuaL41Ebd4ll8i",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Zord Mount: name the rider","steps":[{"do":"choose","prompt":"Which Zord rides this one?","options":[{"label":"Pick the rider Zord","steps":[{"do":"pick","key":"rider","from":"actors","actorType":"zord","notSelf":true,"prompt":"The Zord riding this one:","legacy":"flags.essence20.pr3MountRider"}]},{"label":"No rider","steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.rules.choices.rider":"","flags.essence20.pr3MountRider":""}},{"do":"chat","text":"{name} carries no rider."}]}]}]},
+      {"type":"Trigger","label":"Zord Mount: rider follow-up","event":"afterRoll","when":["attack:melee","roll:targets>=1","rule:data:flags.essence20.rules.choices.rider"],"limit":{"per":"turn","max":1},"steps":[{"do":"target","min":0},{"do":"chat","text":"@UUID[{choice.rider}] may also make a melee Attack against {target}."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: name the Zord riding this one. Automatic: the mount's first melee attack each turn prompts the rider's follow-up melee attack on the same target.</p><p>Left to the table: mounted movement and size rules.</p>"

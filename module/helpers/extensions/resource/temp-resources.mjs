@@ -8,13 +8,10 @@
  * entire scene, until they take damage, or until you are Defeated." The grant is made by
  * helpers/got-to-get-tough.mjs, which records it here (see the integration patch).
  *
- * Together We Stand (Enigma of Combination, 17th level, p.31): "all of your teammates ... gain
- * 1d2 temporary Health and 1d2 temporary Energon Points at the beginning of any combat scene
- * involving two or more team members ... each team member is reduced to their normal maximum at
- * the end of the scene if these temporary resources remain."
+ * Together We Stand (Enigma of Combination) grants through here from its item rule (rules/ext/d/misc.mjs tempResource).
  */
-import { registerAfterDamage, registerRoundStart, registerSceneAdvanced } from "../../extensions.mjs";
-import { IDS, T, has, isActiveGm, num, say, teamOf, worldActors, writeActor } from "./common.mjs";
+import { registerAfterDamage, registerSceneAdvanced } from "../../extensions.mjs";
+import { num, worldActors, writeActor } from "./common.mjs";
 
 export const TEMP_FLAG = 'resTempGrants';
 
@@ -129,52 +126,3 @@ registerSceneAdvanced(async () => {
   }
 });
 
-/* -------------------------------------------- */
-/*  Together We Stand                            */
-/* -------------------------------------------- */
-
-const TWS_COMBAT_FLAG = 'togetherWeStandDone';
-
-/**
- * Who a Together We Stand holder's team is in this combat: teammates who are combatants.
- * @param {Actor} holder
- * @param {Array<Actor>} inCombat
- * @returns {Array<Actor>}
- */
-export function togetherWeStandTeam(holder, inCombat) {
-  const uuids = new Set(inCombat.map(a => a?.uuid));
-  return teamOf(holder).filter(member => uuids.has(member.uuid));
-}
-
-registerRoundStart(async (combat) => {
-  if (!isActiveGm() || combat?.round != 1 || combat.getFlag?.('essence20', TWS_COMBAT_FLAG)) {
-    return;
-  }
-
-  await combat.setFlag?.('essence20', TWS_COMBAT_FLAG, true);
-  const inCombat = (combat.combatants?.contents ?? [...(combat.combatants ?? [])]).map(c => c.actor).filter(Boolean);
-  const granted = new Set();
-  for (const holder of inCombat.filter(actor => has(actor, IDS.togetherWeStand))) {
-    const team = togetherWeStandTeam(holder, inCombat);
-    // "any combat scene involving two or more team members"
-    if (team.length < 2) {
-      continue;
-    }
-
-    for (const member of team) {
-      if (granted.has(member.uuid)) {
-        continue;
-      }
-
-      granted.add(member.uuid);
-      const health = (await new Roll('1d2').evaluate()).total;
-      const energon = (await new Roll('1d2').evaluate()).total;
-      await grantTemp(member, { kind: 'health', amount: health, source: 'togetherWeStand' });
-      if (member.system?.energon?.normal) {
-        await grantTemp(member, { kind: 'energon', amount: energon, source: 'togetherWeStand' });
-      }
-
-      await say(holder, T('ResTogetherWeStand', { name: member.name, health, energon }));
-    }
-  }
-});

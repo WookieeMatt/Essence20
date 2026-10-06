@@ -1,5 +1,4 @@
-import { ensureKnownEmotions } from "./extensions/zord1/emotions.mjs";
-import { actorHasPerk, findPerk, hasUsedThisEncounter, markUsedThisEncounter } from "./perks.mjs";
+import { actorHasPerk, findPerk } from "./perks.mjs";
 import { E20 } from "./config.mjs";
 import { getNearbyEnemyTokens } from "./enemies.mjs";
 
@@ -48,7 +47,6 @@ import { getNearbyEnemyTokens } from "./enemies.mjs";
  *   deactivateShynessOnDamage below).
  */
 export const EMOTIONAL_MASTERY_ID = "Compendium.essence20.jump_through_time.Item.bWAncoQxwfCLtn2v";
-export const EMOTIONAL_STRENGTH_ID = "Compendium.essence20.jump_through_time.Item.BODEMNm0GIAsMMm0";
 export const TEAM_SPIRIT_ID = "Compendium.essence20.jump_through_time.Item.cGI21L1eFai4IfqJ";
 export const HEARTS_CALLING_ID = "Compendium.essence20.jump_through_time.Item.Eg5LUM4lWf7X7yGs";
 const ADAPTION_1_ID = "Compendium.essence20.jump_through_time.Item.diexsL5zyTuJsSPu";
@@ -57,7 +55,6 @@ const ADAPTION_2_ID = "Compendium.essence20.jump_through_time.Item.0bw6c3XfIYcQe
 const ACTIVE_FLAG = 'activeEmotionalMastery';
 const HEARTS_CALLING_FLAG = 'heartsCallingOption';
 const TEAM_SPIRIT_FLAG = 'teamSpiritOption';
-export const EMOTIONAL_STRENGTH_ENCOUNTER_FLAG = 'emotionalStrengthUsedThisEncounter';
 const CONTEMPT_DAMAGE_TYPE_FLAG = 'contemptDamageType';
 export const DISGUST_TURN_FLAG = 'disgustUsedThisTurn';
 export const EMOTIONAL_MASTERY_SHAME_FLAG = 'pendingEmotionalMasteryShame';
@@ -235,6 +232,15 @@ async function applyShynessStatusToggle(actor, activeOptions) {
 }
 
 /**
+ * The options this actor knows (Emotional Range's KnownOptions rule, topped up by asking), or null for all of them -
+ * rules/ext/a/hooks.mjs, loaded when asked.
+ */
+async function knownOptions(actor) {
+  const { ensureKnownOptions } = await import("../rules/ext/a/hooks.mjs");
+  return ensureKnownOptions(actor, 'emotionalMastery');
+}
+
+/**
  * Activates (or switches) the actor's Emotional Mastery. Prompts for which of the 12 options,
  * gates on being Morphed (unless it's the actor's own free Heart's Calling option, which works
  * unmorphed too), spends 1 Personal Power (free only for the Heart's Calling option), and - if
@@ -245,7 +251,7 @@ async function applyShynessStatusToggle(actor, activeOptions) {
  * @returns {Promise<Boolean>}   Whether an option was actually activated.
  */
 export async function activateEmotionalMastery(actor) {
-  const option = await pickEmotionalMasteryOption(await ensureKnownEmotions(actor));
+  const option = await pickEmotionalMasteryOption(await knownOptions(actor));
   if (!option) {
     return false;
   }
@@ -353,7 +359,7 @@ export async function clearEmotionalMasteryOnMorphOff(actor) {
  * @param {Actor} actor
  */
 export async function pickHeartsCallingOption(actor) {
-  const option = await pickEmotionalMasteryOption(await ensureKnownEmotions(actor));
+  const option = await pickEmotionalMasteryOption(await knownOptions(actor));
   if (option) {
     await actor.setFlag('essence20', HEARTS_CALLING_FLAG, option);
   }
@@ -434,37 +440,6 @@ export async function activateEmotionalMasterySurprise(actor) {
 }
 
 /**
- * Emotional Strength (2nd level): "you can regain 1d2 Power Points immediately once you
- * experience a specific trigger attached to whatever Emotional Mastery options you have active
- * at the time... once per scene." Each of the 12 options has its own printed trigger (Anger:
- * "you suffer damage"; Fear: "you gain the Frightened or Impaired condition"; Surprise: "you roll
- * a result of exactly 2 or of 25+"; etc.) - only Anger's own trigger is wired this pass, called
- * from combat.mjs#applyDamage's own reactive-grant tail (the same chokepoint Hardened Armor/Push
- * Through Pain's identical "something just happened to me" checks already use). The other 11
- * triggers each need their own detection point (several - a Group Test failing, discovering
- * something hidden, benefiting from another character's Lend Assistance - have no chokepoint
- * anywhere in this codebase at all yet) and are deliberately left unbuilt rather than
- * approximated against the wrong trigger.
- * @param {Actor} actor
- */
-export async function checkEmotionalStrengthAngerTrigger(actor) {
-  if (!actorHasPerk(actor, EMOTIONAL_STRENGTH_ID) || !isEmotionalMasteryOptionActive(actor, 'anger')) {
-    return;
-  }
-
-  if (hasUsedThisEncounter(actor, EMOTIONAL_STRENGTH_ENCOUNTER_FLAG)) {
-    return;
-  }
-
-  const roll = new Roll('1d2');
-  await roll.evaluate();
-  const max = actor.system.powers?.personal?.max ?? 0;
-  const newValue = Math.min(max, (actor.system.powers?.personal?.value ?? 0) + roll.total);
-  await actor.update({ 'system.powers.personal.value': newValue });
-  await markUsedThisEncounter(actor, EMOTIONAL_STRENGTH_ENCOUNTER_FLAG);
-}
-
-/**
  * Distress: "Your Movement values increase by 10 feet whenever you begin your turn within 10
  * feet of an enemy." A live read in documents/actor.mjs#_prepareMovement (the same touch-point
  * Warrior Rush's own movement modifier already uses) rather than a turn-start hook - "whenever
@@ -498,7 +473,7 @@ export async function deactivateShynessOnAttack(actor) {
 
 /**
  * Shyness's own auto-clear on suffering damage - called from combat.mjs#applyDamage's own
- * reactive-grant tail, alongside Emotional Strength's Anger trigger.
+ * reactive-grant tail. (Emotional Strength is its item's own rules - module/rules/ext/f/.)
  * @param {Actor} actor
  */
 export async function deactivateShynessOnDamage(actor) {

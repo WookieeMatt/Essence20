@@ -8,13 +8,8 @@ export const GIJ = id => `Compendium.essence20.gi_joe_crb.Item.${id}`;
 export const G2 = {
   artillerySupport: GIJ('MrDZK2ifJWpiH24D'),
   castling: GIJ('eB7jbgbevLVPxW4e'),
-  energyResistant: GIJ('lKnjgN4TdHHNktpF'),
-  expertKnowledge: GIJ('9H78lRwXzJW6tj9e'),
-  fearsomePresence: GIJ('Jbx3ei70ZsoabVuL'),
   martialArtist: GIJ('9Elbb94OPCPVSTxL'),
-  mentor: GIJ('jUZrNJbPzSd1zVLa'),
   noseForTrouble: GIJ('MH630UTgsJtbf3Y5'),
-  peerlessPilot: GIJ('y39VC0CIsI8mdLKK'),
   personalShield: GIJ('84JYgd6kZgY41wge'),
   impenetrableShield: GIJ('eEUl7OA9yWAk0QD3'),
   planOfAction: GIJ('7wsu99k8v620IB2N'),
@@ -22,7 +17,6 @@ export const G2 = {
   queensGambit: GIJ('Frf5wHlBS2Tn24yB'),
   recklessAbandon: GIJ('84d0XTJwKCYMJUgY'),
   aegis: GIJ('0ZTjZ36gN74889am'),
-  rollCage: GIJ('H49a6v04JMtbUpDf'),
 };
 
 export const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));

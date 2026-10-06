@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"Defense","label":"Thorns Monster Form (Toughness +1)","defense":"toughness","amount":1,"when":["self:data:flags.essence20.monsterFormActive"]},
-      {"type":"RollModifier","label":"Thorns Monster Form (↑1)","upshift":1,"when":["self:data:flags.essence20.monsterFormActive",{"any":["skill:alertness","skill:intimidation","skill:survival"]}]}
+      {"type":"RollModifier","label":"Thorns Monster Form (↑1)","upshift":1,"when":["self:data:flags.essence20.monsterFormActive",{"any":["skill:alertness","skill:intimidation","skill:survival"]}]},
+      {"type":"Trigger","event":"hit","label":"Monster Form: melee follow-up (Path of Thorns)","when":["self:data:flags.essence20.monsterFormActive","attack:melee"],"steps":[{"do":"button","whisper":"owners","who":"owner","label":"Follow-up attack on {target}","usedWhenDone":true,"steps":[{"do":"choose","prompt":"Skill","options":[{"label":"Might","steps":[{"do":"rollFlat","skill":"might","dif":"max(@target.system.defenses.toughness.total, @target.system.defenses.evasion.total)","onSuccess":[{"do":"button","who":"gm","label":"Apply 1 Acid to {target}","steps":[{"do":"damage","to":"target","amount":1,"damageType":"acid"}]}]}]},{"label":"Finesse","steps":[{"do":"rollFlat","skill":"finesse","dif":"max(@target.system.defenses.toughness.total, @target.system.defenses.evasion.total)","onSuccess":[{"do":"button","who":"gm","label":"Apply 1 Acid to {target}","steps":[{"do":"damage","to":"target","amount":1,"damageType":"acid"}]}]}]}]}]}]}
     ],
     "automation": {
       "status": "full",

@@ -12,10 +12,9 @@ global.Hooks = {
 
 const { registrySnapshot } = await import('../../extensions.mjs');
 const core = await import('./core.mjs');
-const { REACT, megaformDefenderPilots } = await import('./reactions.mjs');
-const { TRIG, lossAndGain, suppressesFumbleStoryPoint, inspiringLeaders, onCheckCard, giverFor } = await import('./triggers.mjs');
-const { FORM, monsterPath, sharedImmunity } = await import('./forms.mjs');
-const { AURA, isPlainReach, auraTargets } = await import('./auras.mjs');
+await import('./reactions.mjs');
+const { TRIG, suppressesFumbleStoryPoint } = await import('./triggers.mjs');
+const { FORM, sharedImmunity } = await import('./forms.mjs');
 await import('./hooks-in.mjs');
 
 function flagged(obj) {
@@ -135,65 +134,35 @@ describe('negateHit', () => {
 });
 
 describe('reactions', () => {
-  test('Legendary Cruelty is offered on a miss against its holder, once per turn', () => {
-    const attacker = makeActor('att');
-    const baroness = makeActor('bar', [item(REACT.legendaryCruelty)]);
-    global.game.actors = [attacker, baroness];
-    global.fromUuidSync.mockImplementation(uuid => [attacker, baroness].find(a => a.uuid == uuid));
-    const info = core.cardInfo(card({ attacker, rows: [{ targetUuid: baroness.uuid, difficulty: 15, success: false }] }));
-    const offers = core.reactionsFor(info).filter(o => o.reaction.id == 'legendaryCruelty');
-    expect(offers.map(o => o.reactor)).toEqual([baroness]);
-    const hit = core.cardInfo(card({ attacker, rows: [{ targetUuid: baroness.uuid, difficulty: 5, success: true }] }));
-    expect(core.reactionsFor(hit).some(o => o.reaction.id == 'legendaryCruelty')).toBe(false);
-  });
-
-  test('Desperate Parry needs its Contingency set during combat', async () => {
-    const attacker = makeActor('att');
-    const sword = item(null, { type: 'weapon', system: { equipped: true } });
-    const effect = item(null, { type: 'weaponEffect', system: { classification: { skill: 'finesse' } }, more: { flags: { essence20: { parentId: sword.id } } } });
-    const parrier = makeActor('par', [item(REACT.desperateParry), sword, effect]);
-    global.game.actors = [attacker, parrier];
-    global.fromUuidSync.mockImplementation(uuid => [attacker, parrier].find(a => a.uuid == uuid));
+  test('the Contingency helpers hold in the combat they were set in (no combat: always set)', async () => {
+    const actor = makeActor('par');
     global.game.combat = { id: 'c1', round: 1, turn: 0 };
-    const info = core.cardInfo(card({ attacker, rows: [{ targetUuid: parrier.uuid, difficulty: 10, success: true }], flags: { isMelee: true } }));
-    const offered = () => core.reactionsFor(info).some(o => o.reaction.id == 'desperateParry');
-    expect(offered()).toBe(false);
-    await core.arm(parrier, 'desperateParry');
-    expect(offered()).toBe(true);
-    await core.disarm(parrier);
-    expect(offered()).toBe(false);
+    expect(core.isArmed(actor, 'x')).toBe(false);
+    await core.arm(actor, 'x');
+    await core.arm(actor, 'y');
+    expect(core.isArmed(actor, 'x')).toBe(true);
+    await core.disarm(actor, 'x');
+    expect(core.isArmed(actor, 'x')).toBe(false);
+    expect(core.isArmed(actor, 'y')).toBe(true);
+    await core.disarm(actor);
+    expect(core.isArmed(actor, 'y')).toBe(false);
+    global.game.combat = null;
+    expect(core.isArmed(actor, 'y')).toBe(true);
   });
 
-  test('That\'s Right, Perfect is offered to an ally of the roller, once per scene', () => {
-    const roller = makeActor('rol');
-    const sarge = makeActor('sar', [item(REACT.thatsRight)]);
-    global.game.actors = [roller, sarge];
-    const info = core.cardInfo(card({ attacker: roller, rows: [{ targetUuid: null, difficulty: 10, success: true }] }));
-    expect(core.reactionsFor(info).filter(o => o.reaction.id == 'thatsRight').map(o => o.reactor)).toEqual([sarge]);
-    expect(core.reactionsFor(info).some(o => o.reaction.id == 'notPerfect')).toBe(false);
-  });
+  // Megaform Defender is the Trait's own Reaction rule (who: megaformPilot - module/rules/conv11-slF11.test.js).
+  test('a roll whose dataset asks for a Snag (the rules roll step\'s snag) gets it once the dialog closes', async () => {
+    const roll = async dataset => {
+      const options = { ext: {} };
+      for (const fn of registrySnapshot().applyDialog) {
+        await fn(makeActor('x'), options, { dataset });
+      }
 
-  test('Megaform Defender finds the piloting Ranger of the participant with the Trait', () => {
-    const zord = makeActor('zord', [item(null, { type: 'megaformTrait', system: { type: 'defender' } })], {}, { type: 'zord' });
-    const pilot = makeActor('pilot', [], { actors: { a: { uuid: zord.uuid } } });
-    const megaform = makeActor('mega', [], { actors: { a: { uuid: zord.uuid } } }, { type: 'megaform' });
-    global.game.actors = [zord, pilot, megaform];
-    global.fromUuidSync.mockImplementation(uuid => [zord, pilot, megaform].find(a => a.uuid == uuid));
-    expect(megaformDefenderPilots(megaform)).toEqual([pilot]);
-    pilot.system.powers.personal.value = 0;
-    expect(megaformDefenderPilots(megaform)).toEqual([]);
-  });
+      return options.snag;
+    };
 
-  test('a banked counter-attack adds its shift against that attacker only, then is spent', async () => {
-    const actor = makeActor('ctr');
-    await actor.setFlag('essence20', 'reactCounter', { targetUuid: 'Actor.foe', shiftDown: 1, melee: true, label: 'Counterstrike' });
-    const sources = registrySnapshot().rollSources.map(fn => fn(actor, { uuid: 'Actor.foe' }, { isAttack: true, isMelee: true })).filter(Boolean);
-    expect(sources.flatMap(s => s.sources).find(s => s.id == 'reactCounter')).toMatchObject({ shiftDown: 1 });
-    const other = registrySnapshot().rollSources.map(fn => fn(actor, { uuid: 'Actor.x' }, { isAttack: true, isMelee: true })).filter(Boolean);
-    expect(other.flatMap(s => s.sources).some(s => s.id == 'reactCounter')).toBe(false);
-    global.fromUuid.mockResolvedValue(actor);
-    await registrySnapshot().consumers.reactCounter({ actorUuid: actor.uuid });
-    expect(actor.getFlag('essence20', 'reactCounter')).toBeUndefined();
+    expect(await roll({ snag: true })).toBe(true);
+    expect(await roll({})).toBeUndefined();
   });
 });
 
@@ -212,26 +181,6 @@ describe('late Snag', () => {
 });
 
 describe('triggers', () => {
-  test('Loss and Gain grows at 6th, 11th and 16th level', () => {
-    expect(lossAndGain(makeActor('a', [], { level: 1 }))).toBe(1);
-    expect(lossAndGain(makeActor('a', [], { level: 11 }))).toBe(3);
-    expect(lossAndGain(makeActor('a', [item(TRIG.lossAndGain, { type: 'rolePoints', system: { bonus: { value: 4 } } })], { level: 2 }))).toBe(4);
-  });
-
-  test('Their Loss, My Gain heals on a nearby Fumble', async () => {
-    const roller = makeActor('rol');
-    const thorns = makeActor('tho', [item(TRIG.theirLoss)], { level: 6, health: { value: 1, max: 5 } });
-    global.game.actors = [roller, thorns];
-    await onCheckCard(card({ attacker: roller, rows: [{ targetUuid: null, difficulty: 10, success: false }], flags: { isFumble: true, rollFailed: true, isAttack: false } }));
-    expect(thorns.system.health.value).toBe(1);
-    global.canvas = { grid: { measurePath: () => ({ distance: 30 }) } };
-    roller.getActiveTokens = () => [{ center: {}, document: {} }];
-    thorns.getActiveTokens = () => [{ center: {}, document: {} }];
-    await onCheckCard(card({ attacker: roller, rows: [{ targetUuid: null, difficulty: 10, success: false }], flags: { isFumble: true, rollFailed: true, isAttack: false } }));
-    expect(thorns.system.health.value).toBe(3);
-    global.canvas = undefined;
-  });
-
   test('Agency drops the Fumble Story Point only for its own skill', () => {
     const agent = makeActor('age', [item(TRIG.agencyHangUp, { type: 'hangUp' }), item(TRIG.agencyPerk, { system: { choice: 'technology' } })]);
     expect(suppressesFumbleStoryPoint(agent, 'technology')).toBe(true);
@@ -239,46 +188,11 @@ describe('triggers', () => {
     expect(suppressesFumbleStoryPoint(makeActor('x'), 'technology')).toBe(false);
   });
 
-  test('Inspirational Leader lifts allies on the same skill this round', () => {
-    const leader = makeActor('lea', [item(TRIG.inspirationalLeader)]);
-    const ally = makeActor('all');
-    global.game.actors = [leader, ally];
-    global.game.combat = { id: 'c1', round: 2 };
-    leader.flags.essence20 = { inspiringSkill: { skill: 'might', combatId: 'c1', round: 2 } };
-    expect(inspiringLeaders(ally, 'might')).toEqual([leader]);
-    expect(inspiringLeaders(ally, 'finesse')).toEqual([]);
-    expect(inspiringLeaders(leader, 'might')).toEqual([]);
-    global.game.combat = null;
-  });
-
-  test('All For One gives from the user\'s own character', () => {
-    const recipient = makeActor('rec');
-    const own = makeActor('own');
-    global.game.user = { id: 'p', isGM: false, character: own };
-    expect(giverFor(recipient)).toBe(own);
-  });
-
-  test('Junker holders get a Snag after gear breaks in combat', async () => {
-    const junker = makeActor('jun', [item(TRIG.junker, { type: 'hangUp' })]);
-    global.game.actors = [junker];
-    global.game.combat = { id: 'c1' };
-    const { noteBroken } = await import('./triggers.mjs');
-    await noteBroken();
-    expect(junker.getFlag('essence20', 'junkerSnag')).toBe(true);
-    const sources = registrySnapshot().rollSources.map(fn => fn(junker, null, {})).filter(Boolean).flatMap(s => s.sources);
-    expect(sources.find(s => s.id == 'reactJunker')).toMatchObject({ snag: true });
-  });
+  // Inspirational Leader, Junker and Revengeful are rules on their items (rules/conv10-slE10.test.js).
+  // All For One is a droppedToZero Trigger on its Perk (rules/conv10-slD10.test.js).
 });
 
 describe('forms', () => {
-  test('Monster Form path', () => {
-    const role = item('Compendium.essence20.finster_s_monster_matic_cookbook.Item.TEjkVjIEFEbRI736', { type: 'role' });
-    const stone = makeActor('sto', [role]);
-    expect(monsterPath(stone)).toBeNull();
-    stone.flags.essence20 = { monsterFormActive: true };
-    expect(monsterPath(stone)).toBe('stone');
-  });
-
   test('Iron Bravado shares immunity with the listed allies', () => {
     const giver = makeActor('giv', [item(FORM.ironBravado)]);
     giver.flags.essence20 = { ironBravadoShare: { conditions: ['frightened'], allies: ['Actor.ally'], combatId: null } };
@@ -289,24 +203,4 @@ describe('forms', () => {
   });
 });
 
-describe('auras', () => {
-  test('only plain Reach melee attacks trigger an aura', () => {
-    const actor = makeActor('att', [], { size: 'common' });
-    CONFIG.E20.actorReach ??= { common: 5 };
-    expect(isPlainReach(actor, { type: 'weaponEffect', system: { classification: { style: 'melee' }, range: {}, totalReach: 5 } })).toBe(true);
-    expect(isPlainReach(actor, { type: 'weaponEffect', system: { classification: { style: 'melee' }, range: { reachMultiplier: 2 } } })).toBe(false);
-    expect(isPlainReach(actor, { type: 'weaponEffect', system: { classification: { style: 'projectile' }, range: {} } })).toBe(false);
-  });
-
-  test('a targeted wearer of Spiked is found; unworn Upgrades are not', () => {
-    const armor = item(null, { type: 'armor', system: { equipped: true } });
-    const spikes = item(AURA[1].uuid, { type: 'upgrade', name: 'Spiked', more: { flags: { core: { sourceId: AURA[1].uuid }, essence20: { parentId: armor.id } } } });
-    const wearer = makeActor('wea', [armor, spikes]);
-    const attacker = makeActor('att', [], { size: 'common' });
-    global.game.user.targets = new Set([{ actor: wearer }]);
-    const melee = { type: 'weaponEffect', system: { classification: { style: 'melee' }, range: {} } };
-    expect(auraTargets(attacker, melee).map(e => e.aura.shiftDown)).toEqual([1]);
-    armor.system.equipped = false;
-    expect(auraTargets(attacker, melee)).toEqual([]);
-  });
-});
+// Energized, Spiked and Energy Field are incoming DialogSelect rules on their Upgrades (rules/conv10-slC10.test.js).

@@ -5,6 +5,9 @@
   "_id": "Xo62YAhi8lULOZpR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Change the probed data","when":["self:marked:commsProbe"],"steps":[{"do":"roll","skill":"deception","open":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (after a successful Comms Probe this scene): roll Deception to alter the data; the result is posted as the DIF for anyone checking whether it's false.</p>"

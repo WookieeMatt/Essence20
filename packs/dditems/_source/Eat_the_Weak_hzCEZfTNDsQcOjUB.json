@@ -5,6 +5,9 @@
   "_id": "hzCEZfTNDsQcOjUB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Cure Addicted (Dark Energon) (Culture vs Willpower)","steps":[{"do":"require","when":["target:data:id"],"check":["target:hasItem:name~addicted (dark energon)"],"message":"The target has no Addicted (Dark Energon) Hang-Up."},{"do":"require","when":["not:target:data:id"],"check":["self:hasItem:name~addicted (dark energon)"],"message":"No Addicted (Dark Energon) Hang-Up to remove."},{"do":"roll","skill":"culture","difDefense":"willpower","difDefenseSelf":true,"onSuccess":[{"do":"deleteItem","to":"targetOrSelf","item":"name~addicted (dark energon)"}],"onFail":[{"do":"chat","text":"{name} fails: the addiction holds."}]}]}
+    ],
     "prerequisites": {"when":["self:has:Word of Unicron","self:skill:culture>=d2"]},
     "automation": {
       "status": "full",

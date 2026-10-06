@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Armor-related test (Second Skin: Edge)","when":["not:attack"],"edge":true}
+      {"type":"DialogSwitch","label":"Armor-related test (Second Skin: Edge)","when":["not:attack"],"edge":true},
+      {"type":"SkillSubstitution","label":"Second Skin (armor requisition with Technology or Science)","from":"athletics","mode":"ask","options":["technology","science"],"prompt":"E20.Gij3SecondSkinPrompt","when":["roll:dataset:requisitionItemName"]},
+      {"type":"SkillSubstitution","label":"Second Skin (armor requisition with Technology or Science)","from":"acrobatics","mode":"ask","options":["technology","science"],"prompt":"E20.Gij3SecondSkinPrompt","when":["roll:dataset:requisitionItemName"]}
     ],
     "automation": {
       "status": "full",

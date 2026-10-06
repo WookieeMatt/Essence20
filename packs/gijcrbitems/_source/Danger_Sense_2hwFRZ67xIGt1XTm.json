@@ -7,7 +7,9 @@
   "system": {
     "rules": [
       {"type":"DialogSwitch","forget":true,"label":"Roll Alertness for Initiative, ↑2 (Danger Sense)","when":["roll:initiative"],"useSkill":"alertness","upshift":2},
-      {"type":"ConditionImmunity","label":"Can't be Surprised (Danger Sense)","conditions":["surprised"]}
+      {"type":"ConditionImmunity","label":"Can't be Surprised (Danger Sense)","conditions":["surprised"]},
+      {"type":"ConditionImmunity","label":"Protected Target within 10 ft can't be Surprised (Danger Sense)","conditions":["surprised"],"scope":"aura","radius":10,"affects":"allies","when":["holder:protects"]},
+      {"type":"Use","label":"Give your Protected Target your Initiative (Danger Sense)","steps":[{"do":"require","check":["self:data:flags.essence20.protectedTargetUuid"],"message":"No Protected Target is set."},{"do":"require","check":["self:initiative"],"message":"Roll your own Initiative in this combat first."},{"do":"writeInitiative","to":"protectedTarget","value":"@initiative"}]}
     ],
     "automation": {
       "status": "full",

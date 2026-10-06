@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"BrawnRequirement","label":"Pack Mule (Brawn counts ↑2 for requirements and carrying)","amount":2,"carrying":true,"stack":"packMule"}
+    ],
     "prerequisites": {"when":["self:skill:brawn>=d2"]},
     "automation": {
       "status": "full",

@@ -1,13 +1,9 @@
 import { jest } from '@jest/globals';
 import { TF1, favoriteWeaponOf, isDefeated, sourceOf } from './common.mjs';
 import {
-  COMBAT_USES, armorOf, commsArmorAdjust, respectTurnEnd, respectTurnStart, shieldTraded, tf1CombatApplyDialog, tf1CombatHitRider,
-  tf1CombatPostRoll, tf1CombatSources, tf1CombatToggles, tf1DefenseAdjust, tf1Derived,
+  COMBAT_USES, respectTurnEnd, respectTurnStart, tf1CombatPostRoll,
 } from './combat.mjs';
-import {
-  FLEXIBLE_SWITCH_RULE, SUPPORT_USES, mimicrySizeOk, sizeClass, tf1SupportPostRoll,
-  tf1SupportSources,
-} from './support.mjs';
+import { SUPPORT_USES, mimicrySizeOk, sizeClass } from './support.mjs';
 import { registrySnapshot } from '../../extensions.mjs';
 
 const owned = (uuid, extra = {}) => ({
@@ -46,74 +42,46 @@ test('every Use and rule is registered', () => {
     expect(ids).toContain(use.id);
   }
 
-  expect(registry.costRules).toEqual(expect.arrayContaining([FLEXIBLE_SWITCH_RULE]));
+  // Flexible Switch's Free conversion is an ActionCost rule on the Perk now.
+  expect(registry.costRules.some(rule => rule.id == 'tf1FlexibleSwitch')).toBe(false);
   expect(typeof registry.chatButtons.tf1Damage).toBe('function');
 });
 
 test('Use buttons match their own items only', () => {
   const byId = Object.fromEntries([...COMBAT_USES, ...SUPPORT_USES].map(u => [u.id, u]));
-  expect(byId.tf1FearsomeVoice.matches(owned(TF1.fearsomeVoice))).toBe(true);
-  expect(byId.tf1FearsomeVoice.matches(owned(TF1.brutalDisplay))).toBe(false);
+  // Fearsome Voice's, Make An Example's, Brutal Display's, Comms Assault's and Flexible Switch's Uses are rules on
+  // the Perks now.
+  for (const id of ['tf1FearsomeVoice', 'tf1MakeAnExample', 'tf1BrutalDisplay', 'tf1CommsAssault', 'tf1FlexibleSwitch', 'tf1TargetRich', 'tf1ToxEn']) {
+    expect(byId[id]).toBeUndefined();
+  }
+
+  // So are Comms Probe's, False Data's, Mine!'s, Picking Up the Trail's, Feedback Field's and Partnered's.
+  for (const id of ['tf1CommsProbe', 'tf1FalseData', 'tf1Mine', 'tf1Trail', 'tf1FeedbackField', 'tf1Partnered']) {
+    expect(byId[id]).toBeUndefined();
+  }
+
   expect(byId.tf1Drone.matches(owned(TF1.drone, { type: 'origin' }))).toBe(true);
-  expect(byId.tf1ToxEn.matches(owned(TF1.toxEn, { type: 'gear' }))).toBe(true);
 });
 
-test('Fearsome Additions: Ram in Alt Mode (the Bot Mode Intimidation ↑1 is a rule)', () => {
-  const gear = owned(TF1.fearsomeAdditions, { type: 'gear', name: 'Fearsome Additions' });
-  const bot = makeActor([gear], { system: { isTransformed: false } });
-  const alt = makeActor([gear], { system: { isTransformed: true } });
-  const ram = { type: 'weaponEffect', name: 'Ram', system: { isRam: true } };
-  expect(tf1CombatSources(bot, null, { rolledSkill: 'intimidation' }).sources).toEqual([]);
-  expect(tf1CombatSources(bot, null, { item: ram, rolledSkill: 'might' }).sources).toEqual([]);
-  expect(tf1CombatSources(alt, null, { item: ram, rolledSkill: 'might' }).sources[0].shiftUp).toBe(1);
-  expect(tf1CombatSources(alt, null, { rolledSkill: 'intimidation' }).sources).toEqual([]);
-});
-
-test('Focused Blast: offered on area weapons, ↑1 or +1 damage', async () => {
-  const holder = makeActor([owned(TF1.focusedBlast)]);
-  const blast = { type: 'weaponEffect', system: { radius: 10 } };
-  expect(tf1CombatToggles(holder, { item: blast })[0].name).toBe('tf1FocusedBlast');
-  expect(tf1CombatToggles(holder, { item: { type: 'weaponEffect', system: {} } })).toEqual([]);
-  const up = { shiftUp: 0, ext: { tf1FocusedBlast: 'up' } };
-  await tf1CombatApplyDialog(holder, up);
-  expect(up.shiftUp).toBe(1);
-  await tf1CombatApplyDialog(holder, { ext: { tf1FocusedBlast: 'damage' } });
-  const note = jest.fn();
-  await tf1CombatHitRider(holder, {}, { damageValue: 2 }, {}, { damageBonusNote: note });
-  expect(note).toHaveBeenCalledWith(expect.anything(), 1, expect.anything());
-});
-
-test('Steady Firepower lowers the same target\'s Defense by the count', async () => {
+test('Fearsome Additions and Steady Firepower are rules now (no roll source, no Defense adjust, no flag)', async () => {
+  const registry = registrySnapshot();
+  expect(registry.rollSources.some(fn => fn.name == 'tf1CombatSources')).toBe(false);
+  expect(registry.defenseAdjust.some(fn => fn.name == 'tf1DefenseAdjust')).toBe(false);
   const weapon = { id: 'w1', type: 'weapon' };
-  const effect = { id: 'e1', type: 'weaponEffect', flags: { essence20: { parentId: 'w1' } } };
   const favorite = owned(TF1.favoriteWeapon, { system: { choice: 'w1' } });
-  const holder = makeActor([owned(TF1.steadyFirepower), favorite, weapon, effect]);
-  const foe = { uuid: 'Actor.f' };
-  await tf1CombatPostRoll(holder, [], {}, { hits: [{ target: foe, hit: true }], rider: { weaponId: 'w1' } });
-  await tf1CombatPostRoll(holder, [], {}, { hits: [{ target: foe, hit: true }], rider: { weaponId: 'w1' } });
-  expect(tf1DefenseAdjust(holder, foe, 'evasion', { item: effect })).toBe(-2);
-  expect(tf1DefenseAdjust(holder, { uuid: 'Actor.other' }, 'evasion', { item: effect })).toBe(0);
-  await tf1CombatPostRoll(holder, [], {}, { hits: [{ target: foe, hit: true }], rider: { weaponId: 'w9' } });
-  expect(holder.flags.essence20.tf1SteadyFire).toBeUndefined();
+  const holder = makeActor([owned('Compendium.essence20.decepticon_directive.Item.svqVyP2tyYzSUtn6'), favorite, weapon]);
+  await tf1CombatPostRoll(holder, [], {}, { hits: [{ target: { uuid: 'Actor.f' }, hit: true }], rider: { weaponId: 'w1' } });
+  expect(holder.setFlag).not.toHaveBeenCalled();
   expect(favoriteWeaponOf(holder)).toBe(weapon);
 });
 
-test('My Allies Are My Shield trade: movement up, counted only this combat', () => {
-  game.combat = { id: 'c1' };
-  const holder = makeActor([owned(TF1.myAlliesAreMyShield)], { flags: { tf1ShieldTrade: { combatId: 'c1', n: 2 } }, system: { movement: { ground: { total: 30 }, aerial: { total: 0 } } } });
-  expect(shieldTraded(holder)).toBe(2);
-  tf1Derived(holder);
-  expect(holder.system.movement.ground.total).toBe(50);
-  expect(holder.system.movement.aerial.total).toBe(0);
-  game.combat = { id: 'c2' };
-  expect(shieldTraded(holder)).toBe(0);
+// Focused Blast is a DialogSelect + HitRider rule pair now (rules/conv10-slB10.test.js).
+
+test('My Allies Are My Shield is rules on the Perk now (no Use here)', () => {
+  expect(COMBAT_USES.map(use => use.id)).not.toContain('tf1ShieldTrade');
 });
 
-test('Comms Assault strips armor only for its own roll', () => {
-  const foe = makeActor([{ id: 'x', type: 'armor', system: { equipped: true, totalBonusToughness: 2 } }], { system: { defenses: { toughness: { armor: 1 } } } });
-  expect(armorOf(foe)).toBe(3);
-  expect(commsArmorAdjust({ id: 'nobody' }, foe, 'toughness')).toBe(0);
-});
+// Comms Assault's armor-ignoring is an ignoreArmor Defense rule now (rules/conv10-slB10.test.js).
 
 test('Show Respect: pending becomes active for one turn', async () => {
   const holder = makeActor([owned(TF1.showRespect, { type: 'hangUp' })], { flags: { tf1Respect: { pending: ['Actor.f'] } } });
@@ -123,32 +91,12 @@ test('Show Respect: pending becomes active for one turn', async () => {
   expect(holder.flags.essence20.tf1Respect.active).toEqual([]);
 });
 
-test('Loaded Questions: cumulative ↑1 per earlier test on the same target this scene', async () => {
-  const holder = makeActor([owned(TF1.loadedQuestions)]);
-  const foe = { uuid: 'Actor.f' };
-  expect(tf1SupportSources(holder, foe, { rolledSkill: 'deception' }).sources).toEqual([]);
-  await tf1SupportPostRoll(holder, [], {}, { hits: [{ target: foe }], rider: { skill: 'deception' } });
-  await tf1SupportPostRoll(holder, [], {}, { hits: [{ target: foe }], rider: { skill: 'persuasion' } });
-  expect(tf1SupportSources(holder, foe, { rolledSkill: 'persuasion' }).sources[0].shiftUp).toBe(2);
-  expect(tf1SupportSources(holder, foe, { rolledSkill: 'alertness' }).sources).toEqual([]);
-});
-
 test('Alt Mode Mimicry size limit', () => {
   expect(sizeClass('long')).toBe(sizeClass('large'));
   expect(mimicrySizeOk('common', 'large')).toBe(true);
   expect(mimicrySizeOk('common', 'huge')).toBe(false);
   expect(mimicrySizeOk('large', 'extended')).toBe(true);
   expect(mimicrySizeOk('huge', 'small')).toBe(true);
-});
-
-test('Flexible Switch cost rule', () => {
-  const perk = owned(TF1.flexibleSwitch, { flags: { switchModes: ['m1', 'm2'] } });
-  const modes = [{ id: 'm1', type: 'altMode' }, { id: 'm2', type: 'altMode' }, { id: 'm3', type: 'altMode' }];
-  const holder = makeActor([perk, ...modes], { system: { isTransformed: true, altModeId: 'm1' } });
-  expect(FLEXIBLE_SWITCH_RULE.has(holder)).toBe(true);
-  holder.system.altModeId = 'm3';
-  expect(FLEXIBLE_SWITCH_RULE.has(holder)).toBe(false);
-  expect(FLEXIBLE_SWITCH_RULE.matches({ kind: 'conversion' })).toBe(true);
 });
 
 test('small helpers', () => {

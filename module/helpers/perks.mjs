@@ -283,45 +283,22 @@ export async function markUsedThisScene(actor, flagKey, count = 1) {
  * @param {Object} data   Whatever the consuming check needs, e.g. { edge: true } or
  *   { shiftUp: 2 } - merged with the same {combatId, round} stamp bankPendingBonus's siblings use.
  */
-export const THIS_I_COMMAND_ID = "Compendium.essence20.cobra_codex.Item.SUc3emTvPnwB6W93";
-
 /**
- * This, I Command (Cobra Codex, 6th level, p.57): "when you use an ability that grants an ally
- * Upshifts, one or more additional actions, or a Ruthless Point, you can deal 1 point of Psychic
- * Damage to that ally to double the benefit you grant them."
- *
- * Asks the granter, and deals the damage on a yes. Returns whether to double. Only for a granter
- * who holds the Perk and an ally who isn't the granter. The Ruthless Point half has its own prompt
- * (helpers/extensions/resource/personal-points.mjs).
+ * Whether the granter doubles what they grant an ally: the granter's GrantDouble rules (This, I Command - asked,
+ * and its damage dealt on a yes; rules/ext/h/types.mjs). `kind` is upshift or actions; `what` names it in the prompt.
  * @param {Actor} granter
  * @param {Actor} ally
- * @param {String} what   What's being granted, for the prompt.
+ * @param {String} kind
+ * @param {String} what
  * @returns {Promise<Boolean>}
  */
-export async function offerThisICommand(granter, ally, what) {
-  if (!granter || !ally || granter.uuid == ally.uuid || !actorHasPerk(granter, THIS_I_COMMAND_ID)) {
+export async function offerGrantDouble(granter, ally, kind, what) {
+  if (!granter || !ally) {
     return false;
   }
 
-  const DialogV2 = globalThis.foundry?.applications?.api?.DialogV2;
-  if (!DialogV2?.confirm) {
-    return false;
-  }
-
-  const i18n = globalThis.game?.i18n;
-  // Bound: DialogV2.confirm calls this.wait internally.
-  const yes = await DialogV2.confirm.call(DialogV2, {
-    window: { title: i18n?.localize?.('E20.ThisICommandTitle') ?? 'This, I Command' },
-    content: `<p>${i18n?.format?.('E20.ThisICommandPrompt', { granter: granter.name, ally: ally.name, what }) ?? ''}</p>`,
-    rejectClose: false,
-  });
-  if (!yes) {
-    return false;
-  }
-
-  const { applyDamage } = await import("./combat.mjs");
-  await applyDamage(ally, 1, 'psychic');
-  return true;
+  const { offerGrantDouble: offer } = await import("../rules/ext/h/types.mjs");
+  return offer(granter, ally, kind, what);
 }
 
 /**
@@ -329,12 +306,12 @@ export async function offerThisICommand(granter, ally, what) {
  * @param {String} flagKey
  * @param {Object} [data]
  * @param {Object} [options]
- * @param {Actor} [options.granter]   Who granted it to someone else - for This, I Command, which can
+ * @param {Actor} [options.granter]   Who granted it to someone else - a GrantDouble rule (This, I Command) can
  *   double a granted upshift.
  */
 export async function bankPendingBonus(actor, flagKey, data = {}, { granter = null } = {}) {
   if (granter && Number(data?.shiftUp) > 0
-    && await offerThisICommand(granter, actor, globalThis.game?.i18n?.format?.('E20.ThisICommandUpshift', { n: data.shiftUp }) ?? `↑${data.shiftUp}`)) {
+    && await offerGrantDouble(granter, actor, 'upshift', globalThis.game?.i18n?.format?.('E20.RulesExtH.Upshift', { n: data.shiftUp }) ?? `↑${data.shiftUp}`)) {
     data = { ...data, shiftUp: Number(data.shiftUp) * 2 };
   }
 

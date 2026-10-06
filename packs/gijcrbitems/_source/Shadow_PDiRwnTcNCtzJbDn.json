@@ -5,6 +5,9 @@
   "_id": "PDiRwnTcNCtzJbDn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"This roll tries to detect {holder} (Shadow: ↓2)","scope":"incoming","downshift":2,"when":["check:infiltrating","not:target:self"],"defaultWhen":["skill:alertness","not:attack"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: switches Infiltrating on or off. While it's on, anyone targeting you gets a Shadow switch in their Roll Options Dialog that gives their roll ↓2. It starts ticked for Alertness tests and unticked for everything else; tick it for any other roll trying to detect you. The Speed increases come with the Focus as you level.</p>"

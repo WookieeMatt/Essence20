@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"Qualification","label":"Roaming the Land (Qualified: Traumatic upgrade)","upgrades":[{"any":["item:id:zXPxC1yLlK2xgGEl","item:data:name=traumatic"]}]},
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:melee","rule:data:system.choice=smallerDamage","self:sizeDiff>=1"]}
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:melee","rule:data:system.choice=smallerDamage","self:sizeDiff>=1"]},
+      {"type":"Qualification","label":"Roaming the Land (Trained: energized close combat weapons)","access":"trained","items":["item:type:weapon",{"any":["item:hasAttack:item:data:system.classification.style=melee","item:hasAttack:item:data:system.range.reachMultiplier>0"]},{"any":["item:trait:energy","item:trait:electric","item:trait:laser","item:trait:fire","item:trait:ice","item:trait:plasma","item:trait:element","item:trait:sonic","item:trait:radiant"]}]}
     ],
     "automation": {
       "status": "full",

@@ -1,7 +1,6 @@
 import { jest } from '@jest/globals';
 import {
-  FIX3_TF, KIND, liveMark, markDigDeepSnag, nextTurnWindow, personalVehicleSources, tfFixPostRoll,
-  tfFixRollSources, tfFixSceneAdvanced, tfFixTurnEnd,
+  KIND, liveMark, markDigDeepSnag, nextTurnWindow, personalVehicleSources, tfFixRollSources, tfFixSceneAdvanced,
 } from './tf-fixes.mjs';
 import { SUMMON } from '../../summons.mjs';
 
@@ -97,77 +96,6 @@ describe("Dig Deep", () => {
     expect(liveMark(actor, KIND.digDeep)).not.toBeNull();
     game.combat.turn = 1;
     expect(liveMark(actor, KIND.digDeep)).toBeNull();
-  });
-});
-
-describe("Covering Fire", () => {
-  test("a miss marks the target; it takes a Snag on attacks during its own next turn", async () => {
-    const gunner = makeActor({ id: 'gun', items: [perk(FIX3_TF.coveringFire, { name: 'Covering Fire' })] });
-    const target = makeActor({ id: 'foe' });
-    game.combat = { id: 'c', round: 1, turn: 0, turns: [{ actor: { id: 'gun' } }, { actor: { id: 'foe' } }], combatant: { actor: { id: 'gun' } } };
-
-    await tfFixPostRoll(gunner, [{ success: false }], { isAttack: true }, { hits: [{ target, hit: false }] });
-    expect(liveMark(target, KIND.coveringFire)).toMatchObject({ label: 'Covering Fire', untilRound: 1, untilTurn: 1 });
-
-    // Not its turn yet: no Snag.
-    expect(tfFixRollSources(target, null, { rolledSkill: 'targeting', isAttack: true }).sources).toEqual([]);
-
-    game.combat.turn = 1;
-    game.combat.combatant = { actor: { id: 'foe' } };
-    expect(tfFixRollSources(target, null, { rolledSkill: 'targeting', isAttack: true }).sources)
-      .toContainEqual({ id: 'fix3CoveringFire', label: 'Covering Fire', snag: true });
-    // Only attacks.
-    expect(tfFixRollSources(target, null, { rolledSkill: 'alertness', isAttack: false }).sources).toEqual([]);
-  });
-
-  test("a hit marks nothing", async () => {
-    const gunner = makeActor({ items: [perk(FIX3_TF.coveringFire)] });
-    const target = makeActor({ id: 'foe' });
-    await tfFixPostRoll(gunner, [{ success: true }], { isAttack: true }, { hits: [{ target, hit: true }] });
-    expect(liveMark(target, KIND.coveringFire)).toBeNull();
-  });
-});
-
-describe("Watchful Eyes", () => {
-  test("marks targeted enemies with its own label; spent by their first test on their turn", async () => {
-    const leader = makeActor({ id: 'lead', items: [perk(FIX3_TF.watchfulEyes, { name: 'Watchful Eyes' })] });
-    const foe = makeActor({ id: 'foe' });
-    game.user.targets = new Set([{ actor: foe, document: { disposition: -1 } }]);
-
-    await tfFixPostRoll(leader, [{ success: true }], { isWatchfulEyesAttempt: true }, { hits: [] });
-    const { sources, consumes } = tfFixRollSources(foe, null, { rolledSkill: 'athletics' });
-    expect(sources).toContainEqual({ id: 'fix3WatchfulEyes', label: 'Watchful Eyes', snag: true });
-    expect(consumes).toEqual([{ actorUuid: foe.uuid, kind: KIND.watchfulEyes, by: leader.uuid }]);
-  });
-
-  test("a failed roll marks nobody", async () => {
-    const leader = makeActor({ items: [perk(FIX3_TF.watchfulEyes)] });
-    const foe = makeActor({ id: 'foe' });
-    game.user.targets = new Set([{ actor: foe, document: { disposition: -1 } }]);
-    await tfFixPostRoll(leader, [{ success: false }], { isWatchfulEyesAttempt: true }, { hits: [] });
-    expect(liveMark(foe, KIND.watchfulEyes)).toBeNull();
-  });
-});
-
-describe("Predacon's Frightened", () => {
-  test("comes off at the end of the target's next turn", async () => {
-    const predacon = makeActor({ id: 'p', items: [perk(FIX3_TF.predacon, { name: 'Predacon' })] });
-    const foe = makeActor({ id: 'foe', statuses: ['frightened'] });
-    const combat = { id: 'c', round: 1, turn: 0, turns: [{ actor: { id: 'p' } }, { actor: { id: 'foe' } }] };
-    game.combat = combat;
-
-    await tfFixPostRoll(predacon, [{ success: true }], { isPredaconAttempt: true }, { hits: [{ target: foe, hit: true }] });
-    expect(foe.flags.essence20.riderMarks).toEqual([expect.objectContaining({ kind: KIND.predaconFright, untilRound: 1 })]);
-
-    await tfFixTurnEnd(foe, combat, { round: 1, turn: 1 });
-    expect(foe.toggleStatusEffect).toHaveBeenCalledWith('frightened', { active: false });
-    expect(foe.flags.essence20.riderMarks).toEqual([]);
-  });
-
-  test("an unrelated turn end leaves it alone", async () => {
-    const foe = makeActor({ id: 'foe', statuses: ['frightened'], flags: { riderMarks: [{ kind: KIND.predaconFright, combatId: 'c', untilRound: 3, untilTurn: 1 }] } });
-    await tfFixTurnEnd(foe, { id: 'c', round: 2 }, { round: 2, turn: 1 });
-    expect(foe.toggleStatusEffect).not.toHaveBeenCalled();
   });
 });
 

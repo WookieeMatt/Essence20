@@ -5,6 +5,10 @@
   "_id": "toav8R7TF92WnQ8G",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the environment (Weather Gear)","steps":[{"do":"pick","key":"environment","from":"list","prompt":"Which environment is it made for?","legacy":"flags.essence20.s1Environment","options":[["extremeCold","E20.S1EnvExtremeCold"],["extremeHeat","E20.S1EnvExtremeHeat"]]}]},
+      {"type":"HazardProtection","label":"Attire for the chosen environment (Weather Gear)","categories":["temperature"],"environments":["{choice.environment}"],"when":["host:type:armor","rule:hostEquipped"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick Extreme Cold or Extreme Heat. While you wear the armor it's attached to, you're protected from that environment's hazards.</p>"

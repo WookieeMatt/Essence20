@@ -5,6 +5,18 @@
   "_id": "RWgIeFdT0c1vIcS1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Toggle","key":"inJungle","label":"In the jungle (scene with no terrain set)","legacy":"actor.flags.essence20.s1InJungle"},
+      {"type":"Use","label":"In or out of the jungle (scene with no terrain set)","when":["not:terrain:set"],"steps":[{"do":"setToggle","key":"inJungle","value":"toggle"},{"do":"chat","text":"{name} is in the jungle.","when":["self:toggle:inJungle"]},{"do":"chat","text":"{name} is out of the jungle.","when":["not:self:toggle:inJungle"]}]},
+      {"type":"RollModifier","label":"Jungle Fighter (non-attack tests in the jungle)","when":["not:attack","not:roll:initiative","terrain:set","terrain:woodlands"],"edge":true},
+      {"type":"RollModifier","label":"Jungle Fighter (non-attack tests in the jungle)","when":["not:attack","not:roll:initiative","not:terrain:set","self:toggle:inJungle"],"edge":true},
+      {"type":"RollModifier","label":"Jungle Fighter (attacks in the jungle are Specialized)","when":["attack","terrain:set","terrain:woodlands"],"specialize":true},
+      {"type":"RollModifier","label":"Jungle Fighter (attacks in the jungle are Specialized)","when":["attack","not:terrain:set","self:toggle:inJungle"],"specialize":true},
+      {"type":"MovementAction","label":"Jungle Fighter (ignores Rough Terrain in the jungle)","ignoreRoughTerrain":true,"when":["terrain:set","terrain:woodlands"]},
+      {"type":"MovementAction","label":"Jungle Fighter (ignores Rough Terrain in the jungle)","ignoreRoughTerrain":true,"when":["not:terrain:set","self:toggle:inJungle"]},
+      {"type":"RollModifier","label":"Jungle Fighter (light armor counts as Silent)","stack":"jungleFighterSilent","when":["skill:infiltration","terrain:set","terrain:woodlands","not:self:wearingItem:item:type:armor&not:item:data:system.classification=light","not:self:wearingItem:item:type:armor&item:data:system.isPowerArmor","not:self:wearingItem:item:type:armor&item:trait:silent"],"upshift":"@sum.equipped.armor.system.totalBonusToughness + @sum.equipped.armor.system.totalBonusEvasion"},
+      {"type":"RollModifier","label":"Jungle Fighter (light armor counts as Silent)","stack":"jungleFighterSilent","when":["skill:infiltration","not:terrain:set","self:toggle:inJungle","not:self:wearingItem:item:type:armor&not:item:data:system.classification=light","not:self:wearingItem:item:type:armor&item:data:system.isPowerArmor","not:self:wearingItem:item:type:armor&item:trait:silent"],"upshift":"@sum.equipped.armor.system.totalBonusToughness + @sum.equipped.armor.system.totalBonusEvasion"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in a woodland scene region (or with its Use button switched on where the scene isn't tagged), you ignore Rough Terrain, non-attack tests get Edge (shown as Jungle Fighter next to Edge in the Roll Options Dialog), attacks open with the Specialized switch on, and Light Armor counts as Silent for Infiltration.</p>"

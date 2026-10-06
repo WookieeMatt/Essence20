@@ -479,3 +479,903 @@ Built for the skip lists in `docs/rules-batches/reg*.md` - re-check those skips 
   (rules/buttons.mjs). `who`: owner (default - its owners and the GM) | gm | anyone | targets | others; `runAs`:
   holder (default) | clicker (the presser's own character - "Follow Me!"); `once` (default true) marks it used. The
   current targets go with it. Use it for hit follow-ups, GM damage buttons and offers to the rest of the party.
+
+## Engine features added 2026-10-05 (after slice round 2)
+
+- **Durations** (`until` on mark / bank / grant / createItem / pickGrant / setToggle), rules/expiry.mjs:
+  - `endOfNextTurn` - through the end of the next turn (the current one doesn't count).
+  - `turnOrScene` / `roundOrScene` - the turn / round in a running combat, else the scene.
+  - `rounds:N` - N rounds on (the same point in the turn order), else the scene. The editor offers 1, 2, 3, 5, 10;
+    any N works in JSON.
+  - **`untilOf: "recipient"`** - count the turns of whoever the step lands on, not the holder's: "until the end of the
+    marked creature's next turn" is `{do: mark, to: target, until: endOfNextTurn, untilOf: recipient}`.
+- **Watch Triggers** - `watch: ally | enemy | any` on a Trigger makes it fire when its event happens to SOMEONE ELSE
+  on the canvas (optional `within` feet): an ally's hit, an enemy's Fumble, an ally Defeated, another creature's turn
+  ending. Steps act as the holder; `target` is the one it happened to, or with `watchTarget: theirTarget` the one
+  they rolled against / who hit them. `self:` tags read the holder, `target:` the other; roll tags read their roll.
+  The holder's own events don't fire a watch Trigger. Not offered for `wouldBeDefeated`.
+- **Reaction rules** (rules/reactions.mjs) - a button on a posted check card for whoever may answer it:
+  `{type: Reaction, label, who, within?, per?, outcome?, attackOnly?, minMargin?, maxMargin?, cost?, limit?, steps}`.
+  `who`: target (default) | attacker | allyOfTarget | allyOfAttacker | enemyOfAttacker; `per`: row (default, a
+  button per target row) | card; `outcome`: any | hit | miss (that row's result; a card: some row's); the margin
+  is the card total minus the row's DIF. Pressing pays the resource cost, runs the steps, counts the limit and
+  claims the button. Steps see `@var.total`, `@var.dif`, `@var.margin`, `@var.damage`; `target` is the other side
+  (the attacker for the defender's side). Card-only steps (refused outside a Reaction):
+  - `negateHit {rows?}` - the hit on that row has no effect (its damage / crit / rider buttons are spent).
+  - `lowerTotal {amount, rows?}` - lower the card's total; rows that drop below their DIF miss.
+  - `lateSnag {rows?}` - roll another d20 and keep the lower, then as lowerTotal.
+  - `convertRows {crit?, rows?}` - turn failed rows into successes (crit: Critical Successes), with Apply buttons.
+  `rows: all` acts on every row of the card instead of the button's own.
+- **`button` limits** - `limit: {per, max, key?}` on a button step counts when it's pressed, on whoever the steps
+  act as (each presser's own with `runAs: clicker`), across every card the rule posts.
+- **Dice in formulas** - `1d2`, `2d4 + 1`, `d6` anywhere a formula goes. Step amounts tell the roll in the run's chat
+  and keep it as `@var.rolled`. Step formulas also read **`@target.<path>`** now (the run's first target).
+- **Old picks** - `legacy: "flags.essence20.<oldFlag>"` (or `"actor.flags..."`) on a `pick` step or ChoiceSet rule:
+  the GM's linking pass moves the old value into `rules.choices.<key>` (never over a newer pick), and `pick` with
+  `ifUnset` reads it before asking. Lets a pick replace a hand-written picker without losing existing characters'
+  choices (pr1DinoGem, pr1LightspeedBoost, gij2ExpertSkill, gij2Mentor, ...).
+- **Granted items** - `rule:granted` (something the rule's item gave the actor is still there), `rule:granted:<item
+  tag>` (`rule:granted:type:weapon`), and `item:granted` (the rolled item, or its weapon, was given by the rule's
+  item - Rotor Blades' ↑1 with its own blades). **`createItem` `children: [item data]`** makes a weapon's attacks /
+  an armor's upgrades with it, attached the way a compendium weapon's are (parentId, the host's system.items), with
+  the host's grant and expiry flags. `{choice.<key>}` works in created names.
+
+## Engine features added 2026-10-05 (round 4, after the local round-3 conversions)
+
+- **Tags:**
+  - `self:wielding` / `target:wielding` - one of the actor's attacks belongs to an equipped weapon (unarmed attacks
+    don't count). `self:wielding:<any tag>` narrows it, asked of that attack: `self:wielding:weapon:trait:ballistic`,
+    `self:wielding:item:data:system.classification.skill=finesse`, `self:wielding:attack:melee`.
+  - `combat:exists` - a combat is set up, started or not (bare `combat` still needs it started).
+- **`until: combat`** - lasts while the combat it started in exists (started or not); with no combat, until something
+  else ends it.
+- **Mark counters** - `mark {count, add?}` keeps a number on the mark: `@mark.<key>` (the actor's own) and
+  `@target.mark.<key>` read it (0 when unmarked or run out). `add: true` adds to a running mark (the duration restarts).
+- **Steps:**
+  - `essenceDamage {essence, amount, to}` - `essence`: strength | speed | smarts | social | `{choice.<key>}` | `choose`
+    (asks). Never below 0; Immortal Rebel Soul still applies (helpers/environment-hazards.mjs).
+  - `healEssence {essence?, amount, to}` - one Essence up to its maximum, or with none named the most-damaged first.
+  - `extendCondition {condition, rounds, to}` - a timed Condition lasts `rounds` longer (an untimed one is left alone).
+  - `rerollCard {target?, mode?, keepBetter?, rows?}` (Reaction only) - rerolls the card's roll through
+    helpers/reroll.mjs (target d20 by default) and posts it; rows the new total no longer reaches miss
+    (`negateHit`), rows it now reaches become hits (`convertRows`).
+  - `roll` gains `snag: true` and `open: true` (an ordinary roll with no DIF, against whoever is targeted; its `then`
+    steps run after, with `@var.rollTotal`; a cancelled roll stops the run).
+  - `grant` gains `name` (`{choice.<key>}` works), `integrated: true` and `systemFormulas: {path: formula | [tags]}`
+    (a tag list sets true/false - `equipped: ["self:data:system.isTransformed"]`).
+- **Every step** takes `filter: [tags]` - only recipients meeting them (asked as the target: `target:type:npc`).
+- **Trigger `outcome` may be a list** - every one must hold (`["fumbled", "allFailed"]`); new outcome `plainSuccess` (a
+  success that isn't a Critical Success or double the DIF). afterRoll Triggers get `@var.total`.
+- **Toggle `legacy`** - like a pick's: the GM's linking pass moves an old on/off flag into `rules.toggles.<key>`.
+- **Granted attachments** - a granted weapon / armor's attached attacks and upgrades now carry the host's `grantedBy` and
+  expiry, so they go with it (and count for `rule:granted`).
+
+## Engine features added 2026-10-05 (round 5, after the local round-4 conversions)
+
+- **Tags:**
+  - `target:ally` / `target:enemy` - the other party is on this actor's side (token disposition; off the canvas, PC or
+    not). Good in a step `filter` (Watchful Eyes' "enemies you target").
+  - `var:<key>[op value]` - a value stored in this run (`var:margin<=-5`, `var:rolled>=4`, `var:picked=red`). Step
+    conditions, Trigger / Reaction `when` and `require` all see the run's vars (`@var.margin`, `@var.total`...).
+  - `vehicle:data:<path>[op value]`, `vehicle:name~<text>` - the vehicle being crewed.
+  - `terrain:set` (some terrain is set - pair with a terrain tag so an unset scene answers "no", not "ask");
+    `environment:outside:<x>` (not counting a vessel interior).
+  - New `check:` names: `inWater` (underwater or swimming), `onLand`, `seaOrWetlands`, `aboardAquaticVessel`,
+    `completeDarkness` (unknown below full scene darkness).
+- **Formulas:** `@host.<path>` - the item the rule's item is attached to. Text fields (`chat`, `require`'s message,
+  `table` rows, `updateActor` text values, `damage`'s `damageType`) fill `{choice.<key>}`, `{var.<key>}` and
+  `{@<formula>}` (`{@mark.questions}`).
+- **Durations:** `endOfNextTurn` / `nextTurn` set in a combat that exists but hasn't started count from its first round.
+- **Recipients:** `to: party` / `party+others` (the actor's Party roster; the primary Party first) and `team` /
+  `team+others` (every Player Character).
+- **Steps:**
+  - `updateActor {to, set: {path: value | formula | true/false | text}, add: {path: formula}, min?, max?}`.
+  - `require {check: [tags], message?}` - stop unless the tags hold. **`beforeCost: true`** on any leading step of a
+    Use runs it before the cost is paid (a `require` gate, a `target`, an `askNumber`); a stopped run still posts what
+    it said.
+  - `setTargets {to}` - make the recipients the user's targets (a counter-attack at the attacker).
+  - `writeInitiative {to, value}` - set Initiative in the running combat.
+  - `table {formula, rows: [{min, max, text, steps}]}` - roll and use the row it lands in (`@var.rolled`).
+  - `item: "wielded"` / `"wielded:<tag>"` on item steps (the weapons being wielded); `roll {skill: "wielded[:<tag>]"}`
+    rolls that attack's own Skill (the run stops when nothing is wielded).
+  - `gainResource {overMax: true}`; `bonusAttack {optional: true}` (no combat doesn't stop the run); `bank {replace:
+    true}` (one banked bonus per item); `pick {from: ownedItem, filter: [item tags], auto: true}` (a lone option is
+    taken without asking).
+  - `button` cards carry the run's vars (`@var.damage`, `@var.margin`...) to the pressed steps.
+  - The `open` roll passes the Skill's own sheet shifts and reads the total of a roll with nothing to compare against.
+- **Rules:**
+  - DerivedStat paths may read a pick (`system.skills.{choice.skill}.edge`; no pick, no change) and `value` may be
+    `true` / `false` (set as it is).
+  - RollModifier `consumeMark: <key>` (`consumeFrom: self | target`) - the roll it applies to uses up that mark.
+  - Movement `stage: afterGravity` - after Low Gravity / Zero-G.
+- **Trigger events:** `equipped` / `unequipped` (the item's own rules fire even as unequipping switches them off),
+  `resourceSpent` (`@var.spent`, `@var.resource` = power | energon | darkEnergon | health), `essenceChanged`
+  (`@var.essence`, `@var.change`). **Outcomes:** `plainFailure` (failed, not Fumbled), `anySucceeded` (some row beat
+  its DIF - pairs with `fumble` / `crit` in a list).
+- **Clean-up:** deleting an item also removes what's attached to the items it granted (a granted weapon's attacks made
+  before attachments carried `grantedBy`).
+
+## Engine features added 2026-10-06 (round 6, after the local round-5 conversions)
+
+- **Tags:**
+  - `target:self` - the other party is this actor itself (keep a step from aiming at its own holder).
+  - `self:status:<id>:timed` / `target:status:<id>:timed` - the Condition is on and runs out after some rounds.
+  - `wielding:<tag>&<tag>...` - several tags that must all hold on the same wielded attack (`self:wielding:weapon:trait:
+    ballistic&not:attack:melee`); the `item: "wielded:..."` selector and `roll {skill: "wielded:..."}` take it too.
+  - `item:trait:` now reads traits that attached upgrades add (`itemAndUpgradeTraits`, on the item and its weapon).
+  - `item:hasUpgrade:<uuid | name~text>` - an upgrade attached to the item (or its weapon).
+  - `rule:hostEquipped` - the item the rule's item is attached to is equipped.
+  - `combat:enemyStatus:<id>` / `combat:allyStatus:<id>` - a combatant on the other / this side has that Condition.
+  - `roll:fumble` - in a Reaction's `when`, the card's roll is a Fumble. Reactions also see the row's damage type
+    (`damage:<type>`) and `@var.damageType`.
+- **Formulas:** `@recipient.<path>` - the actor a step is acting on (in `updateActor`, each recipient's own values;
+  `min` / `max` may be formulas read that way: `max: "@recipient.system.powers.personal.max"`).
+- **Durations:** `nextTurnOrScene` (nextTurn in combat, else the scene); `worldTime:<seconds>` (game-world time -
+  `worldTime:604800` is a week).
+- **Recipients:** `combatAllies` / `combatAllies+self` (the running combat's combatants on the actor's side);
+  `alliesOfTarget:<ft>` / `enemiesOfTarget:<ft>` (around the first target: its allies, or its enemies, within range of
+  it).
+- **Steps:** `mark {exclusive: true}` - the actor's mark under that key moves (it comes off anyone else it was on: "last
+  hit by"). `applyCondition` through the GM now keeps its `rounds`. `table` row `text` may be an i18n key.
+- **Rules:** a `team` scope (every other Player Character in the world) wherever `party` is allowed. Movement `stage:
+  afterDerived` (after every derived adjustment, the hand-written ones too) and `round: nearest | floor | ceil`.
+- **Triggers:** afterRoll gets `@var.dif`. A roll with nothing to compare against (no target, no DIF) now reaches
+  afterRoll Triggers that say `outcome: "any"` in so many words (with `@var.total` and the rolled Skill) - Triggers
+  with no outcome set still ignore those rolls. New outcome `notDouble` (no row reached double its DIF, no Critical
+  Success - with `fumble` and `anySucceeded` in a list: a Fumble that still succeeded, not by double).
+
+## Engine features added 2026-10-06 (round 7, after the local round-6 conversions)
+
+- **Tags:**
+  - `self:onCanvas` - the actor has a token in the scene being viewed.
+  - `self:itemCount:<type>[:equipped]<op><n>` - `self:itemCount:weapon:equipped>=2` (Good with Both).
+  - `self:actionUsed:<standard | move | free>` - spent that kind of action this turn (the action-economy ledger).
+  - `self:wearingItem:<item tags joined by &>` - equipped armor / shield / gear meeting them (`item:hasUpgrade:` too).
+  - `self:hasItem:name~<text>` / `target:hasItem:name~<text>` - an item whose name contains the text.
+  - `item:word:<text>` - the item's name holds that whole word.
+  - `item:hasAttack:<tags joined by &>` - one of the weapon's attacks (owned attack items, else the stored entries)
+    meets them: `item:hasAttack:item:data:system.classification.style=melee`, `...system.numHands=2`.
+  - `roll:targets<op><n>` - how many targets the roll had (afterRoll / hit Triggers also get `@var.targets`).
+  - `host:<item tag>` now works at roll time too (the item the rule's item is attached to - Gunport).
+  - `combat:enemy:<tags joined by &>` / `combat:ally:<...>` - some combatant on that side meets them, asked as the
+    target (`combat:enemy:target:name~librarian`).
+- **Formulas:** `dice(count, faces)` - dice whose count is a formula (`dice(@var.spent, 4)`); `@count.items.<type>` /
+  `@count.equipped.<type>`.
+- **Durations:** `endOfNextTurnOrScene` (endOfNextTurn in combat, also ending with the scene; the scene out of combat),
+  `turnOrUntilCombat` (this turn in combat; out of combat until a combat starts).
+- **Recipients:** `to: partyActor` - the Party document itself (the primary Party first).
+- **Steps:**
+  - `choose` options may carry their own `when` (only offered while it holds); `auto` runs a lone remaining option.
+  - `pick from: skill` takes `essence` (that Essence's Skills) and `specializedOnly` (Skills the actor is Specialized
+    in - all when none is); `pick from: team` (every Player Character in the world; `notSelf`); `auto` on any pick.
+  - `pickGrant` takes `from.fields` (index fields its tags read, e.g. `system.tier`) and `replace` (what this item
+    granted before goes - only once a new pick is made).
+  - `roll {difDefenseSelf: true}` - with no target, the actor's own Defense.
+  - `button {whisper: "owners", usedWhenDone: true}` - only the actor's owners and the GM see the card; the card is
+    used up only when its steps finish (a cancelled choice leaves it pressable). A clicker's button acts for the
+    token they have selected first, then their character.
+- **Triggers:** `sessionStart` (the Story Points app's New Session). `resourceSpent` ignores writes flagged
+  `essence20Loss` / `essence20Refund` / `essence20Rest` / `isRest`. Timed items (`worldTime:N`) are swept when game
+  time moves on.
+
+## Engine features added 2026-10-06 (round 8, after the local round-7 conversions)
+
+- **Marks per setter:** `mark {perSetter: true}` (and `unmark {perSetter: true}`) - each setter keeps its own mark
+  under the key, so two holders working on one creature don't share a count. `marked:<key>` sees any setter's;
+  `markedByMe:<key>` and `@target.myMark.<key>` (the count on the mark this actor set) read the actor's own;
+  `consumeMark` takes every setter's copy.
+- **Formulas:** `@sum.items.<type>.<path>` / `@sum.equipped.<type>.<path>` (a number added up over those items -
+  `@sum.equipped.armor.system.totalBonusToughness`); `@count.named.<text>` (items whose name contains the text; `_`
+  for a space); `atLeast(count, faces, min)` (roll the dice, count those showing min or more - Fuel Efficient).
+- **Durations:** `until: mission` (ends when the mission advances).
+- **Tags:** `self:combatant` (in the current combat, started or not); `scene:token:<tags joined by &>` (some other token
+  in the viewed scene meets them, asked as the target).
+- **Steps:** `pick from: actors` with `actorType` (every world actor of that type - a Zord to mount); `setVar {key,
+  value}` (a formula, or text with `{var}`/`{choice}`) - in a Trigger, a changed event value (`@var.spent`) is what the
+  next Trigger on the same event sees; `updateActor {ladder: {path: steps}}` moves a Skill die along d20, d2 ... 3d6.
+- **Trigger events:** `itemAdded` (another item arrives on the actor - the new item is the roll item, so `item:` tags
+  read it); `movedOnTurn` (the actor's token moved on its own turn in a running combat).
+- **Fixes:** WeaponTrait rules see the weapon's own id (`item:picked:` works there); a button's `limit` counts only a
+  run that finished; the Rest update is flagged so `resourceSpent` skips it; `sessionStart` and the world-time sweep
+  run on one GM's client.
+
+## Engine features added 2026-10-06 (round 9, after the local round-8 conversions)
+
+- **Recipients:** `to: picked:<key>` - the actor a pick step stored under that key (`pick from: actors | team | ally |
+  enemy | target`).
+- **Steps:**
+  - `rollVsEach {skill, defense, to?, onHit, onMiss}` - one Skill Test against each recipient's own Defense (`to`
+    defaults to `targets`), on one card; `onHit` / `onMiss` steps run once per recipient with it as the target;
+    `@var.hits` counts the hits. `skill: "wielded[:<tags>]"` works.
+  - `disarm {to?, maxHands?, optional?, required?}` - each recipient drops a held weapon (they pick it back up by
+    equipping it); `@var.disarmed`.
+  - `takeItem {item}` - `item: choice:<key>` (a `pick from: targetItem`) or an item selector asked of the first target:
+    the actor gets a copy, the target loses it.
+  - `spendAction {action: free | move | standard}` - a Trigger's own action cost; stops when it can't be paid.
+  - `pick from: targetItem` (`itemType`, `equipped`, `filter`) - one of the first target's items, stored as its uuid;
+    `pick from: skill` takes `minShift` / `maxShift` (Skills whose die is at least / at most that).
+  - `pickGrant {record: true, key, max?}` - keeps the pick on the rule's item (a list: several picks build it up, `max`
+    keeps the newest) instead of granting a copy. A Qualification reads it with **`item:pickedSource:<key>`** (the
+    item's book source, or the same name for another printing).
+  - `heal {temporary: true, tracked: true, untilDamage?}` - temporary Health through the resource slice's ledger
+    (raises the bonus and the value; taken back at the scene's end, or by damage with `untilDamage`).
+  - `grant {appendTraits: [...]}` - traits the copy gains.
+  - `updateActor {ladder, ladderMax?, ladderMin?}` - cap / floor the Skill die.
+  - Any step: `quiet: true` - its dice aren't told in chat.
+- **Formulas:** `@sum.equippedTrait.<trait>.<type>.<path>` - equipped items of the type that carry the trait.
+- **Trigger events:** `removed` (the item's own rules, as it's deleted - an undo); `droppedToZero` (Health or Personal
+  Power reached 0 from above by any write; `@var.resource`). afterRoll gets `@var.skill`.
+
+## Engine plug-in points (round 10, 2026-10-06)
+
+Engine pieces can live in their own files instead of growing the core engine. A plug-in file under
+`module/rules/ext/` (imported by `ext/index.mjs`, which `essence20.mjs` and `scripts/check-rules.mjs` import) calls:
+
+- `registerStep(name, handler, {errors, branches})`, `registerRecipient(nameOrRegExp, fn(match, ctx, step))`,
+  `registerPickSource(name, fn(step, ctx))` - `rules/steps.mjs`. A registered recipient passes the `to:` validator.
+- `registerTag(name, fn(rest, ctx), meta)` - `rules/predicate.mjs`. `name` is a new family or a family plus its first
+  word (`item:weaponType`). Answering `undefined` hands the tag on to the core reading, so a plug-in never shadows
+  a core tag of the same name.
+- `registerRef(head, fn(key, scope, parts))` - `rules/formula.mjs`.
+- `registerEvent(name)`, `registerRuleType(name, {params, scopes, validate})` - `rules/types.mjs`. The editor's event
+  list reads the live list.
+- `STEP_FORMS` / `RULE_FORMS` (`rules/editor-spec.mjs`) take editor forms for them.
+
+Plug-in files load under plain Node (heavy helpers imported lazily). Tests that validate pack rules using them load
+them with `await import('./ext/index.mjs')` after any `jest.unstable_mockModule` calls.
+
+## Engine features added 2026-10-06 (round 10, group A)
+
+Everything below is registered on import of `module/rules/ext/a.mjs` (loaded first by `module/rules/ext/index.mjs`).
+Strings are under `E20.RulesExtA.*`.
+
+### Linked scopes
+
+- **`registerLinkScope(name, holdersOf)`** (new in `rules/links.mjs`): a plug-in scope. `holdersOf(actor)` names the
+  actors whose rules of that scope reach `actor`; `linkedEntries` walks them after the built-in scopes, and a rule with
+  `stacks: false` counts once per book item however many holders carry it. The scope is also added to `LINK_SCOPES`
+  and (through the new `addLinkedScope` in `rules/index.mjs`) to the index's linked list, so holders are tracked.
+- **`scope: megaform`** - on a participant's item: reaches every Megaform the participant is part of (Accurate
+  Combiner, Assault Weapon, Roller Drum, Warzord's reminder, Restraining Gear's Megaform half).
+- **`scope: ownZord`** - on a character's item: reaches every Zord listed on their sheet (Terrorzord Nature, Megaform
+  Expeditor).
+- **`scope: zordOwner`** - on a Zord's item: reaches the characters listing that Zord (Power Matrix's refill on rest).
+- All three are accepted by every rule type that already takes `vehicle`.
+- **The rule holder in roll contexts:** `rollRules` (rules/adapter.mjs) now passes `holder: entry.holder`, so a linked
+  RollModifier / DialogSwitch can ask about the actor holding it (`megaform:holderAttack`, `holder:...`).
+
+### Tags
+
+| Tag | True when |
+|---|---|
+| `megaform:in[:zord\|:combiner]` | this actor is part of a Megaform (a Megazord / a Combiner form) |
+| `megaform:is[:zord\|:combiner]` | this actor is a Megaform (of that kind) |
+| `megaform:participantAttack` | the Megaform's rolled attack is one of its participants' attacks |
+| `megaform:holderAttack` | ...the rule holder's own attack |
+| `megaform:generated` | the rolled attack (or its weapon) was generated on the Megaform |
+| `self:megaformTrait:<type>` / `target:megaformTrait:<type>` | holds a Megaform Trait of that type (`defender`, `coreBody`...) |
+| `item:attachedAttack` | the item is a weapon's own attack |
+| `target:combinerForm` | the other party is a Combiner form |
+| `vehicle:ownZord` | crewing a Zord that is theirs (listed on the sheet, or linked as its owner) |
+| `self:ownedByHolder` | this Zord is the rule holder's own |
+| `self:ownsZordOnCanvas` | a Zord on this sheet has a token in the viewed scene |
+| `self:advancedRole` | the actor's Role is an Advanced one |
+| `self:commanded` / `target:commanded` / `holder:commanded` | Commanded this round (companions.mjs's `petCommand` stamp) |
+| `companion:uncommanded[:<type>]` | one of this actor's companions (of that companion type) wasn't Commanded this round |
+| `item:heldBy:picked:<key>` | the item / compendium entry asked about is already on the actor a pick stored under `key` |
+| `target:userOwns` | this user may act for the other party (GM, or its owner) |
+| `self:hasDriver`, `self:drivenByHolder` | the vehicle has a driver / its driver is the rule holder |
+| `self:markedByHolder:<key>`, `vehicle:markedByMe:<key>` | carries mark `key` set by the holder / the crewed vehicle carries mark `key` set by me |
+| `self:specializedAtLeast:<skill>:<die>` | a Specialization of that Skill at that die or better |
+| `movement:<type>` / `movement:has` | in a Movement rule: the type being worked out / it already has speed |
+| `form:active` / `form:any` | the rule's item is the active Form / some Form is active |
+| `target:notBeyond:<ft>` | the other party is no farther away (off the canvas counts as near enough) |
+| `team:holds:<uuid>` | another Player Character holds that compendium item |
+| `scene:tokenWithin:<ft>:<tag>&<tag>` | another token within that range meets the tags (asked as the target) |
+| `self:clockActive:<flag>` | a Scene Clock window flag is live this scene or mission |
+
+### Recipients, pick sources, refs
+
+- **Recipients:** `megaform` (the Megaforms the actor is in), `participants` (a Megaform's roster), `ownZords`,
+  `holder` (the actor holding the rule's item - group D registers the same name with the same meaning), `driver`,
+  `drivenVehicle`, `combinerTop` (the first target's active Combiner components with the most Health, ties all count).
+- **Pick sources:** `ownedZords` (value: uuid), `crew {filter?}` (a vehicle's seated crew, `filter` tags asked as the
+  target), `remaining {options, exclude: [keys]}` (a list less what the item's other picks hold), `noted {list,
+  listLegacy?}` (the uuids `noteEntries` kept on the item; labels from the documents).
+- **Ref `@sourced.<16-char id>.<path>`** - a number on the actor's copy of that compendium item (0 when none).
+
+### Steps
+
+- `megaformSync` - every Megaform the actor is in mirrors its MegaformMirror items again; `@var.megaforms`,
+  `@var.megaformCount`.
+- `shiftSize {steps, ladder?: full|class, min?, max?, record?}` - moves each recipient's stored size; `record` keeps
+  the size before on the rule's item (once). `restoreSize {record, legacy?}` puts it back and forgets it (skips the
+  write when the item is already gone, as in a `removed` Trigger).
+- `askChoiceText {key, prompt?}` - a typed text kept as `{choice.<key>}` and `@var.<key>`; empty / cancelled stops the run.
+  (Named so because group D's `askText` exists.)
+- `spendFrom {to, resource, amount}` - each recipient pays from its own resource; stops (with a chat line) when one
+  can't; `@var.paidBy`.
+- `formStart` / `formEnd` - activate the rule item's Form / end the active one (helpers/extensions/zord1/forms.mjs).
+- `rollAs {to, skill, dif, snag?, onSuccess?, onFail?}` - each recipient rolls; its branch runs with it as the target.
+- `transformInto {item}` - convert into the Alt Mode the item selector finds (`choice:<key>` after a pick); `@var.mode`.
+- `noteEntries {key, count, from: {type}, title?, legacy?}` - choose up to `count` different compendium entries one
+  at a time and note them on the rule's item (a uuid list), leaving out what the actor's other copies noted. Stopping
+  part way keeps those chosen; stopping at the first keeps the old list and stops the run. Read back with
+  `pick {from: noted, list: <key>}`.
+
+### Rule types
+
+- **`Size {steps?, set?, atLeast?, atMost?, ladder?, min?, max?}`** - the actor's derived `system.size`, after the
+  hand-written size code: `steps` (each clamped to its own min / max, never back across a limit), then `set`, then
+  `atLeast` / `atMost`. `ladder: class` walks small, common, large, huge, gigantic, towering, titanic (an
+  extended / long size counts as the class below it).
+- **`ArmorAccommodation {level: limited|restricted}`** - putting on armor without that Alteration Accommodation
+  upgrade is refused (Restricted also covers Limited).
+- **`SizeMatrixCancel`** (on a driver) - an attacker smaller than the vehicle loses the Size Class matrix upshift while
+  `when` holds (`defense:` the attacked Defense, `target:` the attacker); a labelled ↓ source on the attack.
+- **`MegaformHealth {amount}`** (scope megaform) - the holder's row of the Megaform's Health and the combined Health.
+- **`MegaformMirror {items: [item tags]}`** - the participant's matching items are mirrored onto every Megaform it is in
+  (kept in step on roster changes and by `megaformSync`).
+- **`SummonLimit`** - only one of the holder's Zords per scene (refused in preUpdateActor as zord-summon.mjs summons).
+- **`JoinTime {amount, min?}`** (self / ownZord) - the Zord is ready to combine sooner (combiner-timer.mjs).
+- **`SummonTime {mode: halve|subtract, amount?, min?}`** - summoner's rules then the Zord's (zord-summon.mjs).
+- **`AutoDisembark {who?: driver|pilots}`** - passes the emergency disembark outright (vehicle-defeat.mjs).
+- **`KnownOptions {key, count, options, labels?, title?, prompt?, legacy?}`** - the options a helper may offer are only
+  those noted, topped up by asking (emotional-mastery.mjs reads `ensureKnownOptions`).
+- **`Form {cost?, swaps?: [{replaces, uuids|pick, when?}], grants?, element?}`** - what activating a Form Perk does;
+  zord1/forms.mjs reads `ruleFormSpec` / `ruleFormUuids`.
+
+### Events and the Movement stage
+
+- **`beforeRoll`** - fired from the extensions' preRoll (before the dialog) on an actor holding such Triggers; the
+  rolled item is the roll item (`item:own`), `roll:dataset:` reads the dataset.
+- **`groupTestResult`** - once a Group Test card has every result, on each participant: `@var.success` (1/0),
+  `@var.successes`, `@var.participants`.
+- **`megaformCombined`** - a Megaform's roster changed (on the client that changed it): `@var.participants`,
+  `@var.zords`; participants reach it with `scope: megaform`.
+- **Movement `stage: derivedHook`** - applied where a slice calls `applyDerivedHookMovement` among the derived hooks
+  (`module/rules/ext/a/movement-hook.mjs`, import-free so a slice can load it early; pr2/team.mjs registers it).
+  A `ready` hook re-prepares the Player Characters when one holds team-scoped Movement / DerivedStat / Defense rules.
+
+### Helper hooks
+
+- `helpers/grants.mjs#pickPerkFrom` takes `pack` (only that compendium's Roles / Focuses) - the `pickPerk` step passes it.
+
+Tests: `module/rules/engine10-a.test.js` (32 tests).
+
+## Engine features added 2026-10-06 (round 10, group B)
+
+- **`HitRider` rule type** (`ext/b/hit-rider.mjs`) - what a landed hit does on the check card. Read on each hit of a weapon
+  attack that has damage (target-riders.mjs#attackRiders through `registerHitRider`), or with **`on: "cast"`** on each
+  successful row with damage of a spell / power cast (`registerPostRoll`). Params:
+  - `note: <formula>` - an unscaled "+N damage" note on the hit (like an unscaled dealt DamageModifier, but able to read the
+    roll's switches); `negate: true` takes all the hit's damage off.
+  - `damageType: <type | {choice.key}>` / `damageTypeFrom: <path on the holder>` - the hit deals that type instead ("Apply as
+    X"); `retypeFrom: <type>` only when it deals that type now; `retypeCrit: true` retypes the Critical "double" option too.
+  - `option: {damage, damageType, label?, key?, ignoreImmunity?}` - an extra Apply button (a rider option). Formulas read
+    `@var.damage` (the hit's damage) and `@var.base` (the rolled attack's own damage value).
+  - `siblings: {label?, fallback?}` - every other attack of the rolled weapon as an option (its damage and type; `{effect}` in
+    the label is its name); with none, the `fallback` option.
+  - `watch: "ally"` - the rule acts on hits by OTHER actors on the holder's side (token disposition, else prototype), the holder
+    anywhere in the world (game.actors); one book item counts once however many hold it.
+  - `marked: <key>` - the rule acts on hits by whoever carries that mark set by the holder (the "mark carries a rule" shape for
+    hits: Softenblows).
+  - `when` sees the hit: `item:` (the rolled attack), `weapon:`, `skill:`, `attack:melee`, `roll:switch:<key>`,
+    `roll:dataset:<key>`, `item:damageType:<type>` (the attack's own type, else the hit's); `self:` is the one who hit,
+    `holder:` the rule's holder, `target:` the one hit. Scope `self` or `host` (an upgrade: only its weapon's attacks).
+- **The roll's dataset reaches hit / miss / afterRoll Triggers** - target-riders.mjs#buildRiderContext keeps the dataset's
+  plain values (`rider.dataset`) and rules/triggers.mjs passes it on, so `roll:dataset:<key>` works there (Takedown Expert's
+  `roll:dataset:isTakedown`). hit / miss Triggers also get **`@var.rolledItem`** (the rolled attack's uuid).
+- **`defeated` Triggers get the damage's source as their target** (applyDamage's `source`, the card's speaker) - "the creature
+  that Defeated you".
+- **`Veto` rule type** (`ext/b/veto.mjs`) - refuses a change to its actor: `on: "create"` / `"equip"` with `items: [item tags]`
+  (asked of the new / equipped item), or `on: "update"` with `path`, `change: up | down | any` and `clamp: true` (put the old
+  value back and let the rest of the update through; else the whole update is refused). `message` ({name} = the actor) is a
+  warning toast. **`marked: <key>`** - the veto lands on whoever carries that mark set by the holder ("while cuffed...", "can't
+  regain Health until treated"); it lasts while the mark does and the setter still holds the rule.
+- **`ArmorPair` rule type** {items, other} - two sets of armor matching these tags may be worn together without the "two
+  armors" warning (other2/gij.mjs asks `ruleAllowsArmorPair`).
+- **Defense `mode: "ignoreArmor"`** (outgoing only) with **`armor: "defense" | "worn"`** (`ext/b/armor.mjs`) - the attack
+  ignores armor: the attacked Defense's armor value (its Morphed value while Morphed; nothing on an Armor Stripped target), or
+  for `worn` Toughness' armor value plus every equipped armor's Toughness bonus. Added beside the other per-attack Defense
+  changes (registerDefenseAdjust), the same plain subtraction the hand-written code made.
+- **Armor shred** - step **`shredArmor {amount, to, until?}`** leaves a counted `armorShred` mark (default until the scene ends;
+  repeated, it adds up); while it lasts the carrier's Toughness loses that much, never more than its armor share (Morphed
+  Toughness while Morphed, else Toughness' armor value plus equipped armor) - derived data, noted on the Toughness breakdown.
+- **Steps** (`ext/b/steps.mjs`, `ext/b/attack.mjs`):
+  - `push {feet, to?, from?}` - the recipients (default the actor) pushed `feet` away from the run's first target (`from: self`:
+    away from the actor) - forced-movement.mjs#pushActor; `@var.pushed` counts who moved.
+  - `actAs {to, steps}` - run steps as each recipient (their rolls; `to: self` is them). Chat and vars shared.
+  - `healAction {amount, to}` - Health restored the way the Heal action restores it (other2/medic.mjs#restoreHealth: the
+    healer's I've Got You applies, a Defeated creature gets back up).
+  - `actWhileDefeated {}` - the actor may act this turn as though not Defeated (the action economy's stamp, no Story Point).
+  - `collect {to, filter?, without: "targets"?, required?}` - the run's targets become the recipients, without touching the
+    user's own targets; `without: targets` leaves out who was targeted; `required` stops when none.
+  - `rollFormulaVsEach {formula, defense, to?, onHit?, onMiss?}` - a flat-dice roll (any Foundry formula, `2d20kh + 1d8`)
+    against each recipient's Defense (a list: the best of them), one roll per recipient; `@var.hits`.
+  - `rollFlat {skill, dif, onSuccess?, onFail?}` - a Skill Test against a flat DIF formula (`@target.<path>` reads the run's
+    first target) with the user's targets cleared first (react/core.mjs#rollVs); a cancelled roll stops the run.
+  - `attack {item, to?, dataset?}` - roll an attack the ordinary way (its dialog, card, damage) at the recipients (default the
+    first target), who become the user's targets. `item: "rolled"` is `@var.rolledItem`; else an item selector. `dataset`:
+    flags the roll carries (`roll:dataset:<key>` in its own Triggers - a follow-up that mustn't offer itself again).
+  - `attackEach {item, filter?, action?, pay?, dataset?, message?}` - one roll of the attack against every creature within its
+    range (its Range, else 5 ft per Reach multiplier) meeting `filter` (asked as the target); none - stop with `message`. Then
+    `action` (free, move, standard, fullAction, standardAndMove, wholeTurn) is spent and the `pay` steps run, before the roll;
+    `@var.attacked`.
+- **Recipient `markedByMe:<key>`** - every actor (world, and unlinked tokens on the canvas) carrying that mark set by the run's
+  actor (perSetter marks too).
+- **Tags:** `self:limitUsed:<key>[:<per>]` (a limit counted under that key - a button's `limit.key` - was used in its window,
+  turn by default); `damage:attack` / `damage:melee` (the damage a takesDamage Trigger answers came off an attack - a melee one -
+  card the GM applied to this actor, react/core.mjs#lastApplyContext); `self:canSpendStoryPoints` (the Story Point gate).
+- **Event `patchedUp`** - a successful Patch Up / Repair test (patch-up.mjs): `@var.amount` (the Health it restores),
+  `skill:` the Skill, the patched creature as target.
+- **Rule types read by hand-written code** (`ext/b/readers.mjs`): `MissImmunity {}` (a miss against the holder has no effect -
+  `when` sees `defense:`; gij3/dice-hooks.mjs#ignoresMissEffects), `SneakAttackImmunity {}` (sneak-attack.mjs),
+  `CrashProtection {}` (the vehicle the holder pilots protects its crew while Defeated - gij2/vehicles.mjs),
+  `HideBonus {amount}` (a roll declared as the Hide action adds `amount` - other3/hide.mjs).
+
+## Engine features added 2026-10-06 (round 10, group C)
+
+### Marks that carry rules (`ext/c/marks.mjs`)
+
+- **`scope: "marked"` + `mark: "<key>"`** (RollModifier, DialogSwitch, Defense, DamageModifier, Trigger, Reaction,
+  ItemModifier, ... - every type that already carries over a link): the rule doesn't act for its holder, it acts for every
+  creature carrying the holder's mark `<key>` (any side, any actor type) while the mark lasts. The setter's item is read
+  equipped or not (a Cage on the shelf still holds its prisoner). The setter never gets it from its own mark.
+- **`scope: "markedTarget"` + `mark`** (RollModifier only): on rolls *against* the marked creature by anyone but the
+  creature itself (Laser Designator). `consumeMark: "<key>"` uses the mark up on the roll; `consumeFrom: "roller"` uses
+  up the roller's own mark (a `marked` rule).
+- **Tags** `target:ruleHolder` (the other party holds this rule's item), `self:allyOfHolder` (same token side as the
+  rule's holder, not the holder), `self:marking:<key>` (this actor has set `<key>` on someone), `self:movedSince:<key><op><ft>`
+  (feet from where `markHere` stored the token: `self:movedSince:spot>=10`). **Ref** `@marking.<key>` (how many creatures
+  carry this actor's mark).
+- **Steps** `pickMarked {key, prompt}` (pick one creature carrying your mark; it becomes the step's targets) and
+  `markHere {key, until}` (stores the token's position for `movedSince`).
+- **DamageModifier `negate: true`** (dealt only): the hit's damage is taken back to 0 (built for Softenblows, now unused).
+- **Step `holderRoll {skill, dif, downshift, edgeWhen, onSuccess, onFail}`** (`ext/c/holder.mjs`): in a carried rule, the
+  setter rolls (Ignite: the igniter rolls Science against the burning creature's Evasion). `spendActionOf {action, to}`:
+  the recipients pay the action (in a combat only).
+
+### Dialog pieces (`ext/c/dialog.mjs`)
+
+- **`DialogSwitch scope: "incoming"`**: shown on the *roller's* dialog when they target a creature holding the rule, once
+  per targeted holder, never remembered; `{holder}` in the label is the holder's name, `defaultWhen` works as usual. A
+  `key` reaches the holder's own rules as tag `roll:incoming:<key>` (a Defense that only counts while the switch is on).
+- **`DialogSelect {options: [{label, upshift, downshift, edge, snag, key, steps}], default}`** (scopes self / incoming): a
+  select of alternatives; the chosen option applies. Option labels are localised when they're `E20.` keys.
+- **DialogSwitch extras**: `ignoreDownshift: n` (takes back up to n of the roll's downshifts), `specializeWhen: [tags]`
+  (the roll counts as Specialized while on), `bonusDie: "d4"` or `{dice: [...], index: formula}` (a bonus pool die).
+- **RollModifier extras**: `bonus: n` (a flat, non-shift bonus to the total) and `forget: true` (a switch built from it is
+  never remembered).
+- **`SkillSubstitution mode: "ask"` + `options` + `prompt`**: before the dialog, the roller picks the rolled Skill or one of
+  the options.
+- **`BeforeRoll {steps, cancel, message}`** (scopes self / item): steps before the dialog (a cost, a warning), or
+  `cancel: true` refuses the roll with the message. Steps **`warn {text, stop}`** and **`clearTargets`**; tag
+  **`roll:plainReach`** (a melee attack at the roller's plain size Reach, no Reach multiplier).
+
+### Defenses (`ext/c/defense.mjs`)
+
+- **Defense `mode: "addAfter"`**: a roll-time addition after the best-of / halving is worked out; rules sharing a `stack`
+  count once (the biggest). **`mode: "instead"` + `from: [<defense>]`**: use the other Defense's total instead. Both work
+  with `outgoing: true` and `limit`, and never touch the sheet.
+- **Step `grantNextTurn {free, move, standard, to}`**: extra actions on the recipients' next turn.
+
+### Tags, checks and refs (`ext/c/tags.mjs`, `ext/c/picked.mjs`)
+
+- Checks `check:angrySnag` (the rolled Skill is the stored Angry Skill), `check:contingencyLikely` (the actor's last
+  logged action this round was a Contingency, or it's rolling off its turn), `check:survivalSpecialization` (a Survival
+  Specialization's keywords match the scene's terrain / environment; null when there's neither).
+- Tags `roll:save`, `roll:poisonSave`, `skill:of:<essence>`, `roll:anyTarget:<tags joined by &>`,
+  `target:creature:<word|word>`, `target:tagStarts:<prefix>`, `target:threatVsLevel:<op><n>` (Threat Level minus this
+  actor's level), `item:weaponType:<type>` / `item:weaponType:flagOf:<_id>` (the type stored on the owned item with that
+  source id), `rule:pickedItem:<key>:<tags>`.
+- Refs `@rolled.<path>` (the rolled item), `@other.<path>` (the item an ItemModifier is changing, per item),
+  `@reach.size | melee | attack | <size>`, `@altMode.<path>` (the current Alt Mode item, 0 when not transformed),
+  `@owned.<_id>` (1 when an item with that source id is owned), `@availDif.<key>` (Requisition DIF of the picked item).
+
+### Equipment, actions, steps, events
+
+- **`ItemLadder {items, path, by, from, floor}`** (`ext/c/equipment.mjs`): moves an item value along the weapon
+  requirement ladder (none, d2 ... 3d6), with a floor.
+- **`BrawnRequirement {amount, ignore, carrying, stack}`** (`ext/c/brawn.mjs`): Brawn offset for equipment requirements
+  (and for carrying when `carrying: true`); `ignore` beats every amount.
+- **`ActionSkills {action: "heal", skills, limit}`** (`ext/c/actions.mjs`): more Skills for the heal action while `when`
+  holds and the limit lasts.
+- **RollModifier `immune: ["lendAssistance"]`** (`ext/c/assist.mjs`): banked Lend Assistance is set aside for the roll and
+  put back after.
+- **Steps `blindRoll {formula, flavor, rows: [{min, text}]}`** (a GM-only roll with the band its total reaches; `@rolled`
+  afterwards) and **`endExpiring {offer, to}`** (`ext/c/steps.mjs`: ends whatever runs out at the end of this turn, or
+  offers it on a chat button).
+- **Event `enemyEnteredReach`** (`ext/c/reach.mjs`): fires for a holder when an enemy's move ends inside its melee Reach.
+  Tag **`target:inRange:<attack|melee>`**.
+
+## Engine features added 2026-10-06 (round 10, group D)
+
+- **CardOffer rules** (rules/ext/d/cards.mjs) - a button on posted roll cards, offered by an item to its holder or to
+  others: `{type: CardOffer, label, whose: self | party | side | any, pressedBy: roller | holderOwner | gm, when?,
+  pool?: {mark: key}, limit?, counter?: {per}, cost?: {resource, amount}, reroll?: {target: d20 | allDice | formula,
+  keep: new | choose}, addDie?: {faces}, steps?}`.
+  - `whose`: the holder's own cards; `party` - the holder's and the primary Party roster's; `side` - another actor of
+    the holder's kind (player-like or not); `any`.
+  - `pressedBy`: `roller` (the GM, the roller's owners, the card's author), `holderOwner` (the holder's owners and the GM),
+    `gm`.
+  - `when` sees `self:` = the holder, `target:` = the roller and the **`card:` tags**: `card:failed`, `card:fumble`,
+    `card:d20:<n>` (the d20 shows n), `card:hasD20`, `card:checks` (compared with a DIF / Defense), `card:skill`,
+    `card:rerolled` (it is itself a reroll), `card:marked:<key>` (a `markCard` step set it), `card:holderPresent` (the
+    holder has a token on the viewed scene, or the scene has none), `card:involves:<path>` (the creature whose uuid the
+    holder keeps at that path is a row's target, or on the canvas).
+  - `pool: {mark}` - each press takes one from the holder's mark count (offered while some is left; label `{count}`).
+    `limit` counts presses; `counter: {per}` only counts them (`@var.used` in the cost formula - a rising cost).
+  - `cost` is paid by the holder; `{gmStoryPoints: true}` spends the GM's pool; Role Points honour
+    `useUnlimitedResource`. Labels fill `{count}`, `{cost}`, `{die}`, `{holder}`.
+  - `reroll`: `d20` / `allDice` post a fresh check card (helpers/reroll.mjs, marked as a reroll); `formula` rolls the
+    whole formula again (`keep: choose` lists both totals against every DIF for the player to choose). `addDie {faces}`
+    rolls 1d<faces> onto the card's total and rescored rows, with damage buttons for targets now hit (or hit harder).
+  - `steps` run after, as the holder, the roller as target, `@var.used`, `@var.total`. Card-only step
+    **`markCard {key}`** marks the card (`card:marked:<key>`).
+  - **Trigger event `rerolled`** - a Story Point reroll card this user posted (chat.mjs rerollMessage): `@var.source`
+    (storyPoint...), `@var.total`, `@var.failed` (1 when the new total reaches none of the original DIFs), the original
+    card's Skill as `skill:`.
+- **Personal Story Points** (rules/ext/d/story.mjs) - the Ruthless Point ledger is engine data now
+  (`flags.essence20.personalPoints`; helpers/story-points.mjs spends them first). Step **`givePersonalPoints {to, count,
+  shared?, max?, ownTurn?}`** (shared: one point every recipient shares; max: the first N recipients). Trigger events
+  **`personalPointUnspent`** (an actor ended its turn holding points - fired on every actor listening, that actor as
+  target, before they tick down) and **`storyPointNarrative`** (the tracker's narrative spend, `@var.kind`). Tag
+  **`target:sameType`**.
+- **SpellCost rules** (rules/ext/d/spellcost.mjs) - `{type: SpellCost, label, op: set | add | multiply | spend, value?,
+  spend?: {resource, max?}, note?, quiet?, steps?, when?}`: every SpellCost rule of the caster whose `when` holds
+  (`item:` = the spell; `item:own` for a spell's own option) is a row in ONE dialog before the cast; ticked rows apply set,
+  then add, then multiply, then spend (a number box, paid, taken off the Cost, never below 0), post their `note` and
+  run their `steps`. Cancelling cancels the cast. Step **`recastFree {item}`** casts a spell again at no cost (dataset
+  `freeCast`). afterRoll Triggers get **`@var.itemUuid`** (the rolled item).
+- **Initiative** (rules/ext/d/initiative.mjs) - rule type **`InitiativeReroll {atMost}`** (the Initiative formula rerolls
+  Skill dice showing atMost or less, once); Trigger event **`initiativeRolling`** (from the roll itself, before the
+  formula - dice.mjs INITIATIVE_EXTENSIONS); steps **`rollInitiative {to}`**, **`swapInitiative {requireLower?}`** (with
+  the first target), **`distribute {to, total, prompt?, steps}`** (share up to `total` points among the recipients - each
+  one's steps run with it as target and its share as `@var.share`); ref **`@initiative`** (`.target`, `.recipient`);
+  tags **`self:initiative`** / **`target:initiative`** (rolled in the running combat); recipients **`protectedTarget`**
+  and **`markers:<key>`** (actors who set that per-setter mark on this actor). `ruleConditionImmune` now passes
+  `holder` (aura ConditionImmunity with `holder:protects`).
+- **Contested rolls and item states** (rules/ext/d/contest.mjs, items.mjs) - step **`contest {skill | skills, edge?,
+  plain?, against: {skill | skills}, to?, onWin?, onLose?}`** (the actor's Skill against the recipient's own roll, a tie to
+  the resisting side; `plain`: both roll their best listed Skill die as 1d20 + the die; when this user can't roll for the
+  other side, its owner rolls from a card - `contestAnswer`). Steps **`markItem {item, key, effects: {blockRolls?,
+  noArmorDefense?}, to?}`** / **`unmarkItem`** (a marked item can't be rolled, its attacks neither; marked armor adds no
+  Toughness or Evasion), tag **`item:marked:<key>`**, recipient **`operator`** (a vehicle's / Zord's driver, else the
+  target), step **`rollPlain {skill, to, var}`**, step **`spendActionFor {action, to}`**, ref
+  **`@availabilityDif.<choiceKey>`**, tag **`target:withinOrUnknown:<ft>`**.
+- **Canvas points, zones, delayed cards, blasts** (rules/ext/d/canvas.mjs, blast.mjs) - step **`pickPoint {prompt?,
+  at?: targetOrSelf | actorOrKept, actor?}`** (`@var.pointX/pointY`, `{var.pointScene}`); recipient **`around:<ft>`**;
+  step **`placeZone {key, label?, half?, until?, modifier: {when, upshift?, downshift?, edge?, snag?}}`** (anyone rolling
+  from inside a live zone gets its modifier as a roll source); step **`scheduleCard {turnEnds? | rounds?, steps}`**
+  (later in a combat - after this actor's turn ends N times, or when a round comes; now out of combat); steps **`rig`**
+  / **`requireRig`** / **`endRig`** (a live rig two cards share); **`blast {radius, skill, defense, damage,
+  damageType, title}`** (a Skill Test against everyone around the point, Apply Damage buttons x Degrees of Success;
+  `defense: ask` or a number 1-4); **`explosion {radius, formula, saveSkills, saveDif, damageType, title}`** (damage
+  rolled once, a plain save each for half); **`damageCard {actor, amount, damageType, title}`**; **`explodeVehicle
+  {actor}`**.
+- **Banks and team grants** (rules/ext/d/misc.mjs, alteration.mjs) - step **`bankDie {die, appliesWhen}`** (a bonus die
+  for the next matching roll, moved into the More Heads slot before the dialog and back if another roll comes first; tag
+  **`rule:bankedDie`**); step **`tempResource {kind: health | energon, amount, to, untilDamage?}`** (tracked temporary
+  Health / Energon - amount worked out per recipient); recipient / ref **`teamCombatants`** (teammates in the running
+  combat); tag **`combat:roundIs:<n>`**; steps **`checkAllies {within, prompt}`** (tick allies in range - they become the
+  targets) and **`lendAssistEdge {to, against, actionEach?}`** (Lend Assistance's Edge banked against a creature);
+  step **`claimCard`** (a button's presser answers that card once - buttons.mjs hands the card to the steps); step
+  **`askText {var, prompt, firstWord?}`**; step **`queueTurnStart {to, spendAction?, whisper?}`** (at each recipient's next
+  turn start: spend that action, whisper its owners); steps **`spendActions {action, count}`**, **`spendFor {resource:
+  {path}, amount, to}`**, **`captureRoll {var}`** / **`retryRoll {var, downEach}`** (retry the last Skill Test with a
+  cumulative ↓), **`countTargets`**, **`countRecipients`**, **`targetRecipients`**, **`targetSelf`**, **`clearMarks`**,
+  **`rememberTarget`**; tags **`target:uuid:<uuid>`**, **`allOf:<tag>&<tag>`**, **`attackHands:<n>`**; ref
+  **`@targetKeyed.<path>`**; pick source **`sideActors`**; recipient **`driverOrSelf`**; rule types **`HardpointUse
+  {items, slots}`** and **`StanceSwitch {stance: allOutAttack | evasiveFighting, max}`** (a number box in the dialog -
+  that many ↓, the rider stance, All Out Attack's extra damage); steps **`pickAlteration {var, from: own | compendium,
+  tier?, keep?}`** and **`lendAlteration {from, to, part, expire: lenderTurn | theirNextTurnEnd | scene | minute}`** over
+  the other1 slice's Alteration lending ledger. The `bank` step fills `{var.x}` in `appliesWhen`; the `roll` step keeps
+  `@var.rollTotal`.
+
+## Engine features added 2026-10-06 (round 10, group E)
+
+- **Steps** (rules/ext/e/steps.mjs):
+  - `pickEntry {from: {type, availabilities?, tags?, fields?} | children: {of: <var>, type}, var?, title?, prompt?, auto?, record?,
+    key?, max?, until?, legacy?}` - choose a compendium entry WITHOUT granting it. The run keeps `@var.<var>` (default `picked`, its
+    uuid) and `<var>Name`, `<var>Availability`, `<var>Dif` (its Availability DIF, CONFIG.E20.availabilityDifficulties),
+    `<var>DifHarder` (one step harder - Scavenger), `<var>Skill` (the Requisition Skill of a weapon / armor) and `<var>Traits`
+    (comma-joined). `from.tags` see the run's vars (`var:includes:<var>Traits:martialArts` - one pick narrowing the next).
+    `children` offers the entries a picked entry carries (an Origin's Alt Modes; `auto` takes a lone one). `record: true` also keeps
+    it on the rule's item like pickGrant's record (`item:pickedSource:<key>`), with `until`. A cancelled pick stops the run. Grant it
+    later with `grant {uuid: "{var.picked}"}` (twice in `onCrit` for "an extra copy on a Critical Success"), roll against it with
+    `roll {dif: "@var.pickedDif"}` / `roll {skill: "{var.pickedSkill}"}`.
+  - `pickActorItem {actor: picked:<key> | target | self, itemType?, vehicles?, key, record: true, max?, until?, legacy?}` - one of
+    another actor's items (or, `vehicles`, a vehicle / Zord they crew), recorded on the rule's item as {kind, uuid (its book source),
+    name, ally, until}. Read by `item:recorded:<key>` / `self:crewsRecorded:<key>` (Training Evolution).
+  - `pickMany {key, from, count (formula), ...that source's options}` - up to `count` of anything a `pick` offers (a checkbox
+    list), kept as a list. None is a valid answer; closing stops the run.
+  - `repeat {steps, max?, var?}` - run the steps until one stops (a cancelled pick); `@var.repeats` counts finished rounds.
+  - `forEach {to, steps}` - the steps once per recipient, it as the target; one recipient's stop doesn't stop the rest (a `choose`
+    asked per member - Camper).
+  - `focus {to}` - the recipients become the run's targets (no change to the user's targeting); stops when there are none.
+  - `setEffects {effects: [{name?, changeKey?, on: tags | true | false}]}` - switch the rule item's own Active Effects; each
+    effect takes the first entry it matches (name contains / first change key contains / an entry with neither = any).
+  - `unbank` - take back what this rule's item banked on the recipients.
+  - `appendToName {text}` - rename the rule's own item "<name> (<text>)" (text may be an i18n key).
+  - `recordScene {path}` - write {sceneId, terrain} of the actor's scene at a `flags.` path on the actor (stops with no scene).
+  - `grantTopRolePerks {notRole?, notRoleName?, excludeName?}` - the actor's Role's highest-level Role Perks, not already owned.
+  - `fitUpgrade {uuid, onto: choice:<key>, flags?}` - a compendium upgrade attached to an owned item a pick stored, the way
+    dropping it on the item does (no grantedBy - it stays when the rule's item goes).
+  - `giveCopy {uuid, to?, flags?}` - a compendium item (no attachments) copied onto each recipient through the GM relay.
+- **Recipients:** `allParties` (the actor and everyone on any Party roster with it), `targetOrCombatant` (the first target, else
+  whoever's turn it is).
+- **Pick sources:** `skills` {essence?, minShift?, maxShift?, exclude?, also? (count whatever their Essence), sameEssenceAs: <key>,
+  differentEssenceFrom: <key>, notChoice: <key>, partner: {same spec; sameEssence: true = the candidate's Essence}} - "has a
+  partner" filtering; `defense` {exclude?, notChoices: [keys]}; `partyMates` {orTargets?}; `ownedItems` {itemType, prefer: [item
+  tags]} (the preferred ones when any, else all).
+- **Tags:** `self:inTeamOf:holder[:others]` (on the holder's team - the primary Party roster, else every player-owned PC; for a
+  clicker's button run, self is the presser) and `self:hasTeammates`; `item:recorded:<key>` / `self:crewsRecorded:<key>` (a
+  recorded pick that hasn't run out; an old `{mission}` stamp counts only in its mission); `var:includes:<key>:<text>`;
+  `self:` / `target:healthDamaged`, `self:` / `target:essenceDamaged`; `target:ownTurn`; `roll:damaging` (the hit / targeted row
+  came with damage); `self:` / `holder:onRecordedScene:<path>`; `self:itemEffect:<uuid>:<change key>` (that book item's copy has an
+  enabled effect changing the key).
+- **Formula ref** `@alliesWearing.<compendium id>.<ft>` - allies within range (the system's ally count) wearing that upgrade.
+- **Rule types** read by the hand-written registries (rules/ext/e/types.mjs, joined at `setup`):
+  - `HazardProtection {categories?, environments?}` - environment-hazards.mjs ENVIRONMENT_PROTECTORS; `{choice.x}` in
+    environments reads a pick (an unmade pick covers nothing); labelled with the item's name.
+  - `RoughTerrainImposer {}` - rough-terrain.mjs ROUGH_TERRAIN_IMPOSERS; `when` is asked with self = the holder and target = the
+    creature moving (`target:marked:misguided`, `target:ownTurn`).
+  - `MultipleTargets {}` (scopes self, driven) - multiple-targets.mjs MULTIPLE_TARGETS_GRANTS; `when` sees the attack (`attack:ram`).
+  - `KitPrerequisite {mode: lower | waive, tiers?, skipEssenceKits?}` - the essence20.kitPrerequisite hook (one Rank lower, never
+    past d2 / no prerequisite).
+- **Scope** `alliesAnywhere` (RollModifier) - every other actor on the holder's side, anywhere (token dispositions, else PC or
+  not - react/core.mjs#areAllies).
+- **Trigger event** `equipmentBroke` - a weapon / armor / shield flagged broken, or a vehicle / Zord / Megaform brought to 0
+  Health, fired for every world actor that has such a Trigger (on the client that made the change).
+- **Stages:** DerivedStat `stage: "early"` (before the poison training is worked out - documents/actor.mjs); Movement
+  `stage: "derived"` (inside the extensions' derived pass, before `afterDerived`). Actors holding a Movement rule that reads the
+  combat (`combat:`, `actionUsed`, `ownTurn`) are re-prepared on combat / combatant updates.
+- **Legacy marks:** a `mark` step with `perSetter` may carry `legacy: "flags.essence20.<old list>"` (+ `legacyScene: true`); once, at
+  start-up on the active GM, the creatures in that old holder-side list (or map) get the holder's mark (never over one there).
+- **Engine edits:** a `roll` step's `skill` fills `{var.x}`; `updateActor` ladder paths fill `{choice.x}` (no pick, no change);
+  `pickGrant {appendTraits}`; a `choose` prompt fills `{target}`, `{name}`, `{choice.x}`, `{var.x}`; the linking pass moves the
+  `legacy` of any `record: true` step; SurpriseExemption rules see `holder:` tags; Trigger `when` lists see the roll's rows
+  (`roll:damaging`).
+
+## Engine features added 2026-10-06 (round 11, group F)
+
+Everything below is registered on import of `module/rules/ext/f.mjs` (loaded by `module/rules/ext/index.mjs` after e).
+Strings are under `E20.RulesExtF.*`.
+
+### Window counters shared by flag name (`ext/f/window.mjs`)
+
+A rule `limit` keeps its own record (`ruleUses.<key>`); these name a Scene Clock flag outright - the `{epoch, window,
+count}` records `helpers/scene-clock.mjs#markUsed` writes - so a count hand-written code (or another item) already keeps
+carries on unchanged.
+
+- **Tags** `self:windowUsed:<flag>:<window>[:<n>]`, `target:windowUsed:...`, `holder:windowUsed:...` - the actor's count
+  under `flags.essence20.<flag>` in the current `scene` / `encounter` / `mission` is at least n (default 1). No other
+  party: false.
+- **Step `markWindow {flag, window, to?, clear?}`** - one more use on each recipient (a new window starts at 1);
+  `clear: true` forgets the record.
+
+### Events heard anywhere in the world (`ext/f/watch.mjs`)
+
+A Trigger's `watch` reaches tokens in the viewed scene; these reach every world actor holding a Trigger for the event, and
+the actor it happened to (token actor or not). Steps act as the holder; `target` is the actor it happened to
+(`target:self` - the holder itself).
+
+- **`rollSeen`** - a check was rolled (any actor, the extensions' postRoll on the roller's client): `@var.crit`,
+  `@var.fumble` (1 / 0), `@var.failed` (it had rows and all failed), `@var.upshifted` (the dialog closed with a net ↑1+,
+  rule switches included), `@var.assisted` (a Lend Assistance Edge / ↑ was waiting for the roll), `@var.total`. The two
+  dialog facts are noted by an applyDialog hook and used up by the roll.
+- **`conditionSeen`** - an Active Effect with status ids landed on an actor (this user's change): `@var.statuses`
+  (comma-joined - `var:includes:statuses:<id>`), `@var.condition` (1 when one is a listed Condition).
+- **`rollMessage`** - this user posted a chat message whose first roll has a d20: on the speaker's world actor only,
+  `@var.total`.
+- **Tags** `target:sideAlly` / `target:sideEnemy` - same / opposite non-neutral side by disposition (the active token's,
+  else the prototype token's), never itself; works off the canvas. `self:emotion[:<option>]` - that Emotional Mastery
+  option is active for the actor (its own, or one Team Spirit lent while the lender still has it; bare: any).
+- **Pick source** `activeEmotions` - the actor's active options, labelled `E20.EmotionalMastery<Option>`.
+
+### Hit multipliers and the finishing-move pieces (`ext/f/finisher.mjs`)
+
+- **`HitMultiplier {multiply, damageType?, choiceFrom?}`** (scopes `self`, `megaform`) - a landed weapon hit deals
+  `multiply` times its damage (a note "+N (label)", N = damage × (multiply - 1)) and, with `damageType` (a type or
+  `{choice.<key>}`), that type instead. `choiceFrom: <16-char id>` - a `{choice.*}` the rule's item hasn't made is read
+  from its holder's copy of that book item. `when` sees the hit like a HitRider (`roll:switch:<key>`, `item:`,
+  `attack:melee`, `target:`; self = the one who hit, holder = the rule's holder). One book item counts once per hit.
+  Registered with `registerHitRider(fn, {before: ruleDamageDealt})`: after the slices' own riders, ahead of the rules'
+  flat bonuses (so a +1 DamageModifier isn't multiplied - where the hand-written finisher sat).
+- **Tags** `item:styleChoice:<key>[:<id>]` - the rolled attack's style (melee, anything else counts as ranged) is the
+  one picked under `<key>` on the rule's item, else on its holder's copy of book item `<id>`; no pick - any.
+  `target:resistsChoice:<key>[:<id>]` - the other party has Resistance to the type picked (same lookup), else to the
+  rolled attack's own type; no other party - false.
+- **Step `rollEach {to, skills, dif, prompt?, onAllSucceeded?, onAnyFailed?}`** - each recipient picks one of the Skills
+  (a cancelled pick fails) and rolls it against the DIF (grants.mjs#rollTest); then one branch. `@var.failures`,
+  `{var.failedNames}`. `prompt` may be an `E20.` key (formatted with `{name}`, the roller).
+- **Recipient `participantPilots`** - the first target's (a Megaform's) Zord participants: each one's driver, else the
+  Zord.
+
+### Standing Skill dice (`ext/f/skill-die.mjs`)
+
+- **`SkillDie {skill, edge?, bestOf?: "participants"}`** (scopes `self`, `megaform`) - derived data among the extensions'
+  derived hooks: `edge` sets the Skill's own standing Edge (`system.skills.<skill>.edge`, not an untickable roll source);
+  `bestOf: participants` (scope megaform) raises the Megaform's Skill die to the best its Zord participants have in their
+  own such Skill. `skill: "initiative"` = the Skill the actor rolls Initiative with (`system.initiative.skill`).
+
+### Reaction answerers found by lookup (`rules/reactions.mjs`, `ext/f/reactors.mjs`)
+
+- **`registerReactorLookup(who, find)`** (rules/reactions.mjs) - a `who` whose answerers aren't canvas tokens holding the
+  rule. `find(info, row)` (row null for a card-wide rule) returns `[{actor, item, rule, index, holder?}]`; those offers go
+  through the same outcome / margin / `when` / limit / cost checks (no side check), `holder:` tags read the holder, and
+  canvas actors' own rules with that `who` are skipped. The name joins `REACTION_WHO`.
+- **`who: "megaformPilot"`** - on a Megaform participant's item: when the row's target is a Megaform it is part of, the
+  Player Characters listing that participant on their sheet answer (one button each). A Megaform Trait with no rules of
+  its own (homebrew) answers with the book Trait of the same `system.type` (`TRAIT_TWINS`: defender). The plug-in loads
+  rules/reactions.mjs lazily (`lookupReady`), so tests that mock the react slice's core still load ext/index.
+
+### Helper hooks
+
+- `helpers/extensions.mjs#registerHitRider(fn, {before})` - insert ahead of an already-registered rider.
+
+Tests: `module/rules/engine11-f.test.js` (18 tests).
+
+## Engine features added 2026-10-06 (round 11, group G)
+
+- **DialogSelect extras** (`ext/g/select.mjs`, params in `ext/g/select-rule.mjs`; group C's `ext/c/dialog.mjs` asks them):
+  - `options[i].when: [tags]` - the option is offered only while the tags hold (asked as the select itself is: `self:` the
+    roller, `holder:`, `item:` the rolled item, `target:`).
+  - `options[i].pay: [steps]` - run as the holder when the option is chosen, before it applies; a stopped run (an action
+    that can't be spent) means the option doesn't apply at all.
+  - `optionsFrom: {picked, legacy?, copies?, labels?: "damageType", label?, key?, pay?, steps?}` - one more option per value
+    a pick stored on the rule's item under `picked` (a list - `pickEach` / `pickMany` - or one value); `legacy` - where an
+    older version kept it; `copies: true` - the values the actor's other copies of the same book item hold too; `labels:
+    damageType` labels them from CONFIG.E20.damageTypes; `label` / `key` fill `{value}` and `{label}` (`key: "ammo:{value}"`).
+    With optionsFrom, one authored option (the default, "keep it as it is") is enough.
+  - A select left with fewer than two options isn't shown. Values are stable: an authored option is its index, a generated
+    one `v:<value>`.
+- **HitRider `option.damageType: "{switch.<prefix>}"`** - the rest of the first ticked switch key `<prefix>:<value>` (a
+  generated DialogSelect option's key); none ticked - no option.
+- **Step `pickEach {key, count, from, only?, excludeCopies?, prompt?, legacy?}`** (`ext/g/picks.mjs`) - choose `count`
+  different values one at a time (a select each time; `prompt` fills `{n}` and may be an E20. key), kept as a list on the
+  rule's item. Each pick leaves out the earlier ones; `excludeCopies` also leaves out what the actor's other copies of the
+  same book item hold under the key; `only` narrows the source. Running out ends early and keeps what was chosen; a
+  cancelled pick stops the run and keeps nothing. `@var.picked` (the list), `@var.pickedLabels` (", "-joined). Give it
+  `record: true` with `legacy` so the start-up linking pass moves an old pick.
+- **Tag `rule:firstCopy`** - the rule's item is the first copy of its book item on the actor (a rule read once per actor
+  when the copies' picks differ, so collectRules keeps both).
+- **The Hidden state** (`ext/g/hidden.mjs`) - `flags.essence20.o3Hidden {epoch, at}`, live for the scene it was set in
+  (the generic Hide action in other3/hide.mjs sets it). Tags **`self:hidden`** / **`target:hidden`**; step **`hide {to?,
+  value?}`** (`value: false` ends it); event **`brokeHiding`** - the actor attacked while Hidden (hide.mjs ends Hidden first,
+  then fires it): the attack's targets (once each) are the Trigger's targets, `@var.targets` how many.
+- **Cards other items add buttons to** (`ext/g/cards.mjs`):
+  - Step **`postCard {key, text?}`** - a chat card for the actor with `text` (`{name}`, `{target}`, `{var.x}`; an E20. key is
+    localised) and a button for each `CardButtons` rule the actor holds for that `key` whose `when` holds.
+  - Rule **`CardButtons {card, label, steps, each?: "target", who?}`** - the buttons an item adds to cards posted under
+    `card`: one, or (`each: target`) one per target of the card, that target its own (`{target}` in the label). Pressed,
+    the steps run as the card's actor with the button's targets; `who` as the `button` step's (owner by default); a button
+    can be pressed again and again.
+  - Step **`buttonCount {key, add?, max?, check?, message?}`** - in a button's steps (these cards', or a `button` step's): a
+    counter kept on the pressed button (each button its own), read as `@var.<key>` after it. `check: true` only checks; at
+    `max` or more it stops with `message` (an E20. key is localised) as a warning. Otherwise it adds `add` (default 1).
+- **Step `rollVsAll {skill, defense, to?, onSuccess?, onFail?, cancelFails?}`** (`ext/g/rolls.mjs`) - ONE ordinary Skill
+  Test (the Skill's own shifts / Specialization, no DIF), its total compared with each recipient's (default: the targets)
+  Defense - a list: the best of them. A success only when it meets every one; the branch runs with the recipients as
+  targets. `@var.rollTotal`, `@var.beaten`. No recipients - a chat line, stop; a cancelled roll stops (`cancelFails`: the
+  onFail branch).
+- **Rule `OnlyBest {defense, items, path?, key?}`** (`ext/g/best.mjs`) - of the actor's items matching `items` (item tags),
+  only the biggest bonus (the number at `path`, default `system.armorBonus.value`) counts toward that Defense: a derived
+  pass takes every other one off the total, noted "- N (label)". `when` sees the actor. Rules sharing a `key` apply once per
+  actor, so each of a family of items can carry the same rule.
+
+## Engine features added 2026-10-06 (round 12, group H)
+
+Everything below is registered on import of `module/rules/ext/h.mjs` (loaded by `module/rules/ext/index.mjs` after g).
+Strings are under `E20.RulesExtH.*`.
+
+### Copies and formula comparisons (`ext/h/copies.mjs`)
+
+- **Tags** `rule:copy:data:<path>[<op><value>]` - some copy of the rule's item on the actor (matched by book source, itself
+  included) has that data ("any of my Hybridizations is Hold That Shape"); `rule:otherCopy:data:...` - another copy, not
+  itself ("an earlier pick locks the direction"). The data test reads like the core `data:` tags (`=`, `!=`, `>=`, `<=`, `>`,
+  `<`, or bare = set). No rule item - false.
+- **Tag** `calc:<formula><op><number>` - a formula (any rule formula: `@level`, `@actor.<path>`, refs, min / max...) compared
+  with a number, asked with self = the actor and item = the rule's item (`calc:@level - @actor.flags.essence20.used > 0`).
+- **Refs** `@copiesWith.<path>.<value>` - how many copies of the rule's item (itself included) hold `<value>` at `<path>`
+  (`@copiesWith.flags.essence20.zord2Hybrid.extraShift`); `@most.items.<type>.<path>` - the biggest number at `<path>` on the
+  actor's items of that type (0 when none - "the best Alt Mode Movement").
+
+### Active Effects and kept values (`ext/h/effects.mjs`)
+
+- **Step `addEffect {changes: [{key, value, mode?}], name?, img?, on?: item | actor, to?, flags?}`** - an Active Effect with
+  those changes, on the rule's own item (`on: item`, the default - it transfers to the actor and goes with the item) or on each
+  recipient (`on: actor`). `value` is a formula stored as its number (`0 - @var.penalty`); `mode` defaults to 2 (add). A key
+  holding `{movement}` is repeated for every Movement type the actor has a base speed in; keys and the name fill
+  `{choice.x}` / `{var.x}`, and the name may be an `E20.` key. `flags` go under `flags.essence20` on the effect.
+- **Step `removeEffects {flag, to?}`** - the recipients' Active Effects carrying `flags.essence20.<flag>` are deleted (an
+  older version's effects too, when they carry the same flag).
+- **Step `keepValue {path, at}`** - the actor's value at `path` (`{choice.x}`, `{var.x}`, `{item.<path>}` filled) copied onto
+  the rule's item at `at` (a `flags.` path) - the Skill die before a step moves it. A path left with a hole (no pick) stops.
+- **Step `restoreValue {path, from}`** - the value the rule's item keeps at `from` written back to the actor's `path` (same
+  filling); skipped when the item keeps none or the actor has nothing at the path's parent. Works in a `removed` Trigger.
+
+### Rule types read by hand-written hooks, and an event (`ext/h/drawback.mjs`, `ext/h/types.mjs`)
+
+- **`IgnoreDrawback {drawbacks: [limitedArticulation]}`** - while `when` holds the holder ignores those drawbacks:
+  `limitedArticulation` - its Alt Mode's Limited Articulation no longer refuses those Skill Tests (dice.mjs asks
+  `ruleIgnoresDrawback`; the file is import-light, dice.mjs loads it directly).
+- **`InitiativeEdge {}`** - Edge on an Initiative roll, after the dialog (dice.mjs `INITIATIVE_EXTENSIONS`). Scope `self`: the
+  holder's own; scope `sceneAllies`: every OTHER actor on the holder's side (same disposition - the active token's, else the
+  prototype's) while the holder has a token on the viewed scene. `when` sees self = the roller, holder = the rule's holder.
+  Read only at roll time - never in derived data (other tokens' actors aren't touched while one prepares).
+- **`GrantDouble {grants: [upshift | actions], prompt?, damage?: {amount, type}}`** - when the holder grants another actor
+  upshifts on a banked bonus (`helpers/perks.mjs#bankPendingBonus`) or extra actions this turn
+  (`helpers/action-economy.mjs#grantActionsThisTurn`), the holder is asked (a confirm titled with the item's name; `prompt`, an
+  `E20.` key or text, fills `{granter}`, `{ally}`, `{what}`); yes doubles the grant and deals `damage` to the one receiving it.
+  `when`: self = the granter, target = the ally. Never for a grant to oneself. `perks.mjs#offerGrantDouble` is the hook.
+- **`DamageReduction {amount, damageTypes?, limit?, message?}`** - damage about to land on the holder (an extensions damage
+  modifier) of one of those types is lowered by `amount` (a formula - `1d2` rolls), never below 0; `limit` {per: turn | round
+  | scene | encounter | mission} counts uses (a round / turn limit never runs out outside a combat, as the combat-stamped
+  helpers read it); `message` (an `E20.` key or text with `{name}`, `{n}`) is posted. `when` sees the holder.
+- **Trigger event `massShiftUsed`** - the Mass Shift Role Perk was used (`helpers/mass-shift.mjs#activateMassShift`, right after
+  it marks its scene use).
+
+Tests: `module/rules/engine12-h.test.js` (13 tests).
+
+## Engine features added 2026-10-06 (round 12, group I)
+
+Everything below is registered on import of `module/rules/ext/i.mjs` (loaded last by `module/rules/ext/index.mjs`). No new
+strings (`E20.RulesExtI` is empty).
+
+- **Refs** (`ext/i/values.mjs`): `@rolePoints` - what the actor's base Role Points item holds (Mystical Points, Cheer...);
+  `@rolePoints.<name>` the Role Points item of that name (`_` for a space); 0 with none. `@flagList.<flag>` - how many
+  entries the list at `flags.essence20.<flag>` on the actor holds; `@flagList.<flag>.<value>` - how many equal that value.
+- **Step `flagList {flag, add? | clear?, to?}`** - append a text (`{choice.x}` / `{var.x}` filled) to that actor flag list on
+  each recipient, or empty it (no write when it's already empty). For state an older version of an item kept in a flag
+  list, so old characters carry on (Essential Research's `essentialResearch`).
+- **Pick source `config {path}`** - the entries of `CONFIG.E20.<path>` (`weaponTypes`, `damageTypes`...), labelled by their
+  localised names.
+- **Tag `holder:asOther:<self tag>`** - a `self:` tag asked of the rule's holder, with the actor the rule reached (the one
+  rolling) as the other party: `holder:asOther:sizeDiff>=0` - the holder is no smaller than them.
+- **DialogSwitch `scope: "alliesAnywhere"`** (`ext/i/scopes.mjs`) - group E's scope (every other actor on the holder's side,
+  anywhere: token dispositions, else Player Character or not) on dialog switches too: the switch is offered on those
+  allies' rolls. **`{holder}`** in a switch label is the holder's name (rules/adapter.mjs#ruleDialogSwitches). One switch
+  per holder - give them a `stack` group so two ticked count once.
+- **Reroll `scope: "picked"` + `picked: <key>`** - the reroll reaches every actor whose uuid is in the list a pick
+  (`pickMany`, `pickEach`) stored on the rule's item under that key (an unlinked token's actor counts as its world actor);
+  `includeHolder: true` adds the holder. `skills` may hold `{choice.<key>}`; while the list or a skill pick is missing,
+  nobody gets it. Read through `registerRerollGrant` (helpers/reroll.mjs#getRerollConfigs), so it is offered like any
+  item reroll. **`legacyEffects: "<flag>"`** - Active Effects an older version handed out for the grant (flagged
+  `flags.essence20.<flag>` = the holder's uuid) are deleted once at start-up by the active GM.
+- **Rule `RequisitionDif {amount, items?, min?}`** (`ext/i/requisition.mjs`) - the holder's Requisition Test DIF changes by
+  `amount` (a formula) for items matching `items` (item tags; `item:availability` reads the tier the DIF comes from - after
+  the Qualified-upgrade listeners), never below `min` (default 0). Read by helpers/requisition.mjs#requisitionDif; several
+  rules apply in turn, each floored. `when` sees the actor.
+- **`castHitDamage(caster, spell, damage, damageType)`** (`ext/i/cast.mjs`) - a spell's later damage (a storm's strike)
+  counted as one of its cast hits: the caster's `on: "cast"` HitRider rules whose `when` holds for that spell change it the
+  way they change a successful cast row. For hand-written spell code (other2/magic.mjs's Temper Tempest).
+- **Engine edits:**
+  - `updateActor`'s `set` / `add` paths fill `{choice.x}` (`system.essences.{choice.essence}.max`); no pick - left alone.
+  - `pickGrant`'s text `flags` fill `{choice.x}` / `{var.x}` (`flags: {q2WeaponType: "{choice.type}"}`).
+  - `ActionCost` takes `limit.per: "day"` (counted on the actor until a Rest - action-perks.mjs's daily counter) and
+    **`limit.key`** - the counter's name (`actionPerkDailyUses.<key>` for a day; shared with whatever else reads it).
+  - HitRider's cast reader (`ext/b/hit-rider.mjs#hitRiderOnCast`) takes the spell itself as `rider.item`.
+
+Tests: `module/rules/engine12-i.test.js` (12 tests).
+
+## Engine features added 2026-10-06 (round 13, group J)
+
+- **World sweeps reach unlinked tokens' actors** (`rules/triggers.mjs#sweepActors`, exported). Every world-wide sweep now
+  walks the world's actors **plus the synthetic actors of unlinked tokens on the viewed scene (`canvas.scene`, and the
+  canvas placeables) and the active scene (`game.scenes.active`)** - each actor once (deduplicated by object and by uuid;
+  a linked token's actor is its world actor, so it never counts twice; a token with no actor is skipped). It is used by:
+  - the `sceneStart`, `missionStart` and `sessionStart` Triggers (`worldActors()` in triggers.mjs);
+  - the timed-item sweep (`sweepWorld` - items a step gave `until` a time, run at turn start, scene start and world-time
+    changes);
+  - the scene / mission **Pool** resets (`rules/adapter.mjs#resetAllPools`, a lazy import of triggers.mjs).
+  All of these already run on the active GM only (the `essence20.sceneAdvanced` / `missionAdvanced` hooks call the
+  extensions on `game.users.activeGM?.isSelf`; the session hook and world-time sweep check `isActiveGM`), so each fires
+  once per actor per event. `turnStart` / `turnEnd` / `roundStart` were already per combatant - `combatant.actor`, which
+  for an unlinked token IS its synthetic actor - and are unchanged.
+- **Tag `roll:skillSpecialized`** (`rules/ext/j.mjs`) - the rolled Skill is itself Specialized on the roller
+  (`system.skills.<skill>.isSpecialized`, the Skill's own flag - not a Specialization being rolled, which is
+  `roll:specialized`). Unknown (null) with no roller or no rolled Skill.
+
+Tests: `module/rules/engine13-j.test.js` (10 tests).

@@ -234,7 +234,8 @@ async function _applyRestBenefits(actor, completeMessageKey) {
     "system.energon.primal.value": 0,
     "system.energon.red.value": 0,
     "system.energon.synthEn.value": 0,
-  });
+  // A Rest, not a spend (item rules' resourceSpent Triggers skip it - rules/triggers.mjs).
+  }, { essence20Rest: true });
 }
 
 /**

@@ -5,6 +5,11 @@
   "_id": "w1E74WXrvwQJlS1Q",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Cage","steps":[{"do":"choose","prompt":"Cage: imprison the target, or focus on or release a prisoner","options":[{"label":"Imprison the target","steps":[{"do":"target","max":1},{"do":"setVar","key":"room","value":"1 - @marking.caged","when":["not:self:transformed"]},{"do":"setVar","key":"room","value":"max(@altMode.system.altModeCrew, @altMode.system.crew) + 4 * min(1, @owned.PCwgQWKmTOl8va3I) - @marking.caged","when":["self:transformed"]},{"do":"require","check":["var:room>0"],"message":"The Cage is full."},{"do":"mark","key":"caged","to":"target"},{"do":"chat","text":"{name} imprisons {target} in their Cage."}]},{"label":"Focus on a prisoner (Free action)","when":["self:marking:caged"],"steps":[{"do":"pickMarked","key":"caged","prompt":"Which prisoner?"},{"do":"spendAction","action":"free"},{"do":"mark","key":"cageFocus","to":"target"},{"do":"chat","text":"{name} focuses on {target}, a prisoner in their Cage."}]},{"label":"Release a prisoner","when":["self:marking:caged"],"steps":[{"do":"pickMarked","key":"caged","prompt":"Which prisoner?"},{"do":"unmark","key":"caged","to":"target"},{"do":"unmark","key":"cageFocus","to":"target"},{"do":"chat","text":"{name} releases {target} from their Cage."}]}]}]},
+      {"type":"RollModifier","label":"Escaping the Cage (↓2)","scope":"marked","mark":"caged","downshift":2,"when":[{"any":["skill:infiltration","skill:brawn"]}]},
+      {"type":"RollModifier","label":"The captor focuses on you (Cage: Snag)","scope":"marked","mark":"cageFocus","snag":true,"consumeMark":"cageFocus","consumeFrom":"roller","when":[{"any":["skill:infiltration","skill:brawn"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: imprison, focus on or release a prisoner. Holds up to your Crew rating in Alt Mode or one in Bot Mode; prisoners take ↓2 to escape, and a Snag after you focus on them.</p>"

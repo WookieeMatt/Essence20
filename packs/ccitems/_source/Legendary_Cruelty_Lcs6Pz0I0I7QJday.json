@@ -5,6 +5,9 @@
   "_id": "Lcs6Pz0I0I7QJday",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reaction","who":"target","outcome":"miss","attackOnly":true,"when":["target:data:system.defenses"],"limit":{"per":"turn","max":1},"steps":[{"do":"roll","skill":"intimidation","dif":"max(@target.system.defenses.willpower.total, @target.system.defenses.cleverness.total)","onSuccess":[{"do":"button","who":"gm","label":"Apply 1 Psychic damage (Legendary Cruelty)","steps":[{"do":"damage","to":"target","amount":1,"damageType":"psychic"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when an attack against you misses, a button rolls Intimidation against the attacker's better of Willpower or Cleverness; on a success they take 1 Psychic damage. Once per turn.</p>"

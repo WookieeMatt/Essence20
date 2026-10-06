@@ -4,23 +4,14 @@
  * - Be an Example (Noble Blood Origin, p.40): "You can spend a Free action to reflect on your
  *   training and traditions to gain ↑1 to the skill you chose to increase or advance as part of this
  *   Origin." A Use button (Free action) banks ↑1 on system.originSkillsIncrease for the next test.
- * - Destiny, Hang-Up (p.45): "Once per scene, the GM can spend 1 Story Point to turn a regular
- *   failure of yours on a Skill Test into a Fumble." A GM-only button on a failed roll card.
  * - Lightspeed Boost, Zord Feature (p.103): "Increase its Health by 2 [Active Effect] and choose one of
  *   the following": Aeronautic (Aerial 40ft, +2 Evasion while in flight), Aquatic (Aquatic 40ft, +2
  *   Evasion while submerged), HAZMAT (Resistance to two or Immunity to one of Acid, Cold, Electricity,
  *   Poison, Sonic), Medical (+10ft to existing Movement, ↑2 on Science/Technology first aid or repair
  *   by the Zord or its crew), Pyrotechnic (Immunity to Fire; a Standard action extinguishes a 20x20ft
- *   area). "In flight"/"submerged" read the Zord token's elevation (above/below 0). Medical's ↑2 is
- *   the item's own rules (they read the pick below).
- * - Nemesis (Specific Threat) (p.70) - the half helpers/nemesis.mjs leaves open: "Once per scene
- *   involving your Nemesis, you may reroll a Skill Test and choose which results to keep." A button
- *   on the roll card rerolls it and shows both results against every Difficulty.
- * - Power Flux, Zord Feature (p.103): "After any scene involving your Zord, the piloting Power Ranger
- *   and any Power Rangers or characters possessing Personal Power in the Crew Compartment regain up
- *   to 6 Personal Power each." On the GM's "new scene", for Zords with a token in the scene.
- * - Power Wing (Battlizer, p.86): "increases the Ranger's current and maximum Personal Power Pool by
- *   2" while bonded (equipped). (The Defense bonus and 40ft Aerial are the item's own data/effect.)
+ *   area). "In flight"/"submerged" read the Zord token's elevation (above/below 0) - that Evasion and
+ *   the picker stay here; the Movement, Resistances / Immunities, Medical's ↑2 and Pyrotechnic's
+ *   extinguish button are the item's own rules (they read the pick below).
  * - S.W.A.T. Upgrade, Zord Feature (p.104): Armor Up! +2 plating (Active Effect); Drop It! "The pilot
  *   may use Intimidation and Persuasion Skills through the Zord's loudspeakers, gaining Edge";
  *   Incapacitation Ammo "an alternate firing mode for any ranged attacks, changing the effect to Stun
@@ -31,29 +22,23 @@
  *   their attacks unless they succeed on a DIF 14 Alertness Skill Test." helpers/banked-buffs.mjs
  *   spends the Power and marks the taunt; here each enemy within 60ft gets a DIF 14 Alertness button
  *   at the start of its turn, and one that failed can't attack anyone else.
- * - Tactical Size Shift, Zord Feature (p.104): "Increase Size Class by 1 category (maximum of
- *   Towering) and gain 2 Health, 1 Strength Essence (and the associated Skill Rank of your choice)" or
- *   "Decrease Size Class by 1 category (minimum of Long) and gain +10 feet of Movement, 1 Speed
- *   Essence (and the associated Skill Rank of your choice)... future choices of this Zord Feature can
- *   only be in the same direction."
+ * - Tactical Size Shift, Zord Feature (p.104): its own rules (the direction / Skill pick, its Active Effect, the
+ *   Skill die put back on removal, the size steps - module/rules/ext/h/).
  * - Warzord, Zord Feature (p.104): Titanic Size; +3 Health, +3 Strength, Edge on Initiative (Active
- *   Effects); "All the Zord's Might or Finesse-based attacks increase their base damage by 1"; a
- *   Combiner Warzord "must now spend 1 Story Point per Zord combining with it" (a reminder when it
- *   joins a Megaform).
+ *   Effects); "All the Zord's Might or Finesse-based attacks increase their base damage by 1". The
+ *   Combiner reminder when it joins a Megaform is the item's own megaformCombined Trigger.
  * - Xeno-Location Study (p.71): "Edge on Animal Handling, Deception, Insight, Persuasion, and Survival
  *   Skill Tests when in the chosen location or interacting with people from it" - a checkbox (the
  *   Culture half is dice.mjs's). This system has no Insight skill.
  */
 import {
-  registerApplyDialog, registerAfterDamage, registerChatButton, registerChatDecorator, registerDefenseAdjust,
-  registerDerived, registerDialogToggles, registerHitRider, registerRollSources, registerSceneAdvanced,
+  registerApplyDialog, registerChatButton, registerDefenseAdjust, registerRollSources,
   registerTurnStart, registerUse, registerPreRoll,
 } from "../../extensions.mjs";
-import { getSceneEpoch, getUses, markUsed } from "../../scene-clock.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import {
-  PR1, T, allSourced, crewOf, feetBetween, findSourced, flagOf, has, isEnemyOf,
-  isItem, isRanged, kept, num, pending, postLine, setPending, tokenOf, writeDoc,
+  PR1, T, allSourced, feetBetween, findSourced, flagOf, has, isEnemyOf,
+  isItem, kept, num, postLine, tokenOf, writeDoc,
 } from "./common.mjs";
 
 const pushTo = (list, entry) => {
@@ -92,115 +77,6 @@ registerUse({
     await actor.setFlag('essence20', EXAMPLE_FLAG, { skill });
     return T('Pr1BeAnExampleLine', { name: actor.name, skill: game.i18n.localize(CONFIG.E20?.skills?.[skill] ?? skill) });
   },
-});
-
-/* -------------------------------------------- */
-/*  Destiny Hang-Up                              */
-/* -------------------------------------------- */
-
-const DESTINY_FLAG = 'pr1DestinyFumble';
-
-function addButton(element, key, label, data = {}) {
-  const container = element?.querySelector?.('.message-content') ?? element;
-  if (!container || element.querySelector?.(`[data-e20-ext="${key}"]`)) {
-    return;
-  }
-
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = 'e20-chat-action-button';
-  button.dataset.e20Ext = key;
-  for (const [name, value] of Object.entries(data)) {
-    button.dataset[name] = value;
-  }
-
-  button.textContent = label;
-  container.appendChild(button);
-}
-
-const speakerOf = message => (message?.speaker ? ChatMessage.getSpeakerActor?.(message.speaker) : null);
-
-export function destinyOffer(message, actor, isGM) {
-  const flags = message?.flags?.essence20 ?? {};
-  return !!isGM && !!actor && has(actor, PR1.destinyHangUp) && flags.rollFailed === true && !flags.isFumble
-    && !flags.pr1DestinyFumbled && !getUses(actor, DESTINY_FLAG, 'scene');
-}
-
-registerChatButton('pr1DestinyFumble', async (message) => {
-  const actor = speakerOf(message);
-  if (!destinyOffer(message, actor, game.user?.isGM)) {
-    return;
-  }
-
-  const { getGmPoints, requestStoryPointSpend, requestStoryPointGrant } = await import("../../story-points.mjs");
-  if (getGmPoints() < 1) {
-    ui.notifications.warn(T('Pr1DestinyNoPoints'));
-    return;
-  }
-
-  await requestStoryPointSpend(null, 1, { pool: 'gm', announce: false });
-  await markUsed(actor, DESTINY_FLAG, { window: 'scene' });
-  await message.setFlag('essence20', 'pr1DestinyFumbled', true);
-  // A Fumble is a failure that also "gains a Story Point" for the team (core rule, PR CRB p.91).
-  await requestStoryPointGrant(actor);
-  await postLine(actor, T('Pr1DestinyLine', { name: actor.name }));
-});
-
-/* -------------------------------------------- */
-/*  Nemesis (Specific Threat) - the reroll       */
-/* -------------------------------------------- */
-
-const NEMESIS_REROLL = 'pr1NemesisReroll';
-
-export function nemesisInvolved(actor, message) {
-  const nemesis = actor?.getFlag?.('essence20', 'nemesisUuid');
-  if (!nemesis || !has(actor, PR1.nemesis)) {
-    return false;
-  }
-
-  const targeted = (message?.flags?.essence20?.checkResults ?? []).some(r => r?.targetUuid && r.targetUuid == nemesis);
-  const present = (globalThis.canvas?.tokens?.placeables ?? []).some(token => token.actor?.uuid && token.actor.uuid == nemesis);
-  return targeted || present;
-}
-
-/** Which Difficulties a total meets. */
-export function outcomesFor(total, checkResults = []) {
-  return checkResults.map(entry => ({ ...entry, success: Number.isFinite(entry?.difficulty) ? total >= entry.difficulty : null }));
-}
-
-registerChatButton(NEMESIS_REROLL, async (message) => {
-  const actor = speakerOf(message);
-  if (!actor || !nemesisInvolved(actor, message) || getUses(actor, NEMESIS_REROLL, 'scene') || !message.rolls?.[0]) {
-    return;
-  }
-
-  await markUsed(actor, NEMESIS_REROLL, { window: 'scene' });
-  const roll = await new Roll(message.rolls[0].formula).evaluate();
-  const outcomes = outcomesFor(roll.total, message.flags?.essence20?.checkResults ?? []);
-  const lines = outcomes.map(o => {
-    const name = o.targetUuid ? (globalThis.fromUuidSync?.(o.targetUuid)?.name ?? '?') : T('Pr1Difficulty');
-    return `<li>${name} (${o.difficulty}): ${o.success ? T('Pr1Success') : T('Pr1Failure')}</li>`;
-  }).join('');
-  await roll.toMessage({
-    speaker: ChatMessage.getSpeaker({ actor }),
-    flavor: `${T('Pr1NemesisFlavor', { name: actor.name, old: message.rolls[0].total, total: roll.total })}${lines ? `<ul>${lines}</ul>` : ''}`,
-  });
-});
-
-registerChatDecorator((message, element) => {
-  const actor = speakerOf(message);
-  if (!actor || !message?.rolls?.length || !message.flags?.essence20) {
-    return;
-  }
-
-  if (destinyOffer(message, actor, game.user?.isGM)) {
-    addButton(element, 'pr1DestinyFumble', T('Pr1DestinyButton'));
-  }
-
-  if ((actor.isOwner || game.user?.isGM) && !message.flags.essence20.pr1NemesisReroll
-    && !getUses(actor, NEMESIS_REROLL, 'scene') && nemesisInvolved(actor, message)) {
-    addButton(element, NEMESIS_REROLL, T('Pr1NemesisButton'));
-  }
 });
 
 /* -------------------------------------------- */
@@ -247,41 +123,9 @@ async function pickLightspeed(feature) {
   return T('Pr1LightspeedChosen', { name: feature.parent?.name ?? '', option: T(`Pr1Lightspeed.${option}`) });
 }
 
-export function lightspeedDerived(actor) {
-  const system = actor?.system;
-  if (actor?.type != 'zord' || !system) {
-    return;
-  }
-
-  for (const choice of lightspeedOf(actor)) {
-    const movement = system.movement ?? {};
-    switch (choice.option) {
-    case 'aeronautic':
-      if (movement.aerial) movement.aerial.total = Math.max(num(movement.aerial.total), 40);
-      break;
-    case 'aquatic':
-      if (movement.swim) movement.swim.total = Math.max(num(movement.swim.total), 40);
-      break;
-    case 'hazmat':
-      for (const type of choice.types ?? []) {
-        const bucket = choice.how == 'immune' ? system.immunities : system.resistances;
-        if (bucket && type in bucket) bucket[type] = true;
-      }
-
-      break;
-    case 'medical':
-      for (const entry of Object.values(movement)) {
-        if (entry && num(entry.total) > 0) entry.total = num(entry.total) + 10;
-      }
-
-      break;
-    case 'pyrotechnic':
-      if (system.immunities) system.immunities.fire = true;
-      break;
-    }
-  }
-}
-
+// The picks' Movement (Aerial / Swim 40, Medical +10 at stage afterGravity), HAZMAT's Resistances /
+// Immunity and Pyrotechnic's Fire Immunity and extinguish Use are the item's own rules (they read the
+// pick above); the in-flight / submerged Evasion stays here (token elevation).
 export function elevationOf(actor) {
   const doc = tokenOf(actor)?.document;
   return num(doc?.elevation);
@@ -301,106 +145,20 @@ export function lightspeedDefenseAdjust(defender, defenseType) {
   return 0;
 }
 
+// Only until the pick is made: Pyrotechnic's extinguish button is then the item's own Use rule.
 registerUse({
   id: 'pr1-lightspeed-boost',
-  matches: item => isItem(item, PR1.lightspeedBoost),
-  canUse: item => !flagOf(item, LIGHTSPEED_FLAG) || flagOf(item, LIGHTSPEED_FLAG)?.option == 'pyrotechnic',
-  run: async (item, economy, pay) => {
-    if (!flagOf(item, LIGHTSPEED_FLAG)) {
-      return pickLightspeed(item);
-    }
-
-    // Pyrotechnic: "can use a Standard action to extinguish a 20 foot × 20 foot area of burning
-    // targets or materials automatically."
-    if (!(await pay('standard'))) {
-      return null;
-    }
-
-    return T('Pr1PyrotechnicLine', { name: item.parent?.name ?? '' });
-  },
+  matches: item => isItem(item, PR1.lightspeedBoost) && !flagOf(item, LIGHTSPEED_FLAG),
+  run: item => pickLightspeed(item),
 });
 
-/* -------------------------------------------- */
-/*  Power Flux                                   */
-/* -------------------------------------------- */
+// Power Flux is the Feature's own rule: a crew-scoped sceneStart Trigger (the Zord on the canvas) that
+// tops each crew member's Personal Power up by at most 6.
 
-export function powerFluxGains(zord) {
-  return crewOf(zord).map(({ actor }) => {
-    const personal = actor.system?.powers?.personal;
-    const max = num(personal?.max);
-    const gain = max > 0 ? Math.max(0, Math.min(6, max - num(personal.value))) : 0;
-    return { actor, gain };
-  }).filter(entry => entry.gain > 0);
-}
-
-registerSceneAdvanced(async () => {
-  if (!game.user?.isGM) {
-    return;
-  }
-
-  for (const zord of worldActors()) {
-    if (zord?.type != 'zord' || !has(zord, PR1.powerFlux) || !(zord.getActiveTokens?.() ?? []).length) {
-      continue;
-    }
-
-    for (const { actor, gain } of powerFluxGains(zord)) {
-      await actor.update({ 'system.powers.personal.value': num(actor.system.powers.personal.value) + gain });
-      await postLine(actor, T('Pr1PowerFluxLine', { name: actor.name, zord: zord.name, n: gain }));
-    }
-  }
-});
-
-/* -------------------------------------------- */
-/*  Power Wing                                   */
-/* -------------------------------------------- */
-
-globalThis.Hooks?.on?.('updateItem', async (item, changes, options, userId) => {
-  if (userId != globalThis.game?.user?.id || !isItem(item, PR1.powerWing) || changes?.system?.equipped === undefined) {
-    return;
-  }
-
-  const actor = item.parent;
-  const personal = actor?.system?.powers?.personal;
-  if (!personal) {
-    return;
-  }
-
-  const value = num(personal.value);
-  await actor.update({ 'system.powers.personal.value': changes.system.equipped ? value + 2 : Math.max(0, value - 2) });
-});
-
-/* -------------------------------------------- */
-/*  S.W.A.T. Upgrade                             */
-/* -------------------------------------------- */
-
-const SWAT_CARDS = 'pr1SwatCards';
-const SWAT_LAST = 'pr1SwatLastTarget';
-
-export function swatCards(zord) {
-  const record = flagOf(zord, SWAT_CARDS);
-  return record?.scene == getSceneEpoch() ? num(record.left) : 6;
-}
-
-registerAfterDamage(async (actor, dealt, damageType, { newValue, wasAlreadyDefeated } = {}) => {
-  if (wasAlreadyDefeated || num(newValue) > 0 || !actor?.uuid) {
-    return;
-  }
-
-  const zord = worldActors().find(z => z?.type == 'zord' && has(z, PR1.swatUpgrade) && flagOf(z, SWAT_LAST) == actor.uuid);
-  // "any ENEMY Defeated by your Zord's attacks" - when both are on the canvas, check the sides.
-  if (!zord || (tokenOf(zord) && tokenOf(actor) && !isEnemyOf(zord, actor))) {
-    return;
-  }
-
-  const left = swatCards(zord);
-  await writeDoc(zord, 'unsetFlag', 'essence20', SWAT_LAST);
-  if (left < 1) {
-    return;
-  }
-
-  await writeDoc(zord, 'setFlag', 'essence20', SWAT_CARDS, { scene: getSceneEpoch(), left: left - 1 });
-  await postLine(zord, T('Pr1SwatDetained', { name: actor.name, zord: zord.name, n: left - 1 }));
-});
+// S.W.A.T. Upgrade's Incarceration Protocols are the Feature's own rules: a `hit` Trigger moves an
+// exclusive "last hit" mark onto the Zord's target, and a watch Trigger on an enemy's `defeated`
+// detains whoever carries it (6 per scene, the count kept on a scene-long mark). Incapacitation
+// Ammo's alternate fire stays below.
 
 /* -------------------------------------------- */
 /*  Stand Behind Me!                             */
@@ -479,123 +237,6 @@ registerPreRoll((actor, dataset, item) => {
 });
 
 /* -------------------------------------------- */
-/*  Tactical Size Shift                          */
-/* -------------------------------------------- */
-
-const SIZE_FLAG = 'pr1SizeShift';
-
-export function sizeShiftDirection(zord) {
-  return allSourced(zord, PR1.tacticalSizeShift).map(f => flagOf(f, SIZE_FLAG)?.direction).find(Boolean) ?? null;
-}
-
-export function shiftedSize(size, steps) {
-  const sizes = Object.keys(CONFIG.E20?.actorSizes ?? {});
-  const index = sizes.indexOf(size);
-  if (index < 0 || !steps) {
-    return size;
-  }
-
-  const min = sizes.indexOf('long');
-  const max = sizes.indexOf('towering');
-  const target = index + steps;
-  // Never past the printed limits - and never back across them for a Zord already beyond one.
-  const clamped = steps > 0 ? Math.min(target, Math.max(max, index)) : Math.max(target, Math.min(min, index));
-  return sizes[clamped] ?? size;
-}
-
-async function pickSizeShift(feature) {
-  const zord = feature.parent;
-  const { chooseButtons, chooseSelect } = await import("../../grants.mjs");
-  const locked = allSourced(zord, PR1.tacticalSizeShift).filter(f => f.id != feature.id).map(f => flagOf(f, SIZE_FLAG)?.direction).find(Boolean);
-  const direction = locked ?? await chooseButtons(feature.name, T('Pr1SizeShiftPick'), [['larger', T('Pr1SizeShiftLarger')], ['smaller', T('Pr1SizeShiftSmaller')]]);
-  if (!direction) {
-    return null;
-  }
-
-  const essence = direction == 'larger' ? 'strength' : 'speed';
-  const skills = (CONFIG.E20?.skillsByEssence?.[essence] ?? []).filter(s => zord.system?.skills?.[s]);
-  const skill = await chooseSelect(feature.name, T('Pr1SizeShiftSkill'), skills.map(value => ({ value, label: game.i18n.localize(CONFIG.E20.skills[value]) })));
-  if (!skill) {
-    return null;
-  }
-
-  const changes = [{ key: `system.essences.${essence}.value`, mode: 2, value: '1' }];
-  if (direction == 'larger') {
-    changes.push({ key: 'system.health.bonus', mode: 2, value: '2' });
-  } else {
-    for (const [type, movement] of Object.entries(zord.system?.movement ?? {})) {
-      if (num(movement?.base) > 0) changes.push({ key: `system.movement.${type}.bonus`, mode: 2, value: '10' });
-    }
-  }
-
-  await feature.createEmbeddedDocuments('ActiveEffect', [{ name: feature.name, img: 'icons/svg/aura.svg', transfer: true, disabled: false, changes }]);
-
-  // "the associated Skill Rank of your choice" - one step up that skill's die, undone if the Feature goes.
-  const list = CONFIG.E20?.skillShiftList ?? [];
-  const previous = zord.system.skills[skill].shift;
-  const index = list.indexOf(previous);
-  const next = index > 0 ? list[Math.max(list.indexOf('d12'), index - 1)] : previous;
-  await zord.update({ [`system.skills.${skill}.shift`]: next });
-  await feature.setFlag('essence20', SIZE_FLAG, { direction, skill, previous });
-  return T('Pr1SizeShiftChosen', { name: zord.name, direction: T(direction == 'larger' ? 'Pr1SizeShiftLarger' : 'Pr1SizeShiftSmaller') });
-}
-
-registerUse({
-  id: 'pr1-tactical-size-shift',
-  matches: item => isItem(item, PR1.tacticalSizeShift) && item.parent?.type == 'zord',
-  canUse: item => !flagOf(item, SIZE_FLAG),
-  run: item => pickSizeShift(item),
-});
-
-globalThis.Hooks?.on?.('deleteItem', async (item, options, userId) => {
-  const record = flagOf(item, SIZE_FLAG);
-  const zord = item.parent;
-  if (userId != globalThis.game?.user?.id || !isItem(item, PR1.tacticalSizeShift) || !record?.skill || !zord?.system?.skills?.[record.skill]) {
-    return;
-  }
-
-  await zord.update({ [`system.skills.${record.skill}.shift`]: record.previous });
-});
-
-export function sizeShiftDerived(actor) {
-  if (actor?.type != 'zord' || !actor.system) {
-    return;
-  }
-
-  const steps = allSourced(actor, PR1.tacticalSizeShift).reduce((n, f) => {
-    const direction = flagOf(f, SIZE_FLAG)?.direction;
-    return n + (direction == 'larger' ? 1 : direction == 'smaller' ? -1 : 0);
-  }, 0);
-  if (steps) {
-    actor.system.size = shiftedSize(actor.system.size, steps);
-  }
-
-  // Warzord: "The Zord is now of Titanic Size."
-  if (has(actor, PR1.warzord)) {
-    actor.system.size = 'titanic';
-  }
-}
-
-/* -------------------------------------------- */
-/*  Warzord - the Combiner cost                  */
-/* -------------------------------------------- */
-
-globalThis.Hooks?.on?.('updateActor', async (actor, changes, options, userId) => {
-  if (userId != globalThis.game?.user?.id || actor?.type != 'megaform' || !changes?.system?.actors) {
-    return;
-  }
-
-  const zords = Object.values(actor.system?.actors ?? {}).map(e => globalThis.fromUuidSync?.(e.uuid)).filter(z => z?.type == 'zord');
-  const warzord = zords.find(z => has(z, PR1.warzord) && has(z, PR1.combiner));
-  if (!warzord || flagOf(actor, 'pr1WarzordReminded') == getSceneEpoch()) {
-    return;
-  }
-
-  await actor.setFlag('essence20', 'pr1WarzordReminded', getSceneEpoch());
-  await postLine(actor, T('Pr1WarzordCombine', { name: warzord.name, n: Math.max(0, zords.length - 1) }));
-});
-
-/* -------------------------------------------- */
 /*  Roll sources, dialog, riders                 */
 /* -------------------------------------------- */
 
@@ -615,44 +256,13 @@ registerRollSources((actor, target, ctx) => ({ sources: atsSources(actor, target
 
 registerDefenseAdjust((attacker, defender, defenseType) => lightspeedDefenseAdjust(defender, defenseType));
 
-registerDialogToggles((actor, { item } = {}) => {
-  const toggles = [];
-  if (actor?.type == 'zord' && has(actor, PR1.swatUpgrade) && isRanged(item)) {
-    toggles.push({ name: 'pr1SwatStun', label: T('Pr1SwatStunToggle'), type: 'checkbox', value: false });
-  }
-
-  return toggles;
-});
-
-registerApplyDialog(async (actor, options) => {
-  const ext = options.ext ?? {};
-  if (ext.pr1SwatStun) {
-    setPending(actor, { swatStun: true });
-  }
-});
+// S.W.A.T. Upgrade's Incapacitation Ammo is a DialogSwitch + HitRider rule pair on its pack item.
 
 registerApplyDialog(async (actor, options, ctx = {}) => {
   const example = flagOf(actor, EXAMPLE_FLAG);
   if (example?.skill && example.skill == ctx.rolledSkill && kept(options, 'pr1BeAnExample')) {
     await actor.unsetFlag('essence20', EXAMPLE_FLAG);
   }
-});
-
-registerHitRider(async (actor, target, result, rider, tools) => {
-  // Incapacitation Ammo: Stun, one higher than the damage.
-  if (pending(actor).swatStun && result?.damageValue) {
-    tools.addRiderOption(result, { key: 'pr1SwatStun', label: T('Pr1SwatStunApply'), damageValue: num(result.damageValue) + 1, damageType: 'stun' });
-  }
-
-  // Incarceration Protocols: remember who the Zord just hit.
-  if (actor?.type == 'zord' && has(actor, PR1.swatUpgrade) && target?.uuid) {
-    await writeDoc(actor, 'setFlag', 'essence20', SWAT_LAST, target.uuid);
-  }
-});
-
-registerDerived(actor => {
-  lightspeedDerived(actor);
-  sizeShiftDerived(actor);
 });
 
 // A Feature that needs a choice asks for it the moment it lands on a Zord, for whoever dropped it.
@@ -664,8 +274,6 @@ globalThis.Hooks?.on?.('createItem', async (item, options, userId) => {
   let line = null;
   if (isItem(item, PR1.lightspeedBoost) && !flagOf(item, LIGHTSPEED_FLAG)) {
     line = await pickLightspeed(item);
-  } else if (isItem(item, PR1.tacticalSizeShift) && !flagOf(item, SIZE_FLAG)) {
-    line = await pickSizeShift(item);
   }
 
   if (line) {

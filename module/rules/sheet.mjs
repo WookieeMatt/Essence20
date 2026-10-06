@@ -84,6 +84,7 @@ export const SKELETONS = {
   ItemModifier: { type: 'ItemModifier', items: ['item:type:weapon'], path: 'system.range.max', op: 'add', value: 10 },
   Use: { type: 'Use', label: 'Use', cost: { action: 'standard' }, limit: { per: 'scene', max: 1 }, steps: [{ do: 'chat', text: '{name} uses it.' }] },
   Trigger: { type: 'Trigger', event: 'turnStart', steps: [{ do: 'chat', text: 'Turn start for {name}.' }] },
+  Reaction: { type: 'Reaction', label: 'React', who: 'target', outcome: 'hit', limit: { per: 'scene', max: 1 }, steps: [{ do: 'lowerTotal', amount: 2 }] },
 };
 
 /**
@@ -94,6 +95,7 @@ export const ADD_CHOICES = [
   { key: 'effect', icon: 'fa-solid fa-sliders' },
   { key: 'Use', icon: 'fa-solid fa-hand-pointer' },
   { key: 'Trigger', icon: 'fa-solid fa-bolt' },
+  { key: 'Reaction', icon: 'fa-solid fa-hand' },
   { key: 'RollModifier', icon: 'fa-solid fa-dice-d20' },
   { key: 'ActionCost', icon: 'fa-solid fa-person-running' },
   { key: 'Sense', icon: 'fa-solid fa-eye' },

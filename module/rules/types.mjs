@@ -1,7 +1,7 @@
 import { formulaError } from "./formula.mjs";
 import { unknownTags } from "./predicate.mjs";
 import { LIMIT_WINDOWS } from "./limits.mjs";
-import { stepErrors } from "./steps.mjs";
+import { CARD_STEPS, stepErrors } from "./steps.mjs";
 
 /**
  * What an ActionCost can make cheaper: a named action (E20.namedActions), or a kind of cost the
@@ -17,8 +17,23 @@ export const TRIGGER_EVENTS = [
   'turnStart', 'turnEnd', 'roundStart', 'rest', 'sceneStart', 'missionStart', 'takesDamage', 'wouldBeDefeated', 'defeated',
   'morph', 'unmorph', 'transform', 'untransform', 'afterRoll', 'hit', 'miss', 'added', 'conditionGained',
   'lendAssistance', 'assisted', 'combatStart', 'combatEnd', 'initiativeRolled', 'storyPointSpent',
-  'targeted', 'dealtDamage', 'defeatedEnemy',
+  'targeted', 'dealtDamage', 'defeatedEnemy', 'equipped', 'unequipped', 'essenceChanged', 'resourceSpent', 'sessionStart', 'itemAdded', 'movedOnTurn', 'removed', 'droppedToZero',
 ];
+
+/** Add a Trigger event name (module/rules/ext/*.mjs fire it with fireTriggers). */
+export function registerEvent(name) {
+  if (!TRIGGER_EVENTS.includes(name)) {
+    TRIGGER_EVENTS.push(name);
+  }
+}
+
+/**
+ * Add a rule type: {params, scopes, validate?} as in RULE_TYPES. Its consumer (the code that reads it with
+ * rulesOfType) lives beside it.
+ */
+export function registerRuleType(name, definition) {
+  RULE_TYPES[name] = definition;
+}
 
 function costErrors(cost) {
   if (cost === undefined) {
@@ -71,7 +86,8 @@ function limitErrors(limit) {
  * Phase 1 types only. A rule of any other type is kept as it is and shown as "not supported yet" -
  * never stripped, so data written by a newer version survives.
  *
- * Param kinds: 'formula' (a number or formula - rules/formula.mjs), 'bool', 'string', 'enum'
+ * Param kinds: 'formula' (a number or formula - rules/formula.mjs), 'bool', 'string', 'enum', 'outcome' (an enum
+ * value or a list of them)
  * (`options`), 'strings' (an array of strings), 'object' and 'any' (checked by the type's own
  * validate, or by whatever reads it).
  *
@@ -87,14 +103,16 @@ const SHIFT_PARAMS = {
   specialize: { kind: 'bool' },
 };
 
-export const SCOPES = ['self', 'incoming', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'];
+export const SCOPES = ['self', 'incoming', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'];
 
 /** Every type's own params; label, when, scope, priority and disabled are common to all. */
 export const RULE_TYPES = {
   RollModifier: {
     // late: decided after the Roll Options Dialog, when the attacked Defense is settled (defense: tags).
-    params: { ...SHIFT_PARAMS, immune: { kind: 'strings' }, ignoreDownshift: { kind: 'formula' }, limit: { kind: 'object' }, default: { kind: 'bool' }, late: { kind: 'bool' } },
-    scopes: ['self', 'incoming', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    params: { ...SHIFT_PARAMS, immune: { kind: 'strings' }, ignoreDownshift: { kind: 'formula' }, limit: { kind: 'object' }, default: { kind: 'bool' }, late: { kind: 'bool' },
+      // consumeMark: the roll this applies to uses up that mark (on the roller, or consumeFrom: target).
+      consumeMark: { kind: 'string' }, consumeFrom: { kind: 'enum', options: ['self', 'target'] } },
+    scopes: ['self', 'incoming', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => [
       ...(['upshift', 'downshift', 'edge', 'snag', 'specialize', 'immune', 'ignoreDownshift'].some(key => rule[key]?.length ?? rule[key]) ? [] : ['changes nothing']),
       ...limitErrors(rule.limit),
@@ -107,7 +125,7 @@ export const RULE_TYPES = {
     // damage: added to the attack's own damage bonus when ticked (multiplied by Degrees of Success).
     // useSkill: roll that Skill's die instead (the shift difference, like "roll Deception instead of Initiative").
     params: { ...SHIFT_PARAMS, default: { kind: 'bool' }, replacesAim: { kind: 'bool' }, cost: { kind: 'object' }, damage: { kind: 'formula' }, useSkill: { kind: 'string' }, forget: { kind: 'bool' }, spend: { kind: 'object' }, clearSnag: { kind: 'bool' }, key: { kind: 'string' }, steps: { kind: 'object' }, defaultWhen: { kind: 'strings' }, limit: { kind: 'object' } },
-    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => [
       ...(['upshift', 'downshift', 'edge', 'snag', 'specialize', 'damage', 'replacesAim', 'useSkill', 'key', 'steps', 'clearSnag'].some(key => rule[key]) ? [] : ['changes nothing']),
       ...(rule.spend !== undefined && !rule.spend?.resource && rule.spend?.max === undefined ? ['spend needs a resource or a max'] : []),
@@ -134,7 +152,7 @@ export const RULE_TYPES = {
     },
     // item: the rule sits on the rolled item itself (a weapon effect) and applies to whoever rolls it -
     // its owner, or a crew member / pilot firing a vehicle's or Zord's weapon.
-    scopes: ['self', 'host', 'item', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'host', 'item', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
   },
   // A Defense. Static (no roll condition): added to the sheet's total. Otherwise decided per attack
   // (dice.mjs, the target's difficulty), where mode can also be: best (use the better of the current
@@ -150,7 +168,7 @@ export const RULE_TYPES = {
       outgoing: { kind: 'bool' },
       limit: { kind: 'object' },
     },
-    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => [
       ...((rule.mode ?? 'add') == 'add' && (rule.amount === undefined || rule.amount === '') ? ['amount is required'] : []),
       ...(rule.mode == 'best' && !(Array.isArray(rule.from) && rule.from.length) ? ['best needs from (the Defenses to compare)'] : []),
@@ -161,10 +179,16 @@ export const RULE_TYPES = {
     params: {
       path: { kind: 'string', required: true },
       op: { kind: 'enum', options: ['add', 'set', 'multiply', 'max', 'min'] },
-      value: { kind: 'formula', required: true },
+      // A number / formula, or true / false (set as it is). The path may read a pick: system.skills.{choice.skill}.x
+      value: { kind: 'any', required: true },
+      // early: before the poison training is worked out from system.poisonTraining (rules/ext/e/derived.mjs).
+      stage: { kind: 'enum', options: ['early'] },
     },
-    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
-    validate: rule => (String(rule.path ?? '').startsWith('system.') ? [] : ['path must start with "system."']),
+    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
+    validate: rule => [
+      ...(String(rule.path ?? '').startsWith('system.') ? [] : ['path must start with "system."']),
+      ...(typeof rule.value == 'boolean' || !formulaError(rule.value) ? [] : [`value: ${formulaError(rule.value)}`]),
+    ],
   },
   DamageModifier: {
     params: {
@@ -178,7 +202,7 @@ export const RULE_TYPES = {
       limit: { kind: 'object' },
       steps: { kind: 'object' },
     },
-    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => [
       ...(rule.amount || rule.immune ? [] : ['changes nothing']),
       ...(rule.scaled && rule.direction != 'dealt' ? ['scaled only applies to damage dealt'] : []),
@@ -196,7 +220,8 @@ export const RULE_TYPES = {
     validate: rule => (/^Compendium\.|^Item\./.test(String(rule.uuid ?? '')) ? [] : ['uuid must be an Item or Compendium uuid']),
   },
   Toggle: {
-    params: { key: { kind: 'string', required: true }, default: { kind: 'bool' } },
+    // legacy: where an older version of the item kept this state (rules/legacy-choices.mjs).
+    params: { key: { kind: 'string', required: true }, default: { kind: 'bool' }, legacy: { kind: 'string' } },
     scopes: ['self'],
   },
   Pool: {
@@ -212,6 +237,8 @@ export const RULE_TYPES = {
       key: { kind: 'string', required: true },
       from: { kind: 'enum', required: true, options: ['skill', 'essence', 'defense', 'list', 'text'] },
       options: { kind: 'object' },
+      // Where an older version of the item kept this pick (rules/legacy-choices.mjs).
+      legacy: { kind: 'string' },
     },
     scopes: ['self'],
     validate: rule => (rule.from != 'list' || (Array.isArray(rule.options) && rule.options.length) ? [] : ['a list choice needs options']),
@@ -258,7 +285,7 @@ export const RULE_TYPES = {
   // reads the attack: weapon:trait:ballistic, attack:melee...
   AttackCount: {
     params: { count: { kind: 'formula' }, additional: { kind: 'formula' } },
-    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => ((rule.count !== undefined) != (rule.additional !== undefined) ? [] : ['give either count or additional']),
   },
   // The roll can critically succeed on the d2 (dice.mjs's canCritD2), when `when` holds - roll:edge,
@@ -274,11 +301,13 @@ export const RULE_TYPES = {
   Movement: {
     params: {
       movement: { kind: 'enum', required: true, options: ['ground', 'aerial', 'climb', 'swim', 'burrow', 'all'] },
-      stage: { kind: 'enum', options: ['base', 'total', 'adjust', 'final'] },
+      // derived: inside the extensions' derived pass, before afterDerived (rules/ext/e/derived.mjs).
+      stage: { kind: 'enum', options: ['base', 'total', 'adjust', 'final', 'afterGravity', 'derived', 'afterDerived'] },
+      round: { kind: 'enum', options: ['nearest', 'floor', 'ceil'] },
       op: { kind: 'enum', required: true, options: ['set', 'multiply', 'add', 'max', 'min'] },
       value: { kind: 'formula', required: true },
     },
-    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
   },
   // The damage type this attack deals instead (dice.mjs overriddenDamageType) - "choice" is the rule
   // item's chosen type. `when` sees the roll, after the dialog (roll:switch:, roll:edge...).
@@ -344,7 +373,7 @@ export const RULE_TYPES = {
   // fired aimed. `when` sees the roll (item:, weapon:, target:...).
   AimBonus: {
     params: { atLeast: { kind: 'formula' }, extra: { kind: 'formula' }, limit: { kind: 'object' }, clearToggle: { kind: 'string' } },
-    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => [
       ...(rule.atLeast !== undefined || rule.extra !== undefined ? [] : ['changes nothing']),
       ...limitErrors(rule.limit),
@@ -392,7 +421,7 @@ export const RULE_TYPES = {
   // when something tries to apply it. Status ids from CONFIG.statusEffects (frightened, surprised...).
   ConditionImmunity: {
     params: { conditions: { kind: 'strings', required: true } },
-    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => (Array.isArray(rule.conditions) && rule.conditions.length ? [] : ['conditions must list at least one Condition']),
   },
   // Requisition access (helpers/requisition.mjs): Trained or Qualified in every item the `items` tags
@@ -413,7 +442,7 @@ export const RULE_TYPES = {
   // Push Yourself at more feet per Free action, or with no doubling cap.
   MovementAction: {
     params: { ignoreRoughTerrain: { kind: 'bool' }, pushFeet: { kind: 'formula' }, pushUnlimited: { kind: 'bool' } },
-    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => (rule.ignoreRoughTerrain || rule.pushFeet || rule.pushUnlimited ? [] : ['changes nothing']),
   },
   // A number on other items the actor owns - each item the `items` tags match (tested as the rolled
@@ -438,11 +467,11 @@ export const RULE_TYPES = {
       mode: { kind: 'enum', options: ['darkvision', 'monochromatic', 'lightAmplification'] },
       range: { kind: 'formula', required: true },
     },
-    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
   },
   SurpriseExemption: {
     params: { mode: { kind: 'enum', options: ['normal', 'move', 'speedAsLevel'] } },
-    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
+    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
   },
   // A cheaper way to pay for an action (rules/actions.mjs) - offered by the action economy when it applies.
   ActionCost: {
@@ -453,11 +482,29 @@ export const RULE_TYPES = {
       ask: { kind: 'string' },
     },
     scopes: ['self'],
-    validate: rule => (rule.limit === undefined || ['turn', 'scene', 'encounter'].includes(rule.limit?.per) ? [] : ['limit.per must be turn, scene or encounter']),
+    // day: counted on the actor until a Rest (helpers/action-perks.mjs); limit.key names the counter (shared with others).
+    validate: rule => (rule.limit === undefined || ['turn', 'scene', 'encounter', 'day'].includes(rule.limit?.per) ? [] : ['limit.per must be turn, scene, encounter or day']),
   },
   // A Use button (rules/triggers.mjs): pay the cost, count the limit, run the steps.
   Use: {
     params: { cost: { kind: 'object' }, limit: { kind: 'object' }, steps: { kind: 'object', required: true } },
+    scopes: ['self'],
+    validate: rule => [...costErrors(rule.cost), ...limitErrors(rule.limit), ...stepErrors(rule.steps), ...cardStepErrors(rule.steps)],
+  },
+  // A button on a posted check card for whoever may answer it (rules/reactions.mjs); its steps may change the card.
+  Reaction: {
+    params: {
+      who: { kind: 'enum', options: ['target', 'attacker', 'allyOfTarget', 'allyOfAttacker', 'enemyOfAttacker'] },
+      within: { kind: 'number' },
+      per: { kind: 'enum', options: ['row', 'card'] },
+      outcome: { kind: 'enum', options: ['any', 'hit', 'miss'] },
+      attackOnly: { kind: 'bool' },
+      minMargin: { kind: 'number' },
+      maxMargin: { kind: 'number' },
+      cost: { kind: 'object' },
+      limit: { kind: 'object' },
+      steps: { kind: 'object', required: true },
+    },
     scopes: ['self'],
     validate: rule => [...costErrors(rule.cost), ...limitErrors(rule.limit), ...stepErrors(rule.steps)],
   },
@@ -465,16 +512,27 @@ export const RULE_TYPES = {
   Trigger: {
     params: {
       event: { kind: 'enum', required: true, options: TRIGGER_EVENTS },
-      outcome: { kind: 'enum', options: ['any', 'success', 'failure', 'double', 'crit', 'fumble', 'x2', 'anyFailed', 'allFailed', 'fumbled'] },
+      // A list means every one must hold.
+      outcome: { kind: 'outcome', options: ['any', 'success', 'failure', 'double', 'crit', 'fumble', 'x2', 'anyFailed', 'allFailed', 'fumbled', 'plainSuccess', 'plainFailure', 'anySucceeded', 'notDouble'] },
+      // Fire when the event happens to another actor of that side (rules/triggers.mjs#fireWatchers).
+      watch: { kind: 'enum', options: ['ally', 'enemy', 'any'] },
+      within: { kind: 'number' },
+      watchTarget: { kind: 'enum', options: ['actor', 'theirTarget'] },
       prompt: { kind: 'bool' },
       limit: { kind: 'object' },
       steps: { kind: 'object', required: true },
     },
     // A linked Trigger fires for the actor it reaches (its steps act on them); its limit counts on the holder.
-    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'],
-    validate: rule => [...limitErrors(rule.limit), ...stepErrors(rule.steps)],
+    scopes: ['self', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
+    validate: rule => [...limitErrors(rule.limit), ...stepErrors(rule.steps), ...cardStepErrors(rule.steps)],
   },
 };
+
+/** The card-changing steps only work in a Reaction (they need the card). */
+function cardStepErrors(steps) {
+  const used = CARD_STEPS.filter(type => JSON.stringify(steps ?? []).includes(`"do":"${type}"`));
+  return used.length ? [`${used.join(', ')} only work in a Reaction rule`] : [];
+}
 
 const COMMON = ['type', 'label', 'when', 'scope', 'priority', 'disabled', 'stacks', 'radius', 'affects'];
 
@@ -542,6 +600,8 @@ export function validateRule(rule) {
       }
     } else if (param.kind == 'bool' && typeof value != 'boolean') {
       errors.push(`${key} must be true or false`);
+    } else if (param.kind == 'outcome' && ![value].flat().every(one => param.options.includes(one))) {
+      errors.push(`${key} must be one (or a list) of ${param.options.join(', ')}`);
     } else if (param.kind == 'enum' && !param.options.includes(value)) {
       errors.push(`${key} must be one of ${param.options.join(', ')}`);
     } else if (param.kind == 'strings' && !(Array.isArray(value) && value.every(v => typeof v == 'string'))) {
@@ -747,8 +807,9 @@ export function summarizeRule(rule) {
   case 'Sense': return `${who}Sees in the dark to ${rule.range} ft${rule.mode && rule.mode != 'darkvision' ? ` (${rule.mode})` : ''}${tail}`;
   case 'SurpriseExemption': return `${who}${{ move: 'When Surprised, can still Move and make Skill Tests', speedAsLevel: 'When Surprised, acts with Speed equal to level' }[rule.mode] ?? 'Acts normally when Surprised'}${tail}`;
   case 'ActionCost': return `${word(`E20.Rules.Field.Action.${rule.action}`, capital(rule.action))} costs ${rule.to == 'none' ? 'no action' : `a ${capital(rule.to)} action`}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}`;
+  case 'Reaction': return `Card button for ${{ attacker: 'the attacker', allyOfTarget: "the target's allies", allyOfAttacker: "the attacker's allies", enemyOfAttacker: "the attacker's enemies" }[rule.who] ?? 'the target'}${Number(rule.within) > 0 ? ` within ${rule.within} ft` : ''}${rule.outcome && rule.outcome != 'any' ? ` (on a ${rule.outcome})` : ''}${rule.attackOnly ? ', attacks only' : ''}${costPhrase(rule.cost)}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}: ${(rule.steps ?? []).map(step => step?.do).join(', ')}`;
   case 'Use': return `Use: ${rule.label ?? ''}${costPhrase(rule.cost)}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}`;
-  case 'Trigger': return `When ${EVENT_WORDS[rule.event] ?? rule.event}${['afterRoll', 'hit'].includes(rule.event) && rule.outcome && rule.outcome != 'any' ? ` (${rule.outcome})` : ''}${tail ? `,${tail}` : ''}: ${(rule.steps ?? []).map(step => step?.do).join(', ')}${limitPhrase(rule.limit)}`;
+  case 'Trigger': return `When ${rule.watch ? `${{ ally: 'an ally', enemy: 'an enemy', any: 'someone else' }[rule.watch] ?? rule.watch}${Number(rule.within) > 0 ? ` within ${rule.within} ft` : ''} - ` : ''}${EVENT_WORDS[rule.event] ?? rule.event}${['afterRoll', 'hit'].includes(rule.event) && rule.outcome && rule.outcome != 'any' ? ` (${rule.outcome})` : ''}${tail ? `,${tail}` : ''}: ${(rule.steps ?? []).map(step => step?.do).join(', ')}${limitPhrase(rule.limit)}`;
   }
 
   return `${rule.type ?? 'Rule'} (not supported yet)`;
@@ -772,6 +833,9 @@ const EVENT_WORDS = {
   transform: 'you change to Alt Mode', untransform: 'you change to Bot Mode', afterRoll: 'you roll', hit: 'an attack or spell hits', miss: 'an attack or spell misses', added: 'this item is added', conditionGained: 'you gain a Condition',
   lendAssistance: 'you Lend Assistance', assisted: 'someone Lends you Assistance',
   combatStart: 'combat starts', combatEnd: 'combat ends', initiativeRolled: 'you roll Initiative', storyPointSpent: 'you spend a Story Point',
+  equipped: 'this item is equipped', unequipped: 'this item is unequipped', essenceChanged: 'an Essence goes up or down',
+  resourceSpent: 'you spend Power, Energon or Health', sessionStart: 'a new game session starts', itemAdded: 'another item is added', movedOnTurn: 'you move on your turn', removed: 'this item is removed',
+  droppedToZero: 'your Health or Power drops to 0',
 };
 
 function costPhrase(cost) {

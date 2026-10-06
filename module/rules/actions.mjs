@@ -37,7 +37,8 @@ export function actionMatches(rule, ctx = {}) {
  */
 export function costRulesFor(actor) {
   return rulesOfType(actor, 'ActionCost').map(({ rule, item, index }) => ({
-    id: `rule-${item.id}-${index}`,
+    // limit.key: the counter it uses is that name (actionPerkDailyUses.<key> for a day limit - Sensitive spends the same).
+    id: rule.limit?.key ? String(rule.limit.key) : `rule-${item.id}-${index}`,
     label: ruleLabel(rule, item),
     has: () => true,
     matches: ctx => actionMatches(rule, ctx) && evaluate(rule.when, contextFor({

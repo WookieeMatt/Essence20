@@ -573,7 +573,7 @@ export function holdersOf(uuid) {
   return worldActors().filter(actor => holds(actor, uuid));
 }
 
-function placeFor(element, row) {
+export function placeFor(element, row) {
   const items = element?.querySelectorAll?.('.e20-check-result') ?? [];
   const li = row ? items[row.index] : null;
   let box = (li ?? element)?.querySelector?.(':scope > .e20-react-buttons');

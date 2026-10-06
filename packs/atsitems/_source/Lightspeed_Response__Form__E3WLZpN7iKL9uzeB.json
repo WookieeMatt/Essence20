@@ -7,7 +7,8 @@
     "rules": [
       {"type":"DialogSwitch","label":"First aid, repair or other healing effort (Lightspeed Response: Edge)","edge":true,"default":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.E3WLZpN7iKL9uzeB","not:item:type:weaponEffect",{"any":["skill:science","skill:technology"]}]},
       {"type":"DialogSwitch","label":"First aid, repair or other healing effort (Lightspeed Response: Edge)","edge":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.E3WLZpN7iKL9uzeB","not:item:type:weaponEffect","not:skill:science","not:skill:technology"]},
-      {"type":"Use","label":"2 Power: heal an adjacent Morphed ally 1 Health","when":["self:data:system.powers.personal.value>=2"],"steps":[{"do":"pickAlly","within":5,"filter":["target:morphed"]},{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":2},{"do":"heal","to":"target","amount":1}]}
+      {"type":"Use","label":"2 Power: heal an adjacent Morphed ally 1 Health","when":["self:data:system.powers.personal.value>=2"],"steps":[{"do":"pickAlly","within":5,"filter":["target:morphed"]},{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":2},{"do":"heal","to":"target","amount":1}]},
+      {"type":"Form","label":"Lightspeed Response (1 Personal Power when you Morph)","cost":1,"swaps":[{"replaces":"blaster","pick":["Compendium.essence20.across_the_stars.Item.rXaEYw1MX0Zqmp6N","Compendium.essence20.across_the_stars.Item.yOltN3CfcfQ1qrxk"]},{"replaces":"power","uuids":["Compendium.essence20.across_the_stars.Item.CPk5vJmroY58l2ao"]}]}
     ],
     "automation": {
       "status": "partial",

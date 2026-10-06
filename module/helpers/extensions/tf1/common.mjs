@@ -1,7 +1,7 @@
 /**
  * Shared bits for the Decepticon Directive / Technorganic Secrets slice (tf1): item ids, lookups,
- * and the small "apply a Condition / offer a damage button / roll a skill vs a Defense" helpers the
- * Use buttons below share. Light imports only - anything heavy is imported inside a function.
+ * and the small "apply a Condition / offer a damage button" helpers the Use buttons share. Light
+ * imports only - anything heavy is imported inside a function.
  */
 
 const dd = id => `Compendium.essence20.decepticon_directive.Item.${id}`;
@@ -10,30 +10,13 @@ export const TF1 = {
   altModeMimicry: dd('ARtFFscnVBo183hV'),
   brutalDisplay: dd('11Q2KXJ7qxlddusg'),
   commsAssault: dd('pKArYQ259zpdsR7o'),
-  commsProbe: dd('kcU17jzso2caxVJ1'),
   drone: dd('ZdvE8MB35jg1A8wK'),
-  easyInEasyOut: dd('N36G5U8c8HSX3e9c'),
-  falseData: dd('Xo62YAhi8lULOZpR'),
-  fearsomeAdditions: dd('jh4FiaiLPb40jqkv'),
-  fearsomeVoice: dd('ZQl2qzyBNHUYYHS5'),
-  feedbackField: dd('P7dmKCP99DAYqptj'),
   flexibleSwitch: dd('pTHenJt0kG3umsUk'),
-  focusedBlast: dd('zu38NCr99BFPgEBJ'),
-  loadedQuestions: dd('nkqk7AfXUJkigqbq'),
   makeAnExample: dd('mroTcYJKFpAAiqP5'),
-  mine: dd('7NGQHft6V1wAfGPw'),
-  myAlliesAreMyShield: dd('pralmStmjjgVLatX'),
-  partnered: dd('6I4IIvDP3SOCJ5cR'),
-  pickingUpTheTrail: dd('lE4u6aGvWm86L6hY'),
   showRespect: dd('oowLckrIBcn1Zff3'),
   solidStateEnergon: dd('aUxtcuKUb40JYoqx'),
-  steadyFirepower: dd('svqVyP2tyYzSUtn6'),
-  targetRichEnvironment: dd('BF1fKwzQQb1LFKGP'),
   theyCalledItAGlitch: dd('IKPWMfs5ZSp6ijiv'),
-  toxEn: dd('uJRbkLx1BiXNpo3p'),
   favoriteWeapon: dd('emaXxo2XzoHMoNCe'),
-  // Transformers CRB: Disappear (Scout Cybertronian Perk) and Alt Mode Mastery (Modemaster, 10th).
-  disappear: 'Compendium.essence20.tf_crb.Item.aD6N6hTvFhsQFZnB',
 };
 
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
@@ -96,17 +79,6 @@ export function isDefeated(actor) {
   return !!actor?.statuses?.has?.('defeated') || (Number(actor?.system?.health?.value) <= 0 && actor?.system?.health?.max > 0);
 }
 
-export async function spendEnergon(actor, amount = 1) {
-  const value = Number(actor?.system?.energon?.normal?.value) || 0;
-  if (value < amount) {
-    ui.notifications.warn(T('Tf1NoEnergon', { name: actor.name }));
-    return false;
-  }
-
-  await actor.update({ 'system.energon.normal.value': value - amount });
-  return true;
-}
-
 /** A Condition on someone else, relayed through the GM when the user can't write to them. */
 export async function applyCondition(target, status, rounds = 0) {
   if (!target) {
@@ -145,18 +117,6 @@ export async function onDamageButton(message, button) {
   button.disabled = true;
 }
 
-/**
- * Target these tokens and roll a Skill against each one's Defense. The riderSpec kind comes back in
- * registerPostRoll as rider.spec.kind.
- */
-export async function rollAgainst(actor, tokens, { skill, defenseType, kind, extra = {} }) {
-  canvas?.tokens?.setTargets?.(tokens.map(t => t.id));
-  const essence = CONFIG.E20?.skillToEssence?.[skill] ?? 'strength';
-  return actor._dice?.rollSkill({
-    skill, essence, shiftUp: 0, shiftDown: 0, defenseType, riderSpec: JSON.stringify({ kind, ...extra }),
-  }, actor);
-}
-
 export async function chooseButtons(title, prompt, choices) {
   const grants = await import("../../grants.mjs");
   return grants.chooseButtons(title, prompt, choices);
@@ -177,15 +137,4 @@ export function favoriteWeaponOf(actor) {
   const perk = itemOf(actor, TF1.favoriteWeapon);
   const choice = perk?.system?.choice;
   return choice ? actor.items?.get?.(choice) ?? null : null;
-}
-
-/** The weapon a weaponEffect belongs to. */
-export function weaponOfEffect(actor, effect) {
-  const parentId = effect?.flags?.essence20?.parentId;
-  return parentId ? actor?.items?.get?.(parentId) ?? null : null;
-}
-
-export function combatStamp() {
-  const combat = game?.combat;
-  return combat ? { combatId: combat.id, round: combat.round, turn: combat.turn } : null;
 }

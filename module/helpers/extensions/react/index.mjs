@@ -6,5 +6,4 @@ import "./core.mjs";
 import "./reactions.mjs";
 import "./triggers.mjs";
 import "./forms.mjs";
-import "./auras.mjs";
 import "./hooks-in.mjs";

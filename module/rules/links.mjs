@@ -1,5 +1,5 @@
 import { companionsOf, ownerOf, worldActors } from "../helpers/companion-link.mjs";
-import { LINK_HOLDERS, rulesOfType } from "./index.mjs";
+import { LINK_HOLDERS, addLinkedScope, rulesOfType } from "./index.mjs";
 import { feetBetween, setCrewLookup, sideActorsWithin } from "./predicate.mjs";
 import { resolveValue } from "./formula.mjs";
 
@@ -24,7 +24,24 @@ import { resolveValue } from "./formula.mjs";
  * being prepared - while formulas (@level, @pool...) read the actor and item that hold the rule.
  */
 
-export const LINK_SCOPES = ['crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura'];
+/**
+ * Other ways a rule can reach an actor, added by plug-ins: fn(actor, type) => [{rule, item, index, holder}]
+ * (rules/ext/c/marks.mjs - rules a mark carries onto the marked creature).
+ */
+export const LINK_SOURCES = [];
+
+export const LINK_SCOPES = ['crew','pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'];
+
+/* Plug-in scopes (module/rules/ext/*.mjs): `holdersOf(actor)` lists the actors whose `name`-scoped rules reach it. */
+const EXTRA_LINKS = new Map();
+export function registerLinkScope(name, holdersOf) {
+  EXTRA_LINKS.set(name, holdersOf);
+  if (!LINK_SCOPES.includes(name)) {
+    LINK_SCOPES.push(name);
+  }
+
+  addLinkedScope(name);
+}
 
 const CREWED = ['vehicle', 'zord'];
 
@@ -161,11 +178,13 @@ setCrewLookup(actor => crewedBy(actor));
  * @returns {Array<{rule, item, index, holder}>}
  */
 export function linkedEntries(actor, type) {
+  // Plug-in link sources (module/rules/ext/*.mjs) - asked even when no actor holds a linked rule.
+  const extra = actor ? LINK_SOURCES.flatMap(source => source(actor, type) ?? []) : [];
   if (!actor || !LINK_HOLDERS.size) {
-    return [];
+    return extra;
   }
 
-  const out = [];
+  const out = [...extra];
   const add = (holder, scope) => {
     if (holder && holder !== actor) {
       for (const entry of rulesOfType(holder, type, scope)) {
@@ -196,6 +215,50 @@ export function linkedEntries(actor, type) {
 
   for (const mate of partyMates(actor)) {
     add(mate, 'party');
+  }
+
+  // stacks: false - one book item's plug-in-scoped rule counts once, however many of the holders carry it.
+  const pluggedOnce = new Set();
+  for (const [scope, holdersOf] of EXTRA_LINKS) {
+    for (const holder of holdersOf(actor) ?? []) {
+      for (const entry of holder && holder !== actor ? rulesOfType(holder, type, scope) : []) {
+        const key = entry.rule.stacks === false ? sourceKey(entry.item, entry.index) : null;
+        if (key && pluggedOnce.has(key)) {
+          continue;
+        }
+
+        if (key) {
+          pluggedOnce.add(key);
+        }
+
+        out.push({ ...entry, holder });
+      }
+    }
+  }
+
+  // team: a holder's rule reaches every other Player Character in the world; stacks: false counts one
+  // book item's rule once, however many teammates hold it.
+  if (actor.type == 'playerCharacter') {
+    const teamOnce = new Set();
+    for (const id of LINK_HOLDERS.keys?.() ?? LINK_HOLDERS) {
+      const holder = globalThis.game?.actors?.get?.(id);
+      if (holder?.type != 'playerCharacter' || holder === actor) {
+        continue;
+      }
+
+      for (const entry of rulesOfType(holder, type, 'team')) {
+        const key = entry.rule.stacks === false ? sourceKey(entry.item, entry.index) : null;
+        if (key && teamOnce.has(key)) {
+          continue;
+        }
+
+        if (key) {
+          teamOnce.add(key);
+        }
+
+        out.push({ ...entry, holder });
+      }
+    }
   }
 
   // stacks: false - the same book item's aura counts once, however many allies in reach hold it.

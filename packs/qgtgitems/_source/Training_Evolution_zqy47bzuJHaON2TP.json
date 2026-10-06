@@ -5,6 +5,12 @@
   "_id": "zqy47bzuJHaON2TP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Borrow an ally's training for this mission (Training Evolution)","steps":[{"do":"pick","key":"ally","from":"team","notSelf":true,"prompt":"Whose training?"},{"do":"pickActorItem","actor":"picked:ally","itemType":"weapon","vehicles":true,"key":"evolution","max":1,"until":"mission","legacy":"flags.essence20.q2Evolution","record":true,"prompt":"Which weapon or vehicle?"}]},
+      {"type":"Qualification","label":"Trained in the borrowed weapon (Training Evolution)","access":"trained","items":["item:type:weapon","item:recorded:evolution"]},
+      {"type":"RollModifier","label":"Specialized with the borrowed weapon (Training Evolution)","specialize":true,"when":["weapon:recorded:evolution"]},
+      {"type":"RollModifier","label":"Specialized driving the borrowed vehicle (Training Evolution)","specialize":true,"when":["skill:driving","self:crewsRecorded:evolution"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick an ally and one of the weapons or vehicles they use; you count as Trained and Specialized with it for the rest of the mission.</p>"

@@ -8,7 +8,9 @@
     "rules": [
       {"type":"DialogSwitch","label":"Involves fire (Water Cannon: Edge)","when":["self:transformed"],"edge":true},
       {"type":"Trigger","label":"Alt Mode: stow the cannon (Water Cannon)","event":"transform","steps":[{"do":"updateItem","item":"granted","set":{"system.equipped":false}}]},
-      {"type":"Trigger","label":"Bot Mode: cannon in hand (Water Cannon)","event":"untransform","steps":[{"do":"updateItem","item":"granted","set":{"system.equipped":true}}]}
+      {"type":"Trigger","label":"Bot Mode: cannon in hand (Water Cannon)","event":"untransform","steps":[{"do":"updateItem","item":"granted","set":{"system.equipped":true}}]},
+      {"type":"Use","label":"Bot Mode weapon (Water Cannon)","when":["not:rule:granted:type:weapon"],"steps":[{"do":"grant","uuid":"Compendium.essence20.tf_crb.Item.jSjdGdieoUkT0nAf","name":"Water Cannon","integrated":true,"system":{"requirements.skill":null,"requirements.shift":null,"requirements.custom":"","elementChoice":"cold"},"systemFormulas":{"equipped":["not:self:transformed"]}}]},
+      {"type":"HardpointUse","label":"Bot Mode cannon needs one hardpoint (Water Cannon)","items":["item:granted"],"slots":1}
     ],
     "automation": {
       "status": "full",

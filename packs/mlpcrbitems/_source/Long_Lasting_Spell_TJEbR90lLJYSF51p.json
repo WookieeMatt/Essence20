@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SpellCost","label":"Long Lasting Spell: double the Cost to double the duration","op":"multiply","value":2,"note":"Long Lasting: the duration is doubled."}
+    ],
     "prerequisites": {"when":["self:has:Magical","self:skill:spellcasting>=d4"]},
     "automation": {
       "status": "partial",

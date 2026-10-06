@@ -5,6 +5,9 @@
   "_id": "DCgAR3QpfjUspsGU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Lend or force one of your Alterations (Overload)","when":["self:count:alteration>=1"],"steps":[{"do":"target","min":1,"max":1,"beforeCost":true},{"do":"choose","prompt":"Lend the target an Alteration's benefit (Free action), or force its cost on them (Move action, a test against Evasion)?","options":[{"label":"Lend the benefit","steps":[{"do":"setVar","key":"mode","value":1}]},{"label":"Force the cost","steps":[{"do":"setVar","key":"mode","value":2}]}]},{"do":"pickAlteration","from":"own","var":"alteration","prompt":"Which Alteration?"},{"do":"spendAction","action":"free","when":["var:mode=1"]},{"do":"lendAlteration","from":"alteration","to":"target","part":"benefit","expire":"lenderTurn","when":["var:mode=1"]},{"do":"pick","key":"overloadSkill","from":"list","options":[["might","E20.SkillMight"],["finesse","E20.SkillFinesse"],["science","E20.SkillScience"]],"prompt":"Which Skill?","when":["var:mode=2"]},{"do":"spendAction","action":"move","when":["var:mode=2"]},{"do":"roll","skill":"{choice.overloadSkill}","difDefense":"evasion","when":["var:mode=2"],"onSuccess":[{"do":"lendAlteration","from":"alteration","to":"target","part":"cost","expire":"theirNextTurnEnd"}],"onFail":[{"do":"chat","text":"{target} resists."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Free action, lend one of your Alterations' benefits to a target until your next turn; or as a Move action, attack to force an Alteration's cost on a target until the end of their next turn.</p>"

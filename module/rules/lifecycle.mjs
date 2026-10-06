@@ -123,13 +123,25 @@ export async function grantData(item, actor, { load = uuid => fromUuid(uuid) } =
  */
 export async function attachGrantedChildren(actor, created) {
   const { createItemCopies } = await import("../sheet-handlers/attachment-handler.mjs");
+  const ids = () => new Set((actor.items?.contents ?? [...(actor.items ?? [])]).map(other => other.id));
   for (const item of created ?? []) {
+    const before = ids();
     if (['armor', 'weapon'].includes(item?.type)) {
       await createItemCopies(item.system?.items ?? {}, actor, 'upgrade', item);
     }
 
     if (['shield', 'weapon'].includes(item?.type)) {
       await createItemCopies(item.system?.items ?? {}, actor, 'weaponEffect', item);
+    }
+
+    // The attached copies carry the host's grant and expiry, so they go with it (rule:granted, onDeleteItem). They're
+    // the items the copying just made (their parentId flag is set without waiting, so it can't be read yet).
+    const stamp = Object.fromEntries(['grantedBy', 'rulesExpiry'].map(key => [key, item?.flags?.essence20?.[key]]).filter(([, value]) => value));
+    if (Object.keys(stamp).length) {
+      const children = (actor.items?.contents ?? [...(actor.items ?? [])]).filter(other => !before.has(other.id) && other.id != item.id && !other.flags?.essence20?.grantedBy);
+      if (children.length) {
+        await actor.updateEmbeddedDocuments?.('Item', children.map(child => ({ _id: child.id, ...Object.fromEntries(Object.entries(stamp).map(([key, value]) => [`flags.essence20.${key}`, value])) })));
+      }
     }
   }
 }
@@ -166,7 +178,17 @@ async function onDeleteItem(item, options, userId) {
     return;
   }
 
-  const ids = grantedBy(actor, item).filter(id => actor.items.get(id));
+  // The item's own 'removed' Triggers (an undo - Aim Apparatus giving the Skill die back).
+  if (rulesOf(item).some(rule => rule?.type == 'Trigger' && rule.event == 'removed')) {
+    const { fireItemAdded } = await import("./triggers.mjs");
+    await fireItemAdded(actor, item, { event: 'removed' });
+  }
+
+  const granted = grantedBy(actor, item).filter(id => actor.items.get(id));
+  // And what's attached to those (a granted weapon's attacks made before attachments carried grantedBy).
+  const attached = (actor.items?.contents ?? [...(actor.items ?? [])])
+    .filter(other => granted.includes(other.flags?.essence20?.parentId) && !granted.includes(other.id)).map(other => other.id);
+  const ids = [...granted, ...attached];
   if (ids.length) {
     await actor.deleteEmbeddedDocuments('Item', ids);
   }

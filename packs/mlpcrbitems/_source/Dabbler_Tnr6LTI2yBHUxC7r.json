@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Swap a Skill Rank for the day (Dabbler)","when":["not:self:toggle:swapped","not:rule:data:flags.essence20.o3Dabbler"],"steps":[{"do":"pick","key":"lower","from":"skills","prompt":"Lower which Skill by 1 Rank?","minShift":"d2","exclude":["conditioning"],"legacy":"flags.essence20.o3Dabbler.lower","partner":{"sameEssence":true,"also":["spellcasting"],"exclude":["conditioning"],"maxShift":"d10"}},{"do":"pick","key":"raise","from":"skills","prompt":"Raise which Skill by 1 Rank?","sameEssenceAs":"lower","also":["spellcasting"],"exclude":["conditioning"],"notChoice":"lower","maxShift":"d10","legacy":"flags.essence20.o3Dabbler.raise"},{"do":"updateActor","ladder":{"system.skills.{choice.lower}.shift":-1,"system.skills.{choice.raise}.shift":1}},{"do":"setToggle","key":"swapped","value":true}]},
+      {"type":"Use","label":"Undo the swap early (Dabbler)","when":[{"any":["self:toggle:swapped","rule:data:flags.essence20.o3Dabbler"]}],"steps":[{"do":"updateActor","ladder":{"system.skills.{choice.lower}.shift":1,"system.skills.{choice.raise}.shift":-1}},{"do":"setToggle","key":"swapped","value":false},{"do":"updateItem","item":"self","set":{"flags.essence20.o3Dabbler":null},"when":["rule:data:flags.essence20.o3Dabbler"]},{"do":"chat","text":"{name}'s Dabbler swap reverts."}]},
+      {"type":"Trigger","label":"The swap reverts on waking (Dabbler)","event":"rest","when":[{"any":["self:toggle:swapped","rule:data:flags.essence20.o3Dabbler"]}],"steps":[{"do":"updateActor","ladder":{"system.skills.{choice.lower}.shift":1,"system.skills.{choice.raise}.shift":-1}},{"do":"setToggle","key":"swapped","value":false},{"do":"updateItem","item":"self","set":{"flags.essence20.o3Dabbler":null},"when":["rule:data:flags.essence20.o3Dabbler"]},{"do":"chat","text":"{name}'s Dabbler swap reverts."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: lower one Skill a Rank and raise another of the same Essence (or Spellcasting). Your next Rest undoes it, or press Use again to undo it early.</p>"

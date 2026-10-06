@@ -1,171 +1,25 @@
 /**
- * Transformers (TF CRB, Enigma of Combination, Technorganic Secrets) and the Quartermaster's Guide's
- * Holographic Sights: attack-side Perks, zones, generated weapon alternates and the Scramble Field.
+ * Transformers (TF CRB, Enigma of Combination, Technorganic Secrets): attack-side Perks, zones, generated weapon
+ * alternates and the Scramble Field. (Holographic Sights and Balance and Compensation are item rules -
+ * rules/conv10-slC10.test.js.)
  */
 import {
-  registerApplyDialog, registerChatButton, registerConsumer, registerDefenseAdjust, registerDerived,
-  registerPostRoll, registerRollSources, registerTurnEnd, registerUse,
+  registerApplyDialog, registerChatButton, registerConsumer, registerDefenseAdjust,
+  registerPostRoll, registerRollSources, registerUse,
 } from "../../extensions.mjs";
 import { hasUsedThisRound, markUsedThisRound } from "../../perks.mjs";
 import { getSceneEpoch } from "../../scene-clock.mjs";
 import {
-  O3, T, attachedUpgrades, escape, findItem, has, idOf, isItem, itemsOf, num, parentWeaponOf, rollSkillTotal,
-  sameSide, sameTurn, say, sourceOf, targetedActors, tokenOf, turnStamp, worldActors, writeActor,
+  O3, T, escape, findItem, has, isItem, num, parentWeaponOf, rollSkillTotal,
+  sameSide, sameTurn, targetedActors, tokenOf, turnStamp, worldActors, writeActor,
 } from "./shared.mjs";
 
-/* -------------------------------------------- */
-/*  Holographic Sights                           */
-/* -------------------------------------------- */
+// (EM Protective Lining, the Enigma of Combination armor upgrade, is its item's own rules: an incoming ↓6 on
+// Electromagnetic attacks against a Computerized wearer, and a per-attack Defense giving back the computerized
+// armor's Evasion those attacks ignore - both while its armor is worn, or in Alt Mode when it isn't attached.)
 
-/*
- * Holographic Sights (Quartermaster's Guide to Gear, weapon upgrade, p.34) - prerequisite "Any
- * targeting weapon", benefit "Ignore penalties for attacking multiple targets." A Multiple Targets
- * effect carries its penalty as its own printed ↓ (Machine Gun's 2-target alternate: ↓1); the sights
- * hand that ↓ back as a matching ↑ on any multi-target Targeting effect of the upgraded weapon.
- */
-export function holographicShift(actor, effect) {
-  if (effect?.type != 'weaponEffect' || num(effect.system?.numTargets) <= 1 || effect.system?.classification?.skill != 'targeting') {
-    return 0;
-  }
-
-  const weapon = parentWeaponOf(actor, effect);
-  const fitted = attachedUpgrades(actor, weapon).some(upgrade => idOf(sourceOf(upgrade)) == idOf(O3.holographicSights));
-  return fitted ? Math.max(0, num(effect.system?.shiftDown)) : 0;
-}
-
-registerRollSources((actor, target, ctx) => {
-  const shift = holographicShift(actor, ctx?.item);
-  return shift ? { sources: [{ id: 'o3HolographicSights', label: 'Holographic Sights', shiftUp: shift }] } : {};
-});
-
-/* -------------------------------------------- */
-/*  EM Protective Lining                         */
-/* -------------------------------------------- */
-
-/*
- * EM Protective Lining (Enigma of Combination, armor upgrade, p.54): "Weapons dealing Electromagnetic
- * damage gain no special benefits against you for being computerized or mechanical." Against a
- * Computerized target dice.mjs gives an Electromagnetic attack ↑3 and ignores computerized armor's
- * Evasion; against a lined one it is treated as any other target (TF CRB p.125: "↓3 against all
- * other targets") - so the ↑3 becomes ↓3 and the armor's Evasion counts again.
- */
-export function isLined(actor) {
-  return itemsOf(actor).some(item => item.type == 'upgrade' && idOf(sourceOf(item)) == idOf(O3.emLining) && (() => {
-    const parentId = item.flags?.essence20?.parentId;
-    if (!parentId) {
-      return !!actor.system?.canTransform;
-    }
-
-    return !!itemsOf(actor).find(parent => parent.id == parentId)?.system?.equipped;
-  })());
-}
-
-export function isElectromagnetic(actor, item) {
-  if (item?.system?.damageType == 'emp') {
-    return true;
-  }
-
-  return !!parentWeaponOf(actor, item)?.system?.traits?.includes?.('electromagnetic');
-}
-
-registerRollSources((actor, target, ctx) => {
-  if (!target || !ctx?.isAttack || !target.system?.traits?.computerized || !isLined(target) || !isElectromagnetic(actor, ctx.item)) {
-    return {};
-  }
-
-  return { sources: [{ id: 'o3EmLining', label: 'EM Protective Lining', shiftDown: 6 }] };
-});
-
-registerDefenseAdjust((attacker, defender, defenseType, ctx) => {
-  if (defenseType != 'evasion' || !isLined(defender) || !isElectromagnetic(attacker, ctx?.item)) {
-    return 0;
-  }
-
-  return itemsOf(defender).filter(item => item.type == 'armor' && item.system?.equipped && (item.system?.traits ?? []).includes('computerized'))
-    .reduce((sum, armor) => sum + num(armor.system.totalBonusEvasion), 0);
-});
-
-/* -------------------------------------------- */
-/*  Balance and Compensation                     */
-/* -------------------------------------------- */
-
-/*
- * Balance and Compensation (Enigma of Combination, Cannoneer, 1st level, p.31): "It is easier for
- * you to wield a ranged weapon in your External Hardpoints. Any Skill-based requirements for such
- * weapons are reduced by two die sizes (to a minimum of d2)." Weapon requirements are shown, not
- * enforced (documents/item.mjs#_prepareHardpointDerived), so this lowers the requirement the Gear
- * tab shows. Size-based requirements have no field.
- */
-export function lowerRequirement(req, steps = 2) {
-  const ladder = CONFIG.E20?.weaponRequirementShiftLadder ?? ['none', 'd2', 'd4', 'd6', 'd8', 'd10', 'd12'];
-  const index = ladder.indexOf(req);
-  if (index <= 1) {
-    return req;
-  }
-
-  return ladder[Math.max(1, index - steps)];
-}
-
-function isRangedWeapon(actor, weapon) {
-  return itemsOf(actor).some(item => item.type == 'weaponEffect' && item.flags?.essence20?.parentId == weapon.id
-    && item.system?.classification?.style && item.system.classification.style != 'melee');
-}
-
-registerDerived((actor) => {
-  if (!has(actor, O3.balanceAndCompensation)) {
-    return;
-  }
-
-  for (const weapon of itemsOf(actor)) {
-    if (weapon.type == 'weapon' && weapon.system?.hardpoint?.type == 'external' && isRangedWeapon(actor, weapon)) {
-      weapon.system.effectiveBrawnReq = lowerRequirement(weapon.system.effectiveBrawnReq ?? weapon.system.requirements?.shift);
-    }
-  }
-});
-
-/* -------------------------------------------- */
-/*  Same Principle                               */
-/* -------------------------------------------- */
-
-/*
- * Same Principle (TF CRB, Gunner, 10th level, p.70): "choose a weapon you are trained to use. All of
- * your Gunner and Gunslinger perks that specify ballistic weapons also apply to this weapon." Picked
- * with the Perk's Use button; the weapon then reads as Ballistic in derived data (the item sheet
- * keeps editing its own stored traits - system.upgradeTouched). Read broadly: every ballistic check
- * sees it, not only the Gunner/Gunslinger ones.
- */
-const SAME_FLAG = 'o3SameWeapon';
-
-registerUse({
-  id: 'o3SamePrinciple',
-  matches: item => isItem(item, O3.samePrinciple),
-  run: async (item) => {
-    const weapons = itemsOf(item.parent).filter(w => w.type == 'weapon' && !(w.system?.traits ?? []).includes('ballistic'));
-    const { chooseSelect } = await import("../../grants.mjs");
-    const id = await chooseSelect(item.name, T('O3SamePrinciplePick'), weapons.map(w => ({ value: w.id, label: w.name })));
-    if (!id) {
-      return null;
-    }
-
-    await item.setFlag('essence20', SAME_FLAG, id);
-    return T('O3SamePrincipleChosen', { name: escape(item.parent.name), weapon: escape(weapons.find(w => w.id == id)?.name) });
-  },
-});
-
-registerDerived((actor) => {
-  const id = findItem(actor, O3.samePrinciple)?.flags?.essence20?.[SAME_FLAG];
-  const weapon = id ? itemsOf(actor).find(item => item.id == id && item.type == 'weapon') : null;
-  if (!weapon?.system || (weapon.system.traits ?? []).includes('ballistic')) {
-    return;
-  }
-
-  weapon.system.traits = [...(weapon.system.traits ?? []), 'ballistic'];
-  if (Array.isArray(weapon.system.itemAndUpgradeTraits)) {
-    weapon.system.itemAndUpgradeTraits = [...weapon.system.itemAndUpgradeTraits, 'ballistic'];
-  }
-
-  weapon.system.upgradeTouched = [...new Set([...(weapon.system.upgradeTouched ?? []), 'traits'])];
-});
+// (Same Principle, the TF CRB Gunner Perk, is its item's own rules: a Use picking the weapon - the old
+// o3SameWeapon flag carries over - and a WeaponTrait rule making the picked weapon Ballistic.)
 
 /* -------------------------------------------- */
 /*  Again and Again and Again                    */
@@ -243,54 +97,7 @@ registerChatButton('o3Again', async (message, button) => {
   await item.roll({ rollType: 'weaponEffect', bypassEconomy: true, o3AgainStep: step });
 });
 
-/* -------------------------------------------- */
-/*  Bump & Run                                   */
-/* -------------------------------------------- */
-
-/*
- * Bump & Run (Enigma of Combination, Pugilist, 6th level, p.38) - the ↑1 and the Stun are dice.mjs.
- * The rest: "You must move at least 10 feet after making this attack, but if you cannot, you are
- * Impaired until the end of your next turn." The token's spot is noted at the attack; when the turn
- * ends (GM client) a token still within 10ft of it is Impaired.
- */
-const BUMP_FLAG = 'o3BumpRun';
-
-registerPostRoll(async (actor, results, checkContext) => {
-  if (!checkContext?.bumpAndRunAttempt || !actor?.isOwner || !game.combat) {
-    return;
-  }
-
-  const token = tokenOf(actor);
-  await actor.setFlag('essence20', BUMP_FLAG, { stamp: turnStamp(), x: token?.center?.x ?? null, y: token?.center?.y ?? null });
-});
-
-export function movedFeet(from, to) {
-  if (from?.x == null || !to) {
-    return Infinity;
-  }
-
-  return canvas?.grid?.measurePath ? canvas.grid.measurePath([from, to]).distance : Math.hypot(to.x - from.x, to.y - from.y);
-}
-
-registerTurnEnd(async (actor) => {
-  const record = actor?.flags?.essence20?.[BUMP_FLAG];
-  if (!record) {
-    return;
-  }
-
-  await actor.unsetFlag('essence20', BUMP_FLAG);
-  const combat = game.combat;
-  if (!combat || record.stamp?.combatId != combat.id || record.stamp?.round != combat.round) {
-    return;
-  }
-
-  const token = tokenOf(actor);
-  if (movedFeet(record, token?.center) < 10) {
-    const { applyTimedCondition } = await import("../../timed-status.mjs");
-    await applyTimedCondition(actor, 'impaired', 1);
-    await say(actor, T('O3BumpRunImpaired', { name: escape(actor.name) }));
-  }
-});
+// (Bump & Run - the ↑1, the Stun and the Impaired - is its Perk's own rules: rules/conv10-slC10.test.js.)
 
 /* -------------------------------------------- */
 /*  Cover blasts                                 */
@@ -334,80 +141,9 @@ registerChatButton('o3CoverBlast', async (message, button) => {
   }
 });
 
-/* -------------------------------------------- */
-/*  Overcharge Engines                           */
-/* -------------------------------------------- */
-
-/*
- * Overcharge Engines (TF CRB, Scientist, 13th level, p.79): "Once per turn, make a Technology Skill
- * Test as a Free action. Until the end of your turn, increase your Movements a number of feet equal to
- * your Skill Test results, rounded up to the nearest 5. This movement ignores Rough Terrain
- * penalties." Multiplication (p.80) doubles that to twice per turn; each use adds its own feet.
- */
-const OVERCHARGE_FLAG = 'o3Overcharge';
-
-export function overchargeUsesLeft(actor) {
-  const record = actor?.flags?.essence20?.[OVERCHARGE_FLAG];
-  const used = record && sameTurn(record.stamp, turnStamp()) ? num(record.uses ?? 1) : 0;
-  return (has(actor, O3.multiplication) ? 2 : 1) - used;
-}
-
-export function overchargeFeet(total) {
-  return Math.ceil(Math.max(0, num(total)) / 5) * 5;
-}
-
-export function overchargeBonus(actor) {
-  const record = actor?.flags?.essence20?.[OVERCHARGE_FLAG];
-  return record && sameTurn(record.stamp, turnStamp()) ? num(record.feet) : 0;
-}
-
-registerUse({
-  id: 'o3Overcharge',
-  matches: item => isItem(item, O3.overchargeEngines),
-  canUse: item => !!game.combat && overchargeUsesLeft(item.parent) > 0,
-  run: async (item, economy, pay) => {
-    const actor = item.parent;
-    if (!(await pay('free'))) {
-      return null;
-    }
-
-    const roll = await rollSkillTotal(actor, 'technology');
-    if (roll?.total == null) {
-      return null;
-    }
-
-    const feet = overchargeFeet(roll.total);
-    const earlier = overchargeBonus(actor);
-    const record = actor.flags?.essence20?.[OVERCHARGE_FLAG];
-    const uses = earlier && sameTurn(record?.stamp, turnStamp()) ? num(record.uses ?? 1) + 1 : 1;
-    await actor.setFlag('essence20', OVERCHARGE_FLAG, { stamp: turnStamp(), feet: earlier + feet, uses });
-    return T('O3OverchargeLine', { name: escape(actor.name), feet });
-  },
-});
-
-registerDerived((actor) => {
-  const feet = overchargeBonus(actor);
-  if (!feet) {
-    return;
-  }
-
-  for (const move of Object.values(actor.system?.movement ?? {})) {
-    if (move && typeof move == 'object' && num(move.total) > 0) {
-      move.total = num(move.total) + feet;
-    }
-  }
-});
-
-registerTurnEnd(async (actor) => {
-  if (actor?.flags?.essence20?.[OVERCHARGE_FLAG]) {
-    await actor.unsetFlag('essence20', OVERCHARGE_FLAG);
-  }
-});
-
-Hooks.once?.('ready', async () => {
-  const rough = await import("../../rough-terrain.mjs");
-  rough.ROUGH_TERRAIN_IGNORERS?.push({ checkFn: actor => overchargeBonus(actor) > 0 });
-});
+// (Overcharge Engines, the TF CRB Scientist Perk, is its own rules: two Use rules (twice a turn with
+// Multiplication), an open Technology roll marking the feet, Movement rules adding them, a
+// MovementAction ignoring Rough Terrain and a turnEnd Trigger clearing the mark.)
 
 /* -------------------------------------------- */
 /*  Perfect Placement                            */
@@ -508,93 +244,6 @@ registerConsumer('o3PerfectPlacement', async (consume) => {
 
 registerDefenseAdjust((attacker, defender, defenseType) => (defenseType == 'evasion' && has(defender, O3.perfectPlacement)
   && inPerfectPlacement(defender) ? 2 : 0));
-
-/* -------------------------------------------- */
-/*  Precise Chronometrics                        */
-/* -------------------------------------------- */
-
-/*
- * Precise Chronometrics (Enigma of Combination, Combiner role, 10th level, p.29): "you can grant
- * bonuses to your own and your allies' Initiative Skill Test results that total no more than your
- * Smarts Essence. You can choose these bonuses after everyone has rolled." Once per combat, from the
- * Use button; the GM's client writes other players' Initiative (a card button when a player uses it).
- */
-const CHRONO_KEY = 'o3Chronometrics';
-
-export function chronoValid(bonuses, cap) {
-  const total = Object.values(bonuses).reduce((sum, value) => sum + Math.max(0, num(value)), 0);
-  return total > 0 && total <= cap;
-}
-
-async function applyChrono(combat, bonuses) {
-  for (const [id, bonus] of Object.entries(bonuses)) {
-    const combatant = combat?.combatants?.get?.(id);
-    if (combatant && combatant.initiative != null && num(bonus) > 0) {
-      await combatant.update({ initiative: num(combatant.initiative) + num(bonus) });
-    }
-  }
-}
-
-registerUse({
-  id: 'o3Chronometrics',
-  matches: item => isItem(item, O3.preciseChronometrics),
-  canUse: item => !!game.combat && item.parent?.flags?.essence20?.[CHRONO_KEY] != game.combat.id,
-  run: async (item) => {
-    const actor = item.parent;
-    const combat = game.combat;
-    const cap = num(actor.system?.essences?.smarts?.max ?? actor.system?.essences?.smarts?.value);
-    const rows = (combat.combatants?.contents ?? [...combat.combatants]).filter(c => c.actor && c.initiative != null && sameSide(c.actor, actor));
-    const bonuses = await foundry.applications.api.DialogV2.wait({
-      window: { title: item.name },
-      classes: ["window-app", "e20-window"],
-      content: `<p>${T('O3ChronoPrompt', { cap })}</p>${rows.map(c => `<div class="form-group"><label>${escape(c.name)} (${c.initiative})</label><input type="number" name="${c.id}" value="0" min="0" max="${cap}" /></div>`).join('')}`,
-      buttons: [
-        { action: 'ok', label: game.i18n.localize('E20.DialogConfirmButton'), default: true,
-          callback: (event, button) => Object.fromEntries(rows.map(c => [c.id, num(button.form.elements[c.id]?.value)])) },
-        { action: 'cancel', label: game.i18n.localize('E20.DialogCancelButton') },
-      ],
-      rejectClose: false,
-    });
-    if (!bonuses || typeof bonuses != 'object') {
-      return null;
-    }
-
-    if (!chronoValid(bonuses, cap)) {
-      ui.notifications.warn(T('O3ChronoTooMuch', { cap }));
-      return null;
-    }
-
-    await actor.setFlag('essence20', CHRONO_KEY, combat.id);
-    const list = rows.filter(c => num(bonuses[c.id]) > 0).map(c => `${escape(c.name)} +${num(bonuses[c.id])}`).join(', ');
-    if (game.user.isGM || rows.every(c => c.isOwner || !num(bonuses[c.id]))) {
-      await applyChrono(combat, bonuses);
-      return T('O3ChronoApplied', { name: escape(actor.name), list });
-    }
-
-    await ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      content: `<p>${T('O3ChronoApplied', { name: escape(actor.name), list })}</p><button type="button" data-e20-ext="o3Chrono" data-combat="${combat.id}" data-bonuses='${JSON.stringify(bonuses)}'>${T('O3ChronoGmApply')}</button>`,
-    });
-    return null;
-  },
-});
-
-registerChatButton('o3Chrono', async (message, button) => {
-  if (!game.user?.isGM || button.dataset.done) {
-    ui.notifications.warn(T('O3GmOnly'));
-    return;
-  }
-
-  button.dataset.done = '1';
-  let bonuses = {};
-  try {
-    bonuses = JSON.parse(button.dataset.bonuses ?? '{}');
-  } catch (error) {
-    return;
-  }
-
-  await applyChrono(game.combats?.get?.(button.dataset.combat) ?? game.combat, bonuses);
-});
 
 /* -------------------------------------------- */
 /*  Scramble Field Generator                     */

@@ -1,5 +1,3 @@
-import { getSceneEpoch } from "../../scene-clock.mjs";
-
 /**
  * Small helpers shared by the gij1 extension modules (Cobra Codex gear, Perks and Hang-Ups, plus
  * the GI Joe CRB's Asleep/Defeated Conditions).
@@ -11,35 +9,12 @@ export const GIJ = id => `Compendium.essence20.gi_joe_crb.Item.${id}`;
 export const G1 = {
   // Battledress upgrades (Cobra Codex, Table 3-5, p.100-101).
   anonymous: CC('yFikSROr3NzaEoaL'),
-  ceremonial: CC('vf9rJxOwuxDzrPKp'),
-  uniform: CC('VkSI68BkpXLOC5ys'),
-  // Weapon upgrade (p.97).
-  recoilBrace: CC('2gURwr6VrgTuIRFQ'),
   // General Perks (p.79-81).
   cyberneticPart: CC('wCL3rJOEDZVHVg6g'),
-  scavenger: CC('VjLTohjkJJtJPXdE'),
-  seaLegs: CC('mKsSa2HBOimHqS7i'),
-  // Role / Focus Perks.
-  demolitionArtist: CC('QzcZLhyVvdbn09Es'),
-  improviseBomb: CC('BUqXOt90M4yAsA7b'),
-  extractPoison: CC('0kcuvCeRhmneAJTl'),
-  primalFear: CC('xoD8fbVVqymTidNJ'),
-  feedOnFear: CC('dZkRZSH5X88PrSyK'),
-  letItRip: CC('dtB9EUFE45oZNAOR'),
-  // Origin (Assassin, p.40).
-  metier: CC('EcVOkUJE40sKSg8v'),
-  assassin: CC('HCIbetyFvjJGuDcV'),
   // Elsewhere.
-  weaponTraining: GIJ('rFnoQTbnYQX2tlMe'),
   inundation: GIJ('Q09tkHIaVX65lokl'),
   informedAccuracy: 'Compendium.essence20.tf_crb.Item.JtWhjDRI0HDewaKe',
 };
-
-// Troublemaker's Signature Weapon (Cobra Codex p.63) grants one of these four GI Joe CRB weapons -
-// the same list Overwhelming's own item rule keys on.
-export const SIGNATURE_WEAPONS = [
-  GIJ('PFuzUrcYw14JRLf9'), GIJ('xthnRWfhbfXvpmZN'), GIJ('vy8VGcdoFiacJ3bT'), GIJ('Jnjio1DtAx0QgE85'),
-];
 
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
 
@@ -56,14 +31,6 @@ export function itemsOf(actor) {
   return items.contents ?? [...items];
 }
 
-export function findSourced(actor, uuid) {
-  if (!uuid) {
-    return null;
-  }
-
-  return itemsOf(actor).find(item => sourceOf(item) == uuid) ?? null;
-}
-
 export const isFrom = uuid => item => !!uuid && sourceOf(item) == uuid;
 
 /** An upgrade counts while it is loose on the actor or sits on something equipped. */
@@ -77,47 +44,8 @@ export function wornUpgrade(actor, uuid) {
   return itemsOf(actor).find(item => item.type == 'upgrade' && sourceOf(item) == uuid && isWorn(item)) ?? null;
 }
 
-/** The user's first targeted token's actor, if any. */
-export function firstTarget() {
-  const targets = game.user?.targets;
-  const first = targets?.first?.() ?? (targets ? [...targets][0] : null);
-  return first?.actor ?? null;
-}
-
 export async function post(actor, content) {
   return ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content });
-}
-
-/**
- * A stamp for "until the end of your turn". In combat it is the current turn; out of combat there
- * are no turns, so it lasts until something consumes it or the scene changes.
- */
-export function turnStamp() {
-  const combat = game?.combat;
-  return combat ? { combatId: combat.id, round: combat.round, turn: combat.turn } : { scene: getSceneEpoch() };
-}
-
-export function isStampActive(stamp) {
-  if (!stamp) {
-    return false;
-  }
-
-  const combat = game?.combat;
-  if (stamp.combatId) {
-    return !!combat && combat.id == stamp.combatId && combat.round == stamp.round && combat.turn == stamp.turn;
-  }
-
-  return !combat && stamp.scene == getSceneEpoch();
-}
-
-/** Whether the actor is a combatant in the current combat. */
-export function inCombat(actor) {
-  const combatants = game?.combat?.combatants;
-  if (!combatants || !actor) {
-    return false;
-  }
-
-  return [...combatants].some(c => c.actor?.id == actor.id || c.actorId == actor.id);
 }
 
 export async function actorFromUuid(uuid) {

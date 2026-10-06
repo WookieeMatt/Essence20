@@ -5,6 +5,10 @@
   "_id": "1tLnQT580DafhUV4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Conning {holder} in a deal (Something Is Off)","scope":"incoming","key":"conning","stacks":false,"when":[{"any":["skill:of:social","skill:deception"]}]},
+      {"type":"Defense","label":"Something Is Off (+1 Cleverness per pick against a con)","defense":"cleverness","mode":"addAfter","amount":"min(4, @owned.1tLnQT580DafhUV4)","stacks":false,"when":["roll:incoming:conning"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when someone targets you with a Social test, they get a switch for conning you in a deal. Ticked, your Cleverness gets +1 for each copy you have (up to +4); simple lies leave it off.</p>"

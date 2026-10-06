@@ -5,6 +5,9 @@
   "_id": "c1gIi1A6MKHkOwdy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"sessionStart","label":"Everything is Inspiration (+1 Story Point each session)","when":["self:type:playerCharacter"],"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Story Point to the pool for the new session."}]}
+    ],
     "prerequisites": {"when":["self:hasType:origin:Hobbyist"]},
     "automation": {
       "status": "full",

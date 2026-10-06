@@ -5,6 +5,9 @@
   "_id": "yoOIFTh1E2pVlSln",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSelect","label":"Energized ({holder})","scope":"incoming","when":["attack","roll:plainReach","not:target:self"],"options":[{"label":"Take the ↓2","downshift":2},{"label":"Let {holder} strike back","steps":[{"do":"button","whisper":"owners","label":"Energized","intro":"{target} braved the Energized of {name} - {name} may make an immediate aura attack.","steps":[{"do":"pick","key":"element","from":"list","options":[["acid","E20.DamageAcid"],["cold","E20.DamageCold"],["electric","E20.DamageElectric"],["fire","E20.DamageFire"],["sonic","E20.DamageSonic"]],"ifUnset":true,"legacy":"flags.essence20.reactElement","prompt":"Which element does the aura carry?"},{"do":"pick","key":"strikeSkill","from":"list","options":[["might","E20.SkillMight"],["finesse","E20.SkillFinesse"]],"prompt":"Strike back with which Skill?"},{"do":"clearTargets"},{"do":"roll","skill":"{choice.strikeSkill}","dif":"max(@target.system.defenses.toughness.total, @target.system.defenses.evasion.total)","onSuccess":[{"do":"button","who":"gm","label":"Apply 1 {choice.element} damage to {target} (Energized)","steps":[{"do":"damage","to":"target","amount":1,"damageType":"{choice.element}"}]}]}]}]}]}
+    ],
     "prerequisites": {"when":["host:trait:computerized"]},
     "automation": {
       "status": "full",

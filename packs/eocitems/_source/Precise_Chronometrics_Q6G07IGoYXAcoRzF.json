@@ -5,6 +5,9 @@
   "_id": "Q6G07IGoYXAcoRzF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Share Initiative bonuses (Precise Chronometrics)","when":["combat:exists"],"limit":{"per":"encounter"},"steps":[{"do":"distribute","to":"combatAllies+self","filter":["target:initiative"],"total":"max(@essence.smarts, @actor.system.essences.smarts.max)","prompt":"Share Initiative bonuses totalling no more than your Smarts:","steps":[{"do":"writeInitiative","to":"target","value":"@initiative.target + @var.share"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per combat): split Initiative bonuses up to your Smarts among allies. When a player makes the split, the GM applies it with a button on the chat card.</p>"

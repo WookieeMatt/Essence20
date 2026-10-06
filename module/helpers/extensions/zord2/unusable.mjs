@@ -5,9 +5,9 @@
  * attack. Kept import-light: target-riders.mjs imports this at top level.
  *
  * - A Deflecting Weapon or the Rotary Blade in its shield mode "cannot attack when used as a
- *   shield" (Quartermaster's Guide to Gear p.36; Technorganic Secrets p.48-49). A Deflecting Weapon's
- *   mode is its rules' shieldMode toggle (a copy switched before that keeps the old flag until switched
- *   again); the Rotary Blade's is ./gear-modes.mjs's flag.
+ *   shield" (Quartermaster's Guide to Gear p.36; Technorganic Secrets p.48-49). The mode is the
+ *   weapon's rules' shieldMode toggle (a copy switched before that keeps the old flag until switched
+ *   again, or - the Rotary Blade, whose Toggle rule has a `legacy` path - until the GM's linking pass).
  * - A Megaform's Enhanced Melee/Ranged Attack "may only be used once per scene" (PR CRB p.140) -
  *   ./megaform-attacks.mjs.
  */

@@ -5,6 +5,10 @@
   "_id": "8Kyl6XMzRCZGBzbW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Aim Apparatus: who gains Targeting","event":"added","when":["not:rule:data:flags.essence20.rules.choices.target","not:rule:data:flags.essence20.pr2AimApparatusTarget"],"steps":[{"do":"pick","key":"target","from":"team","prompt":"Who gains a level in Targeting?","legacy":"flags.essence20.pr2AimApparatusTarget"},{"do":"updateActor","to":"picked:target","ladder":{"system.skills.targeting.shift":1},"ladderMax":"d12"},{"do":"chat","text":"Aim Apparatus: @UUID[{choice.target}] gains a level in Targeting (from {name})."}]},
+      {"type":"Trigger","label":"Aim Apparatus: give the Targeting level back","event":"removed","steps":[{"do":"updateActor","to":"picked:target","ladder":{"system.skills.targeting.shift":-1},"ladderMax":"d12"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>When added you pick yourself or a teammate; their Targeting goes up one rank. Removing the Perk takes the rank back.</p>"

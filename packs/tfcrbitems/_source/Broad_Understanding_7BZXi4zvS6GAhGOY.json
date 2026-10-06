@@ -5,6 +5,11 @@
   "_id": "7BZXi4zvS6GAhGOY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Science tests count as Specialized (Broad Understanding)","specialize":true,"when":["skill:science","self:specializedIn:science",{"any":["not:combat:exists","self:marked:appliedScience"]}]},
+      {"type":"RollModifier","label":"Uses up Applied Science (Broad Understanding)","specialize":true,"consumeMark":"appliedScience","when":["skill:science","self:specializedIn:science","combat:exists","self:marked:appliedScience","not:roll:initiative"]},
+      {"type":"RollModifier","label":"Outside your Specialization (Broad Understanding: ↓2)","downshift":2,"when":["skill:science","self:specializedIn:science",{"any":["not:combat:exists","self:marked:appliedScience"]},"not:roll:specialized","not:roll:initiative"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: outside combat, with at least one Science Specialization, every Science test opens with the Specialized switch on. Tests outside your Specializations also get a Broad Understanding ↓2 switch under Automatic Modifiers in the Roll Options Dialog.</p>"

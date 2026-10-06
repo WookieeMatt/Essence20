@@ -5,6 +5,10 @@
   "_id": "n5dNCOPVTsqLAapp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick your Qualified weapons (One Bot Over Another)","steps":[{"do":"choose","prompt":"Which Qualification do you take?","options":[{"label":"A Limited melee weapon and a Limited projectile weapon","steps":[{"do":"pickGrant","record":true,"key":"chosen","max":1,"legacy":"flags.essence20.tf3Chosen","title":"Pick a Limited melee weapon","from":{"type":"weapon","availabilities":["limited"],"tags":[{"any":["item:hasAttack:item:data:system.classification.style=melee","item:hasAttack:item:data:system.range.reachMultiplier>0"]}]}},{"do":"pickGrant","record":true,"key":"chosen","max":2,"title":"Pick a Limited projectile weapon","from":{"type":"weapon","availabilities":["limited"],"tags":["item:hasAttack:item:data:system.classification.style&item:data:system.classification.style!=melee"]}}]},{"label":"A Restricted weapon","steps":[{"do":"pickGrant","record":true,"key":"chosen","max":1,"title":"Pick a Restricted weapon","from":{"type":"weapon","availabilities":["restricted"]}}]}]}]},
+      {"type":"Qualification","label":"One Bot Over Another (Qualified: your chosen weapons)","access":"qualified","items":["item:type:weapon","item:pickedSource:chosen"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Health. Use button: pick one Limited melee and one Limited projectile weapon, or one Restricted weapon, to be Qualified with when requisitioning.</p>"

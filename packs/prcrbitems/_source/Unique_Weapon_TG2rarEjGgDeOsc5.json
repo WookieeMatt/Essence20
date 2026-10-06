@@ -5,6 +5,9 @@
   "_id": "TG2rarEjGgDeOsc5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Unique Weapon","when":["not:rule:data:flags.essence20.pr3Granted"],"steps":[{"do":"choose","prompt":"Choose a Unique Weapon, or roll for one.","options":[{"label":"Ranged","steps":[{"do":"grant","uuid":"Compendium.essence20.pr_crb.Item.Pr3UniqWpnRanged"},{"do":"updateItem","item":"self","set":{"flags.essence20.pr3Granted":true},"when":["rule:granted"]}]},{"label":"Small Melee","steps":[{"do":"grant","uuid":"Compendium.essence20.pr_crb.Item.Pr3UniqWpnSmallM"},{"do":"updateItem","item":"self","set":{"flags.essence20.pr3Granted":true},"when":["rule:granted"]}]},{"label":"Versatile","steps":[{"do":"grant","uuid":"Compendium.essence20.pr_crb.Item.Pr3UniqWpnVersat"},{"do":"updateItem","item":"self","set":{"flags.essence20.pr3Granted":true},"when":["rule:granted"]}]},{"label":"Two-Handed Melee","steps":[{"do":"grant","uuid":"Compendium.essence20.pr_crb.Item.Pr3UniqWpnTwoHnd"},{"do":"updateItem","item":"self","set":{"flags.essence20.pr3Granted":true},"when":["rule:granted"]}]},{"label":"Roll","steps":[{"do":"table","formula":"1d4","rows":[{"min":1,"max":1,"steps":[{"do":"grant","uuid":"Compendium.essence20.pr_crb.Item.Pr3UniqWpnRanged"}]},{"min":2,"max":2,"steps":[{"do":"grant","uuid":"Compendium.essence20.pr_crb.Item.Pr3UniqWpnSmallM"}]},{"min":3,"max":3,"steps":[{"do":"grant","uuid":"Compendium.essence20.pr_crb.Item.Pr3UniqWpnVersat"}]},{"min":4,"max":4,"steps":[{"do":"grant","uuid":"Compendium.essence20.pr_crb.Item.Pr3UniqWpnTwoHnd"}]}]},{"do":"updateItem","item":"self","set":{"flags.essence20.pr3Granted":true},"when":["rule:granted"]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick one of the four Unique Weapons or roll for one, and it is added to your sheet.</p>"

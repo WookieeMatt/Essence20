@@ -421,59 +421,6 @@ describe("applyDamage", () => {
     });
   });
 
-  describe("Emotional Mastery: Anger trigger for Emotional Strength - reactive Power regen on taking damage", () => {
-    const EMOTIONAL_STRENGTH_ID = "Compendium.essence20.jump_through_time.Item.BODEMNm0GIAsMMm0";
-
-    function makeActor({ anger = true } = {}) {
-      const flags = anger ? { activeEmotionalMastery: ['anger'] } : {};
-      return {
-        system: { health: { value: 10 }, immunities: {}, powers: { personal: { value: 1, max: 10 } } },
-        items: [{ type: 'perk', flags: { core: { sourceId: EMOTIONAL_STRENGTH_ID } } }],
-        update: jest.fn(),
-        getFlag: jest.fn((scope, key) => (scope == 'essence20' ? flags[key] : undefined)),
-        setFlag: jest.fn(async (scope, key, value) => {
-          flags[key] = value;
-        }),
-      };
-    }
-
-    let originalRoll;
-    beforeEach(() => {
-      global.game.combat = { id: 'combat1', round: 1, turn: 0 };
-      originalRoll = global.Roll;
-      global.Roll = class {
-        async evaluate() {
-          this.total = 2; return this;
-        }
-      };
-    });
-
-    afterEach(() => {
-      global.game.combat = null;
-      global.Roll = originalRoll;
-    });
-
-    test("regains Power once real damage lands while Anger is active", async () => {
-      const actor = makeActor();
-      await applyDamage(actor, 3, 'fire');
-      expect(actor.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.powers.personal.value': expect.any(Number) }));
-      expect(actor.getFlag('essence20', 'emotionalStrengthUsedThisEncounter')).toBeTruthy();
-    });
-
-    test("doesn't trigger without Anger active", async () => {
-      const actor = makeActor({ anger: false });
-      await applyDamage(actor, 3, 'fire');
-      expect(actor.getFlag('essence20', 'emotionalStrengthUsedThisEncounter')).toBeFalsy();
-    });
-
-    test("doesn't trigger when no damage actually landed (e.g. fully Immune)", async () => {
-      const actor = makeActor();
-      actor.system.immunities.fire = true;
-      await applyDamage(actor, 3, 'fire');
-      expect(actor.getFlag('essence20', 'emotionalStrengthUsedThisEncounter')).toBeFalsy();
-    });
-  });
-
   describe("Not On My Watch (Factions in Action Vol. 2, Oktober Guard General Perk, p.95) - reaction on a genuine Defeat transition", () => {
     const NOT_ON_MY_WATCH_ID = "Compendium.essence20.intercontinental_adventures.Item.xH3iQ0NcXp1eFO35";
 
@@ -875,47 +822,7 @@ describe("applyDamage", () => {
     });
   });
 
-  describe("Sensitive (MLP Precise Hang-Up, p.60) - Snag on taking Damage", () => {
-    const SENSITIVE_ID = "Compendium.essence20.mlp_crb.Item.cLe7ettmAIaBUYIj";
-
-    function makeActor({ hasPerk = true } = {}) {
-      const items = hasPerk ? [{ type: 'perk', flags: { core: { sourceId: SENSITIVE_ID } } }] : [];
-      return {
-        system: { health: { value: 10 }, immunities: {}, resistances: {} },
-        update: jest.fn(), items, setFlag: jest.fn(), getFlag: jest.fn(),
-      };
-    }
-
-    test("banks a Snag once real damage lands", async () => {
-      const actor = makeActor();
-      await applyDamage(actor, 3, 'sharp');
-      expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'pendingSensitiveSnag', expect.objectContaining({ snag: true }),
-      );
-    });
-
-    test("also applies to Stun-type damage", async () => {
-      const actor = { ...makeActor(), toggleStatusEffect: jest.fn() };
-      actor.system.stun = { value: 0 };
-      await applyDamage(actor, 2, 'stun');
-      expect(actor.setFlag).toHaveBeenCalledWith(
-        'essence20', 'pendingSensitiveSnag', expect.objectContaining({ snag: true }),
-      );
-    });
-
-    test("doesn't bank anything without the Perk", async () => {
-      const actor = makeActor({ hasPerk: false });
-      await applyDamage(actor, 3, 'sharp');
-      expect(actor.setFlag).not.toHaveBeenCalled();
-    });
-
-    test("doesn't bank anything when no damage actually landed (Immune)", async () => {
-      const actor = makeActor();
-      actor.system.immunities = { sharp: true };
-      await applyDamage(actor, 3, 'sharp');
-      expect(actor.setFlag).not.toHaveBeenCalled();
-    });
-  });
+  // Sensitive's Snag on taking damage is a takesDamage Trigger on the Hang-Up (rules/conv10-slE10.test.js).
 
   describe("Flame Warlord (Finster's Monster-Matic Cookbook, 20th level) - Monster Form damage reduction", () => {
     const FLAME_WARLORD_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.TPrNnDxBKHIajafY";

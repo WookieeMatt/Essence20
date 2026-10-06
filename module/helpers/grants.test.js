@@ -118,13 +118,15 @@ describe("helpers", () => {
 
   test("a copy carries who granted it and how long it lasts", async () => {
     const actor = makeActor();
-    const source = { toObject: () => ({ _id: 'x', name: 'Knife', type: 'gear', system: { traits: [] } }) };
+    const source = { toObject: () => ({ _id: 'x', name: 'Knife', type: 'weapon', system: { traits: [], classification: { size: 'light' } } }) };
     fromUuid.mockResolvedValue(source);
     const grantor = { id: 'g1' };
     const created = await grantCopy(actor, 'Compendium.essence20.gi_joe_crb.Item.x', { grantedBy: grantor, temporary: { kind: 'scene' }, integrated: true });
     expect(created.flags.essence20.grantedBy).toBe('g1');
     expect(created.flags.essence20.temporary).toEqual({ kind: 'scene' });
-    expect(created.system.traits).toEqual(['integrated']);
+    // Integrated is a weapon size, not a trait (a trait made the weapon fail validation).
+    expect(created.system.traits).toEqual([]);
+    expect(created.system.classification.size).toBe('integrated');
     expect(created.flags.core.sourceId).toBe('Compendium.essence20.gi_joe_crb.Item.x');
   });
 

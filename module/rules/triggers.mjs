@@ -5,7 +5,7 @@ import {
 import { isItemActive, ruleLabel, rulesOf, rulesOfType } from "./index.mjs";
 import { recordUse, restClears, usesLeft } from "./limits.mjs";
 import { LINK_SCOPES, linkedEntries } from "./links.mjs";
-import { contextFor, evaluate, isStatic } from "./predicate.mjs";
+import { contextFor, evaluate, isStatic, sideActorsWithin } from "./predicate.mjs";
 import { canAfford, changeResource, runSteps, stepContext } from "./steps.mjs";
 import { resolveValue } from "./formula.mjs";
 
@@ -20,6 +20,12 @@ import { resolveValue } from "./formula.mjs";
  * A **Trigger** rule runs its steps when something happens to its actor: a turn starts or ends, a
  * round, a rest, a new scene or mission, damage taken, about to be Defeated (its steps can stop the
  * damage), Defeated, Morph or Alt Mode changes, or a roll. `prompt: true` asks first.
+ *
+ * A Trigger with `watch` (ally | enemy | any, optionally `within` feet) runs when the event happens
+ * to SOMEONE ELSE on the canvas - an ally's hit, an enemy's Fumble, an ally being Defeated, another
+ * creature's turn ending. Its steps act as the holder; `target` is the one it happened to (or, with
+ * `watchTarget: "theirTarget"`, the one they rolled against / that hit them). `self:` tags read the
+ * holder, `target:` tags the one it happened to; roll tags (item:, skill:, attack:) read their roll.
  */
 
 /* -------------------------------------------- */
@@ -106,10 +112,12 @@ export async function runUse(item, pay, { pick = pickUse, ask = null } = {}) {
   const ctx = stepContext({ actor, item, rule, ask });
   // Picking the ally it's for comes first (pickAlly): a cancelled pick costs nothing.
   const steps = Array.isArray(rule.steps) ? rule.steps : [];
-  const picks = steps.findIndex(step => !PICK_FIRST.includes(step?.do));
+  // beforeCost: any leading step may ask to run first too (a require gate, a target, an askNumber).
+  const picks = steps.findIndex(step => !PICK_FIRST.includes(step?.do) && !step?.beforeCost);
   const leading = picks < 0 ? steps : steps.slice(0, picks);
   if (leading.length && !(await runSteps(leading, ctx))) {
-    return null;
+    const escape = text => String(text ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+    return ctx.chat.length ? [`<strong>${escape(rule.label ? `${item.name}: ${rule.label}` : item.name)}</strong>`, ...ctx.chat].join('<br>') : null;
   }
 
   const action = rule.cost?.action;
@@ -172,13 +180,13 @@ async function post(actor, lines) {
  * @param {Object} [extra]   {roll: tag context, outcome, damage: {amount}, ask, prompt}
  * @returns {Promise<Object|null>}   The damage object, for wouldBeDefeated.
  */
-export async function fireTriggers(actor, event, { roll = {}, outcome = null, facts = null, damage = null, targets = [], ask = null, prompt = confirm, vars = null } = {}) {
+export async function fireTriggers(actor, event, { roll = {}, outcome = null, facts = null, damage = null, targets = [], ask = null, prompt = confirm, vars = null, skipItem = null } = {}) {
   // An aura / party / vehicle Trigger fires for the actor it reaches, never for its holder; its
   // limit is the holder's ("once per encounter" for whoever holds the Perk).
-  const own = rulesOfType(actor, 'Trigger').filter(entry => !LINK_SCOPES.includes(entry.rule.scope)).map(entry => ({ ...entry, holder: actor }));
+  const own = rulesOfType(actor, 'Trigger').filter(entry => !LINK_SCOPES.includes(entry.rule.scope) && !entry.rule.watch).map(entry => ({ ...entry, holder: actor }));
   const reaching = linkedEntries(actor, 'Trigger');
   for (const { rule, item, index, holder } of [...own, ...reaching]) {
-    if (rule.event != event) {
+    if (rule.event != event || (skipItem && item === skipItem)) {
       continue;
     }
 
@@ -186,7 +194,13 @@ export async function fireTriggers(actor, event, { roll = {}, outcome = null, fa
       continue;
     }
 
-    if (evaluate(rule.when, contextFor({ ...roll, self: actor, holder, ruleItem: item, other: targets[0] ?? null })) !== true) {
+    // A roll with nothing to compare against reaches only Triggers that ask for outcome "any" in so many words.
+    if (facts?.open && rule.outcome != 'any') {
+      continue;
+    }
+
+    // results: the roll's rows (hit / targeted / afterRoll) - roll:damaging reads them.
+    if (evaluate(rule.when, contextFor({ ...roll, results: facts?.results, self: actor, holder, ruleItem: item, other: targets[0] ?? null, vars: vars ?? {} })) !== true) {
       continue;
     }
 
@@ -202,6 +216,11 @@ export async function fireTriggers(actor, event, { roll = {}, outcome = null, fa
     // Numbers the event hands the steps (@var.margin for targeted).
     Object.assign(ctx.vars, vars ?? {});
     const finished = await runSteps(rule.steps, ctx);
+    // A value the event handed in that a step changed (setVar) is what the next Trigger sees.
+    for (const key of Object.keys(vars ?? {})) {
+      vars[key] = ctx.vars[key];
+    }
+
     if (finished && countsTowardLimit(rule, ctx)) {
       await recordUse(holder, rule, item, index);
     }
@@ -209,12 +228,114 @@ export async function fireTriggers(actor, event, { roll = {}, outcome = null, fa
     await post(actor, ctx.chat.length ? [`<strong>${ruleLabel(rule, item)}</strong>`, ...ctx.chat] : []);
   }
 
+  if (event != 'wouldBeDefeated') {
+    await fireWatchers(actor, event, { roll, outcome, facts, damage, targets, ask, prompt, vars });
+  }
+
   return damage;
+}
+
+/** Actors on the canvas holding a `watch` Trigger for this event, with those rules. */
+function watchersOf(event) {
+  const seen = new Set();
+  const found = [];
+  for (const token of globalThis.canvas?.tokens?.placeables ?? []) {
+    const actor = token?.actor;
+    if (!actor || seen.has(actor)) {
+      continue;
+    }
+
+    seen.add(actor);
+    const entries = rulesOfType(actor, 'Trigger').filter(entry => entry.rule.watch && entry.rule.event == event);
+    if (entries.length) {
+      found.push({ watcher: actor, entries });
+    }
+  }
+
+  return found;
+}
+
+/** Whether `other` is on the side a watch Trigger watches, within its range. */
+export function watches(watcher, other, rule) {
+  if (!watcher || !other || watcher === other) {
+    return false;
+  }
+
+  const feet = Number(rule.within) > 0 ? Number(rule.within) : 100000;
+  return sideActorsWithin(watcher, feet, rule.watch == 'any' ? 'any' : rule.watch).includes(other);
+}
+
+/** Run every other actor's `watch` Triggers for an event that happened to `actor`. */
+async function fireWatchers(actor, event, { roll = {}, outcome = null, facts = null, damage = null, targets = [], ask = null, prompt = confirm, vars = null } = {}) {
+  for (const { watcher, entries } of watchersOf(event)) {
+    for (const { rule, item, index } of entries) {
+      if (!watches(watcher, actor, rule)) {
+        continue;
+      }
+
+      if (['afterRoll', 'hit', 'targeted'].includes(event) && !outcomeMatches(rule.outcome, outcome, facts)) {
+        continue;
+      }
+
+      const aim = rule.watchTarget == 'theirTarget' ? targets[0] ?? null : actor;
+      if (evaluate(rule.when, contextFor({ ...roll, self: watcher, holder: watcher, ruleItem: item, other: aim, vars: vars ?? {} })) !== true) {
+        continue;
+      }
+
+      if (usesLeft(watcher, rule, item, index) <= 0 || (rule.prompt && !(await prompt(item, rule)))) {
+        continue;
+      }
+
+      const ctx = stepContext({ actor: watcher, item, rule, targets: aim ? [aim] : [], damage, ask });
+      Object.assign(ctx.vars, vars ?? {});
+      const finished = await runSteps(rule.steps, ctx);
+      if (finished && countsTowardLimit(rule, ctx)) {
+        await recordUse(watcher, rule, item, index);
+      }
+
+      await post(watcher, ctx.chat.length ? [`<strong>${ruleLabel(rule, item)}</strong>`, ...ctx.chat] : []);
+    }
+  }
+}
+
+/**
+ * Every actor a world-wide sweep reaches, once each: the world's actors, plus the synthetic actors of UNLINKED tokens
+ * on the viewed scene and the active scene (they aren't in game.actors). A linked token's actor is its world actor, so
+ * it never counts twice. The callers run on the active GM only (sceneAdvanced / missionAdvanced / the session hook).
+ */
+export function sweepActors() {
+  const found = [];
+  const seen = new Set();
+  const add = actor => {
+    const key = actor?.uuid ?? actor;
+    if (actor && !seen.has(actor) && !seen.has(key)) {
+      seen.add(actor);
+      seen.add(key);
+      found.push(actor);
+    }
+  };
+
+  for (const actor of globalThis.game?.actors ?? []) {
+    add(actor);
+  }
+
+  const unlinked = token => token && !(token.actorLink ?? token.document?.actorLink) ? token.actor : null;
+  for (const scene of new Set([globalThis.canvas?.scene, globalThis.game?.scenes?.active].filter(Boolean))) {
+    for (const token of scene.tokens ?? []) {
+      add(unlinked(token));
+    }
+  }
+
+  for (const token of globalThis.canvas?.tokens?.placeables ?? []) {
+    add(unlinked(token));
+  }
+
+  return found;
 }
 
 /** The actor's actors-with-Triggers sweep, for world-wide events. */
 function worldActors() {
-  return [...(globalThis.game?.actors ?? [])].filter(actor => rulesOfType(actor, 'Trigger').length);
+  return sweepActors().filter(actor => rulesOfType(actor, 'Trigger').length);
 }
 
 /**
@@ -243,8 +364,32 @@ export async function wouldBeDefeated(actor, amount, damageType, { isCrit = fals
  *  - fumbled: a Fumble, even on a roll that also crit.
  */
 function outcomeMatches(wanted, outcome, facts = null) {
+  // A list: every one must hold ("fumbled" and "allFailed").
+  if (Array.isArray(wanted)) {
+    return wanted.every(one => outcomeMatches(one, outcome, facts));
+  }
+
   if (!wanted || wanted == 'any') {
     return true;
+  }
+
+  // plainSuccess: a success that isn't a Critical Success or double the DIF. plainFailure: a failure, not a Fumble.
+  if (wanted == 'plainSuccess') {
+    return outcome == 'success';
+  }
+
+  if (wanted == 'plainFailure') {
+    return outcome == 'failure';
+  }
+
+  // notDouble: no row reached double its DIF and it isn't a Critical Success (pairs with fumble in a list).
+  if (wanted == 'notDouble') {
+    return !['crit', 'double'].includes(outcome) && !(Array.isArray(facts?.results) ? facts.results : []).some(result => result?.success && Number(result.multiplier) >= 2);
+  }
+
+  // anySucceeded: some result beat its DIF, whatever the dice showed (pairs with fumble / crit in a list).
+  if (wanted == 'anySucceeded') {
+    return (Array.isArray(facts?.results) ? facts.results : []).some(result => result?.success);
   }
 
   const results = Array.isArray(facts?.results) ? facts.results : [];
@@ -310,7 +455,7 @@ function holdsTimedItems(actor) {
 }
 
 async function sweepWorld() {
-  for (const actor of globalThis.game?.actors ?? []) {
+  for (const actor of sweepActors()) {
     if (holdsTimedItems(actor)) {
       await sweepExpired(actor);
     }
@@ -343,6 +488,25 @@ registerSceneAdvanced(async () => {
     await fireTriggers(actor, 'sceneStart');
   }
 });
+// sessionStart: the Story Points app's New Session moved the session counter (essence20.q2SessionEpoch). The GM's client.
+globalThis.Hooks?.on?.('updateSetting', async setting => {
+  if (setting?.key != 'essence20.q2SessionEpoch' || !globalThis.game?.user?.isActiveGM) {
+    return;
+  }
+
+  for (const actor of worldActors()) {
+    await fireTriggers(actor, 'sessionStart');
+  }
+});
+
+// Game-world time moving on (worldTime:<seconds> durations): timed items that ran out go.
+globalThis.Hooks?.on?.('updateWorldTime', () => {
+  // One GM's client only (two connected GMs would each run it).
+  if (globalThis.game?.user?.isActiveGM) {
+    sweepWorld();
+  }
+});
+
 registerMissionAdvanced(async () => {
   for (const actor of worldActors()) {
     await fireTriggers(actor, 'missionStart');
@@ -359,7 +523,8 @@ registerAfterDamage(async (actor, dealt, damageType, { newValue, wasAlreadyDefea
   }
 
   if (!wasAlreadyDefeated && Number(newValue) <= 0) {
-    await fireTriggers(actor, 'defeated');
+    // The one whose damage Defeated it (when known) is the target (Last Stand's "the creature that Defeated you").
+    await fireTriggers(actor, 'defeated', { targets: source && source !== actor ? [source] : [] });
     if (source && source !== actor) {
       await fireTriggers(source, 'defeatedEnemy', { targets: [actor] });
     }
@@ -368,9 +533,17 @@ registerAfterDamage(async (actor, dealt, damageType, { newValue, wasAlreadyDefea
 registerPostRoll(async (actor, results, checkContext, extra = {}) => {
   const rider = extra.rider ?? checkContext?.riderContext ?? {};
   const item = rider.itemUuid ? globalThis.fromUuidSync?.(rider.itemUuid) ?? null : null;
-  const roll = { item, rolledSkill: rider.skill, isAttack: item?.type == 'weaponEffect', isMelee: rider.style == 'melee', switches: rider.switches ?? [] };
+  const roll = { item, rolledSkill: rider.skill, isAttack: item?.type == 'weaponEffect', isMelee: rider.style == 'melee', switches: rider.switches ?? [], targetCount: (extra.hits ?? []).length, ...(rider.dataset ? { dataset: rider.dataset } : {}) };
   const facts = { results: Array.isArray(results) ? results : [], isCrit: !!extra.isCrit, isFumble: !!extra.isFumble };
-  await fireTriggers(actor, 'afterRoll', { roll, outcome: rollOutcome(results, extra), facts });
+  // @var.total: the roll's total (the first result's - every row shares the dice); @var.dif its DIF. A roll with
+  // nothing to compare against (extra.open) has a total and no outcome - only outcome "any" Triggers hear it.
+  const first = (Array.isArray(results) ? results : [])[0];
+  const total = Number(first?.total ?? extra.total);
+  const dif = Number(first?.difficulty);
+  await fireTriggers(actor, 'afterRoll', {
+    roll, outcome: extra.open ? null : rollOutcome(results, extra), facts,
+    vars: { ...(Number.isFinite(total) ? { total } : {}), ...(Number.isFinite(dif) ? { dif } : {}), targets: (extra.hits ?? []).length, skill: rider.skill ?? '', itemUuid: item?.uuid ?? '' },
+  });
 
   // Each target rolled against, hit or missed - its steps land on that target with `to: "target"`.
   // Any roll against a target's Defense counts: an attack, a spell, an Intimidation test...
@@ -378,7 +551,8 @@ registerPostRoll(async (actor, results, checkContext, extra = {}) => {
   for (const { target, hit, result } of extra.hits ?? []) {
     if (target) {
       const hitFacts = { results: [result ?? { success: !!hit }], isCrit: !!extra.isCrit, isFumble: !!extra.isFumble };
-      await fireTriggers(actor, hit ? 'hit' : 'miss', { roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [target], facts: hitFacts });
+      // @var.rolledItem: the attack rolled (a follow-up `attack` step with item: "rolled" makes it again).
+      await fireTriggers(actor, hit ? 'hit' : 'miss', { roll, outcome: hitOutcome(hit, result, extra.isCrit), targets: [target], facts: hitFacts, vars: rider.itemUuid ? { rolledItem: rider.itemUuid } : null });
       // The defender's side: "an attack against you" - outcome success means it hit them; the target of its
       // steps is the attacker; @var.margin is how far the roll beat (or missed) the Defense.
       const margin = Number.isFinite(Number(result?.total)) && Number.isFinite(Number(result?.difficulty)) ? Number(result.total) - Number(result.difficulty) : 0;
@@ -428,9 +602,79 @@ globalThis.Hooks?.on?.('createActiveEffect', (effect, options, userId) => {
   fireTriggers(actor, 'conditionGained');
 });
 
+// equipped / unequipped: the item's own rules (and anything else on its actor watching for it), with the item in hand.
+globalThis.Hooks?.on?.('updateItem', (item, changed, options, userId) => {
+  const actor = item?.parent;
+  if (userId != globalThis.game?.user?.id || actor?.documentName != 'Actor' || changed?.system?.equipped === undefined) {
+    return;
+  }
+
+  // The item's own rules whether it counts right now or not (unequipping switches them off), then everyone else's.
+  const event = changed.system.equipped ? 'equipped' : 'unequipped';
+  fireItemAdded(actor, item, { event }).then(() => fireTriggers(actor, event, { roll: { item }, skipItem: item }));
+});
+
+// itemAdded: another item arrived on the actor (the item's own rules have 'added'); the new item is the roll item.
+globalThis.Hooks?.on?.('createItem', (item, options, userId) => {
+  const actor = item?.parent;
+  if (userId == globalThis.game?.user?.id && actor?.documentName == 'Actor') {
+    fireTriggers(actor, 'itemAdded', { roll: { item }, skipItem: item });
+  }
+});
+
+// movedOnTurn: a token moved on its own actor's turn in a running combat.
+globalThis.Hooks?.on?.('updateToken', (tokenDoc, changes, options, userId) => {
+  const combat = globalThis.game?.combat;
+  const actor = tokenDoc?.actor;
+  if (userId != globalThis.game?.user?.id || !actor || !combat?.started || !('x' in (changes ?? {}) || 'y' in (changes ?? {}))) {
+    return;
+  }
+
+  if (combat.combatant?.tokenId == tokenDoc.id || combat.combatant?.actor === actor) {
+    fireTriggers(actor, 'movedOnTurn');
+  }
+});
+
+// The values essenceChanged / resourceSpent compare against, taken before the update lands.
+const SPENDABLE = ['system.powers.personal.value', 'system.energon.normal.value', 'system.energon.dark.value', 'system.health.value'];
+const ESSENCE_KEYS = ['strength', 'speed', 'smarts', 'social'];
+globalThis.Hooks?.on?.('preUpdateActor', (actor, changed, options) => {
+  const get = path => Number(globalThis.foundry?.utils?.getProperty?.(actor, path));
+  options.e20RulesBefore = Object.fromEntries([...SPENDABLE, ...ESSENCE_KEYS.map(key => `system.essences.${key}.value`)].map(path => [path, get(path)]));
+});
+
 globalThis.Hooks?.on?.('updateActor', (actor, changed, options, userId) => {
   if (userId != globalThis.game?.user?.id) {
     return;
+  }
+
+  const before = options?.e20RulesBefore ?? {};
+  // Drained, refunded or rested values aren't spends (the writers flag them, as the resource slice's own hooks read).
+  const notSpent = !!(options?.essence20Loss || options?.essence20Refund || options?.essence20Rest || options?.isRest);
+  const now = path => Number(globalThis.foundry?.utils?.getProperty?.(actor, path));
+  const touched = path => globalThis.foundry?.utils?.hasProperty?.(changed ?? {}, path);
+  // resourceSpent: one of the spendable values went down (@var.spent, @var.resource = power | energon | darkEnergon | health).
+  for (const path of SPENDABLE) {
+    if (!notSpent && touched(path) && Number.isFinite(before[path]) && now(path) < before[path]) {
+      const resource = { 'system.powers.personal.value': 'power', 'system.energon.normal.value': 'energon', 'system.energon.dark.value': 'darkEnergon', 'system.health.value': 'health' }[path];
+      fireTriggers(actor, 'resourceSpent', { vars: { spent: before[path] - now(path), resource } });
+    }
+  }
+
+  // droppedToZero: Health or Personal Power reached 0 from above (@var.resource = health | power) - any write, not only
+  // applyDamage.
+  for (const [path, resource] of [['system.health.value', 'health'], ['system.powers.personal.value', 'power']]) {
+    if (touched(path) && Number(before[path]) > 0 && now(path) <= 0) {
+      fireTriggers(actor, 'droppedToZero', { vars: { resource } });
+    }
+  }
+
+  // essenceChanged: @var.essence, @var.change (+/-).
+  for (const key of ESSENCE_KEYS) {
+    const path = `system.essences.${key}.value`;
+    if (touched(path) && Number.isFinite(before[path]) && now(path) != before[path]) {
+      fireTriggers(actor, 'essenceChanged', { vars: { essence: key, change: now(path) - before[path] } });
+    }
   }
 
   const has = path => globalThis.foundry?.utils?.hasProperty?.(changed ?? {}, path);
@@ -445,9 +689,10 @@ globalThis.Hooks?.on?.('updateActor', (actor, changed, options, userId) => {
 
 /** An item just added to an actor runs its own 'added' Triggers - only that item's, not the actor's others. */
 export async function fireItemAdded(actor, item, options = {}) {
-  const own = rulesOf(item).filter(rule => rule?.type == 'Trigger' && rule.event == 'added' && !rule.disabled);
+  const event = options.event ?? 'added';
+  const own = rulesOf(item).filter(rule => rule?.type == 'Trigger' && rule.event == event && !rule.disabled);
   for (const rule of own) {
-    if (evaluate(rule.when, contextFor({ self: actor, ruleItem: item })) !== true) {
+    if (evaluate(rule.when, contextFor({ self: actor, ruleItem: item, item })) !== true) {
       continue;
     }
 
@@ -455,6 +700,11 @@ export async function fireItemAdded(actor, item, options = {}) {
     await runSteps(rule.steps, ctx);
     await post(actor, ctx.chat.length ? [`<strong>${ruleLabel(rule, item)}</strong>`, ...ctx.chat] : []);
   }
+}
+
+/** A roll with nothing to compare against (dice.mjs): afterRoll Triggers with outcome "any", and @var.total. */
+export async function fireOpenRoll(actor, total, skill = null) {
+  await fireTriggers(actor, 'afterRoll', { roll: { rolledSkill: skill }, outcome: null, facts: { results: [], open: true }, vars: Number.isFinite(Number(total)) ? { total: Number(total) } : null });
 }
 
 export { rollOutcome };

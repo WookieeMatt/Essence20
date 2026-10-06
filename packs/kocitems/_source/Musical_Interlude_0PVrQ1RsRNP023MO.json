@@ -5,6 +5,9 @@
   "_id": "0PVrQ1RsRNP023MO",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"turnStart","when":["combat","not:self:marked:musicalInterlude"],"steps":[{"do":"mark","key":"musicalInterlude","until":"combat"},{"do":"button","label":"Didn't sing: suffer 1 Stress","intro":"Musical Interlude: not singing with your first action costs 1 Stress.","once":false,"steps":[{"do":"choose","prompt":"Suffer 1 Stress as:","options":[{"label":"1 Health","steps":[{"do":"loseHealth","amount":1}]},{"label":"1 Essence damage","steps":[{"do":"essenceDamage","essence":"choose","prompt":"Which Essence takes the Stress?","amount":1}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: at the start of your first turn in a conflict, pick whether you sang a song or take 1 Stress (Health or Essence); the choice is applied when you click.</p>"

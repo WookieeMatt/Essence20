@@ -5,6 +5,7 @@ import { makeBool, makeInt, makeStr } from "../generic-makers.mjs";
 import { common } from './templates/common.mjs';
 import { machine } from './templates/machine.mjs';
 import { migrateNonPcStats } from './templates/stat-migration.mjs';
+import { migrateMachineEssences } from '../../helpers/machine-essences.mjs';
 
 const fields = foundry.data.fields;
 
@@ -53,6 +54,7 @@ export class VehicleActorData extends foundry.abstract.TypeDataModel {
 
   static migrateData(source) {
     migrateNonPcStats(source);
+    migrateMachineEssences(source);
     return super.migrateData(source);
   }
 }

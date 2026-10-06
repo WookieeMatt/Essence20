@@ -38,6 +38,7 @@ import { isEvasiveManeuversActive } from "../helpers/evasive-maneuvers.mjs";
 import { isLightningSpeedActive } from "../helpers/lightning-speed.mjs";
 import { isHighGearActive } from "../helpers/high-gear.mjs";
 import { isHotToTrotActive } from "../helpers/hot-to-trot.mjs";
+import { convertEssenceWrites, resetEssencesFromBase, usesEssenceBase } from "../helpers/machine-essences.mjs";
 import { isEngineOverrideBoostActive } from "../helpers/engine-override.mjs";
 import { getHupHupHupHupHupBonus } from "../helpers/hup-hup-hup-hup-hup.mjs";
 import { isJuryRigBenefitActive } from "../helpers/jury-rig.mjs";
@@ -137,6 +138,7 @@ const LIGHT_CHASSIS_ID = `${PR_CRB}rVW7mvnV4MbGuxoq`;
 const HARDENED_CHASSIS_ID = `${PR_CRB}7vwrFKj2UAxG4ocf`;
 import { createId } from "../helpers/utils.mjs";
 import { ruleMovementStages, ruleSurpriseModes } from "../rules/adapter.mjs";
+import { earlyDerivedStats } from "../rules/ext/e/derived.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -234,6 +236,15 @@ export class Essence20Actor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
+    // A Zord / Vehicle created with only Essence values (an importer, a script) takes them as its base.
+    if (usesEssenceBase(this)) {
+      for (const [key, essence] of Object.entries(data?.system?.essences ?? {})) {
+        if (essence && essence.value !== undefined && essence.base === undefined) {
+          this.updateSource({ [`system.essences.${key}.base`]: essence.value });
+        }
+      }
+    }
+
     /* Foundry's own raw default for a brand-new actor's prototype token is unlinked, hostile,
        and sightless - fine for a disposable NPC/Vehicle/Zord/Megaform (Foundry's own docs
        recommend NOT linking "generic creatures"), but wrong for a Player Character or Companion:
@@ -312,6 +323,11 @@ export class Essence20Actor extends Actor {
   async _preUpdate(changed, options, user) {
     await super._preUpdate(changed, options, user);
 
+    // A Zord's / Vehicle's Essence value is worked out from its base: a write to the value moves the base.
+    if (usesEssenceBase(this)) {
+      convertEssenceWrites(this, changed);
+    }
+
     const currentSize = this.system?.size;
     if (currentSize) {
       const newSize = foundry.utils.getProperty(changed, "system.size");
@@ -371,6 +387,11 @@ export class Essence20Actor extends Actor {
   prepareBaseData() {
     super.prepareBaseData();
 
+    // Zord / Vehicle Essences start from the typed base; Active Effects and rules add on top.
+    if (usesEssenceBase(this)) {
+      resetEssencesFromBase(this.system);
+    }
+
     // Data modifications in this step occur before processing embedded
     // documents or derived data.
   }
@@ -422,6 +443,8 @@ export class Essence20Actor extends Actor {
     if (this.type == 'playerCharacter') {
       this._prepareSorcerousPower();
       this._prepareResource();
+      // Item rules' DerivedStat at stage early (Metier's poison step), before the training is worked out.
+      earlyDerivedStats(this);
       this._preparePoisonTraining();
       this._prepareSelfPreservationResistance();
     }
@@ -456,6 +479,16 @@ export class Essence20Actor extends Actor {
 
     // Extensions' derived data - Health, Defenses and Movement adjustments (helpers/extensions.mjs).
     runDerived(this);
+
+    // Item rules' Movement at stage afterDerived: after every derived adjustment above (rules/adapter.mjs#ruleMovementStages).
+    const lateMovement = ruleMovementStages(this);
+    for (const movementType of Object.keys(this.system.movement ?? {})) {
+      const movement = this.system.movement[movementType];
+      const next = movement && typeof movement == 'object' ? lateMovement('afterDerived', movementType, Number(movement.total) || 0) : null;
+      if (next !== null) {
+        movement.total = next;
+      }
+    }
   }
 
   /**
@@ -1478,6 +1511,12 @@ export class Essence20Actor extends Actor {
 
     system.movementNotSet = !movementTotal;
     this._applyGravityMovement();
+    // Item rules' Movement at stage afterGravity: on top of Low Gravity / Zero-G too (rules/adapter.mjs#ruleMovementStages).
+    for (const movementType of Object.keys(system.movement ?? {})) {
+      if (system.movement[movementType] && typeof system.movement[movementType] == 'object') {
+        applyMovementRule('afterGravity', movementType);
+      }
+    }
   }
 
   /**

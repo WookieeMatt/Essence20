@@ -65,41 +65,18 @@ describe('other3 loads', () => {
     await expect(import('./index.mjs')).resolves.toBeDefined();
     const { registrySnapshot } = await import('../../extensions.mjs');
     const ids = registrySnapshot().uses.map(u => u.id);
-    expect(ids).toEqual(expect.arrayContaining(['o3Dabbler', 'o3SelfImprovement', 'o3FollowMe', 'o3GuardianBlast', 'o3MegaDefender', 'o3Scramble', 'o3PerfectPlacement', 'o3Overcharge']));
+    // Dabbler is an item rule (rules/conv10-slE10.test.js).
+    expect(ids).not.toContain('o3Dabbler');
+    expect(ids).toEqual(expect.arrayContaining(['o3SelfImprovement', 'o3GuardianBlast', 'o3MegaDefender', 'o3Scramble', 'o3PerfectPlacement']));
   });
 });
 
-describe('wtnv', () => {
-  let w;
-  beforeAll(async () => {
-    w = await import('./wtnv.mjs');
-  });
-
-  test('Gluten-Tolerant refuses the Weird Perk', () => {
-    const a = actor([item('hangUp', { source: C('wtnv_citizens_guide', 'dzYRdi2cSlZSHozs') })]);
-    expect(w.blocksWeird(a, { flags: { core: { sourceId: C('wtnv_citizens_guide', 'RO0a3eX8MIo5g1Tv') } } })).toBe(true);
-    expect(w.blocksWeird(actor(), { flags: { core: { sourceId: C('wtnv_citizens_guide', 'RO0a3eX8MIo5g1Tv') } } })).toBe(false);
-  });
-});
+// Gluten-Tolerant's Weird refusal is a Veto rule on the Hang-Up now (rules/conv10-slB10.test.js).
 
 describe('mlp', () => {
   let m;
   beforeAll(async () => {
     m = await import('./mlp.mjs');
-  });
-
-  test('skill steps move along the ladder', () => {
-    expect(m.stepShift('d2', 1)).toBe('d4');
-    expect(m.stepShift('d2', -1)).toBe('d20');
-    expect(m.canLower('d20')).toBe(false);
-    expect(m.canLower('d2')).toBe(true);
-    expect(m.canRaise('d12')).toBe(false);
-    expect(m.canRaise('d20')).toBe(true);
-  });
-
-  test('Dabbler raises a skill of the same Essence, or Spellcasting', () => {
-    const a = actor([], { skills: { athletics: { shift: 'd4' }, brawn: { shift: 'd20' }, science: { shift: 'd20' }, spellcasting: { shift: 'd20' }, might: { shift: 'd12' } } });
-    expect(m.dabblerRaiseOptions(a, 'athletics').sort()).toEqual(['brawn', 'spellcasting']);
   });
 
   test('Self Improvement raises the Essence, its Defenses and the Skill for the scene', () => {
@@ -141,16 +118,7 @@ describe('hide', () => {
     h = await import('./hide.mjs');
   });
 
-  test('Now You Don\'t adds 5 only in Alt Mode', () => {
-    const perk = () => item('perk', { source: C('tf_crb', 'iW9TjN9X6SsYm2Ql') });
-    expect(h.nowYouDontBonus(actor([perk()], { isTransformed: true }))).toBe(5);
-    expect(h.nowYouDontBonus(actor([perk()], { isTransformed: false }))).toBe(0);
-  });
-
-  test('observers use the higher of Willpower and Cleverness', () => {
-    expect(h.observerDefense({ system: { defenses: { willpower: { total: 12 }, cleverness: { total: 14 } } } })).toBe(14);
-  });
-
+  // Pop Out / Telltale Sign are rules now (module/rules/conv11-slG11.test.js).
   test('Hidden lasts for the scene it was set in', () => {
     expect(h.isHidden(actor([], {}, { flags: { o3Hidden: { epoch: 1 } } }))).toBe(true);
     expect(h.isHidden(actor([], {}, { flags: { o3Hidden: { epoch: 0 } } }))).toBe(false);
@@ -161,11 +129,6 @@ describe('pr', () => {
   let p;
   beforeAll(async () => {
     p = await import('./pr.mjs');
-  });
-
-  test('Follow Me! adds one per follower and drops each by their d4 (min 1)', () => {
-    expect(p.followMeResults(13, [1, 3, 3])).toEqual({ leader: 16, followers: [15, 13, 13] });
-    expect(p.followMeResults(1, [4])).toEqual({ leader: 2, followers: [1] });
   });
 
   test('Guardian Blast is a Group Skill Test', () => {
@@ -217,12 +180,6 @@ describe('pr', () => {
     expect(a.system.movement.aerial.total).toBe(0);
   });
 
-  test('Void Touched trades a point down for one more up, and back', () => {
-    const a = actor([], { essences: { strength: { max: 3 }, speed: { max: 2 } } });
-    expect(p.voidTouchedUpdate(a, 'strength', 'speed')).toEqual({ 'system.essences.strength.max': 2, 'system.essences.speed.max': 3 });
-    expect(p.voidTouchedUpdate(a, 'strength', 'speed', -1)).toEqual({ 'system.essences.strength.max': 4, 'system.essences.speed.max': 1 });
-  });
-
   test('Better Together pairs the chosen ally either way round', () => {
     const b = actor([], {}, { uuid: 'Actor.b' });
     const a = actor([item('perk', { source: C('through_the_shattered_grid', 'tOoyMHVtV6wjvlxd'), flags: { o3Partner: 'Actor.b' } })], {}, { uuid: 'Actor.a' });
@@ -249,63 +206,15 @@ describe('tf', () => {
     t = await import('./tf.mjs');
   });
 
-  test('Holographic Sights hands back a multi-target penalty', () => {
-    const weapon = item('weapon', { id: 'w1' });
-    const effect = item('weaponEffect', { flags: { parentId: 'w1' }, system: { numTargets: 2, shiftDown: 1, classification: { skill: 'targeting' } } });
-    const sights = item('upgrade', { source: C('quartermasters_guide_to_gear', 'aapIJuPKyMaGjb4U'), flags: { parentId: 'w1' } });
-    const a = actor([weapon, effect, sights]);
-    expect(t.holographicShift(a, effect)).toBe(1);
-    const single = item('weaponEffect', { flags: { parentId: 'w1' }, system: { numTargets: 1, shiftDown: 1, classification: { skill: 'targeting' } } });
-    expect(t.holographicShift(a, single)).toBe(0);
-  });
-
-  test('EM Protective Lining counts only on worn armor or in alt mode', () => {
-    const armor = item('armor', { id: 'ar', system: { equipped: true } });
-    const lining = item('upgrade', { source: C('enigma_of_combination', 'SIGEfpjEe1H06dVM'), flags: { parentId: 'ar' } });
-    expect(t.isLined(actor([armor, lining]))).toBe(true);
-    armor.system.equipped = false;
-    expect(t.isLined(actor([armor, lining]))).toBe(false);
-  });
-
-  test('requirements drop two dice, never below d2', () => {
-    expect(t.lowerRequirement('d6')).toBe('d2');
-    expect(t.lowerRequirement('d8')).toBe('d4');
-    expect(t.lowerRequirement('d4')).toBe('d2');
-    expect(t.lowerRequirement('none')).toBe('none');
-  });
-
   test('Again and Again shifts ↓1 then ↓3', () => {
     expect(t.againShift(1)).toBe(1);
     expect(t.againShift(2)).toBe(3);
-  });
-
-  test('Overcharge Engines: once per turn, twice with Multiplication (TF CRB p.80)', async () => {
-    const { O3 } = await import('./shared.mjs');
-    global.game.combat = { id: 'c1', round: 2, turn: 0 };
-    const stamp = { combatId: 'c1', round: 2, turn: 0 };
-    const plain = actor([], {}, { flags: { o3Overcharge: { stamp, feet: 15, uses: 1 } } });
-    expect(t.overchargeUsesLeft(plain)).toBe(0);
-    const multiplied = actor([item('perk', { source: O3.multiplication })], {}, { flags: { o3Overcharge: { stamp, feet: 15, uses: 1 } } });
-    expect(t.overchargeUsesLeft(multiplied)).toBe(1);
-    expect(t.overchargeUsesLeft(actor([item('perk', { source: O3.multiplication })]))).toBe(2);
-    delete global.game.combat;
-  });
-
-  test('Overcharge rounds up to 5 feet', () => {
-    expect(t.overchargeFeet(17)).toBe(20);
-    expect(t.overchargeFeet(20)).toBe(20);
   });
 
   test('Perfect Placement needs the whole token inside the square', () => {
     const zone = { x: 250, y: 250 };
     expect(t.whollyInside({ x: 150, y: 150, width: 100, height: 100 }, zone, 20)).toBe(true);
     expect(t.whollyInside({ x: 450, y: 150, width: 100, height: 100 }, zone, 20)).toBe(false);
-  });
-
-  test('Precise Chronometrics caps at Smarts', () => {
-    expect(t.chronoValid({ a: 4, b: 4 }, 8)).toBe(true);
-    expect(t.chronoValid({ a: 5, b: 4 }, 8)).toBe(false);
-    expect(t.chronoValid({ a: 0 }, 8)).toBe(false);
   });
 
   test('a Scrambled target rolls Alertness at ↓2', async () => {

@@ -5,6 +5,9 @@
   "_id": "P7dmKCP99DAYqptj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Raise the feedback field","cost":{"action":"move","resource":{"path":"system.energon.normal.value"},"amount":1},"when":["not:self:marked:feedbackField"],"steps":[{"do":"mark","key":"feedbackField","until":"scene"},{"do":"chat","text":"Feedback field up for the scene: non-allied transmissions need Technology against DIF {@actor.system.defenses.willpower.total}."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (Move action, 1 Energon): the field is active for the scene, and the Technology DIF to get a message through (your Willpower) is posted.</p><p>Left to the table: calling for those tests from enemies who send messages.</p>"

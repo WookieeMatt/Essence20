@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Defense","label":"The Heavy: +2 Toughness in heavy armor","defense":"toughness","amount":2,"when":["self:wearing>=heavy"]}
+      {"type":"Defense","label":"The Heavy: +2 Toughness in heavy armor","defense":"toughness","amount":2,"when":["self:wearing>=heavy"]},
+      {"type":"BrawnRequirement","label":"The Heavy (Brawn counts ↑2 for requirements)","amount":2}
     ],
     "automation": {
       "status": "full",

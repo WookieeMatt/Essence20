@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"incoming","snag":true,"when":["attack","defense:evasion"]}
+      {"type":"RollModifier","scope":"incoming","snag":true,"when":["attack","defense:evasion"]},
+      {"type":"MissImmunity","label":"A miss against Evasion has no effect (Seconds Between Click & Boom)","when":["defense:evasion"]}
     ],
     "automation": {
       "status": "full",

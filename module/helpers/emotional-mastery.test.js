@@ -1,8 +1,8 @@
 import { jest } from '@jest/globals';
 import {
   activateEmotionalMastery, activateEmotionalMasterySurprise, activateTeamSpirit,
-  checkEmotionalStrengthAngerTrigger, clearEmotionalMasteryOnMorphOff, deactivateEmotionalMastery,
-  deactivateShynessOnAttack, deactivateShynessOnDamage, EMOTIONAL_MASTERY_ID, EMOTIONAL_STRENGTH_ID,
+  clearEmotionalMasteryOnMorphOff, deactivateEmotionalMastery,
+  deactivateShynessOnAttack, deactivateShynessOnDamage, EMOTIONAL_MASTERY_ID,
   getActiveEmotionalMasteryOptions, getDistressMovementBonus, getMaxActiveEmotionalMastery,
   hasContemptResistance, isEmotionalMasteryOptionActive, pickHeartsCallingOption,
 } from './emotional-mastery.mjs';
@@ -347,63 +347,6 @@ describe("activateEmotionalMasterySurprise", () => {
     expect(await activateEmotionalMasterySurprise(actor)).toBe(true);
     expect(combatant.update).toHaveBeenCalledWith({ initiative: 14.99 });
     game.combat = null;
-  });
-});
-
-describe("checkEmotionalStrengthAngerTrigger", () => {
-  let originalCombat;
-  beforeEach(() => {
-    originalCombat = global.game.combat;
-    global.game.combat = { id: 'combat1', round: 1, turn: 0 };
-  });
-  afterEach(() => {
-    global.game.combat = originalCombat;
-  });
-
-  test("no-op without Emotional Strength", async () => {
-    const actor = makeActor({ flags: { activeEmotionalMastery: ['anger'] } });
-    await checkEmotionalStrengthAngerTrigger(actor);
-    expect(actor.update).not.toHaveBeenCalled();
-  });
-
-  test("no-op without Anger active", async () => {
-    const actor = makeActor({ perkIds: [EMOTIONAL_STRENGTH_ID], flags: { activeEmotionalMastery: ['fear'] } });
-    await checkEmotionalStrengthAngerTrigger(actor);
-    expect(actor.update).not.toHaveBeenCalled();
-  });
-
-  test("regains 1d2 Power once per scene", async () => {
-    FakeRoll.nextTotal = 2;
-    const actor = makeActor({
-      perkIds: [EMOTIONAL_STRENGTH_ID], flags: { activeEmotionalMastery: ['anger'] }, power: 3, powerMax: 10,
-    });
-
-    await checkEmotionalStrengthAngerTrigger(actor);
-    expect(actor.system.powers.personal.value).toBe(5);
-    expect(actor.getFlag('essence20', 'emotionalStrengthUsedThisEncounter')).toBeTruthy();
-  });
-
-  test("doesn't exceed the actor's own Power max", async () => {
-    FakeRoll.nextTotal = 2;
-    const actor = makeActor({
-      perkIds: [EMOTIONAL_STRENGTH_ID], flags: { activeEmotionalMastery: ['anger'] }, power: 9, powerMax: 10,
-    });
-
-    await checkEmotionalStrengthAngerTrigger(actor);
-    expect(actor.system.powers.personal.value).toBe(10);
-  });
-
-  test("doesn't trigger again once already used this encounter", async () => {
-    const actor = makeActor({
-      perkIds: [EMOTIONAL_STRENGTH_ID], power: 3,
-      flags: {
-        activeEmotionalMastery: ['anger'],
-        emotionalStrengthUsedThisEncounter: { epoch: 1, window: 'encounter', count: 1 },
-      },
-    });
-
-    await checkEmotionalStrengthAngerTrigger(actor);
-    expect(actor.update).not.toHaveBeenCalled();
   });
 });
 

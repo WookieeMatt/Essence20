@@ -5,6 +5,10 @@
   "_id": "4gkRa5plNeMNXSmL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Primal Rage","upshift":1,"stack":"primalRage","when":["self:type:playerCharacter","attack","item:type:weaponEffect",{"any":["attack:unarmed","item:name~unarmed","weapon:name~unarmed"]}]},
+      {"type":"RollModifier","scope":"team","stacks":false,"label":"Primal Rage","upshift":1,"stack":"primalRage","when":["self:type:playerCharacter","attack","item:type:weaponEffect",{"any":["attack:unarmed","item:name~unarmed","weapon:name~unarmed"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: unarmed attacks by you and every member of your team get ↑1, labelled Primal Rage in the Roll Options Dialog.</p>"

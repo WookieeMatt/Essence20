@@ -1,5 +1,5 @@
-import { registerApplyDialog, registerRollSources, registerUse } from "../../extensions.mjs";
-import { has, idOf, itemFrom, itemsFrom, Q1, Q1_UPGRADE, SILENCER_UUID, sourceOf, T } from "./common.mjs";
+import { registerUse } from "../../extensions.mjs";
+import { Q1, sourceOf, T } from "./common.mjs";
 import { ruleQualifiedUpgrade } from "../../../rules/adapter.mjs";
 
 /**
@@ -25,7 +25,6 @@ import { ruleQualifiedUpgrade } from "../../../rules/adapter.mjs";
 
 const TIERS = ['automatic', 'standard', 'limited', 'restricted', 'prototype', 'unique', 'theoretical', 'other'];
 const tierRank = tier => TIERS.indexOf(tier);
-const CHOSEN_FLAG = 'q1Chosen';
 
 /* -------------------------------------------- */
 /*  Rules                                        */
@@ -34,8 +33,6 @@ const CHOSEN_FLAG = 'q1Chosen';
 // "Qualified in all Standard weapons" (Standard Weapon Training, Nu, Pogodi!, The Glory of Cobra-La,
 // Ultra-Secret Strike Force) and every upgrade Qualification are Qualification rules on their items
 // (item:availability<=standard reads the effective tier, rules/adapter.mjs#requisitionTier).
-
-const norm = name => String(name ?? '').trim().toLowerCase();
 
 /**
  * Whether the actor is Qualified in this upgrade (an attached entry or an upgrade Item) - the
@@ -104,79 +101,10 @@ export function effectiveAvailability(actor, item) {
   return step(adjusted, tierRank(total) - tierRank(all));
 }
 
-/** A weapon's traits, as prepared (totalTraits) or stored. */
-function traitsOf(item) {
-  const traits = item?.system?.totalTraits ?? item?.system?.traits ?? [];
-  return Array.isArray(traits) ? traits : Object.keys(traits).filter(key => traits[key]);
-}
-
-/** The item as chosen on a Perk: by compendium source, uuid, or name. */
-function matchesChosen(item, chosen) {
-  const source = sourceOf(item) ?? item?.uuid;
-  return (chosen.uuid && (chosen.uuid == source || chosen.uuid == item?.uuid))
-    || (chosen.name && norm(chosen.name) == norm(item?.name));
-}
-
-export function chosenOn(perk) {
-  return perk?.flags?.essence20?.[CHOSEN_FLAG] ?? [];
-}
-
-// Chosen-item Qualifications (Qualified) and training (Trained).
-const CHOSEN_QUALIFIED = [Q1.tradeGoods, Q1.forTheSyndicate, Q1.goodToGo, Q1.ninpoJoes, Q1.nuPogodi];
-const CHOSEN_TRAINED = [Q1.service];
-
-// "Energized close combat weapons" (Roaming the Land) - a melee weapon with an energy/element trait.
-const ENERGIZED_TRAITS = ['energy', 'electric', 'laser', 'fire', 'ice', 'plasma', 'element', 'sonic', 'radiant'];
-
-function isMeleeWeapon(item) {
-  const effects = item?.parent?.items?.filter
-    ? item.parent.items.filter(other => other.type == 'weaponEffect' && other.flags?.essence20?.parentId == item.id).map(effect => effect.system)
-    : Object.values(item?.system?.items ?? {}).filter(entry => entry?.type == 'weaponEffect');
-  return effects.some(effect => effect?.classification?.style == 'melee' || effect?.range?.reachMultiplier > 0);
-}
-
-/**
- * What these Perks add to an actor's access to a weapon or armor.
- * @param {Actor} actor
- * @param {Item} item   A weapon or armor.
- * @returns {?'qualified'|'trained'}
- */
-export function perkAccess(actor, item) {
-  if (!actor || !['weapon', 'armor'].includes(item?.type)) {
-    return null;
-  }
-
-  for (const uuid of CHOSEN_QUALIFIED) {
-    if (itemsFrom(actor, uuid).some(perk => chosenOn(perk).some(chosen => matchesChosen(item, chosen)))) {
-      return 'qualified';
-    }
-  }
-
-  for (const uuid of CHOSEN_TRAINED) {
-    if (itemsFrom(actor, uuid).some(perk => chosenOn(perk).some(chosen => matchesChosen(item, chosen)))) {
-      return 'trained';
-    }
-  }
-
-  if (item.type == 'weapon') {
-    // Roaming the Land: "trained in energized close combat weapons".
-    if (has(actor, Q1.roamingTheLand) && isMeleeWeapon(item) && traitsOf(item).some(trait => ENERGIZED_TRAITS.includes(trait))) {
-      return 'trained';
-    }
-  }
-
-  return null;
-}
-
-const ACCESS_ORDER = ['none', 'unknown', 'trained', 'qualified'];
-
-/** Hook body: only ever widens access. */
-export function onRequisitionAccess(actor, item, out) {
-  const extra = perkAccess(actor, item);
-  if (extra && ACCESS_ORDER.indexOf(extra) > ACCESS_ORDER.indexOf(out.access ?? 'unknown')) {
-    out.access = extra;
-  }
-}
+// The chosen-item Qualifications (Service, Trade Goods, For The Syndicate, Good To Go, Nu, Pogodi!, Ninpō JOEs...) record
+// their picks with item rules (pickGrant / pickEntry record + a Qualification over item:pickedSource), Good To Go's Kit
+// prerequisite is a KitPrerequisite rule and Nothing Personal's free Silencer a Use rule (rules/conv10-slE10.test.js).
+// (Roaming the Land's "energized close combat weapons" training is a Qualification rule on its item now.)
 
 export function onRequisitionAvailability(actor, item, out) {
   const tier = effectiveAvailability(actor, item);
@@ -185,310 +113,9 @@ export function onRequisitionAvailability(actor, item, out) {
   }
 }
 
-/* -------------------------------------------- */
-/*  Good To Go - Kit prerequisites               */
-/* -------------------------------------------- */
-
-/**
- * Good To Go (Intercontinental Adventures p.101): "When Requisitioning Kits, treat the
- * Prerequisites as one Rank lower. For example, you only need +d2 in a Skill to Requisition a
- * Standard Kit, +d4 to Requisition a Limited Kit, and +d6 to Requisition a Restricted Kit."
- * Hook essence20.kitPrerequisite (actor, info, out) - out.need is the shift required.
- */
-export function onKitPrerequisite(actor, info, out) {
-  if (!has(actor, Q1.goodToGo) || !out?.need) {
-    return;
-  }
-
-  const list = CONFIG.E20?.skillShiftList ?? [];
-  const index = list.indexOf(out.need);
-  // skillShiftList runs from the biggest die down; one Rank lower is one step further along it,
-  // never past d2.
-  const d2 = list.indexOf('d2');
-  if (index >= 0 && (d2 < 0 || index < d2)) {
-    out.need = list[index + 1];
-  }
-}
-
-/* -------------------------------------------- */
-/*  Vehicle Qualifications                       */
-/* -------------------------------------------- */
-
-const SIZES = ['small', 'common', 'large', 'long', 'huge', 'extended', 'gigantic', 'extended2', 'towering', 'extended3', 'titanic'];
-const isLand = vehicle => (vehicle?.system?.movement?.ground?.base ?? 0) > 0;
-
-/**
- * The faction Perks' "Qualified with [vehicles] and roll Driving Skill Tests to drive [them] without
- * Snag even if you have no Ranks in the Driving skill."
- * - Mega Training Regimen: "Huge and larger land vehicles".
- * - Spared No Expense: "Large/Long and smaller Land vehicles".
- * - Surgical Operators: "vehicles that can carry passengers".
- * - Ultra-Secret Strike Force: "Python Patrol vehicles ... any Pythonized air, land, or sea vehicles"
- *   (a vehicle wearing Python Paint, or named for the Python Patrol).
- * The Glory of Cobra-La's "vehicles with the Biomechanical trait" has no vehicle trait to read.
- * @returns {?String} the Perk uuid that qualifies, if any.
- */
-export function vehicleQualifier(actor, vehicle) {
-  if (!vehicle) {
-    return null;
-  }
-
-  const size = SIZES.indexOf(vehicle.system?.size ?? 'common');
-  const rules = [
-    [Q1.megaTrainingRegimen, () => isLand(vehicle) && size >= SIZES.indexOf('huge')],
-    [Q1.sparedNoExpense, () => isLand(vehicle) && size >= 0 && size <= SIZES.indexOf('long')],
-    [Q1.surgicalOperators, () => (vehicle.system?.crew?.numPassengers ?? 0) > 0],
-    [Q1.ultraSecretStrikeForce, () => !!vehicle.system?.traits?.pythonPaint || /python/i.test(vehicle.name ?? '')],
-    // The Glory of Cobra-La: "You are Qualified with vehicles with the Biomechanical trait."
-    [Q1.gloryOfCobraLa, () => isBiomechanicalVehicle(vehicle)],
-  ];
-  return rules.find(([uuid, test]) => has(actor, uuid) && test())?.[0] ?? null;
-}
-
-function drivenVehicle(actor) {
-  return actor?._dice?._getPilotedVehicle?.(actor, 'driver') ?? null;
-}
-
-const skillRanked = (actor, skill) => (actor?.system?.skills?.[skill]?.shift ?? 'd20') != 'd20';
-
-/* -------------------------------------------- */
-/*  Roll sources                                 */
-/* -------------------------------------------- */
-
-const BIOMECHANICAL_NAME = /bio-?mech|cobra-la/i;
-
-/** A Biomechanical vehicle: the trait ticked on it, or a Cobra-La name. */
-export function isBiomechanicalVehicle(vehicle) {
-  return !!vehicle?.system?.traits?.biomechanical || BIOMECHANICAL_NAME.test(vehicle?.name ?? '');
-}
-
-/**
- * Biomechanical battledress: the Organic Armor upgrade attached ("the Organic Armor battledress
- * upgrade" is Cobra-La's Biomechanical battledress), or a Cobra-La name.
- */
-export function isBiomechanicalArmor(armor) {
-  const owner = armor?.parent;
-  const upgrades = owner?.items?.filter?.(item => item.type == 'upgrade' && item.flags?.essence20?.parentId == armor.id) ?? [];
-  return BIOMECHANICAL_NAME.test(armor?.name ?? '')
-    || upgrades.some(upgrade => idOf(sourceOf(upgrade)) == Q1_UPGRADE.organicArmor || /organic armor/i.test(upgrade.name ?? ''));
-}
-
-/** Equipped battledress that isn't Biomechanical. */
-export function nonBiomechanicalArmorWorn(actor) {
-  const items = actor?.items?.contents ?? [...(actor?.items ?? [])];
-  return items.find(item => item.type == 'armor' && item.system?.equipped && !isBiomechanicalArmor(item)) ?? null;
-}
-
-function isBiomechanicalWeapon(effect) {
-  const parent = effect?.parent;
-  const weaponId = effect?.flags?.essence20?.parentId;
-  const weapon = weaponId ? parent?.items?.get?.(weaponId) : null;
-  if (!weapon) {
-    return true; // unarmed / natural attacks aren't gear
-  }
-
-  return BIOMECHANICAL_NAME.test(weapon.name ?? '')
-    || traitsOf(weapon).includes('biomechanical')
-    || (parent?.items?.filter?.(item => item.type == 'upgrade' && item.flags?.essence20?.parentId == weapon.id) ?? [])
-      .some(upgrade => idOf(sourceOf(upgrade)) == Q1_UPGRADE.biomechanicalWeapon);
-}
-
-export function qualificationSources(actor, target, ctx = {}) {
-  const sources = [];
-  const perkName = uuid => itemFrom(actor, uuid)?.name ?? '';
-
-  if (ctx.rolledSkill == 'driving') {
-    const vehicle = drivenVehicle(actor);
-    const qualifier = vehicleQualifier(actor, vehicle);
-    // The ↑1 every other Vehicle Qualification in this system gives a driver with Ranks
-    // (dice.mjs VEHICLE_QUALIFICATION_PERKS_BY_MOVEMENT_TYPE).
-    if (qualifier && skillRanked(actor, 'driving')) {
-      sources.push({ id: 'q1VehicleQual', label: perkName(qualifier), shiftUp: 1 });
-    }
-
-    // The Glory of Cobra-La: "You suffer Snag when you use ... vehicles ... that do not have the
-    // Biomechanical trait."
-    if (vehicle && has(actor, Q1.gloryOfCobraLa) && !isBiomechanicalVehicle(vehicle)) {
-      sources.push({ id: 'q1CobraLaVehicle', label: perkName(Q1.gloryOfCobraLa), snag: true });
-    }
-  }
-
-  if (ctx.isAttack && ctx.item?.type == 'weaponEffect') {
-    // The Glory of Cobra-La: Snag with weapons that do not have the Biomechanical trait.
-    if (has(actor, Q1.gloryOfCobraLa) && !isBiomechanicalWeapon(ctx.item)) {
-      sources.push({ id: 'q1CobraLaWeapon', label: perkName(Q1.gloryOfCobraLa), snag: true });
-    }
-  }
-
-  // The Glory of Cobra-La: "You suffer Snag when you use battledress ... that do not have the
-  // Biomechanical trait" - read as every Skill Test made while wearing it.
-  if (has(actor, Q1.gloryOfCobraLa)) {
-    const worn = nonBiomechanicalArmorWorn(actor);
-    if (worn) {
-      sources.push({ id: 'q1CobraLaArmor', label: `${perkName(Q1.gloryOfCobraLa)} (${worn.name})`, snag: true });
-    }
-  }
-
-  return { sources, consumes: [] };
-}
-
-/**
- * The "without Snag even if you have no Ranks in the Driving skill" half: the untrained-Snag
- * default the dialog opened with is lifted for a qualified vehicle.
- */
-export function qualificationApplyDialog(actor, options, ctx = {}) {
-  if (ctx.rolledSkill != 'driving' || skillRanked(actor, 'driving') || !options.snag) {
-    return;
-  }
-
-  // Never lifts The Glory of Cobra-La's own Snag for a vehicle that isn't Biomechanical.
-  const vehicle = drivenVehicle(actor);
-  if (vehicleQualifier(actor, vehicle) && !(has(actor, Q1.gloryOfCobraLa) && !isBiomechanicalVehicle(vehicle))) {
-    options.snag = false;
-  }
-}
-
-/* -------------------------------------------- */
-/*  Choosing the item                            */
-/* -------------------------------------------- */
-
-const effectsOfEntry = entry => Object.values(entry.system?.items ?? {}).filter(e => e?.type == 'weaponEffect');
-const isMeleeEntry = entry => effectsOfEntry(entry).some(e => e.classification?.style == 'melee' || e.range?.reachMultiplier > 0);
-const isRangedEntry = entry => effectsOfEntry(entry).some(e => e.classification?.style && e.classification.style != 'melee');
-const twoHanded = entry => effectsOfEntry(entry).some(e => String(e.numHands ?? '1') == '2');
-const hasTrait = (entry, trait) => (entry.system?.traits ?? []).includes(trait);
-
-/**
- * The picks each Perk makes. A plan is a list of slots; a Perk with alternatives asks first.
- * Service (Field Guide p.68): "training in 1 Limited Weapon of your choice."
- * Trade Goods (Ferocious Fighters p.14): "Qualified with a Limited or Restricted weapon of your choice."
- * For The Syndicate / Good To Go (Intercontinental Adventures p.101-102): "Qualified with 1 Limited
- *   weapon and 1 Limited battledress, or 1 Restricted weapon or battledress."
- * Ninpō JOEs (p.9): "Qualified with 1 Limited melee weapon and 1 Limited projectile weapon. One of
- *   these weapons must have the Martial Art trait."
- * Nu, Pogodi! (p.68): "1 Limited weapon that requires 2 Hands".
- */
-async function planFor(perkUuid, item) {
-  const limitedWeapon = { type: 'weapon', availabilities: ['limited'], label: 'Q1PickLimitedWeapon' };
-  switch (perkUuid) {
-  case Q1.service:
-    return [limitedWeapon];
-  case Q1.tradeGoods:
-    return [{ type: 'weapon', availabilities: ['limited', 'restricted'], label: 'Q1PickLimitedRestrictedWeapon' }];
-  case Q1.nuPogodi:
-    return [{ ...limitedWeapon, matches: twoHanded, label: 'Q1PickTwoHandedWeapon' }];
-  case Q1.ninpoJoes:
-    return [
-      { ...limitedWeapon, matches: isMeleeEntry, label: 'Q1PickMeleeWeapon' },
-      { ...limitedWeapon, matches: isRangedEntry, label: 'Q1PickProjectileWeapon', needsMartialArtsUnless: 0 },
-    ];
-  case Q1.forTheSyndicate:
-  case Q1.goodToGo: {
-    const { chooseButtons } = await import("../../grants.mjs");
-    const which = await chooseButtons(item.name, T('E20.Q1PickPlanPrompt'), [
-      ['two', T('E20.Q1PlanLimitedPair')], ['weapon', T('E20.Q1PlanRestrictedWeapon')], ['armor', T('E20.Q1PlanRestrictedArmor')],
-    ]);
-    if (which == 'two') {
-      return [limitedWeapon, { type: 'armor', availabilities: ['limited'], label: 'Q1PickLimitedArmor' }];
-    }
-
-    if (which == 'weapon' || which == 'armor') {
-      return [{ type: which, availabilities: ['restricted'], label: which == 'weapon' ? 'Q1PickRestrictedWeapon' : 'Q1PickRestrictedArmor' }];
-    }
-
-    return null;
-  }
-
-  default:
-    return null;
-  }
-}
-
-/**
- * Pick the item(s) a chosen-item Perk qualifies you with, and store them on the Perk.
- * @param {Item} perk
- * @returns {Promise<?String>}   The chat line.
- */
-export async function chooseQualifiedItems(perk) {
-  const perkUuid = [...CHOSEN_QUALIFIED, ...CHOSEN_TRAINED].find(uuid => sourceOf(perk) == uuid);
-  const plan = await planFor(perkUuid, perk);
-  if (!plan) {
-    return null;
-  }
-
-  const { findItems, pickOne } = await import("../../grants.mjs");
-  const chosen = [];
-  const entries = [];
-  for (const [index, slot] of plan.entries()) {
-    let matches = slot.matches ?? null;
-    // Ninpō JOEs: if the first pick lacks the Martial Arts trait, the second has to carry it.
-    if (slot.needsMartialArtsUnless != null && !hasTrait(entries[slot.needsMartialArtsUnless] ?? {}, 'martialArts')) {
-      const base = matches;
-      matches = entry => (!base || base(entry)) && hasTrait(entry, 'martialArts');
-    }
-
-    const rows = await findItems({ type: slot.type, availabilities: slot.availabilities, matches });
-    const uuid = await pickOne(T(`E20.${slot.label}`), rows);
-    if (!uuid) {
-      return null;
-    }
-
-    const entry = await fromUuid(uuid);
-    entries[index] = entry;
-    chosen.push({ uuid, name: entry?.name ?? rows.find(row => row.uuid == uuid)?.name ?? '', type: slot.type });
-  }
-
-  await perk.setFlag('essence20', CHOSEN_FLAG, chosen);
-  return T(CHOSEN_TRAINED.includes(perkUuid) ? 'E20.Q1TrainedChosen' : 'E20.Q1QualifiedChosen', {
-    perk: perk.name, items: chosen.map(c => c.name).join(', '),
-  });
-}
-
-/* -------------------------------------------- */
-/*  Nothing Personal - the free Silencer          */
-/* -------------------------------------------- */
-
-/**
- * Nothing Personal (Intercontinental Adventures p.100): "gain a free Silencer upgrade for your
- * pistol." Fitted permanently to the pistol picked (once).
- */
-export async function claimFreeSilencer(perk) {
-  const actor = perk.parent;
-  if (perk.flags?.essence20?.q1SilencerFitted) {
-    ui.notifications.warn(T('E20.Q1SilencerAlready'));
-    return null;
-  }
-
-  const weapons = actor.items.filter(item => item.type == 'weapon');
-  const { chooseSelect } = await import("../../grants.mjs");
-  const pistols = weapons.filter(weapon => /pistol|revolver|handgun/i.test(weapon.name));
-  const weaponId = await chooseSelect(perk.name, T('E20.Q1SilencerPrompt'),
-    (pistols.length ? pistols : weapons).map(weapon => ({ value: weapon.id, label: weapon.name })));
-  const weapon = weaponId ? actor.items.get(weaponId) : null;
-  if (!weapon) {
-    return null;
-  }
-
-  const source = await fromUuid(SILENCER_UUID);
-  if (!source) {
-    return null;
-  }
-
-  const data = source.toObject();
-  delete data._id;
-  foundry.utils.setProperty(data, 'flags.core.sourceId', SILENCER_UUID);
-  foundry.utils.setProperty(data, 'flags.essence20.parentId', weapon.id);
-  foundry.utils.setProperty(data, 'flags.essence20.q1FreeSilencer', true);
-  const [created] = await actor.createEmbeddedDocuments('Item', [data]);
-  const { setEntryAndAddItem } = await import("../../../sheet-handlers/attachment-handler.mjs");
-  const key = await setEntryAndAddItem(created, weapon);
-  if (key) {
-    await created.setFlag('essence20', 'collectionId', key);
-  }
-
-  await perk.setFlag('essence20', 'q1SilencerFitted', true);
-  return T('E20.Q1SilencerFitted', { weapon: weapon.name });
-}
+// The faction Perks' vehicle Qualifications (Mega Training Regimen, Spared No Expense, Surgical
+// Operators, Ultra-Secret Strike Force, The Glory of Cobra-La) and all of Cobra-La's Snags (weapons,
+// vehicles and battledress that aren't Biomechanical) are their own item rules now.
 
 /* -------------------------------------------- */
 /*  Nu, Pogodi! - swapping seats                  */
@@ -555,24 +182,20 @@ export async function swapSeats(perk, pay) {
 /*  Use buttons                                  */
 /* -------------------------------------------- */
 
-const CHOICE_PERKS = [...CHOSEN_QUALIFIED, ...CHOSEN_TRAINED];
+// Nu, Pogodi!'s weapon pick is an item rule (its own Use); the seat swap and Condition removal stay here.
+const USE_PERKS = [Q1.nuPogodi];
 
 export const QUALIFY_USE = {
   id: 'q1Qualify',
-  matches: item => item?.type == 'perk' && (CHOICE_PERKS.includes(sourceOf(item)) || sourceOf(item) == Q1.nothingPersonal),
+  matches: item => item?.type == 'perk' && USE_PERKS.includes(sourceOf(item)),
   canUse: () => true,
   async run(item, economy, pay) {
-    const source = sourceOf(item);
-    if (source == Q1.nothingPersonal) {
-      return claimFreeSilencer(item);
-    }
-
-    if (source == Q1.nuPogodi) {
+    if (sourceOf(item) == Q1.nuPogodi) {
       // Nu, Pogodi!'s own once-per-mission Condition removal (helpers/nu-pogodi.mjs) shares the Use
-      // button, so it's offered here alongside the seat swap and the weapon pick.
+      // button, so it's offered here alongside the seat swap.
       const { canUseNuPogodiCondition, applyNuPogodiCondition } = await import("../../nu-pogodi.mjs");
       const { chooseButtons } = await import("../../grants.mjs");
-      const choices = [['weapon', T('E20.Q1ChooseWeapon')], ['swap', T('E20.Q1SwapSeats')]];
+      const choices = [['swap', T('E20.Q1SwapSeats')]];
       if (canUseNuPogodiCondition(item.parent)) {
         choices.unshift(['condition', T('E20.Q1RemoveCondition')]);
       }
@@ -583,26 +206,16 @@ export const QUALIFY_USE = {
         return removed ? T('E20.PerkUsedNotification', { perk: item.name, actor: item.parent.name }) : null;
       }
 
-      if (which == 'swap') {
-        return swapSeats(item, pay);
-      }
-
-      if (which != 'weapon') {
-        return null;
-      }
+      return which == 'swap' ? swapSeats(item, pay) : null;
     }
 
-    return chooseQualifiedItems(item);
+    return null;
   },
 };
 
 export function registerQualification() {
   registerUse(QUALIFY_USE);
-  registerRollSources(qualificationSources);
-  registerApplyDialog(qualificationApplyDialog);
   if (globalThis.Hooks?.on) {
-    Hooks.on('essence20.requisitionAccess', onRequisitionAccess);
     Hooks.on('essence20.requisitionAvailability', onRequisitionAvailability);
-    Hooks.on('essence20.kitPrerequisite', onKitPrerequisite);
   }
 }

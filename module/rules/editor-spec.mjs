@@ -1,7 +1,7 @@
 import { CHECK_NAMES } from "./predicate.mjs";
 import { ACTION_KEYS, RULE_TYPES, TRIGGER_EVENTS } from "./types.mjs";
 import { LIMIT_WINDOWS } from "./limits.mjs";
-import { STEP_TYPES } from "./steps.mjs";
+import { CARD_STEPS, STEP_TYPES } from "./steps.mjs";
 
 /**
  * What the guided rule editor (apps/rule-editor.mjs) shows for each rule type and each step - a
@@ -59,6 +59,8 @@ export const RULE_FORMS = {
     { path: 'late', kind: 'checkbox', label: 'LateModifier', advanced: true },
     ...LIMIT,
     { path: 'stack', kind: 'text', label: 'StackGroup', advanced: true },
+    { path: 'consumeMark', kind: 'text', label: 'ConsumeMark', advanced: true },
+    { path: 'consumeFrom', kind: 'select', label: 'ConsumeFrom', options: [['self', 'ConsumeFromSelf'], ['target', 'ConsumeFromTarget']], advanced: true, showIf: rule => !!rule.consumeMark },
   ],
   DialogSwitch: [...SHIFTS, { path: 'default', kind: 'checkbox', label: 'DefaultOn' }, { path: 'damage', kind: 'formula', label: 'SwitchDamage' }, { path: 'forget', kind: 'checkbox', label: 'SwitchForget', advanced: true }, { path: 'key', kind: 'text', label: 'SwitchKey', hint: 'SwitchKeyHint', advanced: true }, { path: 'defaultWhen', kind: 'tags', label: 'SwitchDefaultWhen', advanced: true }, { path: 'clearSnag', kind: 'checkbox', label: 'SwitchClearSnag', advanced: true }, { path: 'useSkill', kind: 'select', label: 'UseSkillInstead', options: [['', 'NoSkillSwap'], 'skills'], advanced: true }, { path: 'replacesAim', kind: 'checkbox', label: 'ReplacesAim', advanced: true }, { path: 'cost.resource', kind: 'resource', label: 'SwitchCost', advanced: true }, { path: 'cost.amount', kind: 'formula', label: 'Amount', advanced: true }, { path: 'spend.resource', kind: 'resource', label: 'SpendResource', advanced: true }, { path: 'spend.max', kind: 'formula', label: 'SpendMax', advanced: true }],
   Reroll: [
@@ -102,6 +104,7 @@ export const RULE_FORMS = {
   Toggle: [
     { path: 'key', kind: 'text', label: 'Key' },
     { path: 'default', kind: 'checkbox', label: 'DefaultOn' },
+    { path: 'legacy', kind: 'text', label: 'PickLegacy', advanced: true },
   ],
   Pool: [
     { path: 'key', kind: 'text', label: 'Key' },
@@ -112,6 +115,7 @@ export const RULE_FORMS = {
     { path: 'key', kind: 'text', label: 'Key' },
     { path: 'from', kind: 'select', label: 'ChoiceFrom', options: [['skill', 'FromSkill'], ['essence', 'FromEssence'], ['defense', 'FromDefense'], ['list', 'FromList'], ['text', 'FromText']] },
     { path: 'options', kind: 'strings', label: 'ChoiceOptions', showIf: rule => rule.from == 'list' },
+    { path: 'legacy', kind: 'text', label: 'PickLegacy', advanced: true },
   ],
   Code: [
     { path: 'helper', kind: 'select', label: 'Helper', options: 'helpers', allowCustom: true },
@@ -149,7 +153,8 @@ export const RULE_FORMS = {
     { path: 'movement', kind: 'select', label: 'MovementType', options: ['ground', 'aerial', 'climb', 'swim', 'burrow', 'all'].map(type => [type, `MovementTypes.${type}`]) },
     { path: 'op', kind: 'select', label: 'Op', options: [['add', 'OpAdd'], ['set', 'OpSet'], ['multiply', 'OpMultiply'], ['max', 'OpMax'], ['min', 'OpMin']] },
     { path: 'value', kind: 'formula', label: 'Amount' },
-    { path: 'stage', kind: 'select', label: 'MovementStage', options: ['final', 'base', 'total', 'adjust'].map(stage => [stage, `MovementStages.${stage}`]), advanced: true },
+    { path: 'stage', kind: 'select', label: 'MovementStage', options: ['final', 'base', 'total', 'adjust', 'afterGravity', 'afterDerived'].map(stage => [stage, `MovementStages.${stage}`]), advanced: true },
+    { path: 'round', kind: 'select', label: 'MovementRound', options: [['nearest', 'RoundNearest'], ['floor', 'RoundFloor'], ['ceil', 'RoundCeil']], advanced: true },
   ],
   DamageType: [
     { path: 'to', kind: 'select', label: 'DamageTypeTo', options: [['choice', 'DamageTypeChoice'], 'damageTypes'] },
@@ -226,23 +231,58 @@ export const RULE_FORMS = {
     ...LIMIT,
     { path: 'steps', kind: 'steps', label: 'Steps' },
   ],
+  Reaction: [
+    { path: 'who', kind: 'select', label: 'ReactionWho', options: ['target', 'attacker', 'allyOfTarget', 'allyOfAttacker', 'enemyOfAttacker'].map(who => [who, `ReactionWhos.${who}`]) },
+    { path: 'within', kind: 'number', label: 'WatchWithin' },
+    { path: 'per', kind: 'select', label: 'ReactionPer', options: [['row', 'ReactionPerRow'], ['card', 'ReactionPerCard']] },
+    { path: 'outcome', kind: 'select', label: 'OutcomeLabel', options: ['any', 'hit', 'miss'].map(o => [o, `ReactionOutcome.${o}`]) },
+    { path: 'attackOnly', kind: 'checkbox', label: 'ReactionAttackOnly' },
+    { path: 'minMargin', kind: 'number', label: 'ReactionMinMargin', advanced: true },
+    { path: 'maxMargin', kind: 'number', label: 'ReactionMaxMargin', advanced: true },
+    { path: 'cost.resource', kind: 'resource', label: 'CostResource' },
+    { path: 'cost.amount', kind: 'formula', label: 'CostAmount', showIf: rule => !!rule.cost?.resource },
+    ...LIMIT,
+    { path: 'steps', kind: 'steps', label: 'Steps' },
+  ],
   Trigger: [
-    { path: 'event', kind: 'select', label: 'EventLabel', options: TRIGGER_EVENTS.map(event => [event, `Event.${event}`]) },
-    { path: 'outcome', kind: 'select', label: 'OutcomeLabel', options: ['any', 'success', 'failure', 'double', 'crit', 'fumble', 'x2', 'anyFailed', 'allFailed', 'fumbled'].map(o => [o, `Outcome.${o}`]), showIf: rule => ['afterRoll', 'hit', 'targeted'].includes(rule.event) },
+    // A getter: plug-ins (rules/ext/) add events after this file loads.
+    { path: 'event', kind: 'select', label: 'EventLabel', get options() {
+      return TRIGGER_EVENTS.map(event => [event, `Event.${event}`]);
+    } },
+    { path: 'outcome', kind: 'select', label: 'OutcomeLabel', options: ['any', 'success', 'failure', 'double', 'crit', 'fumble', 'x2', 'anyFailed', 'allFailed', 'fumbled', 'plainSuccess', 'plainFailure', 'anySucceeded', 'notDouble'].map(o => [o, `Outcome.${o}`]), showIf: rule => ['afterRoll', 'hit', 'targeted'].includes(rule.event) },
+    { path: 'watch', kind: 'select', label: 'WatchLabel', options: [['', 'WatchSelf'], ['ally', 'WatchAlly'], ['enemy', 'WatchEnemy'], ['any', 'WatchAny']] },
+    { path: 'within', kind: 'number', label: 'WatchWithin', showIf: rule => !!rule.watch },
+    { path: 'watchTarget', kind: 'select', label: 'WatchTargetLabel', options: [['actor', 'WatchTargetActor'], ['theirTarget', 'WatchTargetTheirs']], showIf: rule => !!rule.watch },
     { path: 'prompt', kind: 'checkbox', label: 'Prompt' },
     ...LIMIT,
     { path: 'steps', kind: 'steps', label: 'Steps' },
   ],
 };
 
-const TO = { path: 'to', kind: 'select', label: 'Recipient', options: [['self', 'ToSelf'], ['target', 'ToTarget'], ['targets', 'ToTargets'], ['targetOrSelf', 'ToTargetOrSelf']] };
+const TO = { path: 'to', kind: 'select', label: 'Recipient', options: [['self', 'ToSelf'], ['target', 'ToTarget'], ['targets', 'ToTargets'], ['targetOrSelf', 'ToTargetOrSelf'],
+  ['party', 'ToParty'], ['party+others', 'ToPartyOthers'], ['team', 'ToTeam'], ['team+others', 'ToTeamOthers'], ['partyActor', 'ToPartyActor']] };
+
+// Which Essence an Essence step works on (blank on healEssence: the most-damaged first).
+const ESSENCE_FIELD = { path: 'essence', kind: 'select', label: 'Essence', options: [['', 'EssenceAny'], ['strength', 'EssenceNames.strength'], ['speed', 'EssenceNames.speed'],
+  ['smarts', 'EssenceNames.smarts'], ['social', 'EssenceNames.social'], ['choose', 'EssenceChoose']] };
+
+// Which rows of the check card a card step acts on (Reaction rules).
+const CARD_ROWS = { path: 'rows', kind: 'select', label: 'CardRows', options: [['this', 'CardRowsThis'], ['all', 'CardRowsAll']] };
+
+// How long a step's effect lasts (rules/expiry.mjs), and whose turns count.
+const UNTIL_FIELD = { path: 'until', kind: 'select', label: 'Until', options: [['', 'UntilUsed'], ['endOfTurn', 'UntilEndOfTurn'], ['endOfRound', 'UntilEndOfRound'],
+  ['endOfNextRound', 'UntilEndOfNextRound'], ['nextTurn', 'UntilNextTurn'], ['endOfNextTurn', 'UntilEndOfNextTurn'], ['turnOrScene', 'UntilTurnOrScene'],
+  ['roundOrScene', 'UntilRoundOrScene'], ['nextTurnOrScene', 'UntilNextTurnOrScene'], ['endOfNextTurnOrScene', 'UntilEndOfNextTurnOrScene'], ['turnOrUntilCombat', 'UntilTurnOrUntilCombat'], ['combat', 'UntilCombat'], ['mission', 'UntilMission'], ...[1, 2, 3, 5, 10].map(n => [`rounds:${n}`, `UntilRounds.${n}`]), ['encounter', 'UntilEncounter'], ['scene', 'UntilScene']] };
+const UNTIL_OF_FIELD = { path: 'untilOf', kind: 'select', label: 'UntilOf', options: [['holder', 'UntilOfHolder'], ['recipient', 'UntilOfRecipient']] };
 
 /** Each step's fields. */
 export const STEP_FORMS = {
   chat: [{ path: 'text', kind: 'text', label: 'Text', hint: 'ChatHint' }],
   spend: [{ path: 'resource', kind: 'resource', label: 'Resource' }, { path: 'amount', kind: 'formula', label: 'Amount' }, { path: 'onFail', kind: 'steps', label: 'OnFail' }],
   gainResource: [{ path: 'resource', kind: 'resource', label: 'Resource' }, { path: 'amount', kind: 'formula', label: 'Amount' }],
-  heal: [TO, { path: 'amount', kind: 'formula', label: 'Amount' }, { path: 'temporary', kind: 'checkbox', label: 'HealTemporary' }],
+  heal: [TO, { path: 'amount', kind: 'formula', label: 'Amount' }, { path: 'temporary', kind: 'checkbox', label: 'HealTemporary' },
+    { path: 'tracked', kind: 'checkbox', label: 'HealTracked', advanced: true, showIf: step => !!step.temporary },
+    { path: 'untilDamage', kind: 'checkbox', label: 'HealUntilDamage', advanced: true, showIf: step => !!step.tracked }],
   loseHealth: [TO, { path: 'amount', kind: 'formula', label: 'Amount' }],
   damage: [TO, { path: 'amount', kind: 'formula', label: 'Amount' }, { path: 'damageType', kind: 'select', label: 'DamageType', options: 'damageTypes' }],
   applyCondition: [TO, { path: 'condition', kind: 'select', label: 'Condition', options: 'statuses' }, { path: 'rounds', kind: 'formula', label: 'Rounds' }],
@@ -251,8 +291,13 @@ export const STEP_FORMS = {
     { path: 'skill', kind: 'select', label: 'Skill', options: 'skills' },
     { path: 'dif', kind: 'formula', label: 'Difficulty' },
     { path: 'difDefense', kind: 'select', label: 'DifDefense', options: [['', 'DifFixed'], 'defenses'] },
+    { path: 'difDefenseSelf', kind: 'checkbox', label: 'DifDefenseSelf', advanced: true, showIf: step => !!step.difDefense },
     { path: 'edge', kind: 'checkbox', label: 'RollEdge', advanced: true },
     { path: 'edgeWhen', kind: 'tags', label: 'RollEdgeWhen', advanced: true },
+    { path: 'snag', kind: 'checkbox', label: 'RollSnag', advanced: true },
+    { path: 'beforeCost', kind: 'checkbox', label: 'BeforeCost', advanced: true },
+    { path: 'open', kind: 'checkbox', label: 'RollOpen', advanced: true },
+    { path: 'then', kind: 'steps', label: 'RollThen', showIf: step => !!step.open },
     { path: 'onSuccess', kind: 'steps', label: 'OnSuccess' },
     { path: 'onFail', kind: 'steps', label: 'OnFail' },
     { path: 'onCrit', kind: 'steps', label: 'OnCrit' },
@@ -263,22 +308,38 @@ export const STEP_FORMS = {
     { path: 'who', kind: 'select', label: 'ButtonWho', options: ['owner', 'gm', 'anyone', 'targets', 'others'].map(who => [who, `ButtonWhos.${who}`]) },
     { path: 'runAs', kind: 'select', label: 'ButtonRunAs', options: [['holder', 'ButtonRunAsHolder'], ['clicker', 'ButtonRunAsClicker']] },
     { path: 'once', kind: 'stacks', label: 'ButtonOnce' },
+    { path: 'usedWhenDone', kind: 'checkbox', label: 'ButtonUsedWhenDone', advanced: true },
+    { path: 'whisper', kind: 'select', label: 'ButtonWhisper', options: [['', 'ButtonWhisperAll'], ['owners', 'ButtonWhisperOwners']], advanced: true },
+    ...LIMIT.slice(0, 3),
     { path: 'steps', kind: 'steps', label: 'ButtonSteps' },
   ],
   pick: [
     { path: 'key', kind: 'text', label: 'PickKey' },
-    { path: 'from', kind: 'select', label: 'PickFrom', options: ['skill', 'essence', 'damageType', 'ownedItem', 'ally', 'enemy', 'target', 'list'].map(from => [from, `PickFroms.${from}`]) },
+    { path: 'from', kind: 'select', label: 'PickFrom', options: ['skill', 'essence', 'damageType', 'ownedItem', 'ally', 'enemy', 'target', 'list', 'team', 'actors'].map(from => [from, `PickFroms.${from}`]) },
+    { path: 'actorType', kind: 'select', label: 'PickActorType', options: [['', 'AnyActor'], ['playerCharacter', 'TypePC'], ['npc', 'TypeNpc'], ['zord', 'TypeZord'], ['vehicle', 'TypeVehicle'], ['companion', 'TypeCompanion']], advanced: true, showIf: step => step.from == 'actors' },
+    { path: 'essence', kind: 'select', label: 'PickEssence', options: [['', 'EssenceAny'], ['strength', 'EssenceNames.strength'], ['speed', 'EssenceNames.speed'], ['smarts', 'EssenceNames.smarts'], ['social', 'EssenceNames.social']], advanced: true, showIf: step => step.from == 'skill' },
+    { path: 'specializedOnly', kind: 'checkbox', label: 'PickSpecializedOnly', advanced: true, showIf: step => step.from == 'skill' },
+    { path: 'filter', kind: 'tags', label: 'PickFilter', advanced: true, showIf: step => step.from == 'ownedItem' },
+    { path: 'auto', kind: 'checkbox', label: 'PickAuto', advanced: true },
+    { path: 'notSelf', kind: 'checkbox', label: 'PickNotSelf', advanced: true, showIf: step => ['team', 'actors'].includes(step.from) },
     { path: 'itemType', kind: 'text', label: 'PickItemType' },
     { path: 'equipped', kind: 'checkbox', label: 'PickEquipped' },
     { path: 'within', kind: 'number', label: 'AuraRadius' },
     { path: 'prompt', kind: 'text', label: 'PickQuestion' },
     { path: 'ifUnset', kind: 'checkbox', label: 'PickIfUnset' },
+    { path: 'legacy', kind: 'text', label: 'PickLegacy', advanced: true },
   ],
-  createItem: [TO, { path: 'data', kind: 'json', label: 'ItemData' }, { path: 'until', kind: 'select', label: 'Until', options: [['', 'UntilUsed'], ['endOfTurn', 'UntilEndOfTurn'], ['endOfRound', 'UntilEndOfRound'], ['endOfNextRound', 'UntilEndOfNextRound'], ['nextTurn', 'UntilNextTurn'], ['encounter', 'UntilEncounter'], ['scene', 'UntilScene']] }],
+  createItem: [TO, { path: 'data', kind: 'json', label: 'ItemData' }, { path: 'children', kind: 'json', label: 'ItemChildren', advanced: true }, UNTIL_FIELD, UNTIL_OF_FIELD],
   deleteItem: [TO, { path: 'item', kind: 'text', label: 'ItemSelector', hint: 'ItemSelectorHint' }, { path: 'all', kind: 'checkbox', label: 'AllMatches' }],
   updateItem: [TO, { path: 'item', kind: 'text', label: 'ItemSelector', hint: 'ItemSelectorHint' }, { path: 'all', kind: 'checkbox', label: 'AllMatches' }, { path: 'set', kind: 'json', label: 'SetValues' }, { path: 'add', kind: 'json', label: 'AddValues' }],
   spendQuantity: [TO, { path: 'item', kind: 'text', label: 'ItemSelector', hint: 'ItemSelectorHint' }, { path: 'amount', kind: 'formula', label: 'Amount' }, { path: 'deleteAtZero', kind: 'checkbox', label: 'DeleteAtZero' }],
-  grant: [TO, { path: 'uuid', kind: 'text', label: 'ItemUuid', hint: 'DropHint' }, { path: 'until', kind: 'select', label: 'Until', options: [['', 'UntilUsed'], ['endOfTurn', 'UntilEndOfTurn'], ['endOfRound', 'UntilEndOfRound'], ['endOfNextRound', 'UntilEndOfNextRound'], ['nextTurn', 'UntilNextTurn'], ['encounter', 'UntilEncounter'], ['scene', 'UntilScene']] }],
+  grant: [
+    TO, { path: 'uuid', kind: 'text', label: 'ItemUuid', hint: 'DropHint' }, UNTIL_FIELD, UNTIL_OF_FIELD,
+    { path: 'name', kind: 'text', label: 'GrantName', advanced: true },
+    { path: 'integrated', kind: 'checkbox', label: 'Integrated', advanced: true },
+    { path: 'appendTraits', kind: 'strings', label: 'AppendTraits', advanced: true },
+    { path: 'systemFormulas', kind: 'json', label: 'GrantSystemFormulas', advanced: true },
+  ],
   bank: [
     TO,
     { path: 'label', kind: 'text', label: 'Label' },
@@ -289,11 +350,11 @@ export const STEP_FORMS = {
     { path: 'defenseBonus', kind: 'formula', label: 'BankDefenseBonus', advanced: true },
     { path: 'persist', kind: 'checkbox', label: 'BankDefensePersist', advanced: true },
     { path: 'uses', kind: 'formula', label: 'Uses' },
-    { path: 'until', kind: 'select', label: 'Until', options: [['', 'UntilUsed'], ['endOfTurn', 'UntilEndOfTurn'], ['endOfRound', 'UntilEndOfRound'], ['endOfNextRound', 'UntilEndOfNextRound'], ['nextTurn', 'UntilNextTurn'], ['encounter', 'UntilEncounter'], ['scene', 'UntilScene']] },
+    UNTIL_FIELD, UNTIL_OF_FIELD,
   ],
   grantActions: [TO, { path: 'free', kind: 'number', label: 'ActionFree' }, { path: 'move', kind: 'number', label: 'ActionMove' }, { path: 'standard', kind: 'number', label: 'ActionStandard' }],
-  setToggle: [{ path: 'key', kind: 'text', label: 'Key' }, { path: 'value', kind: 'select', label: 'ToggleValue', options: [['toggle', 'ToggleFlip'], ['true', 'ToggleOn'], ['false', 'ToggleOff']] }, { path: 'until', kind: 'select', label: 'Until', options: [['', 'UntilUsed'], ['endOfTurn', 'UntilEndOfTurn'], ['endOfRound', 'UntilEndOfRound'], ['endOfNextRound', 'UntilEndOfNextRound'], ['nextTurn', 'UntilNextTurn'], ['encounter', 'UntilEncounter'], ['scene', 'UntilScene']] }],
-  choose: [{ path: 'prompt', kind: 'text', label: 'Prompt' }, { path: 'options', kind: 'choices', label: 'ChooseOptions' }],
+  setToggle: [{ path: 'key', kind: 'text', label: 'Key' }, { path: 'value', kind: 'select', label: 'ToggleValue', options: [['toggle', 'ToggleFlip'], ['true', 'ToggleOn'], ['false', 'ToggleOff']] }, UNTIL_FIELD],
+  choose: [{ path: 'prompt', kind: 'text', label: 'Prompt' }, { path: 'options', kind: 'choices', label: 'ChooseOptions' }, { path: 'auto', kind: 'checkbox', label: 'PickAuto', advanced: true }],
   target: [{ path: 'min', kind: 'number', label: 'MinTargets' }, { path: 'max', kind: 'number', label: 'MaxTargets' }],
   pickPerk: [
     { path: 'from', kind: 'select', label: 'PickPerkFrom', options: [['role', 'PickPerkRole'], ['focus', 'PickPerkFocus'], ['branch', 'PickPerkBranch']] },
@@ -313,6 +374,29 @@ export const STEP_FORMS = {
   ],
   pickAlly: [{ path: 'all', kind: 'checkbox', label: 'PickAllyAll' }, { path: 'includeSelf', kind: 'checkbox', label: 'PickAllyIncludeSelf' }, { path: 'within', kind: 'formula', label: 'PickAllyWithin' }, { path: 'filter', kind: 'tags', label: 'PickAllyFilter' }, { path: 'max', kind: 'number', label: 'MaxTargets' }],
   negateDamage: [],
+  negateHit: [CARD_ROWS],
+  lowerTotal: [{ path: 'amount', kind: 'formula', label: 'Amount' }, CARD_ROWS],
+  lateSnag: [CARD_ROWS],
+  convertRows: [{ path: 'crit', kind: 'checkbox', label: 'CardCrit' }, CARD_ROWS],
+  rerollCard: [
+    { path: 'target', kind: 'select', label: 'RerollTarget', options: 'rerollTargets' },
+    { path: 'mode', kind: 'select', label: 'RerollMode', options: 'rerollModes' },
+    { path: 'keepBetter', kind: 'checkbox', label: 'RerollKeepBetter' },
+    CARD_ROWS,
+  ],
+  essenceDamage: [TO, ESSENCE_FIELD, { path: 'amount', kind: 'formula', label: 'Amount' }],
+  healEssence: [TO, ESSENCE_FIELD, { path: 'amount', kind: 'formula', label: 'Amount' }],
+  extendCondition: [TO, { path: 'condition', kind: 'select', label: 'Condition', options: 'statuses' }, { path: 'rounds', kind: 'formula', label: 'Rounds' }],
+  updateActor: [TO, { path: 'set', kind: 'json', label: 'UpdateSet' }, { path: 'add', kind: 'json', label: 'UpdateAdd' }, { path: 'ladder', kind: 'json', label: 'UpdateLadder', advanced: true }, { path: 'ladderMax', kind: 'select', label: 'LadderMax', options: [['', 'NoLimit'], ...['d2', 'd4', 'd6', 'd8', 'd10', 'd12', '2d8', '3d6'].map(d => [d, d])], advanced: true }, { path: 'min', kind: 'number', label: 'Min', advanced: true }, { path: 'max', kind: 'number', label: 'Max', advanced: true }],
+  require: [{ path: 'check', kind: 'tags', label: 'RequireCheck' }, { path: 'message', kind: 'text', label: 'RequireMessage' }, { path: 'beforeCost', kind: 'checkbox', label: 'BeforeCost' }],
+  setTargets: [TO],
+  writeInitiative: [TO, { path: 'value', kind: 'formula', label: 'InitiativeValue' }],
+  table: [{ path: 'formula', kind: 'formula', label: 'TableFormula' }, { path: 'rows', kind: 'json', label: 'TableRows' }],
+  setVar: [{ path: 'key', kind: 'text', label: 'VarName' }, { path: 'value', kind: 'formula', label: 'SetVarValue' }],
+  spendAction: [{ path: 'action', kind: 'select', label: 'CostAction', options: [['free', 'ActionFree'], ['move', 'ActionMove'], ['standard', 'ActionStandard']] }],
+  rollVsEach: [TO, { path: 'skill', kind: 'select', label: 'Skill', options: 'skills' }, { path: 'defense', kind: 'select', label: 'DifDefense', options: ['defenses'] }, { path: 'onHit', kind: 'steps', label: 'OnSuccess' }, { path: 'onMiss', kind: 'steps', label: 'OnFail' }],
+  disarm: [TO, { path: 'maxHands', kind: 'formula', label: 'DisarmMaxHands' }, { path: 'optional', kind: 'checkbox', label: 'DisarmOptional' }, { path: 'required', kind: 'checkbox', label: 'DisarmRequired', advanced: true }],
+  takeItem: [{ path: 'item', kind: 'text', label: 'ItemSelector' }],
   leaveAt: [{ path: 'value', kind: 'formula', label: 'LeaveAt' }],
   save: [
     { path: 'to', kind: 'text', label: 'Recipient' },
@@ -325,8 +409,13 @@ export const STEP_FORMS = {
     { path: 'removeOnSuccess', kind: 'checkbox', label: 'SaveEscape', advanced: true },
   ],
   setForm: [TO, { path: 'form', kind: 'select', label: 'Form', options: [['morphed', 'FormMorphed'], ['transformed', 'FormTransformed']] }, { path: 'value', kind: 'select', label: 'ToggleValue', options: [['false', 'ToggleOff'], ['true', 'ToggleOn']] }],
-  mark: [TO, { path: 'key', kind: 'text', label: 'Key' }, { path: 'until', kind: 'select', label: 'Until', options: [['', 'UntilUsed'], ['endOfTurn', 'UntilEndOfTurn'], ['endOfRound', 'UntilEndOfRound'], ['endOfNextRound', 'UntilEndOfNextRound'], ['nextTurn', 'UntilNextTurn'], ['encounter', 'UntilEncounter'], ['scene', 'UntilScene']] }],
-  unmark: [TO, { path: 'key', kind: 'text', label: 'Key' }],
+  mark: [
+    TO, { path: 'key', kind: 'text', label: 'Key' }, UNTIL_FIELD, UNTIL_OF_FIELD,
+    { path: 'count', kind: 'formula', label: 'MarkCount', advanced: true },
+    { path: 'add', kind: 'checkbox', label: 'MarkAdd', advanced: true, showIf: step => step.count !== undefined },
+    { path: 'perSetter', kind: 'checkbox', label: 'MarkPerSetter', advanced: true },
+  ],
+  unmark: [TO, { path: 'key', kind: 'text', label: 'Key' }, { path: 'perSetter', kind: 'checkbox', label: 'MarkPerSetter', advanced: true }],
   bonusAttack: [
     TO,
     { path: 'count', kind: 'formula', label: 'BonusAttacks' },
@@ -339,18 +428,24 @@ export const STEP_FORMS = {
     { path: 'from.availabilities', kind: 'strings', label: 'Availabilities', hint: 'AvailabilitiesHint' },
     { path: 'from.tags', kind: 'tags', label: 'PickWhere' },
     { path: 'integrated', kind: 'checkbox', label: 'Integrated' },
-    { path: 'until', kind: 'select', label: 'Until', options: [['', 'UntilUsed'], ['endOfTurn', 'UntilEndOfTurn'], ['endOfRound', 'UntilEndOfRound'], ['endOfNextRound', 'UntilEndOfNextRound'], ['nextTurn', 'UntilNextTurn'], ['encounter', 'UntilEncounter'], ['scene', 'UntilScene']] },
+    { path: 'from.fields', kind: 'strings', label: 'PickGrantFields', advanced: true },
+    { path: 'replace', kind: 'checkbox', label: 'PickGrantReplace', advanced: true },
+    { path: 'record', kind: 'checkbox', label: 'PickGrantRecord', advanced: true },
+    { path: 'key', kind: 'text', label: 'PickKey', advanced: true, showIf: step => !!step.record },
+    { path: 'max', kind: 'number', label: 'PickGrantMax', advanced: true, showIf: step => !!step.record },
+    UNTIL_FIELD, UNTIL_OF_FIELD,
   ],
   askNumber: [{ path: 'prompt', kind: 'text', label: 'Prompt' }, { path: 'var', kind: 'text', label: 'VarName' }, { path: 'min', kind: 'formula', label: 'Min' }, { path: 'max', kind: 'formula', label: 'Max' }],
 };
 
 /** Every step also takes a condition. */
-export const STEP_COMMON = [{ path: 'when', kind: 'tags', label: 'StepWhen' }];
+export const STEP_COMMON = [{ path: 'when', kind: 'tags', label: 'StepWhen' }, { path: 'filter', kind: 'tags', label: 'StepFilter', advanced: true }, { path: 'quiet', kind: 'checkbox', label: 'StepQuiet', advanced: true }];
 
 /** Which steps make sense where: the damage steps only inside the damage Trigger events. */
 export function stepChoices(rule) {
   const damageEvent = rule?.type == 'Trigger' && ['wouldBeDefeated', 'takesDamage'].includes(rule.event);
-  return STEP_TYPES.filter(type => damageEvent || !['negateDamage', 'leaveAt'].includes(type));
+  const reaction = rule?.type == 'Reaction';
+  return STEP_TYPES.filter(type => (damageEvent || !['negateDamage', 'leaveAt'].includes(type)) && (reaction || !CARD_STEPS.includes(type)));
 }
 
 /** Tag families the "when" editor offers, each with what its argument is. */

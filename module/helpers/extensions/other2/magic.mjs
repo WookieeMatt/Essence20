@@ -1,82 +1,26 @@
 import {
-  registerChatButton, registerDefenseAdjust, registerPostRoll, registerTurnStart, registerUse,
+  registerChatButton, registerPostRoll, registerTurnStart, registerUse,
 } from "../../extensions.mjs";
-import { isMonsterFormActive } from "../../monster-morph.mjs";
 import {
-  FMMC, KOC, T, findSourced, has, isFrom, num, post, rollDif, sourceOf, targetedActors,
+  FMMC, KOC, T, findSourced, isFrom, num, post, rollDif, targetedActors,
 } from "./shared.mjs";
 
 /**
- * Magic: Thorn Warlord's Acid, Knights of Canterlot's More Bang for your Buck and Temper Tempest,
- * and Finster's build-your-own Sorcerous Power (Table 4-1).
+ * Magic: Knights of Canterlot's Temper Tempest, and Finster's build-your-own Sorcerous Power (Table 4-1).
  */
 export const O2_MAGIC = {
-  thornWarlord: FMMC('GKNjCEwhgEbBiKQn'),
   sorcery: FMMC('xUBOE1s5pgVyUrwj'),
-  moreBang: KOC('mfS0v8KAhBcLCC9e'),
   temperTempest: KOC('qwUMlRGUBOSoZJEI'),
   fireball: KOC('zlERIywyKQNBQzs6'),
 };
 
 export const TEMPEST_FLAG = 'o2TemperTempest';
 
-/* -------------------------------------------- */
-/*  Thorn Warlord                                */
-/* -------------------------------------------- */
+// Thorn Warlord's Acid against Evasion is an outgoing Defense rule on the Perk (rules/conv10-slC10.test.js).
 
-/**
- * Thorn Warlord (Finster's, Path of Thorns, 20th level, p.298): "While in Monster Form, any attack
- * you make that deals Acid damage can't be defended against with Toughness." A defender who picks
- * Toughness is measured against their Evasion instead.
- */
-export function dealsAcid(item) {
-  return item?.system?.damageType == 'acid' || item?.system?.secondaryDamage?.type == 'acid';
-}
-
-export function thornWarlordAdjust(attacker, defender, defenseType, ctx) {
-  if (defenseType != 'toughness' || !dealsAcid(ctx?.item) || !has(attacker, O2_MAGIC.thornWarlord) || !isMonsterFormActive(attacker)) {
-    return 0;
-  }
-
-  const defenses = defender?.system?.defenses ?? {};
-  return num(defenses.evasion?.total) - num(defenses.toughness?.total);
-}
-
-registerDefenseAdjust(thornWarlordAdjust);
-
-/* -------------------------------------------- */
-/*  More Bang for your Buck                      */
-/* -------------------------------------------- */
-
-/**
- * More Bang for your Buck (Knights of Canterlot, Elemental Mage Influence Perk, p.36): "When you
- * successfully cast a spell that uses fire, air, water or earth, it does 1 extra point of damage."
- * Spells carry no element; the damaging ones that do are listed here, plus any Fire-damage spell.
- */
-export const ELEMENTAL_SPELLS = new Set([O2_MAGIC.fireball, O2_MAGIC.temperTempest]);
-
-export function isElementalSpell(source, damageType) {
-  return ELEMENTAL_SPELLS.has(source) || damageType == 'fire';
-}
-
-registerPostRoll(async (actor, results, checkContext, { rider } = {}) => {
-  if (!has(actor, O2_MAGIC.moreBang) || !rider?.itemUuid) {
-    return;
-  }
-
-  const item = await fromUuid(rider.itemUuid);
-  if (item?.type != 'spell' || !isElementalSpell(sourceOf(item), checkContext?.damageType)) {
-    return;
-  }
-
-  const label = findSourced(actor, O2_MAGIC.moreBang)?.name ?? 'More Bang for your Buck';
-  for (const result of results ?? []) {
-    if (result.success && num(result.damageValue) > 0) {
-      result.damageValue = num(result.damageValue) + 1;
-      result.damageBonusLabel = [result.damageBonusLabel, `+1 (${label})`].filter(Boolean).join(' ');
-    }
-  }
-});
+// More Bang for your Buck (Knights of Canterlot, Elemental Mage Influence Perk, p.36): its +1 on a successful elemental
+// spell is a cast HitRider rule on the Perk (rules/ext/b/hit-rider.mjs); the storm's strikes below count as Temper
+// Tempest's cast hits (rules/ext/i/cast.mjs#castHitDamage), so the same rule adds its +1 there.
 
 /* -------------------------------------------- */
 /*  Temper Tempest                               */
@@ -125,9 +69,10 @@ registerTurnStart(async (actor) => {
   await post(actor, tempestCard(actor));
 });
 
-/** Lightning on up to three of the caster's targets. */
-export function tempestDamage(caster) {
-  return 3 + (has(caster, O2_MAGIC.moreBang) ? 1 : 0);
+/** Lightning on up to three of the caster's targets: 3, then whatever the caster's cast HitRider rules add for the spell. */
+export async function tempestDamage(caster) {
+  const { castHitDamage } = await import("../../../rules/ext/i/cast.mjs");
+  return castHitDamage(caster, findSourced(caster, O2_MAGIC.temperTempest), 3, 'element');
 }
 
 registerChatButton('o2TempestStrike', async (message, button) => {
@@ -143,7 +88,7 @@ registerChatButton('o2TempestStrike', async (message, button) => {
   }
 
   const { applyDamage } = await import("../../combat.mjs");
-  const amount = tempestDamage(caster);
+  const amount = await tempestDamage(caster);
   for (const target of targets) {
     await applyDamage(target, amount, 'element');
   }

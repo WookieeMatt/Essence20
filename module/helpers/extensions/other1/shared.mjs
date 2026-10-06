@@ -137,23 +137,6 @@ export async function actorsInPlay() {
   return [...out.values()];
 }
 
-/**
- * Deal damage straight away if this user may write the target, otherwise post a button whoever
- * owns it (the GM) can click - see the 'o1ApplyDamage' chat button in jtt.mjs.
- */
-export async function damageOrOffer(actor, target, amount, damageType, label) {
-  if (target?.isOwner) {
-    const { applyDamage } = await import("../../combat.mjs");
-    await applyDamage(target, amount, damageType);
-    await post(actor, T('O1DamageDealt', { name: actor.name, target: target.name, amount, source: label }));
-    return;
-  }
-
-  await post(actor, `<p>${T('O1DamageOffered', { name: actor.name, target: target.name, amount, source: label })}</p>`
-    + `<button type="button" data-e20-ext="o1ApplyDamage" data-target-uuid="${target.uuid}" data-amount="${amount}" `
-    + `data-damage-type="${damageType}">${T('O1ApplyDamageButton')}</button>`);
-}
-
 /** Adds to a defense's derived total and keeps its breakdown string in step. */
 export function addToDefense(defense, amount, label) {
   if (!defense || !amount) {

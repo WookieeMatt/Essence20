@@ -5,6 +5,11 @@
   "_id": "c3tBbGzXDar3DA1E",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","label":"Shark's Fin (Ground x2 at sea or in wetlands)","movement":"ground","stage":"afterDerived","op":"multiply","value":2,"when":["check:seaOrWetlands"]},
+      {"type":"Movement","label":"Shark's Fin (Aquatic x2 at sea or in wetlands)","movement":"swim","stage":"afterDerived","op":"multiply","value":2,"when":["check:seaOrWetlands"]},
+      {"type":"Trigger","label":"Shark's Fin (Initiative at sea or in wetlands)","event":"initiativeRolling","when":["check:seaOrWetlands"],"steps":[{"do":"removeCondition","condition":"surprised","to":"self"},{"do":"chat","text":"{name} can move up to {@actor.system.movement.ground.total * 0 + max(@actor.system.movement.ground.total, @actor.system.movement.swim.total)} ft before combat begins, and acts in any surprise round."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in a sea or wetlands scene region your Ground and Aquatic Movement double. When you roll Initiative there, you aren't Surprised and chat reminds you that you can move your full Movement before combat starts.</p>"

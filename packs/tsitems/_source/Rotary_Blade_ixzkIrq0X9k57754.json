@@ -5,6 +5,11 @@
   "_id": "ixzkIrq0X9k57754",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch to Cyber Shield Mode","when":["not:rule:data:system.active"],"cost":{"action":"move"},"steps":[{"do":"updateItem","item":"source:Compendium.essence20.technorganic_secrets.Item.9OuJzchTaiJEMcff","set":{"flags.essence20.rules.toggles.shieldMode":true}},{"do":"updateItem","set":{"system.equipped":true,"system.active":true}},{"do":"chat","text":"{name} switches the Rotary Blade to Cyber Shield Mode."}]},
+      {"type":"Use","label":"Controlled descent","when":["rule:data:system.active"],"cost":{"action":"standard"},"steps":[{"do":"chat","text":"{name} spins the Rotary Blade into a controlled descent and takes no falling damage."}]},
+      {"type":"Use","label":"Switch to Slasher Mode","when":["rule:data:system.active"],"cost":{"action":"move"},"steps":[{"do":"updateItem","item":"source:Compendium.essence20.technorganic_secrets.Item.9OuJzchTaiJEMcff","set":{"flags.essence20.rules.toggles.shieldMode":false,"flags.essence20.zord2ShieldMode":false}},{"do":"updateItem","set":{"system.active":false}},{"do":"chat","text":"{name} switches the Rotary Blade to Slasher Mode."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +1 Toughness and Evasion while the Cyber Shield is active. Use button: a controlled descent while falling (Standard action), or switch back to the blade (Move action).</p>"

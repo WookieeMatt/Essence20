@@ -4,7 +4,6 @@
  * Imported once from helpers/extensions/index.mjs.
  */
 import "./temp-resources.mjs";
-import "./personal-points.mjs";
 import "./wealth.mjs";
 import "./motor-pool.mjs";
 import "./power-spend.mjs";

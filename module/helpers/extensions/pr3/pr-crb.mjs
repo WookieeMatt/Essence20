@@ -1,42 +1,14 @@
 import {
-  registerDerived, registerPostRoll, registerRollSources, registerUse,
+  registerRollSources, registerUse,
 } from "../../extensions.mjs";
-import { worldActors } from "../../companion-link.mjs";
 import {
-  IDS, T, escapeHtml, holding, isItem, isThisRound, itemsOf, personalPower,
-  postLine, spendPower, turnStamp, writeActor,
+  IDS, T, escapeHtml, isItem, isThisRound, personalPower,
+  spendPower, turnStamp, writeActor,
 } from "./common.mjs";
 
 /**
  * Power Rangers Core Rulebook pieces of the pr3 slice. Each rule is quoted above its code.
  */
-
-/* -------------------------------------------- */
-/*  Megaform Expeditor                           */
-/* -------------------------------------------- */
-
-/**
- * Megaform Expeditor (PR CRB, Grid Tech, p.39): "It takes your Zord 1d4 rounds less time to be
- * ready to take part in the formation of any Combined transformation, minimum 1." Called from
- * helpers/combiner-timer.mjs#rollParticipantTime (see integration/pr3-patch.cjs) with the
- * participant's rolled join time. "Your Zord" is the Zord listed on the Ranger's own sheet.
- * @param {Actor} zord
- * @param {Number} total   The rolled join time.
- * @returns {Promise<Number>}
- */
-export async function expediteJoinTime(zord, total) {
-  if (!zord?.uuid || !expeditorOwnerOf(zord)) {
-    return total;
-  }
-
-  const roll = await new Roll('1d4').evaluate();
-  return Math.max(1, total - roll.total);
-}
-
-export function expeditorOwnerOf(zord) {
-  return worldActors().find(actor => !!holding(actor, IDS.megaformExpeditor)
-    && Object.values(actor.system?.actors ?? {}).some(entry => entry?.uuid && entry.uuid == zord?.uuid)) ?? null;
-}
 
 /* -------------------------------------------- */
 /*  Ninja Power - the 20ft jump                  */
@@ -92,21 +64,6 @@ registerRollSources((actor, target, ctx) => {
 
   return { sources: [{ id: 'pr3NinjaJump', label: T('Pr3NinjaJumpSource', { name: target.name }), shiftDown: 1 }] };
 });
-
-/* -------------------------------------------- */
-/*  Peerless Pilot                               */
-/* -------------------------------------------- */
-
-/**
- * Peerless Pilot (PR CRB, General Perk, p.97): "You may always automatically pass the Skill Test to
- * emergency disembark from a vehicle you are piloting." Called from helpers/vehicle-defeat.mjs's
- * emergency disembark (integration/pr3-patch.cjs) for each crew row.
- * @param {Actor} crewMember
- * @param {Object} entry   The vehicle's crew row (vehicleRole 'driver' is the pilot).
- */
-export function autoPassesDisembark(crewMember, entry) {
-  return entry?.vehicleRole == 'driver' && !!holding(crewMember, IDS.peerlessPilot);
-}
 
 /* -------------------------------------------- */
 /*  Power Heal - removing a Condition            */
@@ -214,154 +171,11 @@ Hooks.on('updateItem', (item, changes, options, userId) => {
 });
 
 /* -------------------------------------------- */
-/*  Survivor                                     */
-/* -------------------------------------------- */
-
-// Survivor (PR CRB, Influence Perk, p.75): "at any point when your Smarts would be lowered to 0,
-// roll a d20. On a result of 10 or above, your Smarts remains at 1." (The Survival Edge is the
-// item's Active Effect.)
-export function smartsDroppedToZero(changes) {
-  const value = changes?.system?.essences?.smarts?.value;
-  return value !== undefined && value !== null && Number(value) <= 0;
-}
-
-export async function survivorCheck(actor) {
-  const roll = await new Roll('1d20').evaluate();
-  const saved = roll.total >= 10;
-  if (saved) {
-    await actor.update({ 'system.essences.smarts.value': 1 });
-  }
-
-  await roll.toMessage?.({
-    speaker: ChatMessage.getSpeaker({ actor }),
-    flavor: T(saved ? 'Pr3SurvivorSaved' : 'Pr3SurvivorFailed', { name: actor.name }),
-  });
-  return saved;
-}
-
-Hooks.on('updateActor', (actor, changes, options, userId) => {
-  if (userId == game.user?.id && smartsDroppedToZero(changes) && holding(actor, IDS.survivor)) {
-    survivorCheck(actor);
-  }
-});
-
-/* -------------------------------------------- */
 /*  Unique Weapon (Green Ranger)                 */
 /* -------------------------------------------- */
 
-// Unique Weapon (PR CRB, Green Ranger, 1st level, p.44): "you are given a special, unique Power
-// Weapon... you may choose from or roll randomly on Table 4-4". The four weapons are compendium
-// items (packs/prcrbitems, Pr3UniqWpn*); the Use button picks or rolls one and hands it over.
-export const UNIQUE_WEAPONS = [IDS.uwRanged, IDS.uwSmall, IDS.uwVersatile, IDS.uwTwoHanded];
-
-registerUse({
-  id: 'pr3UniqueWeapon',
-  matches: item => isItem(item, IDS.uniqueWeapon),
-  canUse: item => !item.flags?.essence20?.pr3Granted,
-  run: async (item) => {
-    const actor = item.parent;
-    const { chooseButtons, grantCopy } = await import("../../grants.mjs");
-    const choice = await chooseButtons(item.name, T('Pr3UniquePrompt'), [
-      ['0', T('Pr3UniqueRanged')], ['1', T('Pr3UniqueSmall')], ['2', T('Pr3UniqueVersatile')], ['3', T('Pr3UniqueTwoHanded')],
-      ['roll', T('Pr3UniqueRoll')],
-    ]);
-    if (choice === null || choice === undefined) {
-      return null;
-    }
-
-    let index = Number(choice);
-    if (choice == 'roll') {
-      const roll = await new Roll('1d4').evaluate();
-      await roll.toMessage?.({ speaker: ChatMessage.getSpeaker({ actor }), flavor: item.name });
-      index = roll.total - 1;
-    }
-
-    const created = await grantCopy(actor, UNIQUE_WEAPONS[index], { grantedBy: item });
-    if (!created) {
-      return null;
-    }
-
-    await item.setFlag('essence20', 'pr3Granted', created.id);
-    return T('Pr3GrantedItem', { name: escapeHtml(actor.name), item: escapeHtml(created.name), source: escapeHtml(item.name) });
-  },
-});
-
-function equippedUnique(actor, uuid) {
-  return itemsOf(actor).find(item => item.type == 'weapon' && isItem(item, uuid) && item.system?.equipped !== false) ?? null;
-}
-
-// Ranged (60/100, Targeting): "Stores up to 3 Personal Power for wielder to use." A Use button on
-// the weapon stores 1 of your Power in it or draws 1 back out.
-const STORED_FLAG = 'pr3StoredPower';
-export const storedPower = weapon => Number(weapon?.flags?.essence20?.[STORED_FLAG]) || 0;
-
-registerUse({
-  id: 'pr3UniqueStore',
-  matches: item => item?.type == 'weapon' && isItem(item, IDS.uwRanged),
-  run: async (item) => {
-    const actor = item.parent;
-    const stored = storedPower(item);
-    const choices = [];
-    if (stored < 3 && personalPower(actor) >= 1) {
-      choices.push(['store', T('Pr3UniqueStore')]);
-    }
-
-    if (stored > 0) {
-      choices.push(['draw', T('Pr3UniqueDraw')]);
-    }
-
-    if (!choices.length) {
-      ui.notifications.info(T('Pr3UniqueStoreNothing'));
-      return null;
-    }
-
-    const { chooseButtons } = await import("../../grants.mjs");
-    const choice = choices.length == 1 ? choices[0][0] : await chooseButtons(item.name, T('Pr3UniqueStorePrompt', { stored }), choices);
-    if (choice == 'store' && await spendPower(actor, 1)) {
-      await item.setFlag('essence20', STORED_FLAG, stored + 1);
-    } else if (choice == 'draw') {
-      await item.setFlag('essence20', STORED_FLAG, stored - 1);
-      await actor.update({ 'system.powers.personal.value': personalPower(actor) + 1 });
-    } else {
-      return null;
-    }
-
-    return T('Pr3UniqueStored', { name: escapeHtml(item.name), stored: storedPower(item) });
-  },
-});
-
-// Ranged risk: "User loses 1d4 Personal Power upon a roll of natural 1 to hit."
-registerPostRoll(async (actor, results, checkContext, { isFumble, rider } = {}) => {
-  if (!isFumble || rider?.weaponSource != IDS.uwRanged) {
-    return;
-  }
-
-  const roll = await new Roll('1d4').evaluate();
-  const lost = Math.min(personalPower(actor), roll.total);
-  await actor.update({ 'system.powers.personal.value': personalPower(actor) - lost });
-  await postLine(actor, T('Pr3UniqueFumble', { name: escapeHtml(actor.name), lost }));
-});
-
-/**
- * Small Melee (Finesse): "Calls Zord in half normal time." Called from helpers/zord-summon.mjs's
- * summon timer (integration/pr3-patch.cjs) with the rolled arrival time. (Its risk - a DIF 12
- * Performance Test by someone else to steal the Zord - is the GM's to call.)
- */
-export function halveSummonRounds(pilot, rounds) {
-  return equippedUnique(pilot, IDS.uwSmall) ? Math.max(1, Math.ceil(rounds / 2)) : rounds;
-}
-
-// Two-Handed Melee (Might): "Inflicts energy damage instead of its normal type" (its weapon effect)
-// and "Slows all of wielder's movement types down by 10 ft." while it's equipped.
-registerDerived((actor) => {
-  if (!equippedUnique(actor, IDS.uwTwoHanded)) {
-    return;
-  }
-
-  for (const movement of Object.values(actor.system?.movement ?? {})) {
-    if (movement && Number(movement.total) > 0) {
-      movement.total = Math.max(0, Number(movement.total) - 10);
-    }
-  }
-});
+// Survivor's d20 at Smarts 0 is the Perk's own essenceChanged Trigger. Unique Weapon's pick-or-roll Use is the Perk's
+// own Use rule (choose + a 1d4 table); the Ranged weapon's store / draw Uses and its natural-1 risk, the Small Melee's
+// halved summon time (SummonTime) and the Two-Handed Melee's -10 ft (Movement at the derivedHook stage) are the weapons'
+// own rules. Megaform Expeditor (JoinTime) and Peerless Pilot (AutoDisembark, its Edges) are their Perks' own rules.
 

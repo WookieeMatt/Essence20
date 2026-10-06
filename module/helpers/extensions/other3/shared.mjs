@@ -10,37 +10,19 @@ const C = pack => `Compendium.essence20.${pack}.Item.`;
 export const O3 = {
   // My Little Pony CRB
   betrayal: `${C('mlp_crb')}fhne6x3suULZL040`,
-  dabbler: `${C('mlp_crb')}Tnr6LTI2yBHUxC7r`,
   selfImprovement: `${C('mlp_crb')}COOAlcYNeoScFiAE`,
   // Power Rangers
-  followMe: `${C('pr_crb')}ALq37Ch25nKvZ454`,
   betterTogether: `${C('through_the_shattered_grid')}tOoyMHVtV6wjvlxd`,
   guardianBlast: `${C('through_the_shattered_grid')}GuardianBlast000`,
   megaDefender: `${C('through_the_shattered_grid')}rZjP9CN55D5qKW0s`,
   metallicArmor: `${C('through_the_shattered_grid')}LotTM0zOcCBLkki4`,
-  solarixShard: `${C('through_the_shattered_grid')}jPqr2DuJMSQgiILp`,
-  voidTouched: `${C('through_the_shattered_grid')}NHH2nlllyFMBOB38`,
   // G.I. Joe
-  holographicSights: `${C('quartermasters_guide_to_gear')}aapIJuPKyMaGjb4U`,
   // Transformers
   scrambleField: `${C('technorganic_secrets')}cIki3qTlr4gZed5f`,
   againAndAgain: `${C('enigma_of_combination')}EmL1IgnaX55NTMve`,
-  balanceAndCompensation: `${C('enigma_of_combination')}T0TFdu4HRK8Eh0u0`,
-  bumpAndRun: `${C('enigma_of_combination')}4eA2ktw0cfdYV6Fs`,
-  emLining: `${C('enigma_of_combination')}SIGEfpjEe1H06dVM`,
   perfectPlacement: `${C('enigma_of_combination')}wueeFv0eN8eh7RbS`,
-  preciseChronometrics: `${C('enigma_of_combination')}Q6G07IGoYXAcoRzF`,
   puissance: `${C('enigma_of_combination')}N8nkrj2hSrLv9NFP`,
-  nowYouDont: `${C('tf_crb')}iW9TjN9X6SsYm2Ql`,
-  overchargeEngines: `${C('tf_crb')}BPHwAfGvLPZuJ1m1`,
-  multiplication: `${C('tf_crb')}K3FNcAMjjek1UaJk`,
-  popOut: `${C('tf_crb')}xAAzOb9sYmEN7qmv`,
-  samePrinciple: `${C('tf_crb')}GTUn1LOxb3D4FgHF`,
-  telltaleSign: `${C('tf_crb')}LM5pwZWroo1QKrSN`,
-  // Welcome to Night Vale
-  glutenTolerant: `${C('wtnv_citizens_guide')}dzYRdi2cSlZSHozs`,
-  gravityOptional: `${C('wtnv_citizens_guide')}F5mrzupd6TG2kj3x`,
-  weird: `${C('wtnv_citizens_guide')}RO0a3eX8MIo5g1Tv`,
+  // Pop Out and Telltale Sign are their items' own rules (module/rules/ext/g/).
 };
 
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));

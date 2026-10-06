@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"Defense","label":"Cruelty Monster Form (Toughness +2)","defense":"toughness","amount":2,"when":["self:data:flags.essence20.monsterFormActive"]},
-      {"type":"RollModifier","label":"Cruelty Monster Form (↑1)","upshift":1,"when":["self:data:flags.essence20.monsterFormActive",{"any":["skill:alertness","skill:intimidation","skill:might"]}]}
+      {"type":"RollModifier","label":"Cruelty Monster Form (↑1)","upshift":1,"when":["self:data:flags.essence20.monsterFormActive",{"any":["skill:alertness","skill:intimidation","skill:might"]}]},
+      {"type":"Trigger","event":"takesDamage","label":"Monster Form: Intimidation burst at 2+ damage from an attack (Path of Cruelty)","when":["self:data:flags.essence20.monsterFormActive","damage>=2","damage:attack","not:self:limitUsed:reactMonsterBurst:round"],"steps":[{"do":"button","whisper":"owners","who":"owner","label":"Intimidation against everyone within 10 ft","intro":"{name} can lash out at every creature within 10 feet.","usedWhenDone":true,"limit":{"per":"round","max":1,"key":"reactMonsterBurst"},"steps":[{"do":"collect","to":"all:10","required":true},{"do":"rollVsEach","skill":"intimidation","defense":"willpower","onHit":[{"do":"button","who":"gm","label":"Apply 1 Void to {target}","steps":[{"do":"damage","to":"target","amount":1,"damageType":"void"}]}]}]}]}
     ],
     "automation": {
       "status": "full",

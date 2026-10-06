@@ -5,6 +5,10 @@
   "_id": "GNT0qv91JUTXfS0n",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Use","when":["combat","not:self:marked:overload"],"cost":{"action":"free"},"steps":[{"do":"loseHealth","amount":"1d2"},{"do":"mark","to":"self","key":"overload","until":"endOfTurn"}]},
+      {"type":"RollModifier","label":"Overload","when":["attack","self:marked:overload"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free action, in combat): the Zord loses 1d2 Health and gets an Edge on all its attacks this turn.</p>"

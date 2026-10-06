@@ -5,6 +5,10 @@
   "_id": "FDf9ZhuajJb3U5un",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Questioned about your wealth or gear (Profiteer: ↓1 for a minute)","when":["essence:social","not:self:marked:profiteer"],"downshift":1,"forget":true,"steps":[{"do":"mark","to":"self","key":"profiteer","until":"rounds:10"}]},
+      {"type":"RollModifier","label":"Profiteer","when":["essence:social","self:marked:profiteer"],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Social tests, a switch for when your motives are questioned; for the next 10 rounds (or the rest of the scene) your Social tests take ↓1 automatically.</p>"

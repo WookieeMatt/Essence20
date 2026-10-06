@@ -11,34 +11,10 @@ export const TF2 = {
   // Technorganic Secrets
   mutantBeast: C('technorganic_secrets', 'gkcyg7KWih6QAZlq'),
   mutantBeastPerk: C('technorganic_secrets', 'R85uJNpYbXd9C9Eh'),
-  lingeringSideEffects: C('technorganic_secrets', 'jDRfmpsy1ElT2Kkn'),
   // The Enigma of Combination
-  arrogant: C('enigma_of_combination', 'duMjTyfREHYmDFJs'),
   notLikeThat: C('enigma_of_combination', 'OrK3XyNIyJcorMxp'),
-  rollerDrum: C('enigma_of_combination', 'Hjo7mZ7eLs8EwKeu'),
-  scrambleModulator: C('enigma_of_combination', '5o2qpfqpwRPeUBPA'),
-  sustainedBeam: C('enigma_of_combination', 'BIlS9uwDfZquX9hf'),
-  weAreOne: C('enigma_of_combination', '1MtovibPOMw9O2hP'),
   // Transformers Core Rulebook
-  allOutAttack: C('tf_crb', 'OCQ8ZuC793JHQ4YU'),
-  appliedScience: C('tf_crb', 'qjDBmRlTNvuJxyum'),
-  // Doubles the Scientist Role Perks' listed uses (TF CRB p.80).
-  multiplication: C('tf_crb', 'K3FNcAMjjek1UaJk'),
-  broadUnderstanding: C('tf_crb', '7BZXi4zvS6GAhGOY'),
-  cage: C('tf_crb', 'w1E74WXrvwQJlS1Q'),
-  deconstruct: C('tf_crb', '7tc7EWwKSFQ76tly'),
-  determineProbability: C('tf_crb', 'RK9cboEVTiJKdjbN'),
-  diversion: C('tf_crb', 'LDi9BUkXFtaCSoTe'),
-  dukeItOut: C('tf_crb', 'jkuNDvRt4D9jyDsn'),
-  dustUp: C('tf_crb', '7aKjiqEZ3LYuvwmu'),
-  energonBank: C('tf_crb', 'W87huLqKeOCJJ66L'),
-  evasiveFighting: C('tf_crb', 'fQJF7zvHjd39qw99'),
-  extraCrewCapacity: C('tf_crb', 'PCwgQWKmTOl8va3I'),
-  forTheAllspark: C('tf_crb', 'UMlH70vmM3kJzWvS'),
   // Special-attack weapons the Technorganic Secrets Alt Modes print.
-  // The G.I. JOE printings of All Out Attack / Evasive Fighting, already wired in target-riders.mjs.
-  gijAllOutAttack: C('gi_joe_crb', 'Rhz1k6gTl2XTs8Nk'),
-  gijEvasiveFighting: C('gi_joe_crb', 'tBXpROuVSuAxGZpR'),
 };
 
 export const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));

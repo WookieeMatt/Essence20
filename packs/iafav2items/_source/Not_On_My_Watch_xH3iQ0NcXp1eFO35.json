@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Defense","label":"Defeated ally within Reach (Not On My Watch: +1 Toughness/Evasion)","defense":"any","amount":1,"when":[{"any":["defense:toughness","defense:evasion"]},"check:defeatedAllyInReach"]}
+      {"type":"Defense","label":"Defeated ally within Reach (Not On My Watch: +1 Toughness/Evasion)","defense":"any","amount":1,"when":[{"any":["defense:toughness","defense:evasion"]},"check:defeatedAllyInReach"]},
+      {"type":"Trigger","event":"droppedToZero","watch":"ally","label":"Ally Defeated: Move toward them (Not On My Watch)","when":["var:resource=health","not:target:type:vehicle"],"steps":[{"do":"button","label":"Move toward them (Not On My Watch)","intro":"An ally dropped to 0 Health: an extra Move toward them.","whisper":"owners","steps":[{"do":"grantActions","move":1,"when":["combat:exists"]},{"do":"chat","text":"{name} rushes up to {@actor.system.movement.ground.total} ft toward their fallen teammate."}]}]}
     ],
     "prerequisites": {"when":["self:skill:alertness>=d10"]},
     "automation": {

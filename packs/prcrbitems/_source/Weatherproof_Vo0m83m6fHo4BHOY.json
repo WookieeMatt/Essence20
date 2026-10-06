@@ -5,6 +5,15 @@
   "_id": "Vo0m83m6fHo4BHOY",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the environment","steps":[{"do":"pick","key":"environment","from":"list","prompt":"Choose an environment","legacy":"flags.essence20.s1Environment","options":[["underwater","Underwater"],["lowGravity","Low Gravity"],["zeroGravity","Zero Gravity"],["vacuum","Vacuum"],["normal","On land (normal)"]]}]},
+      {"type":"RollModifier","label":"Weatherproof (Low Gravity)","scope":"host","stacks":true,"edge":true,"when":["attack","item:type:weaponEffect","rule:data:flags.essence20.rules.choices.environment=lowGravity","environment:lowGravity","not:item:data:system.classification.style=melee","not:weapon:trait:inertial","weapon:trait:ballistic"]},
+      {"type":"RollModifier","label":"Weatherproof (Zero Gravity)","scope":"host","stacks":true,"edge":true,"when":["attack","item:type:weaponEffect","rule:data:flags.essence20.rules.choices.environment=zeroGravity","environment:zeroGravity","not:item:data:system.classification.style=melee","not:weapon:trait:inertial","not:weapon:trait:energy","not:item:damageType:laser"]},
+      {"type":"RollModifier","label":"Weatherproof (Vacuum)","scope":"host","stacks":true,"edge":true,"when":["attack","item:type:weaponEffect","rule:data:flags.essence20.rules.choices.environment=vacuum","environment:vacuum","not:item:data:system.classification.style=melee","not:weapon:trait:inertial"]},
+      {"type":"RollModifier","label":"Weatherproof (Underwater)","scope":"host","stacks":true,"edge":true,"when":["attack","item:type:weaponEffect","rule:data:flags.essence20.rules.choices.environment=underwater","environment:underwater","not:weapon:trait:amphibious","not:weapon:trait:aquatic",{"any":["not:item:data:system.classification.style=melee","not:self:data:system.movement.swim.total>0"]}]},
+      {"type":"RollModifier","label":"Weatherproof (Underwater)","scope":"host","stacks":true,"upshift":2,"when":["attack","item:type:weaponEffect","rule:data:flags.essence20.rules.choices.environment=underwater","environment:underwater","item:damageType:fire"]},
+      {"type":"RollModifier","label":"Weatherproof (On land)","scope":"host","stacks":true,"upshift":3,"when":["attack","item:type:weaponEffect","rule:data:flags.essence20.rules.choices.environment=normal","environment:normal","weapon:trait:aquatic","not:weapon:trait:amphibious"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose the environment the weapon is modified for (underwater, low gravity, zero gravity, vacuum or normal). Automatic: when the GM sets the scene to that environment, its attacks get an Edge or ↑ that cancels the environment's Snag or ↓, labelled Weatherproof in the Roll Options Dialog.</p>"

@@ -5,7 +5,8 @@
   "system": {
     "rules": [
       {"type":"RollModifier","label":"Spacewalker (Athletics, Acrobatics in low or zero gravity)","when":[{"any":["skill:athletics","skill:acrobatics"]},{"any":["environment:lowGravity","environment:zeroGravity"]},"not:vehicle:type:vehicle","not:roll:initiative"],"edge":true},
-      {"type":"RollModifier","label":"Spacewalker (zero gravity)","when":["environment:zeroGravity","not:skill:athletics","not:skill:acrobatics","not:vehicle:type:vehicle","not:roll:initiative"],"upshift":1}
+      {"type":"RollModifier","label":"Spacewalker (zero gravity)","when":["environment:zeroGravity","not:skill:athletics","not:skill:acrobatics","not:vehicle:type:vehicle","not:roll:initiative"],"upshift":1},
+      {"type":"Defense","defense":"evasion","amount":5,"when":[{"any":["environment:outside:lowGravity","environment:outside:zeroGravity"]}]}
     ],
     "prerequisites": {"when":["self:skill:athletics>=d4","ask:Spacewalk Specialization"]},
     "automation": {

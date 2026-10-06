@@ -1,4 +1,4 @@
-import { mlp1RollSources, mlp1SpellCost, shapeOf } from './mlp1.mjs';
+import { mlp1RollSources, shapeOf } from './mlp1.mjs';
 
 const actor = (items = [], extra = {}) => ({ uuid: 'Actor.a', name: 'A', system: extra.system ?? {}, flags: { essence20: extra.flags ?? {} }, items: { contents: items }, getActiveTokens: () => [] });
 
@@ -11,9 +11,4 @@ test('a changed shape gives Face-Shift and Master Morph their Skills', () => {
   const holder = actor([], { flags: { mlpShape: { scene: 1, faceSkill: 'persuasion', morphSkill: 'alertness', spell: true } } });
   expect(shapeOf(holder)).toBeTruthy();
   expect(mlp1RollSources(holder, null, { rolledSkill: 'alertness' }).sources[0]).toMatchObject({ id: 'masterMorph', shiftUp: 2 });
-});
-
-test('Sharpcaster\'s second roll is free', async () => {
-  expect(await mlp1SpellCost({ parent: actor() }, 3, { sharpcasterFree: true })).toBe(0);
-  expect(await mlp1SpellCost({ parent: actor() }, 3, {})).toBe(3);
 });

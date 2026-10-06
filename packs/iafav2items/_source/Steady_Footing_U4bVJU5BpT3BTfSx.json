@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"incoming","when":["attack",{"any":["item:damageType:maneuver","item:damageType:grapple"]}],"downshift":1}
+      {"type":"RollModifier","scope":"incoming","when":["attack",{"any":["item:damageType:maneuver","item:damageType:grapple"]}],"downshift":1},
+      {"type":"Reaction","label":"Steady Footing: counter-maneuver","attackOnly":true,"when":["roll:fumble",{"any":["item:damageType:maneuver","item:damageType:grapple"]},"target:data:id"],"steps":[{"do":"mark","to":"target","key":"steadyFooting"},{"do":"bank","replace":true,"upshift":1,"appliesWhen":["attack","markedByMe:steadyFooting","item:damageType:maneuver"]},{"do":"setTargets","to":"target"},{"do":"bonusAttack","cost":"free","optional":true},{"do":"chat","text":"{name} strikes back at {target} (Grapple, Shove or Trip, ↑1)."}]}
     ],
     "prerequisites": {"when":[{"any":["self:skill:acrobatics>=d6","self:skill:athletics>=d6"]}]},
     "automation": {

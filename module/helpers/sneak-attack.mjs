@@ -4,6 +4,8 @@ import { actorHasPerk, findPerk, hasUsedThisEncounter, hasUsedThisRound, markUse
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { canWriteStoryPoints, hasStoryPointsAvailable } from "./story-points.mjs";
 import { isKnownOutsideEnvironmentOfExpertise, meetsEnvironmentOfExpertise } from "./environmental-expertise.mjs";
+// Every Trick in the Book's "no sneak attack damage" is a SneakAttackImmunity rule on its pack item.
+import { ruleSneakAttackImmune } from "../rules/ext/b/readers.mjs";
 
 /**
  * GI Joe CRB p.72 - the Commando Role's Sneak Attack Perk:
@@ -32,7 +34,6 @@ import { isKnownOutsideEnvironmentOfExpertise, meetsEnvironmentOfExpertise } fro
 const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 const SNEAK_ATTACK_DAMAGE_ID = `${GI_JOE_CRB}Mrmbqza0XxVpKj6U`;
 const EVERYTHING_A_WEAPON_ID = `${GI_JOE_CRB}hx4KzTl8iQ8Z22eq`;
-const EVERY_TRICK_IN_THE_BOOK_ID = `${GI_JOE_CRB}HKv38GCtVdSV2qMH`;
 const NEVER_HEARD_IT_COMING_ID = `${GI_JOE_CRB}jIUKR6chHdKQO2vr`;
 export const IN_MY_SIGHTS_ID = `${GI_JOE_CRB}MD54SjlTYiCTvmBB`;
 const BALLISTIC_ADVANTAGE_ID = `${GI_JOE_CRB}civSjmz83aDYPwvo`;
@@ -267,7 +268,7 @@ export function checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack, {
   // target that can't take sneak attack damage at all.
   const fooledTarget = game.user?.targets?.first?.()?.actor;
   if (isPerfectDisguiseActive(actor) && actorHasPerk(actor, PERFECT_DISGUISE_ID)
-    && !(fooledTarget && actorHasPerk(fooledTarget, EVERY_TRICK_IN_THE_BOOK_ID)) && !hasUsedThisRound(actor, SNEAK_ATTACK_ROUND_FLAG)) {
+    && !(fooledTarget && ruleSneakAttackImmune(fooledTarget)) && !hasUsedThisRound(actor, SNEAK_ATTACK_ROUND_FLAG)) {
     return { eligible: true, reason: game.i18n.localize('E20.SneakAttackReasonDisguise') };
   }
 
@@ -285,7 +286,7 @@ export function checkSneakAttackEligibility(actor, weaponEffect, edgeOnAttack, {
 
   // Every Trick in the Book (12th level, General Perk): "You do not suffer sneak attack damage" -
   // an absolute immunity on the TARGET's side.
-  if (targetToken.actor && actorHasPerk(targetToken.actor, EVERY_TRICK_IN_THE_BOOK_ID)) {
+  if (targetToken.actor && ruleSneakAttackImmune(targetToken.actor)) {
     return { eligible: false, reason: game.i18n.localize('E20.SneakAttackReasonTargetImmune') };
   }
 
@@ -360,7 +361,7 @@ export function checkPredatorSneakAttackEligibility(actor, weaponEffect) {
   }
 
   const targetToken = game.user.targets.first();
-  if (targetToken?.actor && actorHasPerk(targetToken.actor, EVERY_TRICK_IN_THE_BOOK_ID)) {
+  if (targetToken?.actor && ruleSneakAttackImmune(targetToken.actor)) {
     return { eligible: false, reason: game.i18n.localize('E20.SneakAttackReasonTargetImmune') };
   }
 

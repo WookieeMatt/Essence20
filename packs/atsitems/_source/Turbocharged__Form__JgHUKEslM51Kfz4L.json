@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Form","label":"Turbo (1 Personal Power when you Morph)","cost":1,"swaps":[{"replaces":"blaster","uuids":["Compendium.essence20.across_the_stars.Item.U4XFwXCXXceKtGEl","Compendium.essence20.across_the_stars.Item.11McvXnnzKsD3OKo"]},{"replaces":"power","pick":["Compendium.essence20.across_the_stars.Item.vQJbFtZMiJNEeyC3","Compendium.essence20.across_the_stars.Item.cQwRkKPB8u6vXkv1","Compendium.essence20.across_the_stars.Item.DVXDYbXAtmRvwceC","Compendium.essence20.across_the_stars.Item.E0qqh4VuNqSfVKMb"]}]},
+      {"type":"Use","label":"Unlock this Form (1 Personal Power)","when":["self:morphed","not:form:active"],"steps":[{"do":"formStart"}]},
+      {"type":"Use","label":"End this Form","when":["form:active"],"steps":[{"do":"formEnd"},{"do":"chat","text":"{name} ends the Form."}]},
+      {"type":"Use","label":"Summon a Turbo Cart (1 Personal Power)","when":["form:active"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"chat","text":"{name} summons a Turbo Cart."}]}
+    ],
     "prerequisites": {"when":["self:level>=5"]},
     "automation": {
       "status": "partial",

@@ -5,9 +5,8 @@
  * Every write to system.energon.normal.value passes the actor update hooks; a decrease is a
  * spend unless the writer passes `{essence20Loss: true}` or `{essence20Refund: true}`.
  *
- * Fuel Efficient (Transformers CRB, General Perk, p.109): "When you spend an Energon Point, roll a
- * d4. On a 4, regain the spent Energon Point." - one d4 per point spent, on any spend. (dice.mjs's
- * own copy on the Converting cost is removed by the integration patch so it isn't rolled twice.)
+ * Fuel Efficient (a d4 per Energon Point spent, a 4 gives it back) is its item's own resourceSpent
+ * Trigger rule.
  *
  * Repair Progress, 10 minutes or less (Cobra/Con Fusion, Table 1-1, p.10): "All PCs, including
  * G.I. Joes, gain 1 bonus Energon Point. This can exceed their normal Energon point maximum, but
@@ -49,15 +48,7 @@ export function isRestUpdate(changes) {
     && changed(changes, ENERGON) !== undefined;
 }
 
-onHook('createItem', async (item, options, userId) => {
-  if (userId != game.user?.id || !isItem(item, IDS.repairProgressEnergon) || !item.parent) {
-    return;
-  }
-
-  const actor = item.parent;
-  await actor.update({ [ENERGON]: num(actor.system?.energon?.normal?.value) + 1 }, { essence20Refund: true });
-  await say(actor, T('ResRepairBonusGained', { name: actor.name }));
-});
+// Adding the Perk gives the point: its own 'added' Trigger rule (gainResource with overMax).
 
 /* -------------------------------------------- */
 /*  Before / after an Energon write              */
@@ -79,25 +70,11 @@ onHook('preUpdateActor', (actor, changes, options) => {
   }
 });
 
-async function onEnergonSpend(actor, prev, spent) {
+async function onEnergonSpend(actor, prev) {
   const max = num(actor.system?.energon?.normal?.max);
   const perk = findItem(actor, IDS.repairProgressEnergon);
   if (perk && !perk.flags?.essence20?.[BONUS_SPENT_FLAG] && prev > max) {
     await perk.setFlag('essence20', BONUS_SPENT_FLAG, true);
-  }
-
-  if (has(actor, IDS.fuelEfficient)) {
-    let regained = 0;
-    for (let i = 0; i < spent; i++) {
-      if ((await new Roll('1d4').evaluate()).total == 4) {
-        regained++;
-      }
-    }
-
-    if (regained) {
-      await actor.update({ [ENERGON]: num(actor.system.energon.normal.value) + regained }, { essence20Refund: true });
-      await say(actor, T('ResFuelEfficientLine', { name: actor.name, count: regained }));
-    }
   }
 }
 
@@ -110,7 +87,7 @@ onHook('updateActor', (actor, changes, options, userId) => {
 
   const spent = options.essence20PrevEnergon - num(next);
   if (spent > 0) {
-    onEnergonSpend(actor, options.essence20PrevEnergon, spent).catch(error => console.error('Essence20 | Energon spend', error));
+    onEnergonSpend(actor, options.essence20PrevEnergon).catch(error => console.error('Essence20 | Energon spend', error));
   }
 });
 

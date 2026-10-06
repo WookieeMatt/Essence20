@@ -1,47 +1,23 @@
-import { registerChatButton, registerHitRider, registerRollSources } from "../../extensions.mjs";
+import { registerChatButton, registerHitRider } from "../../extensions.mjs";
 import { getSceneEpoch } from "../../scene-clock.mjs";
 import { say, T } from "./shared.mjs";
 
 /**
- * The Enigma of Combination weapons whose Special line needed code: Assault Claw, Demolecularization
- * Gun and Primeon Blade.
+ * The Enigma of Combination weapons whose Special line needed code: Assault Claw and Primeon Blade. (The
+ * Demolecularization Gun is its item's own rules - rules/conv10-slC10.test.js.)
  */
 
 const eoc = id => `Compendium.essence20.enigma_of_combination.Item.${id}`;
 export const WEAPON22 = {
   assaultClaw: eoc('VKaNv1Vf0O6ewkix'),
-  demolecularizationGun: eoc('HjkeUVUUTQiXi0MO'),
-  demolecularizationEffect: eoc('pb41Xy9DvpifezHR'),
   primeonBlade: eoc('VuvBnBhXQTmr4Tro'),
 };
 
-const DEMOLEC_FLAG = 'd22Demolecularized';
 export const CLAW_FLAG = 'd22AssaultClawGrapple';
 
-const dealsSharp = item => item?.system?.damageType == 'sharp' || item?.system?.secondaryDamage?.type == 'sharp';
-
-/* -------------------------------------------- */
-/*  Roll sources                                 */
-/* -------------------------------------------- */
-
-export function weaponRollSources(actor, target, { item, isAttack } = {}) {
-  const sources = [];
-  const epoch = getSceneEpoch();
-
-  // Demolecularization Gun (p.53): "Targets hit are partially demolecularized for the remainder of
-  // the scene, granting Edge to attacks against them that deal Sharp damage."
-  const demolec = target?.flags?.essence20?.[DEMOLEC_FLAG];
-  if (isAttack && demolec?.scene == epoch && dealsSharp(item)) {
-    sources.push({ id: 'd22Demolecularized', label: T('D22Demolecularized'), edge: true });
-  }
-
-  // Assault Claw (p.49): "Targets Grappled by this weapon suffer Snag to escape." Its escape Snag is
-  // the Grappled switch (extensions/rules/grappled.mjs#clawGrappled), which a Claw grapple turns on
-  // for every roll, escape attempts included.
-  return { sources, consumes: [] };
-}
-
-registerRollSources((actor, target, ctx) => weaponRollSources(actor, target, ctx));
+// Assault Claw (p.49): "Targets Grappled by this weapon suffer Snag to escape." Its escape Snag is the Grappled
+// switch (extensions/rules/grappled.mjs#clawGrappled), which a Claw grapple turns on for every roll, escape attempts
+// included.
 
 /* -------------------------------------------- */
 /*  On a hit                                     */
@@ -53,10 +29,6 @@ export async function weaponHitRider(actor, target, result, rider) {
   }
 
   const epoch = getSceneEpoch();
-  if (rider?.weaponSource == WEAPON22.demolecularizationGun || rider?.itemSource == WEAPON22.demolecularizationEffect) {
-    await target.setFlag('essence20', DEMOLEC_FLAG, { scene: epoch, by: actor.uuid });
-    await say(actor, T('D22DemolecularizedHit', { target: target.name }));
-  }
 
   // The Assault Claw's Grapple alternate effect.
   if (rider?.weaponSource == WEAPON22.assaultClaw && rider.damageType == 'grapple') {

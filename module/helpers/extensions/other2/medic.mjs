@@ -2,28 +2,24 @@ import {
   registerNamedAction, registerRoundStart, registerUse,
 } from "../../extensions.mjs";
 import { activeKits } from "../../kits.mjs";
-import { getUses, markUsed } from "../../scene-clock.mjs";
+import { ruleActionSkills, spendActionSkill } from "../../../rules/ext/c/actions.mjs";
 import {
-  GIJ, HAWK, T, feetBetween, firstTarget, has, isFrom, itemsOf, num, post, rollDif,
+  GIJ, T, feetBetween, firstTarget, has, isFrom, num, post, rollDif,
 } from "./shared.mjs";
 
 /**
  * Healing: the Core Rules' "restore Health with a Skill Test" as an action anyone can take, and the
- * GI Joe Medic/Hawk's Personnel Files Perks and gear that change it - Hearty Meal, Proper
- * Protection, Stim Dart and the Defibrillator. Peaceable's ↑1 on healing rolls and Proper Protection's
+ * GI Joe Medic/Hawk's Personnel Files Perks and gear that change it - Proper Protection and the
+ * Defibrillator (Hearty Meal's Skills are an ActionSkills rule on its Perk) (Stim Dart is a rule on its Perk). Peaceable's ↑1 on healing rolls and Proper Protection's
  * immunities are rules on their pack items.
  */
 export const O2_MED = {
   iveGotYou: GIJ('6wbY17kDGkxeGBPp'),
   properProtection: GIJ('CUV2gVVGb7U7yU5J'),
-  stimDart: GIJ('5Gx1CuLTEbjFqV8F'),
   defibrillator: GIJ('IP0hnNhERC4OCc0k'),
-  heartyMeal: HAWK('NULhQcWctFcXXdDH'),
 };
 
 export const HEAL_ACTION = 'o2Heal';
-const HEARTY_MEAL_USE = 'o2HeartyMealHeal';
-const STIM_DART_USE = 'o2StimDart';
 const DEFIB_FLAG = 'o2Defibrillating';
 
 /** RAW's DIF to restore Health: "5 + (5 per Health you want to restore)" (GI Joe CRB p.210). */
@@ -53,10 +49,10 @@ export function hasMedicineKit(actor) {
  */
 export function healSkills(actor, { inCombat = !!game.combat } = {}) {
   const skills = ['science', 'technology'];
-  // Hearty Meal (Hawk's Personnel Files p.174): "once per mission, you can use Culture or
-  // Performance in place of Science Skill Tests to heal damage outside of combat."
-  if (!inCombat && has(actor, O2_MED.heartyMeal) && getUses(actor, HEARTY_MEAL_USE, 'mission') < 1) {
-    skills.push('culture', 'performance');
+  // ActionSkills rules (Hearty Meal's Culture / Performance out of combat, once per mission - rules/ext/c/actions.mjs).
+  const combat = inCombat ? (game.combat ?? { started: true }) : null;
+  for (const { skills: more } of ruleActionSkills(actor, 'heal', { combat })) {
+    skills.push(...more.filter(skill => !skills.includes(skill)));
   }
 
   return skills;
@@ -122,9 +118,7 @@ export async function healAction(actor) {
     return { cancelled: true };
   }
 
-  if (['culture', 'performance'].includes(choice.skill)) {
-    await markUsed(actor, HEARTY_MEAL_USE, { window: 'mission' });
-  }
+  await spendActionSkill(actor, 'heal', choice.skill);
 
   if (choice.mode == 'poison') {
     const { success } = await rollDif(actor, choice.skill, choice.dif, { o2Heal: true });
@@ -158,58 +152,8 @@ globalThis.Hooks?.once?.('i18nInit', () => {
   }
 });
 
-/* -------------------------------------------- */
-/*  Stim Dart                                    */
-/* -------------------------------------------- */
-
-/**
- * Stim Dart (GI Joe CRB, Medic, 15th level, p.82): "The launcher has a range of 20 feet, and firing
- * it requires a Targeting attack roll if used at range, but no roll if used on an adjacent ally or
- * yourself. When applied to a conscious ally or to yourself, the dart grants 2 Temporary Health.
- * When applied to a Defeated ally or yourself (through Self-Revive), the defeated character
- * regains 2 Health in addition to benefits from I've Got You and Up and At 'Em. You may requisition
- * additional darts as a prototype upgrade to your medicine kit." One dart per mission, plus one for
- * each extra dart Item carried.
- */
-export function stimDartsLeft(actor) {
-  const extra = itemsOf(actor).filter(item => /stim dart/i.test(item.name ?? '') && item.type != 'perk').length;
-  return 1 + extra - getUses(actor, STIM_DART_USE, 'mission');
-}
-
-registerUse({
-  id: 'o2StimDart',
-  matches: isFrom(O2_MED.stimDart),
-  canUse: item => stimDartsLeft(item.parent) > 0,
-  async run(item, economy, pay) {
-    const actor = item.parent;
-    const target = firstTarget() ?? actor;
-    const distance = target.id == actor.id ? 0 : feetBetween(actor, target);
-    if (distance != null && distance > 20) {
-      ui.notifications?.warn?.(T('O2OutOfRange', { range: 20 }));
-      return null;
-    }
-
-    if (!(await pay('standard'))) {
-      return null;
-    }
-
-    await markUsed(actor, STIM_DART_USE, { window: 'mission' });
-    if (distance != null && distance > 5) {
-      const { success } = await rollDif(actor, 'targeting', num(target.system?.defenses?.evasion?.total));
-      if (!success) {
-        return T('O2StimDartMissed', { name: actor.name, target: target.name });
-      }
-    }
-
-    if (target.statuses?.has?.('defeated')) {
-      await restoreHealth(actor, target, 2);
-      return T('O2StimDartRevived', { name: actor.name, target: target.name });
-    }
-
-    await target.update({ 'system.health.bonus': num(target.system?.health?.bonus) + 2 });
-    return T('O2StimDartBoost', { name: actor.name, target: target.name });
-  },
-});
+// Stim Dart (GI Joe CRB, Medic, 15th level, p.82) is a Use rule on the Perk; its Defeated revive goes through
+// restoreHealth above (the healAction step - rules/ext/b/steps.mjs).
 
 /* -------------------------------------------- */
 /*  Defibrillator                                */

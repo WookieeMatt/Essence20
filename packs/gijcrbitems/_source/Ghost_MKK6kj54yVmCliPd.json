@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Toggle","key":"hiding","label":"Hiding","legacy":"actor.flags.essence20.s1GhostHiding"},
+      {"type":"Use","label":"Start or stop hiding","steps":[{"do":"setToggle","key":"hiding","value":"toggle"},{"do":"mark","key":"ghostHiding","when":["self:toggle:hiding"]},{"do":"applyCondition","condition":"invisible","when":["self:toggle:hiding"]},{"do":"chat","text":"{name} is hiding - invisible to natural senses.","when":["self:toggle:hiding"]},{"do":"unmark","key":"ghostHiding","when":["not:self:toggle:hiding"]},{"do":"removeCondition","condition":"invisible","when":["not:self:toggle:hiding"]},{"do":"chat","text":"{name} is no longer hiding.","when":["not:self:toggle:hiding"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: start or stop hiding. While hidden you have the Invisible Condition.</p>"

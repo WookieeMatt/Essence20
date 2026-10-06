@@ -5,6 +5,9 @@
   "_id": "jDRfmpsy1ElT2Kkn",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"itemAdded","label":"Lingering Side Effects: third Alt Mode warning","when":["item:type:altMode","self:itemCount:altMode>2"],"steps":[{"do":"chat","text":"{name} has Lingering Side Effects: a Mutant Beast can't acquire a third Alt Mode."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you get a warning if a third Alt Mode is added to your character.</p>"

@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Avoiding a trap or ambush (Danger Sense: Edge)","edge":true}
+      {"type":"DialogSwitch","label":"Avoiding a trap or ambush (Danger Sense: Edge)","edge":true},
+      {"type":"InitiativeReroll","label":"Initiative: reroll 1s and 2s on Skill dice (Danger Sense)","atMost":2}
     ],
     "automation": {
       "status": "full",

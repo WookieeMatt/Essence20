@@ -1,11 +1,8 @@
-import { registerDerived } from "../../extensions.mjs";
-import { D21, findSourced, itemsOf, sourceOf } from "./common.mjs";
+import { D21, itemsOf, sourceOf } from "./common.mjs";
 
 /**
- * Finster's Monster-Matic Cookbook's new rules (p.7):
- * - "Larger Than Life: This perk allows the Game Master to treat imposing figures as whichever size
- *   best fits the narrative (usually Common or Large) ... These characters benefit from the Reach of a
- *   Large creature despite the chosen size."
+ * Finster's Monster-Matic Cookbook's new rules (p.7) - Larger Than Life's Reach is its item's own rule
+ * (rules/conv10-slC10.test.js):
  * - "Non-Mystical: A target is Non-Mystical if they do not possess Magical artifacts, the Mystic
  *   trait, Sorcerous Powers, Supernatural Perks, or by clarification of the GM." Read by the Mystic
  *   perk (Zen-Aku's stat block: "Some of Zen-Aku's Attacks and Powers are Mystical in nature ... ignore any
@@ -18,29 +15,6 @@ import { D21, findSourced, itemsOf, sourceOf } from "./common.mjs";
  *   or be knocked Prone. The DIF for this test is equal to 12 plus 3 for each Power spent." The
  *   Sorcery's own 2-point cost replaces the Personal Power, so the caster picks the strength (1-3).
  */
-
-/* -------------------------------------------- */
-/*  Larger Than Life                             */
-/* -------------------------------------------- */
-
-export function largerThanLifeReach(actor) {
-  if (!findSourced(actor, D21.largerThanLife)) {
-    return;
-  }
-
-  const large = Number(CONFIG.E20?.actorReach?.large) || 5;
-  for (const effect of itemsOf(actor)) {
-    const system = effect.system;
-    if (effect.type != 'weaponEffect' || system?.classification?.style != 'melee' || !Number.isFinite(Number(system?.totalReach))) {
-      continue;
-    }
-
-    const multiplier = Math.max(1, Number(system.range?.reachMultiplier) || 1);
-    system.totalReach = Math.max(Number(system.totalReach), large * multiplier);
-  }
-}
-
-registerDerived(largerThanLifeReach);
 
 /* -------------------------------------------- */
 /*  Mystic / Non-Mystical                        */

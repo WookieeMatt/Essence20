@@ -38,22 +38,10 @@ describe("requisitionDif", () => {
     expect(requisitionDif({ system: {} })).toBe(0);
   });
 
-  const EARLY_ADOPTER_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.WrRChund2zAcHYfe";
-
-  function makeActor(perkIds = []) {
-    return { items: perkIds.map(id => ({ type: 'perk', flags: { core: { sourceId: id } } })) };
-  }
-
-  test("Early Adopter reduces a Prototypical/Theoretical requisition DIF by 5", () => {
-    const actor = makeActor([EARLY_ADOPTER_ID]);
-    expect(requisitionDif({ system: { totalAvailability: 'prototype' } }, actor)).toBe(15);
-    expect(requisitionDif({ system: { totalAvailability: 'theoretical' } }, actor)).toBe(25);
-  });
-
-  test("Early Adopter doesn't touch a lower Availability tier, or apply without the Perk", () => {
-    const actor = makeActor([EARLY_ADOPTER_ID]);
-    expect(requisitionDif({ system: { totalAvailability: 'restricted' } }, actor)).toBe(15);
-    expect(requisitionDif({ system: { totalAvailability: 'prototype' } }, makeActor())).toBe(20);
+  // Early Adopter's DIF -5 is a RequisitionDif rule on the Perk now (rules/conv12-slI12.test.js).
+  test("an actor with no RequisitionDif rules keeps the Availability DIF", () => {
+    const actor = { items: [{ type: 'perk', flags: { core: { sourceId: 'Compendium.x.Item.nothingAtAll0000' } } }] };
+    expect(requisitionDif({ system: { totalAvailability: 'prototype' } }, actor)).toBe(20);
   });
 });
 

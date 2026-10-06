@@ -319,7 +319,8 @@ describe('gear and Perks', () => {
   test('carrying capacity', () => {
     expect(carryPercent(makeActor([], { skills: { brawn: { shift: 'd20' } } }))).toBe(10);
     expect(carryPercent(makeActor([], { skills: { brawn: { shift: 'd8' } } }))).toBe(100);
-    expect(carryPercent(makeActor([perk(KIT.packMuleTf)], { skills: { brawn: { shift: 'd8' } } }))).toBe(200);
+    const packMule = { id: 'pm', type: 'perk', name: 'Pack Mule', flags: {}, system: { rules: [{ type: 'BrawnRequirement', amount: 2, carrying: true }] } };
+    expect(carryPercent(makeActor([packMule], { skills: { brawn: { shift: 'd8' } } }))).toBe(200);
     expect(carryPercent(makeActor([perk(KIT.competitiveStrength)], { skills: { brawn: { shift: 'd6' } } }))).toBe(150);
     expect(carryPercent(makeActor([perk(KIT.growthBoost)], { isMorphed: true, skills: { brawn: { shift: 'd8' } } }))).toBe(200);
   });

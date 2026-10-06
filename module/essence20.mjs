@@ -6,6 +6,7 @@ import "./rules/adapter.mjs";
 import "./rules/lifecycle.mjs";
 import "./rules/triggers.mjs";
 import "./rules/buttons.mjs";
+import "./rules/reactions.mjs";
 import "./rules/actions.mjs";
 import { linkExistingCopies, loadSourceIndexes } from "./rules/inherit.mjs";
 import { registerRuleHelper } from "./rules/code.mjs";
@@ -37,18 +38,24 @@ import { grappleEscapeSkills } from "./helpers/extensions/rules/grappled.mjs";
 import { isInfiltrating } from "./helpers/infiltrating.mjs";
 import "./rules/prerequisites.mjs";
 import { isRecklessAbandonActive } from "./helpers/reckless-abandon.mjs";
+import { noticeEssenceBases } from "./helpers/machine-essences.mjs";
+import "./rules/ext/index.mjs";
 import { setStoryPointHelpers } from "./rules/steps.mjs";
 import { canSpendForActor, canWriteStoryPoints, poolFor, requestStoryPointGrant, spendForActor } from "./helpers/story-points.mjs";
 import { getEnvironment, getTerrain } from "./helpers/environment.mjs";
 import { getNearbyAllyTokens } from "./helpers/allies.mjs";
+import { getLedger } from "./helpers/action-economy.mjs";
+import * as sit2 from "./helpers/extensions/situational2/common.mjs";
 
 // The rules engine's terrain: and environment: tags read where an actor is through these.
 setWorldLookups({
   terrain: actor => getTerrain(actor),
   environment: actor => getEnvironment(actor),
+  environmentOutside: actor => getEnvironment(actor, { includeInterior: false }),
   recklessAbandon: actor => isRecklessAbandonActive(actor),
   isAiming: actor => isAiming(actor),
   alliesWithin: (actor, feet) => getNearbyAllyTokens(actor, feet).map(token => token.actor),
+  actionLedger: actor => getLedger(actor),
 });
 useAllyLookup();
 
@@ -100,6 +107,13 @@ for (const [name, fn] of Object.entries({
   grappleEscape: (actor, option, ctx) => (ctx?.rolledSkill ? grappleEscapeSkills(actor).includes(ctx.rolledSkill) : null),
   // The Infiltrating toggle is on (Shadow / Silent Strider).
   infiltrating: actor => isInfiltrating(actor),
+  // Where the actor is (situational2's readings): in the water (underwater or swimming), on land, at sea or in wetlands
+  // (or aboard an aquatic vessel), aboard one, in complete darkness (unknown below full scene darkness).
+  inWater: actor => sit2.isInWater(actor),
+  onLand: actor => sit2.isOnLand(actor),
+  seaOrWetlands: actor => sit2.isSeaOrWetlands(actor),
+  aboardAquaticVessel: actor => sit2.isAboardAquaticVessel(actor),
+  completeDarkness: actor => sit2.isCompleteDarkness(actor),
 })) {
   registerCheck(name, fn);
 }
@@ -219,6 +233,15 @@ function registerSystemSettings() {
     scope: "world",
     type: String,
     default: "",
+  });
+
+  // Whether the GMs have been told which Zords / Vehicles have Features changing an Essence, since their Essences
+  // gained a typed base (helpers/machine-essences.mjs).
+  game.settings.register("essence20", "machineEssenceBaseNotice", {
+    config: false,
+    scope: "world",
+    type: Boolean,
+    default: false,
   });
 
   // Which compendium items carried rules the last time existing copies were linked to them
@@ -674,6 +697,13 @@ Hooks.once("ready", async function () {
      call game.essence20.auditEffectCatalog() from the console at any time). */
   if (CONFIG.debug?.essence20Catalog) {
     auditEffectCatalog();
+  }
+
+  // Once per world: which Zords / Vehicles have Features changing an Essence (their base is the old stored number).
+  try {
+    await noticeEssenceBases();
+  } catch (error) {
+    console.error("Essence20 | Zord Essence notice failed", error);
   }
 
   // Remove demo actors from a tour that was interrupted rather than exited (refresh, crash).

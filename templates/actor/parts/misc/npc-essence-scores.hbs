@@ -6,7 +6,16 @@
       {{!-- Megaform's own Essence values are derived from its component Zords rather than set
            directly - no-unlock keeps them read-only regardless of the sheet's own lock toggle
            (see base-actor-sheet.mjs#_applyLockedState). Zords themselves stay editable. --}}
+      {{#if (and (isdefined essence.base) (ne @root.document.type 'megaform'))}}
+      {{!-- Zord / Vehicle: the input is the typed base; Features' Active Effects and item rules add on top
+           (helpers/machine-essences.mjs), and the worked-out value shows beside it when they differ. --}}
+      <input class="two-digit-input" type="number" name="system.essences.{{@key}}.base" value="{{essence.base}}" min="0" step="1" />
+      {{#if (ne essence.base essence.value)}}
+      <span class="e20-essence-adjusted" data-tooltip="{{localize 'E20.MachineEssenceBase' essence=(localize (lookup @root.config.essences @key)) value=essence.value}}">&rarr; {{essence.value}}</span>
+      {{/if}}
+      {{else}}
       <input class="two-digit-input{{#if (eq @root.document.type 'megaform')}} no-unlock{{/if}}" type="number" name="system.essences.{{@key}}.value" value="{{essence.value}}" min="0" step="1" />
+      {{/if}}
       {{!-- Zord/Megaform's essences (machine.mjs's makeEssencesFields) have no `max` field at
            all - just a bare value - unlike NPC/Companion's (character.mjs's makeEssenceFields,
            {value, max}), so this partial is shared between both shapes rather than assuming a

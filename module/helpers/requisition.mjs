@@ -1,13 +1,7 @@
 import { E20 } from "./config.mjs";
 import { actorHasPerk, clearPendingBonus, getPendingBonus } from "./perks.mjs";
-
-// Early Adopter (Quartermaster's Guide to Gear, Get in Gear Origin benefit, p.17): "...the DIF
-// of any Skill Tests you might make to requisition Prototypical or Theoretical equipment is
-// reduced by 5." Only this self-DIF-reduction half is built here - the other clause ("each of
-// your allies gains a Standard Weapon Upgrade, Battledress Upgrade, or Kit without spending a
-// requisition attempt") needs the Equipment Assignment phase's own allocation UI, which doesn't
-// exist as addressable infrastructure yet.
-const EARLY_ADOPTER_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.WrRChund2zAcHYfe";
+// RequisitionDif rules (Early Adopter's DIF -5 on Prototypical / Theoretical equipment) - rules/ext/i/requisition.mjs.
+import { ruleRequisitionDif } from "../rules/ext/i/requisition.mjs";
 
 // Expert Guidance - see its own check next to rollRequisition's own comment below.
 const EXPERT_GUIDANCE_ID = "Compendium.essence20.intercontinental_adventures.Item.oUQUSWSj3JZ1tBR3";
@@ -106,13 +100,8 @@ export function requisitionDif(item, actor = null) {
   }
 
   const availability = availabilityOut.availability;
-  let dif = E20.availabilityDifficulties[availability] ?? 0;
-
-  if (actor && ['prototype', 'theoretical'].includes(availability) && actorHasPerk(actor, EARLY_ADOPTER_ID)) {
-    dif = Math.max(0, dif - 5);
-  }
-
-  return dif;
+  const dif = E20.availabilityDifficulties[availability] ?? 0;
+  return actor ? ruleRequisitionDif(actor, item, availability, dif) : dif;
 }
 
 /**

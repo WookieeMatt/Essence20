@@ -1,5 +1,6 @@
 import { companionsOf } from "./companion-link.mjs";
 import { getSceneEpoch } from "./scene-clock.mjs";
+import { ruleBrawnBonus } from "../rules/ext/c/brawn.mjs";
 
 /**
  * Kits (GI Joe CRB p.159-160, TF CRB p.133, Quartermaster's Guide p.42-47, Cobra Codex p.90-92,
@@ -46,8 +47,6 @@ export const KIT = {
   wristCommunicator: uuid('pr_crb', 'W7nXP8pOQaDJmZbT'),
   growthBoost: uuid('jump_through_time', 'BVrwQKqvOdyNW0KR'),
   competitiveStrength: uuid('jump_through_time', 'J0ljd1QnU9AgoWj6'),
-  packMuleGiJoe: uuid('gi_joe_crb', 'x8SbuymJTLYn1TdC'),
-  packMuleTf: uuid('tf_crb', 'b4zeeYax1vrzVGZx'),
   loader: uuid('tf_crb', 'OVTDUJRI81VCrFZg'),
   kittedPurpose: uuid('tf_crb', 'YO5STToLRPYVnWBT'),
   personnelMunitionsPack: uuid('enigma_of_combination', 'CXenUI5l8c3WZNSw'),
@@ -1190,11 +1189,8 @@ export function carryPercent(actor) {
     rank += 2;
   }
 
-  // Pack Mule (GI Joe CRB / TF CRB General Perk): "Your Brawn is considered two points higher for
-  // carrying capacity".
-  if ([KIT.packMuleGiJoe, KIT.packMuleTf].some(id => has(actor, id))) {
-    rank += 2;
-  }
+  // BrawnRequirement rules with carrying: true (Pack Mule - rules/ext/c/brawn.mjs).
+  rank += ruleBrawnBonus(actor, 'carrying');
 
   const loader = itemsOf(actor).find(i => sourceOf(i) == KIT.loader);
   if (loader && (actor?.system?.isTransformed || !loader.flags?.essence20?.loaderShield)) {

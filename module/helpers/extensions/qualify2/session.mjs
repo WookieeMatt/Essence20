@@ -1,6 +1,5 @@
 import { getEncounterEpoch } from "../../scene-clock.mjs";
 import { worldActors } from "../../companion-link.mjs";
-import { escape, has, Q2, T } from "./common.mjs";
 
 /**
  * Game sessions (qualify2 slice).
@@ -15,19 +14,17 @@ import { escape, has, Q2, T } from "./common.mjs";
  * rest of the session: when a gated record is written its session is noted, and each time the
  * encounter counter advances the active GM re-stamps the records used this session onto the new
  * encounter. A new session clears them all. ("A" for Effort! and Real Angels are their items' own
- * rules now, with a per-session limit.)
- *   - Timeline Anomaly (p.47): once per session, the Initiative swap.
+ * rules now, with a per-session limit; so is Timeline Anomaly's Initiative swap.) No Perk is gated this way at the
+ * moment - SESSION_GATED is where one would go.
  *
- * Everything is Inspiration (p.32): "You add an additional Story Point to the player pool at the
- * beginning of each game session" - granted per holder when a session begins.
+ * Bumping the counter is what fires item rules' `sessionStart` Triggers (rules/triggers.mjs) -
+ * Everything is Inspiration's Story Point and Nobility's one fewer are rules on their items now.
  */
 
 const SETTING = 'q2SessionEpoch';
 const USES_FLAG = 'q2SessionUses';
 
-export const SESSION_GATED = {
-  timelineAnomalyUsedThisEncounter: Q2.timelineAnomaly,
-};
+export const SESSION_GATED = {};
 
 export function getSessionEpoch() {
   try {
@@ -87,14 +84,13 @@ export async function carryGatedUses(epoch = getEncounterEpoch()) {
   }
 }
 
-/** A new session: bump the counter, free the gated Perks, grant Everything is Inspiration. */
+/** A new session: bump the counter (firing sessionStart Triggers) and free the gated Perks. */
 export async function startNewSession() {
   if (!game.user?.isGM) {
     return;
   }
 
   await game.settings.set('essence20', SETTING, getSessionEpoch() + 1);
-  const inspired = [];
   for (const actor of worldActors()) {
     if (actor.getFlag?.('essence20', USES_FLAG)) {
       for (const key of Object.keys(actor.getFlag('essence20', USES_FLAG))) {
@@ -105,19 +101,6 @@ export async function startNewSession() {
 
       await actor.unsetFlag('essence20', USES_FLAG);
     }
-
-    if (actor.type == 'playerCharacter' && has(actor, Q2.everythingIsInspiration)) {
-      inspired.push(actor);
-    }
-  }
-
-  if (inspired.length) {
-    const { requestStoryPointGrant } = await import("../../story-points.mjs");
-    for (const actor of inspired) {
-      await requestStoryPointGrant(actor, 1);
-    }
-
-    await ChatMessage.create({ content: `<p>${escape(T('E20.Q2InspirationSession', { names: inspired.map(a => a.name).join(', ') }))}</p>` });
   }
 }
 

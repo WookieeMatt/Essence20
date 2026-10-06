@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"CardOffer","label":"Destiny: make it a Fumble (1 GM Story Point)","whose":"self","pressedBy":"gm","when":["card:failed","not:card:fumble","not:card:marked:pr1DestinyFumbled"],"limit":{"per":"scene"},"cost":{"resource":{"gmStoryPoints":true},"amount":1},"steps":[{"do":"markCard","key":"pr1DestinyFumbled"},{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"Destiny: the GM makes {name}'s failure a Fumble, and the team gains a Story Point."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: on one of your failed rolls the GM sees a button to spend 1 Story Point and turn it into a Fumble, once per scene.</p>"

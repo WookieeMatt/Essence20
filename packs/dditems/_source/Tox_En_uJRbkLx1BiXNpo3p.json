@@ -5,6 +5,9 @@
   "_id": "uJRbkLx1BiXNpo3p",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Tox-En attacks the targeted Cybertronians","steps":[{"do":"target","beforeCost":true},{"do":"choose","prompt":"How close is each to the Tox-En?","options":[{"label":"Within 20 feet","steps":[{"do":"rollFormulaVsEach","formula":"1d20 + 1d8","defense":"toughness","onHit":[{"do":"essenceDamage","to":"target","essence":"strength","amount":1},{"do":"essenceDamage","to":"target","essence":"speed","amount":1},{"do":"extendCondition","to":"target","condition":"impaired","rounds":10,"when":["combat:exists","target:status:impaired:timed"]},{"do":"applyCondition","to":"target","condition":"impaired","rounds":10,"when":[{"any":["not:combat:exists","not:target:status:impaired:timed"]}]}]}]},{"label":"Touching it (Edge)","steps":[{"do":"rollFormulaVsEach","formula":"2d20kh + 1d8","defense":"toughness","onHit":[{"do":"essenceDamage","to":"target","essence":"strength","amount":1},{"do":"essenceDamage","to":"target","essence":"speed","amount":1},{"do":"extendCondition","to":"target","condition":"impaired","rounds":10,"when":["combat:exists","target:status:impaired:timed"]},{"do":"applyCondition","to":"target","condition":"impaired","rounds":10,"when":[{"any":["not:combat:exists","not:target:status:impaired:timed"]}]}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (GM): attacks the targeted Cybertronians at +d8 against Toughness, with Edge if they touch it; a hit deals 1 Strength and 1 Speed Essence damage and Impairs them, extending each time it hits.</p>"

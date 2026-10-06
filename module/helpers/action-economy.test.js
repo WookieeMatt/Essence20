@@ -823,7 +823,9 @@ describe("grantActionsThisTurn (Omega Enhancement's Hyper Mode, Across the Stars
   test("This, I Command doubles actions granted to an ally (Cobra Codex p.57)", async () => {
     setGame({ combatant: makeCombatant() });
     const actor = makeActor();
-    const officer = { uuid: 'Actor.officer', name: 'Baroness', items: [{ type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.cobra_codex.Item.SUc3emTvPnwB6W93' } } }] };
+    // Its GrantDouble rule (the pack item's - module/rules/conv12-slH12.test.js).
+    const officer = { uuid: 'Actor.officer', name: 'Baroness', items: [{ type: 'perk', flags: { core: { sourceId: 'Compendium.essence20.cobra_codex.Item.SUc3emTvPnwB6W93' } },
+      system: { rules: [{ type: 'GrantDouble', label: 'This, I Command', grants: ['upshift', 'actions'], damage: { amount: 1, type: 'psychic' } }] } }] };
     // Declined, so the damage step never runs; only the prompt is under test here.
     global.foundry.applications = { api: { DialogV2: { confirm: jest.fn(async () => false) } } };
     await grantActionsThisTurn(actor, { move: 1 }, 'Rally', { granter: officer });

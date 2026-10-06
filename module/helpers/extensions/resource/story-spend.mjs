@@ -1,11 +1,6 @@
 /**
- * Story Point riders.
- *
- * Think Fast! (A Jump Through Time, Inventor, 2nd level, p.33): "when you use Story Points to gain
- * access to a tool or piece of equipment in a scene, roll 1d6. When you roll 5 or 6, you
- * successfully fabricate an improvised version of the item in question and regain the spent Story
- * Point." The Story Points tracker's "equipment" spend calls the `essence20.storyPointNarrative`
- * hook (integration patch); the Initiative Edge half is the pack's own Active Effect.
+ * Story Point riders. (Think Fast!'s Story Point refund is a storyPointNarrative Trigger on its item -
+ * rules/conv10-slD10.test.js.)
  *
  * We Improvise (Transformers One Sourcebook, p.15): "The first time you roll an Initiative Skill
  * Test in combat, add a Story Point to the team's pool. At the end of combat, any unspent Story
@@ -14,32 +9,11 @@
  * the Combat, and at the combat's end takes back the ones not spent (spends count against these
  * points first - they're the ones about to expire).
  *
- * History Buff (A Jump Through Time, Influence Perk, p.54): "You gain a ↑2 bonus on Culture
- * (History) Skill Tests. ... Your actions and activities roll one die smaller (minimum of d2) when
- * determining if they create Continuum Anomalies (see page 113)." The ↑2 is the Perk's own
- * DialogSwitch rules (pack data); the anomaly half is a Use button here that rolls the Continuum
- * Anomaly risk die (Table 4-7) one size smaller and reads the result band (p.113).
+ * The Continuum Anomaly risk dice and result bands (A Jump Through Time, Table 4-7 and p.113) live here too -
+ * Time Displaced (pr1/jtt.mjs) reads them. History Buff's one-die-smaller check is its item's own Use rule
+ * (rules/conv10-slC10.test.js).
  */
-import { registerUse } from "../../extensions.mjs";
-import { IDS, onHook, T, changed, has, isActiveGm, isItem, num, say } from "./common.mjs";
-
-/* -------------------------------------------- */
-/*  Think Fast!                                  */
-/* -------------------------------------------- */
-
-onHook('essence20.storyPointNarrative', async (who, kind) => {
-  if (kind != 'equipment' || !who?.items || !has(who, IDS.thinkFast)) {
-    return;
-  }
-
-  const roll = await new Roll('1d6').evaluate();
-  await roll.toMessage?.({ speaker: ChatMessage.getSpeaker({ actor: who }), flavor: T('ResThinkFast') });
-  if (roll.total >= 5) {
-    const { requestStoryPointGrant } = await import("../../story-points.mjs");
-    await requestStoryPointGrant(who, 1);
-    await say(who, T('ResThinkFastLine', { name: who.name }));
-  }
-});
+import { IDS, onHook, T, changed, has, isActiveGm, num } from "./common.mjs";
 
 /* -------------------------------------------- */
 /*  We Improvise                                 */
@@ -112,18 +86,11 @@ onHook('deleteCombat', async (combat) => {
 });
 
 /* -------------------------------------------- */
-/*  History Buff                                 */
+/*  Continuum Anomalies                          */
 /* -------------------------------------------- */
 
 // Table 4-7: Risk Severity for Anomaly.
 export const RISK_DICE = { trivial: '1d2', small: '1d4', modest: '1d6', average: '1d8', high: '1d10', serious: '1d12', catastrophic: '2d8' };
-const LADDER = ['1d2', '1d4', '1d6', '1d8', '1d10', '1d12', '2d8'];
-
-/** One die smaller, minimum d2. */
-export function smallerDie(formula) {
-  const i = LADDER.indexOf(formula);
-  return i <= 0 ? '1d2' : LADDER[i - 1];
-}
 
 /** "2-5 Minor, 6-8 Lasting, 9-14 Major, 15-16 Cataclysmic" (a 1 creates none). */
 export function anomalyBand(total) {
@@ -133,25 +100,3 @@ export function anomalyBand(total) {
   if (total >= 2) return 'minor';
   return 'none';
 }
-
-registerUse({
-  id: 'resHistoryBuff',
-  matches: item => isItem(item, IDS.historyBuff),
-  run: async (item) => {
-    const { chooseSelect } = await import("../../grants.mjs");
-    const risk = await chooseSelect(item.name, T('ResAnomalyPrompt'),
-      Object.keys(RISK_DICE).map(key => ({ value: key, label: T(`ResAnomalyRisk.${key}`) })));
-    if (!risk) {
-      return null;
-    }
-
-    const formula = smallerDie(RISK_DICE[risk]);
-    const roll = await new Roll(formula).evaluate();
-    // The GM rolls this in secret (p.113), so the result goes to the GM only.
-    await roll.toMessage?.({
-      speaker: ChatMessage.getSpeaker({ actor: item.parent }),
-      flavor: T('ResAnomalyFlavor', { formula, band: T(`ResAnomalyBand.${anomalyBand(roll.total)}`) }),
-    }, { rollMode: 'blindroll' });
-    return T('ResAnomalyLine', { name: item.parent?.name ?? '' });
-  },
-});

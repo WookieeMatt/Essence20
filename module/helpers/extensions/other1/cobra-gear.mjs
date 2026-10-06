@@ -1,28 +1,18 @@
-import {
-  registerChatButton, registerHitRider, registerPreRoll, registerRollSources, registerUse,
-} from "../../extensions.mjs";
-import { hasSourced } from "../../companion-link.mjs";
+import { registerPreRoll, registerRollSources, registerUse } from "../../extensions.mjs";
 import { isRobotic } from "../../creature-tags.mjs";
-import { getSceneEpoch } from "../../scene-clock.mjs";
-import { CC, T, findSourced, isFrom, itemsOf, parentWeapon, post, sourceOf } from "./shared.mjs";
+import { CC, T, itemsOf, parentWeapon, sourceOf } from "./shared.mjs";
 
 /**
  * Cobra Codex gear and Perks: Electromagnetic attacks against computerized gear, the Deflecting
- * Weapon upgrades, Shield Fighter's Element, Onslaught and the Disenfranchised Hang-Up's Willpower
- * check. (Poison Resistance, Dielectric and Insulator are item rules.)
+ * Weapon upgrades. (Shield Fighter, Onslaught, Poison Resistance, Dielectric, Insulator and
+ * the Disenfranchised Hang-Up's Willpower check are item rules.)
  */
 export const O1_CC = {
   limitedDeflecting: CC('KFoF9nEHJrRaJzZA'),
   standardDeflecting: CC('Z1OIoelOdyUdtyl7'),
-  shieldFighter: CC('MRbKuQlNI2tOfpLM'),
-  onslaught: CC('jtpEn1CAEwCr5J7C'),
-  disenfranchised: CC('bLBiNpqobnTDH769'),
   cyberneticPart: CC('wCL3rJOEDZVHVg6g'),
   enhancedPart: CC('eT4g9EfrFtvjMqWu'),
   optimizedPart: CC('zGsTAngJ2HRdKPkz'),
-  personalShield: 'Compendium.essence20.gi_joe_crb.Item.84JYgd6kZgY41wge',
-  closeCombatBlade: 'Compendium.essence20.gi_joe_crb.Item.8lNIijY5XompKHH7',
-  closeCombatBludgeon: 'Compendium.essence20.gi_joe_crb.Item.ZNokHTRBa5aindap',
 };
 
 /** An upgrade counts while it is loose on the actor or on something equipped. */
@@ -179,148 +169,13 @@ registerPreRoll(async (actor, dataset, item) => {
   }
 });
 
-/* -------------------------------------------- */
-/*  Shield Fighter                               */
-/* -------------------------------------------- */
-
-// Shield Fighter (Cobra Codex, Alley-Viper Focus, p.68): "Your shield also counts as a close combat
-// blade and a close combat bludgeon" (the Perk's own item map grants both weapons on the drop).
-// "Additionally, as a Free action, you can spend a use of your Personal Shield to give your shield
-// an Element trait for 1 minute." The Use button spends the use and records the Element; the
-// shield's blade/bludgeon hits then offer the damage as that Element.
-const ELEMENT_FLAG = 'o1ShieldElement';
-
-export function shieldElement(actor) {
-  const flag = actor?.flags?.essence20?.[ELEMENT_FLAG];
-  if (!flag?.type || flag.scene != getSceneEpoch()) {
-    return null;
-  }
-
-  const combat = game?.combat;
-  if (flag.combatId && combat?.id == flag.combatId && combat.round >= flag.round + 10) {
-    return null;
-  }
-
-  return flag.type;
-}
-
-registerUse({
-  id: 'o1ShieldFighter',
-  matches: isFrom(O1_CC.shieldFighter),
-  canUse: item => (findSourced(item.parent, O1_CC.personalShield)?.system?.resource?.value ?? 0) > 0,
-  run: async (item, economy, pay) => {
-    const actor = item.parent;
-    const pool = findSourced(actor, O1_CC.personalShield);
-    const { chooseSelect } = await import("../../grants.mjs");
-    const types = CONFIG.E20?.elementDamageTypes ?? {};
-    const type = await chooseSelect(item.name, T('O1ShieldElementPrompt'),
-      Object.entries(types).map(([value, label]) => ({ value, label: game.i18n.localize(label) })));
-    if (!type || !(await pay('free'))) {
-      return null;
-    }
-
-    if (!actor.system?.useUnlimitedResource) {
-      await pool.update({ 'system.resource.value': pool.system.resource.value - 1 });
-    }
-
-    await actor.setFlag('essence20', ELEMENT_FLAG, {
-      type, scene: getSceneEpoch(), combatId: game.combat?.id ?? null, round: game.combat?.round ?? 0,
-    });
-    return T('O1ShieldElement', { name: actor.name, element: game.i18n.localize(types[type] ?? type) });
-  },
-});
-
-registerHitRider(async (actor, target, result, rider, tools) => {
-  const element = shieldElement(actor);
-  if (!element || !hasSourced(actor, O1_CC.shieldFighter)) {
-    return;
-  }
-
-  const weapon = rider?.weaponId ? actor.items?.get?.(rider.weaponId) : null;
-  if (![O1_CC.closeCombatBlade, O1_CC.closeCombatBludgeon].includes(sourceOf(weapon))) {
-    return;
-  }
-
-  tools.addRiderOption(result, {
-    key: 'o1ShieldElement',
-    label: T('O1ShieldElementHit'),
-    damageValue: Number(result.damageValue) || 0,
-    damageType: element,
-  });
-});
-
-/* -------------------------------------------- */
-/*  Onslaught                                    */
-/* -------------------------------------------- */
-
-// Onslaught (Cobra Codex, Brute Focus, 6th level, p.69): "when you hit a target with a melee weapon,
-// you apply the effects of the attack and one of the attack's alternate effects. If the weapon
-// doesn't have a secondary effect, it gains a Maneuver alternate effect." Every other effect of the
-// weapon is offered on the hit card as an extra button (pick one); a single-effect weapon offers a
-// Maneuver.
-export function onslaughtOptions(actor, effect) {
-  const weapon = parentWeapon(actor, effect);
-  const others = weapon
-    ? itemsOf(actor).filter(item => item.type == 'weaponEffect' && item.flags?.essence20?.parentId == weapon.id && item.id != effect?.id)
-    : [];
-  if (!others.length) {
-    return [{ key: 'o1OnslaughtManeuver', label: T('O1OnslaughtManeuver'), damageValue: 1, damageType: 'maneuver' }];
-  }
-
-  return others.map(other => ({
-    key: `o1Onslaught${other.id}`,
-    label: T('O1OnslaughtAlternate', { name: other.name }),
-    damageValue: Number(other.system?.damageValue) || 0,
-    damageType: other.system?.damageType ?? 'maneuver',
-  }));
-}
-
-registerHitRider(async (actor, target, result, rider, tools) => {
-  if (!hasSourced(actor, O1_CC.onslaught)) {
-    return;
-  }
-
-  const effect = rider?.itemUuid ? await fromUuid(rider.itemUuid) : null;
-  if (effect?.type != 'weaponEffect' || effect.system?.classification?.style != 'melee') {
-    return;
-  }
-
-  for (const option of onslaughtOptions(actor, effect)) {
-    tools.addRiderOption(result, option);
-  }
-});
+// Shield Fighter (the Element Use and its hit option) and Onslaught (the other effects as hit options) are rules on
+// their pack items (rules/ext/b/hit-rider.mjs).
 
 /* -------------------------------------------- */
 /*  Disenfranchised                              */
 /* -------------------------------------------- */
 
-// Disenfranchised (Cobra Codex, Influence Hang-Up, p.30): "If an ally attempts to use an ability for
-// your benefit, such as an Officer's Motivate perk, they first have to succeed at a Deception,
-// Intimidation, or Persuasion Skill Test targeting your Willpower." Nothing tells the system that an
-// ability is "for your benefit", so the Hang-Up's Use button posts the gate: the ally clicks their
-// Skill and rolls it against this character's Willpower before applying their help.
-registerUse({
-  id: 'o1Disenfranchised',
-  matches: isFrom(O1_CC.disenfranchised),
-  run: async (item) => {
-    const actor = item.parent;
-    const willpower = Number(actor.system?.defenses?.willpower?.total) || 10;
-    const buttons = ['deception', 'intimidation', 'persuasion'].map(skill => `<button type="button" data-e20-ext="o1Disenfranchised" `
-      + `data-skill="${skill}" data-dif="${willpower}" data-name="${foundry.utils.escapeHTML?.(actor.name) ?? actor.name}">`
-      + `${game.i18n.localize(CONFIG.E20?.skills?.[skill] ?? skill)}</button>`).join('');
-    await post(actor, `<p>${T('O1DisenfranchisedGate', { name: actor.name, dif: willpower })}</p>${buttons}`);
-    return null;
-  },
-});
-
-registerChatButton('o1Disenfranchised', async (message, button) => {
-  const helper = canvas?.tokens?.controlled?.[0]?.actor ?? game.user?.character;
-  if (!helper) {
-    ui.notifications.warn(T('O1NeedHelper'));
-    return;
-  }
-
-  const { rollTest } = await import("../../grants.mjs");
-  const { success } = await rollTest(helper, button.dataset.skill, Number(button.dataset.dif) || 10);
-  await post(helper, T(success ? 'O1DisenfranchisedPass' : 'O1DisenfranchisedFail', { name: helper.name, target: button.dataset.name }));
-});
+// Disenfranchised (Cobra Codex, Influence Hang-Up, p.30) is its own Use rule: it posts a button any helper presses
+// to roll Deception, Intimidation or Persuasion (as their selected token, else their character) against this
+// character's Willpower.

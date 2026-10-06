@@ -5,6 +5,9 @@
   "_id": "xAAzOb9sYmEN7qmv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"brokeHiding","label":"Pop Out","when":["var:targets>0"],"steps":[{"do":"button","label":"Pop Out: roll Infiltration","intro":"{name} attacked from hiding.","steps":[{"do":"rollVsAll","skill":"infiltration","defense":["willpower","cleverness"],"onSuccess":[{"do":"hide"},{"do":"postCard","key":"popOut","text":"{name} pops out and stays Hidden."}],"onFail":[{"do":"chat","text":"{name} is seen after the attack and loses the benefits of Hide."}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacking while Hidden ends your Hide. Chat card: a Pop Out button rolls Infiltration against each target's higher Willpower or Cleverness, and you stay Hidden on a success.</p>"

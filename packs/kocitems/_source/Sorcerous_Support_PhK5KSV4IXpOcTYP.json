@@ -5,6 +5,10 @@
   "_id": "PhK5KSV4IXpOcTYP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Ready a Fumble re-roll (Sorcerous Support)","when":["not:self:marked:sorcerousUsed"],"steps":[{"do":"mark","key":"sorcerousReady","to":"self","until":"mission"},{"do":"chat","text":"{name} stands ready to let an ally re-roll a Fumble."}]},
+      {"type":"CardOffer","label":"Sorcerous Support ({holder}): re-roll this Fumble","whose":"any","pressedBy":"holderOwner","when":["card:d20:1","self:marked:sorcerousReady","not:self:marked:sorcerousUsed"],"reroll":{"target":"formula"},"steps":[{"do":"unmark","key":"sorcerousReady","to":"self"},{"do":"mark","key":"sorcerousUsed","to":"self","until":"mission"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: readies it. The next time an ally rolls a Fumble, their chat card gets a re-roll button; once per mission.</p>"

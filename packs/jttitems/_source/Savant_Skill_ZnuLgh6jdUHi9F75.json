@@ -5,6 +5,9 @@
   "_id": "ZnuLgh6jdUHi9F75",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Savant Skill: the Story Point comes back","event":"rerolled","when":["var:source=storyPoint","var:failed=1","skill:{item.choice}"],"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} regains the Story Point."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on your chosen Skill, a switch to roll 1d20+1d4 whatever your shifts. Automatic: if a Story Point reroll on that Skill still fails, the Story Point is refunded.</p>"

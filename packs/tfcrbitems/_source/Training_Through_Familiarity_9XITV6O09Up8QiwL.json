@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Qualification","label":"Trained in Limited weapons (Training Through Familiarity)","items":["item:type:weapon","item:data:system.availability=limited"],"access":"trained"}
+      {"type":"Qualification","label":"Trained in Limited weapons (Training Through Familiarity)","items":["item:type:weapon","item:data:system.availability=limited"],"access":"trained"},
+      {"type":"KitPrerequisite","label":"Standard and Limited Kits: no prerequisite (Training Through Familiarity)","mode":"waive","tiers":["standard","limited"],"skipEssenceKits":true}
     ],
     "automation": {
       "status": "full",

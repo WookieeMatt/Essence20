@@ -3,7 +3,4 @@
  * import registers its hooks at load.
  */
 import "./weapons.mjs";
-import "./psycho.mjs";
-import "./gear.mjs";
 import "./threats.mjs";
-import "./officer.mjs";

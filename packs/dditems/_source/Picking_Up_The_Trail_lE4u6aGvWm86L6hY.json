@@ -5,6 +5,10 @@
   "_id": "lE4u6aGvWm86L6hY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Alertness","steps":[{"do":"roll","skill":"alertness","open":true}]},
+      {"type":"Use","label":"Survival","steps":[{"do":"roll","skill":"survival","open":true}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: roll Alertness or Survival to pick up your Primary Quarry's trail. Left to the table: their Infiltration contest and what you find.</p>"

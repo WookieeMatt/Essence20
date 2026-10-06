@@ -12,27 +12,13 @@ export const pradv = pack('power_rangers_adventures');
 
 export const PR1 = {
   // A Jump Through Time
-  mobileHeadquarters: jtt('soCSwGBp0AZbEeZC'),
-  overdrive: jtt('2JZSo4C7xDUMlPG2'),
-  profiteerHangUp: jtt('FDf9ZhuajJb3U5un'),
-  prospectorToolkit: jtt('anD2xly3g2CS45et'),
   spectrumShifted: jtt('sgRiSOX0hDIKkcMh'),
   timeDisplaced: jtt('N4OwC0gTkUtRwBKr'),
-  warheadMagazines: jtt('57an1eB6FMmcpKlk'),
   // Across the Stars
   beAnExample: ats('zkxPG5mwAQl1vZOT'),
-  destinyHangUp: ats('PRf5WTMgof11YCeE'),
   lightspeedBoost: ats('sap5gMPDrWvjLCCu'),
-  nemesis: ats('bxGgq6PpfxeSRr7Q'),
-  powerFlux: ats('zhfG2gH4IgIjMAzT'),
-  powerWing: ats('aCPFmjY80u9671Hl'),
   swatUpgrade: ats('Ce5f5pQTNTSY6xgF'),
   standBehindMe: ats('PcezfGdjUtNUZHYH'),
-  tacticalSizeShift: ats('tS3P7BZqnH9GGLux'),
-  warzord: ats('jX5IHpydHimdjbGb'),
-  combiner: 'Compendium.essence20.pr_crb.Item.ZZMBVjmosr0VViMU',
-  // Beneath the Helmet
-  advancedDinoGem: bth('K4CUMFhAjXRFzGbA'),
 };
 
 /** A localized string - keys live in scratchpad integration/pr1-lang.json as E20.<key>. */
@@ -273,58 +259,5 @@ export function giveEdge(options) {
   }
 }
 
-export function giveSnag(options) {
-  if (options.edge) {
-    options.edge = false;
-  } else {
-    options.snag = true;
-  }
-}
-
-/** The weapon a weaponEffect hangs off (null for an unarmed attack). */
-export function parentWeaponOf(actor, item) {
-  if (item?.type != 'weaponEffect') {
-    return null;
-  }
-
-  const parentId = item.flags?.essence20?.parentId;
-  return parentId ? actor?.items?.get?.(parentId) ?? itemsOf(actor).find(i => i.id == parentId) ?? null : null;
-}
-
 export const isRanged = item => item?.type == 'weaponEffect' && item.system?.classification?.style
   && item.system.classification.style != 'melee';
-export const isMeleeEffect = item => item?.type == 'weaponEffect' && item.system?.classification?.style == 'melee';
-
-/** Transient per-actor state carried from the Roll Options Dialog to the hit riders of the same roll. */
-const PENDING = new Map();
-export const pending = actor => PENDING.get(actor?.uuid) ?? {};
-export function setPending(actor, data) {
-  if (actor?.uuid) {
-    PENDING.set(actor.uuid, { ...pending(actor), ...data });
-  }
-}
-
-export function clearPending(actor) {
-  PENDING.delete(actor?.uuid);
-}
-
-/** Whether a weaponEffect is an Area of Effect attack. */
-export function isAreaAttack(actor, item) {
-  if (item?.type != 'weaponEffect') {
-    return false;
-  }
-
-  const traits = parentWeaponOf(actor, item)?.system?.traits ?? [];
-  return !!item.system?.shape || num(item.system?.radius) > 0 || traits.includes('area');
-}
-
-/** The action economy's spend, when combat is running; resolves false when the spend was blocked. */
-export async function payAction(actor, cost, source) {
-  if (!cost || cost == 'none' || !globalThis.game?.combat) {
-    return true;
-  }
-
-  const { spend } = await import("../../action-economy.mjs");
-  const result = await spend(actor, cost, { source });
-  return !result?.blocked;
-}

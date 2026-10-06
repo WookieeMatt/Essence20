@@ -7,7 +7,6 @@ import {
 import {
   ACTION_PERK_IDS as P, attackMatchesFilter, canUseActionPerk, describeAttack, getAttacksPerAction, getCostOptions,
   getLaughtractingBlock, getLendAssistanceGrantModes, getSecretHelperPenalty, onPowerUsed,
-  resetDailyActionPerkUses,
   isHarmonyUnleashedActive, useActionPerk,
 } from './action-perks.mjs';
 
@@ -173,7 +172,8 @@ describe("cost rules", () => {
   });
 
   test("choosing the normal cost keeps the discount for later", async () => {
-    const actor = makeActor({ items: [sourced(P.detailOriented, 'Detail Oriented')] });
+    // (Detail Oriented, which this used, is an ActionCost rule now - rules/conv12-slI12.test.js.)
+    const actor = makeActor({ items: [sourced(P.talented, 'Talented')] });
     setGame([actor]);
     wait.mockResolvedValueOnce('base');
 
@@ -447,19 +447,8 @@ describe("the second batch", () => {
 });
 
 describe("the last four", () => {
-  test("Detail Oriented: a Finesse Use a Skill as a Move action, three times a day, back after a Rest", async () => {
-    const actor = makeActor({ items: [sourced(P.detailOriented, 'Detail Oriented')] });
-    setGame([actor]);
-    for (let i = 0; i < 3; i++) {
-      wait.mockResolvedValueOnce('offer0');
-      expect((await spend(actor, 'standard', { context: { key: 'useASkill' } })).actionType).toBe('move');
-    }
-
-    expect(getCostOptions(actor, 'standard', { key: 'useASkill' }, getLedger(actor)).offers).toHaveLength(0);
-    expect(await resetDailyActionPerkUses(actor)).toBe(true);
-    expect(getCostOptions(actor, 'standard', { key: 'useASkill' }, getLedger(actor)).offers).toHaveLength(1);
-    expect(await resetDailyActionPerkUses(actor)).toBe(false);
-  });
+  // Detail Oriented (three Finesse Use a Skill tests a day as a Move action) is an ActionCost rule now
+  // (rules/conv12-slI12.test.js).
 
   test("Shoot, You Fools! gives every ally an attack that costs them nothing and stings on a miss", async () => {
     const perk = sourced(P.shootYouFools, 'Shoot, You Fools!');

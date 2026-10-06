@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Seafarer (Driving at sea)","when":["skill:driving","vehicle:driving","vehicle:moves:swim"],"edge":true}
+      {"type":"RollModifier","label":"Seafarer (Driving at sea)","when":["skill:driving","vehicle:driving","vehicle:moves:swim"],"edge":true},
+      {"type":"RollModifier","label":"Seafarer (swimming)","when":["skill:athletics","check:inWater","not:roll:initiative"],"edge":true},
+      {"type":"DialogSwitch","label":"Swimming (Seafarer: Edge)","when":["skill:athletics","not:check:inWater"],"edge":true,"forget":true}
     ],
     "automation": {
       "status": "full",

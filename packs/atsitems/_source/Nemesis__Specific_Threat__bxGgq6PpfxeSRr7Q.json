@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CardOffer","label":"Nemesis: reroll and choose which result to keep","whose":"self","pressedBy":"roller","when":["card:involves:flags.essence20.nemesisUuid"],"limit":{"per":"scene"},"reroll":{"target":"formula","keep":"choose"}}
+    ],
     "prerequisites": {"when":["ask:Defeated a Threat Level 12+ enemy"]},
     "automation": {
       "status": "full",

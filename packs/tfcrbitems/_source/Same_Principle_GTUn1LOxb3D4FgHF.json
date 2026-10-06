@@ -5,6 +5,10 @@
   "_id": "GTUn1LOxb3D4FgHF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick the weapon","steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","filter":["not:item:trait:ballistic"],"prompt":"Which weapon do your ballistic Perks extend to?","legacy":"flags.essence20.o3SameWeapon"}]},
+      {"type":"WeaponTrait","label":"Counts as Ballistic (Same Principle)","traits":["ballistic"],"items":["item:picked:weapon"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick one of your weapons. From then on it counts as Ballistic, so every Perk and rule for Ballistic weapons applies to it.</p>"

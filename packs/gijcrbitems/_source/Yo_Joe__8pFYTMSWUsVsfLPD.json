@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","label":"Battle Cry (Yo Joe!: +10 ft in the first round)","movement":"ground","op":"add","value":10,"stage":"derived","when":["combat:roundIs:1","self:combatant","not:self:actionUsed:standard","self:data:system.movement.ground.total>0"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: +1 Health. Automatic: in the first round of combat, +10 ft Ground movement until you spend a Standard action.</p><p>Left to the table: your standard issue equipment and vehicle Qualifications.</p>"

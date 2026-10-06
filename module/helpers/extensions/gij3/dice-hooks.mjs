@@ -1,17 +1,16 @@
 import { actorHasPerk } from "../../perks.mjs";
+import { ruleIgnoresMissEffects } from "../../../rules/ext/b/readers.mjs";
 
 /**
  * The few gij3 rules that have to sit inside the roll itself, called from dice.mjs and
  * helpers/rough-terrain.mjs (SCRATCH/integration/gij3-patch.cjs adds the calls). Kept synchronous
- * and light - this file imports nothing heavier than perks.mjs, so dice.mjs can import it at the top.
+ * and light - this file imports nothing heavier than perks.mjs and the rules index, so dice.mjs can import it at the top.
+ * (Takedown Expert's choice is a miss Trigger on its pack item now.)
  */
 
-const GIJ_CRB = "Compendium.essence20.gi_joe_crb.Item.";
 const HAWK = "Compendium.essence20.general_hawk_s_personel_files.Item.";
 
-export const SECONDS_BETWEEN_CLICK_AND_BOOM_ID = `${GIJ_CRB}ofiG5IwlURUwORYV`;
 export const BETTER_THAN_THE_BEST_ID = `${HAWK}1Xy3GpglIFAq3sqc`;
-export const TAKEDOWN_EXPERT_ID = `${GIJ_CRB}gO9IixdCX0fhReZk`;
 
 function resolveActor(actorOrUuid) {
   if (!actorOrUuid) {
@@ -55,65 +54,14 @@ export function betterThanTheBestMultiplier(actor, roll, multiplier) {
 }
 
 /**
- * Seconds Between Click & Boom (GI Joe CRB, Commando, 9th level, p.71): "attacks against your
- * Evasion Defense suffer a Snag. If your attacker misses, you suffer no effects (even if there
- * would be an effect on a miss)." The Snag half is in dice.mjs; this is the second sentence - the
- * miss-effects this system applies (Trigger Happy's Frightened, Explosive Aftershock, a Wrecker
- * weapon's Rough Terrain) are skipped for the holder.
+ * Whether a miss has no effect at all on this target - the miss-effects this system applies (Trigger
+ * Happy's Frightened, Explosive Aftershock, a Wrecker weapon's Rough Terrain) are skipped. The
+ * target's MissImmunity rules answer (Seconds Between Click & Boom: against its Evasion - rules/ext/b/readers.mjs).
  * @param {String} defenseType   The Defense the attack was compared against.
  * @param {Actor|String} target   The defender, or its uuid.
  * @returns {Boolean}   True when a miss must have no effect at all on this target.
  */
 export function ignoresMissEffects(target, defenseType = 'evasion') {
-  if (defenseType != 'evasion') {
-    return false;
-  }
-
   const actor = resolveActor(target);
-  return !!actor && actorHasPerk(actor, SECONDS_BETWEEN_CLICK_AND_BOOM_ID);
-}
-
-/**
- * Takedown Expert (GI Joe CRB, Infiltrator, 6th level, p.73): "If you fail against a target of a
- * threat level no higher than your level, in addition to being grappled, you may choose if your
- * target is additionally disarmed, immobilized, or silenced." dice.mjs calls this in place of its
- * old always-Immobilized line. Disarmed goes through target-riders.mjs#disarm (the held weapon is
- * knocked loose); Silenced is the 'silenced' status gij3.mjs adds.
- * @param {Actor} actor   The one attempting the Takedown.
- * @param {Actor} target
- * @returns {Promise<String|null>}   What was chosen.
- */
-export async function takedownExpertChoice(actor, target) {
-  if (!actorHasPerk(actor, TAKEDOWN_EXPERT_ID) || !target) {
-    return null;
-  }
-
-  const T = key => game.i18n.localize(`E20.${key}`);
-  const choice = await foundry.applications.api.DialogV2.wait({
-    window: { title: T('Gij3TakedownExpert') },
-    classes: ["window-app", "e20-window"],
-    content: `<p>${game.i18n.format('E20.Gij3TakedownExpertPrompt', { name: target.name })}</p>`,
-    buttons: [
-      { action: 'disarmed', label: T('Gij3TakedownDisarmed') },
-      { action: 'immobilized', label: T('Gij3TakedownImmobilized'), default: true },
-      { action: 'silenced', label: T('Gij3TakedownSilenced') },
-    ],
-    rejectClose: false,
-  });
-
-  if (choice == 'disarmed') {
-    const { disarm } = await import("../../target-riders.mjs");
-    await disarm(actor, target, { maxHands: 2, source: T('Gij3TakedownExpert') });
-  } else if (choice == 'immobilized' || choice == 'silenced') {
-    await target.toggleStatusEffect(choice, { active: true });
-  }
-
-  if (choice) {
-    await ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      content: game.i18n.format('E20.Gij3TakedownExpertChat', { name: actor.name, target: target.name, what: T(`Gij3Takedown${choice.charAt(0).toUpperCase()}${choice.slice(1)}`) }),
-    });
-  }
-
-  return choice ?? null;
+  return !!actor && ruleIgnoresMissEffects(actor, defenseType);
 }

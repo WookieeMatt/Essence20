@@ -5,6 +5,9 @@
   "_id": "Pr3UniqWpnSmallM",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "rules": [
+      {"type":"SummonTime","label":"Unique Weapon (Small Melee: calls the Zord in half the time)","mode":"halve"}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: attacks roll Finesse for Sharp damage, and your Zord arrives in half the usual time while you hold it.</p><p>Left to the table: its risk of someone stealing your Zord.</p>"

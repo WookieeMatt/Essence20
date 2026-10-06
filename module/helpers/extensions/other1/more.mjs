@@ -1,64 +1,14 @@
-import { registerChatButton, registerDerived, registerUse } from "../../extensions.mjs";
-import { DD, DSOE, T, addToDefense, firstTarget, isFrom, itemsOf, post, sourceOf } from "./shared.mjs";
+import { registerUse } from "../../extensions.mjs";
+import { DSOE, T, isFrom, itemsOf } from "./shared.mjs";
 
 /**
- * Decepticon Directive (Armor Matrix's one-matrix limit; the Eat the Weak Rite of the All-Consuming)
- * and Dark Skies over Equestria (Multimorph). Distill His Essence is a Use rule on its pack item, and
- * Champion His Way a Defense rule on its.
+ * Dark Skies over Equestria (Multimorph). Armor Matrix's one-matrix limit is its items' own rules (a create Veto
+ * and an OnlyBest Toughness rule - module/rules/ext/b/veto.mjs, ext/g/best.mjs). Distill His Essence and Eat the
+ * Weak are Use rules on their pack items, and Champion His Way a Defense rule on its.
  */
 export const O1_MORE = {
-  armorMatrixLight: DD('z3Nb6mrcAZ1c8R3q'),
-  armorMatrixMedium: DD('COIQnaWsN7JorDuv'),
-  armorMatrixHeavy: DD('Gha7PEUJKSOmLnIx'),
-  eatTheWeak: DD('hzCEZfTNDsQcOjUB'),
-  addictedDarkEnergon: DD('e3c7wuCA7JQS7rTA'),
   multimorph: DSOE('HGKHAbwZ43I564vd'),
 };
-
-// A second copy of the Rite was briefly in the compendium (since removed); a character who took
-// that one still matches. (A leftover copy of Champion His Way is linked to the pack item's rules
-// by name - rules/inherit.mjs#linkExistingCopies.)
-const RITE_COPIES = {
-  eatTheWeak: [O1_MORE.eatTheWeak, DD('kIeIcRQVWg4v9CZL')],
-};
-const isRite = key => item => RITE_COPIES[key].includes(sourceOf(item));
-
-/* -------------------------------------------- */
-/*  Armor Matrix                                 */
-/* -------------------------------------------- */
-
-// Armor Matrix (Decepticon Directive, p.75): "An armor matrix is installed in one Integrated
-// Hardpoint, and a character can benefit from only one armor matrix." A second one can't be added,
-// and if an actor already carries two, only the best one's Toughness counts.
-const MATRICES = [O1_MORE.armorMatrixLight, O1_MORE.armorMatrixMedium, O1_MORE.armorMatrixHeavy];
-export const isArmorMatrix = item => item?.type == 'upgrade' && (MATRICES.includes(sourceOf(item)) || /^armor matrix\b/i.test(String(item?.name ?? '')));
-
-Hooks.on('preCreateItem', (item) => {
-  const actor = item.parent;
-  if (!actor || !isArmorMatrix(item) || item.flags?.essence20?.parentId) {
-    return true;
-  }
-
-  if (itemsOf(actor).some(other => isArmorMatrix(other) && !other.flags?.essence20?.parentId)) {
-    ui.notifications?.warn?.(T('O1ArmorMatrixOne', { name: actor.name }));
-    return false;
-  }
-
-  return true;
-});
-
-/** The Toughness the extra matrices add beyond the best one (what derived data takes back off). */
-export function extraMatrixToughness(actor) {
-  if (!actor?.system?.canTransform) {
-    return 0;
-  }
-
-  const values = itemsOf(actor)
-    .filter(item => isArmorMatrix(item) && !item.flags?.essence20?.parentId && item.system?.armorBonus?.defense == 'toughness')
-    .map(item => Number(item.system.armorBonus.value) || 0)
-    .sort((a, b) => b - a);
-  return values.slice(1).reduce((sum, value) => sum + value, 0);
-}
 
 /* -------------------------------------------- */
 /*  Rites of the All-Consuming                   */
@@ -68,64 +18,11 @@ export function extraMatrixToughness(actor) {
 // skill, a Follower with the Word of Unicron General Perk... gains the Rite associated with the die
 // of that Skill Rank." Each Rite is its own Perk (prerequisite: Word of Unicron and the Culture die).
 // Champion His Way (+d10, +2 to all Defenses while holding Dark Energon) is a Defense rule on its
-// pack item. The derived pass below is the Armor Matrix limit.
+// pack item.
 
-registerDerived((actor) => {
-  const defenses = actor?.system?.defenses;
-  if (!defenses) {
-    return;
-  }
-
-  const extra = extraMatrixToughness(actor);
-  if (extra && defenses.toughness) {
-    addToDefense(defenses.toughness, -extra, T('O1ArmorMatrixLabel'));
-  }
-});
-
-// Eat the Weak (+d2): "The Follower may attempt a Culture Skill Test versus a target's Willpower
-// Defense to remove the Addicted (Dark Energon) Hang-Up from that target. This takes 10 minutes."
-const addictionOf = actor => itemsOf(actor).find(item => item.type == 'hangUp'
-  && (sourceOf(item) == O1_MORE.addictedDarkEnergon || /^addicted \(dark energon\)/i.test(item.name ?? ''))) ?? null;
-
-registerUse({
-  id: 'o1EatTheWeak',
-  matches: isRite('eatTheWeak'),
-  run: async (item) => {
-    const actor = item.parent;
-    const target = firstTarget() ?? actor;
-    const addiction = addictionOf(target);
-    if (!addiction) {
-      ui.notifications.warn(T('O1NotAddicted', { name: target.name }));
-      return null;
-    }
-
-    const { rollTest } = await import("../../grants.mjs");
-    const { success } = await rollTest(actor, 'culture', Number(target.system?.defenses?.willpower?.total) || 10);
-    if (!success) {
-      return T('O1EatTheWeakFail', { name: actor.name, target: target.name });
-    }
-
-    if (target.isOwner) {
-      await addiction.delete();
-      return T('O1EatTheWeak', { name: actor.name, target: target.name });
-    }
-
-    await post(actor, `<p>${T('O1EatTheWeak', { name: actor.name, target: target.name })}</p>`
-      + `<button type="button" data-e20-ext="o1RemoveItem" data-uuid="${addiction.uuid}">${T('O1RemoveHangUp')}</button>`);
-    return null;
-  },
-});
-
-registerChatButton('o1RemoveItem', async (message, button) => {
-  const item = await fromUuid(button.dataset.uuid);
-  if (!item?.isOwner) {
-    ui.notifications.warn(T('O1NotOwner'));
-    return;
-  }
-
-  await item.delete();
-  button.disabled = true;
-});
+// Eat the Weak (+d2) is its own Use rule: a Culture test against the target's (or, with no target, its own) Willpower
+// that removes an Addicted (Dark Energon) Hang-Up. The removed duplicate printing is linked to it by name
+// (rules/inherit.mjs#linkExistingCopies).
 
 /* -------------------------------------------- */
 /*  Multimorph                                   */

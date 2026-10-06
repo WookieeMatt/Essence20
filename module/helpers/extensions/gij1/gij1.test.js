@@ -65,18 +65,6 @@ describe('gear', () => {
     expect(gear.anonymousSnag(attacker, target, { rolledSkill: 'athletics' })).toBeNull();
     expect(gear.anonymousSnag(attacker, actor([], {}, { uuid: 'Actor.x' }), { rolledSkill: 'deception' })).toBeNull();
   });
-
-  test('Ceremonial gives ↑1 to Persuasion only while stamped', () => {
-    const a = actor([], {}, { flags: { gij1Ceremonial: { scene: 1 } } });
-    expect(gear.ceremonialSource(a, { rolledSkill: 'persuasion' })?.shiftUp).toBe(1);
-    expect(gear.ceremonialSource(a, { rolledSkill: 'science' })).toBeNull();
-    expect(gear.ceremonialSource(actor(), { rolledSkill: 'persuasion' })).toBeNull();
-  });
-
-  test('Uniform penalty starts at 1 for a wearer', () => {
-    expect(gear.uniformPenalty(actor([item('upgrade', { source: CCX('VkSI68BkpXLOC5ys') })]))).toBe(1);
-    expect(gear.uniformPenalty(actor())).toBe(0);
-  });
 });
 
 describe('perks', () => {
@@ -106,72 +94,6 @@ describe('perks', () => {
     const beast = item('perk', { source: CCX('zuR9YJ2Wy956VGGy'), flags: { beastMode: true } });
     actor([beast]);
     expect(findExtUse(beast).canUse(beast)).toBe(false);
-  });
-
-  test('Sea Legs: 30 with no swim, +15 on top of existing swim', () => {
-    const legs = item('perk', { source: CCX('mKsSa2HBOimHqS7i') });
-    const a = actor([legs], { movement: { swim: { total: 0 } } });
-    perks.applySeaLegs(a);
-    expect(a.system.movement.swim.total).toBe(30);
-    const b = actor([item('perk', { source: CCX('mKsSa2HBOimHqS7i') })], { movement: { swim: { total: 20 } } });
-    perks.applySeaLegs(b);
-    expect(b.system.movement.swim.total).toBe(35);
-  });
-
-  test('Extract Poison qualifies in all poisons; Metier weapons drops the Assassin poison step', () => {
-    const a = actor([item('perk', { source: CCX('0kcuvCeRhmneAJTl') })], {
-      poisonTraining: 1, qualified: { poisons: {} }, trained: { poisons: {}, weapons: { silent: false } },
-    });
-    perks.applyTraining(a);
-    expect(a.system.qualified.poisons).toEqual({ all: true, standard: true, limited: true });
-
-    const origin = item('origin', { source: CCX('HCIbetyFvjJGuDcV'), effects: [{ disabled: false, changes: [{ key: 'system.poisonTraining' }] }] });
-    const metier = item('perk', { source: CCX('EcVOkUJE40sKSg8v'), flags: { gij1Choice: { choice: 'silent' } } });
-    const b = actor([origin, metier], { poisonTraining: 1, qualified: { poisons: {} }, trained: { poisons: {}, weapons: { silent: false } } });
-    b._preparePoisonTraining = jest.fn();
-    perks.applyTraining(b);
-    expect(b.system.poisonTraining).toBe(0);
-    expect(b._preparePoisonTraining).toHaveBeenCalled();
-    expect(b.system.trained.weapons.silent).toBe(true);
-  });
-
-  test('Improvise Bomb: grenades and bombs only; Demolition Artist makes it Free', () => {
-    const grenade = { name: 'Frag Grenade', system: { traits: ['consumable'], items: { a: { type: 'weaponEffect', classification: { style: 'explosive' } } } } };
-    const missile = { name: 'Missile', system: { traits: ['consumable', 'mounted'], items: {} } };
-    const rifle = { name: 'Rifle', system: { traits: [], items: {} } };
-    expect(perks.isBombEntry(grenade)).toBe(true);
-    expect(perks.isBombEntry(missile)).toBe(false);
-    expect(perks.isBombEntry(rifle)).toBe(false);
-    expect(perks.improviseCost(actor())).toBe('standard');
-    expect(perks.improviseCost(actor([item('perk', { source: CCX('QzcZLhyVvdbn09Es') })]))).toBe('free');
-  });
-
-  test('Scavenger looks one availability step harder', () => {
-    expect(perks.oneStepHarder('standard')).toBe('limited');
-    expect(perks.oneStepHarder('restricted')).toBe('prototype');
-    expect(perks.oneStepHarder('theoretical')).toBe('theoretical');
-  });
-
-  test('Primal Fear mark gives ↑1 against that target only', () => {
-    const a = actor([], {}, { flags: { gij1PrimalFear: { targetUuid: 'Actor.t', scene: 1 } } });
-    expect(perks.gij1Sources(a, { uuid: 'Actor.t' }, {}).some(s => s.id == 'gij1PrimalFear')).toBe(true);
-    expect(perks.gij1Sources(a, { uuid: 'Actor.z' }, {})).toHaveLength(0);
-  });
-
-  test('Primal Fear needs the environment of expertise', () => {
-    perks.setEnvironmentCheck(() => false);
-    expect(perks.canPrimalFear(actor())).toBe(false);
-    perks.setEnvironmentCheck(() => true);
-    expect(perks.canPrimalFear(actor())).toBe(true);
-  });
-
-  test('Feed On Fear heals 1 up to max', async () => {
-    const a = actor([], { health: { value: 2, max: 3 } });
-    a.update = jest.fn();
-    expect(await perks.healOne(a)).toBe(true);
-    expect(a.update).toHaveBeenCalledWith({ 'system.health.value': 3 });
-    const full = actor([], { health: { value: 3, max: 3 } });
-    expect(await perks.healOne(full)).toBe(false);
   });
 });
 

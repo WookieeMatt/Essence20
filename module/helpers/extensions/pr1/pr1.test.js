@@ -2,7 +2,6 @@ import { jest } from '@jest/globals';
 
 let jtt;
 let ats;
-let misc;
 let spectrum;
 let common;
 let registry;
@@ -53,7 +52,6 @@ beforeAll(async () => {
   common = await import('./common.mjs');
   jtt = await import('./jtt.mjs');
   ats = await import('./ats.mjs');
-  misc = await import('./misc.mjs');
   spectrum = await import('./spectrum.mjs');
   registry = (await import('../../extensions.mjs')).registrySnapshot();
 });
@@ -66,141 +64,41 @@ beforeEach(() => {
 
 test('every module registers its Use buttons', () => {
   expect(registry.uses.map(u => u.id)).toEqual(expect.arrayContaining([
-    'pr1-overdrive', 'pr1-prospector-toolkit', 'pr1-time-displaced', 'pr1-warhead-magazines', 'pr1-be-an-example',
-    'pr1-lightspeed-boost', 'pr1-tactical-size-shift', 'pr1-advanced-dino-gem',
+    'pr1-time-displaced', 'pr1-be-an-example',
+    'pr1-lightspeed-boost',
   ]));
-  expect(Object.keys(registry.chatButtons)).toEqual(expect.arrayContaining(['pr1DestinyFumble', 'pr1NemesisReroll', 'pr1TauntTest']));
+  expect(registry.uses.map(u => u.id)).not.toContain('pr1-advanced-dino-gem');
+  // Tactical Size Shift is the Feature's own rules (module/rules/conv12-slH12.test.js).
+  expect(registry.uses.map(u => u.id)).not.toContain('pr1-tactical-size-shift');
+  // Warhead Magazines is the Feature's own rules (module/rules/conv11-slG11.test.js).
+  expect(registry.uses.map(u => u.id)).not.toContain('pr1-warhead-magazines');
+  // Overdrive is the Feature's own rules (module/rules/conv10-slA10.test.js).
+  expect(registry.uses.map(u => u.id)).not.toContain('pr1-overdrive');
+  expect(Object.keys(registry.chatButtons)).toEqual(expect.arrayContaining(['pr1TauntTest']));
 });
 
-test('Mobile Headquarters: Megaform initiative', () => {
-  const ranger = actor('playerCharacter');
-  const zord = actor('zord', [item('feature', common.PR1.mobileHeadquarters, { name: 'Mobile HQ' })], {
-    actors: { x: { uuid: ranger.uuid, vehicleRole: 'passenger' } },
-    skills: { initiative: { shift: 'd4', edge: false } }, initiative: { skill: 'initiative' },
-  });
-  global.game.actors = [ranger, zord];
+// Mobile Headquarters is the Feature's own rules: SkillDie (module/rules/conv11-slF11.test.js) and the scene allies'
+// InitiativeEdge (module/rules/conv12-slH12.test.js).
 
-  jtt.mobileHqDerived(zord);
-  expect(zord.system.skills.initiative.edge).toBe(true);
-
-  const other = actor('zord', [], { skills: { initiative: { shift: 'd8' } }, initiative: { skill: 'initiative' } });
-  global.game.actors.push(other);
-  const mega = actor('megaform', [], {
-    actors: { a: { uuid: zord.uuid }, b: { uuid: other.uuid } },
-    skills: { initiative: { shift: 'd20', edge: false } }, initiative: { skill: 'initiative' },
-  });
-  jtt.mobileHqDerived(mega);
-  expect(mega.system.skills.initiative).toMatchObject({ shift: 'd8', edge: true });
-});
-
-// The rest of the scene is read at Initiative, never in derived data (reading other tokens' actors
-// there builds their synthetic actors mid-preparation and loops on world load).
-test('Mobile Headquarters gives allied vehicles and Zords in the scene Edge at Initiative', async () => {
-  const hq = actor('zord', [item('feature', common.PR1.mobileHeadquarters)], { skills: { initiative: {} } });
-  const ally = actor('vehicle', [], { skills: { initiative: { edge: false } }, initiative: { skill: 'initiative' } });
-  global.canvas = { tokens: { placeables: [{ actor: hq }, { actor: ally }] } };
-
-  jtt.mobileHqDerived(ally);
-  expect(ally.system.skills.initiative.edge).toBe(false);
-
-  const options = { edge: false };
-  await jtt.mobileHqInitiative(ally, options);
-  expect(options.edge).toBe(true);
-
-  const onFoot = { edge: false };
-  await jtt.mobileHqInitiative(actor('playerCharacter'), onFoot);
-  expect(onFoot.edge).toBe(false);
-});
-
-test('Overdrive tracks its options per turn and adds Movement', () => {
-  global.game.combat = { id: 'c1', round: 2, turn: 1, turns: [] };
-  const zord = actor('zord', [], { movement: { ground: { total: 40 }, aerial: { total: 0 } } },
-    { flags: { pr1Overdrive: { stamp: { combatId: 'c1', round: 2, turn: 1 }, options: ['move'] } } });
-  expect(jtt.overdriveUsed(zord)).toEqual(['move']);
-  jtt.overdriveDerived(zord);
-  expect(zord.system.movement).toEqual({ ground: { total: 60 }, aerial: { total: 0 } });
-  global.game.combat.turn = 2;
-  expect(jtt.overdriveUsed(zord)).toEqual([]);
-});
-
-test('Profiteer lasts ten rounds of the scene', () => {
-  global.game.combat = { id: 'c1', round: 3 };
-  const a = actor('playerCharacter', [item('hangUp', common.PR1.profiteerHangUp, { name: 'Profiteer' })], {},
-    { flags: { pr1ProfiteerQuestioned: { scene: 1, combatId: 'c1', round: 1 } } });
-  expect(jtt.profiteerSources(a, 'persuasion')).toEqual([{ id: 'pr1Profiteer', label: 'Profiteer', shiftDown: 1 }]);
-  expect(jtt.profiteerSources(a, 'culture')).toEqual([]);
-  global.game.combat.round = 11;
-  expect(jtt.profiteerLive(a)).toBe(false);
-});
-
-test('Prospector Toolkit rides the bonus-die bank on a Wealth Test only', async () => {
-  const a = actor('playerCharacter', [], {}, { flags: { pr1ProspectorDie: '1d8' } });
-  await jtt.prospectorPreRoll(a, { skill: 'wealth' });
-  expect(a.flags.essence20.pendingMoreHeads).toMatchObject({ bonusDie: '1d8', pr1Prospector: '1d8' });
-  expect(a.flags.essence20.pr1ProspectorDie).toBeUndefined();
-  // A cancelled Wealth roll followed by something else puts it back.
-  await jtt.prospectorPreRoll(a, { skill: 'athletics' });
-  expect(a.flags.essence20.pendingMoreHeads).toBeUndefined();
-  expect(a.flags.essence20.pr1ProspectorDie).toBe('1d8');
-});
-
-test('Time Displaced rolls one die larger; Warhead picks accumulate', () => {
+test('Time Displaced rolls one die larger', () => {
   expect(jtt.largerDie('1d8')).toBe('1d10');
   expect(jtt.largerDie('2d8')).toBe('2d8');
-  const zord = actor('zord', [
-    item('feature', common.PR1.warheadMagazines, { flags: { pr1WarheadTypes: ['acid', 'fire', 'cold'] } }),
-    item('feature', common.PR1.warheadMagazines, { flags: { pr1WarheadTypes: ['sonic', 'fire'] } }),
-  ]);
-  expect(jtt.warheadChoices(zord)).toEqual(['acid', 'fire', 'cold', 'sonic']);
 });
 
-test('Destiny offers the Fumble to the GM on a plain failure', () => {
-  const a = actor('playerCharacter', [item('hangUp', common.PR1.destinyHangUp)]);
-  expect(ats.destinyOffer({ flags: { essence20: { rollFailed: true } } }, a, true)).toBe(true);
-  expect(ats.destinyOffer({ flags: { essence20: { rollFailed: true, isFumble: true } } }, a, true)).toBe(false);
-  expect(ats.destinyOffer({ flags: { essence20: { rollFailed: true } } }, a, false)).toBe(false);
-});
-
-test('Nemesis reroll compares against every Difficulty', () => {
-  expect(ats.outcomesFor(15, [{ targetUuid: 'x', difficulty: 14 }, { targetUuid: 'y', difficulty: 16 }]).map(o => o.success)).toEqual([true, false]);
-  const a = actor('playerCharacter', [item('perk', common.PR1.nemesis)], {}, { flags: { nemesisUuid: 'Actor.boss' } });
-  expect(ats.nemesisInvolved(a, { flags: { essence20: { checkResults: [{ targetUuid: 'Actor.boss' }] } } })).toBe(true);
-  expect(ats.nemesisInvolved(a, { flags: { essence20: { checkResults: [{ targetUuid: 'Actor.other' }] } } })).toBe(false);
-});
-
-test('Lightspeed Boost options', () => {
+// The Movement / Resistance half is the item's own rules now (module/rules/conv5-slA5.test.js).
+test('Lightspeed Boost: Evasion in flight', () => {
   const zord = actor('zord', [
     item('feature', common.PR1.lightspeedBoost, { flags: { pr1LightspeedBoost: { option: 'aeronautic' } } }),
-    item('feature', common.PR1.lightspeedBoost, { flags: { pr1LightspeedBoost: { option: 'hazmat', how: 'resist', types: ['acid', 'cold'] } } }),
-  ], { movement: { aerial: { total: 0 }, ground: { total: 40 } }, immunities: { fire: false }, resistances: { acid: false, cold: false } },
-  { tokens: [{ document: { elevation: 20 } }] });
-  ats.lightspeedDerived(zord);
-  expect(zord.system.movement.aerial.total).toBe(40);
-  expect(zord.system.resistances).toEqual({ acid: true, cold: true });
+  ], {}, { tokens: [{ document: { elevation: 20 } }] });
   expect(ats.lightspeedDefenseAdjust(zord, 'evasion')).toBe(2);
   expect(ats.lightspeedDefenseAdjust(zord, 'toughness')).toBe(0);
+  // The picker button only until the pick is made (Pyrotechnic's button is then the item's own Use rule).
+  const use = registry.uses.find(u => u.id == 'pr1-lightspeed-boost');
+  expect(use.matches(item('feature', common.PR1.lightspeedBoost))).toBe(true);
+  expect(use.matches(item('feature', common.PR1.lightspeedBoost, { flags: { pr1LightspeedBoost: { option: 'pyrotechnic' } } }))).toBe(false);
 });
 
-test('Power Flux tops up to 6 each', () => {
-  const pilot = actor('playerCharacter', [], { powers: { personal: { value: 1, max: 10 } } });
-  const low = actor('playerCharacter', [], { powers: { personal: { value: 2, max: 4 } } });
-  const zord = actor('zord', [], { actors: { a: { uuid: pilot.uuid, vehicleRole: 'driver' }, b: { uuid: low.uuid, vehicleRole: 'passenger' } } });
-  global.game.actors = [pilot, low, zord];
-  expect(ats.powerFluxGains(zord).map(g => g.gain)).toEqual([6, 2]);
-});
-
-test('Tactical Size Shift and Warzord sizes', () => {
-  expect(ats.shiftedSize('huge', 1)).toBe('extended');
-  expect(ats.shiftedSize('towering', 1)).toBe('towering');
-  expect(ats.shiftedSize('long', -1)).toBe('long');
-  expect(ats.shiftedSize('huge', -2)).toBe('long');
-  const zord = actor('zord', [item('feature', common.PR1.tacticalSizeShift, { flags: { pr1SizeShift: { direction: 'larger' } } })], { size: 'huge' });
-  ats.sizeShiftDerived(zord);
-  expect(zord.system.size).toBe('extended');
-  const war = actor('zord', [item('feature', common.PR1.warzord)], { size: 'huge' });
-  ats.sizeShiftDerived(war);
-  expect(war.system.size).toBe('titanic');
-});
+// Power Flux is the Feature's own Trigger rule (module/rules/conv7-slA7.test.js).
 
 test('Stand Behind Me! blocks an attack on anyone but the taunter', () => {
   global.game.combat = { id: 'c1', round: 2 };
@@ -222,13 +120,8 @@ test('Be an Example source', () => {
   expect(ats.atsSources(a, null, { rolledSkill: 'culture' }).map(s => s.id)).toEqual(['pr1BeAnExample']);
 });
 
-test('Advanced Dino Gem Integration', () => {
-  const stealth = actor('zord', [item('feature', common.PR1.advancedDinoGem, { flags: { pr1DinoGem: 'stealth' } })], { movement: { ground: { total: 40 }, swim: { total: 0 } } });
-  misc.dinoDerived(stealth);
-  expect(stealth.system.movement).toEqual({ ground: { total: 50 }, swim: { total: 0 } });
-  expect(misc.resonanceRound(6, 2)).toBe(4);
-  expect(misc.resonanceRound(3, 2)).toBe(3);
-});
+// Enhanced Stealth's +10 ft is the item's own Movement rules now (module/rules/conv5-slA5.test.js); Genetic
+// Resonance is its SummonTime rule (module/rules/conv10-slA10.test.js).
 
 test('Spectrum Shifted keeps the Table 2-16 row', async () => {
   const black = { name: 'Black Ranger' };

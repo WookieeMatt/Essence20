@@ -1,5 +1,4 @@
 import { pr2NoUntrainedSnag } from "./extensions/pr2/team.mjs";
-import { zord2NoUntrainedSnag } from "./extensions/zord2/snag.mjs";
 import { skillKitNoUntrainedSnag } from "./kits.mjs";
 import { ruleNoUntrainedSnag } from "../rules/adapter.mjs";
 import { E20 } from "./config.mjs";
@@ -93,11 +92,6 @@ export class RollDialog {
   async _isUntrainedSnag(skillDataset, actor, skill=null) {
     const isUntrainedShift = E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(skillDataset.shift);
     if (!isUntrainedShift) {
-      return false;
-    }
-
-    // Shinobi of the 63rd Hexagram / Steady Hands - helpers/extensions/zord2/snag.mjs.
-    if (zord2NoUntrainedSnag(actor, skill)) {
       return false;
     }
 
@@ -195,7 +189,6 @@ export class RollDialog {
       surgingAvailable: dataset.surgingAvailable,
       psychoanalystAvailable: dataset.psychoanalystAvailable,
       coaxSurrenderAvailable: dataset.coaxSurrenderAvailable,
-      bumpAndRunAvailable: dataset.bumpAndRunAvailable,
       jackOfAllTradesAvailable: dataset.jackOfAllTradesAvailable,
       demolitionDriverAvailable: dataset.demolitionDriverAvailable,
       programmableAvailable: dataset.programmableAvailable,
@@ -227,7 +220,6 @@ export class RollDialog {
       pseudoScienceAvailable: dataset.pseudoScienceAvailable,
       quantumCutAvailable: dataset.quantumCutAvailable,
       soloShotAvailable: dataset.soloShotAvailable,
-      spellcializeAvailable: dataset.spellcializeAvailable,
       observerSnagSubstitutionAvailable: dataset.observerSnagSubstitutionAvailable,
       combatStanceAvailable: dataset.combatStanceAvailable,
       retributionAvailable: dataset.retributionAvailable,

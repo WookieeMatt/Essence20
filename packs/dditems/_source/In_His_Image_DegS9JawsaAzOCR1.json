@@ -5,6 +5,9 @@
   "_id": "DegS9JawsaAzOCR1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Exchange a Defeated foe's Hang-Ups (In His Image)","steps":[{"do":"target","max":1},{"do":"require","check":["target:status:defeated"],"message":"The rite needs a Defeated target."},{"do":"require","check":["not:target:data:flags.essence20.o2InHisImage"],"message":"The rite has already succeeded on this target."},{"do":"roll","skill":"culture","dif":"max(0, @target.system.defenses.toughness.total - @target.system.defenses.toughness.armor)","onSuccess":[{"do":"repeat","steps":[{"do":"pick","key":"oldHangUp","from":"targetItem","itemType":"hangUp","filter":["not:item:granted"],"prompt":"Which Hang-Up goes? (close to finish)"},{"do":"pickEntry","title":"Pick the Hang-Up that replaces it","from":{"type":"hangUp"}},{"do":"deleteItem","to":"target","item":"choice:oldHangUp"},{"do":"giveCopy","to":"target","uuid":"{var.picked}"}]},{"do":"updateActor","to":"target","when":["var:repeats>=1"],"set":{"flags.essence20.o2InHisImage":true}}],"onFail":[{"do":"chat","text":"The rite fails."}]}]}
+    ],
     "prerequisites": {"when":["self:has:Word of Unicron","self:skill:culture>=d12"]},
     "automation": {
       "status": "full",

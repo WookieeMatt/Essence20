@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Cover","mode":"grant","against":true,"label":"Counts as in Cover while in Alt Mode","when":["self:transformed"]}
+      {"type":"Cover","mode":"grant","against":true,"label":"Counts as in Cover while in Alt Mode","when":["self:transformed"]},
+      {"type":"HideBonus","label":"Hide in Alt Mode: +5 (Now You Don't)","amount":5,"when":["self:transformed"]}
     ],
     "automation": {
       "status": "full",

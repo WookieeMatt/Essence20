@@ -5,6 +5,10 @@
   "_id": "cOVq7EH6HPrXmhBC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Defeated a Cybertronian","event":"defeatedEnemy","when":[{"any":["target:canTransform","target:tag:cybertronian","target:tag:robot"]}],"steps":[{"do":"heal","amount":"1d2"}]},
+      {"type":"Use","label":"Destroyed an Energon object","steps":[{"do":"heal","amount":"1d2"}]}
+    ],
     "prerequisites": {"when":["self:level>=10"]},
     "automation": {
       "status": "full",

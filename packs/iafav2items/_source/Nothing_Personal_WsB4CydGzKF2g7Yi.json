@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"RollModifier","label":"Nothing Personal (no untrained Snag, land)","when":["skill:driving","vehicle:driving","vehicle:moves:ground"],"immune":["untrainedSnag"]},
-      {"type":"DialogSwitch","label":"Winning over a new Contact (Nothing Personal: Edge)","edge":true}
+      {"type":"DialogSwitch","label":"Winning over a new Contact (Nothing Personal: Edge)","edge":true},
+      {"type":"Use","label":"Fit the free Silencer to your pistol (Nothing Personal)","when":["not:rule:data:flags.essence20.q1SilencerFitted"],"steps":[{"do":"pick","key":"pistol","from":"ownedItems","itemType":"weapon","prefer":[{"any":["item:name~pistol","item:name~revolver","item:name~handgun"]}],"prompt":"Which weapon gets the Silencer?"},{"do":"fitUpgrade","uuid":"Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ","onto":"choice:pistol","flags":{"q1FreeSilencer":true}},{"do":"updateItem","item":"self","set":{"flags.essence20.q1SilencerFitted":true}}]}
     ],
     "automation": {
       "status": "full",

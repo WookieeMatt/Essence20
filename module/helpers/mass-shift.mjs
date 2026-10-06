@@ -108,6 +108,13 @@ export async function activateMassShift(actor) {
   }
 
   await markUsedThisScene(actor, MASS_SHIFT_SCENE_FLAG);
+  // Item rules listening for it (Hybridization counts the use against its daily Mass Shift uses - rules/ext/h/types.mjs).
+  try {
+    const { massShiftUsed } = await import("../rules/ext/h/types.mjs");
+    await massShiftUsed(actor);
+  } catch (error) {
+    console.error('Essence20 | massShiftUsed Triggers failed', error);
+  }
 
   if (choice.benefit == 'defense') {
     await bankPendingBonus(actor, MASS_SHIFT_DEFENSE_FLAG, { defenseAmounts: { [choice.defenseType]: 1 } });

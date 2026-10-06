@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"RollModifier","label":"In the wild (Tracking Outfit: ↑1)","when":[{"any":["skill:targeting","skill:survival"]},"terrain:wild"],"upshift":1},
-      {"type":"RollModifier","label":"In an urban area (Tracking Outfit: ↓1)","when":[{"any":["skill:alertness","skill:culture"]},"terrain:urban"],"downshift":1}
+      {"type":"RollModifier","label":"In an urban area (Tracking Outfit: ↓1)","when":[{"any":["skill:alertness","skill:culture"]},"terrain:urban"],"downshift":1},
+      {"type":"RollModifier","label":"Initiative in the wild (Tracking Outfit: ↑1)","when":["roll:initiative","terrain:set","terrain:wild"],"upshift":1}
     ],
     "automation": {
       "status": "full",

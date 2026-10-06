@@ -17,6 +17,7 @@ import { dirname, join } from "node:path";
 
 import { validateRule } from "../module/rules/types.mjs";
 import { unknownTags } from "../module/rules/predicate.mjs";
+import "../module/rules/ext/index.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const PACKS = join(ROOT, "packs");

@@ -6,7 +6,10 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","scope":"crew","label":"Mobile Headquarters","when":[{"any":["skill:culture","skill:science","skill:technology"]}],"upshift":1}
+      {"type":"RollModifier","scope":"crew","label":"Mobile Headquarters","when":[{"any":["skill:culture","skill:science","skill:technology"]}],"upshift":1},
+      {"type":"SkillDie","skill":"initiative","edge":true},
+      {"type":"SkillDie","scope":"megaform","skill":"initiative","bestOf":"participants","edge":true},
+      {"type":"InitiativeEdge","scope":"sceneAllies","label":"Mobile Headquarters","when":["holder:type:zord",{"any":["self:type:zord","self:type:vehicle"]},"not:self:hasItem:Compendium.essence20.jump_through_time.Item.soCSwGBp0AZbEeZC"]}
     ],
     "automation": {
       "status": "full",

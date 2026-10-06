@@ -8153,7 +8153,8 @@ describe('slE dmlp', () => {
     const perk = actor.items.contents[0];
     expect(switchNames(actor, { rolledSkill: 'driving' })).toEqual([]);
     for (const [type, label] of [['land', 'Land'], ['sea', 'Sea'], ['air', 'Air']]) {
-      perk.flags = { essence20: { vehicleType: type } };
+      // The pick (rules.choices, slE3); an old flags.essence20.vehicleType moves there through `legacy`.
+      perk.flags = { essence20: { rules: { choices: { vehicleType: type } } } };
       expect(switchNames(actor, { rolledSkill: 'technology' })).toEqual([`${label} vehicle test (Wheel Excited: Edge)`]);
     }
 
@@ -8182,12 +8183,12 @@ test('City Slicker: Streetwise switch on Infiltration in an urban or untagged sc
   }
 });
 
-test('Bookworm: ↓1 in a library scene, but not on Initiative (its slice adds that one)', () => {
+test('Bookworm: ↓1 in a library scene, Initiative included (its second rule - conv7-slC7.test.js)', () => {
   const actor = holder(['wtnvcgitems/_source/Bookworm_p2Qk0B5PWp10ZaqN.json']);
   global.game.scenes = { active: { name: 'Night Vale Public Library' } };
   try {
     expect(ruleRollSources(actor, null, { rolledSkill: 'culture', dataset: {} }).sources.map(s => s.shiftDown)).toEqual([1]);
-    expect(ruleRollSources(actor, null, { rolledSkill: 'initiative', dataset: { isInitiative: true } }).sources).toEqual([]);
+    expect(ruleRollSources(actor, null, { rolledSkill: 'initiative', dataset: { isInitiative: true } }).sources.map(s => s.shiftDown)).toEqual([1]);
     expect(ruleDialogSwitches(actor, { rolledSkill: 'initiative', dataset: { isInitiative: true } })).toEqual([]);
   } finally {
     delete global.game.scenes;
@@ -8229,7 +8230,8 @@ describe('slA2 zord', () => {
 
   test('Mercurial Nature: grants a Hybridization when added, even beside one bought separately', async () => {
     const { grantData } = await import('./lifecycle.mjs');
-    const { hybridsOf } = await import('../helpers/extensions/zord2/snag.mjs');
+    await import('./ext/h/copies.mjs');
+    const { contextFor, evaluate } = await import('./predicate.mjs');
     const saved = global.foundry.utils;
     global.foundry.utils = {
       ...saved,
@@ -8252,9 +8254,11 @@ describe('slA2 zord', () => {
       actor.items.contents.push({ id: 'bought', type: 'perk', flags: { core: { sourceId: HYBRIDIZATION }, essence20: { zord2Hybrid: 'fastShift' } }, system: {} });
       expect(await grantData(perk, actor, { load })).toHaveLength(1);
 
-      // The granted copy (marked with _stats.compendiumSource) is still a Hybridization to the slice.
-      actor.items.contents.push({ id: 'granted', type: 'perk', _stats: { compendiumSource: HYBRIDIZATION }, flags: { essence20: { grantedBy: perk.id, zord2Hybrid: 'extraShift' } }, system: {} });
-      expect(hybridsOf(actor)).toEqual(['fastShift', 'extraShift']);
+      // The granted copy (marked with _stats.compendiumSource) is another copy of the bought one to its rules
+      // (rule:copy - Hybridization's Fast Shift / Hold That Shape reads, module/rules/ext/h/copies.mjs).
+      const grantedCopy = { id: 'granted', type: 'perk', _stats: { compendiumSource: HYBRIDIZATION }, flags: { essence20: { grantedBy: perk.id, zord2Hybrid: 'extraShift' } }, system: {} };
+      actor.items.contents.push(grantedCopy);
+      expect(evaluate(['rule:copy:data:flags.essence20.zord2Hybrid=fastShift'], contextFor({ self: actor, ruleItem: grantedCopy }))).toBe(true);
     } finally {
       global.foundry.utils = saved;
     }

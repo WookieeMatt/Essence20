@@ -5,6 +5,9 @@
   "_id": "pRipbWx12tOzfdqD",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSelect","label":"Spiked ({holder})","scope":"incoming","when":["attack","roll:plainReach","not:target:self"],"options":[{"label":"Take the ↓1","downshift":1},{"label":"Let {holder} strike back","steps":[{"do":"button","whisper":"owners","label":"Spiked","intro":"{target} braved the Spiked of {name} - {name} may make an immediate aura attack.","steps":[{"do":"pick","key":"strikeSkill","from":"list","options":[["might","E20.SkillMight"],["finesse","E20.SkillFinesse"]],"prompt":"Strike back with which Skill?"},{"do":"clearTargets"},{"do":"roll","skill":"{choice.strikeSkill}","dif":"max(@target.system.defenses.toughness.total, @target.system.defenses.evasion.total)","onSuccess":[{"do":"button","who":"gm","label":"Apply 1 Sharp damage to {target} (Spiked)","steps":[{"do":"damage","to":"target","amount":1,"damageType":"sharp"}]}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: an enemy making a plain Reach melee attack against you must take ↓1 or let you strike back at once. The strike back is a Might or Finesse test for 1 Sharp damage, applied with a GM button.</p>"

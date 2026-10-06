@@ -5,6 +5,10 @@
   "_id": "dyjdCTOs83bLiCxC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Tenacity","edge":true,"when":["roll:save"]},
+      {"type":"Trigger","label":"Tenacity (end what expires this turn)","event":"turnStart","steps":[{"do":"endExpiring","offer":true,"to":"self"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when a chat card asks you to roll to resist an effect (such as a poison), that roll gets an Edge, labelled Tenacity in the Roll Options Dialog. At the start of your turn, a card lists Conditions and marks that would end this turn, with a button to end them now.</p>"

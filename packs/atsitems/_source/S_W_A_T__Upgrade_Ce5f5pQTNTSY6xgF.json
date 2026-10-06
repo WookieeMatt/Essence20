@@ -6,7 +6,12 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","scope":"pilot","label":"Through the Zord's loudspeakers (S.W.A.T. Upgrade: Edge)","when":[{"any":["skill:intimidation","skill:persuasion"]}],"edge":true,"default":true}
+      {"type":"DialogSwitch","scope":"pilot","label":"Through the Zord's loudspeakers (S.W.A.T. Upgrade: Edge)","when":[{"any":["skill:intimidation","skill:persuasion"]}],"edge":true,"default":true},
+      {"type":"Trigger","event":"hit","label":"Incarceration Protocols (last hit)","when":["self:type:zord","attack"],"steps":[{"do":"mark","to":"target","key":"swatLastHit","exclusive":true}]},
+      {"type":"Trigger","event":"defeated","watch":"enemy","label":"Incarceration Protocols (S.W.A.T. Upgrade)","when":["self:type:zord","markedByMe:swatLastHit"],"limit":{"per":"scene","max":6},"steps":[{"do":"mark","to":"self","key":"swatDetained","count":1,"add":true,"until":"scene"},{"do":"chat","text":"{target} is digitally detained ({@mark.swatDetained * -1 + 6} containment cards left)."}]},
+      {"type":"Trigger","event":"defeated","watch":"enemy","label":"Incarceration Protocols (S.W.A.T. Upgrade)","when":["self:type:zord","markedByMe:swatLastHit"],"steps":[{"do":"unmark","to":"target","key":"swatLastHit"}]},
+      {"type":"DialogSwitch","label":"Incapacitation Ammo (Stun, 1 higher than the damage)","key":"pr1SwatStun","forget":true,"when":["self:type:zord","item:type:weaponEffect","item:data:system.classification.style","not:item:data:system.classification.style=melee"]},
+      {"type":"HitRider","label":"Incapacitation Ammo","option":{"damage":"@var.damage + 1","damageType":"stun"},"when":["roll:switch:pr1SwatStun"]}
     ],
     "automation": {
       "status": "full",

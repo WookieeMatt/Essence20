@@ -1,13 +1,9 @@
 import { jest } from '@jest/globals';
-import { TF2 } from './common.mjs';
 import {
-  MARK, arrogantForbids, broadUnderstandingApplies, marksOf, tf2PreRoll, tf2RollSources, tf2Specializes, tf2Toggles,
+  tf2RollSources,
 } from './rolls.mjs';
-import { cageCapacity, deconstructKind, differentEssences, requisitionDifOf, weAreOneSize } from './uses.mjs';
-import { scrambleVictims, weAreOneEffect } from './modes.mjs';
 import { specialAttackUpdates } from '../../weapon-fit.mjs';
 
-const item = (uuid, extra = {}) => ({ id: extra.id ?? uuid.slice(-6), name: extra.name ?? 'Thing', type: extra.type ?? 'perk', system: extra.system ?? {}, flags: { core: { sourceId: uuid }, essence20: extra.flags ?? {} } });
 const actor = (items = [], extra = {}) => ({
   uuid: extra.uuid ?? 'Actor.a', id: extra.id ?? 'a', name: extra.name ?? 'A', type: extra.type ?? 'character',
   system: extra.system ?? {}, flags: { essence20: extra.flags ?? {} }, statuses: new Set(extra.statuses ?? []), items: { contents: items },
@@ -24,79 +20,24 @@ beforeEach(() => {
   global.ui = { notifications: { warn: jest.fn() } };
 });
 
-test('Broad Understanding: Specialized out of combat, ↓2 off-Specialization', async () => {
-  const holder = actor([item(TF2.broadUnderstanding)], { system: { skills: { science: { specializations: { chem: { name: 'Chemistry' } } } } } });
-  expect(broadUnderstandingApplies(holder)).toBe(true);
-  expect(tf2Specializes(holder, 'science')).toBe(true);
-  expect(tf2RollSources(holder, null, { rolledSkill: 'science', dataset: {} }).sources[0].shiftDown).toBe(2);
-  expect(tf2RollSources(holder, null, { rolledSkill: 'science', dataset: { isSpecialized: true } }).sources).toEqual([]);
-  // dice.mjs gives roll sources no dataset - the pre-roll hook remembers it.
-  await tf2PreRoll(holder, { specializationKey: 'chem' }, null);
-  expect(tf2RollSources(holder, null, { rolledSkill: 'science' }).sources).toEqual([]);
-  global.game.combat = { id: 'c' };
-  expect(broadUnderstandingApplies(holder)).toBe(false);
-  holder.flags.essence20.tf2AppliedScience = true;
-  expect(broadUnderstandingApplies(holder)).toBe(true);
-  expect(tf2RollSources(holder, null, { rolledSkill: 'science', dataset: {} }).consumes[0].ext).toBe('tf2AppliedScience');
-});
-
-test('Cage prisoner escape tests take ↓2 and the focus Snag', () => {
-  const prisoner = actor([], { flags: { riderMarks: [{ kind: MARK.caged, by: 'Actor.h', label: 'Cage', focused: true }] } });
-  expect(marksOf(prisoner, MARK.caged)).toHaveLength(1);
-  const out = tf2RollSources(prisoner, null, { rolledSkill: 'brawn' });
-  expect(out.sources.map(s => s.id)).toEqual(['tf2Caged', 'tf2CageFocus']);
-  expect(out.consumes[0].ext).toBe('tf2CageFocus');
-});
-
-test('Diversion: Snag attacking the diverter', () => {
-  const diverter = actor([], { uuid: 'Actor.d' });
-  const diverted = actor([], { uuid: 'Actor.x', flags: { riderMarks: [{ kind: MARK.diversion, by: 'Actor.d' }] } });
-  const out = tf2RollSources(diverted, diverter, { isAttack: true });
-  expect(out.sources[0]).toMatchObject({ id: 'tf2DiversionSnag', snag: true });
-});
-
-test('All Out Attack control shows on a Might attack out of combat', () => {
-  const holder = actor([item(TF2.allOutAttack), item(TF2.evasiveFighting)]);
-  const toggles = tf2Toggles(holder, { item: { type: 'weaponEffect', system: { classification: { skill: 'might' } } }, rolledSkill: 'might' });
-  expect(toggles.filter(t => t.type == 'number').map(t => t.name)).toEqual(['tf2AllOutAttack', 'tf2EvasiveFighting']);
-});
-
-test('Arrogant forbids first-turn attacks on lower Threat Levels only', () => {
-  const holder = actor([item(TF2.arrogant, { type: 'hangUp' })], { id: 'h', system: { level: 5 } });
-  global.game.combat = { round: 1, combatant: { actor: { id: 'h' } } };
-  expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }])).toBe(true);
-  // A single attack can't include a lower foe; an area attack can, alongside an equal-or-higher one.
-  expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }, { system: { threatLevel: 6 } }])).toBe(true);
-  expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }, { system: { threatLevel: 6 } }], { isArea: true })).toBe(false);
-  expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }], { isArea: true })).toBe(true);
-  // TL 0 lackeys are lower too; a character without a Threat Level never is.
-  expect(arrogantForbids(holder, [{ system: { threatLevel: 0 } }])).toBe(true);
-  expect(arrogantForbids(holder, [{ system: { level: 1 } }])).toBe(false);
-  global.game.combat.round = 2;
-  expect(arrogantForbids(holder, [{ system: { threatLevel: 2 } }])).toBe(false);
-});
-
-test('Applied Science: once per scene, twice with Multiplication', async () => {
+test('Broad Understanding, Applied Science, Determine Probability and Energon Bank are rules now', async () => {
   const { registrySnapshot } = await import('../../extensions.mjs');
-  const use = registrySnapshot().uses.find(entry => entry.id == 'tf2AppliedScience');
-  // Used once this scene (the scene counter falls back to 1 when unset).
-  const usedOnce = { tf2AppliedScience: { epoch: 1, count: 1 } };
-  const withFlags = a => Object.assign(a, { getFlag: (scope, key) => a.flags[scope]?.[key] });
-  const plain = withFlags(actor([item(TF2.appliedScience)], { flags: { ...usedOnce } }));
-  const multiplied = withFlags(actor([item(TF2.appliedScience), item(TF2.multiplication)], { flags: { ...usedOnce } }));
-  expect(use.canUse({ parent: plain })).toBe(false);
-  expect(use.canUse({ parent: multiplied })).toBe(true);
+  const ids = registrySnapshot().uses.map(entry => entry.id);
+  for (const id of ['tf2AppliedScience', 'tf2DetermineProbability', 'tf2EnergonBank']) {
+    expect(ids).not.toContain(id);
+  }
+
+  // A Science roll gets nothing from this slice any more.
+  const holder = actor([], { system: { skills: { science: { specializations: { chem: { name: 'Chemistry' } } } } } });
+  expect(tf2RollSources(holder, null, { rolledSkill: 'science', dataset: {} })).toEqual({ sources: [], consumes: [] });
 });
 
-test('Arrogant holds the attack: the roll is cancelled', async () => {
-  const holder = actor([item(TF2.arrogant, { type: 'hangUp' })], { id: 'h', system: { level: 5 } });
-  global.game.combat = { round: 1, combatant: { actor: { id: 'h' } } };
-  global.game.user.targets = new Set([{ actor: { system: { threatLevel: 2 } } }]);
-  global.ui = { notifications: { warn: jest.fn() } };
-  const dataset = {};
-  await tf2PreRoll(holder, dataset, { type: 'weaponEffect', system: {} });
-  expect(dataset.cancelRoll).toBe(true);
-  expect(ui.notifications.warn).toHaveBeenCalled();
+test('Duke It Out is rules now: no Use here, and an old refusal mark gives no Edge', async () => {
+  const { registrySnapshot } = await import('../../extensions.mjs');
+  expect(registrySnapshot().uses.map(entry => entry.id)).not.toContain('tf2DukeItOut');
+  const challenger = actor([], { uuid: 'Actor.d' });
+  const refused = actor([], { uuid: 'Actor.x', flags: { riderMarks: [{ kind: 'tf2DukeRefused', by: 'Actor.d' }] } });
+  expect(tf2RollSources(challenger, refused, { rolledSkill: 'might' }).sources).toEqual([]);
 });
 
 test('special-attack weapons are fitted to the chassis: damage, Blunt or Sharp, Finesse or Might', () => {
@@ -129,28 +70,10 @@ test('special-attack weapons are fitted to the chassis: damage, Blunt or Sharp, 
     .toEqual({ effectUpdates: [], weaponUpdate: {} });
 });
 
-test('We Are One! sizes, skills and effect', () => {
-  expect(weAreOneSize(actor([], { system: { essences: { social: { max: 3 } } } }))).toBe(2);
-  expect(differentEssences('science', 'might')).toBe(true);
-  expect(differentEssences('science', 'alertness')).toBe(false);
-  const effect = weAreOneEffect({ uuid: 'Actor.h' }, { skills: ['science', 'might'], label: 'We Are One!' });
-  expect(effect.system.reroll).toMatchObject({ mode: 'ones', target: 'skillDice', maxUses: 0, skills: ['science', 'might'] });
-});
+// We Are One!'s team reroll is a picked-scope Reroll rule on the Perk (rules/conv12-slI12.test.js).
 
-test('Cage capacity, Deconstruct targets and DIF', () => {
-  expect(cageCapacity(actor([], { system: { isTransformed: false } }))).toBe(1);
-  const mode = { id: 'm', type: 'altMode', system: { altModeCrew: 2 }, flags: {} };
-  expect(cageCapacity(actor([mode, item(TF2.extraCrewCapacity, { type: 'gear' })], { system: { isTransformed: true, altModeId: 'm' } }))).toBe(6);
-  expect(deconstructKind({ type: 'gear', name: 'Medical Kit' })).toBe('kit');
-  expect(deconstructKind({ type: 'weapon', name: 'Blaster' })).toBe('weapon');
-  expect(requisitionDifOf({ system: { availability: 'restricted' } })).toBe(15);
-});
-
-test('Scramble Modulator picks the healthiest components', () => {
-  const a = actor([], { uuid: 'Actor.1', system: { health: { value: 4 } } });
-  const b = actor([], { uuid: 'Actor.2', system: { health: { value: 6 } } });
-  const c = actor([], { uuid: 'Actor.3', system: { health: { value: 6 } } });
-  global.fromUuidSync = uuid => [a, b, c].find(x => x.uuid == uuid);
-  const form = { type: 'megaform', system: { subtype: ['megaformCombiner'], actors: { x: { uuid: 'Actor.1' }, y: { uuid: 'Actor.2' }, z: { uuid: 'Actor.3' } } } };
-  expect(scrambleVictims(form).map(v => v.uuid)).toEqual(['Actor.2', 'Actor.3']);
+test('Deconstruct and Cage are rules now; the Repair button stays on a sabotaged item', async () => {
+  const { USES } = await import('./uses.mjs');
+  expect(USES.map(use => use.id)).toEqual(['tf2Repair']);
+  expect(USES[0].matches({ flags: { essence20: { tf2Deconstructed: { dif: 10 } } } })).toBe(true);
 });

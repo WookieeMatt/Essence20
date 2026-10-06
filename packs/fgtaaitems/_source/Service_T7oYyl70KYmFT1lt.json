@@ -5,6 +5,10 @@
   "_id": "T7oYyl70KYmFT1lt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick your Limited weapon (Service)","steps":[{"do":"pickGrant","record":true,"key":"chosen","max":1,"legacy":"flags.essence20.q1Chosen","title":"Pick a Limited weapon","from":{"type":"weapon","availabilities":["limited"]}}]},
+      {"type":"Qualification","label":"Service (Trained: your chosen Limited weapon)","access":"trained","items":[{"any":["item:type:weapon","item:type:armor"]},"item:pickedSource:chosen"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Health. Use button: pick a Limited weapon; you are trained and Qualified with it at Requisition.</p>"

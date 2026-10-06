@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Navigating the Grid (Morphin Navigator: Edge)","when":["not:attack"],"edge":true}
+      {"type":"DialogSwitch","label":"Navigating the Grid (Morphin Navigator: Edge)","when":["not:attack"],"edge":true},
+      {"type":"Use","label":"Grid Power Bloom","cost":{"action":"standard"},"limit":{"per":"mission","max":1},"steps":[{"do":"chat","text":"{name} opens a Grid Power Bloom."},{"do":"updateActor","to":"party","filter":["target:data:system.powers.personal.max>0"],"add":{"system.powers.personal.value":"1d2"},"max":"@recipient.system.powers.personal.max"}]}
     ],
     "automation": {
       "status": "full",

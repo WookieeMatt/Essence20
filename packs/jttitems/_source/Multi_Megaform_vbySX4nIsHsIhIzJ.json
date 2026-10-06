@@ -5,6 +5,11 @@
   "_id": "vbySX4nIsHsIhIzJ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Multi-Megaform: note three Megaform Traits","steps":[{"do":"noteEntries","key":"traits","count":3,"from":{"type":"megaformTrait"},"title":"Megaform Trait {n} of 3","legacy":"flags.essence20.zord1MultiTraits"}]},
+      {"type":"Use","label":"Apply a noted Megaform Trait","steps":[{"do":"pick","key":"active","from":"noted","list":"traits","listLegacy":"flags.essence20.zord1MultiTraits","prompt":"Which Megaform Trait does the Zord apply?"},{"do":"deleteItem","item":"granted","all":true},{"do":"grant","uuid":"{choice.active}"}]},
+      {"type":"Use","label":"Re-choose the three Megaform Traits","steps":[{"do":"noteEntries","key":"traits","count":3,"from":{"type":"megaformTrait"},"title":"Megaform Trait {n} of 3","legacy":"flags.essence20.zord1MultiTraits"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: note three Megaform Traits. Use button: swap which one the Zord brings into the Megaform.</p>"

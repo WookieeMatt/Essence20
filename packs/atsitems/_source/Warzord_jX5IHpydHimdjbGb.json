@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "rules": [
-      {"type":"DamageModifier","label":"Warzord","direction":"dealt","amount":1,"when":[{"any":["skill:might","skill:finesse"]}]}
+      {"type":"DamageModifier","label":"Warzord","direction":"dealt","amount":1,"when":[{"any":["skill:might","skill:finesse"]}]},
+      {"type":"Trigger","event":"megaformCombined","scope":"megaform","label":"Warzord (combining)","when":["holder:hasItem:Compendium.essence20.pr_crb.Item.ZZMBVjmosr0VViMU"],"limit":{"per":"scene"},"steps":[{"do":"chat","text":"{name}: a Warzord is combining - 1 Story Point per Zord combining with it ({@var.zords - 1})."}]},
+      {"type":"Size","label":"Warzord (Titanic)","set":"titanic","when":["self:type:zord"]}
     ],
     "automation": {
       "status": "partial",

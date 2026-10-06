@@ -4,30 +4,11 @@
  */
 
 export const Q1 = {
-  // Across the Stars, Silver Ranger, p.56
-  dangerSense: 'Compendium.essence20.across_the_stars.Item.lwzD2ZvCLLf8PGRF',
   // Cobra Codex, Firestarter Ranger, 10th level, p.58
-  ignite: 'Compendium.essence20.cobra_codex.Item.zherN6ArBKv6wyGc',
   // Decepticon Directive
   addictedDarkEnergon: 'Compendium.essence20.decepticon_directive.Item.e3c7wuCA7JQS7rTA',
-  bestLaidPlans: 'Compendium.essence20.decepticon_directive.Item.qsISoMxGSAu6D2m2',
-  oneLastChance: 'Compendium.essence20.decepticon_directive.Item.7SU3UY5WzOnlOsHM',
-  // Field Guide to Action and Adventure
-  nobility: 'Compendium.essence20.field_guide_action_adventure.Item.gdWzwO7FpX9QOFQF',
-  service: 'Compendium.essence20.field_guide_action_adventure.Item.T7oYyl70KYmFT1lt',
   // G.I. Joe CRB
-  domeGenerator: 'rrJ1kpQfk0627aJq',
-  tenacity: 'Compendium.essence20.gi_joe_crb.Item.dyjdCTOs83bLiCxC',
-  // Ferocious Fighters
-  megaTrainingRegimen: 'Compendium.essence20.ferocious_fighters.Item.nLT8HSCCGWEBiRlq',
-  roamingTheLand: 'Compendium.essence20.ferocious_fighters.Item.jdQFjlYUHaRze6as',
-  sparedNoExpense: 'Compendium.essence20.ferocious_fighters.Item.3ZrBd6FhV6Fep1zq',
-  surgicalOperators: 'Compendium.essence20.ferocious_fighters.Item.JtRCN6ppDatZVmav',
-  gloryOfCobraLa: 'Compendium.essence20.ferocious_fighters.Item.VAhtHpKlv4gsR0OY',
-  tradeGoods: 'Compendium.essence20.ferocious_fighters.Item.DZGQX1B8UwJEBrwg',
-  ultraSecretStrikeForce: 'Compendium.essence20.ferocious_fighters.Item.4Gd5yet4c24yjWtY',
   // Intercontinental Adventures
-  forTheSyndicate: 'Compendium.essence20.intercontinental_adventures.Item.opygNwRWgeIyU1mE',
   goodToGo: 'Compendium.essence20.intercontinental_adventures.Item.Yt3muowN1aALcqOj',
   ninpoJoes: 'Compendium.essence20.intercontinental_adventures.Item.8oZYgik001Dxxxa6',
   nothingPersonal: 'Compendium.essence20.intercontinental_adventures.Item.WsB4CydGzKF2g7Yi',
@@ -36,12 +17,9 @@ export const Q1 = {
 
 /** Upgrades, by compendium _id (the same upgrade is reprinted under one _id across books). */
 export const Q1_UPGRADE = {
-  organicArmor: 'W6fiSzyPOE2VGj8k',
-  biomechanicalWeapon: '7qniIaOGp8Mqwt6O',
   silencer: 'rSP76BWjYaifJLIZ',
 };
 
-export const SILENCER_UUID = `Compendium.essence20.gi_joe_crb.Item.${Q1_UPGRADE.silencer}`;
 
 export function sourceOf(item) {
   return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;

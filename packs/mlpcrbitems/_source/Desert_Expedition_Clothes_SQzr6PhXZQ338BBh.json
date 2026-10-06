@@ -5,6 +5,10 @@
   "_id": "SQzr6PhXZQ338BBh",
   "img": "systems/essence20/assets/icons/gear/clothes.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","defense":"toughness","amount":2,"stack":"exposureClothes","when":[{"any":["environment:extremeHeat","terrain:desert"]}]},
+      {"type":"Defense","label":"Desert Expedition Clothes (no help against an attack)","defense":"toughness","mode":"addAfter","amount":-2,"stack":"exposureClothes","when":[{"any":["environment:extremeHeat","terrain:desert"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you're in desert terrain or an Extreme Heat environment, +2 Toughness is added. Active Effect (off by default): switch it on only when the scene has no terrain or environment set.</p>"

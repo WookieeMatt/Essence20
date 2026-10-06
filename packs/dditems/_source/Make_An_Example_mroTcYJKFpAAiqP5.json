@@ -5,6 +5,10 @@
   "_id": "mroTcYJKFpAAiqP5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Make An Example of the fallen","cost":{"action":"free"},"steps":[{"do":"require","beforeCost":true,"check":[{"any":["target:status:defeated","target:data:system.health.value<=0"]},{"any":["target:status:defeated","target:data:system.health.max>0"]}],"message":"Target the Defeated creature first."},{"do":"setTargets","beforeCost":true,"to":"alliesOfTarget:30","filter":["not:target:self","not:target:ally","not:target:status:defeated",{"any":["target:data:system.health.value>0","target:data:system.health.max<=0"]}]},{"do":"require","beforeCost":true,"check":["target:data:uuid"],"message":"No foes within 30 ft of it."},{"do":"mark","key":"tf1MakeAnExampleRoll","to":"self","until":"turnOrScene"},{"do":"rollVsEach","skill":"intimidation","defense":"willpower","onHit":[{"do":"button","label":"Apply 1 Stun to {target}","who":"targets","steps":[{"do":"damage","to":"target","amount":1,"damageType":"stun"}]}]},{"do":"unmark","key":"tf1MakeAnExampleRoll","to":"self"}]},
+      {"type":"Trigger","label":"Critical Success: Frightened (Make An Example)","event":"hit","outcome":"double","when":["self:marked:tf1MakeAnExampleRoll"],"steps":[{"do":"applyCondition","to":"target","condition":"frightened","rounds":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: target a Defeated creature and spend a Free action to roll one Fearsome Voice attack against every foe within 30 ft of it. Hits offer Stun damage buttons; a Critical Success makes them Frightened.</p>"

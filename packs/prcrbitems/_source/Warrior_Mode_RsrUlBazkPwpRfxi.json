@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "rules": [
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Warrior Mode","when":["attack:melee","self:type:zord","self:data:flags.essence20.warriorModeActive"]}
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Warrior Mode","when":["attack:melee","self:type:zord","self:data:flags.essence20.warriorModeActive"]},
+      {"type":"Size","label":"Warrior Mode (at least Towering)","atLeast":"towering","when":["self:type:zord","self:data:flags.essence20.warriorModeActive"]}
     ],
     "automation": {
       "status": "full",

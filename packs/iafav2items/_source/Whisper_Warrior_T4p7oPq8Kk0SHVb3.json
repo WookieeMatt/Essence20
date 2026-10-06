@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Take a Silent Martial Arts weapon (Qualified)","steps":[{"do":"pickGrant","from":{"type":"weapon","tags":["item:trait:martialArts","item:trait:silent"]},"flags":{"qualified":true}}]}
+      {"type":"Use","label":"Take a Silent Martial Arts weapon (Qualified)","steps":[{"do":"pickGrant","from":{"type":"weapon","tags":["item:trait:martialArts","item:trait:silent"]},"flags":{"qualified":true}}]},
+      {"type":"Qualification","label":"Whisper Warrior (Qualified: Silent Martial Arts weapons)","access":"qualified","items":["item:type:weapon","item:trait:martialArts","item:trait:silent"]},
+      {"type":"ActionCost","label":"Wielding a Silent Martial Arts weapon (Whisper Warrior: Free Defend)","action":"defend","to":"free","when":["self:wielding:weapon:trait:martialArts&weapon:trait:silent"]}
     ],
     "automation": {
       "status": "full",

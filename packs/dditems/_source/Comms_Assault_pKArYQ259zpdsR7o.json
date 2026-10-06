@@ -5,6 +5,10 @@
   "_id": "pKArYQ259zpdsR7o",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Blast enemy receivers (Comms Assault)","cost":{"action":"standard","resource":{"path":"system.energon.normal.value"},"amount":1},"steps":[{"do":"setTargets","beforeCost":true,"to":"all:100","filter":["not:target:ally","not:target:status:defeated",{"any":["target:data:system.health.value>0","target:data:system.health.max<=0"]}]},{"do":"require","beforeCost":true,"check":["target:data:uuid"],"message":"No foes within 100 ft."},{"do":"mark","key":"tf1CommsAssault","to":"self","until":"turnOrScene"},{"do":"rollVsEach","skill":"technology","defense":"toughness","onHit":[{"do":"applyCondition","to":"target","condition":"stunned","rounds":1},{"do":"button","label":"Apply 1 EMP to {target}","who":"targets","steps":[{"do":"damage","to":"target","amount":1,"damageType":"emp"}]}]},{"do":"unmark","key":"tf1CommsAssault","to":"self"}]},
+      {"type":"Defense","label":"Toughness without armor (Comms Assault)","defense":"toughness","mode":"ignoreArmor","armor":"worn","outgoing":true,"when":["self:marked:tf1CommsAssault"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Standard action, 1 Energon): Technology attack against every enemy within 100 ft, using Toughness without armor. Each hit gets a button for 1 Electromagnetic damage and is Stunned for a round.</p>"

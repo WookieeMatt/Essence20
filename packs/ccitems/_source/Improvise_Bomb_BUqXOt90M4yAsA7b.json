@@ -5,6 +5,10 @@
   "_id": "BUqXOt90M4yAsA7b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Improvise a bomb (Standard action)","when":["not:self:hasItem:Compendium.essence20.cobra_codex.Item.QzcZLhyVvdbn09Es"],"cost":{"action":"standard"},"steps":[{"do":"pickEntry","beforeCost":true,"title":"Pick the bomb or grenade","from":{"type":"weapon","tags":["item:trait:consumable","not:item:trait:mounted","not:item:trait:vehicular",{"any":["item:hasAttack:item:data:system.classification.style=explosive","item:name~grenade","item:name~bomb","item:name~explosive","item:name~charge","item:name~dynamite"]}]}},{"do":"roll","skill":"technology","dif":"@var.pickedDif","onSuccess":[{"do":"grant","uuid":"{var.picked}"}],"onCrit":[{"do":"grant","uuid":"{var.picked}"},{"do":"grant","uuid":"{var.picked}"}],"onFail":[{"do":"chat","text":"The {var.pickedName} fails to come together."}]}]},
+      {"type":"Use","label":"Improvise a bomb (Free action - Demolition Artist)","when":["self:hasItem:Compendium.essence20.cobra_codex.Item.QzcZLhyVvdbn09Es"],"cost":{"action":"free"},"steps":[{"do":"pickEntry","beforeCost":true,"title":"Pick the bomb or grenade","from":{"type":"weapon","tags":["item:trait:consumable","not:item:trait:mounted","not:item:trait:vehicular",{"any":["item:hasAttack:item:data:system.classification.style=explosive","item:name~grenade","item:name~bomb","item:name~explosive","item:name~charge","item:name~dynamite"]}]}},{"do":"roll","skill":"technology","dif":"@var.pickedDif","onSuccess":[{"do":"grant","uuid":"{var.picked}"}],"onCrit":[{"do":"grant","uuid":"{var.picked}"},{"do":"grant","uuid":"{var.picked}"}],"onFail":[{"do":"chat","text":"The {var.pickedName} fails to come together."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Standard action): pick a bomb or grenade and roll Technology against its availability; on a success you gain one (two on a Critical Success).</p>"

@@ -5,6 +5,9 @@
   "_id": "90rddMq7sK1SrhBi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"Stinger Spray attack","uuid":"Compendium.essence20.finster_s_monster_matic_cookbook.Item.iOq7mriMr4BCBl78","skipIfOwned":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: the Stinger Spray attack is added with this Perk and removed with it. Each attack with it spends 1 Personal Power automatically and warns you if you aren't in Monster Form.</p>"

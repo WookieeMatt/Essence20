@@ -2,17 +2,16 @@ import { jest } from '@jest/globals';
 import { registrySnapshot } from '../../extensions.mjs';
 import { IDS, changed, has, isItem, setChanged, teamOf } from './common.mjs';
 import { ENERGON_CAP_EXTRAS, grantTemp, revokeTemp, revokeUpdate, tempGrants } from './temp-resources.mjs';
-import { afterTurnEnd, personalStoryPoints, spendPersonalStoryPoint } from './personal-points.mjs';
 import { toWealthTest } from './wealth.mjs';
 import { budgetLeft, upgradeCost } from './motor-pool.mjs';
-import { bodyOfEnergySplit, bodyOfEnergyUnmorph, innerConservationRefund } from './power-spend.mjs';
+import { bodyOfEnergySplit, bodyOfEnergyUnmorph } from './power-spend.mjs';
 import {
   addictionDie, applyDarkEnergonDefenses, darkEnergonRerolls, feedDarkEnergonCraving, isRestUpdate, pointsPerDose, repairBonusHeld, strainOf, strainSources, synthEnPayer,
 } from './energon.mjs';
 import { beastModePackages } from './beast-mode.mjs';
-import { anomalyBand, smallerDie, weImproviseForfeit } from './story-spend.mjs';
+import { anomalyBand, weImproviseForfeit } from './story-spend.mjs';
 import {
-  camperFit, canResearch, cupsLeft, essenceDamage, healStress, honestCompassionMax, pastriesLeft, spellsToShare,
+  essenceDamage, healStress, spellsToShare,
 } from './mlp.mjs';
 import './index.mjs';
 import { getRerollConfigs } from "../../reroll.mjs";
@@ -117,28 +116,6 @@ describe('temporary resources', () => {
   });
 });
 
-describe('Ruthless Points', () => {
-  test('points expire after their turn ends', () => {
-    const { kept, expired } = afterTurnEnd([{ id: 'a', turnEndsLeft: 2 }, { id: 'b', turnEndsLeft: 1 }]);
-    expect(kept.map(p => p.id)).toEqual(['a']);
-    expect(expired.map(p => p.id)).toEqual(['b']);
-  });
-
-  test('spending a shared point removes it from both holders', async () => {
-    const a = actor([], {}, { uuid: 'Actor.a' });
-    const b = actor([], {}, { uuid: 'Actor.b', id: 'b' });
-    a.flags.essence20.personalPoints = [{ id: '1', shareId: 's', turnEndsLeft: 1 }];
-    b.flags.essence20.personalPoints = [{ id: '2', shareId: 's', turnEndsLeft: 1 }];
-    global.game.actors = [a, b];
-    expect(personalStoryPoints(a)).toBe(1);
-    expect(await spendPersonalStoryPoint(a, 1, false)).toBe(true);
-    expect(personalStoryPoints(a)).toBe(0);
-    expect(personalStoryPoints(b)).toBe(0);
-    expect(await spendPersonalStoryPoint(a, 1, false)).toBe(false);
-    global.game.actors = undefined;
-  });
-});
-
 describe('Wealth Tests', () => {
   test('a Requisition roll becomes a Wealth Test with the Wealth skill shifts', () => {
     const dataset = toWealthTest({ skill: 'targeting', essence: 'speed', shiftUp: 1, shiftDown: 0 }, { shiftUp: 0, shiftDown: 1 });
@@ -161,11 +138,6 @@ describe('Personal Power', () => {
     expect(bodyOfEnergySplit(3, 4, 5)).toEqual({ health: 1, power: 1 });
     expect(bodyOfEnergySplit(3, 1, 5)).toEqual({ health: 0, power: 0 });
     expect(bodyOfEnergyUnmorph(3, 6, 10, 4)).toEqual({ health: 4, power: 4 });
-  });
-
-  test('Inner Conservation pays half, rounded up', () => {
-    expect(innerConservationRefund(3)).toBe(1);
-    expect(innerConservationRefund(4)).toBe(2);
   });
 });
 
@@ -238,10 +210,7 @@ describe('Story Point riders', () => {
     expect(weImproviseForfeit({ granted: 3, spent: 0 }, 1)).toBe(1);
   });
 
-  test('History Buff rolls one die smaller', () => {
-    expect(smallerDie('1d8')).toBe('1d6');
-    expect(smallerDie('1d2')).toBe('1d2');
-    expect(smallerDie('2d8')).toBe('1d12');
+  test('Continuum Anomaly result bands (History Buff\'s check is a rule now)', () => {
     expect(anomalyBand(1)).toBe('none');
     expect(anomalyBand(7)).toBe('lasting');
     expect(anomalyBand(16)).toBe('cataclysmic');
@@ -254,17 +223,6 @@ describe('My Little Pony', () => {
     expect(essenceDamage(a)).toBe(2);
     expect(await healStress(a, 1, 'health')).toBe(1);
     expect(a.system.health.value).toBe(4);
-  });
-
-  test('Honest Compassion, Camper, jam and research gates', () => {
-    expect(honestCompassionMax(3)).toBe(1);
-    expect(honestCompassionMax(11)).toBe(3);
-    expect(camperFit(actor([], { health: { max: 6, value: 3 } }))).toBe(true);
-    expect(camperFit(actor([], { health: { max: 6, value: 2 } }))).toBe(false);
-    expect(cupsLeft({ system: { quantity: 1 }, flags: {} })).toBe(3);
-    expect(pastriesLeft({ flags: { essence20: { zapPastries: 4 } } })).toBe(4);
-    expect(canResearch('d8', 'superior')).toBe(true);
-    expect(canResearch('d6', 'superior')).toBe(false);
   });
 
   test('the Circle shares spells members lack', () => {
@@ -281,9 +239,11 @@ describe('registration', () => {
   test('Use buttons match their items', () => {
     const uses = registrySnapshot().uses;
     const find = uuid => uses.find(use => use.matches(item(uuid)));
-    for (const uuid of [IDS.playFavorites, IDS.motorPool, IDS.darkEnergon, IDS.historyBuff,
-      IDS.honestCompassion, IDS.camper, IDS.zapAppleJam, IDS.circleOfMagicalFriends, IDS.extensiveResearch]) {
+    for (const uuid of [IDS.motorPool, IDS.darkEnergon, IDS.circleOfMagicalFriends]) {
       expect(find(uuid)).toBeTruthy();
     }
+
+    // Camper is item rules (rules/conv10-slE10.test.js).
+    expect(find(IDS.camper)).toBeFalsy();
   });
 });

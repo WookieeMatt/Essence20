@@ -5,6 +5,9 @@
   "_id": "dAoJG7ZwVEhOQZY0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reaction","who":"allyOfAttacker","per":"card","cost":{"resource":{"storyPoints":true},"amount":1},"limit":{"per":"scene","max":1},"steps":[{"do":"convertRows","crit":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per scene, when an ally makes a test, spend a Story Point to make it a Critical Success.</p>"

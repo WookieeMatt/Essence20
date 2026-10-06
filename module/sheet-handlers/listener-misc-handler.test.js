@@ -47,7 +47,7 @@ describe("onRest / onRecharge (_applyRestBenefits)", () => {
     expect(sheet.actor.update).toHaveBeenCalledWith(expect.objectContaining({
       "system.health.value": 10,
       "system.stun.value": 0,
-    }));
+    }), { essence20Rest: true });
   });
 
   test("restores half of Energon max (rounded up), capped at max", async () => {
@@ -59,7 +59,7 @@ describe("onRest / onRecharge (_applyRestBenefits)", () => {
     // ceil(5/2) = 3 restored, 1 + 3 = 4, under max 5
     expect(sheet.actor.update).toHaveBeenCalledWith(expect.objectContaining({
       "system.energon.normal.value": 4,
-    }));
+    }), { essence20Rest: true });
   });
 
   test("Energon restore never exceeds max even when already close to it", async () => {
@@ -71,7 +71,7 @@ describe("onRest / onRecharge (_applyRestBenefits)", () => {
     // ceil(5/2) = 3 restored, 4 + 3 = 7, clamped to max 5
     expect(sheet.actor.update).toHaveBeenCalledWith(expect.objectContaining({
       "system.energon.normal.value": 5,
-    }));
+    }), { essence20Rest: true });
   });
 
   test("resets every non-normal Energon type to 0", async () => {
@@ -85,7 +85,7 @@ describe("onRest / onRecharge (_applyRestBenefits)", () => {
       "system.energon.primal.value": 0,
       "system.energon.red.value": 0,
       "system.energon.synthEn.value": 0,
-    }));
+    }), { essence20Rest: true });
   });
 
   test("regenerates Personal Power up to max, capped at max", async () => {
@@ -95,7 +95,7 @@ describe("onRest / onRecharge (_applyRestBenefits)", () => {
     await onRest(sheet);
     expect(sheet.actor.update).toHaveBeenCalledWith(expect.objectContaining({
       "system.powers.personal.value": 5,
-    }));
+    }), { essence20Rest: true });
   });
 
   test("recovers each damaged Essence by 1, capped at its own max", async () => {
@@ -143,7 +143,7 @@ describe("onRest / onRecharge (_applyRestBenefits)", () => {
     await onRecharge(rechargeSheet);
 
     expect(rechargeSheet.actor.update).toHaveBeenCalledWith(
-      restSheet.actor.update.mock.calls.find(call => "system.health.value" in call[0])[0],
+      ...restSheet.actor.update.mock.calls.find(call => "system.health.value" in call[0]),
     );
   });
 });

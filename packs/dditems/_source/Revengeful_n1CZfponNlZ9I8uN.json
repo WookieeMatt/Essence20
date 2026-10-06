@@ -5,6 +5,11 @@
   "_id": "n1CZfponNlZ9I8uN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Remember who hurt you (Revengeful)","event":"targeted","outcome":"success","when":["roll:damaging"],"steps":[{"do":"mark","to":"target","key":"revengeful","perSetter":true,"exclusive":true}]},
+      {"type":"RollModifier","label":"Revengeful","upshift":1,"when":["attack","markedByMe:revengeful"]},
+      {"type":"Trigger","label":"A Story Point for Defeating them (Revengeful)","event":"defeatedEnemy","when":["markedByMe:revengeful"],"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} has revenge on {target}: the team gains a Story Point."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: after an attack damages you, your attacks against that attacker get ↑1 until the end of your next turn, labelled Revengeful in the Roll Options Dialog. Defeating them with one of those attacks gives your team a Story Point.</p>"

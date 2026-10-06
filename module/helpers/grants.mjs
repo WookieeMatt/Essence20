@@ -63,6 +63,20 @@ export function kitAvailability(name) {
  * @param {Object} [options.system]   Overrides for system data.
  * @returns {Promise<Item|null>}
  */
+/**
+ * Built in: a weapon's size becomes Integrated (E20.weaponSizes - free of the hand limit). There is no Integrated
+ * trait (weapon / upgrade traits don't list one), and adding one made the weapon fail validation, so the copy was
+ * never created. Other item types have nothing to change.
+ * @param {Object} data   Item data, changed in place.
+ */
+export function markIntegrated(data) {
+  if (data?.type == 'weapon') {
+    foundry.utils.setProperty(data, 'system.classification.size', 'integrated');
+  }
+
+  return data;
+}
+
 export async function grantCopy(actor, uuid, { grantedBy = null, temporary = null, integrated = false, flags = {}, system = {}, name = null } = {}) {
   const source = await fromUuid(uuid);
   if (!source) {
@@ -81,8 +95,8 @@ export async function grantCopy(actor, uuid, { grantedBy = null, temporary = nul
     foundry.utils.setProperty(data, `flags.essence20.${key}`, value);
   }
 
-  if (integrated && Array.isArray(data.system?.traits) && !data.system.traits.includes('integrated')) {
-    data.system.traits = [...data.system.traits, 'integrated'];
+  if (integrated) {
+    markIntegrated(data);
   }
 
   for (const [path, value] of Object.entries(system)) {
@@ -210,7 +224,8 @@ export async function rollTest(actor, skill, dif, extra = {}) {
   const essence = CONFIG.E20.skillToEssence?.[skill] ?? 'smarts';
   const result = await actor._dice?.rollSkill({ skill, essence, shiftUp: 0, shiftDown: 0, dif: String(dif), ...extra }, actor);
   const first = result?.outcomes?.[0]?.results?.[0];
-  return { success: !!result?.success, crit: !!first && first.multiplier >= 2 };
+  // total: the roll's total (rules/steps.mjs keeps it as @var.rollTotal).
+  return { success: !!result?.success, crit: !!first && first.multiplier >= 2, total: Number(result?.outcomes?.[0]?.roll?.total ?? first?.total) || 0 };
 }
 
 /* -------------------------------------------- */
@@ -295,6 +310,7 @@ async function pickRolePerk(actor, grantor, { containers, allow, subtype = 'role
  * @param {Number} [spec.maxLevel]
  * @param {Boolean} [spec.notOwnPerkNames]   Not a Perk sharing a name with one of the actor's own Role's.
  * @param {String} [spec.excludeName]   A case-insensitive pattern of Perk names to leave out.
+ * @param {String} [spec.pack]   Only Roles / Focuses from that compendium (its name, e.g. pr_crb).
  * @param {String|null} [spec.subtype]   The Perk subtype offered ('role'; null for any).
  * @returns {Promise<Item|null>}   The granted Perk.
  */
@@ -317,7 +333,9 @@ export async function pickPerkFrom(actor, grantor, spec = {}) {
         return e.uuid == branch;
       }
 
-      if (e.type != spec.from || (line && lineOf(e.uuid) != line) || (spec.notAdvanced && e.system?.isAdvanced)) {
+      // pack: only that compendium's Roles / Focuses (pr_crb - the Core Ranger Spectrum Roles).
+      if (e.type != spec.from || (line && lineOf(e.uuid) != line) || (spec.notAdvanced && e.system?.isAdvanced)
+        || (spec.pack && String(e.uuid ?? '').split('.')[2] != spec.pack)) {
         return false;
       }
 

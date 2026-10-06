@@ -5,6 +5,10 @@
   "_id": "6Ov5odRU8tGhQJzu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Qualification","label":"Hardware Training (Qualified: Restricted two-handed Ballistic weapons)","access":"qualified","items":["item:type:weapon","item:trait:ballistic","item:hasAttack:item:data:system.numHands=2",{"any":["not:item:data:system.availability","item:data:system.availability=automatic","item:data:system.availability=standard","item:data:system.availability=limited","item:data:system.availability=restricted"]}]},
+      {"type":"Use","label":"Take a two-handed Ballistic weapon (Hardware Training)","steps":[{"do":"pickGrant","from":{"type":"weapon","availabilities":["standard","limited","restricted"],"tags":["item:trait:ballistic","item:hasAttack:item:data:system.numHands=2"]},"flags":{"qualified":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you count as Qualified with Restricted two-handed Ballistic weapons when requisitioning. Use button: take one.</p>"

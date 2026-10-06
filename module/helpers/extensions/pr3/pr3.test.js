@@ -108,11 +108,19 @@ beforeEach(() => {
 describe('registration', () => {
   test('Use buttons and hooks are registered', () => {
     const ids = ext.registrySnapshot().uses.map(u => u.id);
-    expect(ids).toEqual(expect.arrayContaining(['pr3NinjaPower', 'pr3PowerHealCondition',
-      'pr3UniqueWeapon', 'pr3UniqueStore', 'pr3ElementalFury', 'pr3Overload', 'pr3ZordMount',
-      'pr3EmissarysGift', 'pr3Navigator', 'pr3Safehaven']));
+    expect(ids).toEqual(expect.arrayContaining(['pr3NinjaPower', 'pr3PowerHealCondition', 'pr3ElementalFury']));
+    // Emissary's Gift is the Perk's own Use rule now (module/rules/conv10-slA10.test.js).
+    expect(ids).not.toContain('pr3EmissarysGift');
+    // Protector of Safehaven's gift, its mission-long marks and Roll Options switches are the Perk's own rules now.
+    expect(ids).not.toContain('pr3Safehaven');
+    // Morphin Navigator's Grid Power Bloom is the item's own Use rule now.
+    expect(ids).not.toContain('pr3Navigator');
+    // Zord Mount's rider pick and follow-up note are the Feature's own rules now.
+    expect(ids).not.toContain('pr3ZordMount');
+    // Unique Weapon's pick and the Ranged weapon's store / draw are their items' own Use rules now.
+    expect(ids).not.toContain('pr3UniqueWeapon');
+    expect(ids).not.toContain('pr3UniqueStore');
     expect(global.Hooks.on).toHaveBeenCalledWith('updateItem', expect.any(Function));
-    expect(global.Hooks.on).toHaveBeenCalledWith('updateActor', expect.any(Function));
   });
 
   test('Use buttons match only their own items', () => {
@@ -120,24 +128,6 @@ describe('registration', () => {
     expect(useFor(perk)?.id).toBe('pr3NinjaPower');
     expect(useFor(makeItem({ flags: src('Compendium.essence20.pr_crb.Item.other') }))).toBeNull();
     expect(useFor(makeItem({}))).toBeNull();
-  });
-});
-
-describe('Megaform Expeditor', () => {
-  test('reduces the join time by 1d4 to a minimum of 1 when the owner has it', async () => {
-    const zord = makeActor({ type: 'zord', uuid: 'Actor.zord' });
-    const ranger = makeActor({ items: [{ flags: src(common.IDS.megaformExpeditor) }], system: { actors: { a: { uuid: 'Actor.zord', type: 'zord' } } } });
-    worldList.push(ranger, zord);
-    nextRoll = 2;
-    expect(await crb.expediteJoinTime(zord, 5)).toBe(3);
-    nextRoll = 4;
-    expect(await crb.expediteJoinTime(zord, 3)).toBe(1);
-  });
-
-  test('leaves other Zords alone', async () => {
-    const zord = makeActor({ type: 'zord', uuid: 'Actor.z2' });
-    worldList.push(makeActor({ system: { actors: { a: { uuid: 'Actor.z2' } } } }), zord);
-    expect(await crb.expediteJoinTime(zord, 5)).toBe(5);
   });
 });
 
@@ -149,15 +139,6 @@ describe('Ninja Power jump', () => {
     expect(sourcesFor(attacker, target, { isAttack: true }).find(s => s.id == 'ext-pr3NinjaJump')?.shiftDown).toBe(1);
     global.game.combat.round = 3;
     expect(sourcesFor(attacker, target, { isAttack: true }).find(s => s.id == 'ext-pr3NinjaJump')).toBeUndefined();
-  });
-});
-
-describe('Peerless Pilot', () => {
-  test('auto-passes only for the driver holding the Perk', () => {
-    const pilot = makeActor({ items: [{ flags: src(common.IDS.peerlessPilot) }] });
-    expect(crb.autoPassesDisembark(pilot, { vehicleRole: 'driver' })).toBe(true);
-    expect(crb.autoPassesDisembark(pilot, { vehicleRole: 'passenger' })).toBe(false);
-    expect(crb.autoPassesDisembark(makeActor(), { vehicleRole: 'driver' })).toBe(false);
   });
 });
 
@@ -185,50 +166,6 @@ describe('Standard Issue', () => {
   });
 });
 
-describe('Survivor', () => {
-  test('spots Smarts dropping to 0', () => {
-    expect(crb.smartsDroppedToZero({ system: { essences: { smarts: { value: 0 } } } })).toBe(true);
-    expect(crb.smartsDroppedToZero({ system: { essences: { smarts: { value: 2 } } } })).toBe(false);
-    expect(crb.smartsDroppedToZero({})).toBe(false);
-  });
-
-  test('a 10+ keeps Smarts at 1', async () => {
-    const actor = makeActor();
-    nextRoll = 12;
-    expect(await crb.survivorCheck(actor)).toBe(true);
-    expect(actor.update).toHaveBeenCalledWith({ 'system.essences.smarts.value': 1 });
-    nextRoll = 9;
-    expect(await crb.survivorCheck(makeActor())).toBe(false);
-  });
-});
-
-describe('Unique Weapon', () => {
-  test('the four weapons are distinct compendium uuids', () => {
-    expect(new Set(crb.UNIQUE_WEAPONS).size).toBe(4);
-  });
-
-  test('Small Melee halves the Zord summon time, minimum 1', () => {
-    const pilot = makeActor({ items: [{ type: 'weapon', flags: src(common.IDS.uwSmall), system: { equipped: true } }] });
-    expect(crb.halveSummonRounds(pilot, 5)).toBe(3);
-    expect(crb.halveSummonRounds(pilot, 1)).toBe(1);
-    expect(crb.halveSummonRounds(makeActor(), 5)).toBe(5);
-  });
-
-  test('Two-Handed slows every movement type by 10ft while equipped', () => {
-    const actor = makeActor({ system: { movement: { ground: { total: 30 }, aerial: { total: 0 } } }, items: [{ type: 'weapon', flags: src(common.IDS.uwTwoHanded), system: { equipped: true } }] });
-    ext.runDerived(actor);
-    expect(actor.system.movement.ground.total).toBe(20);
-    expect(actor.system.movement.aerial.total).toBe(0);
-  });
-
-  test('Ranged fumbles cost 1d4 Personal Power', async () => {
-    const actor = makeActor({ system: { powers: { personal: { value: 3 } } } });
-    nextRoll = 2;
-    await ext.runPostRoll(actor, [], {}, { isFumble: true, hits: [], rider: { weaponSource: common.IDS.uwRanged } });
-    expect(actor.system.powers.personal.value).toBe(1);
-  });
-});
-
 describe('Through the Shattered Grid', () => {
   test('Elemental Fury uses the strongest ranged attack', () => {
     const zord = makeActor({ items: [
@@ -238,28 +175,5 @@ describe('Through the Shattered Grid', () => {
     ] });
     expect(ttsg.strongestRanged(zord).system.damageValue).toBe(4);
     expect(ttsg.FURY.fire.bonus).toBe(2);
-  });
-
-  test('Overload gives Edge on attacks this turn', () => {
-    global.game.combat = { id: 'c', round: 1, turn: 0 };
-    const zord = makeActor({ flags: { essence20: { pr3Overload: { combatId: 'c', round: 1, turn: 0 } } }, items: [{ type: 'feature', flags: src(common.IDS.overload) }] });
-    expect(sourcesFor(zord, null, { isAttack: true }).find(s => s.id == 'ext-pr3Overload')?.edge).toBe(true);
-    global.game.combat.turn = 1;
-    expect(sourcesFor(zord, null, { isAttack: true }).find(s => s.id == 'ext-pr3Overload')).toBeUndefined();
-  });
-
-  test("Emissary's Gift offers Role Perks at or below level, minus the excluded ones", () => {
-    const roles = [{ name: 'Red Ranger', system: { items: {
-      a: { type: 'perk', subtype: 'role', uuid: 'u1', name: 'Follow Me!', level: 2 },
-      b: { type: 'perk', subtype: 'role', uuid: 'u2', name: 'Extra Attack', level: 5 },
-      c: { type: 'perk', subtype: 'role', uuid: 'u3', name: 'Team Focus', level: 9 },
-    } } }];
-    expect(ttsg.emissaryOptions(roles, 6).map(o => o.value)).toEqual(['u1']);
-  });
-
-  test('Restraining Gear formulas', () => {
-    expect(ttsg.opposedFormula('d6')).toBe('1d20 + 1d6');
-    expect(ttsg.opposedFormula('2d8')).toBe('1d20 + 2d8');
-    expect(ttsg.opposedFormula('d20')).toBe('1d20');
   });
 });

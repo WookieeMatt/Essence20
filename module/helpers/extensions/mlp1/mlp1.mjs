@@ -1,38 +1,26 @@
 import {
-  registerApplyDialog, registerDialogToggles, registerHitRider, registerPostRoll, registerRollSources, registerSpellCost,
-  registerUse, registerChatButton, registerChatDecorator,
+  registerApplyDialog, registerDialogToggles, registerPostRoll, registerRollSources, registerUse,
 } from "../../extensions.mjs";
-import { activateForWindow, getSceneEpoch, getUses, isActiveForWindow, markUsed } from "../../scene-clock.mjs";
+import { getSceneEpoch } from "../../scene-clock.mjs";
 import { hasSourced, worldActors } from "../../companion-link.mjs";
 
 /**
  * My Little Pony - Dark Skies over Equestria and Knights of Canterlot items: shape-shifting
- * (Basic Shape-Shifting's shape, Face-Shift, Master Morph, Size-Shift), Prize Honey's Use,
- * the Knights of Canterlot tools and Hang-Ups, and the spell Perks
- * (Illusion Casting, Reach Out, Sharpcaster, Sorcerous Support) and spells (Brilliant
- * Sight, Pinkie Sense, Softenblows).
+ * (Basic Shape-Shifting's shape, Face-Shift, Master Morph, Size-Shift). Pinkie Sense is its item's own rule now; so are
+ * Softenblows (rules/conv10-slB10.test.js), Illusion Casting, Reach Out, Brilliant Sight's fog option (SpellCost rules),
+ * Sharpcaster, Sorcerous Support and the Smoke Bomb (rules/conv10-slD10.test.js), and Brilliant Sight's darkvision
+ * (rules/conv12-slI12.test.js).
  */
 
 const pack = (p, id) => `Compendium.essence20.${p}.Item.${id}`;
 const dse = id => pack('dark_skies_over_equestria', id);
-const koc = id => pack('knights_of_canterlot', id);
 export const MLP1 = {
   basicShapeShifting: dse('u2fdkjPJZmeLgalz'),
   faceShift: dse('E1ZaVoP0yjYfyj6F'),
   masterMorph: dse('0fKppLmw0TSNAn5z'),
-  prizeHoney: dse('tbBjkVhSSc3Zj9zp'),
   sizeShift: dse('44UMuF7vQM094oQq'),
   shapeShiftOrigin: dse('yi2Z2ebEmTuow5LL'),
   ponymorph: pack('mlp_crb', '3Tm9SWc060Z62e4Q'),
-  brilliantSight: koc('Oc8NpQa5ylK2Ix0B'),
-  farSighted: koc('Sm7INWZQAIXlu5HC'),
-  illusionCasting: koc('UadqOmn6aZKAvXT1'),
-  pinkieSense: koc('hER4hs3jrIHM8gF3'),
-  reachOut: koc('gu2V2C4aH0fsDYXN'),
-  sharpcaster: koc('Cnv01qtQwEdrUh8I'),
-  smokeBomb: koc('L5KOGeqX43EdO3b3'),
-  softenblows: koc('j5qSt58bw2YLeDMq'),
-  sorcerousSupport: koc('PhK5KSV4IXpOcTYP'),
 };
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
@@ -137,44 +125,14 @@ export function mlp1RollSources(actor, target, { rolledSkill } = {}) {
     sources.push({ id: 'masterMorph', label: nameOf(actor, MLP1.masterMorph, 'Master Morph'), shiftUp: 2 });
   }
 
-  // Smoke Bomb (KoC p.20): "making their targets in a 10x10 foot area suffer ↓1 to any Alertness Skill
-  // Tests." Anyone rolling Alertness from inside a live cloud.
-  if (rolledSkill == 'alertness' && inSmoke(actor)) {
-    sources.push({ id: 'smokeBomb', label: T('E20.Mlp1SmokeBomb'), shiftDown: 1 });
-  }
-
   return { sources, consumes };
-}
-
-function inSmoke(actor) {
-  const token = actor?.getActiveTokens?.()?.[0];
-  if (!token || !globalThis.canvas?.grid) {
-    return false;
-  }
-
-  for (const other of worldActors()) {
-    for (const cloud of other.flags?.essence20?.smokeBombs ?? []) {
-      if (cloud.scene == getSceneEpoch() && cloud.sceneId == canvas.scene?.id
-        && Math.abs(token.center.x - cloud.x) <= canvas.grid.size && Math.abs(token.center.y - cloud.y) <= canvas.grid.size) {
-        return true;
-      }
-    }
-  }
-
-  return false;
 }
 
 /* -------------------------------------------- */
 /*  Dialog choices                               */
 /* -------------------------------------------- */
 
-function hasRangedWeapon(actor) {
-  const list = itemsOf(actor);
-  return list.some(w => w.type == 'weapon' && w.system?.equipped
-    && list.some(e => e.type == 'weaponEffect' && e.flags?.essence20?.parentId == w.id && e.system?.classification?.style != 'melee'));
-}
-
-export function mlp1Toggles(actor, { rolledSkill } = {}) {
+export function mlp1Toggles(actor) {
   const toggles = [];
   const add = (name, label, extra = {}) => toggles.push({ name, label, type: 'checkbox', ...extra });
 
@@ -183,102 +141,21 @@ export function mlp1Toggles(actor, { rolledSkill } = {}) {
     add('faceShiftPass', T('E20.Mlp1TogglePassAs'));
   }
 
-  // Hang-Ups.
-  if (rolledSkill == 'alertness' && hasSourced(actor, MLP1.farSighted) && hasRangedWeapon(actor)) {
-    add('farSighted', T('E20.Mlp1ToggleFarSighted'), { value: true });
-  }
-
   return toggles;
 }
 
 export async function mlp1ApplyDialog(actor, options) {
   const ext = options.ext ?? {};
   const edge = () => (options.snag ? (options.snag = false) : (options.edge = true));
-  const snag = () => (options.edge ? (options.edge = false) : (options.snag = true));
 
   if (ext.faceShiftPass) {
     edge();
   }
-
-  // Far-Sighted: "Snag on any Alertness Skill Tests within 10 feet of you if you're currently using a
-  // ranged weapon".
-  if (ext.farSighted) {
-    snag();
-  }
-}
-
-/* -------------------------------------------- */
-/*  Spell costs                                  */
-/* -------------------------------------------- */
-
-/**
- * Illusion Casting (KoC p.36): "You can cast an illusionary version of any spell you know. This spell
- * cannot actually affect anyone and does no damage ... and costs only ↓1 instead of the normal casting
- * cost." Reach Out (p.38): double a spell's range for +1 cost. Brilliant Sight: "By adding ↑1 to the
- * casting cost" it also sees through fog. Sharpcaster's second roll: "made at no cost".
- */
-export async function mlp1SpellCost(item, cost, dataset = {}) {
-  const actor = item?.actor ?? item?.parent;
-  if (dataset?.sharpcasterFree) {
-    return 0;
-  }
-
-  const illusion = hasSourced(actor, MLP1.illusionCasting);
-  const reach = hasSourced(actor, MLP1.reachOut);
-  const fog = sourceOf(item) == MLP1.brilliantSight;
-  if (!illusion && !reach && !fog) {
-    return cost;
-  }
-
-  const answer = await foundry.applications.api.DialogV2.wait({
-    window: { title: item.name },
-    classes: ["window-app", "e20-window"],
-    content: [
-      illusion ? `<label class="flexrow"><input type="checkbox" name="illusion" /> ${T('E20.Mlp1IllusionOption')}</label>` : '',
-      reach ? `<label class="flexrow"><input type="checkbox" name="reach" /> ${T('E20.Mlp1ReachOption')}</label>` : '',
-      fog ? `<label class="flexrow"><input type="checkbox" name="fog" /> ${T('E20.Mlp1FogOption')}</label>` : '',
-    ].join(''),
-    buttons: [
-      { action: 'ok', label: T('E20.DialogConfirmButton'), default: true, callback: (event, button) => ({
-        illusion: !!button.form.elements.illusion?.checked, reach: !!button.form.elements.reach?.checked, fog: !!button.form.elements.fog?.checked,
-      }) },
-      { action: 'cancel', label: T('E20.DialogCancelButton') },
-    ],
-    rejectClose: false,
-  });
-  if (!answer || answer == 'cancel') {
-    return null;
-  }
-
-  const notes = [];
-  let next = cost;
-  if (answer.illusion) {
-    next = 1;
-    notes.push(T('E20.Mlp1IllusionNote'));
-  }
-
-  if (answer.reach) {
-    next += 1;
-    notes.push(T('E20.Mlp1ReachNote'));
-  }
-
-  if (answer.fog) {
-    next += 1;
-    await actor.setFlag('essence20', 'brilliantSightFog', true);
-  }
-
-  if (notes.length) {
-    ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: `<p>${item.name}: ${notes.join(' ')}</p>` });
-  }
-
-  return next;
 }
 
 /* -------------------------------------------- */
 /*  After a cast                                 */
 /* -------------------------------------------- */
-
-const PINKIE_ROWS = 8;
 
 export async function mlp1PostRoll(actor, results, checkContext) {
   const rider = checkContext?.riderContext ?? {};
@@ -294,54 +171,9 @@ export async function mlp1PostRoll(actor, results, checkContext) {
     await setShape(actor, { ...(shapeOf(actor) ?? {}), spell: source });
   }
 
-  // Brilliant Sight (KoC p.42): "The target of this spell can see perfectly well in darkness, even
-  // magical darkness." For the scene: a darkvision grant on a temporary item.
-  if (source == MLP1.brilliantSight && succeeded) {
-    const target = game.user?.targets?.first?.()?.actor ?? actor;
-    const { temporary } = await import("../../grants.mjs");
-    const { needsGmRelay } = await import("../../gm-relay.mjs");
-    if (!needsGmRelay(target)) {
-      await target.createEmbeddedDocuments('Item', [{
-        name: T('E20.Mlp1BrilliantSightName'), type: 'gear',
-        system: { equipped: true, gearType: 'other', visionGrant: { enabled: true, mode: 'darkvision', range: 120 } },
-        flags: { essence20: { temporary: temporary('scene') } },
-      }]);
-    }
-  }
+  // Brilliant Sight's darkvision for the scene is an afterRoll Trigger on the spell (createItem - rules/conv12-slI12.test.js).
 
-  // Pinkie Sense (KoC p.50): "Roll a d8 and consult the Pinkie Sense Table."
-  if (source == MLP1.pinkieSense && succeeded) {
-    const roll = await new Roll(`1d${PINKIE_ROWS}`).evaluate();
-    await roll.toMessage({ speaker: ChatMessage.getSpeaker({ actor }), flavor: `${T('E20.Mlp1PinkieSense')}: ${T(`E20.Mlp1Pinkie.${roll.total}`)}` });
-  }
-
-  // Softenblows (KoC p.51): "One target creature can deal no damage for the duration of the spell"
-  // (1 round).
-  if (source == MLP1.softenblows && succeeded) {
-    const target = game.user?.targets?.first?.()?.actor;
-    if (target) {
-      const { addMark, untilEndOfNextTurn } = await import("../../target-riders.mjs");
-      await addMark(target, { kind: 'softenblows', by: actor.uuid, label: T('E20.Mlp1Softenblows'), ...untilEndOfNextTurn(target) });
-    }
-  }
-
-  // Sharpcaster (KoC p.38): "When you make a Spellcasting Attack Test and successfully cast the spell
-  // but miss your target, you may make another Spellcasting Attack Test ... at no cost."
-  const targeted = (results ?? []).filter(r => r.targetUuid);
-  if (hasSourced(actor, MLP1.sharpcaster) && !checkContext?.riderContext?.sharpcasterFree && targeted.length && targeted.every(r => !r.success)) {
-    ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      content: `<button type="button" data-e20-ext="mlp1Sharpcaster" data-actor="${actor.uuid}" data-item="${rider.itemUuid}">${T('E20.Mlp1SharpcasterButton')}</button>`,
-    });
-  }
-}
-
-/** Softenblows: the enchanted creature's hits deal nothing. */
-export async function mlp1HitRider(actor, target, result, rider, tools) {
-  const marks = actor?.flags?.essence20?.riderMarks ?? [];
-  if (result?.damageValue && marks.some(m => m.kind == 'softenblows')) {
-    tools.damageBonusNote(result, -result.damageValue, T('E20.Mlp1Softenblows'));
-  }
+  // Softenblows (the enchanted creature's hits deal nothing) is an afterRoll Trigger + a marked HitRider on the spell.
 }
 
 /* -------------------------------------------- */
@@ -354,103 +186,7 @@ const USES = [
     matches: item => [MLP1.shapeShiftOrigin, MLP1.faceShift, MLP1.masterMorph, MLP1.sizeShift].includes(sourceOf(item)),
     run: item => changeShape(item.parent),
   },
-  {
-    // Prize Honey: "when consumed, heals up to 3 points of Health ... enough honey for three uses".
-    id: 'mlp1Honey', matches: item => sourceOf(item) == MLP1.prizeHoney,
-    canUse: item => (item.flags?.essence20?.usesLeft ?? 3) > 0,
-    async run(item) {
-      const target = game.user?.targets?.first?.()?.actor ?? item.parent;
-      const health = target.system?.health;
-      if (health) {
-        await target.update({ 'system.health.value': Math.min(health.max ?? health.value + 3, (health.value ?? 0) + 3) });
-      }
-
-      await item.setFlag('essence20', 'usesLeft', (item.flags?.essence20?.usesLeft ?? 3) - 1);
-      return T('E20.Mlp1HoneyHeals', { name: target.name });
-    },
-  },
-  {
-    // Smoke Bomb: a 10x10 cloud where it's thrown, for the scene.
-    id: 'mlp1Smoke', matches: item => sourceOf(item) == MLP1.smokeBomb,
-    async run(item, economy, pay) {
-      const { pickCanvasPoint } = await import("../../forced-movement.mjs");
-      const point = await pickCanvasPoint(T('E20.Mlp1SmokeWhere'));
-      if (!point || !(await pay('standard'))) {
-        return null;
-      }
-
-      const actor = item.parent;
-      const clouds = (actor.flags?.essence20?.smokeBombs ?? []).filter(c => c.scene == getSceneEpoch());
-      await actor.setFlag('essence20', 'smokeBombs', [...clouds, { x: point.x, y: point.y, scene: getSceneEpoch(), sceneId: canvas.scene?.id }]);
-      const left = (item.system?.quantity ?? 1) - 1;
-      await (left > 0 ? item.update({ 'system.quantity': left }) : item.delete());
-      return T('E20.Mlp1SmokeThrown', { name: actor.name });
-    },
-  },
-  {
-    // Sorcerous Support (KoC p.17): "Once per game session, you can allow an ally to re-roll a Fumble."
-    // Readies it for the targeted ally's next Fumble card; once per mission here.
-    id: 'mlp1Sorcerous', matches: item => sourceOf(item) == MLP1.sorcerousSupport,
-    canUse: item => getUses(item.parent, 'sorcerousSupport', 'mission') < 1,
-    async run(item) {
-      await activateForWindow(item.parent, 'sorcerousSupportReady', 'mission');
-      return T('E20.Mlp1SorcerousReady', { name: item.parent.name });
-    },
-  },
 ];
-
-/* -------------------------------------------- */
-/*  Chat                                         */
-/* -------------------------------------------- */
-
-async function sharpcasterAgain(message, button) {
-  const actor = await fromUuid(button.dataset.actor);
-  const item = await fromUuid(button.dataset.item);
-  if (!actor?.isOwner || !item) {
-    return;
-  }
-
-  button.disabled = true;
-  await item.roll({ rollType: 'spell', sharpcasterFree: true });
-}
-
-/**
- * Sorcerous Support: a "re-roll this Fumble" button on an ally's fumbled card while it's ready.
- */
-function decorateFumble(message, element) {
-  if (!message?.rolls?.length || element.querySelector('[data-e20-ext="mlp1Sorcerous"]')) {
-    return;
-  }
-
-  const d20 = message.rolls[0].dice?.find(d => d.faces == 20)?.total;
-  if (d20 != 1) {
-    return;
-  }
-
-  const helper = (worldActors()).find(a => a.isOwner && hasSourced(a, MLP1.sorcerousSupport)
-    && isActiveForWindow(a, 'sorcerousSupportReady', 'mission') && getUses(a, 'sorcerousSupport', 'mission') < 1);
-  if (!helper) {
-    return;
-  }
-
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.dataset.e20Ext = 'mlp1Sorcerous';
-  button.dataset.helper = helper.uuid;
-  button.textContent = T('E20.Mlp1SorcerousButton', { name: helper.name });
-  element.querySelector('.message-content')?.appendChild(button);
-}
-
-async function sorcerousReroll(message, button) {
-  const helper = await fromUuid(button.dataset.helper);
-  if (!helper || getUses(helper, 'sorcerousSupport', 'mission') >= 1) {
-    return;
-  }
-
-  await markUsed(helper, 'sorcerousSupport', { window: 'mission' });
-  const rerolled = await new Roll(message.rolls[0].formula).evaluate();
-  await rerolled.toMessage({ speaker: message.speaker, flavor: T('E20.Mlp1SorcerousRerolled', { name: helper.name }) });
-}
 
 /* -------------------------------------------- */
 /*  Registration                                 */
@@ -459,14 +195,8 @@ async function sorcerousReroll(message, button) {
 registerRollSources(mlp1RollSources);
 registerDialogToggles(mlp1Toggles);
 registerApplyDialog(mlp1ApplyDialog);
-registerSpellCost(mlp1SpellCost);
 registerPostRoll(mlp1PostRoll);
-registerHitRider(mlp1HitRider);
-registerChatButton('mlp1Sharpcaster', sharpcasterAgain);
-registerChatButton('mlp1Sorcerous', sorcerousReroll);
 USES.forEach(registerUse);
-
-registerChatDecorator(decorateFumble);
 
 // Pointy (DSoE p.21): "Manifesting the natural weapon ... lasts until the end of the combat scene."
 globalThis.Hooks?.on?.('deleteCombat', () => {

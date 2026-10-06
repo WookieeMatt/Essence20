@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"ActionCost","label":"Partnered","action":"lendAssistance","to":"free","ask":"E20.Tf1AskPartnered","when":["rule:data:flags.essence20.partner"]}
+      {"type":"ActionCost","label":"Partnered","action":"lendAssistance","to":"free","ask":"E20.Tf1AskPartnered","when":[{"any":["rule:data:flags.essence20.rules.choices.partner","rule:data:flags.essence20.partner"]}]},
+      {"type":"Use","label":"Choose your partner","steps":[{"do":"target","min":0,"max":1},{"do":"pick","key":"partner","from":"target","auto":true,"legacy":"flags.essence20.partner.uuid","when":["target:data:uuid","not:target:self"]},{"do":"pick","key":"partner","from":"ally","legacy":"flags.essence20.partner.uuid","when":[{"any":["not:target:data:uuid","target:self"]}]}]}
     ],
     "automation": {
       "status": "full",

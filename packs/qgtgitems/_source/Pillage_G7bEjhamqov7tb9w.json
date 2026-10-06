@@ -5,6 +5,11 @@
   "_id": "G7bEjhamqov7tb9w",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Going after a two-handed item (Pillage: ↓1)","downshift":1,"key":"pillageTwoHanded","forget":true,"when":[{"any":["item:id:Gij3PillageFin01","item:id:Gij3PillageMgt01"]}]},
+      {"type":"Trigger","label":"Disarm on a hit (Pillage)","event":"hit","when":[{"any":["item:id:Gij3PillageFin01","item:id:Gij3PillageMgt01"]},"not:roll:switch:pillageTwoHanded"],"steps":[{"do":"disarm","maxHands":1,"required":true},{"do":"choose","prompt":"Take the item, or let it fall nearby?","options":[{"label":"Take it","steps":[{"do":"pick","key":"pillaged","from":"targetItem","itemType":"weapon","filter":["item:data:flags.essence20.disarmed","not:item:data:system.equipped"],"auto":true},{"do":"takeItem","item":"choice:pillaged"}]},{"label":"Let it fall nearby","steps":[{"do":"chat","text":"{name} lets it fall nearby."}]}]}]},
+      {"type":"Trigger","label":"Disarm on a hit, two-handed too (Pillage)","event":"hit","when":[{"any":["item:id:Gij3PillageFin01","item:id:Gij3PillageMgt01"]},"roll:switch:pillageTwoHanded"],"steps":[{"do":"disarm","maxHands":2,"required":true},{"do":"choose","prompt":"Take the item, or let it fall nearby?","options":[{"label":"Take it","steps":[{"do":"pick","key":"pillaged","from":"targetItem","itemType":"weapon","filter":["item:data:flags.essence20.disarmed","not:item:data:system.equipped"],"auto":true},{"do":"takeItem","item":"choice:pillaged"}]},{"label":"Let it fall nearby","steps":[{"do":"chat","text":"{name} lets it fall nearby."}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: the Pillage unarmed attack (Finesse or Might against Evasion). A hit disarms the target and lets you take the item or drop it nearby. Roll Options Dialog: a switch for going after a two-handed item, at ↓1.</p>"

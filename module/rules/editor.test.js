@@ -83,7 +83,7 @@ describe('rendering', () => {
     expect(optionList('skills')).toEqual([['athletics', 'E20.SkillAthletics'], ['might', 'E20.SkillMight']]);
     expect(optionList('essences')).toEqual([['social', 'E20.EssenceSocial']]);
     expect(optionList('statuses')).toEqual([['prone', 'Prone']]);
-    expect(optionList('scopes', { rule: { type: 'RollModifier' } }).map(o => o[0])).toEqual(['self', 'incoming', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'aura']);
+    expect(optionList('scopes', { rule: { type: 'RollModifier' } }).map(o => o[0])).toEqual(['self', 'incoming', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura']);
     expect(optionList('nothing')).toEqual([]);
     expect(fieldLabel('OnSuccess')).toBe('On Success');
     expect(tagDatalists()).toContain('status:prone');

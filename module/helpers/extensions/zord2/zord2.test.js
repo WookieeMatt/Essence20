@@ -1,12 +1,10 @@
 import { jest } from '@jest/globals';
-import { ZORD2, megaformsContaining, sourced } from './common.mjs';
+import { ZORD2, megaformsContaining } from './common.mjs';
 import { desiredAttacks, scaledEffect, strongest, countGeneratedUse, perSceneExhausted } from './megaform-attacks.mjs';
 import { applyFocus, coreBodyDerived, focusToggles, mergeCost, mergeReach, storyPointCost, tokenGap } from './combiner-merge.mjs';
-import { ineligibleZords, matrixReserve, spectrumOf, zordDerived } from './zord-features2.mjs';
-import { gearDerived, roughRegionsAt } from './gear-modes.mjs';
+import { ineligibleZords, spectrumOf } from './zord-features2.mjs';
+import { roughRegionsAt } from './gear-modes.mjs';
 import { zord2WeaponUnusable } from './unusable.mjs';
-import { zord2IgnoresLimitedArticulation, zord2NoUntrainedSnag } from './snag.mjs';
-import { evasiveSources, hybridDerived, massShiftLeft, massShiftUsesPerDay } from './hybridization.mjs';
 import { registrySnapshot } from '../../extensions.mjs';
 
 let n = 0;
@@ -29,11 +27,6 @@ const actor = (type, items = [], system = {}, extra = {}) => {
   return a;
 };
 
-const defenses = () => ({
-  toughness: { total: 10, string: '10' }, evasion: { total: 10, string: '10' },
-  willpower: { total: 10, string: '10' }, cleverness: { total: 10, string: '10' },
-});
-
 beforeEach(() => {
   global.game = { i18n: { localize: k => k, format: k => k }, user: { id: 'u1', targets: new Set() }, users: {}, actors: [] };
   global.CONFIG = {
@@ -47,7 +40,9 @@ beforeEach(() => {
 
 test('every module registers with the extension registry', () => {
   const reg = registrySnapshot();
-  expect(reg.uses.map(u => u.id)).toEqual(expect.arrayContaining(['zord2-megaform-trait', 'zord2-combiner-merge', 'zord2-zord-features', 'zord2-gear-modes', 'zord2-hybridization']));
+  expect(reg.uses.map(u => u.id)).toEqual(expect.arrayContaining(['zord2-megaform-trait', 'zord2-combiner-merge', 'zord2-zord-features', 'zord2-gear-modes']));
+  // Hybridization is the Perk's own rules (module/rules/conv12-slH12.test.js).
+  expect(reg.uses.map(u => u.id)).not.toContain('zord2-hybridization');
   expect(reg.costRules.some(r => r.id == 'zord2FastShift')).toBe(false);
 });
 
@@ -166,22 +161,8 @@ test('focusing a component: Snag, or ↓1 with Gestalt Hunter', () => {
   expect(o2.snag).toBeUndefined();
 });
 
-test('Warrior Mode makes the Zord Towering; Mesh Zord applies its picks', () => {
-  const zord = actor('zord', [], { size: 'huge', defenses: defenses() }, { flags: { warriorModeActive: true } });
-  zordDerived(zord);
-  expect(zord.system.size).toBe('towering');
-
-  const mesh = actor('zord', [item('feature', { source: ZORD2.meshZord, flags: { zord2MeshTraits: ['coreBody', 'coreDefenses', 'coreAbilityStrength'] } })],
-    { size: 'huge', health: { max: 6 }, essences: { strength: { value: 5 }, speed: { value: 3 } }, defenses: defenses() });
-  zordDerived(mesh);
-  expect(mesh.system).toMatchObject({ size: 'towering', health: { max: 12 }, essences: { strength: { value: 6 } } });
-  expect(mesh.system.defenses.toughness.total).toBe(12);
-  expect(mesh.system.defenses.evasion.total).toBe(11);
-});
-
-test('Power Matrix reserve, spectrum and combine eligibility', () => {
-  const zord = actor('zord', [item('feature', { source: ZORD2.powerMatrix }), item('feature', { source: ZORD2.powerMatrix })], {}, { flags: { zord2PowerMatrixSpent: 2 } });
-  expect(matrixReserve(zord)).toBe(4);
+// Warrior Mode's and Mesh Zord's Towering, Mesh Zord's picks and Power Matrix are rules (module/rules/conv10-slA10.test.js).
+test('spectrum and combine eligibility', () => {
   expect(spectrumOf(actor('playerCharacter', [item('role', { name: 'Black Ranger' })]))).toBe('black');
 
   const combiner = actor('zord', [item('feature', { source: ZORD2.combiner })]);
@@ -192,17 +173,7 @@ test('Power Matrix reserve, spectrum and combine eligibility', () => {
   expect(ineligibleZords([versatile, plain, actor('zord')])).toHaveLength(1);
 });
 
-test('Beast Mode movement: Carapaced adds 20 Ground unless Underground was picked', () => {
-  const shell = item('altMode', { source: ZORD2.carapacedLarge, flags: { zord2CarapacedChoice: 'ground' } });
-  const crab = actor('playerCharacter', [shell], { isTransformed: true, altModeId: shell.id, defenses: defenses(), movement: { burrow: { total: 0 }, ground: { total: 40 } } });
-  gearDerived(crab);
-  expect(crab.system.movement).toMatchObject({ burrow: { total: 0 }, ground: { total: 60 } });
-
-  shell.flags.essence20.zord2CarapacedChoice = 'burrow';
-  crab.system.movement.ground.total = 40;
-  gearDerived(crab);
-  expect(crab.system.movement).toMatchObject({ burrow: { total: 0 }, ground: { total: 40 } });
-});
+// Carapaced's +20 Ground and its pick are the Alt Mode items' own rules (module/rules/conv6-slA6.test.js).
 
 test('Dozer Blade finds single-square Rough Terrain under a point', () => {
   const region = { id: 'r', behaviors: [{ system: { roughTerrain: true } }], shapes: [{ type: 'rectangle', x: 0, y: 0, width: 100, height: 100 }] };
@@ -210,33 +181,6 @@ test('Dozer Blade finds single-square Rough Terrain under a point', () => {
   expect(roughRegionsAt({ regions: [region] }, { x: 150, y: 50 })).toEqual([]);
 });
 
-test('Shinobi rides motorcycles without the untrained Snag; Helping Hand', () => {
-  const bike = { name: 'Lightning Cycle' };
-  const ninja = actor('playerCharacter', [item('perk', { source: ZORD2.shinobi })]);
-  ninja._dice = { _getPilotedVehicle: () => bike };
-  expect(zord2NoUntrainedSnag(ninja, 'driving')).toBe(true);
-  expect(zord2NoUntrainedSnag(ninja, 'athletics')).toBe(false);
-  bike.name = 'Tank';
-  expect(zord2NoUntrainedSnag(ninja, 'driving')).toBe(false);
-  expect(zord2IgnoresLimitedArticulation(actor('playerCharacter', [item('perk', { source: ZORD2.hybridization, flags: { zord2Hybrid: 'helpingHand' } })]))).toBe(true);
-});
-
-test('Hybridization: daily uses, Change Size, Half Track, Evasive Conversion', () => {
-  const hybrid = choice => item('perk', { source: ZORD2.hybridization, flags: { zord2Hybrid: choice } });
-  const bot = actor('playerCharacter', [hybrid('extraShift'), hybrid('changeSize'), hybrid('halfTrack'),
-    item('altMode', { system: { altModeMovement: { ground: 60, aerial: 0, aquatic: 0 } } })],
-  { level: 7, size: 'common', isTransformed: false, movement: { ground: { total: 30 }, aerial: { total: 0 }, swim: { total: 15 } } },
-  { flags: { zord2MassShiftDay: 2, zord2HybridSize: { epoch: 1, count: 1 }, zord2HybridSizeDir: 1, zord2HalfTrack: { epoch: 1, count: 1 } } });
-  expect(massShiftUsesPerDay(bot)).toBe(5);
-  expect(massShiftLeft(bot)).toBe(3);
-  hybridDerived(bot);
-  expect(bot.system.size).toBe('large');
-  expect(bot.system.movement.ground.total).toBe(60);
-  expect(massShiftUsesPerDay(actor('playerCharacter', [item('perk', { source: ZORD2.mercurialNature })]))).toBe(Infinity);
-
-  const target = actor('playerCharacter', [], {}, { flags: { zord2EvasiveConversion: { epoch: 1, count: 1 } } });
-  const out = evasiveSources(actor('npc'), target, { isAttack: true });
-  expect(out.sources[0]).toMatchObject({ snag: true });
-  expect(out.consumes[0].ext).toBe('zord2Evasive');
-  expect(sourced(target, ZORD2.shinobi)).toEqual([]);
-});
+// Shinobi's motorcycle Driving is the Perk's own RollModifier now (module/rules/conv5-slA5.test.js); Hybridization
+// (Steady Hands, Helping Hand, the daily Mass Shift uses, Half Track, Evasive Conversion) is the Perk's own rules
+// (module/rules/conv12-slH12.test.js; Change Size: conv10-slA10.test.js).

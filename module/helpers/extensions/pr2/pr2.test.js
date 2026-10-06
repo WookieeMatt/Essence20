@@ -58,9 +58,7 @@ const src = uuid => ({ core: { sourceId: uuid } });
 let ext;
 let common;
 let team;
-let zords;
 let finster;
-let perks;
 
 beforeAll(async () => {
   global.Hooks = { on: jest.fn(), once: jest.fn(), callAll: jest.fn() };
@@ -85,9 +83,7 @@ beforeAll(async () => {
   ext = await import('../../extensions.mjs');
   common = await import('./common.mjs');
   team = await import('./team.mjs');
-  zords = await import('./zords.mjs');
   finster = await import('./finster.mjs');
-  perks = await import('./perks.mjs');
 });
 
 beforeEach(() => {
@@ -98,140 +94,37 @@ beforeEach(() => {
 describe('registration', () => {
   test('uses register', () => {
     const uses = ext.registrySnapshot().uses.map(u => u.id);
-    expect(uses).toEqual(expect.arrayContaining(['pr2Instructor', 'pr2DinoDrive']));
+    // Dino Drive Mode is the Feature's own rules (module/rules/conv12-slH12.test.js).
+    expect(uses).not.toContain('pr2DinoDrive');
+    expect(uses).not.toContain('pr2Instructor');
   });
 });
 
-describe('Bend Physics', () => {
-  test('doubles Movement for a Morphed teammate of the holder', () => {
-    const holder = makeActor({ items: [{ flags: src(common.PR2.bendPhysics) }] });
-    const mate = makeActor({ system: { isMorphed: true, movement: { ground: { total: 30 }, aerial: { total: 0 } } } });
-    worldList.push(holder, mate);
-    team.bendPhysicsDerived(mate);
-    expect(mate.system.movement.ground.total).toBe(60);
-  });
+// Bend Physics (its doubling at the derivedHook stage, its +2 Evasion) is the item's own rules
+// (module/rules/conv10-slA10.test.js, conv6-slA6.test.js).
 
-  test('nothing unmorphed or without the Perk on the team', () => {
-    const mate = makeActor({ system: { isMorphed: false, movement: { ground: { total: 30 } } } });
-    worldList.push(makeActor({ items: [{ flags: src(common.PR2.bendPhysics) }] }), mate);
-    team.bendPhysicsDerived(mate);
-    expect(mate.system.movement.ground.total).toBe(30);
-    const alone = makeActor({ system: { isMorphed: true, movement: { ground: { total: 30 } } } });
-    worldList.length = 0;
-    worldList.push(alone);
-    team.bendPhysicsDerived(alone);
-    expect(alone.system.movement.ground.total).toBe(30);
-  });
-
-  test('+2 Evasion against ranged attacks only', () => {
-    const holder = makeActor({ system: { isMorphed: true }, items: [{ flags: src(common.PR2.bendPhysics) }] });
-    worldList.push(holder);
-    const ranged = { type: 'weaponEffect', system: { classification: { style: 'projectile' } } };
-    const melee = { type: 'weaponEffect', system: { classification: { style: 'melee' } } };
-    expect(team.bendPhysicsDefense(null, holder, 'evasion', { item: ranged })).toBe(2);
-    expect(team.bendPhysicsDefense(null, holder, 'evasion', { item: melee })).toBe(0);
-    expect(team.bendPhysicsDefense(null, holder, 'toughness', { item: ranged })).toBe(0);
-  });
-});
-
-describe('Primal Rage / Instructor / Graphite Prime', () => {
-  test('Primal Rage ↑1 on unarmed attacks for the team', () => {
-    const holder = makeActor({ items: [{ flags: src(common.PR2.primalRage) }] });
-    const mate = makeActor({ items: [{ id: 'w', type: 'weapon', name: 'Power Sword' }] });
-    worldList.push(holder, mate);
-    const unarmed = { type: 'weaponEffect', name: 'Punch', flags: {} };
-    const armed = { type: 'weaponEffect', name: 'Slash', flags: { essence20: { parentId: 'w' } } };
-    expect(team.primalRageSources(mate, null, { isAttack: true, item: unarmed }).sources[0].shiftUp).toBe(1);
-    expect(team.primalRageSources(mate, null, { isAttack: true, item: armed })).toBeNull();
-  });
-
-  test('Instructor ↑1 on the taught Skill and no untrained Snag for students', () => {
+// Primal Rage is the item's own RollModifier rules (module/rules/conv6-slA6.test.js).
+describe('Instructor / Graphite Prime', () => {
+  // Instructor is the Perk's own rules (module/rules/conv7-slA7.test.js); only students taught before
+  // the rules version are read here, from the old flag.
+  test('Instructor: a student in the old flag keeps no untrained Snag on that Skill', () => {
     const student = makeActor({ uuid: 'Actor.student' });
     const teacher = makeActor({ items: [{ flags: { ...src(common.PR2.instructor), essence20: { pr2Instructor: { skill: 'science', students: ['Actor.student'] } } } }] });
     worldList.push(teacher, student);
-    expect(team.instructorSources(teacher, null, { rolledSkill: 'science' }).sources[0].shiftUp).toBe(1);
-    expect(team.instructorSources(teacher, null, { rolledSkill: 'technology' })).toBeNull();
     expect(team.pr2NoUntrainedSnag(student, 'science')).toBe(true);
     expect(team.pr2NoUntrainedSnag(student, 'technology')).toBe(false);
   });
-
-  test('Aim Apparatus steps a shift up one rank, capped at d12', () => {
-    expect(team.stepShift('d20', 1)).toBe('d2');
-    expect(team.stepShift('d12', 1)).toBe('d12');
-    expect(team.stepShift('d2', -1)).toBe('d20');
-  });
+  // Aim Apparatus is the Perk's own added / removed Triggers (module/rules/conv9-slA9.test.js).
 });
 
-describe('Zord Features', () => {
-  test('gem colour updates', () => {
-    const effect = { system: { damageValue: 2, damageType: 'element', range: { value: 50, long: 120 } } };
-    expect(zords.gemUpdate(effect, 'red', { flag: 'dinoGem' })).toEqual({ 'system.damageType': 'fire', 'flags.essence20.pr2GemBoost.dinoGem': 'red' });
-    expect(zords.gemUpdate(effect, 'blue')).toEqual({ 'system.range.value': 100, 'system.range.long': 170 });
-    expect(zords.gemUpdate(effect, 'green', { extraDamage: 1 })).toEqual({ 'system.damageValue': 4 });
-    expect(zords.gemUpdate(effect, null, { extraDamage: 1 })).toEqual({ 'system.damageValue': 3 });
-  });
-
-  test('Dino Gem ↑1 on the flagged attack', () => {
-    const zord = makeActor({ type: 'zord', items: [{ type: 'feature', flags: src(common.PR2.dinoGemIntegration) }] });
-    const item = { type: 'weaponEffect', flags: { essence20: { pr2GemBoost: { dinoGem: 'red' } } } };
-    expect(zords.dinoGemSources(zord, null, { isAttack: true, item }).sources[0].shiftUp).toBe(1);
-    expect(zords.dinoGemSources(zord, null, { isAttack: true, item: { type: 'weaponEffect', flags: {} } })).toBeNull();
-  });
-
-  test('Dino Drive speed penalty keeps Speed at 1', () => {
-    expect(zords.speedPenalty(6)).toBe(3);
-    expect(zords.speedPenalty(2)).toBe(1);
-    expect(zords.speedPenalty(1)).toBe(0);
-  });
-
-  test('Reflective Armor ignores non-Energy damage and inactive Zords', async () => {
-    const zord = makeActor({ type: 'zord' });
-    expect(await zords.reflectiveArmor(zord, 3, 'fire')).toBe(3);
-    expect(await zords.reflectiveArmor(zord, 3, 'blunt')).toBe(3);
-  });
-});
+// Dino Gem Integration / Energem Infusion are their items' own rules now (module/rules/conv5-slA5.test.js), and so is
+// Dino Drive Mode (module/rules/conv12-slH12.test.js).
 
 describe("Finster's", () => {
-  test('Flames of Hate ignores the armor share of the Defense', () => {
-    const attacker = makeActor();
-    const item = { type: 'weaponEffect', flags: src(common.PR2.flamesOfHateEffects[0]) };
-    const defender = makeActor({ system: { isMorphed: true, defenses: { cleverness: { armor: 0, morphed: 2 } } } });
-    expect(finster.flamesOfHateDefense(attacker, defender, 'cleverness', { item })).toBe(-2);
-    defender.statuses.add('armorStripped');
-    expect(finster.flamesOfHateDefense(attacker, defender, 'cleverness', { item })).toBe(0);
-    expect(finster.flamesOfHateDefense(attacker, makeActor({ system: { defenses: { cleverness: { armor: 1 } } } }), 'cleverness', { item: { type: 'weaponEffect', flags: {} } })).toBe(0);
-  });
-
-  test('Aura of Decay costs 1 Health when used', async () => {
-    const actor = makeActor({ system: { health: { value: 4 } } });
-    const power = { type: 'power', name: 'Aura of Decay', flags: src(common.PR2.auraOfDecay) };
-    await finster.auraOfDecayCost(actor, { rollType: 'power' }, power);
-    expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 3 });
-    actor.update.mockClear();
-    await finster.auraOfDecayCost(actor, { rollType: 'skill' }, power);
-    expect(actor.update).not.toHaveBeenCalled();
-  });
-
-  test('Incineration Blast is recognised by effect or weapon', () => {
-    const actor = makeActor({ items: [{ id: 'w', type: 'weapon', flags: src(common.PR2.incinerationBlastWeapon) }] });
-    expect(finster.isIncinerationBlast(actor, { type: 'weaponEffect', flags: { essence20: { parentId: 'w' } } })).toBe(true);
-    expect(finster.isIncinerationBlast(actor, { type: 'weaponEffect', flags: src(common.PR2.incinerationBlastEffect) })).toBe(true);
-    expect(finster.isIncinerationBlast(actor, { type: 'weaponEffect', flags: {} })).toBe(false);
-  });
-
   test('Nemesis Drain clears at the new scene', async () => {
     const hit = makeActor({ flags: { essence20: { nemesisDrainPenaltyActive: true } } });
     worldList.push(hit);
     await finster.clearNemesisDrain();
     expect(hit.flags.essence20.nemesisDrainPenaltyActive).toBeUndefined();
-  });
-});
-
-describe('Perks', () => {
-  test('Grid Relic weapon rolls the Role skill die for Energy damage', () => {
-    const { weapon, effect } = perks.relicData('might', { id: 'p' });
-    expect(weapon.system.traits).toContain('powerWeapon');
-    expect(effect.system.classification.skill).toBe('roleSkillDie');
-    expect(effect.system.damageType).toBe('element');
   });
 });

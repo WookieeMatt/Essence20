@@ -759,6 +759,8 @@ export function buildRiderContext(actor, item, dataset, options, consumes = []) 
     consumes,
     // Rule switches ticked for this roll (DialogSwitch key) - the roll:switch: tag.
     switches: options?.ruleKeys ?? [],
+    // The roll's own dataset flags (plain values) - the roll:dataset:<key> tag in hit / miss / afterRoll Triggers.
+    dataset: Object.fromEntries(Object.entries(dataset ?? {}).filter(([, value]) => ['string', 'number', 'boolean'].includes(typeof value))),
   };
 }
 
@@ -783,7 +785,7 @@ export async function applyRollRiders(actor, results, checkContext, { isCrit = f
     }
 
     // Rule-banked bonuses were already spent when the roll was made (dice.mjs, next to clearPendingBonus).
-    if (['rulesBank', 'rulesLimit'].includes(consume.ext)) {
+    if (['rulesBank', 'rulesLimit', 'rulesMark'].includes(consume.ext)) {
       continue;
     }
 

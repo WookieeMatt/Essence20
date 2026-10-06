@@ -5,6 +5,9 @@
   "_id": "xxMeliFHeWYxtGVI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"No Escape","event":"enemyEnteredReach","steps":[{"do":"button","whisper":"owners","label":"No Escape","intro":"No Escape: {target} moved into the Reach of {name} - attack them now.","steps":[{"do":"setTargets","to":"target"},{"do":"bonusAttack","cost":"none","optional":true},{"do":"chat","text":"{name} interrupts {target}'s movement with an attack (No Escape)."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when an enemy moves into your melee Reach, a button lets you attack it right away.</p>"

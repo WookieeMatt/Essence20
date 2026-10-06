@@ -5,6 +5,9 @@
   "_id": "W87huLqKeOCJJ66L",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Give a targeted ally 1 Energon","cost":{"resource":{"path":"system.energon.normal.value"},"amount":1},"steps":[{"do":"target","beforeCost":true},{"do":"require","beforeCost":true,"check":["not:target:self"],"message":"Target someone else."},{"do":"require","beforeCost":true,"when":["not:target:within:30"],"check":["target:within:30"],"message":"Out of range (30 ft)."},{"do":"require","beforeCost":true,"check":["target:data:system.energon.normal"]},{"do":"updateActor","to":"target","add":{"system.energon.normal.value":1}},{"do":"chat","text":"{name} gives {target} 1 Energon."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: give a targeted ally within 30ft one of your Energon Points to spend.</p>"

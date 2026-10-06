@@ -5,6 +5,11 @@
   "_id": "Ycrb7vHTOZ79nC9U",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"A protected non-combatant was Defeated","when":["combat:exists","not:self:marked:rightOfAllFallen"],"steps":[{"do":"mark","key":"rightOfAllFallen","until":"combat"}]},
+      {"type":"RollModifier","label":"The Right Of All Sentient Beings","edge":true,"when":["self:marked:rightOfAllFallen","not:roll:initiative"]},
+      {"type":"DialogSwitch","label":"Protecting a non-combatant (The Right Of All Sentient Beings: Edge)","edge":true,"forget":true,"when":["combat:exists","not:self:marked:rightOfAllFallen"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: in combat, a switch for Edge while protecting a threatened non-combatant. Use button: if a non-combatant is Defeated, your Skill Tests get Edge for the rest of that combat, labelled The Right Of All Sentient Beings in the Roll Options Dialog.</p>"

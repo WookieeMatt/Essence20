@@ -5,6 +5,10 @@
   "_id": "1MtovibPOMw9O2hP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the team and two Skills (We Are One!)","steps":[{"do":"pickMany","key":"team","record":true,"legacy":"actor.flags.essence20.tf2WeAreOne.members","from":"partyMates","orTargets":true,"count":"ceil(@actor.system.essences.social.max / 2)","prompt":"Choose the allies who join the team"},{"do":"pick","key":"skillA","legacy":"actor.flags.essence20.tf2WeAreOne.skills.0","from":"skills","prompt":"First Skill"},{"do":"pick","key":"skillB","legacy":"actor.flags.essence20.tf2WeAreOne.skills.1","from":"skills","differentEssenceFrom":"skillA","prompt":"Second Skill (another Essence)"}]},
+      {"type":"Reroll","label":"We Are One!","scope":"picked","picked":"team","includeHolder":true,"legacyEffects":"tf2WeAreOneBy","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"skills":["{choice.skillA}","{choice.skillB}"],"recursive":false}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose team members (up to half your Social, rounded up) and two Skills from different Essences. You and each member get an Active Effect that rerolls 1s on those Skills.</p>"

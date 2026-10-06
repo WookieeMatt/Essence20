@@ -22,7 +22,6 @@ const EYE_FOR_APPRAISAL_ID = "Compendium.essence20.decepticon_directive.Item.Jlw
 const WEAPON_CONVERSION_ID = "Compendium.essence20.decepticon_directive.Item.WbXurpieXjFkmS8h";
 const PLAN_OF_ACTION_WTNV_ID = "Compendium.essence20.wtnv_citizens_guide.Item.D3uXlXL7jNn0eD8T";
 const DIG_DEEP_ID = "Compendium.essence20.wtnv_citizens_guide.Item.A2Xay6rHrBK9l8eo";
-const TIMELINE_ANOMALY_ID = "Compendium.essence20.wtnv_citizens_guide.Item.NQXcQL05DLCs75xb";
 const QUICK_STUDY_ID = "Compendium.essence20.wtnv_citizens_guide.Item.adJm4dpjD04TICkd";
 const GUIDANCE_ID = "Compendium.essence20.gi_joe_crb.Item.yVxdYbSfMWfaDQZR";
 const INSPIRING_WORDS_ID = "Compendium.essence20.gi_joe_crb.Item.0cGhuapOhkdwYC9G";
@@ -772,31 +771,6 @@ describe("Forward Observation (General Hawk's Personnel Files, General Perk, p.1
     expect(actor._dice.rollSkill).toHaveBeenCalledWith(
       expect.objectContaining({ skill: 'alertness', essence: 'smarts', dif: 15, isForwardObservation: true }),
       actor,
-    );
-  });
-});
-
-describe("Hearty Meal (General Hawk's Personnel Files, General Perk, p.174)", () => {
-  const HEARTY_MEAL_ID = "Compendium.essence20.general_hawk_s_personel_files.Item.NULhQcWctFcXXdDH";
-
-  beforeEach(() => {
-    foundry.applications.api.DialogV2.wait.mockReset();
-  });
-
-  test("canUsePerk is always true - RAW states no cost or frequency cap", () => {
-    const actor = { ...makeActor(), _dice: { rollSkill: jest.fn() } };
-    expect(canUsePerk(makePerkItem({ sourceId: HEARTY_MEAL_ID, actor }))).toBe(true);
-  });
-
-  test("prompts for a skill and triggers the flat-DIF check", async () => {
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('performance');
-    const actor = { ...makeActor(), _dice: { rollSkill: jest.fn() } };
-    const item = makePerkItem({ sourceId: HEARTY_MEAL_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(actor._dice.rollSkill).toHaveBeenCalledWith(
-      expect.objectContaining({ skill: 'performance', essence: 'social', dif: 15, isHeartyMeal: true }), actor,
     );
   });
 });
@@ -5214,53 +5188,7 @@ describe("Shoulder To Shoulder (GI Joe CRB, Focus: Frontline Leader, 3rd level, 
   });
 });
 
-describe("Fearsome Presence (GI Joe CRB, Renegade base, 14th level, p.97)", () => {
-  const FEARSOME_PRESENCE_ID = "Compendium.essence20.gi_joe_crb.Item.Jbx3ei70ZsoabVuL";
-  const RECKLESS_ABANDON_ID = "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY";
-
-  function makeRenegadeActor({ recklessAbandonActive = true } = {}) {
-    const rolePoints = { flags: { core: { sourceId: RECKLESS_ABANDON_ID } }, system: { isActive: recklessAbandonActive } };
-    return { ...makeActor(), _getBaseRolePoints: jest.fn(() => rolePoints), _dice: { rollSkill: jest.fn() } };
-  }
-
-  beforeEach(() => {
-    ui.notifications.warn.mockReset();
-  });
-
-  test("canUsePerk is true while Reckless Abandon is active", () => {
-    const actor = makeRenegadeActor({ recklessAbandonActive: true });
-    const item = makePerkItem({ sourceId: FEARSOME_PRESENCE_ID, actor });
-    expect(canUsePerk(item)).toBe(true);
-  });
-
-  test("canUsePerk is false while Reckless Abandon isn't active", () => {
-    const actor = makeRenegadeActor({ recklessAbandonActive: false });
-    const item = makePerkItem({ sourceId: FEARSOME_PRESENCE_ID, actor });
-    expect(canUsePerk(item)).toBe(false);
-  });
-
-  test("rolls Intimidation vs. Willpower while active", async () => {
-    const actor = makeRenegadeActor({ recklessAbandonActive: true });
-    const item = makePerkItem({ sourceId: FEARSOME_PRESENCE_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(actor._dice.rollSkill).toHaveBeenCalledWith(
-      expect.objectContaining({ skill: 'intimidation', defenseType: 'willpower', isFearsomePresence: true }),
-      actor,
-    );
-  });
-
-  test("warns and does nothing while Reckless Abandon isn't active", async () => {
-    const actor = makeRenegadeActor({ recklessAbandonActive: false });
-    const item = makePerkItem({ sourceId: FEARSOME_PRESENCE_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(ui.notifications.warn).toHaveBeenCalled();
-    expect(actor._dice.rollSkill).not.toHaveBeenCalled();
-  });
-});
+// Fearsome Presence is a Use rule on its Perk (rules/conv10-slB10.test.js).
 
 describe("Natural Movement (GI Joe CRB, Focus: Predator, 6th level, p.93)", () => {
   const NATURAL_MOVEMENT_ID = "Compendium.essence20.gi_joe_crb.Item.TLI74oM0tbDtQ298";
@@ -9198,74 +9126,6 @@ describe("Dig Deep (MLP CRB, General Perk, p.123)", () => {
   });
 });
 
-describe("Timeline Anomaly (Welcome to Night Vale: Citizens' Guide, General Perk, p.47)", () => {
-  const realTargets = game.user.targets;
-
-  function makeCombatant(actorId, initiative) {
-    return { actor: { id: actorId }, initiative, update: jest.fn() };
-  }
-
-  beforeEach(() => {
-    game.combat = { id: 'combat1' };
-    game.user.targets = { first: jest.fn(() => undefined) };
-  });
-
-  afterEach(() => {
-    game.user.targets = realTargets;
-  });
-
-  test("canUsePerk is true with no cost, as long as it hasn't been used this session", () => {
-    const actor = makeActor();
-    const item = makePerkItem({ sourceId: TIMELINE_ANOMALY_ID, actor });
-    expect(canUsePerk(item)).toBe(true);
-  });
-
-  test("canUsePerk is false once already used this session", () => {
-    const actor = makeActor();
-    actor.getFlag = jest.fn((scope, key) => (key == 'timelineAnomalyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
-    const item = makePerkItem({ sourceId: TIMELINE_ANOMALY_ID, actor });
-    expect(canUsePerk(item)).toBe(false);
-  });
-
-  test("swaps Initiative with the targeted Combatant and marks the session used", async () => {
-    const actor = makeActor({ id: 'actor1' });
-    const actorCombatant = makeCombatant('actor1', 5);
-    const targetCombatant = makeCombatant('target1', 15);
-    game.combat.combatants = [actorCombatant, targetCombatant];
-    game.user.targets.first.mockReturnValue({ actor: { id: 'target1' } });
-    const item = makePerkItem({ sourceId: TIMELINE_ANOMALY_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(actorCombatant.update).toHaveBeenCalledWith({ initiative: 15 });
-    expect(targetCombatant.update).toHaveBeenCalledWith({ initiative: 5 });
-    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'timelineAnomalyUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
-  });
-
-  test("doesn't mark used when there's no valid target to swap with", async () => {
-    const actor = makeActor({ id: 'actor1' });
-    game.combat.combatants = [makeCombatant('actor1', 5)];
-    game.user.targets.first.mockReturnValue(undefined);
-    const item = makePerkItem({ sourceId: TIMELINE_ANOMALY_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(actor.setFlag).not.toHaveBeenCalledWith('essence20', 'timelineAnomalyUsedThisEncounter', expect.anything());
-  });
-
-  test("does nothing once already used this session", async () => {
-    const actor = makeActor({ id: 'actor1' });
-    actor.getFlag = jest.fn((scope, key) => (key == 'timelineAnomalyUsedThisEncounter' ? { epoch: 1, window: 'encounter', count: 1 } : undefined));
-    const actorCombatant = makeCombatant('actor1', 5);
-    game.combat.combatants = [actorCombatant];
-    const item = makePerkItem({ sourceId: TIMELINE_ANOMALY_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(actorCombatant.update).not.toHaveBeenCalled();
-  });
-});
-
 describe("After You (MLP CRB, Spirit of Generosity, 6th level, p.76)", () => {
   const AFTER_YOU_ID = "Compendium.essence20.mlp_crb.Item.CjNQHWxMjTQfcLTZ";
   const realTargets = game.user.targets;
@@ -9504,43 +9364,6 @@ describe("Castling (GI Joe CRB, Grandmaster Focus, 10th level, p.87)", () => {
     game.user.targets = new Set();
     canvas.tokens.placeables = [];
     const item = makePerkItem({ sourceId: CASTLING_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(ui.notifications.warn).toHaveBeenCalled();
-  });
-});
-
-describe("Danger Sense (GI Joe CRB, Bodyguard Focus, 6th level, p.110) - Initiative sync dispatch", () => {
-  const DANGER_SENSE_ID = "Compendium.essence20.gi_joe_crb.Item.2hwFRZ67xIGt1XTm";
-
-  afterEach(() => {
-    game.combat = null;
-  });
-
-  test("canUsePerk is always true", () => {
-    const actor = makeActor();
-    const item = makePerkItem({ sourceId: DANGER_SENSE_ID, actor });
-    expect(canUsePerk(item)).toBe(true);
-  });
-
-  test("syncs the Protected Target's Initiative and posts a chat card", async () => {
-    const actor = { ...makeActor(), getFlag: jest.fn(() => 'Actor.target1') };
-    const myCombatant = { actor: { id: actor.id }, initiative: 15, update: jest.fn() };
-    const targetCombatant = { actor: { id: 'target1' }, initiative: 5, update: jest.fn() };
-    game.combat = { combatants: [myCombatant, targetCombatant] };
-    fromUuid.mockResolvedValue({ id: 'target1' });
-    const item = makePerkItem({ sourceId: DANGER_SENSE_ID, actor });
-
-    await onPerkUse(item);
-
-    expect(targetCombatant.update).toHaveBeenCalledWith({ initiative: 15 });
-  });
-
-  test("does nothing outside combat", async () => {
-    game.combat = null;
-    const actor = makeActor();
-    const item = makePerkItem({ sourceId: DANGER_SENSE_ID, actor });
 
     await onPerkUse(item);
 

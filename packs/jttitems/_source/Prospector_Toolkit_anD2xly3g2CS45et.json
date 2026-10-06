@@ -5,6 +5,9 @@
   "_id": "anD2xly3g2CS45et",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Bank a Wealth Test die (Prospector Toolkit)","when":["not:rule:bankedDie"],"limit":{"per":"mission"},"steps":[{"do":"choose","prompt":"Prospect for a bonus die on your next Wealth Test:","options":[{"label":"A 1d4","steps":[{"do":"bankDie","die":"1d4","appliesWhen":["skill:wealth"]}]},{"label":"Survival Test (DIF 16) for a 1d8","steps":[{"do":"roll","skill":"survival","dif":16,"onSuccess":[{"do":"bankDie","die":"1d8","appliesWhen":["skill:wealth"]}],"onFail":[{"do":"bankDie","die":"1d4","appliesWhen":["skill:wealth"]}]}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: optionally roll DIF 16 Survival; you get a d8 (or a d4) bonus die on your next Wealth test.</p><p>Left to the table: holding it to once per week (the system allows it once per mission).</p>"

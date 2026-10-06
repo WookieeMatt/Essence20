@@ -1,164 +1,29 @@
 import {
-  registerAfterDamage, registerApplyDialog, registerChatButton, registerDamageModifier, registerHitRider, registerPostRoll, registerRollSources,
+  registerAfterDamage, registerApplyDialog, registerDamageModifier, registerPostRoll, registerRollSources,
   registerTurnStart, registerUse,
 } from "../../extensions.mjs";
 import { essenceDamageOf } from "../../essence-damage.mjs";
-import { hasUsedThisRound, markUsedThisRound } from "../../perks.mjs";
 import { worldActors } from "../../companion-link.mjs";
 import {
-  bestDefense, canAct, choose, confirm, damageButton, esc, gmDo, holds, itemsOf, lastApplyContext, ownerIds, payPower, rollVs, rollVsMany, say,
-  SCOPE, skillLabel, sourceOf,
+  choose, confirm, esc, gmDo, holds, payPower, say, SCOPE, sourceOf,
 } from "./core.mjs";
 
 /**
- * Reactions tied to a form or a standing state: Monster Morph's per-Path riders, Iron Bravado's
+ * Reactions tied to a form or a standing state: Iron Bravado's
  * shared immunities, Cyborg's damage-to-Essence, and Mind Beam's Calm / Confused, default effect and
  * 3-round duration. (Path of Stone's Resistance is an incoming rule on the Path of Stone Role.)
  */
 
-const FMMC = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.";
 export const FORM = {
-  monsterMorph: `${FMMC}iDbMl3SS6XnyADN2`,
   ironBravado: "Compendium.essence20.pr_crb.Item.8bmqJ7hyOAcVNB1Y",
   cyborg: "Compendium.essence20.beneath_the_helmet.Item.rqCybOrg7Bth48Pk",
   mindBeam: "Compendium.essence20.mlp_crb.Item.gF8otV8Ag9axRp2Z",
 };
 
-const PATH = {
-  [`${FMMC}vWie8Dy4u54sf1hy`]: 'cruelty',
-  [`${FMMC}4PbR4S3s83Coa0kL`]: 'flame',
-  [`${FMMC}GQ5aQWbjmaO9y00w`]: 'frost',
-  [`${FMMC}TEjkVjIEFEbRI736`]: 'stone',
-  [`${FMMC}0ICOTyVDXK1i6l1S`]: 'thorns',
-  [`${FMMC}rWoVOcNc3lXKDbhg`]: 'venom',
-};
-
 const T = (key, data) => (data ? game.i18n.format(`E20.${key}`, data) : game.i18n.localize(`E20.${key}`));
 
-/* -------------------------------------------- */
-/*  Monster Morph                                */
-/* -------------------------------------------- */
-
-/** The Psycho Path of an actor currently in Monster Form, or null. */
-export function monsterPath(actor) {
-  if (!actor?.getFlag?.(SCOPE, 'monsterFormActive')) {
-    return null;
-  }
-
-  const role = itemsOf(actor).find(item => item.type == 'role');
-  return PATH[sourceOf(role)] ?? null;
-}
-
-// Path of Cruelty (FMMC p.284): "Once per round when you suffer 2 or more damage from a single
-// attack, you can attempt an Intimidation Skill Test targeting the Willpower Defense of all creatures
-// within 10 feet of you. Upon success, each target suffers 1 Void damage."
-// Path of Frost (p.289): "When you suffer 2 or more damage from a single attack, you can freeze all
-// those near you in place; attempt a Brawn Skill Test against the Toughness Defense of all creatures
-// within 10 feet of you. On a success, that creature is Immobilized until the end of your next turn."
-const BURST = {
-  cruelty: { skill: 'intimidation', defense: 'willpower', oncePerRound: true },
-  frost: { skill: 'brawn', defense: 'toughness', oncePerRound: false },
-};
-
-registerAfterDamage(async (actor, dealt) => {
-  const path = monsterPath(actor);
-  const burst = BURST[path];
-  if (!burst || dealt < 2 || !lastApplyContext()?.isAttack || (burst.oncePerRound && hasUsedThisRound(actor, 'reactMonsterBurst'))) {
-    return;
-  }
-
-  await globalThis.ChatMessage?.create?.({
-    speaker: globalThis.ChatMessage.getSpeaker?.({ actor }),
-    whisper: ownerIds(actor),
-    content: `<p>${T(`ReactMonster_${path}`, { name: esc(actor.name) })}</p>
-      <button type="button" data-e20-ext="reactMonsterBurst" data-actor-uuid="${actor.uuid}" data-path="${path}">${esc(skillLabel(burst.skill))}</button>`,
-  });
-});
-
-registerChatButton('reactMonsterBurst', async (message, button) => {
-  const actor = await fromUuid(button.dataset.actorUuid);
-  const burst = BURST[button.dataset.path];
-  if (!canAct(actor) || !burst || message.getFlag?.(SCOPE, 'reactUsed')) {
-    return;
-  }
-
-  if (burst.oncePerRound && hasUsedThisRound(actor, 'reactMonsterBurst')) {
-    ui.notifications?.warn(T('ReactAlreadyUsed'));
-    return;
-  }
-
-  const { getAllNearbyTokens } = await import("../../allies.mjs");
-  const near = getAllNearbyTokens(actor, 10).map(token => token.actor).filter(Boolean);
-  if (!near.length) {
-    ui.notifications?.warn(T('ReactNobodyNear'));
-    return;
-  }
-
-  button.disabled = true;
-  if (burst.oncePerRound) {
-    await markUsedThisRound(actor, 'reactMonsterBurst');
-  }
-
-  const results = await rollVsMany(actor, burst.skill, near, burst.defense);
-  for (const result of results.filter(r => r.success)) {
-    const target = await fromUuid(result.targetUuid);
-    if (!target) {
-      continue;
-    }
-
-    if (button.dataset.path == 'cruelty') {
-      await damageButton(actor, target, 1, 'void', T('ReactMonsterVoid', { name: esc(actor.name), target: esc(target.name) }));
-    } else {
-      await gmDo({ kind: 'status', uuid: target.uuid, status: 'immobilized', rounds: 1 },
-        T('ReactMonsterFrozen', { name: esc(actor.name), target: esc(target.name) }), actor);
-    }
-  }
-});
-
-// Path of Flame (p.292): "When you successfully hit a target with a melee attack, you can spend a
-// Free action to make a Might attack Skill Test against the same target. On a success, the target
-// takes 1 Fire damage." Thorns (p.298): "...a Might or Finesse attack (your choice)... 1 Acid
-// damage." Venom (p.301): "...a Survival attack... 1 Poison damage."
-const FOLLOW = {
-  flame: { skills: ['might'], type: 'fire' },
-  thorns: { skills: ['might', 'finesse'], type: 'acid' },
-  venom: { skills: ['survival'], type: 'poison' },
-};
-
-registerHitRider(async (actor, target, result, rider) => {
-  const path = monsterPath(actor);
-  if (!FOLLOW[path] || rider?.style != 'melee' || !target) {
-    return;
-  }
-
-  await globalThis.ChatMessage?.create?.({
-    speaker: globalThis.ChatMessage.getSpeaker?.({ actor }),
-    whisper: ownerIds(actor),
-    content: `<p>${T(`ReactMonster_${path}`, { name: esc(actor.name), target: esc(target.name) })}</p>
-      <button type="button" data-e20-ext="reactMonsterFollow" data-actor-uuid="${actor.uuid}" data-target-uuid="${target.uuid}"
-        data-path="${path}">${T('ReactFollowUp')}</button>`,
-  });
-});
-
-registerChatButton('reactMonsterFollow', async (message, button) => {
-  const actor = await fromUuid(button.dataset.actorUuid);
-  const target = await fromUuid(button.dataset.targetUuid);
-  const follow = FOLLOW[button.dataset.path];
-  if (!canAct(actor) || !target || !follow) {
-    return;
-  }
-
-  const skill = await choose(T('ReactFollowUp'), T('ReactPickSkill'), follow.skills.map(s => [s, skillLabel(s)]));
-  if (!skill) {
-    return;
-  }
-
-  button.disabled = true;
-  const { success, cancelled } = await rollVs(actor, skill, bestDefense(target));
-  if (!cancelled && success) {
-    await damageButton(actor, target, 1, follow.type, T('ReactFollowHit', { name: esc(actor.name), target: esc(target.name) }));
-  }
-});
+// Monster Morph's per-Path riders (Cruelty and Frost's burst when an attack deals 2 or more, Flame, Thorns and Venom's
+// melee follow-up) are rules on the six Path Role items (rules/ext/b/: damage:attack, rollFlat).
 
 /* -------------------------------------------- */
 /*  Iron Bravado                                 */

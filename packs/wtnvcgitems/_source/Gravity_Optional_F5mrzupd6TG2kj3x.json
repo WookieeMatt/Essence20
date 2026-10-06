@@ -6,7 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Movement","movement":"aerial","stage":"base","op":"set","value":"5 + 5 * floor(@level / 5)","label":"Floating: Aerial Movement 5 ft + 5 per 5 levels","when":["check:gravityOptional"]}
+      {"type":"Movement","movement":"aerial","stage":"base","op":"set","value":"5 + 5 * floor(@level / 5)","label":"Floating: Aerial Movement 5 ft + 5 per 5 levels","when":["check:gravityOptional"]},
+      {"type":"DialogSwitch","label":"Jump (triple the result)","when":["skill:athletics"],"forget":true,"steps":[{"do":"setToggle","key":"jump","value":true,"until":"turnOrScene"}]},
+      {"type":"Trigger","label":"Gravity Optional: jump","event":"afterRoll","outcome":"any","when":["skill:athletics","self:toggle:jump"],"steps":[{"do":"setToggle","key":"jump","value":false},{"do":"chat","text":"{name}'s jump result {var.total} is tripled to {@var.total * 3}."}]}
     ],
     "prerequisites": {"when":["self:hasType:focus:Blood Space War Veteran"]},
     "automation": {

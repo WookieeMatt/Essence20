@@ -117,3 +117,26 @@ test('the card decorator enables the button for whoever may press it and runs it
   // Cards without a rule button are left alone.
   expect(() => decorateRuleButtonCard({ flags: {} }, { querySelector: () => null })).not.toThrow();
 });
+
+test('a button limit counts on whoever presses it (runAs clicker), across cards', async () => {
+  const leader = makeActor('Leader', ['player']);
+  const other = makeActor('Other', ['other']);
+  other.setFlag = async function (scope, key, value) {
+    setPath(this.flags, `${scope}.${key}`, value);
+  };
+
+  other.getFlag = function (scope, key) {
+    return key.split('.').reduce((at, k) => at?.[k], this.flags?.[scope]);
+  };
+
+  global.game.combat = { id: 'c', started: true, round: 1, turn: 0 };
+  const otherUser = { id: 'other', isGM: false, character: other };
+  const data = { actorUuid: leader.uuid, itemUuid: 'Item.f', label: 'Join', targets: [], who: 'others', runAs: 'clicker', once: false, limit: { per: 'round', max: 1 }, steps: [{ do: 'mark', key: 'joined' }] };
+  expect(await pressRuleButton(messageFrom({ ...data }), otherUser)).toBe(true);
+  // A second card from the same rule, same round: the limit holds.
+  expect(await pressRuleButton(messageFrom({ ...data }), otherUser)).toBe(false);
+  global.game.combat = { id: 'c', started: true, round: 2, turn: 0 };
+  expect(await pressRuleButton(messageFrom({ ...data }), otherUser)).toBe(true);
+  expect(stepErrors([{ do: 'button', limit: { per: 'fortnight' }, steps: [{ do: 'chat' }] }])).toHaveLength(1);
+  delete global.game.combat;
+});

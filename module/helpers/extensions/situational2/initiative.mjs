@@ -1,5 +1,5 @@
 import {
-  S2, FLAG, T, findById, has, wornGear, isInWater, isWild, isSeaOrWetlands, isLibrarian, isLibrarySituation, sameSide,
+  S2, FLAG, T, findById, has, sameSide,
 } from "./common.mjs";
 
 /**
@@ -150,48 +150,16 @@ export async function misplacedConfidenceRound(combat) {
   }
 }
 
-/** Bookworm on Initiative: the scene is a library, or a Librarian is in the fight. */
-function bookwormAtInitiative(actor) {
-  if (isLibrarySituation(actor, null) === true) {
-    return true;
-  }
-
-  return [...(game.combat?.combatants ?? [])].some(combatant => combatant.actor && combatant.actor != actor
-    && !sameSide(actor, combatant.actor) && isLibrarian(combatant.actor));
-}
-
 /**
- * Every Initiative-time rule. Mutates the dialog's options.
+ * Every Initiative-time rule (none of them shifts the roll any more).
  * @param {Actor} actor
- * @param {Object} options   The Roll Options Dialog result (shiftUp, shiftDown, edge, snag...).
+ * @param {Object} _options   The Roll Options Dialog result (shiftUp, shiftDown, edge, snag...) - unused now.
  */
-export async function situationalInitiative(actor, options) {
-  // Amphibious Assault (Quartermaster's Guide, Freebooter, 1st level, p.24): "you gain ↑1 on
-  // Initiative Skill Tests when you begin combat while using your Aquatic Movement."
-  if (has(actor, S2.amphibiousAssault, 'perk') && isInWater(actor)) {
-    options.shiftUp = (options.shiftUp ?? 0) + 1;
-  }
+export async function situationalInitiative(actor, _options) {
+  // Amphibious Assault's and Tracking Outfit's Initiative ↑1 are item rules (rules/conv5-slC5.test.js), and so is
+  // Bookworm's Initiative ↓1 (rules/conv7-slC7.test.js).
 
-  // Tracking Outfit: "↑1 on Initiative... in the wild".
-  if (wornGear(actor, S2.trackingOutfit) && isWild(actor) === true) {
-    options.shiftUp = (options.shiftUp ?? 0) + 1;
-  }
-
-  // Bookworm: "↓1 on all Skill Tests" - Initiative included.
-  if (has(actor, S2.bookworm, 'hangUp') && bookwormAtInitiative(actor)) {
-    options.shiftDown = (options.shiftDown ?? 0) + 1;
-  }
-
-  // Shark's Fin (Quartermaster's Guide, Freebooter, 17th level, p.25): "when you make an Initiative
-  // Skill Test in sea or wetlands environments, you can immediately move up to your full Movement
-  // before combat (including the surprise round) begins. You always act in the surprise round when in
-  // sea or wetlands environments."
-  if (has(actor, S2.sharksFin, 'perk') && isSeaOrWetlands(actor)) {
-    await setSurprised(actor, false);
-    const movement = actor.system?.movement ?? {};
-    const best = Math.max(movement.ground?.total ?? 0, movement.swim?.total ?? 0);
-    await say(actor, 'S2SharksFinMove', { feet: best });
-  }
+  // Shark's Fin's Initiative half is an initiativeRolling Trigger on its item (rules/conv10-slD10.test.js).
 
   if (has(actor, S2.takeInAScene, 'perk') && actor.statuses?.has?.('surprised')) {
     await takeInAScene(actor);

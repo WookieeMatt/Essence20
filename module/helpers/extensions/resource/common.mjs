@@ -11,10 +11,6 @@ const C = pack => `Compendium.essence20.${pack}.Item.`;
 export const IDS = {
   motorPool: `${C('quartermasters_guide_to_gear')}Lyb8wPzI0XUuwF3o`,
   moneyTalks: `${C('cobra_codex')}sAY8uesn2NTTcDqi`,
-  playFavorites: `${C('cobra_codex')}5HimuCoEpjYRiOSV`,
-  playFavoritesAgainst: `${C('cobra_codex')}f6hlQSJhLCTSAILh`,
-  ruthlessEfficiency: `${C('cobra_codex')}KQWE1o3PjguwjAD0`,
-  thisICommand: `${C('cobra_codex')}SUc3emTvPnwB6W93`,
   beastMode: `${C('cobra_codex')}o4lqILvsxyU3LhBS`,
   engraftedMutation: `${C('cobra_codex')}zuR9YJ2Wy956VGGy`,
   evolvingMutation: `${C('cobra_codex')}7cL4aUwJwqvbhYCz`,
@@ -22,25 +18,14 @@ export const IDS = {
   capableFreelancer: `${C('intercontinental_adventures')}PTEnW3QDpejzj27c`,
   repairProgressEnergon: `${C('cobra_con_fusion')}rPbEnrg7Qx2Lm9Vd`,
   bodyOfEnergy: `${C('across_the_stars')}L2X2rIz2frulSajQ`,
-  dinoCharged: `${C('beneath_the_helmet')}n9ME10p6mfOJnUdE`,
-  thinkFast: `${C('jump_through_time')}Sjx8BBENyDUTRJvs`,
-  historyBuff: `${C('jump_through_time')}b3O5i3HMtaIHl6PD`,
-  innerConservation: `${C('through_the_shattered_grid')}NkHKAb5TFc7n7C8k`,
-  powerEfficiency: `${C('through_the_shattered_grid')}3fa8lKE6TpQ6lr0P`,
-  fuelEfficient: `${C('tf_crb')}hW6ESJ1p7GvIGzBe`,
   darkEnergon: `${C('decepticon_directive')}MO8ijgRUmLXcYnbL`,
   primalEnergon: `${C('decepticon_directive')}1mTrbliJVJvIl1qk`,
   redEnergon: `${C('decepticon_directive')}EzAE0hdxbgKtffKB`,
   synthEn: `${C('decepticon_directive')}SgYkXSFLiLT8hjMP`,
   addictedDarkEnergon: `${C('decepticon_directive')}e3c7wuCA7JQS7rTA`,
-  togetherWeStand: `${C('enigma_of_combination')}oj7vUwpB9EW8stUG`,
   weImprovise: `${C('transformers_one_sourcebook')}qnRFb2A0sLpSg2sL`,
   circleOfMagicalFriends: `${C('mlp_crb')}Evg7HVLPles0X9DM`,
-  extensiveResearch: `${C('mlp_crb')}TwW8c51b3bCL9Rul`,
-  honestCompassion: `${C('mlp_crb')}Dfjo9U9cAgigD9oA`,
-  musicalInterlude: `${C('knights_of_canterlot')}0PVrQ1RsRNP023MO`,
   camper: `${C('knights_of_canterlot')}dMEFcqcain5oS2mJ`,
-  zapAppleJam: `${C('in_a_jam')}L5B7d8mw0xeOHVkw`,
 };
 
 export function sourceOf(item) {
@@ -121,13 +106,6 @@ export function teamOf(actor) {
   }
 
   return [...seen.values()].filter(Boolean);
-}
-
-/** The first targeted token's actor, if any. */
-export function targetedActor() {
-  const targets = game.user?.targets;
-  const first = targets?.first?.() ?? (targets ? [...targets][0] : null);
-  return first?.actor ?? null;
 }
 
 export function targetedActors() {

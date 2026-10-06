@@ -5,7 +5,8 @@
   "system": {
     "rules": [
       {"type":"RollModifier","scope":"incoming","label":"Every Trick in the Book (invisible attacker)","when":["attack","target:status:invisible"],"snag":true},
-      {"type":"ConditionImmunity","label":"Can't be Surprised (Every Trick in the Book)","conditions":["surprised"]}
+      {"type":"ConditionImmunity","label":"Can't be Surprised (Every Trick in the Book)","conditions":["surprised"]},
+      {"type":"SneakAttackImmunity","label":"No Sneak Attack damage (Every Trick in the Book)"}
     ],
     "automation": {
       "status": "full",

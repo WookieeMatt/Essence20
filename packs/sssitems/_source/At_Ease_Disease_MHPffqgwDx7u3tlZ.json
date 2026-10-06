@@ -5,6 +5,9 @@
   "_id": "MHPffqgwDx7u3tlZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Heal with Intimidation","cost":{"action":"standard"},"steps":[{"do":"require","beforeCost":true,"check":["combat:exists"],"message":"Only during combat."},{"do":"require","beforeCost":true,"check":["not:target:type:vehicle","not:target:type:zord","not:target:type:megaform"],"message":"Only living creatures."},{"do":"askNumber","beforeCost":true,"var":"amount","min":1,"max":6,"prompt":"Health to restore"},{"do":"roll","skill":"intimidation","dif":"5 + 5 * @var.amount","onSuccess":[{"do":"heal","to":"targetOrSelf","amount":"@var.amount"},{"do":"removeCondition","condition":"defeated","to":"targetOrSelf"}],"onFail":[{"do":"chat","text":"No Health restored."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (in combat): heal a targeted living creature with an Intimidation test instead of Science, with no Medicine kit needed.</p>"

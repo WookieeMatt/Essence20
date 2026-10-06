@@ -5,6 +5,12 @@
   "_id": "57an1eB6FMmcpKlk",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick the Warhead Magazines damage types","when":["not:rule:data:flags.essence20.rules.choices.pr1Warhead.length","not:rule:data:flags.essence20.pr1WarheadTypes.length"],"steps":[{"do":"pickEach","key":"pr1Warhead","count":3,"from":"damageType","only":["acid","blunt","cold","electric","emp","element","fire","sharp","sonic","stun"],"excludeCopies":true,"prompt":"E20.Pr1WarheadPick","record":true,"legacy":"flags.essence20.pr1WarheadTypes"},{"do":"chat","text":"{name}'s Warhead Magazines: {var.pickedLabels}."}]},
+      {"type":"Use","label":"Pick the Warhead Magazines damage types","when":["not:rule:data:flags.essence20.rules.choices.pr1Warhead.length","not:rule:data:flags.essence20.pr1WarheadTypes.length"],"steps":[{"do":"pickEach","key":"pr1Warhead","count":3,"from":"damageType","only":["acid","blunt","cold","electric","emp","element","fire","sharp","sonic","stun"],"excludeCopies":true,"prompt":"E20.Pr1WarheadPick","record":true,"legacy":"flags.essence20.pr1WarheadTypes"},{"do":"chat","text":"{name}'s Warhead Magazines: {var.pickedLabels}."}]},
+      {"type":"DialogSelect","label":"Warhead Magazines (Free action): damage type","when":["self:type:zord","rule:firstCopy",{"any":["attack:area","weapon:trait:area"]}],"options":[{"label":"Base damage type"}],"optionsFrom":{"picked":"pr1Warhead","legacy":"flags.essence20.pr1WarheadTypes","copies":true,"labels":"damageType","key":"pr1Warhead:{value}","pay":[{"do":"spendAction","action":"free","when":["combat:exists"]}]}},
+      {"type":"HitRider","label":"Warhead Magazines","when":["self:type:zord","rule:firstCopy"],"option":{"damage":"@var.damage","damageType":"{switch.pr1Warhead}","key":"pr1Warhead"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (also offered when gained): pick three damage types for the Zord. Roll Options Dialog: on the Zord's area attacks, choose one of them (a Free action), and the hit gets a button to apply damage of that type.</p>"

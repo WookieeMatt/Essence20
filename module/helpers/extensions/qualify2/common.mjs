@@ -7,26 +7,9 @@ const ID = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
 
 export const Q2 = {
   // G.I. Joe
-  upgradeTraining: ID('intercontinental_adventures', 'zhwJbYTopQB2RuuM'),
-  whisperWarrior: ID('intercontinental_adventures', 'T4p7oPq8Kk0SHVb3'),
   doOrDie: ID('general_hawk_s_personel_files', '4NG56r746V7BLt8W'),
-  wildIdea: ID('general_hawk_s_personel_files', 'CVl4P0zoArmY5mp1'),
-  atEaseDisease: ID('sgt_slaughter_sourcebook', 'MHPffqgwDx7u3tlZ'),
-  cascadingFailure: ID('quartermasters_guide_to_gear', 'plJkKBuGrkxIYCnS'),
-  destructiveOvercharge: ID('quartermasters_guide_to_gear', 'RpNG4KelUPWm54xv'),
-  trainingEvolution: ID('quartermasters_guide_to_gear', 'zqy47bzuJHaON2TP'),
-  weaponEnthusiastHangUp: ID('quartermasters_guide_to_gear', 'GcMPz5MICXwTzKOq'),
-  weaponEnthusiast: ID('quartermasters_guide_to_gear', 'pwpCtdsf8l7T6Sii'),
-  // Transformers
-  hardwareTraining: ID('enigma_of_combination', '6Ov5odRU8tGhQJzu'),
-  mentor: ID('tf_crb', 'aMrMtyNJUsSYyMId'),
-  opportunist: ID('tf_crb', '8JpfjvHVDHWKjMc9'),
   // My Little Pony
-  sensitive: ID('mlp_crb', 'cLe7ettmAIaBUYIj'),
-  detailOriented: ID('mlp_crb', 'FBIg9BWG2CyjqgBP'),
   // Welcome to Night Vale
-  everythingIsInspiration: ID('wtnv_citizens_guide', 'c1gIi1A6MKHkOwdy'),
-  timelineAnomaly: ID('wtnv_citizens_guide', 'NQXcQL05DLCs75xb'),
 };
 
 export const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));

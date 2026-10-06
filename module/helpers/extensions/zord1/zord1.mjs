@@ -1,9 +1,7 @@
 /**
- * zord1 slice entry: Form General Perks, the Purple Ranger's Emotional Mastery gaps, Zord Feature
- * slots and Zord Features, Megaform finishers/attribution, Power/Target Master, and size/mode items.
+ * zord1 slice entry: Form General Perks and Zord Feature slots. (Power / Target Master, the size / mode items -
+ * Enlarged, Shrunk, Revolutionary Shape-Shifting - Emotional Strength and the Megaform finishers are their items' own
+ * rules: module/rules/ext/a/, module/rules/ext/f/.)
  */
 import "./forms.mjs";
-import "./emotions.mjs";
 import "./zord-slots.mjs";
-import "./megaform.mjs";
-import "./bodies.mjs";

@@ -11,7 +11,7 @@ import { contextFor, evaluate } from "./predicate.mjs";
  * attacked against that Defense (bankedDefense), used up by that attack unless `persist`.
  *   when    tags the roll must match (rules/predicate.mjs), e.g. ["skill:might"]
  *   uses    how many rolls it lasts (default 1)
- *   until   also ends at: "endOfTurn" | "endOfRound" | "scene" | null (only when used up)
+ *   until   also ends at: any rules/expiry.mjs duration ("endOfTurn", "endOfNextTurn", "rounds:2"...) | null (only when used up)
  */
 
 const FLAG = 'ruleBank';

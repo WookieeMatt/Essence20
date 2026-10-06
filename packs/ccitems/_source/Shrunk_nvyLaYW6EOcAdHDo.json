@@ -5,6 +5,11 @@
   "_id": "nvyLaYW6EOcAdHDo",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Shrunk (one size class smaller)","when":["not:rule:data:flags.essence20.zord1OriginalSize","not:rule:data:flags.essence20.rules.choices.originalSize"],"steps":[{"do":"shiftSize","steps":-1,"ladder":"class","record":"originalSize"}]},
+      {"type":"Trigger","event":"removed","label":"Shrunk (size back)","steps":[{"do":"restoreSize","record":"originalSize","legacy":"flags.essence20.zord1OriginalSize"}]},
+      {"type":"ArmorAccommodation","label":"Shrunk (Battledress needs a Limited Accommodation)","level":"limited"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Size drops one class when you gain it and returns when it's removed. Armor can only be put on if it carries a Limited or Restricted Alteration Accommodation upgrade.</p>"

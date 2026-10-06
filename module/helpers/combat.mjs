@@ -6,7 +6,7 @@ import { onBondedHit } from "./bonded.mjs";
 import { protomatterReduce } from "./kits.mjs";
 import { isSealedAboard } from "./vehicle-upgrades.mjs";
 import {
-  actorHasPerk, bankPendingBonus, clearPendingBonus, findPerk, getPendingBonus, hasUsedThisEncounter, markUsedThisEncounter,
+  actorHasPerk, clearPendingBonus, findPerk, getPendingBonus, hasUsedThisEncounter, markUsedThisEncounter,
 } from "./perks.mjs";
 import { isPersonalShieldActive } from "./personal-shield.mjs";
 import { PENDING_ELEMENTAL_SHIELD_FLAG_KEY } from "./team-buffs.mjs";
@@ -20,7 +20,7 @@ import { isMonsterFormActive } from "./monster-morph.mjs";
 import { grantNotOnMyWatchReaction } from "./not-on-my-watch.mjs";
 import { actorHasZordFeature } from "./zord-features.mjs";
 import { getMegaformParticipants } from "./megaform-participants.mjs";
-import { checkEmotionalStrengthAngerTrigger, deactivateShynessOnDamage } from "./emotional-mastery.mjs";
+import { deactivateShynessOnDamage } from "./emotional-mastery.mjs";
 import { deactivatePhantomOnDamage } from "./phantom.mjs";
 import { consumeSelfPreservationImmunity } from "./self-preservation.mjs";
 import { grantSceneResistance } from "./actor.mjs";
@@ -335,28 +335,6 @@ const TOUGH_ENOUGH_ID = "Compendium.essence20.gi_joe_crb.Item.RoIa80w6EAZR0uFP";
  */
 export function toughEnoughDamage(actor, damage) {
   return damage > 0 && actorHasPerk(actor, TOUGH_ENOUGH_ID) ? Math.ceil(damage / 2) : damage;
-}
-
-// Sensitive (MLP Precise Hang-Up, p.60): "When you take Damage, you also suffer Snag on Skill
-// Tests for the next round." See its own reactive trigger below - "you can expend a Detail
-// Oriented use to ignore this for one round" isn't built (Detail Oriented's own action-cost-
-// override half needs this project's still-missing action-economy tracking, so there's no working
-// resource to spend against it).
-const SENSITIVE_ID = "Compendium.essence20.mlp_crb.Item.cLe7ettmAIaBUYIj";
-export const PENDING_SENSITIVE_SNAG_FLAG_KEY = 'pendingSensitiveSnag';
-
-/**
- * Sensitive's own reactive Snag (see SENSITIVE_ID's own comment above) - banked, not applied
- * directly, since a fresh Snag needs to be READ back by dice.mjs's own automatic-modifiers check
- * (the same unscoped-Snag bank shape Through the Arches/Debilitating Strike already use), rather
- * than mutating a die-pool this function has no roll context to reach.
- * @param {Actor} actor
- * @param {Number} amount   The amount actually applied (0 means Immune/no-op - see applyDamage).
- */
-async function grantSensitiveSnag(actor, amount) {
-  if (amount > 0 && actorHasPerk(actor, SENSITIVE_ID)) {
-    await bankPendingBonus(actor, PENDING_SENSITIVE_SNAG_FLAG_KEY, { snag: true });
-  }
 }
 
 // Cruel Warlord (Finster's Monster-Matic Cookbook, 20th level, p.284): "Whenever you... suffer
@@ -766,10 +744,8 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     await grantHardenedArmorResistance(actor, damageType, amount);
     await grantGridElementalAdaptationResistance(actor, damageType, amount);
     await grantSupremeGuardianTechRegen(actor, damageType, amount);
-    await grantSensitiveSnag(actor, amount);
     await grantCruelWarlordPsychicRegen(actor, damageType, amount);
     if (amount > 0) {
-      await checkEmotionalStrengthAngerTrigger(actor);
       await deactivateShynessOnDamage(actor);
       await deactivatePhantomOnDamage(actor);
     }
@@ -875,10 +851,8 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   await grantHardenedArmorResistance(actor, damageType, previousValue - newValue);
   await grantGridElementalAdaptationResistance(actor, damageType, previousValue - newValue);
   await grantSupremeGuardianTechRegen(actor, damageType, previousValue - newValue);
-  await grantSensitiveSnag(actor, previousValue - newValue);
   await grantCruelWarlordPsychicRegen(actor, damageType, previousValue - newValue);
   if (previousValue - newValue > 0) {
-    await checkEmotionalStrengthAngerTrigger(actor);
     await deactivateShynessOnDamage(actor);
     await deactivatePhantomOnDamage(actor);
   }

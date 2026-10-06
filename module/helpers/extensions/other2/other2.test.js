@@ -68,43 +68,15 @@ describe('decepticon', () => {
     dd = await import('./decepticon.mjs');
   });
 
-  test('Junkplate and Pit Plates sharpen unarmed hits only while worn', () => {
-    const armor = item('armor', { id: 'arm', system: { equipped: false } });
-    const plate = item('upgrade', { source: dd.O2_DD.junkplate, flags: { parentId: 'arm' } });
-    const a = actor([armor, plate]);
-    expect(dd.hasSharpUnarmed(a)).toBe(false);
-    armor.system.equipped = true;
-    expect(dd.hasSharpUnarmed(a)).toBe(true);
-    expect(dd.hasSharpUnarmed(actor([item('upgrade', { source: dd.O2_DD.pitPlate })]))).toBe(true);
+  // Junkplate / Pit Plates, Rust Derivatives and Stasis Cuffs are rules now (rules/conv10-slB10.test.js).
 
-    const result = { damageType: 'blunt', criticalOptions: [{ key: 'double', damageType: 'blunt' }] };
-    expect(dd.sharpenResult(result)).toBe(true);
-    expect(result.damageType).toBe('sharp');
-    expect(result.criticalOptions[0].damageType).toBe('sharp');
-    expect(dd.sharpenResult({ damageType: 'fire' })).toBe(false);
-  });
-
-  test('Rust Derivatives blocks regaining Health only', () => {
-    const a = actor([], { health: { value: 2 } }, { flags: { [dd.RUST_FLAG]: { by: 'x' } } });
-    expect(dd.blockedHealing(a, { system: { health: { value: 4 } } })).toBe(true);
-    expect(dd.blockedHealing(a, { system: { health: { value: 1 } } })).toBe(false);
-    expect(dd.blockedHealing(actor([], { health: { value: 2 } }), { system: { health: { value: 4 } } })).toBe(false);
-    expect(dd.weaponHasUpgrade(actor([item('upgrade', { source: dd.O2_DD.rustDerivatives, flags: { parentId: 'w' } })]), 'w', dd.O2_DD.rustDerivatives)).toBe(true);
-  });
-
-  test('Stasis Cuffs stop converting and Energon spending', () => {
-    const a = actor([], { isTransformed: false, energon: { normal: { value: 3 }, dark: { value: 1 } } }, { flags: { [dd.CUFFS_FLAG]: { by: 'x' } } });
-    expect(dd.cuffsBlock(a, { system: { isTransformed: true } })).toBe('convert');
-    expect(dd.cuffsBlock(a, { system: { energon: { normal: { value: 2 } } } })).toBe('energon');
-    expect(dd.cuffsBlock(a, { system: { energon: { dark: { value: 0 } } } })).toBe('energon');
-    expect(dd.cuffsBlock(a, { system: { energon: { normal: { value: 4 } } } })).toBeNull();
-    expect(dd.cuffsBlock(actor([], {}), { system: { isTransformed: true } })).toBeNull();
-  });
-
-  test('Rites: In His Image ignores armor; Grant His Hunger drains Energon from Cybertronians', () => {
-    expect(dd.inHisImageDif(actor([], { defenses: { toughness: { total: 16, armor: 3 } } }))).toBe(13);
-    expect(dd.hasEnergon(actor([], { canTransform: true }))).toBe(true);
-    expect(dd.hasEnergon(actor([], { energon: { normal: { max: 0 } } }))).toBe(false);
+  test('Rites are rules now: Grant His Hunger, and In His Image (rules/conv10-slE10.test.js)', async () => {
+    expect(dd.inHisImageDif).toBeUndefined();
+    expect(dd.hasEnergon).toBeUndefined();
+    expect(dd.O2_DD).toBeUndefined();
+    const { registrySnapshot } = await import('../../extensions.mjs');
+    expect(registrySnapshot().uses.map(use => use.id)).not.toContain('o2GrantHisHunger');
+    expect(registrySnapshot().uses.map(use => use.id)).not.toContain('o2InHisImage');
   });
 });
 
@@ -119,25 +91,14 @@ describe('medic', () => {
     expect(med.restoreDif(4)).toBe(25);
   });
 
-  test('Hearty Meal adds Culture/Performance out of combat, once per mission', () => {
-    const cook = actor([item('perk', { source: med.O2_MED.heartyMeal })]);
-    expect(med.healSkills(cook, { inCombat: false })).toEqual(['science', 'technology', 'culture', 'performance']);
-    expect(med.healSkills(cook, { inCombat: true })).toEqual(['science', 'technology']);
-    cook.flags.essence20.o2HeartyMealHeal = { epoch: 3, window: 'mission', count: 1 };
-    expect(med.healSkills(cook, { inCombat: false })).toEqual(['science', 'technology']);
+  test('heal Skills: Science and Technology (Hearty Meal adds its own through an ActionSkills rule - conv10-slC10)', () => {
+    expect(med.healSkills(actor([]), { inCombat: false })).toEqual(['science', 'technology']);
   });
 
   test('a carried Science (Medicine) kit counts as a medicine kit (check:medicineKit)', () => {
     expect(med.hasMedicineKit(actor([item('perk', { source: med.O2_MED.properProtection })]))).toBe(false);
     const kit = item('gear', { name: 'Standard Science (Medicine) Kit', system: { gearType: 'kits' } });
     expect(med.hasMedicineKit(actor([kit]))).toBe(true);
-  });
-
-  test('Stim darts: one per mission plus carried extras', () => {
-    const medic = actor([item('perk', { source: med.O2_MED.stimDart, name: 'Stim Dart' })]);
-    expect(med.stimDartsLeft(medic)).toBe(1);
-    medic.flags.essence20.o2StimDart = { epoch: 3, window: 'mission', count: 1 };
-    expect(med.stimDartsLeft(medic)).toBe(0);
   });
 
   test('Defibrillator runs six rounds', () => {
@@ -173,21 +134,6 @@ describe('gij', () => {
     expect(weaponCopy.flags.essence20.parentId).toBe('w1');
   });
 
-  test('Laser Designator lasts the scene', () => {
-    expect(gij.isDesignated(actor([], {}, { flags: { [gij.DESIGNATED_FLAG]: { scene: 3 } } }))).toBe(true);
-    expect(gij.isDesignated(actor([], {}, { flags: { [gij.DESIGNATED_FLAG]: { scene: 2 } } }))).toBe(false);
-  });
-
-  test('Battle Cry: round 1, before any Standard action', () => {
-    const joe = actor([item('perk', { source: gij.O2_GIJ.yoJoe })]);
-    const combatant = { flags: { essence20: { actions: { standard: 0, move: 1 } } } };
-    const combat = { round: 1, getCombatantsByActor: () => [combatant] };
-    expect(gij.battleCryActive(joe, combat)).toBe(true);
-    combatant.flags.essence20.actions.standard = 1;
-    expect(gij.battleCryActive(joe, combat)).toBe(false);
-    expect(gij.battleCryActive(joe, { ...combat, round: 2 })).toBe(false);
-  });
-
   test('Delegate finds the ally\'s spent uses', () => {
     game.combat = { id: 'c', round: 2, turn: 1 };
     const ally = actor([], {}, {
@@ -203,47 +149,12 @@ describe('gij', () => {
     game.combat = null;
   });
 
-  test('Frequency Interference', () => {
-    expect(gij.contestFormula('d8')).toBe('1d20 + 1d8');
-    expect(gij.contestFormula('2d8')).toBe('1d20 + 2d8');
-    expect(gij.contestFormula('d20')).toBe('1d20');
-    const weapon = item('weapon', { id: 'w', system: { traits: ['computerized'] } });
-    const effect = item('weaponEffect', { flags: { parentId: 'w' } });
-    const owner = actor([weapon, effect], {}, { flags: { [gij.JAMMED_FLAG]: ['w'] } });
-    expect(gij.isComputerized(weapon)).toBe(true);
-    expect(gij.isJammed(effect)).toBe(true);
-    expect(gij.isJammed(item('weaponEffect'))).toBe(false);
-    expect(owner.items.length).toBe(2);
+  test('Gunport is a rule on the upgrade now (no export, no constant here)', () => {
+    expect(gij.firingThroughGunport).toBeUndefined();
+    expect(gij.O2_GIJ.gunport).toBeUndefined();
   });
 
-  test('Explosive Engineer: grenades by name', () => {
-    const grenade = item('weapon', { id: 'g', name: 'Frag Grenade' });
-    const effect = item('weaponEffect', { name: 'Frag', flags: { parentId: 'g' } });
-    actor([grenade, effect]);
-    expect(gij.isGrenade(effect)).toBe(true);
-    expect(gij.isGrenade(item('weaponEffect', { name: 'Rocket' }))).toBe(false);
-  });
-
-  test('Big Rigger cancels the size upshift unless defending with Evasion', () => {
-    global.fromUuidSync = () => actor([item('perk', { source: gij.O2_GIJ.bigRigger })]);
-    const truck = actor([], { size: 'gigantic', actors: { d: { vehicleRole: 'driver', uuid: 'D' } } }, { type: 'vehicle' });
-    const soldier = actor([], { size: 'common' });
-    expect(gij.sizeShift(soldier, truck)).toBe(2);
-    expect(gij.riggerCancel(soldier, truck, 'toughness')?.shift).toBe(2);
-    expect(gij.riggerCancel(soldier, truck, 'evasion')).toBeNull();
-    expect(gij.riggerCancel(actor([], { size: 'gigantic' }), truck, 'toughness')).toBeNull();
-  });
-
-  test('Gunport only through an active shield', () => {
-    const shield = item('shield', { id: 's', system: { equipped: true, active: false } });
-    const port = item('upgrade', { source: gij.O2_GIJ.gunport, flags: { parentId: 's' } });
-    const a = actor([shield, port]);
-    expect(gij.firingThroughGunport(a)).toBe(false);
-    shield.system.active = true;
-    expect(gij.firingThroughGunport(a)).toBe(true);
-  });
-
-  test('two light weapons and Bio-Tech Armor pairs', () => {
+  test('two light weapons', () => {
     const knife = item('weapon', { id: 'k', system: { classification: { size: 'light' } } });
     const stab = item('weaponEffect', { flags: { parentId: 'k' } });
     const organic = item('armor', { id: 'o' });
@@ -251,8 +162,7 @@ describe('gij', () => {
     const upgrade = item('upgrade', { name: 'Organic Battledress', flags: { parentId: 'o' } });
     actor([knife, stab, organic, computer, upgrade]);
     expect(gij.isLightWeaponAttack(stab)).toBe(true);
-    expect(gij.bioTechPair(organic, computer)).toBe(true);
-    expect(gij.bioTechPair(computer, computer)).toBe(false);
+    // Bio-Tech Armor's pair is an ArmorPair rule now (rules/conv10-slB10.test.js).
   });
 });
 
@@ -262,21 +172,9 @@ describe('magic', () => {
     magic = await import('./magic.mjs');
   });
 
-  test('Thorn Warlord: Acid in Monster Form measured against Evasion', () => {
-    const warlord = actor([item('perk', { source: magic.O2_MAGIC.thornWarlord })], {}, { flags: { monsterFormActive: true } });
-    const defender = actor([], { defenses: { toughness: { total: 18 }, evasion: { total: 12 } } });
-    const acid = { item: { system: { damageType: 'acid' } } };
-    const adjust = magic.thornWarlordAdjust(warlord, defender, 'toughness', acid);
-    expect(adjust).toBe(-6);
-    expect(magic.thornWarlordAdjust(warlord, defender, 'evasion', acid)).toBe(0);
-  });
-
-  test('More Bang: listed elemental spells and Fire', () => {
-    expect(magic.isElementalSpell(magic.O2_MAGIC.fireball, null)).toBe(true);
-    expect(magic.isElementalSpell('X', 'fire')).toBe(true);
-    expect(magic.isElementalSpell('X', 'element')).toBe(false);
-    expect(magic.tempestDamage(actor([item('perk', { source: magic.O2_MAGIC.moreBang })]))).toBe(4);
-    expect(magic.tempestDamage(actor([]))).toBe(3);
+  // More Bang's +1 on the storm is its cast HitRider rule now (rules/conv12-slI12.test.js).
+  test('the Temper Tempest storm strikes for 3', async () => {
+    expect(await magic.tempestDamage(actor([]))).toBe(3);
   });
 
   test('Sorcerous Power costs follow Table 4-1', () => {

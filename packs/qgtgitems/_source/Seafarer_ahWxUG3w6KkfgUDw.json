@@ -5,6 +5,11 @@
   "_id": "ahWxUG3w6KkfgUDw",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Poison or illness against a Seafarer on land (Edge)","scope":"incoming","when":["check:onLand",{"any":["item:data:system.damageType=poison","weapon:data:system.isPoison","item:name~poison","weapon:name~poison","item:name~venom","weapon:name~venom","item:name~toxi","weapon:name~toxi","item:name~disease","weapon:name~disease","item:name~illness","weapon:name~illness","item:name~sick","weapon:name~sick","item:name~plague","weapon:name~plague","item:name~infect","weapon:name~infect"]}],"edge":true},
+      {"type":"RollModifier","label":"Seafarer","snag":true,"when":["roll:poisonSave","check:onLand"]},
+      {"type":"DialogSwitch","label":"Resisting poison or illness on land (Seafarer: Snag)","snag":true,"forget":true,"when":["not:roll:poisonSave",{"any":["skill:conditioning","skill:athletics","skill:brawn"]},"check:onLand"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you're on land (not in water, not in a sea scene region, not aboard a vessel), poison and illness attacks against you get Edge, shown as Seafarer in the attacker's Roll Options Dialog, and your poison saves take a Snag shown the same way. Roll Options Dialog: a switch adds that Snag to other Conditioning, Athletics or Brawn tests to resist them.</p>"

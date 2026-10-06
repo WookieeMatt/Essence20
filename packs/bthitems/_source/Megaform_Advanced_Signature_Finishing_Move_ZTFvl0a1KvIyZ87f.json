@@ -5,6 +5,13 @@
   "_id": "ZTFvl0a1KvIyZ87f",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Initiate","steps":[{"do":"require","check":["megaform:in"],"message":"This Zord isn't part of a Megaform."},{"do":"focus","to":"megaform"},{"do":"require","check":["not:target:windowUsed:zord1AdvSfmUsed:mission"],"message":"The Advanced Signature Finishing Move has been used today."},{"do":"markWindow","flag":"zord1AdvSfmUsed","window":"mission","to":"target"},{"do":"rollEach","to":"participantPilots","skills":["athletics","brawn","intimidation","might","acrobatics","driving","finesse","infiltration","initiative","targeting"],"dif":15,"prompt":"E20.Zord1AdvSfmSkill","onAllSucceeded":[{"do":"markWindow","flag":"zord1AdvSfmReady","window":"scene","to":"target"},{"do":"chat","text":"{target} is ready to unleash its Advanced Signature Finishing Move!"}],"onAnyFailed":[{"do":"chat","text":"{target}'s Advanced Signature Finishing Move fizzles - {var.failedNames} failed."}]}]},
+      {"type":"DialogSwitch","scope":"megaform","stacks":false,"key":"advancedFinish","default":true,"forget":true,"edge":true,"label":"Advanced Signature Finishing Move (×5 damage, bypasses Resistance)","when":["item:type:weaponEffect","item:styleChoice:style:ETpLoMS5CLTbVONp","self:windowUsed:zord1AdvSfmReady:scene","target:resistsChoice:damageType:ETpLoMS5CLTbVONp"],"steps":[{"do":"markWindow","flag":"zord1AdvSfmReady","clear":true,"to":"megaform"}]},
+      {"type":"DialogSwitch","scope":"megaform","stacks":false,"key":"advancedFinish","default":true,"forget":true,"label":"Advanced Signature Finishing Move (×5 damage, bypasses Resistance)","when":["item:type:weaponEffect","item:styleChoice:style:ETpLoMS5CLTbVONp","self:windowUsed:zord1AdvSfmReady:scene","not:target:resistsChoice:damageType:ETpLoMS5CLTbVONp"],"steps":[{"do":"markWindow","flag":"zord1AdvSfmReady","clear":true,"to":"megaform"}]},
+      {"type":"HitMultiplier","scope":"megaform","stacks":false,"multiply":5,"damageType":"{choice.damageType}","choiceFrom":"ETpLoMS5CLTbVONp","when":["roll:switch:advancedFinish"]},
+      {"type":"Trigger","scope":"megaform","stacks":false,"event":"afterRoll","when":["roll:switch:advancedFinish"],"steps":[{"do":"chat","text":"Reach ×3 / Range tripled for this attack."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (on the Zord): once per mission, every pilot rolls the required test; if they all succeed, the Megaform's next attack deals five times damage and ignores the target's Resistance Snag.</p>"

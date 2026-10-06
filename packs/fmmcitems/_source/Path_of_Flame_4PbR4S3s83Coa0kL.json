@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"Defense","label":"Flame Monster Form (Toughness +2)","defense":"toughness","amount":2,"when":["self:data:flags.essence20.monsterFormActive"]},
-      {"type":"RollModifier","label":"Flame Monster Form (↑1)","upshift":1,"when":["self:data:flags.essence20.monsterFormActive",{"any":["skill:alertness","skill:athletics","skill:brawn"]}]}
+      {"type":"RollModifier","label":"Flame Monster Form (↑1)","upshift":1,"when":["self:data:flags.essence20.monsterFormActive",{"any":["skill:alertness","skill:athletics","skill:brawn"]}]},
+      {"type":"Trigger","event":"hit","label":"Monster Form: melee follow-up (Path of Flame)","when":["self:data:flags.essence20.monsterFormActive","attack:melee"],"steps":[{"do":"button","whisper":"owners","who":"owner","label":"Follow-up attack on {target}","steps":[{"do":"rollFlat","skill":"might","dif":"max(@target.system.defenses.toughness.total, @target.system.defenses.evasion.total)","onSuccess":[{"do":"button","who":"gm","label":"Apply 1 Fire to {target}","steps":[{"do":"damage","to":"target","amount":1,"damageType":"fire"}]}]}]}]}
     ],
     "automation": {
       "status": "full",

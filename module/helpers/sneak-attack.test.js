@@ -124,7 +124,8 @@ describe("checkSneakAttackEligibility", () => {
   // used by helpers/perks.mjs#actorHasPerk) AND .get()-able (used by this file's own weapon
   // lookup) - a plain array with a .get() method attached satisfies both.
   const makeActor = ({ traits = ['silent'], hasToken = true, perkIds = [] } = {}) => {
-    const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+    // Every Trick in the Book answers through its SneakAttackImmunity rule (rules/ext/b/readers.mjs).
+    const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } }, system: perkId == EVERY_TRICK_IN_THE_BOOK_ID ? { rules: [{ type: 'SneakAttackImmunity' }] } : {} }));
     items.get = jest.fn(id => (id == 'weapon1' ? { system: { traits, range: {} } } : null));
 
     return {
@@ -484,7 +485,7 @@ describe("checkPredatorSneakAttackEligibility", () => {
   });
 
   test("not eligible against a target with Every Trick in the Book", () => {
-    const targetItems = [{ type: 'perk', flags: { core: { sourceId: EVERY_TRICK_IN_THE_BOOK_ID } } }];
+    const targetItems = [{ type: 'perk', flags: { core: { sourceId: EVERY_TRICK_IN_THE_BOOK_ID } }, system: { rules: [{ type: 'SneakAttackImmunity' }] } }];
     const targetActor = { items: targetItems };
     game.user.targets.first.mockReturnValue({ actor: targetActor });
 

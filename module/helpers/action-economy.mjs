@@ -1,7 +1,7 @@
 import { E20 } from "./config.mjs";
 import { isAutomated } from "./named-actions.mjs";
 import { canUsePerk, hasItemUse } from "./banked-buffs.mjs";
-import { actorHasPerk, hasUsedThisTurn, offerThisICommand } from "./perks.mjs";
+import { actorHasPerk, hasUsedThisTurn, offerGrantDouble } from "./perks.mjs";
 import {
   attackMatchesFilter, bindEconomy, describeAttack, getAttacksPerAction, recordRuleUse,
   resolveCost,
@@ -516,8 +516,8 @@ export async function grantActionsThisTurn(actor, { free = 0, move = 0, standard
     return false;
   }
 
-  // This, I Command (perks.mjs#offerThisICommand): 1 Psychic to the ally doubles the actions granted.
-  if (granter && await offerThisICommand(granter, actor, describeGrant({ free, move, standard }))) {
+  // A GrantDouble rule (This, I Command - perks.mjs#offerGrantDouble): 1 Psychic to the ally doubles the actions granted.
+  if (granter && await offerGrantDouble(granter, actor, 'actions', describeGrant({ free, move, standard }))) {
     free *= 2;
     move *= 2;
     standard *= 2;

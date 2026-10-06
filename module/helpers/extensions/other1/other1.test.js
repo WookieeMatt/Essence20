@@ -55,21 +55,6 @@ describe('jtt', () => {
     expect(jtt.allFailed([{ success: false }, { success: true }])).toBe(false);
   });
 
-  test('Quantum Trigger penalty is cumulative', () => {
-    expect(jtt.quantumTriggerShiftDown(0, 1)).toBe(1);
-    expect(jtt.quantumTriggerShiftDown(1, 3)).toBe(4);
-  });
-
-  test('Savant refund only when the reroll misses every Difficulty', () => {
-    expect(jtt.rerollStillFails(11, [{ difficulty: 12 }])).toBe(true);
-    expect(jtt.rerollStillFails(12, [{ difficulty: 12 }])).toBe(false);
-    expect(jtt.rerollStillFails(12, [])).toBe(false);
-  });
-
-  test('plainDataset keeps only plain values', () => {
-    expect(jtt.plainDataset({ skill: 'might', shiftUp: 1, obj: {}, fn: () => 1, flag: true })).toEqual({ skill: 'might', shiftUp: 1, flag: true });
-  });
-
   test('Interspatial Pause blocks damage', async () => {
     const { registrySnapshot } = await import('../../extensions.mjs');
     const paused = actor([], {}, { flags: { o1InterspatialPause: { by: 'x' } } });
@@ -137,19 +122,6 @@ describe('alterations', () => {
     holder.items.push(item('perk', { source: alt.O1_ALT.enhancedPart }));
     expect(alt.openTiers(holder).map(t => t.level)).toEqual([18]);
   });
-
-  test('Genetic Support tiers by level', () => {
-    expect(alt.geneticTiers(3).map(t => t.key)).toEqual(['standard']);
-    expect(alt.geneticTiers(14).map(t => t.key)).toEqual(['standard', 'limited', 'restricted']);
-  });
-
-  test('Thick Hide: raised shield worth the Alteration count', () => {
-    const shield = item('shield', { flags: { o1ThickHide: true }, system: { active: true, equipped: true, activeEffect: { option1: { value: 2 } } } });
-    const holder = actor([shield, essenceAlt(), essenceAlt(), essenceAlt(), essenceAlt(), essenceAlt()]);
-    expect(alt.thickHideDelta(holder)).toBe(3);
-    shield.system.active = false;
-    expect(alt.thickHideDelta(holder)).toBe(0);
-  });
 });
 
 describe('cobra gear', () => {
@@ -179,14 +151,7 @@ describe('cobra gear', () => {
     expect(gear.hasComputerizedGear(t)).toBe(true);
   });
 
-  test('Onslaught offers the other effects, or a Maneuver', () => {
-    const weapon = item('weapon', { id: 'w' });
-    const main = item('weaponEffect', { id: 'e1', flags: { parentId: 'w' }, system: { damageValue: 2, damageType: 'blunt' } });
-    const holder = actor([weapon, main]);
-    expect(gear.onslaughtOptions(holder, main).map(o => o.damageType)).toEqual(['maneuver']);
-    holder.items.push(Object.assign(item('weaponEffect', { id: 'e2', name: 'Stun', flags: { parentId: 'w' }, system: { damageValue: 1, damageType: 'stun' } }), { parent: holder }));
-    expect(gear.onslaughtOptions(holder, main).map(o => o.damageType)).toEqual(['stun']);
-  });
+  // Onslaught is a HitRider rule now (rules/conv10-slB10.test.js).
 });
 
 describe('more', () => {
@@ -195,13 +160,7 @@ describe('more', () => {
     more = await import('./more.mjs');
   });
 
-  test('only the best Armor Matrix counts', () => {
-    const light = item('upgrade', { source: more.O1_MORE.armorMatrixLight, system: { armorBonus: { defense: 'toughness', value: 1 } } });
-    const heavy = item('upgrade', { source: more.O1_MORE.armorMatrixHeavy, system: { armorBonus: { defense: 'toughness', value: 3 } } });
-    expect(more.extraMatrixToughness(actor([light, heavy], { canTransform: true }))).toBe(1);
-    expect(more.extraMatrixToughness(actor([heavy], { canTransform: true }))).toBe(0);
-  });
-
+  // Only the best Armor Matrix counting is an OnlyBest rule on each matrix (module/rules/conv11-slG11.test.js).
   test('Multimorph offers other MLP Origins only', () => {
     const rows = [
       { uuid: 'Compendium.essence20.mlp_crb.Item.a', name: 'Pegasus', system: { items: { x: { type: 'perk', uuid: 'p' } } } },
@@ -211,20 +170,13 @@ describe('more', () => {
     const holder = actor([item('origin', { name: 'Unicorn' })]);
     expect(more.otherOrigins(rows, holder).map(r => r.name)).toEqual(['Pegasus']);
   });
-
-  test('the duplicate Decepticon Directive copy of Eat the Weak works too', async () => {
-    const { findExtUse } = await import('../../extensions.mjs');
-    const DDX = id => `Compendium.essence20.decepticon_directive.Item.${id}`;
-    expect(findExtUse(item('perk', { source: DDX('hzCEZfTNDsQcOjUB') }))?.id).toBe('o1EatTheWeak');
-    expect(findExtUse(item('perk', { source: DDX('kIeIcRQVWg4v9CZL') }))?.id).toBe('o1EatTheWeak');
-  });
 });
 
 test('the slice index registers its Use buttons', async () => {
   await import('./index.mjs');
   const { registrySnapshot } = await import('../../extensions.mjs');
   const ids = registrySnapshot().uses.map(u => u.id);
-  for (const id of ['o1InterspatialPause', 'o1Timeslide', 'o1Overload', 'o1GeneticSupport', 'o1AlterationEmulator', 'o1Multimorph', 'o1EatTheWeak']) {
+  for (const id of ['o1InterspatialPause', 'o1Timeslide', 'o1Multimorph']) {
     expect(ids).toContain(id);
   }
 });

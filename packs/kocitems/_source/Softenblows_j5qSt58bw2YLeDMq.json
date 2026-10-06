@@ -5,6 +5,10 @@
   "_id": "j5qSt58bw2YLeDMq",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"success","label":"Softenblows: the target deals no damage","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"mark","to":"target","key":"softenblows","until":"endOfNextTurn","untilOf":"recipient"},{"do":"chat","text":"{target} can deal no damage until the end of its next turn.","when":["target:data:uuid"]}]},
+      {"type":"HitRider","label":"Softenblows","negate":true,"marked":"softenblows"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: on a success, the target deals no damage until the end of its next turn.</p>"

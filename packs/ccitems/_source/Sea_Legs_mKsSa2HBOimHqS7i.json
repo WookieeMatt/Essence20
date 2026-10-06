@@ -5,6 +5,10 @@
   "_id": "mKsSa2HBOimHqS7i",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","label":"Sea Legs (+15 ft Aquatic Movement)","movement":"swim","stage":"afterGravity","op":"set","value":"@actor.system.movement.swim.total + 15","when":["self:data:system.movement.swim.total>0"]},
+      {"type":"Movement","label":"Sea Legs (30 ft Aquatic Movement)","movement":"swim","stage":"afterGravity","op":"set","value":30,"when":["not:self:data:system.movement.swim.total>0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you gain a 30 ft Swim speed, or +15 ft if you already have one.</p>"

@@ -5,6 +5,9 @@
   "_id": "fiokYoWguE1eBVda",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Snag on the next Skill Test after seeing gear break (Junker)","event":"equipmentBroke","when":["combat:exists","not:rule:banked"],"steps":[{"do":"bank","label":"Junker","snag":true,"replace":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in combat, whenever any weapon, armor or shield breaks, or any vehicle or Zord drops to 0 Health (yours or anyone else's), your next Skill Test takes a Snag, shown as Junker next to Snag in the Roll Options Dialog.</p>"

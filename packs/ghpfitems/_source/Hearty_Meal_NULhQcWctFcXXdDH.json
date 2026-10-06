@@ -5,6 +5,10 @@
   "_id": "NULhQcWctFcXXdDH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Cook a Hearty Meal","steps":[{"do":"pick","key":"cookSkill","from":"list","prompt":"Cook with which Skill?","options":[["culture","E20.SkillCulture"],["performance","E20.SkillPerformance"]]},{"do":"roll","skill":"{choice.cookSkill}","dif":15,"onSuccess":[{"do":"heal","to":"allies+self:100000","amount":1,"temporary":true}]}]},
+      {"type":"ActionSkills","label":"Hearty Meal (heal with Culture or Performance out of combat, once per mission)","action":"heal","skills":["culture","performance"],"limit":{"per":"mission"},"when":["not:combat:exists"]}
+    ],
     "prerequisites": {"when":["ask:Cuisine or Cooking Specialization"]},
     "automation": {
       "status": "full",

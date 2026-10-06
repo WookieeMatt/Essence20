@@ -7,7 +7,8 @@
   "system": {
     "rules": [
       {"type":"DamageModifier","label":"Roller Drum","direction":"dealt","amount":1,"when":["attack:ram","self:transformed","target:status:prone"]},
-      {"type":"DamageModifier","direction":"dealt","amount":1,"damageType":"stun","when":["not:self:transformed",{"any":["attack:unarmed","weapon:source:Compendium.essence20.tf_crb.Item.OU9rXvoKfXtcpvFy"]}]}
+      {"type":"DamageModifier","direction":"dealt","amount":1,"damageType":"stun","when":["not:self:transformed",{"any":["attack:unarmed","weapon:source:Compendium.essence20.tf_crb.Item.OU9rXvoKfXtcpvFy"]}]},
+      {"type":"MegaformHealth","scope":"megaform","label":"Roller Drum (+1 Health to your part of a Combiner form)","amount":1,"when":["megaform:is:combiner"]}
     ],
     "automation": {
       "status": "full",

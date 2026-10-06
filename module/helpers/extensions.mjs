@@ -116,9 +116,13 @@ export const registerPostRoll = fn => REGISTRY.postRoll.push(fn);
 /**
  * On each successful attack hit, before the card is drawn. fn(actor, target, result, rider, tools)
  * where tools = {damageBonusNote(result, amount, label), addRiderOption(result, option), isCrit}.
- * From helpers/target-riders.mjs#attackRiders.
+ * From helpers/target-riders.mjs#attackRiders. `before`: run ahead of that already-registered rider (a damage multiplier
+ * ahead of the rules' flat bonuses).
  */
-export const registerHitRider = fn => REGISTRY.hitRiders.push(fn);
+export const registerHitRider = (fn, { before = null } = {}) => {
+  const at = before ? REGISTRY.hitRiders.indexOf(before) : -1;
+  return at < 0 ? REGISTRY.hitRiders.push(fn) : REGISTRY.hitRiders.splice(at, 0, fn);
+};
 
 /**
  * Damage about to land. fn(actor, amount, damageType, ctx) => new amount. From

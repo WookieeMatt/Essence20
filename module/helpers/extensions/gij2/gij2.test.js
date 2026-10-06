@@ -41,30 +41,6 @@ beforeEach(() => {
   global.ui.notifications.warn.mockClear();
 });
 
-test('Mentor adds an Essence to a Skill; Energy Resistant makes worn armor Resistant', () => {
-  const armor = item('Compendium.x.Item.armor', { id: 'arm', type: 'armor', system: { equipped: true } });
-  const holder = actor([
-    item(G2.mentor, { flags: { [perks.MENTOR_FLAG]: { skill: 'might', essence: 'social' } } }),
-    item(G2.energyResistant, { type: 'upgrade', flags: { [perks.ELEMENT_FLAG]: 'fire', parentId: 'arm' } }),
-    armor,
-  ], { system: { skills: { might: { essences: { strength: true } } }, resistances: {} } });
-  perks.perkDerived(holder);
-  expect(holder.system.skills.might.essences.social).toBe(true);
-  expect(holder.system.resistances.fire).toBe(true);
-  armor.system.equipped = false;
-  holder.system.resistances = {};
-  perks.perkDerived(holder);
-  expect(holder.system.resistances.fire).toBeUndefined();
-});
-
-test('Expert Knowledge posts one or two extra benefits', async () => {
-  const holder = actor([item(G2.expertKnowledge, { flags: { [perks.EXPERT_FLAG]: 'science' } })]);
-  await perks.expertKnowledgePostRoll(holder, [{ success: true, multiplier: 1 }], { riderContext: { skill: 'science' } }, {});
-  await perks.expertKnowledgePostRoll(holder, [{ success: true }], { riderContext: { skill: 'technology' } }, {});
-  await perks.expertKnowledgePostRoll(holder, [{ success: false }], { riderContext: { skill: 'science' } }, {});
-  expect(global.ChatMessage.create).toHaveBeenCalledTimes(1);
-});
-
 test('Nose For Trouble: Streetwise is offered when it is the better die', () => {
   const nose = actor([item(G2.noseForTrouble)], { system: { skills: { streetwise: { shift: 'd6' }, alertness: { shift: 'd20' } } } });
   expect(perks.streetwiseIsBetter(nose)).toBe(true);
@@ -125,12 +101,13 @@ test('The Beat Goes On: Reckless Abandon survives no enemies left and being Defe
   global.canvas = undefined;
 });
 
-test('Roll Cage and Peerless Pilot', () => {
-  const pilot = actor([item(G2.rollCage), item(G2.peerlessPilot)], { uuid: 'Actor.p' });
+// Peerless Pilot's automatic disembark is its AutoDisembark rule (module/rules/conv10-slA10.test.js).
+test('Roll Cage', () => {
+  // Roll Cage answers through its CrashProtection rule.
+  const pilot = actor([item('Compendium.essence20.gi_joe_crb.Item.H49a6v04JMtbUpDf', { system: { rules: [{ type: 'CrashProtection' }] } })], { uuid: 'Actor.p' });
   global.fromUuidSync = uuid => (uuid == 'Actor.p' ? pilot : null);
   const vehicle = { uuid: 'Actor.v', id: 'v', system: { actors: { a: { uuid: 'Actor.p', vehicleRole: 'driver' } } } };
   expect(vehicles.rollCageProtects(vehicle)).toBe(true);
-  expect(vehicles.autoPassesDisembark(pilot, vehicle)).toBe(true);
   vehicles.RESOLVING.set('Actor.v', { crew: new Set(['Actor.p']), mode: 'defeat', until: Date.now() + 5000, vehicle });
   expect(vehicles.rollCageDamage(pilot, 4, 'fire')).toBe(1);
   vehicles.RESOLVING.get('Actor.v').mode = 'crash';

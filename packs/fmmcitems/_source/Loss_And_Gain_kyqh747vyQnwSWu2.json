@@ -5,6 +5,9 @@
   "_id": "kyqh747vyQnwSWu2",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","watch":"any","within":60,"outcome":["fumbled","allFailed"],"label":"Their Loss, My Gain (Loss And Gain value)","when":["self:hasItem:Compendium.essence20.finster_s_monster_matic_cookbook.Item.mgTerJX1jxtVMQMJ","self:hasItem:Compendium.essence20.finster_s_monster_matic_cookbook.Item.kyqh747vyQnwSWu2"],"steps":[{"do":"chat","text":"{name} feeds on {target}'s Fumble."},{"do":"heal","amount":"max(0, @item.system.bonus.value) + (1 - min(1, max(0, @item.system.bonus.value))) * (1 + min(3, floor((max(1, @level) - 1) / 5)))"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: sets how much Health Their Loss, My Gain restores - 1, rising at 6th, 11th and 16th level.</p>"

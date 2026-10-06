@@ -17,7 +17,7 @@ import { rerollGrants } from "./extensions.mjs";
  * See module/chat.mjs for the ChatMessage-facing button/dialog wiring that calls into this file.
  */
 
-function normalizeRerollConfig(config) {
+export function normalizeRerollConfig(config) {
   if (!config) {
     return null;
   }

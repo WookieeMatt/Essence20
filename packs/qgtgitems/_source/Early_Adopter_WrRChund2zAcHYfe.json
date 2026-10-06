@@ -5,6 +5,10 @@
   "_id": "WrRChund2zAcHYfe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Offer each teammate free Standard gear (Early Adopter)","limit":{"per":"mission"},"steps":[{"do":"require","beforeCost":true,"check":["self:hasTeammates"],"message":"There are no teammates to share with."},{"do":"button","label":"Take a free Standard upgrade or Kit (Early Adopter)","intro":"{name} offers each teammate one Standard weapon upgrade, battledress upgrade or Kit, once this mission.","who":"anyone","runAs":"clicker","once":false,"limit":{"per":"mission","key":"gij3FreePickEarlyAdopter"},"steps":[{"do":"require","check":["self:inTeamOf:holder:others"],"message":"Only a teammate of the holder may take this."},{"do":"choose","prompt":"What do you take?","options":[{"label":"A Standard weapon upgrade","steps":[{"do":"pickGrant","title":"Pick a Standard weapon upgrade","from":{"type":"upgrade","availabilities":["standard"],"tags":["item:data:system.type=weapon"]}}]},{"label":"A Standard battledress upgrade","steps":[{"do":"pickGrant","title":"Pick a Standard battledress upgrade","from":{"type":"upgrade","availabilities":["standard"],"tags":["item:data:system.type=armor"]}}]},{"label":"A Standard Kit","steps":[{"do":"pickGrant","title":"Pick a Standard Kit","from":{"type":"gear","availabilities":["standard"],"tags":["item:data:system.gearType=kits"]}}]}]}]}]},
+      {"type":"RequisitionDif","label":"Early Adopter (Requisition DIF -5 on Prototypical or Theoretical gear)","amount":-5,"items":[{"any":["item:availability=prototype","item:availability=theoretical"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Requisition tests for Prototypical or Theoretical gear are 5 easier. Use button: once per mission, each ally gets a button to pick a free Standard upgrade or kit.</p>"

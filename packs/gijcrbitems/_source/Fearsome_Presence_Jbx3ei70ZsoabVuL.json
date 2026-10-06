@@ -5,6 +5,10 @@
   "_id": "Jbx3ei70ZsoabVuL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Intimidation against up to three targets within 20 ft (Reckless Abandon)","when":["self:recklessAbandon"],"steps":[{"do":"target","beforeCost":true},{"do":"rollVsEach","skill":"intimidation","defense":"willpower","onHit":[{"do":"setVar","key":"frightened","value":"@var.frightened + 1"},{"do":"applyCondition","to":"target","condition":"frightened","when":["var:frightened<=3",{"any":["target:within:20","not:target:onCanvas","not:self:onCanvas"]}]},{"do":"mark","to":"target","key":"gij2FearsomeFrightened","perSetter":true,"when":["var:frightened<=3",{"any":["target:within:20","not:target:onCanvas","not:self:onCanvas"]}]}]}]},
+      {"type":"Trigger","event":"turnStart","label":"Frightened ends at your next turn (Fearsome Presence)","steps":[{"do":"removeCondition","to":"markedByMe:gij2FearsomeFrightened","condition":"frightened"},{"do":"unmark","to":"markedByMe:gij2FearsomeFrightened","key":"gij2FearsomeFrightened","perSetter":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (during Reckless Abandon): target up to three characters within 20 ft and roll Intimidation against their Willpower. Those you beat are Frightened until the start of your next turn, and a chat card reminds them to move away.</p>"

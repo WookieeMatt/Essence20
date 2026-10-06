@@ -7,7 +7,8 @@
   "system": {
     "prerequisites": {"when":["self:skill:brawn>=d4"]},
     "rules": [
-      {"type":"RollModifier","when":["skill:intimidation"],"upshift":1}
+      {"type":"RollModifier","when":["skill:intimidation"],"upshift":1},
+      {"type":"HitRider","label":"Unarmed hits deal Sharp (Pit Plate)","damageType":"sharp","retypeFrom":"blunt","retypeCrit":true,"when":["attack:unarmed"]}
     ],
     "automation": {
       "status": "full",

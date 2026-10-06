@@ -60,6 +60,8 @@ export const TAGS = {
   // A named test the system's own code answers (CHECKS below) - state that lives in a helper, not data
   'check': { family: 'situation', param: 'check' },
   'ask': { family: 'ask', param: 'text' },
+  // A number a step stored in this run (@var.<key>): var:margin<=-5, var:rolled>=4, var:picked=red
+  'var': { family: 'roll', param: 'varTest' },
 };
 
 /** Tags whose answer doesn't depend on the roll - safe to evaluate in derived data. */
@@ -89,9 +91,10 @@ export function contextFor(parts = {}) {
 const lower = value => String(value ?? '').toLowerCase();
 
 function itemTraits(item) {
-  const own = item?.system?.traits;
   const parent = item?.flags?.essence20?.parentId ? item.parent?.items?.get?.(item.flags.essence20.parentId) : null;
-  return new Set([...(Array.isArray(own) ? own : []), ...(Array.isArray(parent?.system?.traits) ? parent.system.traits : [])].map(lower));
+  // Its own traits and its weapon's, with what attached upgrades add (itemAndUpgradeTraits, derived data).
+  const lists = [item?.system?.traits, item?.system?.itemAndUpgradeTraits, parent?.system?.traits, parent?.system?.itemAndUpgradeTraits];
+  return new Set(lists.flatMap(list => (Array.isArray(list) ? list : [])).map(lower));
 }
 
 function sourceOf(item) {
@@ -100,10 +103,23 @@ function sourceOf(item) {
 
 function hasItem(actor, uuid) {
   const items = actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
+  // hasItem:name~<text> - any item whose name contains the text (Eat the Weak's "a ... Hang-Up").
+  const named = /^name~(.+)$/.exec(String(uuid ?? ''));
+  if (named) {
+    return items.some(item => lower(item.name).includes(lower(named[1])));
+  }
+
   return items.some(item => sourceOf(item) == uuid || item.uuid == uuid);
 }
 
 function statusOf(actor, status) {
+  // <id>:timed - the Condition is on and runs out after some rounds (a timed one, rather than open-ended).
+  if (String(status).endsWith(':timed')) {
+    const id = String(status).slice(0, -6);
+    const effects = actor?.effects?.contents ?? (actor?.effects ? [...actor.effects] : []);
+    return effects.some(effect => effect.statuses?.has?.(id) && Number(effect.duration?.rounds) > 0);
+  }
+
   return !!actor?.statuses?.has?.(status);
 }
 
@@ -169,8 +185,9 @@ function sideWithin(self, feet, side) {
  * hasn't run out.
  */
 export function markOf(actor, key) {
-  const mark = actor?.flags?.essence20?.ruleMarks?.[key];
-  return !!mark && !isExpired(mark);
+  // The key's own mark, or any setter's (perSetter marks are kept as <key>--<setter id>).
+  const marks = actor?.flags?.essence20?.ruleMarks ?? {};
+  return Object.entries(marks).some(([name, mark]) => (name == key || name.startsWith(`${key}--`)) && !!mark && !isExpired(mark));
 }
 
 /**
@@ -190,6 +207,22 @@ export function setWorldLookups(lookups) {
  * fixed here so the validator knows them; essence20.mjs registers what each one runs, as
  * (actor, option, ctx) => true / false / null. An unregistered one is unknown (null).
  */
+/* Plug-in tags (module/rules/ext/*.mjs). */
+const EXTRA_TAGS = new Map();
+
+/**
+ * Add a tag. `name` is a new family ("megaform") or a family plus its first word ("item:weaponType"); `fn(rest, ctx)`
+ * answers true / false / null, `rest` being what follows the name's colon. A new family needs `meta` for the
+ * validator and the editor ({family: 'roll' | 'item' | 'self' | 'target' | 'situation', param?}).
+ */
+export function registerTag(name, fn, meta = null) {
+  EXTRA_TAGS.set(name, fn);
+  const family = name.split(':')[0];
+  if (!TAGS[family]) {
+    TAGS[family] = meta ?? { family: 'situation', param: 'text', optionalParam: true };
+  }
+}
+
 export const CHECK_NAMES = [
   'environmentalExpertise', 'cannoneerDugIn', 'bulwark', 'rushTheLine', 'sprinterBoost', 'skiing', 'nearbyDefeatedAlly',
   'frictionlessMovement', 'gravityOptional', 'wisdomOfTheElders', 'monsterForm', 'warriorMode', 'powerAdaptation',
@@ -198,6 +231,7 @@ export const CHECK_NAMES = [
   'favoriteWeaponRolled', 'zordHasDriver', 'personalShield',
   'computerizedGear', 'outsideEnvironmentOfExpertise', 'nonMystical', 'medicineKit', 'shapeShifted', 'disguised',
   'grappleEscape', 'infiltrating',
+  'inWater', 'onLand', 'seaOrWetlands', 'aboardAquaticVessel', 'completeDarkness',
 ];
 const CHECKS = new Map();
 export function registerCheck(name, fn) {
@@ -206,6 +240,69 @@ export function registerCheck(name, fn) {
   }
 
   CHECKS.set(name, fn);
+}
+
+/**
+ * wielding[:<tag>] - one of the actor's attacks belongs to an equipped weapon (a weapon effect whose weapon isn't
+ * unequipped); the optional tag narrows it, asked of that attack (weapon:trait:ballistic, item:data:system.
+ * classification.skill=finesse, attack:melee...). Unarmed attacks don't count.
+ */
+export function wieldedAttacks(actor) {
+  const items = actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
+  return items.filter(item => {
+    const parentId = item?.type == 'weaponEffect' ? item.flags?.essence20?.parentId : null;
+    const weapon = parentId ? items.find(other => other.id == parentId) : null;
+    return !!weapon && weapon.system?.equipped !== false;
+  });
+}
+
+/** combat:enemy:<tags> / ally:<tags> - some combatant on that side meets the tags (joined by &), asked as the target. */
+function combatantMatches(ctx, rest) {
+  const [, which, list] = /^(enemy|ally):(.+)$/.exec(rest);
+  const combatants = ctx.combat?.combatants?.contents ?? (ctx.combat?.combatants ? [...ctx.combat.combatants] : []);
+  const tags = list.split('&');
+  return combatants.some(combatant => {
+    const other = combatant.actor;
+    const same = other && other !== ctx.self ? sameSide(ctx.self, other) : null;
+    return same !== null && same == (which == 'ally') && tags.every(tag => evaluateTag(tag, { ...ctx, other }) === true);
+  });
+}
+
+/** combat:enemyStatus:<id> / allyStatus:<id> - a combatant on the other (or this) side has that Condition. */
+function combatantStatus(ctx, rest) {
+  const [, which, status] = /^(enemy|ally)Status:(.+)$/.exec(rest);
+  const combatants = ctx.combat?.combatants?.contents ?? (ctx.combat?.combatants ? [...ctx.combat.combatants] : []);
+  return combatants.some(combatant => {
+    const other = combatant.actor;
+    const same = other && other !== ctx.self ? sameSide(ctx.self, other) : null;
+    return same !== null && same == (which == 'ally') && statusOf(other, status);
+  });
+}
+
+/** Whether two actors are on the same side: token dispositions, else PC vs not. Null when either is missing. */
+function sameSide(a, b) {
+  if (!a || !b) {
+    return null;
+  }
+
+  const ta = a.getActiveTokens?.()?.[0];
+  const tb = b.getActiveTokens?.()?.[0];
+  if (ta && tb) {
+    return (ta.document?.disposition ?? 0) == (tb.document?.disposition ?? 0);
+  }
+
+  return (a.type == 'playerCharacter') == (b.type == 'playerCharacter');
+}
+
+function wielding(actor, narrow, ctx) {
+  if (!actor) {
+    return false;
+  }
+
+  const attacks = wieldedAttacks(actor);
+  // Several tags joined by & must all hold on the same attack: wielding:weapon:trait:ballistic&not:attack:melee.
+  const tags = narrow ? narrow.split('&') : [];
+  return tags.length ? attacks.some(attack => tags.every(tag => evaluateTag(tag, { ...ctx, item: attack }) === true)) : attacks.length > 0;
 }
 
 /** Whether an actor is the one a pick step stored on the rule's item (null when nothing is picked yet). */
@@ -448,7 +545,38 @@ function actorTag(actor, ruleItem, rest) {
     return prerequisite;
   }
 
+  // itemCount:<type>[:equipped]<op><n> - how many items of a type the actor has (equipped only: worn / held).
+  const counted = /^itemCount:(\w+)(:equipped)?(>=|<=|>|<|=)(\d+)$/.exec(rest);
+  if (counted) {
+    const items = actor.items?.contents ?? (actor.items ? [...actor.items] : []);
+    const n = items.filter(item => item.type == counted[1] && (!counted[2] || item.system?.equipped)).length;
+    return compare(n, counted[3], counted[4]);
+  }
+
   switch (key) {
+  // combatant - the actor is in the current combat (started or not).
+  case 'combatant': {
+    const combat = globalThis.game?.combat;
+    const list = combat?.combatants?.contents ?? (combat?.combatants ? [...combat.combatants] : []);
+    return list.some(combatant => combatant.actor === actor || (actor.id && combatant.actorId == actor.id));
+  }
+
+  // onCanvas - the actor has a token in the scene being viewed.
+  case 'onCanvas': return (globalThis.canvas?.tokens?.placeables ?? []).some(token => token.actor === actor || (actor.id && token.actor?.id == actor.id));
+  // actionUsed:<standard|move|free> - spent that kind of action this turn (helpers/action-economy.mjs's ledger).
+  case 'actionUsed': {
+    const ledger = worldLookups.actionLedger?.(actor);
+    return ledger ? (Number(ledger[arg]) || 0) > 0 : null;
+  }
+
+  // wearingItem:<item tags joined by &> - equipped armor (or other worn gear) matching them.
+  case 'wearingItem': {
+    const tags = arg.split('&');
+    const items = actor.items?.contents ?? (actor.items ? [...actor.items] : []);
+    return items.some(item => ['armor', 'shield', 'gear'].includes(item.type) && item.system?.equipped
+      && tags.every(tag => evaluateTag(tag, { self: actor, item }) === true));
+  }
+
   case 'morphed': return !!actor.system?.isMorphed;
   case 'transformed': return !!actor.system?.isTransformed;
   case 'canTransform': return !!actor.system?.canTransform;
@@ -543,6 +671,18 @@ export function evaluateTag(tag, ctx) {
   const family = compared ? compared[1] : separator < 0 ? text : text.slice(0, separator);
   const rest = compared ? `${compared[2]}${compared[3]}` : separator < 0 ? '' : text.slice(separator + 1);
   const { item } = ctx;
+  const sub = rest.split(':')[0];
+  const plugged = EXTRA_TAGS.get(`${family}:${sub}`);
+  // A plug-in answering undefined hands the tag on to the core reading (combat:round:<n> beside a plug-in combat:round).
+  const pluggedAnswer = plugged ? plugged(rest.slice(sub.length + 1), ctx) : undefined;
+  if (pluggedAnswer !== undefined) {
+    return pluggedAnswer;
+  }
+
+  const familyAnswer = EXTRA_TAGS.has(family) ? EXTRA_TAGS.get(family)(rest, ctx) : undefined;
+  if (familyAnswer !== undefined) {
+    return familyAnswer;
+  }
 
   switch (family) {
   // skill:<key>; skill:choiceOf:<uuid> - the Skill chosen on the actor's copy of that item (a Field...).
@@ -603,10 +743,18 @@ export function evaluateTag(tag, ctx) {
       return !!name && (specialized[1] == '=' ? lower(name).trim() == lower(specialized[2]).trim() : lower(name).includes(lower(specialized[2])));
     }
 
+    const targetCount = /^targets(>=|<=|>|<|=)(\d+)$/.exec(rest);
+    if (targetCount) {
+      return ctx.targetCount === undefined ? null : compare(ctx.targetCount, targetCount[1], targetCount[2]);
+    }
+
     switch (rest) {
     case 'initiative': return ctx.rolledSkill == 'initiative' || !!ctx.dataset?.isInitiative;
     case 'specialized': return !!(ctx.dataset?.isSpecialized || ctx.dataset?.specializationKey);
     case 'shove': return !!(ctx.isShove || ctx.dataset?.isShove);
+    // targets<op><n> - how many targets the roll had (afterRoll / hit Triggers; @var.targets too).
+    // fumble: the roll (a Reaction's card) is a Fumble; null when it isn't known.
+    case 'fumble': return ctx.isFumble === undefined ? null : !!ctx.isFumble;
     // The roll already carries a downshift from somewhere else (ctx.pendingShiftDown, dice.mjs).
     case 'downshifted': return (Number(ctx.pendingShiftDown) || 0) > 0;
     // edge: the roll has an Edge (ctx.edge, known once the roll's own Edge is worked out).
@@ -652,6 +800,60 @@ export function evaluateTag(tag, ctx) {
       const have = AVAILABILITY_TIERS.indexOf(ctx.effectiveAvailability ?? item?.system?.totalAvailability ?? item?.system?.availability ?? 'standard');
       const want = AVAILABILITY_TIERS.indexOf(tier[2]);
       return item && have >= 0 && want >= 0 ? compare(have, tier[1], want) : null;
+    }
+
+    // word:<text> - the item's name holds that whole word (not just the letters: "Claw" isn't "Clawed").
+    if (key == 'word') {
+      return !!item && new RegExp(`(^|[^\\p{L}\\p{N}])${arg.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}($|[^\\p{L}\\p{N}])`, 'iu').test(String(item.name ?? ''));
+    }
+
+    // hasAttack:<tags joined by &> - one of the weapon's attacks (its owned attack items, else the entries it stores)
+    // matches, asked of that attack: item:data:system.classification.style=melee, item:data:system.numHands=2.
+    if (key == 'hasAttack') {
+      if (!item) {
+        return null;
+      }
+
+      const tags = arg.split('&');
+      const owned = (item.parent?.items?.contents ?? (item.parent?.items ? [...item.parent.items] : []))
+        .filter(other => other.type == 'weaponEffect' && other.flags?.essence20?.parentId == item.id);
+      const stored = Object.values(item.system?.items ?? {}).filter(entry => entry?.type == 'weaponEffect').map(entry => ({ type: 'weaponEffect', name: entry.name, system: entry, flags: {} }));
+      return (owned.length ? owned : stored).some(attack => tags.every(tag => evaluateTag(tag, { ...ctx, item: attack }) === true));
+    }
+
+    // hasUpgrade:<uuid | name~text> - an upgrade attached to the item (or to the weapon it belongs to).
+    if (key == 'hasUpgrade') {
+      const parentId = item?.flags?.essence20?.parentId;
+      const hosts = [item?.id, parentId].filter(Boolean);
+      const owned = item?.parent?.items?.contents ?? (item?.parent?.items ? [...item.parent.items] : []);
+      const named = /^name~(.+)$/.exec(arg);
+      return owned.some(other => other.type == 'upgrade' && hosts.includes(other.flags?.essence20?.parentId)
+        && (named ? lower(other.name).includes(lower(named[1])) : sourceOf(other) == arg || other.uuid == arg));
+    }
+
+    // granted - the rolled item, or the weapon it belongs to, was given by the rule's item (a grant /
+    // createItem / pickGrant step, or a Grant rule): Rotor Blades' ↑1 with its own blades.
+    if (rest == 'granted') {
+      if (!item || !ctx.ruleItem?.id) {
+        return item ? false : null;
+      }
+
+      const parentId = item.flags?.essence20?.parentId;
+      const weapon = parentId ? (item.parent ?? item.actor)?.items?.get?.(parentId) : null;
+      return [item, weapon].some(doc => doc?.flags?.essence20?.grantedBy == ctx.ruleItem.id);
+    }
+
+    // pickedSource:<key> - the item is one a recording pickGrant stored on the rule's item (by its book source, or the
+    // same name for another printing) - a Qualification over the picks.
+    if (key == 'pickedSource') {
+      const kept = ctx.ruleItem?.flags?.essence20?.rules?.choices?.[arg];
+      // A lone {uuid, name} (an old single pick moved in by `legacy`) counts as a list of one.
+      const stored = kept && typeof kept == 'object' && !Array.isArray(kept) ? [kept] : kept;
+      if (!Array.isArray(stored) || !stored.length) {
+        return item ? false : null;
+      }
+
+      return !!item && stored.some(entry => entry?.uuid == sourceOf(item) || entry?.uuid == item.uuid || (!!entry?.name && lower(entry.name) == lower(item.name)));
     }
 
     // picked:<key> - the rolled item, or the weapon it belongs to, is the one a pick step stored.
@@ -709,6 +911,26 @@ export function evaluateTag(tag, ctx) {
       return !!ctx.ruleItem && !!ctx.self?.system?.isTransformed && ctx.self.system.altModeId == ctx.ruleItem.id;
     }
 
+    // rule:granted - something the rule's item gave the actor is still there; rule:granted:<item tag>
+    // narrows it (rule:granted:type:weapon, rule:granted:name~Blade).
+    if (rest == 'granted' || rest.startsWith('granted:')) {
+      if (!ctx.ruleItem?.id) {
+        return false;
+      }
+
+      const owned = ctx.self?.items?.contents ?? (ctx.self?.items ? [...ctx.self.items] : []);
+      const given = owned.filter(other => other?.flags?.essence20?.grantedBy == ctx.ruleItem.id);
+      const narrow = rest.slice(8);
+      return narrow ? given.some(other => evaluateTag(`item:${narrow}`, { ...ctx, item: other }) === true) : given.length > 0;
+    }
+
+    // rule:hostEquipped - the item the rule's item is attached to is equipped (an upgrade's armor or weapon).
+    if (rest == 'hostEquipped') {
+      const parentId = ctx.ruleItem?.flags?.essence20?.parentId;
+      const host = parentId ? ctx.ruleItem.parent?.items?.get?.(parentId) : null;
+      return !!host && host.system?.equipped !== false;
+    }
+
     // rule:banked - a bonus this item banked on the actor (rules/bank.mjs) is still unspent.
     if (rest == 'banked') {
       const bank = ctx.self?.flags?.essence20?.ruleBank;
@@ -724,13 +946,22 @@ export function evaluateTag(tag, ctx) {
   }
 
   // The item an Upgrade is attached to (prerequisites): any item: tag, asked of that item.
-  case 'host':
-    return ctx.host ? evaluateTag(`item:${rest}`, { ...ctx, item: ctx.host }) : null;
+  case 'host': {
+    // The prerequisites' host, else the item the rule's item is attached to (Gunport's vehicle weapon).
+    const parentId = ctx.ruleItem?.flags?.essence20?.parentId;
+    const host = ctx.host ?? (parentId ? ctx.ruleItem.parent?.items?.get?.(parentId) ?? null : null);
+    return host ? evaluateTag(`item:${rest}`, { ...ctx, item: host }) : null;
+  }
+
   case 'check': return runCheck(rest, ctx.self, ctx);
   case 'self': {
     // picked:<key> - this actor is the one a pick step stored under that key.
     if (rest.startsWith('picked:')) {
       return pickedActor(ctx.ruleItem, rest.slice(7), ctx.self);
+    }
+
+    if (rest == 'wielding' || rest.startsWith('wielding:')) {
+      return wielding(ctx.self, rest.slice(9), ctx);
     }
 
     if (rest.startsWith('check:')) {
@@ -785,6 +1016,21 @@ export function evaluateTag(tag, ctx) {
       return pickedActor(ctx.ruleItem, rest.slice(7), ctx.other);
     }
 
+    if (rest == 'wielding' || rest.startsWith('wielding:')) {
+      return wielding(ctx.other, rest.slice(9), ctx);
+    }
+
+    // self - the other party is this actor itself (a step aimed at its own holder).
+    if (rest == 'self') {
+      return ctx.other === ctx.self || (!!ctx.other?.uuid && ctx.other.uuid == ctx.self?.uuid);
+    }
+
+    // ally / enemy - the other party is on this actor's side (token disposition; off the canvas, PC or not).
+    if (rest == 'ally' || rest == 'enemy') {
+      const same = sameSide(ctx.self, ctx.other);
+      return same === null ? null : rest == 'ally' ? same : !same;
+    }
+
     const versus = versusTag(rest, ctx.other, ctx.self, ctx.combat);
     if (versus !== undefined) {
       return versus;
@@ -803,6 +1049,22 @@ export function evaluateTag(tag, ctx) {
   case 'combat':
     if (!rest) {
       return !!ctx.combat?.started;
+    }
+
+    // exists - a combat is set up, started or not.
+    if (rest == 'exists') {
+      return !!ctx.combat;
+    }
+
+    // enemyStatus:<id> / allyStatus:<id> - a combatant on the other (or this) side has that Condition.
+    if (/^(enemy|ally)Status:(.+)$/.test(rest)) {
+      return combatantStatus(ctx, rest);
+    }
+
+    // enemy:<tags joined by &> / ally:<...> - some combatant on that side matches them, asked as the target
+    // (combat:enemy:target:type:npc&target:name~librarian).
+    if (/^(enemy|ally):(.+)$/.test(rest)) {
+      return combatantMatches(ctx, rest);
     }
 
     if (rest.startsWith('round:')) {
@@ -839,7 +1101,8 @@ export function evaluateTag(tag, ctx) {
       return null;
     }
 
-    const mark = holder.flags?.essence20?.ruleMarks?.[rest];
+    const marks = holder.flags?.essence20?.ruleMarks ?? {};
+    const mark = marks[`${rest}--${setter.id}`] ?? marks[rest];
     return !!mark && !isExpired(mark) && !!setter.uuid && mark.by == setter.uuid;
   }
 
@@ -861,11 +1124,42 @@ export function evaluateTag(tag, ctx) {
   }
 
   case 'ownTurn': return !!ctx.combat?.started && ctx.combat.combatant?.actor?.id == ctx.self?.id;
+  // var:<key>[op value] - a value an earlier step (or the event) stored in this run.
+  case 'var': {
+    const test = /^([\w-]+)(>=|<=|!=|>|<|=)?(.*)$/.exec(rest);
+    if (!test) {
+      return null;
+    }
+
+    const value = ctx.vars?.[test[1]];
+    if (!test[2]) {
+      return !!value;
+    }
+
+    const wanted = test[3];
+    const numeric = Number.isFinite(Number(wanted)) && Number.isFinite(Number(value));
+    if (numeric && test[2] == '!=') {
+      return Number(value) != Number(wanted);
+    }
+
+    return numeric ? compare(Number(value), test[2], Number(wanted))
+      : test[2] == '=' ? String(value) == wanted : test[2] == '!=' ? String(value) != wanted : null;
+  }
+
   case 'vehicle': {
     const crewed = crewLookup?.(ctx.self) ?? null;
     switch (rest) {
     case 'crew': return !!crewed;
     case 'driving': return crewed?.role == 'driver';
+    }
+
+    // data:<path>[op value] / name~<text> - the vehicle being crewed (vehicle:data:system.size=huge).
+    if (rest.startsWith('data:')) {
+      return crewed?.vehicle ? dataTag(crewed.vehicle, rest) : false;
+    }
+
+    if (rest.startsWith('name~')) {
+      return !!crewed?.vehicle && String(crewed.vehicle.name ?? '').toLowerCase().includes(rest.slice(5).toLowerCase());
     }
 
     // type:<zord|vehicle> - what kind of actor is being crewed.
@@ -893,6 +1187,11 @@ export function evaluateTag(tag, ctx) {
     // No terrain set anywhere is unknown, not "no" - the rule becomes a switch (the old Tracking
     // Outfit/Bookworm reading). "wild" is any terrain that isn't urban.
     const terrain = worldLookups.terrain?.(ctx.self) ?? null;
+    // set - some terrain is set where the actor is (pair it with a terrain to answer "no" instead of "ask" when unset).
+    if (rest == 'set') {
+      return !!terrain;
+    }
+
     if (!terrain) {
       return null;
     }
@@ -901,11 +1200,28 @@ export function evaluateTag(tag, ctx) {
   }
 
   case 'environment': {
+    // outside:<x> - where the actor stands, not counting a vessel interior it's aboard.
+    if (rest.startsWith('outside:')) {
+      const outside = worldLookups.environmentOutside?.(ctx.self);
+      return outside ? outside == rest.slice(8) : null;
+    }
+
     const environment = worldLookups.environment?.(ctx.self);
     return environment ? environment == rest : null;
   }
 
   case 'scene': {
+    // token:<tags joined by &> - some other token in the scene being viewed meets them, asked as the target.
+    if (rest.startsWith('token:')) {
+      const tags = rest.slice(6).split('&');
+      const tokens = globalThis.canvas?.tokens?.placeables;
+      if (!Array.isArray(tokens)) {
+        return null;
+      }
+
+      return tokens.some(token => token.actor && token.actor !== ctx.self && tags.every(tag => evaluateTag(tag, { ...ctx, other: token.actor }) === true));
+    }
+
     const name = /^name~(.+)$/.exec(rest);
     return name ? lower(globalThis.game?.scenes?.active?.name ?? globalThis.game?.scenes?.current?.name).includes(lower(name[1])) : null;
   }

@@ -6,7 +6,10 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Good To Go (no untrained Snag, chosen vehicles)","when":["skill:driving","vehicle:driving","vehicle:moves:{item.choice}"],"immune":["untrainedSnag"]}
+      {"type":"RollModifier","label":"Good To Go (no untrained Snag, chosen vehicles)","when":["skill:driving","vehicle:driving","vehicle:moves:{item.choice}"],"immune":["untrainedSnag"]},
+      {"type":"Use","label":"Pick your Qualified gear (Good To Go)","steps":[{"do":"choose","prompt":"Which Qualification do you take?","options":[{"label":"A Limited weapon and a Limited battledress","steps":[{"do":"pickGrant","record":true,"key":"chosen","max":1,"legacy":"flags.essence20.q1Chosen","title":"Pick a Limited weapon","from":{"type":"weapon","availabilities":["limited"]}},{"do":"pickGrant","record":true,"key":"chosen","max":2,"title":"Pick a Limited battledress","from":{"type":"armor","availabilities":["limited"]}}]},{"label":"A Restricted weapon","steps":[{"do":"pickGrant","record":true,"key":"chosen","max":1,"title":"Pick a Restricted weapon","from":{"type":"weapon","availabilities":["restricted"]}}]},{"label":"A Restricted battledress","steps":[{"do":"pickGrant","record":true,"key":"chosen","max":1,"title":"Pick a Restricted battledress","from":{"type":"armor","availabilities":["restricted"]}}]}]}]},
+      {"type":"Qualification","label":"Good To Go (Qualified: your chosen gear)","access":"qualified","items":[{"any":["item:type:weapon","item:type:armor"]},"item:pickedSource:chosen"]},
+      {"type":"KitPrerequisite","label":"Kit prerequisites one Rank lower (Good To Go)","mode":"lower"}
     ],
     "automation": {
       "status": "full",

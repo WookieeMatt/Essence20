@@ -5,6 +5,11 @@
   "_id": "p9Obyw2krF0pks8D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Stoic (stand tall)","when":["combat:exists"],"cost":{"action":"move"},"steps":[{"do":"choose","beforeCost":true,"prompt":"How much Evasion do you give up? Each ally gains that many Free actions on their next turn.","options":[{"label":"-1","steps":[{"do":"setVar","key":"penalty","value":1}]},{"label":"-2","steps":[{"do":"setVar","key":"penalty","value":2}]},{"label":"-3","steps":[{"do":"setVar","key":"penalty","value":3}]}]},{"do":"mark","key":"stoic","to":"self","until":"nextTurn","count":"@var.penalty"},{"do":"grantNextTurn","free":"@var.penalty","to":"combatAllies"},{"do":"chat","text":"{name} stands tall: -{var.penalty} Evasion and no Toughness until their next turn; each ally gains {var.penalty} Free action(s) next turn."}]},
+      {"type":"Defense","defense":"evasion","amount":"-@mark.stoic","when":["self:marked:stoic"]},
+      {"type":"Defense","label":"Stoic (Toughness attacks meet Evasion)","defense":"toughness","mode":"instead","from":["evasion"],"when":["self:marked:stoic"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (in combat, Move action): pick an Evasion penalty of 1 to 3. Until your next turn attacks against your Toughness use Evasion instead, and each ally gets that many extra Free actions on their next turn.</p>"

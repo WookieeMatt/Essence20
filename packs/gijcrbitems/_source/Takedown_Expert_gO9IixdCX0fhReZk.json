@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Takedown Expert","when":["roll:dataset:isTakedown"],"edge":true}
+      {"type":"RollModifier","label":"Takedown Expert","when":["roll:dataset:isTakedown"],"edge":true},
+      {"type":"Trigger","event":"miss","label":"Failed Takedown: an extra Condition (Takedown Expert)","when":["roll:dataset:isTakedown","not:target:levelDiff>0"],"steps":[{"do":"choose","prompt":"The target is grappled. Also make them:","options":[{"label":"Disarmed","steps":[{"do":"disarm","to":"target","maxHands":2},{"do":"chat","text":"{name}'s failed Takedown also leaves {target} disarmed."}]},{"label":"Immobilized","steps":[{"do":"applyCondition","condition":"immobilized","to":"target"},{"do":"chat","text":"{name}'s failed Takedown also leaves {target} immobilized."}]},{"label":"Silenced","steps":[{"do":"applyCondition","condition":"silenced","to":"target"},{"do":"chat","text":"{name}'s failed Takedown also leaves {target} silenced."}]}]}]}
     ],
     "automation": {
       "status": "full",

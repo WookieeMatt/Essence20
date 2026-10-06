@@ -5,6 +5,9 @@
   "_id": "0OA0R7F3JejAQpkf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Add the Screech attack","when":["not:rule:granted:type:weapon"],"steps":[{"do":"createItem","data":{"name":"Screech","type":"weapon","flags":{"essence20":{"natural":true}},"system":{"classification":{"size":"sidearm"},"availability":"standard","equipped":true,"hardpoint":{"type":"none"}}},"children":[{"name":"Screech","type":"weaponEffect","system":{"classification":{"skill":"targeting","style":"energy"},"damageType":"blunt","damageValue":1,"numTargets":1,"numHands":"0","range":{"value":30,"long":60}}}]}]}
+    ],
     "prerequisites": {"when":["self:has:Griffon"]},
     "automation": {
       "status": "full",

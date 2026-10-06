@@ -1,8 +1,8 @@
 /**
- * My Little Pony CRB - Betrayal (Hang-Up), Dabbler (General Perk) and Self Improvement (spell).
+ * My Little Pony CRB - Betrayal (Hang-Up) and Self Improvement (spell). (Dabbler is an item rule - rules/conv10-slE10.test.js.)
  */
 import {
-  registerChatButton, registerDerived, registerPostRoll, registerRest, registerUse,
+  registerChatButton, registerDerived, registerPostRoll, registerUse,
 } from "../../extensions.mjs";
 import { getSceneEpoch } from "../../scene-clock.mjs";
 import {
@@ -103,116 +103,6 @@ registerChatButton('o3BetrayalHeal', async (message, button) => {
   await spendForActor(healer, 1);
   await healer.setFlag('essence20', HEALED_FLAG, { assister: assisterUuid, epoch: getSceneEpoch(), at: Date.now() });
   await say(healer, T('O3BetrayalHealed', { name: escape(healer.name), other: escape(assister.name) }));
-});
-
-/* -------------------------------------------- */
-/*  Dabbler                                      */
-/* -------------------------------------------- */
-
-/*
- * Dabbler (MLP CRB, General Perk, p.123): "Every morning, you can choose to lower a Skill by 1 Rank
- * and increase another Skill of the same Essence Score (or your Spellcasting skill) by 1 Rank. This
- * change reverts back to normal when you wake the next day."
- *
- * The Use button makes the swap on the actor's real ranks and stamps it on the Perk; the next Rest
- * ("when you wake the next day") undoes it, one step each way, so any advancement taken meanwhile
- * survives. Pressing Use again while a swap stands undoes it early.
- */
-const DABBLER_FLAG = 'o3Dabbler';
-const LADDER = () => CONFIG.E20?.skillShiftList ?? [];
-const UNTRAINED = 'd20';
-const BEST = 'd12';
-
-export function stepShift(shift, steps) {
-  const ladder = LADDER();
-  const index = ladder.indexOf(shift);
-  if (index < 0) {
-    return shift;
-  }
-
-  // The ladder runs best-to-worst: an increase is a LOWER index.
-  const next = Math.min(Math.max(0, index - steps), ladder.length - 1);
-  return ladder[next];
-}
-
-export function canLower(shift) {
-  const ladder = LADDER();
-  return ladder.indexOf(shift) >= 0 && ladder.indexOf(shift) < ladder.indexOf(UNTRAINED);
-}
-
-export function canRaise(shift) {
-  const ladder = LADDER();
-  return ladder.indexOf(shift) > ladder.indexOf(BEST);
-}
-
-export function dabblerRaiseOptions(actor, lowered) {
-  const essence = CONFIG.E20.skillToEssence[lowered];
-  return Object.keys(actor.system?.skills ?? {}).filter(skill => skill != lowered && skill != 'conditioning'
-    && (CONFIG.E20.skillToEssence[skill] == essence || skill == 'spellcasting')
-    && canRaise(actor.system.skills[skill]?.shift));
-}
-
-async function revertDabbler(perk) {
-  const swap = perk?.flags?.essence20?.[DABBLER_FLAG];
-  const actor = perk?.parent;
-  if (!swap || !actor) {
-    return false;
-  }
-
-  const skills = actor.system.skills ?? {};
-  const updates = {};
-  if (skills[swap.lower]) {
-    updates[`system.skills.${swap.lower}.shift`] = stepShift(skills[swap.lower].shift, 1);
-  }
-
-  if (skills[swap.raise]) {
-    updates[`system.skills.${swap.raise}.shift`] = stepShift(skills[swap.raise].shift, -1);
-  }
-
-  await actor.update(updates);
-  await perk.unsetFlag('essence20', DABBLER_FLAG);
-  return true;
-}
-
-registerUse({
-  id: 'o3Dabbler',
-  matches: item => isItem(item, O3.dabbler),
-  run: async (item) => {
-    const actor = item.parent;
-    const label = skill => game.i18n.localize(CONFIG.E20.skills?.[skill] ?? skill);
-    if (item.flags?.essence20?.[DABBLER_FLAG]) {
-      await revertDabbler(item);
-      return T('O3DabblerReverted', { name: escape(actor.name) });
-    }
-
-    const { chooseSelect } = await import("../../grants.mjs");
-    const lowerable = Object.keys(actor.system?.skills ?? {})
-      .filter(skill => skill != 'conditioning' && canLower(actor.system.skills[skill]?.shift) && dabblerRaiseOptions(actor, skill).length);
-    const lower = await chooseSelect(item.name, T('O3DabblerLower'), lowerable.map(skill => ({ value: skill, label: label(skill) })));
-    if (!lower) {
-      return null;
-    }
-
-    const raise = await chooseSelect(item.name, T('O3DabblerRaise'),
-      dabblerRaiseOptions(actor, lower).map(skill => ({ value: skill, label: label(skill) })));
-    if (!raise) {
-      return null;
-    }
-
-    await actor.update({
-      [`system.skills.${lower}.shift`]: stepShift(actor.system.skills[lower].shift, -1),
-      [`system.skills.${raise}.shift`]: stepShift(actor.system.skills[raise].shift, 1),
-    });
-    await item.setFlag('essence20', DABBLER_FLAG, { lower, raise });
-    return T('O3DabblerSwapped', { name: escape(actor.name), lower: label(lower), raise: label(raise) });
-  },
-});
-
-registerRest(async (actor) => {
-  for (const perk of (actor?.items ?? []).filter(item => isItem(item, O3.dabbler) && item.flags?.essence20?.[DABBLER_FLAG])) {
-    await revertDabbler(perk);
-    await say(actor, T('O3DabblerReverted', { name: escape(actor.name) }));
-  }
 });
 
 /* -------------------------------------------- */

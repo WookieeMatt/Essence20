@@ -5,6 +5,9 @@
   "_id": "2eWBm6hbiifmySvX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reaction","outcome":"hit","attackOnly":true,"limit":{"per":"encounter","max":1},"when":["item:data:system.classification.style=projectile","not:target:type:playerCharacter"],"steps":[{"do":"roll","skill":"finesse","dif":"@var.total","onSuccess":[{"do":"negateHit"},{"do":"chat","text":"{name} deflects the projectile."}],"onCrit":[{"do":"negateHit"},{"do":"chat","text":"{name} sends the projectile back at {target}."},{"do":"button","who":"gm","label":"Apply the deflected damage","when":["var:damage>0","target:data:id"],"steps":[{"do":"damage","to":"target","amount":"@var.damage","damageType":"{var.damageType}"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when a Threat's projectile attack hits you, a button rolls Finesse against its attack total, once per Combat. Success negates the hit; a Critical Success sends its damage back at the Threat.</p>"

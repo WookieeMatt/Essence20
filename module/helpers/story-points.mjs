@@ -1,4 +1,4 @@
-import { personalStoryPoints, spendPersonalStoryPoint } from "./extensions/resource/personal-points.mjs";
+import { personalStoryPoints, spendPersonalStoryPoint } from "../rules/ext/d/story.mjs";
 /**
  * The world's shared Story Point pool, and the GM's own points.
  *

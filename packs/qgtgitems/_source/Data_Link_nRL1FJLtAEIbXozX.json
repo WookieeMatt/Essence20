@@ -5,6 +5,12 @@
   "_id": "nRL1FJLtAEIbXozX",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"turnEnd","label":"Data-Link (a drone you didn't Command)","when":["companion:uncommanded:drone"],"steps":[{"do":"mark","key":"dataLink","to":"self","until":"nextTurn"}]},
+      {"type":"Trigger","event":"turnEnd","scope":"owner","label":"Data-Link (your drone wasn't Commanded)","when":["holder:data:system.type=drone","not:holder:commanded"],"steps":[{"do":"mark","key":"dataLink","to":"self","until":"nextTurn"}]},
+      {"type":"Defense","label":"Data-Link","defense":"evasion","amount":1,"stack":"dataLink","when":["self:marked:dataLink","defense:evasion"]},
+      {"type":"Defense","scope":"owner","label":"Data-Link","defense":"evasion","amount":1,"stack":"dataLink","when":["self:marked:dataLink","defense:evasion"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: if you do not command your drone during a combat turn, you get +1 Evasion until your next turn.</p>"

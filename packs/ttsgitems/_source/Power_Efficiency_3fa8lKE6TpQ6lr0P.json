@@ -5,6 +5,9 @@
   "_id": "3fa8lKE6TpQ6lr0P",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"resourceSpent","when":["var:resource=power"],"steps":[{"do":"table","formula":"1d4","rows":[{"min":4,"max":4,"steps":[{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":1,"overMax":true},{"do":"chat","text":"{name} regains 1 Personal Power."}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: every time you spend Personal Power, a d4 is rolled to chat; on a 4 you get 1 Personal Power back and a chat line says so. Power drained by an enemy's attack or ability doesn't trigger it.</p>"

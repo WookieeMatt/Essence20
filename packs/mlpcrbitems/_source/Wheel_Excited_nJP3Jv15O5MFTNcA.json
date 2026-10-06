@@ -4,9 +4,10 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","forget":true,"label":"Land vehicle test (Wheel Excited: Edge)","when":["rule:data:flags.essence20.vehicleType=land"],"edge":true},
-      {"type":"DialogSwitch","forget":true,"label":"Sea vehicle test (Wheel Excited: Edge)","when":["rule:data:flags.essence20.vehicleType=sea"],"edge":true},
-      {"type":"DialogSwitch","forget":true,"label":"Air vehicle test (Wheel Excited: Edge)","when":["rule:data:flags.essence20.vehicleType=air"],"edge":true}
+      {"type":"Use","label":"Pick the vehicle type","steps":[{"do":"pick","key":"vehicleType","from":"list","options":[["land","E20.Mlp2Vehicle.land"],["sea","E20.Mlp2Vehicle.sea"],["air","E20.Mlp2Vehicle.air"]],"prompt":"Which type of vehicle?","legacy":"flags.essence20.vehicleType"}]},
+      {"type":"DialogSwitch","forget":true,"label":"Land vehicle test (Wheel Excited: Edge)","when":["rule:data:flags.essence20.rules.choices.vehicleType=land"],"edge":true},
+      {"type":"DialogSwitch","forget":true,"label":"Sea vehicle test (Wheel Excited: Edge)","when":["rule:data:flags.essence20.rules.choices.vehicleType=sea"],"edge":true},
+      {"type":"DialogSwitch","forget":true,"label":"Air vehicle test (Wheel Excited: Edge)","when":["rule:data:flags.essence20.rules.choices.vehicleType=air"],"edge":true}
     ],
     "automation": {
       "status": "full",

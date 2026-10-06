@@ -77,7 +77,6 @@ import { swapInitiativeWithTarget } from "./timeline-anomaly.mjs";
 import { revealTargetDefenses } from "./quick-study.mjs";
 import { pickFastLearnerAllocation } from "./fast-learner.mjs";
 import { activateCastling } from "./castling.mjs";
-import { syncDangerSenseInitiative } from "./danger-sense.mjs";
 import { activateMysteriousAura } from "./mysterious-aura.mjs";
 import {
   activateElectromagneticDisruptionPulse, canUseElectromagneticDisruptionPulse,
@@ -95,7 +94,6 @@ import { activateIveGotYou, IVE_GOT_YOU_ID } from "./i-ve-got-you.mjs";
 import {
   activateExpandedMysticism, canUseExpandedMysticism, EXPANDED_MYSTICISM_ID,
 } from "./expanded-mysticism.mjs";
-import { activateMagicallyFitIn, canUseMagicallyFitIn, MYSTICAL_UNDERSTANDING_ID } from "./magically-fit-in.mjs";
 import { activateDesignateHeirloom, canDesignateHeirloom, PERSONAL_HEIRLOOM_ID } from "./personal-heirloom.mjs";
 import { activateFaceMe, FACE_ME_ID } from "./face-me.mjs";
 import { activateDigDeepPrCrb, canUseDigDeepPrCrb, DIG_DEEP_PR_CRB_ID } from "./dig-deep-pr-crb.mjs";
@@ -113,7 +111,6 @@ import {
 import { activateTheReturned, canUseTheReturned, THE_RETURNED_ID } from "./the-returned.mjs";
 import { activateMindOverMatter, MIND_OVER_MATTER_ID } from "./mind-over-matter.mjs";
 import { activateForwardObservation } from "./forward-observation.mjs";
-import { activateHeartyMeal } from "./hearty-meal.mjs";
 import { activateYourSafetysOn } from "./your-safetys-on.mjs";
 import {
   applyUninterruptedBreakBenefit, canUseUninterruptedBreak, pickUninterruptedBreakBenefit,
@@ -131,8 +128,6 @@ import { activateFrictionlessMovement, canUseFrictionlessMovement } from "./fric
 import { activateSprinterBoost, canUseSprinterBoost } from "./sprinter-boost.mjs";
 import { activateOutwit } from "./outwit.mjs";
 import { activateShoulderToShoulder } from "./shoulder-to-shoulder.mjs";
-import { activateFearsomePresence } from "./fearsome-presence.mjs";
-import { isRecklessAbandonActive } from "./reckless-abandon.mjs";
 import { canDeclareRelicKeyEdge, declareRelicKeyEdge, RELIC_KEY_ID } from "./relic-key.mjs";
 import { toggleNaturalMovement } from "./natural-movement.mjs";
 import {
@@ -615,11 +610,6 @@ const OUTWIT_ID = "Compendium.essence20.gi_joe_crb.Item.DVBrtxa9iiXXhDoS";
 // economy tracking to gate a once-per-reaction use against, same shape as Outwit above.
 const SHOULDER_TO_SHOULDER_ID = "Compendium.essence20.gi_joe_crb.Item.vZNQBGwiv1hREbyr";
 
-// Fearsome Presence (GI Joe CRB, Renegade base, 14th level, p.97) - see
-// helpers/fearsome-presence.mjs's own doc comment. No Power/rolePoints cost, gated on Reckless
-// Abandon actually being active (RAW: "while in Reckless Abandon").
-const FEARSOME_PRESENCE_ID = "Compendium.essence20.gi_joe_crb.Item.Jbx3ei70ZsoabVuL";
-
 // Natural Movement (GI Joe CRB, Focus: Predator, 6th level, p.93) - see
 // helpers/natural-movement.mjs's own doc comment. No Power/rolePoints cost, always usable (a
 // free toggle either direction, same shape as Dig In/Bulwark).
@@ -663,11 +653,7 @@ const DIG_DEEP_MLP_ID = "Compendium.essence20.mlp_crb.Item.geBN3DkixaCXvnSO";
 // The Transformers printing is "once per combat"; the GI JOE, MLP and Night Vale ones "once per scene".
 const digDeepWindow = sourceId => (sourceId == DIG_DEEP_TF_ID ? 'encounter' : 'scene');
 
-// Timeline Anomaly (Welcome to Night Vale: Citizens' Guide, General Perk, p.47, Weird +d8) - see
-// helpers/timeline-anomaly.mjs's own doc comment. Once per scene (approximating "once per
-// session"), dispatched directly here since it's neither a bankable nor an ally-heal.
-const TIMELINE_ANOMALY_ID = "Compendium.essence20.wtnv_citizens_guide.Item.NQXcQL05DLCs75xb";
-const TIMELINE_ANOMALY_ENCOUNTER_FLAG = 'timelineAnomalyUsedThisEncounter';
+// (Timeline Anomaly's Initiative swap is a Use rule on its item - rules/conv10-slD10.test.js.)
 
 // After You (MLP CRB, Spirit of Generosity, 6th level, p.76): "when you roll for Initiative, you
 // can swap places in the Initiative order with a friend who rolled lower than you." Reuses
@@ -1138,9 +1124,7 @@ const FAST_LEARNER_ID = `${GI_JOE_CRB}u3KK0V30GXDdRPAY`;
 // flag, so it doesn't fit BANKABLE_PERKS' single-target shape).
 const CASTLING_ID = `${GI_JOE_CRB}eB7jbgbevLVPxW4e`;
 
-// Danger Sense (GI Joe CRB, Bodyguard Focus, 6th level, p.110) - see helpers/danger-sense.mjs's
-// own doc comment. The Protected-Target Initiative-sync half only, dispatched directly here.
-const DANGER_SENSE_ID = `${GI_JOE_CRB}2hwFRZ67xIGt1XTm`;
+// (Danger Sense's Protected-Target Initiative sync is a Use rule on its item - rules/conv10-slD10.test.js.)
 
 // Mysterious Aura (A Jump Through Time, White Spectrum Modification, replaces Follow Me!, p.45) -
 // see helpers/mysterious-aura.mjs's own doc comment. Dispatched directly here (a Power-costing
@@ -1267,11 +1251,6 @@ const SQUAD_GUARDIAN_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}Li2y6KqFu2OGRkrX`;
 // resource cost or frequency cap at all (unlike every other direct dispatch in this file), so
 // canUsePerk is unconditionally true.
 const FORWARD_OBSERVATION_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}wOxrMAMHJWFs1DBN`;
-
-// Hearty Meal (General Hawk's Personnel Files, General Perk, p.174) - see
-// helpers/hearty-meal.mjs's own doc comment. Same unconditional-dispatch shape as Forward
-// Observation above (a real dialog roll, no resource cost or frequency cap stated in RAW).
-const HEARTY_MEAL_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}NULhQcWctFcXXdDH`;
 
 // Heroic Intervention (PR CRB, General Perk, p.96, Level 8+): the Story Point grant clause
 // ("Add one additional Story Point to the team pool each session"), dispatched the exact same
@@ -2088,10 +2067,6 @@ export function canUsePerk(item) {
     return true;
   }
 
-  if (sourceId == FEARSOME_PRESENCE_ID) {
-    return isRecklessAbandonActive(actor);
-  }
-
   if (sourceId == NATURAL_MOVEMENT_ID) {
     return true;
   }
@@ -2120,10 +2095,6 @@ export function canUsePerk(item) {
     return getUses(actor, DIG_DEEP_ENCOUNTER_FLAG, digDeepWindow(sourceId)) < 1;
   }
 
-  if (sourceId == TIMELINE_ANOMALY_ID) {
-    return !hasUsedThisEncounter(actor, TIMELINE_ANOMALY_ENCOUNTER_FLAG);
-  }
-
   if (sourceId == AFTER_YOU_ID) {
     return true;
   }
@@ -2137,10 +2108,6 @@ export function canUsePerk(item) {
   }
 
   if (sourceId == CASTLING_ID) {
-    return true;
-  }
-
-  if (sourceId == DANGER_SENSE_ID) {
     return true;
   }
 
@@ -2379,10 +2346,6 @@ export function canUsePerk(item) {
     return true;
   }
 
-  if (sourceId == HEARTY_MEAL_ID) {
-    return true;
-  }
-
   if (sourceId == YOUR_SAFETYS_ON_ID) {
     return true;
   }
@@ -2535,10 +2498,6 @@ export function canUsePerk(item) {
 
   if (sourceId == EXPANDED_MYSTICISM_ID) {
     return canUseExpandedMysticism(actor);
-  }
-
-  if (sourceId == MYSTICAL_UNDERSTANDING_ID) {
-    return canUseMagicallyFitIn(actor);
   }
 
   if (sourceId == PERSONAL_HEIRLOOM_ID) {
@@ -3792,16 +3751,6 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == FEARSOME_PRESENCE_ID) {
-    if (!isRecklessAbandonActive(actor)) {
-      ui.notifications.warn(game.i18n.localize('E20.FearsomePresenceNotActive'));
-      return;
-    }
-
-    await activateFearsomePresence(actor);
-    return;
-  }
-
   if (sourceId == NATURAL_MOVEMENT_ID) {
     // The Climb/Swim picker runs INSIDE toggleNaturalMovement when switching on - a cancelled
     // picker (result === null) just leaves it off, same "nothing to undo" shape as every other
@@ -3878,20 +3827,6 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == TIMELINE_ANOMALY_ID) {
-    if (hasUsedThisEncounter(actor, TIMELINE_ANOMALY_ENCOUNTER_FLAG)) {
-      return;
-    }
-
-    const swapped = await swapInitiativeWithTarget(actor);
-    if (swapped) {
-      await markUsedThisEncounter(actor, TIMELINE_ANOMALY_ENCOUNTER_FLAG);
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
   if (sourceId == AFTER_YOU_ID) {
     const swapped = await swapInitiativeWithTarget(actor, { requireLowerTarget: true });
     if (swapped) {
@@ -3929,15 +3864,6 @@ export async function onPerkUse(item) {
     const targetActors = await pickAllyTargets(actor, candidateAllies, item.name, 2);
     if (targetActors.length) {
       await activateCastling(targetActors);
-      postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
-    }
-
-    return;
-  }
-
-  if (sourceId == DANGER_SENSE_ID) {
-    const synced = await syncDangerSenseInitiative(actor);
-    if (synced) {
       postPerkUseChatCard(actor, game.i18n.format('E20.PerkUsedNotification', { perk: item.name, actor: actor.name }));
     }
 
@@ -4412,11 +4338,6 @@ export async function onPerkUse(item) {
     return;
   }
 
-  if (sourceId == MYSTICAL_UNDERSTANDING_ID) {
-    await activateMagicallyFitIn(actor);
-    return;
-  }
-
   if (sourceId == PERSONAL_HEIRLOOM_ID) {
     await activateDesignateHeirloom(actor);
     return;
@@ -4665,11 +4586,6 @@ export async function onPerkUse(item) {
 
   if (sourceId == FORWARD_OBSERVATION_ID) {
     await activateForwardObservation(actor);
-    return;
-  }
-
-  if (sourceId == HEARTY_MEAL_ID) {
-    await activateHeartyMeal(actor);
     return;
   }
 

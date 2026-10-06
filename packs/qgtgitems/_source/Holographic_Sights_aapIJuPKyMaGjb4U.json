@@ -5,6 +5,9 @@
   "_id": "aapIJuPKyMaGjb4U",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Holographic Sights","scope":"host","upshift":"@rolled.system.shiftDown","when":["item:type:weaponEffect","item:data:system.numTargets>1","item:data:system.classification.skill=targeting"]}
+    ],
     "prerequisites": {"when":["ask:Targeting weapon"]},
     "automation": {
       "status": "full",

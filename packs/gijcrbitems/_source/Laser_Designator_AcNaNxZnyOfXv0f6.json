@@ -5,6 +5,10 @@
   "_id": "AcNaNxZnyOfXv0f6",
   "img": "systems/essence20/assets/icons/gear/laser_designator.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Designate the target (Laser Designator)","steps":[{"do":"target","max":1},{"do":"mark","key":"laserDesignated","to":"target","until":"scene"},{"do":"chat","text":"{name} designates {target} with a Laser Designator."}]},
+      {"type":"RollModifier","label":"Laser Designator (artillery)","scope":"markedTarget","mark":"laserDesignated","upshift":2,"when":["skill:targeting"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: designate a target for the scene. Anyone's Targeting roll against it gets ↑2, shown in the Roll Options Dialog so it can be unticked for non-artillery attacks.</p>"

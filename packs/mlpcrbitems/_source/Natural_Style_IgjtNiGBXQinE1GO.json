@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Social test with a new acquaintance (Natural Style: ↑1)","upshift":1,"when":["not:roll:initiative","target:data:uuid",{"any":["essence:social","skill:animalHandling","skill:deception","skill:performance","skill:persuasion","skill:streetwise"]},{"any":["not:markedByMe:naturalStyleMet","markedByMe:naturalStyleMetHere"]}]},
+      {"type":"Trigger","event":"hit","label":"Remember who was met (Natural Style)","when":[{"any":["skill:animalHandling","skill:deception","skill:performance","skill:persuasion","skill:streetwise"]}],"steps":[{"do":"mark","to":"target","key":"naturalStyleMetHere","perSetter":true,"until":"scene","legacy":"flags.essence20.d22Met","legacyScene":true,"filter":["not:markedByMe:naturalStyleMet"]},{"do":"mark","to":"target","key":"naturalStyleMet","perSetter":true,"legacy":"flags.essence20.d22Met","filter":["not:markedByMe:naturalStyleMet"]}]},
+      {"type":"Trigger","event":"miss","label":"Remember who was met (Natural Style)","when":[{"any":["skill:animalHandling","skill:deception","skill:performance","skill:persuasion","skill:streetwise"]}],"steps":[{"do":"mark","to":"target","key":"naturalStyleMetHere","perSetter":true,"until":"scene","legacy":"flags.essence20.d22Met","legacyScene":true,"filter":["not:markedByMe:naturalStyleMet"]},{"do":"mark","to":"target","key":"naturalStyleMet","perSetter":true,"legacy":"flags.essence20.d22Met","filter":["not:markedByMe:naturalStyleMet"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Social Skill tests targeting a creature you first met this scene get ↑1, labelled Natural Style in your Roll Options Dialog.</p>"

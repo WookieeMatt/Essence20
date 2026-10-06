@@ -5,6 +5,11 @@
   "_id": "YJRejmHoASYm67lQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose this story's gift","limit":{"per":"mission","max":1},"steps":[{"do":"choose","prompt":"Choose Safehaven's gift for this story.","options":[{"label":"A Limited weapon","steps":[{"do":"pickGrant","from":{"type":"weapon","availabilities":["limited"]}},{"do":"chat","text":"{name} is welcomed in Safehaven: a Limited weapon."}]},{"label":"Edge on weapon upgrades","steps":[{"do":"mark","key":"pr3SafehavenUpgrade","to":"self","until":"mission"},{"do":"chat","text":"{name} is welcomed in Safehaven: Edge on weapon upgrades."}]},{"label":"1 Temporary Health","steps":[{"do":"heal","to":"self","amount":1,"temporary":true,"tracked":true},{"do":"chat","text":"{name} is welcomed in Safehaven: 1 Temporary Health."}]},{"label":"↑1 Social with residents","steps":[{"do":"mark","key":"pr3SafehavenSocial","to":"self","until":"mission"},{"do":"chat","text":"{name} is welcomed in Safehaven: ↑1 Social with residents."}]},{"label":"+11 Wealth Bonus","steps":[{"do":"chat","text":"{name} is welcomed in Safehaven: +11 Wealth Bonus."}]}]}]},
+      {"type":"DialogSwitch","label":"Safehaven: weapon upgrade attempt (Edge)","edge":true,"when":["self:marked:pr3SafehavenUpgrade","skill:technology"]},
+      {"type":"DialogSwitch","label":"Safehaven: with Safehaven residents (↑1)","upshift":1,"when":["self:marked:pr3SafehavenSocial","essence:social"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (once per mission): pick a benefit: a Limited weapon, 1 temporary Health, or a Roll Options Dialog switch for Edge on weapon upgrades or ↑1 on Social tests with Safehaven residents.</p><p>Left to the table: the +11 Wealth option, which is only announced in chat.</p>"

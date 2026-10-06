@@ -5,6 +5,10 @@
   "_id": "9OuJzchTaiJEMcff",
   "img": "systems/essence20/assets/icons/weapons/spinning-blades.svg",
   "system": {
+    "rules": [
+      {"type":"Toggle","key":"shieldMode","label":"Cyber Shield Mode","legacy":"flags.essence20.zord2ShieldMode"},
+      {"type":"Use","label":"Switch to Cyber Shield Mode","when":["not:self:toggle:shieldMode","not:rule:data:flags.essence20.zord2ShieldMode"],"cost":{"action":"move"},"steps":[{"do":"setToggle","key":"shieldMode","value":true},{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.ixzkIrq0X9k57754","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.ixzkIrq0X9k57754"]},{"do":"updateItem","item":"source:Compendium.essence20.technorganic_secrets.Item.ixzkIrq0X9k57754","set":{"system.equipped":true,"system.active":true}},{"do":"chat","text":"{name} switches the Rotary Blade to Cyber Shield Mode."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Finesse attacks at Reach for 1 Sharp, with an alternate effect hitting 2 targets at ↓1; its traits apply. Use button (Move action): switch to Cyber Shield Mode, which equips the shield and stops the blade attacking.</p>"

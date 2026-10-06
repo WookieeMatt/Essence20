@@ -75,7 +75,6 @@ export const ACTION_PERK_IDS = {
   motivate: GIJ('BB9Z5wEmjIvclAVx'),
   momentum: GIJ('Czabb7MnyglRRo2P'),
   shootYouFools: ID('cobra_codex', 'OjNB0uwTOwEQjo85'),
-  detailOriented: MLP('FBIg9BWG2CyjqgBP'),
   // Balance Your Enthusiasm (MLP CRB, Spirit of Loyalty, p.91) - see its cost rule below.
   balanceYourEnthusiasm: MLP('0oLVEe94tZ0drQTo'),
   integratedBipod: ID('quartermasters_guide_to_gear', 'dD0We78dzfsH98Bw'),
@@ -287,14 +286,8 @@ export const COST_RULES = [
     id: 'groundAndPound', has: actor => isGroundAndPoundActive(actor), limit: { window: 'turn', max: 99 },
     matches: ctx => ctx?.kind == 'attack' && !!ctx.attack?.unarmed, to: always('free'),
   },
-  // The Use a Skill action (GI Joe CRB p.192, a Standard action) made cheaper for particular tests.
-  // Detail Oriented (MLP CRB, Precise Origin, p.58): "When you make a Finesse Skill Test you may
-  // choose to use either a Move or a Standard Action for the Test. You may use this Perk three
-  // times/day."
-  {
-    id: 'detailOriented', has: perk('detailOriented'), matches: named('useASkill'), to: always('move'),
-    ask: 'E20.ActionPerkAskFinesse', limit: { window: 'day', max: 3 },
-  },
+  // (Detail Oriented's Finesse Use a Skill as a Move action, three times a day, is an ActionCost rule on the Perk -
+  // limit {per: day, key: detailOriented}, the counter Sensitive spends too: rules/conv12-slI12.test.js.)
   // Balance Your Enthusiasm (MLP CRB, Spirit of Loyalty, p.91): Curb Your Enthusiasm as a Move
   // action instead of a Standard action.
   {

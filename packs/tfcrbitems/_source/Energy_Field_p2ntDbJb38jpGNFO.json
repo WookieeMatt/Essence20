@@ -5,6 +5,9 @@
   "_id": "p2ntDbJb38jpGNFO",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSelect","label":"Energy Field ({holder})","scope":"incoming","when":["attack","roll:plainReach","not:target:self"],"options":[{"label":"Take the ↓2","downshift":2},{"label":"Let {holder} strike back","steps":[{"do":"button","whisper":"owners","label":"Energy Field","intro":"{target} braved the Energy Field of {name} - {name} may make an immediate aura attack.","steps":[{"do":"pick","key":"element","from":"list","options":[["acid","E20.DamageAcid"],["cold","E20.DamageCold"],["electric","E20.DamageElectric"],["fire","E20.DamageFire"],["sonic","E20.DamageSonic"]],"ifUnset":true,"legacy":"flags.essence20.reactElement","prompt":"Which element does the aura carry?"},{"do":"pick","key":"strikeSkill","from":"list","options":[["might","E20.SkillMight"],["finesse","E20.SkillFinesse"]],"prompt":"Strike back with which Skill?"},{"do":"clearTargets"},{"do":"roll","skill":"{choice.strikeSkill}","dif":"max(@target.system.defenses.toughness.total, @target.system.defenses.evasion.total)","onSuccess":[{"do":"button","who":"gm","label":"Apply 1 {choice.element} damage to {target} (Energy Field)","steps":[{"do":"damage","to":"target","amount":1,"damageType":"{choice.element}"}]}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose the energy type, which the Upgrade remembers. Automatic: when an enemy targets you with a plain Reach melee attack, its Roll Options Dialog has an Energy Field choice: take ↓2, or let you strike back with a Might or Finesse roll against its better Defense for 1 damage of that type, applied with a GM button.</p>"

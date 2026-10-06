@@ -5,6 +5,15 @@
   "_id": "ijVB6KM95RagxKQp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","scope":"ownZord","label":"Terrorzord (Smarts 5)","path":"system.essences.smarts.value","op":"set","value":5,"when":["self:type:zord",{"any":["not:self:data:flags.essence20.zord1Megafauna","not:self:hasItem:Compendium.essence20.across_the_stars.Item.c6plguiUVmJzGNsw"]}]},
+      {"type":"DerivedStat","scope":"ownZord","label":"Terrorzord (Social 4)","path":"system.essences.social.value","op":"set","value":4,"when":["self:type:zord",{"any":["not:self:data:flags.essence20.zord1Megafauna","not:self:hasItem:Compendium.essence20.across_the_stars.Item.c6plguiUVmJzGNsw"]}]},
+      {"type":"DialogSwitch","scope":"ownZord","label":"Spend Terror on the Terrorzord (↑1 each)","spend":{"resource":{"rolePoints":true}},"upshift":"@spent","when":["self:type:zord","holder:hasItem:Compendium.essence20.beneath_the_helmet.Item.yBBB0Mi6fr84YcSd"]},
+      {"type":"DialogSwitch","label":"Spend Terror on the Terrorzord (↑1 each)","spend":{"resource":{"rolePoints":true}},"upshift":"@spent","when":["skill:driving","vehicle:driving","vehicle:ownZord","self:hasItem:Compendium.essence20.beneath_the_helmet.Item.yBBB0Mi6fr84YcSd"]},
+      {"type":"Trigger","event":"afterRoll","scope":"ownZord","outcome":"fumbled","label":"Terrorzord (a natural 1)","when":["self:drivenByHolder","holder:data:system.powers.personal.value>0"],"steps":[{"do":"updateActor","to":"holder","add":{"system.powers.personal.value":-1},"min":0},{"do":"chat","text":"1 Personal Power lost: a natural 1 while driving the Terrorzord."}]},
+      {"type":"Trigger","event":"afterRoll","outcome":"fumbled","label":"Terrorzord (a natural 1)","when":["vehicle:driving","vehicle:ownZord","self:data:system.powers.personal.value>0"],"steps":[{"do":"updateActor","add":{"system.powers.personal.value":-1},"min":0},{"do":"chat","text":"{name} loses 1 Personal Power: a natural 1 while driving the Terrorzord."}]},
+      {"type":"Trigger","event":"turnStart","label":"Terrorzord (keeping control)","when":["self:ownsZordOnCanvas"],"steps":[{"do":"button","label":"Roll Driving (DIF 10)","intro":"{name}: the Terrorzord moves as it wants at the start of your turn unless you pass a DIF 10 Driving Test.","steps":[{"do":"roll","skill":"driving","dif":10,"onSuccess":[{"do":"chat","text":"The Terrorzord holds still."}],"onFail":[{"do":"chat","text":"The Terrorzord moves as it wants."}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: sets the Zord's Smarts and Social, prompts a Driving control test each turn, and costs the pilot 1 Personal Power on a natural 1. Roll Options Dialog: spend Terror for ↑1 each on the Terrorzord's tests.</p>"

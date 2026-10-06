@@ -1,28 +1,22 @@
 import {
-  registerApplyDialog, registerChatButton, registerDamageModifier, registerDialogToggles, registerHitRider, registerPostRoll,
-  registerPreRoll, registerSceneAdvanced, registerTurnStart, registerUse,
+  registerChatButton, registerDamageModifier, registerPostRoll, registerPreRoll, registerSceneAdvanced, registerTurnStart, registerUse,
 } from "../../extensions.mjs";
 import { hasSourced } from "../../companion-link.mjs";
 import {
-  ATS, BTH, JTT, T, actorsInPlay, combatStamp, damageOrOffer, findSourced, firstTarget, isFrom, itemsOf, parentWeapon, payPower, post,
+  BTH, JTT, T, actorsInPlay, combatStamp, isFrom, payPower, post,
   safeSetFlag, safeUnsetFlag, safeUpdate, sourceOf,
 } from "./shared.mjs";
 
 /**
- * A Jump Through Time (Quantum Ranger and General Perks), Across the Stars and Beneath the Helmet
- * items: Interspatial Pause, Quantum Trigger, Timeslide, Time Strike, Special Program, Lance of
- * Light's strike and Dark Dimension ↓2, Savant Skill's Story Point refund, Good with Both and Unlucky
- * (For You)'s Terror. (Evacuation Vents is item rules on its pack item.)
+ * A Jump Through Time (Quantum Ranger and General Perks) and Beneath the Helmet
+ * items: Interspatial Pause, Timeslide, Special Program and Unlucky (For You)'s Terror. (Time Strike, Evacuation
+ * Vents, Lance of Light, Across the Stars' Good with Both, Quantum Trigger and Savant Skill's Story Point refund are
+ * item rules on their pack items.)
  */
 export const O1_JTT = {
   interspatialPause: JTT('InterspatialPaus'),
-  quantumTrigger: JTT('QuantumTriggerJT'),
   timeslide: JTT('e70Jm3uH5A3mKmSM'),
-  timeStrike: JTT('T7nfBj9GjUHz8alo'),
   specialProgram: JTT('wKGrImiofaMrni0m'),
-  lanceOfLight: JTT('HUdL1MryICmRmWnP'),
-  savantSkill: JTT('ZnuLgh6jdUHi9F75'),
-  goodWithBoth: ATS('bUfVm0jmCcAxu2M3'),
   unluckyForYou: BTH('hSzY2uhu3L9nGP6o'),
 };
 
@@ -33,29 +27,6 @@ export const O1_JTT = {
 /** Whether every compared result of a roll failed - "if you fail a Skill Test". */
 export function allFailed(results) {
   return Array.isArray(results) && results.length > 0 && results.every(result => result && result.success === false);
-}
-
-/** Quantum Trigger's "cumulative ↓1": the nth retry of a chain suffers ↓n. */
-export function quantumTriggerShiftDown(baseShiftDown, chain) {
-  return (Number(baseShiftDown) || 0) + chain;
-}
-
-/** A re-rolled total fails when it reaches none of the original Difficulties. */
-export function rerollStillFails(total, checkResults) {
-  const difficulties = (checkResults ?? []).map(entry => Number(entry?.difficulty)).filter(Number.isFinite);
-  return difficulties.length > 0 && difficulties.every(difficulty => total < difficulty);
-}
-
-/** Only plain values survive into a chat-card flag. */
-export function plainDataset(dataset) {
-  const out = {};
-  for (const [key, value] of Object.entries(dataset ?? {})) {
-    if (['string', 'number', 'boolean'].includes(typeof value) || value === null) {
-      out[key] = value;
-    }
-  }
-
-  return out;
 }
 
 /* -------------------------------------------- */
@@ -78,19 +49,13 @@ registerChatButton('o1ApplyDamage', async (message, button) => {
 /*  Roll bookkeeping                             */
 /* -------------------------------------------- */
 
-// The dataset each actor's latest Skill Test started from (Quantum Trigger retries it), and an
-// armed Unlucky (For You) watch (this roll is the "next Skill Test").
-const lastRoll = new Map();
+// An armed Unlucky (For You) watch (this roll is the "next Skill Test").
 const armedUnlucky = new Map();
-// Time Strike paid for in the dialog, read by the hit rider on the same roll.
-const armedTimeStrike = new Map();
 
-registerPreRoll(async (actor, dataset, item) => {
+registerPreRoll(async actor => {
   if (!actor?.uuid) {
     return;
   }
-
-  lastRoll.set(actor.uuid, { dataset: plainDataset(dataset), itemUuid: item?.uuid ?? null });
 
   armedUnlucky.delete(actor.uuid);
   const watch = actor.flags?.essence20?.o1UnluckyWatch;
@@ -98,48 +63,6 @@ registerPreRoll(async (actor, dataset, item) => {
     armedUnlucky.set(actor.uuid, watch);
     await safeUnsetFlag(actor, 'o1UnluckyWatch');
   }
-});
-
-/* -------------------------------------------- */
-/*  Quantum Trigger                              */
-/* -------------------------------------------- */
-
-// Quantum Trigger (A Jump Through Time, Quantum Ranger, Quantum Power, p.46): "You may spend one
-// Personal Power whenever you fail a Skill Test. You may attempt the Skill Test again immediately,
-// but with a cumulative ↓1 penalty."
-registerPostRoll(async (actor, results) => {
-  if (!allFailed(results) || !hasSourced(actor, O1_JTT.quantumTrigger) || (actor.system?.powers?.personal?.value ?? 0) < 1) {
-    return;
-  }
-
-  const last = lastRoll.get(actor.uuid);
-  if (!last) {
-    return;
-  }
-
-  const chain = (Number(last.dataset.o1QtChain) || 0) + 1;
-  const base = last.dataset.o1QtBase ?? last.dataset.shiftDown ?? 0;
-  await post(actor, `<p>${T('O1QuantumTriggerOffer', { name: actor.name, shift: chain })}</p>`
-    + `<button type="button" data-e20-ext="o1QuantumTrigger">${T('O1QuantumTriggerButton', { shift: chain })}</button>`,
-  { o1Retry: { actorUuid: actor.uuid, itemUuid: last.itemUuid, dataset: { ...last.dataset, o1QtBase: base, o1QtChain: chain } } });
-});
-
-registerChatButton('o1QuantumTrigger', async (message, button) => {
-  const retry = message.flags?.essence20?.o1Retry;
-  const actor = retry ? await fromUuid(retry.actorUuid) : null;
-  if (!actor?.isOwner) {
-    ui.notifications.warn(T('O1NotOwner'));
-    return;
-  }
-
-  if (!(await payPower(actor, 1))) {
-    return;
-  }
-
-  button.disabled = true;
-  const item = retry.itemUuid ? await fromUuid(retry.itemUuid) : null;
-  const dataset = { ...retry.dataset, shiftDown: quantumTriggerShiftDown(retry.dataset.o1QtBase, retry.dataset.o1QtChain) };
-  await actor._dice?.rollSkill(dataset, actor, item);
 });
 
 /* -------------------------------------------- */
@@ -350,64 +273,6 @@ registerUse({
 });
 
 /* -------------------------------------------- */
-/*  Time Strike                                  */
-/* -------------------------------------------- */
-
-// Time Strike (A Jump Through Time, Grid Power, p.58): "When armed with a pair of Chrono Sabers...
-// As a Standard action while Morphed, you can spend 1 Personal Power to make a single Attack Skill
-// Test with your Chrono Sabers. If it hits, this Attack counts as both Chrono Sabers hitting for
-// their base damage, and you can activate one of the Chrono Saber's Alternate Effects as if
-// achieving an additional Degree of Success." A Roll Options Dialog checkbox on a Chrono Saber
-// attack pays the Power; a hit adds the second saber's base damage and offers each of the saber's
-// other effects as a rider button.
-const isChronoSaber = weapon => /chrono saber/i.test(String(weapon?.name ?? ''));
-
-registerDialogToggles((actor, ctx) => {
-  const item = ctx?.item;
-  if (item?.type != 'weaponEffect' || !hasSourced(actor, O1_JTT.timeStrike) || !actor.system?.isMorphed
-    || !isChronoSaber(parentWeapon(actor, item)) || (actor.system?.powers?.personal?.value ?? 0) < 1) {
-    return [];
-  }
-
-  return [{ name: 'o1TimeStrike', label: T('O1TimeStrikeToggle'), type: 'checkbox', value: false }];
-});
-
-registerApplyDialog(async (actor, options, ctx) => {
-  armedTimeStrike.delete(actor.uuid);
-  if (options.ext?.o1TimeStrike && (await payPower(actor, 1))) {
-    armedTimeStrike.set(actor.uuid, ctx?.item?.id ?? true);
-  }
-});
-
-registerHitRider(async (actor, target, result, rider, tools) => {
-  if (!armedTimeStrike.has(actor.uuid)) {
-    return;
-  }
-
-  const effect = rider?.itemUuid ? await fromUuid(rider.itemUuid) : null;
-  const base = Number(effect?.system?.damageValue) || 0;
-  if (base) {
-    tools.damageBonusNote(result, base, T('O1TimeStrikeSecond'));
-  }
-
-  const weapon = parentWeapon(actor, effect);
-  for (const other of itemsOf(actor)) {
-    if (other.type == 'weaponEffect' && weapon && other.flags?.essence20?.parentId == weapon.id && other.id != effect?.id) {
-      tools.addRiderOption(result, {
-        key: `o1TimeStrike${other.id}`,
-        label: T('O1TimeStrikeAlternate', { name: other.name }),
-        damageValue: Number(other.system?.damageValue) || 0,
-        damageType: other.system?.damageType ?? 'maneuver',
-      });
-    }
-  }
-});
-
-registerPostRoll(async (actor) => {
-  armedTimeStrike.delete(actor.uuid);
-});
-
-/* -------------------------------------------- */
 /*  Special Program                              */
 /* -------------------------------------------- */
 
@@ -458,105 +323,9 @@ Hooks.on('createItem', async (item, options, userId) => {
 /*  Lance of Light                               */
 /* -------------------------------------------- */
 
-// Lance of Light (A Jump Through Time, General Perk, p.55), while summoned (helpers/lance-of-light.mjs
-// holds the toggle and the Resistance): "You may spend your Standard action to inflict 1 Energy
-// damage to any target within 10 feet without a Skill Test." and "Enemies with direct ties to the
-// Dark Dimensions... suffer ↓2 on any Skill Tests against you." The ↓2 is an incoming rule on the
-// pack item (a Dark Dimension creature tag or name, while the lanceOfLightActive flag is set).
-const lanceActive = actor => !!actor?.flags?.essence20?.lanceOfLightActive;
+// Lance of Light (A Jump Through Time, General Perk, p.55): its strike is a Use rule on the pack item (a Standard
+// action while summoned - helpers/lance-of-light.mjs holds the toggle - against a target within 10 ft, the 1 Energy
+// damage as a button for whoever owns the target), and its Dark Dimension ↓2 an incoming RollModifier there.
 
-registerUse({
-  id: 'o1LanceOfLight',
-  matches: isFrom(O1_JTT.lanceOfLight),
-  canUse: item => lanceActive(item.parent),
-  run: async (item, economy, pay) => {
-    const actor = item.parent;
-    const target = firstTarget();
-    if (!target) {
-      ui.notifications.warn(T('O1NeedTarget'));
-      return null;
-    }
-
-    const mine = actor.getActiveTokens?.()?.[0];
-    const theirs = target.getActiveTokens?.()?.[0];
-    if (mine && theirs && canvas?.grid?.measurePath?.([mine.center, theirs.center])?.distance > 10) {
-      ui.notifications.warn(T('O1TooFar', { feet: 10 }));
-      return null;
-    }
-
-    if (!(await pay('standard'))) {
-      return null;
-    }
-
-    await damageOrOffer(actor, target, 1, 'element', item.name);
-    return null;
-  },
-});
-
-/* -------------------------------------------- */
-/*  Good with Both                               */
-/* -------------------------------------------- */
-
-// Good with Both (Across the Stars, General Perk, p.69): "When attacking with a one-handed weapon in
-// each hand, your primary Attack suffers no penalty and your off-hand Attack only suffers ↓1." The
-// system tracks no hands, so the off-hand attack is the player's tick in the Roll Options Dialog;
-// the primary attack takes nothing.
-const oneHanded = item => String(item?.system?.numHands ?? '1') == '1';
-
-registerDialogToggles((actor, ctx) => {
-  const item = ctx?.item;
-  if (item?.type != 'weaponEffect' || !oneHanded(item) || !hasSourced(actor, O1_JTT.goodWithBoth)) {
-    return [];
-  }
-
-  const equipped = itemsOf(actor).filter(weapon => weapon.type == 'weapon' && weapon.system?.equipped);
-  if (equipped.length < 2) {
-    return [];
-  }
-
-  return [{ name: 'o1OffHand', label: T('O1GoodWithBothToggle'), type: 'checkbox', value: false }];
-});
-
-registerApplyDialog((actor, options) => {
-  if (options.ext?.o1OffHand) {
-    options.shiftDown = (Number(options.shiftDown) || 0) + 1;
-  }
-});
-
-/* -------------------------------------------- */
-/*  Savant Skill - the Story Point refund        */
-/* -------------------------------------------- */
-
-// Savant Skill (A Jump Through Time, General Perk, p.56): "If you spend a Story Point to re-roll a
-// die using this Skill and your second result fails, you regain that Story Point." The d20+d4 half
-// is dice.mjs's. A Story Point reroll posts its own card (chat.mjs#rerollMessage); this compares
-// its total with the Difficulties on that actor's latest check card.
-Hooks.on('createChatMessage', async (message) => {
-  const authorId = message.author?.id ?? message.user?.id;
-  if (authorId != game.user?.id || message.flags?.essence20?.rerollConfig?.source != 'storyPoint') {
-    return;
-  }
-
-  const actor = ChatMessage.getSpeakerActor?.(message.speaker);
-  const savant = findSourced(actor, O1_JTT.savantSkill);
-  if (!savant?.system?.choice) {
-    return;
-  }
-
-  const messages = game.messages?.contents ?? [];
-  const index = messages.findIndex(m => m.id == message.id);
-  const earlier = (index >= 0 ? messages.slice(0, index) : messages).reverse();
-  const original = earlier.find(m => m.speaker?.actor == message.speaker?.actor && m.flags?.essence20?.checkResults?.length);
-  if (!original || original.flags.essence20.skill != savant.system.choice) {
-    return;
-  }
-
-  const total = message.rolls?.[0]?.total;
-  if (!Number.isFinite(total) || !rerollStillFails(total, original.flags.essence20.checkResults)) {
-    return;
-  }
-
-  const { poolFor, requestStoryPointGrant } = await import("../../story-points.mjs");
-  await requestStoryPointGrant(actor, 1, { pool: poolFor(actor) });
-  await post(actor, T('O1SavantRefund', { name: actor.name, perk: savant.name }));
-});
+// (Good with Both, Across the Stars p.69, is its own DialogSwitch rule: the off-hand ↓1 on a one-handed attack
+// while two or more weapons are equipped.)

@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { onPrimeonComponent, WEAPON22, weaponHitRider, weaponRollSources } from './weapons.mjs';
+import { onPrimeonComponent, WEAPON22, weaponHitRider } from './weapons.mjs';
 
 function makeActor(extra = {}) {
   const actor = {
@@ -18,25 +18,11 @@ beforeEach(() => {
   global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
 });
 
-test('Demolecularization Gun marks the target for the scene; Sharp attacks then have Edge', async () => {
-  const shooter = makeActor();
-  const target = makeActor({ id: 't' });
-  await weaponHitRider(shooter, target, { success: true }, { weaponSource: WEAPON22.demolecularizationGun });
-  expect(target.flags.essence20.d22Demolecularized).toMatchObject({ scene: 3 });
-  expect(ChatMessage.create).toHaveBeenCalled();
-
-  const sharp = { system: { damageType: 'sharp' } };
-  expect(weaponRollSources(makeActor(), target, { item: sharp, isAttack: true }).sources[0]).toMatchObject({ edge: true });
-  expect(weaponRollSources(makeActor(), target, { item: { system: { damageType: 'blunt', secondaryDamage: { type: 'sharp' } } }, isAttack: true }).sources).toHaveLength(1);
-  expect(weaponRollSources(makeActor(), target, { item: { system: { damageType: 'blunt' } }, isAttack: true }).sources).toEqual([]);
-  game.settings.get = () => 4;
-  expect(weaponRollSources(makeActor(), target, { item: sharp, isAttack: true }).sources).toEqual([]);
-});
-
+// The Demolecularization Gun is its item's own rules (rules/conv10-slC10.test.js).
 test('a miss marks nothing', async () => {
   const target = makeActor({ id: 't' });
-  await weaponHitRider(makeActor(), target, { success: false }, { weaponSource: WEAPON22.demolecularizationGun });
-  await weaponHitRider(makeActor(), null, { success: true }, { weaponSource: WEAPON22.demolecularizationGun });
+  await weaponHitRider(makeActor(), target, { success: false }, { weaponSource: WEAPON22.assaultClaw, damageType: 'grapple' });
+  await weaponHitRider(makeActor(), null, { success: true }, { weaponSource: WEAPON22.assaultClaw, damageType: 'grapple' });
   expect(target.setFlag).not.toHaveBeenCalled();
 });
 
@@ -47,7 +33,6 @@ test('Assault Claw grapple marks the target', async () => {
   expect(target.setFlag).not.toHaveBeenCalled();
   await weaponHitRider(makeActor(), target, { success: true }, { weaponSource: WEAPON22.assaultClaw, damageType: 'grapple' });
   expect(target.setFlag).toHaveBeenCalledWith('essence20', 'd22AssaultClawGrapple', expect.objectContaining({ scene: expect.anything() }));
-  expect(weaponRollSources(target, null, { rolledSkill: 'athletics', isAttack: false }).sources).toEqual([]);
 });
 
 test('Primeon Blade offers the extra Energy damage to a Combiner component', async () => {

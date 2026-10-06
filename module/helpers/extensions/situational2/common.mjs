@@ -1,7 +1,7 @@
 /**
  * Shared lookups for the situational2 extension (helpers/extensions/situational2/situational2.mjs):
  * the items it automates, "does this actor hold/wear it", and the situation checks - terrain,
- * water, land, darkness, libraries, StrexCorp - each answering true, false, or null ("nothing on
+ * water, land, darkness, StrexCorp - each answering true, false, or null ("nothing on
  * the scene says"), so a roll can apply a known situation automatically and offer a dialog
  * checkbox for an unknown one.
  *
@@ -9,45 +9,17 @@
  * situational2.mjs with dynamic imports, so this file imports nothing that can loop back.
  */
 
-const uuid = (pack, id) => `Compendium.essence20.${pack}.Item.${id}`;
-
 // Several of these ids exist in more than one pack (the MLP CRB clothing and the PR Weatherproof are
 // copies of the GI Joe CRB entries), so items are matched by their compendium _id, not the full uuid.
 export const S2 = {
-  arcticExpedition: 'pWRpmsOcWIv9trHP',
   competitive: 'Vk2EFSSBfmunP5fk',
-  desertExpedition: 'SQzr6PhXZQ338BBh',
-  forgiving: '985JSL4ANRcKb1EX',
   misplacedConfidence: 'LcKUw5rQd19ovk4I',
   takeInAScene: 'gT6SEHJIK6ob0v7T',
-  caltrops: 'LN0w8SB1fHhidIVp',
-  amphibiousAssault: 'X2atZm3eoIBJcwF6',
-  rifleTritium: 'zIyTgNkWkKUcWBSR',
-  seafarerHangUp: 'ahWxUG3w6KkfgUDw',
-  seafarer: 'vZjp9ncpzhgLIzSm',
-  sharksFin: 'c3tBbGzXDar3DA1E',
-  shipShape: 'MejI6WIShcA0GdoW',
-  feetWet: '7u3xCPPjxJlI7c61',
-  tritiumSights: 'dyNyzaagojOboB3y',
-  cartographySuite: 'l2dioJyakPropGEx',
-  layOfTheLand: 'CTt9gmibpffGC0N4',
-  plow: 'y7VBydpKD8O63C3b',
-  bookworm: 'p2Qk0B5PWp10ZaqN',
-  business: '6Vke4qKEaYjjRWQt',
-  desertGear: 'tv0pOgALa608pw8i',
-  trackingOutfit: 'NHhNnkBBM29NpGpL',
-};
-
-export const S2_UUID = {
-  bookworm: uuid('wtnv_citizens_guide', S2.bookworm),
 };
 
 export const FLAG = {
   competitive: 's2CompetitiveSnag',
-  forgiving: 's2ForgivingAggressors',
   misplaced: 's2MisplacedConfidence',
-  plowRam: 's2PlowRam',
-  survey: 's2CartographySurvey',
 };
 
 /** Filled at init (situational2.mjs#loadDeps) - tests set them directly. */
@@ -90,12 +62,6 @@ export function findById(actor, id, type = null) {
 
 export const has = (actor, id, type = null) => !!findById(actor, id, type);
 
-/** Worn gear (the gear data model's own `equipped`, true by default). */
-export function wornGear(actor, id) {
-  const item = findById(actor, id, 'gear');
-  return item && item.system?.equipped !== false ? item : null;
-}
-
 /* -------------------------------------------- */
 /*  Where the actor is                          */
 /* -------------------------------------------- */
@@ -115,12 +81,6 @@ export function sceneOf(actor) {
 }
 
 export const terrainOf = actor => deps.getTerrain(actor) ?? null;
-
-/** "In the wild" (Tracking Outfit) - any terrain the GM set that isn't urban. */
-export function isWild(actor) {
-  const terrain = terrainOf(actor);
-  return terrain ? terrain != 'urban' : null;
-}
 
 /** The first vehicle this actor crews, with their seat. */
 export function crewedVehicle(actor) {
@@ -181,35 +141,6 @@ export function isCompleteDarkness(actor) {
   return typeof level == 'number' && level >= 0.95 ? true : null;
 }
 
-function tagsOf(actor) {
-  const typed = actor?.system?.creatureTags;
-  return (Array.isArray(typed) ? typed : String(typed ?? '').split(',')).map(tag => String(tag).trim().toLowerCase());
-}
-
-const nameMatches = (doc, pattern) => pattern.test(String(doc?.name ?? ''));
-
-/** A Librarian (WTNV) - by creature tag or name. */
-export function isLibrarian(actor) {
-  return !!actor && (tagsOf(actor).includes('librarian') || nameMatches(actor, /librarian/i));
-}
-
-/** A StrexCorp agent (WTNV) - by creature tag or name. */
-export function isStrexAgent(actor) {
-  return !!actor && (tagsOf(actor).some(tag => tag.startsWith('strex')) || nameMatches(actor, /strex/i));
-}
-
-/**
- * Bookworm's "in a library or facing a Librarian": true when the targeted creature is a Librarian
- * or the scene is named as a library, else null.
- */
-export function isLibrarySituation(actor, target) {
-  if (isLibrarian(target) || nameMatches(sceneOf(actor), /librar/i)) {
-    return true;
-  }
-
-  return null;
-}
-
 /** Same side: both tokens share a disposition, or (no tokens) both are Player Characters. */
 export function sameSide(a, b) {
   const ta = tokenDocOf(a);
@@ -219,15 +150,4 @@ export function sameSide(a, b) {
   }
 
   return a?.type == 'playerCharacter' && b?.type == 'playerCharacter';
-}
-
-/** A weaponEffect's parent weapon on the same actor. */
-export function parentWeapon(actor, item) {
-  const parentId = item?.flags?.essence20?.parentId;
-  return parentId ? actor?.items?.get?.(parentId) ?? null : null;
-}
-
-export function weaponHasUpgradeId(actor, weapon, id) {
-  return !!weapon && itemsOf(actor).some(item => item.type == 'upgrade'
-    && item.flags?.essence20?.parentId == weapon.id && idOf(sourceOf(item)) == id);
 }

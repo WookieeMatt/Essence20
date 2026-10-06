@@ -79,14 +79,16 @@ export function hostMatches(ruleItem, item) {
  */
 export function rollRules(actor, target, roll, types = ['RollModifier']) {
   const out = [];
-  const facts = { ...roll, ...rollFacts(roll.item, roll) };
+  // roll:targets reads how many tokens the user has targeted for this roll (afterRoll Triggers count the hits instead).
+  const facts = { targetCount: globalThis.game?.user?.targets?.size, ...roll, ...rollFacts(roll.item, roll) };
   for (const type of types) {
     for (const entry of affecting(actor, type, ['self', 'host'])) {
       if ((entry.rule.scope ?? 'self') == 'host' && !hostMatches(entry.item, roll.item)) {
         continue;
       }
 
-      const ctx = contextFor({ ...facts, self: actor, ruleItem: entry.item, other: target });
+      // holder: the actor whose item it is (another actor for a linked rule - holder: tags).
+      const ctx = contextFor({ ...facts, self: actor, holder: entry.holder, ruleItem: entry.item, other: target });
       // A modifier with a limit stops applying once its uses are spent (spent when a roll takes it).
       const spent = entry.rule.limit?.per && usesLeft(entry.holder, entry.rule, entry.item, entry.index) <= 0;
       out.push({ ...entry, owner: entry.holder, answer: spent ? false : evaluate(entry.rule.when, ctx) });
@@ -106,9 +108,10 @@ export function rollRules(actor, target, roll, types = ['RollModifier']) {
 }
 
 /** A RollModifier/DialogSwitch's shifts, resolved against its own actor and item. */
-export function shiftsOf(rule, owner, item, vars = undefined, other = null) {
-  // vars: {spent} for a switch that spends an amount (@spent); other: the roll's target (@target.*).
-  const scope = { actor: owner, item, vars, other };
+export function shiftsOf(rule, owner, item, vars = undefined, other = null, rolled = null) {
+  // vars: {spent} for a switch that spends an amount (@spent); other: the roll's target (@target.*); rolled: the
+  // item the roll is made with (@rolled.*).
+  const scope = { actor: owner, item, vars, other, rolled };
   return {
     shiftUp: Math.max(0, Math.round(resolveValue(rule.upshift, scope))),
     shiftDown: Math.max(0, Math.round(resolveValue(rule.downshift, scope))),
@@ -183,7 +186,14 @@ export function ruleRollSources(actor, target, ctx = {}) {
       consumes.push({ ext: 'rulesLimit', actorUuid: owner.uuid, itemId: item.id, index });
     }
 
-    const shifts = shiftsOf(rule, owner, item, undefined, target);
+    // consumeMark: the mark this modifier reads is used up by the roll (on the roller, or consumeFrom: target).
+    // consumeFrom roller: the actor rolling (a rule a mark carried onto it - rules/ext/c/marks.mjs).
+    const marked = rule.consumeMark ? (rule.consumeFrom == 'target' ? target : rule.consumeFrom == 'roller' ? actor : owner) : null;
+    if (marked?.uuid) {
+      consumes.push({ ext: 'rulesMark', actorUuid: marked.uuid, key: rule.consumeMark });
+    }
+
+    const shifts = shiftsOf(rule, owner, item, undefined, target, ctx.item);
     if (!shifts.shiftUp && !shifts.shiftDown && !shifts.edge && !shifts.snag) {
       continue;
     }
@@ -329,7 +339,8 @@ export function ruleDialogSwitches(actor, ctx = {}) {
 
     switches.push({
       name: ruleId(item, index),
-      label: ruleLabel(rule, item),
+      // {holder}: the name of the actor holding a linked switch (an ally's Ladder - scope alliesAnywhere).
+      label: ruleLabel(rule, item).replace(/\{holder\}/g, owner?.name ?? ''),
       type: 'checkbox',
       // A DialogSwitch starts at its own default; a RollModifier that has to ask starts off unless it
       // says `default: true`.
@@ -688,7 +699,7 @@ function heldRules(actor, type) {
  * @returns {String[]}
  */
 export function ruleWeaponTraits(actor, weapon, traits) {
-  const seen = { ...weapon, name: weapon?.name, flags: weapon?.flags, parent: weapon?.parent, system: { ...(weapon?.system ?? {}), traits } };
+  const seen = { ...weapon, id: weapon?.id, uuid: weapon?.uuid, name: weapon?.name, flags: weapon?.flags, parent: weapon?.parent, system: { ...(weapon?.system ?? {}), traits } };
   const out = [];
   for (const { rule, item } of heldRules(actor, 'WeaponTrait')) {
     if (!Array.isArray(rule.items) || !rule.items.length || evaluate(rule.items, contextFor({ self: actor, item: seen, ruleItem: item, combat: null })) === true) {
@@ -971,8 +982,9 @@ export function ruleAssist(helper, ally, skill, essence = null) {
 
 /** Whether a ConditionImmunity rule keeps this Condition off the actor right now. */
 export function ruleConditionImmune(actor, statusId) {
-  return affecting(actor, 'ConditionImmunity').some(({ rule, item }) => (rule.conditions ?? []).includes(statusId)
-    && evaluate(rule.when, contextFor({ self: actor, ruleItem: item })) === true);
+  // holder: the actor whose item it is (an aura's holder - holder:protects, Danger Sense's Protected Target).
+  return affecting(actor, 'ConditionImmunity').some(({ rule, item, holder }) => (rule.conditions ?? []).includes(statusId)
+    && evaluate(rule.when, contextFor({ self: actor, holder: holder ?? actor, ruleItem: item })) === true);
 }
 
 const ACCESS_ORDER = ['unknown', 'none', 'trained', 'qualified'];
@@ -1070,6 +1082,8 @@ export function ruleMovementStages(actor) {
   return (stage, type, value) => {
     let result = value;
     let changed = false;
+    // round: floor / ceil on any applied rule (Ship Shape's x1.5 rounded down); nearest otherwise.
+    let rounding = 'nearest';
     const live = entries.filter(({ rule }) => (rule.stage ?? 'final') == stage && (rule.movement == 'all' || rule.movement == type));
     for (const op of MOVEMENT_OPS) {
       for (const { rule, item, holder } of live) {
@@ -1080,10 +1094,12 @@ export function ruleMovementStages(actor) {
         const amount = resolveValue(rule.value, { actor: holder, item }, 0);
         result = { set: amount, multiply: result * amount, add: result + amount, max: Math.max(result, amount), min: Math.min(result, amount) }[op];
         changed = true;
+        rounding = rule.round ?? rounding;
       }
     }
 
-    return changed ? Math.max(0, Math.round(result)) : null;
+    const round = { floor: Math.floor, ceil: Math.ceil }[rounding] ?? Math.round;
+    return changed ? Math.max(0, round(result)) : null;
   };
 }
 
@@ -1108,8 +1124,9 @@ export function ruleSenses(actor) {
 export function ruleSurpriseModes(actor) {
   rebuildIndex(actor);
   const modes = new Set();
-  for (const { rule, item } of affecting(actor, 'SurpriseExemption')) {
-    if (evaluate(rule.when, contextFor({ self: actor, ruleItem: item })) === true) {
+  for (const { rule, item, holder } of affecting(actor, 'SurpriseExemption')) {
+    // holder: tags read the actor whose item it is (an aura's holder - Cartography Suite's survey).
+    if (evaluate(rule.when, contextFor({ self: actor, holder, ruleItem: item })) === true) {
       modes.add(rule.mode ?? 'normal');
     }
   }
@@ -1136,7 +1153,10 @@ export function ruleDerived(actor) {
   }
 
   for (const { rule, item, holder } of affecting(actor, 'DerivedStat', ['self', 'host'])) {
-    if (!isStatic(rule.when) || evaluate(rule.when, staticCtx(item)) !== true || !String(rule.path ?? '').startsWith('system.')) {
+    // {choice.<key>} in the path reads a pick (Mentor's Skill); with no pick yet the rule does nothing.
+    const path = interpolate(String(rule.path ?? ''), item);
+    // stage early: applied before the poison training is worked out (rules/ext/e/derived.mjs), not here.
+    if (rule.stage == 'early' || !isStatic(rule.when) || evaluate(rule.when, staticCtx(item)) !== true || !path?.startsWith('system.')) {
       continue;
     }
 
@@ -1145,7 +1165,13 @@ export function ruleDerived(actor) {
       continue;
     }
 
-    writeNumber(target, rule.path, rule.op, resolveValue(rule.value, { actor: holder, item }), ruleLabel(rule, item));
+    // true / false: a switch on the actor (resistances, "is Qualified"), set as it is.
+    if (typeof rule.value == 'boolean') {
+      globalThis.foundry?.utils?.setProperty?.(target, path, rule.value);
+      continue;
+    }
+
+    writeNumber(target, path, rule.op, resolveValue(rule.value, { actor: holder, item }), ruleLabel(rule, item));
   }
 
   // ItemModifier: numbers on the actor's other items. Items prepare before their actor, so these
@@ -1155,9 +1181,10 @@ export function ruleDerived(actor) {
       continue;
     }
 
-    const value = resolveValue(rule.value, { actor, item });
     for (const other of actor.items?.contents ?? [...(actor.items ?? [])]) {
       if (other !== item && evaluate(rule.items, contextFor({ self: actor, item: other, ruleItem: item })) === true) {
+        // @other.<path>: the item being changed (its own reach multiplier...).
+        const value = resolveValue(rule.value, { actor, item, otherItem: other });
         writeNumber(other, rule.path, rule.op, value, ruleLabel(rule, item));
         // Derived only - listed like an upgrade's own changes (helpers/weapon-upgrades.mjs), so the
         // item sheet keeps editing the stored value rather than saving the changed one back.
@@ -1343,8 +1370,10 @@ async function resetPools(actor, reset) {
   }
 }
 
+// The world's actors and the unlinked tokens' on the viewed / active scene (rules/triggers.mjs#sweepActors).
 async function resetAllPools(reset) {
-  for (const actor of globalThis.game?.actors ?? []) {
+  const { sweepActors } = await import("./triggers.mjs");
+  for (const actor of sweepActors()) {
     await resetPools(actor, reset);
   }
 }
@@ -1356,6 +1385,16 @@ async function resetAllPools(reset) {
 registerRollSources(ruleRollSources);
 registerConsumer('rulesBank', consume => consumeBanked(consume));
 registerConsumer('rulesLimit', consume => consumeLimited(consume));
+registerConsumer('rulesMark', async consume => {
+  const actor = await globalThis.fromUuid?.(consume.actorUuid);
+  // The key's own mark and every setter's copy of it.
+  const keys = Object.keys(actor?.flags?.essence20?.ruleMarks ?? {}).filter(name => name == consume.key || name.startsWith(`${consume.key}--`));
+  if (keys.length) {
+    const { needsGmRelay, relayToGm } = await import("../helpers/gm-relay.mjs");
+    const update = [Object.fromEntries(keys.map(name => [`flags.essence20.ruleMarks.-=${name}`, null]))];
+    await (needsGmRelay(actor) ? relayToGm(actor, 'update', update) : actor.update(...update));
+  }
+});
 registerSpecializes(ruleSpecializes);
 registerDialogToggles((actor, ctx) => ruleDialogSwitches(actor, ctx).map(({ entry: _entry, ...toggle }) => toggle));
 registerApplyDialog(applyRuleSwitches);

@@ -5,6 +5,10 @@
   "_id": "qjDBmRlTNvuJxyum",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Broad Understanding in combat","when":["not:self:hasItem:Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk"],"limit":{"per":"scene","max":1,"key":"appliedScience"},"steps":[{"do":"mark","key":"appliedScience"},{"do":"chat","text":"{name} may use Broad Understanding on their next Science test in combat."}]},
+      {"type":"Use","label":"Broad Understanding in combat","when":["self:hasItem:Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk"],"limit":{"per":"scene","max":2,"key":"appliedScience"},"steps":[{"do":"mark","key":"appliedScience"},{"do":"chat","text":"{name} may use Broad Understanding on their next Science test in combat."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene in combat, lets you use Broad Understanding and Thesis despite being in combat.</p>"

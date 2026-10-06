@@ -1,18 +1,14 @@
 import {
-  registerAfterDamage, registerChatButton, registerChatDecorator, registerDerived, registerPostRoll,
-  registerPreRoll, registerTurnStart, registerUse,
+  registerAfterDamage, registerChatButton, registerChatDecorator, registerPreRoll, registerUse,
 } from "../../extensions.mjs";
 import { getUses, markUsed } from "../../scene-clock.mjs";
-import { G2, T, escape, findSourced, hasItem, itemsOf, perkUseCard, post, sourceOf } from "./shared.mjs";
+import { G2, T, escape, findSourced, hasItem, perkUseCard, post, sourceOf } from "./shared.mjs";
 
 /**
- * GI JOE CRB Perks that needed a Use button, a roll hook or a follow-up reminder: Expert Knowledge,
- * Mentor, Martial Artist, Nose For Trouble's Streetwise swap, Energy Resistant, Queen's
- * Gambit, Castling's move, Plan of Action's split and Fearsome Presence's range, count and expiry.
+ * GI JOE CRB Perks that needed a Use button, a roll hook or a follow-up reminder: Martial Artist,
+ * Nose For Trouble's Streetwise swap, Queen's Gambit, Castling's move and Plan of Action's split.
  */
 
-const skillLabel = skill => game.i18n.localize(CONFIG.E20?.skills?.[skill] ?? skill);
-const essenceLabel = essence => game.i18n.localize(CONFIG.E20?.essences?.[essence] ?? essence);
 const SHIFTS = () => CONFIG.E20?.skillShiftList ?? [];
 
 async function grantsApi() {
@@ -30,158 +26,12 @@ async function setFlagOn(doc, key, value) {
   return true;
 }
 
-async function unsetFlagOn(doc, key) {
-  const { needsGmRelay, relayToGm } = await import("../../gm-relay.mjs");
-  if (needsGmRelay(doc)) {
-    return relayToGm(doc, 'unsetFlag', ['essence20', key]);
-  }
-
-  await doc.unsetFlag('essence20', key);
-  return true;
-}
-
-async function toggleStatusOn(actor, status, active) {
-  const { needsGmRelay, relayToGm } = await import("../../gm-relay.mjs");
-  if (needsGmRelay(actor)) {
-    return relayToGm(actor, 'toggleStatusEffect', [status, { active }]);
-  }
-
-  return actor.toggleStatusEffect(status, { active });
-}
-
 function tokenOf(actor) {
   return actor?.getActiveTokens?.()?.[0] ?? null;
 }
 
-function feetBetween(a, b) {
-  if (!a?.center || !b?.center || !canvas?.grid) {
-    return null;
-  }
-
-  return canvas.grid.measurePath([a.center, b.center]).distance;
-}
-
-/* -------------------------------------------- */
-/*  Choices made when the item is taken          */
-/* -------------------------------------------- */
-
-// Expert Knowledge (Origin, p.67): "When you choose this Origin, select an area of study covered by
-// a Smarts skill." Mentor (General Perk, p.132): "Choose a Skill. You may associate that Skill with
-// an additional Essence." Energy Resistant (armor upgrade, p.156): "Choose an Element."
-export const EXPERT_FLAG = 'gij2ExpertSkill';
-export const MENTOR_FLAG = 'gij2Mentor';
-export const ELEMENT_FLAG = 'gij2Element';
-export const ELEMENTS = ['acid', 'cold', 'electric', 'emp', 'fire', 'laser', 'sonic'];
-
-export function smartsSkills() {
-  return Object.entries(CONFIG.E20?.skillToEssence ?? {}).filter(([, e]) => e == 'smarts').map(([skill]) => skill);
-}
-
-async function chooseExpertSkill(item) {
-  const { chooseSelect } = await grantsApi();
-  const skill = await chooseSelect(item.name, T('E20.Gij2ExpertKnowledgePrompt'),
-    smartsSkills().map(value => ({ value, label: skillLabel(value) })));
-  if (!skill) {
-    return null;
-  }
-
-  await item.setFlag('essence20', EXPERT_FLAG, skill);
-  return T('E20.Gij2ChoiceSet', { name: item.parent?.name ?? '', item: item.name, choice: skillLabel(skill) });
-}
-
-async function chooseMentor(item) {
-  const { chooseSelect } = await grantsApi();
-  const skill = await chooseSelect(item.name, T('E20.Gij2MentorSkillPrompt'),
-    Object.keys(CONFIG.E20?.skillToEssence ?? {}).map(value => ({ value, label: skillLabel(value) })));
-  if (!skill) {
-    return null;
-  }
-
-  const own = CONFIG.E20.skillToEssence[skill];
-  const essence = await chooseSelect(item.name, T('E20.Gij2MentorEssencePrompt', { skill: skillLabel(skill) }),
-    ['strength', 'speed', 'smarts', 'social'].filter(e => e != own).map(value => ({ value, label: essenceLabel(value) })));
-  if (!essence) {
-    return null;
-  }
-
-  await item.setFlag('essence20', MENTOR_FLAG, { skill, essence });
-  return T('E20.Gij2ChoiceSet', { name: item.parent?.name ?? '', item: item.name, choice: `${skillLabel(skill)} + ${essenceLabel(essence)}` });
-}
-
-async function chooseElement(item) {
-  const { chooseSelect } = await grantsApi();
-  const element = await chooseSelect(item.name, T('E20.Gij2ElementPrompt'),
-    ELEMENTS.map(value => ({ value, label: game.i18n.localize(CONFIG.E20.damageTypes?.[value] ?? value) })));
-  if (!element) {
-    return null;
-  }
-
-  await item.setFlag('essence20', ELEMENT_FLAG, element);
-  return T('E20.Gij2ChoiceSet', { name: item.parent?.name ?? '', item: item.name, choice: game.i18n.localize(CONFIG.E20.damageTypes?.[element] ?? element) });
-}
-
-const CHOOSERS = {
-  [G2.expertKnowledge]: chooseExpertSkill,
-  [G2.mentor]: chooseMentor,
-  [G2.energyResistant]: chooseElement,
-};
-
-for (const [uuid, run] of Object.entries(CHOOSERS)) {
-  registerUse({ id: `gij2Choose-${uuid.slice(-16)}`, matches: item => sourceOf(item) == uuid && !!item.parent, run: item => run(item) });
-}
-
-// Ask right away when the item lands on an actor (dropped, or granted - For The Syndicate grants Mentor).
-globalThis.Hooks?.on?.('createItem', (item, options, userId) => {
-  const run = CHOOSERS[sourceOf(item)];
-  if (run && item.parent && userId == game.user?.id) {
-    run(item);
-  }
-});
-
-/** Mentor's extra Essence and Energy Resistant's Resistance, in derived data. */
-export function perkDerived(actor) {
-  const skills = actor?.system?.skills;
-  for (const item of itemsOf(actor)) {
-    const source = sourceOf(item);
-    if (source == G2.mentor) {
-      const pick = item.flags?.essence20?.[MENTOR_FLAG];
-      if (pick?.skill && pick.essence && skills?.[pick.skill]?.essences) {
-        skills[pick.skill].essences[pick.essence] = true;
-      }
-    } else if (source == G2.energyResistant) {
-      // "You are Resistant to Damage of that Element" - while the upgraded battledress is worn.
-      const element = item.flags?.essence20?.[ELEMENT_FLAG];
-      const parentId = item.flags?.essence20?.parentId;
-      const worn = !parentId || !!actor.items?.get?.(parentId)?.system?.equipped;
-      if (element && worn && actor.system?.resistances) {
-        actor.system.resistances[element] = true;
-      }
-    }
-  }
-}
-
-registerDerived(perkDerived);
-
-/* -------------------------------------------- */
-/*  Expert Knowledge                             */
-/* -------------------------------------------- */
-
-// Expert Knowledge (Origin, p.67): "When you succeed on a Skill Test in your area of study, you gain
-// an additional benefit (such greater information, additional healing, more potent effects) as if you
-// rolled a critical success. If you critically succeed in your area of study, you gain two additional
-// benefits instead of one." What the benefit is stays the GM's; the card says how many are owed.
-export async function expertKnowledgePostRoll(actor, results, checkContext, { isCrit } = {}) {
-  const skill = checkContext?.riderContext?.skill;
-  const item = findSourced(actor, G2.expertKnowledge);
-  if (!item || !skill || item.flags?.essence20?.[EXPERT_FLAG] != skill || !(results ?? []).some(r => r?.success)) {
-    return;
-  }
-
-  const crit = isCrit || (results ?? []).some(r => r?.success && r.multiplier >= 2);
-  await post(actor, T('E20.Gij2ExpertKnowledgeCard', { name: actor.name, perk: item.name, count: crit ? 2 : 1 }));
-}
-
-registerPostRoll(expertKnowledgePostRoll);
+// Mentor, Expert Knowledge and Energy Resistant (their picks and what they give) are item rules now -
+// rules/conv5-slC5.test.js and rules/conv4-slC4.test.js.
 
 /* -------------------------------------------- */
 /*  Martial Artist                               */
@@ -428,76 +278,5 @@ registerChatButton('gij2PlanSplit', async (message, button) => {
   await post(officer, T('E20.Gij2PlanSplitDone', { first: escape(first.name), a: pending.shiftUp - moved, second: escape(second.name), b: moved }));
 });
 
-/* -------------------------------------------- */
-/*  Fearsome Presence                            */
-/* -------------------------------------------- */
-
-export const FEARSOME_FLAG = 'gij2FearsomeFrightened';
-const FEARSOME_RANGE = 20;
-const FEARSOME_MAX = 3;
-
-// Fearsome Presence (Renegade, 14th level, p.97): "Choose up to three characters within 20 feet and
-// roll your Intimidation against their Willpower. If you are successful, they gain the Frightened
-// Condition towards you until the start of your next turn and must move away from you if it is safe
-// to do so." dice.mjs frightens every target the roll beat; this keeps it to the first three within
-// 20 feet, stamps who frightened them, and lifts it at the start of the Renegade's next turn.
-registerPreRoll(async (actor, dataset) => {
-  if (!dataset?.isFearsomePresence) {
-    return;
-  }
-
-  const targets = [...(game.user?.targets ?? [])];
-  const mine = tokenOf(actor);
-  const far = targets.filter(t => (feetBetween(mine, t) ?? 0) > FEARSOME_RANGE);
-  if (targets.length > FEARSOME_MAX || far.length) {
-    ui.notifications.warn(T('E20.Gij2FearsomeLimits', { count: FEARSOME_MAX, range: FEARSOME_RANGE }));
-  }
-});
-
-export async function fearsomePostRoll(actor, results, checkContext) {
-  if (!checkContext?.isFearsomePresenceAttempt) {
-    return;
-  }
-
-  const mine = tokenOf(actor);
-  let counted = 0;
-  const frightened = [];
-  for (const result of results ?? []) {
-    if (!result?.success || !result.targetUuid) {
-      continue;
-    }
-
-    const target = await fromUuid(result.targetUuid);
-    if (!target) {
-      continue;
-    }
-
-    const distance = feetBetween(mine, tokenOf(target));
-    counted += 1;
-    if (counted > FEARSOME_MAX || (distance != null && distance > FEARSOME_RANGE)) {
-      await toggleStatusOn(target, 'frightened', false);
-      continue;
-    }
-
-    await setFlagOn(target, FEARSOME_FLAG, { by: actor.uuid });
-    frightened.push(target.name);
-  }
-
-  if (frightened.length) {
-    await post(actor, T('E20.Gij2FearsomeCard', { name: actor.name, targets: escape(frightened.join(', ')) }));
-  }
-}
-
-registerPostRoll(fearsomePostRoll);
-
-export async function fearsomeExpire(actor) {
-  const actors = (canvas?.tokens?.placeables ?? []).map(t => t.actor).filter(Boolean);
-  for (const target of actors) {
-    if (target.flags?.essence20?.[FEARSOME_FLAG]?.by == actor?.uuid && actor?.uuid) {
-      await target.toggleStatusEffect('frightened', { active: false });
-      await unsetFlagOn(target, FEARSOME_FLAG);
-    }
-  }
-}
-
-registerTurnStart(fearsomeExpire);
+// Fearsome Presence (Renegade, 14th level, p.97) is a Use rule on its Perk: the first three hits within 20 ft are
+// Frightened until the Renegade's next turn starts (a turnStart Trigger lifts it).

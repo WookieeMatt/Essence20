@@ -5,6 +5,10 @@
   "_id": "yYaK1g58FCPpSNUr",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"megaform","upshift":1,"when":["attack:melee","megaform:holderAttack","not:rule:data:system.attackType=ranged"]},
+      {"type":"RollModifier","scope":"megaform","upshift":1,"when":["attack:ranged","megaform:holderAttack","rule:data:system.attackType=ranged"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when a Megaform attacks with this Zord's melee or ranged attacks (whichever the trait is set to), the attack gets ↑1, listed as Accurate Combiner (with the Zord's name) in the Roll Options Dialog. Take the trait a second time to cover the other attack type.</p>"

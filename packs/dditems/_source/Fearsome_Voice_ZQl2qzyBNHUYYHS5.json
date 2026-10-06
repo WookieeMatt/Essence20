@@ -5,6 +5,10 @@
   "_id": "ZQl2qzyBNHUYYHS5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Add the attack","when":["not:rule:granted"],"steps":[{"do":"createItem","data":{"name":"Fearsome Voice","type":"weapon","system":{"classification":{"size":"sidearm"},"availability":"standard","equipped":true,"hardpoint":{"type":"none"}},"flags":{"essence20":{"natural":true}}},"children":[{"name":"Fearsome Voice","type":"weaponEffect","system":{"classification":{"skill":"intimidation","style":"energy"},"damageType":"stun","damageValue":1,"defenseType":"willpower","numTargets":1,"numHands":0,"range":{"value":20,"long":60}}}]}]},
+      {"type":"Trigger","label":"Critical Success: target Frightened (Fearsome Voice)","event":"hit","outcome":"double","when":["item:granted"],"steps":[{"do":"applyCondition","to":"target","condition":"frightened","rounds":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: adds the Fearsome Voice attack (Intimidation against Willpower, 20/60 ft, Stun 1). A Critical Success leaves the target Frightened.</p>"

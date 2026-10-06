@@ -8,7 +8,8 @@
     "rules": [
       {"type":"RollModifier","label":"Out of the Jungle (non-attack tests)","when":["not:attack","not:roll:initiative"],"edge":true},
       {"type":"RollModifier","label":"Out of the Jungle (attacks are Specialized)","when":["attack"],"specialize":true},
-      {"type":"MovementAction","label":"Out of the Jungle (ignores Rough Terrain)","ignoreRoughTerrain":true}
+      {"type":"MovementAction","label":"Out of the Jungle (ignores Rough Terrain)","ignoreRoughTerrain":true},
+      {"type":"RollModifier","label":"Out of the Jungle (light armor counts as Silent)","stack":"jungleFighterSilent","when":["skill:infiltration","not:self:wearingItem:item:type:armor&not:item:data:system.classification=light","not:self:wearingItem:item:type:armor&item:data:system.isPowerArmor","not:self:wearingItem:item:type:armor&item:trait:silent"],"upshift":"@sum.equipped.armor.system.totalBonusToughness + @sum.equipped.armor.system.totalBonusEvasion"}
     ],
     "automation": {
       "status": "full",

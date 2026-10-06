@@ -5,6 +5,11 @@
   "_id": "rrJ1kpQfk0627aJq",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Double the battledress Defense bonus","cost":{"action":"free"},"limit":{"per":"scene","max":1},"when":["rule:hostEquipped"],"steps":[{"do":"mark","key":"domeGenerator","to":"self","until":"nextTurnOrScene"},{"do":"chat","text":"Battledress Defense bonus doubled until the start of the next turn."}]},
+      {"type":"Defense","label":"Dome Generator (battledress Toughness doubled)","defense":"toughness","amount":"max(0, @host.system.totalBonusToughness)","stack":"q1DomeToughness","when":["self:marked:domeGenerator","rule:hostEquipped","not:self:morphed"]},
+      {"type":"Defense","label":"Dome Generator (battledress Evasion doubled)","defense":"evasion","amount":"max(0, @host.system.totalBonusEvasion)","stack":"q1DomeEvasion","when":["self:marked:domeGenerator","rule:hostEquipped","not:self:morphed"]}
+    ],
     "prerequisites": {"when":["host:trait:computerized"]},
     "automation": {
       "status": "full",

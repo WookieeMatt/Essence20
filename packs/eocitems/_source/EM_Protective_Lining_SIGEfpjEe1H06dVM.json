@@ -5,6 +5,10 @@
   "_id": "SIGEfpjEe1H06dVM",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"EM Protective Lining","downshift":6,"when":["attack","self:data:system.traits.computerized",{"any":["rule:hostEquipped","not:rule:data:flags.essence20.parentId"]},{"any":["rule:hostEquipped","self:canTransform"]},{"any":["item:data:system.damageType=emp","weapon:trait:electromagnetic"]}]},
+      {"type":"Defense","defense":"evasion","label":"EM Protective Lining (computerized armor)","amount":"@sum.equippedTrait.computerized.armor.system.totalBonusEvasion","when":[{"any":["rule:hostEquipped","not:rule:data:flags.essence20.parentId"]},{"any":["rule:hostEquipped","self:canTransform"]},{"any":["item:data:system.damageType=emp","weapon:trait:electromagnetic"]}]}
+    ],
     "prerequisites": {"when":[{"any":["self:skill:science>=d4","self:skill:technology>=d4"]}]},
     "automation": {
       "status": "full",

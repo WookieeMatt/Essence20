@@ -5,6 +5,15 @@
   "_id": "0kcuvCeRhmneAJTl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Qualified in all poisons (Extract Poison: all)","path":"system.qualified.poisons.all","op":"set","value":true,"when":["self:data:system.qualified.poisons"]},
+      {"type":"DerivedStat","label":"Qualified in all poisons (Extract Poison: standard)","path":"system.qualified.poisons.standard","op":"set","value":true,"when":["self:data:system.qualified.poisons"]},
+      {"type":"DerivedStat","label":"Qualified in all poisons (Extract Poison: limited)","path":"system.qualified.poisons.limited","op":"set","value":true,"when":["self:data:system.qualified.poisons"]},
+      {"type":"DerivedStat","label":"Trained in all poisons (Extract Poison: all)","path":"system.trained.poisons.all","op":"set","value":true,"when":["self:data:system.qualified.poisons","self:data:system.trained.poisons"]},
+      {"type":"DerivedStat","label":"Trained in all poisons (Extract Poison: standard)","path":"system.trained.poisons.standard","op":"set","value":true,"when":["self:data:system.qualified.poisons","self:data:system.trained.poisons"]},
+      {"type":"DerivedStat","label":"Trained in all poisons (Extract Poison: limited)","path":"system.trained.poisons.limited","op":"set","value":true,"when":["self:data:system.qualified.poisons","self:data:system.trained.poisons"]},
+      {"type":"Use","label":"Extract a poison (Extract Poison)","when":["not:self:combatant"],"steps":[{"do":"pickEntry","title":"Pick the poison","from":{"type":"weapon","fields":["system.isPoison"],"tags":["item:data:system.isPoison"]}},{"do":"roll","skill":"science","dif":"@var.pickedDif","onSuccess":[{"do":"grant","uuid":"{var.picked}"}],"onFail":[{"do":"chat","text":"No dose of {var.pickedName} is extracted."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you are Qualified in all poisons. Use button (out of combat): pick a poison and roll Science against its availability; on a success you gain a dose.</p>"
