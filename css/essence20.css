@@ -8147,6 +8147,11 @@ select.e20-select-searchable optgroup[hidden] {
   font-size: 0.8rem;
   opacity: 0.75;
 }
+.essence20.e20-rules-add-dialog .e20-rules-add-intro {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin: 0 0 0.4rem;
+}
 
 .essence20.e20-rule-editor .window-content {
   flex: 1;

@@ -152,7 +152,9 @@ export async function chooseAddKind() {
       window: { title: T('Title') },
       classes: ['essence20', 'e20-window', 'e20-rules-add-dialog'],
       position: { width: 640 },
-      content: `<p>${T('Prompt')}</p><ul class="e20-rules-add-choices">${items}</ul>`,
+      // The Building an Item tour's own Rules text (one key, so the two never drift apart), then the question.
+      content: `${game.i18n.localize('E20.Tours.Items.Effects.Content').split('\n').map(line => `<p class="e20-rules-add-intro">${line}</p>`).join('')}`
+        + `<p>${T('Prompt')}</p><ul class="e20-rules-add-choices">${items}</ul>`,
       buttons: [{ action: 'cancel', label: game.i18n.localize('Cancel'), default: true }],
       submit: () => resolve(picked),
     });

@@ -746,6 +746,11 @@ export function summarizeRule(rule) {
   const tail = when ? ` ${when}` : '';
   const who = {
     incoming: 'Rolls against you: ', host: 'Attached item: ', item: 'Rolling this: ', crew: 'Its crew: ', pilot: 'Its driver: ', vehicle: 'Their vehicle: ', driven: 'The vehicle they drive: ', companion: 'Their companions: ', owner: 'Its owner: ', party: 'Their Party: ',
+    incomingAura: 'Rolls against allies nearby: ', crewIncoming: "Rolls against its crew: ", sceneAllies: 'Allies in the scene: ', alliesAnywhere: 'Allies anywhere: ',
+    picked: 'Those picked: ', marked: 'Whoever carries the mark: ', markedTarget: 'Marked targets: ', renegadeVehicle: 'The vehicle they drive: ',
+    megaform: 'Its Megaforms: ', ownZord: 'Their Zords: ', zordOwner: "The Zord's Ranger: ", bondPartner: 'Their bonded partner: ',
+    bondHolder: 'Whoever is bonded to them: ', bondPartnerIncoming: 'Rolls against their bonded partner: ', formedBy: 'The Megaform they formed: ',
+    drivenMegaform: "Their Zord's Megazord: ",
     aura: `${{ enemies: 'Enemies', all: 'Everyone' }[rule.affects] ?? 'Allies'} within ${rule.radius ?? '?'} ft: `,
   }[rule.scope] ?? '';
   switch (rule.type) {
