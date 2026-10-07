@@ -2,6 +2,7 @@
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { FormValidationError } from "../util/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class MultiChoiceSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
@@ -74,7 +75,7 @@ export default class MultiChoiceSelector extends serializeFormSubmits(Handlebars
       .map(([key]) => key);
 
     if (selectedKeys.length != this._perk.system.numChoices) {
-      throw new Error(
+      throw new FormValidationError(
         game.i18n.format(
           'E20.SelectionsRequiredError',
           {

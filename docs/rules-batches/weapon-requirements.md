@@ -149,7 +149,10 @@ Totals: 108 weapons. Fully converted: 94; Partly converted (remainder kept as te
 | Transformers Core Rulebook (tfcrbitems) | Blaster | 121 | Nil | - | (cleared) |
 | Transformers Core Rulebook (tfcrbitems) | Mini-Laser | 75 | Nil | - | (cleared) |
 
-## Book checks and judgement calls (for a decision if wanted)
+## Book checks and judgement calls
+
+**All confirmed by the user, 2026-10-07:** "/" is "or"; sizes are minimums; the Forge of Solus Prime encoding, the
+Psycho Staff restriction and the Fire Breathing name stand as written below.
 
 - **"/" read as "or".** TF Core (2nd Printing) prints "Brawn d4/Huge", "Brawn d6/Gigantic"; PR Core (2nd Printing) prints
   "Brawn d4/Huge" and "Brawn/Targeting d4". Enigma of Combination spells both-needed as "and" and its upscaling table

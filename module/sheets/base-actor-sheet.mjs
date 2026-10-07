@@ -74,6 +74,7 @@ import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon } from ".
 import { switchMythicForm } from "../items/attacks/mythically-modular.mjs";
 import { treatOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
 import { nestSubPerks, withSubPerksUnderParents } from "../mechanics/characters/sub-perks.mjs";
+import { missingFocusPickLevels, syncFocusSkillPicks } from "../mechanics/characters/focus-skills.mjs";
 
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
@@ -96,6 +97,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       openRuleSource: this.#onOpenRuleSource,
       sendRuleToChat: this.#onSendRuleToChat,
       startingEssences: this.#onStartingEssences,
+      placeFocusSkills: this.#onPlaceFocusSkills,
       itemDelete: this.#onItemDelete,
       itemEdit: this.#onItemEdit,
       levelDown: this.#onLevelDown,
@@ -922,6 +924,8 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     context.features = features;
     context.gears = gears;
     context.focuses = focuses;
+    // Essence increases with no Skill point recorded yet (mechanics/characters/focus-skills.mjs), by Focus id.
+    context.focusMissingPicks = Object.fromEntries(focuses.map(focus => [focus.id, missingFocusPickLevels(this.actor, focus).length]));
     context.hangUps = hangUps;
     context.influences = influences;
     context.magicBaubles = magicBaubles;
@@ -1005,6 +1009,14 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
    */
   static #onOpenCompendiumBrowser(event, target) {
     return Essence20CompendiumBrowser.openTo(target.dataset.type, { subtype: target.dataset.perkType || null });
+  }
+
+  /** The Focus row's "place Skill point" button: asks for each Essence increase reached with no pick recorded. */
+  static async #onPlaceFocusSkills(event, target) {
+    const focus = this.actor.items.get(target.closest('[data-item-id]')?.dataset.itemId);
+    if (focus) {
+      await syncFocusSkillPicks(this.actor, focus, Number(this.actor.system.level) || 1, 0);
+    }
   }
 
   /** The Skills tab's Starting Essences bar - see apps/starting-essences.mjs. */

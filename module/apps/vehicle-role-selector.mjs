@@ -1,5 +1,5 @@
 ﻿import { setEntryAndAddActor, verifyDropSelection } from "../sheet-handlers/drop-handler.mjs";
-import { getFormData } from "../util/application.mjs";
+import { getFormData, FormValidationError } from "../util/application.mjs";
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
@@ -67,7 +67,7 @@ export default class VehicleRoleSelector extends serializeFormSubmits(Handlebars
     const allowDrop = verifyDropSelection(this._targetActor, newRole);
 
     if (!allowDrop) {
-      throw new Error(game.i18n.localize('E20.VehicleRoleError'));
+      throw new FormValidationError(game.i18n.localize('E20.VehicleRoleError'));
     }
 
     setEntryAndAddActor(this._droppedActor, this._targetActor, newRole);

@@ -533,6 +533,21 @@ describe('pickSubPerk', () => {
     expect(options[0]).toEqual({ value: C, label: 'Ax (PR CRB)', group: 'Power Rangers' });
   });
 
+  test("a copy made before its compendium Perk had a sub-Perk list uses the compendium's list (Grid Relic Weapon)", async () => {
+    const item = makeItem(gridScience(2).system.rules, { name: 'Old Copy', system: { items: {} } });
+    const actor = makeActor([item]);
+    helpers();
+    const original = { system: { items: { k1: { uuid: A, name: 'Alpha' }, k2: { uuid: B, name: 'Beta' } } } };
+    const fromUuid = global.fromUuid;
+    global.fromUuid = jest.fn(async uuid => (uuid == SOURCE ? original : null));
+    try {
+      const options = await subPerkOptions({ do: 'pickSubPerk', key: 'perks', count: 2 }, { actor, item });
+      expect(options.map(option => option.label)).toEqual(['Alpha', 'Beta']);
+    } finally {
+      global.fromUuid = fromUuid;
+    }
+  });
+
   test('change: asks again (the current picks offered too), then swaps the children; a cancel keeps them', async () => {
     const item = gridScience(1);
     const actor = makeActor([item]);

@@ -123,10 +123,16 @@ export async function askFocusSkill(actor, focus, level, skills, specialize) {
         action: 'ok', label: T('E20.FocusSkillPlace'), default: true,
         callback: (event, button) => ({ pick: button.form.elements.pick.value, specName: button.form.elements.specName?.value ?? '' }),
       },
+      // A character made before this prompt existed may already have placed the point in the Skill Picker.
+      { action: 'manual', label: T('E20.FocusSkillManual') },
       { action: 'cancel', label: T('E20.FocusSkillLater') },
     ],
     rejectClose: false,
   });
+
+  if (result == 'manual') {
+    return { kind: 'manual' };
+  }
 
   if (!result?.pick) {
     return null;
@@ -143,6 +149,11 @@ export async function askFocusSkill(actor, focus, level, skills, specialize) {
 
 /** Put one pick on the actor. Returns the record to keep (with the Specialization's key), or null. */
 async function placePick(actor, pick) {
+  // Placed by hand already: just record it, so it is not asked again and deleting the Focus leaves that rank alone.
+  if (pick.kind == 'manual') {
+    return pick;
+  }
+
   if (pick.kind == 'train') {
     const [newShift, path] = getShiftedSkill(pick.skill, 1, actor);
     await actor.update({ [path]: newShift });
@@ -213,6 +224,22 @@ export async function syncFocusSkillPicks(actor, focus, newLevel, previousLevel,
       globalThis.ui?.notifications?.info(game.i18n.format('E20.FocusSkillSkipped', { focus: focus.name }));
     }
   }
+}
+
+/**
+ * The Essence increases this character has reached with no pick recorded - a character made before the prompt existed,
+ * or one whose player chose Later. The Focus row offers a button for them (base-actor-sheet.mjs#onPlaceFocusSkills).
+ * @param {Actor} actor
+ * @param {Item} focus
+ * @returns {Array<Number>}
+ */
+export function missingFocusPickLevels(actor, focus) {
+  if (!actor?.system?.focusEssence) {
+    return [];
+  }
+
+  const picks = storedPicks(focus);
+  return increaseLevels(focus, 0, Number(actor.system.level) || 1).filter(level => !picks[`level${level}`]);
 }
 
 /** Deleting the Focus takes every rank or Specialization its increases placed back off. From onFocusDelete. */

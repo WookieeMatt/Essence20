@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import {
-  focusSkillOptions, increaseLevels, removeFocusSkillPicks, specializationRule, storedPicks, syncFocusSkillPicks,
+  focusSkillOptions, increaseLevels, missingFocusPickLevels, removeFocusSkillPicks, specializationRule, storedPicks, syncFocusSkillPicks,
 } from './focus-skills.mjs';
 
 /**
@@ -148,5 +148,27 @@ describe('placing and taking back', () => {
     const ask = jest.fn();
     await syncFocusSkillPicks(actor, makeFocus(), 1, 0, { ask });
     expect(ask).not.toHaveBeenCalled();
+  });
+});
+
+describe("characters made before the prompt existed", () => {
+  test("the Focus row lists the increases reached with nothing recorded", async () => {
+    const actor = makeActor({ level: 12, skills: { science: { shift: 'd4' } } });
+    const focus = makeFocus();
+    expect(missingFocusPickLevels(actor, focus)).toEqual([1, 10]);
+    await syncFocusSkillPicks(actor, focus, 12, 0, { ask: async (a, f, level) => (level == 1 ? { kind: 'train', skill: 'science' } : null) });
+    expect(missingFocusPickLevels(actor, focus)).toEqual([10]);
+    expect(missingFocusPickLevels({ system: { focusEssence: null, level: 12 } }, focus)).toEqual([]);
+  });
+
+  test("Already placed by hand: recorded, Skills untouched, and deleting the Focus leaves that rank alone", async () => {
+    const actor = makeActor({ skills: { science: { shift: 'd6' } } });
+    const focus = makeFocus();
+    await syncFocusSkillPicks(actor, focus, 1, 0, { ask: async () => ({ kind: 'manual' }) });
+    expect(actor.update).not.toHaveBeenCalled();
+    expect(storedPicks(focus).level1).toEqual({ kind: 'manual' });
+    expect(missingFocusPickLevels(actor, focus)).toEqual([]);
+    await removeFocusSkillPicks(actor, focus);
+    expect(actor.system.skills.science.shift).toBe('d6');
   });
 });

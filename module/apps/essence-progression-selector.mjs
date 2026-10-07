@@ -2,6 +2,7 @@
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { FormValidationError } from "../util/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class EssenceProgressionSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
@@ -70,7 +71,7 @@ export default class EssenceProgressionSelector extends serializeFormSubmits(Han
 
     const isUnique = rankArray.length === new Set(rankArray).size;
     if (!isUnique) {
-      throw new Error('Selections must be unique');
+      throw new FormValidationError(game.i18n.localize('E20.EssenceProgressionUniqueError'));
     }
 
     _setEssenceProgression(this._actor, formData.object, this._role, this._dropFunc, this._level1Essences);

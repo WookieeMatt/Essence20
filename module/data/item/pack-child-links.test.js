@@ -50,3 +50,16 @@ test("a child-item link uses its own pack's copy of that item when the pack has 
 
   expect(crossed).toEqual([]);
 });
+
+test("every pack weapon effect belongs to some weapon (no stray duplicates a GM could drag in)", () => {
+  const docs = packDocs();
+  const referenced = new Set();
+  for (const [, doc] of docs) {
+    for (const match of JSON.stringify(doc).matchAll(/Compendium.essence20.([a-z0-9_]+).Item.([A-Za-z0-9]{16})/g)) {
+      referenced.add(`${match[1]}.${match[2]}`);
+    }
+  }
+
+  const orphans = docs.filter(([pack, doc]) => doc.type == 'weaponEffect' && !referenced.has(`${pack}.${doc._id}`)).map(([pack, doc]) => `${pack}: ${doc.name} (${doc._id})`);
+  expect(orphans).toEqual([]);
+});

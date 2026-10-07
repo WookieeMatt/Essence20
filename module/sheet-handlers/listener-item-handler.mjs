@@ -186,7 +186,7 @@ export async function onItemDelete(event, actorSheet) {
     } else if (item.type == "faction") {
       onFactionDelete(item, actor);
     } else if (item.type == "focus") {
-      onFocusDelete(actor, item);
+      await onFocusDelete(actor, item);
     } else if (item.type == 'influence') {
       deleteAttachmentsForItem(item, actor);
     } else if (item.type == "origin") {
@@ -199,7 +199,8 @@ export async function onItemDelete(event, actorSheet) {
       deleteAttachmentsForItem(item, actor);
     }
 
-    item.delete();
+    // A Focus was undone just above - tell Item#_onDelete not to undo it again.
+    item.delete(item.type == "focus" ? { essence20FocusHandled: true } : {});
     li.slideUp(200, () => actorSheet.render(false));
   }
 }

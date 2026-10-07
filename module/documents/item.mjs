@@ -170,6 +170,12 @@ export class Essence20Item extends Item {
     if (userId == game.user?.id && this.actor && affectsGeneratedEffects(this)) {
       syncGeneratedEffects(this.actor);
     }
+
+    // A Focus deleted any other way than the sheet or its Role (a macro, the API, another module) still takes its
+    // Essence increase and Skill picks back off. Those two paths undo it themselves first and pass essence20FocusHandled.
+    if (this.type == 'focus' && userId == game.user?.id && this.actor && !options?.essence20FocusHandled) {
+      import('../sheet-handlers/role-handler.mjs').then(({ onFocusDelete }) => onFocusDelete(this.actor, this));
+    }
   }
 
   async _onUpdate(change, options, userId) {

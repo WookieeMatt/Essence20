@@ -77,8 +77,16 @@ export async function subPerkOptions(step, ctx, { ignore = [] } = {}) {
       }
     }
   } else {
-    options = Object.values(ctx.item?.system?.items ?? {}).filter(entry => entry?.uuid && (!entry.type || entry.type == 'perk'))
-      .map(entry => ({ value: entry.uuid, label: entry.name ?? entry.uuid }));
+    const listOf = item => Object.values(item?.system?.items ?? {}).filter(entry => entry?.uuid && (!entry.type || entry.type == 'perk'));
+    let entries = listOf(ctx.item);
+    // A copy made before its compendium Perk got its sub-Perk list (Grid Relic Weapon's Relic Weapon Traits, 2026-10-07)
+    // has an empty list of its own; its rules inherit from the compendium, so the list does too.
+    const source = sourceOf(ctx.item);
+    if (!entries.length && source?.startsWith?.('Compendium.')) {
+      entries = listOf(await globalThis.fromUuid?.(source).catch?.(() => null));
+    }
+
+    options = entries.map(entry => ({ value: entry.uuid, label: entry.name ?? entry.uuid }));
   }
 
   const first = await gameLine(sourceOf(ctx.item));
@@ -192,7 +200,12 @@ export async function repickSubPerks(item, step, rule = null) {
     const ctx = stepContext({ actor, item, rule, targets: [] });
     const current = subPerkPicks(item, step);
     const options = await subPerkOptions(step, ctx, { ignore: current });
-    const picks = options.length ? await askSubPerks(step, ctx, options) : null;
+    if (!options.length) {
+      globalThis.ui?.notifications?.info(globalThis.game?.i18n?.format?.('E20.Rules.Step.NothingToPick', { item: item.name }) ?? `${item.name}: nothing to pick.`);
+      return false;
+    }
+
+    const picks = await askSubPerks(step, ctx, options);
     if (!picks) {
       return false;
     }

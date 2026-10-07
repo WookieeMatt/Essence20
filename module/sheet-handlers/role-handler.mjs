@@ -775,7 +775,7 @@ export async function onRoleDelete(actor, role) {
   // Focus updates - a Focus is tied to the base Role, not any additive one.
   if (!isAdditive && focus[0]) {
     await onFocusDelete(actor, focus[0]);
-    await focus[0].delete();
+    await focus[0].delete({ essence20FocusHandled: true });
   }
 
   // Training updates

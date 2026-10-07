@@ -14,3 +14,13 @@ export function getFormData(formData){
 
   return returnData;
 }
+
+/**
+ * Thrown from a form handler to refuse the input and keep the window open. Foundry shows a handler's error as
+ * String(error), which for a plain Error reads "Error: <message>"; this one reads as the message alone.
+ */
+export class FormValidationError extends Error {
+  toString() {
+    return this.message;
+  }
+}
