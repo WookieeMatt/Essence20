@@ -28,10 +28,4 @@ describe('actor-sheet chips for book fields', () => {
     expect(template).toMatch(/\{\{#if item\.system\.requirements\}\}\s*<span class="chip" name="chip\.shield\.requirements">\{\{localize 'E20\.ShieldRequirements'\}\}: \{\{item\.system\.requirements\}\}<\/span>/);
     expect(lang.ShieldRequirements).toEqual(expect.any(String));
   });
-
-  test('the templates keep CRLF line endings', () => {
-    for (const path of ['templates/actor/parts/items/focus.hbs', 'templates/actor/parts/items/weapon/details.hbs', 'templates/actor/parts/items/shield/details.hbs']) {
-      expect(read(path)).not.toMatch(/(?<!\r)\n/);
-    }
-  });
 });

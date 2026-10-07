@@ -75,6 +75,8 @@ the same as the original.
 - **Guided tours** cover the new Rules tabs, Perk picks and level-up picks.
 - **Ram and Flyby** use no hands and no hardpoint.
 - **Vehicle crew:** closing the "Swap Driver and Passenger?" dialog now cancels instead of swapping, and a swap updates both seats together.
+- **Essence Alterations** (Absolute Yield and the other Cobra Codex ones) finish again: after the bonus Skill pick the
+  window for the Essence that pays the cost used to vanish, and the Alteration was never added.
 - **Transformers:** deleting the Alt Mode a character is currently in returns them to Bot Mode (they used to stay transformed into the deleted mode).
 - **Shields with a Brawn requirement** give the same ↓ shortfall as armor.
 - **The Specialization item's Details tab** can be edited again (Skill, die, Specialized).

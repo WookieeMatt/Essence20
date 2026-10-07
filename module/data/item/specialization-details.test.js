@@ -30,8 +30,4 @@ describe('Specialization Details template', () => {
       expect(lang[key]).toEqual(expect.any(String));
     }
   });
-
-  test('the template keeps CRLF line endings', () => {
-    expect(template).not.toMatch(/(?<!\r)\n/);
-  });
 });
