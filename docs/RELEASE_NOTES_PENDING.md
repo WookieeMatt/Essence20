@@ -64,6 +64,8 @@ the same as the original.
   changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.
 - **Guided tours** cover the new Rules tabs, Perk picks and level-up picks.
 - **Ram and Flyby** use no hands and no hardpoint.
+- **Vehicle crew:** closing the "Swap Driver and Passenger?" dialog now cancels instead of swapping, and a swap updates both seats together.
+- **Transformers:** deleting the Alt Mode a character is currently in returns them to Bot Mode (they used to stay transformed into the deleted mode).
 - **Shields with a Brawn requirement** give the same ↓ shortfall as armor.
 - **The Specialization item's Details tab** can be edited again (Skill, die, Specialized).
 - **Transformers core weapons** now use their own book's effects. They used to pull in the

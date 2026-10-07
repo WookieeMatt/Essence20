@@ -11,13 +11,16 @@ import { fireTransforming } from "../rules/plugins/effects/state-changes.mjs";
  * @param {AltMode} altMode The deleted Alt Mode.
  */
 export async function onAltModeDelete(actorSheet, altMode) {
-  const altModes = actorSheet.actor.items.documentsByType.altMode;
+  // _transformBotMode takes the Actor. It was handed the sheet, threw on sheet.system, and the character stayed
+  // transformed into the deleted Alt Mode (release checklist live run, 2026-10-07).
+  const actor = actorSheet.actor;
+  const altModes = actor.items.documentsByType.altMode;
   if (altModes.length > 1) {
-    if (altMode._id == actorSheet.actor.system.altModeId) {
-      _transformBotMode(actorSheet);
+    if (altMode._id == actor.system.altModeId) {
+      await _transformBotMode(actor);
     }
   } else {
-    _transformBotMode(actorSheet);
+    await _transformBotMode(actor);
   }
 }
 

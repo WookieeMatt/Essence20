@@ -1,24 +1,70 @@
 import { jest } from '@jest/globals';
 import {
   _flipDriverAndPassenger, DETACHED_THIS_SCENE_FLAG, onAttachedActorHealthUpdate, onAttachedActorStunUpdate,
-  onSystemActorOpen, onSystemActorsDelete, prepareSystemActors,
+  onSystemActorOpen, onSystemActorsDelete, onVehicleRoleUpdate, prepareSystemActors,
 } from "./vehicle-handler.mjs";
 
 global.foundry.applications.api.DialogV2 = { wait: jest.fn() };
 
 describe("_flipDriverAndPassenger", () => {
-  test("swaps the previous occupant to passenger when the new occupant takes driver", () => {
-    const actor = { update: jest.fn() };
-    _flipDriverAndPassenger(actor, 'newKey', 'driver', 'oldKey');
-    expect(actor.update).toHaveBeenCalledWith({ "system.actors.oldKey.vehicleRole": 'passenger' });
-    expect(actor.update).toHaveBeenCalledWith({ "system.actors.newKey.vehicleRole": 'driver' });
+  const crewActor = () => ({
+    update: jest.fn(),
+    system: { actors: { newKey: { name: 'New', vehicleRole: 'passenger' }, oldKey: { name: 'Old', vehicleRole: 'driver' } } },
   });
 
-  test("swaps the previous occupant to driver when the new occupant takes passenger", () => {
-    const actor = { update: jest.fn() };
-    _flipDriverAndPassenger(actor, 'newKey', 'passenger', 'oldKey');
-    expect(actor.update).toHaveBeenCalledWith({ "system.actors.oldKey.vehicleRole": 'driver' });
-    expect(actor.update).toHaveBeenCalledWith({ "system.actors.newKey.vehicleRole": 'passenger' });
+  test("swaps the previous occupant to passenger when the new occupant takes driver - one update for both seats", async () => {
+    const actor = crewActor();
+    await expect(_flipDriverAndPassenger(actor, 'newKey', 'driver', 'oldKey')).resolves.toBe(true);
+    expect(actor.update).toHaveBeenCalledTimes(1);
+    expect(actor.update).toHaveBeenCalledWith({ "system.actors.oldKey.vehicleRole": 'passenger', "system.actors.newKey.vehicleRole": 'driver' });
+  });
+
+  test("swaps the previous occupant to driver when the new occupant takes passenger", async () => {
+    const actor = crewActor();
+    await _flipDriverAndPassenger(actor, 'newKey', 'passenger', 'oldKey');
+    expect(actor.update).toHaveBeenCalledWith({ "system.actors.oldKey.vehicleRole": 'driver', "system.actors.newKey.vehicleRole": 'passenger' });
+  });
+
+  test("a seat that is no longer on the vehicle swaps nothing (no nameless crew entry)", async () => {
+    const actor = crewActor();
+    const error = jest.spyOn(global.ui.notifications, 'error').mockImplementation(() => {});
+    await expect(_flipDriverAndPassenger(actor, 'newKey', 'driver', 'goneKey')).resolves.toBe(false);
+    expect(actor.update).not.toHaveBeenCalled();
+    expect(error).toHaveBeenCalled();
+    error.mockRestore();
+  });
+});
+
+describe("onVehicleRoleUpdate - the full seat's swap question", () => {
+  const vehicle = () => ({
+    render: jest.fn(),
+    update: jest.fn(),
+    system: {
+      isLocked: false,
+      crew: { numDrivers: 1, numPassengers: 2 },
+      actors: { a: { name: 'A', vehicleRole: 'driver' }, b: { name: 'B', vehicleRole: 'passenger' } },
+    },
+  });
+  const changeTo = role => ({ currentTarget: { attributes: { key: { value: 'b' } }, value: role } });
+
+  test.each([['no'], [null]])("answered %p (No, or the dialog closed) changes nothing", async answer => {
+    const actor = vehicle();
+    global.foundry.applications.api.DialogV2.wait.mockReset();
+    global.foundry.applications.api.DialogV2.wait.mockResolvedValue(answer);
+    const error = jest.spyOn(global.ui.notifications, 'error').mockImplementation(() => {});
+    await onVehicleRoleUpdate(changeTo('driver'), { actor });
+    expect(actor.update).not.toHaveBeenCalled();
+    expect(error).toHaveBeenCalled();
+    expect(actor.render).toHaveBeenCalled();
+    error.mockRestore();
+  });
+
+  test("a free seat just changes the role, no question", async () => {
+    const actor = vehicle();
+    global.foundry.applications.api.DialogV2.wait.mockReset();
+    await onVehicleRoleUpdate({ currentTarget: { attributes: { key: { value: 'a' } }, value: 'passenger' } }, { actor });
+    expect(global.foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
+    expect(actor.update).toHaveBeenCalledWith({ "system.actors.a.vehicleRole": 'passenger' });
   });
 });
 

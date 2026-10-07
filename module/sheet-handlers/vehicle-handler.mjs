@@ -167,7 +167,9 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
       ],
     });
 
-    if (dialogResult == "no") {
+    // Only an explicit Yes swaps: closing the dialog (DialogV2.wait resolves null) used to count as Yes, and the
+    // swap prompt it opened could then act on crew data that had changed meanwhile (live test 2026-10-07).
+    if (dialogResult != "yes") {
       ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
       actor.render();
     } else {
@@ -191,23 +193,24 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
   }
 }
 
-export function _flipDriverAndPassenger(actor, key, newRole, selectedKey) {
-  let flippedRole = "";
-  let updateString = `system.actors.${selectedKey}.vehicleRole`;
-  if (newRole == 'driver') {
-    flippedRole = 'passenger';
-  } else {
-    flippedRole = 'driver';
+export async function _flipDriverAndPassenger(actor, key, newRole, selectedKey) {
+  // Both seats must still be on the vehicle: a stale key would otherwise create a nameless crew entry holding only a
+  // vehicleRole (seen live 2026-10-07).
+  const crew = actor.system.actors ?? {};
+  if (!crew[key] || !crew[selectedKey]) {
+    ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
+    actor.sheet?.render(false);
+    return false;
   }
 
-  actor.update ({
-    [updateString]: flippedRole,
-  });
+  const flippedRole = newRole == 'driver' ? 'passenger' : 'driver';
 
-  updateString = `system.actors.${key}.vehicleRole`;
-  actor.update ({
-    [updateString]: newRole,
+  // One update for both seats, so neither write can land on top of the other.
+  await actor.update({
+    [`system.actors.${selectedKey}.vehicleRole`]: flippedRole,
+    [`system.actors.${key}.vehicleRole`]: newRole,
   });
+  return true;
 }
 
 export async function onCrewNumberUpdate(event, actorSheet) {

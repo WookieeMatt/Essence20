@@ -527,6 +527,6 @@
     "verified": "14"
   },
   "flags": {
-    "needsMigrationVersion": "6.0.0"
+    "needsMigrationVersion": "6.0.4"
   }
 }
