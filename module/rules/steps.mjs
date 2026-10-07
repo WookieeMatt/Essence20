@@ -4,6 +4,7 @@ import { LIMIT_WINDOWS } from "./limits.mjs";
 import { flattenPaths } from "./rule-paths.mjs";
 import { contextFor, evaluate, interpolate, sideActorsWithin, unknownTags as unknownTagsOf, wieldedAttacks } from "./predicate.mjs";
 import { sourceOf as sourceOfItem } from "../items/shared/item-lookups.mjs";
+import { chosenOf } from "./choice-read.mjs";
 
 /**
  * The step language (docs/RULES_ENGINE_PLAN.md §5.5) - what a Use button or a Trigger does, as a
@@ -243,7 +244,7 @@ function skillFor(step, ctx) {
   }
 
   // actor:<path> - a Skill named on the actor (system.originSkillsIncrease, the Origin Skill); choiceOf:<uuid> - the Skill
-  // chosen (system.choice) on the actor's copy of that book item (the Empathy Perk's pick). Null when there's none.
+  // chosen on the actor's copy of that book item (the Empathy Perk's pick, rules/choice-read.mjs). Null when there's none.
   if (skill.startsWith('actor:')) {
     return String(globalThis.foundry?.utils?.getProperty?.(ctx.actor, skill.slice(6)) ?? '') || null;
   }
@@ -251,7 +252,7 @@ function skillFor(step, ctx) {
   if (skill.startsWith('choiceOf:')) {
     const uuid = skill.slice(9);
     const items = ctx.actor?.items?.contents ?? (ctx.actor?.items ? [...ctx.actor.items] : []);
-    return items.find(item => sourceOfItem(item) == uuid || item.uuid == uuid)?.system?.choice || null;
+    return chosenOf(items.find(item => sourceOfItem(item) == uuid || item.uuid == uuid)) || null;
   }
 
   // {var.<key>} too - a Skill an earlier step stored (a picked entry's Requisition Skill).

@@ -3,6 +3,7 @@ import { companionsOf, countSourced, hasSourced, linkCompanion, ownerOf, worldAc
 import { getSceneEpoch } from "../resources/scene-clock.mjs";
 import { rulePetCommandTier, rulePetCommandUpshift } from "../../rules/plugins/picks/pet-command.mjs";
 import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
+import { chosenOf } from "../../rules/choice-read.mjs";
 
 /**
  * Companions: pets (GI JOE CRB p.163-168, MLP CRB p.154-157, WTNV Citizens' Guide p.73-75), drones
@@ -621,7 +622,7 @@ export function commandablePets(actor) {
 // a copy dropped onto the pet's sheet, the Perk's own Skill picker (system.choice).
 function favoriteSkill(pet) {
   const perk = itemsOf(pet).find(item => [COMP.favoriteCommandGij, COMP.favoriteCommandMlp, COMP.favoriteCommandWtnv].includes(sourceOf(item)));
-  const choice = perk?.flags?.essence20?.favoriteSkill || perk?.system?.choice;
+  const choice = perk?.flags?.essence20?.favoriteSkill || chosenOf(perk);
   return choice && choice != 'none' ? choice : null;
 }
 

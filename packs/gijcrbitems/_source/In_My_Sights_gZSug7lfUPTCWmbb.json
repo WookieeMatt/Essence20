@@ -5,6 +5,9 @@
   "_id": "gZSug7lfUPTCWmbb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"skillDice","reset":"combat","maxUses":1,"skills":["targeting"],"recursive":false,"grantsCanCritD2":true,"cost":{"worldStoryPoints":1}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per combat, after a Targeting attack, spend a Story Point to reroll all its Targeting dice. You keep the new result and can crit on the d2.</p>"
@@ -16,19 +19,6 @@
       "page": 78
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "skillDice",
-      "skills": ["targeting"],
-      "recursive": false,
-      "reset": "combat",
-      "maxUses": 1,
-      "cost": {
-        "worldStoryPoints": 1
-      },
-      "grantsCanCritD2": true
-    },
     "selectionLimit": 1,
     "type": "role"
   },

@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Movement","movement":"all","stage":"final","op":"multiply","value":2,"label":"Morphed: every Movement doubled","when":["self:morphed"]}
+      {"type":"Movement","movement":"all","stage":"final","op":"multiply","value":2,"label":"Morphed: every Movement doubled","when":["self:morphed"]},
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"turn","maxUses":1,"recursive":false}
     ],
     "automation": {
       "status": "full",
@@ -19,14 +20,6 @@
       "page": 0
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "skillDice",
-      "reset": "turn",
-      "maxUses": 1,
-      "recursive": false
-    },
     "selectionLimit": 1,
     "type": "role"
   },

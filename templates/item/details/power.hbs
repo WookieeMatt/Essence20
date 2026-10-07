@@ -24,6 +24,13 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{!-- Prerequisite - the printed text; the checkable tags are on the Rules tab --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkPrerequisite'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
   {{!-- Power has an Activation --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerActive'}}
   {{#*inline "item-field-inputs"}}

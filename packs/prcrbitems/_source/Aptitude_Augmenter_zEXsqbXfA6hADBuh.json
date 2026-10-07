@@ -5,6 +5,9 @@
   "_id": "zEXsqbXfA6hADBuh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"onesAndTwos","target":"skillDice","reset":"none","maxUses":0}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>When added you pick a Skill you have ranks in. Chat card: on tests with that Skill, a reroll button lets you reroll any 1s and 2s on the Skill dice. Take it again for another Skill.</p>"
@@ -30,14 +33,6 @@
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "onesAndTwos",
-      "target": "skillDice",
-      "maxUses": 0,
-      "reset": "none",
-      "skills": []
-    },
     "selectionLimit": 4,
     "type": "role",
     "value": 0,

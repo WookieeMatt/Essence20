@@ -35,6 +35,9 @@ export default class ChoicesSelector extends serializeFormSubmits(HandlebarsAppl
 
   static DEFAULT_OPTIONS = {
     actions: {
+      // A caller-supplied handler (selector._onChoose) - e.g. a level's General Perk / Grid Power pick
+      // (mechanics/characters/level-picks.mjs), which needs none of the item-type dispatch below.
+      choose: ChoicesSelector.choose,
       focus: ChoicesSelector.focus,
       influence: ChoicesSelector.influence,
       origin: ChoicesSelector.origin,
@@ -170,6 +173,11 @@ export default class ChoicesSelector extends serializeFormSubmits(HandlebarsAppl
     });
     apply();
     search.focus();
+  }
+
+  static choose(event, selection) {
+    this._onChoose?.(selection.value);
+    this.close();
   }
 
   static attach(event, selection) {

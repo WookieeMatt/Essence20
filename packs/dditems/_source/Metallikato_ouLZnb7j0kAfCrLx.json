@@ -12,7 +12,8 @@
       {"type":"DialogSwitch","label":"Metallikato: ignore armor (up to your Smarts)","key":"metallikatoIgnoreArmor","forget":true,"when":["attack:melee","self:data:system.isTransformed=false"]},
       {"type":"Defense","label":"Metallikato (armor ignored, up to your Smarts)","defense":"toughness","mode":"ignoreArmor","outgoing":true,"lookup":true,"points":"@actor.system.essences.smarts.value","when":["roll:switch:metallikatoIgnoreArmor"]},
       {"type":"Use","label":"Metallikato: Multiple Targets on","when":["not:self:data:flags.essence20.metallikatoMultipleTargetsActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.metallikatoMultipleTargetsActive":true}},{"do":"chat","text":"{name} gains Multiple Targets (2) with melee attacks, downshift 1."}]},
-      {"type":"Use","label":"Metallikato: Multiple Targets off","when":["self:data:flags.essence20.metallikatoMultipleTargetsActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.metallikatoMultipleTargetsActive":false}},{"do":"chat","text":"{name} no longer gains Multiple Targets (2) with melee attacks."}]}
+      {"type":"Use","label":"Metallikato: Multiple Targets off","when":["self:data:flags.essence20.metallikatoMultipleTargetsActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.metallikatoMultipleTargetsActive":false}},{"do":"chat","text":"{name} no longer gains Multiple Targets (2) with melee attacks."}]},
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"condition":"botModeMelee"}
     ],
     "prerequisites": {"when":[{"any":["self:skill:finesse>=d6","self:skill:might>=d6"]},"ask:A blades Specialization"]},
     "automation": {
@@ -27,15 +28,7 @@
     },
     "prerequisite": "Finesse or Might d6 and Specialization in blades",
     "selectionLimit": 1,
-    "type": "general",
-    "reroll": {
-      "condition": "botModeMelee",
-      "enabled": true,
-      "maxUses": 0,
-      "mode": "ones",
-      "reset": "none",
-      "target": "skillDice"
-    }
+    "type": "general"
   },
   "effects": [],
   "flags": {},

@@ -5,6 +5,9 @@
   "_id": "XpHqJMP0UktZzRIM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"essence":"social"}
+    ],
     "prerequisites": {"when":["self:hasType:influence:Kind"]},
     "automation": {
       "status": "full",
@@ -34,15 +37,7 @@
     },
     "type": "influence",
     "value": 0,
-    "version": "powerRangers",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "skillDice",
-      "essence": "social",
-      "maxUses": 0,
-      "reset": "none"
-    }
+    "version": "powerRangers"
   },
   "effects": [],
   "sort": 0,

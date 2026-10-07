@@ -21,7 +21,7 @@ import { CARD_STEPS, STEP_TYPES } from "./steps.mjs";
  */
 
 /** Lists filled from CONFIG.E20 at render time (editor-render.mjs#optionList). */
-export const OPTION_LISTS = ['skills', 'essences', 'defenses', 'damageTypes', 'statuses', 'rerollModes', 'rerollTargets', 'rerollResets'];
+export const OPTION_LISTS = ['skills', 'essences', 'defenses', 'damageTypes', 'statuses', 'rerollModes', 'rerollTargets', 'rerollResets', 'rerollConditions'];
 
 const SHIFTS = [
   { path: 'upshift', kind: 'formula', label: 'Upshift' },
@@ -66,9 +66,24 @@ export const RULE_FORMS = {
   Reroll: [
     { path: 'mode', kind: 'select', label: 'RerollMode', options: 'rerollModes' },
     { path: 'target', kind: 'select', label: 'RerollTarget', options: 'rerollTargets' },
+    // The results it rerolls, past what mode covers: a list (values) or every result from 1 to N (upTo, a formula).
+    { path: 'values', kind: 'strings', label: 'RerollValues', advanced: true },
+    { path: 'upTo', kind: 'formula', label: 'RerollUpTo', advanced: true },
+    { path: 'condition', kind: 'select', label: 'RerollCondition', options: 'rerollConditions' },
     { path: 'reset', kind: 'select', label: 'RerollReset', options: 'rerollResets' },
     { path: 'maxUses', kind: 'formula', label: 'MaxUses' },
     { path: 'skills', kind: 'skills', label: 'OnlySkills' },
+    { path: 'essence', kind: 'select', label: 'RerollEssence', options: [['any', 'RerollEssenceAny'], 'essences'] },
+    { path: 'scopeToOriginSkill', kind: 'checkbox', label: 'RerollOriginSkill', advanced: true },
+    { path: 'minDieFaces', kind: 'number', label: 'RerollMinDieFaces', advanced: true },
+    // On unless set to false, so a yes / no / blank choice rather than a checkbox (which can only write true).
+    { path: 'recursive', kind: 'stacks', label: 'RerollRecursive', advanced: true },
+    { path: 'keepBetter', kind: 'checkbox', label: 'RerollKeepBetter' },
+    { path: 'bonus', kind: 'number', label: 'RerollBonus', advanced: true },
+    { path: 'shiftUp', kind: 'number', label: 'RerollShiftUp', advanced: true },
+    { path: 'grantsCanCritD2', kind: 'checkbox', label: 'RerollCanCritD2', advanced: true },
+    { path: 'cost.worldStoryPoints', kind: 'number', label: 'RerollCostStoryPoints' },
+    { path: 'cost.rolePointsName', kind: 'text', label: 'RerollCostRolePoints', advanced: true },
     { path: 'cost.resourcePath', kind: 'text', label: 'CostPath', advanced: true },
     { path: 'cost.amount', kind: 'number', label: 'CostAmount', advanced: true },
   ],
@@ -153,7 +168,7 @@ export const RULE_FORMS = {
     { path: 'movement', kind: 'select', label: 'MovementType', options: ['ground', 'aerial', 'climb', 'swim', 'burrow', 'all'].map(type => [type, `MovementTypes.${type}`]) },
     { path: 'op', kind: 'select', label: 'Op', options: [['add', 'OpAdd'], ['set', 'OpSet'], ['multiply', 'OpMultiply'], ['max', 'OpMax'], ['min', 'OpMin']] },
     { path: 'value', kind: 'formula', label: 'Amount' },
-    { path: 'stage', kind: 'select', label: 'MovementStage', options: ['final', 'base', 'total', 'adjust', 'afterGravity', 'afterDerived'].map(stage => [stage, `MovementStages.${stage}`]), advanced: true },
+    { path: 'stage', kind: 'select', label: 'MovementStage', options: ['final', 'bonus', 'base', 'total', 'adjust', 'afterGravity', 'afterDerived'].map(stage => [stage, `MovementStages.${stage}`]), advanced: true },
     { path: 'round', kind: 'select', label: 'MovementRound', options: [['nearest', 'RoundNearest'], ['floor', 'RoundFloor'], ['ceil', 'RoundCeil']], advanced: true },
   ],
   DamageType: [

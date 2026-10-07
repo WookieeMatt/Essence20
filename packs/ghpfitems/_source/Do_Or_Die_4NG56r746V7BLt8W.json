@@ -20,8 +20,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role",
-    "canActivate": true
+    "type": "role"
   },
   "effects": [],
   "sort": 300000,

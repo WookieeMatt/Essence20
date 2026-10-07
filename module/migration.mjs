@@ -1,5 +1,6 @@
 import { createId, slugifySpecializationName } from "./util/utils.mjs";
 import { parseDurationString } from "./data/duration-schema.mjs";
+import { legacyChoiceOf } from "./rules/choice-read.mjs";
 
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
@@ -156,13 +157,20 @@ export const migrateWorld = async function() {
  * @param {object} compendiumActor The full actor from the compendium
  * @returns {object}                The updateData to apply
  */
+/** An actor's Role, from a document or from plain data (migrateWorld passes toObject(), whose items are an array). */
+export function roleOfActorData(actor) {
+  return (actor?.items?.documentsByType?.role ?? [...(actor?.items ?? [])].filter(item => item?.type == 'role'))[0] ?? null;
+}
+
 export const migrateActorData = async function(actor, compendiumActor) {
   const updateData = {};
 
   //Migration for Weapon and Armor Training and Qualificaitons moving to Actors from Roles
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
   if (!currentVersion || foundry.utils.isNewerVersion('4.5.1', currentVersion)) {
-    const role = actor.items.documentsByType.role[0];
+    // migrateWorld passes the actor's plain data (toObject), whose items are an array with no documentsByType - the
+    // old read threw for every actor, so forcing a migration from an old version (4.1.2) migrated nothing (2026-10-07).
+    const role = roleOfActorData(actor);
 
     if (role) {
       for (const armorType of role.system.armors.qualified) {
@@ -463,6 +471,8 @@ export const migrateActorData = async function(actor, compendiumActor) {
   }
 
   const items = [];
+  // Running totals of the actor fields migratePerkValue takes a Perk's value back out of (two Fast on Ground).
+  const perkValueTotals = {};
   for (const itemData of actor.items) {
     // Migrate the Owned Item
     const fullActor = game.actors.get(actor._id) || compendiumActor;
@@ -473,7 +483,14 @@ export const migrateActorData = async function(actor, compendiumActor) {
       await itemToDelete.delete();
     }
 
-    let itemUpdate = await migrateItemData(itemToDelete, fullActor);
+    let itemUpdate = await migrateItemData(itemToDelete, fullActor, { inPack: !!compendiumActor });
+
+    // A Perk's `value` (Fast, Expertise) - a rule now; what its drop wrote onto this actor comes back off.
+    const perkValue = await migratePerkValue(itemToDelete, {
+      inPack: !!compendiumActor, actorSystem: actor.system, totals: perkValueTotals, rules: itemUpdate['system.rules'],
+    });
+    Object.assign(itemUpdate, perkValue.update);
+    Object.assign(updateData, perkValue.actorUpdate);
 
     if (itemToDelete.type == "origin") {
       await itemToDelete.update({"system.-=originPerkIds": null});
@@ -545,17 +562,33 @@ async function compendiumActionType(item) {
     return null;
   }
 
-  const [, , packName, , id] = source.split('.');
-  if (!packName || !id) {
+  return (await compendiumEntryAt(source))?.system?.actionType ?? null;
+}
+
+/**
+ * A compendium item's index entry (with its action cost and its rules), from the cached pack index.
+ * Null when there is nothing to read - not a compendium uuid, a pack that is not present, or an
+ * entry since deleted.
+ * @param {String} source   Compendium.<package>.<pack>.Item.<id>
+ * @returns {Promise<Object|null>}
+ */
+async function compendiumEntryAt(source) {
+  if (!source?.startsWith?.('Compendium.')) {
     return null;
   }
 
-  if (!actionTypeIndexCache.has(packName)) {
-    const pack = game.packs.get(`essence20.${packName}`);
-    actionTypeIndexCache.set(packName, pack ? await pack.getIndex({ fields: ['system.actionType'] }) : null);
+  const [, scope, packName, , id] = source.split('.');
+  if (!scope || !packName || !id) {
+    return null;
   }
 
-  return actionTypeIndexCache.get(packName)?.get(id)?.system?.actionType ?? null;
+  const key = `${scope}.${packName}`;
+  if (!actionTypeIndexCache.has(key)) {
+    const pack = game.packs.get(key);
+    actionTypeIndexCache.set(key, pack ? await pack.getIndex({ fields: ['system.actionType', 'system.rules'] }) : null);
+  }
+
+  return actionTypeIndexCache.get(key)?.get(id) ?? null;
 }
 
 export async function searchCompendium(item) {
@@ -594,9 +627,11 @@ export async function getItem(perkId, actor) {
 * Migrate a single Item document to incorporate latest data model changes
 *
 * @param {object} item             Item data to migrate
+* @param {object} [actor]          The actor owning it, when it is an embedded item
+* @param {object} [options]        {inPack}: the item lives in a compendium (its rules are its own, never inherited)
 * @returns {object}                The updateData to apply
 */
-export async function migrateItemData(item, actor) {
+export async function migrateItemData(item, actor, options = {}) {
   const updateData = {};
   const pathPrefix = "system.items";
 
@@ -872,6 +907,13 @@ export async function migrateItemData(item, actor) {
     }
   }
 
+  // Details-tab fields moved into rules (2026-10-07) - see migrateDetailsFields below. An embedded
+  // Perk's `value` is moved by migrateActorData, which also takes it back out of the actor's data.
+  Object.assign(updateData, await migrateDetailsFields(item, {
+    inPack: options.inPack ?? !!item.pack,
+    perkValue: !actor,
+  }));
+
   return updateData;
 }
 
@@ -901,7 +943,7 @@ export const migrateCompendium = async function(pack) {
         updateData = await migrateActorData(doc.toObject(), doc);
         break;
       case "Item":
-        updateData = await migrateItemData(doc.toObject());
+        updateData = await migrateItemData(doc.toObject(), undefined, { inPack: true });
         if (doc.type == "origin") {
           await doc.update({"system.-=originPerkIds": null});
         } else if (doc.type == "influence") {
@@ -934,3 +976,401 @@ export const migrateCompendium = async function(pack) {
   await pack.configure({locked: wasLocked});
   console.log(`Migrated all ${documentName} documents from Compendium ${pack.collection}`);
 };
+
+/* -------------------------------------------- */
+/*  Details-tab fields moved into rules          */
+/* -------------------------------------------- */
+
+/* 2026-10-07 (docs/rules-batches/details-cleanup.md). Five item fields stopped being authored on the
+   item sheet's Details tab: a Perk's canActivate (read by nothing), a Perk's or Power's reroll block,
+   a Perk's hasMorphedToughnessBonus and value, and a weapon Upgrade's aimShiftBonus. The compendium
+   items carry rules for them now; these functions give world and actor copies the same rules and
+   delete the old stored value. The schema fields themselves stay until 6.1.
+
+   Value-matched like the migrations above, never version-gated: each one fires only while the old
+   field still holds a value the drop / sheet wrote, and deletes it as it goes, so a second run finds
+   nothing to do. A rule is added only when the item's rules don't already have one of its kind
+   (matched by type and its settings, never by position), so a re-run can't add it twice.
+
+   Rules and inheritance (rules/inherit.mjs): a copy of a compendium item with no rules of its own
+   runs its original's rules, live. Such a copy is left alone when its original already has the rule
+   (the compendium is updated in the same release). When the original lacks it (a module or world
+   pack's copy, a pack not rebuilt yet), the copy is given the original's rules plus the new one as
+   its own - adding just the new rule would stop it inheriting the rest. */
+
+const COMPENDIUM_EMOTIONAL_MASTERY = 'Compendium.essence20.jump_through_time.Item.bWAncoQxwfCLtn2v';
+const COMPENDIUM_LUCKY_CHARM = 'Compendium.essence20.finster_s_monster_matic_cookbook.Item.Rv3Bhyeo4XBxHLpX';
+const COMPENDIUM_FUTURE_VISION = 'Compendium.essence20.jump_through_time.Item.z9ZMxCd5DZDHlDYL';
+
+/* Items whose system.reroll was switched on in play rather than authored: Emotional Mastery's Guilt
+   (now a reroll grant read from the active options - items/resources/emotional-mastery.mjs), Lucky
+   Charm's and Future Vision's Use (their Reroll rules now wait for a rule toggle). Their reroll is
+   state, not a setting: it becomes that state, never a rule of its own. */
+const REROLL_STATE = {
+  [COMPENDIUM_EMOTIONAL_MASTERY]: () => ({}),
+  [COMPENDIUM_LUCKY_CHARM]: () => ({ 'flags.essence20.rules.toggles.luckyCharm': true }),
+  [COMPENDIUM_FUTURE_VISION]: reroll => ({
+    'flags.essence20.rules.toggles.futureVision': true,
+    'flags.essence20.futureVisionUses': Number(reroll.maxUses) || 0,
+  }),
+};
+
+/** The item's stored system data - a document's source, or the source object itself. */
+function storedSystem(item) {
+  return (item?._source ?? item)?.system ?? {};
+}
+
+/** Where a copy's rules come from (rules/inherit.mjs#rulesSourceOf). */
+function rulesSourceUuid(item) {
+  return item?.flags?.essence20?.rulesSource ?? item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+}
+
+/**
+ * Deletes a stored key. v14's ForcedDeletion operator does it; the older "-=key" form is deprecated
+ * there and no longer applied, so it is only the fallback for a Foundry without the operator.
+ * @param {Object} update
+ * @param {String} path
+ */
+function unset(update, path, item = null) {
+  // A field still in the data model (kept until 6.1) can't be deleted - v14 rejects the update ("may not be
+  // undefined", live test 2026-10-07) - so it goes back to its default instead; 6.1 drops the field itself.
+  const field = path.startsWith('system.') ? item?.system?.schema?.getField?.(path.slice(7)) : null;
+  if (path in RESET_TO) {
+    update[path] = typeof RESET_TO[path] == 'function' ? RESET_TO[path](field) : RESET_TO[path];
+    return;
+  }
+
+  const ForcedDeletion = globalThis.foundry?.data?.operators?.ForcedDeletion;
+  if (ForcedDeletion) {
+    update[path] = new ForcedDeletion();
+    return;
+  }
+
+  const dot = path.lastIndexOf('.');
+  update[`${path.slice(0, dot)}.-=${path.slice(dot + 1)}`] = null;
+}
+
+/** The deprecated Details fields' defaults (the data models), set in place of a deletion until 6.1. */
+const RESET_TO = {
+  'system.canActivate': false,
+  'system.hasMorphedToughnessBonus': false,
+  'system.value': 0,
+  'system.aimShiftBonus': 0,
+  // The whole reroll block back to its initial value (switched off) - the schema's own default when there is one.
+  'system.reroll': field => field?.getInitialValue?.({}) ?? { enabled: false },
+};
+
+/**
+ * The rules this item runs today: its own, or its compendium original's when it has none of its own
+ * and isn't in a pack (rules/inherit.mjs#inheritedRules).
+ * @returns {Promise<Array<Object>>}
+ */
+async function effectiveRules(item, inPack) {
+  const own = storedSystem(item).rules;
+  if (Array.isArray(own) && own.length) {
+    return own;
+  }
+
+  if (!inPack) {
+    const original = (await compendiumEntryAt(rulesSourceUuid(item)))?.system?.rules;
+    if (Array.isArray(original) && original.length) {
+      return original;
+    }
+  }
+
+  return [];
+}
+
+/**
+ * Adds the wanted rules the item doesn't have yet to update['system.rules'].
+ * @param {Object} update   The item's pending update; its system.rules, when set, is the starting point.
+ * @param {Object} item
+ * @param {Array<{rule: Object, has: Function}>} wanted   has(rule): an existing rule already doing this.
+ * @param {Boolean} inPack
+ */
+async function addRules(update, item, wanted, inPack) {
+  const current = update['system.rules'] ?? await effectiveRules(item, inPack);
+  const missing = wanted.filter(({ has }) => !current.some(rule => rule && has(rule))).map(({ rule }) => rule);
+  if (missing.length) {
+    update['system.rules'] = [...current, ...missing];
+  }
+}
+
+const REROLL_DEFAULTS = {
+  condition: 'none', essence: 'any', scopeToOriginSkill: false, recursive: true, minDieFaces: 0, grantsCanCritD2: false,
+  bonus: 0, shiftUp: 0, keepBetter: false,
+};
+
+const REROLL_KEYS = ['mode', 'target', 'reset', 'maxUses', 'values', 'condition', 'skills', 'essence', 'scopeToOriginSkill',
+  'recursive', 'minDieFaces', 'grantsCanCritD2', 'bonus', 'shiftUp', 'keepBetter'];
+
+/** A reroll cost's set parts only, or null when it costs nothing. */
+function rerollCost(cost) {
+  const out = {};
+  if (cost?.resourcePath) {
+    out.resourcePath = cost.resourcePath;
+  }
+
+  for (const key of ['amount', 'worldStoryPoints']) {
+    if (Number(cost?.[key])) {
+      out[key] = Number(cost[key]);
+    }
+  }
+
+  if (cost?.rolePointsName) {
+    out.rolePointsName = cost.rolePointsName;
+  }
+
+  return Object.keys(out).length ? out : null;
+}
+
+/**
+ * The Reroll rule (rules/types.mjs) that does what an item's system.reroll did in
+ * mechanics/rolls/reroll.mjs#getRerollConfigs: the same settings, less the defaults
+ * normalizeRerollConfig fills in anyway. A Perk with the `rerolls` advance type and no switched-on
+ * reroll (Power Infusion) rerolled 1 to its advance value once per scene, with its reroll block's cost
+ * and condition - the same rule with upTo.
+ * @param {Object} system   The item's stored system data.
+ * @returns {Object|null}
+ */
+export function legacyRerollRule(system) {
+  const reroll = system?.reroll ?? {};
+  if (reroll.enabled !== true) {
+    if (system?.advances?.type != 'rerolls') {
+      return null;
+    }
+
+    const cost = rerollCost(reroll.cost);
+    return {
+      type: 'Reroll', mode: 'all', target: 'allDice', reset: 'scene', maxUses: 1, upTo: '@item.system.advances.currentValue',
+      ...(cost ? { cost } : {}),
+      ...((reroll.condition ?? 'none') != 'none' ? { condition: reroll.condition } : {}),
+    };
+  }
+
+  const rule = { type: 'Reroll' };
+  for (const key of REROLL_KEYS) {
+    const value = reroll[key];
+    if (value === undefined || value === null || value === '' || value === REROLL_DEFAULTS[key]
+      || (Array.isArray(value) && !value.length)) {
+      continue;
+    }
+
+    rule[key] = value;
+  }
+
+  const cost = rerollCost(reroll.cost);
+  if (cost) {
+    rule.cost = cost;
+  }
+
+  return rule;
+}
+
+/** Whether a system.reroll still holds something the item used to run on. */
+function hasLegacyReroll(system) {
+  const reroll = system?.reroll;
+  if (!reroll) {
+    return false;
+  }
+
+  return reroll.enabled === true
+    || (system.advances?.type == 'rerolls' && (!!rerollCost(reroll.cost) || (reroll.condition ?? 'none') != 'none'));
+}
+
+/** The Morphed Toughness bonus a hasMorphedToughnessBonus Perk set on its drop and took off on its delete. */
+export const MORPHED_TOUGHNESS_RULES = [
+  {
+    rule: { type: 'Trigger', event: 'added', label: 'Morphed Toughness from Armor Training', steps: [{ do: 'refreshMorphedToughness' }] },
+    has: rule => rule.type == 'Trigger' && rule.event == 'added' && (rule.steps ?? []).some(step => step?.do == 'refreshMorphedToughness'),
+  },
+  {
+    rule: {
+      type: 'Trigger', event: 'removed', label: 'Morphed Toughness off',
+      steps: [{ do: 'updateActor', set: { 'system.canSetToughnessBonus': false, 'system.defenses.toughness.morphed': 0 } }],
+    },
+    has: rule => rule.type == 'Trigger' && rule.event == 'removed'
+      && (rule.steps ?? []).some(step => step?.do == 'updateActor' && step.set?.['system.canSetToughnessBonus'] === false),
+  },
+];
+
+const MOVEMENT_TYPES = ['aerial', 'burrow', 'climb', 'ground', 'swim'];
+
+/**
+ * The rules for a Perk's value (choiceType movement: +value ft to the picked Movement's bonus; skills:
+ * +value upshifts on the picked Skill), for copies flagged perkValueRule only - a copy dropped before
+ * this had the value written straight into its actor instead (sheet-handlers/perk-handler.mjs).
+ * @param {String} choiceType
+ * @param {Number} value
+ * @returns {Array<{rule: Object, has: Function}>}
+ */
+export function perkValueRules(choiceType, value) {
+  const flagged = 'rule:data:flags.essence20.perkValueRule';
+  if (choiceType == 'movement') {
+    return MOVEMENT_TYPES.map(movement => ({
+      rule: {
+        type: 'Movement', label: `+${value} ft ${movement}`, movement, stage: 'bonus', op: 'add', value,
+        when: [`rule:data:system.choice=${movement}`, flagged],
+      },
+      has: rule => rule.type == 'Movement' && rule.stage == 'bonus' && rule.movement == movement,
+    }));
+  }
+
+  if (choiceType == 'skills') {
+    return [{
+      rule: { type: 'DerivedStat', label: `Up ${value} on the picked Skill`, path: 'system.skills.{item.choice}.shiftUp', op: 'add', value, when: [flagged] },
+      has: rule => rule.type == 'DerivedStat' && rule.path == 'system.skills.{item.choice}.shiftUp',
+    }];
+  }
+
+  return [];
+}
+
+/**
+ * A Perk's canActivate: nothing reads it for a Perk (the Use rule gives a Perk its button), so the
+ * stored value goes.
+ * @param {Object} item
+ * @returns {Object}   Update data.
+ */
+export function migratePerkCanActivate(item) {
+  const update = {};
+  if (item?.type == 'perk' && storedSystem(item).canActivate === true) {
+    unset(update, 'system.canActivate', item);
+  }
+
+  return update;
+}
+
+/**
+ * A Perk's or Power's system.reroll -> a Reroll rule (legacyRerollRule), unless the item already has
+ * one; the run-time-switched ones (REROLL_STATE) keep their state instead.
+ * @param {Object} item
+ * @param {Object} [options]   {inPack, update}: update is the item's pending update (its system.rules is built on).
+ * @returns {Promise<Object>}   Update data.
+ */
+export async function migrateRerollFields(item, { inPack = false, update = {} } = {}) {
+  if (!['perk', 'power'].includes(item?.type)) {
+    return update;
+  }
+
+  const system = storedSystem(item);
+  const state = REROLL_STATE[rulesSourceUuid(item)];
+  if (state) {
+    if (system.reroll?.enabled === true) {
+      Object.assign(update, state(system.reroll));
+      unset(update, 'system.reroll', item);
+    }
+
+    return update;
+  }
+
+  const rule = legacyRerollRule(system);
+  if (rule) {
+    await addRules(update, item, [{ rule, has: other => other.type == 'Reroll' && (other.scope ?? 'self') == 'self' }], inPack);
+  }
+
+  if (hasLegacyReroll(system)) {
+    unset(update, 'system.reroll', item);
+  }
+
+  return update;
+}
+
+/**
+ * A Perk's hasMorphedToughnessBonus -> its added / removed Triggers (MORPHED_TOUGHNESS_RULES).
+ * @returns {Promise<Object>}   Update data.
+ */
+export async function migrateMorphedToughness(item, { inPack = false, update = {} } = {}) {
+  if (item?.type != 'perk' || storedSystem(item).hasMorphedToughnessBonus !== true) {
+    return update;
+  }
+
+  await addRules(update, item, MORPHED_TOUGHNESS_RULES, inPack);
+  unset(update, 'system.hasMorphedToughnessBonus', item);
+  return update;
+}
+
+/**
+ * A weapon Upgrade's aimShiftBonus -> an AimBonus rule on the weapon it's attached to (scope host).
+ * @returns {Promise<Object>}   Update data.
+ */
+export async function migrateUpgradeAimBonus(item, { inPack = false, update = {} } = {}) {
+  const value = Number(storedSystem(item).aimShiftBonus) || 0;
+  if (item?.type != 'upgrade' || !value) {
+    return update;
+  }
+
+  await addRules(update, item, [{
+    rule: { type: 'AimBonus', label: `Aim +${value}`, scope: 'host', extra: value },
+    has: rule => rule.type == 'AimBonus' && rule.scope == 'host',
+  }], inPack);
+  unset(update, 'system.aimShiftBonus', item);
+  return update;
+}
+
+/**
+ * A Perk's value (Fast: +10 ft to a picked Movement; GI Joe Expertise: up 2 on a picked Skill) -> its
+ * rules (perkValueRules), and the copy flagged perkValueRule so they apply to it. Its drop wrote the
+ * value straight into the actor (system.movement.<pick>.bonus / system.skills.<pick>.shiftUp), so on
+ * an actor that much comes back off (never below 0), or the rule would count it twice.
+ *
+ * Value-matched: a flagged copy is done, and the value is deleted as it goes.
+ * @param {Object} item
+ * @param {Object} [options]   {inPack, rules: the item's pending system.rules, actorSystem: the owning
+ *   actor's stored system data (for an embedded copy), totals: running values of the actor fields already
+ *   changed this pass, shared across its items}
+ * @returns {Promise<{update: Object, actorUpdate: Object}>}
+ */
+export async function migratePerkValue(item, { inPack = false, rules, actorSystem = null, totals = {} } = {}) {
+  const result = { update: {}, actorUpdate: {} };
+  const system = storedSystem(item);
+  const value = Number(system.value) || 0;
+  if (item?.type != 'perk' || !['movement', 'skills'].includes(system.choiceType) || !value
+    || item.flags?.essence20?.perkValueRule) {
+    return result;
+  }
+
+  const update = rules ? { 'system.rules': rules } : {};
+  await addRules(update, item, perkValueRules(system.choiceType, value), inPack);
+  if (update['system.rules'] === rules) {
+    delete update['system.rules'];
+  }
+
+  update['flags.essence20.perkValueRule'] = true;
+  unset(update, 'system.value', item);
+  result.update = update;
+
+  // The pick the drop baked into the actor: the old picker's value (rules/choice-read.mjs#legacyChoiceOf), from stored data.
+  const choice = legacyChoiceOf({ system, flags: (item?._source ?? item)?.flags });
+  if (actorSystem && choice) {
+    const path = system.choiceType == 'movement' ? `system.movement.${choice}.bonus` : `system.skills.${choice}.shiftUp`;
+    const stored = path.split('.').slice(1).reduce((at, key) => at?.[key], actorSystem);
+    if (stored !== undefined) {
+      const current = totals[path] ?? (Number(stored) || 0);
+      totals[path] = Math.max(0, current - value);
+      result.actorUpdate[path] = totals[path];
+    }
+  }
+
+  return result;
+}
+
+/**
+ * Every Details-tab field above, on one item (migrateItemData). Embedded Perks' value is moved by
+ * migrateActorData instead (perkValue false), since it changes the actor too.
+ * @param {Object} item
+ * @param {Object} [options]   {inPack, perkValue}
+ * @returns {Promise<Object>}   Update data.
+ */
+export async function migrateDetailsFields(item, { inPack = false, perkValue = true } = {}) {
+  const update = migratePerkCanActivate(item);
+  await migrateRerollFields(item, { inPack, update });
+  await migrateMorphedToughness(item, { inPack, update });
+  await migrateUpgradeAimBonus(item, { inPack, update });
+  if (perkValue) {
+    const moved = await migratePerkValue(item, { inPack, rules: update['system.rules'] });
+    Object.assign(update, moved.update);
+  }
+
+  return update;
+}

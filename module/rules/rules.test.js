@@ -211,6 +211,11 @@ describe('types', () => {
     expect(validateRule({ type: 'RollModifier', when: ['skill:might'], upshift: 1 })).toEqual([]);
     expect(validateRule({ type: 'Defense', defense: 'toughness', amount: '@level' })).toEqual([]);
     expect(validateRule({ type: 'Reroll', mode: 'ones', cost: { amount: 1 } })).toEqual([]);
+    // keepBetter (Backup Planner) and upTo (Power Infusion) - settings a Perk's own system.reroll had.
+    expect(validateRule({ type: 'Reroll', mode: 'all', keepBetter: true, upTo: '@item.system.advances.currentValue' })).toEqual([]);
+    expect(validateRule({ type: 'Reroll', keepBetter: 'yes', upTo: '1 +' })).toHaveLength(2);
+    // Movement stage bonus (Fast): the type's bonus, before any total.
+    expect(validateRule({ type: 'Movement', movement: 'ground', stage: 'bonus', op: 'add', value: 10 })).toEqual([]);
     expect(validateRule({ type: 'ChoiceSet', key: 'k', from: 'list', options: ['a'] })).toEqual([]);
     expect(validateRule({ type: 'Grant', uuid: 'Compendium.essence20.x.Item.y' })).toEqual([]);
   });
@@ -517,7 +522,49 @@ describe('adapter: rerolls and pools', () => {
     ], { uuid: 'Actor.a.Item.p' });
     const actor = makeActor([perk]);
     rebuildIndex(actor);
-    expect(ruleRerollGrants(actor)).toEqual([{ mode: 'ones', maxUses: 2, reset: 'scene', source: 'Actor.a.Item.p#rule0', name: 'Lucky' }]);
+    // An item's first Reroll rule counts its uses under the item (item:<uuid>), as its old system.reroll did.
+    expect(ruleRerollGrants(actor)).toEqual([{ mode: 'ones', maxUses: 2, reset: 'scene', source: 'Actor.a.Item.p', sourceType: 'item', name: 'Lucky' }]);
+  });
+
+  test('a later Reroll rule on the same item keeps a count of its own', () => {
+    const perk = makeItem([{ type: 'Reroll', mode: 'ones' }, { type: 'Reroll', mode: 'all', maxUses: 1 }], { uuid: 'Actor.a.Item.q' });
+    const actor = makeActor([perk]);
+    rebuildIndex(actor);
+    expect(ruleRerollGrants(actor).map(config => [config.source, config.sourceType])).toEqual([['Actor.a.Item.q', 'item'], ['Actor.a.Item.q#rule1', undefined]]);
+  });
+
+  // Power Infusion: 1s, then 1s and 2s from its advance - what the advances.type 'rerolls' path in
+  // mechanics/rolls/reroll.mjs worked out before the rule took it over.
+  test('upTo rerolls the results 1 to its formula', () => {
+    const rule = { type: 'Reroll', mode: 'all', reset: 'scene', maxUses: 1, upTo: '@item.system.advances.currentValue' };
+    const perk = makeItem([rule], { uuid: 'Actor.a.Item.r', system: { advances: { currentValue: 2 } } });
+    const actor = makeActor([perk]);
+    rebuildIndex(actor);
+    const [config] = ruleRerollGrants(actor);
+    expect(config.values).toEqual([1, 2]);
+    expect(config.upTo).toBeUndefined();
+
+    perk.system.advances.currentValue = 0;
+    expect(ruleRerollGrants(actor)[0].values).toEqual([1]);
+  });
+
+  // Expertise / Trade Experience / Aptitude Augmenter: a rule naming no Skills covers the picked one.
+  test('a skills-pick Perk scopes a Skills-less Reroll rule to its pick', () => {
+    const perk = makeItem([{ type: 'Reroll', mode: 'ones' }], { uuid: 'Actor.a.Item.s', system: { choiceType: 'skills', choice: 'athletics' } });
+    const named = makeItem([{ type: 'Reroll', mode: 'ones', skills: ['might'] }], { uuid: 'Actor.a.Item.t', system: { choiceType: 'skills', choice: 'athletics' } });
+    const unpicked = makeItem([{ type: 'Reroll', mode: 'ones' }], { uuid: 'Actor.a.Item.u', system: { choiceType: 'skills', choice: null } });
+    const actor = makeActor([perk, named, unpicked]);
+    rebuildIndex(actor);
+    expect(ruleRerollGrants(actor).map(config => config.skills)).toEqual([['athletics'], ['might'], undefined]);
+  });
+
+  test('a toggle-gated Reroll rule (Lucky Charm) is offered only once its toggle is on', () => {
+    const power = makeItem([{ type: 'Reroll', when: ['self:toggle:luckyCharm'], mode: 'ones', maxUses: 0 }], { uuid: 'Actor.a.Item.v', type: 'power' });
+    const actor = makeActor([power]);
+    rebuildIndex(actor);
+    expect(ruleRerollGrants(actor)).toEqual([]);
+    power.flags = { essence20: { rules: { toggles: { luckyCharm: true } } } };
+    expect(ruleRerollGrants(actor)).toHaveLength(1);
   });
 
   test('pools refill on their own reset only', () => {

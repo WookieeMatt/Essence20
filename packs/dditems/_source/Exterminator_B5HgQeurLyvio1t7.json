@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","upshift":1,"when":["attack",{"any":["target:data:system.size=common","target:data:system.size=small"]},"target:sizeDiff<=-1"]}
+      {"type":"RollModifier","upshift":1,"when":["attack",{"any":["target:data:system.size=common","target:data:system.size=small"]},"target:sizeDiff<=-1"]},
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"condition":"smallerTarget"}
     ],
     "automation": {
       "status": "full",
@@ -20,15 +21,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general",
-    "reroll": {
-      "enabled": true,
-      "maxUses": 0,
-      "mode": "ones",
-      "reset": "none",
-      "target": "skillDice",
-      "condition": "smallerTarget"
-    }
+    "type": "general"
   },
   "effects": [],
   "flags": {},

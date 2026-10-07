@@ -11,6 +11,7 @@ import { hostOf, rebuildIndex, ruleId, ruleLabel, rulesOf, rulesOfType } from ".
 import { contextFor, evaluate, interpolate, isStatic } from "./predicate.mjs";
 import { canAfford, readResource } from "./steps.mjs";
 import { linkedEntries } from "./links.mjs";
+import { chosenList, chosenOf } from "./choice-read.mjs";
 
 /**
  * The rules of a type that change this actor: its own (in the given scopes) and any reaching it from
@@ -521,7 +522,7 @@ export async function applyRuleSwitches(actor, options, ctx = {}) {
 }
 
 /**
- * A DialogSwitch's useSkill: a Skill key, or "choiceOf:<uuid>" - the Skill chosen (system.choice) on the actor's copy of
+ * A DialogSwitch's useSkill: a Skill key, or "choiceOf:<uuid>" - the Skill chosen (rules/choice-read.mjs) on the actor's copy of
  * that item (Kind, But Firm's Empathy Skill); null when there's no such choice.
  */
 function useSkillOf(rule, actor) {
@@ -533,7 +534,7 @@ function useSkillOf(rule, actor) {
   const uuid = want.slice(9);
   const items = actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
   const source = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-  return items.find(item => source(item) == uuid || item.uuid == uuid)?.system?.choice || null;
+  return chosenOf(items.find(item => source(item) == uuid || item.uuid == uuid)) || null;
 }
 
 /** Lower index in skillShiftList = better. */
@@ -824,7 +825,7 @@ export function ruleDamageType(actor, target, roll = {}) {
     }
 
     if (evaluate(rule.when, contextFor({ ...roll, ...rollFacts(roll.item, roll), self: actor, other: target, ruleItem: item })) === true) {
-      const type = rule.to == 'choice' ? item?.system?.choice : rule.to;
+      const type = rule.to == 'choice' ? chosenOf(item) : rule.to;
       if (type) {
         return type;
       }
@@ -895,7 +896,7 @@ export function ruleDieSubstitution(actor, target, roll = {}, startShift) {
 
     // dieOf: holder (round 17, perm - rules/plugins/marks/carried-die-and-crit.mjs): the holder's dice, not the roller's.
     const pool = rule.dieOf == 'holder' && holder && holder !== actor ? holder.getRollData?.()?.skills ?? holder.system?.skills ?? {} : skills;
-    const dieOf = name => pool[name == 'choice' ? item?.system?.choice : name]?.shift;
+    const dieOf = name => pool[name == 'choice' ? chosenOf(item) : name]?.shift;
     let next = shift;
     let applies = false;
     if (rule.mode == 'use') {
@@ -1413,17 +1414,41 @@ const RULE_KEYS = ['type', 'label', 'when', 'scope', 'priority', 'disabled', 'st
 
 export function ruleRerollGrants(actor) {
   const configs = [];
-  for (const { rule, item, index } of rulesOfType(actor, 'Reroll', 'self')) {
+  const entries = rulesOfType(actor, 'Reroll', 'self');
+  // An item's first Reroll rule counts its uses under the item itself (`item:<uuid>`) - the key a Perk's own
+  // system.reroll used before it moved into this rule (2026-10-07), and the one a rerollLimit step shares (Power
+  // Infusion). Any later Reroll rule on the same item keeps a count of its own.
+  const firstIndex = new Map();
+  for (const { item, index } of entries) {
+    firstIndex.set(item, Math.min(firstIndex.get(item) ?? Infinity, index));
+  }
+
+  for (const { rule, item, index } of entries) {
     if (!isStatic(rule.when) || evaluate(rule.when, contextFor({ self: actor, ruleItem: item })) !== true) {
       continue;
     }
 
     // The rule's own keys aren't reroll settings.
-    const settings = Object.fromEntries(Object.entries(rule).filter(([key]) => !RULE_KEYS.includes(key)));
+    const { upTo, ...settings } = Object.fromEntries(Object.entries(rule).filter(([key]) => !RULE_KEYS.includes(key)));
+    // upTo: N - every result from 1 to N (Power Infusion: 1s, then 1s and 2s from 18th level).
+    if (upTo !== undefined) {
+      const top = Math.round(resolveValue(upTo, { actor, item }, 1));
+      settings.values = top > 0 ? Array.from({ length: top }, (_, i) => i + 1) : [1];
+    }
+
+    // A Perk whose Skill is picked when it's taken (choiceType skills: Expertise, Trade Experience, Aptitude
+    // Augmenter) and whose rule names no Skills covers only the picked one(s) (rules/choice-read.mjs; a list pick, all of them).
+    const picked = item.system?.choiceType == 'skills' ? chosenList(item) : [];
+    if (!settings.skills?.length && !settings.scopeToOriginSkill && picked.length) {
+      settings.skills = picked;
+    }
+
+    const first = firstIndex.get(item) == index;
     configs.push({
       ...settings,
       maxUses: settings.maxUses === undefined ? undefined : resolveValue(settings.maxUses, { actor, item }, 1),
-      source: `${item.uuid ?? item.id}#rule${index}`,
+      source: first ? item.uuid ?? item.id : `${item.uuid ?? item.id}#rule${index}`,
+      ...(first ? { sourceType: 'item' } : {}),
       name: ruleLabel(rule, item),
     });
   }

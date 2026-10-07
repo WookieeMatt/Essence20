@@ -7,7 +7,8 @@
   "system": {
     "prerequisites": {"when":["self:hasType:origin:Engineer"]},
     "rules": [
-      {"type":"RollModifier","label":"Trade Experience ({item.choice}: ignores the first ↓1)","when":["skill:{item.choice}"],"ignoreDownshift":1}
+      {"type":"RollModifier","label":"Trade Experience ({item.choice}: ignores the first ↓1)","when":["skill:{item.choice}"],"ignoreDownshift":1},
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0}
     ],
     "automation": {
       "status": "full",
@@ -37,14 +38,7 @@
     },
     "type": "origin",
     "value": 0,
-    "version": "powerRangers",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "skillDice",
-      "maxUses": 0,
-      "reset": "none"
-    }
+    "version": "powerRangers"
   },
   "effects": [],
   "sort": 0,

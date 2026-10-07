@@ -1,5 +1,6 @@
 import { registerTag } from "../../predicate.mjs";
 import { itemsOf, sourceOf } from "../shared/card-text-helpers.mjs";
+import { hasChosen } from "../../choice-read.mjs";
 
 /**
  * Round 15 (items2): `holder:choiceOf:<uuid>` - the rolled Skill is the one chosen (system.choice) on the rule HOLDER's
@@ -13,8 +14,8 @@ export function holderChoiceOfTag(rest, ctx) {
   }
 
   const holder = ctx.holder ?? ctx.self;
-  const chosen = itemsOf(holder).find(item => sourceOf(item) == rest || item.uuid == rest)?.system?.choice;
-  return !!chosen && ctx.rolledSkill == chosen;
+  const copy = itemsOf(holder).find(item => sourceOf(item) == rest || item.uuid == rest);
+  return !!copy && hasChosen(copy, ctx.rolledSkill);
 }
 
 registerTag('holder:choiceOf', holderChoiceOfTag, { phrase: ["its owner's choice for {name} matches", "its owner's choice for {name} doesn't match"] });

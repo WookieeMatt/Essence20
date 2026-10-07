@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Power Infusion","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"require","check":["self:morphed"],"message":"You must be Morphed to activate Power Infusion.","beforeCost":true},{"do":"rerollLimit","reset":"scene","max":1,"beforeCost":true},{"do":"bankReroll","to":"self","upTo":"@item.system.advances.currentValue"},{"do":"bankReroll","to":"aroundSelf:60","filter":["not:target:self","target:type:playerCharacter","target:data:system.isMorphed"],"upTo":"@item.system.advances.currentValue"},{"do":"rerollLimit","reset":"scene","max":1,"spend":true},{"do":"listNames","to":"aroundSelf:60","filter":["not:target:self","target:type:playerCharacter","target:data:system.isMorphed"],"var":"allies","none":"E20.PowerInfusionNoAllies"},{"do":"chat","text":"Rerolls banked for: {name}, {var.allies}."}]}
+      {"type":"Use","label":"Power Infusion","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"require","check":["self:morphed"],"message":"You must be Morphed to activate Power Infusion.","beforeCost":true},{"do":"rerollLimit","reset":"scene","max":1,"beforeCost":true},{"do":"bankReroll","to":"self","upTo":"@item.system.advances.currentValue"},{"do":"bankReroll","to":"aroundSelf:60","filter":["not:target:self","target:type:playerCharacter","target:data:system.isMorphed"],"upTo":"@item.system.advances.currentValue"},{"do":"rerollLimit","reset":"scene","max":1,"spend":true},{"do":"listNames","to":"aroundSelf:60","filter":["not:target:self","target:type:playerCharacter","target:data:system.isMorphed"],"var":"allies","none":"E20.PowerInfusionNoAllies"},{"do":"chat","text":"Rerolls banked for: {name}, {var.allies}."}]},
+      {"type":"Reroll","mode":"all","target":"allDice","reset":"scene","maxUses":1,"upTo":"@item.system.advances.currentValue","cost":{"resourcePath":"system.powers.personal.value","amount":1},"condition":"morphed"}
     ],
     "automation": {
       "status": "full",
@@ -25,13 +26,6 @@
     "advances": {
       "canAdvance": true,
       "type": "rerolls"
-    },
-    "reroll": {
-      "cost": {
-        "resourcePath": "system.powers.personal.value",
-        "amount": 1
-      },
-      "condition": "morphed"
     }
   },
   "effects": [],

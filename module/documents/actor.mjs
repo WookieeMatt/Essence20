@@ -687,6 +687,25 @@ export class Essence20Actor extends Actor {
    * Informational only - nothing here blocks equipping or attacking. Matches the system's
    * existing stance of surfacing Equipment Assignment state rather than enforcing it.
    */
+  /**
+   * Whether a weapon is a Ram / Flyby (an Alt Mode Special Attack): its own flag, an effect it lists, or an effect
+   * attached to it on this actor.
+   * @param {Item} weapon
+   * @returns {Boolean}
+   */
+  _isAltModeAttack(weapon) {
+    const flagged = data => !!(data?.isRam || data?.isFlyby || data?.system?.isRam || data?.system?.isFlyby);
+    if (flagged(weapon.system)) {
+      return true;
+    }
+
+    if (Object.values(weapon.system?.items ?? {}).some(flagged)) {
+      return true;
+    }
+
+    return [...(this.items ?? [])].some(item => item.type == 'weaponEffect' && item.flags?.essence20?.parentId == weapon.id && flagged(item));
+  }
+
   _prepareLoadout() {
     const system = this.system;
     if (!system.loadout || !system.hardpoints) {
@@ -705,7 +724,9 @@ export class Essence20Actor extends Actor {
       }
 
       // Ram and Flyby are the Alt Mode's own Special Attacks (TF CRB p.49), not equipment: no hands, no Hardpoint.
-      if (item.system.isRam || item.system.isFlyby) {
+      // The flag sits on the weapon's effect (weaponEffect isRam / isFlyby), listed in system.items and attached as
+      // its own item (parentId) - live test 2026-10-07 found the weapon itself never carries it.
+      if (this._isAltModeAttack(item)) {
         continue;
       }
 
@@ -1143,6 +1164,12 @@ export class Essence20Actor extends Actor {
     };
 
     const movementTypes = ['aerial', 'ground', 'climb', 'swim', 'burrow'];
+    // Stage bonus (Fast): each type's bonus, all of them first, since the loop below reads ground's
+    // base + bonus while it works on aerial and swim (Jury Rig, Lightfoil Wings).
+    for (const movementType of movementTypes) {
+      applyMovementRule('bonus', movementType, 'bonus');
+    }
+
     for (const movementType of movementTypes) {
       system.movement[movementType].base = parseInt(system.movement[movementType].base);
       applyMovementRule('base', movementType, 'base');

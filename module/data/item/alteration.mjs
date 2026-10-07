@@ -20,6 +20,8 @@ export class AlterationItemData extends foundry.abstract.TypeDataModel {
       ...itemDescription(),
       availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
       benefit: makeStr(''),
+      // bonus / cost: the Skills picked when an essence Alteration is dropped (alteration-handler.mjs). Not on the
+      // Details tab since 2026-10-07 - its number boxes for type other edited nothing anything reads.
       bonus: makeStr(null),
       bonusMovement: makeInt(0),
       bonusMovementType: makeStrWithChoices(Object.keys(E20.movementTypes), null),

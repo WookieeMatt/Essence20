@@ -8,6 +8,7 @@ import { getVisibleItemPacks } from "../util/compendium-browser.mjs";
 import { performSpectrumShift } from "./role-handler.mjs";
 import { isPrincessPerk, removeSpellcastingUpshift } from "../items/magic/princess-perks.mjs";
 import { HEARTS_CALLING_ID, pickHeartsCallingOption } from "../items/resources/emotional-mastery.mjs";
+import { chosenList, legacyChoiceOf } from "../rules/choice-read.mjs";
 
 // (Sorcery's levelTaken - set when it's added, cleared when it goes - and its Cost of Sorcery Grant are rules on the Perk:
 // rules/conv17-split2.test.js.)
@@ -141,7 +142,8 @@ export function getAlreadyChosenExpertiseSkills(actor, perk) {
 
   return actor.items
     .filter(item => (item.flags.core?.sourceId ?? item._stats.compendiumSource ?? item?.flags?.essence20?.rulesSource) == perkSourceId)
-    .map(item => item.system.choice)
+    // Each copy's pick (rules/choice-read.mjs); a list pick contributes every Skill in it.
+    .flatMap(item => chosenList(item))
     .filter(Boolean);
 }
 
@@ -396,30 +398,10 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
       actor.update({
         [updateString]: true,
       });
-    } else if (selectionType == 'movement') {
-      updateString = `system.movement.${selection}.bonus`;
-      const updateValue = actor.system.movement[selection].bonus + perk.system.value;
-      actor.update({
-        [updateString]: updateValue,
-      });
-    } else if (selectionType == 'skills') {
-      // e.g. Expertise (GI Joe CRB p.72): two chosen Skills, each with ↑2. Corrected from an earlier version of this branch that
-      // wrote perk.system.value into the skill's flat .modifier instead - the PDF's own up-shift
-      // glyph is lost by plain-text extraction (renders as blank space before the "2"), and it
-      // got misread as a "+2" numeric bonus; the user, checking their own actor sheet against the
-      // book, caught both that and the single-choice bug below. system.skills.<skill>.shiftUp is
-      // the field templates/actor/parts/misc/essence-skills.hbs's own roll link already reads
-      // into dataset.shiftUp for every skill roll, so writing here needs no dice.mjs changes.
-      // Each skill choice is its own independent Perk grant (see Expertise's compendium entry,
-      // granted 4 times across Commando's own progression table: twice at 1st level for the
-      // initial 2 skills, twice more at 7th for "2 more skills"), so this only ever needs to
-      // apply the bonus to the one skill chosen this time.
-      updateString = `system.skills.${selection}.shiftUp`;
-      const updateValue = actor.system.skills[selection].shiftUp + perk.system.value;
-      actor.update({
-        [updateString]: updateValue,
-      });
     }
+    // A movement / skills pick's bonus (Fast's +10 ft, GI Joe Expertise's up 2 - the Perk's old system.value) is the
+    // Perk's own rules now, for copies flagged perkValueRule (stamped with the pick below); nothing is written onto
+    // the actor here any more. Copies dropped before 2026-10-07 had it written in - migration.mjs#migratePerkValue.
   }
 
   let timesTaken = 0;
@@ -506,11 +488,11 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
       "system.choice": selection,
     };
 
-    // Unlike environments/senses/movement (which write to a shared actor-level field), a
-    // skill-scoped reroll grant's scope lives on the granted Perk instance itself - see
-    // mechanics/rolls/reroll.mjs#canMeetRerollScope, which reads system.reroll.skills off each Perk.
-    if (selectionType == 'skills') {
-      updateData["system.reroll.skills"] = [selection];
+    // A skill-scoped Reroll rule with no Skills of its own covers the pick (rules/adapter.mjs#ruleRerollGrants reads
+    // system.choice). The movement / skills bonus rules (Fast, GI Joe Expertise) apply to a copy flagged
+    // perkValueRule - one whose drop didn't write the bonus onto the actor (see above).
+    if (selectionType == 'movement' || selectionType == 'skills') {
+      updateData["flags.essence20.perkValueRule"] = true;
     }
 
     newPerk.update(updateData);
@@ -595,9 +577,9 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
     await pickHeartsCallingOption(actor);
   } else if (perkUuid == SPECTRUM_SHIFT_PERK_ID) {
     return await _showSpectrumShiftDialog(actor, perk, dropFunc);
-  } else if (perk.system.hasMorphedToughnessBonus) {
-    setMorphedToughnessBonus(actor);
   }
+  // (The Morphed Toughness bonus a Faction Perk gives - It's Morphin Time! and the like - is its own `added` /
+  // `removed` Trigger rules now, refreshMorphedToughness; hasMorphedToughnessBonus is no longer read.)
 
   // ChoiceCount rules (Grid Tap's extra Grid Science / Grid Tech bonus): re-clones the Perk with numChoices raised BEFORE
   // its own choice dialog is built below - a real Document#clone (not a plain-object spread) so every downstream read of
@@ -1286,12 +1268,7 @@ export async function onPerkDelete(actor, perk) {
     });
   }
 
-  if (perk.system.hasMorphedToughnessBonus ) {
-    await actor.update ({
-      "system.canSetToughnessBonus": false,
-      "system.defenses.toughness.morphed": 0,
-    });
-  }
+  // (A Faction Perk's Morphed Toughness bonus comes off through its own `removed` Trigger rule now.)
 
   if (isPrincessPerk(perk)) {
     await removeSpellcastingUpshift(actor);
@@ -1300,24 +1277,30 @@ export async function onPerkDelete(actor, perk) {
   let updateString = null;
   let updateValue = null;
   const selectionType = perk.system.choiceType;
+  // The pick the old picker baked into the actor (rules/choice-read.mjs#legacyChoiceOf - never a rules choice, which
+  // was never written into actor data).
+  const baked = legacyChoiceOf(perk);
   if (selectionType == 'environments') {
     updateString = "system.environments";
     updateValue = actor.system.environments;
-    const index = updateValue.indexOf(perk.system.choice);
+    const index = updateValue.indexOf(baked);
     updateValue.splice(index, 1);
     actor.update({
       [updateString]: updateValue,
     });
   } else if (selectionType == 'senses') {
-    updateString = `system.senses.${perk.system.choice}.acute`;
+    updateString = `system.senses.${baked}.acute`;
     actor.update({
       [updateString]: false,
     });
-  } else if (selectionType == 'movement') {
-    updateString = `system.movement.${perk.system.choice}.bonus`;
-    const updateValue = actor.system.movement[perk.system.choice].bonus - perk.system.value;
+  } else if (selectionType == 'movement' && !perk.flags?.essence20?.perkValueRule && baked) {
+    // Only a copy dropped before 2026-10-07 wrote its value into the actor's bonus; a flagged copy's is
+    // its own rule, gone with it. Taken off the stored bonus - the prepared one includes the rules'.
+    const choice = baked;
+    updateString = `system.movement.${choice}.bonus`;
+    const stored = actor._source?.system?.movement?.[choice]?.bonus ?? actor.system.movement[choice].bonus;
     actor.update({
-      [updateString]: updateValue,
+      [updateString]: stored - (Number(perk.system.value) || 0),
     });
   }
 

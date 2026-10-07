@@ -328,7 +328,9 @@ export async function onOriginDelete(actor, origin) {
   const [newShift, skillString] = getShiftedSkill(selectedSkill, -1, actor);
   await deleteAttachmentsForItem(origin, actor);
 
-  const hasAltMode = !!actor.items.documentsByType.length;
+  // Any Alt Mode left after the Origin's own went (a separately dropped one keeps the character transforming).
+  // documentsByType is an object, so its .length was always undefined and this was always false.
+  const hasAltMode = actor.items.some(item => item.type == 'altMode');
 
   const essenceString = `system.essences.${essence}.max`;
 

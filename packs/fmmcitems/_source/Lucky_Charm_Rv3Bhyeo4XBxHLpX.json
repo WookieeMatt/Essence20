@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","label":"Lucky Charm: DIF 12 Performance","event":"powerUsed","when":["item:own"],"steps":[{"do":"rollCheck","skill":"performance","essence":"social","shiftUp":0,"shiftDown":0,"dif":12,"onSuccess":[{"do":"updateItem","item":"self","set":{"system.reroll.enabled":true}}]}]}
+      {"type":"Trigger","label":"Lucky Charm: DIF 12 Performance","event":"powerUsed","when":["item:own"],"steps":[{"do":"rollCheck","skill":"performance","essence":"social","shiftUp":0,"shiftDown":0,"dif":12,"onSuccess":[{"do":"setToggle","key":"luckyCharm","value":true}]}]},
+      {"type":"Reroll","when":["self:toggle:luckyCharm"],"mode":"ones","target":"skillDice","reset":"none","maxUses":0,"recursive":false,"minDieFaces":4}
     ],
     "automation": {
       "status": "partial",
@@ -24,15 +25,6 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
-    "reroll": {
-      "enabled": false,
-      "mode": "ones",
-      "target": "skillDice",
-      "minDieFaces": 4,
-      "recursive": false,
-      "maxUses": 0,
-      "reset": "none"
-    },
     "selectionLimit": 1,
     "type": "sorcerous",
     "usesInterval": "special",

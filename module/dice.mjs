@@ -153,6 +153,7 @@ import {
 import { HIGH_DENSITY_FOLLOW_UP_SHIFT_DOWN, isHighDensityWeapon } from "./items/attacks/high-density.mjs";
 import { hasGeneticAlterations, isRetrogenWeapon } from "./items/attacks/retrogen.mjs";
 import { creatureTagsOf, isRobotic } from "./mechanics/characters/creature-tags.mjs";
+import { chosenOf } from "./rules/choice-read.mjs";
 
 // Every Commando Perk automated below that isn't specific to Sneak Attack itself (those constants
 // live in mechanics/combat/sneak-attack.mjs instead) - all under GI Joe CRB's own compendium pack.
@@ -1539,10 +1540,11 @@ export class Dice {
 
     // Item rules' AimBonus (rules/adapter.mjs#ruleAimBonus): Distance Vision's first Aim each turn, Dig
     // In's while dug in and Calculated Attack's primed Long Range Rifle shot give ↑2 instead of ↑1. Their
-    // limits are spent (and Calculated Attack's priming cleared) only if the shot is aimed.
+    // limits are spent (and Calculated Attack's priming cleared) only if the shot is aimed. A Laser
+    // Sight's extra ↑1 is its own AimBonus rule (scope host - the weapon it's attached to).
     const aimRules = isRangedAttack ? ruleAimBonus(actor, game.user?.targets?.first?.()?.actor ?? null, { item, rolledSkill }) : { atLeast: 0, extra: 0, spend: async () => {} };
     updatedShiftDataset.aimBonus = isRangedAttack
-      ? Math.max(1, aimRules.atLeast) + aimRules.extra + this._getLaserSightBonus(actor, item)
+      ? Math.max(1, aimRules.atLeast) + aimRules.extra
       : null;
     // The Aim action taken this turn (mechanics/actions/action-economy.mjs#isAiming) starts the switch on.
     updatedShiftDataset.aimedByAction = isRangedAttack && isAiming(actor);
@@ -2192,7 +2194,7 @@ export class Dice {
         // "you may roll" clause already uses - swapping in the target's own Evasion Defense
         // whenever it's actually being compared against Toughness, once per scene.
         if (resolvedDefenseType == 'toughness'
-          && findPerk(token.actor, OVER_THE_CANDLESTICK_ID)?.system.choice == 'agileReflexes'
+          && chosenOf(findPerk(token.actor, OVER_THE_CANDLESTICK_ID)) == 'agileReflexes'
           && !hasUsedThisEncounter(token.actor, AGILE_REFLEXES_FLAG)) {
           difficulty = getDefenseValue(token.actor, 'evasion', { ignoreArmor: keyIgnoresArmor })
             + ruleDefenseAura(token.actor, 'evasion');
@@ -4469,19 +4471,6 @@ export class Dice {
     return canvas.grid.measurePath([tokenA.center, tokenB.center]).distance;
   }
 
-  /**
-   * Computes the additional Aiming shift granted by a Laser Sight (or similar) attachment on
-   * the weapon a ranged weaponEffect belongs to.
-   * @param {Actor} actor   The actor performing the roll.
-   * @param {Item} item   The weaponEffect being rolled.
-   * @returns {Number}   The extra shift, 0 if the weaponEffect has no parent weapon or upgrades.
-   * @private
-   */
-  _getLaserSightBonus(actor, item) {
-    const weapon = this._getParentWeapon(actor, item);
-
-    return weapon?.system.totalAimShiftBonus || 0;
-  }
 
   /**
    * Finds the other damage-dealing weaponEffect Items attached to the same weapon as the given

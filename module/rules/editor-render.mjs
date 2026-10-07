@@ -94,6 +94,7 @@ export function optionList(name, { rule = {}, helpers = [], derivedPaths = DERIV
   case 'rerollModes': return fromTable(E20.rerollModes);
   case 'rerollTargets': return fromTable(E20.rerollTargets);
   case 'rerollResets': return fromTable(E20.rerollResets);
+  case 'rerollConditions': return fromTable(E20.rerollConditions);
   case 'statuses': return (globalThis.CONFIG?.statusEffects ?? E20.statusEffects ?? []).map(status => [status.id, localize(status.name ?? status.label ?? status.id)]);
   case 'visionModes': return fromTable(E20.visionModes);
   case 'scopes': return (RULE_TYPES[rule.type]?.scopes ?? ['self']).map(scope => [scope, fieldLabel(`Scope.${scope}`)]);

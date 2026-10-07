@@ -5,6 +5,9 @@
   "_id": "XQxsKmc4eJJFqp6x",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"single","target":"anyDie","reset":"scene","maxUses":1}
+    ],
     "prerequisites": {"when":["self:hasType:influence:Rebellious"]},
     "automation": {
       "status": "full",
@@ -34,14 +37,7 @@
     },
     "type": "influence",
     "value": 0,
-    "version": "powerRangers",
-    "reroll": {
-      "enabled": true,
-      "mode": "single",
-      "target": "anyDie",
-      "maxUses": 1,
-      "reset": "scene"
-    }
+    "version": "powerRangers"
   },
   "effects": [],
   "sort": 0,

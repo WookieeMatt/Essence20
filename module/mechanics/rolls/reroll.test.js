@@ -1,6 +1,11 @@
 import { jest } from '@jest/globals';
 import { readFileSync } from 'fs';
 
+import { legacyRerollRule } from '../../migration.mjs';
+import { rebuildIndex } from '../../rules/index.mjs';
+import '../../rules/adapter.mjs';
+import { registerRerollGrant } from '../item-hooks.mjs';
+
 import {
   applyReroll,
   storyPointRerollConfig,
@@ -12,6 +17,7 @@ import {
   getRerollConfigs,
   hasEligibleRerollTarget,
   hasRerollCost,
+  normalizeRerollConfig,
   payRerollCost,
   rerollModeLabel,
   upshiftFormula,
@@ -79,78 +85,13 @@ describe("getRerollConfigs", () => {
     expect(getRerollConfigs(actor)).toEqual([]);
   });
 
-  test("reads a Perk's own system.reroll schema", () => {
+  // 2026-10-07: an item's own system.reroll moved into a Reroll rule (migration.mjs#legacyRerollRule);
+  // the field is no longer read for items.
+  test("no longer reads an item's own system.reroll", () => {
     const actor = makeActor();
-    actor.items = [{
-      uuid: "Item.abc",
-      system: { reroll: { enabled: true, mode: "ones", target: "allDice" } },
-    }];
-    actor.effects = [];
-
-    const configs = getRerollConfigs(actor);
-    expect(configs).toHaveLength(1);
-    expect(configs[0]).toMatchObject({ mode: "ones", target: "allDice", source: "Item.abc", sourceType: "item" });
-  });
-
-  test("ignores a disabled reroll grant", () => {
-    const actor = makeActor();
-    actor.items = [{ uuid: "Item.abc", system: { reroll: { enabled: false } } }];
+    actor.items = [{ uuid: "Item.abc", system: { reroll: { enabled: true, mode: "ones", target: "allDice" } } }];
     actor.effects = [];
     expect(getRerollConfigs(actor)).toEqual([]);
-  });
-
-  test("Power Infusion's advances.type 'rerolls' falls back to an accumulated values list, reset 'scene'", () => {
-    const actor = makeActor();
-    actor.items = [{
-      uuid: "Item.powerInfusion",
-      name: "Power Infusion",
-      system: { advances: { type: "rerolls", baseValue: 1, currentValue: 2 } },
-    }];
-    actor.effects = [];
-
-    const configs = getRerollConfigs(actor);
-    expect(configs).toHaveLength(1);
-    // 18th-level Power Infusion ("...and 2s") should still reroll 1s, not just 2s.
-    expect(configs[0].values).toEqual([1, 2]);
-    expect(configs[0].reset).toBe("scene");
-  });
-
-  test("scopeToOriginSkill (It's A Gift) overrides skills with the actor's own chosen Origin Skill", () => {
-    const actor = makeActor({ system: { originSkillsIncrease: 'streetwise' } });
-    actor.items = [{
-      uuid: "Item.itsAGift",
-      system: { reroll: { enabled: true, mode: "all", target: "allDice", scopeToOriginSkill: true } },
-    }];
-    actor.effects = [];
-
-    const configs = getRerollConfigs(actor);
-    expect(configs).toHaveLength(1);
-    expect(configs[0].skills).toEqual(['streetwise']);
-  });
-
-  test("scopeToOriginSkill is unscoped (empty skills) when the actor hasn't chosen an Origin Skill yet", () => {
-    const actor = makeActor({ system: {} });
-    actor.items = [{
-      uuid: "Item.itsAGift",
-      system: { reroll: { enabled: true, mode: "all", target: "allDice", scopeToOriginSkill: true } },
-    }];
-    actor.effects = [];
-
-    const configs = getRerollConfigs(actor);
-    expect(configs[0].skills).toEqual([]);
-  });
-
-  test("a Perk with a chosen Skill (Expertise, Trade Experience) scopes its reroll to that Skill", () => {
-    const actor = makeActor();
-    actor.items = [
-      { uuid: "Item.expertise", system: { choiceType: 'skills', choice: 'science', reroll: { enabled: true, mode: "ones", target: "skillDice" } } },
-      { uuid: "Item.unpicked", system: { choiceType: 'skills', choice: null, reroll: { enabled: true, mode: "ones", target: "skillDice" } } },
-    ];
-    actor.effects = [];
-
-    const configs = getRerollConfigs(actor);
-    expect(configs[0].skills).toEqual(['science']);
-    expect(configs[1].skills).toEqual([]);
   });
 
   test("reads a reroll grant off an ActiveEffect", () => {
@@ -161,6 +102,132 @@ describe("getRerollConfigs", () => {
     const configs = getRerollConfigs(actor);
     expect(configs).toHaveLength(1);
     expect(configs[0]).toMatchObject({ sourceType: "effect", source: "eff1" });
+  });
+});
+
+/* The Reroll rule a Perk's old system.reroll became gives the same config the old item loop in
+   getRerollConfigs built from that block: same settings, same use-count key (item:<uuid>), same name. */
+describe("getRerollConfigs: Reroll rules made from the old system.reroll", () => {
+  // What the removed item loop produced for an item with this system data.
+  function oldConfig(item, actorSystem = {}) {
+    const system = item.system;
+    let config = normalizeRerollConfig(system.reroll);
+    if (!config && system.advances?.type === "rerolls") {
+      const currentValue = Number(system.advances.currentValue ?? system.advances.baseValue ?? 1);
+      const values = Number.isFinite(currentValue) && currentValue > 0 ? Array.from({ length: currentValue }, (_, i) => i + 1) : [1];
+      config = normalizeRerollConfig({
+        enabled: true, mode: "all", target: "allDice", reset: "scene", maxUses: 1, values,
+        cost: system.reroll?.cost, condition: system.reroll?.condition,
+      });
+    }
+
+    if (config?.scopeToOriginSkill) {
+      config.skills = [actorSystem.originSkillsIncrease].filter(Boolean);
+    }
+
+    if (config && !config.skills?.length && system.choiceType == 'skills' && system.choice) {
+      config.skills = [system.choice];
+    }
+
+    return { ...config, source: item.uuid, sourceType: "item", name: item.name };
+  }
+
+  // The same item, its reroll moved into a rule.
+  function converted(item) {
+    return { ...item, system: { ...item.system, reroll: undefined, rules: [legacyRerollRule(item.system)] } };
+  }
+
+  function configsFor(item, actorSystem = {}) {
+    const actor = makeActor({ system: actorSystem });
+    actor.items = [converted(item)];
+    actor.effects = [];
+    rebuildIndex(actor);
+    return getRerollConfigs(actor).map(({ onPaid: _onPaid, ...config }) => config);
+  }
+
+  const OLD = {
+    // Luck (MLP / PR CRB)
+    luck: { mode: "ones", target: "skillDice", minDieFaces: 4, recursive: false, maxUses: 0, reset: "none" },
+    // Well-Oiled Tongue (Decepticon Directive): a resource cost, a condition, a skill
+    wellOiled: {
+      maxUses: 0, mode: "all", reset: "none", target: "allDice", condition: "rollFailed", skills: ["deception"], essence: "any",
+      cost: { resourcePath: "system.energon.normal.value", amount: 1, worldStoryPoints: 0, rolePointsName: "" },
+      recursive: false, minDieFaces: 0, grantsCanCritD2: false, bonus: 0,
+    },
+    // Backup Planner (Hawk's Personnel Files): keepBetter, mission reset
+    backupPlanner: { mode: "all", target: "allDice", skills: ["deception"], maxUses: 3, reset: "mission", keepBetter: true },
+    // In My Sights (GI Joe CRB): a Story Point cost, crit on a d2
+    inMySights: { mode: "all", target: "skillDice", skills: ["targeting"], recursive: false, reset: "combat", maxUses: 1, cost: { worldStoryPoints: 1 }, grantsCanCritD2: true },
+    // Cheer (MLP CRB): a Role Points cost
+    cheer: { mode: "all", target: "allDice", skills: ["performance"], condition: "rollFailed", cost: { rolePointsName: "Cheer Points" }, maxUses: 0, reset: "none" },
+    // Mending the Grid (Across the Stars): shiftUp
+    mending: { mode: "all", target: "allDice", condition: "rollFailed", cost: { worldStoryPoints: 1 }, maxUses: 0, reset: "none", bonus: 0, shiftUp: 2 },
+    // Adolescent Attitude: an Essence scope
+    adolescent: { mode: "ones", target: "skillDice", essence: "social", maxUses: 0, reset: "none" },
+  };
+
+  test.each(Object.entries(OLD))("%s", (key, reroll) => {
+    const item = { uuid: `Actor.a.Item.${key}`, name: key, type: "perk", system: { reroll: { enabled: true, ...reroll } } };
+    expect(configsFor(item)).toEqual([oldConfig(item)]);
+  });
+
+  test("It's A Gift: scopeToOriginSkill still takes the actor's Origin Skill (and stays unscoped without one)", () => {
+    const item = { uuid: "Actor.a.Item.gift", name: "It's A Gift", type: "perk", system: { reroll: { enabled: true, mode: "all", target: "allDice", condition: "rollFailed", reset: "scene", maxUses: 1, scopeToOriginSkill: true } } };
+    expect(configsFor(item, { originSkillsIncrease: "streetwise" })).toEqual([oldConfig(item, { originSkillsIncrease: "streetwise" })]);
+    expect(configsFor(item, { originSkillsIncrease: "streetwise" })[0].skills).toEqual(["streetwise"]);
+    expect(configsFor(item)[0].skills).toEqual([]);
+  });
+
+  test("Expertise / Trade Experience: a Skills-less reroll covers the Skill picked for the copy", () => {
+    const item = { uuid: "Actor.a.Item.exp", name: "Expertise (Science)", type: "perk", system: { choiceType: "skills", choice: "science", reroll: { enabled: true, mode: "ones", target: "skillDice", maxUses: 0, reset: "none", skills: [] } } };
+    expect(configsFor(item)).toEqual([oldConfig(item)]);
+    expect(configsFor(item)[0].skills).toEqual(["science"]);
+  });
+
+  test("Power Infusion: the advances-driven grant (1 to its advance value, once per scene, its cost and condition)", () => {
+    for (const currentValue of [0, 1, 2]) {
+      const item = {
+        uuid: "Actor.a.Item.pi", name: "Power Infusion", type: "perk",
+        // enabled false: the schema default every document has (the pack JSON leaves it out).
+        system: { advances: { type: "rerolls", canAdvance: true, baseValue: 1, currentValue }, reroll: { enabled: false, cost: { resourcePath: "system.powers.personal.value", amount: 1 }, condition: "morphed" } },
+      };
+      expect(configsFor(item)).toEqual([oldConfig(item)]);
+    }
+  });
+
+  // Counted under the same key the old item loop and Power Infusion's rerollLimit step use.
+  test("uses are counted under item:<uuid>, as before", () => {
+    const item = { uuid: "Actor.a.Item.once", name: "Once", type: "perk", system: { reroll: { enabled: true, mode: "all", maxUses: 1, reset: "none" } } };
+    const [config] = configsFor(item);
+    expect(`${config.sourceType}:${config.source}`).toBe("item:Actor.a.Item.once");
+  });
+
+  test("the pack copies carry exactly the converted rule (Luck, Power Infusion)", () => {
+    const luck = JSON.parse(readFileSync('packs/mlpcrbitems/_source/Luck_t3jpBkXZdB5XwDNN.json', 'utf8'));
+    expect(luck.system.reroll).toBeUndefined();
+    expect(luck.system.rules).toEqual([legacyRerollRule({ reroll: { enabled: true, ...OLD.luck } })]);
+
+    const infusion = JSON.parse(readFileSync('packs/prcrbitems/_source/Power_Infusion_cuBM706WJjAmhoZO.json', 'utf8'));
+    expect(infusion.system.rules).toContainEqual(legacyRerollRule({
+      advances: { type: "rerolls" }, reroll: { cost: { resourcePath: "system.powers.personal.value", amount: 1 }, condition: "morphed" },
+    }));
+  });
+});
+
+/* A grant registered from code (registerRerollGrant). */
+describe("getRerollConfigs: registered grants", () => {
+  test("keep their own sourceType when they give one, 'code' otherwise, and resolve scopeToOriginSkill", () => {
+    registerRerollGrant(actor => (actor.testGrants ?? []));
+    const actor = makeActor({ system: { originSkillsIncrease: "culture" } });
+    actor.items = [];
+    actor.effects = [];
+    actor.testGrants = [
+      { mode: "ones", source: "x", name: "X" },
+      { mode: "all", source: "y", sourceType: "item", name: "Y", scopeToOriginSkill: true },
+    ];
+    const configs = getRerollConfigs(actor);
+    expect(configs.map(config => [config.source, config.sourceType])).toEqual([["x", "code"], ["y", "item"]]);
+    expect(configs[1].skills).toEqual(["culture"]);
   });
 });
 

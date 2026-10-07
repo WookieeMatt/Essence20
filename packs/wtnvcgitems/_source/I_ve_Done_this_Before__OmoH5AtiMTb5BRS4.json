@@ -5,6 +5,9 @@
   "_id": "OmoH5AtiMTb5BRS4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"day","maxUses":1,"shiftUp":1}
+    ],
     "prerequisites": {"when":["self:hasType:origin:Brought Back"]},
     "automation": {
       "status": "partial",
@@ -34,16 +37,7 @@
     },
     "type": "origin",
     "value": 0,
-    "version": "powerRangers",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "skillDice",
-      "maxUses": 1,
-      "reset": "day",
-      "bonus": 0,
-      "shiftUp": 1
-    }
+    "version": "powerRangers"
   },
   "effects": [],
   "sort": 0,

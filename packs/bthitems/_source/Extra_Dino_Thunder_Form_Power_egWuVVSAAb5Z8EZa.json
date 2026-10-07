@@ -5,6 +5,7 @@
   "_id": "egWuVVSAAb5Z8EZa",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:perk:Dino Thunder (Form)","ask:GM permission, and a power related to your Dino Thunder Form power"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick your second Dino Thunder power, then activate both for 1 Personal Power; both end when you Morph. GM approval is up to the table.</p>"
@@ -20,6 +21,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,
+    "prerequisite": "Dino Thunder Form; GM permission",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

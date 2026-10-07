@@ -5,6 +5,9 @@
   "_id": "Yo1la1g1Mc3fNBbH",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"AimBonus","label":"Laser Sight: Aim +1","scope":"host","extra":1}
+    ],
     "prerequisites": {"when":["host:trait:ballistic"]},
     "automation": {
       "status": "full",
@@ -16,7 +19,6 @@
       "book": "GI Joe Core Rulebook",
       "page": 148
     },
-    "aimShiftBonus": 1,
     "armorBonus": {
       "defense": "toughness",
       "value": 0

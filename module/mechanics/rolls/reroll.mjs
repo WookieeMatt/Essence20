@@ -125,10 +125,8 @@ async function trimExpiredRerollUsage(actor) {
 }
 
 /**
- * Collect every reroll grant currently available to an actor, from both Perk items and
- * ActiveEffects using the shared reroll schema, plus the one legacy grant shape that predates that
- * schema: a Perk's own `advances.type === "rerolls"` leveling track (currently only "Power
- * Infusion", Power Rangers CRB p.41).
+ * Collect every reroll grant currently available to an actor: the registered grants (item rules'
+ * Reroll rules among them) and ActiveEffects using the shared reroll schema.
  * @param {Actor} actor
  * @returns {Array<Object>}
  */
@@ -144,67 +142,27 @@ export function getRerollConfigs(actor) {
     try {
       for (const config of grant(actor) ?? []) {
         const normalized = normalizeRerollConfig(config);
-        if (normalized) {
-          configs.push({ ...normalized, source: config.source, sourceType: 'code', name: config.name, onPaid: config.onPaid });
+        if (!normalized) {
+          continue;
         }
+
+        // It's A Gift (Cobra Codex) - see reroll-schema.mjs's own doc comment on scopeToOriginSkill: the Skill this
+        // actor chose as their Origin Skill (unscoped until one is picked).
+        if (normalized.scopeToOriginSkill) {
+          normalized.skills = [actor.system?.originSkillsIncrease].filter(Boolean);
+        }
+
+        // sourceType: a grant may count its uses under its own kind - a Reroll rule's under its item (rules/adapter.mjs).
+        configs.push({ ...normalized, source: config.source, sourceType: config.sourceType ?? 'code', name: config.name, onPaid: config.onPaid });
       }
     } catch (error) {
       console.warn('essence20 | A reroll grant failed', error);
     }
   }
 
-  for (const item of actor.items) {
-    let config = normalizeRerollConfig(item.system?.reroll);
-    if (!config && item.system?.advances?.type === "rerolls") {
-      const currentValue = Number(item.system.advances.currentValue ?? item.system.advances.baseValue ?? 1);
-      // Power Infusion's advances track ADDS a value at each level rather than replacing it -
-      // 1st level is "reroll 1s" ([1]), 18th level is "...and 2s" ([1, 2]) - so this accumulates
-      // 1..currentValue instead of taking currentValue as the sole matched value. Reset defaults
-      // to "scene" (RAW: "once per scene") since an advances-driven grant has no reset field of
-      // its own to read.
-      const values = Number.isFinite(currentValue) && currentValue > 0
-        ? Array.from({ length: currentValue }, (_, i) => i + 1)
-        : [1];
-      // An advances-driven Perk has no reroll.enabled toggle of its own (that's what routes it
-      // here instead of the branch above), but it can still carry a cost/condition in its own
-      // system.reroll block for exactly this purpose - see the Power Infusion source item
-      // (packs/prcrbitems/_source/Power_Infusion_*.json) for the one real example.
-      config = normalizeRerollConfig({
-        enabled: true,
-        mode: "all",
-        target: "allDice",
-        reset: "scene",
-        maxUses: 1,
-        values,
-        cost: item.system.reroll?.cost,
-        condition: item.system.reroll?.condition,
-      });
-    }
-
-    // It's A Gift (Cobra Codex, Gifted Origin Benefit, p.44) - see reroll-schema.mjs's own doc
-    // comment on scopeToOriginSkill. Overrides the static skills array with whichever skill this
-    // specific actor actually chose as their Origin Skill - a no-op (stays unscoped) if the actor
-    // hasn't picked one yet.
-    if (config?.scopeToOriginSkill) {
-      config.skills = [actor.system?.originSkillsIncrease].filter(Boolean);
-    }
-
-    // A Perk whose Skill is picked when it's taken (choiceType 'skills': Expertise, Trade
-    // Experience, Aptitude Augmenter) and whose reroll names no skills of its own covers only that
-    // chosen Skill (system.choice, stamped by perk-handler.mjs#onPerkDrop).
-    if (config && !config.skills?.length && item.system?.choiceType == 'skills' && item.system?.choice) {
-      config.skills = [item.system.choice];
-    }
-
-    if (config) {
-      // `name` is the human-readable label (the Perk's own name) - kept separate from `source`
-      // (an id/uuid used only as the per-grant usage-tracking key, see canUseReroll's sourceKey)
-      // so callers showing the grant to a player, like chat.mjs#addRerollButtons, don't have to
-      // resolve a uuid back to a name themselves.
-      configs.push({ ...config, source: item.uuid ?? item.name ?? item.type, sourceType: "item", name: item.name });
-    }
-  }
-
+  // A Perk's or Power's own system.reroll moved into a Reroll rule on 2026-10-07 (rules/adapter.mjs#ruleRerollGrants,
+  // above, through rerollGrants(); migration.mjs moves world copies), and Power Infusion's advances-driven grant with
+  // it (a Reroll rule with upTo). Only an Active Effect's system.reroll is still read here.
   for (const effect of actor.effects) {
     const config = normalizeRerollConfig(effect.system?.reroll);
     if (config) {

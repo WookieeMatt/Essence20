@@ -1,4 +1,5 @@
 import { rulesOf } from "./index.mjs";
+import { legacyChoiceOf } from "./choice-read.mjs";
 
 /**
  * Picks that items stored their own way before they became ChoiceSet rules, moved into the rules'
@@ -15,7 +16,7 @@ const ESSENCE_ORDER = ['strength', 'speed', 'smarts', 'social'];
 
 /** The TF CRB Influence Perks' old pick: system.choice "skill::name". */
 function chosenSpecialization(item, withSkill = false) {
-  const [skill, spec] = String(item.system?.choice ?? '').split('::');
+  const [skill, spec] = String(legacyChoiceOf(item) ?? '').split('::');
   if (!spec) {
     return null;
   }
@@ -70,7 +71,8 @@ export function legacyValue(path, item, actor = item?.parent) {
   }
 
   const [doc, rest] = path.startsWith('actor.') ? [actor, path.slice(6)] : [item, path];
-  const value = rest.split('.').reduce((at, part) => (at === null || at === undefined ? at : at[part]), doc);
+  // The old Perk picker's system.choice also reads the 6.1 safety-net flag (rules/choice-read.mjs#legacyChoiceOf).
+  const value = doc === item && rest == 'system.choice' ? legacyChoiceOf(item) : rest.split('.').reduce((at, part) => (at === null || at === undefined ? at : at[part]), doc);
   return value === undefined || value === '' ? null : value;
 }
 

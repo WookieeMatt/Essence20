@@ -4,7 +4,7 @@ import {
   clearEmotionalMasteryOnMorphOff, deactivateEmotionalMastery,
   deactivateShynessOnAttack, deactivateShynessOnDamage, EMOTIONAL_MASTERY_ID,
   getActiveEmotionalMasteryOptions, getDistressMovementBonus, getMaxActiveEmotionalMastery,
-  hasContemptResistance, isEmotionalMasteryOptionActive, pickHeartsCallingOption,
+  guiltRerollGrants, hasContemptResistance, isEmotionalMasteryOptionActive, pickHeartsCallingOption,
 } from './emotional-mastery.mjs';
 
 const ADAPTION_1_ID = "Compendium.essence20.jump_through_time.Item.diexsL5zyTuJsSPu";
@@ -213,23 +213,32 @@ describe("activateEmotionalMastery", () => {
     expect(getActiveEmotionalMasteryOptions(actor)).toEqual(['sadness']);
   });
 
-  test("activating Guilt enables the Emotional Mastery item's own reroll config", async () => {
+  // Guilt's reroll is a reroll grant read from the active options (it used to switch the item's own
+  // system.reroll on and off - the same reroll: d20 1s, unlimited, chasing a second 1).
+  test("activating Guilt gives the d20-ones reroll, writing nothing onto the item", async () => {
     foundry.applications.api.DialogV2.wait.mockResolvedValue('guilt');
     const actor = makeActor({ perkIds: [EMOTIONAL_MASTERY_ID] });
+    expect(guiltRerollGrants(actor)).toEqual([]);
 
     await activateEmotionalMastery(actor);
-    expect(emotionalMasteryItem(actor).update).toHaveBeenCalledWith({
-      'system.reroll': expect.objectContaining({ enabled: true, target: 'd20', mode: 'ones' }),
-    });
+    expect(guiltRerollGrants(actor)).toEqual([expect.objectContaining({
+      mode: 'ones', target: 'd20', maxUses: 0, reset: 'none', recursive: true, sourceType: 'item',
+    })]);
+    expect(emotionalMasteryItem(actor).update).not.toHaveBeenCalled();
   });
 
-  test("switching away from Guilt disables the reroll config again", async () => {
+  test("switching away from Guilt takes the reroll away again", async () => {
     foundry.applications.api.DialogV2.wait.mockResolvedValue('fear');
     const actor = makeActor({ perkIds: [EMOTIONAL_MASTERY_ID], flags: { activeEmotionalMastery: ['guilt'] } });
-    emotionalMasteryItem(actor).system.reroll.enabled = true;
+    expect(guiltRerollGrants(actor)).toHaveLength(1);
 
     await activateEmotionalMastery(actor);
-    expect(emotionalMasteryItem(actor).update).toHaveBeenCalledWith({ 'system.reroll': { enabled: false } });
+    expect(guiltRerollGrants(actor)).toEqual([]);
+  });
+
+  test("Guilt gives nothing without the Emotional Mastery Perk", () => {
+    const actor = makeActor({ flags: { activeEmotionalMastery: ['guilt'] } });
+    expect(guiltRerollGrants(actor)).toEqual([]);
   });
 
   test("activating Surprise in combat also places the actor in the Initiative order", async () => {

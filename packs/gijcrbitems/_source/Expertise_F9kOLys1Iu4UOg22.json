@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"UniqueChoice","label":"Expertise: each copy picks a different Skill"}
+      {"type":"UniqueChoice","label":"Expertise: each copy picks a different Skill"},
+      {"type":"DerivedStat","label":"Expertise: Up 2 on the picked Skill","path":"system.skills.{item.choice}.shiftUp","op":"add","value":2,"when":["rule:data:flags.essence20.perkValueRule"]}
     ],
     "automation": {
       "status": "full",
@@ -21,8 +22,7 @@
     "type": "role",
     "hasChoice": true,
     "choiceType": "skills",
-    "numChoices": 2,
-    "value": 2
+    "numChoices": 2
   },
   "effects": [],
   "folder": "4txCmeGYg1JUzKEl",

@@ -329,23 +329,12 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
   }
 
   /**
-   * system.reroll.skills (module/data/reroll-schema.mjs) is an ArrayField, but its sheet input
-   * (templates/item/details/perk.hbs) is a single free-text field so a Perk like "Survivalist"
-   * can list several scoped skills (e.g. "alertness, initiative, survival") without a bespoke
-   * multi-select widget. ArrayField#_cast doesn't split strings - passed through unchanged,
-   * "alertness, survival" would be cast to the single-element array ["alertness, survival"] and
-   * fail its own choices validation - so it's parsed into a real array here, before Foundry's own
-   * DocumentSheetV2#_prepareSubmitData validates and submits the form.
+   * Form values the sheet's inputs can't give in the shape their fields want, fixed up before
+   * Foundry's own DocumentSheetV2#_prepareSubmitData validates and submits the form. (A Perk's
+   * system.reroll.skills text box used to be split here; the reroll block left the Details tab on
+   * 2026-10-07 - it's a Reroll rule now.)
    */
   _prepareSubmitData(event, form, formData, updateData) {
-    const rawSkills = formData.object["system.reroll.skills"];
-    if (typeof rawSkills === "string") {
-      formData.object["system.reroll.skills"] = rawSkills
-        .split(",")
-        .map(skill => skill.trim())
-        .filter(Boolean);
-    }
-
     // Modular armor's socketed-weapon checkboxes - see items/defenses/modular-armor.mjs.
     const modularWeaponIds = normalizeModularWeaponIds(formData.object["system.modularWeaponIds"]);
     if (modularWeaponIds) {

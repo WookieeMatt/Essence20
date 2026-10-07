@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DownshiftCancel","label":"Expertise (ignore the first ↓1 on the chosen Skill)","amount":1,"stack":"expertise","when":["skill:{item.choice}"]}
+      {"type":"DownshiftCancel","label":"Expertise (ignore the first ↓1 on the chosen Skill)","amount":1,"stack":"expertise","when":["skill:{item.choice}"]},
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0}
     ],
     "automation": {
       "status": "full",
@@ -19,14 +20,6 @@
     "hasChoice": true,
     "choiceType": "skills",
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "skillDice",
-      "maxUses": 0,
-      "reset": "none",
-      "skills": []
-    },
     "selectionLimit": 3,
     "type": "general"
   },

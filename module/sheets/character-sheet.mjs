@@ -3,8 +3,15 @@ import { computeEssenceSpend } from "../mechanics/rolls/skill-picker-math.mjs";
 import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
 import { currentBase, maxEssenceFor, needsStartingEssences } from "../mechanics/characters/starting-essences.mjs";
 import { getGameLine } from "../settings.js";
+import { levelPickLabel, pendingLevelPicks, reviewLevelPicks } from "../mechanics/characters/level-picks.mjs";
 
 export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
+  static DEFAULT_OPTIONS = {
+    actions: {
+      levelPicks: Essence20CharacterActorSheet.#onLevelPicks,
+    },
+  };
+
   static TABS = {
     primary: {
       tabs: [
@@ -94,7 +101,19 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
       needsAttention: needsStartingEssences(this.actor, max),
       isAssigned: !!this.actor.system.essencesAssigned,
     };
+
+    // The header's pending General Perk / Grid Power picks button (headers/character.hbs).
+    const levelPicks = pendingLevelPicks(this.actor);
+    context.levelPicks = levelPicks.length ? {
+      count: levelPicks.length,
+      tooltip: levelPicks.map(levelPickLabel).join(', '),
+    } : null;
     return context;
+  }
+
+  /** The header's pending picks button: choose one of them (mechanics/characters/level-picks.mjs). */
+  static #onLevelPicks() {
+    return reviewLevelPicks(this.actor);
   }
 
   /**

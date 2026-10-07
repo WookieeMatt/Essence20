@@ -5,6 +5,9 @@
   "_id": "eQlnWNMwcd6yDvHZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"recursive":false}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: a reroll button for one Skill-die 1 on your tests (you keep the new result). Use it when you are acting on a superior's orders.</p>"
@@ -17,29 +20,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "origin",
-    "reroll": {
-      "enabled": true,
-      "maxUses": 0,
-      "mode": "ones",
-      "reset": "none",
-      "target": "skillDice",
-      "cost": {
-        "resourcePath": "",
-        "amount": 0,
-        "worldStoryPoints": 0,
-        "rolePointsName": ""
-      },
-      "condition": "none",
-      "skills": [],
-      "scopeToOriginSkill": false,
-      "essence": "any",
-      "recursive": false,
-      "minDieFaces": 0,
-      "grantsCanCritD2": false,
-      "bonus": 0,
-      "keepBetter": false
-    }
+    "type": "origin"
   },
   "effects": [],
   "flags": {},

@@ -50,6 +50,15 @@ export async function onDropItem(data, actor, dropFunc) {
   case 'armor':
     result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
     break;
+  // An Alt Mode dropped straight on (a Mini-Con, a Monstrosity form) makes the character able to transform, as one
+  // that comes with an Origin does (background-handler.mjs) - play-through 2026-10-07: the button never showed.
+  case 'altMode':
+    result = await dropFunc();
+    if (result && !actor.system.canTransform && 'canTransform' in (actor.system ?? {})) {
+      await actor.update({ 'system.canTransform': true });
+    }
+
+    break;
   case 'equipmentPackage':
     result = await onEquipmentPackageDrop(actor, sourceItem);
     break;

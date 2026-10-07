@@ -5,6 +5,9 @@
   "_id": "aQkpXIdBjHsSgSS4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"anyDie","reset":"none","maxUses":0,"condition":"consumableOrWreckerRangedAttack","recursive":false}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: ranged attacks with a Consumable or Wrecker weapon get a Reroll button on their chat card to reroll one die of your choice.</p>"
@@ -16,15 +19,6 @@
       "page": 46
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "anyDie",
-      "reset": "none",
-      "maxUses": 0,
-      "recursive": false,
-      "condition": "consumableOrWreckerRangedAttack"
-    },
     "selectionLimit": 1,
     "type": "role"
   },

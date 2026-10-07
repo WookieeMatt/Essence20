@@ -5,6 +5,7 @@
  * chat and token helpers live in item-lookups.mjs, item-lang.mjs, chat-lines.mjs and sides.mjs.
  */
 import { findSourced } from "./item-lookups.mjs";
+import { chosenOf } from "../../rules/choice-read.mjs";
 
 const dd = id => `Compendium.essence20.decepticon_directive.Item.${id}`;
 
@@ -31,6 +32,7 @@ export function isDefeated(actor) {
  */
 export function favoriteWeaponOf(actor) {
   const perk = findSourced(actor, TF1.favoriteWeapon);
-  const choice = perk?.system?.choice;
+  // Read through rules/choice-read.mjs (no primary key on this Perk yet, so its system.choice, as the Use rule writes it).
+  const choice = chosenOf(perk);
   return choice ? actor.items?.get?.(String(choice).split('.').pop()) ?? null : null;
 }

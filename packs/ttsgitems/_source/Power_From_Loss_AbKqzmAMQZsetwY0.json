@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"ConditionImmunity","label":"Immune to mesmerized","conditions":["mesmerized"]}
+      {"type":"ConditionImmunity","label":"Immune to mesmerized","conditions":["mesmerized"]},
+      {"type":"Reroll","mode":"all","target":"allDice","reset":"scene","maxUses":1,"keepBetter":true}
     ],
     "automation": {
       "status": "partial",
@@ -20,14 +21,6 @@
     },
     "items": {},
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "allDice",
-      "maxUses": 1,
-      "reset": "scene",
-      "keepBetter": true
-    },
     "selectionLimit": 1,
     "type": "general"
   },

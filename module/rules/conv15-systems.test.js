@@ -26,6 +26,7 @@ const { ruleNoArmor } = await import('./plugins/combat/no-armor-defense.mjs');
 const { lateDefenseAdjust } = await import('./plugins/combat/defense-modes.mjs');
 const { vetoesFor } = await import('./plugins/effects/veto.mjs');
 const { getLedger } = await import('../mechanics/actions/action-economy.mjs');
+const { getRerollConfigs } = await import('../mechanics/rolls/reroll.mjs');
 const { spendDailyUse } = await import('../mechanics/resources/nanomite-uses.mjs');
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -382,24 +383,28 @@ describe('Powers: their own powerUsed rules', () => {
     }, other);
   });
 
+  // (Its reroll is a Reroll rule waiting for the futureVision toggle - it used to switch the Power's own system.reroll on.)
   test('Future Vision turns its reroll on with one use per Power spent', async () => {
     const actor = makeActor('Ranger');
+    actor.effects = [];
     const power = addPack(actor, 'futureVision');
     await use(actor, power, 0);
-    expect(power.system.reroll.enabled).toBe(false);
+    expect(getRerollConfigs(actor)).toEqual([]);
     await use(actor, power, 3);
-    expect(power.system.reroll).toEqual(expect.objectContaining({ enabled: true, maxUses: 3 }));
+    expect(getRerollConfigs(actor)).toEqual([expect.objectContaining({ mode: 'all', target: 'allDice', reset: 'scene', maxUses: 3, recursive: false, source: power.uuid, sourceType: 'item' })]);
   });
 
   test('Lucky Charm rolls DIF 12 Performance and turns its reroll on only on a success', async () => {
     const actor = makeActor('Finster');
+    actor.effects = [];
     const power = addPack(actor, 'luckyCharm');
     actor._dice.rollSkill.mockResolvedValueOnce({ success: false, outcomes: [] });
     await use(actor, power);
     expect(actor._dice.rollSkill).toHaveBeenCalledWith({ skill: 'performance', essence: 'social', shiftUp: 0, shiftDown: 0, dif: '12' }, actor);
-    expect(power.system.reroll.enabled).toBe(false);
+    expect(getRerollConfigs(actor)).toEqual([]);
     await use(actor, power);
-    expect(power.system.reroll.enabled).toBe(true);
+    // Luck's reroll: natural 1s on Skill dice of d4 and up, unlimited, one reroll each.
+    expect(getRerollConfigs(actor)).toEqual([expect.objectContaining({ mode: 'ones', target: 'skillDice', minDieFaces: 4, maxUses: 0, recursive: false, reset: 'none' })]);
   });
 
   test('Rapid Morph Morphs through the sheet\'s Morph flow as a Free action; nothing while already Morphed', async () => {

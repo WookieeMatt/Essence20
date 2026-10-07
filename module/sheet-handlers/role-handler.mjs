@@ -232,6 +232,13 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   }
 
   actor.setFlag('essence20', 'roleDrop', false);
+
+  // A base Role dropped onto a character above 1st level: the General Perks / Grid Powers its levels so far give
+  // are picks waiting to be made (mechanics/characters/level-picks.mjs). An additive Role starts at its own level 1.
+  if (!newLevel && !previousLevel && !role.system.isAdditive) {
+    const { updateLevelPicks } = await import("../mechanics/characters/level-picks.mjs");
+    await updateLevelPicks(actor, 0, actor.system.level);
+  }
 }
 
 /**
@@ -626,6 +633,11 @@ export async function onLevelChange(actor, newLevel) {
   }
 
   await actor.setFlag('essence20', 'previousLevel', newLevel);
+
+  // The General Perk / Grid Power picks the Role's levels give (mechanics/characters/level-picks.mjs): offered on the
+  // way up, taken back on the way down. Only this client - the one that changed the level - runs it.
+  const { updateLevelPicks } = await import("../mechanics/characters/level-picks.mjs");
+  await updateLevelPicks(actor, previousLevel, newLevel);
 }
 
 /**
@@ -783,6 +795,10 @@ export async function onRoleDelete(actor, role) {
   }
 
   await deleteAttachmentsForItem(role, actor);
+
+  // The General Perks / Grid Powers picked for this Role's levels go with it, as its Role Perks do.
+  const { clearLevelPicks } = await import("../mechanics/characters/level-picks.mjs");
+  await clearLevelPicks(actor, isAdditive ? 'additive' : 'base');
 }
 
 /**

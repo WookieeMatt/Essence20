@@ -2198,8 +2198,9 @@ describe("_prepareLoadout", () => {
   test("Ram and Flyby (the Alt Mode's own Special Attacks, TF CRB p.49) take no hands and no Hardpoint", () => {
     const actor = makeActor('playerCharacter', loadoutSystem(), {
       weapon: [
-        weapon({ derivedHands: 0, isRam: true }),
-        weapon({ derivedHands: 0, isFlyby: true, hardpoint: { type: 'integrated' } }),
+        // As the packs store them: the flag is on the weapon's effect, listed in system.items.
+        weapon({ derivedHands: 0, items: { e1: { name: 'Ram Effect', isRam: true } } }),
+        weapon({ derivedHands: 0, items: { e2: { name: 'Flyby Effect', isFlyby: true } }, hardpoint: { type: 'integrated' } }),
         weapon({ derivedHands: 1 }),
       ],
     });

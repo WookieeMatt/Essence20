@@ -1,6 +1,7 @@
 import { creatureTagsOf } from "../mechanics/characters/creature-tags.mjs";
 import { isExpired } from "./expiry.mjs";
 import { sourceOf } from "../items/shared/item-lookups.mjs";
+import { chosenOf, hasChosen } from "./choice-read.mjs";
 
 /**
  * The `when` condition language for item rules (docs/RULES_ENGINE_PLAN.md §5.1).
@@ -399,13 +400,16 @@ function compare(a, op, b) {
  * same document, written `$path`: `self:data:system.power.value<$system.power.max`. Undefined when
  * the tag isn't a data tag.
  */
-function dataTag(doc, rest) {
+function dataTag(doc, rest, { choiceAlias = false } = {}) {
   const match = /^data:([\w.-]+?)(?:(>=|<=|!=|>|<|=)(.*))?$/.exec(rest);
   if (!match) {
     return undefined;
   }
 
-  const read = path => path.split('.').reduce((at, key) => (at === null || at === undefined ? at : at[key]), doc);
+  // On an item (rule:data / item:data), system.choice is its pick read through rules/choice-read.mjs: the rules
+  // choice first, then the old field.
+  const read = path => (choiceAlias && path == 'system.choice' ? chosenOf(doc)
+    : path.split('.').reduce((at, key) => (at === null || at === undefined ? at : at[key]), doc));
   const value = read(match[1]);
   if (!match[2]) {
     return !!value;
@@ -416,8 +420,10 @@ function dataTag(doc, rest) {
   }
 
   if (match[2] == '=' || match[2] == '!=') {
-    const same = Number.isFinite(Number(value)) && Number.isFinite(Number(match[3])) && match[3] !== ''
-      ? Number(value) == Number(match[3]) : lower(value) == lower(match[3]);
+    const sameAs = entry => (Number.isFinite(Number(entry)) && Number.isFinite(Number(match[3])) && match[3] !== ''
+      ? Number(entry) == Number(match[3]) : lower(entry) == lower(match[3]));
+    // A list pick (several Skills on one Perk) matches when any entry does.
+    const same = choiceAlias && match[1] == 'system.choice' && Array.isArray(value) ? value.some(sameAs) : sameAs(value);
     return match[2] == '=' ? same : !same;
   }
 
@@ -677,17 +683,22 @@ function sourcedValue(ruleItem, ref) {
   const owner = ruleItem?.parent ?? ruleItem?.actor ?? null;
   const items = owner?.items?.contents ?? (owner?.items ? [...owner.items] : []);
   const copy = items.find(item => String(sourceOf(item) ?? '').split('.').pop() == id);
+  // {sourced.<id>.system.choice}: that copy's pick, through rules/choice-read.mjs.
+  if (copy && ref.slice(17) == 'system.choice') {
+    return chosenOf(copy);
+  }
+
   return copy ? globalThis.foundry?.utils?.getProperty?.(copy, ref.slice(17)) : undefined;
 }
 
 export function interpolate(text, ruleItem) {
   let missing = false;
-  // {choice.<key>} is a ChoiceSet pick; {item.choice} is the item's own system.choice (the pick made
-  // through a Perk's built-in choice field, from before rules).
+  // {choice.<key>} is a ChoiceSet pick; {item.choice} is the item's own pick (rules/choice-read.mjs#chosenOf: its
+  // primary rules choice, else the old Perk picker's system.choice).
   // {sourced.<16-char id>.<path>} is a value on the actor's copy of that compendium item (Energy Affinity's
   // system.choice, read by Self-Preservation's rules - round 15, items1).
   const filled = text.replace(/\{(choice\.[\w-]+|item\.choice|sourced\.[A-Za-z0-9]{16}\.[\w.]+)\}/g, (match, ref) => {
-    const value = ref == 'item.choice' ? ruleItem?.system?.choice : ref.startsWith('sourced.') ? sourcedValue(ruleItem, ref.slice(8))
+    const value = ref == 'item.choice' ? (ruleItem ? chosenOf(ruleItem) : undefined) : ref.startsWith('sourced.') ? sourcedValue(ruleItem, ref.slice(8))
       : ruleItem?.flags?.essence20?.rules?.choices?.[ref.slice(7)];
     if (value === undefined || value === null || value === '') {
       missing = true;
@@ -746,8 +757,9 @@ export function evaluateTag(tag, ctx) {
     if (rest.startsWith('choiceOf:')) {
       const uuid = rest.slice(9);
       const items = ctx.self?.items?.contents ?? (ctx.self?.items ? [...ctx.self.items] : []);
-      const chosen = items.find(item => sourceOf(item) == uuid || item.uuid == uuid)?.system?.choice;
-      return ctx.rolledSkill === undefined ? null : !!chosen && ctx.rolledSkill == chosen;
+      const copy = items.find(item => sourceOf(item) == uuid || item.uuid == uuid);
+      // The copy's pick (rules/choice-read.mjs); a list pick matches on any entry.
+      return ctx.rolledSkill === undefined ? null : !!copy && hasChosen(copy, ctx.rolledSkill);
     }
 
     return ctx.rolledSkill == rest;
@@ -841,7 +853,7 @@ export function evaluateTag(tag, ctx) {
     const [key, ...more] = rest.split(':');
     const arg = more.join(':');
     if (key == 'data') {
-      return item ? dataTag(item, rest) : false;
+      return item ? dataTag(item, rest, { choiceAlias: true }) : false;
     }
 
     const named = /^name~(.+)$/.exec(rest);
@@ -993,7 +1005,7 @@ export function evaluateTag(tag, ctx) {
       return !!ctx.ruleItem && (Array.isArray(bank) ? bank : []).some(entry => entry?.source == ctx.ruleItem.id && entry.uses > 0 && !isExpired(entry));
     }
 
-    return ctx.ruleItem ? dataTag(ctx.ruleItem, rest) ?? null : false;
+    return ctx.ruleItem ? dataTag(ctx.ruleItem, rest, { choiceAlias: true }) ?? null : false;
   // The weapon a rolled weapon effect belongs to: any item: tag, asked of the weapon.
   case 'weapon': {
     const parentId = item?.flags?.essence20?.parentId;

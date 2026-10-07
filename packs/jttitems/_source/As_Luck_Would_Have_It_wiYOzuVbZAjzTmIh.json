@@ -5,6 +5,9 @@
   "_id": "wiYOzuVbZAjzTmIh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"single","target":"anyDie","reset":"scene","maxUses":1,"recursive":false}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per scene, a button to reroll one die from your Skill test.</p>"
@@ -17,29 +20,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "origin",
-    "reroll": {
-      "enabled": true,
-      "maxUses": 1,
-      "mode": "single",
-      "reset": "scene",
-      "target": "anyDie",
-      "cost": {
-        "resourcePath": "",
-        "amount": 0,
-        "worldStoryPoints": 0,
-        "rolePointsName": ""
-      },
-      "condition": "none",
-      "skills": [],
-      "scopeToOriginSkill": false,
-      "essence": "any",
-      "recursive": false,
-      "minDieFaces": 0,
-      "grantsCanCritD2": false,
-      "bonus": 0,
-      "keepBetter": false
-    }
+    "type": "origin"
   },
   "effects": [],
   "flags": {},

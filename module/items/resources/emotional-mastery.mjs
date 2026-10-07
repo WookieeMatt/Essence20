@@ -1,6 +1,7 @@
 import { actorHasPerk, findPerk } from "../../mechanics/characters/perks.mjs";
 import { E20 } from "../../util/config.mjs";
 import { getNearbyEnemyTokens } from "../../mechanics/combat/nearby-enemies.mjs";
+import { registerRerollGrant } from "../../mechanics/item-hooks.mjs";
 
 /**
  * Emotional Mastery (A Jump Through Time, Purple Ranger, 1st level, p.37) - the project's first
@@ -185,37 +186,37 @@ export function hasContemptResistance(actor, damageType) {
 }
 
 /**
- * Guilt ("you may re-roll any d20 result of 1") is expressed by toggling the Emotional Mastery
- * item's OWN generic system.reroll field on/off - the exact same schema every Perk-driven reroll
- * grant already reads (mechanics/rolls/reroll.mjs#getRerollConfigs iterates every item on the actor
- * looking at this field), so activating/deactivating Guilt reuses the entire existing reroll
- * pipeline (the chat button, cost/condition checks, consumption) with no new code there at all.
+ * Guilt ("you may re-roll any d20 result of 1"): a reroll grant (mechanics/item-hooks.mjs#registerRerollGrant)
+ * while the holder has Guilt active themselves - the reroll pipeline's chat button, checks and
+ * consumption, with nothing written onto the item. (Until 2026-10-07 this switched the Emotional
+ * Mastery item's own system.reroll on and off; that field is no longer read for items -
+ * docs/rules-batches/details-cleanup.md.)
  * @param {Actor} actor
- * @param {String[]} activeOptions
+ * @returns {Array<Object>}   Reroll configs (mechanics/rolls/reroll.mjs#normalizeRerollConfig).
  */
-async function applyGuiltRerollToggle(actor, activeOptions) {
+export function guiltRerollGrants(actor) {
+  if (!getActiveEmotionalMasteryOptions(actor).includes('guilt')) {
+    return [];
+  }
+
   const item = findPerk(actor, EMOTIONAL_MASTERY_ID);
   if (!item) {
-    return;
+    return [];
   }
 
-  const shouldBeEnabled = activeOptions.includes('guilt');
-  if (!!item.system.reroll?.enabled == shouldBeEnabled) {
-    return;
-  }
-
-  await item.update({
-    'system.reroll': shouldBeEnabled
-      ? { enabled: true, mode: 'ones', target: 'd20', maxUses: 0, reset: 'none', recursive: true }
-      : { enabled: false },
-  });
+  return [{
+    mode: 'ones', target: 'd20', maxUses: 0, reset: 'none', recursive: true,
+    source: item.uuid ?? item.id, sourceType: 'item', name: item.name,
+  }];
 }
+
+registerRerollGrant(guiltRerollGrants);
 
 /**
  * Shyness ("You become Invisible until you make an Attack or suffer damage") - toggles the real
  * `invisible` status Condition to match whether 'shyness' is currently active, the same
  * flag+status shape items/senses/invisibility.mjs's own toggle already establishes. Called alongside
- * applyGuiltRerollToggle everywhere the active-options list changes (activate/deactivate/clear-
+ * every change of the active-options list (activate/deactivate/clear-
  * on-Morph-off), so switching AWAY from Shyness correctly clears the status too, not just
  * switching into it.
  * @param {Actor} actor
@@ -306,7 +307,6 @@ export async function activateEmotionalMastery(actor) {
 
   const newActive = asAdditional ? [...current, option] : [option];
   await actor.setFlag('essence20', ACTIVE_FLAG, newActive);
-  await applyGuiltRerollToggle(actor, newActive);
   await applyShynessStatusToggle(actor, newActive);
 
   // Surprise's own effect (placing yourself in the Initiative order) only makes sense at the
@@ -328,7 +328,6 @@ export async function activateEmotionalMastery(actor) {
 export async function deactivateEmotionalMastery(actor, option) {
   const newActive = getActiveEmotionalMasteryOptions(actor).filter(o => o != option);
   await actor.setFlag('essence20', ACTIVE_FLAG, newActive);
-  await applyGuiltRerollToggle(actor, newActive);
   await applyShynessStatusToggle(actor, newActive);
 }
 
@@ -348,7 +347,6 @@ export async function clearEmotionalMasteryOnMorphOff(actor) {
   }
 
   await actor.setFlag('essence20', ACTIVE_FLAG, kept);
-  await applyGuiltRerollToggle(actor, kept);
   await applyShynessStatusToggle(actor, kept);
 }
 

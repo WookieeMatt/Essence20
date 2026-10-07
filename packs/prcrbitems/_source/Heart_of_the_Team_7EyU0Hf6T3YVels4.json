@@ -25,8 +25,7 @@
     "advances": {
       "canAdvance": true,
       "type": "upshift"
-    },
-    "canActivate": true
+    }
   },
   "effects": [],
   "sort": 100000,

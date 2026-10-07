@@ -5,6 +5,9 @@
   "_id": "oeK1gHf3B157Bosn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"ones","target":"d20","reset":"combat","maxUses":1,"condition":"fumble"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per combat, a button rerolls a Fumble on one of your attacks.</p>"
@@ -16,14 +19,6 @@
       "page": 28
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "d20",
-      "condition": "fumble",
-      "reset": "combat",
-      "maxUses": 1
-    },
     "selectionLimit": 1,
     "type": "general"
   },

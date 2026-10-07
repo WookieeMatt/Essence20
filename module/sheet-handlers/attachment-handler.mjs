@@ -461,7 +461,7 @@ export function createEntry(droppedItem, targetItem) {
     break;
   case "weapon":
     if (droppedItem.type == "upgrade" && droppedItem.system.type == "weapon") {
-      entry['aimShiftBonus'] = droppedItem.system.aimShiftBonus;
+      // (No aimShiftBonus snapshot: a Laser Sight's Aim bonus is the upgrade's own AimBonus rule since 2026-10-07.)
       entry['availability'] = droppedItem.system.availability;
       entry['benefit'] = droppedItem.system.benefit;
       entry['description'] = droppedItem.system.description;

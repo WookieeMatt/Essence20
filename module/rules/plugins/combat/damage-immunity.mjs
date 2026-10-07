@@ -2,6 +2,7 @@ import { rulesOfType } from "../../index.mjs";
 import { contextFor, evaluate } from "../../predicate.mjs";
 import { registerRuleType } from "../../types.mjs";
 import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
+import { chosenOf } from "../../choice-read.mjs";
 
 /**
  * Round 17 (split2 - docs/rules-batches/slSplit217.md): rule type `DamageImmunity` - while `when` holds, damage of these
@@ -26,7 +27,7 @@ function covers(rule, actor, damageType) {
     return true;
   }
 
-  return !!rule.choiceOf && itemsOf(actor).find(item => sourceOf(item) == rule.choiceOf)?.system?.choice == damageType;
+  return !!rule.choiceOf && chosenOf(itemsOf(actor).find(item => sourceOf(item) == rule.choiceOf)) == damageType;
 }
 
 /**

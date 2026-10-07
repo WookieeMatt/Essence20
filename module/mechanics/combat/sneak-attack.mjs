@@ -84,7 +84,7 @@ export function getSneakAttackDamage(actor) {
 
 /**
  * Finds the weapon a weaponEffect belongs to - same parentId-flag lookup already used by
- * dice.mjs#_getLaserSightBonus for the same purpose.
+ * dice.mjs#_getParentWeapon for the same purpose.
  * @param {Actor} actor
  * @param {Item} weaponEffect
  * @returns {Item|null}

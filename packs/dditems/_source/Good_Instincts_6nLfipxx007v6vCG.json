@@ -5,6 +5,9 @@
   "_id": "6nLfipxx007v6vCG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"scene","maxUses":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per scene, a Skill Test's chat card gets a Reroll button for Skill Die results of 1.</p>"
@@ -16,13 +19,6 @@
       "page": 61
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "skillDice",
-      "reset": "scene",
-      "maxUses": 1
-    },
     "selectionLimit": 1,
     "type": "role"
   },

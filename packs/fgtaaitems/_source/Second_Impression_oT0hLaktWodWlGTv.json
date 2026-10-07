@@ -5,6 +5,9 @@
   "_id": "oT0hLaktWodWlGTv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"allDice","reset":"scene","maxUses":1,"condition":"rollFailed","skills":["deception","intimidation","persuasion"],"recursive":false}
+    ],
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: once per scene, reroll a failed Deception, Intimidation or Persuasion test yourself and keep the new result.</p>"
@@ -16,16 +19,6 @@
       "page": 66
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "allDice",
-      "reset": "scene",
-      "maxUses": 1,
-      "recursive": false,
-      "condition": "rollFailed",
-      "skills": ["deception", "intimidation", "persuasion"]
-    },
     "selectionLimit": 1,
     "type": "role"
   },

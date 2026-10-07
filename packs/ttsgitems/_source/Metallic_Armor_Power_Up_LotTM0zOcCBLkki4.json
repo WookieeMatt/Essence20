@@ -14,6 +14,7 @@
       {"type":"Trigger","event":"targeted","label":"Metallic Armor ends: a Critical Success by a non-minion","outcome":"crit","when":["attack","self:data:flags.essence20.metallicArmorActive","not:target:minion"],"steps":[{"do":"updateActor","set":{"flags.essence20.metallicArmorActive":false},"add":{"system.health.bonus":-3},"min":0},{"do":"chat","text":"{name}'s Metallic Armor ends."}]},
       {"type":"Trigger","event":"takesDamage","label":"Metallic Armor ends: Defeated","when":["self:data:flags.essence20.metallicArmorActive","self:data:system.health.value<=0","not:damage:stun"],"steps":[{"do":"updateActor","set":{"flags.essence20.metallicArmorActive":false},"add":{"system.health.bonus":-3},"min":0},{"do":"chat","text":"{name}'s Metallic Armor ends."}]}
     ],
+    "prerequisites": {"when":["self:level>=6","self:data:system.powers.personal.max>=4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (2 Personal Power, while Morphed): +3 temporary Health, 1 less damage from minions and Putties, and 1 Personal Power drained each turn to keep it up. It ends when you can't pay, take a critical hit from a non-minion, are Defeated or press Use again.</p><p>Automatic while active: all your attacks have Multiple Targets, and your token can't pick the Teleport (Blink) movement. Nothing limits how many targets an attack can have, so the extra target for attacks that already have Multiple Targets has nothing to add.</p>"
@@ -29,6 +30,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 2,
+    "prerequisite": "Level 6+; Personal Power maximum 4+",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

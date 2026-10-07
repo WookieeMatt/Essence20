@@ -3,6 +3,7 @@ import { rulesOfType } from "../../index.mjs";
 import { contextFor, evaluate } from "../../predicate.mjs";
 import { registerRuleType } from "../../types.mjs";
 import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
+import { chosenList } from "../../choice-read.mjs";
 
 /**
  * Round 16 (part a): rule type `AttackResistance {damageTypes}` - while `when` holds, the holder counts as resisting
@@ -51,8 +52,9 @@ function covers(rule, target, damageType) {
   }
 
   if (rule.choiceOf) {
-    const choice = itemsOf(target).find(item => sourceOf(item) == rule.choiceOf)?.system?.choice;
-    if (choice && (choice == damageType || (choice == 'energy' && ENERGY_TYPES.has(damageType)))) {
+    // The copy's pick (rules/choice-read.mjs); a list pick covers each of its entries.
+    const picks = chosenList(itemsOf(target).find(item => sourceOf(item) == rule.choiceOf));
+    if (picks.some(choice => choice && (choice == damageType || (choice == 'energy' && ENERGY_TYPES.has(damageType))))) {
       return true;
     }
   }

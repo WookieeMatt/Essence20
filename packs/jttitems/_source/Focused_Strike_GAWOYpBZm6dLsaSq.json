@@ -5,6 +5,9 @@
   "_id": "GAWOYpBZm6dLsaSq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"skillDice","reset":"none","maxUses":0,"condition":"unarmedAttack","recursive":false,"cost":{"resourcePath":"system.powers.personal.value","amount":1}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: after an unarmed attack, a button to spend 1 Personal Power and reroll the Skill dice.</p>"
@@ -16,22 +19,8 @@
       "page": 46
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "skillDice",
-      "reset": "none",
-      "maxUses": 0,
-      "recursive": false,
-      "condition": "unarmedAttack",
-      "cost": {
-        "resourcePath": "system.powers.personal.value",
-        "amount": 1
-      }
-    },
     "selectionLimit": 1,
-    "type": "role",
-    "canActivate": true
+    "type": "role"
   },
   "effects": [],
   "sort": 700000,

@@ -48,6 +48,8 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
         skill: makeStrWithChoices(Object.keys(E20.skills), null),
         shift: makeStrWithChoices(E20.weaponRequirementShifts, null),
       }),
+      // Deprecated 2026-10-07: no longer worked out (an upgrade's Aim bonus is its AimBonus rule); remove from the
+      // data model in 6.1.
       totalAimShiftBonus: makeInt(0),
       traits: makeStrArrayWithChoices(Object.keys(E20.weaponTraits)),
       // Accurate/Inaccurate (dice.mjs's own _getAutomaticCombatModifiers) default to a flat ↑1/↓1,

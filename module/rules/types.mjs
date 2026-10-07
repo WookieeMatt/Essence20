@@ -148,10 +148,16 @@ export const RULE_TYPES = {
   },
   // The same settings as a Perk's own system.reroll (data/reroll-schema.mjs), checked there - so
   // existing reroll data moves into a rule unchanged. mechanics/rolls/reroll.mjs#normalizeRerollConfig
-  // fills the defaults.
+  // fills the defaults. keepBetter: keep the better of the two totals (Backup Planner). upTo: a formula N -
+  // reroll results 1 to N (Power Infusion's "@item.system.advances.currentValue"), in place of `values`.
+  // A Perk's own system.reroll moved into this rule on 2026-10-07 (docs/rules-batches/details-cleanup.md).
   Reroll: {
-    params: Object.fromEntries(['mode', 'target', 'reset', 'maxUses', 'values', 'cost', 'condition', 'skills', 'essence',
-      'scopeToOriginSkill', 'recursive', 'minDieFaces', 'grantsCanCritD2', 'bonus', 'shiftUp'].map(key => [key, { kind: 'any' }])),
+    params: {
+      ...Object.fromEntries(['mode', 'target', 'reset', 'maxUses', 'values', 'cost', 'condition', 'skills', 'essence',
+        'scopeToOriginSkill', 'recursive', 'minDieFaces', 'grantsCanCritD2', 'bonus', 'shiftUp'].map(key => [key, { kind: 'any' }])),
+      keepBetter: { kind: 'bool' },
+      upTo: { kind: 'formula' },
+    },
     scopes: ['self'],
   },
   SkillSubstitution: {
@@ -312,7 +318,8 @@ export const RULE_TYPES = {
     params: {
       movement: { kind: 'enum', required: true, options: ['ground', 'aerial', 'climb', 'swim', 'burrow', 'all'] },
       // derived: inside the extensions' derived pass, before afterDerived (rules/plugins/effects/derived-stages.mjs).
-      stage: { kind: 'enum', options: ['base', 'total', 'adjust', 'final', 'afterGravity', 'derived', 'afterDerived'] },
+      // bonus: the type's `bonus` (what a Perk's drop used to write - Fast), for every type before any total is worked out.
+      stage: { kind: 'enum', options: ['bonus', 'base', 'total', 'adjust', 'final', 'afterGravity', 'derived', 'afterDerived'] },
       round: { kind: 'enum', options: ['nearest', 'floor', 'ceil'] },
       op: { kind: 'enum', required: true, options: ['set', 'multiply', 'add', 'max', 'min'] },
       value: { kind: 'formula', required: true },

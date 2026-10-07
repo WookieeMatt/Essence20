@@ -288,22 +288,16 @@ describe("onPerkDrop", () => {
   // [2 upshifts] when using them." Regression coverage for a live bug report - this branch used
   // to write perk.system.value into the skill's flat .modifier instead of its .shiftUp.
   describe("'skills' choiceType (e.g. Expertise)", () => {
-    test("adds the Perk's value as a shiftUp on the chosen skill, not a flat modifier", async () => {
-      const actor = makeActor(0);
-      const perk = makePerkItem({ value: 2 });
-
-      await onPerkDrop(actor, perk, null, 'athletics', 'skills', null);
-
-      expect(actor.update).toHaveBeenCalledWith({ 'system.skills.athletics.shiftUp': 2 });
-    });
-
-    test("adds onto an existing shiftUp rather than overwriting it", async () => {
+    // Since 2026-10-07 the up 2 is the Perk's own DerivedStat rule (gated on perkValueRule), not a
+    // shiftUp written into the actor - so it can't be counted twice, and goes with the Perk.
+    test("writes no shiftUp onto the actor, and flags the copy for its rule", async () => {
       const actor = makeActor(1);
       const perk = makePerkItem({ value: 2 });
 
       await onPerkDrop(actor, perk, null, 'athletics', 'skills', null);
 
-      expect(actor.update).toHaveBeenCalledWith({ 'system.skills.athletics.shiftUp': 3 });
+      expect(actor.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.skills.athletics.shiftUp': expect.anything() }));
+      expect(perk.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.choice': 'athletics', 'flags.essence20.perkValueRule': true }));
     });
 
     test("renames the granted Perk to include the chosen skill", async () => {
@@ -673,22 +667,51 @@ describe("onPerkDrop", () => {
       };
     }
 
-    test("adds the Perk's value onto the chosen movement type's bonus", async () => {
-      const actor = makeMovementActor(0);
-      const perk = makeMovementPerkItem({ value: 10 });
-
-      await onPerkDrop(actor, perk, null, 'ground', 'movement', null);
-
-      expect(actor.update).toHaveBeenCalledWith({ 'system.movement.ground.bonus': 10 });
-    });
-
-    test("adds onto an existing movement bonus rather than overwriting it", async () => {
+    // Since 2026-10-07 the +10 ft is the Perk's own Movement rule (stage bonus, gated on perkValueRule).
+    test("writes no movement bonus onto the actor, and flags the copy for its rule", async () => {
       const actor = makeMovementActor(20);
       const perk = makeMovementPerkItem({ value: 10 });
 
       await onPerkDrop(actor, perk, null, 'ground', 'movement', null);
 
-      expect(actor.update).toHaveBeenCalledWith({ 'system.movement.ground.bonus': 30 });
+      expect(actor.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.movement.ground.bonus': expect.anything() }));
+      expect(perk.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.choice': 'ground', 'flags.essence20.perkValueRule': true }));
+    });
+
+    describe("onPerkDelete", () => {
+      function makeDropped({ flagged = false, choice = 'ground', value = 10 } = {}) {
+        return {
+          flags: flagged ? { essence20: { perkValueRule: true } } : {},
+          _stats: {},
+          system: { choiceType: 'movement', choice, value, hasChoice: true, isRoleVariant: false, advances: { canAdvance: false } },
+        };
+      }
+
+      // A copy dropped before then had its value written into the actor - it still comes back off,
+      // from the STORED bonus (the prepared one also holds the rules' bonuses).
+      test("an unflagged (older) copy takes its value back off the stored bonus", async () => {
+        const actor = { ...makeMovementActor(40), _source: { system: { movement: { ground: { bonus: 30 } } } }, items: [] };
+
+        await onPerkDelete(actor, makeDropped());
+
+        expect(actor.update).toHaveBeenCalledWith({ 'system.movement.ground.bonus': 20 });
+      });
+
+      test("a flagged copy writes nothing - its bonus was its own rule", async () => {
+        const actor = { ...makeMovementActor(10), items: [] };
+
+        await onPerkDelete(actor, makeDropped({ flagged: true }));
+
+        expect(actor.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.movement.ground.bonus': expect.anything() }));
+      });
+
+      test("a copy with no pick writes nothing", async () => {
+        const actor = { ...makeMovementActor(10), items: [] };
+
+        await onPerkDelete(actor, makeDropped({ choice: null }));
+
+        expect(actor.update).not.toHaveBeenCalled();
+      });
     });
   });
 

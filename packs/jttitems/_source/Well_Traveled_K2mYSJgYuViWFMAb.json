@@ -5,6 +5,9 @@
   "_id": "K2mYSJgYuViWFMAb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"single","target":"anyDie","reset":"none","maxUses":0,"skills":["culture","streetwise"],"recursive":false}
+    ],
     "prerequisites": {"when":["self:skill:culture>=d4"]},
     "automation": {
       "status": "full",
@@ -18,32 +21,7 @@
     },
     "prerequisite": "Culture Skill at d4 or higher",
     "selectionLimit": 1,
-    "type": "general",
-    "reroll": {
-      "enabled": true,
-      "maxUses": 0,
-      "mode": "single",
-      "reset": "none",
-      "target": "anyDie",
-      "cost": {
-        "resourcePath": "",
-        "amount": 0,
-        "worldStoryPoints": 0,
-        "rolePointsName": ""
-      },
-      "condition": "none",
-      "skills": [
-        "culture",
-        "streetwise"
-      ],
-      "scopeToOriginSkill": false,
-      "essence": "any",
-      "recursive": false,
-      "minDieFaces": 0,
-      "grantsCanCritD2": false,
-      "bonus": 0,
-      "keepBetter": false
-    }
+    "type": "general"
   },
   "effects": [],
   "flags": {},

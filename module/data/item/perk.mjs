@@ -27,6 +27,7 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
         increaseValue: makeInt(1),
         type: makeStrWithChoices(Object.keys(E20.perkAdvanceTypes)),
       }),
+      // Deprecated 2026-10-07: unused since rules (a Perk's button is its Use rule); remove from the data model in 6.1.
       canActivate: makeBool(false),
       choice: makeStr(null),
       // Optionally narrows a choiceType:'skills' picker to one Essence's own skills - e.g. I've
@@ -36,12 +37,19 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       choiceType: makeStrWithChoices(Object.keys(E20.perkChoiceTypes), 'none'),
       isRoleVariant: makeBool(false),
       hasChoice: makeBool(false),
+      // Deprecated 2026-10-07: unused since rules (added / removed Trigger rules, refreshMorphedToughness); remove
+      // from the data model in 6.1.
       hasMorphedToughnessBonus: makeBool(false),
       numChoices : makeInt(1),
       prerequisite: makeStr(null),
+      // Deprecated 2026-10-07: unused since rules (a Reroll rule; mechanics/rolls/reroll.mjs reads it only on Active
+      // Effects now); remove from the data model in 6.1.
       ...rerollSchema(),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices(Object.keys(E20.perkTypes), 'general'),
+      // Deprecated 2026-10-07: unused since rules (Movement / DerivedStat rules on the Perk); remove from the data
+      // model in 6.1. Until then the delete handler still reads it for a copy dropped before then (not flagged
+      // perkValueRule), whose value was written into its actor.
       value: makeInt(0),
       version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),
       blindsight: new fields.SchemaField({

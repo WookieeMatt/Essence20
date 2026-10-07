@@ -25,8 +25,7 @@
     "advances": {
       "canAdvance": true,
       "type": "number"
-    },
-    "canActivate": true
+    }
   },
   "effects": [],
   "sort": 0,

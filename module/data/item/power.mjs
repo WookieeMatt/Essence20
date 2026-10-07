@@ -1,6 +1,6 @@
 import { E20 } from "../../util/config.mjs";
 
-import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { aoeSchema } from "../aoe-schema.mjs";
 import { attackSchema } from "../attack-schema.mjs";
@@ -38,10 +38,11 @@ export class PowerItemData extends foundry.abstract.TypeDataModel {
       hasVariableCost: makeBool(false),
       maxPowerCost: makeInt(null),
       powerCost: makeInt(null),
-      // Temporal Awareness (Across the Stars, Grid Power, p.73) is the first Power to need this -
-      // see mechanics/rolls/reroll.mjs's own actor.items scan, which has no item.type filter at all and
-      // already picks up any item exposing this schema generically, the same way it already does
-      // for Perks.
+      // The printed prerequisite, for display - as a Perk's own. The checkable tags are system.prerequisites
+      // (templates/item-description.mjs, rules/prerequisites.mjs); a Grid Power is offered by the level-up picker.
+      prerequisite: makeStr(null),
+      // Deprecated 2026-10-07: unused since rules (Temporal Awareness, Lucky Charm and Future Vision carry Reroll
+      // rules); remove from the data model in 6.1.
       ...rerollSchema(),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices(Object.keys(E20.powerTypes), 'grid'),

@@ -3,6 +3,13 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","label":"Fast: +10 ft aerial","movement":"aerial","stage":"bonus","op":"add","value":10,"when":["rule:data:system.choice=aerial","rule:data:flags.essence20.perkValueRule"]},
+      {"type":"Movement","label":"Fast: +10 ft burrow","movement":"burrow","stage":"bonus","op":"add","value":10,"when":["rule:data:system.choice=burrow","rule:data:flags.essence20.perkValueRule"]},
+      {"type":"Movement","label":"Fast: +10 ft climb","movement":"climb","stage":"bonus","op":"add","value":10,"when":["rule:data:system.choice=climb","rule:data:flags.essence20.perkValueRule"]},
+      {"type":"Movement","label":"Fast: +10 ft ground","movement":"ground","stage":"bonus","op":"add","value":10,"when":["rule:data:system.choice=ground","rule:data:flags.essence20.perkValueRule"]},
+      {"type":"Movement","label":"Fast: +10 ft swim","movement":"swim","stage":"bonus","op":"add","value":10,"when":["rule:data:system.choice=swim","rule:data:flags.essence20.perkValueRule"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: ↑2 on Initiative. When added you pick a movement type you have, which goes up 10 feet.</p>"
@@ -17,8 +24,7 @@
     "selectionLimit": 1,
     "type": "general",
     "hasChoice": true,
-    "choiceType": "movement",
-    "value": 10
+    "choiceType": "movement"
   },
   "effects": [
     {

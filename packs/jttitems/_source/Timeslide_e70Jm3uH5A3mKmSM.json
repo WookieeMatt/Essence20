@@ -21,8 +21,7 @@
     "actionType": "move",
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role",
-    "canActivate": true
+    "type": "role"
   },
   "effects": [],
   "sort": 1100000,

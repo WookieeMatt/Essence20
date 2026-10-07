@@ -238,7 +238,7 @@ export class Essence20Item extends Item {
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
     } else if (this.type == 'weapon') {
-      this._prepareAimShiftBonus();
+      // (A Laser Sight's extra Aim shift is the upgrade's own AimBonus rule now, not a total kept here.)
       this._prepareWeaponHands();
       this._prepareHardpointDerived();
       // Size steps and one-handed wielding from upgrades and Perks (items/attacks/weapon-upgrades.mjs).
@@ -450,22 +450,6 @@ export class Essence20Item extends Item {
 
     this.system.totalBonusEvasion = armorBonusEvasion;
     this.system.totalBonusToughness = armorBonusToughness;
-  }
-
-  /**
-  * Prepares the total Aiming shift bonus (p.192) granted by any attached Upgrades (e.g. a
-  * Laser Sight, p.148/125) on this weapon
-  */
-  _prepareAimShiftBonus() {
-    let totalAimShiftBonus = 0;
-
-    for (const [, item] of Object.entries(this.system.items)) {
-      if (item.type == 'upgrade' && item.subtype == 'weapon') {
-        totalAimShiftBonus += item.aimShiftBonus || 0;
-      }
-    }
-
-    this.system.totalAimShiftBonus = totalAimShiftBonus;
   }
 
   /**

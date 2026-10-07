@@ -5,6 +5,9 @@
   "_id": "XTtt41mgTtU4rhUc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"allDice","reset":"mission","maxUses":3,"skills":["deception"],"keepBetter":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: a reroll button on your Deception tests, three times per mission; you keep whichever result you prefer.</p>"
@@ -13,15 +16,6 @@
     "description": "",
     "prerequisite": "",
     "selectionLimit": 1,
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "allDice",
-      "skills": ["deception"],
-      "maxUses": 3,
-      "reset": "mission",
-      "keepBetter": true
-    },
     "source": {
       "book": "General Hawk's Personnel Files",
       "page": 174

@@ -18,7 +18,6 @@
       "book": "Finster's Monster-Matic Cookbook",
       "page": 291
     },
-    "canActivate": true,
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"
