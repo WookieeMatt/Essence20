@@ -31,6 +31,7 @@ afterEach(() => {
 function makeZord(name, fastModulationCount = 0) {
   return {
     name,
+    uuid: `Actor.${name}`,
     type: 'zord',
     items: Array.from({ length: fastModulationCount }, () => ({
       type: 'feature',
@@ -110,6 +111,37 @@ describe("rollCombineTimer", () => {
   test("an actor with no subtype is left alone rather than throwing (drops must not break)", async () => {
     const bare = { system: { actors: {} } };
     expect(await rollCombineTimer(bare)).toBeNull();
+  });
+});
+
+describe("rollCombineTimer counts from entering the fight, and never re-rolls (PR CRB p.139)", () => {
+  test("a later drop rolls only for the new Zord; the earlier rolls stand", async () => {
+    const red = makeZord('Red');
+    const blue = makeZord('Blue');
+    const megaform = makeMegaform([red]);
+    rollTotals = [3];
+    expect(await rollCombineTimer(megaform)).toBe(4);
+
+    // Blue joins in round 3: only Blue rolls (2) - from the start of combat, so round 3, and Red's 4 stays the latest.
+    game.combat.round = 3;
+    megaform.system.actors.p1 = { uuid: 'Actor.Blue' };
+    global.fromUuidSync.mockImplementation(uuid => [red, blue].find(p => `Actor.${p.name}` === uuid) ?? null);
+    rollTotals = [2];
+    expect(await rollCombineTimer(megaform)).toBe(4);
+    expect(rollTotals).toEqual([]);
+  });
+
+  test("a Zord that was summoned counts from its arrival round", async () => {
+    const late = { ...makeZord('Late'), getFlag: (scope, key) => (key == 'zordSummonReadyRound' ? 5 : undefined) };
+    const megaform = makeMegaform([late]);
+    rollTotals = [3];
+    expect(await rollCombineTimer(megaform)).toBe(8);
+  });
+
+  test("a Transformers Combiner has no timer", async () => {
+    const megaform = makeMegaform([makeZord('Red')]);
+    megaform.system.subtype = ['megaformCombiner'];
+    expect(await rollCombineTimer(megaform)).toBeNull();
   });
 });
 

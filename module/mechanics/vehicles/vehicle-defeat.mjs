@@ -4,6 +4,7 @@ import { applyDamage } from "../combat/combat.mjs";
 import { getAllNearbyTokens } from "../combat/nearby-allies.mjs";
 import { E20 } from "../../util/config.mjs";
 import { clearWarriorMode } from "../../items/zords/warrior-mode.mjs";
+import { registerAfterDamage } from "../item-hooks.mjs";
 
 /**
  * Defeat of a Vehicle (GI Joe CRB, p.214-215) and its Zord-specific exception (Power Rangers CRB,
@@ -213,9 +214,8 @@ export async function explodeVehicle(actor) {
 /**
  * Recall for Repairs (Power Rangers CRB, p.136): a Zord at 0 Health goes Prone, its crew bail out as
  * in an emergency disembark, and it then lies dormant - no Brawn Test, no crash-impact damage, no
- * explosion; a Zord is explicitly carved out of ordinary Vehicle defeat. Staying dormant until its
- * Ranger recalls it (the actual Recall for Repairs Zord
- * Feature summon-cycle) is out of scope here - this only covers the immediate 0-Health moment.
+ * explosion; a Zord is explicitly carved out of ordinary Vehicle defeat. The recall itself, and its return at full
+ * Health after the scene, is mechanics/vehicles/zord-recall.mjs.
  * @param {Actor} actor
  */
 async function handleZordZeroHealthTransition(actor) {
@@ -283,3 +283,12 @@ function crewHasChangeItsStripes(vehicle) {
     return !!crew?.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == CHANGE_ITS_STRIPES);
   });
 }
+
+// Any damage path (the chat card, rule steps, hazards, a Megazord's split): a Vehicle or Zord whose Health genuinely
+// drops from above 0 to 0 - never Stun, which doesn't touch Health - is Defeated / goes dormant once.
+registerAfterDamage(async (actor, dealt, damageType, ctx) => {
+  if (['vehicle', 'zord'].includes(actor?.type) && dealt > 0 && damageType != 'stun'
+    && Number(ctx?.previousValue) > 0 && Number(ctx?.newValue) <= 0 && !ctx?.wasAlreadyDefeated) {
+    await handleVehicleZeroHealthTransition(actor);
+  }
+});

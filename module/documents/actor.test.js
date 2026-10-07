@@ -3,6 +3,7 @@ import { jest } from '@jest/globals';
 import { applyModularIntegration } from "../items/defenses/modular-armor.mjs";
 import { setWorldLookups } from "../rules/predicate.mjs";
 import { readFileSync } from "node:fs";
+import { finishParticipantHealth } from "../mechanics/vehicles/megaform-bonus-health.mjs";
 
 // The Megaform contributions are rules on their items now (round 16, part a - rules/plugins/zords/megaform-contributions.mjs):
 // the fixtures carry the pack items' own rules.
@@ -1209,6 +1210,8 @@ describe("_prepareMegaformZordData", () => {
     const actor = makeMegazordActor([coreBody, plain]);
 
     actor._prepareMegaformZordData();
+    // The extra Health is collected in prep and the rows built at the end (mechanics/vehicles/megaform-bonus-health.mjs).
+    finishParticipantHealth(actor, [coreBody, plain]);
 
     expect(actor.system.combinedHealthMax).toBe((5 * 2) + 4);
     expect(actor.system.combinedHealthValue).toBe((5 * 2) + 4);
@@ -1222,6 +1225,7 @@ describe("_prepareMegaformZordData", () => {
     const actor = makeMegazordActor([coreBody]);
 
     actor._prepareMegaformZordData();
+    finishParticipantHealth(actor, [coreBody]);
 
     expect(actor.system.combinedHealthMax).toBe((5 * 2) + 3);
   });
@@ -1233,6 +1237,7 @@ describe("_prepareMegaformZordData", () => {
     const actor = makeMegazordActor([holder, otherHolder, plain]);
 
     actor._prepareMegaformZordData();
+    finishParticipantHealth(actor, [holder, otherHolder, plain]);
 
     // 5+4+3 base, plus +1 per participant (3) applied ONCE despite two holders - not +6.
     expect(actor.system.combinedHealthMax).toBe(5 + 4 + 3 + 3);
@@ -1429,6 +1434,26 @@ describe("_prepareMegaformCombinerData", () => {
 
   beforeEach(() => {
     global.fromUuidSync.mockReset();
+  });
+
+  test("a duo / trio is one Size CLASS larger than its largest member - never Long or Extended (EoC p.42)", () => {
+    const actor = makeCombinerActor([makeComponent({ name: 'A', health: 5, size: 'large' }), makeComponent({ name: 'B', health: 5, size: 'large' })]);
+    actor._prepareMegaformCombinerData();
+    expect(actor.system.size).toBe('huge');
+
+    const huge = makeCombinerActor([makeComponent({ name: 'A', health: 5, size: 'huge' }), makeComponent({ name: 'B', health: 5, size: 'extended' })]);
+    huge._prepareMegaformCombinerData();
+    expect(huge.system.size).toBe('gigantic');
+  });
+
+  test("movement: a type only some members have isn't the form's (EoC p.42)", () => {
+    const flier = makeComponent({ name: 'A', health: 5 });
+    flier.system.movement.aerial = { total: 60 };
+    const actor = makeCombinerActor([flier, makeComponent({ name: 'B', health: 5 })]);
+    actor.system.movement.aerial = {};
+    actor._prepareMegaformCombinerData();
+    expect(actor.system.movement.ground.base).toBe(30);
+    expect(actor.system.movement.aerial.base).toBe(0);
   });
 
   test("zeroes Essences/Defenses/Movement with no participants, instead of leaving them at their own zordBase-inherited schema defaults", () => {

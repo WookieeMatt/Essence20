@@ -1,3 +1,4 @@
+import { sizeClassIndex } from "./mechanics/combat/size-classes.mjs";
 import { ruleNaturalTwentyMultiplier } from "./rules/plugins/rolls/natural-twenty.mjs";
 import { ruleShiftCap } from "./rules/plugins/rolls/shift-cap.mjs";
 import { ruleManeuverOption } from "./rules/plugins/combat/maneuver-option.mjs";
@@ -1697,9 +1698,24 @@ export class Dice {
       const energonBefore = actor.system.energon.normal.value;
       const newEnergonValue = energonBefore - 1;
 
-      // A component's EnergonDonor rule (Better As One - rules/plugins/zords/megaform-contributions.mjs) pays it when the
-      // combined form has none.
-      const donor = !(actor.system.energon?.normal?.value > 0) ? energonDonor(actor) : null;
+      // A component's EnergonDonor rule (Better As One, EoC p.34 - rules/plugins/zords/megaform-contributions.mjs) may pay it
+      // from their own pool instead of the combined form's - always when the form has none, and by choice when it has.
+      let donor = energonDonor(actor);
+      if (donor && actor.system.energon?.normal?.value > 0) {
+        const payer = await foundry.applications.api.DialogV2.wait({
+          window: { title: actor.name },
+          content: `<p>${this._localize('E20.EnergonDonorAsk', { form: actor.name, donor: donor.name })}</p>`,
+          buttons: [
+            { action: 'form', label: actor.name, default: true },
+            { action: 'donor', label: donor.name },
+          ],
+          rejectClose: false,
+        });
+        if (payer != 'donor') {
+          donor = null;
+        }
+      }
+
       if (donor) {
         await payEnergonDonor(donor);
       } else {
@@ -2068,14 +2084,11 @@ export class Dice {
         // Size Class than the wielder, armor-upgrade Toughness bonuses don't count. A third sibling of Anti-Tank/Armor Piercing just
         // above - "armor upgrades" specifically (not an armor's own base bonusToughness) is a
         // narrower carve-out than either, so it reads _getArmorUpgradeToughness rather than one
-        // trait-filtered helper. Only this Toughness-ignore half is modelled: the Energon Point
-        // the wielder must spend before attacking is a mandatory COST to attack at
-        // all, not an optional bonus, and every existing Energon-gated effect in this codebase is
-        // the latter (an opt-in Roll Options Dialog checkbox) - there's no established pattern
-        // here for blocking an attack outright over an unspent resource, so it isn't enforced.
-        const sizeOrder = Object.keys(E20.actorSizes);
-        const attackerSizeIndex = sizeOrder.indexOf(actor.system.size);
-        const targetSizeIndex = sizeOrder.indexOf(token.actor.system.size);
+        // trait-filtered helper. The Energon Point the wielder must spend first (once a round) is
+        // items/attacks/titan-class.mjs's pre-roll.
+        // Size CLASSES (an Extended target is the Huge class, not a step up) - mechanics/combat/size-classes.mjs.
+        const attackerSizeIndex = sizeClassIndex(actor.system.size);
+        const targetSizeIndex = sizeClassIndex(token.actor.system.size);
         const titanClassReduction = resolvedDefenseType == 'toughness'
           && attackerSizeIndex != -1 && targetSizeIndex != -1 && targetSizeIndex < attackerSizeIndex
           && this._getParentWeapon(actor, item)?.system?.traits?.includes('titanClass')

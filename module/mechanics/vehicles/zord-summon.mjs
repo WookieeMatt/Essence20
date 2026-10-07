@@ -110,5 +110,24 @@ export async function onSummonZord(target, pilotActor) {
   }
 
   const zordActor = await fromUuid(zordUuid);
+  if (zordActor?.type == 'zord') {
+    // Recalled for repairs in this scene: it stays in its lair until the scene is over (PR CRB p.136).
+    const { recalledThisScene, returnFromRepairs } = await import("./zord-recall.mjs");
+    if (recalledThisScene(zordActor)) {
+      ui.notifications.warn(game.i18n.format('E20.ZordStillRepairing', { name: zordActor.name }));
+      return;
+    }
+
+    // The call itself is a Standard action (PR CRB p.135) - mechanics/actions/action-economy.mjs.
+    const { spend } = await import("../actions/action-economy.mjs");
+    const paid = await spend(pilotActor, 'standard', { source: zordActor.name });
+    if (paid?.blocked) {
+      return;
+    }
+
+    // Back from an earlier scene's repairs: full Health, no lingering Conditions.
+    await returnFromRepairs(zordActor);
+  }
+
   await rollSummonTimer(pilotActor, zordActor);
 }

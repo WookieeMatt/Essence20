@@ -69,6 +69,76 @@ the same as the original.
 - **Power Rangers:** the Grid Relic Weapon asks for its 2 Relic Weapon Traits; five of them are
   automated. The Power Rangers Expertise offers only Skills at d4 or better.
 
+## Megazords and Combiners
+
+- **Who can join which Megaform.** A Megazord takes Zords and, per Field Guide to Action and Adventure p.134, a
+  Cybertronian joining them as a plain component (a chat line notes the Story Point and Energon/Personal Power cost,
+  and the form is one Size Class above its largest part). A Zord can't join a Transformers Combiner: a Zord and
+  Cybertronian mix uses the Megazord rules. Anything that can't count is now refused with the reason, instead of being
+  linked and silently ignored.
+- **Megazords:**
+  - Use every participant's weapons and attacks, rolled with the Megazord's own skill.
+  - Are Towering by default; set Titanic on the sheet if that's the size you chose.
+  - Take the highest Strength and Speed from their Crew as well as their Zords.
+  - Fall apart when more than half the Zords are down, each falling Prone.
+  - A Zord at 0 Health stops adding its stats, traits and attacks.
+- **Core Body, Layered Systems, Tenacious Bonds and Roller Drum now really add Health.** Damage to the Megaform uses
+  that extra Health up first, and a damaged Core Body Zord no longer shows every point lost twice.
+- **Join timer:** counts from when each Zord entered the fight (its Call to Action arrival), only rolls for newly added
+  Zords, and no longer runs for Transformers Combiners.
+- **Megaform immunities** (Grounding's Electromagnetic immunity) protect the whole form. Damage from rules,
+  hazards and ongoing effects now reaches a Megaform's participants instead of disappearing.
+- **Combiners:**
+  - A duo or trio is now one real Size Class up (two Large members make a Huge form, not "Long").
+  - Damage to the whole form is split as evenly as the total allows, with leftover points going to random members.
+  - Commander raises the Essences that are the holder's own two highest.
+  - The Energon pool fills with what was spent to merge.
+  - Invigorating Connection heals once per combination.
+  - Additional Movement grants its Movement Type.
+  - A Movement Type only some members have no longer becomes the form's.
+  - A member at 0 Health adds no attacks.
+- **Zord armor:** Hardened Chassis, Rescue Upgrade, S.W.A.T. Armor Up, Elemental Stone, Assault Shell and External Tech
+  Upgrade now give Armor (plating) to Toughness, so Ignores Armor attacks strip them as the books say.
+- **Breaker-Bar's** +1 damage now applies only against Transformers Combiner forms.
+- **Changing a Megaform between Megazord and Combiner** is refused while someone in it wouldn't count under the new
+  type (a mixed Megazord's Zords, or a Combiner's characters who can't transform), naming who has to leave first. A
+  change that goes through clears the old type's timers.
+- **Starting Zord Features:** linking a new Zord to a Ranger asks for its team. It then adds the team's Automatic Zord
+  Features and the Spectrum-Based one (taken from the Role's colour), from all five books. Mixed teams pick two;
+  Advanced Spectrum picks any. A **Features** button on the Zords tab offers it again until it's done.
+- **Strength with its Skill Ranks:** Auxiliary Zord, Carrier and Warzord ask where their Skill Ranks go.
+- **Warzord** spends its Ranger's Story Points (one per Zord combining with it) when it combines, instead of posting a
+  reminder.
+- **Zero-G's** ranged ↑1 no longer needs a driver; the book doesn't ask for one.
+- **Weapon size is measured against every Mode** (Bot Mode and each Alt Mode), and Combiner movement reads members'
+  Bot Modes.
+- **Zord growth:** at the Ranger's 5th, 10th, 15th and 20th level each linked Zord gets a choice. The options are +1
+  Health, +1 plating, +10 ft movement, pilot ↑1 on Driving or Initiative, and +1 damage to one attack (Core Rulebook
+  p.134), or Accurate (1) on one attack, or exchanging a Zord Feature (A Jump Through Time p.83). It's offered on
+  level-up, and from a **Growth** button on the Ranger's Zords tab while any is owed. Each choice is a feature on the
+  Zord.
+- **Recall for Repairs:** the feature's Use button sends the Zord to its lair. It leaves the map and any Megazord, can't
+  be called again this scene, and comes back at full Health with no Conditions the next time it's summoned.
+- **Summoning a Zord** spends the Ranger's Standard action.
+- **Zord and Vehicle Defeat** now triggers from every damage path, so a Zord inside a Megazord goes dormant too.
+- **Gaining Combiner** asks which Megaform Trait the Zord contributes and adds it. Detachable and Core Body can't be on
+  the same Zord.
+- **Increase (Essence)** and every other Zord or Vehicle Essence now stop at 15.
+- **Megazord Willpower and Cleverness** use the best of its Crew, and its Smarts and Social show the Crew's best.
+- **Combiners (Enigma of Combination):**
+  - **Hardpoints:** two External, plus one Integrated per member, shown on the form. A weapon's prerequisites are met
+    when any active member meets them at the weapon's normal size.
+  - **Upscaled weapons (Table 3-1):** a weapon dropped on a Gigantic or larger actor offers its upscaled version
+    (availability, requirement, range, damage, area, Trip, and Titan-Class and Wrecker at Titanic).
+  - **Hands by size:** a weapon three or more Size Classes smaller takes 1 hand or Hardpoint, three larger takes 2,
+    and four or more larger can't be wielded.
+  - **Titan-Class** weapons cost 1 Energon a round to attack with.
+  - **Mode Lock** stops merging.
+  - **Other Cybertronians:** a PC without a Combiner Perk dropped on a Combiner form joins for the scene for a Story
+    Point plus the Energon. Only one at a time, and they leave when the scene ends.
+  - **Holding together:** a Defeated Combiner can spend 1 Energon per member to postpone breaking apart for 1d2 turns.
+  - **Better as One** lets the holder pay the form's Energon bonus at any time; you're asked who pays.
+
 ## Other changes
 
 - **Power Shield** follows the book now:

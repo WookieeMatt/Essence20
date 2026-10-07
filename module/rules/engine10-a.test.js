@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import { bonusOf } from '../mechanics/vehicles/megaform-bonus-health.mjs';
 
 /**
  * Round 10, group A engine pieces (module/rules/ext/a/): the megaform / ownZord / zordOwner scopes, the Megaform,
@@ -490,12 +491,13 @@ describe('steps', () => {
     const mega = megaform([zord]);
     const { ctx } = await run(zord, master, [{ do: 'megaformSync' }]);
     expect(ctx.vars).toMatchObject({ megaforms: 'Megazord', megaformCount: 1 });
-    expect(mega.items.contents.map(item => item.name)).toEqual(['Blast']);
+    // The power through the Mirror rule; the Zord's weapon because a Megazord may use any participant's attack (PR CRB p.140).
+    expect(mega.items.contents.map(item => item.name)).toEqual(['Blast', 'Sword']);
     expect(mega.items.contents[0].flags.essence20.zord1MirrorOf).toBe(`${zord.uuid}|${zord.items.contents[1].id}`);
     // The participant's item goes: the mirror goes with it.
     zord.items.contents.splice(1, 1);
     await megaformExt.syncMirrors(mega);
-    expect(mega.items.contents).toEqual([]);
+    expect(mega.items.contents.map(item => item.name)).toEqual(['Sword']);
     expect(validateRule({ type: 'MegaformMirror', items: [] })).not.toEqual([]);
   });
 
@@ -615,9 +617,9 @@ describe('rule types', () => {
     const bot = makeActor('playerCharacter', 'Drummer');
     addItem(bot, { name: 'Drum', type: 'feature' }, [{ type: 'MegaformHealth', scope: 'megaform', amount: 2 }]);
     const form = megaform([bot], true);
-    Object.assign(form.system, { participantHealth: [{ name: 'Drummer', value: 4, max: 6 }], combinedHealthMax: 6, combinedHealthValue: 4, health: { max: 6, value: 4 } });
+    // Megaform-only extra Health for the holder (mechanics/vehicles/megaform-bonus-health.mjs builds the rows from it).
     megaformExt.megaformHealthDerived(form);
-    expect(form.system).toMatchObject({ participantHealth: [{ name: 'Drummer', value: 6, max: 8 }], combinedHealthMax: 8, combinedHealthValue: 6, health: { max: 8, value: 6 } });
+    expect(bonusOf(form, bot)).toBe(2);
     megaformExt.megaformHealthDerived(bot);
     expect(bot.system.health.max).toBe(10);
   });

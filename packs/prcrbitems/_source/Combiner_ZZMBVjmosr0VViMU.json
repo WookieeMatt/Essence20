@@ -5,9 +5,12 @@
   "_id": "ZZMBVjmosr0VViMU",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Combiner: choose its Megaform Trait","event":"added","steps":[{"do":"pickEntry","from":{"type":"megaformTrait","fields":["system.source.book","system.type"],"tags":["not:item:data:system.source.book=Enigma of Combination",{"any":["not:item:data:system.type=detachable","not:self:megaformTrait:coreBody"]},{"any":["not:item:data:system.type=coreBody","not:self:megaformTrait:detachable"]}]},"title":"Combiner","prompt":"Which Megaform Trait does this Zord contribute?"},{"do":"grant","uuid":"{var.picked}"}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>On the sheet: lets the Zord join a Megaform with the team's other Combiner Zords. The system rolls how many rounds each Zord needs before it can combine.</p>"
+      "notes": "<p>On the sheet: lets the Zord join a Megaform with the team's other Combiner Zords. The system rolls how many rounds each Zord needs before it can combine. Automatic: gaining it asks which Megaform Trait the Zord contributes and adds it.</p>"
     },
     "originalId": "",
     "description": "",

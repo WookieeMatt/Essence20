@@ -645,6 +645,12 @@ export async function onLevelChange(actor, newLevel) {
   // way up, taken back on the way down. Only this client - the one that changed the level - runs it.
   const { updateLevelPicks } = await import("../mechanics/characters/level-picks.mjs");
   await updateLevelPicks(actor, previousLevel, newLevel);
+
+  // A Zord linked to this Ranger grows at 5th, 10th, 15th and 20th level (PR CRB p.134) - mechanics/vehicles/zord-growth.mjs.
+  if (newLevel > previousLevel) {
+    const { offerZordGrowth } = await import("../mechanics/vehicles/zord-growth.mjs");
+    await offerZordGrowth(actor);
+  }
 }
 
 /**

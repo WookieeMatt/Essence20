@@ -186,6 +186,43 @@ export function prerequisiteText(item) {
  *   system can't read); waiting: `host:` checks for an Upgrade not attached yet.
  */
 export function checkPrerequisites(actor, item, { host = null } = {}) {
+  if (actor?.type == 'megaform' && actor.system?.subtype?.includes?.('megaformCombiner')) {
+    return checkCombinerPrerequisites(actor, item, { host });
+  }
+
+  return checkOne(actor, item, { host });
+}
+
+/**
+ * A Combiner form's weapon (EoC p.44): at least one component must be Qualified to use the weapon's normal size - its
+ * prerequisites are checked against each active component, and met when any one meets them. An upscaled weapon
+ * (items/attacks/weapon-upscale.mjs) is checked on its normal size's prerequisites that way, and on its size
+ * requirement against the form itself.
+ */
+function checkCombinerPrerequisites(form, item, options) {
+  // A form with nobody in it (broken apart, not merged yet) wields nothing: nothing to check.
+  if (!Object.keys(form.system?.actors ?? {}).length) {
+    return { met: true, unmet: [], asks: [], waiting: [] };
+  }
+
+  const upscaled = item?.flags?.essence20?.upscaled;
+  const own = upscaled ? checkOne(form, item, options) : { met: true, unmet: [], asks: [], waiting: [] };
+  const normal = upscaled ? { type: item.type, name: item.name, system: { prerequisites: upscaled.prerequisites } } : item;
+  const members = Object.values(form.system?.actors ?? {})
+    .map(entry => globalThis.fromUuidSync?.(entry?.uuid))
+    .filter(member => member && !['zord', 'vehicle', 'megaform'].includes(member.type)
+      && !(Number(member.system?.health?.max) > 0 && Number(member.system?.health?.value) <= 0));
+  const results = members.map(member => checkOne(member, normal, options));
+  const best = results.find(result => result.met) ?? results[0] ?? checkOne(form, normal, options);
+  return {
+    met: own.met && best.met,
+    unmet: [...own.unmet, ...best.unmet],
+    asks: [...own.asks, ...best.asks],
+    waiting: [...own.waiting, ...best.waiting],
+  };
+}
+
+function checkOne(actor, item, { host = null } = {}) {
   const result = { met: true, unmet: [], asks: [], waiting: [] };
   for (const entry of prerequisitesOf(item)) {
     const answer = evaluate([entry], contextFor({ self: actor, ruleItem: item, host, combat: null }));

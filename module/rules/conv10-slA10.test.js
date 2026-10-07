@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import { bonusOf } from '../mechanics/vehicles/megaform-bonus-health.mjs';
 import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -250,16 +251,13 @@ describe('Megaform roster rules', () => {
     addPackItem(bot, FILES.rollerDrum);
     const other = makeActor('playerCharacter', 'Other');
     const form = megazord([bot, other], { combiner: true });
-    form.system.participantHealth = [{ name: 'Drummer', value: 4, max: 6 }, { name: 'Other', value: 5, max: 5 }];
-    Object.assign(form.system, { combinedHealthMax: 11, combinedHealthValue: 9, health: { max: 11, value: 9 } });
+    // Megaform-only extra Health for the holder alone (mechanics/vehicles/megaform-bonus-health.mjs builds the rows).
     megaformExt.megaformHealthDerived(form);
-    expect(form.system.participantHealth).toEqual([{ name: 'Drummer', value: 5, max: 7 }, { name: 'Other', value: 5, max: 5 }]);
-    expect(form.system).toMatchObject({ combinedHealthMax: 12, combinedHealthValue: 10, health: { max: 12, value: 10 } });
+    expect([bonusOf(form, bot), bonusOf(form, other)]).toEqual([1, 0]);
     // A Megazord (not a Combiner form): nothing.
     const zordForm = megazord([bot]);
-    Object.assign(zordForm.system, { combinedHealthMax: 6, combinedHealthValue: 4, participantHealth: [{ name: 'Drummer', value: 4, max: 6 }] });
     megaformExt.megaformHealthDerived(zordForm);
-    expect(zordForm.system.combinedHealthMax).toBe(6);
+    expect(bonusOf(zordForm, bot)).toBe(0);
   });
 
   test('Power Master / Target Master mirror Perks and Powers / weapons onto the Megaform', async () => {
@@ -310,21 +308,11 @@ describe('Megaform roster rules', () => {
     expect(ChatMessage.create).not.toHaveBeenCalled();
   });
 
-  test('Warzord: the Combiner reminder when its Megaform combines, once per scene', async () => {
+  test('Warzord: its Story Points are spent when a Zord joins it (sheet-handlers/drop-handler.mjs#warzordCosts), not a reminder', async () => {
     const zord = makeActor('zord', 'Warzord');
     addPackItem(zord, FILES.warzord);
     addItem(zord, { name: 'Combiner', type: 'feature', _stats: { compendiumSource: 'Compendium.essence20.pr_crb.Item.ZZMBVjmosr0VViMU' } });
-    const mega = megazord([zord, makeActor('zord', 'Z2'), makeActor('zord', 'Z3')]);
-    await megaformExt.onRosterChanged(mega);
-    expect(ChatMessage.create).toHaveBeenCalledTimes(1);
-    expect(ChatMessage.create.mock.calls[0][0].content).toContain('1 Story Point per Zord combining with it (2)');
-    await megaformExt.onRosterChanged(mega);
-    expect(ChatMessage.create).toHaveBeenCalledTimes(1);
-    // Without the Combiner Feature: no reminder.
-    const plain = makeActor('zord', 'Plain Warzord');
-    addPackItem(plain, FILES.warzord);
-    ChatMessage.create.mockClear();
-    await megaformExt.onRosterChanged(megazord([plain]));
+    await megaformExt.onRosterChanged(megazord([zord, makeActor('zord', 'Z2'), makeActor('zord', 'Z3')]));
     expect(ChatMessage.create).not.toHaveBeenCalled();
   });
 });

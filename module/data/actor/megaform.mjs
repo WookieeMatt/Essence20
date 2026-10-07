@@ -42,6 +42,18 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
         name: makeStr(''),
         value: makeInt(0),
       })),
+      // A Transformers Combiner's Hardpoints (Enigma of Combination p.44): two External, plus one Integrated for each
+      // component - the bases are worked out in Essence20Actor#_prepareMegaformCombinerData, the rest is the same
+      // tally a Transformer's are (Essence20Actor#_prepareLoadout). A Megazord has none.
+      hardpoints: new fields.SchemaField({
+        external: new fields.SchemaField({ base: makeInt(2), bonus: makeInt(0), max: makeInt(0), used: makeInt(0), over: makeBool(false) }),
+        integrated: new fields.SchemaField({ base: makeInt(0), bonus: makeInt(0), max: makeInt(0), used: makeInt(0), over: makeBool(false) }),
+      }),
+      loadout: new fields.SchemaField({
+        handsMax: makeInt(6),
+        handsUsed: makeInt(0),
+        handsOver: makeBool(false),
+      }),
     };
   }
 }

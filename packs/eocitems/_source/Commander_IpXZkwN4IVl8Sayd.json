@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: a Gigantic or larger Combiner form gets +1 to its two highest Essences. Use button: pick one Skill for each Essence; the Skills of the two raised Essences get ↑1.</p><p>Left to the table: choosing between tied Essences (ties go Strength, Speed, Smarts, Social).</p>"
+      "notes": "<p>Automatic: a Gigantic or larger Combiner form gets +1 in the two Essences that are your own highest scores. Use button: pick one Skill for each Essence; the Skills of the two raised Essences get ↑1.</p><p>Left to the table: choosing between tied Essences (ties go Strength, Speed, Smarts, Social).</p>"
     },
     "originalId": "",
     "description": "",

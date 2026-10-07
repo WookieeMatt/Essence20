@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "rules": [
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Breaker-Bar","when":["item:own","target:type:megaform"]}
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Breaker-Bar","when":["item:own","target:combinerForm"]}
     ],
     "originalId": "",
     "actionType": "standard",

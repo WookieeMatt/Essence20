@@ -9,6 +9,7 @@ import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
 import { onZordFeatureDrop } from "./zord-feature-handler.mjs";
 import { getCombineReadyRound, isCombineReady, rollCombineTimer } from "../mechanics/vehicles/combiner-timer.mjs";
+import { canBeParticipant, getMegaformParticipants, isGuestComponent } from "../mechanics/vehicles/megaform-participants.mjs";
 import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
 import { DETACHED_THIS_SCENE_FLAG } from "./vehicle-handler.mjs";
 import { hasUsedThisEncounter } from "../mechanics/characters/perks.mjs";
@@ -86,6 +87,13 @@ export async function onDropItem(data, actor, dropFunc) {
       break;
     }
 
+    // Detachable "cannot be chosen if the Zord also has the Core Body Megaform Trait" (Across the Stars p.104) - either
+    // way round.
+    if (clashingMegaformTrait(actor, sourceItem)) {
+      ui.notifications.error(game.i18n.localize('E20.DetachableCoreBodyClash'));
+      break;
+    }
+
     result = await dropFunc();
     break;
   case 'origin':
@@ -109,9 +117,19 @@ export async function onDropItem(data, actor, dropFunc) {
   case 'upgrade':
     result = await _onUpgradeDrop(sourceItem, actor, dropFunc);
     break;
-  case 'weapon':
+  case 'weapon': {
+    const before = new Set(actor.items.map(item => item.id));
     result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
+    // A Gigantic or larger wielder: offer the weapon made for its size (EoC p.47, Table 3-1).
+    const added = actor.items.find(item => item.type == 'weapon' && !before.has(item.id));
+    if (added) {
+      const { offerUpscale } = await import("../items/attacks/weapon-upscale.mjs");
+      await offerUpscale(actor, added);
+    }
+
     break;
+  }
+
   case 'weaponEffect':
     result = onAttachmentDrop(actor, sourceItem, dropFunc);
     break;
@@ -255,8 +273,15 @@ export async function onDropActor(data, actorSheet) {
         return false;
       }
 
-      setEntryAndAddActor(droppedActor, targetActor);
+      await setEntryAndAddActor(droppedActor, targetActor);
       dropIsValid = true;
+
+      // A Zord newly linked to its Ranger: its starting Spectrum and team Zord Features (PR CRB p.134) -
+      // mechanics/vehicles/zord-auto-features.mjs.
+      if (droppedActor.type == 'zord') {
+        const { offerAutoFeatures } = await import("../mechanics/vehicles/zord-auto-features.mjs");
+        await offerAutoFeatures(targetActor, droppedActor);
+      }
     } else if (['companion', 'vehicle'].includes(droppedActor.type)) {
       // A pet, drone, Mini-Con or companion - or a personal vehicle - becomes this character's
       // (mechanics/companions/companion-link.mjs).
@@ -274,26 +299,69 @@ export async function onDropActor(data, actorSheet) {
       return;
     }
 
-    if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
-      setEntryAndAddActor (droppedActor, targetActor);
-      dropIsValid = true;
+    // Who can join this kind of Megaform (mechanics/vehicles/megaform-participants.mjs): a Megazord takes Zords and
+    // Cybertronians (Field Guide p.134); a Combiner takes characters, and a Zord joining Cybertronians makes a Megazord
+    // instead. Anything that would be linked but never count is refused with the reason.
+    if (!canBeParticipant(targetActor, droppedActor)) {
+      const combiner = targetActor.system.subtype?.includes?.('megaformCombiner');
+      ui.notifications.warn(game.i18n.format(
+        combiner && droppedActor.type == 'zord' ? 'E20.MegaformZordInCombiner' : combiner ? 'E20.MegaformCombinerRefuses' : 'E20.MegaformMegazordRefuses',
+        { name: droppedActor.name },
+      ));
+      return false;
+    }
 
-      // Warrior Mode (PR CRB, Zord Feature, p.140): "...lasts until...the Zord is involved in a
-      // Combiner Megaform." This IS that moment - see items/zords/warrior-mode.mjs's own doc comment.
-      if (droppedActor.type == 'zord') {
-        await clearWarriorMode(droppedActor);
+    // A Transformers Combiner: Mode Lock stops merging (EoC p.49), and a PC with no Combiner Perk joins as an Other
+    // Cybertronian - a Story Point, the Energon and a Standard action, for this scene (EoC p.43).
+    if (targetActor.system.subtype?.includes?.('megaformCombiner')) {
+      const { beginGuestMerge, holdsMergePerk, modeLocked } = await import("../items/zords/combiner-merge.mjs");
+      if (modeLocked(droppedActor)) {
+        return false;
       }
 
-      // Combiner join timer (PR CRB p.139) - re-rolled whenever the roster changes, since every
-      // participant rolls its own time and the highest sets the round. Advisory: this warns rather
-      // than refusing the link, see mechanics/vehicles/combiner-timer.mjs's own doc comment for why.
-      if (!isCombineReady(targetActor)) {
-        ui.notifications.warn(game.i18n.format('E20.CombinerTimerNotReady', {
-          round: getCombineReadyRound(targetActor),
-        }));
-      }
+      if (droppedActor.type == 'playerCharacter' && !holdsMergePerk(droppedActor)) {
+        const line = await beginGuestMerge(droppedActor, targetActor);
+        if (line) {
+          ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: droppedActor }), content: line });
+        }
 
-      await rollCombineTimer(targetActor);
+        return false;
+      }
+    }
+
+    // A Warzord combining (Across the Stars p.105): its Ranger spends 1 Story Point per Zord combining with it.
+    if (!(await payWarzordStoryPoints(targetActor, droppedActor))) {
+      return false;
+    }
+
+    await setEntryAndAddActor(droppedActor, targetActor);
+    dropIsValid = true;
+
+    // A Cybertronian joining Zords (Field Guide p.134): 1 Story Point (unless its own assets say otherwise), plus Energon
+    // and/or Personal Power equal to the number of components - a reminder, the table spends it.
+    if (isGuestComponent(targetActor, droppedActor)) {
+      ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+        content: game.i18n.format('E20.MegaformGuestCost', {
+          name: droppedActor.name, form: targetActor.name, count: getMegaformParticipants(targetActor).length,
+        }),
+      });
+    }
+
+    // Warrior Mode (PR CRB, Zord Feature, p.140): "...lasts until...the Zord is involved in a
+    // Combiner Megaform." This IS that moment - see items/zords/warrior-mode.mjs's own doc comment.
+    if (droppedActor.type == 'zord') {
+      await clearWarriorMode(droppedActor);
+    }
+
+    // Combiner join timer (PR CRB p.139) - the new participant rolls its own time (the highest sets the round), and
+    // only then is it checked. Advisory: this warns rather than refusing the link, see
+    // mechanics/vehicles/combiner-timer.mjs's own doc comment for why. A Transformers Combiner has no timer.
+    await rollCombineTimer(targetActor);
+    if (!isCombineReady(targetActor)) {
+      ui.notifications.warn(game.i18n.format('E20.CombinerTimerNotReady', {
+        round: getCombineReadyRound(targetActor),
+      }));
     }
 
     break;
@@ -431,4 +499,74 @@ async function addActorIfUnique(droppedActor, targetActor, entry) {
   });
 
   return key;
+}
+
+/**
+ * Detachable and Core Body can't be on the same Zord (Across the Stars p.104).
+ * @param {Actor} actor
+ * @param {Item|Object} trait   The Megaform Trait being added
+ * @returns {Boolean}
+ */
+export function clashingMegaformTrait(actor, trait) {
+  const CLASH = { detachable: 'coreBody', coreBody: 'detachable' };
+  const other = CLASH[trait?.system?.type];
+  return !!other && !!actor?.items?.some?.(item => item.type == 'megaformTrait' && item.system?.type == other);
+}
+
+export const WARZORD_ID = "Compendium.essence20.across_the_stars.Item.jX5IHpydHimdjbGb";
+
+/**
+ * Warzord (Across the Stars p.105): a Warzord with Combiner "must now spend 1 Story Point per Zord combining with it".
+ * The Story Points its Ranger owes when `joining` comes into a Megazord: a Warzord joining owes one per Zord already in
+ * it; a Zord joining owes each Warzord already in it one. [{warzord, cost}] - exported for tests.
+ * @param {Actor[]} present   The Megazord's current participants
+ * @param {Actor} joining
+ */
+export function warzordCosts(present, joining) {
+  const { sourceOf } = WARZORD_HELPERS;
+  const isWarzord = actor => actor?.type == 'zord' && (actor.items?.contents ?? [...(actor.items ?? [])]).some(item => sourceOf(item) == WARZORD_ID);
+  if (joining?.type != 'zord') {
+    return [];
+  }
+
+  if (isWarzord(joining)) {
+    const others = present.filter(actor => actor.type == 'zord').length;
+    return others ? [{ warzord: joining, cost: others }] : [];
+  }
+
+  return present.filter(isWarzord).map(warzord => ({ warzord, cost: 1 }));
+}
+
+const WARZORD_HELPERS = { sourceOf: item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null };
+
+/** Spend the Warzord Story Points for a drop; false (with a warning) when its Ranger can't. */
+async function payWarzordStoryPoints(megaform, joining) {
+  if (megaform.system.subtype?.includes?.('megaformCombiner')) {
+    return true;
+  }
+
+  const costs = warzordCosts(getMegaformParticipants(megaform), joining);
+  if (!costs.length) {
+    return true;
+  }
+
+  const { zordOwner } = await import("../rules/plugins/zords/zord-owner-spectrum.mjs");
+  const sp = await import("../mechanics/resources/story-points.mjs");
+  const payers = costs.map(({ warzord, cost }) => ({ warzord, cost, owner: zordOwner(warzord) ?? warzord }));
+  for (const { warzord, cost, owner } of payers) {
+    if (!sp.canSpendForActor(owner, cost)) {
+      ui.notifications.warn(game.i18n.format('E20.WarzordNoStoryPoints', { owner: owner.name, cost, name: warzord.name }));
+      return false;
+    }
+  }
+
+  for (const { warzord, cost, owner } of payers) {
+    await sp.spendForActor(owner, cost);
+    ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: warzord }),
+      content: game.i18n.format('E20.WarzordStoryPoints', { name: warzord.name, owner: owner.name, cost }),
+    });
+  }
+
+  return true;
 }

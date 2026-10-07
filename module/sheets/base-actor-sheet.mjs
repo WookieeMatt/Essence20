@@ -124,6 +124,8 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       startSheetTour: this.#onStartSheetTour,
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
       summonZord: this.#onSummonZord,
+      zordGrowth: this.#onZordGrowth,
+      zordAutoFeatures: this.#onZordAutoFeatures,
       summonContact: this.#onSummonContact,
       systemActorOpen: this.#onSystemActorOpen,
       systemActorsDelete: this.#onSystemActorsDelete,
@@ -1121,6 +1123,21 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onSummonZord(event, target) {
     onSummonZord(target, this.document);
+  }
+
+  /** The Zords tab's starting-Features button (mechanics/vehicles/zord-auto-features.mjs). */
+  static async #onZordAutoFeatures(event, target) {
+    const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
+    if (zord) {
+      const { offerAutoFeatures } = await import("../mechanics/vehicles/zord-auto-features.mjs");
+      await offerAutoFeatures(this.document, zord);
+    }
+  }
+
+  /** The Zords tab's growth button: the choices this Ranger's Zords are still owed (mechanics/vehicles/zord-growth.mjs). */
+  static async #onZordGrowth() {
+    const { offerZordGrowth } = await import("../mechanics/vehicles/zord-growth.mjs");
+    await offerZordGrowth(this.document);
   }
 
   /** Summon a Contact from the Contacts tab - mechanics/companions/contacts.mjs. */

@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: at 0 Health the Zord goes Prone and Defeated instead of crashing or exploding.</p><p>Left to the table: recalling it to the Morphin Grid and how long its repairs take.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: at 0 Health the Zord goes Prone and Defeated instead of crashing or exploding. Use button: recall it to the Morphin Grid - it leaves the map and any Megaform, can't be called again this scene, and comes back at full Health with no Conditions the next time it is summoned.</p>"
     },
     "originalId": "",
     "description": "",

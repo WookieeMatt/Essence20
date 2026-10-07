@@ -10,7 +10,7 @@ import { E20 } from "../../util/config.mjs";
 import { applyEssenceAttack, isEssenceDamageType } from "./essence-attack.mjs";
 import { ruleDriverlessEssence } from "../../rules/plugins/zords/driverless-essence.mjs";
 import { ruleDamageImmune } from "../../rules/plugins/combat/damage-immunity.mjs";
-import { getMegaformParticipants } from "../vehicles/megaform-participants.mjs";
+import { getMegaformCrew, getMegaformParticipants } from "../vehicles/megaform-participants.mjs";
 import { deactivateShynessOnDamage } from "../../items/resources/emotional-mastery.mjs";
 
 // (Relic Key's Willpower / Cleverness default while unpiloted is a DriverlessEssence rule on the Feature -
@@ -126,6 +126,15 @@ export function getDefenseValue(actor, defenseType, { ignoreArmor = false, ignor
     const driver = getVehicleDriver(actor);
     if (driver) {
       return getDefenseValue(driver, 'evasion', { ignoreArmor, ignoreArmorPoints, ignoreShield });
+    }
+  }
+
+  // A Megazord's Willpower / Cleverness: it has the highest Smarts / Social of its Crew (PR CRB p.140) - the Crew of
+  // its Zords, not a driver seated on the Megaform itself, so the best of them defends.
+  if (defense?.usesDrivers && actor.type == 'megaform') {
+    const crew = getMegaformCrew(actor);
+    if (crew.length) {
+      return Math.max(...crew.map(member => getDefenseValue(member, defenseType, { ignoreArmor, ignoreArmorPoints, ignoreShield })));
     }
   }
 
@@ -278,7 +287,7 @@ export function getSkillRanks(actor, skill) {
  * @returns {Promise<Number>}   The amount actually applied (0 if Immune), clamped to how much
  *   Health the actor had left when damageType isn't 'stun'.
  */
-export async function applyDamage(actor, damageValue, damageType, isCrit = false, { ignoreImmunity = false, source = null, unreducible = false } = {}) {
+export async function applyDamage(actor, damageValue, damageType, isCrit = false, { ignoreImmunity = false, source = null, unreducible = false, megaform = null } = {}) {
   // Not On My Watch (Stun branch) and onOwnerDefeated (Health branch) - captured before any of
   // this function's own mutations, the same "read Defeated status once, up front" idiom
   // chat.mjs#onApplyDamage's own wasAlreadyDefeated already uses - both branches below only fire
@@ -292,6 +301,14 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
   // (mechanics/actions/team-actions.mjs).
   if (isCarried(actor)) {
     return 0;
+  }
+
+  // A Megaform's Health is worked out from its participants each prep, so a write to it is lost: damage to it is split
+  // across them (PR CRB p.142, mechanics/vehicles/megaform-damage.mjs). The chat card calls that directly; this catches
+  // every other path (rule steps, environment hazards, ongoing damage).
+  if (actor.type == 'megaform' && !isEssenceDamageType(damageType)) {
+    const { applyMegaformDamage } = await import("../vehicles/megaform-damage.mjs");
+    return applyMegaformDamage(actor, damageValue, damageType);
   }
 
   // Essence damage types take from an Essence score, not Health - none of the Health reductions
@@ -384,6 +401,18 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     return await applyAtAllCostDamage(actor, amount);
   }
 
+  // Through a Megaform: the participant's Megaform-only extra Health (Core Body, Layered Systems...) soaks it first
+  // (mechanics/vehicles/megaform-bonus-health.mjs).
+  let soaked = 0;
+  if (megaform && amount > 0) {
+    const { absorbBonusHealth } = await import("../vehicles/megaform-bonus-health.mjs");
+    soaked = await absorbBonusHealth(megaform, actor, amount);
+    amount -= soaked;
+    if (amount <= 0) {
+      return soaked;
+    }
+  }
+
   const previousValue = actor.system.health.value;
   let newValue = Math.max(0, previousValue - amount);
 
@@ -438,7 +467,7 @@ export async function applyDamage(actor, damageValue, damageType, isCrit = false
     await deactivateShynessOnDamage(actor);
   }
 
-  return previousValue - newValue;
+  return previousValue - newValue + soaked;
 }
 
 /**

@@ -2,6 +2,8 @@ import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { rebuildIndex } from './index.mjs';
+// target:combinerForm (Breaker-Bar) is registered with the Megaform rule pieces.
+import './plugins/zords/megaform.mjs';
 import { applyRuleImmunity, applyRuleSwitches, consumeLimited, requisitionTier, ruleCover, ruleDamageDealt, ruleDamageTaken, ruleDefenseAdjust, ruleDerived, ruleDialogSwitches, ruleDieSubstitution, ruleMovement, ruleNoLongRangeSnag, ruleNoUntrainedSnag, ruleQualifiedUpgrade, ruleRequisitionAccess, ruleRollSources, ruleScaledDamage, ruleSpecializes } from './adapter.mjs';
 
 /**
@@ -4442,7 +4444,7 @@ const dmgBAttack = ({ style = 'melee', skill = 'might', damageType = 'blunt', we
   parent: weapon ? { items: { get: id => (id == weapon.id ? weapon : null) } } : null,
 });
 const dmgBWeapon = sourceId => ({ id: 'w1', type: 'weapon', name: 'Weapon', flags: { core: { sourceId } }, system: { traits: [] } });
-const dmgBTarget = ({ type = 'npc', statuses = [], size = 'common' } = {}) => ({ type, statuses: new Set(statuses), system: { size }, flags: {} });
+const dmgBTarget = ({ type = 'npc', statuses = [], size = 'common', subtype = [] } = {}) => ({ type, statuses: new Set(statuses), system: { size, subtype }, flags: {} });
 const dmgB = (actor, item, target = null) => ruleScaledDamage(actor, target, { item, rolledSkill: item?.system?.classification?.skill });
 
 test('Iron Hands: +1 on a Might unarmed attack', () => {
@@ -4550,9 +4552,12 @@ test('Breaker-Bar (both profiles): +1 against a Combiner form; Negavator Beam: +
   for (const file of ['eocitems/_source/Breaker_Bar_qIgfv11HMWSlnos8.json', 'eocitems/_source/Breaker_Bar_Alternate_Effect_lmDkIe8a49fF7bHS.json']) {
     const actor = holder([file]);
     const own = actor.items.contents[0];
-    expect(dmgB(actor, own, dmgBTarget({ type: 'megaform' }))).toMatchObject({ amount: 1, sources: ['Breaker-Bar'] });
+    const combiner = { type: 'megaform', subtype: ['megaformCombiner'] };
+    expect(dmgB(actor, own, dmgBTarget(combiner))).toMatchObject({ amount: 1, sources: ['Breaker-Bar'] });
     expect(dmgB(actor, own, dmgBTarget({ type: 'npc' })).amount).toBe(0);
-    expect(dmgB(actor, dmgBAttack(), dmgBTarget({ type: 'megaform' })).amount).toBe(0);
+    // EoC's "Combiner form": a Power Rangers Megazord is not one.
+    expect(dmgB(actor, own, dmgBTarget({ type: 'megaform', subtype: ['megaformZord'] })).amount).toBe(0);
+    expect(dmgB(actor, dmgBAttack(), dmgBTarget(combiner)).amount).toBe(0);
   }
 
   const beam = holder(['eocitems/_source/Negavator_Beam_Effect_rzyh86u2NyFINhkk.json']);
@@ -6689,10 +6694,10 @@ describe('regA2', () => {
       expect(regAUp(zord(FILES.martial, { type: 'vehicle' }), swing('melee'))).toBe(0);
     });
 
-    test("Zero-G: ↑1 on the Zord's own ranged attack while it has a driver", () => {
+    test("Zero-G: ↑1 on the Zord's own ranged attack, driver or not (PR CRB p.138 names no driver)", () => {
       expect(regAUp(zord(FILES.zeroG), swing('energy'))).toBe(1);
       expect(regAUp(zord(FILES.zeroG), swing('melee'))).toBe(0);
-      expect(regAUp(zord(FILES.zeroG, { driver: false }), swing('energy'))).toBe(0);
+      expect(regAUp(zord(FILES.zeroG, { driver: false }), swing('energy'))).toBe(1);
     });
 
     test("Zord Sentience: ↑1 on the Zord's own Driving while unpiloted", () => {
