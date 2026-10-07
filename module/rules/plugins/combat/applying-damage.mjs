@@ -196,7 +196,8 @@ registerDamageModifier((actor, amount, damageType) => damageLanding(actor, amoun
  */
 registerStep('takeAsEssence', async (step, ctx) => {
   const actor = ctx.actor;
-  const essences = Object.entries(actor?.system?.essences ?? {}).filter(([, essence]) => Number(essence?.value) > 0);
+  const { currentEssence, currentEssenceUpdate } = await import("../../../mechanics/combat/essence-current.mjs");
+  const essences = Object.keys(actor?.system?.essences ?? {}).filter(key => Number(currentEssence(actor, key)) > 0).map(key => [key]);
   const damage = Math.max(0, Math.round(Number(ctx.vars.damage) || 0));
   if (!essences.length || !damage) {
     return;
@@ -209,10 +210,10 @@ registerStep('takeAsEssence', async (step, ctx) => {
     return false;
   }
 
-  const current = Number(actor.system.essences[essence].value) || 0;
+  const current = Number(currentEssence(actor, essence)) || 0;
   const taken = Math.min(current, damage);
   const { needsGmRelay, relayToGm } = await import("../../../mechanics/world/gm-relay.mjs");
-  const update = [{ [`system.essences.${essence}.value`]: current - taken }];
+  const update = [currentEssenceUpdate(actor, essence, current - taken)];
   await (needsGmRelay(actor) ? relayToGm(actor, 'update', update) : actor.update(...update));
   ctx.vars.damage = damage - taken;
   ctx.chat.push(globalThis.game?.i18n?.format?.('E20.ReactCyborgTaken', { name: escape(actor.name), amount: taken, essence: escape(label(essence)) }) ?? `${actor.name}: ${taken}`);

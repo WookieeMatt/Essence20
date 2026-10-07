@@ -71,6 +71,18 @@ the same as the original.
 
 ## Other changes
 
+- **NPC and Companion Essences have a base.** Each Essence shows current / score, with an always-editable Base
+  underneath. The Base is the printed score; effects and rules raise the score on top of it instead of overwriting
+  it, and the score itself is locked. The current amount Essence damage spends keeps its damage when the score
+  changes. Existing NPCs take their current score as their base automatically. The stat-block importer and Threat
+  Builder fill in the base.
+- **Vehicles show their Essences** on the Main tab, laid out like a Zord's (score with its Base underneath).
+- **Zords, Vehicles and Megaforms take Essence damage, temporarily.** The books don't cover it; the ruling is that
+  the damage comes off what is left (current / score) and never lowers the score or the Base. Type the current amount
+  to adjust it, and the **Repair** button that appears beside the Essences clears it all.
+- **Rules reading `@essence`** now use the Essence score, not what is left after Essence damage
+  (`@essence.<x>.current` gives the remainder).
+- **Fixed a "Maximum call stack size exceeded" error** when loading a scene with unlinked tokens.
 - **New setting: Morphed / Alt Mode token icons.** Options are Show, Hide when the token art
   changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.
 - **Guided tours** cover the new Rules tabs, Perk picks and level-up picks.

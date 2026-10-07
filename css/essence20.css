@@ -3988,6 +3988,44 @@ select.e20-select-searchable optgroup[hidden] {
   flex-wrap: nowrap;
 }
 
+/* A worked-out Essence score (an NPC's / Zord's, raised by effects or rules): read-only, so it reads as a result,
+   not a field. The typed base sits in a small row underneath (templates/actor/parts/misc/npc-essence-scores.hbs). */
+.essence20 .stats-container .e20-essence-score {
+  opacity: 0.85;
+  font-weight: bold;
+  border-style: dashed;
+  cursor: help;
+}
+
+/* The Base row makes its column taller: top-align the columns so every Essence label stays on one line. */
+.essence20 .npc-essence-scores .stats-container {
+  align-items: flex-start;
+}
+
+.essence20 .stats-container .e20-essence-base {
+  gap: 4px;
+  margin-top: 2px;
+  flex-wrap: nowrap;
+  font-size: var(--font-size-11, 11px);
+  opacity: 0.8;
+}
+
+.essence20 .stats-container .e20-essence-repair {
+  flex: 0 0 auto;
+  align-self: center;
+  white-space: nowrap;
+  font-size: var(--font-size-12, 12px);
+}
+
+.essence20 .stats-container .e20-essence-base label {
+  flex: 0 0 auto;
+}
+
+.essence20 .stats-container .e20-essence-base .two-digit-input {
+  height: 20px;
+  font-size: var(--font-size-11, 11px);
+}
+
 .essence20 .sheet-tabs {
   -webkit-box-flex: 0;
   -ms-flex: 0;
@@ -8679,5 +8717,3 @@ select.e20-select-searchable optgroup[hidden] {
   min-width: 500px;
   min-height: auto;
 }
-
-/*# sourceMappingURL=essence20.css.map */

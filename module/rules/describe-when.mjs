@@ -681,6 +681,7 @@ function refWords(text) {
     [/^@actor\.system\.isMorphed$/, () => '1 while you are Morphed'],
     [/^@(size|target\.size|vehicle\.size)$/, m => `${{ size: 'your', 'target.size': "the target's", 'vehicle.size': "your vehicle's" }[m[1]]} size step`],
     [/^@essence\.(\w+)$/, m => `your ${essenceName(m[1])}`],
+    [/^@essence\.(\w+)\.current$/, m => `your remaining ${essenceName(m[1])}`],
     [/^@actor\.(?:_source\.)?([\w.]+)$/, m => `your ${pathName(m[1])}`],
     [/^@target\.(?:my)?[mM]ark\.([\w-]+)$/, m => `the target's ${humanize(m[1])} mark`],
     [/^@target\.(?:_source\.)?([\w.]+)$/, m => `the target's ${pathName(m[1])}`],

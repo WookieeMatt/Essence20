@@ -942,7 +942,8 @@ const HANDLERS = {
     }
 
     for (const actor of recipients(step, ctx)) {
-      const value = Number(actor.system?.essences?.[essence]?.value);
+      const { currentEssence, currentEssenceUpdate } = await import("../mechanics/combat/essence-current.mjs");
+      const value = Number(currentEssence(actor, essence));
       if (!Number.isFinite(value) || value <= 0 || !amount) {
         continue;
       }
@@ -951,7 +952,7 @@ const HANDLERS = {
       let dealt = 0;
       if (needsGmRelay(actor)) {
         dealt = Math.min(value, amount);
-        await write(actor, 'update', [{ [`system.essences.${essence}.value`]: value - dealt }]);
+        await write(actor, 'update', [currentEssenceUpdate(actor, essence, value - dealt)]);
       } else {
         const { applyEssenceDamage } = await import("../mechanics/world/environment-hazards.mjs");
         for (let i = 0; i < amount; i++) {
@@ -974,10 +975,12 @@ const HANDLERS = {
     for (const actor of recipients(step, ctx)) {
       let healed = 0;
       if (essence) {
-        const { max, value } = actor.system?.essences?.[essence] ?? {};
+        const { currentEssence, currentEssenceUpdate, essenceScore } = await import("../mechanics/combat/essence-current.mjs");
+        const max = essenceScore(actor, essence);
+        const value = currentEssence(actor, essence);
         healed = Math.max(0, Math.min(Number(max) - Number(value), amount)) || 0;
         if (healed) {
-          await write(actor, 'update', [{ [`system.essences.${essence}.value`]: Number(value) + healed }]);
+          await write(actor, 'update', [currentEssenceUpdate(actor, essence, Number(value) + healed)]);
         }
       } else {
         const { healEssenceDamage } = await import("../mechanics/combat/essence-damage.mjs");

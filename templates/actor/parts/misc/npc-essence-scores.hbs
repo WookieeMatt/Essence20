@@ -3,28 +3,53 @@
   <div class="flexcol">
     <label>{{lookup @root.config.essences @key}}</label>
     <div class="flexrow e20-flex-group-center">
-      {{!-- Megaform's own Essence values are derived from its component Zords rather than set
-           directly - no-unlock keeps them read-only regardless of the sheet's own lock toggle
-           (see base-actor-sheet.mjs#_applyLockedState). Zords themselves stay editable. --}}
-      {{#if (and (isdefined essence.base) (ne @root.document.type 'megaform'))}}
-      {{!-- Zord / Vehicle: the input is the typed base; Features' Active Effects and item rules add on top
-           (mechanics/vehicles/machine-essences.mjs), and the worked-out value shows beside it when they differ. --}}
-      <input class="two-digit-input" type="number" name="system.essences.{{@key}}.base" value="{{essence.base}}" min="0" step="1" />
-      {{#if (ne essence.base essence.value)}}
-      <span class="e20-essence-adjusted" data-tooltip="{{localize 'E20.MachineEssenceBase' essence=(localize (lookup @root.config.essences @key)) value=essence.value}}">&rarr; {{essence.value}}</span>
+      {{#if (and (isdefined essence.base) (isdefined essence.max))}}
+      {{!-- NPC / Companion (mechanics/characters/creature-essences.mjs): current / score, like a Player Character. The
+           score is always worked out (the base, with effects and rules on top), so it is read-only; the base is edited
+           in the Base field underneath. --}}
+      <input class="two-digit-input" type="number" name="system.essences.{{@key}}.value" value="{{essence.value}}" min="0" step="1" />
+        /
+      <input class="two-digit-input no-unlock e20-essence-score" type="number" value="{{essence.max}}" readonly tabindex="-1"
+        data-tooltip="{{localize 'E20.CreatureEssenceBase' essence=(localize (lookup @root.config.essences @key)) value=essence.max}}" />
+      {{else if (and (isdefined essence.base) (ne @root.document.type 'megaform'))}}
+      {{!-- Zord / Vehicle (mechanics/vehicles/machine-essences.mjs): current / the worked-out score, read-only; the base
+           underneath. The current amount is the score less the Essence damage taken (mechanics/combat/essence-current.mjs);
+           typing it sets that damage. An Essence left blank uses the driver's (Smarts and Social by default) and shows a
+           dash. --}}
+      {{#if (and (isdefined essence.value) (ne essence.value null))}}
+      <input class="two-digit-input" type="number" name="essenceCurrent.{{@key}}" value="{{essence.current}}" min="0" max="{{essence.value}}" step="1" />
+        /
       {{/if}}
+      <input class="two-digit-input no-unlock e20-essence-score" type="text" value="{{#if (and (isdefined essence.value) (ne essence.value null))}}{{essence.value}}{{else}}&ndash;{{/if}}" readonly tabindex="-1"
+        data-tooltip="{{#if (and (isdefined essence.value) (ne essence.value null))}}{{localize 'E20.MachineEssenceBase' essence=(localize (lookup @root.config.essences @key)) value=essence.value}}{{else}}{{localize 'E20.MachineEssenceUsesDriver'}}{{/if}}" />
+      {{else if (eq @root.document.type 'megaform')}}
+      {{!-- Megaform: current / the score worked out from its Zords, never typed (no-unlock keeps it read-only whatever
+           the sheet's lock). --}}
+      <input class="two-digit-input" type="number" name="essenceCurrent.{{@key}}" value="{{essence.current}}" min="0" max="{{essence.value}}" step="1" />
+        /
+      <input class="two-digit-input no-unlock e20-essence-score" type="number" value="{{essence.value}}" readonly tabindex="-1" />
       {{else}}
-      <input class="two-digit-input{{#if (eq @root.document.type 'megaform')}} no-unlock{{/if}}" type="number" name="system.essences.{{@key}}.value" value="{{essence.value}}" min="0" step="1" />
+      <input class="two-digit-input" type="number" name="system.essences.{{@key}}.value" value="{{essence.value}}" min="0" step="1" />
       {{/if}}
-      {{!-- Zord/Megaform's essences (machine.mjs's makeEssencesFields) have no `max` field at
-           all - just a bare value - unlike NPC/Companion's (character.mjs's makeEssenceFields,
-           {value, max}), so this partial is shared between both shapes rather than assuming a
-           max always exists. --}}
-      {{#if (isdefined essence.max)}}
+      {{!-- A {max, value} pair with no base (an old shape) keeps its own max input. --}}
+      {{#if (and (isdefined essence.max) (not (isdefined essence.base)))}}
         /
       <input class="two-digit-input" type="number" name="system.essences.{{@key}}.max" value="{{essence.max}}" min="0" step="1" />
       {{/if}}
     </div>
+    {{!-- The typed base, always editable here. --}}
+    {{#if (and (isdefined essence.base) (ne @root.document.type 'megaform'))}}
+    <div class="flexrow e20-flex-group-center e20-essence-base">
+      <label>{{localize 'E20.EssenceBaseLabel'}}</label>
+      <input class="two-digit-input" type="number" name="system.essences.{{@key}}.base" value="{{essence.base}}" min="0" step="1" />
+    </div>
+    {{/if}}
   </div>
   {{/each}}
+  {{!-- Zord / Vehicle / Megaform Essence damage is temporary: one button takes it all off. --}}
+  {{#if (or (eq @root.document.type 'zord') (eq @root.document.type 'vehicle') (eq @root.document.type 'megaform'))}}
+  {{#if @root.essenceDamaged}}
+  <a class="e20-essence-repair" data-action="repairEssences" data-tooltip="{{localize 'E20.MachineEssenceRepairTip'}}"><i class="fas fa-screwdriver-wrench"></i> {{localize 'E20.MachineEssenceRepair'}}</a>
+  {{/if}}
+  {{/if}}
 </div>

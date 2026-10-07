@@ -6,7 +6,8 @@
  *   @target.size        the roll's target's size place (also @target.level, @target.<path>); 0 with no target
  *   @size               the actor's size as a place in the size order (small 0, common 1, large 2 ... titanic 10)
  *   @level              the actor's level
- *   @essence.<key>      an Essence's current value (strength, speed, smarts, social)
+ *   @essence.<key>      an Essence score (strength, speed, smarts, social): an NPC's or PC's max, a Zord's value
+ *   @essence.<key>.current  what is left of it after Essence damage
  *   @pool.<key>         a Pool on the rule's item
  *   @choice.<key>       a ChoiceSet pick on the rule's item, when it's a number
  *   @skill.<key>.rank   a skill's trained rank: d20 (untrained) 0, d2 1, d4 2 ... d12 6, 2d8 7, 3d6 8
@@ -138,8 +139,16 @@ export function resolveRef(ref, scope = {}) {
   }
 
   case 'essence': {
-    const essence = actor?.system?.essences?.[key];
-    return Number(typeof essence == 'object' ? essence?.value ?? essence?.max : essence) || 0;
+    // The score: a PC's / NPC's max (a Zord's or Vehicle's value - it has no max). .current reads what is left after
+    // Essence damage. This used to read the current amount, so a damaged character's Essence-scaled rules shrank
+    // (2026-10-07, mechanics/characters/creature-essences.mjs).
+    const [name, field] = rest;
+    const essence = actor?.system?.essences?.[name];
+    if (typeof essence != 'object' || essence === null) {
+      return Number(essence) || 0;
+    }
+
+    return Number(field == 'current' ? essence.value : essence.max ?? essence.value) || 0;
   }
 
   case 'pool': return Number(flags.pools?.[key]?.value) || 0;

@@ -112,8 +112,8 @@ describe("buildActorData", () => {
   });
 
   test("writes Essences to both max and value", () => {
-    expect(data.system.essences.strength).toEqual({ max: 5, value: 5 });
-    expect(data.system.essences.social).toEqual({ max: 1, value: 1 });
+    expect(data.system.essences.strength).toEqual({ base: 5, max: 5, value: 5 });
+    expect(data.system.essences.social).toEqual({ base: 1, max: 1, value: 1 });
   });
 
   test("writes the armour to .armor and only the remainder to .bonus", () => {
@@ -182,7 +182,7 @@ describe("buildActorData", () => {
     ].join('\n'));
     const built = buildActorData(noEssences);
 
-    expect(built.system.essences.strength).toEqual({ max: 0, value: 0 });
+    expect(built.system.essences.strength).toEqual({ base: 0, max: 0, value: 0 });
     // 10 base + 0 essence + 6 bonus = the printed 16.
     expect(built.system.defenses.toughness.bonus).toBe(6);
   });
@@ -215,7 +215,7 @@ describe("buildActorData - vehicle and Zord actor types", () => {
 
   test("still writes {max, value} for a character-shaped actor type", () => {
     expect(buildActorData(vehicleIr, { type: 'npc' }).system.essences.strength)
-      .toEqual({ max: 4, value: 4 });
+      .toEqual({ base: 4, max: 4, value: 4 });
   });
 
   test("computes the same Defense residual for a machine as for an NPC", () => {

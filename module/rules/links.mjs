@@ -150,21 +150,39 @@ function sourceKey(item, index) {
   return `${source}#${index}`;
 }
 
-/** The actors on the canvas holding an aura rule (cheap: LINK_HOLDERS says who might). */
+/** Set while auraHolders runs - see there. */
+let collectingAuraHolders = false;
+
+/**
+ * The actors on the canvas holding an aura rule (cheap: LINK_HOLDERS says who might).
+ *
+ * An unlinked token builds its actor lazily on the first read of token.actor (v14), and that build prepares the actor -
+ * which asks this again. While a token's actor is still being built it stays "lazy", so reading token.actor again built
+ * it again, forever: "Maximum call stack size exceeded" for every unlinked token on the scene at load (2026-10-07).
+ * So: test the token's actor id against LINK_HOLDERS before touching token.actor (a synthetic actor keeps its base
+ * actor's id), and a call made from inside a token's build returns nothing - that actor gets its auras on its next
+ * preparation, once every token on the canvas has its actor.
+ */
 function auraHolders() {
   const tokens = globalThis.canvas?.tokens?.placeables;
-  if (!Array.isArray(tokens)) {
+  if (!Array.isArray(tokens) || collectingAuraHolders) {
     return [];
   }
 
-  const holders = new Set();
-  for (const token of tokens) {
-    if (token.actor && LINK_HOLDERS.has(token.actor.id)) {
-      holders.add(token.actor);
+  collectingAuraHolders = true;
+  try {
+    const holders = new Set();
+    for (const token of tokens) {
+      const id = token.document?.actorId ?? token.actor?.id;
+      if (id && LINK_HOLDERS.has(id) && token.actor) {
+        holders.add(token.actor);
+      }
     }
-  }
 
-  return [...holders];
+    return [...holders];
+  } finally {
+    collectingAuraHolders = false;
+  }
 }
 
 // The vehicle:crew and vehicle:driving tags (rules/predicate.mjs) ask this file.

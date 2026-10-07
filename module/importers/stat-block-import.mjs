@@ -273,13 +273,14 @@ function buildEssences(ir, isMachine) {
       // Machines are left alone deliberately: `--` there means "uses the driver's" (see
       // templates/machine.mjs's usesDrivers), which a 0 would wrongly override.
       if (!isMachine) {
-        essences[name] = { max: 0, value: 0 };
+        essences[name] = { base: 0, max: 0, value: 0 };
       }
 
       continue;
     }
 
-    essences[name] = isMachine ? { value: printed } : { max: printed, value: printed };
+    // An NPC's printed score is its base (mechanics/characters/creature-essences.mjs); max and value follow from it.
+    essences[name] = isMachine ? { value: printed } : { base: printed, max: printed, value: printed };
   }
 
   return essences;

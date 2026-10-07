@@ -4,6 +4,7 @@ import { restContact } from "../mechanics/companions/contacts.mjs";
 import { restKits } from "../mechanics/resources/kits.mjs";
 import { imperfectionOf } from "../mechanics/resources/grants.mjs";
 import { clearDefenseDamage } from "../mechanics/combat/essence-damage.mjs";
+import { currentEssence, currentEssenceUpdate, essenceScore } from "../mechanics/combat/essence-current.mjs";
 import { getCrewedVehicle, resetDailyVehicleUses } from "../mechanics/vehicles/vehicle-upgrades.mjs";
 import { resetDailyActionPerkUses } from "../mechanics/actions/action-perks.mjs";
 import { powerCost } from "./power-handler.mjs";
@@ -175,13 +176,13 @@ async function _applyRestBenefits(actor, completeMessageKey) {
   }
 
   // Recovering Essence damage
+  // A Zord's / Vehicle's is kept apart from its score (mechanics/combat/essence-current.mjs).
   for (const essence of Object.keys(actor.system.essences)) {
-    if (actor.system.essences[essence].value < actor.system.essences[essence].max) {
-      const essenceString = `system.essences.${essence}.value`;
-      const essenceRestore = actor.system.essences[essence].value + 1;
-      await actor.update({
-        [essenceString]: essenceRestore,
-      });
+    const current = currentEssence(actor, essence);
+    const score = essenceScore(actor, essence);
+    if (current !== null && score !== null && current < score) {
+      const essenceRestore = current + 1;
+      await actor.update(currentEssenceUpdate(actor, essence, essenceRestore));
 
       ui.notifications.info(game.i18n.format('E20.RestEssenceRestored', { essenceRestore: essenceRestore, essence: CONFIG.E20.essences[essence] }));
     }

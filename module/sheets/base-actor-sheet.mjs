@@ -75,6 +75,7 @@ import { switchMythicForm } from "../items/attacks/mythically-modular.mjs";
 import { treatOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
 import { nestSubPerks, withSubPerksUnderParents } from "../mechanics/characters/sub-perks.mjs";
 import { missingFocusPickLevels, syncFocusSkillPicks } from "../mechanics/characters/focus-skills.mjs";
+import { currentEssence, currentEssenceUpdate, tracksEssenceDamage } from "../mechanics/combat/essence-current.mjs";
 
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
@@ -107,6 +108,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       recharge: this.#onRecharge,
       recoverSpellcastingDownshift: this.#onRecoverSpellcastingDownshift,
       rest: this.#onRest,
+      repairEssences: this.#onRepairEssences,
       rollable: this.#onRoll,
       growMonster: this.#onGrowMonster,
       threatAudit: this.#onThreatAudit,
@@ -383,6 +385,22 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   _processFormData(event, form, formData) {
     const submitData = super._processFormData(event, form, formData);
     foundry.utils.deleteProperty(submitData, "system.level");
+    // A Zord's / Vehicle's current Essence is its score less the damage taken (mechanics/combat/essence-current.mjs):
+    // the typed current amount is stored as that damage, against the score shown when it was typed.
+    const typedCurrent = submitData.essenceCurrent;
+    delete submitData.essenceCurrent;
+    if (typedCurrent && typeof typedCurrent == 'object' && tracksEssenceDamage(this.actor)) {
+      for (const [key, typed] of Object.entries(typedCurrent)) {
+        if (typed === null || typed === '' || !Number.isFinite(Number(typed))) {
+          continue;
+        }
+
+        if (Number(typed) != currentEssence(this.actor, key)) {
+          foundry.utils.mergeObject(submitData, foundry.utils.expandObject(currentEssenceUpdate(this.actor, key, Number(typed))));
+        }
+      }
+    }
+
     return submitData;
   }
 
@@ -558,6 +576,15 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     // Add the actor's system data to context for easier access, as well as flags.
     context.system = actorData.system;
     context.flags = actorData.flags;
+
+    // A Zord's / Vehicle's / Megaform's current Essence, the score less the damage taken (mechanics/combat/essence-current.mjs):
+    // derived, so toObject leaves it out.
+    if (tracksEssenceDamage(this.actor)) {
+      for (const [key, essence] of Object.entries(context.system.essences ?? {})) {
+        essence.current = currentEssence(this.actor, key);
+        context.essenceDamaged ||= Number(essence.damage) > 0;
+      }
+    }
 
     // The header's Alt Mode badge shows which mode, not just that there is one.
     context.altModeName = actorData.system.isTransformed
@@ -1152,6 +1179,23 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onRest() {
     onRest(this);
+  }
+
+  /**
+   * A Zord's / Vehicle's Essence damage is temporary (mechanics/combat/essence-current.mjs): the Essence block's
+   * repair button takes it all off.
+   */
+  static async #onRepairEssences() {
+    const update = {};
+    for (const [key, essence] of Object.entries(this.actor.system.essences ?? {})) {
+      if (Number(essence?.damage) > 0) {
+        update[`system.essences.${key}.damage`] = 0;
+      }
+    }
+
+    if (Object.keys(update).length) {
+      await this.actor.update(update);
+    }
   }
 
   /**

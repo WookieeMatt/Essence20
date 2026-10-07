@@ -13,6 +13,8 @@
  * documents/actor.mjs#_prepareDefenses until the actor rests.
  */
 
+import { currentEssence, currentEssenceUpdate, essenceDamageIn, essenceScore } from "./essence-current.mjs";
+
 const DEFENSE_DAMAGE_FLAG = 'defenseDamage';
 
 /**
@@ -21,16 +23,8 @@ const DEFENSE_DAMAGE_FLAG = 'defenseDamage';
  * @returns {Number}
  */
 export function essenceDamageOf(actor) {
-  let total = 0;
-  for (const essence of Object.values(actor?.system?.essences ?? {})) {
-    const max = Number(essence?.max);
-    const value = Number(essence?.value);
-    if (Number.isFinite(max) && Number.isFinite(value) && max > value) {
-      total += max - value;
-    }
-  }
-
-  return total;
+  // A Zord's / Vehicle's is kept apart from its score (essence-current.mjs).
+  return Object.keys(actor?.system?.essences ?? {}).reduce((total, key) => total + essenceDamageIn(actor, key), 0);
 }
 
 /**
@@ -42,7 +36,7 @@ export function essenceDamageOf(actor) {
 export async function healEssenceDamage(actor, amount = 1) {
   const essences = actor?.system?.essences ?? {};
   const update = {};
-  const values = Object.fromEntries(Object.entries(essences).map(([key, e]) => [key, { max: Number(e?.max), value: Number(e?.value) }]));
+  const values = Object.fromEntries(Object.keys(essences).map(key => [key, { max: essenceScore(actor, key) ?? NaN, value: currentEssence(actor, key) ?? NaN }]));
   let healed = 0;
   for (let i = 0; i < amount; i++) {
     const [key] = Object.entries(values)
@@ -53,7 +47,7 @@ export async function healEssenceDamage(actor, amount = 1) {
     }
 
     values[key].value += 1;
-    update[`system.essences.${key}.value`] = values[key].value;
+    Object.assign(update, currentEssenceUpdate(actor, key, values[key].value));
     healed++;
   }
 

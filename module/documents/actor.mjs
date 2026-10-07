@@ -35,6 +35,8 @@ import { ruleEvasiveManeuvers } from "../rules/plugins/combat/evasive-maneuvers-
 import { isLightningSpeedActive } from "../items/magic/lightning-speed.mjs";
 import { isHotToTrotActive } from "../items/magic/hot-to-trot.mjs";
 import { convertEssenceWrites, resetEssencesFromBase, usesEssenceBase } from "../mechanics/vehicles/machine-essences.mjs";
+import { currentEssence, tracksEssenceDamage } from "../mechanics/combat/essence-current.mjs";
+import { convertCreatureEssenceWrites, finishCurrentEssences, resetScoresFromBase, usesScoreBase } from "../mechanics/characters/creature-essences.mjs";
 import { isJuryRigBenefitActive } from "../items/vehicles/jury-rig.mjs";
 import { isTheToughGetGoingActive } from "../items/movement/the-tough-get-going.mjs";
 import { getHissColumnBonus } from "../mechanics/combat/nearby-allies.mjs";
@@ -269,6 +271,11 @@ export class Essence20Actor extends Actor {
       convertEssenceWrites(this, changed);
     }
 
+    // An NPC's / Companion's score and current amount are worked out from its base: writes are stored in that form.
+    if (usesScoreBase(this)) {
+      convertCreatureEssenceWrites(this, changed);
+    }
+
     const currentSize = this.system?.size;
     if (currentSize) {
       const newSize = foundry.utils.getProperty(changed, "system.size");
@@ -331,6 +338,11 @@ export class Essence20Actor extends Actor {
     // Zord / Vehicle Essences start from the typed base; Active Effects and rules add on top.
     if (usesEssenceBase(this)) {
       resetEssencesFromBase(this.system);
+    }
+
+    // NPC / Companion scores likewise start from the typed base.
+    if (usesScoreBase(this)) {
+      resetScoresFromBase(this.system);
     }
 
     // Data modifications in this step occur before processing embedded
@@ -421,6 +433,18 @@ export class Essence20Actor extends Actor {
       const next = movement && typeof movement == 'object' ? lateMovement('afterDerived', movementType, Number(movement.total) || 0) : null;
       if (next !== null) {
         movement.total = next;
+      }
+    }
+
+    // NPC / Companion: the current amount follows the score's boosts (mechanics/characters/creature-essences.mjs).
+    if (usesScoreBase(this)) {
+      finishCurrentEssences(this);
+    }
+
+    // Zord / Vehicle / Megaform: what Essence damage leaves of each score, for the sheet (mechanics/combat/essence-current.mjs).
+    if (tracksEssenceDamage(this)) {
+      for (const key of Object.keys(this.system.essences ?? {})) {
+        this.system.essences[key].current = currentEssence(this, key);
       }
     }
   }

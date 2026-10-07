@@ -1,6 +1,7 @@
 import { applyDamage } from "../combat/combat.mjs";
 import { DEFAULT_ENVIRONMENT, getEnvironmentState, hasEquippedEnviroSealedArmor } from "./environment.mjs";
 import { essenceWouldEmpty } from "../../rules/plugins/combat/defeat-stage.mjs";
+import { currentEssence, currentEssenceUpdate } from "../combat/essence-current.mjs";
 
 /**
  * Environmental damage over time and the protection against it (Across the Stars, "Exploring
@@ -191,7 +192,8 @@ export async function applyEssenceDamage(actor, essences) {
   const update = {};
   const damaged = [];
   for (const essence of essences) {
-    const value = actor.system?.essences?.[essence]?.value;
+    // A Zord's / Vehicle's damage is kept apart from its score (mechanics/combat/essence-current.mjs).
+    const value = currentEssence(actor, essence);
     if (typeof value == 'number' && value > 0) {
       // essenceWouldEmpty Triggers (rules/plugins/combat/defeat-stage.mjs) may keep the last point - Immortal Rebel
       // Soul's Essence half, sharing its Health half's use.
@@ -199,7 +201,7 @@ export async function applyEssenceDamage(actor, essences) {
         continue;
       }
 
-      update[`system.essences.${essence}.value`] = value - 1;
+      Object.assign(update, currentEssenceUpdate(actor, essence, value - 1));
       damaged.push(essence);
     }
   }

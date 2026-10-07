@@ -3,6 +3,13 @@
   {{> "systems/essence20/templates/actor/parts/misc/common-no-vitals.hbs"}}
 
   <div class="npc-row">
+    <div class="npc-essence-scores">
+      {{!-- Vehicle Essence scores: the typed base, with Features and rules on top (mechanics/vehicles/machine-essences.mjs). --}}
+      {{> "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs"}}
+    </div>
+  </div>
+
+  <div class="npc-row">
     <div class="npc-skills">
       {{!-- Skills --}}
       {{> "systems/essence20/templates/actor/parts/misc/npc-skill-list.hbs"}}

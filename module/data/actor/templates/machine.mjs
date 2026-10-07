@@ -27,6 +27,9 @@ export function makeDefensesFields(name, essence, usesDrivers, base, armor = 0) 
 export function makeEssencesFields(usesDrivers, init) {
   return new fields.SchemaField({
     base: makeInt(init),
+    // Essence damage taken (mechanics/combat/essence-current.mjs): off the score for the current amount, healed by a
+    // Rest, never moving the base.
+    damage: makeInt(0),
     usesDrivers: makeBool(usesDrivers),
     value: makeInt(init),
   });
