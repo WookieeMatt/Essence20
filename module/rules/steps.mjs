@@ -321,38 +321,60 @@ function conditionDurationFor(recipient, condition, spec, ctx) {
 
 const PICK_FROM = ['skill', 'essence', 'damageType', 'ownedItem', 'ally', 'enemy', 'target', 'list', 'team', 'actors', 'targetItem'];
 
-/** What a pick step offers: [{value, label}]. */
+/** Every `from:` a pick step (and a ChoiceSet - rules/lifecycle.mjs#choiceOptions) can name, plug-in sources included. */
+export function pickSources() {
+  return [...PICK_FROM];
+}
+
+/**
+ * A Skill list narrowed by a pick's Skill settings: essence (only that Essence's Skills), minShift / maxShift (only Skills
+ * whose die on the actor is at least / at most that), specializedOnly (only Skills the actor is Specialized in - all,
+ * when none is). Shared by the pick step and a ChoiceSet `from: skill`.
+ */
+export function filterSkills(keys, step, actor) {
+  const E20 = globalThis.CONFIG?.E20 ?? {};
+  let list = [...keys];
+  if (step.essence) {
+    list = list.filter(key => (E20.skillToEssence?.[key] ?? null) == step.essence);
+  }
+
+  // minShift / maxShift: only Skills whose die is at least / at most that (d4, d8...).
+  const RANKS = ['d20', 'd2', 'd4', 'd6', 'd8', 'd10', 'd12', '2d8', '3d6'];
+  const rank = key => RANKS.indexOf(actor?.system?.skills?.[key]?.shift ?? 'd20');
+  if (step.minShift) {
+    list = list.filter(key => rank(key) >= RANKS.indexOf(step.minShift));
+  }
+
+  if (step.maxShift) {
+    list = list.filter(key => rank(key) <= RANKS.indexOf(step.maxShift));
+  }
+
+  if (step.specializedOnly) {
+    const specialized = list.filter(key => Object.keys(actor?.system?.skills?.[key]?.specializations ?? {}).length);
+    list = specialized.length ? specialized : list;
+  }
+
+  return list;
+}
+
+/**
+ * What a pick step offers: [{value, label}]. `only: [...]` narrows any source to those values (Perk choice P1 - the
+ * same list a ChoiceSet offers, docs/PERK_CHOICE_MIGRATION_PLAN.md §2.2).
+ */
 export function pickOptions(step, ctx) {
+  const all = sourceOptions(step, ctx);
+  const only = Array.isArray(step.only) && step.only.length ? step.only.map(String) : null;
+  return only ? all.filter(option => only.includes(String(option.value))) : all;
+}
+
+function sourceOptions(step, ctx) {
   const E20 = globalThis.CONFIG?.E20 ?? {};
   const localize = key => globalThis.game?.i18n?.localize?.(key) ?? key;
   const table = (keys, names = {}) => keys.map(key => ({ value: key, label: localize(names[key] ?? key) }));
   const actor = ctx.actor;
   switch (step.from) {
   // essence: only that Essence's Skills; specializedOnly: only Skills the actor is Specialized in (all, when none is).
-  case 'skill': {
-    let keys = Object.keys(actor?.system?.skills ?? {});
-    if (step.essence) {
-      keys = keys.filter(key => (E20.skillToEssence?.[key] ?? null) == step.essence);
-    }
-
-    // minShift / maxShift: only Skills whose die is at least / at most that (d4, d8...).
-    const RANKS = ['d20', 'd2', 'd4', 'd6', 'd8', 'd10', 'd12', '2d8', '3d6'];
-    const rank = key => RANKS.indexOf(actor?.system?.skills?.[key]?.shift ?? 'd20');
-    if (step.minShift) {
-      keys = keys.filter(key => rank(key) >= RANKS.indexOf(step.minShift));
-    }
-
-    if (step.maxShift) {
-      keys = keys.filter(key => rank(key) <= RANKS.indexOf(step.maxShift));
-    }
-
-    if (step.specializedOnly) {
-      const specialized = keys.filter(key => Object.keys(actor?.system?.skills?.[key]?.specializations ?? {}).length);
-      keys = specialized.length ? specialized : keys;
-    }
-
-    return table(keys, E20.skills);
-  }
+  case 'skill': return table(filterSkills(Object.keys(actor?.system?.skills ?? {}), step, actor), E20.skills);
 
   // targetItem: one of the first target's items (itemType, equipped, filter) - stored as its uuid (Pillage, Disruptor).
   case 'targetItem': {

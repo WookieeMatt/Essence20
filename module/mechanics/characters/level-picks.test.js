@@ -230,6 +230,21 @@ describe("Grid Power prerequisites in the picker", () => {
     expect(choicePrerequisites(actor, uuidOf(index[0]))).toEqual({ missing: 'Level 8+', blocked: false });
     expect(choicePrerequisites(makeActor({ level: 8 }), uuidOf(index[0]))).toBeNull();
   });
+
+  test("General Perks come from every enabled book, any line; Grid Powers stay in the character's line (2026-10-07)", async () => {
+    const joe = {
+      documentName: 'Item',
+      folder: { name: 'GI Joe' },
+      metadata: { id: 'essence20.gi_joe_crb', label: 'GI Joe Core' },
+      getIndex: jest.fn(async () => [{ _id: 'acu', name: 'Acute Sense', type: 'perk', system: { type: 'general' } }, { _id: 'gp', name: 'Joe Grid', type: 'power', system: { type: 'grid' } }]),
+    };
+    game.packs.push(joe);
+    const actor = makeActor({ level: 6 });
+    const general = await levelPickChoices(actor, { key: 'generalPerk-base-4', kind: 'generalPerk', track: 'base', level: 4 });
+    expect(Object.values(general).map(choice => choice.label).sort()).toEqual(['Acute Sense', 'Luck']);
+    const grid = await levelPickChoices(actor, pick);
+    expect(Object.values(grid).map(choice => choice.label)).not.toContain('Joe Grid');
+  });
 });
 
 describe("updateLevelPicks", () => {

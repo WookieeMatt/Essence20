@@ -1,5 +1,5 @@
 import { poolMax } from "./adapter.mjs";
-import { choiceOptions } from "./lifecycle.mjs";
+import { choiceLabel } from "./lifecycle.mjs";
 import { collectRules, hostOf, ruleState } from "./index.mjs";
 import { summarizeRule } from "./types.mjs";
 
@@ -185,11 +185,12 @@ function ruleStateLine(rule, item, actor, T) {
 
   if (rule.type == 'ChoiceSet' && rule.key) {
     const value = state.choices?.[rule.key];
-    if (value === undefined || value === null || value === '') {
+    if (value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length)) {
       return T('E20.Rules.ChoiceUnset');
     }
 
-    return choiceOptions(rule).find(option => option.value == value)?.label ?? String(value);
+    // A list pick (count) reads every label.
+    return choiceLabel(rule, value, { actor, item });
   }
 
   return '';

@@ -54,6 +54,15 @@ $leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, s
   text-align: center;
 }
 
+// A Perk picked from another Perk's list (sheets/base-actor-sheet.mjs, mechanics/characters/sub-perks.mjs): indented
+// under its parent, with a small hook mark. The level badge stays in its column so levels still line up.
+.essence20 :is(#{$leveled-tabs}) .e20-sub-perk-mark {
+  flex: 0 0 auto;
+  margin-left: 0.6rem;
+  font-size: 0.75em;
+  opacity: 0.6;
+}
+
 .essence20.theme-light section.tab.perks i {
   color: #000000 !important;
 }

@@ -2,7 +2,9 @@
 // Import-light: sheet-handlers/perk-handler.mjs loads it directly.
 import { rulesOfType } from "../../index.mjs";
 import { contextFor, evaluate } from "../../predicate.mjs";
+import { registerRef } from "../../formula.mjs";
 import { registerRuleType } from "../../types.mjs";
+import { sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 /**
  * `ChoiceCount {items, add}` - while the holder has it, the listed Perks (compendium uuids) offer `add` more picks in
@@ -30,3 +32,10 @@ export function ruleChoiceCountBonus(actor, perkUuid) {
       && evaluate(rule.when, contextFor({ self: actor, holder: actor, ruleItem: item })) === true)
     .reduce((total, { rule }) => total + Math.max(0, Math.round(Number(rule.add) || 0)), 0);
 }
+
+/**
+ * `@choiceCount` (Perk choice P1): how many more picks the rule's item offers - the ChoiceCount `add`s naming its book
+ * source (ruleChoiceCountBonus), 0 with no actor or no source. A ChoiceSet / pickSubPerk `count: "2 + @choiceCount"` keeps
+ * Grid Tap's extra Grid Science / Grid Tech pick.
+ */
+registerRef('choiceCount', (key, scope) => ruleChoiceCountBonus(scope.actor, sourceOf(scope.item)));

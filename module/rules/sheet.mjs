@@ -1,6 +1,8 @@
 import { poolMax } from "./adapter.mjs";
 import { rulesOf, ruleState } from "./index.mjs";
-import { askChoice, choiceOptions } from "./lifecycle.mjs";
+import { askChoice, askRule, choiceLabel, choiceUpdate } from "./lifecycle.mjs";
+import { queueAsk } from "./ask-queue.mjs";
+import { sourceOf } from "../items/shared/item-lookups.mjs";
 import { rulesAreInherited } from "./inherit.mjs";
 import { ruleHelper } from "./code.mjs";
 import { RULE_TYPES, summarizeRule, validateRule } from "./types.mjs";
@@ -196,9 +198,17 @@ export function rulesContext(item) {
       entry.pool = { value: state.pools?.[rule.key]?.value ?? max, max };
     }
 
+    // A list pick (count) shows every label; "change" asks the whole list again.
     if (rule?.type == 'ChoiceSet' && rule.key) {
       const value = state.choices?.[rule.key];
-      entry.choice = { value, label: choiceOptions(rule).find(option => option.value == value)?.label ?? (value ?? '') };
+      entry.choice = { value, label: choiceLabel(rule, value, { actor, item }) };
+    }
+
+    // An added Trigger's pickSubPerk (Perk choice P1): the picked sub-Perks, and "change" picks them again.
+    const subPerk = subPerkStepOf(rule);
+    if (subPerk) {
+      const value = state.choices?.[subPerk.key ?? 'perks'];
+      entry.choice = { value, label: subPerkNames(item, value).join(', ') };
     }
 
     return entry;
@@ -294,14 +304,42 @@ export async function stepPool(item, key, delta) {
   await item.update({ [`flags.essence20.rules.pools.${key}.value`]: value });
 }
 
-export async function changeChoice(item, index) {
+/** An added Trigger's first top-level pickSubPerk step, or null. */
+export function subPerkStepOf(rule) {
+  return rule?.type == 'Trigger' && rule.event == 'added' && Array.isArray(rule.steps) ? rule.steps.find(step => step?.do == 'pickSubPerk') ?? null : null;
+}
+
+/** The names of picked sub-Perks (compendium uuids): the actor's child copy, else the compendium item, else the uuid. */
+export function subPerkNames(item, value) {
+  const actor = item?.parent?.documentName == 'Actor' ? item.parent : null;
+  const children = (actor?.items?.contents ?? [...(actor?.items ?? [])]).filter(other => other.flags?.essence20?.parentId == item.id);
+  return (Array.isArray(value) ? value : value ? [value] : []).map(uuid => children.find(child => sourceOf(child) == uuid)?.name
+    ?? globalThis.fromUuidSync?.(uuid, { strict: false })?.name ?? String(uuid));
+}
+
+/**
+ * "Change" on the Rules tab (GM and owner - the tab shows it to whoever owns the copy): a ChoiceSet asks again (a list
+ * pick asks its whole list, excludeCopies and the rename apply as when it was added); an added Trigger's pickSubPerk
+ * picks its sub-Perks again (plugins/picks/pick-sub-perk.mjs#repickSubPerks). Queued with the actor's other asks.
+ */
+export async function changeChoice(item, index, { ask = askChoice } = {}) {
   const rule = rulesOf(item)[index];
+  const subPerk = subPerkStepOf(rule);
+  if (subPerk) {
+    const { repickSubPerks } = await import("./plugins/picks/pick-sub-perk.mjs");
+    await repickSubPerks(item, subPerk, rule);
+    return;
+  }
+
   if (rule?.type != 'ChoiceSet' || !rule.key) {
     return;
   }
 
-  const value = await askChoice(rule, item);
-  if (value !== null && value !== undefined) {
-    await item.update({ [`flags.essence20.rules.choices.${rule.key}`]: value });
-  }
+  const actor = item.parent?.documentName == 'Actor' ? item.parent : null;
+  await queueAsk(actor ?? item, async () => {
+    const value = await askRule(rule, item, actor, { ask });
+    if (value !== null && value !== undefined) {
+      await item.update(choiceUpdate(item, rule, value));
+    }
+  });
 }

@@ -516,26 +516,8 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     // A uuid that is already one of the parent's own entries (Nobody Like Me still lists the Power
     // Rangers CRB's General Perks) reuses that entry - adding it a second time is refused as a
     // duplicate, and the Perk was never created.
-    let collectionKey = perk.system.items[selection]
-      ? selection
-      : Object.entries(perk.system.items ?? {}).find(([, entry]) => entry.uuid == selection)?.[0];
-    const chosenPerk = collectionKey ? perk.system.items[collectionKey] : { uuid: selection };
-
-    const itemToCreate = await fromUuid(chosenPerk.uuid);
-    if (!collectionKey) {
-      collectionKey = await setEntryAndAddItem(itemToCreate, newPerk);
-      if (!collectionKey) return newPerk;
-    }
-
-    if (itemToCreate.system.hasChoice) {
-      setPerkValues(actor, itemToCreate, newPerk, null);
-    } else {
-      const createdPerk = await Item.create(itemToCreate, { parent: actor });
-      createdPerk.setFlag('essence20', 'collectionId', collectionKey);
-      createdPerk.setFlag('essence20', 'parentId', newPerk._id);
-      createdPerk.update({
-        "_stats.compendiumSource": itemToCreate.uuid,
-      });
+    if (!(await createSubPerk(actor, newPerk, selection, perk.system.items))) {
+      return newPerk;
     }
   }
 
@@ -552,6 +534,50 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   }
 
   return newPerk;
+}
+
+/**
+ * One picked sub-Perk (a 'perks' choice - Grid Science, Modified Shell, Nobody Like Me...) made on the actor under its
+ * parent: shared by onPerkDrop's 'perks' branch and the rules engine's pickSubPerk step
+ * (rules/plugins/picks/pick-sub-perk.mjs). `selection` is one of the parent's own entry keys, or a uuid - an entry with
+ * that uuid is reused, else (an any-General-Perk pick) a new entry is written onto the parent first, because it is what
+ * links the child back (deleting the parent removes it - deleteAttachmentsForItem - and a child with an old-picker choice
+ * of its own finds its collectionId there, onPerkDrop's parentPerk branch). A child with an old-picker choice goes
+ * through setPerkValues (not awaited, as before); else it is created with its parentId / collectionId flags.
+ * @param {Actor} actor
+ * @param {Item} parent       The actor's copy of the parent Perk.
+ * @param {String} selection  An entry key of `entries`, or a compendium uuid.
+ * @param {Object} [entries]  The entry list the selection is read from (default: the parent's own system.items).
+ * @returns {Promise<String|null>}   The child's collection key, or null when the entry couldn't be written (nothing made).
+ */
+export async function createSubPerk(actor, parent, selection, entries = parent?.system?.items) {
+  let collectionKey = entries?.[selection]
+    ? selection
+    : Object.entries(entries ?? {}).find(([, entry]) => entry.uuid == selection)?.[0];
+  const chosenPerk = collectionKey ? entries[collectionKey] : { uuid: selection };
+
+  const itemToCreate = await fromUuid(chosenPerk.uuid);
+  if (!itemToCreate) {
+    return null;
+  }
+
+  if (!collectionKey) {
+    collectionKey = await setEntryAndAddItem(itemToCreate, parent);
+    if (!collectionKey) return null;
+  }
+
+  if (itemToCreate.system.hasChoice) {
+    setPerkValues(actor, itemToCreate, parent, null);
+  } else {
+    const createdPerk = await Item.create(itemToCreate, { parent: actor });
+    createdPerk.setFlag('essence20', 'collectionId', collectionKey);
+    createdPerk.setFlag('essence20', 'parentId', parent._id);
+    createdPerk.update({
+      "_stats.compendiumSource": itemToCreate.uuid,
+    });
+  }
+
+  return collectionKey;
 }
 
 /**

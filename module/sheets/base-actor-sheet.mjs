@@ -73,6 +73,7 @@ import { deleteSpecialization } from "../sheet-handlers/specialization-handler.m
 import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon } from "../items/attacks/mounted-weapons.mjs";
 import { switchMythicForm } from "../items/attacks/mythically-modular.mjs";
 import { treatOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
+import { nestSubPerks, withSubPerksUnderParents } from "../mechanics/characters/sub-perks.mjs";
 
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
@@ -901,8 +902,11 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     // (player-picked perks, directly-dropped gear, etc.) sort as equal and keep their existing
     // order (Array#sort is stable).
     const byGrantedLevel = (a, b) => (a.system.grantedLevel ?? Infinity) - (b.system.grantedLevel ?? Infinity);
-    for (const perkList of Object.values(perks)) {
-      perkList.sort(byGrantedLevel);
+    // A Perk picked from another Perk's list (Grid Tech I's Gridspeak Receivers) carries its parent's level and lists
+    // right under it, indented (user request 2026-10-07).
+    nestSubPerks(this.actor.items);
+    for (const [type, perkList] of Object.entries(perks)) {
+      perks[type] = withSubPerksUnderParents(perkList.sort(byGrantedLevel));
     }
 
     for (const itemList of [origins, influences, bonds, hangUps, spells, powers, weapons, armors, shields, gears, alterations, magicBaubles]) {

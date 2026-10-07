@@ -263,10 +263,10 @@ async function removeChosen(actor, matches) {
 }
 
 /**
- * The compendium choices for a pick, in the ChoicesSelector's shape. Every book the Compendium Browser shows (a GM
- * who switched a book off does not want it offered) from the character's game line - its pack folder - plus the
- * cross-line books that sit in no folder (Field Guide to Action and Adventure's General Perks are written for any
- * setting). Prerequisites are marked by the selector itself (rules/prerequisites.mjs#choicePrerequisites).
+ * The compendium choices for a pick, in the ChoicesSelector's shape. Only books the Compendium Browser shows (a GM
+ * who switched a book off does not want it offered). General Perks: every enabled book, any game line (user ruling
+ * 2026-10-07). Other picks (Grid Powers): the character's game line - its pack folder - plus the cross-line books that
+ * sit in no folder. Prerequisites are marked by the selector itself (rules/prerequisites.mjs#choicePrerequisites).
  * @param {Actor} actor
  * @param {Object} pick
  * @returns {Promise<Object>}
@@ -282,7 +282,9 @@ export async function levelPickChoices(actor, pick) {
   const groups = {};
   for (const pack of getVisibleItemPacks()) {
     const packFolder = pack.folder?.name ?? null;
-    if (folder && packFolder && packFolder != folder) {
+    // General Perks come from every book the GM has enabled, any line (user ruling 2026-10-07); other picks (Grid
+    // Powers) stay within the character's own line.
+    if (pick.kind != 'generalPerk' && folder && packFolder && packFolder != folder) {
       continue;
     }
 

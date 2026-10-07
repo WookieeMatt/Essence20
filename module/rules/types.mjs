@@ -1,7 +1,7 @@
 import { formulaError } from "./formula.mjs";
 import { unknownTags } from "./predicate.mjs";
 import { LIMIT_WINDOWS } from "./limits.mjs";
-import { CARD_STEPS, stepErrors } from "./steps.mjs";
+import { CARD_STEPS, pickSources, stepErrors } from "./steps.mjs";
 import { describeWhen, formulaWords, humanize, itemClauses, itemName, pathName, skillName } from "./describe-when.mjs";
 
 export { describeWhen };
@@ -194,8 +194,10 @@ export const RULE_TYPES = {
   DerivedStat: {
     params: {
       path: { kind: 'string', required: true },
-      op: { kind: 'enum', options: ['add', 'set', 'multiply', 'max', 'min'] },
-      // A number / formula, or true / false (set as it is). The path may read a pick: system.skills.{choice.skill}.x
+      // append (Perk choice P1): add text entries to a list (system.environments), each once.
+      op: { kind: 'enum', options: ['add', 'set', 'multiply', 'max', 'min', 'append'] },
+      // A number / formula, or true / false (set as it is). The path may read a pick: system.skills.{choice.skill}.x - a
+      // list pick applies the rule once per entry. With op append: text or a list of texts ({choice.environment}).
       value: { kind: 'any', required: true },
       // early: before the poison training is worked out from system.poisonTraining (rules/plugins/effects/derived-stages.mjs).
       stage: { kind: 'enum', options: ['early'] },
@@ -203,7 +205,10 @@ export const RULE_TYPES = {
     scopes: ['self', 'host', 'crew', 'pilot', 'vehicle', 'driven', 'companion', 'owner', 'party', 'team', 'aura'],
     validate: rule => [
       ...(String(rule.path ?? '').startsWith('system.') ? [] : ['path must start with "system."']),
-      ...(typeof rule.value == 'boolean' || !formulaError(rule.value) ? [] : [`value: ${formulaError(rule.value)}`]),
+      ...(rule.op == 'append'
+        ? [...([rule.value].flat().every(value => typeof value == 'string' && value) ? [] : ['append needs value: text or a list of texts']),
+          ...(rule.stage == 'early' ? ['append can\'t be stage early'] : [])]
+        : typeof rule.value == 'boolean' || !formulaError(rule.value) ? [] : [`value: ${formulaError(rule.value)}`]),
     ],
   },
   DamageModifier: {
@@ -251,13 +256,35 @@ export const RULE_TYPES = {
   ChoiceSet: {
     params: {
       key: { kind: 'string', required: true },
-      from: { kind: 'enum', required: true, options: ['skill', 'essence', 'defense', 'list', 'text'] },
+      // Its own sources, and every pick step source (a getter: plug-ins register more - Perk choice P1, rules/lifecycle.mjs
+      // #choiceOptions): config (table), sense, environment, movement, element, damageType...
+      from: { kind: 'enum', required: true, get options() {
+        return [...new Set(['skill', 'essence', 'defense', 'list', 'text', ...pickSources().filter(name => !['target', 'targetItem'].includes(name))])];
+      } },
       options: { kind: 'object' },
       // Where an older version of the item kept this pick (rules/legacy-choices.mjs).
       legacy: { kind: 'string' },
+      // from: config - the CONFIG.E20 table (its keys are the values); labels: a table naming a list table's entries.
+      table: { kind: 'string' }, labels: { kind: 'string' },
+      // Only these values of the source; from: skill - only that Essence's Skills.
+      only: { kind: 'strings' }, essence: { kind: 'enum', options: ['strength', 'speed', 'smarts', 'social'] },
+      // What the actor already has (an acute sense, a known environment, a movement with a base speed): left out / only.
+      notHeld: { kind: 'bool' }, held: { kind: 'bool' },
+      // Not what the actor's other copies of the same book item picked under this key.
+      excludeCopies: { kind: 'bool' },
+      // Several different values, kept as a list (a formula - @choiceCount reads ChoiceCount rules).
+      count: { kind: 'formula' },
+      // Name the item "Name (Pick)"; cancelling the first ask takes a dropped item off; the item's main pick (choice-read.mjs).
+      rename: { kind: 'bool' }, required: { kind: 'bool' }, primary: { kind: 'bool' },
     },
     scopes: ['self'],
-    validate: rule => (rule.from != 'list' || (Array.isArray(rule.options) && rule.options.length) ? [] : ['a list choice needs options']),
+    validate: rule => [
+      ...(rule.from != 'list' || (Array.isArray(rule.options) && rule.options.length) ? [] : ['a list choice needs options']),
+      ...(rule.from == 'config' && !rule.table ? ['a config choice needs table (a CONFIG.E20 key)'] : []),
+      ...(rule.notHeld && rule.held ? ['notHeld and held can\'t both be set'] : []),
+      ...((rule.notHeld || rule.held) && !['sense', 'environment', 'movement'].includes(rule.from) ? ['notHeld / held need from: sense, environment or movement'] : []),
+      ...(rule.essence && rule.from != 'skill' ? ['essence needs from: skill'] : []),
+    ],
   },
   Code: {
     params: { helper: { kind: 'string', required: true } },
@@ -862,6 +889,11 @@ function statChange(op, value, label, after = false) {
   case 'multiply': return `${capital(label)} ×${shown}`;
   case 'max': return `${capital(label)} at least ${shown}`;
   case 'min': return `${capital(label)} at most ${shown}`;
+  // append: "Environments gains the picked environment".
+  case 'append': return `${capital(label)} gains ${[value].flat().map(entry => {
+    const pick = /^\{choice\.([\w-]+)\}$/.exec(String(entry ?? ''));
+    return pick ? `the picked ${humanize(pick[1]).toLowerCase()}` : humanize(String(entry ?? ''));
+  }).join(', ')}`;
   }
 
   return `${capital(label)}: ${humanize(op).toLowerCase()} ${shown}`;
