@@ -35,8 +35,6 @@
         "type": "weaponEffect"
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "light"

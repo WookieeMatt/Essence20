@@ -109,7 +109,7 @@ const FILES = {
   elementalAdaptation: 'bthitems/_source/Elemental_Adaptation_06JVZqlBDXIfPKw8.json',
   reinforcedShell: 'tsitems/_source/Armor_Upgrade_Reinforced_Shell_GQt4IlyXGHCbLxNP.json',
   cleverMind: 'mlpcrbitems/_source/Clever_Mind_34WtMHugUN7Wp5bP.json',
-  defensiveFlexibility: 'prcrbitems/_source/Defensive_Flexibility_7kHQ53hZFgwhSFVi.json',
+  defensiveFlexibility: 'jttitems/_source/Defensive_Flexibility_7kHQ53hZFgwhSFVi.json',
   ironHide: 'gijcrbitems/_source/Iron_Hide_hXtchClOmMDDeWB9.json',
   numbness: 'fmmcitems/_source/Numbness_HB7e3uW1ggYNJVql.json',
   rottenTomatoes: 'mlpcrbitems/_source/Rotten_Tomatoes_0DcWZaKg0GVFV3ei.json',
@@ -562,7 +562,7 @@ describe('Uses', () => {
   test('Create Weapon: grows the chosen Close Combat weapon, not a second copy of one already held', async () => {
     const BLADE = C('gi_joe_crb', '8lNIijY5XompKHH7');
     const CLUB = C('gi_joe_crb', 'ZNokHTRBa5aindap');
-    CATALOG.push({ uuid: BLADE, name: 'Close Combat Blade', type: 'weapon', system: {} }, { uuid: CLUB, name: 'Close Combat Bludgeoning', type: 'weapon', system: {} });
+    CATALOG.push({ uuid: BLADE, name: 'Close Combat Blade', type: 'weapon', system: {} }, { uuid: CLUB, name: 'Close Combat Bludgeon', type: 'weapon', system: {} });
     const power = packItem('createWeapon', { system: { usesPer: 10, usesSpent: 0 } });
     const actor = makeActor([power]);
     chooses = ['Short blade'];
@@ -573,7 +573,7 @@ describe('Uses', () => {
     expect(actor.items.contents.filter(item => item.name == 'Close Combat Blade')).toHaveLength(1);
     chooses = ['Short bludgeon'];
     await use(power);
-    expect(actor.items.contents.filter(item => item.name == 'Close Combat Bludgeoning')).toHaveLength(1);
+    expect(actor.items.contents.filter(item => item.name == 'Close Combat Bludgeon')).toHaveLength(1);
     // Each use spends one of the nanomite Power's daily uses (as its activation did), even a cancelled pick.
     expect(power.system.usesSpent).toBe(3);
     chooses = [];

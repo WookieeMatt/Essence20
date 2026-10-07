@@ -10,14 +10,39 @@
  *   entries and hands an array back as-is. The *Any lookups below use itemsOfAny.
  */
 
+/**
+ * Compendium items that moved to another pack, keeping their _id (2026-10-07, docs/rules-batches/pr-followups.md):
+ * the seven A Jump Through Time Spectrum Modification Perks out of the PR core pack, and the Power Rangers Pre Gen
+ * Characters weapons into their own pack. A copy made before the move still carries the old uuid in its source
+ * fields until migration.mjs#migrateMovedItemSources rewrites them; sourceOf and rules/inherit.mjs read the old uuid
+ * as the new one meanwhile. Fallback only - drop it at 6.1, once every world has migrated.
+ */
+const MOVED_IDS = {
+  'pr_crb>jump_through_time': ['iVpoqL7ZY4SK4iLc', 'DAqOZsEq03rJWWQo', '7kHQ53hZFgwhSFVi', 'E4hk9pHESLuYQuO7', '8bmqJ7hyOAcVNB1Y',
+    'hSu10Kgj9g1LSmyv', 'M3pQgNMsU5hU5dMN'],
+  'pr_crb>power_rangers_pre_gens': ['bMF0bpeywVj9CYYz', 'EtQ5EsNbPspUJrU4', 'Nr1vOg4xCPApJ27G', '1EmLoN9DRgps867P', 'A6OtrWu1AJhSJiPO',
+    'fi9SgjBN2FhW47D3', 'XmZCw5vdjrMmQmbA', 'yY5u7ocQAx7mTgzk', 'Y6qVhMeJE5FHixNh', 'HBkOFDpX3EjGAm9x', '6PHGfFowZAZBQ6Q3'],
+};
+
+/** Old compendium uuid => new, for every moved item. */
+export const MOVED_ITEM_UUIDS = Object.freeze(Object.fromEntries(Object.entries(MOVED_IDS).flatMap(([move, ids]) => {
+  const [from, to] = move.split('>');
+  return ids.map(id => [`Compendium.essence20.${from}.Item.${id}`, `Compendium.essence20.${to}.Item.${id}`]);
+})));
+
+/** A compendium uuid with a moved item's old uuid read as its new one; anything else (null too) unchanged. */
+export function currentUuid(uuid) {
+  return (typeof uuid == 'string' && MOVED_ITEM_UUIDS[uuid]) || uuid;
+}
+
 /** The compendium uuid an item was copied from, or null. */
 export function sourceOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null;
+  return currentUuid(item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource ?? null);
 }
 
 /** sourceOf, but undefined (not null) for an unsourced item. */
 export function sourceOfOrUndefined(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
+  return currentUuid(item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource);
 }
 
 /** The last segment of a compendium uuid (the item _id), matching reprints across packs; '' for none. */

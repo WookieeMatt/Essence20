@@ -21,9 +21,9 @@
         "type": "perk"
       }
     },
-    "baseAerialMovement": "0",
-    "baseAquaticMovement": "0",
-    "baseGroundMovement": "35",
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 35,
     "essences": [
       "speed",
       "social"
@@ -36,13 +36,7 @@
       "persuasion",
       "streetwise"
     ],
-    "startingHealth": 1,
-    "bonusSkillLevels": "",
-    "groundMovement": "",
-    "benefit": {
-      "name": "",
-      "description": ""
-    }
+    "startingHealth": 1
   },
   "effects": [],
   "flags": {

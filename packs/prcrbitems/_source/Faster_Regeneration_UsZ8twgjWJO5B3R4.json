@@ -19,17 +19,13 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",
-    "usesPer": 1,
-    "isVariable": false,
-    "usesPerScene": 1,
-    "timesSelected": 1
+    "usesPer": 1
   },
   "effects": [],
   "folder": "7T0RaytDHGwWT02Z",

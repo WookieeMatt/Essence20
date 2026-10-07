@@ -11,7 +11,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a Finesse melee attack at Reach and ↓1 against up to 2 targets for 1 Sharp damage.</p>"
+      "notes": "<p>Automatic: a melee attack rolling the better of Finesse and Might at Reach and ↓1 against up to 2 targets for 1 Sharp damage.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -28,7 +28,7 @@
     "damageValue": 1,
     "isSpecialized": false,
     "shiftDown": 1,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 2,
     "radius": 0,
     "range": {

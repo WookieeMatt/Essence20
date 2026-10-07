@@ -6,11 +6,11 @@
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
     "rules": [
-      {"type":"Grant","label":"Close Combat Heavy Bludgeoning","uuid":"Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN","skipIfOwned":true}
+      {"type":"Grant","label":"Close Combat Bludgeon","uuid":"Compendium.essence20.gi_joe_crb.Item.ZNokHTRBa5aindap","skipIfOwned":true}
     ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Granted: a Close Combat Heavy Bludgeoning attack you can make with your fist.</p><p>Left to the table: the ↓1 on unarmed attacks that use a Stun effect.</p>"
+      "notes": "<p>Granted: a Close Combat Bludgeon attack you can make with your fist, rolled with the better of Finesse and Might.</p><p>Left to the table: the ↓1 on unarmed attacks that use a Stun effect.</p>"
     },
     "originalId": "",
     "description": "",

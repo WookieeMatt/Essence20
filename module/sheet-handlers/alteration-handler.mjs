@@ -6,7 +6,7 @@ import {
   parseId,
 } from "../util/utils.mjs";
 
-// Power Fist's Close Combat Heavy Bludgeoning attack is a Grant rule on the Alteration now.
+// Power Fist's Close Combat Bludgeon attack is a Grant rule on the Alteration now.
 
 /**
 * Handle the dropping of an Alteration onto an Actor

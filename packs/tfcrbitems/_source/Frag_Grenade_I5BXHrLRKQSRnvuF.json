@@ -17,7 +17,7 @@
     },
     "items": {
       "84dd": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.0BM1VVo7BJgyF5yv",
+        "uuid": "Compendium.essence20.tf_crb.Item.0BM1VVo7BJgyF5yv",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Frag Grenade Effect",
         "type": "weaponEffect",
@@ -39,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"

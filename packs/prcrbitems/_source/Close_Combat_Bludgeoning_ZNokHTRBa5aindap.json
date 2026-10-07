@@ -1,6 +1,6 @@
 {
   "folder": "UCLYWNFqe5XND1kq",
-  "name": "Close Combat Bludgeoning",
+  "name": "Close Combat Bludgeon",
   "type": "weapon",
   "_id": "ZNokHTRBa5aindap",
   "img": "systems/essence20/assets/icons/weapons/baseball-bat.svg",
@@ -19,7 +19,7 @@
       "748c": {
         "uuid": "Compendium.essence20.pr_crb.Item.Ty7ZBubtYM7BIwbT",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Bludgeoning Effect",
+        "name": "Close Combat Bludgeon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "might",
@@ -41,7 +41,7 @@
       "7d6f": {
         "uuid": "Compendium.essence20.pr_crb.Item.2X1w4UM04U6LliE0",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Bludgeoning Alternate Effect 1",
+        "name": "Close Combat Bludgeon Alternate Effect 1",
         "type": "weaponEffect",
         "classification": {
           "skill": "might",
@@ -61,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"

@@ -21,9 +21,9 @@
         "type": "perk"
       }
     },
-    "baseAerialMovement": "0",
-    "baseAquaticMovement": "0",
-    "baseGroundMovement": "35",
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 35,
     "essences": [
       "strength",
       "speed"
@@ -35,13 +35,7 @@
       "athletics",
       "targeting"
     ],
-    "startingHealth": 2,
-    "bonusSkillLevels": "",
-    "groundMovement": "",
-    "benefit": {
-      "name": "",
-      "description": ""
-    }
+    "startingHealth": 2
   },
   "effects": [],
   "flags": {

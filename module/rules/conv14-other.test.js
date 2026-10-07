@@ -57,7 +57,7 @@ const FILES = {
   restrainingChains: 'ttsgitems/_source/Restraining_Chains_AVXOwNhDWQJewKAl.json',
 };
 const FLAG = 'environmentalExpertiseActive';
-const CC_HEAVY_BLUDGEONING = 'Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN';
+const CC_BLUDGEONING = 'Compendium.essence20.gi_joe_crb.Item.ZNokHTRBa5aindap';
 
 let nextId = 1;
 const getPath = (object, key) => String(key).split('.').reduce((o, k) => (o === null || o === undefined ? o : o[k]), object);
@@ -402,20 +402,20 @@ describe('Read the Land and Adaptation: a toggle on the Environmental Expertise 
 
 /* ---- Power Fist (was alteration-handler.mjs) ---- */
 
-describe('Power Fist: grants Close Combat Heavy Bludgeoning', () => {
-  const load = jest.fn(async uuid => ({ toObject: () => ({ _id: 'w', name: 'Close Combat Heavy Bludgeoning', type: 'weapon', system: { items: {} } }), uuid }));
+describe('Power Fist: grants Close Combat Bludgeon', () => {
+  const load = jest.fn(async uuid => ({ toObject: () => ({ _id: 'w', name: 'Close Combat Bludgeon', type: 'weapon', system: { items: {} } }), uuid }));
 
   test('alongside the Alteration', async () => {
     const actor = makeActor([FILES.powerFist]);
     const [data, ...rest] = await grantData(actor.items.contents[0], actor, { load });
     expect(rest).toEqual([]);
-    expect(load).toHaveBeenCalledWith(CC_HEAVY_BLUDGEONING);
-    expect(data).toMatchObject({ type: 'weapon', _stats: { compendiumSource: CC_HEAVY_BLUDGEONING } });
+    expect(load).toHaveBeenCalledWith(CC_BLUDGEONING);
+    expect(data).toMatchObject({ type: 'weapon', _stats: { compendiumSource: CC_BLUDGEONING } });
   });
 
   test('not a second copy if the actor already has one', async () => {
-    const owned = itemFrom({ name: 'Close Combat Heavy Bludgeoning', type: 'weapon', system: {} });
-    owned.flags.core.sourceId = CC_HEAVY_BLUDGEONING;
+    const owned = itemFrom({ name: 'Close Combat Bludgeon', type: 'weapon', system: {} });
+    owned.flags.core.sourceId = CC_BLUDGEONING;
     const actor = makeActor([FILES.powerFist, owned]);
     expect(await grantData(actor.items.contents[0], actor, { load })).toEqual([]);
   });

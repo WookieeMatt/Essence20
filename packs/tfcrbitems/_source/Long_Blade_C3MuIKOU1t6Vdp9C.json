@@ -17,7 +17,7 @@
     },
     "items": {
       "8070": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.2IRZcCJbUGFuEYMk",
+        "uuid": "Compendium.essence20.tf_crb.Item.2IRZcCJbUGFuEYMk",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Long Blade Alternate Effect",
         "type": "weaponEffect",
@@ -39,7 +39,7 @@
         "shiftDown": 1
       },
       "7ad1": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.uYAnV5vfucrRlJlr",
+        "uuid": "Compendium.essence20.tf_crb.Item.uYAnV5vfucrRlJlr",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Long Blade Effect",
         "type": "weaponEffect",
@@ -83,8 +83,6 @@
         "shiftDown": 2
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "long"

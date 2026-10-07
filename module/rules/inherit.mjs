@@ -1,4 +1,5 @@
 import { legacyChoiceUpdates } from "./legacy-choices.mjs";
+import { currentUuid } from "../items/shared/item-lookups.mjs";
 
 /**
  * A copy of a compendium item reads its rules from the original, live - the same arrangement as its
@@ -15,13 +16,15 @@ import { legacyChoiceUpdates } from "./legacy-choices.mjs";
  * creating a copy from a pack that hasn't been loaded yet (ensureSourceIndex).
  */
 
+// A moved item's old uuid (item-lookups.mjs#MOVED_ITEM_UUIDS) reads as its new one, so a copy made before the move
+// still finds its original until the world migration rewrites the source.
 function sourceUuidOf(item) {
-  return item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null;
+  return currentUuid(item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? null);
 }
 
 /** Where a copy's rules come from: the link linkExistingCopies() set, else the item's own source. */
 export function rulesSourceOf(item) {
-  return item?.flags?.essence20?.rulesSource ?? sourceUuidOf(item);
+  return currentUuid(item?.flags?.essence20?.rulesSource ?? sourceUuidOf(item));
 }
 
 /**

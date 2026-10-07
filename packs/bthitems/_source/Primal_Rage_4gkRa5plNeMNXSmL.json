@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Primal Rage","upshift":1,"stack":"primalRage","when":["self:type:playerCharacter","attack","item:type:weaponEffect",{"any":["attack:unarmed","item:name~unarmed","weapon:name~unarmed"]}]},
-      {"type":"RollModifier","scope":"team","stacks":false,"label":"Primal Rage","upshift":1,"stack":"primalRage","when":["self:type:playerCharacter","attack","item:type:weaponEffect",{"any":["attack:unarmed","item:name~unarmed","weapon:name~unarmed"]}]}
+      {"type":"RollModifier","label":"Primal Rage","upshift":1,"stack":"primalRage","when":["self:type:playerCharacter","attack","item:type:weaponEffect","attack:unarmed"]},
+      {"type":"RollModifier","scope":"team","stacks":false,"label":"Primal Rage","upshift":1,"stack":"primalRage","when":["self:type:playerCharacter","attack","item:type:weaponEffect","attack:unarmed"]}
     ],
     "automation": {
       "status": "full",

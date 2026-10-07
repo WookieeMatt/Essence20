@@ -29,8 +29,6 @@
         "type": "weaponEffect"
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "automatic",
     "classification": {
       "size": "integrated"

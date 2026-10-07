@@ -5,7 +5,8 @@ import { itemsOf } from "../shared/item-lookups.mjs";
 /**
  * Armor rules for the data1 slice of the Item Review (Reinforced Shell's Alt Mode / Bot Mode split is its upgrade's own
  * Defense and HitRider rules):
- * - Brawn requirements on battledress (Tanker Armor, Marauder Armor).
+ * - Brawn requirements on battledress (Tanker Armor, Marauder Armor), and on equipped shields (2026-10-07: the
+ *   shield's requirements text, e.g. Through the Shattered Grid's Sentry and Vanguard Shields).
  */
 
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
@@ -36,7 +37,20 @@ export function brawnRequirementBonus(actor) {
 }
 
 /**
- * How many die sizes of Brawn the actor lacks for this armor's printed Brawn requirement - GI Joe
+ * A shield's printed Brawn requirement, read from its requirements text ("Brawn d4", or "Brawn +d6" as Through the
+ * Shattered Grid's Table 2-7 prints it) - the same rule as armor's: ↓1 to the equipment's use for every rank of Brawn
+ * short (Power Rangers CRB p.81). Null when the text names no Brawn die.
+ * @param {Item} shield
+ * @returns {String|null}
+ */
+export function shieldBrawnRequirement(shield) {
+  const match = /\bbrawn\s*\+?\s*(\d?d\d+)\b/i.exec(shield?.system?.requirements ?? '');
+  const shift = match?.[1]?.toLowerCase();
+  return shift && BRAWN_LADDER.includes(shift) ? shift : null;
+}
+
+/**
+ * How many die sizes of Brawn the actor lacks for this armor's (or shield's) printed Brawn requirement - GI Joe
  * CRB, Brawn (p.117): ↓1 while using the gear for every die size of Brawn short. Tanker Armor (Brawn d2) and Marauder Armor
  * (Brawn d4) print theirs in Table 8-5 (p.154-155); armor has no requirements field, so the pack
  * carries it as flags.essence20.brawnRequirement.
@@ -45,7 +59,7 @@ export function brawnRequirementBonus(actor) {
  * @returns {Number}
  */
 export function brawnShortfall(actor, armor) {
-  const required = armor?.flags?.essence20?.brawnRequirement;
+  const required = armor?.type == 'shield' ? shieldBrawnRequirement(armor) : armor?.flags?.essence20?.brawnRequirement;
   if (!required || required == 'none') {
     return 0;
   }
@@ -65,13 +79,18 @@ export function brawnRequirementSources(actor, ctx = {}) {
     return [];
   }
 
+  // An equipped shield counts the same way as worn armor (its requirement is in its requirements text).
   return itemsOf(actor)
-    .filter(item => item.type == 'armor' && item.system?.equipped && !item.system?.isPowerArmor)
+    .filter(item => item.system?.equipped
+      && ((item.type == 'armor' && !item.system?.isPowerArmor) || item.type == 'shield'))
     .map(armor => ({ armor, shortfall: brawnShortfall(actor, armor) }))
     .filter(entry => entry.shortfall > 0)
     .map(({ armor, shortfall }) => ({
       id: `d1BrawnReq-${armor.id}`,
-      label: T('E20.D1BrawnRequirement', { name: armor.name, req: armor.flags.essence20.brawnRequirement }),
+      label: T('E20.D1BrawnRequirement', {
+        name: armor.name,
+        req: armor.type == 'shield' ? shieldBrawnRequirement(armor) : armor.flags.essence20.brawnRequirement,
+      }),
       shiftDown: shortfall,
     }));
 }

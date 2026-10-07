@@ -17,7 +17,7 @@
     },
     "items": {
       "4qq2": {
-        "uuid": "Compendium.essence20.pr_crb.Item.6PHGfFowZAZBQ6Q3",
+        "uuid": "Compendium.essence20.power_rangers_pre_gens.Item.6PHGfFowZAZBQ6Q3",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Power Tetsubo Effect",
         "type": "weaponEffect",
@@ -39,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"

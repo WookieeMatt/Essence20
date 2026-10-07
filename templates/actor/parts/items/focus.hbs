@@ -11,6 +11,13 @@
           </a>
         </div>
       </div>
+      {{!-- The skills the Focus's Essence increase must go into (e.g. GI Joe CRB p.81) - book data, shown so the
+            player can place that rank in the Skill Picker. --}}
+      {{#if item.system.skills.length}}
+      <div class="chip-section">
+        <span class="chip" name="chip.focus.skills">{{localize 'E20.FocusIncreaseSkills'}}: {{#each item.system.skills as |skill|}}{{lookup @root.config.originSkills skill}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+      </div>
+      {{/if}}
     </li>
   {{/each}}
 {{else}}

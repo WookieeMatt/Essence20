@@ -44,13 +44,7 @@
       "athletics",
       "might"
     ],
-    "startingHealth": 3,
-    "bonusSkillLevels": "",
-    "groundMovement": "",
-    "benefit": {
-      "name": "",
-      "description": ""
-    }
+    "startingHealth": 3
   },
   "effects": [],
   "flags": {

@@ -84,3 +84,27 @@
     text-overflow: ellipsis;
   }
 }
+
+/* A pick prompt's search box (module/util/select-search.mjs): on its own row above the select, which becomes a short
+   list box so the matches show as you type. Hidden options / optgroups stay hidden whatever the theme sets. */
+.e20-select-search-row {
+  margin-bottom: 0.25em;
+
+  input.e20-select-search {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+select.e20-select-searchable {
+  width: 100%;
+  height: auto;
+  min-height: 8em;
+  overflow-y: auto;
+
+  option[hidden],
+  optgroup[hidden] {
+    display: none;
+  }
+}

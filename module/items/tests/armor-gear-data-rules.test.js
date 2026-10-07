@@ -41,6 +41,27 @@ describe('armor rules', () => {
     expect(brawnRequirementSources(weak, { isAttack: true })).toEqual([]);
   });
 
+  test('an equipped shield\'s printed Brawn requirement (its requirements text) counts the same way', async () => {
+    const { brawnShortfall, brawnRequirementSources, shieldBrawnRequirement } = await import('../defenses/armor-brawn-reinforced-shell.mjs');
+    expect(shieldBrawnRequirement({ system: { requirements: 'Brawn d4' } })).toBe('d4');
+    expect(shieldBrawnRequirement({ system: { requirements: 'Brawn +d6' } })).toBe('d6');
+    expect(shieldBrawnRequirement({ system: { requirements: '' } })).toBeNull();
+    expect(shieldBrawnRequirement({ system: { requirements: null } })).toBeNull();
+    expect(shieldBrawnRequirement({ system: { requirements: 'Science d4' } })).toBeNull();
+
+    const shield = { id: 's', name: 'Rhino Sentry Shields', type: 'shield', system: { equipped: true, requirements: 'Brawn +d6' }, flags: {} };
+    const weak = { system: { skills: { brawn: { shift: 'd4' } } }, items: items([shield]) };
+    expect(brawnShortfall(weak, shield)).toBe(1);
+    const [source] = brawnRequirementSources(weak, { isAttack: true });
+    expect(source).toEqual(expect.objectContaining({ id: 'd1BrawnReq-s', shiftDown: 1 }));
+    expect(source.label).toContain('"req":"d6"');
+    shield.system.equipped = false;
+    expect(brawnRequirementSources(weak, { isAttack: true })).toEqual([]);
+
+    const plain = { id: 'p', name: 'Riot Shield', type: 'shield', system: { equipped: true, requirements: '' }, flags: {} };
+    expect(brawnRequirementSources({ system: { skills: { brawn: { shift: 'd20' } } }, items: items([plain]) }, { isAttack: true })).toEqual([]);
+  });
+
   test('a BrawnRequirement rule bends the armor Brawn requirement (Over Brawn, The Heavy, Pack Mule - conv10-slC10)', async () => {
     const { brawnShortfall } = await import('../defenses/armor-brawn-reinforced-shell.mjs');
     const armor = { id: 'a', name: 'Marauder Armor', type: 'armor', system: { equipped: true }, flags: { essence20: { brawnRequirement: 'd8' } } };

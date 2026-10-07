@@ -17,7 +17,7 @@
     },
     "items": {
       "ddef": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.SP4uvhATIJanJQQE",
+        "uuid": "Compendium.essence20.tf_crb.Item.SP4uvhATIJanJQQE",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Close Combat Heavy Blade Effect",
         "type": "weaponEffect",
@@ -39,7 +39,7 @@
         "shiftDown": 0
       },
       "66aa": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.eJVQOt1PPGCzePPP",
+        "uuid": "Compendium.essence20.tf_crb.Item.eJVQOt1PPGCzePPP",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Close Combat Heavy Blade Alternate Effect",
         "type": "weaponEffect",
@@ -61,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

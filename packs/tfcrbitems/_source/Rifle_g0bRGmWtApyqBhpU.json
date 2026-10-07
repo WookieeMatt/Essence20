@@ -17,7 +17,7 @@
     },
     "items": {
       "237b": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.w5ttn6zTXISDWqtD",
+        "uuid": "Compendium.essence20.tf_crb.Item.w5ttn6zTXISDWqtD",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Rifle Effect",
         "type": "weaponEffect",
@@ -39,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"

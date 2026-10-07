@@ -115,7 +115,6 @@
     "upgradeTraits": [],
     "usesPerScene": null,
     "isPoison": false,
-    "isToxin": false,
     "transformerMode": "modeBotMode"
   },
   "effects": [],

@@ -11,7 +11,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a Finesse melee Maneuver at Reach with ↓1.</p>"
+      "notes": "<p>Automatic: rolls the better of Finesse and Might.</p><p>Automatic: a melee Maneuver at Reach with ↓1.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -28,7 +28,7 @@
     "damageValue": null,
     "isSpecialized": false,
     "shiftDown": 1,
-    "numHands": "0",
+    "numHands": 0,
     "numTargets": 1,
     "radius": 0,
     "range": {

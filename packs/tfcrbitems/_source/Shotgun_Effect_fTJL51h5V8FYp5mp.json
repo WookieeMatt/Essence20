@@ -14,7 +14,7 @@
     "damageType": "blunt",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 2,
     "radius": 15,
     "range": {

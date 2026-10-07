@@ -1,6 +1,6 @@
 {
   "folder": "UCLYWNFqe5XND1kq",
-  "name": "Long Blade",
+  "name": "Martial Arts Long Blade",
   "type": "weapon",
   "_id": "C3MuIKOU1t6Vdp9C",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
@@ -19,7 +19,7 @@
       "4231": {
         "uuid": "Compendium.essence20.pr_crb.Item.2IRZcCJbUGFuEYMk",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Blade Alternate Effect 1",
+        "name": "Martial Arts Long Blade Alternate Effect 1",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -41,7 +41,7 @@
       "6c5f": {
         "uuid": "Compendium.essence20.pr_crb.Item.uYAnV5vfucrRlJlr",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Blade Effect",
+        "name": "Martial Arts Long Blade Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -63,7 +63,7 @@
       "d4a2": {
         "uuid": "Compendium.essence20.pr_crb.Item.4rgKqfYX9WXvJEX2",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Blade Alternate Effect 2",
+        "name": "Martial Arts Long Blade Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -83,8 +83,6 @@
         "shiftDown": 2
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "long"

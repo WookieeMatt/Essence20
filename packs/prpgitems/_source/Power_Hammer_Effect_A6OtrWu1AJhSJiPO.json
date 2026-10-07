@@ -1,8 +1,8 @@
 {
-  "folder": "nI6VvIrghAzztoF4",
-  "name": "Power Spear Effect",
+  "folder": "3DFhfCdFXlvpZQWT",
+  "name": "Power Hammer Effect",
   "type": "weaponEffect",
-  "_id": "yY5u7ocQAx7mTgzk",
+  "_id": "A6OtrWu1AJhSJiPO",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
@@ -11,10 +11,10 @@
       "skill": "might",
       "style": "melee"
     },
-    "damageType": "sharp",
-    "damageValue": 1,
+    "damageType": "blunt",
+    "damageValue": 2,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {
@@ -38,12 +38,12 @@
     "systemId": "essence20",
     "systemVersion": "4.6.9",
     "coreVersion": "13.344",
-    "createdTime": 1790265429878,
-    "modifiedTime": 1790265429878,
+    "createdTime": 1790265429889,
+    "modifiedTime": 1790265429889,
     "lastModifiedBy": null,
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!yY5u7ocQAx7mTgzk"
+  "_key": "!items!A6OtrWu1AJhSJiPO"
 }

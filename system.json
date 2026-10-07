@@ -317,6 +317,15 @@
       "flags": {}
     },
     {
+      "name": "power_rangers_pre_gens",
+      "label": "Power Rangers Pre Gen Characters",
+      "system": "essence20",
+      "path": "packs/prpgitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "pr_crb",
       "label": "Power Ranger Core Rulebook",
       "system": "essence20",
@@ -481,7 +490,8 @@
         "jump_through_time",
         "finster_s_monster_matic_cookbook",
         "through_the_shattered_grid",
-        "power_rangers_adventures"
+        "power_rangers_adventures",
+        "power_rangers_pre_gens"
       ]
     },
     {

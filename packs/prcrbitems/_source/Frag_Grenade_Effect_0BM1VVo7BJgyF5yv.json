@@ -1,6 +1,6 @@
 {
   "folder": "Pqv0B3tLP8Jahl5S",
-  "name": "Frag Grenade Effect",
+  "name": "Grenade Effect",
   "type": "weaponEffect",
   "_id": "0BM1VVo7BJgyF5yv",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -14,7 +14,7 @@
     "damageType": "sharp",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 10,
     "range": {

@@ -83,7 +83,7 @@ const FILES = {
   smashmouth: 'ccitems/_source/Smashmouth_Offense_3OPswxxHjsYrQggY.json',
   standBehindMe: 'atsitems/_source/Stand_Behind_Me__PcezfGdjUtNUZHYH.json',
   gridSurge: 'atsitems/_source/Grid_Surge_PEDHPJkoGvvJed5u.json',
-  mysteriousAura: 'prcrbitems/_source/Mysterious_Aura_hSu10Kgj9g1LSmyv.json',
+  mysteriousAura: 'jttitems/_source/Mysterious_Aura_hSu10Kgj9g1LSmyv.json',
 };
 
 // Every pack file this part gave rules to.

@@ -5,9 +5,13 @@
   "_id": "QwQb0oB71H00mdth",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Finesse: rolls the better of the two","from":"athletics","to":"finesse","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Finesse: rolls the better of the two","from":"finesse","to":"athletics","mode":"bestOf"}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a thrown Athletics attack at 100ft/200ft range and ↓1 against up to 2 targets within 30ft of each other, for 1 Sharp damage.</p>"
+      "notes": "<p>Automatic: rolls the better of Athletics and Finesse.</p><p>Automatic: a thrown attack at 100ft/200ft range and ↓1 against up to 2 targets within 30ft of each other, for 1 Sharp damage.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -24,7 +28,7 @@
     "damageValue": 1,
     "isSpecialized": false,
     "shiftDown": 1,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 2,
     "radius": 30,
     "range": {

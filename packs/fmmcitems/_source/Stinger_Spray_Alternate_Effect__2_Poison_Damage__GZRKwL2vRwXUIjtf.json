@@ -22,7 +22,7 @@
     "damageValue": 2,
     "defenseType": "toughness",
     "shiftDown": 1,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 3,
     "radius": 0,
     "range": {

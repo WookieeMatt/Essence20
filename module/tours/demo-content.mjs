@@ -137,7 +137,14 @@ export const DEMO_ACTORS = {
         system: {
           type: "general",
           description: "<p>A demonstration Perk. Real Perks wire themselves into the roll dialog and appear there as a named modifier source whenever they apply.</p>",
+          // A Skill pick, already made, so the perks tour's "picks" step has a Change button to point at
+          // (the pick is stored, so adding the demo character asks nothing).
+          rules: [
+            { type: "ChoiceSet", key: "skill", label: "Skill", from: "skill" },
+            { type: "DownshiftCancel", label: "Steady Aim (ignore the first ↓1 on the chosen Skill)", amount: 1, when: ["skill:{choice.skill}"] },
+          ],
         },
+        flags: { essence20: { rules: { choices: { skill: "targeting" } } } },
       },
       {
         name: "Signal Boost", type: "rolePoints", img: "systems/essence20/assets/icons/items/role.svg",

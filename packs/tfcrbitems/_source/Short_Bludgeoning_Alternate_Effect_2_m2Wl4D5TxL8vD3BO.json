@@ -1,6 +1,6 @@
 {
   "folder": "bsdJ7Coa2z9hdtR0",
-  "name": "Short Bludgeoning Alternate Effect 2",
+  "name": "Short Bludgeon Alternate Effect 2",
   "type": "weaponEffect",
   "_id": "m2Wl4D5TxL8vD3BO",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -18,7 +18,7 @@
     "damageType": "maneuver",
     "damageValue": null,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

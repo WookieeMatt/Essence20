@@ -1,27 +1,27 @@
 {
-  "folder": "3DFhfCdFXlvpZQWT",
-  "name": "Power Hammer Effect",
+  "folder": "7cbGCbO9SnTUU2vx",
+  "name": "Power Crossbow Effect",
   "type": "weaponEffect",
-  "_id": "A6OtrWu1AJhSJiPO",
+  "_id": "EtQ5EsNbPspUJrU4",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
     "actionType": "standard",
     "classification": {
-      "skill": "might",
-      "style": "melee"
+      "skill": "targeting",
+      "style": "energy"
     },
-    "damageType": "blunt",
-    "damageValue": 2,
+    "damageType": "element",
+    "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {
       "min": null,
-      "reachMultiplier": 1,
-      "long": null,
-      "value": null
+      "reachMultiplier": 0,
+      "long": 100,
+      "value": 50
     },
     "source": {
       "book": "Power Rangers Pre Gen Characters",
@@ -38,12 +38,12 @@
     "systemId": "essence20",
     "systemVersion": "4.6.9",
     "coreVersion": "13.344",
-    "createdTime": 1790265429889,
-    "modifiedTime": 1790265429889,
+    "createdTime": 1790265429895,
+    "modifiedTime": 1790265429895,
     "lastModifiedBy": null,
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!A6OtrWu1AJhSJiPO"
+  "_key": "!items!EtQ5EsNbPspUJrU4"
 }

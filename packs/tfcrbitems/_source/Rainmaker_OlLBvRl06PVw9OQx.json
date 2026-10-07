@@ -17,13 +17,6 @@
       "book": "Transformers Core Rulebook",
       "page": 52
     },
-    "crew": 0,
-    "firepoints": 0,
-    "movement": {
-      "aerial": 0,
-      "aquatic": 0,
-      "ground": 0
-    },
     "botModeSize": "large",
     "altModeMovement": {
       "aerial": 0,

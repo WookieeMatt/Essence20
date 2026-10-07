@@ -5,6 +5,19 @@ description when tagging, then clear this file.
 
 ## Action needed by GMs
 
+- **A world migration runs on first load.** It moves every Perk's old pick onto the new rules
+  pick, clears item fields the rules replaced (they stay in the data until 6.1), and repoints copies
+  of items that moved to another compendium. When it finishes, the GM gets a chat summary. Any
+  Perk listed there as "nothing picked yet" still needs its pick: open the character's **Rules**
+  tab and choose it there.
+- **Renamed items.** Generic weapons now carry their book names: Close Combat Bludgeon, Close
+  Combat Heavy Bludgeon, Short Bludgeon, Thrown Bludgeon and Long Bludgeon (was "...Bludgeoning"),
+  and in Power Rangers: Grenade, Martial Arts Long/Medium Blade, Martial Arts Long Bludgeon and Zeo
+  Laser Pistols. Power Rangers "Brawling" is now **Unarmed Combat**, and the 1st-printing "Strike"
+  is gone. Copies already on characters keep their old names until replaced.
+- **Moved items.** The 7 Spectrum Modification Perks now live in A Jump Through Time. The Pre Gen
+  weapons (Power Crossbow, Hammer, Spear, Tetsubo) have their own **Power Rangers Pre Gen
+  Characters** compendium. Existing copies still find their automation.
 - **Equipped armor now counts toward Defenses automatically.** A Player Character's equipped
   Armor items (and armor Upgrades attached to them) now add their Toughness/Evasion bonus to the
   character's Defenses. Previously this bonus was never applied, so some tables typed the armor
@@ -16,6 +29,46 @@ description when tagging, then clear this file.
   type set on the character sheet, and worn armor doesn't add to it. The Power Armor items (Mighty
   Morphin, Zeo, Turbo, In Space and Metallic Body Armor, Power Rangers Core Rulebook Table 8-5)
   represent that Morphed suit, so marking one "equipped" never adds a separate armor bonus.
+
+## The rules engine
+
+Item automation is now data on the item, in a **Rules** tab, instead of hard-coded per
+compendium item. That means a copy of a book item, or a homebrew item built in the sheet, works
+the same as the original.
+
+- **Every item's Rules tab** lists what it does in plain English, with an editor for building
+  your own. Active Effects show there too, as "always on" entries.
+- **The character sheet's Rules tab** lists every rule affecting that character. Each line can
+  open the item it comes from or post the rule to chat.
+- **Picks are asked once, when the item is added.** This covers Expertise, Cutie Mark Perk and
+  any Perk with a choice: one dialog per character. Long lists get a search box. If you cancel a
+  pick on an item you dropped, the item isn't added. A pick that comes with a Role must be made.
+  You can change a pick later from the Rules tab.
+- **Level-ups ask for your General Perk and Grid Power picks** at the levels your
+  Role's own table gives them. General Perks come from every enabled book. Sub-Perks show under
+  their parent Perk.
+- **Prerequisites** are checked when an item is added. A world setting chooses Off, Warn
+  (default) or Strict. Strict asks the GM to confirm a drop that doesn't qualify. Warn and Strict
+  both tell the GM when a character takes something they don't qualify for. Items a Role grants
+  are never blocked.
+- **Weapons the book prints with two Skills** ("Finesse or Might", "Athletics or Targeting" and
+  so on) roll whichever Skill is better. This includes every line's Unarmed Combat / Unarmed
+  Strike, Pillage, Power Fist, Natural Weapons, Psycho Strike and the TF/G.I. JOE melee weapons.
+  Power Rangers Martial Arts Long Bludgeon is Might only, as printed.
+- **Power Rangers:** the Grid Relic Weapon asks for its 2 Relic Weapon Traits; five of them are
+  automated. The Power Rangers Expertise offers only Skills at d4 or better.
+
+## Other changes
+
+- **New setting: Morphed / Alt Mode token icons.** Options are Show, Hide when the token art
+  changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.
+- **Guided tours** cover the new Rules tabs, Perk picks and level-up picks.
+- **Ram and Flyby** use no hands and no hardpoint.
+- **Shields with a Brawn requirement** give the same ↓ shortfall as armor.
+- **The Specialization item's Details tab** can be edited again (Skill, die, Specialized).
+- **Transformers core weapons** now use their own book's effects. They used to pull in the
+  G.I. JOE and Power Rangers copies, so Long Bludgeon came with a Power Rangers "Martial Arts"
+  attack.
 
 ## Changes you'll notice at the table
 

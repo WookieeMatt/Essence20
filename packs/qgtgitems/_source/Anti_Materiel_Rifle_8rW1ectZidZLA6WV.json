@@ -113,7 +113,6 @@
     },
     "equipped": true,
     "isPoison": false,
-    "isToxin": false,
     "requirements": {
       "custom": "",
       "skill": "athletics",

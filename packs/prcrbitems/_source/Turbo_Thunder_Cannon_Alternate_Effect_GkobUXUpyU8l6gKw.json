@@ -22,7 +22,7 @@
     "damageType": "element",
     "damageValue": 4,
     "shiftDown": 2,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

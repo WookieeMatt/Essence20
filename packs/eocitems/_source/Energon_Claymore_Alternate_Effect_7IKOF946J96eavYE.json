@@ -5,6 +5,10 @@
   "_id": "7IKOF946J96eavYE",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"finesse","to":"might","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"might","to":"finesse","mode":"bestOf"}
+    ],
     "originalId": "",
     "actionType": "standard",
     "classification": {
@@ -14,7 +18,7 @@
     "damageType": "intimidate",
     "damageValue": 0,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

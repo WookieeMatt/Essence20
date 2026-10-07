@@ -1,6 +1,6 @@
 {
   "folder": "p4ye6pAYbYyizfgq",
-  "name": "Short Bludgeoning",
+  "name": "Short Bludgeon",
   "type": "weapon",
   "_id": "aRBWUHeBjdevKh4Q",
   "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
@@ -17,9 +17,9 @@
     },
     "items": {
       "2031": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.7ah23fiimnJq6HIL",
+        "uuid": "Compendium.essence20.tf_crb.Item.7ah23fiimnJq6HIL",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Short Bludgeoning Effect",
+        "name": "Short Bludgeon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -39,9 +39,9 @@
         "shiftDown": 0
       },
       "b44e": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.rMg6ZhYEEHTeZ8Db",
+        "uuid": "Compendium.essence20.tf_crb.Item.rMg6ZhYEEHTeZ8Db",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Short Bludgeoning Alternate Effect",
+        "name": "Short Bludgeon Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -63,7 +63,7 @@
       "f5bf": {
         "uuid": "Compendium.essence20.tf_crb.Item.m2Wl4D5TxL8vD3BO",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Short Bludgeoning Alternate Effect 2",
+        "name": "Short Bludgeon Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -83,8 +83,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"

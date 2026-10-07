@@ -109,16 +109,17 @@
       check("Every sidebar panel has the same bottom padding", false, "no .essence20-sidebar-panel found");
     }
 
-    // --- Role Points row: checkbox visible, row height matches Health/Stun ---
+    // --- Role Points row: activation toggle visible, row height matches Health/Stun ---
+    // Activation is a click on the name (.role-points-name[data-is-activatable]); the old checkbox is gone.
     const rolePointsRow = root.querySelector(".role-points-item");
     const healthRow = root.querySelector(".essence20-sidebar-resources > div");
     if (rolePointsRow && healthRow) {
-      const checkbox = rolePointsRow.querySelector('input[type="checkbox"]');
-      const checkboxWidth = checkbox ? checkbox.getBoundingClientRect().width : 0;
+      const toggle = rolePointsRow.querySelector(".role-points-name[data-is-activatable]");
+      const toggleRect = toggle ? toggle.getBoundingClientRect() : { width: 0, height: 0 };
       check(
-        "Role Points checkbox renders at a clickable size",
-        checkboxWidth >= 10,
-        `rendered width: ${checkboxWidth.toFixed(1)}px`,
+        "Role Points activation label renders at a clickable size",
+        toggleRect.width >= 10 && toggleRect.height >= 10,
+        `rendered size: ${toggleRect.width.toFixed(1)} x ${toggleRect.height.toFixed(1)}px`,
       );
 
       const rolePointsHeight = Math.round(rolePointsRow.getBoundingClientRect().height);
@@ -129,7 +130,7 @@
         `Role Points: ${rolePointsHeight}px, Health: ${healthHeight}px`,
       );
     } else {
-      check("Role Points checkbox renders at a clickable size", false, "no .role-points-item found");
+      check("Role Points activation label renders at a clickable size", false, "no .role-points-item found");
       check("Role Points row height matches Health/Stun row height", false, "no .role-points-item found");
     }
 

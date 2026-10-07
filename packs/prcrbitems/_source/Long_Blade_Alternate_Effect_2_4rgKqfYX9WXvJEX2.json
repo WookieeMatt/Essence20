@@ -1,6 +1,6 @@
 {
   "folder": "90aj0LwwIHN1JKcX",
-  "name": "Long Blade Alternate Effect 2",
+  "name": "Martial Arts Long Blade Alternate Effect 2",
   "type": "weaponEffect",
   "_id": "4rgKqfYX9WXvJEX2",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -18,7 +18,7 @@
     "damageType": "sharp",
     "damageValue": 1,
     "shiftDown": 2,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 3,
     "radius": 0,
     "range": {

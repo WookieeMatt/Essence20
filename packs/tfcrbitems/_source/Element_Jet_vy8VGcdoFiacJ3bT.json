@@ -17,7 +17,7 @@
     },
     "items": {
       "3715": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.ZqAWG11mWqPzei5E",
+        "uuid": "Compendium.essence20.tf_crb.Item.ZqAWG11mWqPzei5E",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Element Jet Effect",
         "type": "weaponEffect",
@@ -39,7 +39,7 @@
         "shiftDown": 0
       },
       "d231": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.Wf7FBuKNkke4uxOF",
+        "uuid": "Compendium.essence20.tf_crb.Item.Wf7FBuKNkke4uxOF",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Element Jet Alternate Effect",
         "type": "weaponEffect",
@@ -83,8 +83,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

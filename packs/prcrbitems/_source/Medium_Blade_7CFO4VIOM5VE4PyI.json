@@ -1,6 +1,6 @@
 {
   "folder": "UCLYWNFqe5XND1kq",
-  "name": "Medium Blade",
+  "name": "Martial Arts Medium Blade",
   "type": "weapon",
   "_id": "7CFO4VIOM5VE4PyI",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
@@ -19,7 +19,7 @@
       "8968": {
         "uuid": "Compendium.essence20.pr_crb.Item.qJ2FDEwfZF9R8fQX",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Medium Blade Alternate Effect",
+        "name": "Martial Arts Medium Blade Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -41,7 +41,7 @@
       "3cfb": {
         "uuid": "Compendium.essence20.pr_crb.Item.pbfLfPqG58y5bu7z",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Medium Blade Effect",
+        "name": "Martial Arts Medium Blade Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -63,7 +63,7 @@
       "fb8b": {
         "uuid": "Compendium.essence20.pr_crb.Item.4LCgqoy5wE2yHWdx",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Medium Blade Alternate Effect 2",
+        "name": "Martial Arts Medium Blade Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -83,8 +83,6 @@
         "shiftDown": 3
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

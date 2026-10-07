@@ -4,12 +4,12 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Caretaker","when":["skill:science"],"edge":true},
+      {"type":"RollModifier","label":"Caretaker (Science: Medicine)","when":["skill:science",{"any":["roll:specialization~medicine","ask:a Medicine test"]}],"edge":true},
       {"type":"GroupTestBonus","label":"Caretaker","edge":true}
     ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: your Science tests open the Roll Options Dialog with Edge already selected, and your rolls from a Group Test card get Edge too. Left to the table: keeping the Science Edge to medical tasks.</p>"
+      "notes": "<p>Automatic: Edge on Science tests made with a Medicine Specialization, or ticked as a Medicine test in the Roll Options Dialog, and Edge on your rolls from a Group Test card.</p>"
     },
     "originalId": "",
     "description": "",

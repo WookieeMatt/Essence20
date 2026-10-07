@@ -11,7 +11,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: Close Combat Blade and Close Combat Bludgeoning.</p><p>Use button (Free): spend a Personal Shield use to give those weapons an Element for a minute; their hits then offer the Element effect.</p>"
+      "notes": "<p>Granted: Close Combat Blade and Close Combat Bludgeon.</p><p>Use button (Free): spend a Personal Shield use to give those weapons an Element for a minute; their hits then offer the Element effect.</p>"
     },
     "originalId": "",
     "actionType": "free",
@@ -33,7 +33,7 @@
       "sf02": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.ZNokHTRBa5aindap",
         "img": "icons/svg/sword.svg",
-        "name": "Close Combat Bludgeoning",
+        "name": "Close Combat Bludgeon",
         "type": "weapon"
       }
     }

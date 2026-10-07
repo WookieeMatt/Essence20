@@ -163,11 +163,15 @@ test('every rule added in this batch is valid', () => {
 describe('Primal Rage: ↑1 on unarmed attacks, for the holder and every other Player Character', () => {
   function attacks(actor) {
     const sword = addItem(actor, { type: 'weapon', name: 'Power Sword' });
-    const fists = addItem(actor, { type: 'weapon', name: 'Unarmed Combat' });
+    // The printed Unarmed Combat weapon (PR CRB 2nd printing) - attack:unarmed matches it by compendium source
+    // (items/shared/unarmed-attacks.mjs), not by name.
+    const fists = addItem(actor, { type: 'weapon', name: 'Unarmed Combat', flags: { core: { sourceId: 'Compendium.essence20.pr_crb.Item.5Y0qpK0gnsupCNHX' } } });
+    const homemade = addItem(actor, { type: 'weapon', name: 'Unarmed Spikes' });
     return {
       unarmed: addItem(actor, { type: 'weaponEffect', name: 'Punch' }),
       slash: addItem(actor, { type: 'weaponEffect', name: 'Slash', flags: { essence20: { parentId: sword.id } } }),
       jab: addItem(actor, { type: 'weaponEffect', name: 'Jab', flags: { essence20: { parentId: fists.id } } }),
+      spike: addItem(actor, { type: 'weaponEffect', name: 'Spike', flags: { essence20: { parentId: homemade.id } } }),
     };
   }
 
@@ -176,10 +180,12 @@ describe('Primal Rage: ↑1 on unarmed attacks, for the holder and every other P
   test('the holder: unarmed attacks (no weapon, or the Unarmed Combat weapon) only', () => {
     const holder = makeActor();
     addPackItem(holder, FILES.primalRage);
-    const { unarmed, slash, jab } = attacks(holder);
+    const { unarmed, slash, jab, spike } = attacks(holder);
     expect(rage(holder, unarmed)).toEqual([expect.objectContaining({ shiftUp: 1 })]);
     expect(rage(holder, jab)).toHaveLength(1);
     expect(rage(holder, slash)).toEqual([]);
+    // A weapon merely named "Unarmed" is a weapon attack (the old name~unarmed clauses went 2026-10-07).
+    expect(rage(holder, spike)).toEqual([]);
     expect(rage(holder, unarmed, false)).toEqual([]);
   });
 

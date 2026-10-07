@@ -5,9 +5,13 @@
   "_id": "1RvM4pKCAdtQOU3Y",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"finesse","to":"might","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"might","to":"finesse","mode":"bestOf"}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: rolls Might with the listed Sharp damage at ↓1, plus 1 extra damage of the wielder's element.</p>"
+      "notes": "<p>Automatic: rolls the better of Finesse and Might with the listed Sharp damage at ↓1, plus 1 extra damage of the wielder's element.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -22,7 +26,7 @@
       "value": 1
     },
     "shiftDown": 1,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

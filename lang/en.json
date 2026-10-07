@@ -2505,6 +2505,9 @@
     "SpecializationCustomOption": "Custom…",
     "SpecializationCustomPlaceholder": "Custom specialization name",
     "SpecializationGranted": "granted",
+    "SpecializationIsSpecialized": "Specialized?",
+    "SpecializationShift": "Shift",
+    "SpecializationSkill": "Skill",
     "AdvancedRole": "Is Advanced?",
     "Alteration": "Alteration",
     "AlterationAlreadyTaken": "You have already added this alteration",
@@ -3021,6 +3024,7 @@
     "FocusNoRoleError": "Characters must select a Role before adding a Focus.",
     "FocusRoleMismatchError": "This Focus is not for the character's current Role.",
     "FocusEssenceScoreIncrease": "Essence Score Increase",
+    "FocusIncreaseSkills": "Focus increase skills",
     "FocusStartingSkills": "Starting Skills",
     "GearClothes": "Clothes",
     "GearComputers": "Computers & Electronics",
@@ -3772,6 +3776,7 @@
     "SelectFocusSkills": "Focus Skill",
     "SelectHangUp": "Select a Hang-Up.",
     "SelectInfluenceHangUp": "Multiple Influence Hang-Ups",
+    "SelectSearchPlaceholder": "Search",
     "SelectionLimitError": "This {type} has already been added the maximum ({limit}) number of times.",
     "SelectionsRequiredError": "You must select ({numChoices}) options to continue.",
     "SelectMovement": "Select Movement Type",
@@ -4744,7 +4749,7 @@
         },
         "Level": {
           "Title": "Level Drives Everything",
-          "Content": "Raise this number and the Role responds — granting the Perks, skill increases and resources that level unlocks.\nThat is why you rarely add a Perk by hand. Lower it again and what the Role granted goes away with it."
+          "Content": "Raise this number and the Role responds — granting the Perks, skill increases and resources that level unlocks. At a level where the Role's table gives a General Perk or a Grid Power, the sheet asks you to pick one, from every book enabled in the world.\nThat is why you rarely add a Perk by hand. Lower it again and what the Role granted goes away with it."
         },
         "RolePoints": {
           "Title": "Role Points",
@@ -4765,6 +4770,10 @@
         "GeneralSection": {
           "Title": "General Perks",
           "Content": "These Perks are ones you chose. This is the only section with a plus button, because it is the only one you add to directly.\nA Perk that needs activating in play has a lightning-bolt button on its row — the automated Perks in the sourcebook compendiums do this, and they also announce themselves by name in the roll dialog whenever they apply."
+        },
+        "Picks": {
+          "Title": "Picks",
+          "Content": "Some Perks ask for a choice — a Skill, an Essence, a damage type. The sheet asks once, when the Perk is added, and long lists get a search box.\nThe pick is kept on the Perk's <strong>Rules</strong> tab, and <strong>Change</strong> there picks again. A Perk you drop and then cancel the pick on is not added; one that comes with a Role has to be picked."
         },
         "Outro": {
           "Title": "Perks Covered",
@@ -4792,7 +4801,7 @@
         },
         "TransformButton": {
           "Title": "Transform",
-          "Content": "Transforming is a real state change, not a note: size, movement and which gear you can reach all follow the mode you are currently in."
+          "Content": "Transforming is a real state change, not a note: size, movement and which gear you can reach all follow the mode you are currently in.\nThe token shows an Alt Mode icon too; the <strong>Morphed / Alt Mode token icons</strong> setting hides it when the Alt Mode has its own token image."
         },
         "AltModeTab": {
           "Title": "Alt Modes",
@@ -4828,7 +4837,7 @@
         },
         "ItemRules": {
           "Title": "Rules from Items",
-          "Content": "Below the effects is a read-only list of the rules the character's items give it, one group per item.\nClick an item's name to open it — that is where its rules are edited."
+          "Content": "Below the effects is a read-only list of the rules the character's items give it, one group per item, each in plain English.\nClick an item's name, or a rule's open button, to open the item — that is where its rules are edited. The speech-bubble button posts that rule to chat, so the table can see what just applied."
         },
         "Toggle": {
           "Title": "Switching Off",
@@ -4936,7 +4945,7 @@
         },
         "Morph": {
           "Title": "Morphing",
-          "Content": "For a Ranger, morphing is the other thing the sheet tracks here.\nIt is a real state, not a note — it swaps stats and unlocks the gear that only exists once you are morphed."
+          "Content": "For a Ranger, morphing is the other thing the sheet tracks here.\nIt is a real state, not a note — it swaps stats and unlocks the gear that only exists once you are morphed. The token shows a Morphed icon too; the <strong>Morphed / Alt Mode token icons</strong> setting hides it when the morphed art already makes it obvious."
         },
         "Outro": {
           "Title": "Powers Covered",
@@ -5012,7 +5021,7 @@
         },
         "Sheet": {
           "Title": "Three Tabs",
-          "Content": "Every Item type uses the same three tabs: <strong>Description</strong>, <strong>Details</strong> and <strong>Effects</strong>."
+          "Content": "Every Item type uses the same three tabs: <strong>Description</strong>, <strong>Details</strong> and <strong>Rules</strong>."
         },
         "Details": {
           "Title": "Details",

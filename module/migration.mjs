@@ -1,6 +1,7 @@
 import { createId, slugifySpecializationName } from "./util/utils.mjs";
 import { parseDurationString } from "./data/duration-schema.mjs";
 import { legacyChoiceOf } from "./rules/choice-read.mjs";
+import { MOVED_ITEM_UUIDS } from "./items/shared/item-lookups.mjs";
 
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
@@ -951,6 +952,9 @@ export async function migrateItemData(item, actor, options = {}) {
   // The typed prerequisite text retired (2026-10-07) - see migratePrerequisiteText below.
   migratePrerequisiteText(item, { update: updateData });
 
+  // Compendium items moved to another pack (2026-10-07) - see migrateMovedItemSources below.
+  migrateMovedItemSources(item, { update: updateData });
+
   // Perk choice P2: a world / compendium item's old pick into its rules choice (migratePerkChoiceItem below). An
   // embedded one is migrated with its actor (migrateActorData), which also takes the baked value off.
   if (!actor) {
@@ -1368,6 +1372,28 @@ export async function migrateUpgradeAimBonus(item, { inPack = false, update = {}
 }
 
 /**
+ * A weapon's attachment entries (system.items.<id>) used to carry a snapshot of the upgrade's aimShiftBonus
+ * (attachment-handler.mjs, before 2026-10-07). Nothing reads it any more, so the key goes. The entries are an
+ * ObjectField's contents, not schema fields, so ForcedDeletion really deletes the key here (unlike the Details
+ * fields above, which the data model still has). Value-matched: only an entry that still has the key is touched.
+ * @returns {Object}   Update data.
+ */
+export function migrateWeaponEntryAimBonus(item, { update = {} } = {}) {
+  const entries = storedSystem(item).items;
+  if (item?.type != 'weapon' || !entries || typeof entries != 'object') {
+    return update;
+  }
+
+  for (const [id, entry] of Object.entries(entries)) {
+    if (entry && typeof entry == 'object' && Object.hasOwn(entry, 'aimShiftBonus')) {
+      unset(update, `system.items.${id}.aimShiftBonus`);
+    }
+  }
+
+  return update;
+}
+
+/**
  * A Perk's value (Fast: +10 ft to a picked Movement; GI Joe Expertise: up 2 on a picked Skill) -> its
  * rules (perkValueRules), and the copy flagged perkValueRule so they apply to it. Its drop wrote the
  * value straight into the actor (system.movement.<pick>.bonus / system.skills.<pick>.shiftUp), so on
@@ -1426,9 +1452,54 @@ export async function migrateDetailsFields(item, { inPack = false, perkValue = t
   await migrateRerollFields(item, { inPack, update });
   await migrateMorphedToughness(item, { inPack, update });
   await migrateUpgradeAimBonus(item, { inPack, update });
+  migrateWeaponEntryAimBonus(item, { update });
   if (perkValue) {
     const moved = await migratePerkValue(item, { inPack, rules: update['system.rules'] });
     Object.assign(update, moved.update);
+  }
+
+  return update;
+}
+
+/* -------------------------------------------- */
+/*  Compendium items moved to another pack       */
+/* -------------------------------------------- */
+
+/**
+ * Items that moved pack with their _id kept (item-lookups.mjs#MOVED_ITEM_UUIDS - the A Jump Through Time Spectrum
+ * Modification Perks out of the PR core pack, the PR Pre Gen weapons into their own pack; 2026-10-07,
+ * docs/rules-batches/pr-followups.md). A copy's source fields (flags.core.sourceId, _stats.compendiumSource,
+ * flags.essence20.rulesSource), any item's system.items entries (a copied Role's level list, a weapon's effects) and
+ * its rules picks (flags.essence20.rules.choices - a pickSubPerk's uuid list) that name an old uuid get the new one.
+ * Value-matched: only an old uuid is rewritten, so a second run finds nothing to do.
+ * @param {Object} item   A document or its plain data.
+ * @param {Object} [options]   {update: update data to add to}
+ * @returns {Object}   Update data.
+ */
+export function migrateMovedItemSources(item, { update = {} } = {}) {
+  const data = item?._source ?? item ?? {};
+  const at = path => path.split('.').reduce((value, key) => (value === null || value === undefined ? value : value[key]), data);
+  const moved = uuid => (typeof uuid == 'string' && MOVED_ITEM_UUIDS[uuid]) || null;
+  for (const path of ['flags.core.sourceId', '_stats.compendiumSource', 'flags.essence20.rulesSource']) {
+    const to = moved(at(path));
+    if (to) {
+      update[path] = to;
+    }
+  }
+
+  const entries = at('system.items');
+  for (const [key, entry] of Object.entries(entries && typeof entries == 'object' ? entries : {})) {
+    const to = moved(entry?.uuid);
+    if (to) {
+      update[`system.items.${key}.uuid`] = to;
+    }
+  }
+
+  const choices = at('flags.essence20.rules.choices');
+  for (const [key, value] of Object.entries(choices && typeof choices == 'object' ? choices : {})) {
+    if (Array.isArray(value) ? value.some(moved) : moved(value)) {
+      update[`flags.essence20.rules.choices.${key}`] = Array.isArray(value) ? value.map(entry => moved(entry) ?? entry) : moved(value);
+    }
   }
 
   return update;

@@ -5,10 +5,14 @@
   "_id": "aExhIUpfJTx6fJeU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"ownZord","label":"Relic Weapon Trait: Zord Control (↑1 on your Zord's attacks)","upshift":1,"when":["attack","self:type:zord"]},
+      {"type":"SummonTime","label":"Relic Weapon Trait: Zord Control (summoned in half the time)","mode":"halve"}
+    ],
     "prerequisites": {"when":["self:has:Grid Relic Weapon"]},
     "automation": {
-      "status": "manual",
-      "notes": "<p>Left to the table: halving your Zord's summon time and ↑1 on its attacks.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: your Zord is summoned in half the time, and its attacks get ↑1.</p>"
     },
     "originalId": "",
     "description": "",

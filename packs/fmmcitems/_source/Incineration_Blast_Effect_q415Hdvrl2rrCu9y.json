@@ -23,7 +23,7 @@
     "damageValue": 2,
     "defenseType": "evasion",
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 6,
     "radius": 30,
     "range": {

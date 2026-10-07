@@ -17,7 +17,7 @@
     },
     "items": {
       "e2c5": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.H6Z6NxpLuBFB2FJ9",
+        "uuid": "Compendium.essence20.tf_crb.Item.H6Z6NxpLuBFB2FJ9",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Projectile Launcher Effect",
         "type": "weaponEffect",
@@ -61,8 +61,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

@@ -5,6 +5,10 @@
   "_id": "Ya0iiC78NDJxI7Mb",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Finesse: rolls the better of the two","from":"athletics","to":"finesse","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Finesse: rolls the better of the two","from":"finesse","to":"athletics","mode":"bestOf"}
+    ],
     "originalId": "",
     "actionType": "standard",
     "classification": {
@@ -14,7 +18,7 @@
     "damageType": "maneuver",
     "damageValue": null,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

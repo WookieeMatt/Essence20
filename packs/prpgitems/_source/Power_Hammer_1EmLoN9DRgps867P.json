@@ -1,13 +1,13 @@
 {
   "folder": "Cp5ngUHeZZt7nlpL",
-  "name": "Power Crossbow",
+  "name": "Power Hammer",
   "type": "weapon",
-  "_id": "bMF0bpeywVj9CYYz",
-  "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
+  "_id": "1EmLoN9DRgps867P",
+  "img": "systems/essence20/assets/icons/weapons/hammer.svg",
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, plus its alternate effect; its traits apply.</p>"
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, plus its alternate effect; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",
@@ -16,53 +16,51 @@
       "page": 2
     },
     "items": {
-      "Wc5j": {
-        "uuid": "Compendium.essence20.pr_crb.Item.EtQ5EsNbPspUJrU4",
+      "aeN9": {
+        "uuid": "Compendium.essence20.power_rangers_pre_gens.Item.A6OtrWu1AJhSJiPO",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Power Crossbow Effect",
+        "name": "Power Hammer Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "targeting",
-          "style": "energy"
+          "skill": "might",
+          "style": "melee"
         },
-        "damageValue": 1,
-        "damageType": "element",
+        "damageValue": 2,
+        "damageType": "blunt",
         "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {
           "min": null,
-          "reachMultiplier": 0,
-          "long": 100,
-          "value": 50
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
         },
         "shiftDown": 0
       },
-      "oLcK": {
-        "uuid": "Compendium.essence20.pr_crb.Item.Nr1vOg4xCPApJ27G",
+      "58nW": {
+        "uuid": "Compendium.essence20.power_rangers_pre_gens.Item.fi9SgjBN2FhW47D3",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Power Crossbow Alternate Effect",
+        "name": "Power Hammer Alternate Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "targeting",
-          "style": "energy"
+          "skill": "might",
+          "style": "melee"
         },
-        "damageValue": 1,
-        "damageType": "element",
+        "damageValue": 0,
+        "damageType": "stun",
         "numHands": "2",
-        "numTargets": 2,
-        "radius": 30,
+        "numTargets": 1,
+        "radius": 0,
         "range": {
           "min": null,
-          "reachMultiplier": 0,
-          "long": 100,
-          "value": 50
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
         },
-        "shiftDown": 1
+        "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"
@@ -75,9 +73,7 @@
     },
     "traits": [
       "powerWeapon",
-      "martialArts",
-      "energy",
-      "sharp",
+      "blunt",
       "silent"
     ],
     "upgradeTraits": [],
@@ -93,12 +89,12 @@
     "systemId": "essence20",
     "systemVersion": "4.6.9",
     "coreVersion": "13.344",
-    "createdTime": 1790265429898,
-    "modifiedTime": 1790265429898,
+    "createdTime": 1790265429893,
+    "modifiedTime": 1790265429893,
     "lastModifiedBy": null,
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!bMF0bpeywVj9CYYz"
+  "_key": "!items!1EmLoN9DRgps867P"
 }

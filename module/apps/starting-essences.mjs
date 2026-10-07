@@ -41,8 +41,21 @@ export default class StartingEssences extends HandlebarsApplicationMixin(Applica
     }
 
     const app = new StartingEssences(actor);
+    // Registered with the actor, so deleting the actor closes this window too (it was left open, live test 2026-10-07).
+    if (actor.apps) {
+      actor.apps[app.id] = app;
+    }
+
     await app.render({ force: true });
     return app;
+  }
+
+  /** @override */
+  _onClose(options) {
+    super._onClose(options);
+    if (this._actor?.apps?.[this.id] === this) {
+      delete this._actor.apps[this.id];
+    }
   }
 
   static DEFAULT_OPTIONS = {

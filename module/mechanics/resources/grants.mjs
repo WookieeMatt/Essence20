@@ -1,4 +1,5 @@
 import { findCompendiumItems, pickCompendiumItem } from "../../util/compendium-item-picker.mjs";
+import { NO_PICK, searchBoxHtml, searchedValue, searchSelectAttrs, selectSearchRender } from "../../util/select-search.mjs";
 import { grantKindOf, imperfectionOf } from "./grant-uses.mjs";
 import { getSceneEpoch } from "./scene-clock.mjs";
 import { lineOf } from "./game-lines.mjs";
@@ -188,16 +189,18 @@ export async function chooseSelect(title, prompt, options) {
   const list = groups.length
     ? [...options.filter(o => !o.group).map(option), ...groups.map(group => `<optgroup label="${foundry.utils.escapeHTML(group)}">${options.filter(o => o.group == group).map(option).join('')}</optgroup>`)].join('')
     : options.map(option).join('');
+  // A long list gets a search box (util/select-search.mjs); nothing visible answers NO_PICK, taken as a cancel.
   return foundry.applications.api.DialogV2.wait({
     window: { title },
     classes: ["window-app", "e20-window"],
-    content: `<p>${prompt}</p><div class="form-group"><select name="choice">${list}</select></div>`,
+    content: `<p>${prompt}</p>${searchBoxHtml(options.length)}<div class="form-group"><select name="choice"${searchSelectAttrs(options.length)}>${list}</select></div>`,
     buttons: [
-      { action: 'ok', label: T('E20.DialogConfirmButton'), default: true, callback: (event, button) => button.form.elements.choice.value },
+      { action: 'ok', label: T('E20.DialogConfirmButton'), default: true, callback: (event, button) => searchedValue(button.form.elements.choice) },
       { action: 'cancel', label: T('E20.DialogCancelButton') },
     ],
+    render: selectSearchRender(),
     rejectClose: false,
-  }).then(result => (result && result != 'cancel' ? result : null));
+  }).then(result => (result && result != 'cancel' && result !== NO_PICK ? result : null));
 }
 
 /**

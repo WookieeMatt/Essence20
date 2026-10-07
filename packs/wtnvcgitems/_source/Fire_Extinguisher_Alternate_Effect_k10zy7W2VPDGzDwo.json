@@ -11,7 +11,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a two-handed Finesse spray that deals 1 Cover in a 20 ft radius.</p>"
+      "notes": "<p>Automatic: rolls the better of Finesse and Might.</p><p>Automatic: a two-handed spray that deals 1 Cover in a 20 ft radius.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -32,7 +32,7 @@
     },
     "isSpecialized": false,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 20,
     "range": {

@@ -341,14 +341,20 @@ describe('Powers: their own powerUsed rules', () => {
     expect(power.flags.essence20.rules.toggleUntil.on.until).toBe('scene');
   });
 
-  test('Power Blast rolls Athletics against Evasion for 1 Energy damage per Power spent; nothing with none spent', async () => {
+  test('Power Blast rolls Athletics or Targeting (2nd printing) against Evasion for 1 Energy damage per Power spent; nothing with none spent', async () => {
     const actor = makeActor('Ranger');
     const power = addPack(actor, 'powerBlast');
     await use(actor, power, 0);
     expect(actor._dice.rollSkill).not.toHaveBeenCalled();
+    askFirst(0);
     await use(actor, power, 3);
-    expect(actor._dice.rollSkill).toHaveBeenCalledWith({
+    expect(actor._dice.rollSkill).toHaveBeenLastCalledWith({
       skill: 'athletics', essence: 'strength', defenseType: 'evasion', stepDamage: { value: 3, type: 'element' },
+    }, actor);
+    askFirst(1);
+    await use(actor, power, 2);
+    expect(actor._dice.rollSkill).toHaveBeenLastCalledWith({
+      skill: 'targeting', essence: 'speed', defenseType: 'evasion', stepDamage: { value: 2, type: 'element' },
     }, actor);
   });
 

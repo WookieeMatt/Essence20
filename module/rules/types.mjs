@@ -269,6 +269,10 @@ export const RULE_TYPES = {
       table: { kind: 'string' }, path: { kind: 'string' }, labels: { kind: 'string' }, exceptAt: { kind: 'string' },
       // Only these values of the source; from: skill - only that Essence's Skills.
       only: { kind: 'strings' }, essence: { kind: 'enum', options: ['strength', 'speed', 'smarts', 'social'] },
+      // from: skill - only Skills whose die is at least / at most that now (PR Expertise: "a Skill at d4 or higher"). A
+      // pick already made is kept and still named when the die is lower (lifecycle.mjs#choiceOptions, allOptions).
+      minShift: { kind: 'enum', options: ['d2', 'd4', 'd6', 'd8', 'd10', 'd12', '2d8', '3d6'] },
+      maxShift: { kind: 'enum', options: ['d20', 'd2', 'd4', 'd6', 'd8', 'd10', 'd12', '2d8'] },
       // What the actor already has (an acute sense, a known environment, a movement with a base speed): left out / only.
       notHeld: { kind: 'bool' }, held: { kind: 'bool' },
       // Not what the actor's other copies of the same book item picked under this key.

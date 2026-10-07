@@ -1,13 +1,13 @@
 {
   "folder": "Cp5ngUHeZZt7nlpL",
-  "name": "Power Hammer",
+  "name": "Power Crossbow",
   "type": "weapon",
-  "_id": "1EmLoN9DRgps867P",
-  "img": "systems/essence20/assets/icons/weapons/hammer.svg",
+  "_id": "bMF0bpeywVj9CYYz",
+  "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, plus its alternate effect; its traits apply.</p>"
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, plus its alternate effect; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",
@@ -16,53 +16,51 @@
       "page": 2
     },
     "items": {
-      "aeN9": {
-        "uuid": "Compendium.essence20.pr_crb.Item.A6OtrWu1AJhSJiPO",
+      "Wc5j": {
+        "uuid": "Compendium.essence20.power_rangers_pre_gens.Item.EtQ5EsNbPspUJrU4",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Power Hammer Effect",
+        "name": "Power Crossbow Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "might",
-          "style": "melee"
+          "skill": "targeting",
+          "style": "energy"
         },
-        "damageValue": 2,
-        "damageType": "blunt",
+        "damageValue": 1,
+        "damageType": "element",
         "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {
           "min": null,
-          "reachMultiplier": 1,
-          "long": null,
-          "value": null
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
         },
         "shiftDown": 0
       },
-      "58nW": {
-        "uuid": "Compendium.essence20.pr_crb.Item.fi9SgjBN2FhW47D3",
+      "oLcK": {
+        "uuid": "Compendium.essence20.power_rangers_pre_gens.Item.Nr1vOg4xCPApJ27G",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Power Hammer Alternate Effect",
+        "name": "Power Crossbow Alternate Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "might",
-          "style": "melee"
+          "skill": "targeting",
+          "style": "energy"
         },
-        "damageValue": 0,
-        "damageType": "stun",
+        "damageValue": 1,
+        "damageType": "element",
         "numHands": "2",
-        "numTargets": 1,
-        "radius": 0,
+        "numTargets": 2,
+        "radius": 30,
         "range": {
           "min": null,
-          "reachMultiplier": 1,
-          "long": null,
-          "value": null
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
         },
-        "shiftDown": 0
+        "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"
@@ -75,7 +73,9 @@
     },
     "traits": [
       "powerWeapon",
-      "blunt",
+      "martialArts",
+      "energy",
+      "sharp",
       "silent"
     ],
     "upgradeTraits": [],
@@ -91,12 +91,12 @@
     "systemId": "essence20",
     "systemVersion": "4.6.9",
     "coreVersion": "13.344",
-    "createdTime": 1790265429893,
-    "modifiedTime": 1790265429893,
+    "createdTime": 1790265429898,
+    "modifiedTime": 1790265429898,
     "lastModifiedBy": null,
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!1EmLoN9DRgps867P"
+  "_key": "!items!bMF0bpeywVj9CYYz"
 }

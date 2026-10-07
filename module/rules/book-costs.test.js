@@ -33,7 +33,7 @@ const FILES = {
   deadstick: 'qgtgitems/_source/Deadstick_SDwpvAzQX0pYSHyc.json',
   takedown: 'gijcrbitems/_source/Takedown_Yev7VrgEKtsTGdrx.json',
   standFirm: 'tfcrbitems/_source/Stand_Firm_rAxKrR4ObFGeH5yP.json',
-  mysteriousAura: 'prcrbitems/_source/Mysterious_Aura_hSu10Kgj9g1LSmyv.json',
+  mysteriousAura: 'jttitems/_source/Mysterious_Aura_hSu10Kgj9g1LSmyv.json',
   adaptation: 'gijcrbitems/_source/Adaptation_PmY8jGTiemnSdsHi.json',
   growl: 'ccitems/_source/Growl_OSVtPXBdRmZ2C4PD.json',
   toughItOut: 'tfcrbitems/_source/Tough_It_Out_B6b8dRybHodMv8aC.json',

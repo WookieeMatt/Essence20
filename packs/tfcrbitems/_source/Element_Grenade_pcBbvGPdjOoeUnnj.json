@@ -17,7 +17,7 @@
     },
     "items": {
       "a808": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.lKfj3HhpPrsEZKyG",
+        "uuid": "Compendium.essence20.tf_crb.Item.lKfj3HhpPrsEZKyG",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Element Grenade Effect",
         "type": "weaponEffect",
@@ -39,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"

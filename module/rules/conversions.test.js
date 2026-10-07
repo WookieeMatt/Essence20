@@ -1648,7 +1648,7 @@ test('Wait For An Opening: Edge on attacks made on someone else\'s turn', () => 
 });
 
 test('Contingency Shot: Edge on a ranged attack against Toughness made on someone else\'s turn', () => {
-  const actor = holder(['prcrbitems/_source/Contingency_Shot_DAqOZsEq03rJWWQo.json']);
+  const actor = holder(['jttitems/_source/Contingency_Shot_DAqOZsEq03rJWWQo.json']);
   const turn = id => ({ started: true, combatant: { actor: { id } } });
   const ranged = defenseType => dice2Weapon({ classification: { style: 'ranged' }, defenseType });
   expect(ruleRollSources(actor, null, { item: ranged('toughness'), combat: turn('someoneElse') }).sources[0]).toMatchObject({ edge: true, label: 'Contingency Shot' });
@@ -4128,12 +4128,20 @@ function diceACrew(files, { type = 'vehicle', role = 'driver', movement = null, 
 test.each([
   ['tsitems/_source/Vok_Golden_Disk_6AULE5uInvbfPlU9.json', 'culture', 'alertness'],
   ['sssitems/_source/Oorah__7CuDik9Vtpou9iDJ.json', 'infiltration', 'deception'],
-  ['prcrbitems/_source/Caretaker_4q2SPRzdbGosL62k.json', 'science', 'athletics'],
 ])('%s: Edge on %s only', (file, skill, other) => {
   const actor = holder([file]);
   expect(diceASources(actor, { rolledSkill: skill })).toEqual([expect.objectContaining({ edge: true, shiftUp: 0, shiftDown: 0 })]);
   expect(diceASources(actor, { rolledSkill: other })).toEqual([]);
   expect(diceASources(holder([]), { rolledSkill: skill })).toEqual([]);
+});
+
+test('Caretaker (PR CRB 2nd printing p.67): Edge on Science (Medicine) tests only', () => {
+  const actor = holder(['prcrbitems/_source/Caretaker_4q2SPRzdbGosL62k.json']);
+  const medicine = { rolledSkill: 'science', dataset: { specializationName: 'Medicine' } };
+  expect(diceASources(actor, medicine)).toEqual([expect.objectContaining({ edge: true, label: 'Caretaker (Science: Medicine)' })]);
+  // Plain Science (no Medicine Specialization): no automatic Edge - the player ticks "a Medicine test" when it is one.
+  expect(diceASources(actor, { rolledSkill: 'science', dataset: { specializationName: 'Chemistry' } }).filter(source => source.edge && !source.ask && !source.asked)).toEqual([]);
+  expect(diceASources(actor, { rolledSkill: 'athletics', dataset: {} })).toEqual([]);
 });
 
 test('Ninpõ JOEs: Edge on Culture, once per scene', async () => {
@@ -6233,7 +6241,7 @@ test('Strike Bonus: a melee switch spending 1 Personal Power for ↑(its advance
 });
 
 test('Heavy Force: while Morphed, a melee or shove switch spending 1 Personal Power for ↑2, once per turn', async () => {
-  const actor = regAWritable(misc7Holder(['prcrbitems/_source/Heavy_Force_E4hk9pHESLuYQuO7.json'], { system: { isMorphed: true, powers: { personal: { value: 2 } } } }));
+  const actor = regAWritable(misc7Holder(['jttitems/_source/Heavy_Force_E4hk9pHESLuYQuO7.json'], { system: { isMorphed: true, powers: { personal: { value: 2 } } } }));
   const melee = { item: { type: 'weaponEffect', flags: {}, system: { classification: { style: 'melee' } } } };
   const ranged = { item: { type: 'weaponEffect', flags: {}, system: { classification: { style: 'projectile' } } } };
   expect(regASwitches(actor, ranged)).toEqual([]);
@@ -6517,7 +6525,7 @@ test('Exterminator: ↑1 on attacks against a smaller Common or Small target', (
 });
 
 test("Contingency Shot: a ranged attack on someone else's turn ignores Cover", () => {
-  const actor = holder(['prcrbitems/_source/Contingency_Shot_DAqOZsEq03rJWWQo.json']);
+  const actor = holder(['jttitems/_source/Contingency_Shot_DAqOZsEq03rJWWQo.json']);
   const turn = id => ({ started: true, combatant: { actor: { id } } });
   const ranged = { type: 'weaponEffect', flags: {}, system: { classification: { style: 'projectile' }, defenseType: 'toughness' } };
   const melee = { type: 'weaponEffect', flags: {}, system: { classification: { style: 'melee' }, defenseType: 'toughness' } };
@@ -6946,7 +6954,7 @@ describe('regB2: RollDice, Defense modes, DamageType and Force', () => {
       useAllyLookup(true);
     }
 
-    const PAY_IT_FORWARD = 'prcrbitems/_source/Pay_It_Forward_M3pQgNMsU5hU5dMN.json';
+    const PAY_IT_FORWARD = 'jttitems/_source/Pay_It_Forward_M3pQgNMsU5hU5dMN.json';
     const adjust = (target, defense = 'toughness') => ruleDefenseAdjust(plain(), target, defense, { item: null, difficulty: 10 });
 
     test('Pay It Forward: +1 to every Defense with a Morphed holder within 10 ft, once however many', async () => {

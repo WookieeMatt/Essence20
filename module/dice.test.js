@@ -8316,7 +8316,7 @@ describe("_getAutomaticCombatModifiers", () => {
 
     // Contingency Shot's cover-ignore half is a Cover item rule (module/rules/conversions.test.js).
     describe("Cover with and without Contingency Shot (A Jump Through Time, Pink Spectrum Modification, p.47)", () => {
-      const CONTINGENCY_SHOT_ID = "Compendium.essence20.pr_crb.Item.DAqOZsEq03rJWWQo";
+      const CONTINGENCY_SHOT_ID = "Compendium.essence20.jump_through_time.Item.DAqOZsEq03rJWWQo";
       const rangedWeaponEffectWithParent = {
         ...rangedWeaponEffect, flags: { essence20: { parentId: 'weapon1' } },
       };

@@ -196,8 +196,8 @@ describe('the printed unarmed weapons in the packs', () => {
     expect(isPrintedUnarmedWeapon({ flags: { core: { sourceId: PRINTED.prStrike } } })).toBe(true);
   });
 
-  test("every Power Rangers Unarmed Combat effect rolls the better of Finesse and Might, as G.I. JOE's does", () => {
-    const doc = sourceDoc(PRINTED.prUnarmedCombat);
+  test.each(UNARMED_WEAPON_IDS)("every effect of %s rolls the better of Finesse and Might (each book: Finesse or Might)", uuid => {
+    const doc = sourceDoc(uuid);
     for (const entry of Object.values(doc.system.items)) {
       const pairs = (sourceDoc(entry.uuid).system.rules ?? []).filter(rule => rule.type == 'SkillSubstitution' && rule.mode == 'bestOf').map(rule => `${rule.from}>${rule.to}`).sort();
       expect([entry.name, pairs]).toEqual([entry.name, ['finesse>might', 'might>finesse']]);

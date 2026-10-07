@@ -10,7 +10,9 @@ import { T } from "../shared/item-lang.mjs";
  * and Venom's melee follow-up) are rules on the six Path Role items (rules/ext/b/: damage:attack, rollFlat).
  */
 
-export const IRON_BRAVADO = "Compendium.essence20.pr_crb.Item.8bmqJ7hyOAcVNB1Y";
+// In the JTT pack since 2026-10-07 (was pr_crb): copies made before the move read as this through item-lookups'
+// moved-item aliases until the world migration rewrites their source.
+export const IRON_BRAVADO = "Compendium.essence20.jump_through_time.Item.8bmqJ7hyOAcVNB1Y";
 
 // Iron Bravado (A Jump Through Time, Black Spectrum Modification, p.45): a Free action and 1 Personal
 // Power share the holder's current Condition immunities with allies within 30 feet until the

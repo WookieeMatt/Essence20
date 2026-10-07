@@ -17,7 +17,7 @@
     },
     "items": {
       "2beb": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.pbfLfPqG58y5bu7z",
+        "uuid": "Compendium.essence20.tf_crb.Item.pbfLfPqG58y5bu7z",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Medium Blade Effect",
         "type": "weaponEffect",
@@ -39,7 +39,7 @@
         "shiftDown": 0
       },
       "a021": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.qJ2FDEwfZF9R8fQX",
+        "uuid": "Compendium.essence20.tf_crb.Item.qJ2FDEwfZF9R8fQX",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Medium Blade Alternate Effect",
         "type": "weaponEffect",
@@ -83,8 +83,6 @@
         "shiftDown": 3
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

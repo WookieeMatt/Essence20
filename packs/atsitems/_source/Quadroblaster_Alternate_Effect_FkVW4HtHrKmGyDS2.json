@@ -14,7 +14,7 @@
     "damageType": "stun",
     "damageValue": 3,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 5,
     "range": {

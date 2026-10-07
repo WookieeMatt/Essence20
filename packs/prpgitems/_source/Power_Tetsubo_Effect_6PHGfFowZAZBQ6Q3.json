@@ -1,20 +1,20 @@
 {
-  "folder": "3DFhfCdFXlvpZQWT",
-  "name": "Power Hammer Alternate Effect",
+  "folder": "NWo2gEjNYWxdgp7f",
+  "name": "Power Tetsubo Effect",
   "type": "weaponEffect",
-  "_id": "fi9SgjBN2FhW47D3",
+  "_id": "6PHGfFowZAZBQ6Q3",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
     "actionType": "standard",
     "classification": {
       "skill": "might",
-      "style": "melee"
+      "style": "energy"
     },
-    "damageType": "stun",
-    "damageValue": 0,
+    "damageType": "element",
+    "damageValue": 2,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {
@@ -38,12 +38,12 @@
     "systemId": "essence20",
     "systemVersion": "4.6.9",
     "coreVersion": "13.344",
-    "createdTime": 1790265429891,
-    "modifiedTime": 1790265429891,
+    "createdTime": 1790265429899,
+    "modifiedTime": 1790265429899,
     "lastModifiedBy": null,
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!fi9SgjBN2FhW47D3"
+  "_key": "!items!6PHGfFowZAZBQ6Q3"
 }

@@ -11,7 +11,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the Melee Weapon's one-handed attack, rolling Might for 1 Blunt damage in melee.</p>"
+      "notes": "<p>Automatic: the Melee Weapon's one-handed attack, rolling the better of Finesse and Might for 1 Blunt damage in melee.</p>"
     },
     "originalId": "",
     "actionType": "standard",

@@ -85,7 +85,7 @@ export const FILES = {
   takeTheWheel: 'ccitems/_source/Take_the_Wheel_EQK0bAGpmYkGPcRi.json',
   competitiveStrength: 'jttitems/_source/Competitive_Strength_J0ljd1QnU9AgoWj6.json',
   caretaker: 'prcrbitems/_source/Caretaker_4q2SPRzdbGosL62k.json',
-  payItForward: 'prcrbitems/_source/Pay_It_Forward_M3pQgNMsU5hU5dMN.json',
+  payItForward: 'jttitems/_source/Pay_It_Forward_M3pQgNMsU5hU5dMN.json',
   antiMatterReactor: 'qgtgitems/_source/Anti_Matter_Reactor_kOsm7efSfPh531Hm.json',
   camoNetting: 'qgtgitems/_source/Camo_Netting_S3qPHlomgES5iUNi.json',
   optimizedSeating: 'qgtgitems/_source/Optimized_Seating_5LrQ4TGjgWKsomL7.json',

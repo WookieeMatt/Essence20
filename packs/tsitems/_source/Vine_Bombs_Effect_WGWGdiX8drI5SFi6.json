@@ -6,11 +6,13 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Targeting: rolls the better of the two","from":"athletics","to":"targeting","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Targeting: rolls the better of the two","from":"targeting","to":"athletics","mode":"bestOf"},
       {"type":"Trigger","event":"hit","label":"Grappled by the vines (Vine Bombs)","when":["item:own"],"steps":[{"do":"applyCondition","condition":"grappled","to":"target"},{"do":"save","to":"target","title":"Escape the Vine Bombs (vs 16 Toughness)","skills":["might","athletics"],"dif":16,"status":"grappled","removeOnSuccess":true}]}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a thrown attack for 1 Stun; on a hit the target is grappled and gets a chat button to try escaping against Toughness 16.</p>"
+      "notes": "<p>Automatic: rolls the better of Athletics and Targeting.</p><p>Automatic: a thrown attack for 1 Stun; on a hit the target is grappled and gets a chat button to try escaping against Toughness 16.</p>"
     },
     "originalId": "",
     "actionType": "standard",

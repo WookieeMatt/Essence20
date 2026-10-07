@@ -11,7 +11,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the Unarmed Strike's Maneuver: rolls Finesse at Reach with ↓1. Change its Skill to Might on the sheet if you prefer.</p>"
+      "notes": "<p>Automatic: the Unarmed Strike's Maneuver: rolls the better of Finesse and Might at Reach with ↓1.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -28,7 +28,7 @@
     "damageValue": null,
     "isSpecialized": false,
     "shiftDown": 1,
-    "numHands": "0",
+    "numHands": 0,
     "numTargets": 1,
     "radius": 0,
     "range": {

@@ -24,7 +24,7 @@
     "damageValue": 3,
     "isSpecialized": false,
     "shiftDown": 3,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

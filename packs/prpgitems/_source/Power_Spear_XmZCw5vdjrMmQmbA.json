@@ -17,7 +17,7 @@
     },
     "items": {
       "HcAU": {
-        "uuid": "Compendium.essence20.pr_crb.Item.yY5u7ocQAx7mTgzk",
+        "uuid": "Compendium.essence20.power_rangers_pre_gens.Item.yY5u7ocQAx7mTgzk",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Power Spear Effect",
         "type": "weaponEffect",
@@ -39,7 +39,7 @@
         "shiftDown": 0
       },
       "p6BA": {
-        "uuid": "Compendium.essence20.pr_crb.Item.Y6qVhMeJE5FHixNh",
+        "uuid": "Compendium.essence20.power_rangers_pre_gens.Item.Y6qVhMeJE5FHixNh",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Power Spear Alternate Effect",
         "type": "weaponEffect",
@@ -61,8 +61,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"

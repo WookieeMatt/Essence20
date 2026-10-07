@@ -5,9 +5,12 @@
   "_id": "U8hcTqLqPyMGyz22",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick a Relic Weapon Trait","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","count":1,"required":true}]}
+    ],
     "automation": {
-      "status": "manual",
-      "notes": "<p>Left to the table: pick one Relic Weapon Trait for your Grid Relic (add that trait's Perk); more at 7th, 12th and 17th level.</p>"
+      "status": "full",
+      "notes": "<p>When gained (7th, 12th and 17th level), pick one Relic Weapon Trait you don't have yet; it is added as its own Perk and works as that Perk describes.</p>"
     },
     "originalId": "",
     "description": "",
@@ -15,7 +18,64 @@
       "book": "Power Rangers Core Rulebook",
       "page": 61
     },
-    "items": {},
+    "items": {
+      "a1e3": {
+        "uuid": "Compendium.essence20.pr_crb.Item.op48tWsOS2uno2MA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Energy Blasts",
+        "type": "perk",
+        "role": null
+      },
+      "b27c": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FL7xnRUhVwmtKj2N",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Fast Draw",
+        "type": "perk",
+        "role": null
+      },
+      "c49d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.fPnUOnzp4glrlvtR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Intelligence",
+        "type": "perk",
+        "role": null
+      },
+      "d5a1": {
+        "uuid": "Compendium.essence20.pr_crb.Item.v0xy8scGOCGFBrOa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Multi-Strike",
+        "type": "perk",
+        "role": null
+      },
+      "e6b8": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rDwsw5Gaps5GLB71",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Proximity Alarm",
+        "type": "perk",
+        "role": null
+      },
+      "f7c2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.uk0T2IjgefVwOufv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Shatter Strike",
+        "type": "perk",
+        "role": null
+      },
+      "18d4": {
+        "uuid": "Compendium.essence20.pr_crb.Item.qt9OhfYaZwc6NV9c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Thunderous",
+        "type": "perk",
+        "role": null
+      },
+      "29e6": {
+        "uuid": "Compendium.essence20.pr_crb.Item.aExhIUpfJTx6fJeU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Zord Control",
+        "type": "perk",
+        "role": null
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,

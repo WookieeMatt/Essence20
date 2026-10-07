@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import {
   MORPHED_TOUGHNESS_RULES, legacyRerollRule, migrateDetailsFields, migrateItemData, migrateMorphedToughness, migratePerkCanActivate,
   migratePerkValue, roleOfActorData, migrateRerollFields, migrateUpgradeAimBonus, perkValueRules, resetMigrationCaches,
-  migratePrerequisiteText, PREREQUISITE_ASK_MAX,
+  migratePrerequisiteText, PREREQUISITE_ASK_MAX, migrateWeaponEntryAimBonus,
 } from './migration.mjs';
 
 /**
@@ -302,6 +302,34 @@ describe('Details-tab fields moved into rules', () => {
 
     test('0 is left alone', async () => {
       expect(await migrateUpgradeAimBonus({ type: 'upgrade', system: { aimShiftBonus: 0 } })).toEqual({});
+    });
+  });
+
+  describe('a weapon entry\'s unread aimShiftBonus snapshot', () => {
+    const weapon = items => ({ type: 'weapon', flags: {}, system: { items } });
+
+    test('the key is force-deleted from every entry that has it, whatever its value; a second run does nothing', async () => {
+      const item = weapon({
+        aaaa: { name: 'Laser Sight', type: 'upgrade', aimShiftBonus: 1 },
+        bbbb: { name: 'Scope', type: 'upgrade', aimShiftBonus: 0 },
+        cccc: { name: 'Burst', type: 'weaponEffect', damageValue: 2 },
+      });
+      const update = migrateWeaponEntryAimBonus(item);
+      expect(Object.keys(update).sort()).toEqual(['system.items.aaaa.aimShiftBonus', 'system.items.bbbb.aimShiftBonus']);
+      expect(Object.values(update).every(isForced)).toBe(true);
+      const next = applied(item, update);
+      expect(next.system.items.aaaa).toEqual({ name: 'Laser Sight', type: 'upgrade' });
+      expect(next.system.items.cccc).toEqual({ name: 'Burst', type: 'weaponEffect', damageValue: 2 });
+      expect(migrateWeaponEntryAimBonus(next)).toEqual({});
+      expect(await migrateDetailsFields(next)).toEqual({});
+    });
+
+    test('runs from migrateDetailsFields; other types and entry-less weapons are left alone', async () => {
+      const item = weapon({ aaaa: { aimShiftBonus: 1 } });
+      expect(isForced((await migrateDetailsFields(item))['system.items.aaaa.aimShiftBonus'])).toBe(true);
+      expect(migrateWeaponEntryAimBonus({ type: 'armor', system: { items: { aaaa: { aimShiftBonus: 1 } } } })).toEqual({});
+      expect(migrateWeaponEntryAimBonus(weapon(undefined))).toEqual({});
+      expect(migrateWeaponEntryAimBonus(weapon({ aaaa: null }))).toEqual({});
     });
   });
 

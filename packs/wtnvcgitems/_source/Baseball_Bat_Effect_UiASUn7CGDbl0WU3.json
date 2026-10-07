@@ -11,7 +11,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a two-handed Finesse melee attack at Reach for 1 Blunt damage.</p>"
+      "notes": "<p>Automatic: rolls the better of Finesse and Might.</p><p>Automatic: a two-handed melee attack at Reach for 1 Blunt damage.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -28,7 +28,7 @@
     "damageValue": 1,
     "isSpecialized": false,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

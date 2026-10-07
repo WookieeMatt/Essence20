@@ -7,6 +7,7 @@ import { legacyValue } from "./legacy-choices.mjs";
 import { choiceValue, legacyChoiceOf } from "./choice-read.mjs";
 import { queueAsk } from "./ask-queue.mjs";
 import { sourceOf } from "../items/shared/item-lookups.mjs";
+import { NO_PICK, searchBoxHtml, searchedValue, searchSelectAttrs, selectSearchRender } from "../util/select-search.mjs";
 
 /**
  * What an item's rules do when it joins or leaves an actor (docs/RULES_ENGINE_PLAN.md §4):
@@ -41,7 +42,10 @@ export function choiceOptions(rule, { actor = null, item = null, allOptions = fa
   let options;
   switch (rule.from) {
   case 'skill': {
-    const keys = filterSkills(Object.keys(E20.skills ?? {}).filter(key => key != 'any'), rule, actor);
+    // minShift / maxShift / specializedOnly read the actor's dice now, so a label lookup or an old pick's match
+    // (allOptions) leaves them off: a pick made while the die was lower is kept and still named (PR Expertise, d4+).
+    const narrow = allOptions ? { ...rule, minShift: undefined, maxShift: undefined, specializedOnly: undefined } : rule;
+    const keys = filterSkills(Object.keys(E20.skills ?? {}).filter(key => key != 'any'), narrow, actor);
     options = fromConfig(E20.skills).filter(option => keys.includes(option.value));
     break;
   }
@@ -224,16 +228,22 @@ export async function askChoice(rule, item, { options = null, n = null, count = 
   // `from: 'text'` - the player types the answer (a subject studied, a person named).
   const select = rule.from == 'text'
     ? `<input type="text" name="choice" value="${escape(current ?? '')}" autofocus>`
-    : `<select name="choice">${offered.map(o => `<option value="${escape(o.value)}"${o.value == current ? ' selected' : ''}>${escape(o.label)}</option>`).join('')}</select>`;
+    : `<select name="choice"${searchSelectAttrs(offered.length)}>${offered.map(o => `<option value="${escape(o.value)}"${o.value == current ? ' selected' : ''}>${escape(o.label)}</option>`).join('')}</select>`;
+  // A long list gets a search box (util/select-search.mjs); nothing visible answers NO_PICK, taken as a cancel.
+  const search = rule.from == 'text' ? '' : searchBoxHtml(offered.length);
   const prompt = n && count > 1 ? T('ChoicePromptOf', { name, n, count }) : T('ChoicePrompt', { name });
   const { DialogV2 } = foundry.applications.api;
   return DialogV2.prompt({
     window: { title: `${item.name}: ${name}` },
     classes: ['essence20', 'e20-rules-choice'],
-    content: `<p>${escape(prompt)}</p><div class="form-group">${select}</div>`,
-    ok: { label: T('ChoiceConfirm'), callback: (event, button) => button.form.elements.choice.value.trim() || null },
+    content: `<p>${escape(prompt)}</p>${search}<div class="form-group">${select}</div>`,
+    ok: {
+      label: T('ChoiceConfirm'),
+      callback: (event, button) => (rule.from == 'text' ? button.form.elements.choice.value.trim() || null : searchedValue(button.form.elements.choice)),
+    },
+    render: selectSearchRender(),
     rejectClose: false,
-  }).catch(() => null);
+  }).then(value => (value === NO_PICK ? null : value)).catch(() => null);
 }
 
 /**

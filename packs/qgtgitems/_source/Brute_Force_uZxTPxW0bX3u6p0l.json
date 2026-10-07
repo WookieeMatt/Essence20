@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: a Thrown Bludgeoning weapon, a Close Combat Heavy Bludgeoning weapon and Ballistic Armor (Spiked).</p>"
+      "notes": "<p>Granted: a Thrown Bludgeon weapon, a Close Combat Heavy Bludgeon weapon and Ballistic Armor (Spiked).</p>"
     },
     "originalId": "",
     "description": "",
@@ -19,13 +19,13 @@
       "1345": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.aYXpzOQHHTbJi9pk",
         "img": "systems/essence20/assets/icons/weapons/boomerang.svg",
-        "name": "Thrown Bludgeoning",
+        "name": "Thrown Bludgeon",
         "type": "weapon",
         "items": {
           "0f47": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.tXzl5XrXnSX091BF",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Thrown Bludgeoning Effect",
+            "name": "Thrown Bludgeon Effect",
             "type": "weaponEffect",
             "classification": {
               "skill": "targeting",
@@ -47,7 +47,7 @@
           "7fd4": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.teAtYR2ewLiQIFNp",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Thrown Bludgeoning Alternate Effect",
+            "name": "Thrown Bludgeon Alternate Effect",
             "type": "weaponEffect",
             "classification": {
               "skill": "targeting",
@@ -71,13 +71,13 @@
       "c477": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN",
         "img": "systems/essence20/assets/icons/weapons/hammer.svg",
-        "name": "Close Combat Heavy Bludgeoning",
+        "name": "Close Combat Heavy Bludgeon",
         "type": "weapon",
         "items": {
           "8fa4": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.JWm06vX4u4QSDf4D",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Close Combat Heavy Bludgeoning Effect",
+            "name": "Close Combat Heavy Bludgeon Effect",
             "type": "weaponEffect",
             "classification": {
               "skill": "finesse",
@@ -99,7 +99,7 @@
           "a47f": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.SdBelSCDxdO7XM0j",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Close Combat Heavy Bludgeoning Alternate Effect",
+            "name": "Close Combat Heavy Bludgeon Alternate Effect",
             "type": "weaponEffect",
             "classification": {
               "skill": "finesse",

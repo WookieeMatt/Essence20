@@ -1,6 +1,6 @@
 {
   "folder": "3biTo5jNrvQrycM8",
-  "name": "Close Combat Bludgeoning Effect",
+  "name": "Close Combat Bludgeon Effect",
   "type": "weaponEffect",
   "_id": "Ty7ZBubtYM7BIwbT",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -14,7 +14,7 @@
     "damageType": "stun",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

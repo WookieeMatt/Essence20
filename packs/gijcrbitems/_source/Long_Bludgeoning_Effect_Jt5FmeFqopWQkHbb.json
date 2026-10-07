@@ -1,6 +1,6 @@
 {
   "folder": "drka0rofRF1H6EQg",
-  "name": "Long Bludgeoning Effect",
+  "name": "Long Bludgeon Effect",
   "type": "weaponEffect",
   "_id": "Jt5FmeFqopWQkHbb",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -18,7 +18,7 @@
     "damageType": "blunt",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

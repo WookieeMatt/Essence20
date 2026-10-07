@@ -72,7 +72,7 @@ const P = {
   fury: 'ttsgitems/_source/Elemental_Fury_larsGRE5U4ZOVxzw.json',
   teeth: 'wtnvcgitems/_source/Replacement_Teeth_wuHnZ1qtGrd8il8a.json',
   nanoMed: 'gijcrbitems/_source/Nano_Med_Mastery_7hMe2hYONR6wBMFv.json',
-  ironBravado: 'prcrbitems/_source/Iron_Bravado_8bmqJ7hyOAcVNB1Y.json',
+  ironBravado: 'jttitems/_source/Iron_Bravado_8bmqJ7hyOAcVNB1Y.json',
   safety: 'qgtgitems/_source/Your_Safety_s_On_CLwsh2pCwbrgYGru.json',
 };
 

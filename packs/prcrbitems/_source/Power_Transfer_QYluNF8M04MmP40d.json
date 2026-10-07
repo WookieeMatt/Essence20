@@ -20,7 +20,6 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": true,
     "maxPowerCost": null,
     "powerCost": 1,

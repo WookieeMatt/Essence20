@@ -27,7 +27,6 @@
         "type": "hangUp"
       }
     },
-    "bond": "",
     "mandatoryHangUp": false,
     "skills": [
       "infiltration"

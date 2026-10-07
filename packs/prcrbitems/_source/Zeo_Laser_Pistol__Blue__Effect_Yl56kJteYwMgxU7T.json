@@ -1,6 +1,6 @@
 {
   "folder": "5zj2CgvpGqW2KOa8",
-  "name": "Zeo Laser Pistol (Blue) Effect",
+  "name": "Zeo Laser Pistols (Blue) Effect",
   "type": "weaponEffect",
   "_id": "Yl56kJteYwMgxU7T",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -14,7 +14,7 @@
     "damageType": "cold",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

@@ -1,6 +1,6 @@
 {
   "folder": "twAzK7PJVBNaMLJk",
-  "name": "Medium Blade Alternate Effect",
+  "name": "Martial Arts Medium Blade Alternate Effect",
   "type": "weaponEffect",
   "_id": "qJ2FDEwfZF9R8fQX",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -18,7 +18,7 @@
     "damageType": "sharp",
     "damageValue": 1,
     "shiftDown": 1,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 2,
     "radius": 0,
     "range": {

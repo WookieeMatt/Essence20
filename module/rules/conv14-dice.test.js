@@ -113,7 +113,7 @@ const FILES = {
   nowImAngry: 'dditems/_source/Now_I_m_Angry_eqOgBhx720rSSUTh.json',
   menacingGlare: 'bthitems/_source/Menacing_Glare_eWlflRHYAVB9p5Z0.json',
   augmented: 'atsitems/_source/Augmented_k76uXWWDpe0yKEcu.json',
-  ironBravado: 'prcrbitems/_source/Iron_Bravado_8bmqJ7hyOAcVNB1Y.json',
+  ironBravado: 'jttitems/_source/Iron_Bravado_8bmqJ7hyOAcVNB1Y.json',
 };
 
 let nextId = 1;

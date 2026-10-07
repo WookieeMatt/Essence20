@@ -131,7 +131,7 @@ const FILES = {
   weaponForage: 'fffav1items/_source/Weapon_Forage_OWVl8HRXBI7mwJ0j.json',
   quickbash: 'gijcrbitems/_source/Quickbash_YlihpNSSspqwfMv6.json',
   manifestEnhancement: 'tfcrbitems/_source/Manifest_Enhancement_syJ8looy53vONS0X.json',
-  brainstorm: 'prcrbitems/_source/Brainstorm_iVpoqL7ZY4SK4iLc.json',
+  brainstorm: 'jttitems/_source/Brainstorm_iVpoqL7ZY4SK4iLc.json',
   droneWeapon: 'gijcrbitems/_source/Integrated_Specialized_Weapon_ddLUrsn3t96NpUqL.json',
   inventive1: 'jttitems/_source/Inventive_Application_1_ubR7N8PYKDMSxmkM.json',
   inventive2: 'jttitems/_source/Inventive_Application_2_As1eUnG5W54GwotE.json',

@@ -1,6 +1,6 @@
 {
   "folder": "pOLMlRxCTW5NqJfT",
-  "name": "Zeo Laser Pistol",
+  "name": "Zeo Laser Pistols",
   "type": "weapon",
   "_id": "oy8BIwJnGGOMCgMv",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
@@ -19,7 +19,7 @@
       "41f3": {
         "uuid": "Compendium.essence20.pr_crb.Item.A9y8bQESIlPw9BnP",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Zeo Laser Pistol Effect",
+        "name": "Zeo Laser Pistols Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -41,7 +41,7 @@
       "z1bk": {
         "uuid": "Compendium.essence20.pr_crb.Item.xThllZn6ehdOWt3K",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Zeo Laser Pistol (Black) Effect",
+        "name": "Zeo Laser Pistols (Black) Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -63,7 +63,7 @@
       "z2bl": {
         "uuid": "Compendium.essence20.pr_crb.Item.Yl56kJteYwMgxU7T",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Zeo Laser Pistol (Blue) Effect",
+        "name": "Zeo Laser Pistols (Blue) Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -85,7 +85,7 @@
       "z3gr": {
         "uuid": "Compendium.essence20.pr_crb.Item.zHPyFSE6jFRYUYtA",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Zeo Laser Pistol (Green) Effect",
+        "name": "Zeo Laser Pistols (Green) Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -107,7 +107,7 @@
       "z4pk": {
         "uuid": "Compendium.essence20.pr_crb.Item.xj8d0ytPxDKOhg78",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Zeo Laser Pistol (Pink) Effect",
+        "name": "Zeo Laser Pistols (Pink) Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -129,7 +129,7 @@
       "z5rd": {
         "uuid": "Compendium.essence20.pr_crb.Item.XjNYg101ThPB3MAG",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Zeo Laser Pistol (Red) Effect",
+        "name": "Zeo Laser Pistols (Red) Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -151,7 +151,7 @@
       "z6yl": {
         "uuid": "Compendium.essence20.pr_crb.Item.QOVGWuPC0hrNTIIz",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Zeo Laser Pistol (Yellow) Effect",
+        "name": "Zeo Laser Pistols (Yellow) Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -171,8 +171,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"

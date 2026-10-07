@@ -1,27 +1,27 @@
 {
-  "folder": "7cbGCbO9SnTUU2vx",
-  "name": "Power Crossbow Alternate Effect",
+  "folder": "nI6VvIrghAzztoF4",
+  "name": "Power Spear Effect",
   "type": "weaponEffect",
-  "_id": "Nr1vOg4xCPApJ27G",
+  "_id": "yY5u7ocQAx7mTgzk",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
     "actionType": "standard",
     "classification": {
-      "skill": "targeting",
-      "style": "energy"
+      "skill": "might",
+      "style": "melee"
     },
-    "damageType": "element",
+    "damageType": "sharp",
     "damageValue": 1,
-    "shiftDown": 1,
-    "numHands": "2",
-    "numTargets": 2,
-    "radius": 30,
+    "shiftDown": 0,
+    "numHands": 1,
+    "numTargets": 1,
+    "radius": 0,
     "range": {
       "min": null,
-      "reachMultiplier": 0,
-      "long": 100,
-      "value": 50
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
     },
     "source": {
       "book": "Power Rangers Pre Gen Characters",
@@ -38,12 +38,12 @@
     "systemId": "essence20",
     "systemVersion": "4.6.9",
     "coreVersion": "13.344",
-    "createdTime": 1790265429897,
-    "modifiedTime": 1790265429897,
+    "createdTime": 1790265429878,
+    "modifiedTime": 1790265429878,
     "lastModifiedBy": null,
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!Nr1vOg4xCPApJ27G"
+  "_key": "!items!yY5u7ocQAx7mTgzk"
 }

@@ -1,6 +1,6 @@
 {
   "folder": "p4ye6pAYbYyizfgq",
-  "name": "Close Combat Bludgeoning",
+  "name": "Close Combat Bludgeon",
   "type": "weapon",
   "_id": "ZNokHTRBa5aindap",
   "img": "systems/essence20/assets/icons/weapons/baseball-bat.svg",
@@ -17,9 +17,9 @@
     },
     "items": {
       "96c8": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.Ty7ZBubtYM7BIwbT",
+        "uuid": "Compendium.essence20.tf_crb.Item.Ty7ZBubtYM7BIwbT",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Bludgeoning Effect",
+        "name": "Close Combat Bludgeon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -39,9 +39,9 @@
         "shiftDown": 0
       },
       "bcfd": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.2X1w4UM04U6LliE0",
+        "uuid": "Compendium.essence20.tf_crb.Item.2X1w4UM04U6LliE0",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Bludgeoning Alternate Effect",
+        "name": "Close Combat Bludgeon Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -63,7 +63,7 @@
       "008c": {
         "uuid": "Compendium.essence20.tf_crb.Item.YODFm2APSGLPdnw0",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Bludgeoning Alternate Effect 2",
+        "name": "Close Combat Bludgeon Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -83,8 +83,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"

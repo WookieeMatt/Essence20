@@ -1,6 +1,6 @@
 {
   "folder": "drka0rofRF1H6EQg",
-  "name": "Short Bludgeoning Effect",
+  "name": "Short Bludgeon Effect",
   "type": "weaponEffect",
   "_id": "7ah23fiimnJq6HIL",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -18,7 +18,7 @@
     "damageType": "stun",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

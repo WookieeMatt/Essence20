@@ -5,9 +5,13 @@
   "_id": "0D8fE5pl44sGUQ4p",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"finesse","to":"might","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"might","to":"finesse","mode":"bestOf"}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: an attack at double Reach, at ↑2, that performs a Maneuver on a hit.</p>"
+      "notes": "<p>Automatic: rolls the better of Finesse and Might.</p><p>Automatic: an attack at double Reach, at ↑2, that performs a Maneuver on a hit.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -24,7 +28,7 @@
     "damageValue": null,
     "accurateShiftUp": 2,
     "shiftDown": 0,
-    "numHands": "0",
+    "numHands": 0,
     "numTargets": 1,
     "radius": 0,
     "range": {

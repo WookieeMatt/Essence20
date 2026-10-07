@@ -1,4 +1,5 @@
 import { getVisibleItemPacks } from "./compendium-browser.mjs";
+import { NO_PICK, searchBoxHtml, searchedValue, searchSelectAttrs, selectSearchRender } from "./select-search.mjs";
 
 /**
  * A picker over every compendium Item matching a filter, rather than over a fixed list of options.
@@ -85,22 +86,24 @@ export async function pickCompendiumItem(rows, { title, label }) {
   const options = rows
     .map(row => `<option value="${row.uuid}">${foundry.utils.escapeHTML?.(row.name) ?? row.name}</option>`)
     .join('');
+  // A long list gets a search box (select-search.mjs); nothing visible answers NO_PICK, taken as a cancel.
   const chosen = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize(title) },
     classes: ["window-app"],
-    content: `<div class="form-group"><label>${
+    content: `${searchBoxHtml(rows.length)}<div class="form-group"><label>${
       game.i18n.localize(label)
-    }</label><select name="uuid">${options}</select></div>`,
+    }</label><select name="uuid"${searchSelectAttrs(rows.length)}>${options}</select></div>`,
     modal: true,
     buttons: [
       {
         label: game.i18n.localize('E20.DialogConfirmButton'),
         action: 'confirm',
-        callback: (event, button) => button.form.elements.uuid.value,
+        callback: (event, button) => searchedValue(button.form.elements.uuid),
       },
       { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
     ],
+    render: selectSearchRender({ name: 'uuid', confirm: 'confirm' }),
   });
 
-  return chosen && chosen != 'cancel' ? chosen : null;
+  return chosen && chosen != 'cancel' && chosen !== NO_PICK ? chosen : null;
 }

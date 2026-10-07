@@ -549,9 +549,9 @@ function hasBlindingAlternate(actor, weapon) {
     && i.flags?.essence20?.parentId == weapon.id && i.system?.damageType == 'blindingBlast');
 }
 
-// Beastly (Factions in Action Vol. 1, Influence Perk, p.75) is handled entirely in
-// documents/item.mjs (UNARMED_COMBAT_ALTERNATE_EFFECT_1_IDS), which zeroes the Blunt alternate
-// effect's own shiftDown before it reaches the roller. A second cancelling ↑1 used to live here
+// Beastly (Factions in Action Vol. 1, Influence Perk, p.75) is handled entirely by its own ItemModifier
+// rule, which sets the Unarmed Combat Blunt alternate effect's shiftDown to 0 (rules/adapter.mjs#ruleDerived;
+// documents/item.mjs reads the result as the effect's printed ↓). A second cancelling ↑1 used to live here
 // too and double-counted it (fix pass 3).
 
 // Defensive Flexibility (Blue Spectrum Modification, replaces Grid Tech, p.45) - see
@@ -1169,7 +1169,7 @@ export class Dice {
     }
 
     // Eureka's d2 crit on Field Skill Tests is its CritOnD2 rule (skill:choiceOf:<Field>).
-    // Eureka! (Blue Ranger), Eltarian Tech, "I remember reading about…." and Mystical Understanding's
+    // Eureka! (Blue Ranger), Eltarian Tech, "I remember reading about..." and Mystical Understanding's
     // Spellcialize are DialogSwitch rules on their own items.
 
     // Enviro-Sealed - see hasEnviroSealedEdge's own comment above. Shown whenever the actor wears

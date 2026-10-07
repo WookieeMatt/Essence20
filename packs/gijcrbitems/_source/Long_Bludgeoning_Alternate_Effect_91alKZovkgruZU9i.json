@@ -1,6 +1,6 @@
 {
   "folder": "drka0rofRF1H6EQg",
-  "name": "Long Bludgeoning Alternate Effect",
+  "name": "Long Bludgeon Alternate Effect",
   "type": "weaponEffect",
   "_id": "91alKZovkgruZU9i",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -18,7 +18,7 @@
     "damageType": "stun",
     "damageValue": 1,
     "shiftDown": 1,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

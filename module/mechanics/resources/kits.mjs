@@ -7,6 +7,7 @@ import { ruleKitOptions, ruleKitSkill, runKitOption } from "../../rules/plugins/
 import { ruleKitUses } from "../../rules/plugins/resources/kit-uses.mjs";
 import { ruleCarryMultiplier } from "../../rules/plugins/combat/subsystem-readers.mjs";
 import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
+import { NO_PICK, searchBoxHtml, searchedValue, searchSelectAttrs, selectSearchRender } from "../../util/select-search.mjs";
 
 /**
  * Kits (GI Joe CRB p.159-160, TF CRB p.133, Quartermaster's Guide p.42-47, Cobra Codex p.90-92,
@@ -476,16 +477,18 @@ async function chooseSelect(title, prompt, options) {
   return foundry.applications.api.DialogV2.wait({
     window: { title },
     classes: ["window-app", "e20-window"],
-    content: `<p>${prompt}</p><div class="form-group"><select name="choice">${
+    // A long list gets a search box (util/select-search.mjs); nothing visible answers NO_PICK, taken as a cancel.
+    content: `<p>${prompt}</p>${searchBoxHtml(options.length)}<div class="form-group"><select name="choice"${searchSelectAttrs(options.length)}>${
       options.map(o => `<option value="${o.value}">${foundry.utils.escapeHTML(o.label)}</option>`).join('')
     }</select></div>`,
     buttons: [
-      { action: 'ok', label: T('E20.DialogConfirmButton'), default: true, callback: (event, button) => button.form.elements.choice.value },
+      { action: 'ok', label: T('E20.DialogConfirmButton'), default: true, callback: (event, button) => searchedValue(button.form.elements.choice) },
       { action: 'cancel', label: T('E20.DialogCancelButton') },
     ],
+    render: selectSearchRender(),
     rejectClose: false,
   // '' is a real choice ("Any Specialization"), not a cancel: only a closed / cancelled dialog answers null.
-  }).then(result => (result === null || result === undefined || result == 'cancel' ? null : result));
+  }).then(result => (result === null || result === undefined || result == 'cancel' || result === NO_PICK ? null : result));
 }
 
 async function rollTest(actor, skill, dif, extra = {}) {
