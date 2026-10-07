@@ -279,11 +279,12 @@
     opacity: 0.75;
   }
 
-  // The Building an Item tour's Rules text, above the question.
-  .e20-rules-add-intro {
-    font-size: 0.85rem;
-    opacity: 0.85;
-    margin: 0 0 0.4rem;
+  // The heading between the Active Effect choice and the rule kinds - a full row.
+  .e20-rules-add-choices li.e20-rules-add-heading {
+    grid-column: 1 / -1;
+    margin: 0.4rem 0 0.1rem;
+    font-weight: bold;
+    font-size: 0.9rem;
   }
 }
 

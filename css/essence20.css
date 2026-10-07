@@ -8147,10 +8147,11 @@ select.e20-select-searchable optgroup[hidden] {
   font-size: 0.8rem;
   opacity: 0.75;
 }
-.essence20.e20-rules-add-dialog .e20-rules-add-intro {
-  font-size: 0.85rem;
-  opacity: 0.85;
-  margin: 0 0 0.4rem;
+.essence20.e20-rules-add-dialog .e20-rules-add-choices li.e20-rules-add-heading {
+  grid-column: 1/-1;
+  margin: 0.4rem 0 0.1rem;
+  font-weight: bold;
+  font-size: 0.9rem;
 }
 
 .essence20.e20-rule-editor .window-content {
