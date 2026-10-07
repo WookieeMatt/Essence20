@@ -66,8 +66,9 @@
       "size": "long"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:skill:brawn>=d6","self:size>=gigantic"]}]},
     "requirements": {
-      "custom": "Gigantic",
+      "custom": "",
       "skill": "brawn",
       "shift": "d6"
     },

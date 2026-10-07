@@ -44,8 +44,9 @@
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Path of Flame"]},
     "requirements": {
-      "custom": "Path of Flame",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

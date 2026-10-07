@@ -66,8 +66,9 @@
       "size": "heavy"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:skill:brawn>=d4"]},
     "requirements": {
-      "custom": "Brawn d4",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

@@ -88,8 +88,9 @@
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=towering"]},
     "requirements": {
-      "custom": "Towering",
+      "custom": "",
       "skill": "might",
       "shift": "d6"
     },

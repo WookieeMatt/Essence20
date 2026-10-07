@@ -1,6 +1,8 @@
 import { registerRollSources } from "../../mechanics/item-hooks.mjs";
 import { ruleBrawnBonus } from "../../rules/plugins/effects/brawn-requirement.mjs";
 import { itemsOf } from "../shared/item-lookups.mjs";
+import { parentWeaponOf } from "../shared/unarmed-attacks.mjs";
+import { contextFor, evaluate } from "../../rules/predicate.mjs";
 
 /**
  * Armor rules for the data1 slice of the Item Review (Reinforced Shell's Alt Mode / Bot Mode split is its upgrade's own
@@ -32,8 +34,8 @@ function ladderIndex(shift) {
  * Die sizes the actor's Brawn counts as higher for an armor requirement - Infinity to ignore it. The Perks that
  * bend it (Over Brawn, The Heavy, Pack Mule) carry BrawnRequirement rules (rules/plugins/effects/brawn-requirement.mjs).
  */
-export function brawnRequirementBonus(actor) {
-  return ruleBrawnBonus(actor, 'requirement');
+export function brawnRequirementBonus(actor, equipment = 'armor') {
+  return ruleBrawnBonus(actor, 'requirement', equipment);
 }
 
 /**
@@ -65,7 +67,79 @@ export function brawnShortfall(actor, armor) {
   }
 
   const has = actor?.system?.skills?.brawn?.shift ?? 'd20';
-  return Math.max(0, ladderIndex(required) - ladderIndex(has) - brawnRequirementBonus(actor));
+  return Math.max(0, ladderIndex(required) - ladderIndex(has) - brawnRequirementBonus(actor, 'armor'));
+}
+
+/**
+ * A weapon's printed Brawn requirement (its structured requirements, skill brawn), or null. For a Transformer, a weapon
+ * in an Integrated Hardpoint has it lowered one die (TF CRB p.114: d4 becomes d2) - Item#_prepareHardpointDerived's
+ * effectiveBrawnReq. The hardpoint type defaults on every weapon, so only an actor that can transform reads it.
+ * @param {Item} weapon
+ * @param {Actor} [actor]
+ * @returns {String|null}
+ */
+export function weaponBrawnRequirement(weapon, actor = null) {
+  const requirements = weapon?.system?.requirements;
+  if (requirements?.skill != 'brawn') {
+    return null;
+  }
+
+  const shift = actor?.system?.canTransform ? (weapon.system.effectiveBrawnReq ?? requirements.shift) : requirements.shift;
+  return BRAWN_LADDER.includes(shift) && shift != 'none' ? shift : null;
+}
+
+/**
+ * Die sizes of Brawn the actor lacks for a weapon's Brawn requirement - ↓1 to its attacks for each (GI Joe CRB p.117,
+ * TF CRB p.97, Power Rangers CRB p.81). Rules raising Brawn for requirements count (The Heavy, Ordnance Expert's
+ * weapons-only ↑4); Over Brawn ignores it.
+ * @param {Actor} actor
+ * @param {Item} weapon
+ * @returns {Number}
+ */
+export function weaponBrawnShortfall(actor, weapon) {
+  const required = weaponBrawnRequirement(weapon, actor);
+  if (!required || meetsBrawnAlternative(actor, weapon)) {
+    return 0;
+  }
+
+  const has = actor?.system?.skills?.brawn?.shift ?? 'd20';
+  return Math.max(0, ladderIndex(required) - ladderIndex(has) - brawnRequirementBonus(actor, 'weapon'));
+}
+
+/**
+ * Whether the weapon's printed requirement offers something in place of the Brawn, and the actor has it: "Brawn d4/Huge"
+ * (TF and PR CRB) or "Brawn/Targeting d4" (Power Cannon) are prerequisite `any` groups - a Huge character, or one with
+ * the Targeting, meets the requirement without the Brawn. A Brawn tag on its own (the Forge of Solus Prime's d8 floor)
+ * keeps the requirement whatever else is met.
+ * @param {Actor} actor
+ * @param {Item} weapon
+ * @returns {Boolean}
+ */
+export function meetsBrawnAlternative(actor, weapon) {
+  const when = weapon?.system?.prerequisites?.when ?? [];
+  const isBrawnTag = tag => typeof tag == 'string' && /^self:skill:brawn>=/.test(tag);
+  if (!Array.isArray(when) || when.some(isBrawnTag)) {
+    return false;
+  }
+
+  const ctx = contextFor({ self: actor });
+  return when.some(group => Array.isArray(group?.any) && group.any.some(isBrawnTag)
+    && group.any.some(tag => !isBrawnTag(tag) && evaluate([tag], ctx) === true));
+}
+
+/** The attack's own weapon, when it is too heavy for the attacker: one dialog line, unticked by a GM who disagrees. */
+export function weaponBrawnSources(actor, ctx = {}) {
+  if (!ctx.isAttack || ctx.item?.type != 'weaponEffect') {
+    return [];
+  }
+
+  const weapon = parentWeaponOf(ctx.item, actor);
+  const shortfall = weapon ? weaponBrawnShortfall(actor, weapon) : 0;
+  return shortfall > 0 ? [{
+    id: `d1BrawnReqWeapon-${weapon.id}`,
+    label: T('E20.D1BrawnRequirement', { name: weapon.name, req: weaponBrawnRequirement(weapon, actor) }),
+    shiftDown: shortfall,
+  }] : [];
 }
 
 /**
@@ -95,4 +169,4 @@ export function brawnRequirementSources(actor, ctx = {}) {
     }));
 }
 
-registerRollSources((actor, target, ctx) => ({ sources: brawnRequirementSources(actor, ctx) }));
+registerRollSources((actor, target, ctx) => ({ sources: [...brawnRequirementSources(actor, ctx), ...weaponBrawnSources(actor, ctx)] }));

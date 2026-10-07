@@ -44,8 +44,9 @@
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:has:Dino Charger"]},
     "requirements": {
-      "custom": "Requires a Dino Charger",
+      "custom": "",
       "skill": null,
       "shift": "none"
     },

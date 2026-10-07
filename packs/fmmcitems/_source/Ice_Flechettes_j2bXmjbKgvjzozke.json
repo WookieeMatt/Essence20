@@ -66,8 +66,9 @@
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Path of Frost"]},
     "requirements": {
-      "custom": "Path of Frost",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

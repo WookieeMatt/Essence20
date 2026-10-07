@@ -67,8 +67,9 @@
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Phantom Ranger"]},
     "requirements": {
-      "custom": "Phantom Ranger",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

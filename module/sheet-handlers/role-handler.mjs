@@ -6,6 +6,7 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 import { onPerkDelete, onPerkDrop } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
+import { removeFocusSkillPicks, syncFocusSkillPicks } from "../mechanics/characters/focus-skills.mjs";
 
 /**
  * Performs a Spectrum Shift: retroactively swaps the Actor's current Role for a new one, per
@@ -396,6 +397,10 @@ export async function _setFocusValues(focus, actor, newLevel=null, previousLevel
       [essenceMaxString]: essenceMax,
       [essenceValueString]: essenceValue,
     });
+
+    // The Skill rank each increase brings (mechanics/characters/focus-skills.mjs): asked for an increase gained,
+    // taken back for one lost.
+    await syncFocusSkillPicks(actor, focus, newLevel ?? actor.system.level, previousLevel ?? 0);
   }
 
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
@@ -435,6 +440,8 @@ export async function onFocusDelete(actor, focus) {
   // See _setFocusValues's own comment above - a Focus granting no Essence Increase at all never
   // set system.focusEssence to begin with, so there's nothing to lower back down here either.
   if (actor.system.focusEssence) {
+    // The Skill ranks / Specializations its increases placed come back off too.
+    await removeFocusSkillPicks(actor, focus);
     const previousLevel = actor.getFlag('essence20', 'previousLevel');
     const totalDecrease = roleValueChange(0, focus.system.essenceLevels, previousLevel);
     const essenceMax = Math.max(0, actor.system.essences[actor.system.focusEssence].max + totalDecrease);

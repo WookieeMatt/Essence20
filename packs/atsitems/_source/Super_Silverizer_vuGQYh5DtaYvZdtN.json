@@ -66,8 +66,9 @@
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Silver Ranger"]},
     "requirements": {
-      "custom": "SIlver Ranger",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

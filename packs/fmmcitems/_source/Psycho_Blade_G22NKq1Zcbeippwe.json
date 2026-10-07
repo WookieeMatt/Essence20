@@ -88,8 +88,9 @@
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:hasType:role:Path of Cruelty","self:hasType:role:Path of Flame","self:hasType:role:Path of Frost","self:hasType:role:Path of Stone","self:hasType:role:Path of Thorns","self:hasType:role:Path of Venom"]}]},
     "requirements": {
-      "custom": "Psycho Rangers only",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

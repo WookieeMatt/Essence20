@@ -66,8 +66,9 @@
       "size": "long"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:skill:alertness>=d4"]},
     "requirements": {
-      "custom": "Alertness d4",
+      "custom": "",
       "skill": "brawn",
       "shift": "d4"
     },

@@ -10,7 +10,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: worn armor's Brawn requirement never adds its ↓ to your rolls. Weapon Brawn requirements are only shown on the sheet, so there is nothing else to waive.</p>"
+      "notes": "<p>Automatic: armor's and weapons' Brawn requirements never add their ↓ to your rolls.</p>"
     },
     "originalId": "",
     "description": "",

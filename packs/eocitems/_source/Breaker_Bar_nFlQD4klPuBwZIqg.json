@@ -66,8 +66,9 @@
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:skill:technology>=d2"]},
     "requirements": {
-      "custom": "Technology d2",
+      "custom": "",
       "skill": "brawn",
       "shift": "d4"
     },

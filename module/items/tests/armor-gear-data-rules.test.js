@@ -69,6 +69,69 @@ describe('armor rules', () => {
     const withPerk = rule => ({ system: { skills: { brawn: { shift: 'd20' } } }, items: items([armor, perk(rule)]) });
     expect(brawnShortfall(withPerk({ amount: 2 }), armor)).toBe(2);
     expect(brawnShortfall(withPerk({ ignore: true }), armor)).toBe(0);
+    // A weapons-only rule (Ordnance Expert) leaves armor alone.
+    expect(brawnShortfall(withPerk({ amount: 4, equipment: 'weapon' }), armor)).toBe(4);
+  });
+
+  describe("a weapon's Brawn requirement (GI Joe CRB p.117, TF CRB p.97/p.114, PR CRB p.81)", () => {
+    const weapon = (shift, extra = {}) => ({
+      id: 'w', name: 'M2 Machine Gun', type: 'weapon', flags: {},
+      system: { requirements: { skill: 'brawn', shift }, hardpoint: { type: 'external' }, ...extra },
+    });
+    const effectOf = w => ({ id: 'e', type: 'weaponEffect', flags: { essence20: { parentId: w.id } } });
+    const holder = (brawn, list, system = {}) => ({ system: { skills: { brawn: { shift: brawn } }, ...system }, items: items(list) });
+
+    test('↓1 per die size of Brawn short, on attacks with that weapon only', async () => {
+      const { weaponBrawnShortfall, weaponBrawnSources } = await import('../defenses/armor-brawn-reinforced-shell.mjs');
+      const gun = weapon('d6');
+      const effect = effectOf(gun);
+      const weak = holder('d2', [gun, effect]);
+      expect(weaponBrawnShortfall(weak, gun)).toBe(2);
+      expect(weaponBrawnShortfall(holder('d6', [gun]), gun)).toBe(0);
+      const [source] = weaponBrawnSources(weak, { isAttack: true, item: effect });
+      expect(source).toEqual(expect.objectContaining({ id: 'd1BrawnReqWeapon-w', shiftDown: 2 }));
+      expect(source.label).toContain('"req":"d6"');
+      expect(weaponBrawnSources(weak, { isAttack: false, item: effect })).toEqual([]);
+      expect(weaponBrawnSources(weak, { isAttack: true, item: { type: 'weaponEffect', flags: {} } })).toEqual([]);
+    });
+
+    test('only a Brawn requirement counts; none / another Skill is no penalty', async () => {
+      const { weaponBrawnRequirement } = await import('../defenses/armor-brawn-reinforced-shell.mjs');
+      expect(weaponBrawnRequirement(weapon('none'))).toBeNull();
+      expect(weaponBrawnRequirement({ system: { requirements: { skill: 'finesse', shift: 'd4' } } })).toBeNull();
+      expect(weaponBrawnRequirement({ system: {} })).toBeNull();
+    });
+
+    test("a Transformer reads the Integrated Hardpoint's lowered requirement; anyone else the printed one", async () => {
+      const { weaponBrawnRequirement } = await import('../defenses/armor-brawn-reinforced-shell.mjs');
+      const integrated = weapon('d4', { hardpoint: { type: 'integrated' }, effectiveBrawnReq: 'd2' });
+      expect(weaponBrawnRequirement(integrated, { system: { canTransform: true } })).toBe('d2');
+      expect(weaponBrawnRequirement(integrated, { system: { canTransform: false } })).toBe('d4');
+      expect(weaponBrawnRequirement(weapon('d4', { hardpoint: { type: 'integrated' }, effectiveBrawnReq: 'none' }), { system: { canTransform: true } })).toBeNull();
+    });
+
+    test('"Brawn d4/Huge": a big enough character meets it without the Brawn; a Brawn tag on its own still counts', async () => {
+      const { weaponBrawnShortfall, meetsBrawnAlternative } = await import('../defenses/armor-brawn-reinforced-shell.mjs');
+      const rocket = weapon('d4', { prerequisites: { when: [{ any: ['self:skill:brawn>=d4', 'self:size>=huge'] }] } });
+      expect(weaponBrawnShortfall(holder('d20', [rocket], { size: 'huge' }), rocket)).toBe(0);
+      expect(weaponBrawnShortfall(holder('d20', [rocket], { size: 'common' }), rocket)).toBe(2);
+      expect(meetsBrawnAlternative(holder('d20', [rocket], { size: 'gigantic' }), rocket)).toBe(true);
+
+      // The Forge of Solus Prime prints a Brawn floor of its own: size never waives it.
+      const forge = weapon('d8', { prerequisites: { when: ['self:size>=huge', 'self:skill:brawn>=d8', { any: ['self:skill:brawn>=d10', 'self:size>=towering'] }] } });
+      expect(meetsBrawnAlternative(holder('d20', [forge], { size: 'towering' }), forge)).toBe(false);
+      expect(weaponBrawnShortfall(holder('d4', [forge], { size: 'towering' }), forge)).toBe(2);
+    });
+
+    test('BrawnRequirement rules: The Heavy (both), Ordnance Expert (weapons only), Over Brawn (ignore)', async () => {
+      const { weaponBrawnShortfall } = await import('../defenses/armor-brawn-reinforced-shell.mjs');
+      const gun = weapon('d8');
+      const perk = rule => ({ id: 'p', type: 'perk', flags: {}, system: { rules: [{ type: 'BrawnRequirement', ...rule }] } });
+      expect(weaponBrawnShortfall(holder('d20', [gun, perk({ amount: 2 })]), gun)).toBe(2);
+      expect(weaponBrawnShortfall(holder('d20', [gun, perk({ amount: 4, equipment: 'weapon' })]), gun)).toBe(0);
+      expect(weaponBrawnShortfall(holder('d20', [gun, perk({ amount: 4, equipment: 'armor' })]), gun)).toBe(4);
+      expect(weaponBrawnShortfall(holder('d20', [gun, perk({ ignore: true })]), gun)).toBe(0);
+    });
   });
 });
 

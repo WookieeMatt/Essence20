@@ -55,6 +55,16 @@ the same as the original.
   so on) roll whichever Skill is better. This includes every line's Unarmed Combat / Unarmed
   Strike, Pillage, Power Fist, Natural Weapons, Psycho Strike and the TF/G.I. JOE melee weapons.
   Power Rangers Martial Arts Long Bludgeon is Might only, as printed.
+- **Focus Skill increases.** When a Focus raises an Essence (1st and 10th level), the sheet asks which of the Focus's
+  Skills gets the point: train one a step, or take a Specialization in it where the book allows. Levelling back down,
+  or deleting the Focus, takes that rank or Specialization back off. Characters made before this keep what they placed
+  by hand in the Skill Picker.
+- **Weapon Brawn requirements apply.** A weapon you lack the Brawn for gives ↓1 per die short on its attacks, as a
+  line in the Roll Options Dialog (G.I. JOE p.117, Transformers p.97, Power Rangers p.81). "Brawn d4/Huge" weapons
+  waive it for a big enough character; a Transformer's Integrated Hardpoint lowers it one die; The Heavy, Pack Mule,
+  Over Brawn and now Ordnance Expert (↑4 for weapons) all count.
+- **Weapon requirements are prerequisites.** The free-text requirements on about 100 weapons (Skill ranks, sizes,
+  Origins and Perks, Psycho Ranger or Path weapons) are checked like any other prerequisite when the weapon is added.
 - **Power Rangers:** the Grid Relic Weapon asks for its 2 Relic Weapon Traits; five of them are
   automated. The Power Rangers Expertise offers only Skills at d4 or better.
 

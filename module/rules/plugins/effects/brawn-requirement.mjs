@@ -8,14 +8,18 @@ import { resolveValue } from "../../formula.mjs";
  * die sizes higher against equipment's Brawn requirement (items/defenses/armor-brawn-reinforced-shell.mjs
  * #brawnRequirementBonus), or the requirement is ignored outright. `carrying: true` also raises it for carrying
  * capacity (mechanics/resources/kits.mjs#carryPercent). Rules sharing a `stack` group count once (the biggest). Over Brawn,
- * The Heavy, Pack Mule.
+ * The Heavy, Pack Mule. `equipment: weapon|armor` limits a rule to that kind of requirement (Ordnance Expert: Brawn ↑4 for
+ * weapon requirements only, GI Joe CRB).
  *
  * Kept apart from the other plug-ins (and light on imports): kits.mjs and armor-rules.mjs read it.
  */
 
 registerRuleType('BrawnRequirement', {
   // carryingOnly (round 15, uses): the offset counts for carrying capacity only, not equipment requirements (Loader).
-  params: { amount: { kind: 'formula' }, ignore: { kind: 'bool' }, carrying: { kind: 'bool' }, carryingOnly: { kind: 'bool' }, stack: { kind: 'string' } },
+  params: {
+    amount: { kind: 'formula' }, ignore: { kind: 'bool' }, carrying: { kind: 'bool' }, carryingOnly: { kind: 'bool' }, stack: { kind: 'string' },
+    equipment: { kind: 'enum', options: ['weapon', 'armor'] },
+  },
   scopes: ['self'],
   validate: rule => (rule.amount !== undefined || rule.ignore ? [] : ['give an amount or ignore']),
 });
@@ -24,11 +28,13 @@ registerRuleType('BrawnRequirement', {
  * How many die sizes higher the actor's Brawn counts - Infinity when a rule ignores the requirement.
  * @param {Actor} actor
  * @param {'requirement'|'carrying'} use
+ * @param {'weapon'|'armor'|null} [equipment]   The kind of gear whose requirement this is; a rule naming another kind skips it.
  * @returns {Number}
  */
-export function ruleBrawnBonus(actor, use = 'requirement') {
+export function ruleBrawnBonus(actor, use = 'requirement', equipment = null) {
   const live = rulesOfType(actor, 'BrawnRequirement', 'self')
     .filter(({ rule }) => (use != 'carrying' ? !rule.carryingOnly : rule.carrying || rule.carryingOnly))
+    .filter(({ rule }) => !rule.equipment || (use == 'requirement' && rule.equipment == equipment))
     .filter(({ rule, item }) => evaluate(rule.when, contextFor({ self: actor, ruleItem: item, combat: null })) === true);
   if (use == 'requirement' && live.some(({ rule }) => rule.ignore)) {
     return Infinity;

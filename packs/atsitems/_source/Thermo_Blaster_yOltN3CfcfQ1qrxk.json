@@ -110,8 +110,9 @@
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:perk:Lightspeed Response (Form)"]},
     "requirements": {
-      "custom": "Lightspeed Response",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

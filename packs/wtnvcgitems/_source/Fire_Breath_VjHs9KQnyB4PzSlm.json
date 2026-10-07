@@ -34,8 +34,9 @@
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:origin:Dragon","self:hasType:perk:Fire Breathing"]},
     "requirements": {
-      "custom": "Dragon Origin, Fire Breath Perk",
+      "custom": "",
       "skill": null,
       "shift": "none"
     },

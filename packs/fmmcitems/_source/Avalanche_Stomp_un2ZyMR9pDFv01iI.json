@@ -44,8 +44,9 @@
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Path of Stone"]},
     "requirements": {
-      "custom": "Path of Stone",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

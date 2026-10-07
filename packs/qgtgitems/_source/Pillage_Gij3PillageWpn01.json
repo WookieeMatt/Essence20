@@ -66,8 +66,9 @@
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:focus:Freebooter","self:hasType:perk:Pillage"]},
     "requirements": {
-      "custom": "Freebooter Focus, Pillage Perk",
+      "custom": "",
       "skill": null,
       "shift": "none"
     },

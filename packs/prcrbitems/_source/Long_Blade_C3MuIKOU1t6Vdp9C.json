@@ -88,8 +88,9 @@
       "size": "long"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:skill:finesse>=d6","self:skill:might>=d6"]}]},
     "requirements": {
-      "custom": "or Might",
+      "custom": "",
       "skill": "finesse",
       "shift": "d6"
     },

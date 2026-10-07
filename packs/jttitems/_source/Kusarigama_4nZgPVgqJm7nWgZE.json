@@ -88,8 +88,9 @@
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:skill:athletics>=d4","self:skill:acrobatics>=d4"]}]},
     "requirements": {
-      "custom": "Acrobatics d4",
+      "custom": "",
       "skill": "athletics",
       "shift": "d4"
     },

@@ -34,8 +34,9 @@
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:origin:Dragon"]},
     "requirements": {
-      "custom": "Dragon Origin",
+      "custom": "",
       "skill": null,
       "shift": "none"
     },

@@ -44,8 +44,9 @@
       "size": "light"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:perk:Turbocharged (Form)"]},
     "requirements": {
-      "custom": "Turbocharged",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

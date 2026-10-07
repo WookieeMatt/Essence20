@@ -67,7 +67,7 @@
     },
     "equipped": true,
     "requirements": {
-      "custom": "Nil",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

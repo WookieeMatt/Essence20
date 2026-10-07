@@ -66,8 +66,9 @@
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Path of Venom"]},
     "requirements": {
-      "custom": "Path of Venom",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

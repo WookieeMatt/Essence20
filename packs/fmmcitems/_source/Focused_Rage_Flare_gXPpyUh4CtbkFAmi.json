@@ -44,8 +44,9 @@
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Path of Cruelty"]},
     "requirements": {
-      "custom": "Path of Cruelty",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },
