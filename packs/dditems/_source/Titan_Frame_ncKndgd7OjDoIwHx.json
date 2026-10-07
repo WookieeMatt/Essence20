@@ -28,7 +28,7 @@
     "benefit": "+4 Toughness, -2 Evasion; Bot Mode only.",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Huge or Larger (Bot Mode)"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

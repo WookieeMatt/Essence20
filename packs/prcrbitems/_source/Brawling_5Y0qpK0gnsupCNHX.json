@@ -1,6 +1,6 @@
 {
   "folder": "cZmpUestiJJV73Mc",
-  "name": "Brawling",
+  "name": "Unarmed Combat",
   "type": "weapon",
   "_id": "5Y0qpK0gnsupCNHX",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
@@ -19,7 +19,7 @@
       "592f": {
         "uuid": "Compendium.essence20.pr_crb.Item.IOenNqdotgidwRTa",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Brawling Effect",
+        "name": "Unarmed Combat Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "might",
@@ -41,7 +41,7 @@
       "0efb": {
         "uuid": "Compendium.essence20.pr_crb.Item.JK2fJIoMMEmrX3pF",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Brawling Alternate Effect 1",
+        "name": "Unarmed Combat Alternate Effect 1",
         "type": "weaponEffect",
         "classification": {
           "skill": "might",
@@ -63,7 +63,7 @@
       "fb17": {
         "uuid": "Compendium.essence20.pr_crb.Item.WgxbC8HBSTE6i1Yb",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Brawling Alternate Effect 2",
+        "name": "Unarmed Combat Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
           "skill": "might",

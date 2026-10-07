@@ -30,7 +30,7 @@
     "benefit": "The vehicle makes no noise in motion and gains the benefits of Radar-Tempered Camo and Stealthy, at double Stealthy's own bonuses.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Air or Sea vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

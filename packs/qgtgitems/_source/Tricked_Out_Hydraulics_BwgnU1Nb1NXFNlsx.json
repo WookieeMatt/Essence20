@@ -27,7 +27,7 @@
     "benefit": "Once per combat, an incoming attack with a Ballistic weapon rolls with Snag.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Hydraulic Bounce"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

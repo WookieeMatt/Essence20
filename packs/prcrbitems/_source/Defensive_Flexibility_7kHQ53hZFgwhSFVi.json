@@ -6,17 +6,18 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Defense","label":"Defensive Flexibility (+2 Toughness while Morphed)","defense":"toughness","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityToughness","when":["self:morphed","rule:data:system.choice=defenseToughness"]},
-      {"type":"Defense","label":"Defensive Flexibility (+2 Evasion while Morphed)","defense":"evasion","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityEvasion","when":["self:morphed","rule:data:system.choice=defenseEvasion"]},
-      {"type":"Defense","label":"Defensive Flexibility (+2 Willpower while Morphed)","defense":"willpower","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityWillpower","when":["self:morphed","rule:data:system.choice=defenseWillpower"]},
-      {"type":"Defense","label":"Defensive Flexibility (+2 Cleverness while Morphed)","defense":"cleverness","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityCleverness","when":["self:morphed","rule:data:system.choice=defenseCleverness"]},
-      {"type":"DerivedStat","label":"Defensive Flexibility (Acid Resistance)","path":"system.resistances.acid","value":true,"when":["rule:data:system.choice=resistanceAcid"]},
-      {"type":"DerivedStat","label":"Defensive Flexibility (Cold Resistance)","path":"system.resistances.cold","value":true,"when":["rule:data:system.choice=resistanceCold"]},
-      {"type":"DerivedStat","label":"Defensive Flexibility (Electric Resistance)","path":"system.resistances.electric","value":true,"when":["rule:data:system.choice=resistanceElectric"]},
-      {"type":"DerivedStat","label":"Defensive Flexibility (Emp Resistance)","path":"system.resistances.emp","value":true,"when":["rule:data:system.choice=resistanceEmp"]},
-      {"type":"DerivedStat","label":"Defensive Flexibility (Fire Resistance)","path":"system.resistances.fire","value":true,"when":["rule:data:system.choice=resistanceFire"]},
-      {"type":"DerivedStat","label":"Defensive Flexibility (Laser Resistance)","path":"system.resistances.laser","value":true,"when":["rule:data:system.choice=resistanceLaser"]},
-      {"type":"DerivedStat","label":"Defensive Flexibility (Sonic Resistance)","path":"system.resistances.sonic","value":true,"when":["rule:data:system.choice=resistanceSonic"]}
+      {"type":"ChoiceSet","key":"option","label":"Option","from":"config","table":"defensiveFlexibilityOptions","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"Defense","label":"Defensive Flexibility (+2 Toughness while Morphed)","defense":"toughness","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityToughness","when":["self:morphed","rule:choiceHas:option:defenseToughness"]},
+      {"type":"Defense","label":"Defensive Flexibility (+2 Evasion while Morphed)","defense":"evasion","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityEvasion","when":["self:morphed","rule:choiceHas:option:defenseEvasion"]},
+      {"type":"Defense","label":"Defensive Flexibility (+2 Willpower while Morphed)","defense":"willpower","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityWillpower","when":["self:morphed","rule:choiceHas:option:defenseWillpower"]},
+      {"type":"Defense","label":"Defensive Flexibility (+2 Cleverness while Morphed)","defense":"cleverness","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityCleverness","when":["self:morphed","rule:choiceHas:option:defenseCleverness"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Acid Resistance)","path":"system.resistances.acid","value":true,"when":["rule:choiceHas:option:resistanceAcid"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Cold Resistance)","path":"system.resistances.cold","value":true,"when":["rule:choiceHas:option:resistanceCold"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Electric Resistance)","path":"system.resistances.electric","value":true,"when":["rule:choiceHas:option:resistanceElectric"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Emp Resistance)","path":"system.resistances.emp","value":true,"when":["rule:choiceHas:option:resistanceEmp"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Fire Resistance)","path":"system.resistances.fire","value":true,"when":["rule:choiceHas:option:resistanceFire"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Laser Resistance)","path":"system.resistances.laser","value":true,"when":["rule:choiceHas:option:resistanceLaser"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Sonic Resistance)","path":"system.resistances.sonic","value":true,"when":["rule:choiceHas:option:resistanceSonic"]}
     ],
     "automation": {
       "status": "full",
@@ -32,8 +33,8 @@
     "selectionLimit": 1,
     "type": "role",
     "canActivate": false,
-    "hasChoice": true,
-    "choiceType": "defensiveFlexibility",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 1
   },
   "effects": [],

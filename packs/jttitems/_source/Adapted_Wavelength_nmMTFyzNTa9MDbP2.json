@@ -6,13 +6,14 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"acid","amount":-1,"when":["rule:data:system.choice=acid"]},
-      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"cold","amount":-1,"when":["rule:data:system.choice=cold"]},
-      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"electric","amount":-1,"when":["rule:data:system.choice=electric"]},
-      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"emp","amount":-1,"when":["rule:data:system.choice=emp"]},
-      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"fire","amount":-1,"when":["rule:data:system.choice=fire"]},
-      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"laser","amount":-1,"when":["rule:data:system.choice=laser"]},
-      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"sonic","amount":-1,"when":["rule:data:system.choice=sonic"]}
+      {"type":"ChoiceSet","key":"element","label":"Element","from":"element","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"acid","amount":-1,"when":["rule:choiceHas:element:acid"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"cold","amount":-1,"when":["rule:choiceHas:element:cold"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"electric","amount":-1,"when":["rule:choiceHas:element:electric"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"emp","amount":-1,"when":["rule:choiceHas:element:emp"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"fire","amount":-1,"when":["rule:choiceHas:element:fire"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"laser","amount":-1,"when":["rule:choiceHas:element:laser"]},
+      {"type":"DamageModifier","label":"Adapted Wavelength","direction":"taken","damageType":"sonic","amount":-1,"when":["rule:choiceHas:element:sonic"]}
     ],
     "automation": {
       "status": "full",
@@ -33,9 +34,9 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "elementDamageType",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",

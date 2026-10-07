@@ -51,9 +51,7 @@
       "skill": "targeting",
       "shift": "d4"
     },
-    "traits": [
-      "stun"
-    ],
+    "traits": [],
     "upgradeTraits": [],
     "usesPerScene": null
   },

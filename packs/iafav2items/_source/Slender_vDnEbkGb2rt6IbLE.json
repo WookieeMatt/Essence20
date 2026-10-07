@@ -26,7 +26,7 @@
       "armorPiercing"
     ],
     "type": "weapon",
-    "prerequisite": "Sidearmor Medium melee weapon that deals Sharp damage"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

@@ -27,7 +27,7 @@
     "benefit": "The sealed compartment grants immunity to Poison and Disease.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle with an enclosed crew compartment"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

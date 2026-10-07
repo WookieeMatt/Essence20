@@ -8,6 +8,7 @@
     "rules": [
       {"type":"CriticalOption","essence":"social","when":["item:onHost"]}
     ],
+    "prerequisites": {"when":["host:trait:blunt"]},
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: on a Critical Success with the weapon you can deal 1 Social Essence damage to the target.</p>"

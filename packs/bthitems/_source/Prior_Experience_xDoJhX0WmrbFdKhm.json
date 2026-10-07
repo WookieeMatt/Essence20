@@ -21,7 +21,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
-    "prerequisite": "A past as a Ranger on another team",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

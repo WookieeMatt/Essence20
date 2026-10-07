@@ -2892,3 +2892,104 @@ Rule summaries read `when` tags and formula amounts through `rules/describe-when
 `{its}` / `{s}` for whoever the tag asks about. A `self:` phrase also reads `target:` and `holder:` tags of the same name.
 `w` carries `humanize`, `itemName`, `pathName`, `comparison`, `skillName`, `items(tags, name?)`, `facts(tags, name?)`,
 `describe(tags)` and `formula(text)`. A tag registered elsewhere can get one later with `registerTagPhrase`.
+
+## Engine features added (Perk choice P1)
+
+Design and per-family use: `docs/PERK_CHOICE_MIGRATION_PLAN.md` ("Phase 1 - done"). New plug-in files are imported in
+`rules/plugins/index.mjs`'s "Perk choice P1" block. New strings: `E20.Rules.ChoicePromptOf`, `ChoiceTaken`,
+`SubPerkPrompt`, `SubPerkPromptOf`, and the editor labels under `E20.Rules.Field`.
+
+### ChoiceSet: the pick step's lists, and new settings (`rules/lifecycle.mjs`, `rules/types.mjs`)
+
+- **Sources.** A ChoiceSet keeps its own `skill` (CONFIG.E20.skills), `essence`, `defense`, `list` and `text`; any other
+  `from` goes through `steps.mjs#pickOptions` with the actor as the run's actor, so a ChoiceSet and a `pick` step with the
+  same settings offer the same list. New pick sources (`plugins/picks/choice-sources.mjs`): `sense`, `environment`,
+  `movement` (CONFIG.E20.movementTypes) and `element` (CONFIG.E20.elementDamageTypes). `config` (round 17,
+  `plugins/tags/role-points-and-flag-lists.mjs`) now also takes `table` (the same as `path`) and a list table with
+  `labels` (`{from: config, table: fieldSkills, labels: skills}`). Values are the table keys - the exact strings the old
+  picker stored in `system.choice`. `from` validates against every registered pick source but `target` / `targetItem`.
+- **`only: [...]`** narrows any source (and now any `pick` step too). **`essence`** (from: skill) - that Essence's Skills
+  (replaces `choiceEssence`).
+- **`notHeld: true` / `held: true`** (sense / environment / movement only): leave out / offer only what the actor has - an
+  acute sense, a known environment, a movement with base > 0. The old Fast picker offered only movements the actor has:
+  that is `held: true`. The Rules tab's label lookup ignores both, so a held pick still shows its name.
+- **`excludeCopies: true`**: not what the actor's other copies of the same book item hold under the key (a list gives
+  every entry; with `legacy`, an old copy's `system.choice` counts). Checked again when the answer comes back: a value
+  another copy took meanwhile is refused (a warning) and asked again.
+- **`count: <formula>`**: that many different values, kept as a LIST (a scalar `count: 1` still stores `[x]`). Each ask
+  leaves out the earlier picks, a repeat is refused, running out keeps what was chosen, a cancel keeps nothing.
+- **`rename: true`**: the item becomes "Name (Label)" (a list: "Name (A, B)"); `flags.essence20.rules.baseName` keeps the
+  bare name so a re-pick replaces the suffix (an old copy without it has its old pick's suffix stripped first).
+- **`required: true`**: cancelling the first ask on a freshly DROPPED item deletes it. A copy with `grantedBy` or
+  `parentId` (a grant, a Role level, a sub-Perk) is kept unpicked.
+- **`primary: true`**: the item's main pick for `chosenOf` / `{item.choice}` / `choiceOf:<uuid>` (choice-read.mjs).
+- **Re-pick**: the Rules tab's "change" (owner and GM - whoever owns the copy) runs the same ask (`askRule`): a list asks
+  its whole list again, excludeCopies and rename apply. The actor rules view shows a list's labels joined.
+- **One dialog at a time** (`rules/ask-queue.mjs#queueAsk`): onCreateItem's choice asks (`lifecycle.mjs#setUpItem`),
+  "change" and pickSubPerk are queued per actor; the next ask works out its options only after the previous pick is
+  stored. Never queue from inside a queued ask for the same actor.
+
+### Reading a list pick
+
+- A tag with `{choice.<key>}` holding a list is asked once per entry - true when any entry is
+  (`skill:{choice.skill}`); `not:` negates the whole. `rule:choiceHas:<key>:<v>` already read lists.
+- A DerivedStat path with a list `{choice.<key>}` applies once per entry (`system.skills.{choice.skill}.shiftUp` + 2 on
+  both of GI Joe Expertise's Skills).
+- `chosenOf` returns the list as stored; `chosenList` / `hasChosen` read entries (Phase 0).
+- Not list-aware: `{choice.x}` in chat / labels / Grant uuids (the entries joined with ","), `skill: "choiceOf:..."`,
+  DamageType `to` (first entry). Phase 2b decides per reader.
+
+### DerivedStat `op: append`, DamageType `to: "{choice.x}"` (`rules/adapter.mjs`)
+
+- `{type: DerivedStat, path: "system.environments", op: append, value: "{choice.environment}"}` adds text entries to a
+  list, each once (a whole `{choice.x}` list adds every entry; `value` may be a list of texts). Derived only - the stored
+  list is untouched. Not at `stage: early`. Summary: "Environments gains the picked environment".
+- DamageType `to` fills `{choice.<key>}` (`to: "{choice.element}"`); no pick, no change. `to: "choice"` still reads
+  chosenOf.
+
+### `@choiceCount` (`plugins/picks/choice-count.mjs`)
+
+The sum of the ChoiceCount `add`s that name the rule item's book source (0 with no actor). `count: "2 + @choiceCount"` on
+a ChoiceSet or pickSubPerk keeps Grid Tap's extra pick. The ChoiceCount `items` uuids are unchanged.
+
+### Step `pickSubPerk` (`plugins/picks/pick-sub-perk.mjs`)
+
+`{do: pickSubPerk, key?: "perks", count?: 1, notOwned?: true, anyGeneral?: false, prompt?, optional?}` in an `added`
+Trigger (with `removeOnStop: true` a cancel removes the dropped item, like the old picker). Offers the rule item's own
+`system.items` perk entries by name (or, `anyGeneral`, every General Perk of the enabled books, grouped by game line, the
+item's own line first - shown as `<optgroup>`s by `grants.mjs#chooseSelect`), leaving out what the actor holds unless
+`notOwned: false`. Every pick is asked first; then each is made by `perk-handler.mjs#createSubPerk` (the old 'perks'
+branch, now shared: parentId, collectionId, an entry written for an any-General pick, an old-picker child through
+setPerkValues). The uuids are kept as a list under `key` and shown on the Rules tab's Trigger row with "change"
+(`repickSubPerks`: asks again with the current picks offered too, then swaps the children; a cancel keeps them). Has an
+editor form (`editor-spec.mjs#registerStepForm`, the plug-in way to give a step a form).
+
+### Static checks (`rules/choice-checks.mjs`, run by `scripts/check-rules.mjs`)
+
+Errors: an item with both `hasChoice: true` and a rules pick (ChoiceSet, or pick / pickEach / pickSubPerk in an added
+Trigger); a converted item (a ChoiceSet with `legacy: "system.choice"`, or a pickSubPerk) whose rules still read
+`system.choice` / `{item.choice}` (its `legacy` setting aside); a `legacy: "system.choice"` ChoiceSet whose `from` has no
+fixed list (`STABLE_CHOICE_SOURCES`).
+
+## Engine features added (Perk choice P2)
+
+The 116 old-picker items are converted; design, per-item shapes and the world migration: `docs/PERK_CHOICE_MIGRATION_PLAN.md`
+("Phase 2 - done"). Tests: `module/rules/perk-choice-p2.test.js`. For authors:
+
+- **A pick converted from the old Perk picker** is a ChoiceSet (or a pick step) with `legacy: "system.choice"`, plus
+  `required: true` (and `rename: true` where the old picker renamed). Read it with `rule:choiceHas:<key>:<value>`,
+  `{choice.<key>}`, `rule:choiceHas:<key>` (no value: some pick made) or `item:choiceHas:<key>[:<value>]` (the tag's
+  item - another item's pick: Gallantry). Never `system.choice` / `{item.choice}` (check-rules refuses them on a converted
+  item, and refuses a converted item that keeps a choiceType or a UniqueChoice / AnyGeneralPerkChoice rule).
+- **Until the world migration has copied it**, such an item's `{choice.<key>}` / `rule:choiceHas` read its old pick
+  through `legacy` (`choice-read.mjs#choiceValue`), so no rule needs a fallback of its own.
+- **Another item's pick in text**: `{sourced.<16-char id>.flags.essence20.rules.choices.<key>}` (in tags, paths and step
+  text, with `|default` in step text).
+- **List picks** (`count`): tags read any entry; DerivedStat paths / append, Reroll and DieSubstitution `skills:
+  ["{choice.skill}"]` read every entry; chat text and labels list them ("A, B"); a Grant `uuid: "{choice.x}"` grants each;
+  `skill: "choiceOf:..."`, `useSkill: "choiceOf:..."` and DamageType `to` take the first.
+- **A Skill Perk's Reroll** names its pick: `skills: ["{choice.skill}"]` (no pick: it covers no Skill).
+- **Sub-Perk lists**: `{type: Trigger, event: added, removeOnStop: true, steps: [{do: pickSubPerk, key: perks, count?,
+  anyGeneral?, required: true}]}` - `required`: a granted item asks again after a cancel and is kept when there's nothing
+  to offer. Such an item's `system.items` is its option list: grantPerkEquipmentMap doesn't grant it.
+- **A copy carrying an old pick** that matches an option takes it when it is added (no ask).

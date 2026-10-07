@@ -32,6 +32,7 @@ import { firePosted } from "../rules/plugins/effects/rough-terrain-space.mjs";
 import { ruleDefersSpellCost } from "../rules/plugins/resources/spell-cost-defer.mjs";
 import { runPreCast } from "../rules/plugins/picks/pre-cast.mjs";
 import { ruleAvailabilitySteps } from "../rules/plugins/resources/availability-shift.mjs";
+import { prerequisiteText } from "../rules/prerequisites.mjs";
 
 const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
 
@@ -845,7 +846,7 @@ export class Essence20Item extends Item {
       const label = `[${this.type}] ${this.name}`;
 
       let content = `Source: ${this.system.source || 'None'} <br>`;
-      content += `Prerequisite: ${this.system.prerequisite || 'None'} <br>`;
+      content += `Prerequisite: ${prerequisiteText(this) || 'None'} <br>`;
       content += `Description: ${this.system.description || 'None'}`;
 
       ChatMessage.create({

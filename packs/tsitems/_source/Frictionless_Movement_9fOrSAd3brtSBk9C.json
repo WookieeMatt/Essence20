@@ -28,7 +28,7 @@
     "choiceType": "none",
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,
-    "prerequisite": "Mutant Beast Influence",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "influence",
     "version": "transformers"

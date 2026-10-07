@@ -27,7 +27,7 @@
     "benefit": "Once per encounter, reduce damage the vehicle suffers from an Explosive weapon by 1.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land or Sea vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

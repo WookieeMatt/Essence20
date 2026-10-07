@@ -25,7 +25,7 @@
     "benefit": "Rounds won't puncture hardened targets like ship bulkheads or airplane bodies, but Deflective and Plating armor gain +2 Defense against it. Not compatible with other ammunition upgrades.",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Weapon with the Ballistic trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 200000,

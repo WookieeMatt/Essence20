@@ -7,6 +7,7 @@ import { teamKindOf } from "./team-actions.mjs";
 import { isBondUse } from "../companions/bonded-partners.mjs";
 import { CMD } from "./commands.mjs";
 import { sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
+import { isUnarmedAttack } from "../../items/shared/unarmed-attacks.mjs";
 
 // Issue Command and Loyal Minions' Use button (mechanics/actions/commands.mjs).
 const isCommandUse = item => sourceOf(item) == CMD.issueCommand;
@@ -82,7 +83,7 @@ export function hasSourced(actor, uuid) {
 }
 
 /**
- * The weapon behind an attack - a Weapon Effect's parent Weapon, or null for an unarmed attack.
+ * The weapon behind an attack - a Weapon Effect's parent Weapon, or null for a weaponless one.
  * Passed in by the caller where it's known; looked up by the Effect's own parentId flag otherwise.
  */
 function parentWeaponOf(actor, item) {
@@ -105,7 +106,8 @@ export function describeAttack(actor, item, weapon = undefined) {
     traits: parent?.system?.traits ?? [],
     skill: item?.system?.classification?.skill ?? null,
     melee: item?.system?.classification?.style == 'melee',
-    unarmed: item?.type == 'weaponEffect' && !parent,
+    // The shared definition: no weapon, or a printed unarmed one (items/shared/unarmed-attacks.mjs).
+    unarmed: isUnarmedAttack(item, actor, weapon),
     // A weapon's size is its classification's (system.size never existed - Snap Shots' pistols were never recognised).
     size: parent?.system?.classification?.size ?? null,
   };

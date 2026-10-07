@@ -10,6 +10,13 @@ import { fileURLToPath } from 'node:url';
  * carries only a legacy `system.choice`, through the new reader (rules/choice-read.mjs) and through the old one (the
  * raw field). The answers must be identical, for every one of the 116 items with an old picker and every value their
  * own rules test for.
+ *
+ * Phase 2 (Perk choice P2): the 116 are converted - each asks its pick through rules (a ChoiceSet carrying
+ * `legacy: "system.choice"`, or a pickSubPerk) and its own tags read `rule:choiceHas` / `{choice.<key>}`. What is left
+ * here: the items that read ANOTHER item's pick (`choiceOf`), against a legacy-only world copy of their (now converted)
+ * targets; the inventory; and every converted item's legacy-only copy reading its old pick through its legacy setting.
+ * The old-vs-new rule parity of the converted items themselves is rules/perk-choice-p2.test.js (against the pre-conversion
+ * pack snapshot in test-data/perk-choice-p2-baseline.json (repo root - kept out of the release zip)).
  */
 
 global.Hooks = { on: () => {}, once: () => {}, callAll: () => {} };
@@ -83,7 +90,10 @@ for (const entry of ALL) {
   }
 }
 
-const LEGACY_PICKERS = ALL.filter(({ doc }) => doc.system?.hasChoice || doc.system?.choice);
+// The 116 old pickers, as they were before the conversion (Perk choice P2), and as they are now in the packs.
+const BASELINE = JSON.parse(readFileSync(join(ROOT, 'test-data', 'perk-choice-p2-baseline.json'), 'utf8'));
+const BASELINE_PICKERS = Object.keys(BASELINE).filter(id => BASELINE[id].picker);
+const LEGACY_PICKERS = ALL.filter(({ doc }) => BASELINE_PICKERS.includes(doc._id));
 const READ_FORMS = /\{item\.choice\}|(?:rule|item):data:system\.choice|choiceOf|\{sourced\.[A-Za-z0-9]{16}\.system\.choice/;
 const READERS = ALL.filter(({ doc }) => {
   const rules = doc.system?.rules ?? [];
@@ -91,7 +101,9 @@ const READERS = ALL.filter(({ doc }) => {
 });
 const uniq = list => [...new Set(list)];
 // How often each form was actually exercised with a pick present (checked at the end, so the harness can't pass empty).
-const seen = { itemChoice: 0, sourced: 0, dataTag: 0, choiceOf: 0 };
+// Phase 2: {item.choice}, data tags on system.choice and {sourced.<id>.system.choice} are gone from the packs (checked
+// below), so only choiceOf is left to exercise.
+const seen = { choiceOf: 0 };
 
 /** The old interpolation: {item.choice} straight off system.choice, {sourced...} straight off the copy. */
 function oldInterpolate(text, ruleItem) {
@@ -125,6 +137,12 @@ function copyOf(doc, choice, sourceUuid = `Compendium.essence20.test.Item.${doc.
     flags: { core: { sourceId: sourceUuid } },
     system: { ...JSON.parse(JSON.stringify(doc.system)), choice },
   };
+}
+
+/** What chosenOf reads off a legacy-only copy of a converted item: the raw value, a list ChoiceSet's wrapped. */
+function legacyRead(copy, value) {
+  const listed = (copy.system.rules ?? []).some(rule => rule.type == 'ChoiceSet' && rule.legacy == 'system.choice' && rule.count !== undefined);
+  return listed && value !== undefined && value !== null && value !== '' ? [value] : value;
 }
 
 function actorWith(items) {
@@ -162,18 +180,44 @@ beforeEach(() => {
 });
 
 describe('pack inventory', () => {
-  test('116 items carry the old picker (115 Perks + Augmented); 70+ items read the old pick in their rules', () => {
+  test('116 items carried the old picker (115 Perks + Augmented); every one is converted (Perk choice P2)', () => {
+    expect(BASELINE_PICKERS.length).toBe(116);
     expect(uniq(LEGACY_PICKERS.map(({ doc }) => doc._id)).length).toBe(116);
-    expect(READERS.length).toBeGreaterThanOrEqual(70);
+    expect(ALL.filter(({ doc }) => doc.system?.hasChoice === true).map(({ doc }) => doc.name)).toEqual([]);
+    expect(LEGACY_PICKERS.filter(({ doc }) => doc.system.choiceType && doc.system.choiceType != 'none').map(({ doc }) => doc.name)).toEqual([]);
   });
 
-  test('none of them has a primary rules pick yet, so a legacy copy can only read system.choice (phase 0: no change)', () => {
+  test('no pack rule reads the old pick any more ({item.choice}, system.choice data tags, {sourced...system.choice}, to: "choice")', () => {
+    const OLD = /\{item\.choice\}|(?:rule|item):data:system\.choice|\{sourced\.[A-Za-z0-9]{16}\.system\.choice/;
+    const left = ALL.filter(({ doc }) => {
+      const rules = doc.system?.rules ?? [];
+      return OLD.test(JSON.stringify(rules)) || objectsIn(rules).some(o => o.to == 'choice' || (Array.isArray(o.skills) && o.skills.includes('choice')));
+    });
+    expect(left.map(({ doc }) => doc.name)).toEqual([]);
+  });
+
+  test('family by family, the converted items hold a primary rules pick; the sub-Perk lists ask through pickSubPerk', () => {
+    const byFamily = {};
+    for (const { doc } of LEGACY_PICKERS) {
+      const was = BASELINE[doc._id].system.choiceType;
+      const family = was == 'perks' ? 'D' : was == 'damageType' ? 'E' : was == 'skills' ? 'B'
+        : ['senses', 'environments', 'movement', 'altModeMovement'].includes(was) ? 'C' : 'A';
+      (byFamily[family] ??= []).push(doc);
+    }
+
+    expect(Object.fromEntries(Object.entries(byFamily).map(([family, docs]) => [family, uniq(docs.map(doc => doc._id)).length])))
+      // (The plan's inventory table said A 28 - its rows add up to 27; 27 + 32 + 10 + 46 + 1 = 116.)
+      .toEqual({ A: 27, B: 32, C: 10, D: 46, E: 1 });
+    for (const family of ['A', 'B', 'C', 'E']) {
+      expect([family, byFamily[family].filter(doc => !primaryChoiceKey(doc)).map(doc => doc.name)]).toEqual([family, []]);
+    }
+
+    const subPerk = doc => (doc.system.rules ?? []).some(rule => rule.type == 'Trigger' && rule.event == 'added' && rule.steps?.some(step => step.do == 'pickSubPerk'));
+    expect(byFamily.D.filter(doc => !subPerk(doc)).map(doc => doc.name)).toEqual([]);
+    // The readers of another item's pick (choiceOf) have none of their own; their targets now do.
     const referenced = READERS.flatMap(({ doc }) => referencedCopies(doc, 'x'));
-    const withKey = [...LEGACY_PICKERS.map(({ doc }) => doc), ...READERS.map(({ doc }) => doc), ...referenced]
-      .filter(doc => primaryChoiceKey(doc))
-      .map(doc => doc.name);
-    // Phase 2 adds ChoiceSets to these items (and rewrites their tags in the same edit) - this list then grows on purpose.
-    expect(uniq(withKey)).toEqual([]);
+    expect(READERS.filter(({ doc }) => primaryChoiceKey(doc)).map(({ doc }) => doc.name)).toEqual([]);
+    expect(referenced.filter(doc => !primaryChoiceKey(doc)).map(doc => doc.name)).toEqual([]);
   });
 });
 
@@ -187,22 +231,8 @@ describe.each(uniq(READERS.map(({ doc }) => doc._id)).map(id => [byId.get(id).na
     const ctx = contextFor({ self: actor, ruleItem: item, item, rolledSkill: value || undefined });
 
     for (const text of strings) {
-      // {item.choice} / {sourced.<id>.system.choice}: the filled text (or "missing").
+      // Text with no pick in it reads the same.
       expect([text, interpolate(text, item)]).toEqual([text, oldInterpolate(text, item)]);
-      if (value && text.includes('{item.choice}')) {
-        seen.itemChoice += interpolate(text, item) === null ? 0 : 1;
-      }
-
-      if (value && /\{sourced\.\w+\.system\.choice\}/.test(text)) {
-        seen.sourced += interpolate(text, item)?.includes(value) ? 1 : 0;
-      }
-
-      // Data tags: the alias against the raw field, renamed so the alias can't apply.
-      for (const tag of text.match(/(?:rule|item):data:system\.choice(?:!?=[\w-]*)?/g) ?? []) {
-        item.system.rawChoice = item.system.choice;
-        expect([tag, evaluateTag(tag, ctx)]).toEqual([tag, evaluateTag(tag.replace('system.choice', 'system.rawChoice'), ctx)]);
-        seen.dataTag += evaluateTag(tag, ctx) === true ? 1 : 0;
-      }
 
       // skill:choiceOf:<uuid> - the referenced copy's raw pick against the rolled Skill.
       for (const [, uuid] of text.matchAll(/skill:choiceOf:(Compendium\.[\w.]+)/g)) {
@@ -224,19 +254,20 @@ describe.each(uniq(READERS.map(({ doc }) => doc._id)).map(id => [byId.get(id).na
       }
     }
 
-    // DamageType to: "choice", DieSubstitution "choice", every choiceOf target: the reader's value is the raw field.
+    // Every choiceOf target (converted - its ChoiceSet carries legacy "system.choice"): the reader's value is the raw
+    // field, a list ChoiceSet's wrapped in a one-entry list.
     expect(chosenOf(item)).toBe(item.system.choice);
     for (const copy of actor.items.slice(1)) {
-      expect(chosenOf(copy)).toBe(copy.system.choice);
+      expect(chosenOf(copy)).toEqual(legacyRead(copy, copy.system.choice));
     }
   });
 });
 
 describe('the 116 legacy pickers on their own', () => {
-  test.each(uniq(LEGACY_PICKERS.map(({ doc }) => doc._id)).map(id => [byId.get(id).name, id]))('%s (%s): chosenOf is the stored system.choice', (name, id) => {
-    for (const value of [...candidateValues(byId.get(id)), null, undefined]) {
+  test.each(uniq(LEGACY_PICKERS.map(({ doc }) => doc._id)).map(id => [byId.get(id).name, id]))('%s (%s): a legacy-only copy reads its stored system.choice', (name, id) => {
+    for (const value of ['sample', 'none', '', null, undefined]) {
       const item = copyOf(byId.get(id), value);
-      expect(chosenOf(item)).toBe(value);
+      expect(chosenOf(item)).toEqual(legacyRead(item, value));
     }
   });
 });

@@ -5,6 +5,9 @@
   "_id": "rEjB9I0yKQZF5zPT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick one from the list","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","required":true}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Granted: pick one of the four listed weapons; Overwhelming and similar Perks recognise it as your Signature Weapon.</p><p>Left to the table: the free weapon upgrade for an Element Jet or Power Tool.</p>"
@@ -18,8 +21,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "perks",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 1,
     "items": {
       "sig1": {

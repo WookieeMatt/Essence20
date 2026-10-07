@@ -72,10 +72,17 @@ async function stepsApi() {
 
 // exceptAt (round 17, split2): leave out the keys the actor already has set at that path (system.qualified.weapons -
 // Armchair General's weapon type it isn't Qualified in yet).
+// Perk choice P1: `table` names the CONFIG.E20 table too (the ChoiceSet spelling - the same as path); a list table
+// (fieldSkills) offers its entries, labelled from the `labels` table when given (skills).
 registerPickSource('config', (step, ctx) => {
-  const table = getPath(globalThis.CONFIG?.E20 ?? {}, step.path) ?? {};
+  const table = getPath(globalThis.CONFIG?.E20 ?? {}, step.path ?? step.table) ?? {};
   const localize = key => globalThis.game?.i18n?.localize?.(key) ?? key;
   const held = step.exceptAt ? getPath(ctx?.actor ?? {}, step.exceptAt) ?? {} : {};
+  if (Array.isArray(table)) {
+    const labels = step.labels ? getPath(globalThis.CONFIG?.E20 ?? {}, step.labels) ?? {} : {};
+    return table.map(String).filter(value => !held?.[value]).map(value => ({ value, label: localize(typeof labels[value] == 'string' ? labels[value] : value) }));
+  }
+
   return Object.entries(table && typeof table == 'object' ? table : {}).filter(([value]) => !held?.[value])
     .map(([value, label]) => ({ value, label: localize(typeof label == 'string' ? label : value) }));
 });

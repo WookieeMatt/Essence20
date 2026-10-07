@@ -5,6 +5,9 @@
   "_id": "dWfuzsqz30rZmX1G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick 2 from the list","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","count":"2 + @choiceCount","required":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>When added you pick two Grid Tech options from its list; they are added to your sheet.</p>"
@@ -18,8 +21,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "perks",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 2,
     "items": {
       "821d": {
@@ -116,7 +119,7 @@
       "dfad": {
         "uuid": "Compendium.essence20.pr_crb.Item.c2XlLY69AX3laWPh",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Vision Focusers",
+        "name": "Vision Focuser",
         "type": "perk",
         "role": null
       },

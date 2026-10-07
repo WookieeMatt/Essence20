@@ -1778,30 +1778,33 @@ describe('Metamorphosis: deleteItem keepGrants + grantPerk runPicker', () => {
   });
 });
 
-describe('UniqueChoice: Expertise', () => {
-  test('another copy\'s Skill is left out of the picker list; a Perk without the rule leaves everything in', async () => {
-    const { getAlreadyChosenExpertiseSkills } = await import('../sheet-handlers/perk-handler.mjs');
+describe('Expertise (GI Joe): no Skill another copy holds (Perk choice P2 - excludeCopies replaced UniqueChoice)', () => {
+  test('another copy\'s Skills (an old copy\'s system.choice too) are left out of the pick; the ChoiceSet holds two', async () => {
+    const { copiesHold } = await import('./lifecycle.mjs');
     const doc = fromPack('gijcrbitems/_source/Expertise_F9kOLys1Iu4UOg22.json');
-    expect(validateRule(doc.system.rules[0])).toEqual([]);
+    const set = doc.system.rules[0];
+    expect(validateRule(set)).toEqual([]);
+    expect([set.type, set.key, set.count, set.excludeCopies]).toEqual(['ChoiceSet', 'skill', 2, true]);
+    expect(doc.system.rules.some(rule => rule.type == 'UniqueChoice')).toBe(false);
     const UUID = `Compendium.essence20.gi_joe_crb.Item.${doc._id}`;
     const joe = makeActor('Duke');
-    for (const choice of ['athletics', 'stealth']) {
-      addItem(joe, { name: doc.name, type: 'perk', system: { ...clone(doc.system), choice }, flags: { core: { sourceId: UUID } }, _stats: {} });
-    }
-
-    expect(getAlreadyChosenExpertiseSkills(joe, { uuid: UUID, flags: {}, system: clone(doc.system) })).toEqual(['athletics', 'stealth']);
-    expect(getAlreadyChosenExpertiseSkills(joe, { uuid: UUID, flags: {}, system: { ...clone(doc.system), rules: [] } })).toEqual([]);
+    addItem(joe, { name: doc.name, type: 'perk', system: { ...clone(doc.system), choice: 'athletics' }, flags: { core: { sourceId: UUID } }, _stats: {} });
+    addItem(joe, { name: doc.name, type: 'perk', system: clone(doc.system), flags: { core: { sourceId: UUID }, essence20: { rules: { choices: { skill: ['stealth', 'brawn'] } } } }, _stats: {} });
+    const fresh = addItem(joe, { name: doc.name, type: 'perk', system: clone(doc.system), flags: { core: { sourceId: UUID } }, _stats: {} });
+    expect(copiesHold(set, fresh, joe).sort()).toEqual(['athletics', 'brawn', 'stealth']);
   });
 });
 
-describe('AnyGeneralPerkChoice: Nobody Like Me', () => {
-  test('its picker offers any General Perk; another Perk with a "perks" picker keeps its own list', async () => {
+describe('Nobody Like Me: any General Perk (Perk choice P2 - pickSubPerk anyGeneral replaced AnyGeneralPerkChoice)', () => {
+  test('its added pick offers any General Perk; a Perk with its own sub-Perk list keeps that list', async () => {
     const { grantsAnyGeneralPerk } = await import('../sheet-handlers/perk-handler.mjs');
     const doc = fromPack('prcrbitems/_source/Nobody_Like_Me_9nvRKN0A8N0EEXUl.json');
     expect(validateRule(doc.system.rules[0])).toEqual([]);
-    expect(grantsAnyGeneralPerk({ uuid: `Compendium.essence20.pr_crb.Item.${doc._id}`, system: clone(doc.system) })).toBe(true);
-    const talented = fromPack('mlpcrbitems/_source/Talented_UGFiK8wMXQ8fhXbT.json');
-    expect(grantsAnyGeneralPerk({ system: clone(talented.system) })).toBe(false);
+    expect(doc.system.rules[0].steps).toEqual([{ do: 'pickSubPerk', key: 'perks', anyGeneral: true, required: true }]);
+    // The old picker's rule is gone (the old picker isn't used for it any more).
+    expect(grantsAnyGeneralPerk({ uuid: `Compendium.essence20.pr_crb.Item.${doc._id}`, system: clone(doc.system) })).toBe(false);
+    const grid = fromPack('prcrbitems/_source/Grid_Tech_I_R7HF3aSR3ZPURh1W.json');
+    expect(grid.system.rules[0].steps[0]).toEqual({ do: 'pickSubPerk', key: 'perks', count: '2 + @choiceCount', required: true });
   });
 });
 

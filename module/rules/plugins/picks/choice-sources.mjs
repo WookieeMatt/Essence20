@@ -5,10 +5,10 @@ import { registerPickSource } from "../../steps.mjs";
  * Pick sources (`from:`) for a `pick` / `pickEach` step and a ChoiceSet rule (which offers exactly the pick step's lists -
  * rules/lifecycle.mjs#choiceOptions):
  *
- *  - `config {table: "<CONFIG.E20 key>"}` - a config table's keys, which are the exact strings the old Perk picker stored in
- *    system.choice: fightingStyle, airBornMovement, alwaysReadyOptions, powerAdaptationOptions, elementDamageTypes... An
- *    entry keyed "any" is left out. A list table (fieldSkills) offers its entries, labelled from `labels` (another table,
- *    "skills") when given.
+ *  - `config {table | path: "<CONFIG.E20 key>", exceptAt?, labels?}` lives in plugins/tags/role-points-and-flag-lists.mjs
+ *    (round 17): a config table's keys, which are the exact strings the old Perk picker stored in system.choice -
+ *    fightingStyle, airBornMovement, alwaysReadyOptions, powerAdaptationOptions, elementDamageTypes... A list table
+ *    (fieldSkills) offers its entries, labelled from `labels` (another table, "skills") when given.
  *  - `sense` (CONFIG.E20.senses), `environment` (CONFIG.E20.environments), `movement` (CONFIG.E20.movementTypes), `element`
  *    (CONFIG.E20.elementDamageTypes - an Element's damage types). `damageType` is a core source.
  *
@@ -49,12 +49,6 @@ function heldFilter(name, options, step, ctx) {
 
   return options.filter(option => (step.held ? held(ctx.actor, option.value) : !held(ctx.actor, option.value)));
 }
-
-registerPickSource('config', step => {
-  const table = E20()[String(step.table ?? '')];
-  const labels = step.labels ? E20()[String(step.labels)] : null;
-  return table ? tableOptions(table, labels) : [];
-});
 
 registerPickSource('sense', (step, ctx) => heldFilter('sense', tableOptions(E20().senses), step, ctx));
 registerPickSource('environment', (step, ctx) => heldFilter('environment', tableOptions(E20().environments), step, ctx));

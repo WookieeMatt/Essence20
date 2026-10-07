@@ -34,7 +34,7 @@
     "traits": [],
     "removedTraits": [],
     "type": "vehicle",
-    "prerequisite": "Ranger Operator Only",
+    "prerequisite": "",
     "linkedWeaponEffect": null
   },
   "effects": [],

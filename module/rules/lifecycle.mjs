@@ -4,7 +4,7 @@ import { interpolate } from "./predicate.mjs";
 import { resolveValue } from "./formula.mjs";
 import { filterSkills, pickOptions } from "./steps.mjs";
 import { legacyValue } from "./legacy-choices.mjs";
-import { legacyChoiceOf } from "./choice-read.mjs";
+import { choiceValue, legacyChoiceOf } from "./choice-read.mjs";
 import { queueAsk } from "./ask-queue.mjs";
 import { sourceOf } from "../items/shared/item-lookups.mjs";
 
@@ -237,6 +237,31 @@ export async function askChoice(rule, item, { options = null, n = null, count = 
 }
 
 /**
+ * A ChoiceSet's old pick (its `legacy` path - the old Perk picker's system.choice) when every value of it is one of the
+ * rule's options (a list ChoiceSet gets a single old pick as a one-entry list); null otherwise. Value-matched: nothing is
+ * guessed (Perk choice P2, plan §3.1).
+ * @returns {*|null}
+ */
+export function matchedLegacyChoice(rule, item, actor = actorOf(item)) {
+  if (!rule?.legacy) {
+    return null;
+  }
+
+  const old = legacyValue(rule.legacy, item, actor);
+  const values = asList(old).map(String);
+  if (!values.length) {
+    return null;
+  }
+
+  const known = new Set(choiceOptions(rule, { actor, item, allOptions: true }).map(option => String(option.value)));
+  if (!values.every(value => known.has(value))) {
+    return null;
+  }
+
+  return isListChoice(rule) ? [...new Set(values)] : Array.isArray(old) ? null : String(old);
+}
+
+/**
  * The flag update for an item just added to an actor: choices, toggle defaults, full pools (and a `rename` ChoiceSet's
  * name). A `required` ChoiceSet that is cancelled stops it there: its key goes into `cancelled`, for onCreateItem to take
  * the item off again.
@@ -251,7 +276,10 @@ export async function initialState(item, actor, { ask = askChoice, cancelled = [
     }
 
     if (rule.type == 'ChoiceSet' && rule.key && state.choices?.[rule.key] === undefined) {
-      const value = await askRule(rule, item, actor, { ask });
+      // An old pick the copy already carries (a world copy made before the Perk choice conversion, added to another
+      // actor): taken as it is when it is one of the options - asked again otherwise (Perk choice P2).
+      const carried = matchedLegacyChoice(rule, item, actor);
+      const value = carried ?? await askRule(rule, item, actor, { ask });
       if (value !== null && value !== undefined) {
         update[`flags.essence20.rules.choices.${rule.key}`] = value;
         picked[rule.key] = value;
@@ -283,22 +311,27 @@ export async function grantData(item, actor, { load = uuid => fromUuid(uuid) } =
       continue;
     }
 
-    // "{choice.x}" - the item a ChoiceSet on this item picked (the choices are asked first).
-    const uuid = interpolate(String(rule.uuid), item);
-    if (!uuid || (rule.skipIfOwned && owned.has(uuid))) {
-      continue;
-    }
+    // "{choice.x}" - the item a ChoiceSet on this item picked (the choices are asked first); a list pick grants every
+    // entry (Perk choice P2b).
+    const whole = /^\{choice\.([\w-]+)\}$/.exec(String(rule.uuid).trim());
+    const picked = whole ? choiceValue(item, whole[1]) : undefined;
+    const uuids = Array.isArray(picked) ? picked.filter(Boolean).map(String) : [interpolate(String(rule.uuid), item)];
+    for (const uuid of uuids) {
+      if (!uuid || (rule.skipIfOwned && owned.has(uuid))) {
+        continue;
+      }
 
-    const source = await load(uuid);
-    if (!source) {
-      continue;
-    }
+      const source = await load(uuid);
+      if (!source) {
+        continue;
+      }
 
-    const data = source.toObject();
-    delete data._id;
-    foundry.utils.setProperty(data, '_stats.compendiumSource', uuid);
-    foundry.utils.setProperty(data, 'flags.essence20.grantedBy', item.id);
-    created.push(data);
+      const data = source.toObject();
+      delete data._id;
+      foundry.utils.setProperty(data, '_stats.compendiumSource', uuid);
+      foundry.utils.setProperty(data, 'flags.essence20.grantedBy', item.id);
+      created.push(data);
+    }
   }
 
   return created;
@@ -345,14 +378,29 @@ export function grantedBy(actor, item) {
  * the time the dialog is answered) is kept unpicked, as grants keep it today.
  * @returns {Promise<Boolean>}   false when the item was taken off.
  */
-export async function setUpItem(item, actor, { ask = askChoice } = {}) {
+export async function setUpItem(item, actor, { ask = askChoice, maxReasks = REQUIRED_REASKS } = {}) {
   return queueAsk(actor, async () => {
-    const cancelled = [];
-    const update = await initialState(item, actor, { ask, cancelled });
-    const now = actor.items?.get?.(item.id) ?? item;
-    if (cancelled.length && !now.flags?.essence20?.grantedBy && !now.flags?.essence20?.parentId) {
+    let cancelled = [];
+    let update = await initialState(item, actor, { ask, cancelled });
+    const now = () => actor.items?.get?.(item.id) ?? item;
+    const granted = () => !!(now().flags?.essence20?.grantedBy || now().flags?.essence20?.parentId);
+    // A dropped item whose required pick is cancelled is not added (user ruling 2026-10-07: the drop fails).
+    if (cancelled.length && !granted()) {
       await item.delete?.();
       return false;
+    }
+
+    // One a Role or another item granted can't be cancelled: it asks again until something is picked (user ruling
+    // 2026-10-07). A pick with nothing to offer would ask forever, so after maxReasks it is left unpicked, with a warning.
+    for (let tries = 0; cancelled.length && tries < maxReasks; tries++) {
+      if (Object.keys(update).length) {
+        await item.update(update);
+        update = {};
+      }
+
+      globalThis.ui?.notifications?.warn?.(globalThis.game?.i18n?.format?.('E20.Rules.ChoiceRequired', { item: item.name }) ?? `${item.name}: a choice is required.`);
+      cancelled = [];
+      update = await initialState(now(), actor, { ask, cancelled });
     }
 
     if (Object.keys(update).length) {
@@ -362,6 +410,9 @@ export async function setUpItem(item, actor, { ask = askChoice } = {}) {
     return true;
   });
 }
+
+/** How many times a granted item's required pick is asked again after a cancel before it is left unpicked. */
+const REQUIRED_REASKS = 10;
 
 async function onCreateItem(item, options, userId) {
   const actor = item.parent;

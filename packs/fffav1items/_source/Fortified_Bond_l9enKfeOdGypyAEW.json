@@ -16,7 +16,7 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 9
     },
-    "prerequisite": "One or more Contacts",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

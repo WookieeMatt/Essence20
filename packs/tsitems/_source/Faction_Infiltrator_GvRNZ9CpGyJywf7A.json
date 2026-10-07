@@ -22,7 +22,7 @@
     "choiceType": "none",
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,
-    "prerequisite": "Double Agent General Perk",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
     "version": "transformers"

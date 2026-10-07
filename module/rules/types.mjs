@@ -264,8 +264,9 @@ export const RULE_TYPES = {
       options: { kind: 'object' },
       // Where an older version of the item kept this pick (rules/legacy-choices.mjs).
       legacy: { kind: 'string' },
-      // from: config - the CONFIG.E20 table (its keys are the values); labels: a table naming a list table's entries.
-      table: { kind: 'string' }, labels: { kind: 'string' },
+      // from: config - the CONFIG.E20 table (its keys are the values; path is the pick step's spelling of it); labels: a
+      // table naming a list table's entries; exceptAt: leave out the keys set at that actor path.
+      table: { kind: 'string' }, path: { kind: 'string' }, labels: { kind: 'string' }, exceptAt: { kind: 'string' },
       // Only these values of the source; from: skill - only that Essence's Skills.
       only: { kind: 'strings' }, essence: { kind: 'enum', options: ['strength', 'speed', 'smarts', 'social'] },
       // What the actor already has (an acute sense, a known environment, a movement with a base speed): left out / only.
@@ -280,7 +281,7 @@ export const RULE_TYPES = {
     scopes: ['self'],
     validate: rule => [
       ...(rule.from != 'list' || (Array.isArray(rule.options) && rule.options.length) ? [] : ['a list choice needs options']),
-      ...(rule.from == 'config' && !rule.table ? ['a config choice needs table (a CONFIG.E20 key)'] : []),
+      ...(rule.from == 'config' && !rule.table && !rule.path ? ['a config choice needs table (a CONFIG.E20 key)'] : []),
       ...(rule.notHeld && rule.held ? ['notHeld and held can\'t both be set'] : []),
       ...((rule.notHeld || rule.held) && !['sense', 'environment', 'movement'].includes(rule.from) ? ['notHeld / held need from: sense, environment or movement'] : []),
       ...(rule.essence && rule.from != 'skill' ? ['essence needs from: skill'] : []),

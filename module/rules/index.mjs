@@ -1,7 +1,7 @@
 import { RULE_TYPES } from "./types.mjs";
 import { rulesSourceOf } from "./inherit.mjs";
 import { itemsOf } from "../items/shared/item-lookups.mjs";
-import { chosenOf } from "./choice-read.mjs";
+import { choiceValue, chosenOf } from "./choice-read.mjs";
 
 /**
  * Reading an actor's rules (docs/RULES_ENGINE_PLAN.md §6, §8).
@@ -210,7 +210,13 @@ export function ruleLabel(rule, item) {
 
   // "Studying {choice.subject}" - filled from the item's ChoiceSet picks; "…" until one is made.
   return String(rule.label).replace(/\{(choice\.[\w-]+|item\.choice)\}/g, (match, ref) => {
-    const value = ref == 'item.choice' ? (item ? chosenOf(item) : undefined) : item?.flags?.essence20?.rules?.choices?.[ref.slice(7)];
+    const value = ref == 'item.choice' ? (item ? chosenOf(item) : undefined) : choiceValue(item, ref.slice(7));
+    // A list pick (Perk choice P2b): every entry, joined.
+    const entries = Array.isArray(value) ? value.filter(entry => entry !== undefined && entry !== null && entry !== '') : null;
+    if (entries) {
+      return entries.length ? entries.join(', ') : '…';
+    }
+
     return value === undefined || value === null || value === '' ? '…' : String(value);
   });
 }

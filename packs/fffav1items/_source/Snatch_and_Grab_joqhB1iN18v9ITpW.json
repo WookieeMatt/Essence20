@@ -16,7 +16,7 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 39
     },
-    "prerequisite": "Snatch General Perk, Finesse +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

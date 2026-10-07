@@ -29,7 +29,7 @@
     "benefit": "The vehicle's Ram attack deals 1 extra Sharp damage.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land or Sea vehicle with a Ram attack"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

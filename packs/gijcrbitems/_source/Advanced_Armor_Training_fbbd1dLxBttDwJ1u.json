@@ -14,7 +14,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 165
     },
-    "prerequisite": "Basic Armor Training",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

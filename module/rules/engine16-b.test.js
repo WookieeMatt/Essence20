@@ -93,7 +93,10 @@ describe('tags', () => {
     expect(evaluate(['target:exists'], ctxOf(a))).toBe(false);
     expect(evaluate(['target:exists'], ctxOf(a, { other: b }))).toBe(true);
     expect(evaluate(['item:mentions:mega weapon|combiner'], ctxOf(a, { item: { name: 'Zord Mega-Weapon System', system: {} } }))).toBe(true);
+    // The prerequisite tags in words; the old typed text only as an unmigrated item's fallback (retired 2026-10-07).
+    expect(evaluate(['item:mentions:mega weapon|combiner'], ctxOf(a, { item: { name: 'Heavy Chassis', system: { prerequisites: { when: ['self:has:Combiner'] } } } }))).toBe(true);
     expect(evaluate(['item:mentions:mega weapon|combiner'], ctxOf(a, { item: { name: 'Heavy Chassis', system: { prerequisite: 'Combiner' } } }))).toBe(true);
+    expect(evaluate(['item:mentions:mega weapon|combiner'], ctxOf(a, { item: { name: 'Heavy Chassis', system: { prerequisite: 'Combiner', prerequisites: { when: ['self:level>=2'] } } } }))).toBe(false);
     expect(evaluate(['item:mentions:mega weapon|combiner'], ctxOf(a, { item: { name: 'Heavy Chassis', system: {} } }))).toBe(false);
   });
 

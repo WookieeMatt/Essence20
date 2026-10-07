@@ -14,7 +14,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 132
     },
-    "prerequisite": "Trained in Light Armor",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

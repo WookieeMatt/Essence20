@@ -19,7 +19,7 @@
       "book": "A Jump Through Time",
       "page": 56
     },
-    "prerequisite": "Targeting Skill d4 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

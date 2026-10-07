@@ -19,7 +19,7 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 37
     },
-    "prerequisite": "Infiltration +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

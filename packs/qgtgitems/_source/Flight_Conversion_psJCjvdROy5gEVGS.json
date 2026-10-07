@@ -29,7 +29,7 @@
     "benefit": "Once per scene, the vehicle gains Aerial Movement equal to its Ground or Aquatic Movement plus the VTOL trait for 3 turns, falling if it hasn't landed by the end.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land or Sea vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

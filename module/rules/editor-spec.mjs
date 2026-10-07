@@ -102,8 +102,10 @@ export const RULE_FORMS = {
   ],
   DerivedStat: [
     { path: 'path', kind: 'select', label: 'Stat', options: 'derivedPaths', allowCustom: true },
-    { path: 'op', kind: 'select', label: 'Op', options: [['add', 'OpAdd'], ['set', 'OpSet'], ['multiply', 'OpMultiply'], ['max', 'OpMax'], ['min', 'OpMin']] },
-    { path: 'value', kind: 'formula', label: 'Value' },
+    { path: 'op', kind: 'select', label: 'Op', options: [['add', 'OpAdd'], ['set', 'OpSet'], ['multiply', 'OpMultiply'], ['max', 'OpMax'], ['min', 'OpMin'], ['append', 'OpAppend']] },
+    { path: 'value', kind: 'formula', label: 'Value', showIf: rule => rule.op != 'append' },
+    // append: the entry text, kept as text ({choice.environment}).
+    { path: 'value', kind: 'text', label: 'AppendValue', hint: 'AppendValueHint', showIf: rule => rule.op == 'append' },
   ],
   DamageModifier: [
     { path: 'direction', kind: 'select', label: 'Direction', options: [['taken', 'DamageTaken'], ['dealt', 'DamageDealt']] },
@@ -128,8 +130,21 @@ export const RULE_FORMS = {
   ],
   ChoiceSet: [
     { path: 'key', kind: 'text', label: 'Key' },
-    { path: 'from', kind: 'select', label: 'ChoiceFrom', options: [['skill', 'FromSkill'], ['essence', 'FromEssence'], ['defense', 'FromDefense'], ['list', 'FromList'], ['text', 'FromText']] },
+    { path: 'from', kind: 'select', label: 'ChoiceFrom', options: [['skill', 'FromSkill'], ['essence', 'FromEssence'], ['defense', 'FromDefense'], ['list', 'FromList'], ['text', 'FromText'],
+      ['config', 'FromConfig'], ['sense', 'FromSense'], ['environment', 'FromEnvironment'], ['movement', 'FromMovement'], ['damageType', 'FromDamageType'], ['element', 'FromElement']], allowCustom: true },
     { path: 'options', kind: 'strings', label: 'ChoiceOptions', showIf: rule => rule.from == 'list' },
+    { path: 'table', kind: 'text', label: 'ChoiceTable', hint: 'ChoiceTableHint', showIf: rule => rule.from == 'config' },
+    { path: 'labels', kind: 'text', label: 'ChoiceLabels', advanced: true, showIf: rule => rule.from == 'config' },
+    { path: 'exceptAt', kind: 'text', label: 'ChoiceExceptAt', advanced: true, showIf: rule => rule.from == 'config' },
+    { path: 'essence', kind: 'select', label: 'PickEssence', options: [['', 'EssenceAny'], ['strength', 'EssenceNames.strength'], ['speed', 'EssenceNames.speed'], ['smarts', 'EssenceNames.smarts'], ['social', 'EssenceNames.social']], showIf: rule => rule.from == 'skill' },
+    { path: 'only', kind: 'strings', label: 'ChoiceOnly', hint: 'ChoiceOnlyHint', showIf: rule => rule.from != 'list' && rule.from != 'text' },
+    { path: 'notHeld', kind: 'checkbox', label: 'ChoiceNotHeld', showIf: rule => ['sense', 'environment', 'movement'].includes(rule.from) },
+    { path: 'held', kind: 'checkbox', label: 'ChoiceHeld', showIf: rule => ['sense', 'environment', 'movement'].includes(rule.from) },
+    { path: 'count', kind: 'formula', label: 'ChoiceCount', hint: 'ChoiceCountHint' },
+    { path: 'excludeCopies', kind: 'checkbox', label: 'ChoiceExcludeCopies' },
+    { path: 'rename', kind: 'checkbox', label: 'ChoiceRename' },
+    { path: 'required', kind: 'checkbox', label: 'ChoiceRequired' },
+    { path: 'primary', kind: 'checkbox', label: 'ChoicePrimary', advanced: true },
     { path: 'legacy', kind: 'text', label: 'PickLegacy', advanced: true },
   ],
   Code: [
@@ -452,6 +467,14 @@ export const STEP_FORMS = {
   ],
   askNumber: [{ path: 'prompt', kind: 'text', label: 'Prompt' }, { path: 'var', kind: 'text', label: 'VarName' }, { path: 'min', kind: 'formula', label: 'Min' }, { path: 'max', kind: 'formula', label: 'Max' }],
 };
+
+/**
+ * A plug-in step's form (rules/plugins/<topic>/, beside its registerStep): the same field list as STEP_FORMS. Only
+ * plug-ins loaded through plugins/index.mjs add one, so the core forms still match the core STEP_TYPES.
+ */
+export function registerStepForm(name, fields) {
+  STEP_FORMS[name] = fields;
+}
 
 /** Every step also takes a condition. */
 export const STEP_COMMON = [{ path: 'when', kind: 'tags', label: 'StepWhen' }, { path: 'filter', kind: 'tags', label: 'StepFilter', advanced: true }, { path: 'quiet', kind: 'checkbox', label: 'StepQuiet', advanced: true }];

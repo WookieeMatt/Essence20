@@ -29,7 +29,7 @@
     "benefit": "The vehicle's jamming automatically blocks all signals within 100ft, and imposes Snag on signals within 1 mile while active.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Radar Jammer"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

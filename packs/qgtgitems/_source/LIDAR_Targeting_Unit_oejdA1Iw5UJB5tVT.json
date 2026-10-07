@@ -28,7 +28,7 @@
     "benefit": "+1 to every vehicle weapon system and hardpoint weapon attack.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Computerized vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

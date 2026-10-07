@@ -23,7 +23,7 @@
       "page": 30
     },
     "actionType": "free",
-    "prerequisite": "Anti-Air Combat Training, Level 8",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

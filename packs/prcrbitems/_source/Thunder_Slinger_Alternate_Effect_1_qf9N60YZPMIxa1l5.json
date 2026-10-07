@@ -1,6 +1,6 @@
 {
   "folder": "HMobEyWV3AHCixnn",
-  "name": "Thunder Slinger Alternate Effect 1",
+  "name": "Thunder Slinger Effect (Sonic vs Putty)",
   "type": "weaponEffect",
   "_id": "qf9N60YZPMIxa1l5",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -9,9 +9,9 @@
     "actionType": "standard",
     "classification": {
       "skill": "targeting",
-      "style": "energy"
+      "style": "projectile"
     },
-    "damageType": "element",
+    "damageType": "sonic",
     "damageValue": 1,
     "shiftDown": 0,
     "numHands": "1",

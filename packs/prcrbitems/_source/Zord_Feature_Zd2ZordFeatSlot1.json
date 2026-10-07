@@ -17,10 +17,10 @@
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 32
+      "page": 33
     },
     "prerequisite": "",
-    "selectionLimit": 4,
+    "selectionLimit": 5,
     "type": "role"
   },
   "effects": [],

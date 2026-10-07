@@ -6,8 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Predacon: Edge (chosen Specialization)","when":["skill:{item.choice}","skill:intimidation","roll:dataset:specializationKey"],"edge":true,"default":true,"forget":true},
-      {"type":"DialogSwitch","label":"Predacon: Edge (chosen Specialization)","when":["skill:{item.choice}","skill:intimidation","not:roll:dataset:specializationKey"],"edge":true,"forget":true},
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DialogSwitch","label":"Predacon: Edge (chosen Specialization)","when":["skill:{choice.skill}","skill:intimidation","roll:dataset:specializationKey"],"edge":true,"default":true,"forget":true},
+      {"type":"DialogSwitch","label":"Predacon: Edge (chosen Specialization)","when":["skill:{choice.skill}","skill:intimidation","not:roll:dataset:specializationKey"],"edge":true,"forget":true},
       {"type":"Trigger","label":"Frightened until the end of its next turn (Predacon)","event":"hit","when":["skill:intimidation","combat:exists"],"steps":[{"do":"applyCondition","condition":"frightened","to":"target"},{"do":"mark","to":"target","key":"predaconFright"}]},
       {"type":"Trigger","label":"Frightened ends (Predacon)","event":"turnEnd","watch":"any","when":["markedByMe:predaconFright"],"steps":[{"do":"removeCondition","to":"target","condition":"frightened"},{"do":"unmark","to":"target","key":"predaconFright"}]}
     ],
@@ -24,8 +25,8 @@
     "items": {},
     "canActivate": false,
     "choice": null,
-    "choiceType": "skills",
-    "hasChoice": true,
+    "choiceType": "none",
+    "hasChoice": false,
     "numChoices": 1,
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,

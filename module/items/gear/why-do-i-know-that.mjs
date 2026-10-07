@@ -14,9 +14,9 @@ import { grantPerkOutright } from "../../sheet-handlers/perk-handler.mjs";
  * (perk-handler.mjs#grantPerkOutright) has existed for some time behind Change Its Stripes and
  * Combat Lifesaver. So this needed neither piece built - only the two connected.
  *
- * "Provided you meet its prerequisites" is NOT enforced. Prerequisites are free text on the Perk
- * (system.prerequisite: "Persuasion at +d6 or higher", "One or more Contacts with Threat stat
- * blocks", "12th Level or higher"), with no parser anywhere and no shared shape to parse - the
+ * "Provided you meet its prerequisites" is NOT enforced. (Written when prerequisites were free text on
+ * the Perk, with no parser and no shared shape to parse; they are system.prerequisites tags now -
+ * rules/prerequisites.mjs - and the typed text was retired 2026-10-07.) It stays the
  * same honour-system drop this project applies to every other unverifiable qualifier. The picker
  * deliberately still offers everything rather than guessing at a filter, since a wrong filter would
  * hide legal choices rather than merely allow illegal ones.

@@ -18,7 +18,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 97
     },
-    "prerequisite": "Light Armor Training",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

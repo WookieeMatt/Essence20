@@ -36,7 +36,7 @@ import { shapeOf as mlpShapeOf } from "./items/forms/pony-shape-shifting.mjs";
 import { isDsoeDisguiseActive } from "./items/magic/disguise-spell.mjs";
 import { grappleEscapeSkills } from "./mechanics/combat/grappled-snag.mjs";
 import { isInfiltrating } from "./items/senses/infiltrating.mjs";
-import "./rules/prerequisites.mjs";
+import { prerequisiteText } from "./rules/prerequisites.mjs";
 import { isRecklessAbandonActive } from "./items/rolls/reckless-abandon.mjs";
 import { noticeEssenceBases } from "./mechanics/vehicles/machine-essences.mjs";
 import "./rules/plugins/index.mjs";
@@ -570,6 +570,9 @@ Handlebars.registerHelper("weaponEffectDamages", getWeaponEffectDamages);
 
 // "1/2 today" for a power with a per-day limit (nanomite powers) - see mechanics/resources/nanomite-uses.mjs.
 Handlebars.registerHelper("powerDailyUses", formatDailyUses);
+
+// An item's (or an attached Upgrade entry's) prerequisites in words, from its tags - see rules/prerequisites.mjs.
+Handlebars.registerHelper("prerequisiteText", item => prerequisiteText(item));
 
 // Nanomite equipment's uses left and inert state - see items/gear/nanomite-gear.mjs.
 Handlebars.registerHelper("gearNanomiteUsesLeft", getGearNanomiteUsesLeft);

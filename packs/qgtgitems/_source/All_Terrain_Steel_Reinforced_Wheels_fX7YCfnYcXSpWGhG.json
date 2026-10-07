@@ -27,7 +27,7 @@
     "benefit": "The vehicle ignores Rough Terrain.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

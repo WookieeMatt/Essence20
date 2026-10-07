@@ -27,7 +27,7 @@
     "benefit": "The vehicle gains the Sensors trait.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle without the Sensors trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

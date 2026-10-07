@@ -315,8 +315,15 @@ describe('JS readers', () => {
     const actor = makeActor([]);
     const blaster = makeItem(actor, { type: 'weapon', flags: {} });
     actor.items.push(blaster);
-    // Its Use rule keeps the weapon's id; a uuid's last part reads the same.
-    actor.items.push(makeItem(actor, sourcedChooser(TF1.favoriteWeapon, way, `Actor.x.Item.${blaster.id}`)));
+    // Its Use rule keeps the weapon's id under the pick's key "weapon" (Perk choice P2e), or an old copy's system.choice;
+    // a uuid's last part reads the same.
+    const data = sourcedChooser(TF1.favoriteWeapon, way, `Actor.x.Item.${blaster.id}`);
+    if (way == 'rules') {
+      data.flags.essence20.rules.choices = { weapon: data.flags.essence20.rules.choices.pick };
+      data.system.rules = [{ type: 'Use', steps: [{ do: 'pick', key: 'weapon', from: 'ownedItem', legacy: 'system.choice' }] }];
+    }
+
+    actor.items.push(makeItem(actor, data));
     expect(favoriteWeaponOf(actor)).toBe(blaster);
   });
 
@@ -368,13 +375,16 @@ describe('legacy-choices', () => {
     }
   });
 
-  test('a `legacy: "system.choice"` ChoiceSet copies the old field, as before, and the 6.1 flag', () => {
+  test('a `legacy: "system.choice"` ChoiceSet is left to the value-matched Perk choice migration (P2); other legacy paths as before', () => {
     const rules = [{ type: 'ChoiceSet', key: 'element', legacy: 'system.choice', choices: [] }];
     for (const way of ['legacy', 'flag']) {
       const held = HOLDINGS[way]('fire');
       const actor = makeActor([{ flags: held.flags ?? {}, system: { ...held.system, rules } }]);
-      expect(legacyChoiceUpdates(actor)).toEqual([{ _id: actor.items[0].id, 'flags.essence20.rules.choices.element': 'fire' }]);
+      expect(legacyChoiceUpdates(actor)).toEqual([]);
     }
+
+    const other = makeActor([{ flags: { essence20: { oldPick: 'fire' } }, system: { rules: [{ type: 'ChoiceSet', key: 'element', legacy: 'flags.essence20.oldPick' }] } }]);
+    expect(legacyChoiceUpdates(other)).toEqual([{ _id: other.items[0].id, 'flags.essence20.rules.choices.element': 'fire' }]);
 
     expect(legacyValue('system.choice', { system: { choice: '' } })).toBeNull();
     expect(legacyValue('system.other', { system: { other: 'x' } })).toBe('x');

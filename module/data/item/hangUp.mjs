@@ -14,8 +14,13 @@ export class HangUpItemData extends foundry.abstract.TypeDataModel {
       // fields. Deliberately narrower than perk.mjs's own set: no numChoices/selectionLimit, since
       // a Hang-Up is granted once by its parent Influence rather than re-picked at level-ups, and
       // the picker fires from background-handler.mjs#_hangUpSelect rather than setPerkValues.
+      // Deprecated until 6.1 (Perk choice P2e): Augmented asks its damage type through a ChoiceSet rule now; 6.1 removes
+      // these three. None of them is on the Hang-Up Details tab (Perk choice P3).
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       hasChoice: makeBool(false),
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       choiceType: makeStr(null),
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       choice: makeStr(null),
     };
   }

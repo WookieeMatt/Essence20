@@ -20,7 +20,7 @@ export const itemDescription = () => ({
   // (rules/types.mjs#validateRule), so a rule this version doesn't know is kept, not stripped.
   rules: new fields.ArrayField(new fields.ObjectField()),
   // What taking this item requires: {when: [tags]} in the rules' condition language, checked when
-  // it's added or attached (rules/prerequisites.mjs, docs/PREREQUISITES_PLAN.md). The printed text
-  // stays in a Perk's or Upgrade's own `prerequisite` field.
+  // it's added or attached (rules/prerequisites.mjs, docs/PREREQUISITES_PLAN.md), and shown in words
+  // (prerequisiteText). The old typed `prerequisite` text was retired 2026-10-07.
   prerequisites: new fields.ObjectField(),
 });

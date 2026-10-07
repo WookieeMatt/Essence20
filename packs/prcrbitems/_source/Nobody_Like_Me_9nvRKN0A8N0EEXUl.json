@@ -4,7 +4,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"AnyGeneralPerkChoice","label":"Nobody Like Me: pick any General Perk"}
+      {"type":"Trigger","event":"added","label":"Pick a General Perk","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","anyGeneral":true,"required":true}]}
     ],
     "automation": {
       "status": "full",
@@ -19,8 +19,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "hasChoice": true,
-    "choiceType": "perks",
+    "hasChoice": false,
+    "choiceType": "none",
     "items": {
       "2063": {
         "uuid": "Compendium.essence20.pr_crb.Item.R2kcuVGRvvtPQmQX",

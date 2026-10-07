@@ -1,7 +1,7 @@
 import { getSceneEpoch } from "../../mechanics/resources/scene-clock.mjs";
 import { findPerk } from "../../mechanics/characters/perks.mjs";
 import { postPerkUseChatCard } from "../../mechanics/characters/perks.mjs";
-import { chosenOf } from "../../rules/choice-read.mjs";
+import { chosenOf, firstChosen } from "../../rules/choice-read.mjs";
 
 /**
  * Energy Affinity (Decepticon Directive, Elementalist Focus, 1st level, p.53-54): one chosen Element
@@ -46,7 +46,7 @@ const ENERGY_AFFINITY_ALTERED_FLAG = 'energyAffinityAltered';
  * @returns {Boolean}
  */
 export function isEnergyAffinityElementAttack(actor, item) {
-  const choice = item?.type == 'weaponEffect' ? chosenOf(findPerk(actor, ENERGY_AFFINITY_ID)) : null;
+  const choice = item?.type == 'weaponEffect' ? firstChosen(chosenOf(findPerk(actor, ENERGY_AFFINITY_ID))) : null;
   if (!choice) {
     return false;
   }
@@ -78,7 +78,7 @@ export async function activateEnergyAffinity(actor, style) {
   await actor.setFlag('essence20', ENERGY_AFFINITY_ALTERED_FLAG, { epoch: getSceneEpoch(), style });
   await actor.update({ 'system.energon.normal.value': actor.system.energon.normal.value - 1 });
 
-  const choice = chosenOf(findPerk(actor, ENERGY_AFFINITY_ID));
+  const choice = firstChosen(chosenOf(findPerk(actor, ENERGY_AFFINITY_ID)));
   const damageTypeLabel = choice ? game.i18n.localize(`E20.Damage${choice.capitalize()}`) : '';
   postPerkUseChatCard(actor, game.i18n.format('E20.EnergyAffinityActivated', {
     name: actor.name,

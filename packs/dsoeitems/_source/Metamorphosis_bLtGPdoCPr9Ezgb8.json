@@ -19,7 +19,7 @@
       "book": "Dark Skies Over Equestria",
       "page": 20
     },
-    "prerequisite": "Colony Changeling",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

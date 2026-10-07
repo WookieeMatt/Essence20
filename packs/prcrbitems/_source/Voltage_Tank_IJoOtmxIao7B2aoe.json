@@ -5,6 +5,7 @@
   "_id": "IJoOtmxIao7B2aoe",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Weapon with a range in feet and an Energy trait other than Electric"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: gives the weapon the Electric trait on top of its other Energy trait, so its attacks get ↑1, already counted in the upshift your Roll Options Dialog opens with.</p>"

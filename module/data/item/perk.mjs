@@ -29,26 +29,35 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       }),
       // Deprecated 2026-10-07: unused since rules (a Perk's button is its Use rule); remove from the data model in 6.1.
       canActivate: makeBool(false),
+      // Deprecated until 6.1 (Perk choice P2): the old Perk picker's fields - choice, choiceEssence, choiceType, hasChoice,
+      // numChoices. Every pack Perk asks its pick through rules now (a ChoiceSet / pickSubPerk; the pick lives in
+      // flags.essence20.rules.choices); the world migration (migration.mjs#migratePerkChoices) copied old picks over and
+      // keeps choice as a backup. 6.1 removes them (with an Essence20Item.migrateData shim keeping system.choice).
+      // Perk choice P3: none of them is on the Details tab any more (a read-only legacy notice instead).
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       choice: makeStr(null),
-      // Optionally narrows a choiceType:'skills' picker to one Essence's own skills - e.g. I've
-      // Done My Research (Beneath the Helmet, Genius Origin Benefit, p.29) offers only the Smarts
-      // skills. Left empty (the default) the picker offers every skill, as Expertise's own does.
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
+      // (Narrowed a choiceType:'skills' picker to one Essence's skills - a ChoiceSet's `essence` now.)
       choiceEssence: makeStr(null),
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       choiceType: makeStrWithChoices(Object.keys(E20.perkChoiceTypes), 'none'),
       isRoleVariant: makeBool(false),
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       hasChoice: makeBool(false),
       // Deprecated 2026-10-07: unused since rules (added / removed Trigger rules, refreshMorphedToughness); remove
       // from the data model in 6.1.
       hasMorphedToughnessBonus: makeBool(false),
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       numChoices : makeInt(1),
+      // Deprecated 2026-10-07: shown from system.prerequisites now; remove from the data model in 6.1.
       prerequisite: makeStr(null),
       // Deprecated 2026-10-07: unused since rules (a Reroll rule; mechanics/rolls/reroll.mjs reads it only on Active
       // Effects now); remove from the data model in 6.1.
       ...rerollSchema(),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices(Object.keys(E20.perkTypes), 'general'),
-      // Deprecated 2026-10-07: unused since rules (Movement / DerivedStat rules on the Perk); remove from the data
-      // model in 6.1. Until then the delete handler still reads it for a copy dropped before then (not flagged
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
+      // (Unused since rules: Movement / DerivedStat rules on the Perk; not on the Details tab.) Until then the delete handler still reads it for a copy dropped before then (not flagged
       // perkValueRule), whose value was written into its actor.
       value: makeInt(0),
       version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),

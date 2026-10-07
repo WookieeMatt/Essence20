@@ -29,7 +29,7 @@
       "blinding"
     ],
     "type": "weapon",
-    "prerequisite": "Any weapon with a flashlight, the Laser trait, or that does Laser damage"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

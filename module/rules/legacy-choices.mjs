@@ -124,6 +124,12 @@ export function legacyChoiceUpdates(actor) {
     const read = LEGACY[sourceId(item)];
     const picks = { ...(read?.(item, actor) ?? {}) };
     for (const [key, path] of Object.entries(legacyPaths(item))) {
+      // The old Perk picker's system.choice is copied by the value-matched Perk choice migration
+      // (migration.mjs#migratePerkChoices), never as-is here; the rules read it meanwhile (choice-read.mjs#choiceValue).
+      if (path == 'system.choice') {
+        continue;
+      }
+
       picks[key] ??= legacyValue(path, item, actor);
     }
 

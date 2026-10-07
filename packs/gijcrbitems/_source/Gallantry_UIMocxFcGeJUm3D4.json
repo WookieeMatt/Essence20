@@ -9,7 +9,7 @@
       {"type":"RollModifier","scope":"incoming","when":["skill:intimidation","target:hasItem:Compendium.essence20.ferocious_fighters.Item.786NTb2bQyHZ7qfg"],"snag":true,"stack":"gallantry"},
       {"type":"RollModifier","scope":"incoming","when":["skill:intimidation","combat","target:hasItem:Compendium.essence20.technorganic_secrets.Item.jRD6G5Z6eblTvxeO"],"snag":true,"stack":"gallantry"},
       {"type":"RollModifier","scope":"incoming","when":["skill:persuasion","target:hasItem:Compendium.essence20.decepticon_directive.Item.lIiVbzESbPpV7Egu"],"snag":true,"stack":"gallantry"},
-      {"type":"RollModifier","scope":"incoming","when":["target:holdsItem:item:id:2LtDCHxgg9bMvWQK&item:data:system.choice=triggerHappy","target:check:multipleTargetsWeapon"],"snag":true,"stack":"gallantry"},
+      {"type":"RollModifier","scope":"incoming","when":["target:holdsItem:item:id:2LtDCHxgg9bMvWQK&item:choiceHas:style:triggerHappy","target:check:multipleTargetsWeapon"],"snag":true,"stack":"gallantry"},
       {"type":"ConditionHalving","label":"Gallantry (Frightened lasts half as long)","conditions":["frightened"]}
     ],
     "automation": {

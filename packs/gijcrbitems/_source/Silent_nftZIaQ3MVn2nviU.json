@@ -26,7 +26,7 @@
       "silent"
     ],
     "type": "armor",
-    "prerequisite": "Not Silent"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

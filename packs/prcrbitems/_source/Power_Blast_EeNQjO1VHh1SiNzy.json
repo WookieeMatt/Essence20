@@ -6,11 +6,11 @@
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","label":"Power Blast: Athletics against Evasion","event":"powerUsed","when":["item:own","var:spent>0"],"steps":[{"do":"rollCheck","skill":"athletics","essence":"strength","defense":"evasion","damage":{"value":"@var.spent","type":"element"}}]}
+      {"type":"Trigger","label":"Power Blast: Athletics or Targeting against Evasion","event":"powerUsed","when":["item:own","var:spent>0"],"steps":[{"do":"choose","prompt":"Throw the Power Blast with which Skill?","options":[{"label":"Athletics","steps":[{"do":"rollCheck","skill":"athletics","essence":"strength","defense":"evasion","damage":{"value":"@var.spent","type":"element"}}]},{"label":"Targeting","steps":[{"do":"rollCheck","skill":"targeting","essence":"speed","defense":"evasion","damage":{"value":"@var.spent","type":"element"}}]}]}]}
     ],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button (while Morphed): spend 1 to 5 Power and roll Athletics against the targeted enemy's Evasion; a hit deals 1 Energy damage per Power spent.</p><p>Left to the table: rolling Targeting instead of Athletics.</p>"
+      "status": "full",
+      "notes": "<p>Use button (while Morphed, a Standard action): spend 1 to 5 Power, pick Athletics or Targeting and roll against the targeted enemy's Evasion; a hit deals 1 Energy damage per Power spent.</p>"
     },
     "originalId": "",
     "description": "",
@@ -18,7 +18,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 100
     },
-    "actionType": "free",
+    "actionType": "standard",
     "canActivate": true,
     "classFeatureId": null,
     "hasVariableCost": true,

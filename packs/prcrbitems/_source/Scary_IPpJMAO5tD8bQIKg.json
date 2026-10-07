@@ -5,6 +5,7 @@
   "_id": "IPpJMAO5tD8bQIKg",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["not:host:trait:intimidating"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains the Intimidating trait, so you can Intimidate by attacking with it.</p>"

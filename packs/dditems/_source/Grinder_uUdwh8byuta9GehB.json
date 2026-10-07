@@ -20,7 +20,7 @@
       "book": "Decepticon Directive",
       "page": 65
     },
-    "prerequisite": "Brawn d8",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

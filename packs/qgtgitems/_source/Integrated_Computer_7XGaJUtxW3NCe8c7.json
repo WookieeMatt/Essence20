@@ -27,7 +27,7 @@
     "benefit": "The vehicle gains the Computerized trait.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle without the Computerized trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

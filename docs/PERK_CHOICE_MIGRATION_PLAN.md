@@ -1,6 +1,6 @@
 # Perk choice migration plan (old `hasChoice` picker -> rules choices)
 
-Status: design only, 2026-10-06. Branch Rules-Engine-Phase-1. Nothing here is built yet.
+Status: designed 2026-10-06; Phases 0, 1, 2 and 3 built 2026-10-07 (see the "done" sections at the end); P4 (6.1) to do. Branch Rules-Engine-Phase-1.
 Goal: move every pack item that uses the old Perk choice fields (`hasChoice`, `choiceType`, `numChoices`, `choiceEssence`,
 `value`, and the stored `system.choice`) onto the rules choice system (ChoiceSet, pick steps, `flags.essence20.rules.choices`).
 The old Details fields get hidden in 6.0.x, existing characters' picks get migrated, and the fields come out of the data model in 6.1.
@@ -280,6 +280,10 @@ Each P2 batch is one scripted pack rewrite (a `scripts/` one-off, deterministic 
 10. Homebrew compatibility at 6.1: keep `{item.choice}` and a `rule:data:system.choice` alias permanently, or break with a
     release-note warning?
 11. Unmatched legacy values: report and leave, or prompt the owner to re-pick the next time the sheet opens?
+12. (P2) All-Terrain Alt Mode offers every Movement type (TF CRB 2nd printing p.110); enforcing "one your Alt Mode lacks" would
+    need a filter on the Alt Mode's own movement - not built, the player picks.
+13. (P2) 21 old choice types never stored their pick (old picker bug): those characters pick on the Rules tab (the migration
+    reports them). Prompt on sheet open instead (see 11)?
 ## Decisions (user, 2026-10-07)
 
 - Multi-Skill Perks: ONE item holding a LIST of Skills (not one copy per Skill). The ChoiceSet takes `count` and stores an array; rules read every entry. GI Joe Expertise's "a different Skill each time" becomes "no Skill twice in the list" (plus the existing per-copy check for anyone who still adds a second copy). The migration folds existing duplicate copies into one item with a list.
@@ -369,3 +373,248 @@ Phase 1 / 2 must know:
   migrateData shim.
 - `{item.choice}` on an item with a ChoiceSet now reads that ChoiceSet's pick: a homebrew item mixing both will see the rules
   choice first (none in the packs).
+
+## Phase 1 - done 2026-10-07
+
+Engine only: no pack item, no world migration, no Details-tab change. check-rules passes (the new assertions included) and
+the Phase 0 pack-parity harness is still green (no pack ChoiceSet was added). Reference for authors:
+docs/RULES_CONVERSION_GUIDE.md, "Engine features added (Perk choice P1)". Tests: `module/rules/perk-choice-p1.test.js`.
+
+What was built (plan §2.2):
+
+| §2.2 | Built | Where |
+|---|---|---|
+| 1. ChoiceSet sources | ChoiceSet keeps skill / essence / defense / list / text; every other `from` goes through `steps.pickOptions` with the actor (exactly the pick step's list). New pick sources `sense`, `environment`, `movement`, `element`; the existing `config` source takes `table` (= `path`) and list tables with `labels`. `from` validates against every registered source. | lifecycle.mjs#choiceOptions, plugins/picks/choice-sources.mjs, plugins/tags/role-points-and-flag-lists.mjs |
+| 1. params | `only` (any source, and pick steps), `essence`, `notHeld` / `held` (sense / environment / movement), `excludeCopies` (re-checked on confirm), `count` (a list; no value twice), `rename` (+ `flags.essence20.rules.baseName`), `required`, `primary`, `table` / `path` / `labels` / `exceptAt` | types.mjs ChoiceSet, lifecycle.mjs#askRule / initialState / renameUpdate / setUpItem |
+| 1. re-pick | Rules tab "change" (owner + GM, the existing button) runs askRule for a ChoiceSet (list picks too) and repickSubPerks for an added Trigger's pickSubPerk; labels of lists joined | sheet.mjs#changeChoice / rulesContext, actor-view.mjs |
+| ask queue | per-actor `queueAsk`: onCreateItem's asks, "change", pickSubPerk | rules/ask-queue.mjs |
+| 2. fills | DamageType `to: "{choice.x}"` (updateItem text already filled) | adapter.mjs#ruleDamageType |
+| 3. Q3 | DerivedStat `op: append` (derived only, each entry once, list picks add every entry) - the user's "derive it" decision, so no Trigger pair is needed | adapter.mjs#ruleDerived, types.mjs |
+| 4. | `@choiceCount` | plugins/picks/choice-count.mjs |
+| 5. | step `pickSubPerk` + `repickSubPerks`; `perk-handler.mjs#createSubPerk` (onPerkDrop's 'perks' branch moved into it, unchanged behaviour); grouped `chooseSelect` (`<optgroup>`) | plugins/picks/pick-sub-perk.mjs, sheet-handlers/perk-handler.mjs, mechanics/resources/grants.mjs |
+| 6. | check-rules assertions: no double ask; no `system.choice` / `{item.choice}` in a converted item's rules; a `legacy: "system.choice"` ChoiceSet has a fixed-list source | rules/choice-checks.mjs, scripts/check-rules.mjs |
+| list reads | a tag with a list `{choice.x}` is true when any entry is (`not:` negates the whole); a DerivedStat path with a list `{choice.x}` applies once per entry | predicate.mjs#evaluateTag, adapter.mjs#choicePaths |
+| editor | form fields for every new ChoiceSet param, `from` options for the new sources, DerivedStat append (a text value field), a pickSubPerk step form (`editor-spec.mjs#registerStepForm`); en.json labels | editor-spec.mjs, lang/en.json |
+
+How each Phase 2 group should use it:
+
+- **P2a (family A, 28):** `{type: ChoiceSet, key: <short key>, from: config, table: <the E20 table the old switch read>,
+  rename: true, required: true, legacy: "system.choice"}`. Tables: fightingStyle, airBornMovement, alwaysReadyOptions,
+  powerAdaptationOptions, electromagneticDisruptionOptions, defensiveFlexibilityOptions, energyConnectionOptions,
+  viciousOrVenomOptions, toothAndClawOptions, overTheCandlestickOptions, sparedNoExpenseSkills, communityHelperSkills,
+  roamingTheLandOptions, twoHandedAssaultOptions, elementDamageTypes (or `from: element`), stoneWarlordDamageTypes,
+  wisdomOfTheEldersOptions, phantomFocusOptions, experimentOptions. Field: `from: skill, only: [culture, science,
+  technology]`. vehicleType: `from: movement, only: [aerial, ground, swim]` (no `held` - any actor may pick any of the
+  three). essence: `from: essence`. Rewrites: `rule:data:system.choice=x` -> `rule:choiceHas:<key>:x`, `{item.choice}` ->
+  `{choice.<key>}`, DamageType `to: "choice"` -> `to: "{choice.element}"`. Set `hasChoice: false` in the same edit
+  (check-rules refuses both), and update choice-read-packs.test.js's "no primary pick yet" assertion for these items.
+- **P2b (family B, 32):** `from: skill` (+ `essence` for I've Done My Research, `excludeCopies: true` for GIJ
+  Expertise), `rename`, `required`, `legacy: "system.choice"`; the three multi-pick Perks add `count` (2 / 3 / 2). A list
+  is read by `skill:{choice.skill}` tags, DerivedStat paths and `rule:choiceHas` with no extra work; decide the other
+  single-value readers (Phase 0 list above). Reroll scope `skills: ["{choice.skill}"]` still needs the audit's Reroll-rule
+  move.
+- **P2c (family C, 10):** Acute Sense `from: sense, notHeld: true` + DerivedStat `system.senses.{choice.sense}.acute =
+  true`; Environmental Expertise / Environment Choice `from: environment, notHeld: true` + DerivedStat `path:
+  system.environments, op: append, value: "{choice.environment}"`; Fast `from: movement, held: true` (the old list offered
+  only movements with base > 0) + Movement / DerivedStat on `system.movement.{choice.movement}.bonus`; All-Terrain Alt
+  Mode `from: movement, only: [aerial, ground, swim]` + DerivedStat on `system.movement.{choice.movement}.altMode`. Then
+  the M2 unbake.
+- **P2d (family D, 46):** `{type: Trigger, event: added, removeOnStop: true, steps: [{do: pickSubPerk, key: perks, count:
+  "<numChoices> + @choiceCount"}]}` (count 1 needs no `@choiceCount` unless a ChoiceCount names the item); Nobody Like Me
+  `anyGeneral: true` (retire AnyGeneralPerkChoice). `system.items` stays. A child that still has `hasChoice` goes through
+  the old setPerkValues, so D can convert before A-C.
+- **P2e:** Augmented `{ChoiceSet, key: damageType, from: damageType, legacy: "system.choice"}`; Mode Attachment's Bot Mode
+  branch can be a list pick or a `pick` with `only`.
+
+Phase 2 must know:
+
+- `removeOnStop` deletes an item when the run stops, granted or not; ChoiceSet `required` keeps a granted copy (grantedBy
+  / parentId). If open question 5 is decided as "keep it", drop `required` / `removeOnStop` from the converted items.
+- `notHeld` / `held` read the actor's prepared data. Once family C derives acute senses / environments from the rules, a
+  re-pick from the Rules tab still offers the current pick (it is the item's own), but another copy's pick reads as held.
+- excludeCopies reads other copies' `flags.essence20.rules.choices[key]`, else (with `legacy`) their `system.choice`, so
+  GIJ Expertise copies dropped before the migration still count.
+- The M1 copy should wrap a scalar in a list for a `count` ChoiceSet (legacyChoiceUpdates doesn't yet); the migration that
+  folds duplicate GIJ Expertise copies into one list item is still to write.
+- Asks are queued only on this client and only for onCreateItem / "change" / pickSubPerk; a `pick` step in another added
+  Trigger still opens at once. Don't call queueAsk from inside a queued ask for the same actor.
+- The prompt is still a plain select (grouped for pickSubPerk's any-General list); the old ChoicesSelector's search box was
+  not carried over.
+- repickSubPerks deletes the old children with `deleteEmbeddedDocuments` (rule grants come off through onDeleteItem);
+  entries an any-General pick wrote onto the parent's `system.items` stay.
+- `perkChoiceProblems` counts `pick` / `pickEach` steps in added Triggers as rules picks: an item converted that way must
+  drop `hasChoice` in the same edit.
+
+- Cancelling a pick (user, 2026-10-07): a DROPPED item whose required pick is cancelled is not added (the drop fails); one GRANTED by a Role or another item (parentId / grantedBy) cannot be cancelled - it asks again until something is picked (lifecycle.mjs#setUpItem; after 10 re-asks with nothing picked it is left unpicked with a warning, so an empty option list cannot loop forever). Phase 2 marks every converted choice `required: true`.
+
+## Phase 2 - done 2026-10-07
+
+All 116 old-picker items are converted (P2a-P2e in one pass), with the world migration for every group. check-rules is clean
+(the P1 assertions plus two new ones), the full jest suite passes. Pack edits were text-only (one script, each file read just
+before it was written, its line endings kept, the result checked against the same edit made on the parsed object); no book
+text. Pre-conversion snapshot of every converted item and every cross reader: `module/rules/test-data/perk-choice-p2-baseline.json`
+(the parity tests compare against it). Tests: `module/rules/perk-choice-p2.test.js`.
+
+Every converted pick is `required: true` (a ChoiceSet's `required`, a pickSubPerk step's new `required` - see below), so
+per the user's ruling a dropped item whose pick is cancelled isn't added and a granted one asks again until picked. Every
+converted item has `hasChoice: false` and `choiceType: "none"` (Augmented: `null`) in the same edit.
+
+Counts: A 27 (the inventory table's rows add up to 27, not 28 - 27 + 32 + 10 + 46 + 1 = 116), B 32, C 10, D 46, E 1.
+
+### Per group
+
+| Group | Items | New shape | Rule rewrites |
+|---|---|---|---|
+| P2a (A, 27) | Air Born, Always Ready, Community Helper, Defensive Flexibility, Electromagnetic Disruption, Adapted Wavelength, Energy Affinity, Ninja Power, Energy Connection, Adaptable, Experiment, Field, Fighting Style, Over the Candlestick, Phantom Focus, Power Adaptation, Roaming the Land, Spared No Expense, Stone Warlord, Tooth and Claw x2, Two-Handed Assault, For The Syndicate, Good To Go, Petrolhead, Vicious or Venom, Wisdom of the Eldars | `ChoiceSet {key, from: config, table}` (the E20 table the old switch read); Field `from: skill, only: [culture, science, technology]`; vehicleType `from: movement, only: [aerial, ground, swim]` (key `vehicle`); essence `from: essence`; elementDamageType `from: element`. All `rename, required, legacy: "system.choice"`. Keys: `style` (Fighting Style), `skill` (Field, Community Helper, Spared No Expense), `damageType` (Tooth and Claw, Stone Warlord), `element`, `vehicle`, `essence`, else `option` | `rule:data:system.choice=x` -> `rule:choiceHas:<key>:x`; Vicious or Venom's bare `rule:data:system.choice` -> `rule:choiceHas:option` (new bare form: "some pick"); `{item.choice}` -> `{choice.<key>}`; `to: "choice"` -> `to: "{choice.<key>}"` |
+| P2b (B, 32) | the 32 `skills` Perks | `ChoiceSet {key: skill, from: skill, essence? (I've Done My Research: smarts; Totally Awesome: social), count? (GI Joe Expertise 2, I've Done My Research 3, Low Tech Priorities 2), excludeCopies? (GI Joe Expertise - its UniqueChoice rule removed), rename, required, legacy}` | `{item.choice}` -> `{choice.skill}`; Agency's DieSubstitution `skills: ["choice"]` -> `["{choice.skill}"]`; a Reroll rule with no Skills of its own (MLP / PR Expertise, Aptitude Augmenter, Trade Experience) gains `skills: ["{choice.skill}"]` |
+| P2c (C, 10) | Acute Sense x3, Acute (Sense), Environmental Expertise, Environment Choice, Fast x2, All-Terrain Alt Mode, Transmetal | Acute: `from: sense, notHeld` + DerivedStat `system.senses.{choice.sense}.acute = true`. Environments: `from: environment, notHeld` (Environment Choice `count: 2` - book) + DerivedStat `system.environments` `op: append` `{choice.environment}`. Fast: `from: movement, held`, its five Movement rules kept. All-Terrain Alt Mode: `from: movement` (every type - book) + DerivedStat `system.movement.{choice.movement}.altMode` `op: set` 20; its three bundled Active Effects removed from the pack item. Transmetal: `from: movement, only: [aerial, ground, swim]` | Transmetal's 9 and Fast's 5 `rule:data:system.choice=x` -> `rule:choiceHas:movement:x`; Fast's and GI Joe Expertise's gate `rule:data:flags.essence20.perkValueRule` -> `not:rule:data:system.value>0` (see below); GI Joe Expertise's DerivedStat path -> `system.skills.{choice.skill}.shiftUp` |
+| P2d (D, 46) | the 46 `perks` Perks | `Trigger {event: added, removeOnStop: true, steps: [{do: pickSubPerk, key: perks, count?, anyGeneral?, required: true}]}`; count = numChoices (2 on Modified Shell I-III and Metamorphosed Changeling; `"2 + @choiceCount"` on Grid Science I-IV / Grid Tech I-IV, Grid Tap's ChoiceCount); Nobody Like Me `anyGeneral: true` (its AnyGeneralPerkChoice rule removed). `system.items` stays | none (nothing read the pick) |
+| P2e | Augmented (Hang-Up) | `ChoiceSet {key: damageType, from: damageType, required, legacy}` (no rename - the old prompt didn't rename) | `{item.choice}` -> `{choice.damageType}` |
+| P2e rule-written picks | Favorite Weapon, Mode Attachment | Favorite Weapon: the `weapon` pick step gains `legacy: "system.choice"`, its `updateItem set system.choice` step is gone; condition-damage-buttons reads `chosenOf(perk, 'weapon')`. Mode Attachment: key `mode` - Bot Mode sets `flags.essence20.rules.choices.mode` (updateItem), the Alt Mode branch is `pick {key: mode, legacy: "system.choice"}`; its Trigger reads `var:mode={choice.mode}` | - |
+| P2e cross readers | Gallantry, Self-Preservation, Volatile Delivery | - | `item:data:system.choice=triggerHappy` -> `item:choiceHas:style:triggerHappy` (new tag); `{sourced.DgFY0ZmAtClAobiA.system.choice}` -> `{sourced.DgFY0ZmAtClAobiA.flags.essence20.rules.choices.element}` (with Volatile Delivery's `|fire` default). The `choiceOf:` readers (19) need no text change |
+
+Book checks (book is truth): Environment Choice picks two environments (GI Joe CRB p.92; the old picker asked one).
+All-Terrain Alt Mode is "a Movement Type you do not have access to in your Alt Mode ... of 20ft" (TF CRB 2nd printing p.110):
+every Movement type is offered (the old picker offered ground / aerial / aquatic), and it sets 20 ft as the old Active
+Effect (mode Override 20) did. Fast keeps the old picker's "a Movement you have" (`held`).
+
+Found on the way: the old picker never stored `system.choice` for 21 of its 29 choice types (onPerkDrop wrote it only for
+environments / senses / movement / altModeMovement / skills / fightingStyle / field): Air Born, Always Ready, Power Adaptation,
+Defensive Flexibility, the element / vehicle / essence picks etc. never had a pick on existing characters, so their
+`rule:data:system.choice=` rules never fired. Those copies have nothing to migrate; the migration reports them as "nothing
+picked yet - pick it on the Rules tab".
+
+### Engine pieces added in P2
+
+- `choice-read.mjs#choiceValue(item, key)`: the rules choice, else - while an item converted from the old picker (a
+  ChoiceSet or pick step carrying `legacy: "system.choice"`) has none - its old pick (system.choice / the 6.1 flag; a list
+  ChoiceSet gets `[old]`). Read by `{choice.x}` (interpolate, ruleLabel, DerivedStat paths and append values, Grant uuids),
+  `rule:choiceHas`, `item:choiceHas`, `{sourced.<id>.flags.essence20.rules.choices.<key>}` (predicate and the step-text
+  `sourced` ref) and `chosenOf`. So a converted pack item works on an old copy before the migration has run (and for an
+  unmatched old value the migration leaves alone - the same reading the old rules gave). Also `legacyChoiceRule`,
+  `firstChosen`.
+- Tags: `rule:choiceHas:<key>` (no value: some pick made), `item:choiceHas:<key>[:<value>]` (the tag's item). Loaded with
+  `rules/adapter.mjs` so they exist wherever rules are read.
+- `lifecycle.mjs#matchedLegacyChoice`: a copy added to an actor that already carries an old pick matching an option (a world
+  copy made before the conversion, dragged to another actor) takes it without asking.
+- pickSubPerk `required` (with an editor field): a granted item (grantedBy / parentId) is asked again after a cancel (up to
+  10 times) and, with nothing to offer, stays unpicked with a warning - its Trigger's removeOnStop no longer deletes it; a
+  dropped one stops the run (removeOnStop takes it off).
+- `choice-checks.mjs#hasRulesPick` / `hasSubPerkPick`; perkChoiceProblems also refuses a converted item that still has a
+  choiceType or a UniqueChoice / AnyGeneralPerkChoice rule.
+- Exactly one dialog per pick: `setPerkValues`, `createSubPerk`, `setRoleVatiantPerks` and the Hang-Up prompt
+  (`hang-up-choice.mjs#applyHangUpChoice`) skip the old picker for anything with a rules pick (even a world copy still saying
+  hasChoice); `grantPerkEquipmentMap` treats a pickSubPerk Perk's `system.items` as its option list, not a grant;
+  `onPerkDelete` leaves a copy flagged `choiceMigration.unbaked` alone; `legacyChoiceUpdates` (the linking pass) no longer
+  copies `legacy: "system.choice"` as-is (the value-matched migration does).
+- The Fast / GI Joe Expertise gate: their rules apply unless the copy still stores `system.value > 0` - the copies whose
+  drop baked the bonus and that the Details cleanup's migratePerkValue hasn't processed yet (it resets the value). A new
+  drop stores 0, so the perkValueRule flag isn't needed by the new rules. perkValueRules' `has` accepts the `{choice.skill}`
+  path, so migratePerkValue never adds the old rule beside the converted one.
+
+P2b list-awareness (Phase 0's open point, decided):
+
+| Reader | A list pick reads |
+|---|---|
+| tags with `{choice.x}`, `rule:choiceHas`, `item:choiceHas`, `skill:choiceOf`, `holder:choiceOf`, AttackResistance `choiceOf` | any entry |
+| DerivedStat path / append, Reroll `skills: ["{choice.x}"]`, DieSubstitution `skills` (`"choice"` / `"{choice.x}"`; best: the best of them, use: the first) | every entry |
+| `{choice.x}` in chat text and in labels | every entry, joined with ", " ("…" when the list is empty) |
+| Grant `uuid: "{choice.x}"` | every entry granted |
+| `skill: "choiceOf:..."` (roll / rollVsEach), DialogSwitch `useSkill: "choiceOf:..."`, DamageType `to` (`"choice"` and `"{choice.x}"`), DamageImmunity `choiceOf`, the `sourced` step-text ref, Energy Affinity's JS readers | the first entry (one Skill rolled, one damage type) |
+| Over the Candlestick (dice.mjs), Phantom Focus | any entry (`hasChosen`) |
+
+### World migration (migration.mjs, "Perk choice P2" block)
+
+- `migratePerkChoiceItem(item, actor?)` - M1: the old pick into `flags.essence20.rules.choices.<key>` only when the slot is
+  empty and every value is one of the rule's options (a ChoiceSet's every option, held / notHeld off; an ownedItem pick: the
+  actor's items of that type; Mode Attachment also `botMode`); a list ChoiceSet gets `[value]`. Unmatched and unpicked are
+  reported, never copied. `system.hasChoice` goes back to false (RESET_TO - the field can't be deleted in v14) unless
+  something was left unmatched; `system.choice` stays as the backup until 6.1. Family D: the children already under the copy
+  (`flags.essence20.parentId`) are recorded under the pickSubPerk key. A copy whose own rules are only what the Details
+  cleanup wrote onto it (perkValueRules) gets `system.rules: []` so it inherits the converted rules. Flag
+  `flags.essence20.choiceMigration.copied`.
+- `unbakePerkChoice(item, actor, state)` - M2 for acute senses (stored `acute` back to false), environments (one entry out of
+  the stored list) and All-Terrain Alt Mode (the one enabled bundled AE disabled, as a nested `effects` update); only for a
+  copy whose rules are converted and that isn't flagged `choiceMigration.unbaked`. A value already gone is reported
+  ("clamped") and the copy flagged. Fast / GI Joe Expertise: migratePerkValue, reused.
+- `planActorPerkChoices(actor)` - M1 + M2 + the sub-Perk record for one actor as data (`actorUpdate`, `itemUpdates`), merged
+  into `migrateActorData`'s update, so the actor change and each copy's flag are ONE `actor.update`.
+- `planPerkCopyFold` - the multi-Skill Perks' old one-copy-per-Skill shape folded into one list item per grant (same book
+  item, parentId, collectionId, grantedBy - so Commando's 1st-level and 7th-level Expertise stay two items of two Skills):
+  every value kept, no value twice, renamed "Name (A, B)" (baseName kept), the other copies' rule state (toggles, pools,
+  limits...) and perkValueRule flag carried where the kept copy has none; the others deleted after the update. A copy with an
+  unmatched pick stays out. The baked +2s come off through migratePerkValue first, so the total bonus is unchanged.
+- `migrateActorPerkChoices(actor)` - all of it for one live actor: one `actor.update` (actor fields + item updates), then the
+  folded copies deleted. Run by `migrateWorld` and `migrateCompendium` after each actor's update, and by
+  `migratePerkChoices`.
+- `migratePerkChoices()` - at `ready` (essence20.mjs, after linkExistingCopies), GM only: every world actor, every unlinked
+  token actor (`scene.tokens` with `!actorLink`), every world Item; gated by the new world setting
+  `perkChoiceMigrationVersion` < `PERK_CHOICE_MIGRATION_VERSION` (1). Console summary and a GM whisper listing what was
+  left alone. `migrateItemData` runs M1 for an item with no actor (world / compendium items).
+- Idempotent: every step fills only empty slots or undoes only what isn't flagged; a second run changes nothing (tested,
+  including after a fold).
+
+The old fields stay in the data model with "deprecated until 6.1" comments (data/item/perk.mjs, hangUp.mjs).
+
+### Left / P3 needs
+
+- **P3 (Details tab)**: hide `hasChoice` / `choiceType` / movement `value` / `numChoices` / `choiceEssence` on the Perk
+  Details tab and `hasChoice` / `choiceType` on the Hang-Up tab; every pack item is converted, so the "hidden when every
+  pack item is converted" condition holds now. A world copy the migration left with `hasChoice: true` (an unmatched pick)
+  gets the read-only "Legacy choice" notice. Retitle the `items` id-drop "Choice list (used by the Pick Sub-Perk rule)" and
+  show it only with a pickSubPerk rule. `E20.perkChoiceTypes` stays until 6.1.
+- **P4 (6.1)**: unchanged - plus `choiceValue`'s legacy fallback reads the 6.1 `legacyChoice` flag already, so the
+  migrateData shim keeps old copies working. Code now dead for pack content (kept until 6.1): the setPerkValues switch and
+  its helpers, onMultiSkillPerkDrop / getAlreadyChosenExpertiseSkills, MultiChoiceSelector, the perk branches of
+  ChoicesSelector, hang-up-choice.mjs, UniqueChoice / AnyGeneralPerkChoice (no pack item uses them now), the
+  `choiceType == 'skills'` Reroll-scope fallback in ruleRerollGrants.
+- Not live-tested: the whole drop / grant / re-pick flow in Foundry, the nested `effects` update in `actor.update` (All-Terrain
+  Alt Mode unbake), the GM whisper. Packs need a recompile.
+- The baseline snapshot (~200 KB) lives under module/ and so ships in the release zip; move it if that matters.
+
+### Open (added to §5)
+
+12. All-Terrain Alt Mode now offers every Movement type (book). If the GM wants only types the Alt Mode lacks enforced, that
+    needs an `exceptAt`-style filter on the Alt Mode's own movement (not built; the player picks).
+13. The 21 choice types whose pick was never stored: existing characters must pick them on the Rules tab (reported). Should the
+    sheet prompt on open instead (Q11)?
+
+- 2026-10-07 (user): the Perk choice pass is part of the main migration - `migrateWorld` calls `migratePerkChoices` at its end. The separate `ready` hook, the `perkChoiceMigrationVersion` setting and `PERK_CHOICE_MIGRATION_VERSION` are gone. It runs when `needsMigrationVersion` (bumped at release) says so; to test, force it with `game.settings.set("essence20", "systemMigrationVersion", "4.1.2")` and reload.
+
+## Phase 3 - done 2026-10-07
+
+The old picker's inputs are off the Details tab (plan §2.5). No pack, migration or engine change; check-rules clean.
+
+Hidden / changed:
+
+- **templates/item/details/perk.hbs**: the `hasChoice` checkbox (and its two-way disable with `canAdvance` - Can Advance is
+  always editable now), the `choiceType` select, the `numChoices` input. (`choiceEssence` and the movement `value` had no input
+  left on the tab already; nothing else edits these fields.)
+- **Legacy notice**: an item that still has `hasChoice: true` shows a read-only "Legacy Choice: <type label> = <pick>" row -
+  "(old picker - convert it to a ChoiceSet rule)" for a homebrew item with no rules pick, "(not carried over - pick it on the
+  Rules tab)" for a converted copy the migration left unmatched. The pick is read with `choice-read.mjs#chosenList` (joined).
+- **Sub-Perk list**: the `system.items` id-drop is retitled "Choice list (used by the Pick Sub-Perk rule)" and shows only
+  when the item has a pickSubPerk rule, or is a legacy `choiceType: perks` item (the old picker still reads the list).
+- The context comes from the new pure `module/rules/perk-choice-details.mjs#perkChoiceDetails(item, E20.perkChoiceTypes)`,
+  set as `context.perkChoice` in item-sheet.mjs for Perks.
+- **Hang-Up**: its Details template had no choice inputs (Augmented's pick was always a drop prompt), so nothing to hide.
+- The current pick keeps showing on the Rules tab's ChoiceSet / pickSubPerk row with "change" (P1); the Details tab had no
+  display of `system.choice` to switch.
+- Data model: every old field (perk.mjs `choice`, `choiceEssence`, `choiceType`, `hasChoice`, `numChoices`, `value`;
+  hangUp.mjs `hasChoice`, `choiceType`, `choice`) is marked "Deprecated 2026-10-07: replaced by rules choices; remove from the
+  data model in 6.1."
+- lang/en.json: removed `PerkHasChoice`, `PerkChoiceType`, `PerkChoiceQuantity`, `PerkNumChoices` (already unused),
+  `PerkPlural` (only the old id-drop label); added `PerkLegacyChoice`, `PerkLegacyChoiceConvert`, `PerkLegacyChoiceRepick`,
+  `PerkSubPerkChoiceList`. The `PerkChoice<Type>` labels stay (E20.perkChoiceTypes, read by the schema and the notice).
+- Tours: none pointed at the removed inputs.
+- Code: no sheet listener served only these inputs, so nothing to remove there. The drop-time old picker (setPerkValues,
+  onMultiSkillPerkDrop, MultiChoiceSelector, the ChoicesSelector perk branches, hang-up-choice.mjs) stays: a homebrew world
+  item with `hasChoice: true` still asks through it until 6.1 - but its type / count can no longer be edited on the sheet
+  (only through the item's data, or by converting it to a ChoiceSet).
+- Tests: `module/rules/perk-choice-details.test.js` - the helper's cases, and the perk / Hang-Up Details templates read as
+  text: no `name="system.<field>"` input for any old field, the old labels gone, the new lang keys present and the removed ones
+  absent.
+
+Left for 6.1 (P4), unchanged: remove the fields and `E20.perkChoiceTypes` (and with them the `PerkChoice<Type>` labels and the
+legacy notice / perk-choice-details.mjs's legacy half), the migrateData shim, and the dead old-picker code listed under
+"Left / P3 needs". Not live-tested in Foundry.

@@ -16,7 +16,7 @@
       "book": "A Jump Through Time",
       "page": 54
     },
-    "prerequisite": "Time Force Ranger",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

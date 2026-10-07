@@ -25,7 +25,7 @@
     "choiceType": "none",
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,
-    "prerequisite": "Level 2",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
     "version": "transformers"

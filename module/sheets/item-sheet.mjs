@@ -19,6 +19,7 @@ import {
 } from "../mechanics/characters/active-effect-controls.mjs";
 import { SKELETONS, changeChoice, chooseAddKind, deleteRule, effectEntries, rulesContext, saveRulesJson, setToggle, stepPool } from "../rules/sheet.mjs";
 import { rulesOf } from "../rules/index.mjs";
+import { perkChoiceDetails } from "../rules/perk-choice-details.mjs";
 
 /**
  * Handles retrieving all existing roles of the system version selected.
@@ -235,6 +236,8 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
     if (this.document.type == 'perk') {
       context.roles = await _getVersionRoles(itemData);
+      // Perk choice P3: the old picker's inputs are gone; a legacy notice and the sub-Perk list (rules/perk-choice-details.mjs).
+      context.perkChoice = perkChoiceDetails(itemData, CONFIG.E20.perkChoiceTypes);
     }
 
     // An Element weapon's element is chosen on its sheet (GI Joe CRB p.207) - any weapon whose own

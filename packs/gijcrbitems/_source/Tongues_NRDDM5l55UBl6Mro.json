@@ -14,7 +14,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 134
     },
-    "prerequisite": "Linguistics Perk or know 4+ Languages",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

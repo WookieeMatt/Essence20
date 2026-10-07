@@ -6,14 +6,15 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Akimbo (↑1 on your off-hand attack)","upshift":1,"when":["rule:data:system.choice=akimbo","attack","not:attack:melee"]},
-      {"type":"RollModifier","label":"Long Shot (no Snag past normal range)","immune":["longRangeSnag"],"when":["rule:data:system.choice=longShot"]},
-      {"type":"RollModifier","label":"Close Quarters Battle (no ↓1 for a ranged attack inside Reach)","immune":["reachDownshift"],"when":["rule:data:system.choice=closeQuartersBattle"]},
-      {"type":"Defense","label":"Fighting Style: Careful (in cover)","defense":"toughness","amount":2,"when":["rule:data:system.choice=careful","self:status:cover"]},
-      {"type":"Defense","label":"Fighting Style: Careful (in cover)","defense":"evasion","amount":2,"when":["rule:data:system.choice=careful","self:status:cover"]},
-      {"type":"Defense","label":"Fighting Style: Defense (wearing armor)","defense":"toughness","amount":1,"when":["rule:data:system.choice=defense","self:wearing>=non"]},
-      {"type":"Defense","label":"Fighting Style: Defense (wearing armor)","defense":"evasion","amount":1,"when":["rule:data:system.choice=defense","self:wearing>=non"]},
-      {"type":"Trigger","label":"Trigger Happy (Frightened on beating Willpower)","event":"afterRoll","outcome":"any","when":["rule:data:system.choice=triggerHappy","check:multipleTargetsWeapon"],"steps":[{"do":"targetRowsBeating","defense":"willpower"},{"do":"applyCondition","condition":"frightened","to":"targets","until":"endOfNextTurn","untilOf":"recipient"}]}
+      {"type":"ChoiceSet","key":"style","label":"Fighting Style","from":"config","table":"fightingStyle","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DialogSwitch","label":"Akimbo (↑1 on your off-hand attack)","upshift":1,"when":["rule:choiceHas:style:akimbo","attack","not:attack:melee"]},
+      {"type":"RollModifier","label":"Long Shot (no Snag past normal range)","immune":["longRangeSnag"],"when":["rule:choiceHas:style:longShot"]},
+      {"type":"RollModifier","label":"Close Quarters Battle (no ↓1 for a ranged attack inside Reach)","immune":["reachDownshift"],"when":["rule:choiceHas:style:closeQuartersBattle"]},
+      {"type":"Defense","label":"Fighting Style: Careful (in cover)","defense":"toughness","amount":2,"when":["rule:choiceHas:style:careful","self:status:cover"]},
+      {"type":"Defense","label":"Fighting Style: Careful (in cover)","defense":"evasion","amount":2,"when":["rule:choiceHas:style:careful","self:status:cover"]},
+      {"type":"Defense","label":"Fighting Style: Defense (wearing armor)","defense":"toughness","amount":1,"when":["rule:choiceHas:style:defense","self:wearing>=non"]},
+      {"type":"Defense","label":"Fighting Style: Defense (wearing armor)","defense":"evasion","amount":1,"when":["rule:choiceHas:style:defense","self:wearing>=non"]},
+      {"type":"Trigger","label":"Trigger Happy (Frightened on beating Willpower)","event":"afterRoll","outcome":"any","when":["rule:choiceHas:style:triggerHappy","check:multipleTargetsWeapon"],"steps":[{"do":"targetRowsBeating","defense":"willpower"},{"do":"applyCondition","condition":"frightened","to":"targets","until":"endOfNextTurn","untilOf":"recipient"}]}
     ],
     "automation": {
       "status": "full",
@@ -28,8 +29,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "fightingStyle"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "sort": 200000,

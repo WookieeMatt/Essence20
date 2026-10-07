@@ -1,47 +1,25 @@
 import { registerTag } from "../../predicate.mjs";
-import { itemsOf, sourceOf } from "../../../items/shared/item-lookups.mjs";
+import { itemsOf } from "../../../items/shared/item-lookups.mjs";
+import { isPrintedUnarmedWeapon, isUnarmedAttack } from "../../../items/shared/unarmed-attacks.mjs";
+
+export { UNARMED_WEAPON_IDS, isPrintedUnarmedWeapon } from "../../../items/shared/unarmed-attacks.mjs";
 
 /**
- * Round 15 (dice part): unarmed the way dice.mjs#_isUnarmedWeaponEffect reads it - an attack with no weapon behind it,
- * OR one of the printed unarmed "weapons" (G.I. JOE / Transformers Unarmed Combat, Night Vale's Unarmed Strike), whose
- * attacks do carry a parent. (The core `attack:unarmed` is "no weapon" only - the rules built on it keep that reading.)
+ * Round 15 (dice part), plus the shared unarmed definition (items/shared/unarmed-attacks.mjs#isUnarmedAttack - no
+ * weapon behind the attack, or one of the printed unarmed "weapons": G.I. JOE / Transformers / Power Rangers Unarmed
+ * Combat, Night Vale's Unarmed Strike).
  *
- *  - `attack:barehanded` - the rolled weaponEffect is unarmed in that wider sense.
+ *  - `attack:barehanded` - the rolled weaponEffect is unarmed. Same definition as the core `attack:unarmed`; the one
+ *    difference is that it only needs the roll not to be flagged a non-attack (ctx.isAttack === false), where
+ *    `attack:unarmed` needs ctx.isAttack set - so it also answers on the item alone (DamageType, Cold Touch).
  *  - `self:holdingWeapon` / `target:holdingWeapon` - an equipped weapon that isn't one of those printed unarmed ones
  *    (Empty Hands' "wielding no weapons"; `self:itemCount:weapon:equipped<1` counts them too).
  *  - `roll:dealsDamage` - some row of the roll carries damage (Brazen Strike).
  */
 
-export const UNARMED_WEAPON_IDS = [
-  "Compendium.essence20.gi_joe_crb.Item.OU9rXvoKfXtcpvFy",
-  "Compendium.essence20.tf_crb.Item.OU9rXvoKfXtcpvFy",
-  "Compendium.essence20.wtnv_citizens_guide.Item.Cwd1FASmKXWiAFom",
-];
-
-/** Whether this weapon item is one of the printed unarmed "weapons". */
-export function isPrintedUnarmedWeapon(weapon) {
-  return !!weapon && UNARMED_WEAPON_IDS.includes(sourceOf(weapon));
-}
-
-/** The weapon a weaponEffect belongs to (on its own actor), or null. */
-function parentWeapon(item, actor) {
-  const parentId = item?.flags?.essence20?.parentId;
-  if (!parentId) {
-    return null;
-  }
-
-  const owner = item.parent ?? item.actor ?? actor;
-  return owner?.items?.get?.(parentId) ?? itemsOf(owner).find(entry => entry.id == parentId) ?? null;
-}
-
-/** An unarmed attack in dice.mjs's sense: no weapon behind it, or a printed unarmed weapon. */
+/** An unarmed attack - isUnarmedAttack under its older name. */
 export function isBarehandedAttack(item, actor = null) {
-  if (item?.type != 'weaponEffect') {
-    return false;
-  }
-
-  const weapon = parentWeapon(item, actor);
-  return !weapon || isPrintedUnarmedWeapon(weapon);
+  return isUnarmedAttack(item, actor);
 }
 
 registerTag('attack:barehanded', (rest, ctx) => (ctx.isAttack === false ? false : isBarehandedAttack(ctx.item, ctx.self)), { phrase: ['on barehanded attacks', 'except on barehanded attacks'] });

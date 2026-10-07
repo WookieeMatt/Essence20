@@ -23,7 +23,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "energy"
+          "style": "projectile"
         },
         "damageValue": 1,
         "damageType": "element",
@@ -45,7 +45,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "energy"
+          "style": "projectile"
         },
         "damageValue": 2,
         "damageType": "element",

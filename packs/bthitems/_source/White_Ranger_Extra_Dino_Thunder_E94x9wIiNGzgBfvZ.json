@@ -21,7 +21,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
-    "prerequisite": "White Ranger only; Dino Thunder Form",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

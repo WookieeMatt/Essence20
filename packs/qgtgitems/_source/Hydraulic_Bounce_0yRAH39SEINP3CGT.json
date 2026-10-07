@@ -28,7 +28,7 @@
     "benefit": "Edge on Driving Skill Tests to maneuver on Rough Terrain.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

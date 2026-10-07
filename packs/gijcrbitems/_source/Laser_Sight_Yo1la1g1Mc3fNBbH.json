@@ -27,7 +27,7 @@
     "benefit": "Aiming with this weapon provides an additional 1 shift.",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Ballistic"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

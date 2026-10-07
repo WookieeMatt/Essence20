@@ -4,7 +4,8 @@
   "img": "icons/svg/hazard.svg",
   "system": {
     "rules": [
-      {"type":"Defense","label":"Augmented (weakness: Defenses halved)","defense":"any","mode":"halve","when":["item:damageType:{item.choice}"]}
+      {"type":"ChoiceSet","key":"damageType","label":"Damage type","from":"damageType","required":true,"legacy":"system.choice"},
+      {"type":"Defense","label":"Augmented (weakness: Defenses halved)","defense":"any","mode":"halve","when":["item:damageType:{choice.damageType}"]}
     ],
     "automation": {
       "status": "full",
@@ -16,8 +17,8 @@
       "book": "Across the Stars",
       "page": 44
     },
-    "hasChoice": true,
-    "choiceType": "damageType"
+    "hasChoice": false,
+    "choiceType": null
   },
   "effects": [],
   "flags": {

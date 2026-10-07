@@ -27,7 +27,7 @@
     "benefit": "The vehicle (excluding its weapons) can no longer be targeted as if it were Computerized.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle with the Computerized trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

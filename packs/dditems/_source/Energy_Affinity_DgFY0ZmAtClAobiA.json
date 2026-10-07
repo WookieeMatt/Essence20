@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DamageType","label":"Energy Affinity (the chosen Element)","to":"choice","priority":1,"when":["check:energyAffinityAttack"]}
+      {"type":"ChoiceSet","key":"element","label":"Element","from":"element","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DamageType","label":"Energy Affinity (the chosen Element)","to":"{choice.element}","priority":1,"when":["check:energyAffinityAttack"]}
     ],
     "automation": {
       "status": "partial",
@@ -21,8 +22,8 @@
     },
     "items": {},
     "choice": null,
-    "choiceType": "elementDamageType",
-    "hasChoice": true,
+    "choiceType": "none",
+    "hasChoice": false,
     "numChoices": 1,
     "prerequisite": "",
     "selectionLimit": 1,

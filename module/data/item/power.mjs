@@ -38,8 +38,8 @@ export class PowerItemData extends foundry.abstract.TypeDataModel {
       hasVariableCost: makeBool(false),
       maxPowerCost: makeInt(null),
       powerCost: makeInt(null),
-      // The printed prerequisite, for display - as a Perk's own. The checkable tags are system.prerequisites
-      // (templates/item-description.mjs, rules/prerequisites.mjs); a Grid Power is offered by the level-up picker.
+      // Deprecated 2026-10-07: shown from system.prerequisites now; remove from the data model in 6.1.
+      // (The prerequisite tags are system.prerequisites - templates/item-description.mjs, rules/prerequisites.mjs.)
       prerequisite: makeStr(null),
       // Deprecated 2026-10-07: unused since rules (Temporal Awareness, Lucky Charm and Future Vision carry Reroll
       // rules); remove from the data model in 6.1.

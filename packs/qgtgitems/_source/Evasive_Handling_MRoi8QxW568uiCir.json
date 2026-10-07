@@ -29,7 +29,7 @@
     "benefit": "As a Free action, the driver can halve the vehicle's Speed (round down) to force incoming attacks to target its Evasion until the start of the driver's next turn.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Speed Essence 4"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

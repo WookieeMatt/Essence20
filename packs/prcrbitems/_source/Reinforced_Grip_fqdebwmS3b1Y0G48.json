@@ -8,6 +8,7 @@
     "rules": [
       {"type":"ItemModifier","label":"Attacks roll Might (Reinforced Grip)","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost"],"path":"system.classification.skill","op":"set","value":"might","priority":3}
     ],
+    "prerequisites": {"when":["ask:Athletics or Finesse melee weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon rolls Might instead of its normal Skill.</p>"

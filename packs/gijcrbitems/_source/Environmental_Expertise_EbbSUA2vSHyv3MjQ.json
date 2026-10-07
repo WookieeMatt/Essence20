@@ -6,6 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
+      {"type":"ChoiceSet","key":"environment","label":"Environment","from":"environment","notHeld":true,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DerivedStat","label":"Environment of expertise (the picked one)","path":"system.environments","op":"append","value":"{choice.environment}"},
       {"type":"EnvironmentalExpertise","label":"Environmental Expertise","when":[{"any":["self:inExpertiseTerrain","self:data:flags.essence20.environmentalExpertiseActive"]}]},
       {"type":"Use","label":"Switch on","when":["not:self:data:flags.essence20.environmentalExpertiseActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.environmentalExpertiseActive":true}},{"do":"chat","text":"{name} is now in their environment of expertise."}]},
       {"type":"Use","label":"Switch off","when":["self:data:flags.essence20.environmentalExpertiseActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.environmentalExpertiseActive":false}},{"do":"chat","text":"{name} is no longer in their environment of expertise."}]}
@@ -23,8 +25,8 @@
     "prerequisite": "",
     "selectionLimit": 3,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "environments"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "sort": 100000,

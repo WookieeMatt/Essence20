@@ -16,7 +16,7 @@
       "book": "Time of Knight",
       "page": 27
     },
-    "prerequisite": "Level 4 or higher; must have performed a heroic act",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "contact"
   },

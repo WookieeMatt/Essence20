@@ -14,7 +14,7 @@
       "book": "Transformers Core Rulebook",
       "page": 112
     },
-    "prerequisite": "Purpose is a Smarts or Social Skill",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "minicon"
   },

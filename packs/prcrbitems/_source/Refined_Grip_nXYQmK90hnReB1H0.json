@@ -8,6 +8,7 @@
     "rules": [
       {"type":"ItemModifier","label":"Attacks roll Finesse (Refined Grip)","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost"],"path":"system.classification.skill","op":"set","value":"finesse","priority":2}
     ],
+    "prerequisites": {"when":["ask:Might or Athletics weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon rolls Finesse instead of its normal Skill.</p>"

@@ -17,7 +17,7 @@
       "book": "Field Guide to Action and Adventure",
       "page": 71
     },
-    "prerequisite": "You can’t have the Robot trait",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

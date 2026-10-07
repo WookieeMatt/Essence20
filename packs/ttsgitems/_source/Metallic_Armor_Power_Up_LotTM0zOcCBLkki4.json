@@ -30,7 +30,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 2,
-    "prerequisite": "Level 6+; Personal Power maximum 4+",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

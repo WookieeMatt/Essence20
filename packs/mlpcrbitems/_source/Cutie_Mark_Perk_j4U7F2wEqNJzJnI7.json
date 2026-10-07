@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Cutie Mark Perk","when":["skill:{item.choice}"],"upshift":1}
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Cutie Mark Perk","when":["skill:{choice.skill}"],"upshift":1}
     ],
     "automation": {
       "status": "partial",
@@ -19,8 +20,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "hasChoice": true,
-    "choiceType": "skills"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "flags": {

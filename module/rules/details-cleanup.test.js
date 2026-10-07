@@ -155,9 +155,11 @@ describe('Fast (MLP / PR): +10 ft to the picked Movement', () => {
     return actor.system.movement;
   }
 
-  const fast = (key, choice, flagged = true) => {
+  // Perk choice P2: the pack copy picks through its ChoiceSet; an old copy's system.choice reads through its legacy setting.
+  // A copy whose drop baked the +10 still stores system.value (migratePerkValue takes it off and resets it).
+  const fast = (key, choice, unbaked = true) => {
     const doc = fromPack(FILES[key]);
-    return { name: doc.name, type: doc.type, flags: flagged ? { essence20: { perkValueRule: true } } : {}, system: { ...clone(doc.system), choice } };
+    return { name: doc.name, type: doc.type, flags: unbaked ? { essence20: { perkValueRule: true } } : {}, system: { ...clone(doc.system), choice, value: unbaked ? 0 : 10 } };
   };
 
   test.each(['fastMlp', 'fastPr'])('%s: a flagged copy gives what the old written-in bonus gave', async key => {
@@ -171,7 +173,7 @@ describe('Fast (MLP / PR): +10 ft to the picked Movement', () => {
     }
   });
 
-  test('an older, unflagged copy adds nothing (its +10 is already in the stored bonus)', async () => {
+  test('an older copy still holding its value adds nothing (its +10 is already in the stored bonus)', async () => {
     const now = await movementOf([fast('fastPr', 'ground', false)], { ground: 10 });
     expect(now.ground.total).toBe(40);
     expect(now.ground.bonus).toBe(10);
@@ -183,10 +185,10 @@ describe('Fast (MLP / PR): +10 ft to the picked Movement', () => {
 });
 
 /* GI Joe Expertise: the drop used to add 2 to the picked Skill's shiftUp. */
-test('Expertise (GI Joe): up 2 on the picked Skill for a flagged copy, nothing otherwise', () => {
+test('Expertise (GI Joe): up 2 on the picked Skill, except on a copy still holding its baked value', () => {
   const actor = makeActor();
   addPack(actor, 'expertiseGij', { system: { choice: 'athletics' }, flags: { essence20: { perkValueRule: true } } });
-  addPack(actor, 'expertiseGij', { system: { choice: 'might' } });
+  addPack(actor, 'expertiseGij', { system: { choice: 'might', value: 2 } });
   addPack(actor, 'expertiseGij', { system: { choice: null }, flags: { essence20: { perkValueRule: true } } });
   rebuildIndex(actor);
   ruleDerived(actor);

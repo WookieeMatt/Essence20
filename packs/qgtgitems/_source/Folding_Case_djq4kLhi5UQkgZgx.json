@@ -26,7 +26,7 @@
       "obfuscated"
     ],
     "type": "weapon",
-    "prerequisite": "Any Sidearm weapon"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

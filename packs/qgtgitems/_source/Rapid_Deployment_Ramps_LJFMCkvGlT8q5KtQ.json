@@ -27,7 +27,7 @@
     "benefit": "Deployed ramps let every passenger disembark using 5ft of Movement instead of half their Movement.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle with capacity for at least one non-driver passenger"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

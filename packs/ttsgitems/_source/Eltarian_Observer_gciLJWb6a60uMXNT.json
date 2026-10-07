@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Eltarian Observer","when":["skill:{item.choice}"],"edge":true}
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Eltarian Observer","when":["skill:{choice.skill}"],"edge":true}
     ],
     "automation": {
       "status": "partial",
@@ -22,8 +23,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "influence",
-    "hasChoice": true,
-    "choiceType": "skills"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "sort": 0,

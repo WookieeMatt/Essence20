@@ -27,7 +27,7 @@
     "benefit": "Compartment occupants ignore light-based Driving downshifts, and attacks with the Laser trait against them suffer Snag.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle with an enclosed crew compartment"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

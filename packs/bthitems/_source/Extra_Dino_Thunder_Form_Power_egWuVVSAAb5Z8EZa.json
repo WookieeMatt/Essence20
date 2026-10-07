@@ -21,7 +21,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,
-    "prerequisite": "Dino Thunder Form; GM permission",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

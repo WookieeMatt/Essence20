@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"movement","label":"Movement","from":"movement","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DerivedStat","label":"Alt Mode Movement 20 ft (the picked type)","path":"system.movement.{choice.movement}.altMode","op":"set","value":20}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: switch on the one for the Movement type you chose (Ground, Aerial or Aquatic) to give your Alt Mode 20ft of it.</p>"
@@ -13,147 +17,14 @@
       "book": "Transformers Core Rulebook",
       "page": 108
     },
-    "hasChoice": true,
-    "choiceType": "altModeMovement",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 1,
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [
-    {
-      "origin": "Item.f7QOaDUFo1b0184W",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "tY4QAmHLtkWyNhC0",
-      "changes": [
-        {
-          "key": "system.movement.ground.altMode",
-          "mode": 5,
-          "value": "20",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "Ground Movement",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!f7QOaDUFo1b0184W.tY4QAmHLtkWyNhC0"
-    },
-    {
-      "origin": "Item.f7QOaDUFo1b0184W",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "UEepQb0ndL3eC8G6",
-      "changes": [
-        {
-          "key": "system.movement.aerial.altMode",
-          "mode": 5,
-          "value": "20",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "Aerial Movement",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!f7QOaDUFo1b0184W.UEepQb0ndL3eC8G6"
-    },
-    {
-      "origin": "Item.f7QOaDUFo1b0184W",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "G060aSTs1oKdiyds",
-      "changes": [
-        {
-          "key": "system.movement.swim.altMode",
-          "mode": 5,
-          "value": "20",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "Aquatic Movement",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!f7QOaDUFo1b0184W.G060aSTs1oKdiyds"
-    }
-  ],
+  "effects": [],
   "flags": {
     "core": {}
   },

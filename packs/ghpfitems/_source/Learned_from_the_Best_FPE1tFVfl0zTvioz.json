@@ -12,7 +12,7 @@
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "One or more Contacts with Threat stat blocks",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

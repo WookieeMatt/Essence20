@@ -1786,9 +1786,8 @@ E20.rerollConditions = {
   inEnvironmentOfExpertise: "E20.RerollConditionInEnvironmentOfExpertise",
   // A Jump Through Time "Focused Strike" (Quantum Ranger, 9th level, p.46): a Personal Power buys a
   // reroll on an Unarmed Attack. Checked against the
-  // triggering roll's own context (rollContext.isUnarmedAttack, dice.mjs's own
-  // "no parent weapon" proxy for unarmed - the same shape Empty Hands/Randori Master already use
-  // elsewhere in dice.mjs), the same "computed there, read here" idiom as powerWeapon/
+  // triggering roll's own context (rollContext.isUnarmedAttack, dice.mjs#_isUnarmedWeaponEffect -
+  // the shared items/shared/unarmed-attacks.mjs definition), the same "computed there, read here" idiom as powerWeapon/
   // smallerTarget above.
   unarmedAttack: "E20.RerollConditionUnarmedAttack",
   // Decepticon Directive "Homing Shots" (Cannonade Focus, 10th level, p.46): reroll one die of a

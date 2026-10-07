@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"I've Done My Research","when":["skill:{item.choice}"],"upshift":1,"stack":"iveDoneMyResearch"}
+      {"type":"ChoiceSet","key":"skill","label":"Skills","from":"skill","essence":"smarts","count":3,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"I've Done My Research","when":["skill:{choice.skill}"],"upshift":1,"stack":"iveDoneMyResearch"}
     ],
     "automation": {
       "status": "full",
@@ -21,8 +22,8 @@
     "prerequisite": "",
     "selectionLimit": 3,
     "type": "origin",
-    "hasChoice": true,
-    "choiceType": "skills",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 3,
     "choiceEssence": "smarts"
   },

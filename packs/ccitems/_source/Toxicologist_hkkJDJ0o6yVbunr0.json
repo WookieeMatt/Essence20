@@ -16,7 +16,7 @@
       "book": "Cobra Codex",
       "page": 81
     },
-    "prerequisite": "Qualified with Standard Poisons, Science d12",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

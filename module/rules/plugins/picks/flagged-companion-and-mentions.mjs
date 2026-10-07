@@ -2,14 +2,15 @@
 // module/rules/plugins/index.mjs.
 import { companionsOf } from "../../../mechanics/companions/companion-link.mjs";
 import { registerTag } from "../../predicate.mjs";
+import { prerequisiteText } from "../../prerequisites.mjs";
 import { registerRecipient } from "../../steps.mjs";
 
 /**
  * - Recipient `companionFlagged:<flag>` - the actor's first companion (companion-link.mjs#companionsOf: listed on its sheet,
  *   or tied to it as companionOf) carrying `flags.essence20.<flag>` - Rally Guardians' company (`guardians`).
  *   Tag `self:companionFlagged:<flag>` - it has one.
- * - Tag `item:mentions:<text|text...>` - the item's (or compendium entry's) name or `system.prerequisite` text contains one
- *   of the texts, ignoring case; a hyphen counts as a space ("mega weapon" finds "Zord Mega-Weapon System"). Rally Guardians
+ * - Tag `item:mentions:<text|text...>` - the item's (or compendium entry's) name or prerequisites (its
+ *   `system.prerequisites.when` tags in words - rules/prerequisites.mjs#prerequisiteText) contain one of the texts, ignoring case; a hyphen counts as a space ("mega weapon" finds "Zord Mega-Weapon System"). Rally Guardians
  *   Features' ban on Combiner, Zord Mega-Weapon System and anything needing Combiner.
  */
 
@@ -27,6 +28,7 @@ registerTag('item:mentions', (rest, ctx) => {
     return null;
   }
 
-  const haystack = `${plain(item.name)} ${plain(item.system?.prerequisite)}`;
+  // The prerequisite tags in words (prerequisiteText; an unmigrated item's old typed text when it has no tags, until 6.1).
+  const haystack = `${plain(item.name)} ${plain(prerequisiteText(item))}`;
   return String(rest ?? '').split('|').map(plain).filter(Boolean).some(text => haystack.includes(text));
 }, { phrase: arg => [`{poss} name or prerequisite mentions "${arg.split('|').join('" or "')}"`, `{poss} name and prerequisite don't mention "${arg.split('|').join('" or "')}"`] });

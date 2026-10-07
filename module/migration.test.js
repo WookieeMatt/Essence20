@@ -2,6 +2,7 @@ import { jest } from '@jest/globals';
 import {
   MORPHED_TOUGHNESS_RULES, legacyRerollRule, migrateDetailsFields, migrateItemData, migrateMorphedToughness, migratePerkCanActivate,
   migratePerkValue, roleOfActorData, migrateRerollFields, migrateUpgradeAimBonus, perkValueRules, resetMigrationCaches,
+  migratePrerequisiteText, PREREQUISITE_ASK_MAX,
 } from './migration.mjs';
 
 /**
@@ -389,6 +390,76 @@ describe('Details-tab fields moved into rules', () => {
     test('an item with none of the old fields gets nothing', async () => {
       expect(await migrateDetailsFields(perk({ canActivate: false, value: 0 }))).toEqual({});
     });
+  });
+});
+
+describe('typed prerequisite text retired (2026-10-07)', () => {
+  const item = (system, type = 'perk') => ({ type, name: 'Item', flags: {}, system });
+  // An update applied to the item's source - what the next run sees.
+  const applied = (source, update) => {
+    const next = JSON.parse(JSON.stringify(source));
+    for (const [path, value] of Object.entries(update)) {
+      const keys = path.split('.');
+      const last = keys.pop();
+      keys.reduce((at, key) => (at[key] ??= {}), next)[last] = value;
+    }
+
+    return next;
+  };
+
+  beforeEach(() => setPacks({}));
+
+  test('text with no tags becomes one ask: tag, then resets to the schema default (null, never a deletion)', () => {
+    const source = item({ prerequisite: '  Must have  a\nstarship ', prerequisites: {} });
+    const update = migratePrerequisiteText(source);
+    expect(update['system.prerequisites']).toEqual({ when: ['ask:Must have a starship'] });
+    expect(update['system.prerequisite']).toBeNull();
+    expect(update['system.prerequisite'] instanceof foundry.data.operators.ForcedDeletion).toBe(false);
+    expect(migratePrerequisiteText(applied(source, update))).toEqual({});
+  });
+
+  test('an item that has tags keeps them, and only loses the text', () => {
+    const source = item({ prerequisite: 'Level 5', prerequisites: { when: ['self:level>=5'] } }, 'upgrade');
+    const update = migratePrerequisiteText(source);
+    expect(update).toEqual({ 'system.prerequisite': null });
+    expect(migratePrerequisiteText(applied(source, update))).toEqual({});
+  });
+
+  test('a schema field that is not nullable resets to its own initial value', () => {
+    const source = { ...item({ prerequisite: 'x', prerequisites: { when: ['ask:x'] } }), system: { prerequisite: 'x', prerequisites: { when: ['ask:x'] }, schema: { getField: () => ({ initial: '' }) } } };
+    expect(migratePrerequisiteText(source)).toEqual({ 'system.prerequisite': '' });
+  });
+
+  test('a copy of Acute Senses (its text was a note about its choice) only loses the text', () => {
+    const source = { ...item({ prerequisite: 'a note', prerequisites: {} }), _stats: { compendiumSource: 'Compendium.essence20.wtnv_citizens_guide.Item.ygxNBnUhFIfqg349' } };
+    expect(migratePrerequisiteText(source)).toEqual({ 'system.prerequisite': null });
+  });
+
+  test('empty, null, missing and whitespace-only text', () => {
+    expect(migratePrerequisiteText(item({ prerequisite: '' }))).toEqual({});
+    expect(migratePrerequisiteText(item({ prerequisite: null }))).toEqual({});
+    expect(migratePrerequisiteText(item({}, 'weapon'))).toEqual({});
+    // Whitespace only: no tag, but the text still resets.
+    expect(migratePrerequisiteText(item({ prerequisite: '   ' }))).toEqual({ 'system.prerequisite': null });
+  });
+
+  test('long text is cut at a word, with an ellipsis', () => {
+    const update = migratePrerequisiteText(item({ prerequisite: 'word '.repeat(100) }));
+    const tag = update['system.prerequisites'].when[0];
+    expect(tag.length).toBeLessThanOrEqual(PREREQUISITE_ASK_MAX + 'ask:'.length);
+    expect(tag.endsWith('word…')).toBe(true);
+  });
+
+  test('migrateItemData runs it on world and actor-embedded items, and a re-run does nothing more', async () => {
+    const source = item({ prerequisite: 'GM approval', prerequisites: {} });
+    for (const actor of [undefined, { _id: 'actor' }]) {
+      const update = await migrateItemData(source, actor);
+      expect(update['system.prerequisites']).toEqual({ when: ['ask:GM approval'] });
+      expect(update['system.prerequisite']).toBeNull();
+      const again = await migrateItemData(applied(source, update), actor);
+      expect(again['system.prerequisite']).toBeUndefined();
+      expect(again['system.prerequisites']).toBeUndefined();
+    }
   });
 });
 

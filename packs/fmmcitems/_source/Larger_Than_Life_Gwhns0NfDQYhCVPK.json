@@ -19,7 +19,7 @@
       "book": "Finster's Monster-Matic Cookbook",
       "page": 7
     },
-    "prerequisite": "Threat",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

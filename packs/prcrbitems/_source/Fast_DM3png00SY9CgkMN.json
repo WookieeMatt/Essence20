@@ -4,11 +4,12 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Movement","label":"Fast: +10 ft aerial","movement":"aerial","stage":"bonus","op":"add","value":10,"when":["rule:data:system.choice=aerial","rule:data:flags.essence20.perkValueRule"]},
-      {"type":"Movement","label":"Fast: +10 ft burrow","movement":"burrow","stage":"bonus","op":"add","value":10,"when":["rule:data:system.choice=burrow","rule:data:flags.essence20.perkValueRule"]},
-      {"type":"Movement","label":"Fast: +10 ft climb","movement":"climb","stage":"bonus","op":"add","value":10,"when":["rule:data:system.choice=climb","rule:data:flags.essence20.perkValueRule"]},
-      {"type":"Movement","label":"Fast: +10 ft ground","movement":"ground","stage":"bonus","op":"add","value":10,"when":["rule:data:system.choice=ground","rule:data:flags.essence20.perkValueRule"]},
-      {"type":"Movement","label":"Fast: +10 ft swim","movement":"swim","stage":"bonus","op":"add","value":10,"when":["rule:data:system.choice=swim","rule:data:flags.essence20.perkValueRule"]}
+      {"type":"ChoiceSet","key":"movement","label":"Movement","from":"movement","held":true,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"Movement","label":"Fast: +10 ft aerial","movement":"aerial","stage":"bonus","op":"add","value":10,"when":["rule:choiceHas:movement:aerial","not:rule:data:system.value>0"]},
+      {"type":"Movement","label":"Fast: +10 ft burrow","movement":"burrow","stage":"bonus","op":"add","value":10,"when":["rule:choiceHas:movement:burrow","not:rule:data:system.value>0"]},
+      {"type":"Movement","label":"Fast: +10 ft climb","movement":"climb","stage":"bonus","op":"add","value":10,"when":["rule:choiceHas:movement:climb","not:rule:data:system.value>0"]},
+      {"type":"Movement","label":"Fast: +10 ft ground","movement":"ground","stage":"bonus","op":"add","value":10,"when":["rule:choiceHas:movement:ground","not:rule:data:system.value>0"]},
+      {"type":"Movement","label":"Fast: +10 ft swim","movement":"swim","stage":"bonus","op":"add","value":10,"when":["rule:choiceHas:movement:swim","not:rule:data:system.value>0"]}
     ],
     "automation": {
       "status": "full",
@@ -23,8 +24,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "movement"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [
     {

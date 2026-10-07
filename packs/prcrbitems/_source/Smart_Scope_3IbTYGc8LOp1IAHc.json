@@ -10,6 +10,7 @@
       {"type":"ItemModifier","label":"Range x1.5 (Smart Scope)","stage":"item","slot":"element","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.range.value>0"],"path":"system.range.value","op":"set","value":"ceil(@other.system.range.value * 1.5)"},
       {"type":"ItemModifier","label":"Long range x2 (Smart Scope)","stage":"item","slot":"element","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.range.value>0","item:data:system.range.long>0"],"path":"system.range.long","op":"multiply","value":2}
     ],
+    "prerequisites": {"when":["ask:Targeting weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon's normal range is multiplied by 1.5 and its long range doubled. Roll Options Dialog: Cover from smoke or darkness is cancelled for this weapon (untick it for solid cover).</p>"
@@ -26,9 +27,7 @@
     },
     "availability": "prototype",
     "benefit": "",
-    "traits": [
-      "computerized"
-    ],
+    "traits": [],
     "type": "weapon",
     "prerequisite": ""
   },

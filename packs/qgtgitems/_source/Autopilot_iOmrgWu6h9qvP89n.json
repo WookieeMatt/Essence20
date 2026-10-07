@@ -27,7 +27,7 @@
     "benefit": "The vehicle gains the Autopilot trait.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle with the Computerized trait but without the Autopilot trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

@@ -5,6 +5,9 @@
   "_id": "0JsEhJdM3fmp4O65",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick one from the list","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","required":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Evasion. Granted: pick your Division Perk from its list.</p>"
@@ -132,8 +135,8 @@
         "role": null
       }
     },
-    "hasChoice": true,
-    "choiceType": "perks",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 1,
     "choice": null
   },

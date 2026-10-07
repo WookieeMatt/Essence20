@@ -26,7 +26,7 @@
       "deflective"
     ],
     "type": "armor",
-    "prerequisite": "Might d6"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

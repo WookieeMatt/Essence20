@@ -19,7 +19,7 @@
       "book": "Cobra Codex",
       "page": 80
     },
-    "prerequisite": "At least one Influence Hang-Up",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

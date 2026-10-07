@@ -5,7 +5,7 @@ import { ruleIgnoresDrawback, useIgnoredDrawback } from "./rules/plugins/rolls/i
 // Round 15 (dice part) - rule readers dice.mjs asks (docs/rules-batches/slDice15.md).
 import { ruleFumbleStoryPoints } from "./rules/plugins/resources/grant-story-point.mjs";
 import { ruleSkillEssence } from "./rules/plugins/rolls/skill-essence.mjs";
-import { UNARMED_WEAPON_IDS } from "./rules/plugins/tags/barehanded-tags.mjs";
+import { isUnarmedAttack } from "./items/shared/unarmed-attacks.mjs";
 import { earlyDefenseAdjust } from "./rules/plugins/combat/early-defense.mjs";
 import { ruleDownshiftCancel } from "./rules/plugins/rolls/downshift-cancel.mjs";
 import { ruleMultipliers } from "./rules/plugins/rolls/degree-multiplier.mjs";
@@ -153,7 +153,7 @@ import {
 import { HIGH_DENSITY_FOLLOW_UP_SHIFT_DOWN, isHighDensityWeapon } from "./items/attacks/high-density.mjs";
 import { hasGeneticAlterations, isRetrogenWeapon } from "./items/attacks/retrogen.mjs";
 import { creatureTagsOf, isRobotic } from "./mechanics/characters/creature-tags.mjs";
-import { chosenOf } from "./rules/choice-read.mjs";
+import { hasChosen } from "./rules/choice-read.mjs";
 
 // Every Commando Perk automated below that isn't specific to Sneak Attack itself (those constants
 // live in mechanics/combat/sneak-attack.mjs instead) - all under GI Joe CRB's own compendium pack.
@@ -316,7 +316,7 @@ const KOC_FIREBALL_ID = `${KNIGHTS_OF_CANTERLOT_SPELLS}zlERIywyKQNBQzs6`;
 // Pointy (General Perk, p.21): a Free action grows claws or teeth for the rest of the combat scene -
 // ↑1 on attacks with them, Sharp damage. A toggle (see
 // items/attacks/pointy.mjs's own doc comment, same on/off shape as Dig In) - only the ↑1 shiftUp half on
-// an unarmed attack is built (same "no parent weapon" proxy as Iron Hooves/Phantom Ranger Prime);
+// an unarmed attack is built (items/shared/unarmed-attacks.mjs#isUnarmedAttack, like every unarmed reader);
 // forcing the attack's own damageType to 'sharp' isn't - no existing Perk in this project
 // overrides a weaponEffect's own fixed damageType field, and doing so here would be a new,
 // separately-risky precedent rather than a small addition.
@@ -876,9 +876,8 @@ export class Dice {
     }
 
     // The Quiet One - see items/rolls/quiet-one.mjs's own doc comment. Marks any Driving roll, or any
-    // weaponEffect attack with a weapon lacking the Silent trait (an unarmed attack, with no
-    // weapon at all, also counts - the same "no parent weapon" proxy this project already uses
-    // elsewhere never carries a Silent trait either), regardless of the roller holding The Quiet
+    // weaponEffect attack with a weapon lacking the Silent trait (an attack with no weapon at all
+    // also counts - it never carries a Silent trait either), regardless of the roller holding The Quiet
     // One themselves - unconditional on the roll's own outcome, since RAW says "operated" or
     // "attacked with," not "successfully."
     if (rolledSkill == 'driving'
@@ -1457,9 +1456,9 @@ export class Dice {
 
     // Power Adaptation - Striking Hands (Across the Stars, Silver Ranger, 9th/18th level, p.57) -
     // see items/forms/power-adaptation.mjs's own doc comment. "↑1 to your unarmed Attacks" while
-    // active - "unarmed" detected the same way Phantom Ranger Prime's identical clause already
-    // does (no parent weapon Item backs the attack).
-    if (item?.type == 'weaponEffect' && !this._getParentWeapon(actor, item)
+    // active - "unarmed" is the shared definition (_isUnarmedWeaponEffect: no parent weapon, or a
+    // printed unarmed one).
+    if (this._isUnarmedWeaponEffect(actor, item)
       && isPowerAdaptationActive(actor, 'strikingHands')) {
       updatedShiftDataset.shiftUp += 1;
     }
@@ -2194,7 +2193,7 @@ export class Dice {
         // "you may roll" clause already uses - swapping in the target's own Evasion Defense
         // whenever it's actually being compared against Toughness, once per scene.
         if (resolvedDefenseType == 'toughness'
-          && chosenOf(findPerk(token.actor, OVER_THE_CANDLESTICK_ID)) == 'agileReflexes'
+          && hasChosen(findPerk(token.actor, OVER_THE_CANDLESTICK_ID), 'agileReflexes')
           && !hasUsedThisEncounter(token.actor, AGILE_REFLEXES_FLAG)) {
           difficulty = getDefenseValue(token.actor, 'evasion', { ignoreArmor: keyIgnoresArmor })
             + ruleDefenseAura(token.actor, 'evasion');
@@ -2413,12 +2412,12 @@ export class Dice {
     }
 
     // Emotional Mastery: Anger (A Jump Through Time, Purple Ranger, p.37) - +1 on Unarmed and
-    // One-Handed weapon Attacks while active. Unarmed detected the same "no
-    // parent weapon" way as Iron Hooves/Phantom Ranger Prime; One-Handed read directly off the
+    // One-Handed weapon Attacks while active. Unarmed is the shared definition
+    // (_isUnarmedWeaponEffect); One-Handed read directly off the
     // weaponEffect's own numHands field (the same field Weapon Conversion's own one-time edit
     // targets).
     const angerDamageBonus = checkEntries && item?.type == 'weaponEffect'
-      && (!this._getParentWeapon(actor, item) || item.system.numHands == 1)
+      && (this._isUnarmedWeaponEffect(actor, item) || item.system.numHands == 1)
       && isEmotionalMasteryOptionActive(actor, 'anger')
       ? 1 : 0;
     if (angerDamageBonus) {
@@ -2787,8 +2786,8 @@ export class Dice {
         isPowerWeaponAttack: item?.type == 'weaponEffect'
           && !!this._getParentWeapon(actor, item)?.system.itemAndUpgradeTraits?.includes('powerWeapon'),
         // Focused Strike (A Jump Through Time, Quantum Ranger, 9th level, p.46) - see
-        // mechanics/rolls/reroll.mjs's own REROLL_CONDITIONS.unarmedAttack doc comment. Same "no parent
-        // weapon" proxy for unarmed as Empty Hands/Randori Master's identical checks above.
+        // mechanics/rolls/reroll.mjs's own REROLL_CONDITIONS.unarmedAttack doc comment. Unarmed is the
+        // shared definition (items/shared/unarmed-attacks.mjs#isUnarmedAttack).
         isUnarmedAttack: this._isUnarmedWeaponEffect(actor, item),
         // Metallikato (Decepticon Directive p.66) - mechanics/rolls/reroll.mjs's REROLL_CONDITIONS.botModeMelee.
         isMeleeAttack: item?.type == 'weaponEffect' && item.system.classification?.style == 'melee',
@@ -4029,21 +4028,16 @@ export class Dice {
   }
 
   /**
-   * Whether a weaponEffect is an unarmed attack: this project's "no parent weapon" proxy, widened
-   * to the printed unarmed "weapons" (UNARMED_WEAPON_IDS - G.I. JOE/Transformers Unarmed Combat,
-   * Night Vale's Unarmed Strike), whose effects do carry a parent.
+   * Whether a weaponEffect is an unarmed attack - the shared definition (items/shared/unarmed-attacks.mjs#isUnarmedAttack:
+   * no parent weapon, or a printed unarmed "weapon" - G.I. JOE/Transformers/Power Rangers Unarmed Combat, Night
+   * Vale's Unarmed Strike).
    * @param {Actor} actor
    * @param {Item} item
    * @returns {Boolean}
    * @private
    */
   _isUnarmedWeaponEffect(actor, item) {
-    if (item?.type != 'weaponEffect') {
-      return false;
-    }
-
-    const weapon = this._getParentWeapon(actor, item);
-    return !weapon || UNARMED_WEAPON_IDS.includes(weapon.flags?.core?.sourceId ?? weapon._stats?.compendiumSource ?? weapon?.flags?.essence20?.rulesSource);
+    return isUnarmedAttack(item, actor);
   }
 
   /**

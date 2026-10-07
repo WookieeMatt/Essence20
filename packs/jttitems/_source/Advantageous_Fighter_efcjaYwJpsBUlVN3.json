@@ -19,7 +19,7 @@
       "book": "A Jump Through Time",
       "page": 54
     },
-    "prerequisite": "Finesse or Might Skill at d4 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

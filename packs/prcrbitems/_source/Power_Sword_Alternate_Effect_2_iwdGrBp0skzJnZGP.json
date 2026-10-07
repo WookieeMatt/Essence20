@@ -5,6 +5,14 @@
   "_id": "iwdGrBp0skzJnZGP",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"BeforeRoll","scope":"item","label":"Energy Attack (once per encounter)","early":true,"cancel":true,"message":"E20.LimitedWeaponEffectAlreadyUsed","when":["self:windowUsed:powerSwordEnergyAttackUsedThisEncounter:encounter"]},
+      {"type":"Trigger","event":"afterRoll","outcome":"any","label":"Energy Attack used (once per encounter)","when":["item:own"],"steps":[{"do":"markWindow","flag":"powerSwordEnergyAttackUsedThisEncounter","window":"encounter"}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Energy Attack rolls Might for 3 damage at ↓1. Once per encounter: after one use it won't roll again until the next encounter.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {

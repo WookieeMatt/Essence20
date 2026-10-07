@@ -6,8 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","label":"Two-Handed Assault (↑1)","when":["rule:data:system.choice=dualWieldLight","attack:melee","weapon:trait:silent","weapon:trait:martialArts","weapon:data:system.classification.size=light"],"upshift":1,"forget":true},
-      {"type":"DialogSwitch","label":"Two-Handed Assault (↑1)","when":["rule:data:system.choice=twoHanded","attack:melee","weapon:trait:silent","weapon:trait:martialArts","item:data:system.numHands=2"],"upshift":1,"forget":true}
+      {"type":"ChoiceSet","key":"option","label":"Option","from":"config","table":"twoHandedAssaultOptions","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DialogSwitch","label":"Two-Handed Assault (↑1)","when":["rule:choiceHas:option:dualWieldLight","attack:melee","weapon:trait:silent","weapon:trait:martialArts","weapon:data:system.classification.size=light"],"upshift":1,"forget":true},
+      {"type":"DialogSwitch","label":"Two-Handed Assault (↑1)","when":["rule:choiceHas:option:twoHanded","attack:melee","weapon:trait:silent","weapon:trait:martialArts","item:data:system.numHands=2"],"upshift":1,"forget":true}
     ],
     "automation": {
       "status": "full",
@@ -21,8 +22,8 @@
     },
     "items": {},
     "choice": null,
-    "choiceType": "twoHandedAssault",
-    "hasChoice": true,
+    "choiceType": "none",
+    "hasChoice": false,
     "numChoices": 1,
     "prerequisite": "",
     "selectionLimit": 1,

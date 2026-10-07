@@ -4,12 +4,13 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Movement","movement":"ground","stage":"base","op":"set","value":15,"label":"Base Ground Movement 15 ft","when":["rule:data:system.choice=groundHeavy"]},
-      {"type":"Movement","movement":"aerial","stage":"base","op":"set","value":45,"label":"Base Aerial Movement 45 ft","when":["rule:data:system.choice=groundHeavy"]},
-      {"type":"Movement","movement":"ground","stage":"base","op":"set","value":30,"label":"Base Ground Movement 30 ft","when":["rule:data:system.choice=balanced"]},
-      {"type":"Movement","movement":"aerial","stage":"base","op":"set","value":30,"label":"Base Aerial Movement 30 ft","when":["rule:data:system.choice=balanced"]},
-      {"type":"Movement","movement":"ground","stage":"base","op":"set","value":45,"label":"Base Ground Movement 45 ft","when":["rule:data:system.choice=aerialHeavy"]},
-      {"type":"Movement","movement":"aerial","stage":"base","op":"set","value":15,"label":"Base Aerial Movement 15 ft","when":["rule:data:system.choice=aerialHeavy"]}
+      {"type":"ChoiceSet","key":"option","label":"Movement","from":"config","table":"airBornMovement","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"Movement","movement":"ground","stage":"base","op":"set","value":15,"label":"Base Ground Movement 15 ft","when":["rule:choiceHas:option:groundHeavy"]},
+      {"type":"Movement","movement":"aerial","stage":"base","op":"set","value":45,"label":"Base Aerial Movement 45 ft","when":["rule:choiceHas:option:groundHeavy"]},
+      {"type":"Movement","movement":"ground","stage":"base","op":"set","value":30,"label":"Base Ground Movement 30 ft","when":["rule:choiceHas:option:balanced"]},
+      {"type":"Movement","movement":"aerial","stage":"base","op":"set","value":30,"label":"Base Aerial Movement 30 ft","when":["rule:choiceHas:option:balanced"]},
+      {"type":"Movement","movement":"ground","stage":"base","op":"set","value":45,"label":"Base Ground Movement 45 ft","when":["rule:choiceHas:option:aerialHeavy"]},
+      {"type":"Movement","movement":"aerial","stage":"base","op":"set","value":15,"label":"Base Aerial Movement 15 ft","when":["rule:choiceHas:option:aerialHeavy"]}
     ],
     "automation": {
       "status": "full",
@@ -24,8 +25,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "hasChoice": true,
-    "choiceType": "airBornMovement"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "flags": {

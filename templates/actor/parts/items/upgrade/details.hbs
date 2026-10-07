@@ -1,7 +1,7 @@
 {{#if item.system }}
   {{#if (eq system.type "drone")}}
     <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
-    <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.system.prerequisite}}}</div>
+    <div>{{localize 'E20.UpgradePrerequisite'}}: {{prerequisiteText item}}</div>
     <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.system.benefit}}}</div>
     <div class="chip-section">
       <span class="chip" name="chip.upgrade.type">{{localize 'E20.UpgradeType'}}: {{lookup @root.config.upgradeTypes item.system.type}}</span>
@@ -16,7 +16,7 @@
   {{else}}
     {{#if @root.system.canTransform}}
       <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
-      <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.system.prerequisite}}}</div>
+      <div>{{localize 'E20.UpgradePrerequisite'}}: {{prerequisiteText item}}</div>
       <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.system.benefit}}}</div>
       <div class="chip-section">
         <span class="chip" name="chip.upgrade.type">{{localize 'E20.UpgradeType'}}: {{lookup @root.config.upgradeTypes item.system.type}}</span>
@@ -30,7 +30,7 @@
       </div>
     {{else}}
       <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
-      <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.system.prerequisite}}}</div>
+      <div>{{localize 'E20.UpgradePrerequisite'}}: {{prerequisiteText item}}</div>
       <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.system.benefit}}}</div>
       <div class="chip-section">
         <span class="chip" name="chip.upgrade.type">{{localize 'E20.UpgradeType'}}: {{lookup @root.config.upgradeTypes item.system.type}}</span>
@@ -47,7 +47,7 @@
 {{else}}
   {{#if (eq system.type "drone")}}
     <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
-    <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.prerequisite}}}</div>
+    <div>{{localize 'E20.UpgradePrerequisite'}}: {{prerequisiteText item}}</div>
     <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.benefit}}}</div>
     <div class="chip-section">
       <span class="chip" name="chip.upgrade.type">{{localize 'E20.UpgradeType'}}: {{lookup @root.config.upgradeTypes item.type}}</span>
@@ -62,7 +62,7 @@
   {{else}}
     {{#if @root.system.canTransform}}
       <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
-      <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.prerequisite}}}</div>
+      <div>{{localize 'E20.UpgradePrerequisite'}}: {{prerequisiteText item}}</div>
       <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.benefit}}}</div>
       <div class="chip-section">
         <span class="chip" name="chip.upgrade.type">{{localize 'E20.UpgradeType'}}: {{lookup @root.config.upgradeTypes item.type}}</span>
@@ -76,7 +76,7 @@
       </div>
     {{else}}
       <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
-      <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.prerequisite}}}</div>
+      <div>{{localize 'E20.UpgradePrerequisite'}}: {{prerequisiteText item}}</div>
       <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.benefit}}}</div>
       <div class="chip-section">
         <span class="chip" name="chip.upgrade.type">{{localize 'E20.UpgradeType'}}: {{lookup @root.config.upgradeTypes item.subtype}}</span>

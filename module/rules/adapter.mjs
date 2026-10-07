@@ -11,7 +11,10 @@ import { hostOf, rebuildIndex, ruleId, ruleLabel, rulesOf, rulesOfType } from ".
 import { contextFor, evaluate, interpolate, isStatic } from "./predicate.mjs";
 import { canAfford, readResource } from "./steps.mjs";
 import { linkedEntries } from "./links.mjs";
-import { chosenList, chosenOf } from "./choice-read.mjs";
+import { choiceValue, chosenList, chosenOf, firstChosen } from "./choice-read.mjs";
+// rule:choiceHas / item:choiceHas - the tags every converted Perk pick is read by (Perk choice P2) - with the adapter, so
+// anything reading rules has them whether or not the plug-in set is loaded.
+import "./plugins/tags/rule-choice-has.mjs";
 
 /**
  * The rules of a type that change this actor: its own (in the given scopes) and any reaching it from
@@ -534,7 +537,8 @@ function useSkillOf(rule, actor) {
   const uuid = want.slice(9);
   const items = actor?.items?.contents ?? (actor?.items ? [...actor.items] : []);
   const source = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-  return chosenOf(items.find(item => source(item) == uuid || item.uuid == uuid)) || null;
+  // A list pick (several Skills on one Perk): its first entry - one Skill is rolled (Perk choice P2b).
+  return firstChosen(chosenOf(items.find(item => source(item) == uuid || item.uuid == uuid))) || null;
 }
 
 /** Lower index in skillShiftList = better. */
@@ -681,6 +685,59 @@ function applyOp(current, op, value) {
 }
 
 /** Set a number at a path, and note an addition on a sibling `.string` breakdown when there is one. */
+/**
+ * A DerivedStat path with its picks filled: one path, or - when a {choice.<key>} in it holds a list (a ChoiceSet with
+ * count) - one per entry. [null] when a pick is missing (the rule does nothing), as interpolate.
+ */
+export function choicePaths(path, item) {
+  const lists = [...path.matchAll(/\{choice\.([\w-]+)\}/g)].map(match => match[1])
+    .filter(key => Array.isArray(choiceValue(item, key)));
+  if (!lists.length) {
+    return [interpolate(path, item)];
+  }
+
+  const key = lists[0];
+  const entries = choiceValue(item, key).filter(entry => entry !== undefined && entry !== null && entry !== '');
+  return entries.flatMap(entry => choicePaths(path.split(`{choice.${key}}`).join(String(entry)), item));
+}
+
+/** DerivedStat append's entries: each text with its picks filled; a whole {choice.<key>} that is a list gives every entry. */
+export function appendValues(value, item) {
+  return [value].flat().flatMap(entry => {
+    const whole = /^\{choice\.([\w-]+)\}$/.exec(String(entry ?? ''));
+    const picked = whole ? choiceValue(item, whole[1]) : undefined;
+    if (Array.isArray(picked)) {
+      return picked.map(String);
+    }
+
+    const text = interpolate(String(entry ?? ''), item);
+    return text ? [text] : [];
+  }).filter(Boolean);
+}
+
+/** Add text entries to the list at `path` (made a list when it isn't one), each once. */
+function appendEntries(target, path, entries) {
+  if (!entries.length) {
+    return;
+  }
+
+  const getProperty = globalThis.foundry?.utils?.getProperty ?? ((object, key) => key.split('.').reduce((o, k) => o?.[k], object));
+  const setProperty = globalThis.foundry?.utils?.setProperty ?? ((object, key, v) => {
+    const keys = key.split('.');
+    const last = keys.pop();
+    keys.reduce((o, k) => (o[k] ??= {}), object)[last] = v;
+  });
+  const current = getProperty(target, path);
+  const list = Array.isArray(current) ? [...current] : current instanceof Set ? [...current] : [];
+  for (const entry of entries) {
+    if (!list.includes(entry)) {
+      list.push(entry);
+    }
+  }
+
+  setProperty(target, path, current instanceof Set ? new Set(list) : list);
+}
+
 function writeNumber(target, path, op, value, label) {
   const getProperty = globalThis.foundry?.utils?.getProperty ?? ((object, key) => key.split('.').reduce((o, k) => o?.[k], object));
   const setProperty = globalThis.foundry?.utils?.setProperty ?? ((object, key, v) => {
@@ -818,6 +875,11 @@ export function ruleCritD2(actor, target, roll = {}) {
 }
 
 /** A DamageType rule's damage type for this attack (the first whose condition holds), or null. */
+/** DamageType `to` with its picks filled (a list pick: its first entry), or null when a pick is missing. */
+function filledDamageType(to, item) {
+  return choicePaths(String(to), item)[0] || null;
+}
+
 export function ruleDamageType(actor, target, roll = {}) {
   for (const { rule, item } of affecting(actor, 'DamageType', ['self', 'host'])) {
     if ((rule.scope ?? 'self') == 'host' && !hostMatches(item, roll.item)) {
@@ -825,7 +887,8 @@ export function ruleDamageType(actor, target, roll = {}) {
     }
 
     if (evaluate(rule.when, contextFor({ ...roll, ...rollFacts(roll.item, roll), self: actor, other: target, ruleItem: item })) === true) {
-      const type = rule.to == 'choice' ? chosenOf(item) : rule.to;
+      // "{choice.<key>}" (Perk choice P1): the pick fills it; no pick yet, no change. A list pick gives its first entry.
+      const type = rule.to == 'choice' ? firstChosen(chosenOf(item)) : String(rule.to ?? '').includes('{') ? filledDamageType(rule.to, item) : rule.to;
       if (type) {
         return type;
       }
@@ -896,14 +959,17 @@ export function ruleDieSubstitution(actor, target, roll = {}, startShift) {
 
     // dieOf: holder (round 17, perm - rules/plugins/marks/carried-die-and-crit.mjs): the holder's dice, not the roller's.
     const pool = rule.dieOf == 'holder' && holder && holder !== actor ? holder.getRollData?.()?.skills ?? holder.system?.skills ?? {} : skills;
-    const dieOf = name => pool[name == 'choice' ? chosenOf(item) : name]?.shift;
+    const dieOf = name => pool[name]?.shift;
+    // "choice" (the item's own pick) and "{choice.<key>}": the picked Skill, or every entry of a list pick (Perk choice P2b).
+    const skillNames = (rule.skills ?? []).flatMap(name => (name == 'choice' ? chosenList(item)
+      : String(name).includes('{choice.') ? choicePaths(String(name), item).filter(Boolean) : [name]));
     let next = shift;
     let applies = false;
     if (rule.mode == 'use') {
-      next = dieOf(rule.skills[0]) ?? shift;
+      next = (skillNames.length ? dieOf(skillNames[0]) : undefined) ?? shift;
       applies = next != shift;
     } else if (rule.mode == 'best') {
-      for (const name of rule.skills) {
+      for (const name of skillNames) {
         const die = dieOf(name);
         if (die && rank(die) >= 0 && (rank(next) < 0 || rank(die) < rank(next))) {
           next = die;
@@ -1241,10 +1307,8 @@ export function ruleDerived(actor) {
   }
 
   for (const { rule, item, holder } of affecting(actor, 'DerivedStat', ['self', 'host'])) {
-    // {choice.<key>} in the path reads a pick (Mentor's Skill); with no pick yet the rule does nothing.
-    const path = interpolate(String(rule.path ?? ''), item);
     // stage early: applied before the poison training is worked out (rules/plugins/effects/derived-stages.mjs), not here.
-    if (rule.stage == 'early' || !isStatic(rule.when) || evaluate(rule.when, staticCtx(item)) !== true || !path?.startsWith('system.')) {
+    if (rule.stage == 'early' || !isStatic(rule.when) || evaluate(rule.when, staticCtx(item)) !== true) {
       continue;
     }
 
@@ -1253,13 +1317,27 @@ export function ruleDerived(actor) {
       continue;
     }
 
-    // true / false: a switch on the actor (resistances, "is Qualified"), set as it is.
-    if (typeof rule.value == 'boolean') {
-      globalThis.foundry?.utils?.setProperty?.(target, path, rule.value);
-      continue;
-    }
+    // {choice.<key>} in the path reads a pick (Mentor's Skill); with no pick yet the rule does nothing. A list pick (a
+    // ChoiceSet with count) applies the rule once per entry (GI Joe Expertise's two Skills - Perk choice P1).
+    for (const path of choicePaths(String(rule.path ?? ''), item)) {
+      if (!path?.startsWith('system.')) {
+        continue;
+      }
 
-    writeNumber(target, path, rule.op, resolveValue(rule.value, { actor: holder, item }), ruleLabel(rule, item));
+      // append: text entries added to a list, each once (Environmental Expertise's environment).
+      if (rule.op == 'append') {
+        appendEntries(target, path, appendValues(rule.value, item));
+        continue;
+      }
+
+      // true / false: a switch on the actor (resistances, "is Qualified"), set as it is.
+      if (typeof rule.value == 'boolean') {
+        globalThis.foundry?.utils?.setProperty?.(target, path, rule.value);
+        continue;
+      }
+
+      writeNumber(target, path, rule.op, resolveValue(rule.value, { actor: holder, item }), ruleLabel(rule, item));
+    }
   }
 
   // ItemModifier: numbers on the actor's other items. Items prepare before their actor, so these
@@ -1441,6 +1519,16 @@ export function ruleRerollGrants(actor) {
     const picked = item.system?.choiceType == 'skills' ? chosenList(item) : [];
     if (!settings.skills?.length && !settings.scopeToOriginSkill && picked.length) {
       settings.skills = picked;
+    }
+
+    // skills: ["{choice.skill}"] (Perk choice P2b - the converted Skill Perks): the pick fills it, every entry of a list
+    // pick; with nothing picked the rule covers no Skill.
+    if (Array.isArray(settings.skills) && settings.skills.some(skill => String(skill).includes('{choice.'))) {
+      settings.skills = [...new Set(settings.skills.flatMap(skill => (String(skill).includes('{choice.')
+        ? choicePaths(String(skill), item).filter(Boolean) : [skill])))];
+      if (!settings.skills.length) {
+        continue;
+      }
     }
 
     const first = firstIndex.get(item) == index;

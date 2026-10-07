@@ -19,7 +19,7 @@
       "book": "Quartermaster's Guide to Gear",
       "page": 30
     },
-    "prerequisite": "Level 12",
+    "prerequisite": "",
     "selectionLimit": 10,
     "type": "general",
     "hasChoice": false,

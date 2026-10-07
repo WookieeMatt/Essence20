@@ -24,7 +24,7 @@
     "benefit": "The vehicle can land on any flat surface allies have prepared in advance.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Air vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

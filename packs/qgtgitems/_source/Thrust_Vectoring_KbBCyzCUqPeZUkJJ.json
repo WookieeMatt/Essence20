@@ -27,7 +27,7 @@
     "benefit": "The vehicle gains the VTOL trait.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Air vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

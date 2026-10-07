@@ -27,7 +27,7 @@
     "benefit": "+2 Toughness, +4 in Alt Mode.",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Insecticon or Monstrosity only"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

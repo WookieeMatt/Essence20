@@ -40,7 +40,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Griffon Only",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
     "value": 0,

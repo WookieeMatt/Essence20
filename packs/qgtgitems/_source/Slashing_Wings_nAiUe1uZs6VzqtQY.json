@@ -29,7 +29,7 @@
     "benefit": "The vehicle's Flyby attack deals 1 extra Sharp damage.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Air vehicle with a Flyby attack"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

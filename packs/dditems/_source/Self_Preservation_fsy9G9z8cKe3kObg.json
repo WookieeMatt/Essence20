@@ -6,9 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DerivedStat","label":"Self-Preservation (Resistance to your Energy Affinity Element)","path":"system.resistances.{sourced.DgFY0ZmAtClAobiA.system.choice}","value":true},
+      {"type":"DerivedStat","label":"Self-Preservation (Resistance to your Energy Affinity Element)","path":"system.resistances.{sourced.DgFY0ZmAtClAobiA.flags.essence20.rules.choices.element}","value":true},
       {"type":"Use","label":"Self-Preservation (Immunity to the next hit of that Element)","cost":{"resource":{"path":"system.energon.normal.value"},"amount":1},"steps":[{"do":"mark","key":"selfPreservation","to":"self","until":"combat"},{"do":"chat","text":"{name} spends an Energon Point: Immune to the next hit of their Energy Affinity's damage type."}]},
-      {"type":"DamageReduction","label":"Self-Preservation (Immunity)","amount":999,"consumeMark":"selfPreservation","when":["damage:{sourced.DgFY0ZmAtClAobiA.system.choice}"],"quiet":true}
+      {"type":"DamageReduction","label":"Self-Preservation (Immunity)","amount":999,"consumeMark":"selfPreservation","when":["damage:{sourced.DgFY0ZmAtClAobiA.flags.essence20.rules.choices.element}"],"quiet":true}
     ],
     "automation": {
       "status": "partial",

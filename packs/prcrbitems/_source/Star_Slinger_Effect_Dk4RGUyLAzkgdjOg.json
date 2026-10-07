@@ -9,7 +9,7 @@
     "actionType": "standard",
     "classification": {
       "skill": "targeting",
-      "style": "energy"
+      "style": "projectile"
     },
     "damageType": "element",
     "damageValue": 1,

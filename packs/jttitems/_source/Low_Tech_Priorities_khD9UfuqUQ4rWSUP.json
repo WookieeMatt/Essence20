@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DownshiftCancel","label":"Low Tech Priorities (ignore ↓1 on a chosen Skill, once per turn)","amount":1,"stacks":true,"limit":{"per":"turn","key":"lowTechPriorities"},"when":["skill:{item.choice}"]}
+      {"type":"ChoiceSet","key":"skill","label":"Skills","from":"skill","count":2,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DownshiftCancel","label":"Low Tech Priorities (ignore ↓1 on a chosen Skill, once per turn)","amount":1,"stacks":true,"limit":{"per":"turn","key":"lowTechPriorities"},"when":["skill:{choice.skill}"]}
     ],
     "automation": {
       "status": "full",
@@ -21,8 +22,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "hasChoice": true,
-    "choiceType": "skills",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 2
   },
   "effects": [],

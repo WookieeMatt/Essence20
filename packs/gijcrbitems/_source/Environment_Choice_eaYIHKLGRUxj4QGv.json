@@ -5,6 +5,10 @@
   "_id": "eaYIHKLGRUxj4QGv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"environment","label":"Environments","from":"environment","notHeld":true,"count":2,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DerivedStat","label":"Environment of expertise (the picked one)","path":"system.environments","op":"append","value":"{choice.environment}"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: pick two more environments of expertise. Your Environmental Expertise benefits then apply in them too.</p>"
@@ -25,9 +29,9 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "environments",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 2,
     "prerequisite": "",

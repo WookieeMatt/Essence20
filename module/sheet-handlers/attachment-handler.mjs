@@ -369,6 +369,8 @@ export function createEntry(droppedItem, targetItem) {
       entry['availability'] = droppedItem.system.availability;
       entry['benefit'] = droppedItem.system.benefit;
       entry['description'] = droppedItem.system.description;
+      // Deprecated 2026-10-07 (with system.prerequisite): the sheet shows the attached item's tags through its uuid
+      // (rules/prerequisites.mjs#prerequisiteText) and reads this copy only as a fallback when there are none. Drop it in 6.1.
       entry['prerequisite'] = droppedItem.system.prerequisite;
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
@@ -465,6 +467,7 @@ export function createEntry(droppedItem, targetItem) {
       entry['availability'] = droppedItem.system.availability;
       entry['benefit'] = droppedItem.system.benefit;
       entry['description'] = droppedItem.system.description;
+      // Deprecated 2026-10-07 - see the armor branch above.
       entry['prerequisite'] = droppedItem.system.prerequisite;
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;

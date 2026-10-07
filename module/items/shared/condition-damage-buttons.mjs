@@ -32,7 +32,8 @@ export function isDefeated(actor) {
  */
 export function favoriteWeaponOf(actor) {
   const perk = findSourced(actor, TF1.favoriteWeapon);
-  // Read through rules/choice-read.mjs (no primary key on this Perk yet, so its system.choice, as the Use rule writes it).
-  const choice = chosenOf(perk);
+  // Read through rules/choice-read.mjs: the Use rule's `weapon` pick (Perk choice P2e), else - a copy picked before -
+  // the weapon id its old rule wrote onto system.choice.
+  const choice = chosenOf(perk, 'weapon');
   return choice ? actor.items?.get?.(String(choice).split('.').pop()) ?? null : null;
 }

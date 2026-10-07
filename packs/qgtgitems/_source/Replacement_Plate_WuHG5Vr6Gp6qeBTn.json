@@ -24,7 +24,7 @@
     "benefit": "Once per mission, repair all damage to armor, even if destroyed.",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Counter-Ballistic, Counter-Element, or Counter-Kinetic trait, or Reinforced upgrade"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

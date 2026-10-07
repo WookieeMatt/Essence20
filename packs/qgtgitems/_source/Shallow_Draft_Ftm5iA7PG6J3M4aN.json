@@ -28,7 +28,7 @@
     "benefit": "The vehicle gains the Amphibious trait and Ground Movement equal to its Aquatic Movement.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Sea vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

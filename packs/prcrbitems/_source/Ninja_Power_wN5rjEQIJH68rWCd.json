@@ -6,9 +6,10 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
+      {"type":"ChoiceSet","key":"element","label":"Element","from":"element","rename":true,"required":true,"legacy":"system.choice"},
       {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:unarmed","self:morphed","self:data:flags.essence20.ninjaPowerActive"]},
       {"type":"RollModifier","label":"Ninja Power","when":["essence:speed","self:morphed","self:data:flags.essence20.ninjaPowerActive"],"edge":true},
-      {"type":"DamageType","label":"Ninja Power (the chosen element)","to":"choice","priority":-2,"when":["attack:barehanded","skill:finesse","self:morphed","self:data:flags.essence20.ninjaPowerActive"]},
+      {"type":"DamageType","label":"Ninja Power (the chosen element)","to":"{choice.element}","priority":-2,"when":["attack:barehanded","skill:finesse","self:morphed","self:data:flags.essence20.ninjaPowerActive"]},
       {"type":"Trigger","event":"morph","label":"Ninja Power (spend 1 Power to activate it)","prompt":true,"when":["not:self:data:flags.essence20.ninjaPowerActive","self:data:system.powers.personal.value>=1"],"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"updateActor","to":"self","set":{"flags.essence20.ninjaPowerActive":true}},{"do":"chat","text":"{lang.Pr3NinjaOnLine}"}]},
       {"type":"Trigger","event":"unmorph","label":"Ninja Power ends","when":["self:data:flags.essence20.ninjaPowerActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.ninjaPowerActive":false}}]},
       {"type":"Use","label":"Ninja jump (20 ft, Free)","cost":{"action":"free"},"when":["self:morphed","self:data:flags.essence20.ninjaPowerActive"],"steps":[{"do":"mark","key":"ninjaJump","to":"self","until":"endOfRound","when":["combat"]},{"do":"chat","text":"{lang.Pr3NinjaJumped}"}]},
@@ -26,12 +27,12 @@
       "book": "Power Rangers Core Rulebook",
       "page": 97
     },
-    "prerequisite": "Max Personal Power 4+",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
     "choice": null,
-    "choiceType": "elementDamageType",
-    "hasChoice": true,
+    "choiceType": "none",
+    "hasChoice": false,
     "numChoices": 1
   },
   "effects": [],

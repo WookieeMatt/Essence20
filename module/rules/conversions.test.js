@@ -4456,7 +4456,7 @@ test("Iron Hooves / Strex Strikes: +1 on any unarmed attack, the printed Unarmed
   }
 });
 
-test('Puissance / Frost Warlord / Venom Warlord: +1 on an attack with no weapon behind it', () => {
+test('Puissance / Frost Warlord / Venom Warlord: +1 on an unarmed attack (no weapon, or a printed unarmed one)', () => {
   for (const [file, label] of [
     ['eocitems/_source/Puissance_N8nkrj2hSrLv9NFP.json', 'Puissance'],
     ['fmmcitems/_source/Frost_Warlord_iFHlsLgUvmlT8cMK.json', 'Frost Warlord'],
@@ -4464,7 +4464,11 @@ test('Puissance / Frost Warlord / Venom Warlord: +1 on an attack with no weapon 
   ]) {
     const actor = holder([file]);
     expect(dmgB(actor, dmgBAttack({ skill: 'finesse', style: 'ranged' }))).toMatchObject({ amount: 1, sources: [label] });
-    expect(dmgB(actor, dmgBAttack({ weapon: dmgBWeapon('Compendium.essence20.wtnv_citizens_guide.Item.Cwd1FASmKXWiAFom') })).amount).toBe(0);
+    // attack:unarmed's shared definition (items/shared/unarmed-attacks.mjs): the printed Unarmed Strike / Unarmed
+    // Combat count (Puissance names "Unarmed strike"; the Warlords' "natural Reach" attacks include them).
+    expect(dmgB(actor, dmgBAttack({ weapon: dmgBWeapon('Compendium.essence20.wtnv_citizens_guide.Item.Cwd1FASmKXWiAFom') })).amount).toBe(1);
+    expect(dmgB(actor, dmgBAttack({ weapon: dmgBWeapon('Compendium.essence20.pr_crb.Item.5Y0qpK0gnsupCNHX') })).amount).toBe(1);
+    expect(dmgB(actor, dmgBAttack({ weapon: dmgBWeapon('Compendium.essence20.pr_crb.Item.someSword') })).amount).toBe(0);
   }
 
   expect(dmgB(holder([]), dmgBAttack()).amount).toBe(0);

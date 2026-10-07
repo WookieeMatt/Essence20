@@ -2477,7 +2477,7 @@ describe("Zord creation adds its two standard Features", () => {
   const RECALL_FOR_REPAIRS_ID = "Compendium.essence20.pr_crb.Item.r1S0Sc4oq8axDL6C";
   const sources = {
     [CALL_TO_ACTION_ID]: { name: "Call to Action", type: "feature" },
-    [RECALL_FOR_REPAIRS_ID]: { name: "Recall For Repairs", type: "feature" },
+    [RECALL_FOR_REPAIRS_ID]: { name: "Recall for Repairs", type: "feature" },
   };
 
   /** A Zord about to be created, already carrying `items` - as a duplicate or import would. */
@@ -2505,13 +2505,13 @@ describe("Zord creation adds its two standard Features", () => {
     await actor._preCreate({}, {}, {});
 
     const added = actor.updateSource.mock.calls[0][0].items.map(item => item.name);
-    expect(added).toEqual(["Call to Action", "Recall For Repairs"]);
+    expect(added).toEqual(["Call to Action", "Recall for Repairs"]);
   });
 
   test("a duplicated Zord that already has both gets neither again", async () => {
     const actor = makeNewZord([
       { type: 'feature', name: "Call to Action", _stats: { compendiumSource: CALL_TO_ACTION_ID } },
-      { type: 'feature', name: "Recall For Repairs", _stats: { compendiumSource: RECALL_FOR_REPAIRS_ID } },
+      { type: 'feature', name: "Recall for Repairs", _stats: { compendiumSource: RECALL_FOR_REPAIRS_ID } },
     ]);
     await actor._preCreate({}, {}, {});
 
@@ -2522,7 +2522,7 @@ describe("Zord creation adds its two standard Features", () => {
   test("an existing Feature is recognised by name when its source link is gone", async () => {
     const actor = makeNewZord([
       { type: 'feature', name: "Call to Action" },
-      { type: 'feature', name: "Recall For Repairs" },
+      { type: 'feature', name: "Recall for Repairs" },
     ]);
     await actor._preCreate({}, {}, {});
 
@@ -2538,7 +2538,7 @@ describe("Zord creation adds its two standard Features", () => {
     await actor._preCreate({}, {}, {});
 
     const items = actor.updateSource.mock.calls[0][0].items.map(item => item.name);
-    expect(items).toEqual(["Zord Cannon", "Call to Action", "Recall For Repairs"]);
+    expect(items).toEqual(["Zord Cannon", "Call to Action", "Recall for Repairs"]);
   });
 });
 

@@ -182,12 +182,16 @@ export async function chooseSelect(title, prompt, options) {
     return null;
   }
 
+  // Options carrying a `group` (rules pickSubPerk's game lines) are shown under one heading per group, in their order.
+  const option = o => `<option value="${o.value}">${foundry.utils.escapeHTML(o.label)}</option>`;
+  const groups = [...new Set(options.map(o => o.group).filter(Boolean))];
+  const list = groups.length
+    ? [...options.filter(o => !o.group).map(option), ...groups.map(group => `<optgroup label="${foundry.utils.escapeHTML(group)}">${options.filter(o => o.group == group).map(option).join('')}</optgroup>`)].join('')
+    : options.map(option).join('');
   return foundry.applications.api.DialogV2.wait({
     window: { title },
     classes: ["window-app", "e20-window"],
-    content: `<p>${prompt}</p><div class="form-group"><select name="choice">${
-      options.map(o => `<option value="${o.value}">${foundry.utils.escapeHTML(o.label)}</option>`).join('')
-    }</select></div>`,
+    content: `<p>${prompt}</p><div class="form-group"><select name="choice">${list}</select></div>`,
     buttons: [
       { action: 'ok', label: T('E20.DialogConfirmButton'), default: true, callback: (event, button) => button.form.elements.choice.value },
       { action: 'cancel', label: T('E20.DialogCancelButton') },

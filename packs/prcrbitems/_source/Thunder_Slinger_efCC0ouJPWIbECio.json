@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll Targeting at 50/100 ft for Stun, with two Energy damage alternate effects; its traits apply.</p>"
+      "notes": "<p>Automatic: attacks roll Targeting at 50/100 ft for Stun (use the Sonic effect against Putty Threats), with an Energy blast alternate effect; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",
@@ -63,14 +63,14 @@
       "24d7": {
         "uuid": "Compendium.essence20.pr_crb.Item.qf9N60YZPMIxa1l5",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Thunder Slinger Alternate Effect 1",
+        "name": "Thunder Slinger Effect (Sonic vs Putty)",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "energy"
+          "style": "projectile"
         },
         "damageValue": 1,
-        "damageType": "element",
+        "damageType": "sonic",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,

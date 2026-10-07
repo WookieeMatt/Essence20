@@ -21,7 +21,7 @@
       "book": "Cobra Codex",
       "page": 80
     },
-    "prerequisite": "Engrafted Mutation or 8th Level",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

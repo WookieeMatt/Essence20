@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { checkAttached, checkPrerequisites, describePrerequisite, prerequisitesOf, recheck } from './prerequisites.mjs';
+import { checkAttached, checkPrerequisites, describePrerequisite, prerequisitesOf, prerequisiteText, recheck } from './prerequisites.mjs';
 
 const hero = (extra = {}) => ({
   name: 'Hero',
@@ -59,6 +59,39 @@ describe('checking', () => {
     expect(describePrerequisite({ any: ['self:skill:might>=d6', 'self:skill:finesse>=d6'] })).toBe('Might d6+ or Finesse d6+');
     expect(describePrerequisite('not:self:canTransform')).toBe('Not: Has an Alt Mode');
     expect(describePrerequisite('ask:GM approval')).toBe('GM approval');
+    // The pack prerequisites that used to fall through as raw tags (2026-10-07).
+    expect(describePrerequisite('self:tag:robot')).toBe('Robot trait');
+    expect(describePrerequisite('not:self:tag:robot')).toBe('Not: Robot trait');
+    expect(describePrerequisite('self:type:npc')).toBe('Is a Threat');
+    expect(describePrerequisite('self:data:system.traits.flyBy')).toBe('Fly By trait');
+    expect(describePrerequisite('self:data:system.qualified.poisons.all')).toBe('Qualified: poisons all');
+    expect(describePrerequisite('self:data:system.powers.personal.max>=4')).toBe('Maximum Personal Power 4+');
+    expect(describePrerequisite('self:data:system.movement.aerial.total>=50')).toBe('Aerial Movement 50+');
+    expect(describePrerequisite('self:data:system.crew.numPassengers>=1')).toBe('Passengers 1+');
+  });
+});
+
+describe('prerequisiteText - what the sheet chip, chat card and attached Upgrade line show', () => {
+  afterEach(() => {
+    delete global.fromUuidSync;
+  });
+
+  test('the tags in words, joined', () => {
+    expect(prerequisiteText(perk(['self:level>=5', { any: ['self:skill:might>=d6', 'self:skill:finesse>=d6'] }]))).toBe('Level 5+; Might d6+ or Finesse d6+');
+    expect(prerequisiteText(perk([]))).toBe('');
+    expect(prerequisiteText(null)).toBe('');
+  });
+
+  test('the tags win over old typed text; the text is only an unmigrated item\'s fallback', () => {
+    expect(prerequisiteText(perk(['self:level>=5'], { system: { prerequisite: 'Old words', prerequisites: { when: ['self:level>=5'] } } }))).toBe('Level 5+');
+    expect(prerequisiteText({ name: 'Old', system: { prerequisite: ' Old words ' } })).toBe('Old words');
+  });
+
+  test('an attachment entry shows its attached item\'s tags, read through its uuid', () => {
+    global.fromUuidSync = jest.fn(() => perk(['host:type:weapon']));
+    expect(prerequisiteText({ uuid: 'Actor.a.Item.u', name: 'Scope', prerequisite: 'Old words' })).toBe('Attached to: type weapon');
+    global.fromUuidSync = jest.fn(() => null);
+    expect(prerequisiteText({ uuid: 'Actor.a.Item.gone', name: 'Scope', prerequisite: 'Old words' })).toBe('Old words');
   });
 });
 

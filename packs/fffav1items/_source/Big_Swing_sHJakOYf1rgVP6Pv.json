@@ -20,7 +20,7 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 37
     },
-    "prerequisite": "Trained to use a heavy Anti-Tank or Ballistic weapon",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

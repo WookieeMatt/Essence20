@@ -27,7 +27,7 @@
       "mounted"
     ],
     "type": "armor",
-    "prerequisite": "Ranged weapon with the Mounted trait and without the Vehicular trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 50000,

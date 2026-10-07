@@ -5,6 +5,9 @@
   "_id": "vhNKDTJPO9jgCuE5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick one from the list","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","required":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: when you gain it, pick one of History Buff, Personal Heirloom, Savant Skill or Well-Traveled. The chosen Perk is added and works on its own.</p>"
@@ -44,8 +47,8 @@
         "type": "perk"
       }
     },
-    "hasChoice": true,
-    "choiceType": "perks",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 1
   },
   "effects": [],

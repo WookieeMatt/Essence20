@@ -6,8 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"added","label":"Special Program (choose a General Perk)","when":["not:rule:granted","not:rule:data:flags.essence20.o1Picked"],"steps":[{"do":"pickGrant","from":{"type":"perk","tags":["item:data:system.type=general"],"fields":["system.type","system.prerequisite"]},"title":"Choose a General Perk whose prerequisites you meet:"}]},
-      {"type":"Use","label":"Choose a General Perk","when":["not:rule:granted","not:rule:data:flags.essence20.o1Picked"],"steps":[{"do":"pickGrant","from":{"type":"perk","tags":["item:data:system.type=general"],"fields":["system.type","system.prerequisite"]},"title":"Choose a General Perk whose prerequisites you meet:"}]}
+      {"type":"Trigger","event":"added","label":"Special Program (choose a General Perk)","when":["not:rule:granted","not:rule:data:flags.essence20.o1Picked"],"steps":[{"do":"pickGrant","from":{"type":"perk","tags":["item:data:system.type=general"],"fields":["system.type","system.prerequisites"]},"title":"Choose a General Perk whose prerequisites you meet:"}]},
+      {"type":"Use","label":"Choose a General Perk","when":["not:rule:granted","not:rule:data:flags.essence20.o1Picked"],"steps":[{"do":"pickGrant","from":{"type":"perk","tags":["item:data:system.type=general"],"fields":["system.type","system.prerequisites"]},"title":"Choose a General Perk whose prerequisites you meet:"}]}
     ],
     "automation": {
       "status": "full",

@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Give the Guardians a Zord Feature now due","steps":[{"do":"notify","text":"E20.GuardianCompanyNone","level":"warn","stop":true,"when":["not:self:companionFlagged:guardians"]},{"do":"notify","text":"E20.GrantAlready","stop":true,"when":["calc:@item.flags.essence20.guardianFeatures - min(1, max(0, @level - 5)) - min(1, max(0, @level - 9)) - min(1, max(0, @level - 13)) - min(1, max(0, @level - 16)) >= 0"]},{"do":"pickGrant","from":{"type":"feature","fields":["system.prerequisite"],"tags":["not:item:mentions:combiner|mega weapon"]},"to":"companionFlagged:guardians"},{"do":"updateItem","item":"self","add":{"flags.essence20.guardianFeatures":"1"}}]}
+      {"type":"Use","label":"Give the Guardians a Zord Feature now due","steps":[{"do":"notify","text":"E20.GuardianCompanyNone","level":"warn","stop":true,"when":["not:self:companionFlagged:guardians"]},{"do":"notify","text":"E20.GrantAlready","stop":true,"when":["calc:@item.flags.essence20.guardianFeatures - min(1, max(0, @level - 5)) - min(1, max(0, @level - 9)) - min(1, max(0, @level - 13)) - min(1, max(0, @level - 16)) >= 0"]},{"do":"pickGrant","from":{"type":"feature","fields":["system.prerequisites"],"tags":["not:item:mentions:combiner|mega weapon"]},"to":"companionFlagged:guardians"},{"do":"updateItem","item":"self","add":{"flags.essence20.guardianFeatures":"1"}}]}
     ],
     "automation": {
       "status": "full",

@@ -24,7 +24,7 @@
     "benefit": "The vehicle can be air-dropped without taking falling damage, but can't maneuver until it lands.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land or Sea vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

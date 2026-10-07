@@ -23,6 +23,7 @@ import { RIDER, riderUseFor } from "./rider-uses.mjs";
 import { imperfectionOf } from "../resources/grant-uses.mjs";
 import { skillImmunityOverrideOf } from "../../rules/plugins/combat/subsystem-readers.mjs";
 import { sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
+import { isUnarmedAttack } from "../../items/shared/unarmed-attacks.mjs";
 
 /**
  * Per-target modifiers, on-hit riders and the Conditions that go with them - the Perks, weapons and
@@ -68,10 +69,6 @@ function nameOf(actor, id, fallback) {
 
 function tokenOf(actor) {
   return actor?.token?.object ?? actor?.getActiveTokens?.()?.[0] ?? null;
-}
-
-function isWeaponEffect(item) {
-  return item?.type == 'weaponEffect';
 }
 
 function parentWeaponOf(actor, item) {
@@ -434,7 +431,8 @@ export function buildRiderContext(actor, item, dataset, options, consumes = []) 
     weaponId: weapon?.id ?? null,
     weaponSource: sourceOf(weapon) ?? null,
     weaponHands: weapon?.system?.derivedHands ?? weapon?.system?.hands ?? null,
-    isUnarmed: isWeaponEffect(item) && !weapon,
+    // The shared definition: no weapon, or a printed unarmed one (items/shared/unarmed-attacks.mjs).
+    isUnarmed: isUnarmedAttack(item, actor),
     isArea: isArea(item),
     style: item?.system?.classification?.style ?? null,
     skill: dataset?.skill ?? null,

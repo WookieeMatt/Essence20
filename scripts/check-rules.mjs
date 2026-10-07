@@ -17,6 +17,7 @@ import { dirname, join } from "node:path";
 
 import { validateRule } from "../module/rules/types.mjs";
 import { unknownTags } from "../module/rules/predicate.mjs";
+import { perkChoiceProblems } from "../module/rules/choice-checks.mjs";
 import "../module/rules/plugins/index.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -93,6 +94,12 @@ for (const pack of readdirSync(PACKS, { withFileTypes: true })) {
           (/not supported yet/.test(problem) ? warnings : errors).push(line);
         }
       });
+
+      // The Perk choice migration (docs/PERK_CHOICE_MIGRATION_PLAN.md §2.2.6): no double ask, no old-pick reads once
+      // converted, a carried-over pick has a fixed list.
+      for (const problem of perkChoiceProblems(item)) {
+        errors.push(`${where}: ${problem}`);
+      }
     }
   }
 }

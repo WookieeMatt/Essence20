@@ -5,6 +5,9 @@
   "_id": "jNOwd35gE6Qrybdb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick 2 from the list","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","count":"2 + @choiceCount","required":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: when gained, pick 2 Grid Science options from its list (3 if you have Grid Tap). Each pick is added as its own Perk and works as that Perk describes.</p>"
@@ -18,8 +21,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "perks",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 2,
     "items": {
       "5d4f": {

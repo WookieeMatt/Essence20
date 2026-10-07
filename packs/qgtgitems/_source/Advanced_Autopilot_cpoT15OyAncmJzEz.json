@@ -27,7 +27,7 @@
     "benefit": "The vehicle gains the Advanced Autopilot trait.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle with the Autopilot trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

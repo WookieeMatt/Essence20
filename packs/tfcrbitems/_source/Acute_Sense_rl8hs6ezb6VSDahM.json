@@ -4,6 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
+      {"type":"ChoiceSet","key":"sense","label":"Sense","from":"sense","notHeld":true,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DerivedStat","label":"Acute sense (the picked sense)","path":"system.senses.{choice.sense}.acute","value":true},
       {"type":"RollModifier","label":"Acute Sense","when":["skill:alertness"],"edge":true},
       {"type":"DialogSwitch","label":"Your chosen sense applies (Acute Sense: ↑1)","when":["not:skill:alertness","not:self:hasItem:Compendium.essence20.gi_joe_crb.Item.WvjGJ5AcC0z07d0J"],"upshift":1}
     ],
@@ -20,8 +22,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "senses"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "flags": {

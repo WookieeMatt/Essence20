@@ -583,7 +583,7 @@ describe('Uses', () => {
     expect(available(power)).toBe(false);
   });
 
-  test('Favorite Weapon: picks a two-handed, non-Integrated Targeting weapon onto system.choice; attacks with it get ↑1', async () => {
+  test('Favorite Weapon: picks a two-handed, non-Integrated Targeting weapon (its `weapon` pick - Perk choice P2e); attacks with it get ↑1', async () => {
     const perk = packItem('favoriteWeapon', { source: C('decepticon_directive', 'emaXxo2XzoHMoNCe') });
     const actor = makeActor([perk]);
     const rifle = weapon(actor, { name: 'Rifle' });
@@ -595,7 +595,8 @@ describe('Uses', () => {
     picks = ['Rifle'];
     await use(perk);
     expect(offered[0]).toEqual(['Rifle']);
-    expect(perk.system.choice).toBe(rifle.id);
+    expect(perk.flags.essence20.rules.choices.weapon).toBe(rifle.id);
+    expect(perk.system.choice ?? null).toBeNull();
     expect(favoriteWeaponOf(actor)).toBe(rifle);
     expect(ruleRollSources(actor, null, { item: rifleShot, isAttack: true }).sources[0]).toMatchObject({ shiftUp: 1 });
     const pistolShot = actor.items.contents.find(item => item.flags.essence20.parentId == pistol.id);

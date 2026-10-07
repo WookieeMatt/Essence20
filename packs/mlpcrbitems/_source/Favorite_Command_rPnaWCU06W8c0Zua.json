@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
       {"type":"Use","label":"Choose the Favorite Command Skill","steps":[{"do":"pick","key":"skill","from":"config","path":"skills","prompt":"Skill"},{"do":"updateItem","set":{"flags.essence20.favoriteSkill":"{var.picked}"}}]}
     ],
     "automation": {
@@ -21,8 +22,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "skills"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "sort": 0,

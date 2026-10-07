@@ -7,9 +7,9 @@
 {{/if}}
 
 <div class="chip-section">
-  {{#if item.system.prerequisite}}
-  <span class="chip" name="chip.perk.prerequisite">{{localize 'E20.PerkPrerequisite'}}: {{item.system.prerequisite}}</span>
-  {{/if}}
+  {{#with (prerequisiteText item) as |prerequisite|}}
+  <span class="chip" name="chip.perk.prerequisite">{{localize 'E20.PerkPrerequisite'}}: {{prerequisite}}</span>
+  {{/with}}
   {{#if item.system.type}}
   <span class="chip" name="chip.perk.type">{{localize 'E20.PerkType'}}: {{lookup @root.config.perkTypes item.system.type}}</span>
   {{/if}}

@@ -24,7 +24,7 @@
     "benefit": "Once per combat, repair 1 armor Health as a Standard action.",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Counter-Ballistic, Counter-Element, or Counter-Kinetic trait, or Reinforced upgrade"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

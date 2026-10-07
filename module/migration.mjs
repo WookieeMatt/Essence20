@@ -37,6 +37,10 @@ export const migrateWorld = async function() {
     return;
   }
 
+  // One Perk choice report for the whole run (perkChoiceReport), summarised to the GM by migratePerkChoices at the end.
+  activePerkReport = null;
+  activePerkReport = perkChoiceReport();
+
   // Migrate World Actors
   const actors = game.actors.map(a => [a, true])
     .concat(Array.from(game.actors.invalidDocumentIds).map(id => [game.actors.getInvalid(id), false]));
@@ -52,6 +56,11 @@ export const migrateWorld = async function() {
         await actor.update({"system.skills.-=social": null});
         await actor.update({"system.skills.-=speed": null});
         await actor.update({"system.skills.-=any": null});
+      }
+
+      // Perk choice P2: the multi-Skill Perks' copies folded into one item (and anything migrateActorData left).
+      if (valid) {
+        await migrateActorPerkChoices(actor);
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Actor ${actor.name}: ${err.message}`;
@@ -139,6 +148,14 @@ export const migrateWorld = async function() {
     if (!["world", "module"].includes(p.metadata.packageType)) continue;
     if (!["Actor", "Item", "Scene"].includes(p.documentName)) continue;
     await migrateCompendium(p);
+  }
+
+  // The Perk choice pass (old picks into rules choices): unlinked token actors too, and the GM told what was left alone.
+  // Part of the main migration (user, 2026-10-07) - it runs when needsMigrationVersion says so, like everything here.
+  try {
+    await migratePerkChoices();
+  } finally {
+    activePerkReport = null;
   }
 
   // Set the migration as complete
@@ -510,6 +527,23 @@ export const migrateActorData = async function(actor, compendiumActor) {
       items.push(itemUpdate);
     }
 
+  }
+
+  // Perk choice P2 (migratePerkChoices below): the old picks copied into the rules choices, what the old picker baked
+  // into the actor taken off (in this same update, with each copy's unbaked flag), sub-Perk children recorded. The
+  // fold of the multi-Skill Perks' copies needs deletes, so migrateWorld / migrateCompendium run it after this update.
+  const fullActorForChoices = game.actors.get(actor._id) || compendiumActor;
+  if (fullActorForChoices) {
+    const choices = await planActorPerkChoices(fullActorForChoices, { inPack: !!compendiumActor, actorSystem: actor.system });
+    Object.assign(updateData, choices.actorUpdate);
+    for (const update of choices.itemUpdates) {
+      const existing = items.find(entry => entry._id == update._id);
+      if (existing) {
+        Object.assign(existing, update);
+      } else {
+        items.push(update);
+      }
+    }
   }
 
   if (items.length > 0) {
@@ -914,6 +948,20 @@ export async function migrateItemData(item, actor, options = {}) {
     perkValue: !actor,
   }));
 
+  // The typed prerequisite text retired (2026-10-07) - see migratePrerequisiteText below.
+  migratePrerequisiteText(item, { update: updateData });
+
+  // Perk choice P2: a world / compendium item's old pick into its rules choice (migratePerkChoiceItem below). An
+  // embedded one is migrated with its actor (migrateActorData), which also takes the baked value off.
+  if (!actor) {
+    const choices = await migratePerkChoiceItem(item, null, { inPack: options.inPack ?? !!item.pack });
+    if (updateData['system.rules'] !== undefined) {
+      delete choices['system.rules'];
+    }
+
+    Object.assign(updateData, choices);
+  }
+
   return updateData;
 }
 
@@ -963,8 +1011,14 @@ export const migrateCompendium = async function(pack) {
       }
 
       // Save the entry, if data was changed
-      if ( foundry.utils.isEmpty(updateData) ) continue;
+      if ( foundry.utils.isEmpty(updateData) ) {
+        if (documentName == "Actor") await migrateActorPerkChoices(doc, { inPack: true });
+        continue;
+      }
+
       await doc.update(updateData);
+      // Perk choice P2: the multi-Skill Perks' copies folded (migrateActorPerkChoices).
+      if (documentName == "Actor") await migrateActorPerkChoices(doc, { inPack: true });
       console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
     } catch(err) { // Handle migration failures
       err.message = `Failed essence20 system migration for document ${doc.name} in pack ${pack.collection}: ${err.message}`;
@@ -1056,6 +1110,10 @@ const RESET_TO = {
   'system.hasMorphedToughnessBonus': false,
   'system.value': 0,
   'system.aimShiftBonus': 0,
+  // The old Perk / Hang-Up picker (Perk choice P2 - deprecated until 6.1).
+  'system.hasChoice': false,
+  // A Perk's, Power's or Upgrade's old typed prerequisite text (makeStr(null): nullable, initial null).
+  'system.prerequisite': field => field?.initial ?? null,
   // The whole reroll block back to its initial value (switched off) - the schema's own default when there is one.
   'system.reroll': field => field?.getInitialValue?.({}) ?? { enabled: false },
 };
@@ -1219,7 +1277,8 @@ export function perkValueRules(choiceType, value) {
   if (choiceType == 'skills') {
     return [{
       rule: { type: 'DerivedStat', label: `Up ${value} on the picked Skill`, path: 'system.skills.{item.choice}.shiftUp', op: 'add', value, when: [flagged] },
-      has: rule => rule.type == 'DerivedStat' && rule.path == 'system.skills.{item.choice}.shiftUp',
+      // The converted pack rule reads the ChoiceSet's {choice.skill} (Perk choice P2) - the same rule.
+      has: rule => rule.type == 'DerivedStat' && /^system\.skills\.\{(item\.choice|choice\.skill)\}\.shiftUp$/.test(String(rule.path ?? '')),
     }];
   }
 
@@ -1373,4 +1432,604 @@ export async function migrateDetailsFields(item, { inPack = false, perkValue = t
   }
 
   return update;
+}
+
+/* -------------------------------------------- */
+/*  Typed prerequisite text retired              */
+/* -------------------------------------------- */
+
+/* Compendium items whose old text was a note, not a prerequisite: a copy's text just goes, no `ask:` tag.
+   Welcome to Night Vale's Acute Senses (Citizens' Guide) - its text described its own choice. */
+const NOT_A_PREREQUISITE = new Set(['Compendium.essence20.wtnv_citizens_guide.Item.ygxNBnUhFIfqg349']);
+
+/** The longest old prerequisite text kept as an `ask:` tag; longer text is cut at a word with an ellipsis. */
+export const PREREQUISITE_ASK_MAX = 200;
+
+/**
+ * An item's old typed `system.prerequisite` text (2026-10-07, docs/rules-batches/prereq-text-retired.md).
+ * Prerequisites are shown from their `system.prerequisites.when` tags now. An item with text and no tags
+ * keeps it as one `ask:<text>` tag (a GM question: never blocks, the GM is told); then the text goes back
+ * to the schema's default - not deleted, the field stays in the data model until 6.1 (see unset).
+ *
+ * Value-matched: it fires only while the text is a non-empty string, and empties it as it goes, so a
+ * second run finds nothing to do. An item that already has tags is never given another.
+ * @param {Object} item
+ * @param {Object} [options]   {update: update data to add to}
+ * @returns {Object}   Update data.
+ */
+export function migratePrerequisiteText(item, { update = {} } = {}) {
+  const system = storedSystem(item);
+  if (typeof system.prerequisite != 'string' || system.prerequisite === '') {
+    return update;
+  }
+
+  const text = system.prerequisite.replace(/\s+/g, ' ').trim();
+  const prerequisites = system.prerequisites && typeof system.prerequisites == 'object' ? system.prerequisites : {};
+  const when = Array.isArray(prerequisites.when) ? prerequisites.when : [];
+  if (text && !when.length && !NOT_A_PREREQUISITE.has(rulesSourceUuid(item))) {
+    update['system.prerequisites'] = { ...prerequisites, when: [`ask:${clipAsk(text)}`] };
+  }
+
+  unset(update, 'system.prerequisite', item);
+  return update;
+}
+
+function clipAsk(text) {
+  if (text.length <= PREREQUISITE_ASK_MAX) {
+    return text;
+  }
+
+  const cut = text.slice(0, PREREQUISITE_ASK_MAX - 1);
+  const space = cut.lastIndexOf(' ');
+  return `${(space > PREREQUISITE_ASK_MAX / 2 ? cut.slice(0, space) : cut).trimEnd()}…`;
+}
+
+/* -------------------------------------------- */
+/*  Perk choice P2: old picks -> rules choices   */
+/* -------------------------------------------- */
+
+/* docs/PERK_CHOICE_MIGRATION_PLAN.md §3. The 116 pack items that used the old Perk / Hang-Up picker (hasChoice,
+   choiceType, system.choice) ask their pick through rules now: a ChoiceSet carrying `legacy: "system.choice"`, a Use
+   rule's `pick` step carrying it (Favorite Weapon, Mode Attachment), or a pickSubPerk step in an `added` Trigger (the
+   46 sub-Perk lists). A character's copy made before that keeps its old pick; this moves it over.
+
+   - M1 copy: the old pick (system.choice, or the 6.1 legacyChoice flag) goes into flags.essence20.rules.choices.<key> -
+     only into an empty slot, and only when it is one of the rule's option values (a list ChoiceSet gets a one-entry
+     list). Anything else is left where it is and reported, so nothing is guessed. system.choice itself stays as a backup
+     until 6.1 (the old fields stay in the data model, deprecated); hasChoice goes back to its default so the old picker
+     never asks for the copy again.
+   - M2 unbake: what the old picker wrote into the actor - an acute sense, an environment, All-Terrain Alt Mode's enabled
+     Active Effect - comes back off once, since the rules derive it now. The actor change and the copy's
+     flags.essence20.choiceMigration.unbaked go in ONE actor update, so it can't be undone twice. Fast's and GI Joe
+     Expertise's baked value is the Details cleanup's migratePerkValue (reused, not redone).
+   - Sub-Perk lists: the children already on the actor (flags.essence20.parentId) stay attached; their book uuids are
+     recorded under the pickSubPerk key so the Rules tab shows them.
+   - Fold: the multi-Skill Perks (a ChoiceSet with `count` - GI Joe Expertise, I've Done My Research, Low Tech
+     Priorities) are ONE item holding a list (user decision 2026-10-07); the old picker made one copy per Skill. Copies of
+     one grant (same book item, parent and collection key) are folded into the first: every picked value, no value twice,
+     the other copies' rule state kept where the first has none; the rest are deleted after the update.
+
+   Value-matched and idempotent: every step only fills what is missing or undoes what is still flagged as baked, so a
+   second run does nothing. Run from migrateItemData (an item on its own) / migrateActorData (M1, M2, the sub-Perk record),
+   and in full - fold included - by migrateActorPerkChoices, which migratePerkChoices runs (from migrateWorld) for every
+   world actor, every unlinked token actor and every world item. */
+
+/** A made pick: not undefined / null / '' / an empty list. */
+const madePick = value => value !== undefined && value !== null && value !== '' && (!Array.isArray(value) || value.some(madePick));
+
+/** A pick as a list of strings. */
+const pickList = value => (Array.isArray(value) ? value : [value]).filter(madePick).map(String);
+
+/** Every step in a step list, nested ones too. */
+function stepsWithin(steps, out = []) {
+  for (const step of Array.isArray(steps) ? steps : []) {
+    out.push(step);
+    for (const nested of [step?.steps, step?.onSuccess, step?.onFail, step?.onCrit, ...(Array.isArray(step?.options) ? step.options.map(o => o?.steps) : [])]) {
+      stepsWithin(nested, out);
+    }
+  }
+
+  return out;
+}
+
+/** Old values a converted pick takes besides its options, by book item id: Mode Attachment's Bot Mode. */
+const EXTRA_LEGACY_VALUES = {
+  SgofEgBVvg4josSR: { mode: ['botMode'] },
+};
+
+/** The rules picks of an item that carry the old system.choice over: [{rule, key, kind: 'set' | 'step'}]. */
+function legacyChoicePicks(rules) {
+  const picks = [];
+  for (const rule of Array.isArray(rules) ? rules : []) {
+    if (rule?.disabled) {
+      continue;
+    }
+
+    if (rule?.type == 'ChoiceSet' && rule.key && rule.legacy == 'system.choice') {
+      picks.push({ rule, key: rule.key, kind: 'set' });
+    }
+
+    for (const step of stepsWithin(rule?.steps)) {
+      if (step?.key && step.legacy == 'system.choice' && !picks.some(pick => pick.key == step.key)) {
+        picks.push({ rule: step, key: step.key, kind: 'step' });
+      }
+    }
+  }
+
+  return picks;
+}
+
+/** The pickSubPerk steps of an item's `added` Triggers. */
+function subPerkSteps(rules) {
+  return (Array.isArray(rules) ? rules : []).filter(rule => rule?.type == 'Trigger' && rule.event == 'added' && !rule.disabled)
+    .flatMap(rule => stepsWithin(rule.steps)).filter(step => step?.do == 'pickSubPerk');
+}
+
+/** Whether an item's rules ask its pick through rules (converted from the old picker). */
+function isConvertedPick(rules) {
+  return legacyChoicePicks(rules).length > 0 || subPerkSteps(rules).length > 0;
+}
+
+/** A copy's own rules that are only what the Details cleanup wrote onto it (perkValueRules) - stale once its book item is converted. */
+function onlyPerkValueRules(item) {
+  const own = storedSystem(item).rules;
+  const wanted = perkValueRules(storedSystem(item).choiceType, 1);
+  return Array.isArray(own) && own.length > 0 && wanted.length > 0
+    && own.every(rule => rule?.type == 'UniqueChoice' || wanted.some(({ has }) => has(rule)));
+}
+
+/**
+ * The rules a copy runs for this migration: its prepared rules (a document's are its original's), else its own, else
+ * its compendium original's. A copy whose own rules are only the Details cleanup's perkValueRules reads its original's
+ * (and `reset` says so: its own rules go, so it inherits the converted ones).
+ * @returns {Promise<{rules: Array, reset: Boolean}>}
+ */
+async function perkChoiceRulesOf(item, inPack = false) {
+  if (!inPack && onlyPerkValueRules(item) && String(rulesSourceUuid(item) ?? '').startsWith('Compendium.')) {
+    const original = (await compendiumEntryAt(rulesSourceUuid(item)))?.system?.rules;
+    if (Array.isArray(original) && isConvertedPick(original)) {
+      return { rules: original, reset: true };
+    }
+  }
+
+  const prepared = item?._source ? item.system?.rules : null;
+  if (Array.isArray(prepared) && prepared.length) {
+    return { rules: prepared, reset: false };
+  }
+
+  return { rules: await effectiveRules(item, inPack), reset: false };
+}
+
+/** The book item id a copy came from (its 16-char compendium id), or ''. */
+function bookIdOf(item) {
+  return String(rulesSourceUuid(item) ?? '').split('.').pop();
+}
+
+/**
+ * The values an old pick may take for one converted rule: a ChoiceSet's options (every one - held / notHeld left off),
+ * a pick step's (an ownedItem pick: the actor's items of that type), plus EXTRA_LEGACY_VALUES.
+ * @returns {Promise<Set<String>>}
+ */
+async function legacyOptionValues(pick, item, actor, rules) {
+  const values = new Set(EXTRA_LEGACY_VALUES[bookIdOf(item)]?.[pick.key] ?? []);
+  const view = { id: item?.id ?? item?._id, name: item?.name, type: item?.type, parent: actor, _stats: item?._stats, flags: (item?._source ?? item)?.flags ?? {}, system: { ...storedSystem(item), rules } };
+  if (pick.kind == 'set') {
+    const { choiceOptions } = await import("./rules/lifecycle.mjs");
+    for (const option of choiceOptions(pick.rule, { actor, item: view, allOptions: true })) {
+      values.add(String(option.value));
+    }
+  } else if (pick.rule.from == 'ownedItem') {
+    for (const owned of [...(actor?.items ?? [])]) {
+      if (!pick.rule.itemType || owned?.type == pick.rule.itemType) {
+        values.add(String(owned?.id ?? owned?._id));
+      }
+    }
+  } else {
+    const { pickOptions } = await import("./rules/steps.mjs");
+    try {
+      for (const option of pickOptions(pick.rule, { actor, item: view, targets: [], vars: {}, chat: [], allOptions: true })) {
+        values.add(String(option.value));
+      }
+    } catch (error) {
+      // A source that needs a live run (targets, the canvas): nothing to match against - reported.
+    }
+  }
+
+  return values;
+}
+
+/** A new, empty Perk choice report - or, during a migrateWorld run, the run's shared one (so the GM summary counts what
+ *  the main actor pass did as well as the final sweep; live test 2026-10-07 showed 0s for work that had happened). */
+export function perkChoiceReport() {
+  return activePerkReport ?? { copied: [], recorded: [], unbaked: [], folded: [], unmatched: [], unpicked: [], clamped: [] };
+}
+
+/** The report shared across one migrateWorld run (null otherwise). */
+let activePerkReport = null;
+
+const reportLine = (actor, item, extra = {}) => ({ actor: actor?.name ?? '', item: item?.name ?? '', ...extra });
+
+/**
+ * M1 for one item: its old pick into the rules choices (value-matched, empty slots only), hasChoice back to its default.
+ * Also the sub-Perk record when the actor is known. Pure apart from reading the compendium index.
+ * @param {Object} item     A document or its source data.
+ * @param {Actor|Object} [actor]   The owning actor (its items: an ownedItem pick's options, a sub-Perk's children).
+ * @param {Object} [options]   {inPack, report, rules: the rules to read (default: perkChoiceRulesOf)}
+ * @returns {Promise<Object>}   The item's update data.
+ */
+export async function migratePerkChoiceItem(item, actor = null, { inPack = false, report = perkChoiceReport(), rules: given = null } = {}) {
+  const update = {};
+  const source = item?._source ?? item;
+  if (!['perk', 'hangUp'].includes(item?.type)) {
+    return update;
+  }
+
+  const { rules, reset } = given ? { rules: given, reset: false } : await perkChoiceRulesOf(item, inPack);
+  if (!isConvertedPick(rules)) {
+    return update;
+  }
+
+  if (reset) {
+    update['system.rules'] = [];
+  }
+
+  const have = source?.flags?.essence20?.rules?.choices ?? {};
+  const old = legacyChoiceOf({ system: storedSystem(item), flags: source?.flags });
+  let open = false;
+  for (const pick of legacyChoicePicks(rules)) {
+    if (madePick(have[pick.key])) {
+      continue;
+    }
+
+    const values = pickList(old);
+    if (!values.length) {
+      open = true;
+      report.unpicked.push(reportLine(actor, item, { key: pick.key }));
+      continue;
+    }
+
+    const known = await legacyOptionValues(pick, item, actor, rules);
+    if (!values.every(value => known.has(value))) {
+      open = true;
+      report.unmatched.push(reportLine(actor, item, { key: pick.key, value: old }));
+      continue;
+    }
+
+    const listed = pick.kind == 'set' && pick.rule.count !== undefined && pick.rule.count !== null && pick.rule.count !== '';
+    update[`flags.essence20.rules.choices.${pick.key}`] = listed ? [...new Set(values)] : Array.isArray(old) ? values[0] : old;
+    report.copied.push(reportLine(actor, item, { key: pick.key, value: old }));
+  }
+
+  // The sub-Perk lists: the children already made under this copy, recorded under the step's key.
+  for (const step of subPerkSteps(rules)) {
+    const key = String(step.key ?? 'perks');
+    if (madePick(have[key]) || !actor) {
+      continue;
+    }
+
+    const id = item?.id ?? item?._id;
+    const children = [...(actor.items ?? [])].filter(other => (other?.flags?.essence20?.parentId) == id && other?.type == 'perk')
+      .map(child => rulesSourceUuid(child)).filter(Boolean);
+    if (children.length) {
+      update[`flags.essence20.rules.choices.${key}`] = [...new Set(children)];
+      report.recorded.push(reportLine(actor, item, { key, value: children }));
+    } else {
+      report.unpicked.push(reportLine(actor, item, { key }));
+    }
+  }
+
+  // The old picker never asks for this copy again (hasChoice to its default; 6.1 drops the field). An old pick left
+  // unmatched keeps it, so the GM can see the legacy pick on the Details tab.
+  if (storedSystem(item).hasChoice === true && !open) {
+    unset(update, 'system.hasChoice', item);
+  }
+
+  if (Object.keys(update).length) {
+    update['flags.essence20.choiceMigration.copied'] = true;
+  }
+
+  return update;
+}
+
+/** The value at a dotted path of a plain object. */
+const valueAt = (object, path) => path.split('.').reduce((at, key) => (at === null || at === undefined ? at : at[key]), object);
+
+/**
+ * M2 for one copy: the change taking off what the old picker baked into the actor, and the copy's own part (its
+ * unbaked flag; All-Terrain Alt Mode's Active Effect switched off). `state` carries the actor's running stored values
+ * across its items (two copies taking from the same list).
+ * @returns {{actorUpdate: Object, itemUpdate: Object}}
+ */
+export function unbakePerkChoice(item, actor, state, { report = perkChoiceReport(), rules = [] } = {}) {
+  const result = { actorUpdate: {}, itemUpdate: {} };
+  const source = item?._source ?? item;
+  const system = storedSystem(item);
+  if (source?.flags?.essence20?.choiceMigration?.unbaked || !legacyChoicePicks(rules).length
+    || !['senses', 'environments', 'altModeMovement'].includes(system.choiceType)) {
+    return result;
+  }
+
+  const baked = pickList(legacyChoiceOf({ system, flags: source?.flags }))[0];
+  result.itemUpdate['flags.essence20.choiceMigration.unbaked'] = true;
+  if (!baked) {
+    return result;
+  }
+
+  if (system.choiceType == 'senses') {
+    const path = `system.senses.${baked}.acute`;
+    const current = path in state ? state[path] : valueAt(state.system, path.slice(7));
+    if (current === true) {
+      state[path] = false;
+      result.actorUpdate[path] = false;
+      report.unbaked.push(reportLine(actor, item, { value: baked }));
+    } else {
+      report.clamped.push(reportLine(actor, item, { value: baked }));
+    }
+  } else if (system.choiceType == 'environments') {
+    const list = state['system.environments'] ?? [...(Array.isArray(state.system?.environments) ? state.system.environments : [])];
+    const index = list.indexOf(baked);
+    if (index >= 0) {
+      list.splice(index, 1);
+      state['system.environments'] = list;
+      result.actorUpdate['system.environments'] = [...list];
+      report.unbaked.push(reportLine(actor, item, { value: baked }));
+    } else {
+      report.clamped.push(reportLine(actor, item, { value: baked }));
+    }
+  } else {
+    // All-Terrain Alt Mode: the one bundled Active Effect the drop switched on.
+    const key = `system.movement.${baked}.altMode`;
+    const effects = [...(source?.effects ?? item?.effects ?? [])];
+    const on = effects.filter(effect => !effect?.disabled && (effect?.changes ?? effect?.system?.changes ?? []).some(change => change?.key == key));
+    if (on.length) {
+      result.itemUpdate.effects = on.map(effect => ({ _id: effect._id ?? effect.id, disabled: true }));
+      report.unbaked.push(reportLine(actor, item, { value: baked }));
+    } else if (effects.length) {
+      report.clamped.push(reportLine(actor, item, { value: baked }));
+    }
+  }
+
+  return result;
+}
+
+/** A list ChoiceSet (`count`) carrying the old pick over, or null. */
+function listChoiceSet(rules) {
+  return legacyChoicePicks(rules).find(pick => pick.kind == 'set' && pick.rule.count !== undefined && pick.rule.count !== null && pick.rule.count !== '') ?? null;
+}
+
+/**
+ * Everything M1 / M2 / the sub-Perk record change on one actor, as data: {actorUpdate, itemUpdates: [{_id, ...}]}.
+ * Pure apart from reading the compendium index. `perkValue` also runs the Details cleanup's migratePerkValue for each
+ * copy (migrateActorData does that itself).
+ * @param {Actor|Object} actor   A document (its items' prepared rules are read) or source data with items.
+ * @param {Object} [options]   {inPack, report, perkValue, actorSystem (default: the actor's stored system)}
+ * @returns {Promise<{actorUpdate: Object, itemUpdates: Array<Object>, rulesById: Map}>}
+ */
+export async function planActorPerkChoices(actor, { inPack = false, report = perkChoiceReport(), perkValue = false, actorSystem = null } = {}) {
+  const system = actorSystem ?? (actor?._source ?? actor)?.system ?? {};
+  const state = { system };
+  const totals = {};
+  const actorUpdate = {};
+  const itemUpdates = [];
+  const rulesById = new Map();
+  for (const item of [...(actor?.items ?? [])]) {
+    const id = item?.id ?? item?._id;
+    const update = {};
+    if (perkValue) {
+      const moved = await migratePerkValue(item, { inPack, actorSystem: system, totals });
+      Object.assign(update, moved.update);
+      Object.assign(actorUpdate, moved.actorUpdate);
+    }
+
+    const { rules, reset } = await perkChoiceRulesOf(item, inPack);
+    rulesById.set(id, rules);
+    if (!isConvertedPick(rules)) {
+      if (Object.keys(update).length) {
+        itemUpdates.push({ _id: id, ...update });
+      }
+
+      continue;
+    }
+
+    Object.assign(update, await migratePerkChoiceItem(item, actor, { inPack, report, rules }));
+    if (reset && !update['system.rules']) {
+      update['system.rules'] = [];
+    }
+
+    const unbaked = unbakePerkChoice(item, actor, state, { report, rules });
+    Object.assign(actorUpdate, unbaked.actorUpdate);
+    Object.assign(update, unbaked.itemUpdate);
+    if (Object.keys(update).length) {
+      itemUpdates.push({ _id: id, ...update });
+    }
+  }
+
+  return { actorUpdate, itemUpdates, rulesById };
+}
+
+/** The flags.essence20.rules state keys (other than choices) a folded copy brings along where the kept copy has none. */
+const FOLD_STATE_KEYS = ['toggles', 'pools', 'limits', 'uses', 'banked', 'counters'];
+
+/**
+ * The fold of the multi-Skill Perks' copies (one copy per Skill, the old picker's shape) into one item per grant, as
+ * data: {itemUpdates, deleteIds}. Copies are grouped by book item, parent, collection key and granting item; the first of
+ * each group keeps every value of the group (its own first, no value twice), named "Name (A, B)", and the other copies'
+ * rule state where it has none. A copy whose pick is unmatched (not a Skill) is left out of the fold and reported.
+ * Reads each copy's pick after `pending` (this run's item updates, by id).
+ * @returns {Promise<{itemUpdates: Array<Object>, deleteIds: Array<String>}>}
+ */
+export async function planPerkCopyFold(actor, rulesById, pending = new Map(), { report = perkChoiceReport() } = {}) {
+  const groups = new Map();
+  for (const item of [...(actor?.items ?? [])]) {
+    const id = item?.id ?? item?._id;
+    const rules = rulesById.get(id) ?? [];
+    const pick = listChoiceSet(rules);
+    const book = rulesSourceUuid(item);
+    if (!pick || !book) {
+      continue;
+    }
+
+    const flags = (item?._source ?? item)?.flags?.essence20 ?? {};
+    const stored = pending.get(id)?.[`flags.essence20.rules.choices.${pick.key}`] ?? flags.rules?.choices?.[pick.key];
+    const values = pickList(stored);
+    if (!values.length) {
+      continue;
+    }
+
+    const group = [book, flags.parentId ?? '', flags.collectionId ?? '', flags.grantedBy ?? '', pick.key].join('|');
+    groups.set(group, [...(groups.get(group) ?? []), { item, id, values, pick, rules, flags }]);
+  }
+
+  const itemUpdates = [];
+  const deleteIds = [];
+  const { renameUpdate } = await import("./rules/lifecycle.mjs");
+  for (const copies of groups.values()) {
+    if (copies.length < 2) {
+      continue;
+    }
+
+    const [keep, ...rest] = copies;
+    const merged = [...new Set(copies.flatMap(copy => copy.values))];
+    const update = { _id: keep.id, ...(pending.get(keep.id) ?? {}), [`flags.essence20.rules.choices.${keep.pick.key}`]: merged };
+    // The other copies' rule state (toggles, pools, limits...) where the kept copy has none.
+    for (const copy of rest) {
+      for (const stateKey of FOLD_STATE_KEYS) {
+        for (const [key, value] of Object.entries(copy.flags.rules?.[stateKey] ?? {})) {
+          const path = `flags.essence20.rules.${stateKey}.${key}`;
+          if (keep.flags.rules?.[stateKey]?.[key] === undefined && update[path] === undefined) {
+            update[path] = value;
+          }
+        }
+      }
+
+      if (copy.flags.perkValueRule) {
+        update['flags.essence20.perkValueRule'] = true;
+      }
+    }
+
+    const view = { id: keep.id, name: keep.item.name, type: keep.item.type, parent: actor, _stats: keep.item._stats, flags: (keep.item._source ?? keep.item).flags ?? {}, system: { ...storedSystem(keep.item), rules: keep.rules } };
+    Object.assign(update, renameUpdate(view, { ...(keep.flags.rules?.choices ?? {}), [keep.pick.key]: merged }) ?? {});
+    update['flags.essence20.choiceMigration.folded'] = rest.map(copy => copy.id);
+    update['flags.essence20.choiceMigration.copied'] = true;
+    itemUpdates.push(update);
+    deleteIds.push(...rest.map(copy => copy.id));
+    report.folded.push(reportLine(actor, keep.item, { value: merged, copies: copies.length }));
+  }
+
+  return { itemUpdates, deleteIds };
+}
+
+/**
+ * The whole Perk choice migration for one live actor (a world actor or an unlinked token's): M1, M2, the sub-Perk
+ * record, Fast's / GI Joe Expertise's value (migratePerkValue) and the fold - written as ONE actor update (the actor's
+ * changes with its items' flags), then the folded copies deleted. Safe to run again.
+ * @param {Actor} actor
+ * @param {Object} [options]   {report, inPack}
+ * @returns {Promise<Object>}   The report.
+ */
+export async function migrateActorPerkChoices(actor, { report = perkChoiceReport(), inPack = false } = {}) {
+  const { actorUpdate, itemUpdates, rulesById } = await planActorPerkChoices(actor, { inPack, report, perkValue: true });
+  const pending = new Map(itemUpdates.map(update => [update._id, update]));
+  const fold = await planPerkCopyFold(actor, rulesById, pending, { report });
+  for (const update of fold.itemUpdates) {
+    pending.set(update._id, update);
+  }
+
+  const items = [...pending.values()].filter(update => !fold.deleteIds.includes(update._id));
+  if (items.length || Object.keys(actorUpdate).length) {
+    await actor.update({ ...actorUpdate, ...(items.length ? { items } : {}) });
+  }
+
+  const gone = fold.deleteIds.filter(id => actor.items?.get?.(id));
+  if (gone.length) {
+    await actor.deleteEmbeddedDocuments('Item', gone);
+  }
+
+  return report;
+}
+
+/** Every unlinked token actor in the world's scenes. */
+function unlinkedTokenActors() {
+  const actors = [];
+  for (const scene of globalThis.game?.scenes ?? []) {
+    for (const token of scene.tokens ?? []) {
+      if (!token.actorLink && token.actor) {
+        actors.push(token.actor);
+      }
+    }
+  }
+
+  return actors;
+}
+
+/** The GM-facing lines of a report: what was left alone, and counts. */
+export function perkChoiceReportText(report) {
+  const value = entry => (Array.isArray(entry.value) ? entry.value.join(', ') : entry.value ?? '');
+  // One run passes items twice (the actor pass, then the sweep): each actor + item + value is counted once.
+  const once = list => [...new Map((list ?? []).map(entry => [`${entry.actor}|${entry.item}|${JSON.stringify(entry.value ?? '')}`, entry])).values()];
+  report = Object.fromEntries(Object.entries(report).map(([key, list]) => [key, once(list)]));
+  const lines = [];
+  for (const entry of report.unmatched) {
+    lines.push(`${entry.actor ? `${entry.actor}: ` : ''}${entry.item} - old pick "${value(entry)}" matches no option (left as it was; pick it on the Rules tab)`);
+  }
+
+  for (const entry of report.unpicked) {
+    lines.push(`${entry.actor ? `${entry.actor}: ` : ''}${entry.item} - nothing picked yet (pick it on the Rules tab)`);
+  }
+
+  for (const entry of report.clamped) {
+    lines.push(`${entry.actor ? `${entry.actor}: ` : ''}${entry.item} - "${value(entry)}" was no longer on the character (nothing taken off)`);
+  }
+
+  return {
+    summary: `copied ${report.copied.length}, sub-Perks recorded ${report.recorded.length}, unbaked ${report.unbaked.length}, `
+      + `folded ${report.folded.length}, unmatched ${report.unmatched.length}, unpicked ${report.unpicked.length}, clamped ${report.clamped.length}`,
+    lines,
+  };
+}
+
+/**
+ * From migrateWorld (the main migration, run when needsMigrationVersion says so - user, 2026-10-07), GM only: the Perk
+ * choice migration for every world actor, every unlinked token actor and every world item. Safe to run again (every step
+ * is value-matched). A console summary, and a GM whisper listing what was left alone. User compendia go through the
+ * "migrate compendium" action (migrateCompendium).
+ * @returns {Promise<Object|null>}   The report, or null when nothing ran.
+ */
+export async function migratePerkChoices() {
+  if (!globalThis.game?.user?.isGM) {
+    return null;
+  }
+
+  resetMigrationCaches();
+  const report = perkChoiceReport();
+  for (const actor of [...(game.actors ?? []), ...unlinkedTokenActors()]) {
+    try {
+      await migrateActorPerkChoices(actor, { report });
+    } catch (error) {
+      console.error(`Essence20 | Perk choice migration failed for ${actor?.name}`, error);
+    }
+  }
+
+  for (const item of game.items ?? []) {
+    try {
+      const update = await migratePerkChoiceItem(item, null, { report });
+      if (Object.keys(update).length) {
+        await item.update(update);
+      }
+    } catch (error) {
+      console.error(`Essence20 | Perk choice migration failed for ${item?.name}`, error);
+    }
+  }
+
+  const { summary, lines } = perkChoiceReportText(report);
+  console.info(`Essence20 | Perk choice migration: ${summary}`, report);
+  if (lines.length && globalThis.ChatMessage?.create) {
+    const escape = text => String(text).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+    await ChatMessage.create({
+      content: `<p><strong>Essence20: Perk choice migration</strong> (${escape(summary)})</p><ul>${lines.map(line => `<li>${escape(line)}</li>`).join('')}</ul>`,
+      whisper: ChatMessage.getWhisperRecipients?.('GM')?.map(user => user.id) ?? [],
+    });
+  }
+
+  return report;
 }

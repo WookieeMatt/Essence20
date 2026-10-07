@@ -22,7 +22,7 @@
       "book": "A Jump Through Time",
       "page": 55
     },
-    "prerequisite": "Must have Defeated a Threat Level 8+ enemy",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

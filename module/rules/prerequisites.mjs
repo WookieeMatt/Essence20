@@ -3,7 +3,11 @@ import { contextFor, evaluate } from "./predicate.mjs";
 /**
  * Prerequisites (docs/PREREQUISITES_PLAN.md): what an item requires of the character taking it, or -
  * for an Upgrade - of the item it attaches to. Stored as `system.prerequisites.when`, the same tag
- * list rules use (rules/predicate.mjs); the printed `system.prerequisite` text stays for display.
+ * list rules use (rules/predicate.mjs). Everything that shows an item's prerequisite (the actor-sheet
+ * chip, the chat card, an attached Upgrade's line) shows prerequisiteText(item), the tags in words.
+ * The old typed `system.prerequisite` text was retired 2026-10-07 (docs/rules-batches/prereq-text-retired.md):
+ * a world migration moves text with no tags into one `ask:` tag; it is only read here as a fallback for
+ * an unmigrated item until the field leaves the data model in 6.1.
  *
  * Checked when an item is added to an actor and when an Upgrade is attached. The world setting
  * `essence20.prerequisiteMode` decides what an unmet prerequisite does (decided 2026-10-02):
@@ -94,7 +98,81 @@ export function describePrerequisite(entry) {
     return capital(match[1]);
   }
 
+  if ((match = /^self:tag:([\w-]+)$/.exec(text))) {
+    return `${capital(words(match[1]))} trait`;
+  }
+
+  if ((match = /^self:type:([\w-]+)$/.exec(text))) {
+    return `Is a ${ACTOR_TYPE_WORDS[match[1]] ?? words(match[1]).toLowerCase()}`;
+  }
+
+  if ((match = /^self:data:system\.traits\.([\w-]+)$/.exec(text))) {
+    return `${capital(words(match[1]))} trait`;
+  }
+
+  if ((match = /^self:data:system\.qualified\.([\w.-]+)$/.exec(text))) {
+    return `Qualified: ${match[1].split('.').map(words).join(' ')}`;
+  }
+
+  if ((match = /^self:data:([\w.-]+?)(>=|<=|>|<|=)([\w.-]+)$/.exec(text))) {
+    return `${dataWords(match[1])} ${match[3]}${match[2] == '<=' ? ' or less' : op(match[2])}`;
+  }
+
+  if ((match = /^self:data:([\w.-]+)$/.exec(text))) {
+    return `Has ${dataWords(match[1]).toLowerCase()}`;
+  }
+
   return text;
+}
+
+const ACTOR_TYPE_WORDS = { npc: 'Threat', playerCharacter: 'player character', zord: 'Zord', megaform: 'Megaform Zord' };
+
+/* A `self:data:` path in words: a few known ones by name, else its last parts ("system.crew.numPassengers"
+   -> "Crew num passengers"). */
+const DATA_WORDS = {
+  'system.powers.personal.max': 'Maximum Personal Power',
+  'system.energon.normal.max': 'Energon Pool max',
+  'system.conditioning': 'Conditioning',
+  'system.crew.numPassengers': 'Passengers',
+};
+function dataWords(path) {
+  if (DATA_WORDS[path]) {
+    return DATA_WORDS[path];
+  }
+
+  const movement = /^system\.movement\.(\w+)\.total$/.exec(path);
+  if (movement) {
+    return `${capital(words(movement[1]))} Movement`;
+  }
+
+  return capital(path.replace(/^(system|flags\.essence20)\./, '').split('.').map(words).join(' ').toLowerCase());
+}
+
+/**
+ * An item's prerequisites as one line of words ("Might d6+ or Finesse d6+; Level 5+"), for display -
+ * '' when it has none. Takes an Item (or its data) or a parent item's attachment entry (an Upgrade's
+ * `system.items` snapshot on its weapon or armor), whose tags are read from the attached item (its uuid).
+ * Until 6.1, an item with no tags falls back to its old typed `prerequisite` text (an unmigrated item).
+ * @param {Item|Object} item
+ * @returns {String}
+ */
+export function prerequisiteText(item) {
+  if (!item) {
+    return '';
+  }
+
+  let when = prerequisitesOf(item);
+  if (!item.system && item.uuid) {
+    // An attachment entry carries no tags of its own: read the attached item's, live.
+    when = prerequisitesOf(globalThis.fromUuidSync?.(item.uuid, { strict: false }));
+  }
+
+  if (when.length) {
+    return when.map(describePrerequisite).join('; ');
+  }
+
+  const legacy = item.system ? item.system.prerequisite : item.prerequisite;
+  return typeof legacy == 'string' ? legacy.trim() : '';
 }
 
 /**

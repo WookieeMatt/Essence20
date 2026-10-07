@@ -29,7 +29,7 @@
     "benefit": "The vehicle gains Aquatic Movement (equal to its Ground Movement, or half its Aerial Movement) and the benefits of Pressurized Cabin; sustainable air supply is at GM discretion.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Air or Land vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

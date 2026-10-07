@@ -4,8 +4,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Community Helper","when":["skill:{item.choice}",{"any":["not:skill:brawn","not:attack"]}],"edge":true},
-      {"type":"RollModifier","label":"Community Helper (Initiative: Edge)","when":["roll:initiative","rule:data:system.choice=initiative","not:skill:initiative"],"edge":true}
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"config","table":"communityHelperSkills","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Community Helper","when":["skill:{choice.skill}",{"any":["not:skill:brawn","not:attack"]}],"edge":true},
+      {"type":"RollModifier","label":"Community Helper (Initiative: Edge)","when":["roll:initiative","rule:choiceHas:skill:initiative","not:skill:initiative"],"edge":true}
     ],
     "automation": {
       "status": "full",
@@ -18,8 +19,8 @@
       "page": 68
     },
     "prerequisite": "",
-    "hasChoice": true,
-    "choiceType": "communityHelperSkill",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 1,
     "selectionLimit": 1,
     "type": "influence"

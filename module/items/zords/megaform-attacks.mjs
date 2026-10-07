@@ -23,6 +23,7 @@ import { getUses, markUsed } from "../../mechanics/resources/scene-clock.mjs";
 import {
   chat, isCombinerForm, isGiganticOrLarger, isResponsible, itemsOf, megaformsContaining, rosterOf, sourceOf, T, traitsOf,
 } from "./combiner-roster-helpers.mjs";
+import { isUnarmedAttack } from "../shared/unarmed-attacks.mjs";
 
 const GEN = 'zord2Gen';
 const SIG = 'zord2Sig';
@@ -46,8 +47,11 @@ export function attacksOf(actor) {
 
 const isMelee = ({ effect }) => effect.system?.classification?.style == 'melee';
 const isRanged = ({ effect }) => !!effect.system?.classification?.style && effect.system.classification.style != 'melee';
-const isUnarmedish = attack => isMelee(attack) && (!attack.weapon || attack.effect.system?.isRam || attack.effect.system?.isFlyby
-  || attack.weapon.system?.classification?.size == 'integrated' || (attack.weapon.system?.traits ?? []).includes('integrated'));
+// The Combiner strike's sources (p.44: "unarmed, ram, fly-by or natural attack"): an unarmed attack in the shared sense
+// (items/shared/unarmed-attacks.mjs), plus Ram / Fly-by attacks and integrated (natural) weapons. Ram and Fly-by are
+// the book's own separate entries beside "unarmed", so they stay here rather than in the shared definition.
+const isUnarmedish = attack => isMelee(attack) && (isUnarmedAttack(attack.effect, null, attack.weapon) || attack.effect.system?.isRam
+  || attack.effect.system?.isFlyby || attack.weapon.system?.classification?.size == 'integrated' || (attack.weapon.system?.traits ?? []).includes('integrated'));
 const isIntegratedRanged = attack => isRanged(attack) && !!attack.weapon
   && (attack.weapon.system?.hardpoint?.type == 'integrated' || attack.weapon.system?.classification?.size == 'integrated');
 const damageOf = attack => Number(attack.effect.system?.damageValue) || 0;

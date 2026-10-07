@@ -18,7 +18,7 @@
       "page": 165
     },
     "actionType": "free",
-    "prerequisite": "Favorite Command",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

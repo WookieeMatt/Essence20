@@ -6,7 +6,7 @@ import { sourceOf } from "../items/shared/item-lookups.mjs";
 import { rulesAreInherited } from "./inherit.mjs";
 import { ruleHelper } from "./code.mjs";
 import { RULE_TYPES, summarizeRule, validateRule } from "./types.mjs";
-import { describePrerequisite, prerequisitesOf } from "./prerequisites.mjs";
+import { describePrerequisite, prerequisitesOf, prerequisiteText } from "./prerequisites.mjs";
 import { contextFor, evaluate } from "./predicate.mjs";
 
 /**
@@ -38,6 +38,12 @@ export function prerequisiteLines(item) {
     const answer = actor ? evaluate([entry], contextFor({ self: actor, ruleItem: item, host, combat: null })) : undefined;
     return { words: describePrerequisite(entry), state: answer === undefined ? 'none' : answer === true ? 'met' : answer === false ? 'unmet' : 'ask' };
   });
+}
+
+/** The Rules tab's prerequisites block: the lines, plus an unmigrated item's old typed text when it has no tags. */
+function prerequisitesContext(item) {
+  const lines = prerequisiteLines(item);
+  return { text: lines.length ? '' : prerequisiteText(item), lines };
 }
 
 /**
@@ -219,7 +225,8 @@ export function rulesContext(item) {
     rulesOwned: !!actor && item.isOwner,
     rulesInherited: rulesAreInherited(item),
     rulesJson: JSON.stringify(rulesOf(item), null, 2),
-    prerequisites: { text: item.system?.prerequisite ?? '', lines: prerequisiteLines(item) },
+    // The lines are the prerequisites; `text` is only an unmigrated item's old typed text (no tags), until 6.1.
+    prerequisites: prerequisitesContext(item),
     actsAs: actsAsContext(item),
     ruleTypes: Object.keys(RULE_TYPES),
   };

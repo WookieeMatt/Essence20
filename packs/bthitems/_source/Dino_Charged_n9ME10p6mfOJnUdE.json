@@ -24,7 +24,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,
-    "prerequisite": "An Energem and Dino Charged gear",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

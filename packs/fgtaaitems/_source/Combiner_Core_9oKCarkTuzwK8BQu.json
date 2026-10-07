@@ -25,7 +25,7 @@
     "benefit": "Grants the Combiner trait, letting you join a Megaform.",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Robot trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

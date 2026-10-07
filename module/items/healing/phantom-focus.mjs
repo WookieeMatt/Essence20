@@ -1,4 +1,4 @@
-import { chosenOf } from "../../rules/choice-read.mjs";
+import { hasChosen } from "../../rules/choice-read.mjs";
 
 const PHANTOM_FOCUS_ID = "Compendium.essence20.across_the_stars.Item.aXGMEoVsYSttOSHn";
 
@@ -15,7 +15,7 @@ const PHANTOM_FOCUS_ID = "Compendium.essence20.across_the_stars.Item.aXGMEoVsYSt
 export function hasPhantomFocusOption(actor, option) {
   return !!actor?.items?.some(item => {
     const sourceId = item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
-    return sourceId == PHANTOM_FOCUS_ID && chosenOf(item) == option;
+    return sourceId == PHANTOM_FOCUS_ID && hasChosen(item, option);
   });
 }
 

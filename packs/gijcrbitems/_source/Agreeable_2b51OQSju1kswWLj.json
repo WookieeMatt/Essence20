@@ -17,7 +17,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 165
     },
-    "prerequisite": "Limited or Restricted animal pet",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

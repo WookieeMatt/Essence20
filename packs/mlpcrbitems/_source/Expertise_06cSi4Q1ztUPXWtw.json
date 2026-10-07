@@ -4,8 +4,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DownshiftCancel","label":"Expertise (ignore the first ↓1 on the chosen Skill)","amount":1,"stack":"expertise","when":["skill:{item.choice}"]},
-      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0}
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DownshiftCancel","label":"Expertise (ignore the first ↓1 on the chosen Skill)","amount":1,"stack":"expertise","when":["skill:{choice.skill}"]},
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"skills":["{choice.skill}"]}
     ],
     "automation": {
       "status": "full",
@@ -17,8 +18,8 @@
       "book": "My Little Pony Core Rulebook",
       "page": 123
     },
-    "hasChoice": true,
-    "choiceType": "skills",
+    "hasChoice": false,
+    "choiceType": "none",
     "prerequisite": "",
     "selectionLimit": 3,
     "type": "general"

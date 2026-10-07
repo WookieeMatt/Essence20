@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DialogSwitch","forget":true,"label":"Roll Technology instead (Brain Power)","when":["skill:{item.choice}"],"useSkill":"technology"}
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DialogSwitch","forget":true,"label":"Roll Technology instead (Brain Power)","when":["skill:{choice.skill}"],"useSkill":"technology"}
     ],
     "automation": {
       "status": "full",
@@ -21,8 +22,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "skills"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "sort": 100000,

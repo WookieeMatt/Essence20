@@ -1230,7 +1230,8 @@ describe('poisons, heals, lending, picks', () => {
   test('Self-Preservation: Resistance to the Energy Affinity Element; 1 Energon - Immune to the next hit of it', async () => {
     const { damageReduction } = await import('./plugins/combat/damage-reduction.mjs');
     const perk = packItem('selfPreservation');
-    const affinity = sourced('DgFY0ZmAtClAobiA', { name: 'Energy Affinity', system: { choice: 'fire' } });
+    // An old copy of Energy Affinity: its pick only in system.choice, read through the pack ChoiceSet's legacy (Perk choice P2).
+    const affinity = sourced('DgFY0ZmAtClAobiA', { name: 'Energy Affinity', system: { choice: 'fire', rules: [{ type: 'ChoiceSet', key: 'element', from: 'element', required: true, legacy: 'system.choice' }] } });
     const actor = makeActor([perk, affinity]);
     ruleDerived(actor);
     expect(actor.system.resistances).toMatchObject({ fire: true });
@@ -1385,14 +1386,15 @@ describe('Scramble, Elemental Adaptation, Interspatial Pause, Shield Modulation,
     chooses = ['An Alt Mode'];
     picks = ['Jet'];
     await use(hangUp);
-    expect(hangUp.system.choice).toBe(jet.id);
+    // Perk choice P2e: kept under the pick's `mode` key (an old copy's system.choice still reads through its legacy).
+    expect(hangUp.flags.essence20.rules.choices.mode).toBe(jet.id);
     await fireTransforming(actor, 'botMode');
     expect(rollsMade).toEqual([]);
     await fireTransforming(actor, jet.id);
     expect(rollsMade).toEqual([{ skill: 'technology', dif: 13 }]);
     chooses = [lang('ModeBotMode')];
     await use(hangUp);
-    expect(hangUp.system.choice).toBe('botMode');
+    expect(hangUp.flags.essence20.rules.choices.mode).toBe('botMode');
     await fireTransforming(actor, 'botMode');
     expect(rollsMade).toHaveLength(2);
   });

@@ -19,7 +19,7 @@
       "book": "Cobra Codex",
       "page": 56
     },
-    "prerequisite": "Branch Leader",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"
   },

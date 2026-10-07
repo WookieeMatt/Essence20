@@ -17,7 +17,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 132
     },
-    "prerequisite": "Strength Essence 3",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

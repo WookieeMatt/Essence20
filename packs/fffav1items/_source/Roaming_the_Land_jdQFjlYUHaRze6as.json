@@ -6,10 +6,11 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
+      {"type":"ChoiceSet","key":"option","label":"Option","from":"config","table":"roamingTheLandOptions","rename":true,"required":true,"legacy":"system.choice"},
       {"type":"Qualification","label":"Roaming the Land (Qualified: Traumatic upgrade)","upgrades":[{"any":["item:id:zXPxC1yLlK2xgGEl","item:data:name=traumatic"]}]},
-      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:melee","rule:data:system.choice=smallerDamage","self:sizeDiff>=1"]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:melee","rule:choiceHas:option:smallerDamage","self:sizeDiff>=1"]},
       {"type":"Qualification","label":"Roaming the Land (Trained: energized close combat weapons)","access":"trained","items":["item:type:weapon",{"any":["item:hasAttack:item:data:system.classification.style=melee","item:hasAttack:item:data:system.range.reachMultiplier>0"]},{"any":["item:trait:energy","item:trait:electric","item:trait:laser","item:trait:fire","item:trait:ice","item:trait:plasma","item:trait:element","item:trait:sonic","item:trait:radiant"]}]},
-      {"type":"Trigger","label":"Roaming the Land: 1 Stun to a larger creature hit","event":"hit","when":["attack:melee","rule:data:system.choice=largerStun","target:sizeDiff>=1"],"steps":[{"do":"damage","amount":1,"damageType":"stun","to":"target"}]}
+      {"type":"Trigger","label":"Roaming the Land: 1 Stun to a larger creature hit","event":"hit","when":["attack:melee","rule:choiceHas:option:largerStun","target:sizeDiff>=1"],"steps":[{"do":"damage","amount":1,"damageType":"stun","to":"target"}]}
     ],
     "automation": {
       "status": "full",
@@ -30,9 +31,9 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "roamingTheLand",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",

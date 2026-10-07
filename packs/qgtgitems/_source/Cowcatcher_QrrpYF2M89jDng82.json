@@ -28,7 +28,7 @@
     "benefit": "Edge on Ram attacks.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle with a Ram attack"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

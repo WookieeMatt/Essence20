@@ -75,7 +75,8 @@
     },
     "traits": [
       "sharp",
-      "silent"
+      "silent",
+      "versatile"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

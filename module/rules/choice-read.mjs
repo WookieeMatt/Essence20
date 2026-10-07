@@ -96,7 +96,7 @@ export function legacyChoiceOf(item) {
  */
 export function chosenOf(item, key = primaryChoiceKey(item)) {
   if (key) {
-    const chosen = item?.flags?.essence20?.rules?.choices?.[key];
+    const chosen = choiceValue(item, key);
     if (isMade(chosen)) {
       return chosen;
     }
@@ -139,4 +139,69 @@ export function hasChosen(item, value, key = primaryChoiceKey(item)) {
 /** Whether an item has any pick made. */
 export function hasAnyChoice(item, key = primaryChoiceKey(item)) {
   return chosenList(item, key).length > 0;
+}
+
+/** Every step in a step list, nested ones too. */
+function stepsIn(steps, out = []) {
+  for (const step of Array.isArray(steps) ? steps : []) {
+    out.push(step);
+    for (const nested of [step?.steps, step?.onSuccess, step?.onFail, step?.onCrit, ...(Array.isArray(step?.options) ? step.options.map(o => o?.steps) : [])]) {
+      stepsIn(nested, out);
+    }
+  }
+
+  return out;
+}
+
+/**
+ * The rule (a ChoiceSet) or step (a `pick` / recording step) that keeps an item's pick under `key` and carries the old
+ * Perk picker's pick over (`legacy: "system.choice"` - Perk choice P2), or null.
+ * @param {Item|Object} item
+ * @param {String} key
+ * @returns {Object|null}
+ */
+export function legacyChoiceRule(item, key) {
+  for (const rule of rulesOfItem(item)) {
+    if (rule?.type == 'ChoiceSet' && rule.key == key && rule.legacy == 'system.choice' && !rule.disabled) {
+      return rule;
+    }
+
+    const step = stepsIn(rule?.steps).find(one => one?.key == key && one.legacy == 'system.choice');
+    if (step) {
+      return step;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * The value a `{choice.<key>}` / `rule:choiceHas:<key>` reads (Perk choice P2): the rules choice under `key`; while that
+ * isn't made yet, an item converted from the old Perk picker (its ChoiceSet carries `legacy: "system.choice"`) reads its
+ * old pick - so a character's copy keeps working before the world migration has copied the pick over (or when the old
+ * value matched no option and was left alone). A list ChoiceSet (`count`) gets an old single pick as a one-entry list.
+ * Anything else: the stored value as it is (undefined when there is none).
+ * @param {Item|Object} item
+ * @param {String} key
+ * @returns {*}
+ */
+export function choiceValue(item, key) {
+  const chosen = item?.flags?.essence20?.rules?.choices?.[key];
+  if (isMade(chosen) || !key) {
+    return chosen;
+  }
+
+  const rule = legacyChoiceRule(item, key);
+  const old = rule ? legacyChoiceOf(item) : undefined;
+  if (!isMade(old)) {
+    return chosen;
+  }
+
+  const listed = rule.count !== undefined && rule.count !== null && rule.count !== '';
+  return listed && !Array.isArray(old) ? [old] : old;
+}
+
+/** A pick as one value: a list's first made entry, else the value itself ('' / null / undefined stay as they are). */
+export function firstChosen(value) {
+  return Array.isArray(value) ? value.find(isMade) : value;
 }

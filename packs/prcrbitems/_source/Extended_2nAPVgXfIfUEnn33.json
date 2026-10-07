@@ -8,6 +8,7 @@
     "rules": [
       {"type":"ItemModifier","label":"Reach one step further (Extended)","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost",{"any":["not:item:data:system.range.value","item:data:system.range.reachMultiplier>=1"]}],"path":"system.range.reachMultiplier","op":"set","value":"max(1, @other.system.range.reachMultiplier) + 1"}
     ],
+    "prerequisites": {"when":["ask:Weapon with a range measured in Reach"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: the weapon's Reach attacks reach one step further (Reach becomes Reach x2, and so on).</p>"

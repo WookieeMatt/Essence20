@@ -24,7 +24,7 @@
     "benefit": "The vehicle can imprison Common-or-smaller passengers up to its passenger capacity; escaping needs a DIF 20 Brawn Test to break out or a DIF 15 Infiltration Test with a Limited Burglary Kit to pick the lock.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle with capacity for at least one non-driver passenger"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

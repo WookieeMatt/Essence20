@@ -19,7 +19,7 @@
       "book": "Quartermaster's Guide to Gear",
       "page": 31
     },
-    "prerequisite": "Initiative +d6, Persuasion +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

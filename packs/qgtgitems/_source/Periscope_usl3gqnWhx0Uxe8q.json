@@ -24,7 +24,7 @@
     "benefit": "One occupant at a time can look outside as if positioned up to 30ft above the vehicle; noticing the periscope itself suffers -2 on the Alertness Skill Test.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land or Sea vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

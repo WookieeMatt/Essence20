@@ -30,7 +30,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Awarded for finishing the In a Jam adventure with Happy, Joyous, or Overjoyed Customers",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "In a Jam",

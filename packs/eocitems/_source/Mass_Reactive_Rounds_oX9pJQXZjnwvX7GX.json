@@ -27,7 +27,7 @@
     "benefit": "+1 Sharp Damage",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Ballistic Trait and Sharp Damage"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

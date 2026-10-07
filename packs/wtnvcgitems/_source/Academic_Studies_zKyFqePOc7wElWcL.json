@@ -6,8 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"SkillEssence","label":"Academic Studies (the chosen Skill is Smarts-based)","essence":"smarts","when":["skill:{item.choice}"]},
-      {"type":"FumbleStoryPoints","label":"Academic Studies (a Fumble with it adds 2 Story Points)","amount":2,"when":["skill:{item.choice}"]}
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"SkillEssence","label":"Academic Studies (the chosen Skill is Smarts-based)","essence":"smarts","when":["skill:{choice.skill}"]},
+      {"type":"FumbleStoryPoints","label":"Academic Studies (a Fumble with it adds 2 Story Points)","amount":2,"when":["skill:{choice.skill}"]}
     ],
     "prerequisites": {"when":["self:hasType:origin:Student"]},
     "automation": {
@@ -25,12 +26,12 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "skills",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Student Origin",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

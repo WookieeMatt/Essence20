@@ -6,8 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
+      {"type":"ChoiceSet","key":"vehicle","label":"Vehicle type","from":"movement","only":["aerial","ground","swim"],"rename":true,"required":true,"legacy":"system.choice"},
       {"type":"DialogSwitch","label":"Repairing or improving your vehicle type (Petrolhead: Specialized)","when":["skill:technology"],"specialize":true},
-      {"type":"RollModifier","label":"Petrolhead (Driving your vehicle type)","when":["skill:driving","vehicle:driving","vehicle:moves:{item.choice}"],"specialize":true}
+      {"type":"RollModifier","label":"Petrolhead (Driving your vehicle type)","when":["skill:driving","vehicle:driving","vehicle:moves:{choice.vehicle}"],"specialize":true}
     ],
     "automation": {
       "status": "full",
@@ -22,8 +23,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "hasChoice": true,
-    "choiceType": "vehicleType"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "sort": 0,

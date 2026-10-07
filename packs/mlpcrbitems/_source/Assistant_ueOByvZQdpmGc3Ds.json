@@ -19,7 +19,7 @@
       "book": "My Little Pony Core Rulebook",
       "page": 156
     },
-    "prerequisite": "Favorite Command",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
     "actionType": "free"

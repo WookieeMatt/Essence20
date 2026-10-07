@@ -5,6 +5,7 @@
   "_id": "IJBeoPW2yUDWh2Wh",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Weapon without a Maneuver alternate effect"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains a Maneuver alternate effect.</p>"

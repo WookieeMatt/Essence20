@@ -463,11 +463,15 @@ describe("roll", () => {
 
   test("perk items post source/prerequisite/description to chat", async () => {
     const item = makeItem('perk', {
-      source: "Core Rulebook", prerequisite: "None", description: "Does a thing",
+      source: "Core Rulebook", prerequisite: "", prerequisites: { when: ['self:level>=5'] }, description: "Does a thing",
     });
     await item.roll({});
     expect(global.ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({
       content: expect.stringContaining("Does a thing"),
+    }));
+    // The prerequisite line is the tags in words (the typed text was retired 2026-10-07).
+    expect(global.ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({
+      content: expect.stringContaining("Prerequisite: Level 5+"),
     }));
   });
 

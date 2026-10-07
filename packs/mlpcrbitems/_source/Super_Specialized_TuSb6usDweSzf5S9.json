@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollDice","label":"Specialized in the chosen Skill (Super Specialized: ↑1)","stepUp":1,"when":["roll:dataset:isSpecialized","skill:{item.choice}"]}
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollDice","label":"Specialized in the chosen Skill (Super Specialized: ↑1)","stepUp":1,"when":["roll:dataset:isSpecialized","skill:{choice.skill}"]}
     ],
     "automation": {
       "status": "full",
@@ -19,8 +20,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "skills"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "flags": {

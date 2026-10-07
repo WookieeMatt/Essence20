@@ -2,7 +2,7 @@
  * Zord and Vehicle Essences: a typed base and a worked-out value.
  *
  * A Zord's Essences used to be one stored number, `system.essences.<key>.value`, that both the
- * sheet and the Zord Features' Active Effects (Heavy Chassis, Increase Essence, ...) and item rules
+ * sheet and the Zord Features' Active Effects (Heavy Chassis, Increase (Essence), ...) and item rules
  * (Mesh Zord, Terrorzord Nature) wrote to. The sheet showed the boosted number and saved it back
  * with every form submit, so each edit counted the Feature bonuses again.
  *

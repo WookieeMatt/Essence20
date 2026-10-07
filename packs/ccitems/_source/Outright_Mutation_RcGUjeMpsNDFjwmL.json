@@ -21,7 +21,7 @@
       "book": "Cobra Codex",
       "page": 81
     },
-    "prerequisite": "Evolving Mutation or 12th Level",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

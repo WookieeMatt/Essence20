@@ -993,7 +993,7 @@ describe('foraging, kitbashing and crafting', () => {
     expect(available(perk)).toBe(false);
 
     const other = packItem('volatile');
-    const elementalist = makeActor([other, makeItem({ name: 'Energy Affinity', type: 'perk', flags: { core: { sourceId: C('decepticon_directive', 'DgFY0ZmAtClAobiA') } }, system: { choice: 'cold' } })]);
+    const elementalist = makeActor([other, makeItem({ name: 'Energy Affinity', type: 'perk', flags: { core: { sourceId: C('decepticon_directive', 'DgFY0ZmAtClAobiA') }, essence20: { rules: { choices: { element: 'cold' } } } }, system: { rules: [{ type: 'ChoiceSet', key: 'element', from: 'element', required: true, legacy: 'system.choice' }] } })]);
     await use(other);
     expect(granted(elementalist, other)[0].system.elementChoice).toBe('cold');
   });

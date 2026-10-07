@@ -20,7 +20,7 @@
  * - **Crushing Strength** (1 Power): ↑2 Athletics/Brawn Skill Tests while active - read in
  *   dice.mjs#rollSkill's shift computation.
  * - **Striking Hands** (1 Power): ↑1 unarmed Attacks while active - read in dice.mjs#rollSkill,
- *   gated on the same "no parent weapon" unarmed-attack proxy Phantom Ranger Prime already uses.
+ *   gated on the shared unarmed definition (items/shared/unarmed-attacks.mjs#isUnarmedAttack).
  * - **Fast Trigger** (2 Power): "make an additional ranged Attack per Attack action" - Not
  *   automatable, same action-economy gap as Extra Attack itself; the toggle still exists purely
  *   to track and pay the Power cost for the GM to adjudicate narratively.

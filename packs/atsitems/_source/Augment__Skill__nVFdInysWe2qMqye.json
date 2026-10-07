@@ -4,7 +4,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"RollModifier","label":"Augment (Skill)","when":["skill:{item.choice}"],"upshift":1,"stack":"augmentSkill"}
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Augment (Skill)","when":["skill:{choice.skill}"],"upshift":1,"stack":"augmentSkill"}
     ],
     "automation": {
       "status": "full",
@@ -19,8 +20,8 @@
     "prerequisite": "",
     "selectionLimit": 10,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "skills"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "flags": {

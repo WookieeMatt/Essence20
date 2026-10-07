@@ -24,7 +24,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,
-    "prerequisite": "Able to use Grid Science or Grid Tech",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

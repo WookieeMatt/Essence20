@@ -24,7 +24,7 @@
     "benefit": "Once per scene, ground the vehicle crosses during its turn becomes Rough Terrain in its wake.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

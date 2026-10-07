@@ -1,7 +1,8 @@
 import { creatureTagsOf } from "../mechanics/characters/creature-tags.mjs";
 import { isExpired } from "./expiry.mjs";
 import { sourceOf } from "../items/shared/item-lookups.mjs";
-import { chosenOf, hasChosen } from "./choice-read.mjs";
+import { isUnarmedAttack } from "../items/shared/unarmed-attacks.mjs";
+import { choiceValue, chosenOf, hasChosen } from "./choice-read.mjs";
 
 /**
  * The `when` condition language for item rules (docs/RULES_ENGINE_PLAN.md §5.1).
@@ -688,6 +689,13 @@ function sourcedValue(ruleItem, ref) {
     return chosenOf(copy);
   }
 
+  // {sourced.<id>.flags.essence20.rules.choices.<key>}: that copy's rules pick (rules/choice-read.mjs#choiceValue - its old
+  // pick while the migration hasn't copied it over).
+  const choiceKey = /^flags\.essence20\.rules\.choices\.([\w-]+)$/.exec(ref.slice(17))?.[1];
+  if (copy && choiceKey) {
+    return choiceValue(copy, choiceKey);
+  }
+
   return copy ? globalThis.foundry?.utils?.getProperty?.(copy, ref.slice(17)) : undefined;
 }
 
@@ -699,13 +707,15 @@ export function interpolate(text, ruleItem) {
   // system.choice, read by Self-Preservation's rules - round 15, items1).
   const filled = text.replace(/\{(choice\.[\w-]+|item\.choice|sourced\.[A-Za-z0-9]{16}\.[\w.]+)\}/g, (match, ref) => {
     const value = ref == 'item.choice' ? (ruleItem ? chosenOf(ruleItem) : undefined) : ref.startsWith('sourced.') ? sourcedValue(ruleItem, ref.slice(8))
-      : ruleItem?.flags?.essence20?.rules?.choices?.[ref.slice(7)];
-    if (value === undefined || value === null || value === '') {
+      : choiceValue(ruleItem, ref.slice(7));
+    const entries = Array.isArray(value) ? value.filter(entry => entry !== undefined && entry !== null && entry !== '') : null;
+    if (value === undefined || value === null || value === '' || (entries && !entries.length)) {
       missing = true;
       return '';
     }
 
-    return String(value);
+    // A list pick in text (a chat line, a name): every entry, joined (Perk choice P2b).
+    return entries ? entries.join(', ') : String(value);
   });
 
   return missing ? null : filled;
@@ -718,7 +728,23 @@ export function interpolate(text, ruleItem) {
  * @returns {Boolean|null}
  */
 export function evaluateTag(tag, ctx) {
-  const text = interpolate(String(tag ?? '').trim(), ctx.ruleItem);
+  // A {choice.<key>} holding a list (a ChoiceSet with count - Perk choice P1) asks the tag once per entry: true when any
+  // entry makes it true (skill:{choice.skill} on a two-Skill Expertise). An empty list is a missing pick.
+  const raw = String(tag ?? '').trim();
+  const listKey = raw.includes('{choice.') ? [...raw.matchAll(/\{choice\.([\w-]+)\}/g)].map(match => match[1])
+    .find(key => Array.isArray(choiceValue(ctx.ruleItem, key))) : undefined;
+  if (listKey && raw.startsWith('not:')) {
+    const inner = evaluateTag(raw.slice(4), ctx);
+    return inner === null ? null : !inner;
+  }
+
+  if (listKey) {
+    const entries = choiceValue(ctx.ruleItem, listKey).filter(entry => entry !== undefined && entry !== null && entry !== '');
+    const answers = entries.map(entry => evaluateTag(raw.split(`{choice.${listKey}}`).join(String(entry)), ctx));
+    return answers.includes(true) ? true : answers.includes(null) ? null : false;
+  }
+
+  const text = interpolate(raw, ctx.ruleItem);
   if (text === null) {
     return false;
   }
@@ -777,8 +803,8 @@ export function evaluateTag(tag, ctx) {
     case 'melee': return !!ctx.isMelee;
     case 'ranged': return !ctx.isMelee;
     case 'area': return isArea(item);
-    // An attack with no weapon behind it - the system's own reading of "unarmed" (target-riders.mjs).
-    case 'unarmed': return item?.type == 'weaponEffect' && !item.flags?.essence20?.parentId;
+    // No weapon behind it, or a printed unarmed weapon's (items/shared/unarmed-attacks.mjs - the one definition).
+    case 'unarmed': return isUnarmedAttack(item, ctx.self);
     // A Ram attack (weapon-effect.mjs's isRam).
     case 'ram': return !!item?.system?.isRam;
     }

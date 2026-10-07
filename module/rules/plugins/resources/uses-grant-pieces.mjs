@@ -4,6 +4,7 @@ import { itemsFor, registerStep, registerTextRef } from "../../steps.mjs";
 import { registerRuleType } from "../../types.mjs";
 import { write } from "../shared/chat-speaker-helpers.mjs";
 import { sourceOf } from "../../../items/shared/item-lookups.mjs";
+import { choiceValue, chosenOf, firstChosen } from "../../choice-read.mjs";
 
 /**
  * Small pieces for the grant-style Use buttons (round 15, uses):
@@ -66,8 +67,12 @@ registerTextRef('sourced', (rest, ctx) => {
   }
 
   const copy = listOf(ctx.actor?.items).find(item => String(sourceOf(item) ?? '').endsWith(`.${match[1]}`));
-  const value = copy ? match[2].split('.').reduce((at, key) => (at === null || at === undefined ? at : at[key]), copy) : undefined;
-  return value === undefined || value === null ? match[3] ?? '' : value;
+  // The copy's pick (Perk choice P2): system.choice through rules/choice-read.mjs#chosenOf, a rules choice through
+  // choiceValue (its old pick until migrated); a list pick gives its first entry. Other paths as stored.
+  const choiceKey = /^flags\.essence20\.rules\.choices\.([\w-]+)$/.exec(match[2])?.[1];
+  const value = !copy ? undefined : match[2] == 'system.choice' ? firstChosen(chosenOf(copy)) : choiceKey ? firstChosen(choiceValue(copy, choiceKey))
+    : match[2].split('.').reduce((at, key) => (at === null || at === undefined ? at : at[key]), copy);
+  return value === undefined || value === null || value === '' ? match[3] ?? '' : value;
 });
 
 registerRuleType('EssenceRedirect', {

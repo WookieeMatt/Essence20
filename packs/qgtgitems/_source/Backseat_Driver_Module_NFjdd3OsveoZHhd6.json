@@ -24,7 +24,7 @@
     "benefit": "A designated passenger can take over driving without changing seats.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle with capacity for at least one non-driver passenger"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

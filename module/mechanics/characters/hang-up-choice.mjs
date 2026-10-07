@@ -1,4 +1,5 @@
 import { E20 } from "../../util/config.mjs";
+import { hasRulesPick } from "../../rules/choice-checks.mjs";
 
 /**
  * Generic choice prompting for Hang-Ups, the counterpart to perk-handler.mjs#setPerkValues' own
@@ -51,7 +52,9 @@ export async function pickHangUpDamageType() {
  * @param {Item} hangUp   The Hang-Up Item already created on the Actor.
  */
 export async function applyHangUpChoice(hangUp) {
-  if (!hangUp?.system?.hasChoice || hangUp.system.choiceType != 'damageType') {
+  // A Hang-Up converted to a rules pick (Perk choice P2e: Augmented's ChoiceSet) asks it itself when it is created -
+  // this old prompt (deprecated until 6.1) is only for one that doesn't, so it never asks twice.
+  if (!hangUp?.system?.hasChoice || hangUp.system.choiceType != 'damageType' || hasRulesPick(hangUp)) {
     return;
   }
 

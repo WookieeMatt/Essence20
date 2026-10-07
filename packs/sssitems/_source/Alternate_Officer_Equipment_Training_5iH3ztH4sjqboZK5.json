@@ -20,7 +20,7 @@
       "book": "Sgt Slaughter Sourcebook",
       "page": 9
     },
-    "prerequisite": "Officer, 1st level",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"
   },

@@ -605,3 +605,9 @@ import "./zords/summon-arrival.mjs";
 // Step buildSorcerousPower - the Sorcery builder dialog as a Use step (Sorcery).
 import "./picks/sorcery-builder-step.mjs";
 // ---- Round 18 (convB) - end ----
+// ---- Perk choice P1 (docs/PERK_CHOICE_MIGRATION_PLAN.md) - start ----
+// Pick sources config / sense / environment / movement / element (pick steps and ChoiceSet), notHeld / held.
+import "./picks/choice-sources.mjs";
+// Step pickSubPerk + repickSubPerks (the old 'perks' picker's sub-Perk lists), with its editor form.
+import "./picks/pick-sub-perk.mjs";
+// ---- Perk choice P1 - end ----

@@ -9,6 +9,7 @@ import { performSpectrumShift } from "./role-handler.mjs";
 import { isPrincessPerk, removeSpellcastingUpshift } from "../items/magic/princess-perks.mjs";
 import { HEARTS_CALLING_ID, pickHeartsCallingOption } from "../items/resources/emotional-mastery.mjs";
 import { chosenList, legacyChoiceOf } from "../rules/choice-read.mjs";
+import { hasRulesPick, hasSubPerkPick } from "../rules/choice-checks.mjs";
 
 // (Sorcery's levelTaken - set when it's added, cleared when it goes - and its Cost of Sorcery Grant are rules on the Perk:
 // rules/conv17-split2.test.js.)
@@ -302,7 +303,8 @@ export async function grantIntegratedWeapon(actor, weaponId) {
  * @param {Item} perk   The Perk being granted.
  */
 export async function grantPerkEquipmentMap(actor, perk) {
-  const skipPerkEntries = perk?.system?.hasChoice || perk?.system?.isRoleVariant;
+  // A pickSubPerk rule (Perk choice P2) reads the map as its option list too, like the old hasChoice picker.
+  const skipPerkEntries = perk?.system?.hasChoice || perk?.system?.isRoleVariant || hasSubPerkPick(perk);
   for (const entry of Object.values(perk?.system?.items ?? {})) {
     if (!entry?.uuid) {
       continue;
@@ -566,7 +568,8 @@ export async function createSubPerk(actor, parent, selection, entries = parent?.
     if (!collectionKey) return null;
   }
 
-  if (itemToCreate.system.hasChoice) {
+  // A child converted to rules picks (Perk choice P2) asks them itself when it is created.
+  if (itemToCreate.system.hasChoice && !hasRulesPick(itemToCreate)) {
     setPerkValues(actor, itemToCreate, parent, null);
   } else {
     const createdPerk = await Item.create(itemToCreate, { parent: actor });
@@ -616,7 +619,10 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
     perk = perk.clone({ 'system.numChoices': perk.system.numChoices + extraChoices });
   }
 
-  if (perk.system.hasChoice) {
+  // The old picker - only for a Perk that doesn't ask its pick through its rules (Perk choice P2: a converted Perk's
+  // ChoiceSet / pickSubPerk asks when it is created, rules/lifecycle.mjs; a world copy made before the conversion still
+  // says hasChoice until migrated). Exactly one dialog per pick.
+  if (perk.system.hasChoice && !hasRulesPick(perk)) {
     let choices = {};
     let prompt = null;
     let title = game.i18n.localize("E20.PerkSelect");
@@ -1306,6 +1312,13 @@ export async function onPerkDelete(actor, perk) {
   // The pick the old picker baked into the actor (rules/choice-read.mjs#legacyChoiceOf - never a rules choice, which
   // was never written into actor data).
   const baked = legacyChoiceOf(perk);
+  // A copy the Perk choice migration has already taken the baked value off (migration.mjs#migratePerkChoices - its rules
+  // give it now and go with it) has nothing left to undo.
+  if (perk.flags?.essence20?.choiceMigration?.unbaked) {
+    deleteAttachmentsForItem(perk, actor);
+    return;
+  }
+
   if (selectionType == 'environments') {
     updateString = "system.environments";
     updateValue = actor.system.environments;
@@ -1365,7 +1378,7 @@ export async function setRoleVatiantPerks(newPerk, currentRole, actor) {
   for (const [key, perk] of Object.entries(newPerk.system.items)) {
     if (currentRole?.name == perk.role) {
       const itemToCreate = await fromUuid(perk.uuid);
-      if (itemToCreate.system.choiceType != 'none') {
+      if (itemToCreate.system.choiceType != 'none' && !hasRulesPick(itemToCreate)) {
         setPerkValues(actor, itemToCreate, perk, null);
       } else {
         const createdPerk = await Item.create(itemToCreate, { parent: actor });

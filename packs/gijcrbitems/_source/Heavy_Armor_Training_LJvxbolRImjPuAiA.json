@@ -14,7 +14,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 131
     },
-    "prerequisite": "Trained in Medium Armor",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

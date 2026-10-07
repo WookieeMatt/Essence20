@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
+      {"type":"Trigger","event":"added","label":"Pick one from the list","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","required":true}]},
       {"type":"DialogSwitch","label":"Relies on hearing or smell (Hunter's Prowess: ↑1)","upshift":1}
     ],
     "automation": {
@@ -50,14 +51,14 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "perks",
+    "choiceType": "none",
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
     "version": "transformers",
-    "hasChoice": true
+    "hasChoice": false
   },
   "effects": [],
   "sort": 1400000,

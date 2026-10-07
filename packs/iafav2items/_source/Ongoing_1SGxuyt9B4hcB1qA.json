@@ -26,7 +26,7 @@
       "ongoing"
     ],
     "type": "weapon",
-    "prerequisite": "Weapon that deals Element damage"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

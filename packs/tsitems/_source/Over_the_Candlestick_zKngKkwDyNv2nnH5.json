@@ -6,8 +6,9 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
+      {"type":"ChoiceSet","key":"option","label":"Option","from":"config","table":"overTheCandlestickOptions","rename":true,"required":true,"legacy":"system.choice"},
       {"type":"MovementAction","label":"Unimpeded by Rough Terrain","ignoreRoughTerrain":true},
-      {"type":"Movement","movement":"climb","stage":"final","op":"set","value":40,"label":"Innate Climber: Alt Mode Climb Movement 40 ft","when":["self:transformed","rule:data:system.choice=innateClimber"]}
+      {"type":"Movement","movement":"climb","stage":"final","op":"set","value":40,"label":"Innate Climber: Alt Mode Climb Movement 40 ft","when":["self:transformed","rule:choiceHas:option:innateClimber"]}
     ],
     "automation": {
       "status": "full",
@@ -22,9 +23,9 @@
     "items": {},
     "canActivate": false,
     "choice": null,
-    "choiceType": "overTheCandlestick",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",
