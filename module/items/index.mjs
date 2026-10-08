@@ -16,6 +16,8 @@ import "./shared/gij-crb-item-lookups.mjs";
 import "./defenses/personal-shield-uses.mjs";
 import "./vehicles/roll-cage.mjs";
 import "./defenses/miss-effect-immunity.mjs";
+// Power Shield's hand-over button and its end on un-Morphing (PR CRB p.100).
+import "./defenses/power-shield.mjs";
 import "./attacks/silenced-status.mjs";
 import "./forms/pony-shape-shifting.mjs";
 import "./magic/bestow-expertise-scene-expiry.mjs";

@@ -335,15 +335,6 @@
       "flags": {}
     },
     {
-      "name": "pr_crb_effects",
-      "label": "Power Ranger Core Rulebook - Applied Effects",
-      "system": "essence20",
-      "path": "packs/prcrbeffects",
-      "type": "ActiveEffect",
-      "private": false,
-      "flags": {}
-    },
-    {
       "name": "quartermasters_guide_to_gear",
       "label": "Quartermaster's Guide to Gear",
       "system": "essence20",
@@ -484,7 +475,6 @@
       "sorting": "m",
       "packs": [
         "pr_crb",
-        "pr_crb_effects",
         "across_the_stars",
         "beneath_the_helmet",
         "jump_through_time",

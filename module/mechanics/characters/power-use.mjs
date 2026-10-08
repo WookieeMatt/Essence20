@@ -72,6 +72,13 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
 
   // (Chrono-File Access's report is a powerUsed Trigger on the Power - rules/conv17-perm.test.js.)
 
+  // Power Shield (PR CRB p.100): the shield appears on the summoner, ready to hand on - items/defenses/power-shield.mjs.
+  if (sourceId == POWER_SHIELD_ID) {
+    const { summonShield } = await import("../../items/defenses/power-shield.mjs");
+    await summonShield(actor, item);
+    return;
+  }
+
   if (sourceId == MONSTER_GROW_ID) {
     const result = await activateMonsterGrow(actor);
     if (result != null) {
@@ -85,3 +92,4 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
 // The Powers still dispatched here by compendium id (the rest are their items' own powerUsed rules).
 // (Blazing Strikes is its Power's own powerUsed Trigger, DamageType and sceneStart rules - rules/conv17-split2.test.js.)
 const MONSTER_GROW_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.KR4KuZlalNywMvSb";
+const POWER_SHIELD_ID = "Compendium.essence20.pr_crb.Item.F7QPCcXW9822L5Xs";

@@ -81,6 +81,40 @@ export function isRelayAllowed(doc, user) {
 }
 
 /**
+ * A Power Shield changing hands (items/defenses/power-shield.mjs): creating or deleting that one kind of Active Effect
+ * on an actor the player doesn't own - the shield "can be transferred to others" (PR CRB p.100). Only effects stamped as
+ * a Power Shield summoned by a character the player owns, so nothing else rides on it.
+ */
+export function isPowerShieldHandoff(doc, method, args, user) {
+  if (doc?.documentName != 'Actor' || !user || !Array.isArray(args) || args[0] != 'ActiveEffect') {
+    return false;
+  }
+
+  // The summoner's player, or the player of whoever holds that summoner's shield now (passing it on).
+  const ownsSummoner = uuid => {
+    const summoner = uuid ? globalThis.fromUuidSync?.(uuid, { strict: false }) : null;
+    if (summoner?.testUserPermission?.(user, 'OWNER')) {
+      return true;
+    }
+
+    return !!uuid && [...(globalThis.game?.actors ?? [])].some(actor => actor.testUserPermission?.(user, 'OWNER')
+      && [...(actor.effects ?? [])].some(effect => effect.flags?.essence20?.powerShield?.summoner == uuid));
+  };
+
+  if (method == 'createEmbeddedDocuments') {
+    const list = Array.isArray(args[1]) ? args[1] : [];
+    return list.length > 0 && list.every(entry => ownsSummoner(entry?.flags?.essence20?.powerShield?.summoner));
+  }
+
+  if (method == 'deleteEmbeddedDocuments') {
+    const ids = Array.isArray(args[1]) ? args[1] : [];
+    return ids.length > 0 && ids.every(id => ownsSummoner(doc.effects?.get?.(id)?.flags?.essence20?.powerShield?.summoner));
+  }
+
+  return false;
+}
+
+/**
  * Whether this document is an actor, or an item on an actor, linked to one the user owns.
  * @param {Document} doc
  * @param {User} user
@@ -126,7 +160,8 @@ export async function handleGmRelayRequest(data) {
   const reply = (ok) => game.socket.emit(SOCKET, { action: 'gmRelayDone', requestId: data.requestId, userId: data.userId, ok });
   const user = game.users.get(data.userId);
   const doc = await fromUuid(data.uuid);
-  if (!RELAY_METHODS.has(data.method) || !doc || typeof doc[data.method] != 'function' || !isRelayAllowed(doc, user)) {
+  const shieldHandoff = isPowerShieldHandoff(doc, data.method, data.args, user);
+  if (!shieldHandoff && (!RELAY_METHODS.has(data.method) || !doc || typeof doc[data.method] != 'function' || !isRelayAllowed(doc, user))) {
     console.warn(`Essence20 | refused a relayed ${data.method} on ${data.uuid} from ${user?.name ?? data.userId}`);
     reply(false);
     return false;

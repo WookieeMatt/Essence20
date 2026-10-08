@@ -5,9 +5,13 @@
   "_id": "xz0N8ltXFRFjr9wx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Defensive Shields: whose Morphed Toughness goes up","event":"added","when":["not:rule:data:flags.essence20.rules.choices.target"],"steps":[{"do":"pick","key":"target","from":"team","prompt":"Whose Morphed Toughness goes up by 1?"},{"do":"addEffect","on":"actor","to":"picked:target","name":"Defensive Shields","img":"icons/svg/shield.svg","changes":[{"key":"system.defenses.toughness.morphed","value":1}],"flags":{"defensiveShields":true}},{"do":"chat","text":"Defensive Shields: @UUID[{choice.target}] gains +1 Morphed Toughness (from {name})."}]},
+      {"type":"Trigger","label":"Defensive Shields: take the +1 back","event":"removed","steps":[{"do":"removeEffects","to":"picked:target","flag":"defensiveShields"}]}
+    ],
     "automation": {
-      "status": "manual",
-      "notes": "<p>Left to the table: +1 Morphed Toughness for the chosen teammate.</p>"
+      "status": "full",
+      "notes": "<p>When added you pick yourself or a teammate; they get +1 Morphed Toughness (an effect on their sheet). Removing the Perk takes it back.</p>"
     },
     "originalId": "",
     "description": "",

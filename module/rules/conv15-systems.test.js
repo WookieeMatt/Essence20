@@ -32,7 +32,6 @@ const { spendDailyUse } = await import('../mechanics/resources/nanomite-uses.mjs
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const FILES = {
   speedBoost: 'prcrbitems/_source/Speed_Boost_CDbaCheOK2rUsqli.json',
-  powerShield: 'prcrbitems/_source/Power_Shield_F7QPCcXW9822L5Xs.json',
   fasterRegen: 'prcrbitems/_source/Faster_Regeneration_UsZ8twgjWJO5B3R4.json',
   boostInit: 'prcrbitems/_source/Boost_Initiative_IuQ0tsM2G99fQlSz.json',
   augmentPw: 'prcrbitems/_source/Augment_Power_Weapon_n7kXeiPmmdg55K1X.json',
@@ -228,10 +227,13 @@ test('every changed item\'s rules validate', () => {
 describe('Powers: their own powerUsed rules', () => {
   test('a Trigger only answers its own Power (item:own)', async () => {
     const actor = makeActor('Ranger');
-    const shield = addPack(actor, 'powerShield');
-    const other = addPack(actor, 'speedBoost');
+    const mine = addPack(actor, 'speedBoost');
+    mine.effects.forEach(effect => {
+      effect.disabled = true;
+    });
+    const other = addPack(actor, 'boostInit');
     await use(actor, other, 1);
-    expect(shield.effects.every(effect => effect.disabled)).toBe(true);
+    expect(mine.effects.every(effect => effect.disabled)).toBe(true);
   });
 
   test('Speed Boost switches its Ground Movement effect on and banks one Initiative Edge; a second use banks no second one', async () => {
@@ -249,13 +251,7 @@ describe('Powers: their own powerUsed rules', () => {
     expect(ruleRollSources(actor, null, { rolledSkill: 'initiative', dataset: { isInitiative: true } }).sources.some(s => s.edge)).toBe(true);
   });
 
-  test('Power Shield switches its effect on', async () => {
-    const actor = makeActor('Ranger');
-    const power = addPack(actor, 'powerShield');
-    expect(power.effects[0].disabled).toBe(true);
-    await use(actor, power, 1);
-    expect(power.effects[0].disabled).toBe(false);
-  });
+  // (Power Shield is code now - a shield effect that can be handed on: items/defenses/power-shield.test.js.)
 
   test('Faster Regeneration heals d2 up to the maximum, once per encounter', async () => {
     jest.spyOn(Math, 'random').mockReturnValue(0.99);

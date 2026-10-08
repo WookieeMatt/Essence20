@@ -71,6 +71,16 @@ the same as the original.
 
 ## Other changes
 
+- **Power Shield** follows the book now:
+  - Using it puts the shield on the summoner as +2 armor to Toughness, which counts whether they're Morphed or not.
+  - The chat card's **Hand the Power Shield** button passes it to the character you target, or one you pick from the
+    scene, and takes it from whoever had it.
+  - It lasts until the summoner un-Morphs, wherever it is (no more 10-round timer).
+- **Defensive Shields** is automated: taking it asks which teammate (or yourself) gets +1 Morphed Toughness. That
+  becomes an effect on their sheet, and removing the Perk takes it back.
+- **The "Power Ranger Core Rulebook - Applied Effects" compendium is gone.** Foundry can't show Active Effects in a
+  compendium, so it was always empty. Its five effects are all handled by their items now.
+
 - **NPC and Companion Essences have a base.** Each Essence shows current / score, with an always-editable Base
   underneath. The Base is the printed score; effects and rules raise the score on top of it instead of overwriting
   it, and the score itself is locked. The current amount Essence damage spends keeps its damage when the score
