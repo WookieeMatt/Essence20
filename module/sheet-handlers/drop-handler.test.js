@@ -152,6 +152,7 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
     originalGame = global.game;
     global.fromUuid = jest.fn();
     global.ui.notifications.error.mockClear();
+    global.ui.notifications.warn.mockClear();
   });
   afterEach(() => {
     global.game = originalGame;
@@ -170,7 +171,7 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
     await onDropActor({ uuid: 'Actor.zord1' }, actorSheet);
 
     // jest.setup.js's game.i18n.format stub just echoes the key back, ignoring the data arg.
-    expect(global.ui.notifications.error).toHaveBeenCalledWith('E20.DetachableCannotReattach');
+    expect(global.ui.notifications.warn).toHaveBeenCalledWith('E20.DetachableCannotReattach');
     expect(actorSheet.actor.update).not.toHaveBeenCalled();
   });
 
@@ -190,7 +191,7 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
 
     await onDropActor({ uuid: 'Actor.zord1' }, actorSheet);
 
-    expect(global.ui.notifications.error).not.toHaveBeenCalled();
+    expect(global.ui.notifications.warn).not.toHaveBeenCalledWith('E20.DetachableCannotReattach');
     expect(actorSheet.actor.update).toHaveBeenCalled();
   });
 
@@ -215,7 +216,7 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
 
     await onDropActor({ uuid: 'Actor.zord1' }, actorSheet);
 
-    expect(global.ui.notifications.error).not.toHaveBeenCalled();
+    expect(global.ui.notifications.warn).not.toHaveBeenCalledWith('E20.DetachableCannotReattach');
     expect(actorSheet.actor.update).toHaveBeenCalled();
   });
 

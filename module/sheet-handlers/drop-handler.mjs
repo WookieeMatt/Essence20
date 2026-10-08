@@ -83,14 +83,14 @@ export async function onDropItem(data, actor, dropFunc) {
   // stats the moment you looked for its effect. Refused outright instead, naming where it goes.
   case 'megaformTrait':
     if (actor.type == 'megaform') {
-      ui.notifications.error(game.i18n.localize('E20.MegaformTraitMegaformDropError'));
+      ui.notifications.warn(game.i18n.localize('E20.MegaformTraitMegaformDropError'));
       break;
     }
 
     // Detachable "cannot be chosen if the Zord also has the Core Body Megaform Trait" (Across the Stars p.104) - either
     // way round.
     if (clashingMegaformTrait(actor, sourceItem)) {
-      ui.notifications.error(game.i18n.localize('E20.DetachableCoreBodyClash'));
+      ui.notifications.warn(game.i18n.localize('E20.DetachableCoreBodyClash'));
       break;
     }
 
@@ -295,7 +295,7 @@ export async function onDropActor(data, actorSheet) {
     // Detachable (Across the Stars, p.104): "may not reattach in the same scene" - see
     // vehicle-handler.mjs's own DETACHED_THIS_SCENE_FLAG comment for where this gets set.
     if (droppedActor.type == 'zord' && hasUsedThisEncounter(droppedActor, DETACHED_THIS_SCENE_FLAG)) {
-      ui.notifications.error(game.i18n.format('E20.DetachableCannotReattach', { name: droppedActor.name }));
+      ui.notifications.warn(game.i18n.format('E20.DetachableCannotReattach', { name: droppedActor.name }));
       return;
     }
 

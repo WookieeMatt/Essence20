@@ -289,12 +289,18 @@ export class Essence20Actor extends Actor {
           ui.notifications.warn(game.i18n.format(toCombiner ? 'E20.MegaformSubtypeBlockedCombiner' : 'E20.MegaformSubtypeBlockedMegazord', {
             form: this.name, names: blockers.map(actor => actor.name).join(', '),
           }));
-          return false;
-        }
-
-        for (const flag of toCombiner ? ['combineReadyRound', 'combineRolled'] : ['zord2HoldTogether', 'zord2Merge', 'zord2Invigorated']) {
-          if (this.flags?.essence20?.[flag] !== undefined) {
-            foundry.utils.setProperty(changed, `flags.essence20.-=${flag}`, null);
+          // Only the type change is dropped (the rest of the save still lands), and the open sheet is drawn again so its
+          // type select goes back to the type it still has.
+          delete changed.system.subtype;
+          setTimeout(() => this.sheet?.rendered && this.sheet.render(), 0);
+          if (!Object.keys(changed.system).length) {
+            delete changed.system;
+          }
+        } else {
+          for (const flag of toCombiner ? ['combineReadyRound', 'combineRolled'] : ['zord2HoldTogether', 'zord2Merge', 'zord2Invigorated']) {
+            if (this.flags?.essence20?.[flag] !== undefined) {
+              foundry.utils.setProperty(changed, `flags.essence20.-=${flag}`, null);
+            }
           }
         }
       }
