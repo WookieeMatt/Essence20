@@ -5,6 +5,9 @@
   "_id": "vf9rJxOwuxDzrPKp",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"↑1 on Persuasion until the end of your turn","cost":{"action":"free"},"when":["not:rule:banked"],"steps":[{"do":"bank","when":["combat"],"label":"Ceremonial","upshift":1,"appliesWhen":["skill:persuasion"],"until":"turnOrScene","uses":99},{"do":"bank","when":["not:combat"],"label":"Ceremonial","upshift":1,"appliesWhen":["skill:persuasion"],"until":"turnOrScene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free action): while you wear the armor, your Persuasion rolls get ↑1 until the end of your turn (out of combat, your next Persuasion roll this scene), labelled Ceremonial in the Roll Options Dialog.</p>"

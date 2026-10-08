@@ -5,6 +5,9 @@
   "_id": "KxmnKUYmQ56D02Jg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Mark every creature this scene","when":["not:self:windowUsed:markEverybotUsedThisEncounter:encounter"],"steps":[{"do":"markWindow","flag":"markEverybotUsedThisEncounter","window":"encounter"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene, Mark Target counts every creature in the scene as marked, including ones that arrive later.</p>"

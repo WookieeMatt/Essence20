@@ -5,6 +5,7 @@
   "_id": "GvRNZ9CpGyJywf7A",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:perk:Double Agent"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: spending the Energon and Story Point to use the other faction's benefits for a scene, and the Infiltration Edge for a dedicated disguise mode.</p>"
@@ -21,7 +22,7 @@
     "choiceType": "none",
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,
-    "prerequisite": "Double Agent General Perk",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
     "version": "transformers"

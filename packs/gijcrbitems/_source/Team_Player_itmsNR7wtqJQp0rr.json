@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Team Player","event":"lendAssistance","when":["combat"],"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a successful Lend Assistance that you spend a Standard action on during combat adds a Story Point to the team pool.</p>"

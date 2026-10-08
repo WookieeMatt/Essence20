@@ -5,6 +5,10 @@
   "_id": "FRUWPAePJzm7Mlf0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"Infatuated","uuid":"Compendium.essence20.dark_skies_over_equestria.Item.2Kw4msw0l4j6fTOm","skipIfOwned":true},
+      {"type":"Defense","label":"Colony Changeling (adjacent colony changelings)","defense":"evasion","amount":"min(3, @tokensHolding.FRUWPAePJzm7Mlf0.5)"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: 15 ft aerial movement and +1 Evasion. Automatic: +1 more Evasion for each adjacent Colony Changeling ally (up to +3), and the Infatuated Influence is required.</p>"

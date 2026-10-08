@@ -5,6 +5,9 @@
   "_id": "J8kK8oU2rF7eWTRc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Gain a temporary ally","cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"chat","text":"{name} gains a temporary ally for the rest of the session (the GM decides who)."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: Social rolls show a Status Pressure switch that gives Edge; turn it on when your status matters. Use button: spend a Story Point for the temporary ally.</p><p>Left to the table: where your status opens or bars access.</p>"

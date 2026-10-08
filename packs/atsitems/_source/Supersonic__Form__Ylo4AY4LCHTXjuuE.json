@@ -3,6 +3,17 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"No Xenotech weapon penalty (Supersonic: Edge)","edge":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.Ylo4AY4LCHTXjuuE","weapon:trait:xenotech","not:weapon:data:flags.essence20.xenotechCritted"]},
+      {"type":"DialogSwitch","label":"Deal Energy damage (Supersonic)","key":"zord1SupersonicEnergy","forget":true,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.Ylo4AY4LCHTXjuuE","attack:unarmed"]},
+      {"type":"HitRider","label":"Blade Blaster deals Sonic (Supersonic)","damageType":"sonic","when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.Ylo4AY4LCHTXjuuE","weapon:name~Blade Blaster"]},
+      {"type":"HitRider","label":"Unarmed attack deals Energy (Supersonic)","damageType":"element","when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.across_the_stars.Item.Ylo4AY4LCHTXjuuE","attack:unarmed","roll:switch:zord1SupersonicEnergy"]},
+      {"type":"Form","label":"Supersonic (1 Personal Power when you Morph)","cost":1,"grants":["Compendium.essence20.across_the_stars.Item.aVQzWhD1oKDTcApQ"]},
+      {"type":"Use","label":"Unlock this Form (1 Personal Power)","when":["self:morphed","not:form:active"],"steps":[{"do":"formStart"}]},
+      {"type":"Use","label":"End this Form","when":["form:active"],"steps":[{"do":"formEnd"},{"do":"chat","text":"{name} ends the Form."}]},
+      {"type":"RollModifier","label":"No Xenotech armor penalty (Supersonic)","upshift":"@sum.equippedTrait.xenotech.armor.system.equipped","when":["form:active",{"any":["skill:athletics","skill:acrobatics"]}]}
+    ],
+    "prerequisites": {"when":["self:data:system.powers.personal.max>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>When you Morph you can pay 1 Personal Power to Go Supersonic: ↑1 on Athletics and Acrobatics, a switch for Energy damage on unarmed attacks, Sonic damage from your Blade Blaster, no Xenotech penalties, and a Gridwide Communicator.</p>"
@@ -13,7 +24,7 @@
       "book": "Across the Stars",
       "page": 71
     },
-    "prerequisite": "maximum Personal Power 3 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

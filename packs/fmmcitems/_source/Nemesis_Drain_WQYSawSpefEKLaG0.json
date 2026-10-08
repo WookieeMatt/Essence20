@@ -5,6 +5,11 @@
   "_id": "WQYSawSpefEKLaG0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Nemesis Drain","cost":{"resource":{"path":"system.powers.personal.value"},"amount":2},"limit":{"per":"encounter"},"steps":[{"do":"rollVsEach","skill":"intimidation","essence":"social","defense":"willpower","to":"nearbyEnemies:30","onHit":[{"do":"updateActor","to":"target","add":{"system.powers.personal.value":-1},"min":0,"filter":["target:data:system.powers.personal"]},{"do":"mark","key":"nemesisDrain","to":"target","until":"scene"}]}]},
+      {"type":"Defense","label":"Nemesis Drain","scope":"marked","mark":"nemesisDrain","defense":"toughness","mode":"addAfter","amount":-1,"when":["self:morphed","not:self:data:system.defenses.toughness.morphed<=0"]},
+      {"type":"Defense","label":"Nemesis Drain","scope":"marked","mark":"nemesisDrain","defense":"evasion","mode":"addAfter","amount":-1,"when":["self:morphed","not:self:data:system.defenses.evasion.morphed<=0"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (once per scene): spends 2 Personal Power and rolls Intimidation against the Willpower of every enemy within 30ft. Each hit loses 1 Personal Power and takes -1 Toughness while Morphed until the GM advances the scene.</p><p>Left to the table: only targeting Power Rangers.</p>"

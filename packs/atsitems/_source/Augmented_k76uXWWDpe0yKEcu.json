@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"damageType","label":"Damage type","from":"damageType","required":true,"legacy":"system.choice"},
+      {"type":"Defense","label":"Augmented (weakness: Defenses halved)","defense":"any","mode":"halve","when":["item:damageType:{choice.damageType}"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: choose a damage type on the Hang-Up. When an attack of that damage type targets you, the Defense it has to beat is halved (rounded up), and the halved number is what the attack's chat card checks against.</p>"
@@ -13,8 +17,8 @@
       "book": "Across the Stars",
       "page": 44
     },
-    "hasChoice": true,
-    "choiceType": "damageType"
+    "hasChoice": false,
+    "choiceType": null
   },
   "effects": [],
   "flags": {

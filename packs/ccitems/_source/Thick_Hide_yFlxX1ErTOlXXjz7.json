@@ -5,6 +5,13 @@
   "_id": "yFlxX1ErTOlXXjz7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Riot shield","event":"added","steps":[{"do":"grant","uuid":"Compendium.essence20.cobra_codex.Item.MQuoZeuRPWEyUxFc","name":"Thick Hide","system":{"equipped":true}}]},
+      {"type":"Use","label":"Get the riot shield back","when":["not:rule:granted:type:shield"],"steps":[{"do":"grant","uuid":"Compendium.essence20.cobra_codex.Item.MQuoZeuRPWEyUxFc","name":"Thick Hide","system":{"equipped":true}}]},
+      {"type":"Trigger","label":"The riot shield stays equipped","event":"unequipped","when":["item:granted"],"steps":[{"do":"updateItem","item":"granted","set":{"system.equipped":true}}]},
+      {"type":"Defense","label":"Thick Hide (raised shield: one per Alteration)","defense":"evasion","amount":"@count.items.alteration - 2","when":["rule:granted:data:system.active","rule:granted:data:system.equipped"]}
+    ],
+    "prerequisites": {"when":["self:count:alteration>=1"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: an always-equipped Riot Shield. Automatic: when you raise it, its Evasion bonus equals the number of Alterations you have.</p>"
@@ -15,7 +22,7 @@
       "book": "Cobra Codex",
       "page": 81
     },
-    "prerequisite": "One or more Alterations",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

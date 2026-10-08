@@ -5,6 +5,9 @@
   "_id": "gkcyg7KWih6QAZlq",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Take another Origin's Alt Mode (Mutant Beast)","when":["self:itemCount:altMode<2"],"steps":[{"do":"pickEntry","title":"Pick a non-Fuzor Origin","from":{"type":"origin","tags":["not:item:name~fuzor"]}},{"do":"pickEntry","var":"altMode","auto":true,"prompt":"Pick its Alt Mode","children":{"of":"picked","type":"altMode"}},{"do":"grant","uuid":"{var.altMode}"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Granted: the Mutant Beast Perk plus its Hang-Ups. Use button: add a second Alt Mode taken from another non-Fuzor Origin. Left to the table: having no Bot Mode, and the Origin pairing and size limits.</p>"

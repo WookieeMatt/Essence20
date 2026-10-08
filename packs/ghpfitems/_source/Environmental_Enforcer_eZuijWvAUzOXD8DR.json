@@ -5,13 +5,19 @@
   "_id": "eZuijWvAUzOXD8DR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose your environments","steps":[{"do":"pickMany","key":"environments","from":"config","path":"environments","count":"max(1, @skill.survival.rank)","record":true,"legacy":"flags.essence20.s1Environments","prompt":"One environment per Survival rank"}]},
+      {"type":"RollModifier","label":"Environmental Enforcer","edge":true,"when":["attack",{"any":["item:damageType:maneuver","roll:shove"]},"terrain:picked:environments"]},
+      {"type":"DialogSwitch","label":"Environmental Enforcer: I'm in one of my chosen environments (Edge)","edge":true,"forget":true,"when":["attack","item:damageType:maneuver","not:terrain:set"]}
+    ],
+    "prerequisites": {"when":["self:skill:survival>=d2"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick environments, up to your Survival Ranks. Automatic: Edge on Maneuver attacks in a scene tagged with one of them; in untagged scenes the Roll Options Dialog offers a switch instead.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Survival +d2",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

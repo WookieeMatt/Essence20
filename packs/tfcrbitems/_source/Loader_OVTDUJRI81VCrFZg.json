@@ -5,6 +5,13 @@
   "_id": "OVTDUJRI81VCrFZg",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Toggle","key":"shield","label":"Used as a shield","legacy":"flags.essence20.loaderShield"},
+      {"type":"Use","label":"Use the loader as a shield, or to carry (Loader)","steps":[{"do":"setToggle","key":"shield"},{"do":"chat","when":["self:toggle:shield"],"text":"{name} uses the loader as a shield."},{"do":"chat","when":["not:self:toggle:shield"],"text":"{name} uses the loader to carry."}]},
+      {"type":"BrawnRequirement","label":"Loader","amount":2,"carryingOnly":true,"when":[{"any":["self:transformed","not:self:toggle:shield"]}]},
+      {"type":"RollModifier","label":"Loader","upshift":2,"when":["roll:shove",{"any":["self:transformed","not:self:toggle:shield"]}]},
+      {"type":"Defense","label":"Loader","defense":"toughness","amount":1,"when":["not:self:transformed","self:toggle:shield"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Alt Mode, or in Bot Mode when not used as a shield, your shoves get ↑2, labelled Loader in the Roll Options Dialog, and your carrying capacity counts your Brawn 2 steps higher. Use button: in Bot Mode, switch it to shield use for +1 Toughness instead.</p>"
@@ -16,7 +23,6 @@
       "page": 134
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

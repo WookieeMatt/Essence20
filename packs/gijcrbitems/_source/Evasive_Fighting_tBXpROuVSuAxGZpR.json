@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"StanceSwitch","label":"Evasive Fighting: downshifts taken (enemies suffer the same attacking you)","stance":"evasiveFighting","max":5,"when":["attack",{"any":["item:data:system.classification.skill=might","item:data:system.classification.skill=finesse","item:data:system.classification.skill=targeting"]},{"any":["not:combat:exists","ownTurn"]}]}
+    ],
+    "prerequisites": {"when":[{"any":["self:skill:might>=d6","self:skill:finesse>=d6","self:skill:targeting>=d6"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on your Might, Finesse or Targeting attacks, choose how many downshifts to take. Enemies attacking you take the same number until the start of your next turn.</p>"
@@ -13,7 +17,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 131
     },
-    "prerequisite": "Might, Finesse, or Targeting d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

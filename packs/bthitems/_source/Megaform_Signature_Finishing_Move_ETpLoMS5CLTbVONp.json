@@ -5,6 +5,13 @@
   "_id": "ETpLoMS5CLTbVONp",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Choose the finishing move","steps":[{"do":"pick","key":"style","from":"list","options":[["melee","E20.Zord1SfmMelee"],["ranged","E20.Zord1SfmRanged"]],"prompt":"Melee or ranged finishing move?","ifUnset":true,"legacy":"flags.essence20.zord1Finisher.style"},{"do":"pick","key":"damageType","from":"damageType","prompt":"Its damage type?","ifUnset":true,"legacy":"flags.essence20.zord1Finisher.damageType"}]},
+      {"type":"Use","label":"Choose the finishing move","steps":[{"do":"pick","key":"style","from":"list","options":[["melee","E20.Zord1SfmMelee"],["ranged","E20.Zord1SfmRanged"]],"prompt":"Melee or ranged finishing move?"},{"do":"pick","key":"damageType","from":"damageType","prompt":"Its damage type?"}]},
+      {"type":"DialogSwitch","scope":"megaform","stacks":false,"key":"signatureFinish","forget":true,"label":"Signature Finishing Move (×4 damage, once per scene)","when":["item:type:weaponEffect","item:styleChoice:style","not:self:windowUsed:zord1SfmUsed:scene"],"steps":[{"do":"markWindow","flag":"zord1SfmUsed","window":"scene","to":"megaform"}]},
+      {"type":"HitMultiplier","scope":"megaform","stacks":false,"multiply":4,"damageType":"{choice.damageType}","when":["roll:switch:signatureFinish","not:roll:switch:advancedFinish"]},
+      {"type":"Trigger","scope":"megaform","stacks":false,"event":"afterRoll","when":["roll:switch:signatureFinish"],"steps":[{"do":"chat","text":"Reach ×3 / Range tripled for this attack."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Choose melee or ranged and a damage type when it is granted. Roll Options Dialog: once per scene, a switch on the Megaform's matching attack for four times damage of that type.</p>"

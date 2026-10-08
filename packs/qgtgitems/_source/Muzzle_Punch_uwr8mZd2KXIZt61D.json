@@ -5,6 +5,10 @@
   "_id": "uwr8mZd2KXIZt61D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Thump a creature in reach with the muzzle (Muzzle Punch)","cost":{"action":"move"},"steps":[{"do":"target","beforeCost":true},{"do":"require","beforeCost":true,"check":["target:within:10"],"message":"{target} isn't within reach."},{"do":"require","beforeCost":true,"check":["self:wielding:weapon:data:system.derivedHands>=2&not:attack:melee"],"message":"{name} needs a two-handed ranged weapon in hand."},{"do":"rollVsEach","skill":"finesse","defense":"toughness","when":["calc:@skill.finesse.rank - @skill.might.rank >= 0"],"onHit":[{"do":"push","to":"target","from":"self","feet":5},{"do":"slow","to":"target","feet":5}],"onDouble":[{"do":"push","to":"target","from":"self","feet":10},{"do":"slow","to":"target","feet":10}]},{"do":"rollVsEach","skill":"might","defense":"toughness","when":["calc:@skill.finesse.rank - @skill.might.rank < 0"],"onHit":[{"do":"push","to":"target","from":"self","feet":5},{"do":"slow","to":"target","feet":5}],"onDouble":[{"do":"push","to":"target","from":"self","feet":10},{"do":"slow","to":"target","feet":10}]}]}
+    ],
+    "prerequisites": {"when":[{"any":["self:skill:finesse>=d4","self:skill:might>=d4"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: with a target in reach, roll Finesse or Might against its Toughness; on a success it is pushed 5ft away and its Movement drops by the same amount (10ft on a Critical Success).</p>"
@@ -16,7 +20,7 @@
       "book": "Quartermaster's Guide to Gear",
       "page": 30
     },
-    "prerequisite": "Finese or Might +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

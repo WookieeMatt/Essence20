@@ -5,6 +5,9 @@
   "_id": "Hg3B2BkTNnqTzRmr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Designate who else can Command the pet (Extra Friend)","steps":[{"do":"pick","key":"designee","from":"team","notSelf":true,"prompt":"Who else can Command the pet?"},{"do":"updateItem","set":{"flags.essence20.designee":"{var.picked}"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (on the pet): pick another character. They can then Command your pet with the Command a Pet action too.</p>"

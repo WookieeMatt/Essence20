@@ -5,6 +5,7 @@
   "_id": "SCaKhmiYKC5VSPqU",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:ballistic"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: the extra +2 Defense that Deflective and Plating armor get against these rounds, what they won't punch through, and keeping it off weapons with other ammunition upgrades.</p>"
@@ -24,7 +25,7 @@
     "benefit": "Rounds won't puncture hardened targets like ship bulkheads or airplane bodies, but Deflective and Plating armor gain +2 Defense against it. Not compatible with other ammunition upgrades.",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Weapon with the Ballistic trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 200000,

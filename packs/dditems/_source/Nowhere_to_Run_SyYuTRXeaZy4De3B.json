@@ -5,6 +5,9 @@
   "_id": "SyYuTRXeaZy4De3B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Nowhere to Run (no long-range Snag; Edge if already ignored)","immune":["longRangeSnagForEdge"],"when":["attack:ranged"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: attacks beyond normal range don't take their usual Snag. If something else already removes that Snag, you get Edge instead, labelled Nowhere to Run in the Roll Options Dialog.</p><p>Left to the table: giving up the Aim ↑1 to use it.</p>"

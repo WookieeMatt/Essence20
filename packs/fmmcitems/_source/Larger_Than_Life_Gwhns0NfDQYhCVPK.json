@@ -5,6 +5,10 @@
   "_id": "Gwhns0NfDQYhCVPK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Larger Than Life (Large Reach)","items":["item:type:weaponEffect","item:data:system.classification.style=melee","item:data:system.totalReach>=0"],"path":"system.totalReach","op":"max","value":"@reach.large * max(1, @other.system.range.reachMultiplier)"}
+    ],
+    "prerequisites": {"when":["self:type:npc"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: melee attacks reach at least as far as a Large creature's, whatever Size the token shows.</p>"
@@ -15,7 +19,7 @@
       "book": "Finster's Monster-Matic Cookbook",
       "page": 7
     },
-    "prerequisite": "Threat",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

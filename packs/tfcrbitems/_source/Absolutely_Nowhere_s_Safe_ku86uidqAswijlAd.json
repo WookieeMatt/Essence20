@@ -5,6 +5,9 @@
   "_id": "ku86uidqAswijlAd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Cover","mode":"reduce","amount":2,"label":"Cover ↓2 less on its ranged attacks (to ↓0)"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you make a ranged attack against a target in Cover, the Cover ↓ in your Roll Options Dialog is 2 steps smaller, never below ↓0, so normal Cover gives no penalty at all.</p>"

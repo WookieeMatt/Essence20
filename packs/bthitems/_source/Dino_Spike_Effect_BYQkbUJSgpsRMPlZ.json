@@ -5,9 +5,13 @@
   "_id": "BYQkbUJSgpsRMPlZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Might: rolls the better of the two","from":"athletics","to":"might","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Might: rolls the better of the two","from":"might","to":"athletics","mode":"bestOf"}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a Might melee attack at Reach for 4 damage.</p>"
+      "notes": "<p>Automatic: a melee attack rolling the better of Athletics and Might at Reach for 4 damage.</p>"
     },
     "originalId": "",
     "actionType": "standard",

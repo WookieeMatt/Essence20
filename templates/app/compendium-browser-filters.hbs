@@ -3,6 +3,16 @@
     <input type="search" name="search" value="{{search}}" placeholder="{{localize 'E20.CompendiumBrowserSearchPlaceholder'}}" />
   </search>
 
+  {{#if qualifies.length}}
+    <label class="compendium-browser-qualifies">
+      <span>{{localize "E20.CompendiumBrowserQualifies"}}</span>
+      <select name="qualifies">
+        <option value="">{{localize "E20.CompendiumBrowserQualifiesAnyone"}}</option>
+        {{#each qualifies}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>{{/each}}
+      </select>
+    </label>
+  {{/if}}
+
   {{#if isGM}}
     <button type="button" class="compendium-browser-configure-sources" data-action="configureSources">
       <i class="fa-solid fa-book-atlas"></i>

@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ConditionImmunity","label":"Immune to frightened","conditions":["frightened"]},
+      {"type":"Use","label":"Righteous Heart: Resistance to a chosen damage type","when":["self:morphed"],"steps":[{"do":"pick","key":"type","from":"damageType","prompt":"Resist which damage type?"},{"do":"mark","key":"righteousHeart","to":"self","text":"{choice.type}"}]},
+      {"type":"AttackResistance","label":"Righteous Heart (the chosen damage type, once)","fromMark":"righteousHeart","consumeMark":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: immune to fear (Frightened). Use button (while Morphed): pick a damage type to resist until the end of your next turn.</p>"
@@ -16,7 +21,6 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
-    "canActivate": true,
     "actionType": "free"
   },
   "effects": [],

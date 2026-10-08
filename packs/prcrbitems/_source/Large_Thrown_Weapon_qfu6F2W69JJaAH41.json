@@ -61,15 +61,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:skill:brawn>=d4","self:size>=huge"]}]},
     "requirements": {
-      "custom": "Huge",
+      "custom": "",
       "skill": "brawn",
       "shift": "d4"
     },

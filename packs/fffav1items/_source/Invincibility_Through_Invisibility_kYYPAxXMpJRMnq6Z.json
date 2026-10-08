@@ -5,6 +5,9 @@
   "_id": "kYYPAxXMpJRMnq6Z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Invincibility Through Invisibility","event":"applyingDamage","stage":"lateReductions","priority":1,"when":["not:self:status:surprised"],"limit":{"per":"encounter"},"steps":[{"do":"setVar","key":"damage","value":0},{"do":"setVar","key":"dropSecondary","value":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per combat, while you don't have the Surprised condition, the first attack damage applied to you from a chat card is reduced to 0, along with any extra effect it carried.</p>"

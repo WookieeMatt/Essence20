@@ -5,6 +5,10 @@
   "_id": "04lrt1b9aCN4ts2N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Antagonistic","steps":[{"do":"target","max":1},{"do":"rollVsEach","skill":"intimidation","defense":"cleverness","to":"target","onHit":[{"do":"choose","prompt":"What does {target} suffer?","options":[{"label":"↓1 on their next test","steps":[{"do":"bank","downshift":1,"to":"target","until":"combat","replace":true,"appliesWhen":["not:roll:initiative"]}]},{"label":"A Snag on their next attack against you","steps":[{"do":"mark","key":"antagonized","to":"target","until":"combat"}]}]}]}]},
+      {"type":"RollModifier","label":"Antagonistic","scope":"marked","mark":"antagonized","snag":true,"consumeMark":"antagonized","consumeFrom":"roller","when":["attack","target:ruleHolder"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: roll Intimidation against a target's Cleverness; on a success choose ↓1 on their tests or a Snag on their attacks against you.</p>"

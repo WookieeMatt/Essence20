@@ -5,6 +5,11 @@
   "_id": "m3Kh8PqGf3O1oMmc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":"max(1, @item.system.advances.currentValue)","when":["attack","self:data:flags.essence20.powerBoostActive","weapon:trait:powerWeapon"]},
+      {"type":"Use","label":"Power Boost on (2 Personal Power)","when":["not:self:data:flags.essence20.powerBoostActive"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":2},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.powerBoostActive":true}},{"do":"chat","text":"{name}: Power Boost on."}]},
+      {"type":"Use","label":"Power Boost off","when":["self:data:flags.essence20.powerBoostActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.powerBoostActive":false}},{"do":"chat","text":"{name}: Power Boost off."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 2 Personal Power to switch it on; your Power Weapon attacks deal +1 Energy damage (+2 at 10th level, +3 at 17th). Click again to switch it off.</p>"

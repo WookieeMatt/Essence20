@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Daredevil","when":["skill:driving","self:transformed"],"upshift":2},
+      {"type":"RollModifier","label":"Daredevil (Alt Mode Initiative: Edge)","when":["roll:initiative","self:transformed"],"edge":true}
+    ],
+    "prerequisites": {"when":["self:skill:driving>=d6","ask:A Driving Specialization"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you are in Alt Mode, your Initiative rolls get Edge and your Driving tests get ↑2. Both are already applied when the Roll Options Dialog opens.</p>"
@@ -13,7 +18,7 @@
       "book": "Transformers Core Rulebook",
       "page": 108
     },
-    "prerequisite": "Driving d6 with at least one specialization.",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

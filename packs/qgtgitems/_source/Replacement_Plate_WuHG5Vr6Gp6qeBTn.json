@@ -5,6 +5,7 @@
   "_id": "WuHG5Vr6Gp6qeBTn",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["ask:Counter-Ballistic/Element/Kinetic or Reinforced"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: once per mission, repairing all damage to the armor, even if it was destroyed.</p>"
@@ -23,7 +24,7 @@
     "benefit": "Once per mission, repair all damage to armor, even if destroyed.",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Counter-Ballistic, Counter-Element, or Counter-Kinetic trait, or Reinforced upgrade"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

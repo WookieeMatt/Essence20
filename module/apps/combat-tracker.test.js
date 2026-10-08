@@ -107,7 +107,7 @@ describe("_renderActionMarks", () => {
     const actor = makeActor();
     const combatant = makeCombatant(actor);
     setGame({ combatant });
-    const { spend } = await import('../helpers/action-economy.mjs');
+    const { spend } = await import('../mechanics/actions/action-economy.mjs');
     await spend(actor, 'standard');
 
     const tracker = makeTracker(combatant);
@@ -183,7 +183,7 @@ describe("_renderActionMarks", () => {
     const actor = makeActor();
     const combatant = makeCombatant(actor);
     setGame({ combatant });
-    const { resetTurn, spend } = await import('../helpers/action-economy.mjs');
+    const { resetTurn, spend } = await import('../mechanics/actions/action-economy.mjs');
     await spend(actor, 'wholeTurn');
     await resetTurn(combatant);
 

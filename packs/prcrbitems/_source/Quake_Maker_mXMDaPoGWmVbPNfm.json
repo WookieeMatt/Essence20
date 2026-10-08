@@ -5,6 +5,7 @@
   "_id": "mXMDaPoGWmVbPNfm",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Weapon with a range in feet and an Energy trait other than Sonic"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains the Sonic trait, which adds an alternate effect against Willpower at ↓2.</p>"

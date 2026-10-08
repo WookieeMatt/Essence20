@@ -5,6 +5,12 @@
   "_id": "SBlOGEnend5WYwgd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Mystic","upshift":1,"when":["attack","target:check:nonMystical"]},
+      {"type":"Defense","label":"Target's Toughness armor ignored (Mystic)","defense":"toughness","amount":"-@target.system.defenses.toughness.armor","outgoing":true,"when":["not:target:morphed","not:target:status:armorStripped"]},
+      {"type":"Defense","label":"Target's morphed Toughness ignored (Mystic)","defense":"toughness","amount":"-@target.system.defenses.toughness.morphed","outgoing":true,"when":["target:morphed","not:target:status:armorStripped"]}
+    ],
+    "prerequisites": {"when":["self:type:npc"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your attacks ignore armor bonuses to Toughness and get ↑1 against targets that aren't Mystical, labelled Mystic in the Roll Options Dialog. A GM can mark any actor as Mystical or not.</p><p>Left to the table: leaving out attacks the stat block doesn't call Mystical.</p>"
@@ -15,7 +21,7 @@
       "book": "Finster's Monster-Matic Cookbook",
       "page": 7
     },
-    "prerequisite": "Threat",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

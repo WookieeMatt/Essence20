@@ -5,6 +5,10 @@
   "_id": "YzvU6WpADTfuGVLj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Consult memories: pick a Skill","limit":{"per":"scene"},"steps":[{"do":"pick","key":"skill","from":"skill"},{"do":"mark","key":"consultMemories","to":"self","until":"scene"}]},
+      {"type":"RollModifier","label":"Consulted memories (↑2, Specialized)","upshift":2,"specialize":true,"when":["not:roll:initiative","self:marked:consultMemories","skill:{choice.skill}"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: pick a Skill to gain ↑2 and Specialization in it for the scene.</p><p>Left to the table: spending Personal Power to extend it to more scenes.</p>"

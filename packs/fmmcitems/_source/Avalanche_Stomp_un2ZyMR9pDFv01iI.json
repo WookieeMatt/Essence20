@@ -6,8 +6,8 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: attacks roll Athletics with its listed damage and area; its traits apply.</p><p>Left to the table: knocking the target Prone on a Critical Success.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics with its listed damage and area, and a Critical Success knocks the target Prone; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",
@@ -39,15 +39,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Path of Stone"]},
     "requirements": {
-      "custom": "Path of Stone",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

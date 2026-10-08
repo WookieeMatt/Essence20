@@ -1,21 +1,21 @@
 import { applyThemeClass } from "../settings.js";
-import { readPdf, readImageRects, renderRegion } from "../helpers/pdf-reader.mjs";
+import { readPdf, readImageRects, renderRegion } from "../importers/pdf-reader.mjs";
 import {
   findBodyFontSize, findTextFloor, findFurnitureBands, buildReadingOrder,
-} from "../helpers/book-descriptions.mjs";
+} from "../importers/book-descriptions.mjs";
 import {
   flattenOutline, readSections, buildJournalEntries, mapSections,
-} from "../helpers/book-journal.mjs";
+} from "../importers/book-journal.mjs";
 import {
   findPageFurniture, pickMapImage, samplePages, mapFileName, mapFileNames,
-} from "../helpers/book-maps.mjs";
+} from "../importers/book-maps.mjs";
 import {
   findThreatSpans, spanText, actorTypeFor, markerPages,
-} from "../helpers/book-threats.mjs";
-import { splitStatBlocks, parseStatBlock } from "../helpers/stat-block-parser.mjs";
-import { extractRollTables } from "../helpers/book-tables.mjs";
-import { createActorFromStatBlock } from "../helpers/stat-block-import.mjs";
-import { loadCompendiumEntries, buildMatchIndex, findMatches } from "../helpers/stat-block-match.mjs";
+} from "../importers/book-threats.mjs";
+import { splitStatBlocks, parseStatBlock } from "../importers/stat-block-parser.mjs";
+import { extractRollTables } from "../importers/book-tables.mjs";
+import { createActorFromStatBlock } from "../importers/stat-block-import.mjs";
+import { loadCompendiumEntries, buildMatchIndex, findMatches } from "../importers/stat-block-match.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -250,7 +250,7 @@ export default class AdventureImporter extends HandlebarsApplicationMixin(Applic
   /**
    * Read every stat block printed in the book.
    *
-   * Nothing here parses a stat block. helpers/stat-block-parser.mjs has understood three printed
+   * Nothing here parses a stat block. importers/stat-block-parser.mjs has understood three printed
    * dialects since the Stat Block Importer was built, and it takes exactly what a GM would get by
    * selecting a page in a PDF reader - so the work is to rebuild those lines and hand them over.
    * @param {Array<Array<Object>>} orders   Runs per page, in reading order.
@@ -301,7 +301,7 @@ export default class AdventureImporter extends HandlebarsApplicationMixin(Applic
   /**
    * Render one section as the HTML of a journal page.
    *
-   * The paragraphs and sub-headings helpers/book-journal.mjs recovered from the print, escaped:
+   * The paragraphs and sub-headings importers/book-journal.mjs recovered from the print, escaped:
    * this is the GM's own PDF but it is still untrusted text going into a document, and a stray
    * angle bracket in a stat line should read as one rather than open a tag.
    * @param {{blocks: Array<{type: string, text: string}>, text: string}} page

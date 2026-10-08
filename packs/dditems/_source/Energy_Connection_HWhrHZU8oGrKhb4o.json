@@ -5,6 +5,10 @@
   "_id": "HWhrHZU8oGrKhb4o",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"option","label":"Option","from":"config","table":"energyConnectionOptions","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"CritOnD2","label":"Energy Affinity attack with Edge (Deepen Connection: d2 crit)","when":["check:energyAffinityAttack","roll:edge","rule:choiceHas:option:deepenConnection"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic (Deepen Connection option): with Edge on an attack dealing your Energy Affinity Element, you can critically succeed on a d2.</p><p>Left to the table: the Additional Energy Types option (a second Element and its Resistance).</p>"
@@ -17,8 +21,8 @@
     },
     "items": {},
     "choice": null,
-    "choiceType": "energyConnectionOption",
-    "hasChoice": true,
+    "choiceType": "none",
+    "hasChoice": false,
     "numChoices": 1,
     "prerequisite": "",
     "selectionLimit": 1,

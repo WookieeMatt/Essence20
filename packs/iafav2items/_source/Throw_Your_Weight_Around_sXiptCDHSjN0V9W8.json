@@ -5,6 +5,9 @@
   "_id": "sXiptCDHSjN0V9W8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:melee","self:sizeDiff>=1"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: melee attacks against a targeted creature of a smaller Size than you deal +1 damage, included in the damage on the chat card.</p>"

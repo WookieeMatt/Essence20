@@ -5,6 +5,16 @@
   "_id": "VAhtHpKlv4gsR0OY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"The Glory of Cobra-La","scope":"incoming","when":["skill:intimidation"],"snag":true},
+      {"type":"Qualification","label":"The Glory of Cobra-La (Qualified: Standard weapons)","access":"qualified","items":["item:type:weapon","item:availability<=standard"]},
+      {"type":"Qualification","label":"The Glory of Cobra-La (Qualified: Organic Armor, Biomechanical Weapon)","upgrades":[{"any":["item:id:W6fiSzyPOE2VGj8k","item:id:7qniIaOGp8Mqwt6O","item:data:name=organic armor","item:data:name=biomechanical weapon"]}]},
+      {"type":"RollModifier","label":"Driving a Biomechanical vehicle (The Glory of Cobra-La: ↑1)","when":["skill:driving","vehicle:driving",{"any":["vehicle:data:system.traits.biomechanical","vehicle:name~biomech","vehicle:name~bio-mech","vehicle:name~cobra-la"]},"not:roll:untrained"],"upshift":1,"stack":"q1VehicleQualification"},
+      {"type":"RollModifier","label":"Driving a Biomechanical vehicle untrained (The Glory of Cobra-La: no Snag)","when":["skill:driving","vehicle:driving",{"any":["vehicle:data:system.traits.biomechanical","vehicle:name~biomech","vehicle:name~bio-mech","vehicle:name~cobra-la"]},"roll:untrained"],"immune":["snag"]},
+      {"type":"RollModifier","label":"Driving a non-Biomechanical vehicle (The Glory of Cobra-La: Snag)","when":["skill:driving","vehicle:driving","not:vehicle:data:system.traits.biomechanical","not:vehicle:name~biomech","not:vehicle:name~bio-mech","not:vehicle:name~cobra-la"],"snag":true},
+      {"type":"RollModifier","label":"Attacking with a non-Biomechanical weapon (The Glory of Cobra-La: Snag)","when":["attack","item:type:weaponEffect","not:attack:unarmed","not:weapon:trait:biomechanical","not:weapon:name~biomech","not:weapon:name~bio-mech","not:weapon:name~cobra-la","not:item:hasUpgrade:Compendium.essence20.ferocious_fighters.Item.7qniIaOGp8Mqwt6O"],"snag":true},
+      {"type":"RollModifier","label":"Wearing non-Biomechanical battledress (The Glory of Cobra-La: Snag)","when":["not:roll:initiative","self:wearingItem:item:type:armor&not:item:name~biomech&not:item:name~bio-mech&not:item:name~cobra-la&not:item:hasUpgrade:Compendium.essence20.ferocious_fighters.Item.W6fiSzyPOE2VGj8k&not:item:hasUpgrade:name~organic armor"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: its weapon, armor and upgrade Qualifications at Requisition, and Qualification with Biomechanical vehicles (↑1 driving them with Ranks, no Snag without). Snags, each labelled The Glory of Cobra-La in the Roll Options Dialog: attacks with weapons that aren't Biomechanical, Driving vehicles that aren't, and every Skill Test while wearing battledress that isn't (Organic Armor makes it Biomechanical). Intimidation tests against you take a Snag.</p><p>Tick the Biomechanical trait on a Cobra-La vehicle's sheet; Cobra-La names count too.</p>"

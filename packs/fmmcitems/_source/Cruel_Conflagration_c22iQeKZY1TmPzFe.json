@@ -5,9 +5,13 @@
   "_id": "c22iQeKZY1TmPzFe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Cruel Conflagration (a failure nearby)","event":"afterRoll","watch":"any","within":15,"outcome":"plainFailure","steps":[{"do":"button","label":"Cruel Conflagration: Impaired (1 Personal Power)","whisper":"owners","usedWhenDone":true,"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"applyCondition","to":"target","condition":"impaired","until":"endOfNextTurn"}]}]},
+      {"type":"Trigger","label":"Cruel Conflagration (a Fumble nearby)","event":"afterRoll","watch":"any","within":15,"outcome":["fumbled","allFailed"],"steps":[{"do":"button","label":"Cruel Conflagration: burn them","whisper":"owners","usedWhenDone":true,"steps":[{"do":"choose","prompt":"Spend how much Personal Power?","options":[{"label":"2 Psychic damage (1 Personal Power)","steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"button","who":"gm","label":"Apply 2 Psychic damage","steps":[{"do":"damage","to":"target","amount":2,"damageType":"psychic"}]}]},{"label":"2 Psychic damage and Impaired (2 Personal Power)","steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":2},{"do":"applyCondition","to":"target","condition":"impaired","until":"endOfNextTurn"},{"do":"button","who":"gm","label":"Apply 2 Psychic damage","steps":[{"do":"damage","to":"target","amount":2,"damageType":"psychic"}]}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Chat card: when someone within 15ft fails a Skill Test, you get a private button to spend 1 Personal Power and make them Impaired. On a Fumble, buttons let you deal 2 Psychic damage (1 Personal Power) or both (2 Personal Power).</p>"
+      "notes": "<p>Chat card: when someone within 15ft fails a Skill Test, you get a private button to spend 1 Personal Power and make them Impaired until the end of your next turn. On a Fumble, buttons let you deal 2 Psychic damage (1 Personal Power) or both (2 Personal Power).</p>"
     },
     "originalId": "",
     "description": "",

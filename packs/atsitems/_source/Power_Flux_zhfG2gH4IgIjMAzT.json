@@ -5,6 +5,9 @@
   "_id": "zhfG2gH4IgIjMAzT",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"sceneStart","scope":"crew","label":"Power Flux (crew regain up to 6 Personal Power)","when":["holder:type:zord","holder:onCanvas","self:data:system.powers.personal.max>0","self:data:system.powers.personal.value<$system.powers.personal.max"],"steps":[{"do":"chat","text":"{name} regains {@actor.system.powers.personal.value * 0 + min(6, @actor.system.powers.personal.max - @actor.system.powers.personal.value)} Personal Power"},{"do":"updateActor","to":"self","add":{"system.powers.personal.value":"min(6, @recipient.system.powers.personal.max - @recipient.system.powers.personal.value)"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when the GM starts a new scene, the pilot and crew of this Zord (if it has a token) each regain up to 6 Personal Power.</p>"

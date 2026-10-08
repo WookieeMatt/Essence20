@@ -5,6 +5,9 @@
   "_id": "t94vdRRRwxbAdG84",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"allDice","reset":"none","maxUses":0,"condition":"rollFailed","shiftUp":2,"cost":{"worldStoryPoints":1}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: after any failed Skill Test, a Reroll button spends 1 Story Point to re-roll it with ↑2.</p>"
@@ -16,19 +19,6 @@
       "page": 61
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "allDice",
-      "condition": "rollFailed",
-      "cost": {
-        "worldStoryPoints": 1
-      },
-      "maxUses": 0,
-      "reset": "none",
-      "bonus": 0,
-      "shiftUp": 2
-    },
     "selectionLimit": 1,
     "type": "role"
   },

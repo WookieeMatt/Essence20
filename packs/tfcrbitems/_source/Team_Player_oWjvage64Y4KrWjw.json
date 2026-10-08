@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Team Player","event":"lendAssistance","steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a successful Lend Assistance with the Standard action earns you a Story Point.</p>"

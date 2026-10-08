@@ -5,6 +5,9 @@
   "_id": "b4rCpGE6aJuxvoB5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Roll a new Initiative (Reactionary)","when":["combat"],"cost":{"action":"free"},"limit":{"per":"round"},"steps":[{"do":"require","beforeCost":true,"check":["self:combatant","not:combat:first"],"message":"Not in the combat, or already first in Initiative."},{"do":"rollInitiative","to":"self"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: ↑1 on Initiative. Use button: once per round, when you're not first, spend a Free action to reroll Initiative for the next round.</p>"

@@ -5,6 +5,9 @@
   "_id": "W6ZrWSY6ux3ki9D1",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick an integrated weapon","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"weapon"},"integrated":true},{"do":"setToggle","key":"granted","value":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: -1 maximum Health.</p><p>Use button: pick an integrated weapon of the matching tier; it's added to your sheet as part of you.</p>"

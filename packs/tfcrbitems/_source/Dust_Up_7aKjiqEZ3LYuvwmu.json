@@ -5,6 +5,10 @@
   "_id": "7aKjiqEZ3LYuvwmu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"movedOnTurn","label":"Dust Up: Concealment after moving","when":["not:self:marked:dustUp"],"steps":[{"do":"mark","key":"dustUpCover","to":"self","when":["not:self:status:cover"]},{"do":"applyCondition","condition":"cover","to":"self","when":["self:marked:dustUpCover"]},{"do":"mark","key":"dustUp","to":"self"}]},
+      {"type":"Trigger","event":"turnStart","label":"Dust Up: Concealment ends","when":["self:marked:dustUp"],"steps":[{"do":"removeCondition","condition":"cover","to":"self","when":["self:marked:dustUpCover"]},{"do":"unmark","key":"dustUpCover","to":"self"},{"do":"unmark","key":"dustUp","to":"self"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the first time your token moves on your own turn in combat, you get the Cover condition (standing in for Concealment, shown as its token icon) until your next turn starts.</p>"

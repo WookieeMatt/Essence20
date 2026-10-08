@@ -5,6 +5,9 @@
   "_id": "aHgTDkCIBHjBnt0L",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Implant a thought","steps":[{"do":"target"},{"do":"choose","prompt":"Is the target willing?","options":[{"label":"Willing","steps":[{"do":"chat","text":"{target} takes the thought, no roll needed."}]},{"label":"Unwilling or unknowing","steps":[{"do":"roll","skill":"persuasion","difDefense":"willpower","edgeWhen":[{"any":["target:status:asleep","target:status:unconscious"]}],"onSuccess":[{"do":"chat","text":"{target} takes the thought."}],"onFail":[{"do":"chat","text":"{target} resists."}]}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: a willing target takes the thought with no roll; otherwise roll Persuasion against Willpower, with Edge if they're Asleep or Unconscious. Left to the table: the implanted Contingency itself.</p>"

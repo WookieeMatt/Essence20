@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"EMT Crash Course (Medicine)","when":["skill:science","roll:specialization=medicine"],"edge":true},
+      {"type":"Use","label":"Heal 1 Health (once per scene)","limit":{"per":"encounter"},"steps":[{"do":"pickAlly","includeSelf":true},{"do":"heal","amount":1,"to":"target"}]},
+      {"type":"Use","label":"Restore 1 Essence","steps":[{"do":"pickAlly","includeSelf":true},{"do":"pick","key":"essence","from":"damagedEssences"},{"do":"healEssence","essence":"{choice.essence}","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (with a medicine kit on you): heal 1 on yourself or an ally once per scene, or restore 1 Essence to an ally. Automatic: when you roll Science with your Medicine Specialization, the Roll Options Dialog opens with Edge already selected.</p>"

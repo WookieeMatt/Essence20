@@ -5,6 +5,10 @@
   "_id": "T2Rbuw9DHwL2gGmV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:influence:Wandering"]},
+    "rules": [
+      {"type":"RollModifier","label":"The Road Calls","when":["essence:speed"],"specialize":true,"limit":{"per":"encounter","max":1}}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your first Speed test each scene opens the Roll Options Dialog with Specialized already ticked.</p><p>Left to the table: ignoring the first effect of the first space-time anomaly you meet.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Wandering Influence",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

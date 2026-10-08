@@ -3,9 +3,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","minShift":"d4","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DownshiftCancel","label":"Expertise (ignore the first ↓1 on the chosen Skill)","amount":1,"stack":"expertise","when":["skill:{choice.skill}"]},
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"skills":["{choice.skill}"]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>When added you pick a Skill. Automatic: on tests with that Skill the first ↓1 is cancelled before the Roll Options Dialog opens, and the chat card shows a reroll button for any 1s on the Skill dice. Take it again for another Skill.</p>"
+      "notes": "<p>When added you pick a Skill you have at d4 or higher (its prerequisite). Automatic: on tests with that Skill the first ↓1 is cancelled before the Roll Options Dialog opens, and the chat card shows a reroll button for any 1s on the Skill dice. Take it again for another Skill.</p>"
     },
     "originalId": "",
     "description": "",
@@ -13,17 +18,9 @@
       "book": "Power Rangers Core Rulebook",
       "page": 95
     },
-    "hasChoice": true,
-    "choiceType": "skills",
+    "hasChoice": false,
+    "choiceType": "none",
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "skillDice",
-      "maxUses": 0,
-      "reset": "none",
-      "skills": []
-    },
     "selectionLimit": 3,
     "type": "general"
   },

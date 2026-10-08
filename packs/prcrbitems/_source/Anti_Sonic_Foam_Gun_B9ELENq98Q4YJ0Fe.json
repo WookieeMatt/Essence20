@@ -39,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "medium"
@@ -51,9 +49,7 @@
       "skill": "targeting",
       "shift": "d4"
     },
-    "traits": [
-      "stun"
-    ],
+    "traits": [],
     "upgradeTraits": [],
     "usesPerScene": null
   },

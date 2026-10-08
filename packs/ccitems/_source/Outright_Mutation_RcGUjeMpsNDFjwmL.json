@@ -5,6 +5,12 @@
   "_id": "RcGUjeMpsNDFjwmL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick a Restricted Alteration (genetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["restricted"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]},
+      {"type":"Use","label":"Pick a Restricted Alteration (genetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["restricted"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]},
+      {"type":"Trigger","event":"added","label":"Beast Mode: a Restricted Alteration (genetic) for the scene","when":["rule:data:flags.essence20.beastMode","not:self:toggle:granted"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["restricted"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true},"until":"scene"},{"do":"setToggle","key":"granted","value":true}]}
+    ],
+    "prerequisites": {"when":[{"any":["self:has:Evolving Mutation","self:level>=12"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained (or via the Use button), pick a Restricted Alteration you don't already have; it is added as a genetic Alteration. Counts as a genetic Alteration and as an Alteration Perk for Additional Alteration.</p>"
@@ -15,7 +21,7 @@
       "book": "Cobra Codex",
       "page": 81
     },
-    "prerequisite": "Evolving Mutation or 12th Level",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

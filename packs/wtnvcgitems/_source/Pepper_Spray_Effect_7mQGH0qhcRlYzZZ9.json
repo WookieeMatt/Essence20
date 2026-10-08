@@ -5,9 +5,13 @@
   "_id": "7mQGH0qhcRlYzZZ9",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Targeting: rolls the better of the two","from":"athletics","to":"targeting","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Targeting: rolls the better of the two","from":"targeting","to":"athletics","mode":"bestOf"}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: Pepper Spray's attack: rolls Athletics at Short range for 1 Acid damage to up to 2 targets. Change its Skill to Targeting on the sheet if you prefer.</p>"
+      "notes": "<p>Automatic: Pepper Spray's attack: rolls the better of Athletics and Targeting at Short range for 1 Acid damage to up to 2 targets.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -24,7 +28,7 @@
     "damageValue": 1,
     "isSpecialized": false,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 2,
     "radius": 0,
     "range": {

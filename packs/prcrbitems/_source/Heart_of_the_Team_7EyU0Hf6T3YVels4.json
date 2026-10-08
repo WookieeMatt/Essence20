@@ -5,6 +5,9 @@
   "_id": "7EyU0Hf6T3YVels4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"1 Quips & Speeches: upshift an ally's next roll","cost":{"resource":{"rolePoints":true},"amount":1},"steps":[{"do":"pickAlly"},{"do":"choose","when":["self:hasItem:Compendium.essence20.cobra_codex.Item.SUc3emTvPnwB6W93"],"prompt":"This, I Command: deal 1 Psychic to the ally to double it?","options":[{"label":"Double it","steps":[{"do":"damage","to":"target","amount":1,"damageType":"psychic"},{"do":"bank","to":"target","label":"Heart of the Team","upshift":"2 * max(1, @item.system.advances.currentValue)"}]},{"label":"Keep it","steps":[{"do":"bank","to":"target","label":"Heart of the Team","upshift":"max(1, @item.system.advances.currentValue)"}]}]},{"do":"bank","when":["not:self:hasItem:Compendium.essence20.cobra_codex.Item.SUc3emTvPnwB6W93"],"to":"target","label":"Heart of the Team","upshift":"max(1, @item.system.advances.currentValue)"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend a Quips &amp; Speeches point and pick an ally. Their next Skill Test gets ↑1 (↑2 once you've taken this Perk twice, ↑3 at three), labelled Heart of the Team in their Roll Options Dialog.</p>"
@@ -22,8 +25,7 @@
     "advances": {
       "canAdvance": true,
       "type": "upshift"
-    },
-    "canActivate": true
+    }
   },
   "effects": [],
   "sort": 100000,

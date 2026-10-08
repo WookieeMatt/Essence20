@@ -5,6 +5,9 @@
   "_id": "vZNQBGwiv1hREbyr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"↑1 on a Skill for an ally","steps":[{"do":"target","max":1},{"do":"pick","key":"skill","from":"skill","prompt":"Which Skill?"},{"do":"bank","upshift":1,"to":"target","until":"combat","replace":true,"appliesWhen":["skill:{var.picked}","not:roll:initiative"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: pick a skill, and your targeted ally gets ↑1 on it for their turn.</p><p>Left to the table: checking that the ally started their turn adjacent to you.</p>"

@@ -5,6 +5,10 @@
   "_id": "wXbkcyQTziLjCYEC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Beloved (↑1, for your beloved)","upshift":1,"stack":"beloved","limit":{"per":"turn","key":"beloved"}},
+      {"type":"DialogSwitch","label":"Beloved (remove Snag, for your beloved)","clearSnag":true,"stack":"beloved","limit":{"per":"turn","key":"beloved"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per turn, when you act for your beloved, pick either ↑1 or removing the roll's Snag.</p>"

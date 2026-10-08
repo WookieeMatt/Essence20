@@ -4,6 +4,11 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Mouth, claws or hooves for a precise task (Bestial Articulation: ↓1)","downshift":1,"when":["rule:altMode"]},
+      {"type":"Trigger","event":"added","label":"Its special attack arrives with it","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"},{"do":"fitAttack","types":["blunt","sharp"]}]},
+      {"type":"Use","label":"Get its special attack back","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"},{"do":"fitAttack","types":["blunt","sharp"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: converting into this Alt Mode makes you Extended with 40ft Aerial Movement. Taking it adds the Natural Weapon (you pick Blunt or Sharp). Roll Options Dialog: a Bestial Articulation switch (↓1) for tasks done with mouth, claws or hooves.</p>"
@@ -14,14 +19,6 @@
       "book": "Decepticon Directive",
       "page": 37
     },
-    "crew": 0,
-    "firepoints": 0,
-    "movement": {
-      "aerial": 0,
-      "aquatic": 0,
-      "ground": 0
-    },
-    "size": "common",
     "altModeMovement": {
       "aerial": 40,
       "aquatic": 0,

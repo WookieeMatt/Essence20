@@ -5,6 +5,7 @@
   "_id": "4tMexiD6f9auqQqx",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["host:data:system.classification.size=sidearm","host:data:system.classification.size=light","host:data:system.classification.size=medium"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: a dropped or disarmed weapon stays in your space, and your Movement drops by 5ft until you pick it up.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Medium or smaller weapon"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

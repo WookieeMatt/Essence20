@@ -5,6 +5,9 @@
   "_id": "2P2i605rHgNhm2FJ",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Repair (Automated Repair Kit)","cost":{"action":"standard"},"steps":[{"do":"updateActor","to":"targetOrSelf","add":{"system.health.value":"2 * @takeMine"},"max":"@recipient.system.health.max"},{"do":"chat","text":"{name} heals {@takeMine * 2} Health with the Automated Repair Kit."},{"do":"spendQuantity","amount":1,"deleteAtZero":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: a Cybertronian spends a Standard action to heal 2 Health with no Skill Test, and one kit is used up.</p>"

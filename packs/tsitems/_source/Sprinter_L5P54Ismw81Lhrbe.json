@@ -5,6 +5,13 @@
   "_id": "L5P54Ismw81Lhrbe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"ground","stage":"final","op":"add","value":20,"label":"Alt Mode: Ground Movement +20 ft","when":["self:transformed"]},
+      {"type":"Movement","movement":"ground","stage":"final","op":"multiply","value":2,"label":"Sprint: Ground Movement doubled","when":["check:sprinterBoost"]},
+      {"type":"Movement","movement":"ground","stage":"final","op":"add","value":20,"label":"Sprint: Alt Mode +20 ft doubled too","when":["self:transformed","check:sprinterBoost"]},
+      {"type":"Use","label":"Sprint (once per scene)","limit":{"per":"encounter"},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.sprinterBoostActive":true}},{"do":"chat","text":"{name}: Ground Movement doubled this turn."}]},
+      {"type":"Trigger","event":"turnEnd","label":"Sprinter ends","when":["self:data:flags.essence20.sprinterBoostActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.sprinterBoostActive":false}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +20ft Ground Movement in Alt Mode. Use button (once per scene): double your Ground Movement for the round.</p>"

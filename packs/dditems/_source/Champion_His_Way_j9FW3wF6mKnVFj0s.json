@@ -5,6 +5,10 @@
   "_id": "j9FW3wF6mKnVFj0s",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Word of Unicron","self:skill:culture>=d10"]},
+    "rules": [
+      {"type":"Defense","defense":"any","amount":2,"when":["self:data:system.energon.dark.value>0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +2 to all Defenses while you hold at least one Dark Energon Point.</p>"
@@ -15,7 +19,7 @@
       "book": "Decepticon Directive",
       "page": 111
     },
-    "prerequisite": "Word of Unicron; Culture d10",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

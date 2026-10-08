@@ -5,6 +5,10 @@
   "_id": "HjkeUVUUTQiXi0MO",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Demolecularized (on a hit)","event":"hit","when":["item:own"],"steps":[{"do":"mark","key":"demolecularized","to":"target","until":"scene"},{"do":"chat","text":"{target} is partially demolecularized for the rest of the scene: attacks against them that deal Sharp damage gain an Edge."}]},
+      {"type":"RollModifier","label":"Demolecularized","scope":"markedTarget","mark":"demolecularized","edge":true,"when":["attack",{"any":["item:damageType:sharp","item:data:system.secondaryDamage.type=sharp"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and traits. A hit marks the target for the scene, and Sharp attacks against it get Edge, labelled Demolecularized in the Roll Options Dialog.</p>"
@@ -39,8 +43,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "prototype",
     "classification": {
       "size": "sidearm"

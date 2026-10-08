@@ -1,8 +1,8 @@
-import { spend } from "../helpers/action-economy.mjs";
+import { spend } from "../mechanics/actions/action-economy.mjs";
 import TransformOptionSelector from "../apps/transform-option-selector.mjs";
-import { changeTokenImage, resizeTokens } from "../helpers/actor.mjs";
-import { warnMissingStateImage } from "../helpers/morph-state.mjs";
-import { triggerModeAttachmentCheck } from "../helpers/mode-attachment.mjs";
+import { changeTokenImage, resizeTokens } from "../mechanics/world/token-sync.mjs";
+import { warnMissingStateImage } from "../mechanics/characters/morph-state.mjs";
+import { fireTransforming } from "../rules/plugins/effects/state-changes.mjs";
 
 
 /**
@@ -11,13 +11,16 @@ import { triggerModeAttachmentCheck } from "../helpers/mode-attachment.mjs";
  * @param {AltMode} altMode The deleted Alt Mode.
  */
 export async function onAltModeDelete(actorSheet, altMode) {
-  const altModes = actorSheet.actor.items.documentsByType.altMode;
+  // _transformBotMode takes the Actor. It was handed the sheet, threw on sheet.system, and the character stayed
+  // transformed into the deleted Alt Mode (release checklist live run, 2026-10-07).
+  const actor = actorSheet.actor;
+  const altModes = actor.items.documentsByType.altMode;
   if (altModes.length > 1) {
-    if (altMode._id == actorSheet.actor.system.altModeId) {
-      _transformBotMode(actorSheet);
+    if (altMode._id == actor.system.altModeId) {
+      await _transformBotMode(actor);
     }
   } else {
-    _transformBotMode(actorSheet);
+    await _transformBotMode(actor);
   }
 }
 
@@ -37,8 +40,7 @@ export async function onTransform(actor) {
   const altModes = actor.items.documentsByType.altMode;
   const isTransformed = actor.system.isTransformed;
 
-  // Converting is a Standard action (TF CRB p.111: Quick Change makes "that sequence require a Free
-  // action to enact instead of a Standard action"). Charged only in combat; a player who backs out
+  // Converting is a Standard action (TF CRB p.111: Quick Change makes it a Free action). Charged only in combat; a player who backs out
   // of the "how do you pay?" question hasn't converted.
   if (altModes.length || isTransformed) {
     const paid = await spend(actor, 'standard', {
@@ -100,7 +102,8 @@ export async function onTransformUuid(actor, altModeUuid=null) {
  * @private
  */
 async function _transformBotMode(actor) {
-  await triggerModeAttachmentCheck(actor, true);
+  // Item rules' transforming Triggers (Mode Attachment), before the change.
+  await fireTransforming(actor, 'botMode');
 
   const width = CONFIG.E20.tokenSizes[actor.system.size].width;
   const height = CONFIG.E20.tokenSizes[actor.system.size].height;
@@ -126,7 +129,7 @@ async function _transformBotMode(actor) {
  * @private
  */
 async function _transformAltMode(actor, altMode) {
-  await triggerModeAttachmentCheck(actor, false, altMode.id);
+  await fireTransforming(actor, altMode.id);
   warnMissingStateImage(actor, "altMode", altMode);
   const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
   const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;

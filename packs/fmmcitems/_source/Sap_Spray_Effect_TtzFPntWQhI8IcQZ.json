@@ -18,7 +18,7 @@
     "damageType": "acid",
     "damageValue": 2,
     "shiftDown": 0,
-    "numHands": "0",
+    "numHands": 0,
     "numTargets": 1,
     "radius": 40,
     "range": {

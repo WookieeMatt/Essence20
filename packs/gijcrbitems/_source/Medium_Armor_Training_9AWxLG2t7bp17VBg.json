@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:trained:armors.light"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: you're trained in Medium armor, so you can requisition it.</p>"
@@ -13,7 +14,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 132
     },
-    "prerequisite": "Trained in Light Armor",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -1,5 +1,5 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
-import { getActionsTabContext } from "../helpers/action-economy.mjs";
+import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
 
 export class Essence20ZordActorSheet extends Essence20BaseActorSheet {
   static TABS = {
@@ -8,7 +8,7 @@ export class Essence20ZordActorSheet extends Essence20BaseActorSheet {
         { id: "main", group: 'primary', label: "E20.TabMain" },
         { id: "actions", group: 'primary', label: "E20.TabActions" },
         { id: "passengers", group: 'primary', label: "E20.TabCrew" },
-        { id: "effects", group: 'primary', label: "E20.TabEffects" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
         { id: "notes", group: 'primary', label: "E20.TabNotes" },
       ],
       initial: "main",

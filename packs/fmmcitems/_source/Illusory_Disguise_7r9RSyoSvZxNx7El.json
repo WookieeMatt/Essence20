@@ -5,6 +5,10 @@
   "_id": "7r9RSyoSvZxNx7El",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Cast the disguise (DIF 12 Culture)","steps":[{"do":"roll","skill":"culture","dif":12,"onSuccess":[{"do":"setToggle","key":"disguised","value":true}]}]},
+      {"type":"RollModifier","label":"Illusory Disguise (Edge)","edge":true,"when":["self:toggle:disguised",{"any":["skill:infiltration","skill:deception"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: rolls the DIF 12 Culture test; on a success you have Edge on Infiltration and Deception.</p><p>Left to the table: limiting the Edge to tests about the disguise, and ending it when the illusion drops.</p>"
@@ -17,7 +21,6 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 2,

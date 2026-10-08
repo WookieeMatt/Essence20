@@ -5,6 +5,10 @@
   "_id": "Yo1la1g1Mc3fNBbH",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"AimBonus","label":"Laser Sight: Aim +1","scope":"host","extra":1}
+    ],
+    "prerequisites": {"when":["host:trait:ballistic"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: the Aiming switch in this weapon's Roll Options Dialog gives ↑1 more than usual.</p>"
@@ -15,7 +19,6 @@
       "book": "Transformers Core Rulebook",
       "page": 125
     },
-    "aimShiftBonus": 1,
     "armorBonus": {
       "defense": "toughness",
       "value": 0
@@ -24,7 +27,7 @@
     "benefit": "Aiming with this weapon provides an additional 1 shift.",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Ballistic"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

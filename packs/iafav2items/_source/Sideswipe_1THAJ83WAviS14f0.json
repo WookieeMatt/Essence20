@@ -5,6 +5,10 @@
   "_id": "1THAJ83WAviS14f0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","scope":"driven","label":"Ram or Flyby hit on a character on foot: Prone","when":["self:type:vehicle",{"any":["attack:ram","item:data:system.isFlyby"]},"not:target:type:vehicle","not:target:type:zord","not:target:type:megaform"],"steps":[{"do":"applyCondition","condition":"prone","to":"target"}]}
+    ],
+    "prerequisites": {"when":["self:skill:driving>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Ram and Flyby attacks from a vehicle you drive also knock targets on foot Prone.</p>"
@@ -16,7 +20,7 @@
       "page": 64
     },
     "items": {},
-    "prerequisite": "Driving +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

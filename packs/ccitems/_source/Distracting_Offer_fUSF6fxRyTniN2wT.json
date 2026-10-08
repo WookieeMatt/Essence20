@@ -5,6 +5,9 @@
   "_id": "fUSF6fxRyTniN2wT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Distracting Offer","when":["self:data:system.originSkillsIncrease","not:self:marked:distractingOfferFailed"],"steps":[{"do":"target","max":1},{"do":"require","check":["not:allOf:self:marking:distractingOffer&not:markedByMe:distractingOffer"],"message":"This scene, only the creature your offer already worked on."},{"do":"rollVsEach","skill":"actor:system.originSkillsIncrease","defense":"cleverness","to":"target","onHit":[{"do":"mark","key":"distractingOffer","perSetter":true,"exclusive":true,"to":"target","until":"mapScene"},{"do":"bank","downshift":1,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"]}],"onDouble":[{"do":"mark","key":"distractingOffer","perSetter":true,"exclusive":true,"to":"target","until":"mapScene"},{"do":"bank","downshift":2,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"]}],"onMiss":[{"do":"mark","key":"distractingOfferFailed","to":"self","until":"mapScene"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: with a target selected, roll your Origin Skill against its Cleverness. On a success its next Skill Test gets ↓1 (↓2 on a Critical Success), labelled Distracting Offer in its Roll Options Dialog. Its once-per-scene and same-target limits are tracked.</p>"

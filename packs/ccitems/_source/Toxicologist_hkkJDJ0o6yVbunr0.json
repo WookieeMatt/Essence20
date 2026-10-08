@@ -5,6 +5,7 @@
   "_id": "hkkJDJ0o6yVbunr0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:data:system.qualified.poisons.standard","self:data:system.qualified.poisons.all"]},"self:skill:science>=d12"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: you're Qualified with toxins.</p>"
@@ -15,7 +16,7 @@
       "book": "Cobra Codex",
       "page": 81
     },
-    "prerequisite": "Qualified with Standard Poisons, Science d12",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

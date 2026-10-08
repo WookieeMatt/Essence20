@@ -1,4 +1,4 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import {
   makeBool,
@@ -20,6 +20,8 @@ export class AlterationItemData extends foundry.abstract.TypeDataModel {
       ...itemDescription(),
       availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
       benefit: makeStr(''),
+      // bonus / cost: the Skills picked when an essence Alteration is dropped (alteration-handler.mjs). Not on the
+      // Details tab since 2026-10-07 - its number boxes for type other edited nothing anything reads.
       bonus: makeStr(null),
       bonusMovement: makeInt(0),
       bonusMovementType: makeStrWithChoices(Object.keys(E20.movementTypes), null),
@@ -34,9 +36,9 @@ export class AlterationItemData extends foundry.abstract.TypeDataModel {
       movementCost: new fields.ObjectField({}),
       selectedEssence: makeStrWithChoices(Object.keys(E20.essences), null),
       type: makeStrWithChoices(Object.keys(E20.alterationTypes), 'other'),
-      // Enhanced Photoreceptors (Cobra Codex, p.84): "You can see in darkness up to 30 feet as if
-      // it was dim light." The vision-granting shape already exists on gear/perk (see
-      // GearItemData's own visionGrant, and helpers/vision-grant.mjs#getBestVisionGrant, which
+      // Enhanced Photoreceptors (Cobra Codex, p.84): darkness within 30 feet counts as dim light.
+      // The vision-granting shape already exists on gear/perk (see
+      // GearItemData's own visionGrant, and mechanics/characters/vision-grant.mjs#getBestVisionGrant, which
       // reads item.system.visionGrant off ANY actor item regardless of type) - Alteration was
       // simply never given the field, so no alteration could ever declare one.
       visionGrant: new fields.SchemaField({

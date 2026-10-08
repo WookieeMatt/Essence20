@@ -5,6 +5,10 @@
   "_id": "eiTUR08GXw03M21m",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Power Heal: 1 Health per Power spent","event":"powerUsed","when":["item:own","var:spent>0"],"steps":[{"do":"pickAlly","within":5,"includeSelf":true},{"do":"updateActor","to":"target","add":{"system.health.value":"@var.spent"},"max":"@recipient.system.health.max"},{"do":"chat","text":"{target} regains {var.spent} Health."}]},
+      {"type":"Use","label":"Power Heal","when":["self:morphed","self:data:system.powers.personal.value>=1"],"steps":[{"do":"choose","prompt":"E20.Pr3PowerHealPrompt","options":[{"label":"E20.Pr3PowerHealHeal","steps":[{"do":"activatePower"}]},{"label":"E20.Pr3PowerHealCondition","steps":[{"do":"pickAlly","within":5,"includeSelf":true,"filter":["target:status:any:except=morphed|altMode|defending|cover|totalCover|invisible|defeated"]},{"do":"pick","key":"powerHealCondition","from":"conditions","of":"target","all":true,"exclude":["morphed","altMode","defending","cover","totalCover","invisible","defeated"],"prompt":"E20.Pr3PowerHealWhich"},{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"removeCondition","to":"target","condition":"{choice.powerHealCondition}"},{"do":"chat","text":"{name} spends 1 Power: Power Heal removes a Condition from {target}."}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (while Morphed): choose Heal or Remove a Condition. Heal spends Power to restore 1 Health per Power spent to an adjacent creature. Remove a Condition spends 1 Power to clear one negative Condition from you or a creature within 5 ft.</p>"
@@ -17,7 +21,6 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": true,
     "maxPowerCost": null,
     "powerCost": 1,

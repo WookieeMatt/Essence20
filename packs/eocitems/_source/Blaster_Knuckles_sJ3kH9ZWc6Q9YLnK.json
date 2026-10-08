@@ -83,15 +83,14 @@
         "shiftDown": 2
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=towering"]},
     "requirements": {
-      "custom": "Towering",
+      "custom": "",
       "skill": "might",
       "shift": "d6"
     },

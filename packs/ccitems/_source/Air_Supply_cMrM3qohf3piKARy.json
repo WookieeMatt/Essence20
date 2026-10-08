@@ -5,6 +5,9 @@
   "_id": "cMrM3qohf3piKARy",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Air Supply","when":["attack","weapon:data:system.isPoison","weapon:data:system.poisonApplication.inhaled"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks with an inhaled poison against the wearer take a Snag, labelled Air Supply in the attacker's Roll Options Dialog.</p>"

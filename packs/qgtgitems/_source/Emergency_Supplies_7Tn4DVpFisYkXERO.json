@@ -5,6 +5,10 @@
   "_id": "7Tn4DVpFisYkXERO",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"crew","edge":true,"when":[{"any":["skill:science","skill:medicine"]}]},
+      {"type":"RollModifier","edge":true,"when":["self:type:vehicle",{"any":["skill:science","skill:medicine"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: aboard the vehicle, a switch for Edge on Science (Medicine) tests to treat wounds.</p>"

@@ -5,6 +5,9 @@
   "_id": "fz3s9ay6oOPujwTh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Give an order (Irrefutable Order)","cost":{"action":"standard"},"steps":[{"do":"target","min":1,"max":1,"beforeCost":true},{"do":"setVar","key":"levels","value":"@target.system.level - @level","beforeCost":true},{"do":"require","check":["var:levels<=0"],"message":"The target's level is higher than yours.","beforeCost":true},{"do":"askText","var":"order","prompt":"A one-word order:","firstWord":true,"beforeCost":true},{"do":"choose","prompt":"Persuasion against which Defense?","beforeCost":true,"options":[{"label":"Willpower","steps":[{"do":"setVar","key":"defense","value":1}]},{"label":"Cleverness","steps":[{"do":"setVar","key":"defense","value":2}]}]},{"do":"roll","skill":"persuasion","difDefense":"willpower","when":["var:defense=1"],"onSuccess":[{"do":"queueTurnStart","to":"target","spendAction":"move","whisper":"Follow {name}'s order: {var.order}"},{"do":"chat","text":"{name} gives {target} an order: {var.order}."}],"onFail":[{"do":"chat","text":"{target} doesn't take {name}'s order."}]},{"do":"roll","skill":"persuasion","difDefense":"cleverness","when":["var:defense=2"],"onSuccess":[{"do":"queueTurnStart","to":"target","spendAction":"move","whisper":"Follow {name}'s order: {var.order}"},{"do":"chat","text":"{name} gives {target} an order: {var.order}."}],"onFail":[{"do":"chat","text":"{target} doesn't take {name}'s order."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: roll Persuasion against a target of your level or lower and give a one-word order. On a success its Move action is spent on the order at the start of its next turn, with a reminder.</p>"

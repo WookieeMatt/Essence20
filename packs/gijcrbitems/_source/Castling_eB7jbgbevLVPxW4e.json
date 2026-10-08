@@ -5,6 +5,9 @@
   "_id": "eB7jbgbevLVPxW4e",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Castling","cost":{"action":"standard"},"steps":[{"do":"pickAlly","max":2},{"do":"updateActor","to":"targets","add":{"system.health.bonus":1,"system.health.value":1}},{"do":"chat","text":"Both designated allies may immediately move up to their full Movement Rating."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spends your Standard action; pick two allies and each gains 1 Temporary Health. The chat card reminds them they may move up to their full Movement right away.</p>"

@@ -5,6 +5,10 @@
   "_id": "3NS825G6UdbdW7ZY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"wouldBeDefeated","label":"We All Go Home: stay at 1 Health","limit":{"per":"encounter","key":"weAllGoHome"},"steps":[{"do":"leaveAt","value":1}]},
+      {"type":"Trigger","event":"wouldBeDefeated","label":"We All Go Home: an ally stays at 1 Health","scope":"aura","radius":9999,"affects":"allies","limit":{"per":"encounter","key":"weAllGoHome"},"steps":[{"do":"leaveAt","value":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per encounter, when you or a nearby ally would be defeated, they drop to 1 Health instead.</p>"

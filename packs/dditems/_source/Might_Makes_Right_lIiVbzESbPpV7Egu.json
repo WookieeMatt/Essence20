@@ -5,9 +5,12 @@
   "_id": "lIiVbzESbPpV7Egu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Might Makes Right (Frightened)","outcome":"x2","when":["skill:persuasion"],"steps":[{"do":"applyCondition","condition":"frightened","rounds":12,"to":"target"}],"prompt":true}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: Persuasion also counts as a Strength Skill for you. Chat card: a Critical Success on Persuasion offers to make the targets Frightened.</p>"
+      "notes": "<p>Active Effect: Persuasion also counts as a Strength Skill for you. Automatic: a Critical Success on Persuasion asks whether to make each target it beat Frightened for 1 minute (12 rounds in combat).</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,6 +5,10 @@
   "_id": "h8DuSX4N1buJb6uN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Lend Assistance","steps":[{"do":"lendAssistance"}]},
+      {"type":"Use","label":"↑1 for a teammate (1 Energon)","cost":{"resource":{"path":"system.energon.normal.value"},"amount":1},"limit":{"per":"round"},"steps":[{"do":"pickAlly"},{"do":"bank","upshift":1,"to":"targets"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: Lend Assistance to a teammate, or once per round spend 1 Energon to give a teammate ↑1 on a test, even off your turn. Left to the table: assisting allies 50 to 60 ft away.</p>"

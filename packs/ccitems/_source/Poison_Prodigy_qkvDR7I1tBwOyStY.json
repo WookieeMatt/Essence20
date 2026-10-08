@@ -5,6 +5,9 @@
   "_id": "qkvDR7I1tBwOyStY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Change a poison or ready an upgrade (Poison Prodigy)","steps":[{"do":"choose","options":[{"label":"Change a poison's type (Standard action)","steps":[{"do":"pick","key":"oldPoison","from":"ownedItem","itemType":"weapon","filter":["item:data:system.isPoison"]},{"do":"pickEntry","var":"newPoison","from":{"type":"weapon","fields":["system.isPoison"],"tags":["item:data:system.isPoison"]}},{"do":"spendAction","action":"standard"},{"do":"grant","uuid":"{var.newPoison}","unlinked":true,"system":{"quantity":1}},{"do":"spendQuantity","item":"choice:oldPoison","deleteAtZero":true},{"do":"chat","text":"{name} swaps a poison for {var.newPoisonName}."}]},{"label":"Add an upgrade (Move action)","steps":[{"do":"spendAction","action":"move"},{"do":"chat","text":"{name} may now drop an upgrade onto one of their poisons."}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Standard action, turn a poison you carry into any other poison; or as a Move action, add a weapon upgrade to it.</p>"

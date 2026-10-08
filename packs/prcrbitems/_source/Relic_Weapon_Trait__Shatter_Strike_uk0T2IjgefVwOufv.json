@@ -5,9 +5,13 @@
   "_id": "uk0T2IjgefVwOufv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Attacking an object (Shatter Strike: ↑2)","upshift":2,"forget":true,"when":["attack","item:data:flags.essence20.pr2GridRelic"]}
+    ],
+    "prerequisites": {"when":["self:has:Grid Relic Weapon"]},
     "automation": {
-      "status": "manual",
-      "notes": "<p>Left to the table: ↑2 on attacks against objects.</p>"
+      "status": "full",
+      "notes": "<p>Roll Options Dialog switch on Grid Relic attacks: tick it when the target is an object (not a creature or a vehicle) for ↑2.</p>"
     },
     "originalId": "",
     "description": "",
@@ -15,7 +19,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 61
     },
-    "prerequisite": "Grid Relic Weapon",
+    "prerequisite": "",
     "selectionLimit": 3,
     "type": "role"
   },

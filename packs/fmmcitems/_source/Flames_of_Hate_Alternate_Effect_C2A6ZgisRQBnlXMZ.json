@@ -5,9 +5,12 @@
   "_id": "C2A6ZgisRQBnlXMZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Ignores armor (Flames of Hate)","defense":"any","mode":"ignoreArmor","outgoing":true,"when":["item:own"]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: rolls Targeting against the Cleverness of everyone in a 60ft line, ignoring armor bonuses; a hit leaves the target Blinded.</p>"
+      "notes": "<p>Automatic: rolls Targeting against the Cleverness of everyone in a 60ft line, ignoring armor bonuses; a hit leaves the target Blinded until the end of its next turn.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -19,7 +22,7 @@
     "damageValue": 0,
     "defenseType": "cleverness",
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 60,
     "range": {

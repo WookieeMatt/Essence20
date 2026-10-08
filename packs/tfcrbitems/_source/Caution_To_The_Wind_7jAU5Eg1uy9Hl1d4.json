@@ -5,6 +5,9 @@
   "_id": "7jAU5Eg1uy9Hl1d4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Caution To The Wind (↑ = Defenses penalty on the next attack against you)","spend":{"max":3},"upshift":"@spent","when":["not:roll:initiative"],"steps":[{"do":"bank","replace":true,"label":"Caution To The Wind","defense":"any","defenseBonus":"0 - @spent"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: take up to -3 on all your Defenses to gain the same ↑ on the roll. The Defense penalty applies to the next attack against you.</p>"

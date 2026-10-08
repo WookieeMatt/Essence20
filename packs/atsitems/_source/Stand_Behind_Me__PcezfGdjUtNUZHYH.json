@@ -5,9 +5,14 @@
   "_id": "PcezfGdjUtNUZHYH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Stand Behind Me!","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"require","check":["self:morphed"],"message":"Stand Behind Me! requires being Morphed.","beforeCost":true},{"do":"require","check":["combat"],"message":"Stand Behind Me! needs a running combat.","beforeCost":true},{"do":"mark","key":"standBehindMe","perSetter":true,"to":"enemies:60","until":"nextTurn"}]},
+      {"type":"Trigger","label":"Stand Behind Me! (Alertness to resist)","event":"turnStart","scope":"marked","mark":"standBehindMe","when":["not:self:markedByHolder:standBehindMeTested"],"steps":[{"do":"focus","to":"holder"},{"do":"button","label":"Roll DIF 14 Alertness","intro":"{target} dares {name} to attack them (Stand Behind Me!): {name} must target {target} unless they pass a DIF 14 Alertness test.","whisper":"owners","steps":[{"do":"mark","key":"standBehindMeTested","by":"holder","to":"self","until":"nextTurn","untilOf":"holder"},{"do":"roll","skill":"alertness","dif":14,"onSuccess":[{"do":"chat","text":"{name} shakes off {target}'s taunt."}],"onFail":[{"do":"mark","key":"standBehindMeForced","by":"holder","to":"self","until":"nextTurn","untilOf":"holder"},{"do":"chat","text":"{name} can only attack {target} (Stand Behind Me!)."}]}]}]},
+      {"type":"BeforeRoll","label":"Stand Behind Me! (attack the Gold Ranger only)","scope":"marked","mark":"standBehindMeForced","when":["item:type:weaponEffect","self:markedByHolder:standBehindMe",{"any":["roll:targets=0","roll:anyTarget:not:target:ruleHolder"]}],"cancel":true,"message":"E20.RulesExtConvA18.TauntBlocked"}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: while Morphed, spend 1 Personal Power at the start of the round. Enemies within 60ft get a DIF 14 Alertness button on their turn; those who fail can only attack you.</p>"
+      "notes": "<p>Use button: while Morphed, spend 1 Personal Power at the start of the round to taunt every enemy within 60ft until the start of your next turn. Only in a running combat. At a taunted enemy's turn start its owner gets a DIF 14 Alertness button; one that fails can only attack you.</p>"
     },
     "originalId": "",
     "description": "",
@@ -17,8 +22,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role",
-    "canActivate": true
+    "type": "role"
   },
   "effects": [],
   "sort": 150000,

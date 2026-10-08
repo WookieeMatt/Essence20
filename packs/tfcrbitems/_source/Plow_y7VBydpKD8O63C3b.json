@@ -5,6 +5,14 @@
   "_id": "y7VBydpKD8O63C3b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Plow (a Ram: Rough Terrain ignored this turn)","event":"afterRoll","outcome":"any","when":["attack:ram"],"steps":[{"do":"mark","to":"self","key":"plowRam","until":"turnOrUntilCombat"}]},
+      {"type":"Trigger","label":"Plow (a Ram: Rough Terrain ignored this turn)","scope":"driven","event":"afterRoll","outcome":"any","when":["self:type:vehicle","attack:ram"],"steps":[{"do":"mark","to":"self","key":"plowRam","until":"turnOrUntilCombat"}]},
+      {"type":"MovementAction","label":"Plow (Rough Terrain ignored after a Ram)","ignoreRoughTerrain":true,"when":["self:marked:plowRam"]},
+      {"type":"MovementAction","label":"Plow (Rough Terrain ignored after a Ram)","scope":"driven","ignoreRoughTerrain":true,"when":["self:type:vehicle","self:marked:plowRam"]},
+      {"type":"MultipleTargets","label":"Ram attacks gain Multiple Targets (Plow)","when":["attack:ram"]},
+      {"type":"MultipleTargets","label":"Ram attacks gain Multiple Targets (Plow)","scope":"driven","when":["self:type:vehicle","attack:ram"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you Ram, your Ram can hit up to three targets in Reach and your movement that turn ignores Rough Terrain.</p>"

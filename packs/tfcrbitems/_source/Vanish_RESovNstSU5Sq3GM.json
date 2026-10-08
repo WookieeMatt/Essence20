@@ -5,6 +5,10 @@
   "_id": "RESovNstSU5Sq3GM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Turn Invisible","when":["not:self:status:invisible"],"steps":[{"do":"applyCondition","condition":"invisible"}]},
+      {"type":"Use","label":"End Invisibility","when":["self:status:invisible"],"steps":[{"do":"removeCondition","condition":"invisible"},{"do":"chat","text":"{name} is no longer Invisible."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (Move action): turns you Invisible; use it again to end it. Left to the table: ending it when the scene ends, when you land an attack, or when an enemy hits you.</p>"

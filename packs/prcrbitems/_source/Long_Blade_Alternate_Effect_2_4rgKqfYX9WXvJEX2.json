@@ -1,10 +1,14 @@
 {
   "folder": "90aj0LwwIHN1JKcX",
-  "name": "Long Blade Alternate Effect 2",
+  "name": "Martial Arts Long Blade Alternate Effect 2",
   "type": "weaponEffect",
   "_id": "4rgKqfYX9WXvJEX2",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"finesse","to":"might","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"might","to":"finesse","mode":"bestOf"}
+    ],
     "originalId": "",
     "actionType": "standard",
     "classification": {
@@ -14,7 +18,7 @@
     "damageType": "sharp",
     "damageValue": 1,
     "shiftDown": 2,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 3,
     "radius": 0,
     "range": {

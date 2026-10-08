@@ -5,6 +5,9 @@
   "_id": "uhp3JOTYZJfHrz7q",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Stalwart Defense (Shield)","when":["not:rule:banked"],"limit":{"per":"turn"},"steps":[{"do":"choose","prompt":"Which Defense bonus, until your next turn?","options":[{"label":"+2 Toughness","steps":[{"do":"bank","defense":"toughness","defenseBonus":2,"persist":true,"until":"nextTurn","when":["combat:exists"]},{"do":"bank","defense":"toughness","defenseBonus":2,"until":"combat","when":["not:combat:exists"]}]},{"label":"+2 Evasion","steps":[{"do":"bank","defense":"evasion","defenseBonus":2,"persist":true,"until":"nextTurn","when":["combat:exists"]},{"do":"bank","defense":"evasion","defenseBonus":2,"until":"combat","when":["not:combat:exists"]}]},{"label":"+1 Toughness and Evasion","steps":[{"do":"bank","defense":["toughness","evasion"],"defenseBonus":1,"persist":true,"until":"nextTurn","when":["combat:exists"]},{"do":"bank","defense":["toughness","evasion"],"defenseBonus":1,"until":"combat","when":["not:combat:exists"]}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (once per turn): choose +2 Toughness, +2 Evasion, or +1 to both. In combat it applies to every attack against that Defense until your next turn; out of combat, to the next one.</p><p>Left to the table: the parrying-weapon option.</p>"

@@ -5,6 +5,9 @@
   "_id": "PDOUlIOgO7YoPVvm",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Chrono-File Access: the target's file","event":"powerUsed","when":["item:own"],"steps":[{"do":"notify","text":"E20.ChronoFileAccessNoTarget","level":"warn","stop":true,"when":["not:target:exists"]},{"do":"defenseFacts"},{"do":"attackFacts"},{"do":"setVar","key":"hangUps","value":"{var.hangUpNames}"},{"do":"chat","text":"{lang.ChronoFileAccessResult}"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend the Power and target a creature; a chat card shows its highest Defense, its attacks and its Hang-Ups.</p>"
@@ -17,7 +20,6 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,

@@ -5,13 +5,14 @@
   "_id": "4uQeNl1ymugY0v4w",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:trained:armors.light"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: qualifies you for Light armor.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Light Armor Training",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

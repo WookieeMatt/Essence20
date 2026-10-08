@@ -5,6 +5,9 @@
   "_id": "CJTtjWkUl7BhiaN4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"KitModifier","label":"Stretching Resources","keepRoll":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you use up a kit, you roll its scrounging test; on a success the kit isn't used up.</p>"

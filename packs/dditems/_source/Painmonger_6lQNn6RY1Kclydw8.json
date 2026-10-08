@@ -5,6 +5,9 @@
   "_id": "6lQNn6RY1Kclydw8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Painmonger (Stun: Impaired)","when":["roll:damaging","roll:damageType:stun"],"steps":[{"do":"applyCondition","condition":"impaired","until":"endOfNextTurn","untilOf":"recipient","to":"target"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: attacks whose damage is Stun also make the target Impaired until the end of its next turn. Left to the table: Stun from other effects.</p>"

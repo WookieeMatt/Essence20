@@ -5,6 +5,10 @@
   "_id": "lKnjgN4TdHHNktpF",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the energy type (Energy Resistor)","steps":[{"do":"pick","key":"type","from":"list","legacy":"flags.essence20.riderChoice","prompt":"Energy type","options":[["acid","E20.DamageAcid"],["cold","E20.DamageCold"],["electric","E20.DamageElectric"],["emp","E20.DamageEmp"],["fire","E20.DamageFire"],["laser","E20.DamageLaser"],["sonic","E20.DamageSonic"]]}]},
+      {"type":"DerivedStat","label":"Immune to the chosen energy (Energy Resistor)","path":"system.immunities.{choice.type}","value":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose an energy type. Automatic: while the armor is worn, you are immune to damage of that type.</p>"

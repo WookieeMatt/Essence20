@@ -1,4 +1,4 @@
-import { getEffectStacks } from "../helpers/vessel-conditions.mjs";
+import { getEffectStacks } from "../mechanics/vehicles/vessel-conditions.mjs";
 
 /**
  * The effects core's Token#_drawEffects draws as small status icons, in the order it draws them
@@ -14,7 +14,7 @@ export function getDrawnStatusEffects(actor) {
 
 /**
  * The stack badges one token needs: `{index, stacks}` for every drawn effect carrying more than
- * one stack (Space Vessel Conditions - see helpers/vessel-conditions.mjs).
+ * one stack (Space Vessel Conditions - see mechanics/vehicles/vessel-conditions.mjs).
  * @param {Actor} actor
  * @returns {Array<{index: Number, stacks: Number}>}
  */
@@ -33,6 +33,20 @@ export function getStackBadges(actor) {
  */
 export function makeEssence20Token(Token) {
   return class Essence20Token extends Token {
+    /**
+     * A status filter (Invisible) applied before the token has drawn its mesh - a Condition landing on a token placed a
+     * moment ago - threw inside core and failed the whole actor's data preparation (play-through 2026-10-07). Core
+     * applies the filter again once the token draws (_updateSpecialStatusFilterEffects), so waiting is safe.
+     * @override
+     */
+    _configureFilterEffect(statusId, active) {
+      if (!this.mesh) {
+        return;
+      }
+
+      return super._configureFilterEffect(statusId, active);
+    }
+
     /** @override */
     async _drawEffects() {
       await super._drawEffects();

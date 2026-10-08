@@ -5,6 +5,7 @@
   "_id": "UmadPIvZKzM5ktVD",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["host:data:system.bonusEvasion>0"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attached to worn armor, it adds +1 to that armor's Evasion bonus.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Evasion Bonus"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

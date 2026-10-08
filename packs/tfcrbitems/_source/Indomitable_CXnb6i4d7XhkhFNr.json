@@ -5,6 +5,10 @@
   "_id": "CXnb6i4d7XhkhFNr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Indomitable","scope":"incoming","when":["skill:intimidation"],"snag":true},
+      {"type":"ConditionImmunity","label":"Immune to frightened","conditions":["frightened"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you can't be given the Frightened condition, and Intimidation tests against you take a Snag, labelled Indomitable in the roller's Roll Options Dialog.</p>"

@@ -5,6 +5,9 @@
   "_id": "DlyxYU8RfDeSmS1q",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Recall a fact (DIF 14 Alertness)","steps":[{"do":"roll","skill":"alertness","dif":14,"onSuccess":[{"do":"chat","text":"{name} recalls the information."}],"onFail":[{"do":"chat","text":"{name} can't recall it."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: roll the DIF 14 Alertness Test to recall a fact. Add the extra languages to your sheet yourself.</p>"

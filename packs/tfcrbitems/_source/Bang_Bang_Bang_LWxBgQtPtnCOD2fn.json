@@ -5,6 +5,9 @@
   "_id": "LWxBgQtPtnCOD2fn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AttackCount","label":"Bang Bang Bang (ballistic)","count":3,"when":["weapon:trait:ballistic"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you take the Attack action with a ballistic weapon, you make three attacks instead of one.</p>"

@@ -5,6 +5,10 @@
   "_id": "gbDY8UiTgSNZHPAo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Sprinter","when":[{"any":["skill:acrobatics","skill:athletics"]},"not:self:transformed"],"upshift":1},
+      {"type":"Movement","movement":"ground","stage":"final","op":"add","value":5,"label":"Bot Mode: Ground Movement +5 ft","when":["not:self:transformed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Bot Mode, your Ground Movement is +5 ft on the sheet, and Acrobatics and Athletics tests get ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p>"

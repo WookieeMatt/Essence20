@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:technology>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: builds your drone pet from the book's options (function, size, movement) and links it to you. Taking the Perk again improves the pet one availability step.</p>"
@@ -13,7 +14,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 133
     },
-    "prerequisite": "Technology d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

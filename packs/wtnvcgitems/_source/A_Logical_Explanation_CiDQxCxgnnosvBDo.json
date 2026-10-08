@@ -5,6 +5,10 @@
   "_id": "CiDQxCxgnnosvBDo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"A Logical Explanation","steps":[{"do":"rollVsEach","skill":"science","defense":"willpower","onHit":[{"do":"applyCondition","condition":"stunned","to":"target","until":"endOfNextTurn","untilOf":"recipient"}]}]}
+    ],
+    "prerequisites": {"when":["self:hasType:focus:University of What It Is"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: roll Science against your target's Willpower; on a success they are Stunned until the end of their next turn.</p><p>Left to the table: what happens on a critical success.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "University of What It Is Scientist Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

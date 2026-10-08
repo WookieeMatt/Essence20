@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Cover","mode":"ignore","label":"Ignores Cover with a sniper weapon","when":["weapon:trait:sniper"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your attacks with sniper weapons ignore cover.</p>"

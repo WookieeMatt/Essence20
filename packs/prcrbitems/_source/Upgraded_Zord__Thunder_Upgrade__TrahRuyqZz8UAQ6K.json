@@ -5,6 +5,9 @@
   "_id": "TrahRuyqZz8UAQ6K",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Thunder Upgrade","when":["attack","self:type:zord"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: the Zord gets +1 Speed and ↑1 on Driving. Automatic: all its attacks deal +1 damage, listed as a Thunder Upgrade bonus on the attack's chat card.</p>"

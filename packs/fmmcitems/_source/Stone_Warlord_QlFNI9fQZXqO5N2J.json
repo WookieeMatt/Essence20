@@ -5,6 +5,10 @@
   "_id": "QlFNI9fQZXqO5N2J",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"damageType","label":"Damage type","from":"config","table":"stoneWarlordDamageTypes","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DamageModifier","label":"Stone Warlord","direction":"taken","amount":-1,"when":["self:data:flags.essence20.monsterFormActive"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 to all Defenses while Morphed. On the sheet: choose one more damage type for Numbness. Automatic: in Monster Form you take 1 less damage from every source.</p>"
@@ -18,8 +22,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "stoneWarlordDamageType"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [
     {

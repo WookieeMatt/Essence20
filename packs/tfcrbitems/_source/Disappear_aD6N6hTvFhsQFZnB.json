@@ -5,6 +5,10 @@
   "_id": "aD6N6hTvFhsQFZnB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Turn Invisible (1 Energon)","when":["not:self:status:invisible"],"cost":{"resource":{"path":"system.energon.normal.value"},"amount":1},"steps":[{"do":"applyCondition","condition":"invisible"}]},
+      {"type":"Use","label":"End Invisibility","when":["self:status:invisible"],"steps":[{"do":"removeCondition","condition":"invisible"},{"do":"chat","text":"{name} is no longer Invisible."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend 1 Energon to turn Invisible; press it again to switch Invisible off.</p><p>Left to the table: ending it at the end of your turn.</p>"
@@ -23,7 +27,6 @@
       "currentValue": 0,
       "increaseValue": 1
     },
-    "canActivate": true,
     "choice": null,
     "choiceType": "none",
     "isRoleVariant": false,

@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:size=common"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: give this Perk to your pet and it becomes Large with +1 Toughness.</p><p>Left to the table: removing the Defense bonus from the pet's old size.</p>"
@@ -13,7 +14,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 165
     },
-    "prerequisite": "Common size",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

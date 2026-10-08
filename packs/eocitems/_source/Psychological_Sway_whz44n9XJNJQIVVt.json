@@ -5,6 +5,10 @@
   "_id": "whz44n9XJNJQIVVt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Psychological Sway: help gives ↑2","side":"give","effect":"boost","atLeast":2},
+      {"type":"Use","label":"Sway a foe (↓1 on their next Skill Test)","steps":[{"do":"target"},{"do":"bank","to":"target","downshift":1},{"do":"chat","text":"{name} sways {target}: ↓1 on their next Skill Test."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you Lend Assistance, the ally gets ↑2 instead of ↑1, added to the Upshift number of their next roll with that Skill. Use button: the targeted foe takes ↓1 on its next Skill Test, labelled Psychological Sway in its Roll Options Dialog.</p>"

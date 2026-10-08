@@ -5,6 +5,11 @@
   "_id": "7qniIaOGp8Mqwt6O",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Biomechanical Weapon: pick its Skill","event":"added","steps":[{"do":"pick","key":"skill","from":"list","options":[["animalHandling","Animal Handling"],["science","Science"],["survival","Survival"]],"legacy":"flags.essence20.skillChoice","ifUnset":true}]},
+      {"type":"ItemModifier","label":"Attacks roll the picked Skill (Biomechanical Weapon)","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost"],"path":"system.classification.skill","op":"set","value":"{choice.skill}","priority":5},
+      {"type":"ItemModifier","label":"↓1 on its attacks (Biomechanical Weapon)","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost"],"path":"system.shiftDown","op":"add","value":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you attach it, pick Animal Handling, Science or Survival; the upgraded weapon's attacks roll that Skill. It also counts toward Cobra-La's Qualification rules at Requisition.</p>"

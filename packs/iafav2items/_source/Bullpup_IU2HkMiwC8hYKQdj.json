@@ -5,6 +5,11 @@
   "_id": "IU2HkMiwC8hYKQdj",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"One size smaller (Bullpup)","stage":"item","stacks":true,"items":["item:type:weapon","item:isHost"],"path":"system.effectiveSize","op":"step","value":-1,"ladder":"weaponSize"},
+      {"type":"ActionCost","label":"Bullpup (a Free reload once a scene)","action":"reload","to":"free","when":["item:isHost","not:self:holdsActive:Compendium.essence20.gi_joe_crb.Item.c0woQ6aEyVd4DBvA","not:self:holdsActive:Compendium.essence20.tf_crb.Item.Vj0RpJmj7XNKXphR"],"limit":{"per":"scene"},"stacks":true}
+    ],
+    "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","host:data:system.classification.size=long","host:data:system.classification.size=heavy"]},"ask:Ranged weapon","host:trait:reload"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon it's attached to is one size smaller, and once per scene you can reload it as a Free action.</p>"
@@ -23,7 +28,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Medium or larger ranged weapon with the Reload trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

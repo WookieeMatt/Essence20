@@ -5,6 +5,11 @@
   "_id": "Pr3UniqWpnRanged",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"fumbled","label":"Unique Weapon (Ranged): natural 1","when":["item:own"],"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":"min(1d4, @actor.system.powers.personal.value)"},{"do":"chat","text":"{name} loses {var.spent} Personal Power."}]},
+      {"type":"Use","label":"Store 1 Personal Power","when":["not:rule:data:flags.essence20.pr3StoredPower>=3"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"updateItem","item":"self","add":{"flags.essence20.pr3StoredPower":1}},{"do":"chat","text":"Personal Power stored: {@item.flags.essence20.pr3StoredPower}"}]},
+      {"type":"Use","label":"Draw 1 Personal Power","when":["rule:data:flags.essence20.pr3StoredPower>0"],"steps":[{"do":"updateItem","item":"self","add":{"flags.essence20.pr3StoredPower":-1}},{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":1,"overMax":true},{"do":"chat","text":"Personal Power stored: {@item.flags.essence20.pr3StoredPower}"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks roll Targeting at 60/100 ft for Energy damage. Use button: store up to 3 of your Personal Power in it or draw one back out. A natural 1 to hit costs you 1d4 Personal Power.</p>"
@@ -39,8 +44,6 @@
         }
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

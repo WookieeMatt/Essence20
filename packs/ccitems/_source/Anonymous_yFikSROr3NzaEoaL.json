@@ -5,6 +5,10 @@
   "_id": "yFikSROr3NzaEoaL",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Anonymous (target Resistant to repeat use)","snag":true,"stack":"anonymous","when":["target:hasItem:Compendium.essence20.gi_joe_crb.Item.Q09tkHIaVX65lokl",{"any":["skill:deception","skill:intimidation"]},"markedBy:outwitted"]},
+      {"type":"RollModifier","scope":"incoming","label":"Anonymous (target Resistant to repeat use)","snag":true,"stack":"anonymous","when":["attack","target:hasItem:Compendium.essence20.tf_crb.Item.JtWhjDRI0HDewaKe","target:keyedOnMe:flags.essence20.analyzeTargetCounts>=2"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: a Snag, labelled with this upgrade in the roller's Roll Options Dialog, on Deception or Intimidation rolls from someone with Inundation who has already outwitted the wearer, and on attacks from someone with Informed Accuracy who has already analyzed the wearer twice.</p><p>Left to the table: any other repeated ability used against the wearer.</p>"

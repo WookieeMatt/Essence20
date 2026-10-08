@@ -5,6 +5,9 @@
   "_id": "JJ8ffuxjYeXJ9KJ2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pass a Condition along the Bridge","cost":{"resource":{"path":"system.energon.normal.value"},"amount":1},"when":["self:sideStatus:frightened|impaired|mesmerized|stunned","self:sideBankKey:dataBridge"],"steps":[{"do":"moveCondition","beforeCost":true,"conditions":["frightened","impaired","mesmerized","stunned"],"toFilter":["target:bankKey:dataBridge"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Free action for 1 Energon, move Frightened, Impaired, Mesmerized or Stunned from one ally to someone on your Data Bridge (you included).</p>"

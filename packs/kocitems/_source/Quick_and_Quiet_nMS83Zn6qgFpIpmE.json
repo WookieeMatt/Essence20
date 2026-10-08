@@ -5,6 +5,9 @@
   "_id": "nMS83Zn6qgFpIpmE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Surprise a creature (first round)","when":["combat:roundIs:1"],"steps":[{"do":"target","max":1},{"do":"applyCondition","condition":"surprised","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: in the first round of combat, the targeted creature becomes Surprised with no test needed.</p>"

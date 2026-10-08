@@ -5,6 +5,11 @@
   "_id": "svqVyP2tyYzSUtn6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Steady Firepower","defense":"any","outgoing":true,"amount":"0 - @target.myMark.steadyFire","when":["markedByMe:steadyFire","check:favoriteWeaponRolled"]},
+      {"type":"Trigger","event":"afterRoll","label":"Steady Firepower: count attacks on one target","when":["attack","not:attack:unarmed","check:favoriteWeaponRolled","roll:targets=1"],"steps":[{"do":"target","min":0},{"do":"mark","key":"steadyFire","to":"target","count":1,"add":true,"exclusive":true,"perSetter":true,"until":"scene"}]},
+      {"type":"Trigger","event":"afterRoll","label":"Steady Firepower: count starts over","when":["attack","not:attack:unarmed",{"any":["not:check:favoriteWeaponRolled","not:roll:targets=1"]}],"steps":[{"do":"mark","key":"steadyFire","to":"self","exclusive":true,"perSetter":true,"filter":["not:target:self"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in a scene, each further attack with your Favorite Weapon against the same target treats its Defense as 1 lower per earlier attack; the chat card shows the lowered value.</p>"

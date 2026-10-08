@@ -5,6 +5,9 @@
   "_id": "Y1sMUqI3JOYb0QiD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"One shot instead of several (All I Need Is One Shot: ↑2, +2 damage)","when":["attack:ranged"],"upshift":2,"damage":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on a ranged attack, a switch for ↑2 and +2 damage; use it in place of Bang Bang's extra attacks.</p>"

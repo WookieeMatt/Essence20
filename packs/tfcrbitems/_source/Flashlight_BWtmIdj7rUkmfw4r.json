@@ -5,6 +5,7 @@
   "_id": "BWtmIdj7rUkmfw4r",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","ask:Large weapon"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>The table handles this: the weapon has a built-in flashlight.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Medium or Large"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

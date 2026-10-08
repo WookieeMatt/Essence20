@@ -5,6 +5,9 @@
   "_id": "GY9fkASnSzkQIYKC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CritOnD2","label":"Ripple Effect: crit on the d2 against equipment with a blade or bludgeon","when":["attack",{"any":["item:damageType:blunt","item:damageType:sharp"]},"target:type:vehicle"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when your Blunt or Sharp attack targets a vehicle, the Roll Options Dialog opens with its \"Can critically succeed on a d2\" switch on.</p>"

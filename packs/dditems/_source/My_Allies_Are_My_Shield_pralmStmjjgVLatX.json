@@ -5,6 +5,15 @@
   "_id": "pralmStmjjgVLatX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"+1 per ally within 30 ft, less trades (My Allies Are My Shield)","defense":"any","amount":"max(0, @count.allies.30 - @mark.shieldTrade)","when":[{"any":["defense:toughness","defense:evasion","defense:willpower","defense:cleverness"]}]},
+      {"type":"Use","label":"Trade 1 Defense for +10 ft Movement","when":["combat:exists"],"cost":{"action":"free"},"steps":[{"do":"table","formula":"@count.allies.30 - @mark.shieldTrade","rows":[{"max":0,"text":"No Defense bonus left to trade."}],"beforeCost":true},{"do":"require","beforeCost":true,"check":["var:rolled>=1"]},{"do":"mark","key":"shieldTrade","to":"self","count":1,"add":true,"until":"nextTurn"},{"do":"chat","text":"{name} trades 1 Defense for +10 ft Movement ({@mark.shieldTrade} traded)."}]},
+      {"type":"Movement","label":"Traded Defense, ground (My Allies Are My Shield: +10 ft each)","movement":"ground","op":"add","value":"10 * @mark.shieldTrade * min(1, ceil(max(0, @actor.system.movement.ground.total)))","stage":"afterDerived","when":["self:marked:shieldTrade"]},
+      {"type":"Movement","label":"Traded Defense, aerial (My Allies Are My Shield: +10 ft each)","movement":"aerial","op":"add","value":"10 * @mark.shieldTrade * min(1, ceil(max(0, @actor.system.movement.aerial.total)))","stage":"afterDerived","when":["self:marked:shieldTrade"]},
+      {"type":"Movement","label":"Traded Defense, swim (My Allies Are My Shield: +10 ft each)","movement":"swim","op":"add","value":"10 * @mark.shieldTrade * min(1, ceil(max(0, @actor.system.movement.swim.total)))","stage":"afterDerived","when":["self:marked:shieldTrade"]},
+      {"type":"Movement","label":"Traded Defense, climb (My Allies Are My Shield: +10 ft each)","movement":"climb","op":"add","value":"10 * @mark.shieldTrade * min(1, ceil(max(0, @actor.system.movement.climb.total)))","stage":"afterDerived","when":["self:marked:shieldTrade"]},
+      {"type":"Trigger","label":"The trade ends as your turn starts (My Allies Are My Shield)","event":"turnStart","when":["self:data:flags.essence20.ruleMarks.shieldTrade"],"steps":[{"do":"unmark","key":"shieldTrade","to":"self"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you're attacked, your Defense counts as 1 higher for each ally within 30 ft; the attack's chat card shows the raised value. Use button (Free): trade 1 point of that bonus for +10 ft of Movement until your next turn.</p>"

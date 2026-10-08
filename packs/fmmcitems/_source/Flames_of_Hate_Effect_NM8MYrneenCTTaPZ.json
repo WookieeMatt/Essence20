@@ -5,6 +5,9 @@
   "_id": "NM8MYrneenCTTaPZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Ignores armor (Flames of Hate)","defense":"any","mode":"ignoreArmor","outgoing":true,"when":["item:own"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: rolls Targeting against the Cleverness of everyone in a 60ft line for 2 Psychic damage, ignoring armor bonuses.</p>"
@@ -19,7 +22,7 @@
     "damageValue": 2,
     "defenseType": "cleverness",
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 60,
     "range": {

@@ -5,6 +5,12 @@
   "_id": "ojIyM3QMD0QgRGca",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Take a shape","when":["not:self:marked:zord1Shape"],"steps":[{"do":"askChoiceText","key":"creature","prompt":"Creature"},{"do":"choose","prompt":"Size","options":[{"label":"One size smaller","steps":[{"do":"shiftSize","steps":-1,"ladder":"class","record":"shapeSize"}]},{"label":"The same size","steps":[]},{"label":"One size larger","steps":[{"do":"shiftSize","steps":1,"ladder":"class","record":"shapeSize"}]}]},{"do":"mark","key":"zord1Shape","to":"self","until":"scene"},{"do":"chat","text":"{name} takes the shape of {choice.creature}."}]},
+      {"type":"Use","label":"End the shape","when":["self:marked:zord1Shape"],"steps":[{"do":"restoreSize","record":"shapeSize"},{"do":"unmark","key":"zord1Shape","to":"self"},{"do":"chat","text":"{name} returns to their own shape."}]},
+      {"type":"Trigger","event":"sceneStart","label":"Revolutionary Shape-Shifting (the shape ends)","when":["rule:data:flags.essence20.rules.choices.shapeSize"],"steps":[{"do":"restoreSize","record":"shapeSize"}]},
+      {"type":"DialogSwitch","label":"Suited to your {choice.creature} shape (↑1)","upshift":1,"forget":true,"when":["self:marked:zord1Shape"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button after casting: name the creature, optionally change size by one step (reverted at scene end), and get a ↑1 switch on tests that suit the creature for the scene. Left to the table: the creature's natural attacks.</p>"

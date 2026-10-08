@@ -5,13 +5,14 @@
   "_id": "FPE1tFVfl0zTvioz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:A Contact with a Threat stat block"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a Perk from one of your Contacts' stat blocks and it's added to your sheet.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "One or more Contacts with Threat stat blocks",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

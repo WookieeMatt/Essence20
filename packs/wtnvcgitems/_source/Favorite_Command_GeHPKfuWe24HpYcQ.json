@@ -5,9 +5,12 @@
   "_id": "GeHPKfuWe24HpYcQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the Favorite Command Skill","steps":[{"do":"pick","key":"skill","from":"config","path":"skills","prompt":"Skill"},{"do":"updateItem","set":{"flags.essence20.favoriteSkill":"{var.picked}"}}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button (on the pet): choose its favourite Skill. When you Command the pet you're asked if it's that Skill; if so the command costs a Move action instead of a Standard action.</p>"
+      "notes": "<p>Use button (on the pet): choose its favourite Skill. When you Command the pet you're asked if it's that Skill; if so the command costs a Move action instead of a Standard action. The Perk belongs on the pet, not on you.</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,6 +5,9 @@
   "_id": "Pr3UniqEffVersMt",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Target 3+ sizes larger (Unique Weapon (Versatile Melee): ↑2)","when":["attack","weapon:source:Compendium.essence20.pr_crb.Item.Pr3UniqWpnVersat","target:sizeDiff>=3"],"upshift":2,"stack":"uniqueWeaponVersatile"}
+    ],
     "originalId": "",
     "actionType": "standard",
     "classification": {
@@ -14,7 +17,7 @@
     "damageType": "sharp",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

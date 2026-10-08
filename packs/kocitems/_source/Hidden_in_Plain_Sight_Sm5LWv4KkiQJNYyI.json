@@ -5,6 +5,9 @@
   "_id": "Sm5LWv4KkiQJNYyI",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Trying to get noticed (Hidden in Plain Sight: Snag)","snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a Snag switch for tests to get someone to notice you.</p>"

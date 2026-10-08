@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the Skill and its extra Essence","steps":[{"do":"pick","key":"skill","from":"list","prompt":"Choose the Skill your mentor taught you","legacy":"flags.essence20.q2Mentor.skill","options":[["athletics","E20.SkillAthletics"],["brawn","E20.SkillBrawn"],["intimidation","E20.SkillIntimidation"],["might","E20.SkillMight"],["acrobatics","E20.SkillAcrobatics"],["driving","E20.SkillDriving"],["finesse","E20.SkillFinesse"],["infiltration","E20.SkillInfiltration"],["initiative","E20.SkillInitiative"],["targeting","E20.SkillTargeting"],["alertness","E20.SkillAlertness"],["culture","E20.SkillCulture"],["science","E20.SkillScience"],["survival","E20.SkillSurvival"],["technology","E20.SkillTechnology"],["animalHandling","E20.SkillAnimalHandling"],["deception","E20.SkillDeception"],["performance","E20.SkillPerformance"],["persuasion","E20.SkillPersuasion"],["spellcasting","E20.SkillSpellcasting"],["streetwise","E20.SkillStreetwise"],["weird","E20.SkillWeird"]]},{"do":"pick","key":"essence","from":"list","prompt":"Choose the Essence it can also use","legacy":"flags.essence20.q2Mentor.essence","options":[["strength","E20.EssenceStrength"],["speed","E20.EssenceSpeed"],["smarts","E20.EssenceSmarts"],["social","E20.EssenceSocial"]]}]},
+      {"type":"DerivedStat","label":"Mentor (extra Essence)","path":"system.skills.{choice.skill}.essences.{choice.essence}","value":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose the Skill your mentor taught you; it can also be rolled with the extra Essence you pick.</p>"

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Dodgy","action":"defend","to":"free"}
+    ],
+    "prerequisites": {"when":["self:essence:speed>=3"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: +2 Evasion. Automatic: Defend costs you a Free action. Left to the table: only Defending that way on rounds when you move 5 ft or less.</p>"
@@ -13,7 +17,7 @@
       "book": "My Little Pony Core Rulebook",
       "page": 123
     },
-    "prerequisite": "Speed 3",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

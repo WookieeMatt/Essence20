@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: dropping it on a character adds the Medium Blade, Tactical Armor (Silent), Standard Infiltration Kit, Short Bludgeoning and Thrown Blade (Aerodynamics), with their upgrades attached.</p>"
+      "notes": "<p>Granted: dropping it on a character adds the Medium Blade, Tactical Armor (Silent), Standard Infiltration Kit, Short Bludgeon and Thrown Blade (Aerodynamics), with their upgrades attached.</p>"
     },
     "originalId": "",
     "description": "",
@@ -107,13 +107,13 @@
       "1ddb": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.aRBWUHeBjdevKh4Q",
         "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
-        "name": "Short Bludgeoning",
+        "name": "Short Bludgeon",
         "type": "weapon",
         "items": {
           "ce5d": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.7ah23fiimnJq6HIL",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Short Bludgeoning Effect",
+            "name": "Short Bludgeon Effect",
             "type": "weaponEffect",
             "classification": {
               "skill": "finesse",
@@ -135,7 +135,7 @@
           "2f24": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.rMg6ZhYEEHTeZ8Db",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Short Bludgeoning Alternate Effect",
+            "name": "Short Bludgeon Alternate Effect",
             "type": "weaponEffect",
             "classification": {
               "skill": "finesse",

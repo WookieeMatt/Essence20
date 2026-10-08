@@ -5,6 +5,9 @@
   "_id": "2STwn9zH3aInPsS9",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Polite society or a formal setting (Brutish: Snag)","when":["essence:social"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch on Social tests that gives you a Snag in formal or polite settings.</p>"

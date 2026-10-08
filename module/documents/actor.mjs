@@ -1,69 +1,51 @@
-import { runDerived } from "../helpers/extensions.mjs";
-import { COMMANDER_SKILLS_FLAG } from "../helpers/extensions/r2misc/commander.mjs";
-import { linkedBonuses } from "../helpers/companions.mjs";
-import { BOND, bondBonuses } from "../helpers/bonded.mjs";
-import { hardTargetBonus, vehicleHands } from "../helpers/summons.mjs";
-import { socialStandingDefense } from "../helpers/social-rolls.mjs";
-import { carryPercent, extraCarriedHands, loaderShieldToughness } from "../helpers/kits.mjs";
-import { imperfectionOf, thickSkullsShift } from "../helpers/grants.mjs";
-import { GRANT } from "../helpers/grant-uses.mjs";
-import { ablativeLossOf, RIDER, riderChoiceOf, sourceOf as sourceOfItem } from "../helpers/target-riders.mjs";
-import { defenseDamageOf } from "../helpers/essence-damage.mjs";
-import { hardpointBonus, integratedHardpointsPerWeapon } from "../helpers/weapon-traits.mjs";
-import { applyToVehicle as applyVehicleUpgrades, driverDefenseBonus, getCrewedVehicle } from "../helpers/vehicle-upgrades.mjs";
-import { isUndoEngineMovementDisabled } from "../helpers/undo-engine.mjs";
-import { isGridShellActive, WEAPON_USE_IDS } from "../helpers/weapon-perk-uses.mjs";
-import { handlePartyDeleted, preventLastPartyDelete, preventPrimaryDeleteByPlayer } from "../helpers/party.mjs";
+import { runDerived } from "../mechanics/item-hooks.mjs";
+import { COMMANDER_SKILLS_FLAG } from "../items/zords/commander-combiner-feature.mjs";
+import { linkedBonuses } from "../mechanics/companions/companions.mjs";
+import { BOND } from "../mechanics/companions/bonded-partners.mjs";
+import { vehicleHands } from "../mechanics/companions/summons.mjs";
+import { carryPercent, extraCarriedHands } from "../mechanics/resources/kits.mjs";
+import { imperfectionOf } from "../mechanics/resources/grants.mjs";
+import { rulePartyRequisitionPerMember } from "../rules/plugins/resources/party-requisition.mjs";
+import { ablativeLossOf, sourceOf as sourceOfItem } from "../mechanics/combat/target-riders.mjs";
+import { defenseDamageOf } from "../mechanics/combat/essence-damage.mjs";
+import { hardpointBonus, integratedHardpointsPerWeapon } from "../mechanics/combat/weapon-traits.mjs";
+import { applyToVehicle as applyVehicleUpgrades } from "../mechanics/vehicles/vehicle-upgrades.mjs";
+import { holdsMegaformTogether, megaformArmorOf, sharesSpecializations, traitReplaced } from "../rules/plugins/zords/megaform-contributions.mjs";
+import { isGridShellActive } from "../items/attacks/weapon-perk-uses.mjs";
+import { handlePartyDeleted, preventLastPartyDelete, preventPrimaryDeleteByPlayer } from "../mechanics/resources/party.mjs";
 import { Dice } from "../dice.mjs";
-import { isUnableToAct } from "../helpers/action-economy.mjs";
-import { E20 } from "../helpers/config.mjs";
-import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { getNumActions, resizeTokens, sceneResistancesOf } from "../helpers/actor.mjs";
-import { syncMorphState } from "../helpers/morph-state.mjs";
-import { actorHasPerk, findPerk } from "../helpers/perks.mjs";
-import { getBlindsightRange } from "../helpers/blindsight.mjs";
-import { getBestVisionGrant } from "../helpers/vision-grant.mjs";
-import { getGravityOptionalHeight, isGravityOptionalActive } from "../helpers/gravity-optional.mjs";
+import { isUnableToAct } from "../mechanics/actions/action-economy.mjs";
+import { E20 } from "../util/config.mjs";
+import { RollDialog } from "../mechanics/rolls/roll-dialog.mjs";
+import { getNumActions } from "../mechanics/actions/action-counts.mjs";
+import { resizeTokens } from "../mechanics/world/token-sync.mjs";
+import { sceneResistancesOf } from "../mechanics/world/scene-resistances.mjs";
+import { syncMorphState } from "../mechanics/characters/morph-state.mjs";
+import { getBlindsightRange } from "../items/senses/blindsight.mjs";
+import { getBestVisionGrant } from "../mechanics/characters/vision-grant.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransformUuid } from "../sheet-handlers/transformer-handler.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
 import { normalizeSpecializations } from "../sheet-handlers/specialization-handler.mjs";
-import { isPowerAdaptationActive } from "../helpers/power-adaptation.mjs";
-import { isSkiing } from "../helpers/skier.mjs";
-import { isWisdomOfTheEldersActive } from "../helpers/wisdom-of-the-elders.mjs";
-import { getMobileModeType } from "../helpers/mobile-mode.mjs";
-import { getAnimalGaitType } from "../helpers/animal-gait.mjs";
-import { getSwiftnessBonusFeet } from "../helpers/swiftness.mjs";
-import { getFlutteryWingsBonus } from "../helpers/fluttery-wings.mjs";
-import { isEvasiveManeuversActive } from "../helpers/evasive-maneuvers.mjs";
-import { isLightningSpeedActive } from "../helpers/lightning-speed.mjs";
-import { isRushTheLineActive } from "../helpers/rush-the-line.mjs";
-import { isHighGearActive } from "../helpers/high-gear.mjs";
-import { isFrictionlessMovementActive } from "../helpers/frictionless-movement.mjs";
-import { isSprinterBoostActive } from "../helpers/sprinter-boost.mjs";
-import { isHotToTrotActive } from "../helpers/hot-to-trot.mjs";
-import { isBulwarkActive } from "../helpers/bulwark.mjs";
-import { hasNearbyDefeatedAlly } from "../helpers/field-aid.mjs";
-import { isEngineOverrideBoostActive } from "../helpers/engine-override.mjs";
-import { getHupHupHupHupHupBonus } from "../helpers/hup-hup-hup-hup-hup.mjs";
-import { isJuryRigBenefitActive } from "../helpers/jury-rig.mjs";
-import { isTheToughGetGoingActive } from "../helpers/the-tough-get-going.mjs";
-import { getNaturalMovementType } from "../helpers/natural-movement.mjs";
-import { hasActiveEnvironmentalExpertise } from "../helpers/environmental-expertise.mjs";
-import { getHissColumnBonus, getColonyChangelingEvasionBonus } from "../helpers/allies.mjs";
-import { actorHasZordFeature } from "../helpers/zord-features.mjs";
-import { isRecklessAbandonActive } from "../helpers/reckless-abandon.mjs";
-import { getDistressMovementBonus } from "../helpers/emotional-mastery.mjs";
-import { EXPANDED_MYSTICISM_ID, isExpandedMysticismQuickenActive } from "../helpers/expanded-mysticism.mjs";
-import { getMachineMantleBonus } from "../helpers/imperial-machine-mantle.mjs";
-import { ENERGY_AFFINITY_ID } from "../helpers/energy-affinity.mjs";
-import { SELF_PRESERVATION_ID } from "../helpers/self-preservation.mjs";
-import { getInnerMagicWillpowerReduction } from "../helpers/inner-magic.mjs";
-import { applyModularIntegration } from "../helpers/modular-armor.mjs";
-import { DEFAULT_ENVIRONMENT, getEnvironment } from "../helpers/environment.mjs";
-import { changeVesselConditionStacks, getVesselConditionStacks, isStackingVesselCondition } from "../helpers/vessel-conditions.mjs";
-import { needsGmRelay, relayToGm } from "../helpers/gm-relay.mjs";
+import { isPowerAdaptationActive } from "../items/forms/power-adaptation.mjs";
+import { isWisdomOfTheEldersActive } from "../items/forms/wisdom-of-the-elders.mjs";
+import { getFlutteryWingsBonus } from "../items/magic/fluttery-wings.mjs";
+import { ruleEvasiveManeuvers } from "../rules/plugins/combat/evasive-maneuvers-rule.mjs";
+import { isLightningSpeedActive } from "../items/magic/lightning-speed.mjs";
+import { isHotToTrotActive } from "../items/magic/hot-to-trot.mjs";
+import { convertEssenceWrites, resetEssencesFromBase, usesEssenceBase } from "../mechanics/vehicles/machine-essences.mjs";
+import { currentEssence, tracksEssenceDamage } from "../mechanics/combat/essence-current.mjs";
+import { convertCreatureEssenceWrites, finishCurrentEssences, resetScoresFromBase, usesScoreBase } from "../mechanics/characters/creature-essences.mjs";
+import { isJuryRigBenefitActive } from "../items/vehicles/jury-rig.mjs";
+import { isTheToughGetGoingActive } from "../items/movement/the-tough-get-going.mjs";
+import { getHissColumnBonus } from "../mechanics/combat/nearby-allies.mjs";
+import { actorHasZordFeature } from "../mechanics/vehicles/zord-features.mjs";
+import { getDistressMovementBonus } from "../items/resources/emotional-mastery.mjs";
+import { applyModularIntegration } from "../items/defenses/modular-armor.mjs";
+import { DEFAULT_ENVIRONMENT, getEnvironment } from "../mechanics/world/environment.mjs";
+import { changeVesselConditionStacks, getVesselConditionStacks, isStackingVesselCondition } from "../mechanics/vehicles/vessel-conditions.mjs";
+import { needsGmRelay, relayToGm } from "../mechanics/world/gm-relay.mjs";
 
 // GI Joe CRB Vanguard Perks that grant a flat, condition-gated Toughness/Evasion bonus - computed
 // fresh in _prepareDefenses() below (like rolePointsDefense already is) rather than written into
@@ -82,312 +64,24 @@ import { needsGmRelay, relayToGm } from "../helpers/gm-relay.mjs";
 // clause too, which had been wrongly logged elsewhere as an unbuilt gap) - removed once the
 // double-count was found by cross-referencing every automated Perk ID here against the
 // compendium's own Active Effects.
-const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
-const ARMOR_EXPERT_ID = `${GI_JOE_CRB}0a01vmWtbbYYcNvA`;
-const THE_HEAVY_ID = `${GI_JOE_CRB}rlD6YJSr2fgROKHo`;
-// Colony Changeling (Dark Skies Over Equestria, Natural Shape choice, p.17) - see
-// helpers/allies.mjs#getColonyChangelingEvasionBonus's own doc comment.
-const COLONY_CHANGELING_ID = "Compendium.essence20.dark_skies_over_equestria.Item.FRUWPAePJzm7Mlf0";
-// Fast (General Perk, p.131): "Increase all of your Movement types by 10 feet" - see
-// _prepareMovement()'s own check below for why its flat Active Effect bonus (the only way this
-// codebase has to express "+10 to a stat") needs a code-side correction rather than being left as
-// pure data.
-const FAST_ID = `${GI_JOE_CRB}5IWpV61QlVwBkpTI`;
+// Colony Changeling's +1 Evasion per adjacent colony changeling and Fighting Style's Careful / Defense bonuses are Defense
+// rules on those items (rules/conv17-Split1.test.js); Trigger Happy is dice.mjs#_hasFightingStyle.
 
-// Bulwark (Tank Focus, 17th level, p.99) - see helpers/bulwark.mjs's own doc comment. "Your
-// movement becomes zero" while planted, checked in _prepareMovement() below alongside Warrior
-// Rush's own permitted movement-math touch-point.
-const BULWARK_ID = `${GI_JOE_CRB}7758n3XWOzhSjdOk`;
-// Wire Work (Commando base, Infiltrator Focus, 6th level, p.73): "you gain a Climb Movement equal
-// to your Ground Movement" - unlike Lightfoil Wings' identical-shaped aerial=ground copy, this is
-// safe to read system.movement.ground.total directly (movementTypes processes 'climb' AFTER
-// 'ground' in the loop below, so ground's own total is already fully finalized by this point).
-// "Do not have to roll a Skill Test to climb most surfaces" and the jump-distance clauses are pure
-// narrative/GM-adjudicated with no mechanic to hook - not built. The Acrobatics-for-Athletics
-// substitution lives in dice.mjs (see WIRE_WORK_ID's own comment there).
-const WIRE_WORK_ID = `${GI_JOE_CRB}TGqWGjDUy24SPSGZ`;
-const AMPHIBIOUS_ASSAULT_ID = "Compendium.essence20.quartermasters_guide_to_gear.Item.X2atZm3eoIBJcwF6";
-// Field Aid (Focus: Medic, 3rd level, p.82) - see helpers/field-aid.mjs's own doc comment.
-const FIELD_AID_ID = `${GI_JOE_CRB}5JUC0fO9hUIJFP6u`;
-// Shared by Infantry and Vanguard - a single compendium Perk both Roles grant, whose chosen
-// Fighting Style lives on its own system.choice field (see sheet-handlers/perk-handler.mjs's
-// 'fightingStyle' choiceType). Only Careful/Defense have a numeric effect built - the other 4
-// options (Akimbo, Close Quarters Battle, Long Shot, Trigger Happy) are recorded but not automated.
-const FIGHTING_STYLE_ID = `${GI_JOE_CRB}2LtDCHxgg9bMvWQK`;
-
-// Transformers CRB Role Perks automated below - Tier 1 of the Transformers Role automation pass
-// (see project plan). Bare `perk` items with no compendium mechanical data of their own, same
-// "content is empty, the fix is code" situation as every Power Ranger Tier 1 Perk.
-const TF_CRB = "Compendium.essence20.tf_crb.Item.";
-
-// Organic Energon (Field Guide to Action and Adventure, General Perk, p.71): "Whether through
-// nature or experimentation, you represent the evolutionary crossing point between organic and
-// robotic life... You gain a pool of Energon Points equal to half your lowest Essence score."
-// Unlike Energon Battery below, this is meant for a NON-transforming character (prerequisite:
-// "You can't have the Robot trait") who would otherwise get no Energon pool at all
-// (_prepareEnergon's own early-return below is gated on system.canTransform) - so this Perk
-// widens that gate rather than fitting inside the existing canTransform branch.
-const ORGANIC_ENERGON_ID = "Compendium.essence20.field_guide_action_adventure.Item.ic1SwixGi3tstr5y";
-
-// Personal Power Supply (Field Guide to Action and Adventure, General Perk, p.71): "You gain a
-// Personal Power Point pool, starting with 1 and growing by 1 every 5 levels (for instance, if
-// you choose this Perk at 6th level, you begin with a pool of 2). You regenerate 2 Personal Power
-// Points per day (up to your maximum)." The pool and its +2 regeneration (read by the sheet's Rest)
-// are here; "you can choose Grid Powers as General Perks" is the Perk's own Use button
-// (helpers/grants.mjs#personalPowerSupply). The level-scaling formula (1 + floor(level/5))
-// matches RAW's own worked example exactly. `system.powers.personal.max` is otherwise a plain
-// Active-Effect-additive field (see Extra Grid Power's own compendium Active Effect, `mode: 2`
-// ADD, +1) with no existing derived-data computation of its own - this runs in
-// prepareDerivedData(), after Active Effects have already applied, and ADDS on top of whatever
-// value already exists, the same "additive, not overriding" shape every other source of Personal
-// Power already assumes.
-const PERSONAL_POWER_SUPPLY_ID = "Compendium.essence20.field_guide_action_adventure.Item.Uy3t5KLbeGHv08ho";
-
-// Energon Battery (Scientist Role, 1st level, p.79): "you store a number of personal Energon
-// Points equal to your highest Essence Score, not your lowest." Overrides the Math.min() every
-// other transforming actor uses in _prepareEnergon() below.
-const ENERGON_BATTERY_ID = `${TF_CRB}mRwjbhGpqWu7hqDM`;
-
-// Cybertroid Catalyst (Decepticon Directive, General Perk, p.65): "The maximum number of Energon
-// Points you can store is equal to your second lowest Essence Score (instead of the lowest)."
-// Same override-the-Math.min() shape as Energon Battery just above, just a different aggregate of
-// the same four Essence values - see _prepareEnergon's own use of this constant below. ("Whenever
-// you gain Energon Points for any reason, you gain 1 additional Energon Point" isn't built: unlike
-// the max itself, which this method OWNS in one place, real Energon gains are written directly at
-// several separate call sites across the codebase (banked-buffs.mjs, energon-parasite.mjs,
-// siphon.mjs, etc.) with no single shared "gain Energon" chokepoint to add +1 onto - the same class
-// of cross-cutting gap this project already accepts elsewhere rather than touching every call site.)
-const DECEPTICON_DIRECTIVE = "Compendium.essence20.decepticon_directive.Item.";
-const CYBERTROID_CATALYST_ID = `${DECEPTICON_DIRECTIVE}WfrRHdgPpZiOLT8V`;
-
-// Fireproof (Cobra Codex, Ranger Firestarter Focus, 3rd/10th level, p.58): "At 3rd level, you gain
-// Fire Resistance. At 10th level, this improves to Fire Immunity." Level-gated, so - unlike a
-// static compendium Active Effect - this needs a live level check; runs in prepareDerivedData()
-// (after Active Effects have already applied) and only ADDS the Resistance/Immunity on top of
-// whatever's already set, the same "additive, not overriding" idiom PERSONAL_POWER_SUPPLY_ID's own
-// comment above already establishes - it never clears an existing true value down to false.
-const FIREPROOF_ID = "Compendium.essence20.cobra_codex.Item.gaOLMFlImcLRmQV0";
-
-// Titanspark (Enigma of Combination, Influence Perk, p.26): "your Bot and Alt Modes are one Size
-// Class larger than your Origin normally allows, and you start with +1 Health." The +1 Health half
-// is a plain compendium Active Effect (system.health.bonus); this constant/method cover the Size
-// Class bump only, which system.size has no live derivation to hook (it's a plain field written
-// once at chassis selection - sheet-handlers/background-handler.mjs) - so this bumps it here
-// instead, in memory only, the same "computed, never persisted" idiom Fireproof's own comment
-// above establishes.
-const TITANSPARK_ID = "Compendium.essence20.enigma_of_combination.Item.ldnUTXw5w21toLIy";
-
-// Armored Defense (Enigma of Combination, Combiner trait, p.42): "Increase the bonus to the
-// Combiner form's Toughness Defense from armor upgrades by 1." Authored as a coreDefenses trait,
-// but unlike Core Defenses it leaves Evasion alone.
-const ARMORED_DEFENSE_ID = "Compendium.essence20.enigma_of_combination.Item.GQHo1Tv5jIJ65GW3";
-const isArmoredDefense = item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == ARMORED_DEFENSE_ID;
-
-// Mind Palace (MLP CRB, Role Perk, p.94): "At 5th level, you gain +1 to Willpower. At 11th level,
-// this bonus increases to +2. At 17th level, this bonus increases to +3." Level-gated, so - unlike
-// a static compendium Active Effect - this needs a live level check; all 3 of the item's own
-// compendium Active Effects are disabled (their 5th-level one included, since RAW never intends it
-// below 5th level either) and this method computes the CURRENT tier's bonus fresh instead, the
-// same "runs in prepareDerivedData(), additive on top of whatever's already set" idiom Fireproof's
-// own comment above establishes.
-const MIND_PALACE_ID = "Compendium.essence20.mlp_crb.Item.UVFsgco1AMzgZ595";
-
-// Inner Magic - see helpers/inner-magic.mjs's own doc comment. The ↑1 Spellcasting half is already
-// built (helpers/banked-buffs.mjs); this constant/method cover the stacking Willpower Defense
+// Inner Magic - see items/magic/inner-magic.mjs's own doc comment. The ↑1 Spellcasting half is already
+// built (mechanics/resources/banked-buffs.mjs); this constant/method cover the stacking Willpower Defense
 // reduction half only.
 
-// Animal Gait (Cobra Codex, Ranger Guerilla Focus, 6th level, p.61) - see helpers/animal-gait.mjs's
+// Animal Gait (Cobra Codex, Ranger Guerilla Focus, 6th level, p.61) - see items/movement/animal-gait.mjs's
 // own doc comment. Checked in _prepareMovement() below, same permitted movement-math touch-point
 // Wisdom of the Elders' Lightfoil Wings/Warrior Rush already use.
 
-// Warrior Rush (Wrecker Focus, 1st level, p.92) - see its own check in _prepareMovement() below.
-const WARRIOR_RUSH_ID = `${TF_CRB}jTNi4jENlLEq8ruS`;
-const THUNDEROUS_ADVANCE_ID = "Compendium.essence20.gi_joe_crb.Item.B0yM8ewEoYJb1GBg";
-const OVERPROTECTIVE_UPGRADE_ID = "Compendium.essence20.jump_through_time.Item.oQL3yYlWvKQNZlJC";
-
-// Keep it Together! (Enigma of Combination, Component Ace Focus, 17th level, p.34) - see its own
-// check in _prepareMegaformCombinerData() below.
-const KEEP_IT_TOGETHER_ID = "Compendium.essence20.enigma_of_combination.Item.9QdGh6Kfb1EVi4N7";
-
-// Better as One (Enigma of Combination, Component Ace Focus, 10th level, p.34) - see its own
-// Specialization-merging check in _prepareMegaformCombinerData() below. Only the Specialization
-// half is built - the "spend 1 personal Energon Point to give the combined form the normal +1
-// bonus (instead of spending from the combined form's own pool)" half needs a "which component's
-// resource to charge" picker this codebase has no precedent for (every existing Energon-spend
-// checkbox charges the ROLLING actor's own pool), left as a documented gap.
-const BETTER_AS_ONE_ID = "Compendium.essence20.enigma_of_combination.Item.XnmVJF4XNcsaXAKL";
-
-// Rush the Line (Factions in Action Vol. 2, Renegade Focus, p.68) - see helpers/rush-the-line.mjs's
-// own doc comment, and its own check in _prepareMovement() below.
-const RUSH_THE_LINE_ID = "Compendium.essence20.intercontinental_adventures.Item.va1HF5CudO4WsguB";
-
-// Frictionless Movement (Technorganic Secrets, Mutant Beast Influence Perk, p.47) - see
-// helpers/frictionless-movement.mjs's own doc comment for the full "double EVERY Movement type"
-// reasoning, unlike Rush the Line's own ground-only reading just above.
-const FRICTIONLESS_MOVEMENT_ID = "Compendium.essence20.technorganic_secrets.Item.9fOrSAd3brtSBk9C";
-
-// Over the Candlestick (Technorganic Secrets, Climber/Nimble Origin Benefit, p.38) - see
-// dice.mjs's own OVER_THE_CANDLESTICK_ID comment for the full Perk text and Agile Reflexes half;
-// this file only handles the Innate Climber half's own movement grant, below.
-const OVER_THE_CANDLESTICK_ID = "Compendium.essence20.technorganic_secrets.Item.zKngKkwDyNv2nnH5";
-
-// Sprinter (Technorganic Secrets, Hunter's Prowess Quadruped Origin choice, p.44): "Add 20 feet to
-// your Alt Mode's Ground Movement. Additionally, once per scene, you may double your Movement for
-// one round." CORRECTED 2026-09-11: this item's own compendium ActiveEffect
-// (`system.movement.ground.bonus +20`) was unconditional - since `.bonus` is added to Ground
-// Movement's own total in EITHER Bot or Alt Mode (see _prepareMovement's own base+bonus/
-// altMode+bonus formulas below), it wrongly buffed Bot Mode too, when RAW scopes this to Alt Mode
-// only. Disabled that static effect and replaced it with the live, Alt-Mode-gated check below -
-// same pattern Innate Climber's own fix just established. The once/scene double-Movement half
-// lives in helpers/sprinter-boost.mjs, reusing Frictionless Movement's exact toggle +
-// combatTurn/combatRound end-of-turn-clear shape, scoped to Ground only (Sprinter's own Alt-Mode-
-// Ground focus, the same reading Rush the Line's identical "your Movement" wording already gets).
-const SPRINTER_ID = "Compendium.essence20.technorganic_secrets.Item.L5P54Ismw81Lhrbe";
-
-// Sprinter (Transformers One Sourcebook, General Perk, p.19): "Increase your Bot Mode Ground
-// Movement by 5 feet." CORRECTED 2026-09-11: the compendium's own unconditional
-// system.movement.ground.bonus effect wrongly buffed Alt Mode too - the same overreach bug already
-// found and fixed for Technorganic Secrets' own identically-named Sprinter Perk this same session,
-// disabled and replaced with this live, Bot-Mode-gated check. A third, unrelated compendium item
-// from this project's own "same name, different book" pile - see dice.mjs's own
-// TF1S_SPRINTER_ID comment for this Perk's Acrobatics/Athletics shiftUp half.
-const TF1S_SPRINTER_ID = "Compendium.essence20.transformers_one_sourcebook.Item.gbDY8UiTgSNZHPAo";
-
-// I Can Dig It (Technorganic Secrets, General Perk, p.46): "While in your Alt Mode, you gain a 25
-// feet Underground Movement or increase your existing Underground Movement by 15 feet." Same
-// "already have it -> add, otherwise grant flat" shape as Amphibious Assault above, read off the
-// base value before this Perk's own contribution, Alt-Mode gated like Sprinter's own clause above.
-const I_CAN_DIG_IT_ID = "Compendium.essence20.technorganic_secrets.Item.0BrnoOPvwSSQ5oVe";
-
-// Prowl (GI Joe CRB, Focus: Predator, 17th level, p.94): "in your environment of expertise, you
-// double your Ground Movement." Gated on hasActiveEnvironmentalExpertise - the scene's terrain
-// when the GM has set one, else the manual toggle (see helpers/environmental-expertise.mjs's own
-// doc comment; helpers/environment.mjs#refreshTerrainDependentActor re-prepares the actor when
-// its token changes Region) - see its own check in _prepareMovement() below.
-const PROWL_ID = "Compendium.essence20.gi_joe_crb.Item.ZCOzxoy7d3P5izBB";
-
-const JUMP_THROUGH_TIME = "Compendium.essence20.jump_through_time.Item.";
-const GENERAL_HAWKS_PERSONNEL_FILES = "Compendium.essence20.general_hawk_s_personel_files.Item.";
-
-// Skier (General Hawk's Personnel Files, General Perk, p.175) - see helpers/skier.mjs's own doc
-// comment. "+10ft Ground Movement... while skiing."
-const SKIER_ID = `${GENERAL_HAWKS_PERSONNEL_FILES}dvmY7UiuKejOPY4N`;
-
-// Quantum Master (A Jump Through Time, Quantum Ranger, 20th level, p.47): "double all Movement
-// values while Morphed" - see its own check in _prepareMovement() below, same permanent-while-
-// Morphed doubling shape as Warrior Rush's own round-1-only doubling just above (movement math is
-// one of the few spots this project's own Active Effects/derived-data hold still permits touching -
-// see project_essence20_active_effects's own note on _prepareHealth/_prepareDefenses staying off
-// limits pending the user's separate migration).
-const QUANTUM_MASTER_ID = `${JUMP_THROUGH_TIME}YlHp7yzbOsytNUjD`;
-
-// Eltarian Training (Through the Shattered Grid, General Perk, p.73) - see its own check just
-// below in _prepareMovement(). Not a piloting Perk despite being flagged as one by an earlier,
-// mistaken categorization pass - see dice.mjs's own identical constant/comment for the full
-// discovery (this Perk's Finesse-downshift-immunity half lives there instead, in rollSkill()).
-const ELTARIAN_TRAINING_ID = "Compendium.essence20.through_the_shattered_grid.Item.NXxiyoOB60ems444";
-
-// Scuba Gear (GI Joe CRB, Exploration Gear, p.162): "The wet/dry suit grants +2 Toughness Defense
-// against cold water [a disabled compendium Active Effect - "against cold water" isn't a condition
-// this codebase can key an AE on, so it's left for the player to toggle], and fins grant Swim
-// Movement equal to Ground Movement." Same live-override shape as Jury Rig's own Watertight Seals
-// clause just below in movementTypes' own loop - checked directly against an equipped copy of this
-// specific gear Item, not actorHasPerk (Scuba Gear is type 'gear', not 'perk').
-const SCUBA_GEAR_ID = "Compendium.essence20.gi_joe_crb.Item.cZpeYK7VoLJKGKL6";
-
-/**
- * Whether the actor has an equipped copy of a specific gear Item - the type:'gear' analog of
- * actorHasPerk (helpers/perks.mjs), which only matches type:'perk'.
- * @param {Actor} actor
- * @param {String} gearId
- * @returns {Boolean}
- */
-function actorHasEquippedGear(actor, gearId) {
-  return !!actor?.items?.find(item => item.type == 'gear' && item.system.equipped
-    && (item.flags?.core?.sourceId == gearId || item._stats?.compendiumSource == gearId));
-}
-
-// Wildfire (Cobra Codex, Ranger Guerilla Focus, 17th level, p.59): "when wielding a weapon with
-// the Fire trait, your Movements increase by 10 ft." "Wielding" is read as "has an equipped
-// weapon Item carrying the Fire trait" - the same equipped-Item check actorHasEquippedGear just
-// above uses for gear, applied to weapons instead.
-const WILDFIRE_ID = "Compendium.essence20.cobra_codex.Item.ifF6KRO65Yguf7K1";
-
-/**
- * Whether the actor currently has an equipped weapon carrying the Fire trait - see WILDFIRE_ID's
- * own comment above.
- * @param {Actor} actor
- * @returns {Boolean}
- */
-function hasEquippedFireWeapon(actor) {
-  return !!actor?.items?.find(item => item.type == 'weapon' && item.system.equipped
-    && item.system.traits?.includes('fire'));
-}
-
-// Air Born (MLP Pegasus Origin Perk, p.37): "Choose one of the following as your starting
-// Movement: 15ft ground and 45ft aerial, 30ft/30ft, or 45ft/15ft." Sets the actor's own BASE
-// ground/aerial Movement outright - see its own check in _prepareMovement() below, which OVERRIDES
-// (not adds to) system.movement.<type>.base before the total is computed, the same permitted
-// movement-math touch-point Warrior Rush/Quantum Master/Eltarian Training above already use.
-const AIR_BORN_ID = "Compendium.essence20.mlp_crb.Item.ekWiJObUf2BAhevg";
-const AIR_BORN_MOVEMENT_OPTIONS = {
-  groundHeavy: { ground: 15, aerial: 45 },
-  balanced: { ground: 30, aerial: 30 },
-  aerialHeavy: { ground: 45, aerial: 15 },
-};
-
-// Static Electricity (WTNV Citizen's Guide, General Perk, p.51, Weird +d6 prereq): "your Movement
-// speed is 35 feet." Sets ground Movement's own base outright - see its own check in
-// _prepareMovement() below, same permitted movement-math touch-point as Air Born just above. The
-// "+2 Evasion" half is a compendium Active Effect.
-const STATIC_ELECTRICITY_ID = "Compendium.essence20.wtnv_citizens_guide.Item.mF6zMzGIfxQgJF9B";
-
-// Gravity Optional (Soldier Role, Blood Space War Veteran Focus, p.37) - see
-// helpers/gravity-optional.mjs's own doc comment.
-const GRAVITY_OPTIONAL_ID = "Compendium.essence20.wtnv_citizens_guide.Item.F5mrzupd6TG2kj3x";
-
-// Security (Transformers CRB, Autobot Influence, p.40): "When you are Surprised, you can take a
-// Move action and roll a Skill Test. You still can't take a Standard action." An exception to the
-// blanket Surprised zero-out just below - see that comment for why Surprised zeroes anything at
-// all in the first place.
-const SECURITY_ID = "Compendium.essence20.tf_crb.Item.JSIHwTZHlqRPDERC";
-
-// Unsurprising (Transformers CRB, Analyst Role, p.59): "If you would be Surprised, you instead can
-// act, but treat your Speed score as though it were equal to your level (up to your actual Speed
-// score)." Also read in _prepareActions just below - it replaces the whole Surprised zero-out with
-// an ordinary (capped-Speed) budget rather than carving out one exception like Security does.
-const UNSURPRISING_ID = "Compendium.essence20.tf_crb.Item.C1PP2JWreUxFJfMa";
-
-// Ready For Anything (GI Joe CRB, Renegade base, 9th level, p.97): "While not incapacitated, when
-// you take damage or would be surprised, you may begin to act with Reckless Abandon when you roll
-// Initiative. If you do so, you act normally in the surprise round." The Edge-on-Initiative and
-// roll-Brawn/Might-for-Initiative clauses are built as an ordinary compendium AE (dice.mjs's own
-// READY_FOR_ANYTHING_ID comment / skills.{brawn,might}.canBeInitiative) - this is the third clause,
-// same "an exception to the blanket Surprised zero-out" shape as Security/Unsurprising just above,
-// gated on Reckless Abandon actually being active (the player's own choice to "begin to act with
-// Reckless Abandon" at Initiative time - see helpers/reckless-abandon.mjs's own toggle) rather than
-// Unsurprising's unconditional Speed-capped budget, since RAW says "act normally," not a reduced one.
-const READY_FOR_ANYTHING_ID = "Compendium.essence20.gi_joe_crb.Item.BEAZ1oLp9XeibJoh";
-
-const PR_CRB = "Compendium.essence20.pr_crb.Item.";
-// Light Chassis (PR CRB, Zord Feature, p.137): "increases the Zord's Speed by 1 and adds 10 feet
-// [to] one of the Zord's movement types" (both a static compendium Active Effect already) "...
-// While in a Combined Megaform, it grants ↑1 to the Megaform's Initiative Skill Test." That
-// second clause is the Megaform's own gain, not the Zord's, so it can't be a static Active Effect
-// on the Zord (nothing there could reach the Megaform) - checked per-participant in
-// _prepareMegaformZordData/_prepareMegaformCombinerData below, same "Feature on a participant,
-// consumed via a Megaform-only flag" shape Enhanced Initiative (a megaformTrait, not a Feature)
-// already established for hasEnhancedInitiative; the actual ↑1 is applied in dice.mjs's
-// prepareInitiativeRoll, alongside that same flag's own Edge check.
-const LIGHT_CHASSIS_ID = `${PR_CRB}rVW7mvnV4MbGuxoq`;
-// Hardened Chassis (PR CRB, Zord Feature, p.139): "increases its Strength score by 1, it adds +2
-// to its Armor bonus to Toughness as well [both a static Active Effect already] ... While in a
-// Combined Megaform, it adds +1 to the Megaform's Armor bonus to Toughness." Same shape as Light
-// Chassis above - the Megaform-facing clause folds straight into the existing toughnessTraitBonus
-// local variable below, the same aggregate Defender/Core Defenses already feed into
-// system.defenses.toughness.armor.
-const HARDENED_CHASSIS_ID = `${PR_CRB}7vwrFKj2UAxG4ocf`;
-import { createId } from "../helpers/utils.mjs";
+// (Light Chassis' ↑1 on a Megazord's Initiative is a megaform-scoped RollModifier rule on the Feature.)
+// (Hardened Chassis' +1 to a Megazord's Toughness armor and Armored Defense are MegaformArmor rules on their items; Keep IT
+// Together! and Better As One are MegaformHold / MegaformSpecializations / EnergonDonor rules -
+// rules/plugins/zords/megaform-contributions.mjs.)
+import { createId } from "../util/utils.mjs";
+import { ruleMovementStages, ruleSurpriseModes } from "../rules/adapter.mjs";
+import { earlyDerivedStats } from "../rules/plugins/effects/derived-stages.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -396,7 +90,7 @@ import { createId } from "../helpers/utils.mjs";
 export class Essence20Actor extends Actor {
   /**
    * The last Party cannot be deleted, and only a GM can delete the primary: it holds the
-   * Story Point pool (see helpers/party.mjs). Returning false here is the one place a deletion
+   * Story Point pool (see mechanics/resources/party.mjs). Returning false here is the one place a deletion
    * can still be refused.
    * @override
    */
@@ -410,7 +104,7 @@ export class Essence20Actor extends Actor {
 
   /**
    * A deleted primary Party hands its pin, and its points, to the next one. Every client
-   * hears this; helpers/party.mjs decides which one acts.
+   * hears this; mechanics/resources/party.mjs decides which one acts.
    * @override
    */
   _onDelete(options, userId) {
@@ -425,7 +119,7 @@ export class Essence20Actor extends Actor {
 
   /**
    * Writes to an actor this user can't modify - on-hit effects written to a player's NPC target -
-   * go to the active GM instead of failing with a permission error. See helpers/gm-relay.mjs.
+   * go to the active GM instead of failing with a permission error. See mechanics/world/gm-relay.mjs.
    * @override
    */
   async update(data = {}, operation = {}) {
@@ -455,13 +149,13 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   * Space Vessel Conditions that stack (Across the Stars p.25-26 - see helpers/vessel-conditions.mjs):
+   * Space Vessel Conditions that stack (Across the Stars p.25-26 - see mechanics/vehicles/vessel-conditions.mjs):
    * applying one the actor already has adds a stack rather than doing nothing. Every other status,
    * and every removal or plain toggle, is core's own behavior.
    * @override
    */
   async toggleStatusEffect(statusId, options = {}) {
-    // A target this user can't modify (a player hitting an NPC) - the GM applies it. See helpers/gm-relay.mjs.
+    // A target this user can't modify (a player hitting an NPC) - the GM applies it. See mechanics/world/gm-relay.mjs.
     if (needsGmRelay(this)) {
       return relayToGm(this, 'toggleStatusEffect', [statusId, options]);
     }
@@ -484,6 +178,15 @@ export class Essence20Actor extends Actor {
   /** @override */
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
+
+    // A Zord / Vehicle created with only Essence values (an importer, a script) takes them as its base.
+    if (usesEssenceBase(this)) {
+      for (const [key, essence] of Object.entries(data?.system?.essences ?? {})) {
+        if (essence && essence.value !== undefined && essence.base === undefined) {
+          this.updateSource({ [`system.essences.${key}.base`]: essence.value });
+        }
+      }
+    }
 
     /* Foundry's own raw default for a brand-new actor's prototype token is unlinked, hostile,
        and sightless - fine for a disposable NPC/Vehicle/Zord/Megaform (Foundry's own docs
@@ -521,7 +224,7 @@ export class Essence20Actor extends Actor {
       // item through, so an auto-added Feature ends up identical to a hand-dropped one. This used
       // to hand-build the item data from name/type/img/system, which silently dropped two things:
       // the item's own Active Effects, and _stats.compendiumSource - the provenance
-      // helpers/zord-features.mjs#actorHasZordFeature matches Features by. Both of these Features
+      // mechanics/vehicles/zord-features.mjs#actorHasZordFeature matches Features by. Both of these Features
       // were therefore invisible to every sourceId-based check, and would have quietly lost any
       // effect added to them in the compendium later.
       //
@@ -562,6 +265,16 @@ export class Essence20Actor extends Actor {
   /** @override */
   async _preUpdate(changed, options, user) {
     await super._preUpdate(changed, options, user);
+
+    // A Zord's / Vehicle's Essence value is worked out from its base: a write to the value moves the base.
+    if (usesEssenceBase(this)) {
+      convertEssenceWrites(this, changed);
+    }
+
+    // An NPC's / Companion's score and current amount are worked out from its base: writes are stored in that form.
+    if (usesScoreBase(this)) {
+      convertCreatureEssenceWrites(this, changed);
+    }
 
     const currentSize = this.system?.size;
     if (currentSize) {
@@ -622,6 +335,16 @@ export class Essence20Actor extends Actor {
   prepareBaseData() {
     super.prepareBaseData();
 
+    // Zord / Vehicle Essences start from the typed base; Active Effects and rules add on top.
+    if (usesEssenceBase(this)) {
+      resetEssencesFromBase(this.system);
+    }
+
+    // NPC / Companion scores likewise start from the typed base.
+    if (usesScoreBase(this)) {
+      resetScoresFromBase(this.system);
+    }
+
     // Data modifications in this step occur before processing embedded
     // documents or derived data.
   }
@@ -641,7 +364,6 @@ export class Essence20Actor extends Actor {
     this._prepareNpcData();
     this._prepareVision();
     this._prepareEnergon();
-    this._preparePersonalPowerSupply();
     // Runs after Active Effects have applied (prepareDerivedData is the step after that in
     // Foundry's own document lifecycle) - fills in any field a Specialization-granting effect's
     // OVERRIDE changes left unset (see specialization-handler.mjs#normalizeSpecializations).
@@ -655,13 +377,7 @@ export class Essence20Actor extends Actor {
       this._prepareMegaformData();
     }
 
-    // Titanspark - see TITANSPARK_ID's own comment above. Bumps this.system.size one step up
-    // BEFORE every size-driven calculation below (Defenses, and dice.mjs's own size-based combat
-    // math which reads actor.system.size fresh off the final prepared data) - not persisted, same
-    // "computed in memory only" idiom Fireproof's own Resistance bump already establishes.
-    this._prepareTitansparkSize();
-    this._prepareMindPalaceBonus();
-    this._prepareInnerMagicWillpowerReduction();
+    // Titanspark's Size Class bump is a Size item rule now (rules/plugins/effects/size.mjs, in runDerived below).
 
     // Every actor type now shares the same computed Defenses/Health/Movement pipeline a
     // playerCharacter always has - see project_essence20_active_effects memory for why this was
@@ -674,9 +390,9 @@ export class Essence20Actor extends Actor {
     if (this.type == 'playerCharacter') {
       this._prepareSorcerousPower();
       this._prepareResource();
+      // Item rules' DerivedStat at stage early (Metier's poison step), before the training is worked out.
+      earlyDerivedStats(this);
       this._preparePoisonTraining();
-      this._prepareFireproofResistance();
-      this._prepareSelfPreservationResistance();
     }
 
     this._prepareSceneResistances();
@@ -707,8 +423,30 @@ export class Essence20Actor extends Actor {
     // Movement math.
     this._prepareActions();
 
-    // Extensions' derived data - Health, Defenses and Movement adjustments (helpers/extensions.mjs).
+    // Extensions' derived data - Health, Defenses and Movement adjustments (mechanics/item-hooks.mjs).
     runDerived(this);
+
+    // Item rules' Movement at stage afterDerived: after every derived adjustment above (rules/adapter.mjs#ruleMovementStages).
+    const lateMovement = ruleMovementStages(this);
+    for (const movementType of Object.keys(this.system.movement ?? {})) {
+      const movement = this.system.movement[movementType];
+      const next = movement && typeof movement == 'object' ? lateMovement('afterDerived', movementType, Number(movement.total) || 0) : null;
+      if (next !== null) {
+        movement.total = next;
+      }
+    }
+
+    // NPC / Companion: the current amount follows the score's boosts (mechanics/characters/creature-essences.mjs).
+    if (usesScoreBase(this)) {
+      finishCurrentEssences(this);
+    }
+
+    // Zord / Vehicle / Megaform: what Essence damage leaves of each score, for the sheet (mechanics/combat/essence-current.mjs).
+    if (tracksEssenceDamage(this)) {
+      for (const key of Object.keys(this.system.essences ?? {})) {
+        this.system.essences[key].current = currentEssence(this, key);
+      }
+    }
   }
 
   /**
@@ -721,7 +459,7 @@ export class Essence20Actor extends Actor {
    *
    * So Free actions are NOT unlimited - a Speed 3 character gets exactly one, and a Speed 1 or 2
    * character gets none by default. Speed 1's "one or the other" is carried by `shared`, which
-   * helpers/action-economy.mjs#getRemaining reads to zero BOTH categories once either is spent.
+   * mechanics/actions/action-economy.mjs#getRemaining reads to zero BOTH categories once either is spent.
    *
    * An actor type with no Essences at all (nothing on the common template guarantees them - see
    * data/actor/templates/character.mjs, machine.mjs and zord-base.mjs, which each declare their
@@ -744,7 +482,7 @@ export class Essence20Actor extends Actor {
       return;
     }
 
-    /* The per-Speed counts come from helpers/actor.mjs#getNumActions, which already existed to
+    /* The per-Speed counts come from mechanics/world/token-sync.mjs#getNumActions, which already existed to
        drive the sheet's own "1M, 1S, 1F" readout. Deriving them a second time here was a mistake:
        it silently disagreed with that readout for any actor whose Speed .max and .value differ,
        and for the Perks that move Free actions off Speed entirely (Quick Thinker and University
@@ -753,18 +491,18 @@ export class Essence20Actor extends Actor {
        The one deliberate difference is Speed 1. getNumActions reports it as one Move and zero
        Standards, but the rules say "Move OR Standard action... then ends their turn" (CRB p.193) -
        a choice, not a fixed Move. Both budgets are granted and `shared` makes them mutually
-       exclusive, which helpers/action-economy.mjs#getRemaining honours. */
+       exclusive, which mechanics/actions/action-economy.mjs#getRemaining honours. */
     const speedEssence = this.system.essences?.speed;
     const statuses = this.statuses ?? new Set();
 
-    // Surprise (GI Joe CRB, Combat chapter): "on the surprise round... they cannot take any
-    // actions (including Standard, Move, or Free actions)." Unsurprising overrides this entirely
-    // with its own reduced-but-nonzero budget (below); Security instead carves one exception into
-    // the ordinary zero-out (see its own zeroed.move, further down).
+    // Surprise (GI Joe CRB, Combat chapter): no actions of any kind in the surprise round. Item rules carve the exceptions
+    // (SurpriseExemption, rules/adapter.mjs#ruleSurpriseModes): "speedAsLevel" (Unsurprising) acts
+    // with Speed capped to level, "normal" (Ready For Anything) acts as usual, and "move" (Security)
+    // keeps the Move action inside the ordinary zero-out (see zeroed.move, further down).
     const isSurprised = statuses.has('surprised');
-    const hasUnsurprising = isSurprised && actorHasPerk(this, UNSURPRISING_ID);
-    const hasReadyForAnything = isSurprised
-      && actorHasPerk(this, READY_FOR_ANYTHING_ID) && isRecklessAbandonActive(this);
+    const surpriseModes = isSurprised ? ruleSurpriseModes(this) : new Set();
+    const hasUnsurprising = surpriseModes.has('speedAsLevel');
+    const hasReadyForAnything = surpriseModes.has('normal');
 
     // getNumActions reads system.essences.speed without guarding, which is safe for every actor
     // type the system registers (all six get Essences from character.mjs, machine.mjs or
@@ -778,7 +516,7 @@ export class Essence20Actor extends Actor {
     const counts = !speedEssence
       ? { free: 0, movement: 1, standard: 1 }
       : hasUnsurprising
-        // Same Speed-derived formula getNumActions uses (helpers/actor.mjs), against the
+        // Same Speed-derived formula getNumActions uses (mechanics/world/token-sync.mjs), against the
         // level-capped speed above rather than the actor's real one.
         ? { free: Math.max(0, speed - 2), movement: speed > 0 ? 1 : 0, standard: speed > 1 ? 1 : 0 }
         : getNumActions(this);
@@ -790,13 +528,13 @@ export class Essence20Actor extends Actor {
       free: counts.free,
     };
 
-    // Asleep/Defeated/Stunned (GI Joe CRB, Conditions, p.226: "Stunned characters can't take
-    // actions (Standard, Movement, or Free)")/Unconscious all zero out every action budget - see
-    // isUnableToAct's own doc comment (helpers/action-economy.mjs) for the Defeated exception and
+    // Asleep/Defeated/Stunned (GI Joe CRB, Conditions, p.226: no actions of any kind while
+    // Stunned)/Unconscious all zero out every action budget - see
+    // isUnableToAct's own doc comment (mechanics/actions/action-economy.mjs) for the Defeated exception and
     // why this used to be a second, separately-maintained copy of that same list.
     const incapacitated = isUnableToAct(this);
     const surprisedZeroed = isSurprised && !hasUnsurprising && !(hasReadyForAnything && !incapacitated);
-    const hasSecurity = surprisedZeroed && actorHasPerk(this, SECURITY_ID);
+    const hasSecurity = surprisedZeroed && surpriseModes.has('move');
     const zeroed = {
       free: incapacitated || statuses.has('cantTakeFreeActions') || surprisedZeroed,
       move: incapacitated || statuses.has('cantTakeMoveActions') || (surprisedZeroed && !hasSecurity),
@@ -815,15 +553,13 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   * Defeat of a Vehicle (GI Joe CRB, p.214): "The vehicle is considered to have all Movement
-   * types reduced to 0 until repaired." Read-only + zeroed the same way _prepareMegaformData()
+   * Defeat of a Vehicle (GI Joe CRB, p.214): every Movement type is 0 until it is repaired. Read-only + zeroed the same way _prepareMegaformData()
    * already displays a computed-not-edited Movement (system.movementIsReadOnly) - the real
    * system.movement.<type>.total this Vehicle's sheet directly edits is left untouched
    * underneath, so clearing system.crashed (repairing it) needs nothing further to restore.
    *
-   * Crew (GI Joe CRB, p.212): "Drivers must have a d2 or more in the Driving skill and the
-   * vehicle needs the full number of drivers in order to move at full Movement; if understaffed
-   * or untrained, the vehicle can only use half of its listed Movement per turn." Only runs when
+   * Crew (GI Joe CRB, p.212): drivers need d2+ Driving, and a vehicle short of its full count of
+   * qualified drivers moves at half its listed Movement. Only runs when
    * not crashed (Movement is already fully zeroed above, a strictly stronger effect) - halves the
    * same in-memory .total each render rather than the real stored value, for the same
    * non-destructive reason as the crashed branch.
@@ -847,18 +583,16 @@ export class Essence20Actor extends Actor {
         return shiftIndex >= 0 && shiftIndex <= d2Index;
       }).length;
 
-    // Autopilot (GI Joe CRB, Vehicle Trait, p.173): "As long as this vehicle has 1 driver, it
-    // operates at full capacity" - a full exception to the driver-count halving below, not just a
+    // Autopilot (GI Joe CRB, Vehicle Trait, p.173): one driver is enough for full capacity - a full exception to the driver-count halving below, not just a
     // softer penalty, as soon as at least 1 qualified driver is seated (regardless of how many
-    // more the vehicle's own crew.numDrivers calls for). Autopilot, Advanced's own clause
-    // ("operates like a normal vehicle with at least 1 driver but less than its full complement,
-    // even with zero drivers") needs no separate code here - this halving branch already treats 0
+    // more the vehicle's own crew.numDrivers calls for). Autopilot, Advanced's own clause (it runs
+    // as an understaffed vehicle even with no driver at all) needs no separate code here - this halving branch already treats 0
     // qualified drivers the same as an understaffed-but-present crew (halved, not zeroed), which
     // is exactly that guarantee; nothing currently makes a 0-driver Vehicle fully immobile for
     // Advanced Autopilot to be an exception to.
-    // Undo Engine (Intercontinental Adventures p.71): "the vehicle's Movement is reduced to 0 until
-    // the driver uses their Standard action to restart the engines" (helpers/undo-engine.mjs).
-    if (isUndoEngineMovementDisabled(this)) {
+    // Undo Engine (Intercontinental Adventures p.71): Movement 0 until the driver spends a Standard
+    // action restarting the engines - the flag its rules set (and the restart button clears).
+    if (this.getFlag?.('essence20', 'undoEngineMovementDisabled')) {
       for (const movementType of Object.keys(this.system.movement)) {
         this.system.movement[movementType].total = 0;
       }
@@ -905,11 +639,9 @@ export class Essence20Actor extends Actor {
       ? 3 * system.memberCount
       : system.requisition.attempts;
 
-    // Base Technological Advancements (Cobra Codex, Division Resource, p.75): "your group gains an
-    // additional Requisition point per character that can be spent on a Standard upgrade."
-    if (system.requisition.autoFromRoster && this.members.some(member => member.items?.some?.(item =>
-      (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == GRANT.baseTechAdvancement))) {
-      system.requisitionMax += system.memberCount;
+    // PartyRequisition rules on members' items (Base Technological Advancements - rules/plugins/resources/party-requisition.mjs).
+    if (system.requisition.autoFromRoster) {
+      system.requisitionMax += rulePartyRequisitionPerMember(this.members) * system.memberCount;
     }
   }
 
@@ -979,6 +711,25 @@ export class Essence20Actor extends Actor {
    * Informational only - nothing here blocks equipping or attacking. Matches the system's
    * existing stance of surfacing Equipment Assignment state rather than enforcing it.
    */
+  /**
+   * Whether a weapon is a Ram / Flyby (an Alt Mode Special Attack): its own flag, an effect it lists, or an effect
+   * attached to it on this actor.
+   * @param {Item} weapon
+   * @returns {Boolean}
+   */
+  _isAltModeAttack(weapon) {
+    const flagged = data => !!(data?.isRam || data?.isFlyby || data?.system?.isRam || data?.system?.isFlyby);
+    if (flagged(weapon.system)) {
+      return true;
+    }
+
+    if (Object.values(weapon.system?.items ?? {}).some(flagged)) {
+      return true;
+    }
+
+    return [...(this.items ?? [])].some(item => item.type == 'weaponEffect' && item.flags?.essence20?.parentId == weapon.id && flagged(item));
+  }
+
   _prepareLoadout() {
     const system = this.system;
     if (!system.loadout || !system.hardpoints) {
@@ -993,6 +744,13 @@ export class Essence20Actor extends Actor {
 
     for (const item of this.items) {
       if (item.type != 'weapon' || !item.system.equipped) {
+        continue;
+      }
+
+      // Ram and Flyby are the Alt Mode's own Special Attacks (TF CRB p.49), not equipment: no hands, no Hardpoint.
+      // The flag sits on the weapon's effect (weaponEffect isRam / isFlyby), listed in system.items and attached as
+      // its own item (parentId) - live test 2026-10-07 found the weapon itself never carries it.
+      if (this._isAltModeAttack(item)) {
         continue;
       }
 
@@ -1015,12 +773,12 @@ export class Essence20Actor extends Actor {
     handsUsed = Math.max(0, handsUsed - extraCarriedHands(this, carried));
     // Skybound: "your Jet Pack counts as 2 hands of equipment."
     handsUsed += vehicleHands(this);
-    // Carrying capacity as a share of body weight (PR CRB Table 6-1) - helpers/kits.mjs.
+    // Carrying capacity as a share of body weight (PR CRB Table 6-1) - mechanics/resources/kits.mjs.
     system.loadout.carryPercent = carryPercent(this);
     system.loadout.handsUsed = handsUsed;
     system.loadout.handsOver = handsUsed > handsMax;
 
-    // Hardpoints Perks add (helpers/weapon-traits.mjs#hardpointBonus).
+    // Hardpoints Perks add (mechanics/combat/weapon-traits.mjs#hardpointBonus).
     const perkHardpoints = hardpointBonus(this);
     for (const [key, used] of [['external', externalUsed], ['integrated', integratedUsed]]) {
       const slot = system.hardpoints[key];
@@ -1052,7 +810,7 @@ export class Essence20Actor extends Actor {
    * Also sets this.system.visionSuppressed for the Asleep/Unconscious statuses, so a sleeping
    * actor doesn't get a bonus grant from equipped Night Vision Goggles etc. while unconscious.
    * This does NOT block a token's vision outright - actually blacking out perception for
-   * Asleep/Unconscious is handled by syncAutoBlindStatus() (helpers/actor.mjs) applying the
+   * Asleep/Unconscious is handled by syncAutoBlindStatus() (mechanics/world/token-sync.mjs) applying the
    * real "blinded" status, which reuses Foundry's own CONFIG.specialStatusEffects.BLIND
    * handling (see essence20.mjs) rather than trying to force TokenDocument.sight.enabled off
    * directly, which does not actually block perception.
@@ -1060,49 +818,19 @@ export class Essence20Actor extends Actor {
   _prepareVision() {
     this.system.visionSuppressed = this.statuses?.has('asleep') || this.statuses?.has('unconscious') || false;
 
-    // Selection (and Used to the Dark's own doubling clause) lives in helpers/vision-grant.mjs
+    // Selection (and Used to the Dark's own doubling clause) lives in mechanics/characters/vision-grant.mjs
     // so it can be unit tested directly.
     this.system.visionGrant = this.system.visionSuppressed ? null : getBestVisionGrant(this);
 
     // Blindsight is deliberately computed OUTSIDE the visionSuppressed guard above - see
-    // helpers/blindsight.mjs#getBlindsightRange's own doc comment for why suppressing it would
+    // items/senses/blindsight.mjs#getBlindsightRange's own doc comment for why suppressing it would
     // cancel the only Perk it exists for.
     this.system.blindsightRange = getBlindsightRange(this);
   }
 
   /**
-   * Fireproof - see FIREPROOF_ID's own comment above. Additive only: never clears an already-true
-   * Resistance/Immunity, since some other source (an Alteration, a different Perk) may have
-   * granted it independently.
-   */
-  _prepareFireproofResistance() {
-    if (!actorHasPerk(this, FIREPROOF_ID)) {
-      return;
-    }
-
-    this.system.resistances.fire = true;
-    if (this.system.level >= 10) {
-      this.system.immunities.fire = true;
-    }
-  }
-
-  /**
-   * Self-Preservation (Decepticon Directive, Elementalist Focus, 3rd level, p.53): "You gain
-   * Resistance to the Element chosen for your Energy Affinity." Same additive-only, "read the
-   * chosen Element off Energy Affinity's own system.choice" shape Fireproof's own comment above
-   * establishes - the Immunity-until-next-hit half lives in helpers/self-preservation.mjs instead,
-   * since it's a manual spend rather than an always-on derived value.
-   */
-  _prepareSelfPreservationResistance() {
-    const choice = actorHasPerk(this, SELF_PRESERVATION_ID) ? findPerk(this, ENERGY_AFFINITY_ID)?.system.choice : null;
-    if (choice) {
-      this.system.resistances[choice] = true;
-    }
-  }
-
-  /**
    * Resistances granted "for the rest of the scene" (Hardened Armor, Elemental Adaptation) - see
-   * helpers/actor.mjs#grantSceneResistance. Additive only, like Fireproof above.
+   * mechanics/world/token-sync.mjs#grantSceneResistance. Additive only, like Fireproof above.
    */
   _prepareSceneResistances() {
     if (!this.system.resistances) {
@@ -1115,121 +843,40 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   * Mind Palace - see MIND_PALACE_ID's own comment above. +1/+2/+3 Willpower Defense at 5th/11th/
-   * 17th level respectively (not cumulative across tiers - the highest tier reached is the whole
-   * bonus).
-   */
-  _prepareMindPalaceBonus() {
-    if (!actorHasPerk(this, MIND_PALACE_ID) || !this.system.defenses?.willpower) {
-      return;
-    }
-
-    const level = this.system.level ?? 0;
-    const bonus = level >= 17 ? 3 : level >= 11 ? 2 : level >= 5 ? 1 : 0;
-    this.system.defenses.willpower.bonus = (this.system.defenses.willpower.bonus ?? 0) + bonus;
-  }
-
-  /**
-   * Inner Magic - see helpers/inner-magic.mjs's own doc comment. Subtracts this scene's stacked
-   * reduction count from Willpower Defense's own bonus field.
-   */
-  _prepareInnerMagicWillpowerReduction() {
-    if (!this.system.defenses?.willpower) {
-      return;
-    }
-
-    const reduction = getInnerMagicWillpowerReduction(this);
-    if (reduction) {
-      this.system.defenses.willpower.bonus = (this.system.defenses.willpower.bonus ?? 0) - reduction;
-    }
-  }
-
-  /**
-   * Titanspark - see TITANSPARK_ID's own comment above. One Size Class up from whatever the Origin
-   * set, capped at the top of E20.actorSizes so an already-Titanic actor doesn't overflow.
-   */
-  _prepareTitansparkSize() {
-    if (!actorHasPerk(this, TITANSPARK_ID)) {
-      return;
-    }
-
-    const sizeOrder = Object.keys(E20.actorSizes);
-    const currentIndex = sizeOrder.indexOf(this.system.size);
-    if (currentIndex >= 0) {
-      this.system.size = sizeOrder[Math.min(sizeOrder.length - 1, currentIndex + 1)];
-    }
-  }
-
-  /**
-   * Sets system.energon.normal.max to this actor's lowest current Essence Score (p.104-105 -
-   * "capable of storing a number of personal Energon Points equal to their lowest Essence
-   * Score"), for actors that can transform. Non-transforming actors (vehicles, etc.) keep
+   * Sets system.energon.normal.max to this actor's lowest current Essence Score (p.104-105 - the
+   * personal Energon pool equals the lowest Essence Score), for actors that can transform. Non-transforming actors (vehicles, etc.) keep
    * whatever value was set manually, since they may use system.energon.normal as literal fuel
    * capacity rather than the Cybertronian Energon Points resource.
    *
    * Note the assignment below is `=`, not `+=`: this method OWNS the value, which is why anything
    * wanting to add to the pool has to land after it. Spark of the Ancients (Enigma of
-   * Combination, General Perk, p.41 - "Your maximum Energon Pool is increased by 2") used to be a
+   * Combination, General Perk, p.41 - +2 maximum Energon) used to be a
    * branch at the bottom of this method for exactly that reason; it is now an ordinary Active
    * Effect on the compendium Perk itself (packs/eocitems/_source/Spark_Of_the_Ancients_*.json),
    * applied in the FINAL phase so core runs it after prepareDerivedData rather than before, where
    * this assignment would simply overwrite it. Any future "+N maximum Energon" effect needs that
-   * same phase - see docs/ACTIVE_EFFECTS_UI_PLAN.md §13. The Perk's other two halves ("regain 1
-   * Energon at the beginning of any scene", "always register as having the highest amount of
-   * Energon") remain unbuilt: there is no scene-boundary hook and no scanner mechanic to hang
+   * same phase - see docs/ACTIVE_EFFECTS_UI_PLAN.md §13. The Perk's other two halves (1 Energon
+   * back at each scene start, and always reading as the highest Energon on a scan) remain unbuilt: there is no scene-boundary hook and no scanner mechanic to hang
    * them on.
    */
   _prepareEnergon() {
-    const hasOrganicEnergon = actorHasPerk(this, ORGANIC_ENERGON_ID);
-    if (!this.system.canTransform && !hasOrganicEnergon) {
+    if (!this.system.canTransform) {
       return;
     }
 
+    // Energon Battery, Cybertroid Catalyst and Organic Energon change this pool through their own
+    // item rules (DerivedStat), applied after this method.
     const essences = this.system.essences;
-    const values = [essences.strength.value, essences.speed.value, essences.smarts.value, essences.social.value];
-    const lowest = Math.min(...values);
+    this.system.energon.normal.max = Math.min(essences.strength.value, essences.speed.value, essences.smarts.value, essences.social.value);
 
-    if (!this.system.canTransform) {
-      // Organic Energon - see ORGANIC_ENERGON_ID's own comment above.
-      this.system.energon.normal.max = Math.floor(lowest / 2);
-    } else if (actorHasPerk(this, ENERGON_BATTERY_ID)) {
-      // Energon Battery - see ENERGON_BATTERY_ID's own comment above.
-      this.system.energon.normal.max = Math.max(...values);
-    } else if (actorHasPerk(this, CYBERTROID_CATALYST_ID)) {
-      // Cybertroid Catalyst - see CYBERTROID_CATALYST_ID's own comment above.
-      this.system.energon.normal.max = [...values].sort((a, b) => a - b)[1];
-    } else {
-      this.system.energon.normal.max = lowest;
-    }
-
-    // Mini-Con Master (Decepticon Directive p.50): "Power Conduit: ... the maximum number of Energon
-    // Points you can store is increased by 1" per two docked.
+    // Mini-Con Master (Decepticon Directive p.50): Power Conduit Mini-Cons give +1 maximum Energon per
+    // two docked.
     this.system.energon.normal.max += linkedBonuses(this).energonMax;
 
-    // A Hint of Independence's Poor Energon Circulation: "Your maximum Energon Points is equal to your
-    // lowest Essence Score -1".
+    // A Hint of Independence's Poor Energon Circulation: maximum Energon is the lowest Essence -1.
     if (imperfectionOf(this)?.n == 1) {
       this.system.energon.normal.max = Math.max(0, this.system.energon.normal.max - 1);
     }
-  }
-
-  /**
-   * Personal Power Supply - see PERSONAL_POWER_SUPPLY_ID's own comment above.
-   */
-  _preparePersonalPowerSupply() {
-    // Grid Connection (Field Guide p.67): "you gain 1 Personal Power per day, which can be spent to
-    // use Grid Powers."
-    if (this.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == WEAPON_USE_IDS.gridConnection)
-      && this.system.powers?.personal) {
-      this.system.powers.personal.max += 1;
-    }
-
-    if (!actorHasPerk(this, PERSONAL_POWER_SUPPLY_ID)) {
-      return;
-    }
-
-    this.system.powers.personal.max += 1 + Math.floor((this.system.level ?? 0) / 5);
-    this.system.powers.personal.regeneration += 2;
   }
 
   /**
@@ -1333,14 +980,14 @@ export class Essence20Actor extends Actor {
       return;
     }
 
-    // Compromised (Across the Stars, Space Vessel Condition, p.25): "each instance of the Condition
-    // reduces the vessel's maximum Health by another point." Defeat at 0 is
-    // helpers/vessel-conditions.mjs#syncVesselConditionConsequences.
+    // Compromised (Across the Stars, Space Vessel Condition, p.25): -1 maximum Health per stack.
+    // Defeat at 0 is
+    // mechanics/vehicles/vessel-conditions.mjs#syncVesselConditionConsequences.
     const compromised = getVesselConditionStacks(this, 'compromised');
 
-    // Tough Together, a Mini-Con's Linked Health, Advanced/Perfect Link, Hard Target - the
-    // companion and bond Perks (helpers/companions.mjs, bonded.mjs, summons.mjs).
-    const linkedHealth = linkedBonuses(this).health + bondBonuses(this).health + hardTargetBonus(this, getCrewedVehicle(this)?.vehicle).health;
+    // Tough Together, a Mini-Con's Linked Health - the companion Perks (mechanics/companions/companions.mjs). Hard
+    // Target's and Advanced / Perfect Link's (on the bonded partner) are DerivedStat rules.
+    const linkedHealth = linkedBonuses(this).health;
     health.max = Math.max(0, originStartingHealth + rolePointsBonusHealth + conditioning + bonus + bulwarkBonusHealth - compromised + linkedHealth);
     health.string = `${originStartingHealth} (${originName}) + ${rolePointsBonusHealth} (${rolePointsName}) + ${conditioning} (${conditionName}) + ${bonus} (${bonusName})`
       + (bulwarkBonusHealth ? ` + ${bulwarkBonusHealth} (${game.i18n.localize('E20.ArmorTraitBulwark')})` : '')
@@ -1359,7 +1006,6 @@ export class Essence20Actor extends Actor {
     }
 
     const equippedArmor = this.items.documentsByType.armor.filter(a => a.system.equipped);
-    const fightingStyle = findPerk(this, FIGHTING_STYLE_ID)?.system.choice;
 
     // Equipped Armor's Toughness/Evasion bonus (item.mjs#_prepareArmorBonuses, which already
     // folds in that Armor's own attached armor Upgrades) plus any unparented alt-mode armor
@@ -1374,17 +1020,7 @@ export class Essence20Actor extends Actor {
     // code is now gone; ADDED here on top of the stored .armor value below rather than replacing
     // it, so a world that already has a hand-typed PC .armor value (a GM workaround for this bug)
     // doesn't lose it - it simply becomes redundant with the equipped item and should be zeroed.
-    // Energy Resistor (TF CRB, armor upgrade, p.132): "Choose an energy type. Weapons that deal
-    // damage of that energy type do not affect you." Worn armor's upgrade, or a loose (alt mode) one.
-    for (const upgrade of this.items.documentsByType.upgrade ?? []) {
-      const parentId = upgrade.getFlag('essence20', 'parentId');
-      const worn = !parentId || this.items.get(parentId)?.system?.equipped;
-      const energy = riderChoiceOf(upgrade);
-      if (worn && energy && sourceOfItem(upgrade) == RIDER.energyResistor && system.immunities) {
-        system.immunities[energy] = true;
-      }
-    }
-
+    // (Energy Resistor's immunity is a DerivedStat rule on the upgrade.)
     let itemArmorBonus = null;
     if (this.type == 'playerCharacter') {
       itemArmorBonus = { toughness: 0, evasion: 0 };
@@ -1401,15 +1037,15 @@ export class Essence20Actor extends Actor {
         itemArmorBonus.evasion += parseInt(armorItem.system.totalBonusEvasion) || 0;
       }
 
-      // Grid Connection (Field Guide p.67): "you gain a light armor shell from the Grid, granting
-      // a +1 bonus to Toughness" while the summoned Power Weapon lasts (weapon-perk-uses.mjs).
+      // Grid Connection (Field Guide p.67): a light Grid armor shell, +1 Toughness, while the
+      // summoned Power Weapon lasts (weapon-perk-uses.mjs).
       if (isGridShellActive(this)) {
         itemArmorBonus.toughness += 1;
       }
 
       // A loose armor upgrade counts when the actor can transform (an alt-mode upgrade), or when an
       // Alteration grants its benefit "whether you're wearing armor or not" (Skin Tempering,
-      // helpers/grants.mjs).
+      // mechanics/resources/grants.mjs).
       {
         for (const upgrade of this.items.documentsByType?.upgrade ?? []) {
           if (upgrade.getFlag('essence20', 'parentId') || upgrade.system?.type != 'armor'
@@ -1459,7 +1095,7 @@ export class Essence20Actor extends Actor {
           // Hardened Armor (PR ATS Gold Ranger, p.52): "your Toughness Defense increases while
           // Morphed" - most defenseBonus Role Points apply unconditionally, so this is opt-in
           // per item via bonus.whileMorphed, same flag name/shape as an Active Effect's own
-          // whileMorphed gate (helpers/morph-gated-effects.mjs).
+          // whileMorphed gate (mechanics/characters/morph-gated-effects.mjs).
           && (!rolePoints.system.bonus.whileMorphed || system.isMorphed)) {
           rolePointsName = rolePoints.name;
 
@@ -1476,43 +1112,8 @@ export class Essence20Actor extends Actor {
         }
       }
 
-      // GI Joe CRB Vanguard Perks - flat, condition-gated Toughness/Evasion bonuses. Computed
-      // fresh every prepareData pass off live conditions (armor currently equipped, its
-      // classification) rather than written into defense.bonus (the player/GM's own manual
-      // catch-all via the Stat Editor dialog), so removing armor or the Perk immediately drops
-      // the bonus instead of leaving a stale value behind.
-      if (defenseType == 'toughness' && equippedArmor.length) {
-        if (actorHasPerk(this, ARMOR_EXPERT_ID)) {
-          // Armor Expert (Juggernaut Focus, 1st level): "+2 Toughness defense while wearing armor."
-          perkDefenseBonus += 2;
-        }
-
-        if (actorHasPerk(this, THE_HEAVY_ID) && equippedArmor.some(a => ['heavy', 'ultraHeavy'].includes(a.system.classification))) {
-          // The Heavy (base, 2nd level): "gain 2 additional Toughness when wearing heavy or super
-          // heavy armor."
-          perkDefenseBonus += 2;
-        }
-      }
-
-      // Fighting Style (Infantry/Vanguard, shared Perk, p.79/108) - only the 2 options with a
-      // clean numeric effect are automated:
-      if (['toughness', 'evasion'].includes(defenseType)) {
-        if (fightingStyle == 'careful' && this.statuses?.has('cover')) {
-          // Careful: "When taking cover, you gain a +2 bonus to your Toughness and Evasion."
-          // Reads the actor's own 'cover' status (the same one dice.mjs's automatic combat
-          // modifiers already read on a target) - the player/GM toggles it via the token HUD.
-          perkDefenseBonus += 2;
-        }
-
-        if (fightingStyle == 'defense' && equippedArmor.length) {
-          // Defense: "While you are wearing armor, you gain a +1 bonus to your Toughness and
-          // Evasion."
-          perkDefenseBonus += 1;
-        }
-      }
-
-      // H.I.S.S. Column (GI Joe CRB, Vehicle Trait, p.302): "Every H.I.S.S. on a battlefield
-      // gains a bonus to Evasion equal to the number of other H.I.S.S. on the battlefield."
+      // H.I.S.S. Column (GI Joe CRB, Vehicle Trait, p.302): +1 Evasion per other H.I.S.S. on the
+      // battlefield.
       // Recomputed fresh every prepareData pass (getHissColumnBonus scans the live scene), same
       // idiom as every other condition-gated bonus in this loop, so it tracks other H.I.S.S.
       // tokens entering/leaving the scene automatically.
@@ -1520,29 +1121,12 @@ export class Essence20Actor extends Actor {
         perkDefenseBonus += getHissColumnBonus(this);
       }
 
-      // Colony Changeling (Dark Skies Over Equestria, Natural Shape choice, p.17) - see
-      // helpers/allies.mjs#getColonyChangelingEvasionBonus's own doc comment. The flat +1 Evasion
-      // half already lives on this Perk's own compendium Active Effect (defense.bonus above); this
-      // is only the SCALING +1-per-adjacent-Colony-Changeling half, up to +3.
-      if (defenseType == 'evasion' && actorHasPerk(this, COLONY_CHANGELING_ID)) {
-        perkDefenseBonus += getColonyChangelingEvasionBonus(this);
-      }
-
-      // Early-Warning Alarm / Focus Module: +1 Willpower / Cleverness while driving that vehicle.
-      if (this.type == 'playerCharacter' || this.type == 'npc') {
-        perkDefenseBonus += driverDefenseBonus(this)[defenseType] ?? 0;
-
-        // Upgraded Zord (Overprotective Upgrade), A Jump Through Time p.84: "the driver gains +2 to
-        // Willpower and Cleverness" - read off the Zord this actor is driving.
-        if (['willpower', 'cleverness'].includes(defenseType) && (game?.actors?.contents ?? []).some(zord => zord.type == 'zord'
-          && Object.values(zord.system?.actors ?? {}).some(crew => crew?.uuid == this.uuid && crew.vehicleRole == 'driver')
-          && zord.items.some(item => sourceOfItem(item) == OVERPROTECTIVE_UPGRADE_ID))) {
-          perkDefenseBonus += 2;
-        }
-      }
 
       defense.total = base + essence + bonus + rolePointsDefense + perkDefenseBonus;
       defense.total += system.isMorphed ? morphed : armor;
+      // The armor share just added (the Morphed shell, or stored + worn + loose-upgrade armor) - read by rules as
+      // @actor.system.defenses.<defense>.armorShare (Imperial Machine Mantle's +50%).
+      defense.armorShare = system.isMorphed ? morphed : armor;
       defense.total += shield;
 
       defense.string = `${base} (${baseName}) + ${essence} (${essenceName})`;
@@ -1551,41 +1135,17 @@ export class Essence20Actor extends Actor {
       defense.string += ` + ${bonus} (${bonusName}) + ${rolePointsDefense} (${rolePointsName})`;
       defense.string += ` + ${perkDefenseBonus} (${perkName})`;
 
-      // Imperial Machine Mantle (Power Rangers Adventures, Adventures in Angel Grove, p.90) - see
-      // helpers/imperial-machine-mantle.mjs's own doc comment. Toughness only, and reads whichever
-      // of morphed/armor was just added above as the "existing Armor Bonus" it melds onto.
-      if (defenseType == 'toughness') {
-        const machineMantleBonus = getMachineMantleBonus(this, system.isMorphed ? morphed : armor);
-        if (machineMantleBonus) {
-          defense.total += machineMantleBonus;
-          defense.string += ` + ${machineMantleBonus} (${game.i18n.localize('E20.DefenseMachineMantle')})`;
-        }
-      }
+      // (Imperial Machine Mantle is a Defense rule on the upgrade, over armorShare - rules/conv15-items1.test.js.)
 
-      // Thick Skulls (Intercontinental Adventures p.36): Smarts increases that raised Toughness
-      // instead of Willpower (helpers/grants.mjs#thickSkullsShift).
-      const thickSkulls = thickSkullsShift(this);
-      if (thickSkulls && ['toughness', 'willpower'].includes(defenseType)) {
-        const shift = defenseType == 'toughness' ? thickSkulls : -thickSkulls;
-        defense.total += shift;
-        defense.string += ` ${shift < 0 ? '-' : '+'} ${Math.abs(shift)} (Thick Skulls)`;
-      }
-
-      // Companion, bond and team Perks: Reinforced Bond, Mini-Con Master, Armored Connection, Hard
-      // Target, In The Right Hands' Body Armor Segment.
-      const linkedDefense = (linkedBonuses(this).defenses[defenseType] ?? 0) + (bondBonuses(this).defenses[defenseType] ?? 0)
-        + (hardTargetBonus(this, getCrewedVehicle(this)?.vehicle).defenses[defenseType] ?? 0) + socialStandingDefense(this, defenseType);
+      // Companion Perks: Reinforced Bond, Mini-Con Master. (Hard Target's, Armored Connection's and In The Right Hands'
+      // Body Armor Segment are Defense rules.)
+      const linkedDefense = linkedBonuses(this).defenses[defenseType] ?? 0;
       if (linkedDefense) {
         defense.total += linkedDefense;
         defense.string += ` ${linkedDefense < 0 ? '-' : '+'} ${Math.abs(linkedDefense)} (${game.i18n.localize('E20.CompanionBonds')})`;
       }
 
-      // Loader used as a shield in Bot Mode: "+1 Deflection to Toughness" (TF CRB p.134).
-      if (defenseType == 'toughness' && loaderShieldToughness(this)) {
-        defense.total += 1;
-        defense.string += ` + 1 (${game.i18n.localize('E20.KitLoader')})`;
-      }
-
+      // (Loader used as a shield in Bot Mode is a Defense rule on the Loader.)
       // A Hint of Independence's Fragile Chassis: "You have a -1 penalty to your Toughness Defense".
       if (defenseType == 'toughness' && imperfectionOf(this)?.n == 2) {
         defense.total -= 1;
@@ -1593,7 +1153,7 @@ export class Essence20Actor extends Actor {
       }
 
       // Defense damage - the Transformers Bewildering/Maiming/Surgical/Traumatic Critical Effects
-      // (helpers/essence-damage.mjs), until a rest.
+      // (mechanics/combat/essence-damage.mjs), until a rest.
       const defenseDamage = defenseDamageOf(this)[defenseType] ?? 0;
       if (defenseDamage) {
         defense.total -= defenseDamage;
@@ -1613,43 +1173,30 @@ export class Essence20Actor extends Actor {
       return;
     }
 
-    // Air Born - see AIR_BORN_ID's own comment above. Resolved once, outside the per-type loop
-    // (it sets both ground and aerial in the same pick), then applied to each type's own base
-    // inside the loop below.
-    const airBornOption = AIR_BORN_MOVEMENT_OPTIONS[findPerk(this, AIR_BORN_ID)?.system.choice];
-
-    // Static Electricity - see STATIC_ELECTRICITY_ID's own comment above. Sets ground Movement's
-    // own base to a flat 35ft, same override shape as Air Born just above.
-    const hasStaticElectricity = actorHasPerk(this, STATIC_ELECTRICITY_ID);
-
-    // Gravity Optional - see helpers/gravity-optional.mjs's own doc comment. Sets aerial
-    // Movement's own base while the toggle is active, same override shape as Static Electricity
-    // just above.
-    const gravityOptionalActive = actorHasPerk(this, GRAVITY_OPTIONAL_ID) && isGravityOptionalActive(this);
-
-    // Fast - see FAST_ID's own comment above.
-    const hasFast = actorHasPerk(this, FAST_ID);
-
-    // Order matters here and is not alphabetical: 'climb' is processed AFTER 'ground' so Wire
-    // Work's climb-equals-ground clause can read ground's finished total (see WIRE_WORK_ID's own
-    // comment above). 'burrow' is appended last because nothing derives from it - unlike climb and
+    // Order matters here and is not alphabetical: 'climb' is processed AFTER 'ground' so a
+    // climb-equals-ground rule (Wire Work's) can read ground's finished total. 'burrow' is
+    // appended last because nothing derives from it - unlike climb and
     // swim it has no half-Ground default, since an actor only ever has Burrow Movement because
     // something explicitly granted it (Burrower, tsitems).
+    // Item rules' Movement (rules/adapter.mjs#ruleMovementStages), at four points of the loop below.
+    const movementRule = ruleMovementStages(this);
+    const applyMovementRule = (stage, movementType, key = 'total') => {
+      const next = movementRule(stage, movementType, Number(system.movement[movementType][key]) || 0);
+      if (next !== null) {
+        system.movement[movementType][key] = next;
+      }
+    };
+
     const movementTypes = ['aerial', 'ground', 'climb', 'swim', 'burrow'];
+    // Stage bonus (Fast): each type's bonus, all of them first, since the loop below reads ground's
+    // base + bonus while it works on aerial and swim (Jury Rig, Lightfoil Wings).
     for (const movementType of movementTypes) {
-      if (airBornOption && (movementType == 'ground' || movementType == 'aerial')) {
-        system.movement[movementType].base = airBornOption[movementType];
-      }
+      applyMovementRule('bonus', movementType, 'bonus');
+    }
 
-      if (movementType == 'ground' && hasStaticElectricity) {
-        system.movement[movementType].base = 35;
-      }
-
-      if (movementType == 'aerial' && gravityOptionalActive) {
-        system.movement[movementType].base = getGravityOptionalHeight(this);
-      }
-
+    for (const movementType of movementTypes) {
       system.movement[movementType].base = parseInt(system.movement[movementType].base);
+      applyMovementRule('base', movementType, 'base');
       system.movement[movementType].total = 0;
 
       // Each branch sums whichever "innate" value applies in this form (base, or altMode while
@@ -1668,17 +1215,7 @@ export class Essence20Actor extends Actor {
         movement.total = innateValue + movement.bonus + morphedBonus;
       }
 
-      // Fast (General Perk, p.131) - see FAST_ID's own comment above. Its own flat +10 Active
-      // Effect bonus (applied identically to aerial/climb/swim, alongside ground) is baked into
-      // `movement.bonus` above with no way to tell it apart from any OTHER source contributing to
-      // the same aggregate field - unlike Zero-G's own "+60 Aerial" (an explicit grant of a
-      // movement type the actor didn't have), Fast's own "increase ALL your Movement types"
-      // doesn't read as granting a brand new one out of nothing, so its contribution is backed out
-      // here for any of the three types the actor had no innate value in. Ground is excluded
-      // (virtually every actor already has some, and RAW never intends this Perk to zero it out).
-      if (hasFast && !innateValue && ['aerial', 'climb', 'swim'].includes(movementType)) {
-        movement.total = Math.max(0, movement.total - 10);
-      }
+      applyMovementRule('total', movementType);
 
       movementTotal += movement.total;
 
@@ -1692,191 +1229,38 @@ export class Essence20Actor extends Actor {
         movement.total = Math.max(movement.total, halfGround);
       }
 
-      // Natural Movement - see helpers/natural-movement.mjs's own doc comment. "Half your Ground
-      // Movement" is the same formula the default climb/swim fallback above already computes, but
-      // this OVERRIDES regardless of whatever that movement type's total already was (unlike the
-      // fallback, which only kicks in when it's still 0) - real value for an actor whose actual
-      // permanent Climb/Swim speed is lower than half their Ground Movement.
-      if (movementType == getNaturalMovementType(this)) {
-        system.movement[movementType].total = Math.floor(system.movement.ground.total / 5 * .5) * 5;
-      }
+      applyMovementRule('adjust', movementType);
 
-      // Prowl - see PROWL_ID's own comment above.
-      if (movementType == 'ground' && actorHasPerk(this, PROWL_ID) && hasActiveEnvironmentalExpertise(this)) {
-        system.movement.ground.total *= 2;
-      }
+      // (High Gear's Ground Movement doubling is a Movement rule on the Feature, stage adjust - just above; a Megaform's
+      // aggregate reads each Zord's own .base, so it never sees it.)
 
-      // Wire Work - see WIRE_WORK_ID's own comment above. Overrides the default half-Ground climb
-      // speed just computed above, the same "last word on this movement type's own total" shape
-      // Bulwark's own zeroing-out already uses.
-      if (movementType == 'climb' && actorHasPerk(this, WIRE_WORK_ID)) {
-        system.movement.climb.total = system.movement.ground.total;
-      }
-
-      // Amphibious Assault (Quartermaster's Guide to Gear, Freebooter Focus, Renegade, 1st level,
-      // p.24): "You gain an Aquatic Movement equal to your Ground Movement. If you already have
-      // an Aquatic Movement, or gain one from another source, increase the better Aquatic
-      // Movement option by 15ft." Same "last word on this movement type's own total" shape as
-      // Wire Work just above - "already have Aquatic Movement" is read off the base value (before
-      // this Perk's own contribution), the same way Wire Work reads a pre-existing Climb base
-      // being nonzero elsewhere in this project. The Initiative Edge half ("while using your
-      // Aquatic Movement") needs an "am I currently in the water" concept this codebase doesn't
-      // track anywhere - correctly left unbuilt, the same environment-tracking gap Feet Wet's own
-      // clause hits.
-      if (movementType == 'swim' && actorHasPerk(this, AMPHIBIOUS_ASSAULT_ID)) {
-        system.movement.swim.total = system.movement.swim.base > 0
-          ? Math.max(system.movement.swim.total, system.movement.ground.total) + 15
-          : system.movement.ground.total;
-      }
-
-      // I Can Dig It - see I_CAN_DIG_IT_ID's own comment above.
-      if (movementType == 'burrow' && this.system.isTransformed && actorHasPerk(this, I_CAN_DIG_IT_ID)) {
-        system.movement.burrow.total = movement.base > 0 ? movement.base + 15 : 25;
-      }
-
-      // Warrior Rush (Wrecker Focus, 1st level, p.92): "On the first turn of combat, double your
-      // Movements until the beginning of your next turn." Approximated as "for the whole first
-      // round" rather than tracking whose specific turn it is (this system has no per-actor
-      // "was it your turn yet this round" check outside dice.mjs's own combat-modifier functions,
-      // and derived data like this has no roll/target context to hook one in with) - the same
-      // round-granularity simplification Who Dares Wins/Alpha Strike already use for "until my
-      // next turn" clauses.
-      if (game.combat?.round == 1 && actorHasPerk(this, WARRIOR_RUSH_ID)) {
-        system.movement[movementType].total *= 2;
-      }
-
-      // Rush the Line - see RUSH_THE_LINE_ID's own comment above. Ground Movement only (this
-      // system's own default "Movement" stat), same reading Power Adaptation's own "+20 feet"
-      // clause already uses.
-      if (movementType == 'ground' && actorHasPerk(this, RUSH_THE_LINE_ID) && isRushTheLineActive(this)) {
-        system.movement[movementType].total *= 2;
-      }
-
-      // High Gear (A Jump Through Time, Zord Feature, p.83) - see helpers/high-gear.mjs's own doc
-      // comment. Same "ground *= 2" idiom as Rush the Line just above. this.type == 'zord' isn't
-      // strictly required (the flag can only ever be set on a Zord in the first place, per
-      // toggleHighGear's own guard), but stated explicitly since Megaform participants have
-      // already had their own .base folded in by _prepareMegaformZordData BEFORE this runs, so
-      // this deliberately never touches a Megaform's own aggregate total.
-      if (movementType == 'ground' && this.type == 'zord' && isHighGearActive(this)) {
-        system.movement.ground.total *= 2;
-      }
-
-      // Frictionless Movement - see FRICTIONLESS_MOVEMENT_ID's own comment above. Every Movement
-      // type, unlike Rush the Line's own ground-only check just above.
-      if (actorHasPerk(this, FRICTIONLESS_MOVEMENT_ID) && isFrictionlessMovementActive(this)) {
-        system.movement[movementType].total *= 2;
-      }
-
-      // Expanded Mysticism - Quicken (MLP CRB, Spirit of Magic, 9th level, p.95) - see
-      // helpers/expanded-mysticism.mjs's own doc comment. Only the ONE Movement type the player
-      // chose, unlike Frictionless Movement's own every-type check just above.
-      if (actorHasPerk(this, EXPANDED_MYSTICISM_ID) && isExpandedMysticismQuickenActive(this, movementType)) {
-        system.movement[movementType].total *= 2;
-      }
-
-      // Emotional Mastery: Distress (A Jump Through Time, Purple Ranger, p.37) - "Your Movement
-      // values increase by 10 feet whenever you begin your turn within 10 feet of an enemy."
+      // Emotional Mastery: Distress (A Jump Through Time, Purple Ranger, p.37) - +10ft to every
+      // Movement when the turn starts within 10ft of an enemy.
       // Every Movement type, same live-read touch-point as Warrior Rush above (see
       // getDistressMovementBonus's own doc comment for the "whenever you begin your turn"
       // approximation).
       system.movement[movementType].total += getDistressMovementBonus(this);
 
       // The Tough Get Going (Factions in Action Vol. 2, Oktober Guard General Perk, p.95) - see
-      // helpers/the-tough-get-going.mjs's own doc comment. Same round-scoped doubling shape as
-      // Warrior Rush/Rush the Line just above.
+      // items/movement/the-tough-get-going.mjs's own doc comment. Ground only.
       if (movementType == 'ground' && isTheToughGetGoingActive(this)) {
         system.movement[movementType].total *= 2;
       }
 
-      // Thunderous Advance (GI Joe CRB, Mechanized Infantry Focus, 7th level, p.81, built
-      // 2026-09-12): "While piloting a vehicle, its Movement increases by 15 feet in combat, and
-      // 20% out of combat." Held by the DRIVER, applied to the VEHICLE's own movement - checked
-      // here on `this` (the vehicle) by resolving its own crew map directly (the same
-      // fromUuidSync(entry.uuid) idiom _prepareMegaformZordData already establishes) rather than
-      // dice.mjs's private, Dice-class-only _getPilotedVehicle. RAW doesn't scope this to ground
-      // only, unlike Power Adaptation's own "+20 feet" - applied to every movement type, the same
-      // "every type" reading Frictionless Movement's own unscoped clause already uses.
-      if (this.type == 'vehicle') {
-        const driverEntry = Object.values(this.system?.actors ?? {}).find(crew => crew.vehicleRole == 'driver');
-        const driver = driverEntry ? fromUuidSync(driverEntry.uuid) : null;
-        if (driver && actorHasPerk(driver, THUNDEROUS_ADVANCE_ID)) {
-          system.movement[movementType].total += game.combat ? 15 : Math.round(system.movement[movementType].total * 0.2);
-        }
-      }
-
-      // Bulwark - see BULWARK_ID's own comment above. Overrides every movement type to 0 while
-      // planted, the last word on this movement type's own total for this pass.
-      if (actorHasPerk(this, BULWARK_ID) && isBulwarkActive(this)) {
-        system.movement[movementType].total = 0;
-      }
-
       // Power Adaptation - Boost of Speed (Across the Stars, Silver Ranger, 9th/18th level,
-      // p.57) - see helpers/power-adaptation.mjs's own doc comment. "Increase Movement by 20
+      // p.57) - see items/forms/power-adaptation.mjs's own doc comment. "Increase Movement by 20
       // feet" is read as the ground Movement specifically (this system's default "Movement"
       // stat), same reasoning Warrior Rush's own doubling above already applies broadly instead.
       if (movementType == 'ground' && isPowerAdaptationActive(this, 'boostOfSpeed')) {
         system.movement[movementType].total += 20;
       }
 
-      // Over the Candlestick - Innate Climber (Technorganic Secrets, Climber/Nimble Origin
-      // Benefit, p.38) - see OVER_THE_CANDLESTICK_ID's own comment in dice.mjs. "You gain a 40
-      // feet Climb Movement while in your Alt Mode," gated on the actor having actually chosen
-      // this option (hasChoice picker, `system.choice`) rather than Agile Reflexes. A flat SET,
-      // not an addition - overrides the generic "half of Ground" climb fallback just above, the
-      // same "last word on this movement type's own total" shape Wire Work/Natural Movement
-      // already use for their own Climb grants.
-      if (movementType == 'climb' && this.system.isTransformed
-        && findPerk(this, OVER_THE_CANDLESTICK_ID)?.system.choice == 'innateClimber') {
-        system.movement[movementType].total = 40;
-      }
+      // (Engine Override's +15ft Ground Movement is a Movement rule its mark carries - stage final, rules/conv15-banked.test.js.)
 
-      // Sprinter - see SPRINTER_ID's own comment above. "+20ft Alt Mode Ground Movement," Alt Mode
-      // gated (replacing the item's own now-disabled unconditional compendium effect).
-      if (movementType == 'ground' && this.system.isTransformed && actorHasPerk(this, SPRINTER_ID)) {
-        system.movement[movementType].total += 20;
-      }
-
-      // Sprinter's own once/scene Movement double - see helpers/sprinter-boost.mjs's own doc
-      // comment. Ground only, unlike Frictionless Movement's own every-type doubling.
-      if (movementType == 'ground' && actorHasPerk(this, SPRINTER_ID) && isSprinterBoostActive(this)) {
-        system.movement[movementType].total *= 2;
-      }
-
-      // Sprinter (Transformers One) - see TF1S_SPRINTER_ID's own comment above. +5ft Bot Mode
-      // Ground Movement only.
-      if (movementType == 'ground' && !this.system.isTransformed && actorHasPerk(this, TF1S_SPRINTER_ID)) {
-        system.movement[movementType].total += 5;
-      }
-
-      // Skier - see SKIER_ID's own comment above. Same "flag alone isn't enough" defense-in-depth
-      // check Bulwark's own toggle already uses.
-      if (movementType == 'ground' && actorHasPerk(this, SKIER_ID) && isSkiing(this)) {
-        system.movement[movementType].total += 10;
-      }
-
-      // Field Aid - see helpers/field-aid.mjs's own doc comment.
-      if (movementType == 'ground' && actorHasPerk(this, FIELD_AID_ID) && hasNearbyDefeatedAlly(this)) {
-        system.movement[movementType].total += 10;
-      }
-
-      // Engine Override (Factions in Action Vol. 2, Engineer Troop Focus, 3rd level, p.72) - see
-      // helpers/engine-override.mjs's own doc comment. +15ft Ground Movement to whichever vehicle
-      // this was activated on - checked on THIS actor directly (not gated on actorHasPerk, since
-      // the flag lives on the boosted vehicle, not the Perk holder).
-      if (movementType == 'ground' && isEngineOverrideBoostActive(this)) {
-        system.movement[movementType].total += 15;
-      }
-
-      // Hup! Hup! Hup! Hup! Hup! - see helpers/hup-hup-hup-hup-hup.mjs's own doc comment. Checked
-      // directly on THIS actor, not gated on actorHasPerk - the flag lives on the boosted ally,
-      // not the Officer who granted it, same shape as Engine Override's own +15ft grant above.
-      if (movementType == 'ground') {
-        system.movement[movementType].total += getHupHupHupHupHupBonus(this);
-      }
+      // (Hup! Hup! Hup! Hup! Hup!'s Ground Movement bonus is a Movement rule its mark carries - stage final.)
 
       // Jury Rig - Engine Turbo-Boost / Watertight Seals (Factions in Action Vol. 2, Engineer
-      // Troop Focus, 17th level, p.73) - see helpers/jury-rig.mjs's own doc comment. Both grant
+      // Troop Focus, 17th level, p.73) - see items/vehicles/jury-rig.mjs's own doc comment. Both grant
       // "an Aerial/Aquatic Movement equal to its Ground Movement" - same override shape as Wisdom
       // of the Elders' identical Lightfoil Wings clause, checked on THIS actor directly (the flag
       // lives on the boosted vehicle, not the Engineer who granted it). Read ground's own .base +
@@ -1889,37 +1273,6 @@ export class Essence20Actor extends Actor {
 
       if (movementType == 'swim' && isJuryRigBenefitActive(this, 'watertightSeals')) {
         system.movement.swim.total = system.movement.ground.base + system.movement.ground.bonus;
-      }
-
-      // Scuba Gear - see SCUBA_GEAR_ID's own comment above. Same override shape as Watertight
-      // Seals just above; the larger of the two wins if somehow both apply.
-      if (movementType == 'swim' && actorHasEquippedGear(this, SCUBA_GEAR_ID)) {
-        system.movement.swim.total = Math.max(
-          system.movement.swim.total, system.movement.ground.base + system.movement.ground.bonus,
-        );
-      }
-
-      // Swiftness (Quartermaster's Guide to Gear, Grid Power, p.94) - see
-      // helpers/swiftness.mjs's own doc comment. +20ft to whichever of ground/aerial was chosen
-      // at activation, same live-override shape as Boost of Speed just above.
-      if (movementType == 'ground' || movementType == 'aerial') {
-        system.movement[movementType].total += getSwiftnessBonusFeet(this, movementType);
-      }
-
-      // Eltarian Training (Through the Shattered Grid, General Perk, p.73): "+10 Ground
-      // Movement" - a plain flat bonus, same shape as Boost of Speed's own +20 just above.
-      if (movementType == 'ground' && actorHasPerk(this, ELTARIAN_TRAINING_ID)) {
-        system.movement[movementType].total += 10;
-      }
-
-      // Wildfire - see WILDFIRE_ID's own comment above. "Your Movements increase by 10ft" reads
-      // as every movement type the actor already has (same "don't invent a movement type out of
-      // nothing" caution Burrow Movement's own doc comment establishes), not a flat universal
-      // grant - so this is gated on the type already having a nonzero total, unlike Eltarian
-      // Training's single fixed 'ground' type above.
-      if (system.movement[movementType].total > 0 && hasEquippedFireWeapon(this)
-        && actorHasPerk(this, WILDFIRE_ID)) {
-        system.movement[movementType].total += 10;
       }
 
       // Wisdom of the Elders - Lightfoil Wings (Through the Shattered Grid, Guardian of Eltar,
@@ -1937,79 +1290,58 @@ export class Essence20Actor extends Actor {
           + (system.isMorphed ? system.movement.ground.morphed : 0);
       }
 
-      // Animal Gait - see ANIMAL_GAIT_ID's own comment above / helpers/animal-gait.mjs. Same
-      // aerial-before-ground ordering wrinkle Lightfoil Wings already hit (computed from ground's
-      // own base/bonus/morphed inputs, not .total, when the chosen type is 'aerial'); climb/swim
-      // both process after ground in this same loop, so reading ground.total directly is safe for
-      // those two, same as Wire Work's own identical Climb-copy-Ground clause.
-      if (movementType == getAnimalGaitType(this)) {
-        system.movement[movementType].total = movementType == 'aerial'
-          ? system.movement.ground.base + system.movement.ground.bonus + (system.isMorphed ? system.movement.ground.morphed : 0)
-          : system.movement.ground.total;
-      }
-
-      // Mobile Mode (Through the Shattered Grid, Grid Power, p.26): "gain that type of Movement at
-      // 30 feet" while active and Morphed - a floor, not a reduction, if the actor already has more
-      // of that movement type some other way. See helpers/mobile-mode.mjs's own doc comment for why
-      // the movement type is picked fresh at each activation rather than a permanent build-time
-      // choice.
-      if (system.isMorphed && movementType == getMobileModeType(this)) {
-        system.movement[movementType].total = Math.max(system.movement[movementType].total, 30);
-      }
-
       // Fluttery Wings (MLP CRB, Elementary Aid spell, p.136) - see
-      // helpers/fluttery-wings.mjs's own doc comment. +15ft Aerial Movement while active.
+      // items/magic/fluttery-wings.mjs's own doc comment. +15ft Aerial Movement while active.
       if (movementType == 'aerial') {
         system.movement.aerial.total += getFlutteryWingsBonus(this);
       }
 
       // Hot To Trot (Knights of Canterlot, Elementary Enchantment spell, p.43) - see
-      // helpers/hot-to-trot.mjs's own doc comment. "Move 15ft further with each Movement action" -
+      // items/magic/hot-to-trot.mjs's own doc comment. "Move 15ft further with each Movement action" -
       // read as ground Movement (the spell's own flavor text, "quickly catch up to a friend
       // across town," points at ordinary ground travel, not flight).
       if (movementType == 'ground' && isHotToTrotActive(this)) {
         system.movement.ground.total += 15;
       }
 
-      // Quantum Master - see QUANTUM_MASTER_ID's own comment above. Applied after every other
-      // addend above (Warrior Rush's own doubling included, in the unlikely case an actor somehow
-      // held both), matching "double all Movement values" as the final multiplier on the total.
-      if (system.isMorphed && actorHasPerk(this, QUANTUM_MASTER_ID)) {
-        system.movement[movementType].total *= 2;
-      }
-
       // Lightning Speed (MLP CRB, Virtuoso Utility spell, p.139) - see
-      // helpers/lightning-speed.mjs's own doc comment. "Doubles all Movement rates" while active -
-      // applied last, same final-multiplier shape as Quantum Master just above (not gated on
-      // isMorphed, unlike Quantum Master - RAW states no such qualifier here).
+      // items/magic/lightning-speed.mjs's own doc comment. "Doubles all Movement rates" while active -
+      // applied after the hand-written additions above (not gated on isMorphed).
       if (isLightningSpeedActive(this)) {
         system.movement[movementType].total *= 2;
       }
 
-      // Fly In The Future's evasive maneuvers - see helpers/evasive-maneuvers.mjs's own doc
-      // comment. The COST half of that toggle ("you may halve the speed of your Aerial vehicle"),
-      // scoped to aerial movement specifically and applied last, same final-multiplier shape as
-      // Quantum Master/Lightning Speed above. Rounded down, this project's standard halving.
-      if (movementType == 'aerial' && isEvasiveManeuversActive(this)) {
+      // Fly In The Future's evasive maneuvers - an EvasiveManeuvers rule (rules/plugins/combat/evasive-maneuvers-rule.mjs).
+      // The COST half of that toggle ("you may halve the speed of your Aerial vehicle"),
+      // scoped to aerial movement specifically and applied after Lightning Speed above. Rounded
+      // down, this project's standard halving.
+      if (movementType == 'aerial' && ruleEvasiveManeuvers(this)) {
         system.movement[movementType].total = Math.floor(system.movement[movementType].total / 2);
       }
+
+      applyMovementRule('final', movementType);
     }
 
     system.movementNotSet = !movementTotal;
     this._applyGravityMovement();
+    // Item rules' Movement at stage afterGravity: on top of Low Gravity / Zero-G too (rules/adapter.mjs#ruleMovementStages).
+    for (const movementType of Object.keys(system.movement ?? {})) {
+      if (system.movement[movementType] && typeof system.movement[movementType] == 'object') {
+        applyMovementRule('afterGravity', movementType);
+      }
+    }
   }
 
   /**
    * Low Gravity and Zero-G (Across the Stars, Exploring Infinite Environments, p.24-25), applied on
-   * top of every other Movement change. Low Gravity: "Movement types gain a 10-foot bonus" (each
-   * type the creature already has). Zero-G: "Treat all Movement like Aerospace Movement, with a rate
-   * of 20 feet/10 feet" - Aerial becomes 20 and every other type 0; the 10-foot inertia minimum has
+   * top of every other Movement change. Low Gravity: +10ft to each Movement type the creature
+   * already has. Zero-G: all Movement works like Aerospace at 20ft/10ft - Aerial becomes 20 and every other type 0; the 10-foot inertia minimum has
    * no field to live in and stays a table rule. High Gravity's tripled cost is a movement-cost rule
-   * instead (helpers/rough-terrain.mjs), so the ruler shows it.
+   * instead (mechanics/world/rough-terrain.mjs), so the ruler shows it.
    *
    * Creatures only - vehicles, Zords and Megaforms print their own Aerospace Movement for this.
    * Records the environment it prepared against, so a token walking between Regions re-prepares
-   * (helpers/environment.mjs#refreshTerrainDependentActor).
+   * (mechanics/world/environment.mjs#refreshTerrainDependentActor).
    */
   _applyGravityMovement() {
     if (!['playerCharacter', 'npc', 'companion'].includes(this.type) || this.pack) {
@@ -2036,9 +1368,8 @@ export class Essence20Actor extends Actor {
 
   /**
    * Prepares Sorcerous Power - a one-time BUILD budget (Finster's Monster-Matic Cookbook,
-   * "Building Sorcerous Powers," p.274: "You begin with 4 points of Sorcerous Powers, and gain 2
-   * more with each level gained after taking this Perk... Once you have created a Power, you can
-   * use it as often as the Power dictates"), not a spendable-per-use pool. USER DECISION
+   * "Building Sorcerous Powers," p.274: 4 points to build with, +2 per level after taking the
+   * Perk, and a built Power is used as often as it says), not a spendable-per-use pool. USER DECISION
    * (2026-09-24): Sorcerous Powers no longer spend `.value` on activation (see
    * sheet-handlers/power-handler.mjs#powerCost) - instead `.committed` tracks how much of the
    * budget is already spoken for by the actor's owned Sorcerous Powers, so the sheet can warn
@@ -2180,7 +1511,6 @@ export class Essence20Actor extends Actor {
       system.health.value = 0;
       system.stun.value = 0;
       system.hasEnhancedAttack = false;
-      system.hasLightChassisInitiativeUpshift = false;
       // Every other field below is normally computed from the linked Zords - with none linked
       // yet, these would otherwise sit at whatever this actor's own zordBase-inherited schema
       // defaults are (e.g. Ground Movement 40, Strength 6, Toughness base 17), showing a
@@ -2226,7 +1556,6 @@ export class Essence20Actor extends Actor {
     let hasTenaciousBonds = false;
     let combinedHealthMax = 0;
     let combinedHealthValue = 0;
-    let hasLightChassisInitiativeUpshift = false;
 
     for (const zord of participants) {
       const hasCoreBody = zord.items.some(
@@ -2235,16 +1564,10 @@ export class Essence20Actor extends Actor {
       const healthMultiplier = hasCoreBody ? 2 : 1;
       let layeredSystemsBonus = 0;
 
-      // Light Chassis / Hardened Chassis - see their own LIGHT_CHASSIS_ID/HARDENED_CHASSIS_ID
-      // comments above. Zord Features, not megaformTrait items, so checked here rather than in
-      // the megaformTrait switch below.
-      if (actorHasZordFeature(zord, LIGHT_CHASSIS_ID)) {
-        hasLightChassisInitiativeUpshift = true;
-      }
-
-      if (actorHasZordFeature(zord, HARDENED_CHASSIS_ID)) {
-        toughnessTraitBonus += 1;
-      }
+      // The participant's MegaformArmor rules (Hardened Chassis) - the armor part of the Megaform's Defenses.
+      const contributed = megaformArmorOf(zord, 'megazord');
+      toughnessTraitBonus += contributed.toughness;
+      evasionTraitBonus += contributed.evasion;
 
       // Not handled below - none are a missing switch case, each needs a mechanic this system
       // doesn't have yet: Accurate Combiner (Across the Stars, p.104) is a per-roll ↑1 that only
@@ -2262,7 +1585,8 @@ export class Essence20Actor extends Actor {
       // narrow build/GM-enforced rules in the same class this project leaves unenforced
       // elsewhere rather than building bespoke tracking for.
       for (const item of zord.items) {
-        if (item.type != 'megaformTrait') {
+        // A trait whose MegaformArmor rule says what it adds (replacesTrait - Armored Defense) adds nothing by its type.
+        if (item.type != 'megaformTrait' || traitReplaced(item)) {
           continue;
         }
 
@@ -2277,15 +1601,13 @@ export class Essence20Actor extends Actor {
           break;
         case 'coreDefenses':
           toughnessTraitBonus += item.system.value;
-          if (!isArmoredDefense(item)) {
-            evasionTraitBonus += item.system.value;
-          }
+          evasionTraitBonus += item.system.value;
 
           break;
         case 'defender':
-          // Across the Stars, p.104: "+1 bonus to the Megaform's adjusted Toughness Defense."
-          // The reactive half ("piloting Ranger may spend 1 Personal Power to impose a Snag on
-          // an attack targeting the Megaform") needs a "react to an incoming attack" hook this
+          // Across the Stars, p.104: +1 to the Megaform's adjusted Toughness.
+          // The reactive half (the pilot spends 1 Personal Power to Snag an attack on the
+          // Megaform) needs a "react to an incoming attack" hook this
           // system doesn't have yet - not built.
           toughnessTraitBonus += item.system.value;
           break;
@@ -2303,8 +1625,8 @@ export class Essence20Actor extends Actor {
           hasTenaciousBonds = true;
           break;
         case 'layeredSystems':
-          // Across the Stars, p.105: "adds 3 to the Health of its specific section (added after
-          // any modifiers for the Core Body position)" - a flat bonus to just this Zord's own
+          // Across the Stars, p.105: +3 Health to this Zord's own section, after the Core Body
+          // multiplier - a flat bonus to just this Zord's own
           // share, applied after (not doubled by) the Core Body multiplier below.
           layeredSystemsBonus += item.system.value;
           break;
@@ -2315,8 +1637,7 @@ export class Essence20Actor extends Actor {
           system.immunities.emp = true;
           break;
         case 'resistant':
-          // Across the Stars, p.105: "adds one of its damage Resistances to the entirety of
-          // the Megaform."
+          // Across the Stars, p.105: one of the Zord's Resistances covers the whole Megaform.
           system.resistances[item.system.damageType] = true;
           break;
         }
@@ -2326,9 +1647,8 @@ export class Essence20Actor extends Actor {
       combinedHealthValue += (Math.max(0, zord.system.health.value) * healthMultiplier) + layeredSystemsBonus;
     }
 
-    // Tenacious Bonds (A Jump Through Time, p.84): "this component Zord and all other component
-    // Zords gain 1 additional Health, added after any multipliers for the Core Body Megaform
-    // Trait... This Megaform Trait may only modify the Megaform once" - a flat, non-stacking +1
+    // Tenacious Bonds (A Jump Through Time, p.84): +1 Health to every component Zord, after the
+    // Core Body multiplier, counted once per Megaform however many carry it - a flat, non-stacking +1
     // per participant (not per instance of the trait across multiple holders), so this is a
     // single conditional add after the main loop rather than accumulated inside it.
     if (hasTenaciousBonds) {
@@ -2359,7 +1679,6 @@ export class Essence20Actor extends Actor {
 
     system.hasEnhancedAttack = hasEnhancedAttack;
     system.hasAssaultWeapon = hasAssaultWeapon;
-    system.hasLightChassisInitiativeUpshift = hasLightChassisInitiativeUpshift;
     system.combinedHealthMax = combinedHealthMax;
     system.combinedHealthValue = combinedHealthValue;
     // Health is NOT pooled per RAW (see this method's own class comment) - combinedHealthMax/
@@ -2371,9 +1690,9 @@ export class Essence20Actor extends Actor {
     system.health.origin = combinedHealthMax;
     system.health.value = combinedHealthValue;
 
-    // Stun (p.170: "shown on the sheet as 'Stun / Health'... every hit that deals Stun damage
-    // adds to this instead of subtracting from Health") isn't pooled either, for the same reason
-    // Health isn't - each participant tracks its own, and helpers/megaform-damage.mjs's
+    // Stun (p.170: tracked as Stun / Health, Stun damage adding to Stun rather than coming off
+    // Health) isn't pooled either, for the same reason
+    // Health isn't - each participant tracks its own, and mechanics/vehicles/megaform-damage.mjs's
     // applyMegaformDamage already correctly routes Stun-type damage to each participant's own
     // system.stun.value (it just calls the ordinary applyDamage() per participant, which
     // branches on damageType itself). This is purely the same kind of display mirror as
@@ -2497,13 +1816,12 @@ export class Essence20Actor extends Actor {
         if (winner.system.skills[skill] && system.skills[skill]) {
           system.skills[skill] = foundry.utils.deepClone(winner.system.skills[skill]);
 
-          // Better as One (Component Ace Focus, 10th level, p.34): "any Skill Specializations
-          // you possess are also applied to the Skills of a Combiner form you are a component
-          // of." A holder's own Specializations in this skill are merged in even when they
+          // Better as One (Component Ace Focus, 10th level, p.34): the component's own Skill
+          // Specializations carry over to the Combiner form. A holder's own Specializations in this skill are merged in even when they
           // weren't the essence's high-score "winner" above (whose own Specializations were
           // already carried over by the deepClone just above).
           for (const component of participants) {
-            if (component === winner || !actorHasPerk(component, BETTER_AS_ONE_ID)) {
+            if (component === winner || !sharesSpecializations(component)) {
               continue;
             }
 
@@ -2554,9 +1872,9 @@ export class Essence20Actor extends Actor {
     // _prepareMegaformZordData's own identical comment (a per-roll dice.mjs hook, the
     // still-missing Megaform damage-distribution mechanic, and an out-of-turn action this
     // system already supports the core of via the ordinary system.actors remove control,
-    // respectively). Safe Release (Enigma of Combination, p.42: "when you are forced to leave a
-    // Combiner form... you do so with at least 1 Health") and Universal Receptors (p.43: "spend 1
-    // fewer Story Point... merging with Combiner-capable NPCs") are likewise unhandled here -
+    // respectively). Safe Release (Enigma of Combination, p.42: a forced exit from a Combiner leaves
+    // at least 1 Health) and Universal Receptors (p.43: one fewer Story Point to merge with
+    // Combiner-capable NPCs) are likewise unhandled here -
     // Safe Release needs Phase 4's still-unbuilt Vehicle/Megaform Defeat subsystem to have
     // anything to guard against, and Universal Receptors discounts a Story Point cost this system
     // doesn't charge anywhere yet (no code currently spends one for an NPC joining a Combiner).
@@ -2571,8 +1889,12 @@ export class Essence20Actor extends Actor {
     let hasEnhancedInitiative = false;
     let hasTitanHardpoint = false;
     for (const component of participants) {
+      // The component's MegaformArmor rules (Armored Defense) - the armor part of the Combiner form's Defenses.
+      const contributed = megaformArmorOf(component, 'combiner');
+      toughnessTraitBonus += contributed.toughness;
+      evasionTraitBonus += contributed.evasion;
       for (const item of component.items) {
-        if (item.type != 'megaformTrait') {
+        if (item.type != 'megaformTrait' || traitReplaced(item)) {
           continue;
         }
 
@@ -2594,7 +1916,7 @@ export class Essence20Actor extends Actor {
         case 'coreDefenses':
         case 'defender':
           toughnessTraitBonus += item.system.value;
-          if (item.system.type == 'coreDefenses' && !isArmoredDefense(item)) {
+          if (item.system.type == 'coreDefenses') {
             evasionTraitBonus += item.system.value;
           }
 
@@ -2615,7 +1937,7 @@ export class Essence20Actor extends Actor {
           system.resistances[item.system.damageType] = true;
           break;
         case 'skillExpertise':
-          // Enigma of Combination, p.42: "the Combiner form receives ↑1 to each of these Skills"
+          // Enigma of Combination, p.42: ↑1 on each chosen Skill for the Combiner form
           // - an upshift, not a flat modifier (the shift glyph drops in this book's own text
           // extraction, the same lossy-glyph gotcha already documented for Weak Point/
           // Technostalgic elsewhere in this project). "Choose TWO Skills" is modeled as two
@@ -2633,9 +1955,8 @@ export class Essence20Actor extends Actor {
           hasTitanHardpoint = true;
           break;
         case 'commander':
-          // Enigma of Combination, p.42: "Note your two highest Essence Scores... and increase
-          // each of those Essence Scores of the Combined Form by 1... a Combiner form can only
-          // ever benefit from this Combiner feature once" - a flat, non-stacking flag (like
+          // Enigma of Combination, p.42: +1 to the Combined Form's two highest Essence Scores,
+          // once per Combiner however many hold it - a flat, non-stacking flag (like
           // Tenacious Bonds above), applied once after every other Essence bonus is tallied so it
           // reads the Combiner's own final scores, not a snapshot from before this loop finishes.
           // The holder's per-Essence Skill picks (the item's Use button, extensions/r2misc/
@@ -2650,7 +1971,7 @@ export class Essence20Actor extends Actor {
     system.defenses.toughness.armor += toughnessTraitBonus;
     system.defenses.evasion.armor += evasionTraitBonus;
 
-    // "This Combiner feature can only apply to Combiner forms of Gigantic Size or larger" - reuses
+    // Only for Combiner forms of Gigantic Size or bigger - reuses
     // this same function's own sizeOrder/giganticIndex (already computed above for the
     // Titanic/Towering Titanspark-adjacent check), read AFTER system.size was finalized just above.
     if (hasCommander && sizeOrder.indexOf(system.size) >= giganticIndex) {
@@ -2706,12 +2027,12 @@ export class Essence20Actor extends Actor {
     system.stun.value = participants.reduce((sum, component) => sum + (component.system.stun?.value || 0), 0);
 
     const defeatedCount = participants.filter(component => component.system.health.value <= 0).length;
-    // Keep it Together! (Component Ace Focus, 17th level, p.34): "a combined form you are
-    // merged with will not fall apart as long as you still have Health" - overrides the normal
+    // Keep it Together! (Component Ace Focus, 17th level, p.34): the combined form holds together
+    // while the holder has Health left - overrides the normal
     // majority-defeated rule entirely while ANY component holding the Perk is still above 0
     // Health, regardless of how many other components have fallen.
     const hasKeepItTogetherHolderStanding = participants.some(
-      component => component.system.health.value > 0 && actorHasPerk(component, KEEP_IT_TOGETHER_ID),
+      component => component.system.health.value > 0 && holdsMegaformTogether(component),
     );
     system.isDefeated = !hasKeepItTogetherHolderStanding && defeatedCount > participants.length / 2;
   }
@@ -2806,7 +2127,7 @@ export class Essence20Actor extends Actor {
    * Every visible sign of being Morphed or in an Alt Mode - status effect, ring tint, chat line -
    * follows the two flags from here, so it does not matter which path flipped them (the sheet
    * buttons, the TAH helpers below, or a Perk toggling the flag directly). See
-   * helpers/morph-state.mjs.
+   * mechanics/characters/morph-state.mjs.
    * @override
    */
   _onUpdate(changed, options, userId) {

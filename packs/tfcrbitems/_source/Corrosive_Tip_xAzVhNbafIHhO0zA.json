@@ -5,6 +5,7 @@
   "_id": "xAzVhNbafIHhO0zA",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Melee weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: the weapon gains the Acid trait, and the Acid trait's rules apply to its attacks.</p>"
@@ -25,7 +26,7 @@
       "acid"
     ],
     "type": "weapon",
-    "prerequisite": "Melee"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

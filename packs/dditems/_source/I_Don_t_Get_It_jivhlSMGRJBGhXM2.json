@@ -5,6 +5,9 @@
   "_id": "jivhlSMGRJBGhXM2",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"I Don't Get It","scope":"incoming","when":[{"any":["skill:deception","skill:persuasion"]}],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Deception and Persuasion Tests made against you get Edge, labelled I Don't Get It in the roller's Roll Options Dialog.</p>"

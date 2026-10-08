@@ -5,6 +5,10 @@
   "_id": "TuXN8c83c1CDiMUD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Feed on a touched target","cost":{"action":"standard"},"steps":[{"do":"target","beforeCost":true},{"do":"require","beforeCost":true,"check":["not:target:self"],"message":"Target someone else."},{"do":"require","beforeCost":true,"when":["not:target:within:5"],"check":["target:within:5"],"message":"You must touch the target."},{"do":"roll","skill":"culture","dif":"@target.system.defenses.cleverness.total","onFail":[{"do":"chat","text":"The rite fails."}],"onSuccess":[{"do":"table","formula":"1d2","rows":[{"min":1,"max":1,"steps":[{"do":"updateActor","to":"target","when":[{"any":["target:canTransform","target:data:system.energon.normal.max>0"]}],"add":{"system.energon.normal.value":-1},"min":0},{"do":"chat","when":[{"any":["target:canTransform","target:data:system.energon.normal.max>0"]}],"text":"{target} loses 1 Energon."},{"do":"table","when":["not:target:canTransform","not:target:data:system.energon.normal.max>0"],"formula":"1d4","rows":[{"min":1,"max":1,"steps":[{"do":"essenceDamage","to":"target","essence":"strength","amount":1}]},{"min":2,"max":2,"steps":[{"do":"essenceDamage","to":"target","essence":"speed","amount":1}]},{"min":3,"max":3,"steps":[{"do":"essenceDamage","to":"target","essence":"smarts","amount":1}]},{"min":4,"max":4,"steps":[{"do":"essenceDamage","to":"target","essence":"social","amount":1}]}]}]},{"min":2,"max":2,"steps":[{"do":"updateActor","to":"target","when":[{"any":["target:canTransform","target:data:system.energon.normal.max>0"]}],"add":{"system.energon.normal.value":-2},"min":0},{"do":"chat","when":[{"any":["target:canTransform","target:data:system.energon.normal.max>0"]}],"text":"{target} loses 2 Energon."},{"do":"table","when":["not:target:canTransform","not:target:data:system.energon.normal.max>0"],"formula":"1d4","rows":[{"min":1,"max":1,"steps":[{"do":"essenceDamage","to":"target","essence":"strength","amount":2}]},{"min":2,"max":2,"steps":[{"do":"essenceDamage","to":"target","essence":"speed","amount":2}]},{"min":3,"max":3,"steps":[{"do":"essenceDamage","to":"target","essence":"smarts","amount":2}]},{"min":4,"max":4,"steps":[{"do":"essenceDamage","to":"target","essence":"social","amount":2}]}]}]}]}]}]}
+    ],
+    "prerequisites": {"when":["self:has:Word of Unicron","self:skill:culture>=d8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Standard action): touch a target and roll Culture against its Cleverness. On a success it loses 1d2 Energon, or takes that much damage to a random Essence if it has none.</p>"
@@ -15,7 +19,7 @@
       "book": "Decepticon Directive",
       "page": 111
     },
-    "prerequisite": "Word of Unicron; Culture d8",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

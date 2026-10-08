@@ -11,9 +11,12 @@
     {{/inline}}
 
     {{#*inline "item-label" item}}
-      <div class="flexrow e20-align-center e20-gap-5 leveled-item-label">
+      <div class="flexrow e20-align-center e20-gap-5 leveled-item-label{{#if item.system.subPerkOf}} e20-sub-perk{{/if}}">
         {{#if item.system.grantedLevel}}
           <span class="leveled-item-badge">{{item.system.grantedLevel}}</span>
+        {{/if}}
+        {{#if item.system.subPerkOf}}
+          <i class="fa-solid fa-turn-up fa-rotate-90 e20-sub-perk-mark" aria-hidden="true"></i>
         {{/if}}
         <img class="leveled-item-icon" src="{{item.img}}" alt="{{item.name}}" />
         <span class="leveled-item-name">{{item.name}}</span>

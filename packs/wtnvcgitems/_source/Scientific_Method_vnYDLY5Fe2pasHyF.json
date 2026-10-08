@@ -5,6 +5,11 @@
   "_id": "vnYDLY5Fe2pasHyF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:University of What It Is"]},
+    "rules": [
+      {"type":"RollModifier","label":"Scientific Method (Science)","when":["skill:science"],"specialize":true},
+      {"type":"Use","label":"↑1 on your next Skill Test","limit":{"per":"mission","max":1},"steps":[{"do":"bank","label":"Scientific Method","upshift":1}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: every Science test opens the Roll Options Dialog with Specialized already ticked. Use button (once per session; a new mission on the Scene Clock resets it): your very next Skill Test gets ↑1, added to its Upshift box.</p><p>Left to the table: Specialization is meant only for studying Weird phenomena, and the ↑1 only for tests using your banned tech.</p>"
@@ -25,7 +30,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "University of What It Is Scientist Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

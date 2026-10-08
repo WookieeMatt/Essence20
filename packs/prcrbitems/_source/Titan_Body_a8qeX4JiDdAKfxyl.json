@@ -5,6 +5,9 @@
   "_id": "a8qeX4JiDdAKfxyl",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"DamageFloor","label":"Titan Body (base melee attacks deal 3)","floor":3,"when":["attack:melee","self:type:zord"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: the Zord becomes Towering with +2 Health, +1 Strength and -2 Speed. Automatic: its melee attacks deal at least 3 damage, already used on the chat card's damage. Left to the table: removing the Zord Features it cannot be combined with.</p>"

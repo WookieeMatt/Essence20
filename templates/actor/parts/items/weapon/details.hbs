@@ -14,6 +14,11 @@
     </span>
   {{/if}}
 
+  {{!-- The book's other printed requirements (a size, an Origin or Perk, "Psycho Rangers only", ...) - shown, not checked. --}}
+  {{#if item.system.requirements.custom}}
+    <span class="chip" name="chip.weapon.requirementsCustom">{{localize 'E20.WeaponRequirements'}}: {{item.system.requirements.custom}}</span>
+  {{/if}}
+
   {{#if @root.system.canTransform}}
     <span class="chip" name="chip.weapon.hardpoint">{{lookup @root.config.hardpointTypes item.system.hardpoint.type}}</span>
     {{#if item.system.derivedMode}}

@@ -5,6 +5,11 @@
   "_id": "8oZYgik001Dxxxa6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Ninpõ JOEs","when":["skill:culture"],"edge":true,"limit":{"per":"scene"}},
+      {"type":"Use","label":"Pick your Qualified weapons (Ninpō JOEs)","steps":[{"do":"pickEntry","var":"melee","record":true,"key":"chosen","max":1,"legacy":"flags.essence20.q1Chosen","title":"Pick a Limited melee weapon","from":{"type":"weapon","availabilities":["limited"],"tags":[{"any":["item:hasAttack:item:data:system.classification.style=melee","item:hasAttack:item:data:system.range.reachMultiplier>0"]}]}},{"do":"pickEntry","var":"ranged","record":true,"key":"chosen","max":2,"title":"Pick a Limited projectile weapon","from":{"type":"weapon","availabilities":["limited"],"tags":["item:hasAttack:item:data:system.classification.style&item:data:system.classification.style!=melee",{"any":["var:includes:meleeTraits:martialArts","item:trait:martialArts"]}]}}]},
+      {"type":"Qualification","label":"Ninpō JOEs (Qualified: your chosen weapons)","access":"qualified","items":[{"any":["item:type:weapon","item:type:armor"]},"item:pickedSource:chosen"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Willpower. Automatic: your first Culture test each scene opens the Roll Options Dialog with Edge selected. Use button: pick your Qualified Limited melee and projectile weapons (one must be Martial Arts).</p>"

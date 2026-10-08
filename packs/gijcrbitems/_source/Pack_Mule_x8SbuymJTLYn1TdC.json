@@ -3,9 +3,13 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"BrawnRequirement","label":"Pack Mule (Brawn counts ↑2 for requirements and carrying)","amount":2,"carrying":true,"stack":"packMule"}
+    ],
+    "prerequisites": {"when":["self:skill:brawn>=d2"]},
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: you can carry 3 more hands of weapons. Automatic: your Brawn counts two steps higher for carrying capacity and against armor's Brawn requirement.</p>"
+      "notes": "<p>Active Effect: you can carry 3 more hands of weapons. Automatic: your Brawn counts two steps higher for carrying capacity and against armor's and weapons' Brawn requirements.</p>"
     },
     "originalId": "",
     "description": "",
@@ -13,7 +17,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 132
     },
-    "prerequisite": "Brawn d2",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

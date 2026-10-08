@@ -5,6 +5,9 @@
   "_id": "uXX6ZCaHlM4gErua",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"defeated","label":"Defeated in combat: one last full turn (Last Stand)","when":["combat:exists"],"steps":[{"do":"button","whisper":"owners","who":"owner","label":"Last Stand","intro":"{name} is Defeated - take one last full turn against whoever Defeated them?","steps":[{"do":"actWhileDefeated"},{"do":"grantActions","standard":1,"move":1},{"do":"setTargets","to":"target","when":["target:data:uuid"]},{"do":"chat","text":"{name} takes one last full turn against {target}.","when":["target:data:uuid"]},{"do":"chat","text":"{name} takes one last full turn against their foe.","when":["not:target:data:uuid"]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when you are Defeated in combat, a button lets you take one full turn first, aimed at the creature that Defeated you.</p>"

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","defense:cleverness"]}
+    ],
+    "prerequisites": {"when":["self:essence:social>=4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 Cleverness. Automatic: your attacks against a target's Cleverness deal +1 damage on a hit, listed on the attack's chat card.</p>"
@@ -13,7 +17,7 @@
       "book": "Transformers Core Rulebook",
       "page": 111
     },
-    "prerequisite": "Social Essence 4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

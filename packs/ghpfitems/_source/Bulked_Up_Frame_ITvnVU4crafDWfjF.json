@@ -5,13 +5,17 @@
   "_id": "ITvnVU4crafDWfjF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Bulked Up Frame (Brawn Ranks, no armor)","defense":"toughness","mode":"addAfter","amount":"@skill.brawn.rank + @actor.system.skills.brawn.isSpecialized","when":["self:itemCount:armor:equipped<1"]}
+    ],
+    "prerequisites": {"when":["self:skill:brawn>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you wear no armor, you get a deflective bonus to Toughness equal to your Brawn Ranks.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Brawn +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

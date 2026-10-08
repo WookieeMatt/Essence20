@@ -22,7 +22,6 @@
       "currentValue": 0,
       "increaseValue": 1
     },
-    "canActivate": true,
     "choice": null,
     "choiceType": "none",
     "isRoleVariant": false,

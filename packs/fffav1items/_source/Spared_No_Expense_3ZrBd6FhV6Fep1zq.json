@@ -5,6 +5,13 @@
   "_id": "3ZrBd6FhV6Fep1zq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"config","table":"sparedNoExpenseSkills","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Spared No Expense","when":["skill:{choice.skill}"],"upshift":1},
+      {"type":"RollModifier","label":"Larger target (Spared No Expense)","when":["attack","target:sizeDiff>=1"],"edge":true},
+      {"type":"RollModifier","label":"Driving a Long or smaller land vehicle (Spared No Expense: ↑1)","when":["skill:driving","vehicle:driving","vehicle:data:system.movement.ground.base>0",{"any":["vehicle:data:system.size=small","vehicle:data:system.size=common","vehicle:data:system.size=large","vehicle:data:system.size=long"]},"not:roll:untrained"],"upshift":1,"stack":"q1VehicleQualification"},
+      {"type":"RollModifier","label":"Driving a Long or smaller land vehicle untrained (Spared No Expense: no Snag)","when":["skill:driving","vehicle:driving","vehicle:data:system.movement.ground.base>0",{"any":["vehicle:data:system.size=small","vehicle:data:system.size=common","vehicle:data:system.size=large","vehicle:data:system.size=long"]},"roll:untrained",{"any":["not:self:hasItem:Compendium.essence20.ferocious_fighters.Item.VAhtHpKlv4gsR0OY","vehicle:data:system.traits.biomechanical","vehicle:name~biomech","vehicle:name~bio-mech","vehicle:name~cobra-la"]}],"immune":["snag"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: trained in medium and heavy armor. Automatic: driving Qualification for Large/Long and smaller land vehicles.</p><p>Left to the table: training with the silent battledress upgrade.</p>"
@@ -24,9 +31,9 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "sparedNoExpenseSkill",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",

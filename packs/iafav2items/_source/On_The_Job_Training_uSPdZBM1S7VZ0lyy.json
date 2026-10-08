@@ -5,6 +5,10 @@
   "_id": "uSPdZBM1S7VZ0lyy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Gain another Origin Benefit (On-The-Job Training)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickChildEntry","parent":{"type":"origin","tags":["item:line:gij","not:item:nameOfOwned:origin"]},"childType":"perk","prompt":"Which Origin Benefit?"},{"do":"grantPerk","uuid":"{var.picked}"},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
+    "prerequisites": {"when":["self:essence:smarts>=6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick another G.I. JOE Origin and gain its Origin Benefit.</p>"
@@ -16,7 +20,7 @@
       "page": 95
     },
     "items": {},
-    "prerequisite": "Smarts Essence 6+",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

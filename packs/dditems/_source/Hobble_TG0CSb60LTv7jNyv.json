@@ -5,6 +5,10 @@
   "_id": "TG0CSb60LTv7jNyv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Hobble, choose a Condition on a hit","key":"hobble","downshift":2,"forget":true,"when":["attack:ranged"]},
+      {"type":"Trigger","event":"hit","label":"Hobble","when":["roll:switch:hobble"],"steps":[{"do":"choose","prompt":"Inflict which Condition?","options":[{"label":"Immobilized","steps":[{"do":"applyCondition","condition":"immobilized","to":"target"}]},{"label":"Prone","steps":[{"do":"applyCondition","condition":"prone","to":"target"}]},{"label":"Restrained","steps":[{"do":"applyCondition","condition":"restrained","to":"target"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch on ranged attacks to take ↓2; on a hit you pick Immobilized, Prone or Restrained for the target.</p>"

@@ -5,6 +5,10 @@
   "_id": "CkeKNYNaotNlxWxd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Spend 2 Free actions on a hit to Grapple (Get A Grip)","key":"getAGrip","when":["attack:unarmed"],"forget":true},
+      {"type":"Trigger","label":"Get A Grip","event":"hit","oncePerRoll":true,"when":["roll:switch:getAGrip","target:sizeDiff<=1"],"steps":[{"do":"spendActions","action":"free","count":2,"atomic":true},{"do":"applyCondition","condition":"grappled","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch on unarmed attacks. On a hit against a target no more than one Size Class larger, two Free actions are spent and the target is Grappled.</p>"

@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:skill:finesse>=d6","self:skill:might>=d6","self:skill:targeting>=d6"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: once per turn after attacking with an External Hardpoint weapon, spend 2 Free actions and roll that attack again.</p>"
@@ -13,7 +14,7 @@
       "book": "Transformers Core Rulebook",
       "page": 111
     },
-    "prerequisite": "Finesse, Might, or Targeting d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

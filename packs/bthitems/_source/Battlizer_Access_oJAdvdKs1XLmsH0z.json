@@ -5,9 +5,14 @@
   "_id": "oJAdvdKs1XLmsH0z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"battlizer","label":"Battlizer","from":"list","options":[{"value":"Compendium.essence20.beneath_the_helmet.Item.k7svIPp9YYkzjxwB","label":"Red Fury Mode"},{"value":"Compendium.essence20.beneath_the_helmet.Item.vV7DVwdTNAcKacvR","label":"Dino Super Charge"},{"value":"Compendium.essence20.beneath_the_helmet.Item.sVYZLXhPZqdVhNax","label":"Triassic Battlizer"}]},
+      {"type":"Trigger","label":"Battlizer Access","event":"added","steps":[{"do":"grant","uuid":"{choice.battlizer}","when":["not:self:hasItem:{choice.battlizer}"]}]}
+    ],
+    "prerequisites": {"when":["self:level>=5","ask:GM approval"]},
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: when you take this Perk you pick one of Beneath the Helmet's Battlizers (Red Fury Mode, Dino Super Charge or the Triassic Battlizer). It lands on your sheet ready to summon while Morphed.</p>"
+      "notes": "<p>Granted: right after you take this Perk you pick one of Beneath the Helmet's Battlizers (Red Fury Mode, Dino Super Charge or the Triassic Battlizer). It lands on your sheet ready to summon while Morphed. Removing the Perk removes the Battlizer it gave.</p>"
     },
     "originalId": "",
     "description": "",
@@ -16,7 +21,7 @@
       "page": 50
     },
     "items": {},
-    "prerequisite": "5th level or higher, GM approval",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

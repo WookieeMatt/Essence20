@@ -5,6 +5,10 @@
   "_id": "ro5hMv4XMhOmANao",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Wrestler (Beast of Burden: ↑2)","when":["attack","item:damageType:maneuver","self:hasItem:Compendium.essence20.gi_joe_crb.Item.8m5s0JxTNSMU9zcj"],"upshift":2},
+      {"type":"ItemModifier","label":"Wrestler (no Maneuver ↓ on melee weapons)","items":["item:type:weaponEffect","item:damageType:maneuver","item:data:system.classification.style=melee"],"path":"system.shiftDown","op":"set","value":0}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: melee Maneuver alternate effects lose their ↓, and if you have Beast of Burden your Maneuver attacks get its ↑2.</p>"

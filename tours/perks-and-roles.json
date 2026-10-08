@@ -75,6 +75,16 @@
       "tooltipDirection": "LEFT"
     },
     {
+      "id": "picks",
+      "app": "item",
+      "item": "Steady Aim",
+      "tab": "rules",
+      "selector": "[data-action=\"rulesChoose\"]",
+      "title": "E20.Tours.Perks.Picks.Title",
+      "content": "E20.Tours.Perks.Picks.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
       "id": "background",
       "app": "character",
       "tab": "background",

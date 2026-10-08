@@ -5,6 +5,10 @@
   "_id": "bChPSldjpYZgAnIh",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"AlternateEffect","label":"Folding Stock: one-handed at ↓2","scope":"host","key":"foldingStock","name":"{primary} - {E20.WeaponAltOneHand}","changes":{"numHands":1},"formulas":{"shiftDown":"@base.shiftDown + 2"}}
+    ],
+    "prerequisites": {"when":["ask:Two-handed Targeting weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon it's attached to gains a one-handed copy of its main effect as an alternate, rolled at an extra ↓2.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Two-handed targeting weapon"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

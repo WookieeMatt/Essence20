@@ -83,15 +83,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "unique",
     "classification": {
       "size": "long"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=huge","self:skill:brawn>=d8",{"any":["self:skill:brawn>=d10","self:size>=towering"]},{"any":["self:skill:brawn>=d12","self:size>=gigantic"]}]},
     "requirements": {
-      "custom": "Huge-Towering",
+      "custom": "",
       "skill": "brawn",
       "shift": "d8"
     },

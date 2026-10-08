@@ -5,6 +5,9 @@
   "_id": "DU5oZEhhd45VDmRg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Spend 1 Idea Point (Eureka!: Edge)","when":["essence:smarts"],"edge":true,"clearSnag":true,"cost":{"resource":{"rolePoints":true},"amount":1}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on a Smarts test, spend an Idea Point for Edge.</p>"

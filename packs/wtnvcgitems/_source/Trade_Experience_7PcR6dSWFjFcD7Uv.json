@@ -5,6 +5,12 @@
   "_id": "7PcR6dSWFjFcD7Uv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:origin:Engineer"]},
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Trade Experience ({choice.skill}: ignores the first ↓1)","when":["skill:{choice.skill}"],"ignoreDownshift":1},
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"skills":["{choice.skill}"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: you pick one Smarts or Speed Skill when you add it. Automatic: tests with that Skill open the Roll Options Dialog with the Downshift box 1 lower (the first ↓1 is cancelled). Chat card: those tests get a reroll button for Skill Dice that came up 1.</p>"
@@ -20,12 +26,12 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "skills",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Engineer Origin",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",
@@ -33,14 +39,7 @@
     },
     "type": "origin",
     "value": 0,
-    "version": "powerRangers",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "skillDice",
-      "maxUses": 0,
-      "reset": "none"
-    }
+    "version": "powerRangers"
   },
   "effects": [],
   "sort": 0,

@@ -5,6 +5,9 @@
   "_id": "JYOzJJ1OUnb9xHVo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Pet Venom Adaptation","when":["skill:brawn","self:status:poisoned"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Resistant to Poison. Automatic: while you have the Poisoned condition, your Brawn tests get an Edge, labelled Pet Venom Adaptation in the Roll Options Dialog.</p>"

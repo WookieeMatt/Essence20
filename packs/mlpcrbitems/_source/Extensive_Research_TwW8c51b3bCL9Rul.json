@@ -5,6 +5,9 @@
   "_id": "TwW8c51b3bCL9Rul",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Research a spell (Mastered for a week)","steps":[{"do":"pickGrant","replace":true,"until":"worldTime:604800","from":{"type":"spell","fields":["system.tier"],"tags":["self:skill:spellcasting>=d4",{"any":["not:item:data:system.tier=superior","self:skill:spellcasting>=d8"]},{"any":["not:item:data:system.tier=virtuoso","self:skill:spellcasting>=d12"]}]}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: research a spell your Spellcasting is high enough for; you Master it for a week of game time, and only one spell at a time this way.</p>"

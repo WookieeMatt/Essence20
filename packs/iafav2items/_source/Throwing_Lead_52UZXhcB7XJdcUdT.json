@@ -5,6 +5,9 @@
   "_id": "52UZXhcB7XJdcUdT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AttackCount","label":"Throwing Lead","count":2,"when":[{"any":["weapon:trait:ballistic","weapon:trait:computerized"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Combat, when an attack with a Ballistic or Computerized weapon takes your Attack action, your next attack with such a weapon that turn costs no further action; your Actions panel keeps count.</p>"

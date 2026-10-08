@@ -5,6 +5,11 @@
   "_id": "aCPFmjY80u9671Hl",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Power Wing","path":"system.powers.personal.max","op":"add","value":2},
+      {"type":"Trigger","event":"equipped","label":"Power Wing bonded (+2 Personal Power)","when":["item:own","self:data:system.powers.personal"],"steps":[{"do":"updateActor","add":{"system.powers.personal.value":2}}]},
+      {"type":"Trigger","event":"unequipped","label":"Power Wing removed (-2 Personal Power)","when":["item:own","self:data:system.powers.personal"],"steps":[{"do":"updateActor","add":{"system.powers.personal.value":-2},"min":0}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic while equipped: +3 Toughness and Evasion, 40ft Aerial movement, and +2 maximum Personal Power (equipping adds 2 current, unequipping removes 2).</p><p>Left to the table: paying the 1 Personal Power summon cost.</p>"

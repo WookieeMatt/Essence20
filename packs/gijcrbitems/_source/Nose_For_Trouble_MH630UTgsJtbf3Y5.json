@@ -3,6 +3,13 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:streetwise>=d6"]},
+    "rules": [
+      {"type":"DialogSwitch","label":"Setting or disarming a trap (Nose For Trouble: Edge)","edge":true},
+      {"type":"Use","label":"Add an escape route","cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"chat","text":"{name} spends a Story Point to find an escape route; the GM describes it."}]},
+      {"type":"DialogSwitch","forget":true,"label":"Roll Streetwise for Initiative (Nose For Trouble)","when":["roll:initiative"],"useSkill":"streetwise"},
+      {"type":"SkillSubstitution","label":"Searching (Nose For Trouble: Streetwise for Alertness)","from":"alertness","mode":"ask","options":["streetwise"],"clearSpecialized":true,"prompt":"E20.Gij2NoseStreetwisePrompt","when":["not:item:data:type","calc:@skill.streetwise.rank - @skill.alertness.rank > 0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: offers Streetwise in place of Alertness when it's the better die, a switch for Edge when setting or disarming traps, and a Streetwise-for-Initiative switch. Use button: spends a Story Point for a minor change to the scene, which the GM describes.</p>"
@@ -13,7 +20,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 132
     },
-    "prerequisite": "Streetwise d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

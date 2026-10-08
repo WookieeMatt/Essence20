@@ -5,6 +5,10 @@
   "_id": "Jlfb8iPvT7JFvcxv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Patch Up (1 Energon)","when":["self:data:system.energon.normal.value>=1","not:calc:@owned.lupxm8SNDLvbjoDt>0"],"limit":{"per":"turn"},"steps":[{"do":"choose","prompt":"Patch Up with which Skill?","options":[{"label":"Science (Heal an organic lifeform)","steps":[{"do":"setVar","key":"skill","value":"science"}]},{"label":"Technology (Repair a Cybertronian or vehicle)","steps":[{"do":"setVar","key":"skill","value":"technology"}]}]},{"do":"askNumber","var":"n","min":1,"max":6,"prompt":"Health to attempt to restore"},{"do":"spend","resource":{"path":"system.energon.normal.value"},"amount":1},{"do":"roll","skill":"{var.skill}","dif":"5 + 5 * @var.n","dataset":{"isPatchUp":true,"patchUpAmount":"{var.n}"}}]},
+      {"type":"Use","label":"Patch Up (1 Energon, Intensive)","when":["self:data:system.energon.normal.value>=1","calc:@owned.lupxm8SNDLvbjoDt>0"],"steps":[{"do":"choose","prompt":"Patch Up with which Skill?","options":[{"label":"Science (Heal an organic lifeform)","steps":[{"do":"setVar","key":"skill","value":"science"}]},{"label":"Technology (Repair a Cybertronian or vehicle)","steps":[{"do":"setVar","key":"skill","value":"technology"}]}]},{"do":"askNumber","var":"n","min":1,"max":6,"prompt":"Health to attempt to restore"},{"do":"spend","resource":{"path":"system.energon.normal.value"},"amount":1},{"do":"roll","skill":"{var.skill}","dif":"5 + 5 * @var.n","dataset":{"isPatchUp":true,"patchUpAmount":"{var.n}"}}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per turn, spend an Energon Point and roll to Repair a Cybertronian or vehicle, or Heal an organic, as a Free action.</p><p>Left to the table: counting as carrying Standard Medicine and Repair Kits.</p>"

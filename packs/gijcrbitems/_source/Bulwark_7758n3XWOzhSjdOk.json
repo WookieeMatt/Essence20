@@ -5,6 +5,12 @@
   "_id": "7758n3XWOzhSjdOk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"all","stage":"adjust","op":"min","value":0,"label":"Planted: Movement 0","when":["check:bulwark"]},
+      {"type":"Cover","mode":"grant","against":true,"label":"Planted Bulwark within 5 ft (Bulwark: counts as Cover)","scope":"aura","radius":5,"affects":"all","when":["holder:data:flags.essence20.bulwarkActive"]},
+      {"type":"Use","label":"Plant yourself or move on","steps":[{"do":"choose","auto":true,"options":[{"label":"Plant yourself","when":["not:self:data:flags.essence20.bulwarkActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.bulwarkActive":true}},{"do":"chat","text":"{name} plants themselves - a one-soldier fortress."}]},{"label":"Stop being planted","when":["self:data:flags.essence20.bulwarkActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.bulwarkActive":false}},{"do":"chat","text":"{name} is no longer planted."}]}]}]},
+      {"type":"ConditionImmunity","label":"Planted (immune to Frightened)","conditions":["frightened"],"when":["self:data:flags.essence20.bulwarkActive"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: plant or unplant yourself. While planted your Movement is 0, you're immune to Frightened, and adjacent allies count as in cover against attacks.</p><p>Left to the table: ignoring pushes and other forced movement.</p>"

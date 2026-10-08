@@ -5,6 +5,7 @@
   "_id": "Yb5W1XSsgr1eQnGW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:role:Journalist"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: the Writing Utensil contraband.</p>"
@@ -32,7 +33,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Journalist Role",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

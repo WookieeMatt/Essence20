@@ -5,6 +5,9 @@
   "_id": "Dw5KmScLetUz6Ugg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Intimidation vs Willpower: worse Initiative","limit":{"per":"encounter"},"steps":[{"do":"target","max":1},{"do":"rollVsEach","skill":"intimidation","defense":"willpower","to":"target","onHit":[{"do":"require","check":["target:initiative"]},{"do":"setVar","key":"before","value":"@initiative.target"},{"do":"rollInitiative","to":"target"},{"do":"writeInitiative","to":"target","value":"@var.before","when":["calc:@initiative.target - @var.before > 0"]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per combat, as a Move action, roll Intimidation against a target's Willpower. On a success it rerolls Initiative and keeps the lower result.</p><p>Left to the table: using Performance instead of Intimidation.</p>"

@@ -5,6 +5,9 @@
   "_id": "bCNp9CxhKmIGifyY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"IgnoreDrawback","label":"Field Test Expert","drawbacks":["temperamentalFumble"],"limit":{"per":"encounter"},"message":"E20.FieldTestExpertSaved"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per combat, a Fumble with a Temperamental weapon is just a failure instead of hitting you.</p>"

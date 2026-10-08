@@ -5,6 +5,9 @@
   "_id": "xvd1sVIqu0sNEI1c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Torozord Feature: a Zord Feature for your Zord","event":"added","steps":[{"do":"require","check":["self:ownsZord"],"message":"{name} has no Zord to give the Feature to."},{"do":"pickGrant","from":{"type":"feature","notOwned":true},"to":"ownZord"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: each time you gain it, pick a Zord Feature; it is added to your linked Torozord.</p>"

@@ -1,5 +1,5 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
-import { requisitionAccess, requisitionDrop } from "../helpers/requisition.mjs";
+import { requisitionAccess, requisitionDrop } from "../mechanics/resources/requisition.mjs";
 import { getGameLine } from "../settings.js";
 
 /**
@@ -34,7 +34,7 @@ export class Essence20PartyActorSheet extends Essence20BaseActorSheet {
         { id: "roster", group: 'primary', label: "E20.TabRoster" },
         { id: "requisition", group: 'primary', label: "E20.TabRequisition" },
         { id: "missionCritical", group: 'primary', label: "E20.TabMissionCritical" },
-        { id: "effects", group: 'primary', label: "E20.TabEffects" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
         { id: "notes", group: 'primary', label: "E20.TabNotes" },
       ],
       initial: "roster",
@@ -199,9 +199,9 @@ export class Essence20PartyActorSheet extends Essence20BaseActorSheet {
    * Resets the shared Requisition attempt pool to its derived maximum (3 x roster size, or the
    * current value when autoFromRoster is off).
    */
-  /** A Group Skill Test for the Party's members - helpers/group-tests.mjs. */
+  /** A Group Skill Test for the Party's members - mechanics/rolls/group-tests.mjs. */
   static async #onGroupSkillTest() {
-    const { startGroupTest } = await import("../helpers/group-tests.mjs");
+    const { startGroupTest } = await import("../mechanics/rolls/group-tests.mjs");
     await startGroupTest(this.document.members ?? []);
   }
 

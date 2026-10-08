@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Involves language, codes or ciphers (Tongues: Edge)","edge":true}
+    ],
+    "prerequisites": {"when":[{"any":["self:hasType:perk:Linguistics","ask:Knows 4+ languages"]}]},
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: a switch for Edge on Skill Tests involving language. Left to the table: choosing and declaring known languages, and the GM's free clue.</p>"
@@ -13,7 +17,7 @@
       "book": "Transformers Core Rulebook",
       "page": 112
     },
-    "prerequisite": "Linguistics Perk or know 4+ Languages",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

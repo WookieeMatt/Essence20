@@ -5,9 +5,13 @@
   "_id": "HTQEaadz9eZ5ZkC1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"DIF 10 Alertness: remote combat control","cost":{"action":"standard"},"steps":[{"do":"roll","skill":"alertness","dif":10,"onSuccess":[{"do":"mark","key":"remoteOperations","to":"self","until":"turnOrScene"}]}]},
+      {"type":"Assist","label":"Remote combat control (any rank)","side":"give","effect":"anyRank","when":["self:marked:remoteOperations"]}
+    ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: makes the DIF 10 Alertness test; on a success you can Lend Assistance to allies for the rest of the turn.</p><p>Left to the table: the Free-action timing and the once-per-ally limit.</p>"
+      "notes": "<p>Use button (Standard action): makes the DIF 10 Alertness test; on a success you can Lend Assistance to allies for the rest of this turn (out of combat, the scene).</p><p>Left to the table: the Free-action timing and the once-per-ally limit.</p>"
     },
     "originalId": "",
     "actionType": "standard",

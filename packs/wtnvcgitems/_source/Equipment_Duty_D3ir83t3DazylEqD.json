@@ -5,6 +5,7 @@
   "_id": "D3ir83t3DazylEqD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:role:Soldier"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: Edge on Wealth tests.</p><p>Left to the table: the Edge is meant only for getting weapons, and weapons of Wealth 15 or less need no test at all.</p>"
@@ -25,7 +26,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Soldier Role",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

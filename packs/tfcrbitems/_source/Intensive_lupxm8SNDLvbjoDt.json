@@ -5,6 +5,9 @@
   "_id": "lupxm8SNDLvbjoDt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"patchedUp","label":"Share the Repair with injured allies (Intensive)","when":["skill:technology","var:amount>0"],"steps":[{"do":"collect","to":"allies+self:30","filter":["target:data:system.health.value<$system.health.max"],"without":"targets","required":true},{"do":"button","whisper":"owners","who":"owner","label":"Intensive","intro":"Repair {var.amount} Health on every injured ally within 30 ft too?","steps":[{"do":"heal","to":"targets","amount":"@var.amount"}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: no limit on Patch Up uses per turn, and a successful Technology Patch Up offers the same Repair to each injured ally within 30ft.</p><p>Left to the table: counting as having Restricted Medicine and Repair Kits.</p>"

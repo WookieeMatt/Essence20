@@ -1,17 +1,15 @@
-import { checkIsLocked } from "../helpers/actor.mjs";
+import { checkIsLocked } from "../util/sheet-lock.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
-import { markUsedThisEncounter } from "../helpers/perks.mjs";
+import { markUsedThisEncounter } from "../mechanics/characters/perks.mjs";
 
-// Detachable (Across the Stars, p.104): "the Combiner participant can remove itself... roll its
-// Initiative Skill Test for the following Combat round, and become a separate combatant...
-// [but] may not reattach in the same scene." The "leave the Megaform" half needs no new code at
+// Detachable (Across the Stars, p.104): a participant may leave, roll Initiative for the next round
+// as its own combatant, and not rejoin that scene. The leaving half needs no new code at
 // all - it's the exact same removal onSystemActorsDelete already performs for any other reason a
 // GM might unlink an actor - so this only needs to flag that removal as a Detach (scoped to
-// "removed a Zord holding this trait from a Megaform while a combat is active," since that's the
-// only context RAW's "detach" action makes sense in) and, in drop-handler.mjs's own onDropActor,
-// refuse to re-add that same Zord to a Megaform while the flag is still set. "Incompatible with
-// the Core Body Megaform Trait" is a chargen-time build restriction rather than something with
+// a Zord with this trait removed from a Megaform during combat, the only context RAW's detach
+// makes sense in) and, in drop-handler.mjs's own onDropActor, refuse to re-add that same Zord to a
+// Megaform while the flag is still set. The trait's clash with Core Body is a chargen-time build restriction rather than something with
 // runtime combat consequences (worst case a GM builds a Zord RAW wouldn't technically allow, not
 // a crash or an exploit) - left as a GM-adjudicated build rule, not enforced in code here.
 export const DETACHED_THIS_SCENE_FLAG = 'detachedFromMegaformThisScene';
@@ -108,7 +106,7 @@ export async function onSystemActorsDelete(event, actorSheet) {
   }
 
   await actor.update({[updateString]: new foundry.data.operators.ForcedDeletion()});
-  // A companion taken off the list stops being this character's (helpers/companion-link.mjs).
+  // A companion taken off the list stops being this character's (mechanics/companions/companion-link.mjs).
   if (removedActor?.flags?.essence20?.companionOf == actor.uuid) {
     await removedActor.unsetFlag('essence20', 'companionOf');
   }
@@ -169,7 +167,9 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
       ],
     });
 
-    if (dialogResult == "no") {
+    // Only an explicit Yes swaps: closing the dialog (DialogV2.wait resolves null) used to count as Yes, and the
+    // swap prompt it opened could then act on crew data that had changed meanwhile (live test 2026-10-07).
+    if (dialogResult != "yes") {
       ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
       actor.render();
     } else {
@@ -193,23 +193,24 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
   }
 }
 
-export function _flipDriverAndPassenger(actor, key, newRole, selectedKey) {
-  let flippedRole = "";
-  let updateString = `system.actors.${selectedKey}.vehicleRole`;
-  if (newRole == 'driver') {
-    flippedRole = 'passenger';
-  } else {
-    flippedRole = 'driver';
+export async function _flipDriverAndPassenger(actor, key, newRole, selectedKey) {
+  // Both seats must still be on the vehicle: a stale key would otherwise create a nameless crew entry holding only a
+  // vehicleRole (seen live 2026-10-07).
+  const crew = actor.system.actors ?? {};
+  if (!crew[key] || !crew[selectedKey]) {
+    ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
+    actor.sheet?.render(false);
+    return false;
   }
 
-  actor.update ({
-    [updateString]: flippedRole,
-  });
+  const flippedRole = newRole == 'driver' ? 'passenger' : 'driver';
 
-  updateString = `system.actors.${key}.vehicleRole`;
-  actor.update ({
-    [updateString]: newRole,
+  // One update for both seats, so neither write can land on top of the other.
+  await actor.update({
+    [`system.actors.${selectedKey}.vehicleRole`]: flippedRole,
+    [`system.actors.${key}.vehicleRole`]: newRole,
   });
+  return true;
 }
 
 export async function onCrewNumberUpdate(event, actorSheet) {

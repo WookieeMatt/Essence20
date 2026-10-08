@@ -5,6 +5,9 @@
   "_id": "q2rDpOJq7d5xyMia",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Panacea (full Health, every Condition cleared)","event":"afterRoll","outcome":"success","when":["item:own"],"steps":[{"do":"cureAll","to":"targetOrSelf"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: on a successful cast, your target (or you, with no target) returns to full Health and every Condition ends, Defeated included.</p>"

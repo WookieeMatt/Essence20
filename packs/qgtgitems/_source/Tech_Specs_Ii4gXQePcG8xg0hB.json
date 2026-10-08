@@ -5,6 +5,10 @@
   "_id": "Ii4gXQePcG8xg0hB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Analyze a target","steps":[{"do":"target"},{"do":"defenseFacts"},{"do":"rollVsEach","skill":"technology","defense":"{var.highestDefense}","to":"target","onHit":[{"do":"defenseFacts"},{"do":"chat","text":"{target}'s Defenses: {var.defenseValues}. Hang-Ups: {var.hangUpNames}."},{"do":"mark","key":"techSpecs","to":"target","until":"combatThroughNextRound"}]}]},
+      {"type":"RollModifier","label":"Tech Specs","scope":"markedTarget","mark":"techSpecs","upshift":1,"when":["attack","self:sameSideAsHolder"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: roll Technology against the targeted enemy's highest Defense. On a success a chat card shows its Defenses and Hang-Ups, and you and your allies get ↑1 on attacks against it until the end of your next turn.</p>"

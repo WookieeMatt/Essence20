@@ -1,16 +1,16 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 import { applyThemeClass, getGameLine, setting } from "../settings.js";
-import { advanceMission, advanceScene, getMissionEpoch, getSceneEpoch, getSceneLabel } from "../helpers/scene-clock.mjs";
+import { advanceMission, advanceScene, getMissionEpoch, getSceneEpoch, getSceneLabel } from "../mechanics/resources/scene-clock.mjs";
 import {
   canWriteCircle, circlesLeftThisScene, drawForActor, endCircle, formCircle, FRIENDSHIP_CIRCLE_ID, getCircle,
   isCirclePony, joinLiveCircle, POOLS,
-} from "../helpers/friendship-circle.mjs";
-import { actorHasPerk } from "../helpers/perks.mjs";
+} from "../items/social/friendship-circle.mjs";
+import { actorHasPerk } from "../mechanics/characters/perks.mjs";
 import {
   canWriteStoryPoints, getGmPoints, getStoryPoints, getStoryPointsActor, gridPowerBloomResults, hasGmPool,
   hasGridPowerBloom, hasStoryPointsAvailable, ownsStoryPoints, requestStoryPointSpend, sessionResetUpdate,
   setGmPoints, setStoryPoints,
-} from "../helpers/story-points.mjs";
+} from "../mechanics/resources/story-points.mjs";
 
 export function getPointsName(plural) {
   return `${
@@ -112,7 +112,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /**
    * Everything the Friendship Circle section shows, or null when the group has no such Perk
-   * to show it for. See helpers/friendship-circle.mjs.
+   * to show it for. See items/social/friendship-circle.mjs.
    * @returns {?Object}
    */
   #circleContext() {
@@ -149,7 +149,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       // Whose pool this is. The tracker reads the PRIMARY Party and nothing else, so naming it
       // is the only thing on screen that says which of several Parties the points belong to -
       // and the only clue a player has that the pinned one changed. Null only in the gap before
-      // helpers/party.mjs pins one at the GM's ready.
+      // mechanics/resources/party.mjs pins one at the GM's ready.
       partyName: getStoryPointsActor()?.name ?? null,
       gmPoints: this._gmPoints,
       storyPoints: this._storyPoints,
@@ -176,7 +176,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       hasGmPool: hasGmPool(getGameLine()),
       gmPointsArePublic: hasGmPool(getGameLine()) && (game.user.isGM || setting("sptGmPointsArePublic")),
       pointsName: getPointsName(true),
-      // Scene Clock - see helpers/scene-clock.mjs. Shown to everyone, advanced only by the GM:
+      // Scene Clock - see mechanics/resources/scene-clock.mjs. Shown to everyone, advanced only by the GM:
       // players benefit from knowing which scene they are in, because it is what refreshes their
       // own once-per-scene abilities.
       sceneEpoch: getSceneEpoch(),
@@ -260,7 +260,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /**
    * Begin a new scene: both Scene Clock counters advance, refreshing every "once per scene" and
-   * "once per encounter" ability at the table (see helpers/scene-clock.mjs).
+   * "once per encounter" ability at the table (see mechanics/resources/scene-clock.mjs).
    *
    * Lives on the Story Points tracker because that is already the one persistent GM widget this
    * system puts on screen - a second floating window for one button would be worse. Prompts for an
@@ -268,7 +268,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
    */
   /**
    * Begin a new mission: a new scene too, and every "once per mission" ability and Contact's
-   * Allegiance Points refresh (helpers/scene-clock.mjs, helpers/contacts.mjs).
+   * Allegiance Points refresh (mechanics/resources/scene-clock.mjs, mechanics/companions/contacts.mjs).
    */
   static async newMission() {
     if (!game.user.isGM) {
@@ -362,8 +362,8 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   /**
-   * The spends that are pure narrative: "Gain temporary access to a minor piece of equipment or
-   * tool useful in the scene" and "Get a clue when stumped" (GI Joe CRB p.127; PR p.91 keeps
+   * The spends that are pure narrative: a handy minor piece of equipment for the scene, and a
+   * clue when stuck (GI Joe CRB p.127; PR p.91 keeps
    * the equipment one, MLP p.118 calls the clue "a hint"). Nothing to automate but the point
    * and the announcement - which is still worth having, so the pool the table sees is right.
    * @param {PointerEvent} event
@@ -384,10 +384,9 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   /**
-   * Grid Power bloom (PR CRB p.91): "The Power Rangers team can spend 1 Story Point per team
-   * member to cause a Grid Power bloom, generating 1d2 Personal Power for each team member."
+   * Grid Power bloom (PR CRB p.91): one Story Point per team member, 1d2 Personal Power for each.
    * The team is the primary Party's roster; the cost and the gains follow from it. Each gain is
-   * capped at that member's own maximum (helpers/story-points.mjs#gridPowerBloomResults).
+   * capped at that member's own maximum (mechanics/resources/story-points.mjs#gridPowerBloomResults).
    */
   static async gridPowerBloom() {
     const party = getStoryPointsActor();
@@ -425,7 +424,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     });
   }
 
-  /** Form a Friendship Circle around this client's pony - see helpers/friendship-circle.mjs. */
+  /** Form a Friendship Circle around this client's pony - see items/social/friendship-circle.mjs. */
   static async circleForm() {
     await formCircle(this.#circleActor());
   }
@@ -474,7 +473,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
    */
 
   /**
-   * Both writes go to the primary Party through helpers/story-points.mjs, which is where the
+   * Both writes go to the primary Party through mechanics/resources/story-points.mjs, which is where the
    * permission check lives. They resolve to whether the write was made, so the callers above
    * announce only what actually happened. The window re-renders from the updateActor hook
    * rather than here, the same way every other client's does.

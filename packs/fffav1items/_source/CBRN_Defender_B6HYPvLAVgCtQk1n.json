@@ -5,6 +5,11 @@
   "_id": "B6HYPvLAVgCtQk1n",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"defeatedEnemy","label":"CBRN Defender (Defeated someone)","steps":[{"do":"mark","key":"cbrnDefender","to":"self","until":"combat","when":["combat:exists"]},{"do":"mark","key":"cbrnDefender","to":"self","until":"turnOrUntilCombat","when":["not:combat:exists"]}]},
+      {"type":"Trigger","event":"defeatedEnemyStun","label":"CBRN Defender (Defeated someone)","steps":[{"do":"mark","key":"cbrnDefender","to":"self","until":"combat","when":["combat:exists"]},{"do":"mark","key":"cbrnDefender","to":"self","until":"turnOrUntilCombat","when":["not:combat:exists"]}]},
+      {"type":"RollModifier","label":"CBRN Defender","downshift":1,"when":["attack","self:marked:cbrnDefender"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: after damage you apply from a chat card drops a creature to 0 Health, your attacks take ↓1 for the rest of that combat, labelled CBRN Defender in your Roll Options Dialog.</p>"

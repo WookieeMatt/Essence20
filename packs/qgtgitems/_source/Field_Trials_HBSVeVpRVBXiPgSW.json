@@ -5,6 +5,9 @@
   "_id": "HBSVeVpRVBXiPgSW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Offer each teammate a free Limited weapon upgrade (Field Trials)","limit":{"per":"mission"},"steps":[{"do":"button","label":"Take a free Limited weapon upgrade (Field Trials)","intro":"{name} offers each team member one Limited weapon upgrade (it comes Temperamental), once this mission.","who":"anyone","runAs":"clicker","once":false,"limit":{"per":"mission","key":"gij3FreePickFieldTrials"},"steps":[{"do":"require","check":["self:inTeamOf:holder"],"message":"Only a teammate of the holder may take this."},{"do":"pickGrant","title":"Pick a Limited weapon upgrade","from":{"type":"upgrade","availabilities":["limited"],"tags":["item:data:system.type=weapon"]},"flags":{"gij3FieldTrials":true},"appendTraits":["temperamental"]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per mission, each team member gets a button to pick a free Limited weapon upgrade; the weapon it goes on becomes Temperamental.</p>"

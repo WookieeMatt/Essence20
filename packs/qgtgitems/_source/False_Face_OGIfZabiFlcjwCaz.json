@@ -5,6 +5,9 @@
   "_id": "OGIfZabiFlcjwCaz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Claim your free Disguise Kits (False Face)","steps":[{"do":"deleteItem","item":"granted","all":true},{"do":"setVar","key":"points","value":"ceil(max(1, @level) / 2)"},{"do":"repeat","steps":[{"do":"require","check":["var:points>=1"]},{"do":"choose","auto":true,"prompt":"Choose a Disguise Kit ({var.points} Standard kits' worth left).","options":[{"label":"Standard Disguise Kit","steps":[{"do":"createItem","data":{"name":"Standard Deception (Disguise) Kit","type":"gear","system":{"gearType":"kits","quantity":1},"flags":{"essence20":{"kit":{"tier":"standard","skill":"deception","spec":"Disguise","essence":null}}}}},{"do":"setVar","key":"points","value":"@var.points - 1"}]},{"label":"Limited Disguise Kit (two Standard)","when":["calc:@level >= 3","var:points>=2"],"steps":[{"do":"createItem","data":{"name":"Limited Deception (Disguise) Kit","type":"gear","system":{"gearType":"kits","quantity":1},"flags":{"essence20":{"kit":{"tier":"limited","skill":"deception","spec":"Disguise","essence":null}}}}},{"do":"setVar","key":"points","value":"@var.points - 2"}]},{"label":"Restricted Disguise Kit (four Standard)","when":["calc:@level >= 6","var:points>=4"],"steps":[{"do":"createItem","data":{"name":"Restricted Deception (Disguise) Kit","type":"gear","system":{"gearType":"kits","quantity":1},"flags":{"essence20":{"kit":{"tier":"restricted","skill":"deception","spec":"Disguise","essence":null}}}}},{"do":"setVar","key":"points","value":"@var.points - 4"}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: claim your free Disguise Kits for your level, trading two Standard for a Limited at 3rd level and two Limited for a Restricted at 6th.</p>"

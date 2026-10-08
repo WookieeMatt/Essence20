@@ -5,13 +5,17 @@
   "_id": "eKkAuWHCtHPocK8f",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Performance for Initiative (Needle Drop)","when":["roll:initiative"],"useSkill":"performance"}
+    ],
+    "prerequisites": {"when":["ask:Performance (Music) Specialization"]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when rolling Initiative, a switch rolls Performance in its place.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Performance (Music) Specialization",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

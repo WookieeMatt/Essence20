@@ -5,6 +5,10 @@
   "_id": "ngRiC3rt8GDo4rT3",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Static Slide Inhibitor","scope":"incoming","downshift":1,"when":["attack",{"any":["item:damageType:element","item:damageType:acid","item:damageType:cold","item:damageType:electric","item:damageType:emp","item:damageType:fire","item:damageType:laser","item:damageType:sonic"]},"rule:data:system.type=armor","not:rule:data:flags.essence20.parentId"]}
+    ],
+    "prerequisites": {"when":["self:size<=large"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +1 Toughness while worn, and attacks against you that deal Energy-type damage (Acid, Cold, Electric, EMP, Fire, Laser, Sonic or elemental) take ↓1, labelled Static Slide Inhibitor in the attacker's Roll Options Dialog.</p>"
@@ -25,7 +29,7 @@
       "deflective"
     ],
     "type": "armor",
-    "prerequisite": "Large or Smaller Bot Mode"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

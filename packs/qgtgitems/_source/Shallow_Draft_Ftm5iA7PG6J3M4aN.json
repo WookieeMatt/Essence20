@@ -5,6 +5,11 @@
   "_id": "Ftm5iA7PG6J3M4aN",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","path":"system.traits.amphibious","op":"set","value":1,"when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Shallow Draft: Ground Movement at least its Aquatic","movement":"ground","stage":"vehicleBase","op":"max","value":"@actor.system.movement.swim.total","when":["self:type:vehicle"]}
+    ],
+    "prerequisites": {"when":["self:data:system.traits.sea"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the vessel gains the Amphibious trait and Ground Movement equal to its Aquatic Movement.</p>"
@@ -23,7 +28,7 @@
     "benefit": "The vehicle gains the Amphibious trait and Ground Movement equal to its Aquatic Movement.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Sea vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

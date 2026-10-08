@@ -5,9 +5,12 @@
   "_id": "qplsg3JI3kmUCtU9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Catch Off Guard","when":["attack","target:status:surprised"],"steps":[{"do":"damage","amount":1,"damageType":"stun","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when your attack hits a target with the Surprised condition, the target also takes 1 Stun, applied as soon as the hit is rolled.</p>"
+      "notes": "<p>Automatic: when your attack hits a target with the Surprised Condition, the target also takes 1 Stun, applied as soon as the hit is rolled.</p>"
     },
     "originalId": "",
     "description": "",

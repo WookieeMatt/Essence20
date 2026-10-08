@@ -5,6 +5,9 @@
   "_id": "W222yDXUDZl0HQFT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"onesAndTwos","target":"skillDice","reset":"none","maxUses":0,"condition":"powerWeapon","recursive":false}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when an attack with a Power Weapon rolls a 1 or 2 on a Skill die, a button rerolls that die once, and you keep the new result.</p>"
@@ -16,15 +19,6 @@
       "page": 52
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "onesAndTwos",
-      "target": "skillDice",
-      "recursive": false,
-      "condition": "powerWeapon",
-      "maxUses": 0,
-      "reset": "none"
-    },
     "selectionLimit": 1,
     "type": "role"
   },

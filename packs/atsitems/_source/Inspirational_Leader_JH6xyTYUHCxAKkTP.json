@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Lend Assistance at any rank outside combat (Inspirational Leader)","side":"give","effect":"anyRank","when":["not:combat","not:combat:round:0"]},
+      {"type":"Trigger","label":"Inspiring (Inspirational Leader)","event":"afterRoll","outcome":"anySucceeded","when":["combat","var:skill"],"steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.rules.choices.inspiring":"{var.skill}"}},{"do":"mark","to":"self","key":"inspiring","until":"roundOrScene"}]},
+      {"type":"RollModifier","label":"Inspired (Inspirational Leader: ↑1)","scope":"alliesAnywhere","upshift":1,"when":["combat:exists","holder:marked:inspiring","skill:{choice.inspiring}"]}
+    ],
+    "prerequisites": {"when":["self:skill:persuasion>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in combat, when you succeed on a Skill Test, your allies get ↑1 on that same Skill until the round ends, listed as Inspirational Leader (with your name) in their Roll Options Dialog. Out of combat you can Lend Assistance even without ranks in the Skill.</p>"
@@ -13,7 +19,7 @@
       "book": "Across the Stars",
       "page": 69
     },
-    "prerequisite": "Persuasion d6 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

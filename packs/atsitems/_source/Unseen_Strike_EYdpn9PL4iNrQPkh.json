@@ -5,6 +5,9 @@
   "_id": "EYdpn9PL4iNrQPkh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Unseen Strike (the target's Evasion is halved)","defense":"evasion","mode":"halve","outgoing":true,"limit":{"per":"turn"},"when":["attack","self:data:flags.essence20.phantomSuiteActive"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while your Phantom Suite is active, your first attack each turn against Evasion is checked against the target's Evasion halved (rounded up), the number shown on the attack's chat card.</p>"

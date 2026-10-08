@@ -5,6 +5,9 @@
   "_id": "MOOrbfVEyGTDExfv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Change a poison's state (Poison Chemistry)","cost":{"action":"standard"},"steps":[{"do":"pick","beforeCost":true,"key":"poison","from":"ownedItem","itemType":"weapon","filter":["item:data:system.isPoison"],"prompt":"Poison"},{"do":"pick","beforeCost":true,"key":"state","from":"list","options":[["contact","E20.PoisonApplicationContact"],["ingested","E20.PoisonApplicationIngested"],["inhaled","E20.PoisonApplicationInhaled"]],"prompt":"New state"},{"do":"updateItem","item":"choice:poison","when":["rule:data:flags.essence20.rules.choices.state=contact"],"set":{"system.poisonApplication.contact":true,"system.poisonApplication.ingested":false,"system.poisonApplication.inhaled":false}},{"do":"updateItem","item":"choice:poison","when":["rule:data:flags.essence20.rules.choices.state=ingested"],"set":{"system.poisonApplication.contact":false,"system.poisonApplication.ingested":true,"system.poisonApplication.inhaled":false}},{"do":"updateItem","item":"choice:poison","when":["rule:data:flags.essence20.rules.choices.state=inhaled"],"set":{"system.poisonApplication.contact":false,"system.poisonApplication.ingested":false,"system.poisonApplication.inhaled":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Standard action): switch a poison you carry between contact, ingested and inhaled. Active Effect: +1 poison training.</p>"

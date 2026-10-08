@@ -1,6 +1,6 @@
 {
   "folder": "xEobfe1YNl85DACZ",
-  "name": "Long Bludgeoning Alternate Effect 3",
+  "name": "Martial Arts Long Bludgeon Alternate Effect 3",
   "type": "weaponEffect",
   "_id": "d0km91rD8rvzywo3",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -14,7 +14,7 @@
     "damageType": "blunt",
     "damageValue": 2,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

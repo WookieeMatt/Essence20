@@ -96,8 +96,8 @@ Three layers, deliberately split so the hard part is testable.
 
 | Layer | File | Foundry globals? | Tested |
 |---|---|---|---|
-| Parser | `module/helpers/stat-block-parser.mjs` | none | yes, heavily |
-| Builder | `module/helpers/stat-block-import.mjs` | yes | pure parts only |
+| Parser | `module/importers/stat-block-parser.mjs` | none | yes, heavily |
+| Builder | `module/importers/stat-block-import.mjs` | yes | pure parts only |
 | UI | `module/apps/stat-block-importer.mjs` | yes | no (per QA_PLAN) |
 
 `module/helpers/**` is inside `jest.config.js`'s `collectCoverageFrom`, so **both helper files
@@ -187,7 +187,7 @@ Languages: English, Putty     ->  system.languages
   `d20`.
 - Trailing `*` means `isSpecialized: true`.
 - The parenthetical becomes an entry in `system.skills.<skill>.specializations`, keyed via
-  `slugifySpecializationName()` (helpers/utils.mjs), with `granted: true`.
+  `slugifySpecializationName()` (util/utils.mjs), with `granted: true`.
 - Every parsed skill sets `isChosen: true`, which is what makes it visible on the NPC sheet
   (see `base-actor-sheet.mjs#_prepareChosenNpcSkills`).
 
@@ -302,7 +302,7 @@ builder must set `prototypeToken.width/height` explicitly from `CONFIG.E20.token
 ### 4.4 Compendium matching — the highest-value decision
 
 Before creating a bare Item for a named Perk/Power/weapon, search enabled Item packs
-(reuse `helpers/compendium-browser.mjs#getVisibleItemPacks`, which respects the GM's sourcebook
+(reuse `util/compendium-browser.mjs#getVisibleItemPacks`, which respects the GM's sourcebook
 setting) for a name match, preferring packs in the detected game line's folder.
 
 On a hit, create via `game.items.fromCompendium(source)` — the same idiom
@@ -358,9 +358,9 @@ campaign.
 
 ### 6.1 What exists today
 
-- `helpers/monster-grow.mjs` — the FMMC Sorcerous Power "Monster... Grow!". Toggles the
+- `items/forms/monster-grow.mjs` — the FMMC Sorcerous Power "Monster... Grow!". Toggles the
   target's `system.size` to `gigantic` and back, saving the original. **Nothing else.**
-- `helpers/monster-morph.mjs` — the Psycho Path `Monster Morph` and its 10th-level `Grow!`;
+- `items/forms/monster-morph.mjs` — the Psycho Path `Monster Morph` and its 10th-level `Grow!`;
   size plus flat Health/Toughness/Evasion/damage riders, for a *player* character.
 
 One correction to make to `monster-grow.mjs` along the way: its doc comment claims "the actual
@@ -409,7 +409,7 @@ the Essences reproduces the printed Defenses automatically with no extra work; o
 
 ### 6.4 Design: a Grown-form generator, not an Active Effect
 
-`module/helpers/monster-grow-generator.mjs`, pure:
+`module/importers/monster-grow-generator.mjs`, pure:
 
 ```js
 computeGrownStatBlock(ir, {
@@ -450,7 +450,7 @@ in ways worth verifying live in v14 rather than reasoning about. Fallback if it 
 delete and re-create the token at the same coordinates in one transaction, preserving
 combat-tracker position by updating the `Combatant`'s `tokenId`.
 
-**C. Upgrade the existing Power.** `helpers/monster-grow.mjs#toggleMonsterGrow` gains one
+**C. Upgrade the existing Power.** `items/forms/monster-grow.mjs#toggleMonsterGrow` gains one
 branch: if the target has a linked Grown form, do the mode-B swap; otherwise fall back to
 today's size-only toggle. Existing behaviour is preserved for any Threat nobody has generated a
 Grown form for, and the Power's existing tests keep passing.
@@ -473,14 +473,14 @@ Threat as a text stat block" for free — a genuinely useful third feature for s
 
 | Phase | Deliverable | Gate |
 |---|---|---|
-| 1 | ✅ **Done** 2026-09-16 — `helpers/stat-block-parser.mjs` + 41 tests | all three dialects green, and three real book blocks parse with only legitimate diagnostics |
-| 2 | ✅ **Done** 2026-09-16 — `helpers/stat-block-import.mjs` + 38 tests | four real printed blocks reproduce every printed Defense and Health exactly |
+| 1 | ✅ **Done** 2026-09-16 — `importers/stat-block-parser.mjs` + 41 tests | all three dialects green, and three real book blocks parse with only legitimate diagnostics |
+| 2 | ✅ **Done** 2026-09-16 — `importers/stat-block-import.mjs` + 38 tests | four real printed blocks reproduce every printed Defense and Health exactly |
 | 3 | ✅ **Done** 2026-09-16 — `apps/stat-block-importer.mjs`, hbs, scss, 28 lang keys, directory button | live-tested in Foundry v14.364: a real pasted block imported to a correct sheet |
-| 4 | ✅ **Done** 2026-09-16 — `helpers/stat-block-match.mjs` + 19 tests | proved live: a matched Perk's Active Effect actually applied to the imported actor |
-| 5 | ✅ **Done** 2026-09-16 — `helpers/monster-grow-generator.mjs` + `actorToIr` + 50 tests | the real printed Normal block grows to **26/26** exact against the real printed Grown block |
+| 4 | ✅ **Done** 2026-09-16 — `importers/stat-block-match.mjs` + 19 tests | proved live: a matched Perk's Active Effect actually applied to the imported actor |
+| 5 | ✅ **Done** 2026-09-16 — `importers/monster-grow-generator.mjs` + `actorToIr` + 50 tests | the real printed Normal block grows to **26/26** exact against the real printed Grown block |
 | 6 | ✅ **Done** 2026-09-16 — `apps/monster-grow-dialog.mjs` + sheet header control | live: drove the dialog to the published block's choices and created a Grown actor matching it on every field |
-| 7 | ✅ **Done** 2026-09-16 — spike resolved, `helpers/monster-grow-swap.mjs` + 21 tests, modes B and C | a placed token swapped both ways on real documents, damage and Combatant following |
-| 8 | ✅ **Done** 2026-09-16 — batch import, vehicle/Zord types, `helpers/stat-block-export.mjs` + 26 tests | live: two real blocks imported in one pass, a real vehicle imported, and a Grow-built actor round-tripped through text |
+| 7 | ✅ **Done** 2026-09-16 — spike resolved, `mechanics/characters/monster-grow-swap.mjs` + 21 tests, modes B and C | a placed token swapped both ways on real documents, damage and Combatant following |
+| 8 | ✅ **Done** 2026-09-16 — batch import, vehicle/Zord types, `importers/stat-block-export.mjs` + 26 tests | live: two real blocks imported in one pass, a real vehicle imported, and a Grow-built actor round-tripped through text |
 
 Phases 1-2 are useful on their own. Phase 5 is useful the moment Phase 2 exists.
 
@@ -551,7 +551,7 @@ Two v14 notes worth carrying into any new code written here:
 
 ## 10. Phase 1 results (2026-09-16)
 
-`module/helpers/stat-block-parser.mjs` + `stat-block-parser.test.js` are in. 41 parser tests
+`module/importers/stat-block-parser.mjs` + `stat-block-parser.test.js` are in. 41 parser tests
 green; full suite 5247 tests / 265 suites green; both files lint clean.
 
 Validated against **real extracted book text**, not only the synthesized fixtures:
@@ -586,7 +586,7 @@ Two **real content gaps** the parser surfaces rather than papering over:
 
 ## 11. Phase 2 results (2026-09-16)
 
-`module/helpers/stat-block-import.mjs` + `stat-block-import.test.js` are in. 38 builder tests
+`module/importers/stat-block-import.mjs` + `stat-block-import.test.js` are in. 38 builder tests
 green; full suite 5285 tests / 266 suites green; all four new files lint clean.
 
 The gate was "a Polluticorn paste produces a correct sheet". Checked harder than that: four real
@@ -666,7 +666,7 @@ uncommitted Hardpoints/Party work, whose DataModel isn't registered on this bran
 
 ## 13. Phase 4 results (2026-09-16)
 
-`module/helpers/stat-block-match.mjs` + `stat-block-match.test.js` (19 tests), plus
+`module/importers/stat-block-match.mjs` + `stat-block-match.test.js` (19 tests), plus
 `applyCompendiumMatches` in the builder, a game-line selector in the app, and per-entry match
 labels in the preview. Full suite 5309 tests / 267 suites green; lint clean.
 
@@ -722,7 +722,7 @@ empty — which looks exactly like a broken matcher.
 
 ## 14. Phase 5 results (2026-09-16)
 
-`module/helpers/monster-grow-generator.mjs` (pure, 42 tests) and `actorToIr` in the builder
+`module/importers/monster-grow-generator.mjs` (pure, 42 tests) and `actorToIr` in the builder
 (8 more). Full suite 5358 tests / 268 suites green; lint clean.
 
 **The gate, measured against real printed pages.** Both Polluticorn blocks were parsed out of the
@@ -809,8 +809,8 @@ Still open: the token-swap spike and modes B/C (Phase 7), and batch import / veh
 
 ## 16. Phase 7 results (2026-09-16)
 
-`module/helpers/monster-grow-swap.mjs` + 21 tests, a `renderTokenHUD` button (mode B), a new branch
-in `helpers/monster-grow.mjs` (mode C), and a `monsterGrowHealthMode` world setting. Suite 5379 /
+`module/mechanics/characters/monster-grow-swap.mjs` + 21 tests, a `renderTokenHUD` button (mode B), a new branch
+in `items/forms/monster-grow.mjs` (mode C), and a `monsterGrowHealthMode` world setting. Suite 5379 /
 269 green; new files lint clean.
 
 ### The spike, resolved — and it resolved well
@@ -857,7 +857,7 @@ target returns null. So every Threat nobody has built a Grown form for behaves e
   `actor.getActiveTokens()`, which is empty without a drawn canvas. The actor's Size changed
   correctly. This is pre-existing behaviour, not something this phase changed.
 
-A correction recorded in `helpers/monster-grow.mjs`: its own doc comment used to claim the
+A correction recorded in `items/forms/monster-grow.mjs`: its own doc comment used to claim the
 Size-only toggle had no visual effect on the canvas because "this codebase has no precedent for a
 Perk/Power resizing a token". That was wrong — `_preUpdate` has always called `resizeTokens()` on
 every Size change.
@@ -867,7 +867,7 @@ every Size change.
 ## 17. Phase 8 results (2026-09-16)
 
 `splitStatBlocks` in the parser, batch handling in the app, machine-type support in the builder,
-and `module/helpers/stat-block-export.mjs` + 26 tests. Suite 5405 / 270 green; lint clean.
+and `module/importers/stat-block-export.mjs` + 26 tests. Suite 5405 / 270 green; lint clean.
 
 **Batch import needs no mode switch.** The paste is split on its own `THREAT LEVEL:` lines, every
 block is parsed, the first is previewed, and Import creates all of them. A one-block paste is the
@@ -916,7 +916,7 @@ Large 2x2 → Gigantic 4x4, Health **3/7 → 6/13** proportional, and the token 
 Grown actor. Phase 7 mode B is no longer an open item.
 
 **Linking an actor that already exists** — `getLinkCandidates` / `linkGrownForm` /
-`unlinkGrownForm` in `helpers/monster-grow-swap.mjs`, plus a mode switch in the Grow dialog.
+`unlinkGrownForm` in `mechanics/characters/monster-grow-swap.mjs`, plus a mode switch in the Grow dialog.
 
 This closed a real hole. Until now the `grownFormId`/`normalFormId` pairing was written *only*
 when the dialog generated a new Actor — so the most common way a GM ends up with both forms, the

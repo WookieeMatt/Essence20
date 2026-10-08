@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Smaller target (Large And In Charge)","when":["skill:{choice.skill}","target:sizeDiff<=-1"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: choose a Social Skill. Automatic: your tests with that Skill against a smaller target get ↑1, labelled Large And In Charge in the Roll Options Dialog.</p>"
@@ -16,8 +20,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "hasChoice": true,
-    "choiceType": "skills"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "flags": {

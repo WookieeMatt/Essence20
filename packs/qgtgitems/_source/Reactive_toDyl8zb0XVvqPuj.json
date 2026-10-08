@@ -5,6 +5,11 @@
   "_id": "toDyl8zb0XVvqPuj",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Reactive: scene boost on / off","event":"powerUsed","when":["item:own"],"steps":[{"do":"setToggle","key":"boost","value":"toggle","until":"scene"}]},
+      {"type":"Defense","label":"Reactive (+1 evasion boost)","defense":"evasion","mode":"addAfter","amount":1,"when":["self:toggle:boost"]},
+      {"type":"FreeUse","label":"Reactive (switching the boost off is free)","when":["self:toggle:boost"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Evasion, always on. Use button: spend one of its daily uses for another +1 Evasion for the scene.</p>"
@@ -17,7 +22,6 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,

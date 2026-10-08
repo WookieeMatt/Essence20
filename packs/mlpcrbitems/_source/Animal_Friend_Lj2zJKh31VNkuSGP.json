@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Animal Friend","when":["skill:animalHandling"],"specialize":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your Animal Handling tests open the Roll Options Dialog with the Specialized box ticked.</p><p>Left to the table: other social tests with an animal, such as Persuasion, should count as Specialized too.</p>"

@@ -5,6 +5,10 @@
   "_id": "2JsjyEOtWTNHpxDl",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"crew","edge":true,"when":["skill:survival"]},
+      {"type":"RollModifier","edge":true,"when":["self:type:vehicle","skill:survival"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: crew making a Survival test aboard get Edge from it; untick it when the test isn't navigating while the vehicle moves.</p>"

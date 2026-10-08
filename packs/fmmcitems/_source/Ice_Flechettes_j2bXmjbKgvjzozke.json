@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and range; the Alternate Effect hits several targets at ↓1. Its traits apply.</p><p>Left to the table: the printed target count for the Alternate Effect and the Critical Success armor loss.</p>"
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and range; the Alternate Effect hits several targets at ↓1, and a Critical Success strips the target's armor Defense bonuses until the end of its next turn. Its traits apply. Left to the table: the printed target count for the Alternate Effect.</p>"
     },
     "originalId": "",
     "description": "",
@@ -61,15 +61,14 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Path of Frost"]},
     "requirements": {
-      "custom": "Path of Frost",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

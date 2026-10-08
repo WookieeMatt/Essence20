@@ -5,6 +5,7 @@
   "_id": "66mBjSaroyx9L6am",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:Radio"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: ↑2 on Persuasion and ↑1 on Culture and Performance. Granted: the Recording Microphone weapon.</p><p>Left to the table: one ↑1 of the Persuasion bonus, and the Culture and Performance bonus, are meant only when you use your voice.</p>"
@@ -32,7 +33,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Radio Journalist Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

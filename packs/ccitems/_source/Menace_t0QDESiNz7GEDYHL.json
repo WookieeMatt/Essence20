@@ -5,6 +5,9 @@
   "_id": "t0QDESiNz7GEDYHL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Menace","when":["self:data:system.originSkillsIncrease"],"limit":{"per":"scene"},"steps":[{"do":"rollVsEach","skill":"actor:system.originSkillsIncrease","defense":"willpower","damage":{"value":1,"type":"stun"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene, roll your Origin Skill against a targeted character's Willpower; on a success it deals 1 Stun.</p>"

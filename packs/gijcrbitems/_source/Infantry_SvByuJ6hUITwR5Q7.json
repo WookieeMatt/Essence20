@@ -169,8 +169,10 @@
     "perkLevels": {
       "general": [
         "level4",
+        "level6",
         "level8",
         "level12",
+        "level14",
         "level16",
         "level19"
       ]

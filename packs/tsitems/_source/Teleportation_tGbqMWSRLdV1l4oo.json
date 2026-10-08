@@ -5,6 +5,10 @@
   "_id": "tGbqMWSRLdV1l4oo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Teleport up to 30 ft","limit":{"per":"encounter"},"steps":[{"do":"chat","text":"{name} teleports up to 30 feet."}]}
+    ],
+    "prerequisites": {"when":["self:hasType:influence:Mutant Beast"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (once per scene): records the teleport. Left to the table: moving your token up to 30ft to a spot you can see, in the Alt Mode you chose.</p>"
@@ -22,7 +26,7 @@
     "choiceType": "none",
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,
-    "prerequisite": "Mutant Beast Influence",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "influence",
     "version": "transformers"

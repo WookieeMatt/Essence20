@@ -5,6 +5,10 @@
   "_id": "cf2zIWdlulvGmRU5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Area Awareness","when":[{"any":["skill:deception","skill:infiltration"]}],"snag":true},
+      {"type":"RollModifier","label":"Area Awareness (Surprised: Initiative Edge)","when":["roll:initiative","self:status:surprised"],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: Deception and Infiltration Tests made against you take a Snag, labelled Area Awareness in the roller's Roll Options Dialog. While you're Surprised, your Initiative roll gets Edge.</p><p>Left to the table: the one action you may take in the first round while Surprised, and switching the Snag off when the test isn't a surprise attempt.</p>"

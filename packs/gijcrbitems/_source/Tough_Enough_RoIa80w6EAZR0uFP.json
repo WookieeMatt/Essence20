@@ -5,6 +5,10 @@
   "_id": "RoIa80w6EAZR0uFP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Tough Enough","when":["not:attack","item:data:system.defenseType=toughness"],"snag":true},
+      {"type":"CardResistance","label":"Tough Enough (Resistance to the effect's damage)","when":["card:flagEquals:isAttack=false","card:flagEquals:defenseType=toughness"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a roll against your Toughness that isn't an attack takes a Snag, labelled Tough Enough in the roller's Roll Options Dialog. If it still succeeds and deals damage, Apply Damage halves that damage (rounded up).</p>"

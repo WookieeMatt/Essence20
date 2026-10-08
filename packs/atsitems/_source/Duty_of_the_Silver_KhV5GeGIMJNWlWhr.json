@@ -5,6 +5,10 @@
   "_id": "KhV5GeGIMJNWlWhr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"1 Grid Surge and 2 Power: teleport","when":["self:data:system.powers.personal.value>=2"],"cost":{"resource":{"rolePoints":true},"amount":1},"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":2}]},
+      {"type":"Trigger","event":"added","label":"Duty of the Silver: Heavy (or Ultra-Heavy) Armor training","steps":[{"do":"updateActor","to":"self","set":{"system.trained.armors.ultraHeavy":true},"when":["self:data:system.trained.armors.heavy"]},{"do":"updateActor","to":"self","set":{"system.trained.armors.heavy":true},"when":["not:self:data:system.trained.armors.heavy"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spends 1 Grid Surge and 2 Personal Power to teleport. Granted: Heavy Armor training, or Ultra-Heavy if you already have Heavy.</p><p>Left to the table: moving your token to the other Rangers.</p>"

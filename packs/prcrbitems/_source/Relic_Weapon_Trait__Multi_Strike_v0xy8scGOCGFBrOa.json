@@ -5,6 +5,7 @@
   "_id": "v0xy8scGOCGFBrOa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Grid Relic Weapon"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: attacking two adjacent targets at once, then not attacking with it the next round.</p>"
@@ -15,7 +16,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 61
     },
-    "prerequisite": "Grid Relic Weapon",
+    "prerequisite": "",
     "selectionLimit": 3,
     "type": "role"
   },

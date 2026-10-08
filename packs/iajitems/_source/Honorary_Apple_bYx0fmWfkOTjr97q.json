@@ -5,6 +5,11 @@
   "_id": "bYx0fmWfkOTjr97q",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Awarded by the In a Jam adventure"]},
+    "rules": [
+      {"type":"DialogSwitch","label":"With the Apple family (Honorary Apple: Edge)","when":["essence:social"],"edge":true},
+      {"type":"Use","label":"Edge on your next Skill Test","cost":{"action":"free"},"limit":{"per":"mission","max":1},"steps":[{"do":"bank","label":"Honorary Apple","edge":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Social tests, a switch for Edge when dealing with the Apple family. Use button: a Free action for Edge on an agriculture test, once per mission.</p>"
@@ -25,7 +30,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Awarded for finishing the In a Jam adventure with Happy, Joyous, or Overjoyed Customers",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "In a Jam",

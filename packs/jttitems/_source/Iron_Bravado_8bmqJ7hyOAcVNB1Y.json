@@ -1,0 +1,45 @@
+{
+  "folder": "S0TVSZfMxXIqPYj4",
+  "name": "Iron Bravado",
+  "type": "perk",
+  "_id": "8bmqJ7hyOAcVNB1Y",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","event":"beforeRoll","label":"Iron Bravado (immune to Frightened after attacking)","when":["item:type:weaponEffect"],"steps":[{"do":"mark","key":"ironBravado","to":"self","until":"nextTurn","filter":["combat"]},{"do":"mark","key":"ironBravado","to":"self","until":"turnOrUntilCombat","filter":["not:combat"]}]},
+      {"type":"ConditionImmunity","label":"Iron Bravado","conditions":["frightened"],"when":["self:marked:ironBravado"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: after you attack, you can't be given the Frightened condition until your next turn. Use button: spend 1 Personal Power to share your current Condition immunities with allies within 30 ft until your next turn.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 45
+    },
+    "actionType": "free",
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 200001,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1756080000000,
+    "modifiedTime": 1756080000000,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!8bmqJ7hyOAcVNB1Y"
+}

@@ -5,9 +5,13 @@
   "_id": "Epkm9DVktvFurYDL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Declare your nemesis","steps":[{"do":"target","max":1},{"do":"rememberTarget","var":"nemesis"},{"do":"updateActor","set":{"flags.essence20.decepticonNemesisUuid":"{var.nemesis}"}}]},
+      {"type":"RollModifier","label":"Non-combat test about your nemesis (↑1)","upshift":1,"when":["not:item:type:weaponEffect","target:data:uuid","check:decepticonNemesis"]}
+    ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: target a creature to set it as your nemesis. Automatic: your non-attack Skill Tests with your nemesis targeted get ↑1, already counted in the Roll Options Dialog's starting ↑ total but not listed by name.</p><p>Left to the table: related tests that don't target them directly.</p>"
+      "notes": "<p>Use button: target a creature to set it as your nemesis. Automatic: your non-attack Skill Tests with your nemesis targeted get ↑1, listed by name in the Roll Options Dialog.</p><p>Left to the table: related tests that don't target them directly.</p>"
     },
     "originalId": "",
     "description": "",

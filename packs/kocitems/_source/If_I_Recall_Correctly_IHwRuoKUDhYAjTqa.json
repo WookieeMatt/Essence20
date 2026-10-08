@@ -5,6 +5,9 @@
   "_id": "IHwRuoKUDhYAjTqa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Edge on your next Spellcasting test","limit":{"per":"encounter"},"steps":[{"do":"bank","label":"If I Recall Correctly","edge":true,"appliesWhen":["skill:spellcasting"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene, bank Edge on your next Spellcasting test.</p>"

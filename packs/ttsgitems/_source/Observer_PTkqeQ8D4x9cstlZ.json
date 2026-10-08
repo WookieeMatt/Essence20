@@ -5,6 +5,11 @@
   "_id": "PTkqeQ8D4x9cstlZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","when":["skill:technology","self:data:flags.essence20.observerDisguiseActive"],"snag":true},
+      {"type":"Use","label":"Disguise on (1 Personal Power)","when":["not:self:data:flags.essence20.observerDisguiseActive"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.observerDisguiseActive":true}},{"do":"chat","text":"{name} activates the disguise."}]},
+      {"type":"Use","label":"Disguise off","when":["self:data:flags.essence20.observerDisguiseActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.observerDisguiseActive":false}},{"do":"chat","text":"{name} drops the disguise."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: switch your disguise on (1 Personal Power) or off. While it's on: ↑2 on your Deception tests; Technology tests that target you take a Snag, labelled Observer in the roller's Roll Options Dialog; and when one of your Social tests has a Snag, the Roll Options Dialog offers a switch to trade it for ↓2. Tick it when the test is about understanding another species.</p>"

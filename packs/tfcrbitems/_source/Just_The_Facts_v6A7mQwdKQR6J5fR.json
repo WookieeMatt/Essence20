@@ -5,6 +5,10 @@
   "_id": "v6A7mQwdKQR6J5fR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Deceiver is a higher level (Just The Facts: Snag)","when":["skill:deception","self:levelDiff<0"],"snag":true},
+      {"type":"Defense","label":"Deceiver is your level or lower (Just The Facts: Immune)","defense":"any","mode":"fail","when":["skill:deception","self:levelDiff>=0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a Deception test aimed at you by a creature of your level or lower fails automatically on its chat card. One from a higher-level creature takes a Snag, labelled Just the Facts in its Roll Options Dialog.</p>"

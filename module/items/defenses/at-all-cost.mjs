@@ -1,0 +1,57 @@
+/**
+ * At All Cost (Through the Shattered Grid, Magna Defender, 18th level, p.25): once a day, a Morphed
+ * holder at 0 Health keeps fighting instead of being Defeated or unmorphing; hits then cost Personal
+ * Power instead of Health, and at 0 Personal Power they drop to their normal form at 0 Health,
+ * Unconscious and Defeated.
+ *
+ * A plain on/off toggle (like Power Boost/Dig In) rather than a bank-now/consume-later flag - it
+ * doesn't grant a bonus to a future roll, it changes how ALL of this actor's incoming damage
+ * resolves for as long as it's active. "Once per day" is approximated as once per scene
+ * (hasUsedThisEncounter, this codebase's own standing idiom for every "once per day" resource -
+ * see Grid Surges/Idea Points' own daily refresh, which is manual too) - gates only ACTIVATING it,
+ * matching every other once-per-scene toggle in this project (Elemental Storm, Curb Your
+ * Enthusiasm) rather than the toggle itself, which can still be switched back off freely.
+ *
+ * The damage-conversion half (applyAtAllCostDamage) is called from mechanics/combat/combat.mjs#applyDamage
+ * in place of the normal Health subtraction, whenever this is active - "return to your normal
+ * form" is approximated as simply toggling Unconscious + Defeated (the same "grant the Conditions,
+ * let a GM narrate the actual un-Morph" idiom this project uses for the closely analogous 0-Health
+ * auto-revert every Morphed Role already has via hasMorphedToughnessBonus, which this codebase
+ * doesn't otherwise intercept in code either).
+ */
+// The switch itself is the Perk's own Use rules (an updateActor on this flag, once per scene); combat.mjs reads it.
+const AT_ALL_COST_FLAG = 'atAllCostActive';
+
+/**
+ * Whether At All Cost is currently converting this actor's incoming damage to Power loss.
+ * @param {Actor} actor
+ * @returns {Boolean}
+ */
+export function isAtAllCostActive(actor) {
+  return !!actor.getFlag?.('essence20', AT_ALL_COST_FLAG);
+}
+
+/**
+ * Applies At All Cost's own damage-conversion in place of the normal Health subtraction: the
+ * actor loses Personal Power equal to the incoming amount instead. If Power would hit 0, the
+ * actor immediately reverts (0 Health, Unconscious + Defeated, toggle switches back off).
+ * @param {Actor} actor
+ * @param {Number} amount   The damage that would otherwise be subtracted from Health (already
+ *   reduced by Immunity/Elemental Shield/Adapted Wavelength/Resilient Armor upstream).
+ * @returns {Promise<Number>}   The amount actually converted, matching applyDamage's own
+ *   "amount actually applied" return contract.
+ */
+export async function applyAtAllCostDamage(actor, amount) {
+  const currentPower = actor.system.powers.personal.value;
+  const newPower = Math.max(0, currentPower - amount);
+  await actor.update({ 'system.powers.personal.value': newPower });
+
+  if (newPower <= 0) {
+    await actor.unsetFlag('essence20', AT_ALL_COST_FLAG);
+    await actor.update({ 'system.health.value': 0 });
+    await actor.toggleStatusEffect('unconscious', { active: true });
+    await actor.toggleStatusEffect('defeated', { active: true });
+  }
+
+  return currentPower - newPower;
+}

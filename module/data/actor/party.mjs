@@ -33,7 +33,7 @@ export class PartyActorData extends foundry.abstract.TypeDataModel {
       // Party (Essence20Actors#party) rather than in a world setting because a setting can only
       // be written by a GM, and a player granted ownership of this actor can write this. Not
       // shown on the sheet - the Story Points tracker is their one screen. Only the primary
-      // Party's copy is ever read; see helpers/story-points.mjs and helpers/party.mjs.
+      // Party's copy is ever read; see mechanics/resources/story-points.mjs and mechanics/resources/party.mjs.
       storyPoints: makeInt(0),
       gmPoints: makeInt(0),
       // Derived each prep by Essence20Actor._preparePartyData() - schema-declared so the

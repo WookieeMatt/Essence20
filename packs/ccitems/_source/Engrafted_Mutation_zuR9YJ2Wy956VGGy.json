@@ -5,6 +5,11 @@
   "_id": "zuR9YJ2Wy956VGGy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick a Standard Alteration (genetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["standard"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]},
+      {"type":"Use","label":"Pick a Standard Alteration (genetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["standard"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]},
+      {"type":"Trigger","event":"added","label":"Beast Mode: a Standard Alteration (genetic) for the scene","when":["rule:data:flags.essence20.beastMode","not:self:toggle:granted"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["standard"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true},"until":"scene"},{"do":"setToggle","key":"granted","value":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained (or via the Use button), pick a Standard Alteration you don't already have; it is added as a genetic Alteration. You count as having genetic Alterations for Retrogen weapons, and Beast Mode offers its extra picks.</p>"

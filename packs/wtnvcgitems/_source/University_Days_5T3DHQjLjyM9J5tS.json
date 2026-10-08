@@ -5,6 +5,9 @@
   "_id": "5T3DHQjLjyM9J5tS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCount","label":"University Days","action":"free","essence":"smarts"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your number of Free actions comes from Smarts instead of Speed.</p>"

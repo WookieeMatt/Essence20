@@ -5,6 +5,9 @@
   "_id": "Uie11vx8RiWMoj4X",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DieSubstitution","label":"Kill Counter","scope":"crew","mode":"best","skills":["driving"],"when":["skill:intimidation"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while crewing the vehicle, Intimidation uses your Driving die when that is better.</p>"

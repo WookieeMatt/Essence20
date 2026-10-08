@@ -5,6 +5,9 @@
   "_id": "PdmiiOmBYzNfXTeh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reaction","outcome":"miss","maxMargin":-5,"limit":{"per":"round","max":1},"when":["attack:melee","target:data:id"],"steps":[{"do":"mark","to":"target","key":"counterstrike"},{"do":"bank","replace":true,"downshift":1,"appliesWhen":["attack:melee","markedByMe:counterstrike"]},{"do":"setTargets","to":"target"},{"do":"bonusAttack","cost":"free","optional":true},{"do":"chat","text":"{name} counter-attacks {target} (melee, ↓1)."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per round, when a melee attack misses you by 5 or more, its card gets a Counterstrike button for you. It targets the attacker and gives you a free extra attack; your next melee attack against them takes ↓1, labelled Counterstrike in the Roll Options Dialog.</p>"

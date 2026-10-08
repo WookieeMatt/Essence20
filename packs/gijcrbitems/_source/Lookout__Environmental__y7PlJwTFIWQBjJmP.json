@@ -5,6 +5,9 @@
   "_id": "y7PlJwTFIWQBjJmP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Move before the surprise round","when":[{"any":["combat:round:0","combat:round:1"]}],"limit":{"per":"encounter"},"steps":[{"do":"grantActions","move":1},{"do":"chat","text":"{name} gains a Move action."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button, once per encounter at the start of combat: take a free Move action.</p><p>Left to the table: always acting in the surprise round in your environment.</p>"

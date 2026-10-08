@@ -4,9 +4,10 @@
   "_id": "F7QPCcXW9822L5Xs",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button: spend 1 Power to switch on its effect for +2 Toughness while Morphed.</p><p>Left to the table: it should last until you de-Morph (the effect runs out after 10 rounds), and handing the shield to someone else.</p>"
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Power to summon the shield: +2 armor to the wielder's Toughness, Morphed or not. The chat card's button hands it to the character you target (or one you pick), taking it from whoever has it. It ends when you un-Morph, whoever holds it.</p>"
     },
     "originalId": "",
     "description": "",
@@ -16,62 +17,15 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",
-    "usesPer": null,
-    "usesPerScene": null
+    "usesPer": null
   },
-  "effects": [
-    {
-      "name": "Power Shield",
-      "origin": "Item.F7QPCcXW9822L5Xs",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": 10,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "eZNtpcIUp0RDnv6m",
-      "changes": [
-        {
-          "key": "system.defenses.toughness.morphed",
-          "mode": 2,
-          "value": "2",
-          "priority": null
-        }
-      ],
-      "description": "",
-      "transfer": true,
-      "statuses": [],
-      "flags": {},
-      "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!F7QPCcXW9822L5Xs.eZNtpcIUp0RDnv6m"
-    }
-  ],
+  "effects": [],
   "folder": "7T0RaytDHGwWT02Z",
   "flags": {},
   "_stats": {

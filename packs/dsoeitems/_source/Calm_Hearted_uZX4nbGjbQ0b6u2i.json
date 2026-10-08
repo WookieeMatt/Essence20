@@ -5,6 +5,9 @@
   "_id": "uZX4nbGjbQ0b6u2i",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Edge on your next Social test","limit":{"per":"encounter","max":1},"steps":[{"do":"bank","label":"Calm Hearted","edge":true,"appliesWhen":["essence:social"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: gives your next Social test Edge. Left to the table: the once-per-session limit (the system allows it once per scene).</p>"

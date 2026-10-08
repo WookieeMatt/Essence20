@@ -5,6 +5,11 @@
   "_id": "nkqk7AfXUJkigqbq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Question counted (Loaded Questions)","event":"hit","when":[{"any":["skill:deception","skill:persuasion"]}],"steps":[{"do":"mark","to":"target","key":"loadedQuestions","count":1,"add":true,"until":"scene"}]},
+      {"type":"Trigger","label":"Question counted (Loaded Questions)","event":"miss","when":[{"any":["skill:deception","skill:persuasion"]}],"steps":[{"do":"mark","to":"target","key":"loadedQuestions","count":1,"add":true,"until":"scene"}]},
+      {"type":"RollModifier","label":"Loaded Questions","upshift":"@target.mark.loadedQuestions","when":[{"any":["skill:deception","skill:persuasion"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: each Deception or Persuasion test you make against the same creature in a scene adds a stacking ↑1 to the next one, shown in the Roll Options Dialog.</p>"

@@ -5,6 +5,9 @@
   "_id": "R6XROOkbI2dKmn5R",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"They believe you're someone else (Identity Crisis: Edge)","when":[{"any":["check:shapeShifted","check:disguised"]}],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: while shifted or disguised, a switch gives Edge against creatures who believe your disguise.</p>"

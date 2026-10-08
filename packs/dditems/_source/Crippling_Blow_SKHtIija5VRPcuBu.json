@@ -5,6 +5,10 @@
   "_id": "SKHtIija5VRPcuBu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Crippling Blow, choose a Condition on a hit (↓1)","key":"cripplingBlow","downshift":1,"forget":true,"when":["attack:melee"]},
+      {"type":"Trigger","event":"hit","label":"Crippling Blow","when":["roll:switch:cripplingBlow"],"steps":[{"do":"choose","prompt":"Inflict which Condition?","when":["calc:@owned.oeGoFl2hwcPfMWCr<1"],"options":[{"label":"Blinded","steps":[{"do":"applyCondition","condition":"blinded","to":"target"}]},{"label":"Deafened","steps":[{"do":"applyCondition","condition":"deafened","to":"target"}]},{"label":"Prone","steps":[{"do":"applyCondition","condition":"prone","to":"target"}]}]},{"do":"updateActor","to":"target","add":{"system.energon.normal.value":"0 - 1d2"},"min":0,"quiet":true,"when":["calc:@owned.oeGoFl2hwcPfMWCr>0"],"filter":["target:data:system.energon.normal.value>0"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch on melee attacks to take ↓1; on a hit you pick Blinded, Deafened or Prone for the target.</p>"

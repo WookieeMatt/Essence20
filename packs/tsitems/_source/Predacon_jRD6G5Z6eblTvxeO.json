@@ -5,6 +5,13 @@
   "_id": "jRD6G5Z6eblTvxeO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DialogSwitch","label":"Predacon: Edge (chosen Specialization)","when":["skill:{choice.skill}","skill:intimidation","roll:dataset:specializationKey"],"edge":true,"default":true,"forget":true},
+      {"type":"DialogSwitch","label":"Predacon: Edge (chosen Specialization)","when":["skill:{choice.skill}","skill:intimidation","not:roll:dataset:specializationKey"],"edge":true,"forget":true},
+      {"type":"Trigger","label":"Frightened until the end of its next turn (Predacon)","event":"hit","when":["skill:intimidation","combat:exists"],"steps":[{"do":"applyCondition","condition":"frightened","to":"target"},{"do":"mark","to":"target","key":"predaconFright"}]},
+      {"type":"Trigger","label":"Frightened ends (Predacon)","event":"turnEnd","watch":"any","when":["markedByMe:predaconFright"],"steps":[{"do":"removeCondition","to":"target","condition":"frightened"},{"do":"unmark","to":"target","key":"predaconFright"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: pick Intimidation as the Perk's Skill. Roll Options Dialog: Intimidation tests show a Predacon switch for Edge, on by default when you roll a Specialization. Automatic: in combat, a successful Intimidation test gives each target it beat the Frightened condition, removed at the end of that target's next turn.</p>"
@@ -18,8 +25,8 @@
     "items": {},
     "canActivate": false,
     "choice": null,
-    "choiceType": "skills",
-    "hasChoice": true,
+    "choiceType": "none",
+    "hasChoice": false,
     "numChoices": 1,
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,

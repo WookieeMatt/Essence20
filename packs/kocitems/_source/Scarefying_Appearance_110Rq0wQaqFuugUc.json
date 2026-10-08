@@ -5,6 +5,13 @@
   "_id": "110Rq0wQaqFuugUc",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Scarefying Appearance","event":"afterRoll","outcome":"any","when":["item:own","roll:firstRow:success"],"steps":[{"do":"sizeChange","key":"scarefying","steps":1,"rounds":10},{"do":"save","to":"nearbyEnemies:99999","filter":["target:sizeDiff<=0"],"skills":["intimidation"],"dif":14,"status":"frightened"},{"do":"pickMany","key":"benefits","count":2,"from":"list","prompt":"Pick two benefits:","options":[["toughness","E20.ScarefyingBenefit.toughness"],["claws","E20.ScarefyingBenefit.claws"],["wings","E20.ScarefyingBenefit.wings"],["might","E20.ScarefyingBenefit.might"],["intimidation","E20.ScarefyingBenefit.intimidation"]]},{"do":"mark","key":"scarefyingPicked","to":"self","until":"scene"}]},
+      {"type":"RollModifier","label":"Scarefying Appearance","upshift":2,"when":["skill:intimidation","self:sizeChanged:scarefying"]},
+      {"type":"RollModifier","label":"Scarefying Appearance (Might)","upshift":1,"when":["skill:might","self:sizeChanged:scarefying","self:marked:scarefyingPicked","rule:choiceHas:benefits:might"]},
+      {"type":"RollModifier","label":"Scarefying Appearance (Intimidation)","upshift":1,"when":["skill:intimidation","self:sizeChanged:scarefying","self:marked:scarefyingPicked","rule:choiceHas:benefits:intimidation"]},
+      {"type":"Defense","label":"Scarefying Appearance (Toughness)","defense":"toughness","mode":"addAfter","amount":2,"when":["self:sizeChanged:scarefying","self:marked:scarefyingPicked","rule:choiceHas:benefits:toughness"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: on a success you step up one Size and get ↑2 on Intimidation, already counted in your Roll Options Dialog. Chat card: nearby Threats your Size or smaller get a DIF 14 Intimidation save or become Frightened, and you pick two benefits. Automatic: after 10 rounds, or when the Combat or scene ends, your Size goes back and the benefits end.</p>"

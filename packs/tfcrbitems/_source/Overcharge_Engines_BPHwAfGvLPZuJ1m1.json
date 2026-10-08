@@ -5,6 +5,17 @@
   "_id": "BPHwAfGvLPZuJ1m1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","cost":{"action":"free"},"when":["combat","not:self:hasItem:Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk"],"limit":{"per":"turn","max":1,"key":"overchargeEngines"},"steps":[{"do":"roll","skill":"technology","open":true,"then":[{"do":"askNumber","var":"feet","min":"ceil(max(0, @var.rollTotal) / 5) * 5","max":"ceil(max(0, @var.rollTotal) / 5) * 5"},{"do":"mark","key":"overcharge","count":"@var.feet","add":true,"until":"endOfTurn"},{"do":"chat","text":"{name}'s Movements increase by {var.feet} ft this turn, ignoring Rough Terrain."}]}]},
+      {"type":"Use","cost":{"action":"free"},"when":["combat","self:hasItem:Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk"],"limit":{"per":"turn","max":2,"key":"overchargeEngines"},"steps":[{"do":"roll","skill":"technology","open":true,"then":[{"do":"askNumber","var":"feet","min":"ceil(max(0, @var.rollTotal) / 5) * 5","max":"ceil(max(0, @var.rollTotal) / 5) * 5"},{"do":"mark","key":"overcharge","count":"@var.feet","add":true,"until":"endOfTurn"},{"do":"chat","text":"{name}'s Movements increase by {var.feet} ft this turn, ignoring Rough Terrain."}]}]},
+      {"type":"Movement","label":"Overcharge Engines (aerial)","movement":"aerial","op":"add","value":"@mark.overcharge","stage":"final","when":["self:marked:overcharge","self:data:system.movement.aerial.total>0"]},
+      {"type":"Movement","label":"Overcharge Engines (ground)","movement":"ground","op":"add","value":"@mark.overcharge","stage":"final","when":["self:marked:overcharge","self:data:system.movement.ground.total>0"]},
+      {"type":"Movement","label":"Overcharge Engines (climb)","movement":"climb","op":"add","value":"@mark.overcharge","stage":"final","when":["self:marked:overcharge","self:data:system.movement.climb.total>0"]},
+      {"type":"Movement","label":"Overcharge Engines (swim)","movement":"swim","op":"add","value":"@mark.overcharge","stage":"final","when":["self:marked:overcharge","self:data:system.movement.swim.total>0"]},
+      {"type":"Movement","label":"Overcharge Engines (burrow)","movement":"burrow","op":"add","value":"@mark.overcharge","stage":"final","when":["self:marked:overcharge","self:data:system.movement.burrow.total>0"]},
+      {"type":"MovementAction","label":"Overcharge Engines: ignores Rough Terrain","ignoreRoughTerrain":true,"when":["self:marked:overcharge"]},
+      {"type":"Trigger","event":"turnEnd","when":["self:data:flags.essence20.ruleMarks.overcharge"],"steps":[{"do":"unmark","key":"overcharge"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per turn, as a Free action, roll Technology; until your turn ends your Movements rise by the result (rounded up to 5ft) and ignore Rough Terrain.</p>"

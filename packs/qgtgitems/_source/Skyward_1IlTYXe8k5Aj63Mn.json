@@ -5,6 +5,10 @@
   "_id": "1IlTYXe8k5Aj63Mn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Skyward (no untrained Snag flying)","when":["skill:driving","vehicle:driving","vehicle:moves:aerial"],"immune":["untrainedSnag"]},
+      {"type":"RollModifier","label":"Skyward (↑1 on Driving, with Ranks)","stack":"vehicleQualification","upshift":1,"when":["skill:driving","vehicle:driving","vehicle:moves:aerial",{"any":["self:skill:driving>=d2","self:data:system.skills.driving.isSpecialized"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: you count as Qualified with air vehicles, so Driving them never takes a Snag even without ranks.</p><p>Left to the table: identifying air vehicles you see, and the GM sharing their Speed and Movement.</p>"

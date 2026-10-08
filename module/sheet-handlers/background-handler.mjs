@@ -1,6 +1,6 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
-import { applyHangUpChoice } from "../helpers/hang-up-choice.mjs";
-import { getItemsOfTypeFromSystemItems, getShiftedSkill } from "../helpers/utils.mjs";
+import { applyHangUpChoice } from "../mechanics/characters/hang-up-choice.mjs";
+import { getItemsOfTypeFromSystemItems, getShiftedSkill } from "../util/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
 /**
@@ -311,7 +311,7 @@ export async function _hangUpSelect(actor, uuid, parentItem) {
   newItem.setFlag('essence20', 'parentId', parentItem._id);
 
   // Some Hang-Ups record a player choice of their own (Augmented's damage type) - see
-  // helpers/hang-up-choice.mjs. A no-op for every Hang-Up that declares none.
+  // mechanics/characters/hang-up-choice.mjs. A no-op for every Hang-Up that declares none.
   await applyHangUpChoice(newItem);
 }
 
@@ -328,7 +328,9 @@ export async function onOriginDelete(actor, origin) {
   const [newShift, skillString] = getShiftedSkill(selectedSkill, -1, actor);
   await deleteAttachmentsForItem(origin, actor);
 
-  const hasAltMode = !!actor.items.documentsByType.length;
+  // Any Alt Mode left after the Origin's own went (a separately dropped one keeps the character transforming).
+  // documentsByType is an object, so its .length was always undefined and this was always false.
+  const hasAltMode = actor.items.some(item => item.type == 'altMode');
 
   const essenceString = `system.essences.${essence}.max`;
 

@@ -5,6 +5,9 @@
   "_id": "GUppwd5R2bSVaKVO",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Layered Armor (+1 to Persuasion (Leadership))","bonus":1,"when":["skill:persuasion","roll:specialization~leadership"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while equipped, its Defense bonus and Deflective apply, and a Persuasion test rolled from a Leadership Specialization gets +1 added to its total on the chat card.</p>"

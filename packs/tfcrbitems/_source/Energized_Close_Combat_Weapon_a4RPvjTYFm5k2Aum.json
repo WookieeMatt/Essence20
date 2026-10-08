@@ -17,7 +17,7 @@
     },
     "items": {
       "d93d": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.RwpDWPgoIEejm7Fz",
+        "uuid": "Compendium.essence20.tf_crb.Item.RwpDWPgoIEejm7Fz",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Energized Close Combat Weapon Effect",
         "type": "weaponEffect",
@@ -39,7 +39,7 @@
         "shiftDown": 0
       },
       "997b": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.mCD4bCkChXbq6NzO",
+        "uuid": "Compendium.essence20.tf_crb.Item.mCD4bCkChXbq6NzO",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Energized Close Combat Weapon Alternate Effect",
         "type": "weaponEffect",
@@ -83,8 +83,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "sidearm"

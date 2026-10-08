@@ -5,6 +5,10 @@
   "_id": "UYaPTaAQH5SDXxnz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ConditionImmunity","label":"Immune to blinded, deafened","conditions":["blinded","deafened"]},
+      {"type":"Use","label":"Extra attack while an enemy is Surprised","when":["combat:exists","combat:enemyStatus:surprised",{"any":["self:hasItem:Compendium.essence20.gi_joe_crb.Item.2qW1YLopvjKyezNQ","self:hasItem:Compendium.essence20.gi_joe_crb.Item.oJInlAgdYZzjH7bk"]}],"limit":{"per":"encounter"},"steps":[{"do":"bonusAttack","cost":"none","optional":true},{"do":"chat","text":"{name} surprised an enemy and gains one extra shotgun or submachine gun attack this turn."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: immune to Blinded and Deafened. Use button: once per combat while an enemy is Surprised, make a bonus attack.</p><p>Left to the table: making that bonus attack with a shotgun or submachine gun.</p>"

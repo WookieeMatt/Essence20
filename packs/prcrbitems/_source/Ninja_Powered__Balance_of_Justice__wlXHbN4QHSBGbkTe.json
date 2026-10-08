@@ -5,6 +5,10 @@
   "_id": "wlXHbN4QHSBGbkTe",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"beforeRoll","label":"Ninja Powered: Balance of Justice (marks the target this round)","when":["item:type:weaponEffect","self:type:zord"],"steps":[{"do":"target","min":0},{"do":"mark","key":"balanceOfJustice","to":"target","until":"roundOrScene","filter":["combat:exists"]}]},
+      {"type":"RollModifier","label":"Balance of Justice","scope":"markedTarget","mark":"balanceOfJustice","edge":true,"when":["attack"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: allies get Edge on attacks against a target this Zord attacked earlier in the round, labelled Balance of Justice in their Roll Options Dialog.</p>"

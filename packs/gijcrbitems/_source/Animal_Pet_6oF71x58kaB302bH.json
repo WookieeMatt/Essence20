@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:animalHandling>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: builds your pet from the book's table (function, size, movement), and improves it a tier each time you take the Perk again.</p>"
@@ -13,7 +14,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 129
     },
-    "prerequisite": "Animal Handling d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

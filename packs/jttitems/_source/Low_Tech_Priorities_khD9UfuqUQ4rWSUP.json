@@ -5,6 +5,10 @@
   "_id": "khD9UfuqUQ4rWSUP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skills","from":"skill","count":2,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DownshiftCancel","label":"Low Tech Priorities (ignore ↓1 on a chosen Skill, once per turn)","amount":1,"stacks":true,"limit":{"per":"turn","key":"lowTechPriorities"},"when":["skill:{choice.skill}"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: when added you pick two Skills. Automatic: once per turn, a test with one of them drops one point of ↓, so the Downshift number in its Roll Options Dialog starts one lower.</p>"
@@ -18,8 +22,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "hasChoice": true,
-    "choiceType": "skills",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 2
   },
   "effects": [],

@@ -5,6 +5,10 @@
   "_id": "Frf5wHlBS2Tn24yB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"takesDamage","watch":"ally","label":"Queen's Gambit","when":["combat","self:combatant","not:self:limitUsed:queensGambit:encounter"],"steps":[{"do":"button","label":"Queen's Gambit","intro":"{target} took damage. Move an ally to act right after the current turn?","whisper":"owners","usedWhenDone":true,"limit":{"per":"encounter","key":"queensGambit"},"steps":[{"do":"require","check":["combat:currentRolled"]},{"do":"pick","key":"ally","from":"recipients","of":"combatAllies+self","prompt":"Which ally moves?"},{"do":"writeInitiative","to":"picked:ally","value":"@initiative.afterCurrent","exact":true}]}]},
+      {"type":"Trigger","event":"takesDamage","label":"Queen's Gambit","when":["combat","self:combatant","not:self:limitUsed:queensGambit:encounter"],"steps":[{"do":"button","label":"Queen's Gambit","intro":"{name} took damage. Move an ally to act right after the current turn?","whisper":"owners","usedWhenDone":true,"limit":{"per":"encounter","key":"queensGambit"},"steps":[{"do":"require","check":["combat:currentRolled"]},{"do":"pick","key":"ally","from":"recipients","of":"combatAllies+self","prompt":"Which ally moves?"},{"do":"writeInitiative","to":"picked:ally","value":"@initiative.afterCurrent","exact":true}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when an ally takes damage in combat, you get a card to move them in the Initiative order to act right after the current turn, once per encounter. The GM completes the move if you can't edit that combatant.</p>"

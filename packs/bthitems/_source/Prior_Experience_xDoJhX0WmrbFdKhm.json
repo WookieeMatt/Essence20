@@ -5,6 +5,7 @@
   "_id": "xDoJhX0WmrbFdKhm",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "prerequisites": {"when":["ask:Backstory: was a Power Ranger before, on a different team"]},
     "automation": {
       "status": "full",
       "notes": "<p>Group Skill Test card (Party sheet): a button spends 1 Personal Power to pick a teammate who failed the group test, applying the Perk's benefit to them.</p>"
@@ -20,6 +21,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

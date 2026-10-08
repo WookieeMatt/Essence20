@@ -5,6 +5,11 @@
   "_id": "PHgWjT0syOOBOOK5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Using a Grid Power (Phantom Ranger Prime: Edge)","when":["self:morphed","not:item:type:power"],"edge":true},
+      {"type":"RollModifier","label":"Phantom Ranger Prime","when":["self:morphed","item:type:power","item:data:system.type=grid"],"edge":true},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:unarmed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 to all four Defenses while Morphed. Automatic: unarmed attacks deal +1 damage (named on the chat card), and while Morphed a Grid Power's own roll gets Edge, labelled Phantom Ranger Prime. Roll Options Dialog: while Morphed, a Using a Grid Power switch gives Edge on other tests.</p>"

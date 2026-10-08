@@ -5,6 +5,10 @@
   "_id": "kW4yyD9rwhc0JfYp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Stand Together","when":["skill:{choice.skill}","not:combat"],"upshift":1}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: outside combat, tests of the Skill you pick on the Perk get ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p><p>Left to the table: Qualification with Standard equipment, Tool weapon training, and the disease immunity.</p>"
@@ -24,9 +28,9 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "skills",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",

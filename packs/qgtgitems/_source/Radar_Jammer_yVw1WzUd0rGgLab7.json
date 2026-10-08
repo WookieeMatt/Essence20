@@ -5,6 +5,11 @@
   "_id": "yVw1WzUd0rGgLab7",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","when":["self:type:vehicle"],"cost":{"action":"free"},"steps":[{"do":"setToggle","key":"jam"},{"do":"chat","text":"{name}'s jammer is on.","when":["self:toggle:jam"]},{"do":"chat","text":"{name}'s jammer is off.","when":["not:self:toggle:jam"]}]},
+      {"type":"RollModifier","label":"Radar Jammer","scope":"aura","radius":50,"affects":"all","snag":true,"when":["skill:technology","self:toggle:jam"]},
+      {"type":"RollModifier","label":"Radar Jammer","snag":true,"when":["skill:technology","self:toggle:jam","self:onCanvas"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: switch the jammer on or off (a Free action). While on, Technology tests made within 50ft of the vehicle get a Snag in the Roll Options Dialog.</p>"

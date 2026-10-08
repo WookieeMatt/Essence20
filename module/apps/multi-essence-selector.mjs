@@ -2,6 +2,7 @@
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { FormValidationError } from "../util/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class MultiEssenceSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
@@ -70,7 +71,7 @@ export default class MultiEssenceSelector extends serializeFormSubmits(Handlebar
     }
 
     if (selectionAmount != 2) {
-      throw new Error(game.i18n.localize("E20.EssencesRequiredError"));
+      throw new FormValidationError(game.i18n.localize("E20.EssencesRequiredError"));
     }
 
     _selectEssenceProgression(this._actor, this._role, this._dropFunc, formData.object);

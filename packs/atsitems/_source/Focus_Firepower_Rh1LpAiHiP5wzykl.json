@@ -3,6 +3,7 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:targeting>=d6"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: when you attack with Targeting as a Contingency on an ally's target, give the ally ↑1 and ignore the target's armor bonus to Defense.</p>"
@@ -13,7 +14,7 @@
       "book": "Across the Stars",
       "page": 69
     },
-    "prerequisite": "Targeting d6 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

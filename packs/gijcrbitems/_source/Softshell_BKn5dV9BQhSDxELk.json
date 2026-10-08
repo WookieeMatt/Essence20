@@ -5,6 +5,7 @@
   "_id": "BKn5dV9BQhSDxELk",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["host:data:system.bonusToughness>0"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attached to worn armor, it adds +1 to that armor's Toughness bonus.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Toughness Bonus"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

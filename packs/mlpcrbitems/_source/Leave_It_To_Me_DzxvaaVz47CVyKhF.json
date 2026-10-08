@@ -5,6 +5,9 @@
   "_id": "DzxvaaVz47CVyKhF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"rollSeen","label":"A BFF failed on their turn: Edge on that Skill","when":["var:failed=1","var:skill","target:pickedBy:b7qT0W4L9Ito2EB2:bffs",{"any":["not:combat:exists","target:ownTurn"]}],"steps":[{"do":"bank","edge":true,"appliesWhen":["skill:{var.skill}"],"until":"endOfNextRoundOrScene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when one of your BFFs fails a Skill Test, your next test with that same Skill this round or next gets Edge, labelled Leave It To Me in your Roll Options Dialog.</p>"

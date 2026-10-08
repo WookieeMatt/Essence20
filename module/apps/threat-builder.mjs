@@ -6,7 +6,7 @@ import {
   ESSENCES, extraMovementRate, maxDamagePerks, MOVEMENT_TYPES, perkBudget, QUICK_PERKS, RANKED_SHIFTS, ROLE_PRESETS, RULESETS,
   SIZE_LADDER, SKILLS_BY_ESSENCE, skillGuideFor, skillSpend, THREAT_TYPES, threatDefenses, threatFromActor, threatGroundMovement,
   threatHealth, threatLevelForRole,
-} from "../helpers/threat-rules.mjs";
+} from "../mechanics/characters/threat-rules.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -24,7 +24,7 @@ const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localiz
 
 /**
  * The Threat Builder: the books' threat creation rules as a step-by-step window
- * (helpers/threat-rules.mjs holds the rules themselves and says which book each comes from).
+ * (mechanics/characters/threat-rules.mjs holds the rules themselves and says which book each comes from).
  *
  * Two modes:
  * - create: walk the steps and create a new NPC (or vehicle) through the stat block importer's
@@ -475,7 +475,7 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
 
     const labels = { quickPerk: Object.fromEntries(QUICK_PERKS.map(key => [key, T(`E20.ThreatQuickPerk.${key}`)])) };
     const ir = buildThreatIr({ ...s, health: this._derived().health - (s.quickPerks ?? []).filter(p => p.key == 'health').length, ground: s.groundOverride ?? undefined }, labels);
-    const { createActorFromStatBlock } = await import("../helpers/stat-block-import.mjs");
+    const { createActorFromStatBlock } = await import("../importers/stat-block-import.mjs");
     const actor = await createActorFromStatBlock(ir, { type: s.ruleset == 'vehicle' ? 'vehicle' : 'npc' });
     if (!actor) {
       return;

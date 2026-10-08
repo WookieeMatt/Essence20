@@ -5,6 +5,7 @@
   "_id": "xAzVhNbafIHhO0zA",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Melee weapon without an Energy trait"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains the Acid trait, so it deals +1 damage against targets defending with Toughness.</p>"
@@ -25,7 +26,7 @@
       "acid"
     ],
     "type": "weapon",
-    "prerequisite": "Melee"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {

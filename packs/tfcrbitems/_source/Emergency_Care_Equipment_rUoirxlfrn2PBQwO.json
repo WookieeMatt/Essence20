@@ -5,6 +5,9 @@
   "_id": "rUoirxlfrn2PBQwO",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Emergency Care Equipment (no ↓ on Science (Medicine) in Bot Mode)","immune":["downshift"],"when":["skill:science","roll:dataset:specializationKey=medicine","not:self:data:system.altModeId"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: in Bot Mode, when you roll Science with the Medicine Specialization, any ↓ picked in the Roll Options Dialog is dropped before the dice are rolled.</p><p>Left to the table: the Alt Mode Edge for passengers treating each other.</p>"
@@ -16,7 +19,6 @@
       "page": 134
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

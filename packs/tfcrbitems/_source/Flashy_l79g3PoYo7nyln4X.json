@@ -5,6 +5,9 @@
   "_id": "l79g3PoYo7nyln4X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Flashy","when":["attack","item:data:system.damageType=electric"],"steps":[{"do":"button","label":"Flashy (Science vs. Toughness)","steps":[{"do":"roll","skill":"science","difDefense":"toughness","when":[{"any":["calc:@owned.tdFzQ0IOtoHQ0vmy<1","calc:@skill.technology.rank - @skill.science.rank<1"]}],"onSuccess":[{"do":"applyCondition","condition":"blinded","rounds":"2 + 2 * min(1, @owned.K3FNcAMjjek1UaJk)","to":"target"}]},{"do":"roll","skill":"technology","difDefense":"toughness","when":["calc:@owned.tdFzQ0IOtoHQ0vmy>0","calc:@skill.technology.rank - @skill.science.rank>0"],"onSuccess":[{"do":"applyCondition","condition":"blinded","rounds":"2 + 2 * min(1, @owned.K3FNcAMjjek1UaJk)","to":"target"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: after a hit with an Electric weapon, a button rolls Science against the target's Toughness; on a success the target is Blinded for 2 rounds (4 with Multiplication), counted down in combat.</p>"

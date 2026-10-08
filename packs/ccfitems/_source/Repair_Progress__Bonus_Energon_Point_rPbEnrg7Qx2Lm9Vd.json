@@ -5,6 +5,10 @@
   "_id": "rPbEnrg7Qx2Lm9Vd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","steps":[{"do":"gainResource","resource":{"path":"system.energon.normal.value"},"amount":1,"overMax":true},{"do":"chat","text":"{name} gains 1 bonus Energon Point (above the maximum)."}]},
+      {"type":"BonusEnergon","label":"Repair Progress: 1 Energon Point above the maximum, until spent"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: raises your Energon cap by 1 until that bonus point is spent; a rest restores it.</p>"

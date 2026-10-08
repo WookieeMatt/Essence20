@@ -6,9 +6,13 @@ export default {
   // just make the "All files" number meaningless until they get their own test files.
   collectCoverageFrom: [
     'module/documents/**/*.mjs',
-    'module/helpers/**/*.mjs',
+    'module/mechanics/**/*.mjs',
+    'module/items/**/*.mjs',
+    'module/importers/**/*.mjs',
+    'module/util/**/*.mjs',
     'module/data/**/*.mjs',
     'module/sheet-handlers/**/*.mjs',
+    'module/rules/**/*.mjs',
     'module/dice.mjs',
     'module/chat.mjs',
   ],

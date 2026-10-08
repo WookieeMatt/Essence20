@@ -5,6 +5,9 @@
   "_id": "TLTJHkOpPC07D2dB",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Poison Resistance","scope":"incoming","snag":true,"when":["attack",{"any":["weapon:data:system.isPoison","item:damageType:poison"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you wear it, attacks against you with a poison weapon or poison damage take a Snag, labelled Poison Resistance in the attacker's Roll Options Dialog.</p>"

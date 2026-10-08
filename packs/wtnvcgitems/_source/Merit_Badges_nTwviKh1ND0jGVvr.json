@@ -5,6 +5,11 @@
   "_id": "nTwviKh1ND0jGVvr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Merit Badges","when":["skill:{choice.skill}"],"immune":["snag"]}
+    ],
+    "prerequisites": {"when":["self:hasType:origin:Scout"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: you pick one Smarts Skill when you add it. Automatic: tests with that Skill can't take a Snag from any source; the Roll Options Dialog opens on Normal instead.</p>"
@@ -20,12 +25,12 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "skills",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Scout Origin",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

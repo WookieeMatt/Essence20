@@ -5,6 +5,11 @@
   "_id": "fiSowblyLmO9dN8F",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AlternateEffect","label":"Pistol Whip: Stun","key":"pistolWhipStun","name":"Pistol Whip - {E20.DamageStun}","items":["item:trait:ballistic",{"any":["not:item:data:system.hardpoint.type","item:data:system.hardpoint.type=external"]}],"changes":{"classification.skill":"finesse","classification.style":"melee","range.value":null,"range.long":null,"range.min":null,"range.reachMultiplier":1,"radius":0,"shape":null,"numTargets":1,"numHands":"1","defenseType":"toughness","accurateShiftUp":0,"secondaryDamage.type":null,"secondaryDamage.value":0,"damageType":"stun","damageValue":1,"shiftDown":0}},
+      {"type":"AlternateEffect","label":"Pistol Whip: Blunt","key":"pistolWhipBlunt","name":"Pistol Whip - {E20.DamageBlunt}","items":["item:trait:ballistic",{"any":["not:item:data:system.hardpoint.type","item:data:system.hardpoint.type=external"]}],"changes":{"classification.skill":"finesse","classification.style":"melee","range.value":null,"range.long":null,"range.min":null,"range.reachMultiplier":1,"radius":0,"shape":null,"numTargets":1,"numHands":"1","defenseType":"toughness","accurateShiftUp":0,"secondaryDamage.type":null,"secondaryDamage.value":0,"damageType":"blunt","damageValue":1,"shiftDown":1}},
+      {"type":"AlternateEffect","label":"Pistol Whip: Maneuver","key":"pistolWhipManeuver","name":"Pistol Whip - {E20.DamageManeuver}","items":["item:trait:ballistic",{"any":["not:item:data:system.hardpoint.type","item:data:system.hardpoint.type=external"]}],"changes":{"classification.skill":"finesse","classification.style":"melee","range.value":null,"range.long":null,"range.min":null,"range.reachMultiplier":1,"radius":0,"shape":null,"numTargets":1,"numHands":"1","defenseType":"toughness","accurateShiftUp":0,"secondaryDamage.type":null,"secondaryDamage.value":0,"damageType":"maneuver","damageValue":null,"shiftDown":0}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ballistic weapons in External Hardpoints gain Close Combat Bludgeon alternate effects (1 Stun, 1 Blunt ↓1, Maneuver). Attacks made with those alternates don't count as Ballistic, so no Ballistic bonus applies to them.</p>"

@@ -5,9 +5,16 @@
   "_id": "gWjcSPeqNe1h8rwZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch Animal Gait on","when":["not:self:toggle:on"],"steps":[{"do":"warn","text":"E20.NotInEnvironmentOfExpertise","stop":true,"when":["check:outsideEnvironmentOfExpertise"],"beforeCost":true},{"do":"pick","key":"gait","from":"list","options":[["aerial","E20.MovementTypeAerial"],["climb","E20.MovementTypeClimb"],["swim","E20.MovementTypeSwim"]],"prompt":"Which Movement?","beforeCost":true},{"do":"setToggle","key":"on","value":true,"until":"endOfTurn"}],"cost":{"action":"standard"}},
+      {"type":"Use","label":"Switch Animal Gait off","when":["self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":false}]},
+      {"type":"Movement","label":"Animal Gait","movement":"aerial","op":"set","stage":"final","value":"@actor.system.movement.ground.base + @actor.system.movement.ground.bonus + @actor.system.isMorphed * @actor.system.movement.ground.morphed","when":["self:toggle:on","rule:data:flags.essence20.rules.choices.gait=aerial"]},
+      {"type":"Movement","label":"Animal Gait","movement":"climb","op":"set","stage":"final","value":"@actor.system.movement.ground.total","when":["self:toggle:on","rule:data:flags.essence20.rules.choices.gait=climb"]},
+      {"type":"Movement","label":"Animal Gait","movement":"swim","op":"set","stage":"final","value":"@actor.system.movement.ground.total","when":["self:toggle:on","rule:data:flags.essence20.rules.choices.gait=swim"]}
+    ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: switches on Aerial, Climb and Swim movement equal to your Ground movement. Left to the table: which of them your environment allows.</p>"
+      "notes": "<p>Use button (Standard action, in your environment of expertise): pick Aerial, Climb or Swim; that Movement equals your Ground Movement until the end of your turn (out of combat, until you switch it off). Left to the table: what happens if you don't end your turn on solid ground.</p>"
     },
     "originalId": "",
     "actionType": "standard",

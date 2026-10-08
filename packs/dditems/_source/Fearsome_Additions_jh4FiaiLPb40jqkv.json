@@ -5,6 +5,10 @@
   "_id": "jh4FiaiLPb40jqkv",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Fearsome Additions","when":["not:self:transformed","skill:intimidation"],"upshift":1},
+      {"type":"RollModifier","label":"Fearsome Additions","when":["self:transformed","item:type:weaponEffect",{"any":["item:data:system.isRam","item:data:system.isFlyby","item:word:ram","item:word:slam","item:word:flyby"]}],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ↑1 on Flyby, Ram and Slam attacks in Alt Mode, and ↑1 on Intimidation Tests in Bot Mode, labelled Fearsome Additions in the Roll Options Dialog.</p>"
@@ -16,7 +20,6 @@
       "page": 76
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

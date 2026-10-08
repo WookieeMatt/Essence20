@@ -5,6 +5,10 @@
   "_id": "0BrnoOPvwSSQ5oVe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"burrow","stage":"adjust","op":"set","value":"@actor.system.movement.burrow.base + 15","label":"Alt Mode: Underground Movement +15 ft","when":["self:transformed","self:data:system.movement.burrow.base>0"]},
+      {"type":"Movement","movement":"burrow","stage":"adjust","op":"set","value":25,"label":"Alt Mode: Underground Movement 25 ft","when":["self:transformed","not:self:data:system.movement.burrow.base>0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Alt Mode you gain a 25ft Underground Movement, or +15ft if you already have one.</p>"

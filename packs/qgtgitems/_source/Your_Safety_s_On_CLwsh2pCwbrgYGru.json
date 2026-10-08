@@ -5,6 +5,11 @@
   "_id": "CLwsh2pCwbrgYGru",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Your Safety's On","steps":[{"do":"rollVsEach","skill":"deception","defense":"cleverness","onHit":[{"do":"bank","snag":true,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"]}],"onDouble":[{"do":"mark","key":"yourSafetysOn","to":"target","until":"endOfNextTurn","when":["combat:exists"]},{"do":"bank","snag":true,"to":"target","until":"combat","appliesWhen":["not:roll:initiative"],"when":["not:combat:exists"]}]}]},
+      {"type":"RollModifier","label":"Your Safety's On","scope":"marked","mark":"yourSafetysOn","snag":true,"when":["attack"]}
+    ],
+    "prerequisites": {"when":["self:skill:deception>=d2"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: roll Deception against the targeted enemy's Cleverness. On a success its next attack has Snag; on a Critical Success its attacks have Snag until the end of your next turn.</p>"
@@ -16,7 +21,7 @@
       "page": 31
     },
     "actionType": "standard",
-    "prerequisite": "Deception +d2",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -5,6 +5,11 @@
   "_id": "NXxiyoOB60ems444",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"ground","stage":"adjust","op":"add","value":10,"label":"Ground Movement +10 ft"},
+      {"type":"DownshiftCancel","label":"Eltarian Training (ignore the first ↓1 on Finesse)","amount":1,"when":["skill:finesse"]}
+    ],
+    "prerequisites": {"when":["self:essence:speed>=4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +10ft Ground Movement on the sheet, and one ↓ is taken off your Finesse tests before the Roll Options Dialog opens.</p>"
@@ -16,7 +21,7 @@
       "page": 73
     },
     "items": {},
-    "prerequisite": "Speed 4 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -1,4 +1,4 @@
-import { E20 } from "../helpers/config.mjs";
+import { E20 } from "../util/config.mjs";
 
 import { makeInt, makeStrWithChoices } from "./generic-makers.mjs";
 
@@ -25,7 +25,7 @@ export const attackSchema = () => ({
   damageValue: makeInt(0),
   // Null for the non-attack majority. Setting this is what marks an item as an attack at all -
   // see dice.mjs, which pre-selects the Roll Options Dialog's Defense from it, and
-  // helpers/power-attack.mjs, which uses it to decide whether a Power is rolled or just narrated.
+  // mechanics/characters/attack-powers.mjs, which uses it to decide whether a Power is rolled or just narrated.
   defenseType: makeStrWithChoices(Object.keys(E20.defenses), null),
   // Multiple/Multi-Weapon (X) Targets (e.g. Forked Lightning/Wizard Missiles, Finster's
   // Monster-Magic Cookbook p.273-274) - the same informational "how many targets this attack is

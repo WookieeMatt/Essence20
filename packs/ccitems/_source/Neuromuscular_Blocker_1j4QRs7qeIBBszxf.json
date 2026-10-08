@@ -50,8 +50,9 @@
       "ingested": false,
       "inhaled": false
     },
+    "prerequisites": {"when":[{"any":["self:skill:infiltration>=d6","self:skill:science>=d6"]}]},
     "requirements": {
-      "custom": "Science d6",
+      "custom": "",
       "skill": "infiltration",
       "shift": "d6"
     },

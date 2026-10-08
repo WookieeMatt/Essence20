@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"First Deception against this creature (Fresh Mark: Edge)","edge":true,"when":["skill:deception","not:roll:initiative","target:data:uuid","not:markedByMe:freshMarkDeceived"]},
+      {"type":"Trigger","event":"hit","label":"Remember who was deceived (Fresh Mark)","when":["skill:deception"],"steps":[{"do":"mark","to":"target","key":"freshMarkDeceived","perSetter":true,"legacy":"flags.essence20.d22Deceived"}]},
+      {"type":"Trigger","event":"miss","label":"Remember who was deceived (Fresh Mark)","when":["skill:deception"],"steps":[{"do":"mark","to":"target","key":"freshMarkDeceived","perSetter":true,"legacy":"flags.essence20.d22Deceived"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your first Deception test targeting each creature gets Edge, labelled Fresh Mark in your Roll Options Dialog.</p>"

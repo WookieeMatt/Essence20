@@ -3,6 +3,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Area of study (a Smarts Skill)","from":"list","options":[{"value":"alertness","label":"Alertness"},{"value":"culture","label":"Culture"},{"value":"science","label":"Science"},{"value":"survival","label":"Survival"},{"value":"technology","label":"Technology"}],"legacy":"flags.essence20.gij2ExpertSkill"},
+      {"type":"Use","label":"Choose the area of study","steps":[{"do":"pick","key":"skill","from":"list","prompt":"Choose the Smarts Skill your area of study falls under","options":[["alertness","E20.SkillAlertness"],["culture","E20.SkillCulture"],["science","E20.SkillScience"],["survival","E20.SkillSurvival"],["technology","E20.SkillTechnology"]]}]},
+      {"type":"Trigger","label":"Expert Knowledge (1 extra benefit)","event":"afterRoll","outcome":"plainSuccess","when":["skill:{choice.skill}"],"steps":[{"do":"chat","text":"{name} succeeded in their area of study: 1 additional benefit, as if from a Critical Success (the GM decides what)."}]},
+      {"type":"Trigger","label":"Expert Knowledge (2 extra benefits)","event":"afterRoll","outcome":["double","anySucceeded"],"when":["skill:{choice.skill}"],"steps":[{"do":"chat","text":"{name} succeeded in their area of study: 2 additional benefits, as if from a Critical Success (the GM decides what)."}]},
+      {"type":"Trigger","label":"Expert Knowledge (2 extra benefits, Fumble)","event":"afterRoll","outcome":["fumble","x2"],"when":["skill:{choice.skill}"],"steps":[{"do":"chat","text":"{name} succeeded in their area of study: 2 additional benefits, as if from a Critical Success (the GM decides what)."}]},
+      {"type":"Trigger","label":"Expert Knowledge (1 extra benefit, Fumble)","event":"afterRoll","outcome":["fumble","anySucceeded","notDouble"],"when":["skill:{choice.skill}"],"steps":[{"do":"chat","text":"{name} succeeded in their area of study: 1 additional benefit, as if from a Critical Success (the GM decides what)."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick your Smarts area of study. Chat card: when you succeed on that skill, it notes one extra critical-style benefit (two on a Critical Success). The GM decides what the benefit is.</p>"

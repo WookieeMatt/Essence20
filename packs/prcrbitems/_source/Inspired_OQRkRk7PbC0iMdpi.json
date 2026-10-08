@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"single","target":"anyDie","reset":"day","maxUses":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per day, a reroll button lets you reroll any one die.</p>"
@@ -14,13 +17,6 @@
       "page": 96
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "single",
-      "target": "anyDie",
-      "maxUses": 1,
-      "reset": "day"
-    },
     "selectionLimit": 1,
     "type": "general"
   },

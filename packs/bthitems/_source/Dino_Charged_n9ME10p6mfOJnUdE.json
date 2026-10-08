@@ -5,6 +5,10 @@
   "_id": "n9ME10p6mfOJnUdE",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"resourceSpent","when":["var:resource=power","self:morphed"],"steps":[{"do":"choose","prompt":"Personal Power spent while Morphed: take that much Essence damage from which Essence?","options":[{"label":"None (not drawing on Dino Charged)","steps":[]},{"label":"Strength","steps":[{"do":"essenceDamage","essence":"strength","amount":"@var.spent"}]},{"label":"Speed","steps":[{"do":"essenceDamage","essence":"speed","amount":"@var.spent"}]},{"label":"Smarts","steps":[{"do":"essenceDamage","essence":"smarts","amount":"@var.spent"}]},{"label":"Social","steps":[{"do":"essenceDamage","essence":"social","amount":"@var.spent"}]}]}]}
+    ],
+    "prerequisites": {"when":["self:has:Energem",{"any":["self:has:Dino Charger","self:has:Dino Charge Morpher","ask:Other Dino Charged gear"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while Morphed, each Personal Power you spend asks you to choose an Essence to take 1 damage, or skip it when you are using your Energem or a Dino Charger.</p>"
@@ -20,6 +24,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

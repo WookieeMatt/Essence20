@@ -5,6 +5,11 @@
   "_id": "J0ljd1QnU9AgoWj6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CritOnD2","label":"Competitive Strength: crit on the d2 on Brawn","when":["skill:brawn"]},
+      {"type":"BrawnRequirement","label":"Competitive Strength: Brawn 2 Ranks higher for carrying","amount":2,"carryingOnly":true}
+    ],
+    "prerequisites": {"when":["self:skill:brawn>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Brawn tests can Critically Succeed on the d2, and your Brawn counts two Ranks higher for carrying. Active Effect (off by default): switch it on for Edge on Athletics and Brawn when it applies.</p>"
@@ -15,7 +20,7 @@
       "book": "A Jump Through Time",
       "page": 54
     },
-    "prerequisite": "Brawn Skill d4 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -1,12 +1,9 @@
-import { applyToEffect as applyUpgradesToEffect } from "../../helpers/weapon-upgrades.mjs";
-import { E20 } from "../../helpers/config.mjs";
+import { applyToEffect as applyUpgradesToEffect } from "../../items/attacks/weapon-upgrades.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { aoeSchema } from "../aoe-schema.mjs";
-import { isExtendedAttackActive } from "../../helpers/extended-attack.mjs";
-import { isMassShiftReachActive } from "../../helpers/mass-shift.mjs";
-import { isAntlersReachActive } from "../../helpers/antlers.mjs";
 
 import { activation } from './templates/activation.mjs';
 import { item } from './templates/item.mjs';
@@ -68,7 +65,7 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       // purely cosmetic entries in the parent Weapon item's own `traits` array (a config label
       // with zero mechanical hook anywhere in this codebase). These two fields are the first real
       // mechanical hooks for them, built for "Design your own Attack" (A Jump Through Time,
-      // Purple Ranger's Unique Strike/Enhance Strike, p.37-39, see helpers/unique-strike.mjs) -
+      // Purple Ranger's Unique Strike/Enhance Strike, p.37-39 - their items' own rules) -
       // a freshly player-authored weaponEffect can now actually express either trait. Defaulting
       // to 0/false leaves every existing compendium weaponEffect completely unaffected; this pass
       // does NOT retroactively populate them onto the ~28 existing items whose own `traits` array
@@ -79,7 +76,7 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       numHands: makeInt(1),
       numTargets: makeInt(1),
       // Area of Effect shape + radius (GitHub #824), shared with spells and Powers - see
-      // module/data/aoe-schema.mjs. Consumed by helpers/aoe-targeting.mjs.
+      // module/data/aoe-schema.mjs. Consumed by mechanics/combat/aoe-targeting.mjs.
       ...aoeSchema(),
       range: new fields.SchemaField({
         min: makeInt(null),
@@ -100,23 +97,10 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
         reachMultiplier = this.range.reachMultiplier;
       }
 
-      // Extended Attack - see helpers/extended-attack.mjs's own doc comment. Melee only, and
-      // doesn't stack with an already-doubled (or better) permanent reachMultiplier.
-      if (this.classification?.style == 'melee'
-        && (isExtendedAttackActive(this.parent.parent) || isMassShiftReachActive(this.parent.parent))) {
-        reachMultiplier = Math.max(reachMultiplier, 2);
-      }
-
-      // Antlers - see helpers/antlers.mjs's own doc comment. Unarmed only (no parent weapon Item,
-      // the same "no parentId flag" proxy dice.mjs#_getParentWeapon already uses for "unarmed"
-      // everywhere else in this codebase), doesn't stack past a flat double.
-      const isUnarmed = !this.parent.flags?.essence20?.parentId;
-      if (this.classification?.style == 'melee' && isAntlersReachActive(this.parent.parent, isUnarmed)) {
-        reachMultiplier = Math.max(reachMultiplier, 2);
-      }
+      // (Mass Shift's Reach option, Extended Attack and Antlers are ItemModifier rules on their items.)
 
       // Upgrades on the parent weapon - ranges, blasts, skill, targets, damage riders
-      // (helpers/weapon-upgrades.mjs). Derived only; the paths it changed are listed in
+      // (items/attacks/weapon-upgrades.mjs). Derived only; the paths it changed are listed in
       // this.upgradeTouched so the item sheet keeps editing the stored values.
       applyUpgradesToEffect(this, this.parent);
 

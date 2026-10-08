@@ -5,6 +5,9 @@
   "_id": "smvGDC2LdShGs0UK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick free armor upgrades","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"choose","prompt":"Two Limited armor upgrades, or one Restricted?","options":[{"label":"Two Limited","steps":[{"do":"pickGrant","from":{"type":"upgrade","availabilities":["limited"],"tags":["item:data:system.type=armor"]}},{"do":"setToggle","key":"granted","value":true},{"do":"pickGrant","from":{"type":"upgrade","availabilities":["limited"],"tags":["item:data:system.type=armor"]}}]},{"label":"One Restricted","steps":[{"do":"pickGrant","from":{"type":"upgrade","availabilities":["restricted"],"tags":["item:data:system.type=armor"]}},{"do":"setToggle","key":"granted","value":true}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose two Limited or one Restricted armor upgrade, and they're added to your sheet.</p>"

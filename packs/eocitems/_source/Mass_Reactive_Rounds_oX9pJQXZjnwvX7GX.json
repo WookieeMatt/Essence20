@@ -5,6 +5,10 @@
   "_id": "oX9pJQXZjnwvX7GX",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"scope":"host","amount":1,"when":["attack","item:damageType:sharp","defense:toughness"]}
+    ],
+    "prerequisites": {"when":["host:trait:ballistic","host:trait:sharp"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the upgraded weapon deals +1 Sharp damage on attacks against Toughness.</p>"
@@ -23,7 +27,7 @@
     "benefit": "+1 Sharp Damage",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Ballistic Trait and Sharp Damage"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

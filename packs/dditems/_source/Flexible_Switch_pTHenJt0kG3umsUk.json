@@ -5,6 +5,10 @@
   "_id": "pTHenJt0kG3umsUk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick the two Alt Modes (Flexible Switch)","when":["not:combat:exists","self:itemCount:altMode>=2"],"steps":[{"do":"pick","key":"switchA","from":"ownedItem","itemType":"altMode","legacy":"flags.essence20.switchModes.0","prompt":"First Alt Mode"},{"do":"pick","key":"switchB","from":"ownedItem","itemType":"altMode","filter":["not:item:picked:switchA"],"legacy":"flags.essence20.switchModes.1","prompt":"Second Alt Mode"}]},
+      {"type":"ActionCost","label":"Flexible Switch","action":"conversion","to":"free","ask":"E20.Tf1AskFlexibleSwitch","when":["self:transformed","self:itemCount:altMode>=2",{"any":["not:rule:data:flags.essence20.rules.choices.switchA","self:data:system.altModeId={choice.switchA}","self:data:system.altModeId={choice.switchB}"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: converting between your two chosen Alt Modes is a Free action. Use button (out of combat): choose which two Alt Modes it covers.</p>"

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"UntrainedSnagImmunity","label":"Green","limit":{"per":"scene","max":3},"priority":1}
+    ],
+    "prerequisites": {"when":["self:level<=4"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: on an untrained Skill Test, a switch to skip the Snag, three times.</p><p>Left to the table: the count resets each scene, so keep the three-per-mission total yourself.</p>"
@@ -13,7 +17,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 131
     },
-    "prerequisite": "Level 4 or lower",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

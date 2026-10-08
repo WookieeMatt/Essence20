@@ -5,6 +5,10 @@
   "_id": "MMToVGBAkB79DZEW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Pressure Cooker","upshift":1,"when":["self:data:system.health.value<$system.health.max"]},
+      {"type":"DialogSwitch","label":"Pressure Cooker: Edge (1 Moxie Point)","edge":true,"clearSnag":true,"cost":{"resource":{"rolePoints":"Moxie"},"amount":1},"when":["self:data:system.health.value=1"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ↑1 on every Skill Test while you are below your maximum Health, labelled Pressure Cooker in the Roll Options Dialog. Roll Options Dialog: at 1 Health, a switch spends a Moxie Point for Edge.</p>"

@@ -5,6 +5,9 @@
   "_id": "Kn1LyTMvqzMY8LnA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"MovementAction","label":"First round: Push 10 ft per Free action","pushFeet":10,"when":["combat:round:1","not:self:status:surprised"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in the first round of combat, unless you are Surprised, each Free action spent to Push Yourself buys 10ft of extra Movement.</p>"

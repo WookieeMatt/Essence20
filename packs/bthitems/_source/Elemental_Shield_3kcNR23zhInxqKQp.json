@@ -5,6 +5,9 @@
   "_id": "3kcNR23zhInxqKQp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Shield yourself and the Morphed team from Energy","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"limit":{"per":"encounter"},"steps":[{"do":"damageShield","to":"allies+self:99999","filter":[{"any":["target:self","target:data:system.isMorphed"]}],"amount":"@item.system.advances.currentValue","damageTypes":["element","acid","cold","electric","emp","fire","laser","sonic"],"until":"combat"},{"do":"listNames","to":"allies+self:99999","filter":[{"any":["target:self","target:data:system.isMorphed"]}],"var":"shielded"},{"do":"chat","text":"Elemental Shield: {var.shielded} ignore {@item.system.advances.currentValue} Energy damage from the next energy hit."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene while Morphed, spend 1 Personal Power; you and Morphed teammates within 60ft ignore 1 Energy damage (2 at 18th level) from the next energy attack.</p>"

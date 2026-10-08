@@ -5,6 +5,10 @@
   "_id": "XRn8pnRtJVdaxTC6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SizeMatrixCancel","label":"Big Rigger","when":["not:defense:evasion"]}
+    ],
+    "prerequisites": {"when":["self:skill:driving>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a smaller attacker only gets its size ↑ against a vehicle you drive when the attack targets Evasion.</p>"
@@ -16,7 +20,7 @@
       "page": 63
     },
     "items": {},
-    "prerequisite": "Driving +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

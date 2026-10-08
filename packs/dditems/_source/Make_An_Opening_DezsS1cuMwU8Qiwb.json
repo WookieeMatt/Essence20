@@ -5,6 +5,11 @@
   "_id": "DezsS1cuMwU8Qiwb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Make an Opening (↓2)","downshift":2,"key":"makeAnOpening","forget":true,"when":["attack:unarmed",{"any":["target:hasArmorUpgrade:toughness","target:hasArmorUpgrade:evasion"]}]},
+      {"type":"Trigger","label":"Weaken the armor (Make an Opening)","event":"hit","when":["roll:switch:makeAnOpening"],"steps":[{"do":"mark","key":"armorStrip","to":"target","until":"scene"}]},
+      {"type":"ArmorUpgradePenalty","label":"Make an Opening","mark":"armorStrip","amount":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch on unarmed attacks that takes ↓2; on a hit the target's armor bonus to that Defense drops by 2 for the rest of the scene.</p>"

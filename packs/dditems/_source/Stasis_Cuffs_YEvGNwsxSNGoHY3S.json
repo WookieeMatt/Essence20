@@ -5,6 +5,12 @@
   "_id": "YEvGNwsxSNGoHY3S",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Cuff the target","cost":{"action":"standard"},"steps":[{"do":"target","beforeCost":true},{"do":"require","beforeCost":true,"check":["not:target:self"],"message":"Target someone else first."},{"do":"require","beforeCost":true,"check":["self:skill:technology>=d2"],"message":"Stasis Cuffs need at least d2 Technology to use."},{"do":"mark","to":"target","key":"o2StasisCuffs"},{"do":"applyCondition","to":"target","condition":"impaired"},{"do":"chat","text":"{name} snaps Stasis Cuffs onto {target}: they can't convert or spend Energon, and are Impaired."},{"do":"button","label":"Break free of the Stasis Cuffs (DIF 19 Brawn)","who":"targets","once":false,"steps":[{"do":"actAs","to":"target","steps":[{"do":"require","check":["self:marked:o2StasisCuffs"]},{"do":"roll","skill":"brawn","dif":19,"onSuccess":[{"do":"unmark","key":"o2StasisCuffs"},{"do":"removeCondition","condition":"impaired"},{"do":"chat","text":"{name} is free of the Stasis Cuffs."}]}]}]},{"do":"button","label":"Release {target} from the Stasis Cuffs","who":"anyone","steps":[{"do":"unmark","to":"target","key":"o2StasisCuffs"},{"do":"removeCondition","to":"target","condition":"impaired"},{"do":"chat","text":"{target} is free of the Stasis Cuffs."}]}]},
+      {"type":"Veto","on":"update","label":"Can't convert while cuffed (Stasis Cuffs)","marked":"o2StasisCuffs","path":"system.isTransformed","message":"{name} is in Stasis Cuffs and can't convert."},
+      {"type":"Veto","on":"update","label":"Can't spend Energon while cuffed (Stasis Cuffs)","marked":"o2StasisCuffs","path":"system.energon.normal.value","change":"down","message":"{name} is in Stasis Cuffs and can't spend Energon."},
+      {"type":"Veto","on":"update","label":"Can't spend Dark Energon while cuffed (Stasis Cuffs)","marked":"o2StasisCuffs","path":"system.energon.dark.value","change":"down","message":"{name} is in Stasis Cuffs and can't spend Energon."}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: cuff your target; they are Impaired and can't convert or spend Energon. Chat card: buttons to try the DIF 19 Brawn break-free or release them, and the tether's Health regrowth is tracked.</p>"
@@ -16,7 +22,6 @@
       "page": 76
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

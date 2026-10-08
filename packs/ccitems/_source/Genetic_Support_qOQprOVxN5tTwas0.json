@@ -5,6 +5,9 @@
   "_id": "qOQprOVxN5tTwas0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Lend an Alteration (Genetic Support)","when":["self:data:system.level>=3"],"cost":{"action":"standard"},"steps":[{"do":"target","min":0,"beforeCost":true},{"do":"choose","prompt":"Which tier of Alteration?","beforeCost":true,"options":[{"label":"Standard","steps":[{"do":"setVar","key":"tier","value":1}]},{"label":"Limited","when":["self:data:system.level>=10"],"steps":[{"do":"setVar","key":"tier","value":2}]},{"label":"Restricted","when":["self:data:system.level>=14"],"steps":[{"do":"setVar","key":"tier","value":3}]}]},{"do":"setVar","key":"scene","value":0,"beforeCost":true},{"do":"choose","prompt":"How long does it last?","beforeCost":true,"when":["self:data:system.level>=14"],"options":[{"label":"Until the start of your next turn","steps":[]},{"label":"Until the end of the scene (Extended Support)","steps":[{"do":"setVar","key":"scene","value":1}]}]},{"do":"pickAlteration","from":"compendium","tier":"{var.tier}","var":"alteration","beforeCost":true},{"do":"lendAlteration","from":"alteration","to":"targetOrSelf","part":"both","expire":"lenderTurn","when":["not:var:scene=1"]},{"do":"lendAlteration","from":"alteration","to":"targetOrSelf","part":"both","expire":"scene","when":["var:scene=1"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Standard action): a targeted ally gains the benefit and cost of an Alteration you choose (availability by your level) until your next turn, or for the scene at 14th level.</p>"

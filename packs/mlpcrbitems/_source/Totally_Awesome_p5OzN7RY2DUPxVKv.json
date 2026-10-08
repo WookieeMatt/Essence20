@@ -5,6 +5,10 @@
   "_id": "p5OzN7RY2DUPxVKv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","essence":"social","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Totally Awesome","when":["skill:{choice.skill}"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Health. Automatic: pick a Social Skill when you gain it; tests with that Skill get ↑1, already counted in the upshift your Roll Options Dialog opens with.</p>"
@@ -18,8 +22,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "skills",
+    "hasChoice": false,
+    "choiceType": "none",
     "choiceEssence": "social"
   },
   "effects": [

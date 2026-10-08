@@ -5,6 +5,7 @@
   "_id": "ksrnVFThLDcEFTV9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:culture>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: creates your alien companion with its two chosen Essences set from your level. Buy its Skills on its own sheet.</p>"
@@ -15,7 +16,7 @@
       "book": "Enigma of Combination",
       "page": 40
     },
-    "prerequisite": "Culture d4+",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

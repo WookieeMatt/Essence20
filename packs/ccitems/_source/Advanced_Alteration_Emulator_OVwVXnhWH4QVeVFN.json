@@ -5,6 +5,11 @@
   "_id": "OVwVXnhWH4QVeVFN",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Recharge it (Advanced Alteration Emulator: DIF 20 Technology)","when":["rule:data:flags.essence20.o1EmulatorSpent"],"steps":[{"do":"roll","skill":"technology","dif":20,"onSuccess":[{"do":"updateItem","item":"self","set":{"flags.essence20.o1EmulatorSpent":false}},{"do":"chat","text":"{name} recharges the emulator."}],"onFail":[{"do":"chat","text":"The emulator isn't recharged yet."}]}]},
+      {"type":"Use","label":"Emulate an Alteration for a minute (Advanced Alteration Emulator)","when":["not:rule:data:flags.essence20.o1EmulatorSpent"],"cost":{"action":"standard"},"steps":[{"do":"pickAlteration","from":"compendium","tier":"limited","keep":"flags.essence20.o1EmulatedUuid","var":"alteration","beforeCost":true},{"do":"lendAlteration","from":"alteration","to":"self","part":"both","expire":"minute"},{"do":"updateItem","item":"self","set":{"flags.essence20.o1EmulatorSpent":true}}]}
+    ],
+    "prerequisites": {"when":["host:trait:computerized"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a Limited Alteration; as a Standard action you gain its benefit and cost for 1 minute. The same button then rolls the Technology test to recharge it.</p>"
@@ -23,7 +28,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Computerized"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

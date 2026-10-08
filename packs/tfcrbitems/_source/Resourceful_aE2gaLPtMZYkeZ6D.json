@@ -5,6 +5,10 @@
   "_id": "aE2gaLPtMZYkeZ6D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose a benefit","limit":{"per":"encounter"},"steps":[{"do":"choose","auto":true,"options":[{"label":"Edge on Initiative","when":["not:self:hasItem:Compendium.essence20.tf_crb.Item.1mTCwsgnscEreieW"],"steps":[{"do":"mark","key":"resourcefulEdge","to":"self","until":"combat"}]},{"label":"1 Temporary Health","when":["not:self:hasItem:Compendium.essence20.tf_crb.Item.1mTCwsgnscEreieW"],"steps":[{"do":"heal","amount":1,"temporary":true}]},{"label":"Both (Extremely Resourceful)","when":["self:hasItem:Compendium.essence20.tf_crb.Item.1mTCwsgnscEreieW"],"steps":[{"do":"mark","key":"resourcefulEdge","to":"self","until":"combat"},{"do":"heal","amount":1,"temporary":true}]}]}]},
+      {"type":"RollModifier","label":"Resourceful (Edge on Initiative)","edge":true,"when":["roll:initiative","self:marked:resourcefulEdge"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (once per combat): choose Edge on your Initiative roll or 1 Temporary Health. Left to the table: the other three options (+10ft Movement, acting normally when surprised, sharing your Mark Target with an ally).</p>"

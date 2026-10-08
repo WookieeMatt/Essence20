@@ -5,6 +5,7 @@
   "_id": "zog0g3GPNS7fldVw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:role:Journalist","self:level>=1"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Granted: comes with the Journalist Role at level 1, and the Role adds the +1 Smarts and +1 Social Essence increases on its own.</p><p>Left to the table: picking and adding the one Smarts and one Social Skill Rank from the listed Skills.</p>"
@@ -25,7 +26,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Journalist Role, Level 1",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

@@ -5,6 +5,9 @@
   "_id": "29GLZcbjQhJHdsg0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Edge on your next roll","limit":{"per":"encounter"},"steps":[{"do":"bank","label":"Brutish","edge":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene): when the GM agrees you're acting on impulse, bank an Edge for your next Skill Test.</p>"

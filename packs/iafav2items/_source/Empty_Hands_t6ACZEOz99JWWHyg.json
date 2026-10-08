@@ -5,6 +5,10 @@
   "_id": "t6ACZEOz99JWWHyg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Empty Hands (unarmed, wielding no weapon)","edge":true,"when":["attack:barehanded","not:self:holdingWeapon"]}
+    ],
+    "prerequisites": {"when":[{"any":["self:skill:finesse>=d10","self:skill:might>=d10"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while no weapon other than Unarmed Combat is marked equipped on your sheet, your unarmed attacks (the Unarmed Combat weapon, or an attack not tied to any weapon) open the Roll Options Dialog with Edge selected. Unequip your other weapons when you fight empty-handed.</p>"
@@ -16,7 +20,7 @@
       "page": 30
     },
     "items": {},
-    "prerequisite": "Finesse of Might +d10",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

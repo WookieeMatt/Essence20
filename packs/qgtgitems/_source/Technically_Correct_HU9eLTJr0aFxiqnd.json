@@ -5,6 +5,9 @@
   "_id": "HU9eLTJr0aFxiqnd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Use your Technology die instead (Technically Correct)","useSkill":"technology","when":["not:roll:initiative"],"limit":{"per":"encounter"},"forget":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per scene, a switch rolls your Technology die in place of the Skill being tested.</p>"

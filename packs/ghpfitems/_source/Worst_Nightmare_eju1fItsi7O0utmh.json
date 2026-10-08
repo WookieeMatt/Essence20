@@ -5,13 +5,18 @@
   "_id": "eju1fItsi7O0utmh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Worst Nightmare (↑1 against a Frightened target)","upshift":1,"when":["attack","target:status:frightened","not:target:statusFrom:frightened"]},
+      {"type":"RollModifier","label":"Worst Nightmare (Edge against a target Frightened of you)","edge":true,"when":["attack","target:statusFrom:frightened"]}
+    ],
+    "prerequisites": {"when":["self:skill:intimidation>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your attacks against a targeted Frightened creature get ↑1, or an Edge instead if you're the one who gave it the Frightened condition. Either one is labelled Worst Nightmare in the Roll Options Dialog.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Intimidation +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

@@ -2,12 +2,12 @@
 const { ContextMenu } = foundry.applications.ux;
 
 import { applyThemeClass } from "../settings.js";
-import { setGearNanomitePower } from "../helpers/nanomite-gear.mjs";
+import { setGearNanomitePower } from "../items/gear/nanomite-gear.mjs";
 import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
-import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { getModularCandidates, normalizeModularWeaponIds } from "../helpers/modular-armor.mjs";
-import { rollExoFrameTest } from "../helpers/exo-frame.mjs";
-import { updateRoleCache } from "../helpers/utils.mjs";
+import { onManageSelectTrait } from "../mechanics/characters/manage-traits.mjs";
+import { getModularCandidates, normalizeModularWeaponIds } from "../items/defenses/modular-armor.mjs";
+import { rollExoFrameTest } from "../items/defenses/exo-frame.mjs";
+import { updateRoleCache } from "../util/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 import {
   prepareActiveEffectCategories,
@@ -16,7 +16,10 @@ import {
   onDropActiveEffect,
   onEditActiveEffect,
   onToggleActiveEffect,
-} from "../helpers/effects.mjs";
+} from "../mechanics/characters/active-effect-controls.mjs";
+import { SKELETONS, changeChoice, chooseAddKind, deleteRule, effectEntries, rulesContext, saveRulesJson, setToggle, stepPool } from "../rules/sheet.mjs";
+import { rulesOf } from "../rules/index.mjs";
+import { perkChoiceDetails } from "../rules/perk-choice-details.mjs";
 
 /**
  * Handles retrieving all existing roles of the system version selected.
@@ -97,6 +100,15 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       deleteEffect: this.#deleteActiveEffect,
       editEffect: this.#editActiveEffect,
       toggleEffect: this.#toggleActiveEffect,
+      rulesSaveJson: this.#rulesSaveJson,
+      rulesAdd: this.#rulesAdd,
+      rulesEdit: this.#rulesEdit,
+      prerequisitesEdit: this.#prerequisitesEdit,
+      actsAsClear: this.#actsAsClear,
+      rulesDelete: this.#rulesDelete,
+      rulesToggle: this.#rulesToggle,
+      rulesPool: this.#rulesPool,
+      rulesChoose: this.#rulesChoose,
     },
     classes: ["essence20", "sheet", "item", "window-app", "theme-wrapper", "e20-window"],
     form: {
@@ -137,7 +149,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       tabs: [
         { id: "description", group: 'primary', label: "Description"},
         { id: "details", group: 'primary', label: "Details"},
-        { id: "effects", group: 'primary', label: "Effects"},
+        { id: "rules", group: 'primary', label: "E20.Rules.Tab"},
       ],
       initial: "description",
     },
@@ -163,8 +175,8 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       template: "systems/essence20/templates/item/tabs/detail-base.hbs",
       scrollable: [''],
     },
-    effects: {
-      template: "systems/essence20/templates/item/tabs/effects.hbs",
+    rules: {
+      template: "systems/essence20/templates/item/tabs/rules.hbs",
       scrollable: [""],
     },
   };
@@ -195,13 +207,18 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       context.tabs.description.active = true;
     }
 
+    // The Rules tab is for item types that carry system.rules (data/item/templates/item-description.mjs).
+    if (!Array.isArray(itemData.system?.rules)) {
+      delete context.tabs.rules;
+    }
+
     // Prepare active effects
     // context.effects = prepareActiveEffectCategories(this.object.effects);
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
     // A weapon effect's range, skill, damage or targets may be changed by upgrades on its weapon
-    // (helpers/weapon-upgrades.mjs) - in derived data only. The form edits the STORED values, or
+    // (items/attacks/weapon-upgrades.mjs) - in derived data only. The form edits the STORED values, or
     // saving any other field would write the upgraded number back as the base one.
     const touched = itemData.system.upgradeTouched ?? [];
     if (touched.length) {
@@ -219,10 +236,12 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
     if (this.document.type == 'perk') {
       context.roles = await _getVersionRoles(itemData);
+      // Perk choice P3: the old picker's inputs are gone; a legacy notice and the sub-Perk list (rules/perk-choice-details.mjs).
+      context.perkChoice = perkChoiceDetails(itemData, CONFIG.E20.perkChoiceTypes);
     }
 
     // An Element weapon's element is chosen on its sheet (GI Joe CRB p.207) - any weapon whose own
-    // effects are printed as "Element" damage (helpers/weapon-upgrades.mjs).
+    // effects are printed as "Element" damage (items/attacks/weapon-upgrades.mjs).
     if (this.document.type == 'weapon') {
       const own = this.document.parent?.items?.filter(i => i.type == 'weaponEffect' && i.flags?.essence20?.parentId == this.document.id) ?? [];
       context.dealsElementDamage = own.some(e => e._source?.system?.damageType == 'element')
@@ -244,7 +263,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     switch ( partId ) {
     case "description": context = await this._prepareDescriptionContext(context); break;
     case "details": context = await this._prepareDetailsContext(context); break;
-    case "effects": context = await this._prepareEffectsContext(context); break;
+    case "rules": context = await this._prepareRulesContext(context); break;
     }
 
     return context;
@@ -263,19 +282,27 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     return context;
   }
 
+  /**
+   * The Rules tab lists the item's Active Effects and its rules together (rules/sheet.mjs) - the
+   * effects first, since an always-on change is what most items carry.
+   */
+  async _prepareRulesContext(context) {
+    const categories = await prepareActiveEffectCategories(this.document.effects);
+    Object.assign(context, rulesContext(this.document), {
+      ruleEffects: effectEntries([...categories.passive.effects, ...categories.temporary.effects, ...categories.inactive.effects]),
+      rulesJsonOpen: this._rulesJsonOpen,
+    });
+    return context;
+  }
+
   async _prepareDetailsContext(context) {
     const path = "systems/essence20/templates/item/details";
     context.detailPath = `${path}/${this.document.type}.hbs`;
     return context;
   }
 
-  async _prepareEffectsContext(context) {
-    context.effects = await prepareActiveEffectCategories(this.document.effects);
-    return context;
-  }
-
   /**
-   * Unlinks a gear item's nanomite Power - see helpers/nanomite-gear.mjs.
+   * Unlinks a gear item's nanomite Power - see items/gear/nanomite-gear.mjs.
    */
   static async #clearGearNanomite() {
     await this.document.update({ 'system.nanomite.powerUuid': null, 'system.nanomite.spent': 0 });
@@ -283,12 +310,21 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
   async _onDrop(event) {
     const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
+    // "Acts as" on the Rules tab - see rules/sheet.mjs#actsAsContext.
+    if (event.target?.closest?.('[data-acts-as]')) {
+      if (data?.type == 'Item' && data.uuid?.startsWith('Compendium.') && this.isEditable) {
+        await this.document.update({ 'flags.essence20.rulesSource': data.uuid });
+      }
+
+      return;
+    }
+
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.document;
     if (droppedItem.type == "base") {
       onDropActiveEffect(droppedItem, targetItem);
     } else if (targetItem.type == "gear" && droppedItem.type == "power") {
-      // Nanomite equipment - see helpers/nanomite-gear.mjs.
+      // Nanomite equipment - see items/gear/nanomite-gear.mjs.
       await setGearNanomitePower(targetItem, droppedItem);
     } else {
       await setEntryAndAddItem(droppedItem, targetItem);
@@ -296,24 +332,13 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
   }
 
   /**
-   * system.reroll.skills (module/data/reroll-schema.mjs) is an ArrayField, but its sheet input
-   * (templates/item/details/perk.hbs) is a single free-text field so a Perk like "Survivalist"
-   * can list several scoped skills (e.g. "alertness, initiative, survival") without a bespoke
-   * multi-select widget. ArrayField#_cast doesn't split strings - passed through unchanged,
-   * "alertness, survival" would be cast to the single-element array ["alertness, survival"] and
-   * fail its own choices validation - so it's parsed into a real array here, before Foundry's own
-   * DocumentSheetV2#_prepareSubmitData validates and submits the form.
+   * Form values the sheet's inputs can't give in the shape their fields want, fixed up before
+   * Foundry's own DocumentSheetV2#_prepareSubmitData validates and submits the form. (A Perk's
+   * system.reroll.skills text box used to be split here; the reroll block left the Details tab on
+   * 2026-10-07 - it's a Reroll rule now.)
    */
   _prepareSubmitData(event, form, formData, updateData) {
-    const rawSkills = formData.object["system.reroll.skills"];
-    if (typeof rawSkills === "string") {
-      formData.object["system.reroll.skills"] = rawSkills
-        .split(",")
-        .map(skill => skill.trim())
-        .filter(Boolean);
-    }
-
-    // Modular armor's socketed-weapon checkboxes - see helpers/modular-armor.mjs.
+    // Modular armor's socketed-weapon checkboxes - see items/defenses/modular-armor.mjs.
     const modularWeaponIds = normalizeModularWeaponIds(formData.object["system.modularWeaponIds"]);
     if (modularWeaponIds) {
       formData.object["system.modularWeaponIds"] = modularWeaponIds;
@@ -413,7 +438,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
   /**
    * Exo-Frame armor (Across the Stars p.85) - the manual Driving test, DIF from the wearer's
-   * recorded movement this turn. See helpers/exo-frame.mjs.
+   * recorded movement this turn. See items/defenses/exo-frame.mjs.
    */
   static async #rollExoFrameTest() {
     const actor = this.document.parent;
@@ -447,6 +472,65 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     onToggleActiveEffect(event, target);
   }
 
+  /* Rules tab (module/rules/sheet.mjs) */
+
+  static async #rulesSaveJson() {
+    await saveRulesJson(this.document, this.element);
+  }
+
+  /**
+   * One Add for everything the item does: ask in game words, then make an Active Effect for a flat
+   * stat change (through the usual wizard-or-blank choice) or a rule for anything else - opening the
+   * JSON editor on the new rule until the guided editor exists.
+   */
+  static async #rulesAdd(event) {
+    const kind = await chooseAddKind();
+    if (!kind) {
+      return;
+    }
+
+    if (kind == 'effect') {
+      // Picked in plain words already, so straight to the Wizard - unless this user always wants a blank effect.
+      const behavior = game.settings.get('essence20', 'effectAddBehavior') == 'blank' ? 'blank' : 'wizard';
+      await onCreateActiveEffect(event, this.document, { dataset: { effectType: 'passive' } }, { behavior });
+      return;
+    }
+
+    // A rule opens in the guided editor; it lands on the item only when saved there.
+    const { default: RuleEditor } = await import("../apps/rule-editor.mjs");
+    RuleEditor.open(this.document, rulesOf(this.document).length, SKELETONS[kind]);
+  }
+
+  static async #actsAsClear() {
+    await this.document.update({ 'flags.essence20.-=rulesSource': null });
+  }
+
+  static async #prerequisitesEdit() {
+    const { default: RuleEditor } = await import("../apps/rule-editor.mjs");
+    RuleEditor.openPrerequisites(this.document);
+  }
+
+  static async #rulesEdit(event, target) {
+    const { default: RuleEditor } = await import("../apps/rule-editor.mjs");
+    RuleEditor.open(this.document, Number(target.dataset.index));
+  }
+
+  static async #rulesDelete(event, target) {
+    await deleteRule(this.document, Number(target.dataset.index));
+  }
+
+  static async #rulesToggle(event, target) {
+    await setToggle(this.document, target.dataset.key, target.checked);
+  }
+
+  static async #rulesPool(event, target) {
+    await stepPool(this.document, target.dataset.key, Number(target.dataset.delta) || 0);
+  }
+
+  static async #rulesChoose(event, target) {
+    await changeChoice(this.document, Number(target.dataset.index));
+  }
+
   /**
    * Start the item-authoring tour from the titlebar help control. The tour runs against its own
    * demo item rather than this one, so opening it never rearranges something the user is editing.
@@ -475,7 +559,7 @@ export async function prepareAutomationContext(item) {
   }
 
   const stored = item._source?.system?.automation ?? {};
-  const sourced = !item.pack && !!(item.flags?.core?.sourceId ?? item._stats?.compendiumSource);
+  const sourced = !item.pack && !!(item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource);
   const inherited = sourced && !stored.status && !stored.notes?.trim();
   const status = automation.status || '';
   return {

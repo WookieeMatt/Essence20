@@ -4,6 +4,9 @@
   "type": "shield",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "rules": [
+      {"type":"AttackResistance","label":"Dispersion","damageTypes":["element","acid","cold","electric","emp","fire","laser","sonic"],"when":["rule:data:system.active"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: adds its Defense bonus while equipped. Automatic: gives you Resistance to energy damage.</p>"

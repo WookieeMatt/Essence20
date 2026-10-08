@@ -1,20 +1,12 @@
-import { renegadeHolderFor } from "./helpers/summons.mjs";
-import { handleRiderButton, onDamageDealt } from "./helpers/target-riders.mjs";
-import { hasVehicleUpgrade, reduceVehicleDamage, VU } from "./helpers/vehicle-upgrades.mjs";
-import { applyTimedCondition } from "./helpers/timed-status.mjs";
-import { applyEssenceDamage } from "./helpers/environment-hazards.mjs";
-import { applyEssenceAttack, describeEssenceAttack, isEssenceDamageType } from "./helpers/essence-attack.mjs";
-import { E20 } from "./helpers/config.mjs";
+import { handleRiderButton } from "./mechanics/combat/target-riders.mjs";
+import { applyTimedCondition } from "./mechanics/combat/timed-status.mjs";
+import { applyEssenceDamage } from "./mechanics/world/environment-hazards.mjs";
+import { applyEssenceAttack, describeEssenceAttack, isEssenceDamageType } from "./mechanics/combat/essence-attack.mjs";
+import { E20 } from "./util/config.mjs";
 import {
-  _isCritIsFumble, applyDamage, buildCheckChatData, getSecondaryDamageForButton, toughEnoughDamage,
-} from "./helpers/combat.mjs";
-import { computeSystemColorVars } from "./helpers/actor.mjs";
-import {
-  actorHasHangUp, actorHasPerk, hasUsedThisEncounter, hasUsedThisRound, hasUsedThisTurn,
-  markUsedThisEncounter, markUsedThisRound, markUsedThisTurn,
-} from "./helpers/perks.mjs";
-import { isRecklessAbandonActive } from "./helpers/reckless-abandon.mjs";
-import { breakMachineMantleIfPresent } from "./helpers/imperial-machine-mantle.mjs";
+  _isCritIsFumble, applyDamage, buildCheckChatData, getSecondaryDamageForButton,
+} from "./mechanics/combat/combat.mjs";
+import { computeSystemColorVars } from "./util/system-color.mjs";
 import {
   applyReroll,
   canMeetRerollCondition,
@@ -29,59 +21,25 @@ import {
 
   storyPointRerollConfig,
   upshiftFormula,
-} from "./helpers/reroll.mjs";
+} from "./mechanics/rolls/reroll.mjs";
 import {
-  canSpendForActor, canWriteStoryPoints, defenseBoostAfterRoll, hasStoryPointsAvailable, requestStoryPointSpend,
-  spendForActor,
-} from "./helpers/story-points.mjs";
+  canSpendForActor, canWriteStoryPoints, defenseBoostAfterRoll, spendForActor,
+} from "./mechanics/resources/story-points.mjs";
 import { getGameLine } from "./settings.js";
-import { activateIronHide, IRON_HIDE_ID } from "./helpers/iron-hide.mjs";
-import { claimConsummatePerformer } from "./helpers/consummate-performer.mjs";
-import { activateOneUpping, findOneUppingClaimant } from "./helpers/one-upping.mjs";
-import { findSecretHelperClaimant, rollSecretHelperAssist } from "./helpers/secret-helper.mjs";
-import { getSecretHelperPenalty } from "./helpers/action-perks.mjs";
-import { setNextTurn } from "./helpers/action-economy.mjs";
-import { activateSpite, hasSpite } from "./helpers/spite.mjs";
-import { activateExploitWeakness } from "./helpers/exploit-weakness.mjs";
-import { activateFlashy } from "./helpers/flashy.mjs";
-import { activateSuffer, hasSuffer } from "./helpers/suffer.mjs";
-import { activateFrenziedAttack, canActivateFrenziedAttack } from "./helpers/frenzied-attack.mjs";
-import { canOfferHighDensityFollowUp, hasDifferentTarget, rollHighDensityFollowUp } from "./helpers/high-density.mjs";
-import { consumeDamageRedirect, findEligibleProtector } from "./helpers/interpose.mjs";
-import { activateFeBurn, canUseFeBurn } from "./helpers/fe-burn.mjs";
-import { getTerrorAvailable } from "./helpers/terror.mjs";
-import { CBRN_DEFENDER_HANG_UP_ID, markCbrnDefenderTriggered } from "./helpers/cbrn-defender.mjs";
-import { bankHardCorpsDebt, HARD_CORPS_ENCOUNTER_FLAG } from "./helpers/hard-corps.mjs";
-import { applyMegaformDamage } from "./helpers/megaform-damage.mjs";
-import { handleVehicleZeroHealthTransition } from "./helpers/vehicle-defeat.mjs";
+import { claimConsummatePerformer } from "./items/resources/consummate-performer.mjs";
+import { canOfferHighDensityFollowUp, hasDifferentTarget, rollHighDensityFollowUp } from "./items/attacks/high-density.mjs";
+import { ruleSelfRedirect, takeSelfRedirect } from "./rules/plugins/combat/self-redirect.mjs";
+import { applyMegaformDamage } from "./mechanics/vehicles/megaform-damage.mjs";
+import { handleVehicleZeroHealthTransition } from "./mechanics/vehicles/vehicle-defeat.mjs";
 
 export { _isCritIsFumble };
 
-const JUST_A_GRAZE_ID = "Compendium.essence20.gi_joe_crb.Item.YXL5dCiLZvzDgZzJ";
-const JUST_A_GRAZE_ROUND_FLAG = 'justAGrazeLastRound';
-const FORTITUDE_ID = "Compendium.essence20.gi_joe_crb.Item.19odrVUOsp4dCiOV";
-const EXTRA_PLATES_ID = "Compendium.essence20.gi_joe_crb.Item.xr0PvYXRNAg9cU42";
-const EXTRA_PLATES_TURN_FLAG = 'extraPlatesLastTurn';
-const DIDNT_EVEN_FEEL_IT_ID = "Compendium.essence20.gi_joe_crb.Item.y7hyuXOuARcKgahl";
-const DIDNT_EVEN_FEEL_IT_ENCOUNTER_FLAG = 'didntEvenFeelItThisEncounter';
-const SUDDEN_DEATH_ID = "Compendium.essence20.gi_joe_crb.Item.bfBFQH3sxny3BfEK";
-const SUDDEN_DEATH_ENCOUNTER_FLAG = 'suddenDeathThisEncounter';
-const HARD_CORPS_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.IR8Rl7IXn0zKBBXV";
-
-// Invincibility Through Invisibility (Ferocious Fighters, Python Patrol Faction Perk, p.42): "If
-// you get to act in the surprise round of combat, you ignore the effects of the first attack that
-// successfully targets you in this combat." Unlike Hard Corps/Didn't Even Feel It just above, RAW
-// gives no "you may choose to" - the negation is mandatory, so it's applied outright with no GM-
-// confirm dialog, the same "no choice involved" idiom this project's immunity grants already use.
-// "You get to act in the surprise round" is approximated as "you are not yourself Surprised" -
-// this system has no per-combatant "did they actually get a turn in round 1" tracking beyond the
-// Surprised Condition itself, and a Surprised creature is the one case RAW clearly excludes.
-const INVINCIBILITY_THROUGH_INVISIBILITY_ID = "Compendium.essence20.ferocious_fighters.Item.kYYPAxXMpJRMnq6Z";
-const INVINCIBILITY_THROUGH_INVISIBILITY_ENCOUNTER_FLAG = 'invincibilityThroughInvisibilityUsedThisEncounter';
+// (Sudden Death, Fortitude, Extra Plates, Didn't Even Feel It, Hard Corps, Invincibility Through Invisibility and Just a Graze
+// are staged applyingDamage Triggers on their items - rules/plugins/combat/applying-damage-stages.mjs.)
 
 // {skill, essence, snag, isPowerWeaponAttack, rollFailed, canCritD2} stashed on the message by
 // dice.mjs#rollSkill/combat.mjs#buildCheckChatData - see
-// helpers/reroll.mjs#canMeetRerollScope/canMeetRerollCondition's own doc comments.
+// mechanics/rolls/reroll.mjs#canMeetRerollScope/canMeetRerollCondition's own doc comments.
 export function getRerollContext(message) {
   return {
     skill: message.flags?.essence20?.skill,
@@ -170,7 +128,7 @@ async function rerollMessage(message, config) {
   if (!hasRerollCost(actor, config)) {
     // A world-level Story Point cost (GI Joe CRB "In My Sights") can fail for a reason more
     // specific than "insufficient resource" - nobody able to actually spend it is connected at
-    // all, distinct from there not being enough left. See helpers/story-points.mjs.
+    // all, distinct from there not being enough left. See mechanics/resources/story-points.mjs.
     const noGmForStoryPoints = config.cost?.worldStoryPoints > 0 && !canWriteStoryPoints();
     ui.notifications.warn(game.i18n.localize(noGmForStoryPoints ? "E20.RerollNoGmConnected" : "E20.RerollInsufficientResource"));
     return;
@@ -183,10 +141,10 @@ async function rerollMessage(message, config) {
   //
   // A grant that upshifts the re-rolled test (Mending the Grid) can't be done in place - the skill
   // die's own size changes - so it re-rolls the whole test from its formula instead, with the
-  // shift applied. See helpers/reroll.mjs#upshiftFormula.
+  // shift applied. See mechanics/rolls/reroll.mjs#upshiftFormula.
   //
-  // A skill-dice-only upshift grant (I've Done this Before?: "when you roll a 1 on a Skill Die you
-  // may reroll the Skill Die and gain ↑1") needs a matching Skill Die first, and keeps the original
+  // A skill-dice-only upshift grant (I've Done this Before?: a Skill Die showing 1 may be
+  // rerolled one size up) needs a matching Skill Die first, and keeps the original
   // d20 - only the Skill Die is re-rolled, one size up.
   let rerolled;
   if (config.shiftUp > 0) {
@@ -249,7 +207,7 @@ export const addRerollButtons = function (message, html) {
   const context = getRerollContext(message);
   const roll = message.rolls[0];
   // The actor's own grants, plus the reroll everyone has: a 1, for a Story Point (see
-  // helpers/reroll.mjs#storyPointRerollConfig).
+  // mechanics/rolls/reroll.mjs#storyPointRerollConfig).
   const configs = [...getRerollConfigs(actor), storyPointRerollConfig()]
     .filter(config => canMeetRerollScope(config, context))
     .filter(config => hasEligibleRerollTarget(roll, config));
@@ -300,7 +258,7 @@ export const addRerollButtons = function (message, html) {
 /**
  * "+1 to a Defense after dice are rolled" for a Story Point (GI Joe CRB p.127, TF p.105; Power
  * Rangers and My Little Pony have no after-the-roll spend - see
- * helpers/story-points.mjs#defenseBoostAfterRoll). A single point of Defense only changes
+ * mechanics/resources/story-points.mjs#defenseBoostAfterRoll). A single point of Defense only changes
  * anything when the attack met the Defense exactly, so that is the only time the button appears:
  * on each target that was hit by a margin of nothing, for whoever can spend for that target.
  * Buying it turns the hit into a miss, which is announced in chat; the damage button above it
@@ -370,7 +328,7 @@ function placeActionButton(html, button) {
 }
 
 // MLP CRB "Consummate Performer" (Laugh Tactic, p.86) - offers to regain 1 Cheer once a
-// Consummate Performer attempt (see helpers/consummate-performer.mjs#activateConsummatePerformer)
+// Consummate Performer attempt (see items/resources/consummate-performer.mjs#activateConsummatePerformer)
 // has actually posted and its outcome is known, same "only known once the message exists"
 // reasoning as rollFailed itself. Called on the renderChatMessageHTML hook, alongside
 // addRerollButtons.
@@ -410,263 +368,9 @@ export const addConsummatePerformerButton = function (message, html) {
   placeActionButton(html, button);
 };
 
-// Spite (Beneath the Helmet, Dark Ranger, 2nd level, p.39) - see helpers/spite.mjs's own doc
-// comment for why this needs its own reactive, post-roll button rather than a pre-roll checkbox:
-// the trigger ("whenever you MISS your Attack") isn't knowable until the roll has already
-// resolved. Same overall shape as addConsummatePerformerButton just above (a button appended to
-// the roll's own chat message, gated on that roll's outcome, disabled once claimed) - here gated
-// on a miss (rollFailed === true, the mirror of Consummate Performer's own === false check)
-// against a single resolved target, rather than a success.
-export const addSpiteButton = function (message, html) {
-  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
-    return;
-  }
+// (Secret Helper is a CardOffer rule on its Perk - rules/conv15-items2.test.js.)
 
-  const flags = message.flags?.essence20;
-  if (!flags?.isAttack || flags?.rollFailed !== true || !flags?.targetUuid) {
-    return;
-  }
-
-  const actor = ChatMessage.getSpeakerActor(message.speaker);
-  if (!actor || !hasSpite(actor)) {
-    return;
-  }
-
-  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
-  if (!target) {
-    return;
-  }
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "e20-chat-action-button e20-spite-button";
-  button.textContent = game.i18n.localize("E20.SpiteActivate");
-  if (message.getFlag("essence20", "spiteClaimed")) {
-    button.disabled = true;
-  } else if (actor.system.powers.personal.value < 1) {
-    button.disabled = true;
-  } else {
-    button.addEventListener("click", async () => {
-      await activateSpite(actor, flags.targetUuid);
-      await message.setFlag("essence20", "spiteClaimed", true);
-      button.disabled = true;
-    });
-  }
-
-  placeActionButton(html, button);
-};
-
-// One-Upping (Across the Stars, Competitive Origin Benefit, p.38) - see helpers/one-upping.mjs's
-// own doc comment. Same reactive post-roll button shape as addSpiteButton just above, with one
-// real difference: the button belongs to a BYSTANDER, not the roller. Every other button in this
-// file acts for the message's own speaker; this one resolves the viewing user's own character
-// instead, so each player only sees it when their own character can actually claim it. Gated on
-// any failed Skill Test (not just an attack) that carries a skill to scope the bonus to.
-// Claims are tracked as a list of claimant ids rather than Spite's single boolean, since several
-// different allies may each hold One-Upping and RAW lets each of them respond to the same failure.
-export const addOneUppingButton = function (message, html) {
-  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
-    return;
-  }
-
-  const flags = message.flags?.essence20;
-  if (flags?.rollFailed !== true || !flags?.skill) {
-    return;
-  }
-
-  const claimant = findOneUppingClaimant(ChatMessage.getSpeakerActor(message.speaker));
-  if (!claimant) {
-    return;
-  }
-
-  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
-  if (!target) {
-    return;
-  }
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "e20-chat-action-button e20-one-upping-button";
-  button.textContent = game.i18n.localize("E20.OneUppingActivate");
-  if ((message.getFlag("essence20", "oneUppingClaimedBy") ?? []).includes(claimant.id)) {
-    button.disabled = true;
-  } else {
-    button.addEventListener("click", async () => {
-      await activateOneUpping(claimant, flags.skill);
-      const claimedBy = message.getFlag("essence20", "oneUppingClaimedBy") ?? [];
-      await message.setFlag("essence20", "oneUppingClaimedBy", [...claimedBy, claimant.id]);
-      button.disabled = true;
-    });
-  }
-
-  placeActionButton(html, button);
-};
-
-// Secret Helper (MLP CRB, Spirit of Generosity, 3rd level, p.74) - see
-// helpers/secret-helper.mjs's own doc comment. Same bystander-claims-someone-else's-failed-roll
-// shape as addOneUppingButton just above, and gated identically (rollFailed === true + a known
-// skill); what differs is the payoff - One-Upping banks a shift for the claimant's OWN later roll,
-// while this one immediately posts the friend's assisted total, so it needs the original roll's
-// number and a card of its own rather than a flag.
-export const addSecretHelperButton = function (message, html) {
-  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
-    return;
-  }
-
-  const flags = message.flags?.essence20;
-  if (flags?.rollFailed !== true || !flags?.skill) {
-    return;
-  }
-
-  const claimant = findSecretHelperClaimant(ChatMessage.getSpeakerActor(message.speaker));
-  if (!claimant) {
-    return;
-  }
-
-  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
-  if (!target) {
-    return;
-  }
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "e20-chat-action-button e20-secret-helper-button";
-  button.textContent = game.i18n.localize("E20.SecretHelperActivate");
-  // Tracked per claimant, like One-Upping's own claim list: two different ponies each holding
-  // Secret Helper may both pitch in on the same failed roll, but neither gets to do it twice.
-  if ((message.getFlag("essence20", "secretHelperClaimedBy") ?? []).includes(claimant.id)) {
-    button.disabled = true;
-  } else {
-    button.addEventListener("click", async () => {
-      const roll = await rollSecretHelperAssist(claimant, flags.skill, message.rolls[0].total);
-      if (!roll) {
-        ui.notifications.warn(game.i18n.localize("E20.SecretHelperNoDie"));
-        return;
-      }
-
-      // Spoken by the original roller, not the helper - the number on this card is the FRIEND's
-      // assisted total, and it is their roll that the table is still resolving. Whose die made the
-      // difference goes in the flavor instead. Same choice rerollMessage above already makes.
-      // results is empty and no {skill, rollFailed} context is carried forward, so this follow-up
-      // card can't itself be re-assisted, One-Upped, or rerolled - it isn't a new Skill Test.
-      const chatData = await buildCheckChatData(roll, {
-        flavor: game.i18n.format("E20.SecretHelperAssist", {
-          helper: claimant.name,
-          skill: game.i18n.localize(E20.skills[flags.skill] ?? flags.skill),
-        }),
-        results: [],
-        speaker: message.speaker,
-        canCritD2: false,
-        rollContext: { secretHelperAssist: true },
-      });
-      await ChatMessage.create(chatData);
-
-      // "On your next turn, you can't take a Standard action" - or Subtle/Stealth Helper's lighter
-      // price. Lands on the helper's next turn (helpers/action-economy.mjs#setNextTurn).
-      const penalty = getSecretHelperPenalty(claimant);
-      await setNextTurn(claimant, penalty, game.i18n.localize("E20.SecretHelperActivate"));
-
-      const claimedBy = message.getFlag("essence20", "secretHelperClaimedBy") ?? [];
-      await message.setFlag("essence20", "secretHelperClaimedBy", [...claimedBy, claimant.id]);
-      button.disabled = true;
-    });
-  }
-
-  placeActionButton(html, button);
-};
-
-// Suffer! (Finster's Monster-Matic Cookbook, Path of Thorns, 15th level, p.300) - see
-// helpers/suffer.mjs's own doc comment. Same overall shape as addSpiteButton above, but gated on
-// dealtDamage === true (the mirror of Spite's own rollFailed === true) rather than a miss, and the
-// spend amount is chosen by the player at click time (helpers/suffer.mjs#pickSufferAmount) rather
-// than a fixed cost, so there's no single "can afford it" number to disable on beyond having any
-// Personal Power at all.
-export const addSufferButton = function (message, html) {
-  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
-    return;
-  }
-
-  const flags = message.flags?.essence20;
-  if (!flags?.isAttack || flags?.dealtDamage !== true || !flags?.targetUuid) {
-    return;
-  }
-
-  const actor = ChatMessage.getSpeakerActor(message.speaker);
-  if (!actor || !hasSuffer(actor)) {
-    return;
-  }
-
-  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
-  if (!target) {
-    return;
-  }
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "e20-chat-action-button e20-suffer-button";
-  button.textContent = game.i18n.localize("E20.SufferActivate");
-  if (message.getFlag("essence20", "sufferClaimed")) {
-    button.disabled = true;
-  } else if (actor.system.powers.personal.value < 1) {
-    button.disabled = true;
-  } else {
-    button.addEventListener("click", async () => {
-      const activated = await activateSuffer(actor, flags.targetUuid);
-      if (activated) {
-        await message.setFlag("essence20", "sufferClaimed", true);
-        button.disabled = true;
-      }
-    });
-  }
-
-  placeActionButton(html, button);
-};
-
-// Frenzied Attack (Decepticon Directive, Shredder Focus, 10th level, p.58) - see
-// helpers/frenzied-attack.mjs's own doc comment. Same reactive post-roll button shape as
-// addSpiteButton/addSufferButton above, gated on a successful unarmed attack that dealt damage
-// (RAW: "if this additional attack inflicts damage on a target"). The item that was rolled is
-// resolved from flags.essence20.itemUuid (dice.mjs's own checkContext, stamped next to isAttack)
-// since clicking this button has to roll that SAME weaponEffect again, not just grant a bonus.
-export const addFrenziedAttackButton = function (message, html) {
-  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
-    return;
-  }
-
-  const flags = message.flags?.essence20;
-  if (!flags?.isAttack || flags?.dealtDamage !== true || !flags?.itemUuid) {
-    return;
-  }
-
-  const actor = ChatMessage.getSpeakerActor(message.speaker);
-  const item = fromUuidSync(flags.itemUuid);
-  if (!canActivateFrenziedAttack(actor, item)) {
-    return;
-  }
-
-  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
-  if (!target) {
-    return;
-  }
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "e20-chat-action-button e20-frenzied-attack-button";
-  button.textContent = game.i18n.localize("E20.FrenziedAttackActivate");
-  if (message.getFlag("essence20", "frenziedAttackClaimed")) {
-    button.disabled = true;
-  } else {
-    button.addEventListener("click", async () => {
-      button.disabled = true;
-      await message.setFlag("essence20", "frenziedAttackClaimed", true);
-      await activateFrenziedAttack(actor, item);
-    });
-  }
-
-  placeActionButton(html, button);
-};
-
-// High-Density (Factions in Action Vol. 2, p.92) - see helpers/high-density.mjs's own doc comment.
+// High-Density (Factions in Action Vol. 2, p.92) - see items/attacks/high-density.mjs's own doc comment.
 // Same reactive post-roll button shape as addFrenziedAttackButton just above, gated on an Attack
 // with a High-Density weapon that hit something. The player targets the second creature first;
 // clicking with only the original target still selected just warns, without claiming the button.
@@ -708,93 +412,6 @@ export const addHighDensityButton = function (message, html) {
       button.disabled = true;
       await message.setFlag("essence20", "highDensityClaimed", true);
       await rollHighDensityFollowUp(actor, item);
-    });
-  }
-
-  placeActionButton(html, button);
-};
-
-const EXPLOIT_WEAKNESS_ID = "Compendium.essence20.pr_crb.Item.BTSdvgvfKHWeV07C";
-
-// Exploit Weakness (Power Rangers CRB, Yellow Ranger, 7th/15th level, p.57) - see
-// helpers/exploit-weakness.mjs's own doc comment for why this needs its own reactive, post-roll
-// button rather than a pre-roll checkbox: the trigger ("after making a melee attack") isn't a
-// choice made before the roll, and RAW doesn't require the attack to have hit. Same overall shape
-// as addSpiteButton just above, but gated on a melee Attack regardless of outcome, with no cost to
-// afford (a free Skill Test, not a Power spend) and no target-scoped rollFailed check.
-export const addExploitWeaknessButton = function (message, html) {
-  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
-    return;
-  }
-
-  const flags = message.flags?.essence20;
-  if (!flags?.isMelee || !flags?.targetUuid) {
-    return;
-  }
-
-  const actor = ChatMessage.getSpeakerActor(message.speaker);
-  if (!actor || !actorHasPerk(actor, EXPLOIT_WEAKNESS_ID)) {
-    return;
-  }
-
-  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
-  if (!target) {
-    return;
-  }
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "e20-chat-action-button e20-exploit-weakness-button";
-  button.textContent = game.i18n.localize("E20.ExploitWeaknessActivate");
-  if (message.getFlag("essence20", "exploitWeaknessClaimed")) {
-    button.disabled = true;
-  } else {
-    button.addEventListener("click", async () => {
-      await activateExploitWeakness(actor, flags.targetUuid);
-      await message.setFlag("essence20", "exploitWeaknessClaimed", true);
-      button.disabled = true;
-    });
-  }
-
-  placeActionButton(html, button);
-};
-
-// Flashy (Transformers CRB, Scientist Role, 14th level, p.80) - see helpers/flashy.mjs's own doc
-// comment. Same reactive-chat-button shape as Exploit Weakness just above, gated on the isFlashyAttack
-// recognition flag (an Electric-damage weaponEffect attack from a Flashy holder) instead of
-// isMelee, and only offered once the attack has actually succeeded (RAW: "when you successfully
-// attack").
-export const addFlashyButton = function (message, html) {
-  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
-    return;
-  }
-
-  const flags = message.flags?.essence20;
-  if (!flags?.isFlashyAttack || flags?.rollFailed !== false || !flags?.targetUuid) {
-    return;
-  }
-
-  const actor = ChatMessage.getSpeakerActor(message.speaker);
-  if (!actor) {
-    return;
-  }
-
-  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
-  if (!target) {
-    return;
-  }
-
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "e20-chat-action-button e20-flashy-button";
-  button.textContent = game.i18n.localize("E20.FlashyActivate");
-  if (message.getFlag("essence20", "flashyClaimed")) {
-    button.disabled = true;
-  } else {
-    button.addEventListener("click", async () => {
-      await activateFlashy(actor);
-      await message.setFlag("essence20", "flashyClaimed", true);
-      button.disabled = true;
     });
   }
 
@@ -884,7 +501,7 @@ export async function onApplyDamage(message, button) {
   }
 
   // A crit option that applies a Condition instead - Scramble Wave's Stunned "until the end of their
-  // next turn" (helpers/timed-status.mjs counts that one round).
+  // next turn" (mechanics/combat/timed-status.mjs counts that one round).
   if (button.dataset.status) {
     await applyTimedCondition(target, button.dataset.status, 1);
     button.disabled = true;
@@ -908,7 +525,7 @@ export async function onApplyDamage(message, button) {
     return;
   }
 
-  // Defense damage, marks and bonus attacks from a Critical Effect - helpers/target-riders.mjs.
+  // Defense damage, marks and bonus attacks from a Critical Effect - mechanics/combat/target-riders.mjs.
   if (button.dataset.defense || button.dataset.rider) {
     await handleRiderButton(message, button, target);
     button.disabled = true;
@@ -919,37 +536,15 @@ export async function onApplyDamage(message, button) {
 
   let damage = parseInt(button.dataset.damage);
 
-  // Essence damage (helpers/essence-attack.mjs) - it comes off an Essence score, not Health, so
+  // Essence damage (mechanics/combat/essence-attack.mjs) - it comes off an Essence score, not Health, so
   // none of the Health-side reductions and reactions below apply.
   if (isEssenceDamageType(button.dataset.damageType)) {
     await applyEssenceDamageButton(message, button, target, damage);
     return;
   }
 
-  // Active Protection System / Slat Armor / Reactive Armor (helpers/vehicle-upgrades.mjs).
-  if (target.type == 'vehicle') {
-    const cut = await reduceVehicleDamage(target, damage, {
-      style: message.flags?.essence20?.attackStyle, traits: message.flags?.essence20?.attackTraits,
-      damageType: button.dataset.damageType,
-    });
-    if (cut.notes.length) {
-      ChatMessage.create({
-        content: game.i18n.format('E20.VehicleDamageReduced', { name: target.name, from: damage, to: cut.amount, sources: cut.notes.join(', ') }),
-        speaker: ChatMessage.getSpeaker({ actor: target }),
-      });
-    }
-
-    damage = cut.amount;
-
-    // Reactive Shocks: "Once per turn, when the vehicle takes damage it can immediately move 10ft away
-    // from the attack's source."
-    if (damage > 0 && hasVehicleUpgrade(target, VU.reactiveShocks)) {
-      ChatMessage.create({
-        content: game.i18n.format('E20.VehicleReactiveShocks', { name: target.name }),
-        speaker: ChatMessage.getSpeaker({ actor: target }),
-      });
-    }
-  }
+  // (Active Protection System / Slat Armor / Reactive Armor are DamageReduction rules on the vehicle's upgrades, read
+  // in applyDamage - rules/plugins/tags/damage-source.mjs.)
 
   // The weaponEffect's own second damage component on this same hit, if it has one - see
   // combat.mjs#getSecondaryDamageForButton. Dropped only when the whole attack is negated
@@ -958,7 +553,7 @@ export async function onApplyDamage(message, button) {
 
   // A Megaform doesn't take damage against a single pooled Health the way every other actor type
   // does - RAW (PR CRB p.142) distributes it across its linked participants instead (see
-  // helpers/megaform-damage.mjs's own doc comment). None of the checks below this point (all
+  // mechanics/vehicles/megaform-damage.mjs's own doc comment). None of the checks below this point (all
   // PC/NPC Perk-driven mitigations) apply to a Megaform anyway, so this routes to the dedicated
   // distribution helper and skips straight to the same tail bookkeeping (button disable,
   // applied-amount chat message) the ordinary path performs after applyDamage() below.
@@ -979,54 +574,29 @@ export async function onApplyDamage(message, button) {
     return;
   }
 
-  // Sudden Death (Blitzer Focus, 20th level, p.98): "once per combat, when you successfully hit
-  // with a Might melee attack against a target whose Threat Level is equal to or less than your
-  // level, you can choose to defeat them instead of dealing damage." Unlike every other check
-  // below, this is the ATTACKER's own Perk and choice, not the target's - resolved off the chat
-  // message's own speaker (the same ChatMessage.getSpeaker({actor}) data dice.mjs already stamps
-  // onto every check card it creates), not the target being damaged. isMightMelee is a plain fact
-  // about the weapon/attack (dice.mjs's own results-building step) - the Perk, once-per-combat
-  // gate, and Threat Level compare all happen here instead, once the actual target is known.
+  // The attacker's own staged applyingDamage Triggers (Sudden Death - rules/plugins/combat/applying-damage-stages.mjs):
+  // the hit may be taken over outright (a Defeat instead of damage), spending the card's button.
   const attacker = game.actors.get(message.speaker?.actor);
-  const targetThreatLevel = target.system.threatLevel ?? Infinity; // PCs have no Threat Level
-  const attackerLevel = attacker?.system.level ?? -Infinity;
-  if (
-    button.dataset.isMightMelee == 'true' && attacker && actorHasPerk(attacker, SUDDEN_DEATH_ID)
-    && !hasUsedThisEncounter(attacker, SUDDEN_DEATH_ENCOUNTER_FLAG) && targetThreatLevel <= attackerLevel
-  ) {
-    const confirmation = await foundry.applications.api.DialogV2.wait({
-      window: { title: game.i18n.localize('E20.SuddenDeathConfirmTitle') },
-      classes: ["window-app", "e20-window"],
-      content: `<p>${game.i18n.format('E20.SuddenDeathConfirmContent', { name: target.name })}</p>`,
-      modal: true,
-      buttons: [
-        { label: game.i18n.localize('E20.DialogConfirmButton'), action: 'confirm' },
-        { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-      ],
-    });
-
-    if (confirmation == 'confirm') {
-      await target.update({ 'system.health.value': 0 });
-      await markUsedThisEncounter(attacker, SUDDEN_DEATH_ENCOUNTER_FLAG);
-      button.disabled = true;
-      const appliedKeys = message.getFlag('essence20', 'damageAppliedKeys') || [];
-      await message.setFlag('essence20', 'damageAppliedKeys', [...appliedKeys, button.dataset.key]);
-      ChatMessage.create({
-        content: `${target.name}: ${game.i18n.localize('E20.SuddenDeathApplied')}`,
-        speaker: ChatMessage.getSpeaker({ actor: target }),
-      });
-
-      return;
-    }
+  const { applyingDamageStage } = await import("./rules/plugins/combat/applying-damage-stages.mjs");
+  const takenOver = await applyingDamageStage(attacker, damage, {
+    stage: 'attacker', other: target, hit: target, damageType: button.dataset.damageType, dataset: { ...button.dataset },
+  });
+  if (takenOver.handled) {
+    button.disabled = true;
+    const appliedKeys = message.getFlag('essence20', 'damageAppliedKeys') || [];
+    await message.setFlag('essence20', 'damageAppliedKeys', [...appliedKeys, button.dataset.key]);
+    return;
   }
 
-  // Interpose / Body Shield / Heroic Sacrifice - see helpers/interpose.mjs's own doc comment.
-  // Same "auto-detect eligibility, human confirms" shape as Just a Graze/Didn't Even Feel It/
-  // Hard Corps below, but resolved FIRST and against the redirect, not a reduction - a confirmed
-  // swap here reassigns `target` itself, so every check below (including applyDamage() itself)
-  // naturally runs against the protector instead, with no separate code path needed.
+  // Taking the hit for someone - the one hit's own redirectTo rule (Impenetrable Armor -
+  // rules/plugins/combat/self-redirect.mjs) first, else the item rules'
+  // applyingDamage protectors (Interpose, Body Shield, Heroic Sacrifice, Golden Guardian, Stand By Me -
+  // rules/plugins/combat/applying-damage.mjs); only one is offered. Same "auto-detect eligibility, human confirms" shape
+  // as Just a Graze/Didn't Even Feel It/Hard Corps below, but resolved FIRST and against the redirect, not a reduction -
+  // a confirmed swap here reassigns `target` itself, so every check below (including applyDamage() itself) naturally runs
+  // against the protector instead. Then the applyingDamage Triggers of whoever it lands on (Fe-BURN!) may change the damage.
   if (damage > 0) {
-    const redirect = findEligibleProtector(target);
+    const redirect = ruleSelfRedirect(target, attacker);
     if (redirect) {
       const confirmation = await foundry.applications.api.DialogV2.wait({
         window: { title: game.i18n.localize('E20.DamageRedirectConfirmTitle') },
@@ -1040,176 +610,69 @@ export async function onApplyDamage(message, button) {
       });
 
       if (confirmation == 'confirm') {
-        await consumeDamageRedirect(redirect.protector, redirect.perkId, attacker);
+        await takeSelfRedirect(redirect);
         target = redirect.protector;
       }
     }
-  }
 
-  // Fe-BURN! (Beneath the Helmet, Dark Ranger, 9th level) - see helpers/fe-burn.mjs's own doc
-  // comment. Checked right after any Golden-Guardian-style redirect resolves, so it reacts to
-  // whoever ends up as the actual (final) target of this hit.
-  if (damage > 0 && canUseFeBurn(target, damage)) {
-    const confirmation = await foundry.applications.api.DialogV2.wait({
-      window: { title: game.i18n.localize('E20.FeBurnConfirmTitle') },
-      classes: ["window-app"],
-      content: `<p>${game.i18n.format('E20.FeBurnConfirmContent', { name: target.name, terror: getTerrorAvailable(target) })}</p>`,
-      modal: true,
-      buttons: [
-        { label: game.i18n.localize('E20.DialogConfirmButton'), action: 'confirm' },
-        { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-      ],
-    });
-
-    if (confirmation == 'confirm') {
-      damage = await activateFeBurn(target, damage);
-    }
-  }
-
-  // Fortitude (Renegade base, 15th level): "you reduce the amount of damage you suffer from any
-  // source by 1." Unconditional and passive (no once-per-round gate, no GM confirm needed) -
-  // applied before Just a Graze's own reduce-to-1 choice below so Just a Graze always sees
-  // whatever damage is left after this flat reduction.
-  // Racer Abandon (Cobra Codex p.61) moves these onto the driven vehicle - helpers/summons.mjs.
-  const renegade = renegadeHolderFor(target);
-  if (actorHasPerk(renegade, FORTITUDE_ID)) {
-    damage = Math.max(0, damage - 1);
-  }
-
-  // Extra Plates (Renegade/Juggernaut Focus, 3rd level): "once per turn, reduce the damage from
-  // an attack or effect by 1 while wearing heavy or superheavy armor." Same flat -1 shape as
-  // Fortitude above, but gated on the target's own equipped armor and limited to once per turn
-  // (hasUsedThisTurn/markUsedThisTurn - helpers/perks.mjs - not the once-per-round flags Just a
-  // Graze uses below, since a round can span several combatants' own turns).
-  if (actorHasPerk(target, EXTRA_PLATES_ID) && !hasUsedThisTurn(target, EXTRA_PLATES_TURN_FLAG)) {
-    const wearingHeavyArmor = (target.items.documentsByType?.armor ?? []).some(
-      a => a.system.equipped && ['heavy', 'ultraHeavy'].includes(a.system.classification),
-    );
-    if (wearingHeavyArmor) {
-      damage = Math.max(0, damage - 1);
-      await markUsedThisTurn(target, EXTRA_PLATES_TURN_FLAG);
-    }
-  }
-
-  // Didn't Even Feel It (GI Joe CRB p.97, Renegade base, 18th level): "once per encounter while
-  // acting with Reckless Abandon, you may reduce the damage you take from a single attack or
-  // effect to zero damage." Same "auto-detect eligibility, human confirms" shape as Just a Graze
-  // below, checked first since it's strictly stronger - a confirmed negation here drops damage to
-  // 0, which makes Just a Graze's own "> 1" eligibility check below moot for this hit rather than
-  // prompting twice.
-  if (
-    damage > 0 && renegade && isRecklessAbandonActive(renegade) && actorHasPerk(renegade, DIDNT_EVEN_FEEL_IT_ID)
-    && !hasUsedThisEncounter(renegade, DIDNT_EVEN_FEEL_IT_ENCOUNTER_FLAG)
-  ) {
-    const confirmation = await foundry.applications.api.DialogV2.wait({
-      window: { title: game.i18n.localize('E20.DidntEvenFeelItConfirmTitle') },
-      classes: ["window-app", "e20-window"],
-      content: `<p>${game.i18n.format('E20.DidntEvenFeelItConfirmContent', { name: target.name })}</p>`,
-      modal: true,
-      buttons: [
-        { label: game.i18n.localize('E20.DialogConfirmButton'), action: 'confirm' },
-        { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-      ],
-    });
-
-    if (confirmation == 'confirm') {
-      damage = 0;
+    const { applyingDamage } = await import("./rules/plugins/combat/applying-damage.mjs");
+    const landing = await applyingDamage(target, damage, { attacker, damageType: button.dataset.damageType, redirect: !redirect });
+    target = landing.target;
+    damage = landing.damage;
+    if (landing.dropSecondary) {
       secondary = null;
-      await markUsedThisEncounter(target, DIDNT_EVEN_FEEL_IT_ENCOUNTER_FLAG);
     }
   }
 
-  // Hard Corps (Sgt Slaughter Sourcebook, Marine Origin Benefit, p.8) - see
-  // helpers/hard-corps.mjs's own doc comment. Checked before Didn't Even Feel It/Just a Graze
-  // below since a confirmed ignore here banks a debt rather than just discarding the damage - if
-  // both this and one of those were somehow available on the same hit, prompting for Hard Corps
-  // first avoids a moot second prompt once damage is already at 0.
-  if (damage > 0 && actorHasPerk(target, HARD_CORPS_ID) && !hasUsedThisEncounter(target, HARD_CORPS_ENCOUNTER_FLAG)) {
-    const confirmation = await foundry.applications.api.DialogV2.wait({
-      window: { title: game.i18n.localize('E20.HardCorpsConfirmTitle') },
-      classes: ["window-app", "e20-window"],
-      content: `<p>${game.i18n.format('E20.HardCorpsConfirmContent', { name: target.name })}</p>`,
-      modal: true,
-      buttons: [
-        { label: game.i18n.localize('E20.DialogConfirmButton'), action: 'confirm' },
-        { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-      ],
-    });
-
-    if (confirmation == 'confirm') {
-      await bankHardCorpsDebt(target, damage);
-      damage = 0;
+  // Staged applyingDamage Triggers of whoever it lands on (rules/plugins/combat/applying-damage-stages.mjs): Fortitude,
+  // Extra Plates, Didn't Even Feel It (Racer Abandon moves the Renegade's onto the driven vehicle - scope renegadeVehicle).
+  if (damage > 0) {
+    const reduced = await applyingDamageStage(target, damage, { stage: 'reductions', other: attacker, hit: target, damageType: button.dataset.damageType });
+    damage = reduced.damage;
+    if (reduced.dropSecondary) {
       secondary = null;
-      await markUsedThisEncounter(target, HARD_CORPS_ENCOUNTER_FLAG);
     }
   }
 
-  // Invincibility Through Invisibility - see its own comment above. No dialog (mandatory, not a
-  // choice) - checked after Hard Corps/Didn't Even Feel It so either of those, if also available,
-  // gets first crack at a GM's actual choice; this one just silently mops up whatever's left.
-  if (
-    damage > 0 && !target.statuses?.has('surprised')
-    && actorHasPerk(target, INVINCIBILITY_THROUGH_INVISIBILITY_ID)
-    && !hasUsedThisEncounter(target, INVINCIBILITY_THROUGH_INVISIBILITY_ENCOUNTER_FLAG)
-  ) {
-    damage = 0;
-    secondary = null;
-    await markUsedThisEncounter(target, INVINCIBILITY_THROUGH_INVISIBILITY_ENCOUNTER_FLAG);
-  }
-
-  // Just a Graze (GI Joe CRB p.72, Commando 5th level): "Once per turn, you can reduce the
-  // damage of an attack against you to 1." The defender's own choice, not something to apply
-  // silently - the GM confirms it here, same "auto-detect eligibility, human confirms" approach
-  // as the Sneak Attack Roll Options Dialog checkbox, just via a confirm dialog instead since
-  // this is a GM chat-card click rather than a roll dialog.
-  if (damage > 1 && actorHasPerk(target, JUST_A_GRAZE_ID) && !hasUsedThisRound(target, JUST_A_GRAZE_ROUND_FLAG)) {
-    const confirmation = await foundry.applications.api.DialogV2.wait({
-      window: { title: game.i18n.localize('E20.JustAGrazeConfirmTitle') },
-      classes: ["window-app", "e20-window"],
-      content: `<p>${game.i18n.format('E20.JustAGrazeConfirmContent', { name: target.name })}</p>`,
-      modal: true,
-      buttons: [
-        { label: game.i18n.localize('E20.DialogConfirmButton'), action: 'confirm' },
-        { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-      ],
-    });
-
-    if (confirmation == 'confirm') {
-      damage = 1;
-      await markUsedThisRound(target, JUST_A_GRAZE_ROUND_FLAG);
+  // The late staged applyingDamage Triggers (Hard Corps first - its debt is a mark settled at the combat's end -, then
+  // Invincibility Through Invisibility, Just a Graze).
+  if (damage > 0) {
+    const late = await applyingDamageStage(target, damage, { stage: 'lateReductions', other: attacker, hit: target, damageType: button.dataset.damageType });
+    damage = late.damage;
+    if (late.dropSecondary) {
+      secondary = null;
     }
   }
 
   const previousHealth = target.system.health.value;
   const wasAlreadyDefeated = !!target.statuses?.has?.('defeated');
-  // Rise Again - see helpers/rise-again.mjs's own doc comment. The only caller that ever has a
+  // Rise Again (its wouldBeDefeated Trigger rule reads damage:crit) - the only caller that ever has a
   // real crit/fumble result to thread through (a synthetic damage source, e.g. Psychoanalyst's own
   // psychoanalystDamage, has no underlying d20 roll to check and correctly defaults to false).
   const [isCrit] = _isCritIsFumble(message.rolls?.[0]?.dice ?? [], message.flags?.essence20?.canCritD2);
 
-  // Imperial Machine Mantle (Power Rangers Adventures, p.90) - "falls to pieces" the first time
-  // the wearer is hit by a Critical Success. See helpers/imperial-machine-mantle.mjs's own doc
-  // comment; no-ops if the target has no intact Mantle.
+  // A Critical Success landing: the target's criticallyHit Triggers (Imperial Machine Mantle "falls to pieces" -
+  // rules/plugins/combat/critically-hit-event.mjs).
   if (isCrit) {
-    await breakMachineMantleIfPresent(target);
+    const { criticallyHit } = await import("./rules/plugins/combat/critically-hit-event.mjs");
+    await criticallyHit(target, attacker);
   }
 
-  // Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99): a non-attack effect against Toughness
-  // that still hit deals its holder half damage (helpers/combat.mjs#toughEnoughDamage). Read off the
-  // posted roll's own isAttack/defenseType flags (dice.mjs#rollSkill's rollContext).
-  if (message.getFlag('essence20', 'isAttack') === false && message.getFlag('essence20', 'defenseType') == 'toughness') {
-    damage = toughEnoughDamage(target, damage);
+  // CardResistance rules of whoever it lands on (Tough Enough: a non-attack effect against Toughness that still hit - the
+  // posted roll's own isAttack / defenseType flags): its damage, and its second damage, halved (rounded up).
+  const { resisted, ruleCardResistance } = await import("./rules/plugins/combat/card-resistance.mjs");
+  if (ruleCardResistance(target, message, attacker)) {
+    damage = resisted(damage);
     if (secondary?.value > 0) {
-      secondary = { ...secondary, value: toughEnoughDamage(target, secondary.value) };
+      secondary = { ...secondary, value: resisted(secondary.value) };
     }
   }
 
-  // Concentrated Fire "treats Fire Immunity as Fire Resistance" (helpers/target-riders.mjs) - its
+  // Concentrated Fire "treats Fire Immunity as Fire Resistance" (mechanics/combat/target-riders.mjs) - its
   // button carries data-ignore-immunity.
-  const amount = await applyDamage(target, damage, button.dataset.damageType, isCrit, { ignoreImmunity: button.dataset.ignoreImmunity == 'true' });
-  // Shots Fired - "when you deal damage to a creature" (helpers/target-riders.mjs).
-  await onDamageDealt(game.actors.get(message.speaker?.actor), target, amount);
-  const secondaryAmount = secondary?.value > 0 ? await applyDamage(target, secondary.value, secondary.type, isCrit) : 0;
+  const source = game.actors?.get?.(message.speaker?.actor) ?? null;
+  const amount = await applyDamage(target, damage, button.dataset.damageType, isCrit, { ignoreImmunity: button.dataset.ignoreImmunity == 'true', source });
+  const secondaryAmount = secondary?.value > 0 ? await applyDamage(target, secondary.value, secondary.type, isCrit, { source }) : 0;
   // Health actually lost to this hit - Stun never reduces Health (see applyDamage), and nor does a
   // second damage that is Essence damage.
   const secondaryHitsHealth = !!secondary && secondary.type != 'stun' && !isEssenceDamageType(secondary.type);
@@ -1217,49 +680,15 @@ export async function onApplyDamage(message, button) {
     + (secondaryHitsHealth ? secondaryAmount : 0);
   const hitsHealth = button.dataset.damageType != 'stun' || (secondaryAmount > 0 && secondaryHitsHealth);
 
-  // CBRN Defender's own Hang-Up - see helpers/cbrn-defender.mjs's own doc comment. "Defeats a
-  // living creature through damage" - either the target's own Health reaching 0 from this hit (an
-  // ordinary damage type, which never auto-toggles the Defeated status itself - computed from
-  // applyDamage's own returned amount rather than re-reading target.system.health.value, since a
-  // Stun hit's returned "amount" is Stun dealt, not Health lost, and never reduces Health at all)
-  // or the Defeated status actually getting toggled on (applyDamage's own Stun-crosses-remaining-
-  // Health branch) - covers both real Defeat paths this codebase has. Guarded on not already being
-  // Defeated beforehand, so re-hitting an already-downed target doesn't keep re-triggering this.
+  // The target's Health reaching 0 from this hit (an ordinary damage type - computed from applyDamage's own
+  // returned amount, since a Stun hit's returned "amount" is Stun dealt, not Health lost).
   const isDefeatedByHealthLoss = hitsHealth && (previousHealth - healthLost) <= 0;
-  const isNowDefeated = isDefeatedByHealthLoss || !!target.statuses?.has?.('defeated');
-  if (attacker && !wasAlreadyDefeated && isNowDefeated && actorHasHangUp(attacker, CBRN_DEFENDER_HANG_UP_ID)) {
-    await markCbrnDefenderTriggered(attacker);
-  }
 
-  // Defeat of a Vehicle / Recall for Repairs - see helpers/vehicle-defeat.mjs's own doc comment.
-  // Scoped to isDefeatedByHealthLoss (excludes Stun, same as CBRN Defender's own check just
-  // above) since RAW's own trigger is "reaches 0 Health," which Stun damage never touches.
+  // Defeat of a Vehicle / Recall for Repairs - see mechanics/vehicles/vehicle-defeat.mjs's own doc comment.
+  // Scoped to isDefeatedByHealthLoss (excludes Stun) since RAW's own trigger is "reaches 0 Health," which
+  // Stun damage never touches.
   if (isDefeatedByHealthLoss && !wasAlreadyDefeated && (target.type == 'vehicle' || target.type == 'zord')) {
     await handleVehicleZeroHealthTransition(target);
-  }
-
-  // Iron Hide (GI Joe CRB, Vanguard base, 1st level, p.107) - see helpers/iron-hide.mjs's own doc
-  // comment. The damage has already landed above (its own roll's outcome isn't known
-  // synchronously) - a confirmed attempt here spends the Story Point and triggers the real Brawn
-  // DIF 15 Skill Test, which restores the Health on a success via its own post-hit consumption in
-  // dice.mjs. Scoped to isDefeatedByHealthLoss (excludes Stun, same as CBRN Defender's own check
-  // just above) since RAW's own "an attack would make you Defeated" reads as ordinary damage.
-  if (isDefeatedByHealthLoss && actorHasPerk(target, IRON_HIDE_ID) && canWriteStoryPoints() && hasStoryPointsAvailable(1)) {
-    const confirmation = await foundry.applications.api.DialogV2.wait({
-      window: { title: game.i18n.localize('E20.IronHideConfirmTitle') },
-      classes: ["window-app", "e20-window"],
-      content: `<p>${game.i18n.format('E20.IronHideConfirmContent', { name: target.name })}</p>`,
-      modal: true,
-      buttons: [
-        { label: game.i18n.localize('E20.DialogConfirmButton'), action: 'confirm' },
-        { label: game.i18n.localize('E20.DialogCancelButton'), action: 'cancel' },
-      ],
-    });
-
-    if (confirmation == 'confirm') {
-      requestStoryPointSpend(target, 1);
-      await activateIronHide(target, healthLost);
-    }
   }
 
   button.disabled = true;
@@ -1294,7 +723,7 @@ export const highlightCriticalSuccessFailure = function (message, html) {
 
 // Hides the Targeting Difficulty ("DIF n") shown next to each target on a resolved-check chat
 // card (check-card.hbs) from non-GM viewers, the same GM-only treatment the @Check[dif=...]
-// enricher already gives a flat Difficulty value (helpers/enrichers.mjs). Unlike that enricher,
+// enricher already gives a flat Difficulty value (util/enrichers.mjs). Unlike that enricher,
 // this card's HTML is baked once into the ChatMessage's content and shared verbatim to every
 // client, so there's no re-enrichment point to hook into - concealment has to happen by pruning
 // the DOM on render instead. This is display-only: a player could still recover the value from
@@ -1312,7 +741,7 @@ export const hideDifficultyForNonGm = function (message, html) {
 
 // Outlines a chat card in the speaking Actor's own system.color, the same
 // --e20-system-color mechanism the actor sheet's e20-border-accent trim already uses
-// (helpers/actor.mjs) - unset when the actor has no color chosen (or there's no actor at all,
+// (mechanics/world/token-sync.mjs) - unset when the actor has no color chosen (or there's no actor at all,
 // e.g. a GM-only message), leaving the card on its default themed border.
 // Called on the renderChatMessageHTML hook.
 export const applyChatMessageSystemColor = function (message, html) {

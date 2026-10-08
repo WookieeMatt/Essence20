@@ -5,6 +5,9 @@
   "_id": "312ubjCA7mCBDoea",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Regeneration: heal now, or a Science test","event":"powerUsed","when":["item:own"],"steps":[{"do":"choose","options":[{"label":"Heal 1 Health now","steps":[{"do":"updateActor","to":"self","add":{"system.health.value":1},"max":"@recipient.system.health.max"}]},{"label":"Science healing test (Edge)","steps":[{"do":"askNumber","var":"amount","min":1,"max":6},{"do":"rollCheck","skill":"science","essence":"smarts","dif":"5 + 5 * @var.amount","edge":true,"onSuccess":[{"do":"heal","to":"targetOrSelf","amount":"@var.amount"}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: either heal 1 Health at once, or make a Science healing test with Edge on yourself or a targeted ally. It uses one of its two daily uses.</p>"
@@ -17,7 +20,6 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,

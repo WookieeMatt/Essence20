@@ -5,6 +5,9 @@
   "_id": "JgHOsyaD5WR5lgMk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Copy again what you copied this scene (I Can Still Do That)","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"pick","beforeCost":true,"key":"copied","prompt":"Which General Perk or Grid Power?","from":"sceneList","flag":"copiedAbilities"},{"do":"grant","uuid":"{var.picked}","until":"endOfNextTurnOrScene"},{"do":"addToSceneList","flag":"copiedAbilities","entry":"{var.picked}"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend a Personal Power to copy again a Perk or Power you copied with I Can Do That this scene.</p>"

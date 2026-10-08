@@ -5,6 +5,10 @@
   "_id": "3mgHGQRzVaKtwnWb",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"KitSkill","label":"Science (Medicine) kit","skill":"science","spec":"Medicine"},
+      {"type":"KitOption","label":"Heal 2","cost":"standard","when":["not:rule:data:flags.essence20.kitSpent"],"steps":[{"do":"focus","to":"targetOrSelf"},{"do":"updateActor","to":"target","add":{"system.health.value":"2 * @takeMine"},"max":"@recipient.system.health.max"},{"do":"updateItem","item":"self","set":{"flags.essence20.kitSpent":true}},{"do":"chat","text":"{name} uses the kit: {target} heals {@takeMine * 2}."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: counts as a Science (Medicine) kit for rolls that call for one. Use button: spend it for temporary Specialization (or an Edge if already Specialized), or spend it in combat to heal 2 Health on you or an ally with no roll.</p>"

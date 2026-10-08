@@ -5,6 +5,11 @@
   "_id": "lKnjgN4TdHHNktpF",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"element","label":"Element","from":"list","options":[{"value":"acid","label":"Acid"},{"value":"cold","label":"Cold"},{"value":"electric","label":"Electric"},{"value":"emp","label":"EMP"},{"value":"fire","label":"Fire"},{"value":"laser","label":"Laser"},{"value":"sonic","label":"Sonic"}],"legacy":"flags.essence20.gij2Element"},
+      {"type":"Use","label":"Choose the Element","steps":[{"do":"pick","key":"element","from":"list","prompt":"Choose an Element to be Resistant to","options":[["acid","E20.DamageAcid"],["cold","E20.DamageCold"],["electric","E20.DamageElectric"],["emp","E20.DamageEmp"],["fire","E20.DamageFire"],["laser","E20.DamageLaser"],["sonic","E20.DamageSonic"]]}]},
+      {"type":"DerivedStat","label":"Energy Resistant ({choice.element})","path":"system.resistances.{choice.element}","op":"set","value":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose an Element. Automatic: you're Resistant to that damage while the armor is worn.</p>"

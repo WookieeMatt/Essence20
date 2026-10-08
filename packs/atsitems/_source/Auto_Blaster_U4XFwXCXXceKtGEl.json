@@ -61,15 +61,14 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:perk:Turbocharged (Form)"]},
     "requirements": {
-      "custom": "Turbocharged",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

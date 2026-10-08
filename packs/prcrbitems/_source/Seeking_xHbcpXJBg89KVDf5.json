@@ -5,6 +5,7 @@
   "_id": "xHbcpXJBg89KVDf5",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Weapon with a range in feet"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains the Indirect trait, so its attacks ignore ordinary Cover (not total Cover).</p>"

@@ -5,6 +5,10 @@
   "_id": "jsaByB9ui8k1VUfG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"2d2 on your next Skill Test","when":["not:rule:bankedDie"],"limit":{"per":"mission"},"steps":[{"do":"bankDie","die":"2d2"}]}
+    ],
+    "prerequisites": {"when":["self:hasType:origin:Dragon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: the Fangs attack. Use button (once per session; a new mission on the Scene Clock resets it): your next Skill Test adds 2d2 to the roll.</p>"
@@ -32,7 +36,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Dragon Origin",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

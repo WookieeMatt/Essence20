@@ -5,6 +5,10 @@
   "_id": "RsrUlBazkPwpRfxi",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Warrior Mode","when":["attack:melee","self:type:zord","self:data:flags.essence20.warriorModeActive"]},
+      {"type":"Size","label":"Warrior Mode (at least Towering)","atLeast":"towering","when":["self:type:zord","self:data:flags.essence20.warriorModeActive"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 3 of the pilot's Personal Power to switch Warrior Mode on. Automatic: the Zord becomes Towering, its Initiative gets ↑2 (already in its Roll Options Dialog) and its melee attacks deal +1 damage (listed on the chat card). It leaves Warrior Mode when it joins a Megaform or drops to 0 Health.</p>"

@@ -17,7 +17,6 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": true,
     "maxPowerCost": 3,
     "powerCost": 1,

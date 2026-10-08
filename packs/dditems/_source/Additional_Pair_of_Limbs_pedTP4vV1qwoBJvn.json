@@ -5,6 +5,13 @@
   "_id": "pedTP4vV1qwoBJvn",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","label":"Extra limbs (Additional Pair of Limbs: +10 ft Ground)","movement":"ground","op":"add","value":10,"stage":"afterDerived","when":["self:transformed","rule:data:flags.essence20.zord1LimbsMode=move"]},
+      {"type":"RollModifier","label":"Two targets (Additional Pair of Limbs: ↓1)","downshift":1,"when":["self:transformed","rule:data:flags.essence20.zord1LimbsMode=multi","attack","attack:unarmed","roll:targets>=2"]},
+      {"type":"Use","label":"Stand up from Prone","cost":{"action":"free"},"when":["not:self:transformed","self:status:prone"],"steps":[{"do":"removeCondition","condition":"prone"},{"do":"chat","text":"{name} stands up from Prone"}]},
+      {"type":"Use","label":"Alt Mode: +10 feet Movement","steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.zord1LimbsMode":"move"}},{"do":"chat","text":"Alt Mode limbs: +10 feet Movement"}]},
+      {"type":"Use","label":"Alt Mode: Multiple (2) Targets on unarmed attacks","steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.zord1LimbsMode":"multi"}},{"do":"chat","text":"Alt Mode limbs: Multiple (2) Targets on unarmed attacks"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: in Alt Mode, pick +10 ft Ground Movement or a two-target unarmed attack at ↓1; in Bot Mode, stand up from Prone as a Free action.</p>"
@@ -16,7 +23,6 @@
       "page": 76
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

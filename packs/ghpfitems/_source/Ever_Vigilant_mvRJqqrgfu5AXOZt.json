@@ -5,13 +5,17 @@
   "_id": "mvRJqqrgfu5AXOZt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Alertness for Initiative (Ever Vigilant)","when":["roll:initiative"],"useSkill":"alertness"}
+    ],
+    "prerequisites": {"when":["ask:Situational Awareness Specialization"]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when rolling Initiative, a switch rolls Alertness in its place.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Alertness (Situational Awareness) Specialization",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

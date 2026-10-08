@@ -5,9 +5,15 @@
   "_id": "AXmmcHK2tSzRZLqB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Qualified with Element weapons (Natural Science)","path":"system.qualified.weapons.element","op":"set","value":1},
+      {"type":"DerivedStat","label":"Trained in Element weapons (Natural Science)","path":"system.trained.weapons.element","op":"set","value":1},
+      {"type":"DialogSwitch","forget":true,"label":"Roll Survival instead (Natural Science)","when":["skill:science"],"useSkill":"survival"},
+      {"type":"DialogSwitch","forget":true,"label":"Roll Science instead (Natural Science)","when":["skill:survival"],"useSkill":"science"}
+    ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Roll Options Dialog: a switch to roll Survival for a Science Test, or Science for a Survival Test. Automatic: you're trained with Element weapons when you gain it.</p><p>Left to the table: setting your Element weapons to Fire and adding the free Blazing or Broiler upgrade.</p>"
+      "notes": "<p>Roll Options Dialog: a switch to roll Survival for a Science Test, or Science for a Survival Test. Automatic: while you have this Perk you're Qualified with Element Jets and Trained with Element weapons; removing the Perk removes them.</p><p>Left to the table: setting your Element weapons to Fire and adding the free Blazing or Broiler upgrade.</p>"
     },
     "originalId": "",
     "description": "",

@@ -5,6 +5,9 @@
   "_id": "H6hSIGrG2zCQa6Kr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Talk Them Up (DIF 10 Persuasion)","steps":[{"do":"target","max":1},{"do":"roll","skill":"persuasion","dif":10,"onSuccess":[{"do":"pick","key":"condition","from":"conditions","of":"target","all":true,"exclude":["defeated"]},{"do":"removeCondition","condition":"{choice.condition}","to":"target"}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: a DIF 10 Persuasion test that removes one Condition (not Defeated) from the targeted ally.</p><p>Left to the table: rolling Deception or Intimidation instead.</p>"

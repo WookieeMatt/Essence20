@@ -5,6 +5,9 @@
   "_id": "NkHKAb5TFc7n7C8k",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"resourceSpent","label":"Pay half the Personal Power","priority":-1,"prompt":true,"limit":{"per":"scene","max":1},"when":["var:resource=power","var:spent>=2"],"steps":[{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":"@var.spent - ceil(@var.spent / 2)","overMax":true},{"do":"chat","text":"{name} pays only half: {@var.spent - ceil(@var.spent / 2)} Personal Power back."},{"do":"setVar","key":"spent","value":"ceil(@var.spent / 2)"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per scene, when you spend 2 or more Personal Power, you're offered to pay only half (rounded up) and get the rest back.</p>"

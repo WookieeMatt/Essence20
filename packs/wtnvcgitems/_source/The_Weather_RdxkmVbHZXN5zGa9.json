@@ -5,6 +5,10 @@
   "_id": "RdxkmVbHZXN5zGa9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","defense:willpower"]}
+    ],
+    "prerequisites": {"when":["self:essence:smarts>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 Willpower and +1 Health. Automatic: attacks you roll against a target's Willpower deal +1 damage, shown on the hit's chat card as \"Includes +1 from The Weather\".</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Smarts 3+",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

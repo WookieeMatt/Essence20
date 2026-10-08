@@ -5,6 +5,13 @@
   "_id": "LDi9BUkXFtaCSoTe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Diversion","cost":{"action":"standard"},"steps":[{"do":"target","beforeCost":true,"max":1},{"do":"pick","beforeCost":true,"key":"diversionSkill","from":"list","prompt":"Diversion: roll which Skill?","options":[["deception","E20.SkillDeception"],["intimidation","E20.SkillIntimidation"],["persuasion","E20.SkillPersuasion"]]},{"do":"choose","beforeCost":true,"prompt":"Against which Defense?","options":[{"label":"Willpower","steps":[{"do":"setVar","key":"defense","value":1}]},{"label":"Cleverness","steps":[{"do":"setVar","key":"defense","value":2}]}]},{"do":"roll","skill":"{choice.diversionSkill}","dif":"(2 - @var.defense) * @target.system.defenses.willpower.total + (@var.defense - 1) * @target.system.defenses.cleverness.total","onSuccess":[{"do":"mark","key":"diversion","to":"target","until":"endOfNextRound"},{"do":"chat","text":"{name} diverts {target}: attacking {name} is Snagged, and the allies of {name} gain an Edge against {target} unless it does."}],"onFail":[{"do":"chat","text":"{name}'s Diversion fails against {target}."}]}]},
+      {"type":"RollModifier","label":"Attacking the one who diverted you (Diversion: Snag)","scope":"marked","mark":"diversion","snag":true,"when":["attack","target:ruleHolder"]},
+      {"type":"Trigger","label":"Diversion (it went for the diverter)","scope":"marked","mark":"diversion","event":"hit","when":["attack","target:ruleHolder"],"steps":[{"do":"mark","key":"divertedWentForHolder","to":"self","until":"endOfNextRound"}]},
+      {"type":"Trigger","label":"Diversion (it went for the diverter)","scope":"marked","mark":"diversion","event":"miss","when":["attack","target:ruleHolder"],"steps":[{"do":"mark","key":"divertedWentForHolder","to":"self","until":"endOfNextRound"}]},
+      {"type":"RollModifier","label":"Diverted target (Diversion: Edge)","scope":"markedTarget","mark":"diversion","edge":true,"when":["attack","self:allyOfHolder","not:target:marked:divertedWentForHolder"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: target a creature, pick Deception, Intimidation or Persuasion and its Willpower or Cleverness, and roll. On a success, until the end of the next round its attacks against you take a Snag, and your allies' attacks against it get Edge until it attacks you. Both show as labelled Diversion sources in the attacker's Roll Options Dialog.</p>"

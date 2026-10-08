@@ -5,6 +5,10 @@
   "_id": "bbA0ayzoaeW6G6R5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Intricate Nano Infusion: a Limited nanomite power","event":"added","steps":[{"do":"pickGrant","from":{"type":"power","availabilities":["limited"],"tags":["item:data:system.type=nanomite"],"notOwned":true,"selectionLimit":true}}]}
+    ],
+    "prerequisites": {"when":["self:level>=8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: pick a Limited nanomite power each time you take this Perk.</p>"
@@ -15,44 +19,13 @@
       "book": "Quartermaster's Guide to Gear",
       "page": 30
     },
-    "prerequisite": "8th Level",
+    "prerequisite": "",
     "selectionLimit": 10,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "perks",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 1,
-    "items": {
-      "90Jo": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.6Ku40JiKZCMbGMtM",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Augmented Combat",
-        "type": "power"
-      },
-      "ZEmr": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.KeDQbX62owtITKDo",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Electric Discharge",
-        "type": "power"
-      },
-      "BzTB": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.IF9v9C3tCJSQYRjd",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Protection",
-        "type": "power"
-      },
-      "Q14a": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.toDyl8zb0XVvqPuj",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Reactive",
-        "type": "power"
-      },
-      "isjd": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.HOM0e2W0aBYnZ8Z3",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Repair Machine",
-        "type": "power"
-      }
-    }
+    "items": {}
   },
   "effects": [],
   "sort": 0,

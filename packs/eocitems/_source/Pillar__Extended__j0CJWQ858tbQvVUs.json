@@ -5,6 +5,10 @@
   "_id": "j0CJWQ858tbQvVUs",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"Ram (special attack)","uuid":"Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m","skipIfOwned":true},
+      {"type":"Use","label":"Get the Ram attack back","when":["not:self:hasItem:Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m"],"steps":[{"do":"grant","uuid":"Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: taking this Alt Mode sets your size and Movement and adds the Ram attack (1 Blunt, Trip alternate) to your sheet; a Use button re-adds it. While you are in it, Limited Articulation stops Athletics and Finesse rolls with an error message instead of rolling them.</p>"
@@ -15,14 +19,6 @@
       "book": "Enigma of Combination",
       "page": 27
     },
-    "crew": 0,
-    "firepoints": 0,
-    "movement": {
-      "aerial": 0,
-      "aquatic": 0,
-      "ground": 0
-    },
-    "size": "common",
     "altModeMovement": {
       "aerial": 0,
       "aquatic": 0,

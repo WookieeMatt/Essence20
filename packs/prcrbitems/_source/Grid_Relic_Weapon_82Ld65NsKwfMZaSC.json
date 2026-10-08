@@ -5,15 +5,77 @@
   "_id": "82Ld65NsKwfMZaSC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Grid Relic Weapon","when":["self:type:playerCharacter","not:self:has:Grid Relic"],"steps":[{"do":"choose","prompt":"Is your Grid Relic a Might or a Finesse weapon?","options":[{"label":"Might","steps":[{"do":"createItem","data":{"name":"Grid Relic","type":"weapon","img":"systems/essence20/assets/icons/items/perk.svg","flags":{"essence20":{"pr2GridRelic":true}},"system":{"equipped":true,"traits":["energy","powerWeapon"],"classification":{"size":"medium"}}},"children":[{"name":"Grid Relic Strike","type":"weaponEffect","flags":{"essence20":{"pr2GridRelic":"might"}},"system":{"classification":{"skill":"roleSkillDie","style":"melee"},"damageType":"element","damageValue":2,"defenseType":"toughness","range":{"min":null,"reachMultiplier":1,"long":null,"value":null},"numHands":"1","numTargets":1}}]}]},{"label":"Finesse","steps":[{"do":"createItem","data":{"name":"Grid Relic","type":"weapon","img":"systems/essence20/assets/icons/items/perk.svg","flags":{"essence20":{"pr2GridRelic":true}},"system":{"equipped":true,"traits":["energy","powerWeapon"],"classification":{"size":"medium"}}},"children":[{"name":"Grid Relic Strike","type":"weaponEffect","flags":{"essence20":{"pr2GridRelic":"finesse"}},"system":{"classification":{"skill":"roleSkillDie","style":"melee"},"damageType":"element","damageValue":2,"defenseType":"toughness","range":{"min":null,"reachMultiplier":1,"long":null,"value":null},"numHands":"1","numTargets":1}}]}]}]}]},
+      {"type":"Trigger","event":"added","label":"Pick 2 Relic Weapon Traits","removeOnStop":true,"when":["self:type:playerCharacter"],"steps":[{"do":"pickSubPerk","key":"perks","count":2,"required":true}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>When added you choose Might or Finesse, and a Grid Relic weapon dealing Energy damage is added to your sheet. It rolls your White Ranger Role skill die.</p>"
+      "notes": "<p>When added you choose Might or Finesse, and a Grid Relic weapon dealing Energy damage is added to your sheet. It rolls your White Ranger Role skill die. Then you pick two Relic Weapon Traits from its list; each is added as its own Perk and works as that Perk describes.</p>"
     },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 61
+    },
+    "items": {
+      "a1e3": {
+        "uuid": "Compendium.essence20.pr_crb.Item.op48tWsOS2uno2MA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Energy Blasts",
+        "type": "perk",
+        "role": null
+      },
+      "b27c": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FL7xnRUhVwmtKj2N",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Fast Draw",
+        "type": "perk",
+        "role": null
+      },
+      "c49d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.fPnUOnzp4glrlvtR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Intelligence",
+        "type": "perk",
+        "role": null
+      },
+      "d5a1": {
+        "uuid": "Compendium.essence20.pr_crb.Item.v0xy8scGOCGFBrOa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Multi-Strike",
+        "type": "perk",
+        "role": null
+      },
+      "e6b8": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rDwsw5Gaps5GLB71",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Proximity Alarm",
+        "type": "perk",
+        "role": null
+      },
+      "f7c2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.uk0T2IjgefVwOufv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Shatter Strike",
+        "type": "perk",
+        "role": null
+      },
+      "18d4": {
+        "uuid": "Compendium.essence20.pr_crb.Item.qt9OhfYaZwc6NV9c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Thunderous",
+        "type": "perk",
+        "role": null
+      },
+      "29e6": {
+        "uuid": "Compendium.essence20.pr_crb.Item.aExhIUpfJTx6fJeU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait: Zord Control",
+        "type": "perk",
+        "role": null
+      }
     },
     "prerequisite": "",
     "selectionLimit": 1,

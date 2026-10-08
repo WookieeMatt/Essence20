@@ -5,13 +5,14 @@
   "_id": "0OTOD93UCMEaaOhD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Athletics (Climbing) Specialization"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: +20ft Climb Movement.</p><p>Left to the table: the free Athletics (Climbing) kit and only having the bonus while you carry it.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Athletics (Climbing) Specialization",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",
@@ -21,6 +22,7 @@
   },
   "effects": [
     {
+      "name": "Rock Climber",
       "img": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.general_hawk_s_personel_files.Item.0OTOD93UCMEaaOhD",
       "duration": {

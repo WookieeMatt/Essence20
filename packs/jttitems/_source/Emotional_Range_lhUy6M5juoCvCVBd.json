@@ -5,6 +5,9 @@
   "_id": "lhUy6M5juoCvCVBd",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "rules": [
+      {"type":"KnownOptions","label":"Emotional Range (the Emotional Mastery options you know)","key":"emotionalMastery","count":"@item.system.bonus.value","options":["anger","contempt","disgust","distress","fear","guilt","interest","joy","sadness","shame","shyness","surprise"],"labels":"E20.EmotionalMastery{Option}","title":"Emotional Range","prompt":"Emotional Mastery option {n} of {count}","legacy":"zord1KnownEmotions"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: sets how many Emotional Mastery options you know; you're asked to pick new ones as the value rises, and only known options can be activated.</p>"
@@ -50,8 +53,7 @@
       "max": null,
       "startingMax": null,
       "value": null
-    },
-    "level20Value": null
+    }
   },
   "effects": [],
   "sort": 0,

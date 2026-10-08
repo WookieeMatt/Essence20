@@ -5,6 +5,9 @@
   "_id": "2i8jWYZH14Cu30LO",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Eat it (Imaginary Corn)","steps":[{"do":"kitBoost","essence":"strength","mode":"shiftUp","kind":"scene","times":"@takeMine"},{"do":"chat","text":"{name} eats the Imaginary Corn: ↑{@takeMine} on Strength Skill Tests this scene."},{"do":"spendQuantity","amount":1,"deleteAtZero":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: eat it for ↑1 on Strength tests for the rest of the scene.</p>"

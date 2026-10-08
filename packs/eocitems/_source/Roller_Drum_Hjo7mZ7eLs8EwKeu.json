@@ -5,6 +5,11 @@
   "_id": "Hjo7mZ7eLs8EwKeu",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","label":"Roller Drum","direction":"dealt","amount":1,"when":["attack:ram","self:transformed","target:status:prone"]},
+      {"type":"DamageModifier","direction":"dealt","amount":1,"damageType":"stun","when":["not:self:transformed",{"any":["attack:unarmed","weapon:source:Compendium.essence20.tf_crb.Item.OU9rXvoKfXtcpvFy"]}]},
+      {"type":"MegaformHealth","scope":"megaform","label":"Roller Drum (+1 Health to your part of a Combiner form)","amount":1,"when":["megaform:is:combiner"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Alt Mode your Ram deals +1 Blunt to a Prone target, and in Bot Mode your Unarmed Stun hits deal +1 Stun; both show on the chat card as \"Includes +1 from Roller Drum\". In a Combiner form you add +1 to its Health.</p>"
@@ -16,7 +21,6 @@
       "page": 56
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

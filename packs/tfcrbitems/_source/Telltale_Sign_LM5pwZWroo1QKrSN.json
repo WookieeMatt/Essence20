@@ -5,6 +5,9 @@
   "_id": "LM5pwZWroo1QKrSN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CardButtons","card":"popOut","each":"target","label":"E20.O3TelltaleFrighten","steps":[{"do":"buttonCount","key":"presses","max":3,"check":true,"message":"E20.O3TelltaleMax"},{"do":"spendAction","action":"free","when":["combat:exists"]},{"do":"buttonCount","key":"presses","max":3,"message":"E20.O3TelltaleMax"},{"do":"rollVsAll","skill":"infiltration","defense":["willpower","cleverness"],"to":"target","cancelFails":true,"onSuccess":[{"do":"buttonCount","key":"rounds"},{"do":"applyCondition","condition":"frightened","rounds":"@var.rounds","to":"target"},{"do":"chat","text":"{name} leaves a calling card: {target} is Frightened for {var.rounds} round(s)."}],"onFail":[{"do":"chat","text":"{target} isn't frightened by {name}."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: after a successful Pop Out, buttons let you spend Free actions to roll Infiltration against enemies who missed you; each success Frightens them for one more round, up to 3.</p>"

@@ -61,15 +61,14 @@
         "shiftDown": 2
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "heavy"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:skill:brawn>=d4","self:skill:targeting>=d4"]}]},
     "requirements": {
-      "custom": "Brawn",
+      "custom": "3 Rangers",
       "skill": "targeting",
       "shift": "d4"
     },

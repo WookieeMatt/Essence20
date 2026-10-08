@@ -1,30 +1,148 @@
-import { runChatDecorators as runExtChatDecorators, runMissionAdvanced, runSceneAdvanced } from "./helpers/extensions.mjs";
-// Every extension module registers itself on import (helpers/extensions/index.mjs).
-import "./helpers/extensions/index.mjs";
-import { decorateSocialCard, onGroupResultChanged } from "./helpers/social-cards.mjs";
-import { endSceneTeamEffects, onMorphChanged } from "./helpers/team-actions.mjs";
-import { onInitiativeRolled } from "./helpers/commands.mjs";
-import { allegianceLeft, isContactAvailable } from "./helpers/contacts.mjs";
-import { dismissSceneSummons } from "./helpers/summons.mjs";
-import { startGroupTest } from "./helpers/group-tests.mjs";
-import { onKitCreated } from "./helpers/kits.mjs";
-import { sweepTemporary } from "./helpers/weapon-perk-uses.mjs";
-import { checkSuppressingEntry, decorateRiderCard, decorateSuppressCard, stampConditionSource } from "./helpers/target-riders.mjs";
-import { decorateSaveCard } from "./helpers/save-riders.mjs";
-import { decorateEngineCard } from "./helpers/undo-engine.mjs";
-import { decorateCombinedCard } from "./helpers/combined-weapons.mjs";
-import { checkProximityBombs, decorateBombCard } from "./helpers/planted-bombs.mjs";
+import { runChatDecorators as runExtChatDecorators, runMissionAdvanced, runSceneAdvanced } from "./mechanics/item-hooks.mjs";
+// Every extension module registers itself on import (items/index.mjs).
+import "./items/index.mjs";
+// Item rules (system.rules) - one more extension, plus their add/remove lifecycle (docs/RULES_ENGINE_PLAN.md).
+import "./rules/adapter.mjs";
+import "./rules/lifecycle.mjs";
+import "./rules/triggers.mjs";
+import "./rules/buttons.mjs";
+import "./rules/reactions.mjs";
+import "./rules/actions.mjs";
+import { linkExistingCopies, loadSourceIndexes } from "./rules/inherit.mjs";
+import { registerRuleHelper } from "./rules/code.mjs";
+import { registerCheck, setWorldLookups } from "./rules/predicate.mjs";
+import { useAllyLookup } from "./rules/links.mjs";
+import { hasActiveEnvironmentalExpertise, isKnownOutsideEnvironmentOfExpertise } from "./mechanics/world/environmental-expertise.mjs";
+import { isCannoneerDugIn } from "./items/defenses/cannoneer-dig-in.mjs";
+import { isBulwarkActive } from "./items/defenses/bulwark.mjs";
+import { isSkiing } from "./items/movement/skier.mjs";
+import { hasNearbyDefeatedAlly } from "./items/movement/field-aid.mjs";
+import { isGravityOptionalActive } from "./items/movement/gravity-optional.mjs";
+import { isWisdomOfTheEldersActive } from "./items/forms/wisdom-of-the-elders.mjs";
+import { isMonsterFormActive } from "./items/forms/monster-morph.mjs";
+import { isWarriorModeActive } from "./items/zords/warrior-mode.mjs";
+import { isHighGearActive } from "./items/zords/high-gear.mjs";
+import { isTheToughGetGoingActive } from "./items/movement/the-tough-get-going.mjs";
+import { isEnergyAffinityElementAttack } from "./items/attacks/energy-affinity.mjs";
+import { hasDefeatedAllyInReach } from "./items/defenses/not-on-my-watch.mjs";
+import { isDecepticonNemesis, isNemesisInScene } from "./items/rolls/nemesis-decepticon.mjs";
+import { isMultipleTargetsWeapon } from "./mechanics/combat/multiple-targets.mjs";
+import { favoriteWeaponOf } from "./items/shared/condition-damage-buttons.mjs";
+import { isPersonalShieldActive } from "./items/defenses/personal-shield.mjs";
+import { hasComputerizedGear } from "./items/attacks/electromagnetic-vs-computerized.mjs";
+import { isNonMystical } from "./items/magic/mystic-non-mystical.mjs";
+import { hasMedicineKit } from "./items/healing/medicine-kit.mjs";
+import { shapeOf as mlpShapeOf } from "./items/forms/pony-shape-shifting.mjs";
+import { isDsoeDisguiseActive } from "./items/magic/disguise-spell.mjs";
+import { grappleEscapeSkills } from "./mechanics/combat/grappled-snag.mjs";
+import { isInfiltrating } from "./items/senses/infiltrating.mjs";
+import { prerequisiteText } from "./rules/prerequisites.mjs";
+import { isRecklessAbandonActive } from "./items/rolls/reckless-abandon.mjs";
+import { noticeEssenceBases } from "./mechanics/vehicles/machine-essences.mjs";
+import "./rules/plugins/index.mjs";
+import { setStoryPointHelpers } from "./rules/steps.mjs";
+import { canSpendForActor, canWriteStoryPoints, poolFor, requestStoryPointGrant, spendForActor } from "./mechanics/resources/story-points.mjs";
+import { getEnvironment, getTerrain } from "./mechanics/world/environment.mjs";
+import { getNearbyAllyTokens } from "./mechanics/combat/nearby-allies.mjs";
+import { getLedger } from "./mechanics/actions/action-economy.mjs";
+import * as sit2 from "./items/shared/situation-checks.mjs";
+
+// The rules engine's terrain: and environment: tags read where an actor is through these.
+setWorldLookups({
+  terrain: actor => getTerrain(actor),
+  environment: actor => getEnvironment(actor),
+  environmentOutside: actor => getEnvironment(actor, { includeInterior: false }),
+  recklessAbandon: actor => isRecklessAbandonActive(actor),
+  isAiming: actor => isAiming(actor),
+  alliesWithin: (actor, feet) => getNearbyAllyTokens(actor, feet).map(token => token.actor),
+  actionLedger: actor => getLedger(actor),
+});
+useAllyLookup();
+
+// The rules engine's `check:<name>` tags - state the system's own helpers keep (rules/predicate.mjs#CHECK_NAMES).
+for (const [name, fn] of Object.entries({
+  environmentalExpertise: actor => hasActiveEnvironmentalExpertise(actor),
+  cannoneerDugIn: actor => isCannoneerDugIn(actor),
+  bulwark: actor => isBulwarkActive(actor),
+  rushTheLine: actor => isRushTheLineActive(actor),
+  sprinterBoost: actor => isSprinterBoostActive(actor),
+  skiing: actor => isSkiing(actor),
+  nearbyDefeatedAlly: actor => hasNearbyDefeatedAlly(actor),
+  frictionlessMovement: actor => isFrictionlessMovementActive(actor),
+  gravityOptional: actor => isGravityOptionalActive(actor),
+  wisdomOfTheElders: (actor, option) => isWisdomOfTheEldersActive(actor, option),
+  monsterForm: actor => isMonsterFormActive(actor),
+  warriorMode: actor => isWarriorModeActive(actor),
+  powerAdaptation: (actor, option) => isPowerAdaptationActive(actor, option),
+  highGear: actor => isHighGearActive(actor),
+  theToughGetGoing: actor => isTheToughGetGoingActive(actor),
+  energyAffinityAttack: (actor, option, ctx) => isEnergyAffinityElementAttack(actor, ctx?.item),
+  // An equipped weapon with the Fire trait ("wielding" - Wildfire).
+  equippedFireWeapon: actor => !!actor?.items?.find(item => item.type == 'weapon' && item.system.equipped && item.system.traits?.includes('fire')),
+  defeatedAllyInReach: actor => hasDefeatedAllyInReach(actor),
+  // The other party is this actor's Decepticon Nemesis (Nemesis Perk / Hang-Up).
+  decepticonNemesis: (actor, option, ctx) => (ctx?.other ? isDecepticonNemesis(actor, ctx.other) : null),
+  nemesisInScene: actor => isNemesisInScene(actor),
+  multipleTargetsWeapon: (actor, option, ctx) => (ctx?.item ? isMultipleTargetsWeapon(actor, ctx.item) : null),
+  // The Favorite Weapon (Transformers One): equipped, or the weapon this roll's effect belongs to.
+  favoriteWeaponEquipped: actor => !!favoriteWeaponOf(actor)?.system?.equipped,
+  favoriteWeaponRolled: (actor, option, ctx) => {
+    const weapon = favoriteWeaponOf(actor);
+    return !!weapon && !!ctx?.item && (ctx.item.id == weapon.id || ctx.item.flags?.essence20?.parentId == weapon.id);
+  },
+  // A Zord / vehicle with someone in the driver's seat.
+  zordHasDriver: actor => !!getVehicleDriver(actor),
+  personalShield: actor => isPersonalShieldActive(actor),
+  // Robot, part Perks, or worn computerized gear (Machinesmith, Dielectric, Insulator).
+  computerizedGear: actor => hasComputerizedGear(actor),
+  // Known to be outside the environment of expertise (Stalk).
+  outsideEnvironmentOfExpertise: actor => isKnownOutsideEnvironmentOfExpertise(actor),
+  nonMystical: actor => isNonMystical(actor),
+  // Carries a Science (Medicine) kit (Proper Protection).
+  medicineKit: actor => hasMedicineKit(actor),
+  // A changed shape this scene (MLP shape-shifting) / a disguise (Identity Crisis).
+  shapeShifted: actor => !!mlpShapeOf(actor),
+  disguised: actor => isDsoeDisguiseActive(actor),
+  // The rolled Skill is one this actor uses to break free of a grapple (its game line's list).
+  grappleEscape: (actor, option, ctx) => (ctx?.rolledSkill ? grappleEscapeSkills(actor).includes(ctx.rolledSkill) : null),
+  // The Infiltrating toggle is on (Shadow / Silent Strider).
+  infiltrating: actor => isInfiltrating(actor),
+  // Where the actor is (situational2's readings): in the water (underwater or swimming), on land, at sea or in wetlands
+  // (or aboard an aquatic vessel), aboard one, in complete darkness (unknown below full scene darkness).
+  inWater: actor => sit2.isInWater(actor),
+  onLand: actor => sit2.isOnLand(actor),
+  seaOrWetlands: actor => sit2.isSeaOrWetlands(actor),
+  aboardAquaticVessel: actor => sit2.isAboardAquaticVessel(actor),
+  completeDarkness: actor => sit2.isCompleteDarkness(actor),
+})) {
+  registerCheck(name, fn);
+}
+
+// Story Point costs and gains in rule steps go through the same helpers as the hand-written ones.
+setStoryPointHelpers({ canSpendForActor, canWriteStoryPoints, poolFor, requestStoryPointGrant, spendForActor });
+import { decorateSocialCard, onGroupResultChanged } from "./items/social/social-cards.mjs";
+import { onMorphChanged } from "./mechanics/actions/team-actions.mjs";
+import { onInitiativeRolled } from "./mechanics/actions/commands.mjs";
+import { allegianceLeft, isContactAvailable } from "./mechanics/companions/contacts.mjs";
+import { dismissSceneSummons } from "./mechanics/companions/summons.mjs";
+import { startGroupTest } from "./mechanics/rolls/group-tests.mjs";
+import { onKitCreated } from "./mechanics/resources/kits.mjs";
+import { sweepTemporary } from "./items/attacks/weapon-perk-uses.mjs";
+import { checkSuppressingEntry, decorateRiderCard, decorateSuppressCard, stampConditionSource } from "./mechanics/combat/target-riders.mjs";
+import { decorateSaveCard } from "./mechanics/combat/save-riders.mjs";
+import { decorateCombinedCard } from "./mechanics/actions/combined-weapons.mjs";
+import { checkProximityBombs, decorateBombCard } from "./items/attacks/planted-bombs.mjs";
 // Import data models
 import EffectWizard from "./apps/effect-wizard.mjs";
-import { addEffectKeyWarnings } from "./helpers/effect-key-warnings.mjs";
-import { auditEffectCatalog, probeClobberedKeys } from "./helpers/effect-catalog-audit.mjs";
+import { addEffectKeyWarnings } from "./mechanics/characters/effect-key-warnings.mjs";
+import { auditEffectCatalog, probeClobberedKeys } from "./mechanics/characters/effect-catalog-audit.mjs";
 import * as data from "./data/index.mjs";
-import { createEffectMacro, toggleEffectMacro } from "./helpers/effects.mjs";
+import { createEffectMacro, toggleEffectMacro } from "./mechanics/characters/active-effect-controls.mjs";
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
 import { Essence20Actors } from "./documents/actors.mjs";
 import { Essence20ActorDirectory } from "./apps/essence20-actor-directory.mjs";
-import { registerBlindsightDetectionMode } from "./helpers/blindsight.mjs";
+import { registerBlindsightDetectionMode } from "./items/senses/blindsight.mjs";
 import { Essence20Combat } from "./documents/combat.mjs";
 import { Essence20TokenDocument } from "./documents/token.mjs";
 import { Essence20CombatTracker } from "./apps/combat-tracker.mjs";
@@ -42,74 +160,86 @@ import { Essence20ZordActorSheet } from "./sheets/zord-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
-import { handleStoryPointGrantRequest, handleStoryPointSpendRequest } from "./helpers/story-points.mjs";
-import { ensurePrimaryParty } from "./helpers/party.mjs";
-import { expireCircleAtTurnEnd } from "./helpers/friendship-circle.mjs";
-import { handleRemoteChoiceRequest, handleRemoteChoiceResponse } from "./helpers/remote-request.mjs";
-import { handleSetActionLedger } from "./helpers/action-economy.mjs";
+import { handleStoryPointGrantRequest, handleStoryPointSpendRequest } from "./mechanics/resources/story-points.mjs";
+import { ensurePrimaryParty } from "./mechanics/resources/party.mjs";
+import { expireCircleAtTurnEnd } from "./items/social/friendship-circle.mjs";
+import { handleRemoteChoiceRequest, handleRemoteChoiceResponse } from "./mechanics/world/remote-request.mjs";
+import { handleSetActionLedger, isAiming } from "./mechanics/actions/action-economy.mjs";
 // Registers the "chooseDefense" remote prompt against remote-request.mjs's own registry -
 // imported for this side effect alone (see defense-choice.mjs's own registerRemotePrompt call at
 // its bottom), same reason-for-import-with-no-named-use as any other registration-pattern file.
-import "./helpers/defense-choice.mjs";
+import "./mechanics/combat/defense-choice.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 import StartingEssences from "./apps/starting-essences.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import ThreatBuilder from "./apps/threat-builder.mjs";
-import { canSwapTokenForm, swapTokenForm } from "./helpers/monster-grow-swap.mjs";
+import { canSwapTokenForm, swapTokenForm } from "./mechanics/characters/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
-import { addConsummatePerformerButton, addDefenseBoostButton, addExploitWeaknessButton, addFlashyButton, addFrenziedAttackButton, addHighDensityButton, addOneUppingButton, addRerollButtons, addSecretHelperButton, addSpiteButton, addSufferButton, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure, runChatDecorators } from "./chat.mjs";
-import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
-import { E20 } from "./helpers/config.mjs";
-import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
-import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { applyVisionToTokens, getNumActions, syncAutoBlindStatus, syncAutoImmobilizedStatus } from "./helpers/actor.mjs";
-import { canUsePerk, hasItemUse } from "./helpers/banked-buffs.mjs";
-import { canUsePower } from "./helpers/power-use.mjs";
-import { getWeaponEffectDamages } from "./helpers/damage-display.mjs";
-import { getSummonReadyRound, isSummonReady } from "./helpers/zord-summon.mjs";
-import { healStunAtTurnStart } from "./helpers/combat.mjs";
-import { applyTimeToThinkEdge } from "./helpers/time-to-think.mjs";
-import { healRegeneratingShellAtTurnEnd } from "./helpers/power-adaptation.mjs";
-import { healRapidRescueResponseAtRoundEnd } from "./helpers/rapid-rescue-response.mjs";
-import { deactivateRushTheLineAtTurnEnd } from "./helpers/rush-the-line.mjs";
-import { deactivateFrictionlessMovementAtTurnEnd } from "./helpers/frictionless-movement.mjs";
-import { applyOngoingEffectsAtTurnEnd } from "./helpers/ongoing-effects.mjs";
-import { deactivateExpandedMysticismQuickenAtTurnEnd } from "./helpers/expanded-mysticism.mjs";
-import { deactivateSprinterBoostAtTurnEnd } from "./helpers/sprinter-boost.mjs";
-import { healUnbeatableAtTurnStart } from "./helpers/unbeatable.mjs";
-import { applyBravado } from "./helpers/bravado.mjs";
-import { applyHardCorpsDeferredDefeat } from "./helpers/hard-corps.mjs";
-import { applyNoFightingSnag } from "./helpers/no-fighting.mjs";
-import { payMetallicArmorMaintenance } from "./helpers/metallic-armor.mjs";
-import { isImmuneToCondition } from "./helpers/condition-immunity.mjs";
-import { performPreLocalization } from "./helpers/localize.mjs";
+import { addConsummatePerformerButton, addDefenseBoostButton, addHighDensityButton, addRerollButtons, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure, runChatDecorators } from "./chat.mjs";
+import { syncSourcebookOwnership } from "./util/compendium-browser.mjs";
+import { E20 } from "./util/config.mjs";
+import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./util/enrichers.mjs";
+import { preloadHandlebarsTemplates } from "./util/templates.mjs";
+import { applyVisionToTokens } from "./mechanics/world/token-sync.mjs";
+import { getNumActions } from "./mechanics/actions/action-counts.mjs";
+import { syncAutoBlindStatus, syncAutoImmobilizedStatus } from "./mechanics/combat/linked-status-sync.mjs";
+import { canUsePerk, hasItemUse } from "./mechanics/resources/banked-buffs.mjs";
+import { canUsePower } from "./mechanics/characters/power-use.mjs";
+import { getWeaponEffectDamages } from "./mechanics/combat/damage-display.mjs";
+import { getSummonReadyRound, isSummonReady } from "./mechanics/vehicles/zord-summon.mjs";
+import { getVehicleDriver, healStunAtTurnStart } from "./mechanics/combat/combat.mjs";
+import { healRegeneratingShellAtTurnEnd, isPowerAdaptationActive } from "./items/forms/power-adaptation.mjs";
+import { isRushTheLineActive } from "./items/movement/rush-the-line.mjs";
+import { isFrictionlessMovementActive } from "./items/movement/frictionless-movement.mjs";
+import { applyOngoingEffectsAtTurnEnd } from "./mechanics/combat/ongoing-effects.mjs";
+import { isSprinterBoostActive } from "./items/movement/sprinter-boost.mjs";
+import { isImmuneToCondition } from "./mechanics/combat/condition-immunity.mjs";
+import { performPreLocalization } from "./util/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
-import { expireAoeRegions, expireAoeRegionsForScene, reconcileAoeRegions } from "./helpers/aoe-expiry.mjs";
+import { expireAoeRegions, expireAoeRegionsForScene, reconcileAoeRegions } from "./mechanics/combat/aoe-expiry.mjs";
 import { applyThemeClass, insertSettingGroupHeadings, migrateSheetThemeSetting, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
-import { updateRoleCache } from "./helpers/utils.mjs";
+import { updateRoleCache } from "./util/utils.mjs";
 import { registerEssence20Tours, sweepTourDemoContent } from "./tours/index.mjs";
 import { activateWelcomeOfferListeners, offerWelcomeTour } from "./tours/welcome-offer.mjs";
-import { registerExoFrameHooks } from "./helpers/exo-frame.mjs";
+import { registerExoFrameHooks } from "./items/defenses/exo-frame.mjs";
 import {
   ENVIRONMENT_REGION_BEHAVIOR_TYPE, EnvironmentRegionBehaviorType, injectEnvironmentSceneConfigField,
   refreshTerrainDependentActor,
-} from "./helpers/environment.mjs";
-import { handleCreateRoughTerrainRequest, makeEssence20TerrainData } from "./helpers/rough-terrain.mjs";
-import { configureMovementActions } from "./helpers/token-movement.mjs";
-import { applyEnvironmentAtSceneEnd } from "./helpers/environment-hazards.mjs";
-import { wireEnvironmentLevelSelects } from "./helpers/environment-levels.mjs";
-import { handleGmCreateRequest, handleGmRelayDone, handleGmRelayRequest } from "./helpers/gm-relay.mjs";
-import { formatDailyUses } from "./helpers/nanomite-uses.mjs";
-import { getGearNanomitePowerName, getGearNanomiteUsesLeft, isGearNanomiteInert } from "./helpers/nanomite-gear.mjs";
+} from "./mechanics/world/environment.mjs";
+import { handleCreateRoughTerrainRequest, makeEssence20TerrainData } from "./mechanics/world/rough-terrain.mjs";
+import { configureMovementActions } from "./mechanics/combat/token-movement.mjs";
+import { applyEnvironmentAtSceneEnd } from "./mechanics/world/environment-hazards.mjs";
+import { wireEnvironmentLevelSelects } from "./mechanics/world/environment-levels.mjs";
+import { handleGmCreateRequest, handleGmRelayDone, handleGmRelayRequest } from "./mechanics/world/gm-relay.mjs";
+import { formatDailyUses } from "./mechanics/resources/nanomite-uses.mjs";
+import { getGearNanomitePowerName, getGearNanomiteUsesLeft, isGearNanomiteInert } from "./items/gear/nanomite-gear.mjs";
 import {
   decorateTokenHudVesselConditions, handleVesselConditionStacksRequest, isVesselCondition,
   shouldBlockZordVesselCondition, syncVesselConditionConsequences,
-} from "./helpers/vessel-conditions.mjs";
+} from "./mechanics/vehicles/vessel-conditions.mjs";
 import { makeEssence20Token } from "./canvas/token.mjs";
 
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
+    config: false,
+    scope: "world",
+    type: String,
+    default: "",
+  });
+
+  // Whether the GMs have been told which Zords / Vehicles have Features changing an Essence, since their Essences
+  // gained a typed base (mechanics/vehicles/machine-essences.mjs).
+  game.settings.register("essence20", "machineEssenceBaseNotice", {
+    config: false,
+    scope: "world",
+    type: Boolean,
+    default: false,
+  });
+
+  // Which compendium items carried rules the last time existing copies were linked to them
+  // (rules/inherit.mjs#linkExistingCopies) - the pass re-runs only when that set changes.
+  game.settings.register("essence20", "rulesLinkSignature", {
     config: false,
     scope: "world",
     type: String,
@@ -164,16 +294,18 @@ function runMigrations() {
 Hooks.once("init", async function () {
   // Item automation notes ride in the compendium index, so a copy on an actor can show its
   // original's current notes without loading the compendium document (documents/item.mjs).
-  CONFIG.Item.compendiumIndexFields = [...new Set([...(CONFIG.Item.compendiumIndexFields ?? []), 'system.automation'])];
+  CONFIG.Item.compendiumIndexFields = [...new Set([...(CONFIG.Item.compendiumIndexFields ?? []), 'system.automation', 'system.rules', 'system.prerequisites'])];
 
   // Blindsight needs its detection mode to exist before any token is drawn - see
-  // helpers/blindsight.mjs's own doc comment.
+  // items/senses/blindsight.mjs's own doc comment.
   registerBlindsightDetectionMode();
 
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.essence20 = {
-    // A Group Skill Test for the selected tokens (or the given actors) - helpers/group-tests.mjs.
+    // Item rules' Code helpers - any module or world script can add one (rules/code.mjs).
+    registerRuleHelper,
+    // A Group Skill Test for the selected tokens (or the given actors) - mechanics/rolls/group-tests.mjs.
     groupSkillTest: (actors = null) => startGroupTest(actors),
     Essence20Actor,
     Essence20Combat,
@@ -182,7 +314,7 @@ Hooks.once("init", async function () {
     CompendiumBrowser: Essence20CompendiumBrowser,
     rollItemMacro,
     // Developer tooling: cross-checks the Effect Wizard's catalog against the actor DataModels it
-    // claims to describe, in both directions. See helpers/effect-catalog-audit.mjs.
+    // claims to describe, in both directions. See mechanics/characters/effect-catalog-audit.mjs.
     auditEffectCatalog,
     // Live counterpart: applies each numeric key to a throwaway actor to catch fields derived
     // data silently overwrites, which no static check can see. Creates and deletes an Actor.
@@ -208,7 +340,7 @@ Hooks.once("init", async function () {
   CONFIG.Combat.documentClass = Essence20Combat;
   CONFIG.Combatant.documentClass = Essence20Combatant;
   // Charges token movement against the action economy - see documents/token.mjs and
-  // helpers/token-movement.mjs. Inert unless the world opts in to movement tracking.
+  // mechanics/combat/token-movement.mjs. Inert unless the world opts in to movement tracking.
   CONFIG.Token.documentClass = Essence20TokenDocument;
   // Remaining-action marks per combatant - see apps/combat-tracker.mjs. Draws nothing unless the
   // world is tracking the action economy.
@@ -229,7 +361,7 @@ Hooks.once("init", async function () {
 
   // @Check[skill=... dif=15] / @Check[skill=... defense=toughness] text-enricher links (p.88-89
   // "DIF 15 Sleight of Hand or Technology" style Skill Test references), usable in item/actor
-  // descriptions and journal entries. See module/helpers/enrichers.mjs for the GM-only DIF
+  // descriptions and journal entries. See module/util/enrichers.mjs for the GM-only DIF
   // visibility rationale.
   CONFIG.TextEditor.enrichers.push({
     pattern: /@Check\[([^\]]+)\](?:\{([^}]+)\})?/g,
@@ -244,15 +376,15 @@ Hooks.once("init", async function () {
   /* Custom "Environment" Region Behavior - lets a GM override the scene's own default
      environment (Scene Config's "Basics" tab, see injectEnvironmentSceneConfigField below) for
      just part of a scene (e.g. a beach map's water) by drawing a Region over it. See
-     helpers/environment.mjs's own doc comment for the full precedence rules getEnvironment()
+     mechanics/world/environment.mjs's own doc comment for the full precedence rules getEnvironment()
      reads back. */
   CONFIG.RegionBehavior.dataModels[ENVIRONMENT_REGION_BEHAVIOR_TYPE] = EnvironmentRegionBehaviorType;
   CONFIG.RegionBehavior.typeLabels[ENVIRONMENT_REGION_BEHAVIOR_TYPE] = "E20.RegionBehaviorEnvironmentLabel";
   CONFIG.RegionBehavior.typeHints[ENVIRONMENT_REGION_BEHAVIOR_TYPE] = "E20.RegionBehaviorEnvironmentHint";
   CONFIG.RegionBehavior.typeIcons[ENVIRONMENT_REGION_BEHAVIOR_TYPE] = "fa-solid fa-water";
-  // Rough Terrain's doubled Movement cost - see helpers/rough-terrain.mjs's own doc comment.
+  // Rough Terrain's doubled Movement cost - see mechanics/world/rough-terrain.mjs's own doc comment.
   CONFIG.Token.movement.TerrainData = makeEssence20TerrainData(CONFIG.Token.movement.TerrainData);
-  // Climb/Jump costs and which actors can pick Fly/Burrow - see helpers/token-movement.mjs.
+  // Climb/Jump costs and which actors can pick Fly/Burrow - see mechanics/combat/token-movement.mjs.
   configureMovementActions(CONFIG.Token.movement.actions);
   // Stack counts on status icons (Space Vessel Conditions) - see canvas/token.mjs.
   CONFIG.Token.objectClass = makeEssence20Token(CONFIG.Token.objectClass);
@@ -341,7 +473,7 @@ Hooks.once("init", async function () {
   registerSettings();
 
   // A client that cannot write the primary Party itself asks the GM's client to spend or grant
-  // a Story Point for it - see helpers/story-points.mjs. The totals themselves are no longer
+  // a Story Point for it - see mechanics/resources/story-points.mjs. The totals themselves are no longer
   // broadcast here: they live on an Actor now, and reach every client through updateActor.
   game.socket.on("system.essence20", (data) => {
     if (data.action === "spendStoryPoints") {
@@ -359,10 +491,10 @@ Hooks.once("init", async function () {
     } else if (data.action === "vesselConditionStacks") {
       handleVesselConditionStacksRequest(data);
     } else if (data.action === "gmRelay") {
-      // Writes to a target the player doesn't own - see helpers/gm-relay.mjs.
+      // Writes to a target the player doesn't own - see mechanics/world/gm-relay.mjs.
       handleGmRelayRequest(data);
     } else if (data.action === "gmCreate") {
-      // Companion actors and tokens a player may not make - see helpers/gm-relay.mjs.
+      // Companion actors and tokens a player may not make - see mechanics/world/gm-relay.mjs.
       handleGmCreateRequest(data);
     } else if (data.action === "gmRelayDone") {
       handleGmRelayDone(data);
@@ -416,30 +548,33 @@ Handlebars.registerHelper("inArray", function (array, value, options) {
 });
 
 // Whether the Perks list should show a "Use" control for this item - see
-// helpers/banked-buffs.mjs for the full registry (Think On It, Plan of Action) and what "Use"
+// mechanics/resources/banked-buffs.mjs for the full registry (Think On It, Plan of Action) and what "Use"
 // actually banks for each. A template-level check, the same idiom {{eq item.type "shield"}}
 // already uses for the shield-activate icon right next to where this one renders.
 Handlebars.registerHelper("canUsePerk", canUsePerk);
 Handlebars.registerHelper("hasItemUse", hasItemUse);
 Handlebars.registerHelper("canUsePower", canUsePower);
 
-// Call to Action (PR CRB, Zord Feature, p.136-137) - see helpers/zord-summon.mjs's own doc
+// Call to Action (PR CRB, Zord Feature, p.136-137) - see mechanics/vehicles/zord-summon.mjs's own doc
 // comment. Template-level checks (same idiom as canUsePerk/canUsePower just above) so
 // system-actors.hbs can show a Summon control per zordActors row without pre-computing readiness
 // for every attached actor in prepareSystemActors.
 Handlebars.registerHelper("isZordSummonReady", isSummonReady);
 Handlebars.registerHelper("zordSummonReadyRound", getSummonReadyRound);
-// A Contact's Allegiance Points left this mission - helpers/contacts.mjs.
+// A Contact's Allegiance Points left this mission - mechanics/companions/contacts.mjs.
 Handlebars.registerHelper("contactAllegiance", allegianceLeft);
 
 // Both damages a weaponEffect deals (main + secondaryDamage) with an icon each - see
-// helpers/damage-display.mjs. Used by the weapon row chips and the weaponEffect details card.
+// mechanics/combat/damage-display.mjs. Used by the weapon row chips and the weaponEffect details card.
 Handlebars.registerHelper("weaponEffectDamages", getWeaponEffectDamages);
 
-// "1/2 today" for a power with a per-day limit (nanomite powers) - see helpers/nanomite-uses.mjs.
+// "1/2 today" for a power with a per-day limit (nanomite powers) - see mechanics/resources/nanomite-uses.mjs.
 Handlebars.registerHelper("powerDailyUses", formatDailyUses);
 
-// Nanomite equipment's uses left and inert state - see helpers/nanomite-gear.mjs.
+// An item's (or an attached Upgrade entry's) prerequisites in words, from its tags - see rules/prerequisites.mjs.
+Handlebars.registerHelper("prerequisiteText", item => prerequisiteText(item));
+
+// Nanomite equipment's uses left and inert state - see items/gear/nanomite-gear.mjs.
 Handlebars.registerHelper("gearNanomiteUsesLeft", getGearNanomiteUsesLeft);
 Handlebars.registerHelper("isGearNanomiteInert", isGearNanomiteInert);
 Handlebars.registerHelper("gearNanomitePowerName", getGearNanomitePowerName);
@@ -535,6 +670,14 @@ Hooks.on("clientSettingChanged", (key) => {
 });
 
 Hooks.once("ready", async function () {
+  // Compendium copies inherit their original's rules - load the indexes that carry them (rules/inherit.mjs).
+  try {
+    await loadSourceIndexes();
+    await linkExistingCopies();
+  } catch (error) {
+    console.error("Essence20 | Loading compendium rules failed", error);
+  }
+
   runMigrations();
 
   /* Client-scoped, so it cannot ride along with runMigrations() (which is the world-data pass a
@@ -550,6 +693,13 @@ Hooks.once("ready", async function () {
      call game.essence20.auditEffectCatalog() from the console at any time). */
   if (CONFIG.debug?.essence20Catalog) {
     auditEffectCatalog();
+  }
+
+  // Once per world: which Zords / Vehicles have Features changing an Essence (their base is the old stored number).
+  try {
+    await noticeEssenceBases();
+  } catch (error) {
+    console.error("Essence20 | Zord Essence notice failed", error);
   }
 
   // Remove demo actors from a tour that was interrupted rather than exited (refresh, crash).
@@ -732,22 +882,14 @@ Hooks.on("renderChatMessageHTML", (app, html) => {
     addRerollButtons,
     addDefenseBoostButton,
     addConsummatePerformerButton,
-    addSpiteButton,
-    addOneUppingButton,
-    addSecretHelperButton,
-    addSufferButton,
-    addFrenziedAttackButton,
     addHighDensityButton,
-    addExploitWeaknessButton,
-    addFlashyButton,
     decorateBombCard,
     decorateCombinedCard,
-    decorateEngineCard,
     decorateSaveCard,
     decorateRiderCard,
-    // Group Skill Tests, Contacts, Issue Command, team cards - helpers/social-cards.mjs.
+    // Group Skill Tests, Contacts, Issue Command, team cards - items/social/social-cards.mjs.
     decorateSocialCard,
-    // Extension chat decorators and data-e20-ext buttons (helpers/extensions.mjs).
+    // Extension chat decorators and data-e20-ext buttons (mechanics/item-hooks.mjs).
     runExtChatDecorators,
     decorateSuppressCard,
     attachCheckCardListeners,
@@ -763,7 +905,7 @@ Hooks.on("renderChatMessageHTML", (app, html) => {
   ], app, html);
 });
 
-// @Check[...] links (module/helpers/enrichers.mjs) can appear in item/actor descriptions and
+// @Check[...] links (module/util/enrichers.mjs) can appear in item/actor descriptions and
 // journal entries alike, not just chat, so this is a plain document-level delegated listener
 // rather than something scoped to the renderChatMessageHTML hook above.
 document.addEventListener("click", (event) => {
@@ -804,16 +946,16 @@ function refreshMegaformsLinkedToActor(actorUuid) {
 Hooks.on("updateActor", (actor, changed, options, userId) => {
   refreshMegaformsLinkedToActor(actor.uuid);
   refreshStoryPointsTracker(actor);
-  // A Group Skill Test result landed - redraw its card (helpers/social-cards.mjs).
+  // A Group Skill Test result landed - redraw its card (items/social/social-cards.mjs).
   onGroupResultChanged(changed);
-  // Team Player's lent Boons and Morphin Pet follow the Morph (helpers/team-actions.mjs).
+  // Team Player's lent Boons and Morphin Pet follow the Morph (mechanics/actions/team-actions.mjs).
   if (userId == game.user.id && foundry.utils.hasProperty(changed ?? {}, 'system.isMorphed')) {
     onMorphChanged(actor, !!actor.system?.isMorphed);
   }
 });
 
-// The First Rule Of Soldiering: "when you roll for Initiative, you can Issue a Command for free"
-// (helpers/commands.mjs).
+// The First Rule Of Soldiering: a free Issue Command on the Initiative roll
+// (mechanics/actions/commands.mjs).
 Hooks.on("updateCombatant", (combatant, changed, options, userId) => {
   if (userId == game.user.id && changed?.initiative != null && combatant.actor) {
     onInitiativeRolled(combatant.actor);
@@ -821,7 +963,7 @@ Hooks.on("updateCombatant", (combatant, changed, options, userId) => {
 });
 
 // A new mission: Contacts' Allegiance Points are fresh (they read the mission), and temporary Contacts
-// leave (helpers/contacts.mjs).
+// leave (mechanics/companions/contacts.mjs).
 Hooks.on("essence20.missionAdvanced", async (epoch) => {
   if (!game.users.activeGM?.isSelf) {
     return;
@@ -881,14 +1023,14 @@ for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
       applyVisionToTokens(item.parent);
     }
 
-    // What comes inside a kit, and who handed a consumable over (Take Mine) - helpers/kits.mjs.
+    // Who handed a consumable over (Take Mine) - mechanics/resources/kits.mjs.
     if (hookName == 'createItem' && userId == game.user.id && item.parent instanceof Actor && item.type == 'gear') {
       onKitCreated(item);
     }
   });
 }
 
-/* Condition immunity (e.g. Caution, GI Joe CRB p.110 - see helpers/condition-immunity.mjs for the
+/* Condition immunity (e.g. Caution, GI Joe CRB p.110 - see mechanics/combat/condition-immunity.mjs for the
    full Perk-to-Conditions table). Statuses (Frightened, Stunned, etc.) apply to an actor as
    ActiveEffects, the same mechanism the createActiveEffect/updateActiveEffect/deleteActiveEffect
    hooks just below already rely on - preCreateActiveEffect fires before that document is actually
@@ -901,11 +1043,11 @@ Hooks.on("preCreateActiveEffect", (effect, data) => {
   }
 
   // Who caused a Frightened/Mesmerized - Worst Nightmare's "Frightened of you" and the mesmerizer's
-  // Social Edge (helpers/target-riders.mjs).
+  // Social Edge (mechanics/combat/target-riders.mjs).
   stampConditionSource(effect, data);
 
   // Zords can't be given Space Vessel Conditions (Across the Stars p.26) - see
-  // helpers/vessel-conditions.mjs#shouldBlockZordVesselCondition for the GM's override.
+  // mechanics/vehicles/vessel-conditions.mjs#shouldBlockZordVesselCondition for the GM's override.
   if (shouldBlockZordVesselCondition(actor, effect.statuses)) {
     ui.notifications.warn(game.i18n.localize("E20.VesselConditionZordBlocked"));
     return false;
@@ -931,7 +1073,7 @@ for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiv
     /* Status toggles (Asleep, Unconscious, etc.) apply as ActiveEffects on the actor rather than
        Item changes, so they need their own hook to trigger the vision-grant push. syncAutoBlindStatus
        additionally keeps the real "blinded" status in sync with Asleep/Unconscious, reusing
-       Foundry's own working Blind vision-block instead of reinventing it (see helpers/actor.mjs
+       Foundry's own working Blind vision-block instead of reinventing it (see mechanics/world/token-sync.mjs
        for why sight.enabled=false alone doesn't actually block a token's perception). This create/
        delete's its own ActiveEffect, which re-fires this same hook - safe since both functions are
        idempotent no-ops once the actor's state already matches. */
@@ -962,14 +1104,7 @@ for (const hookName of ["combatTurn", "combatRound"]) {
     if (actor) {
       healStunAtTurnStart(actor);
 
-      // Metallic Armor Power Up! (Through the Shattered Grid, Grid Power, p.26) - "costs 1
-      // Personal Power at the start of each subsequent turn to maintain" - see
-      // payMetallicArmorMaintenance's own doc comment for what this does and doesn't cover.
-      payMetallicArmorMaintenance(actor);
-
-      // Unbeatable (GI Joe CRB, Renegade base, 11th level, p.97) - see
-      // healUnbeatableAtTurnStart's own doc comment.
-      healUnbeatableAtTurnStart(actor);
+      // (Metallic Armor Power Up!'s 1 Personal Power upkeep is a turnStart Trigger on the Power.)
     }
 
     // Power Adaptation - Regenerating Shell (Across the Stars, Silver Ranger, 9th/18th level,
@@ -982,32 +1117,15 @@ for (const hookName of ["combatTurn", "combatRound"]) {
     if (endingActor) {
       healRegeneratingShellAtTurnEnd(endingActor);
 
-      // Rush the Line (Factions in Action Vol. 2, Renegade Focus, p.68) - see
-      // deactivateRushTheLineAtTurnEnd's own doc comment. Same "read combat.combatant BEFORE the
-      // update commits" idiom as Regenerating Shell just above.
-      deactivateRushTheLineAtTurnEnd(endingActor);
+      // (Rush the Line, Frictionless Movement and Sprinter end with turnEnd Triggers on their items.)
 
-      // Frictionless Movement (Technorganic Secrets, Mutant Beast Influence Perk, p.47) - see
-      // deactivateFrictionlessMovementAtTurnEnd's own doc comment. Same "read combat.combatant
-      // BEFORE the update commits" idiom as Rush the Line just above.
-      deactivateFrictionlessMovementAtTurnEnd(endingActor);
+      // (Expanded Mysticism's Quicken ends with a turnEnd Trigger on its Perk.)
 
-      // Expanded Mysticism - Quicken (MLP CRB, Spirit of Magic, 9th level, p.95) - see
-      // helpers/expanded-mysticism.mjs's own doc comment. Same "read combat.combatant BEFORE the
-      // update commits" idiom as Rush the Line/Frictionless Movement just above.
-      deactivateExpandedMysticismQuickenAtTurnEnd(endingActor);
-
-      // Sprinter (Technorganic Secrets, Hunter's Prowess Quadruped Origin choice, p.44) - see
-      // deactivateSprinterBoostAtTurnEnd's own doc comment. Same "read combat.combatant BEFORE the
-      // update commits" idiom as Frictionless Movement just above.
-      deactivateSprinterBoostAtTurnEnd(endingActor);
-
-      // Friendship Circle (MLP CRB) - "until the end of the pony who formed the Friendship
-      // Circle's next turn". Same ending-actor idiom; helpers/friendship-circle.mjs decides.
+      // Friendship Circle (MLP CRB) - lasts to the end of its former's next turn. Same ending-actor idiom; items/social/friendship-circle.mjs decides.
       expireCircleAtTurnEnd(endingActor, combat);
 
       // Ongoing / Poison / Toxin (Cobra Codex, New Weapon Effects and Traits, p.93-94) - see
-      // helpers/ongoing-effects.mjs's own doc comment. Same "read combat.combatant BEFORE the
+      // mechanics/combat/ongoing-effects.mjs's own doc comment. Same "read combat.combatant BEFORE the
       // update commits" idiom as Regenerating Shell/Rush the Line/Frictionless Movement above -
       // here, endingActor is sometimes the AFFECTED creature itself, which is exactly the "end of
       // their turn" RAW asks for.
@@ -1016,14 +1134,7 @@ for (const hookName of ["combatTurn", "combatRound"]) {
   });
 }
 
-/* R.R.R. (Rapid Rescue Response) (Across the Stars, Zord Feature, p.104) - "regain 1 Health at the
-   end of every round," with no "whose turn is it" scoping at all (unlike Regenerating Shell's own
-   per-TURN heal just above), so this is its own combatRound-only hook rather than joining the
-   combatTurn/combatRound loop above - see healRapidRescueResponseAtRoundEnd's own doc comment for
-   why it walks every Zord in the fight instead of a single ending actor. */
-Hooks.on("combatRound", (combat) => {
-  healRapidRescueResponseAtRoundEnd(combat);
-});
+/* (R.R.R. (Rapid Rescue Response)'s round-end heal for the Zord's crew is a roundStart Trigger on the Feature.) */
 
 /* Action economy: repaint every open actor sheet when the turn changes, so the header pip row
    reflects the new turn's budget.
@@ -1046,21 +1157,8 @@ Hooks.on("combatTurnChange", () => {
   }
 });
 
-/* Time To Think (MLP Magic, 3rd level) - see applyTimeToThinkEdge's own doc comment. Checked once,
-   when combat actually begins, by which point every combatant's Initiative should already be
-   set. */
-Hooks.on("combatStart", (combat) => {
-  applyTimeToThinkEdge(combat);
-
-  // Bravado (GI Joe CRB, Renegade base, 13th level, p.97) - see applyBravado's own doc comment.
-  applyBravado(combat);
-});
-
-/* Hard Corps (Sgt Slaughter Sourcebook, Marine Origin Benefit, p.8) - see
-   applyHardCorpsDeferredDefeat's own doc comment. deleteCombat (fired when a GM ends/deletes the
-   encounter) is this codebase's own first "combat has ended" signal - every other "until the end
-   of the scene" clause elsewhere in this project has so far just gone unenforced rather than
-   needing this. */
+/* deleteCombat (fired when a GM ends/deletes the encounter): things that end with the combat. (Hard Corps' debt is a
+   combatEnd Trigger on its item.) */
 Hooks.on("deleteCombat", (combat) => {
   // Every client hears the combat end; the active GM alone writes the results below, so no player
   // client tries (and fails) to update an actor it doesn't own, and nothing is written twice.
@@ -1075,21 +1173,16 @@ Hooks.on("deleteCombat", (combat) => {
     }
   }
 
-  applyHardCorpsDeferredDefeat(combat);
-
-  /* No Fighting?! (Knights of Canterlot, Fighter Influence Hang-Up, p.16) - see
-     helpers/no-fighting.mjs's own doc comment. Same "combat has ended" signal as Hard Corps
-     just above. */
-  applyNoFightingSnag(combat);
+  // (No Fighting?!'s Snag for the next Social test is a combatEnd Trigger rule on the Hang-Up.)
 
   /* Lingering Area of Effect regions whose duration is tied to the encounter rather than to a
      clock - "1 scene", plus any round-counting area that outlived the combat it was counting
-     rounds in. See helpers/aoe-expiry.mjs. */
+     rounds in. See mechanics/combat/aoe-expiry.mjs. */
   expireAoeRegionsForScene();
 });
 
 /* World time moved, so a minutes/hours/days area may have run out. Fires on every client, but
-   expireAoeRegions gates itself to the one designated GM - see helpers/aoe-expiry.mjs. */
+   expireAoeRegions gates itself to the one designated GM - see mechanics/combat/aoe-expiry.mjs. */
 Hooks.on("updateWorldTime", () => {
   expireAoeRegions();
 });
@@ -1111,7 +1204,7 @@ Hooks.on("getHeaderControlsActiveEffectConfig", (app, controls) => {
 });
 
 /* Flags a change key that will never apply, inline on Foundry's own effect sheet - see
-   helpers/effect-key-warnings.mjs. Decoration only; the sheet itself is untouched. */
+   mechanics/characters/effect-key-warnings.mjs. Decoration only; the sheet itself is untouched. */
 /* Draws the group headings over this system's own settings - see settings.js#SETTING_GROUPS.
    Decoration only: every setting still renders and behaves exactly as Foundry rendered it, so
    if this ever stops matching core's markup the settings list simply goes back to being flat. */
@@ -1123,13 +1216,13 @@ Hooks.on("renderActiveEffectConfig", (app, html) => {
   addEffectKeyWarnings(app, html);
 });
 
-// Scene-default-environment picker - see helpers/environment.mjs's own doc comment.
+// Scene-default-environment picker - see mechanics/world/environment.mjs's own doc comment.
 Hooks.on("renderSceneConfig", (app, html) => {
   injectEnvironmentSceneConfigField(app, html);
   wireEnvironmentLevelSelects(html);
 });
 
-// Exo-Frame armor's Driving test prompt (Across the Stars p.85) - see helpers/exo-frame.mjs.
+// Exo-Frame armor's Driving test prompt (Across the Stars p.85) - see items/defenses/exo-frame.mjs.
 registerExoFrameHooks();
 
 /* Space Vessel Conditions (Across the Stars p.25-26): Immobilized at two Sputtering/Spun-Out stacks,
@@ -1150,21 +1243,18 @@ Hooks.on("renderTokenHUD", (hud, html) => {
 });
 
 // The Environment Region Behavior's Severity list follows its chosen environment - see
-// helpers/environment-levels.mjs.
+// mechanics/world/environment-levels.mjs.
 Hooks.on("renderRegionBehaviorConfig", (app, html) => {
   wireEnvironmentLevelSelects(html);
 });
 
 // Per-scene environmental damage (Irradiated, Harmful Toxic Atmosphere) when the GM starts a new
-// scene - see helpers/environment-hazards.mjs.
+// scene - see mechanics/world/environment-hazards.mjs.
 Hooks.on("essence20.sceneAdvanced", () => {
   // Scene-long summons: capsule vehicles, Battlizers, Toxo-Zombies and summoned allies
-  // (helpers/summons.mjs), and Renegade Commander's grant (helpers/team-actions.mjs).
+  // (mechanics/companions/summons.mjs). (Renegade Commander's grant is a timed addEffect, swept by the rules.)
   if (game.users.activeGM?.isSelf) {
     dismissSceneSummons();
-    for (const actor of game.actors ?? []) {
-      endSceneTeamEffects(actor);
-    }
   }
 
   if (game.users.activeGM?.isSelf) {
@@ -1186,10 +1276,10 @@ Hooks.on("essence20.sceneAdvanced", () => {
 // Terrain-dependent derived data (Prowl, Taking Point) - see refreshTerrainDependentActor.
 Hooks.on("updateToken", (tokenDoc, changes) => {
   refreshTerrainDependentActor(tokenDoc, changes);
-  // A Proximity Bomb goes off when someone moves into it (helpers/planted-bombs.mjs).
+  // A Proximity Bomb goes off when someone moves into it (items/attacks/planted-bombs.mjs).
   if (changes.x !== undefined || changes.y !== undefined) {
     checkProximityBombs(tokenDoc);
-    // Moving into someone's Suppressing Fire (helpers/target-riders.mjs).
+    // Moving into someone's Suppressing Fire (mechanics/combat/target-riders.mjs).
     checkSuppressingEntry(tokenDoc);
   }
 });

@@ -61,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
@@ -75,7 +73,8 @@
     },
     "traits": [
       "sharp",
-      "silent"
+      "silent",
+      "versatile"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

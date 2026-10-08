@@ -5,6 +5,10 @@
   "_id": "lXIAufB3PnE5a6P8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Laughtracting: Performance against Willpower","when":["combat:exists"],"cost":{"action":"standard"},"steps":[{"do":"target","beforeCost":true},{"do":"rollCheck","skill":"performance","essence":"social","shiftUp":0,"shiftDown":0,"defense":"willpower","dataset":{"isLaughtracting":true}}]},
+      {"type":"Trigger","label":"Laughtracting: no Free actions on its next turn","event":"hit","when":["roll:dataset:isLaughtracting"],"steps":[{"do":"grantNextTurn","block":["free"],"to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Standard action, roll Performance against your target's Willpower; each creature you beat can't use Free actions on its next turn.</p>"

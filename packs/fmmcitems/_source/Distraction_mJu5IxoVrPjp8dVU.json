@@ -5,6 +5,11 @@
   "_id": "mJu5IxoVrPjp8dVU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","when":["attack:ranged","self:data:flags.essence20.distractionActive"],"downshift":1},
+      {"type":"Use","label":"Distraction on","when":["not:self:data:flags.essence20.distractionActive","self:morphed","not:check:monsterForm"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.distractionActive":true}},{"do":"chat","text":"{name}: Distraction on - ranged attacks against them suffer ↓1."}]},
+      {"type":"Use","label":"Distraction off","when":["self:data:flags.essence20.distractionActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.distractionActive":false}},{"do":"chat","text":"{name}: Distraction off."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: switches it on; while it is on, ranged attacks against you take ↓1, labelled Distraction in the attacker's Roll Options Dialog.</p><p>Left to the table: switching it off at the start of your next turn, and only using it while Morphed and out of Monster Form.</p>"

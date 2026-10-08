@@ -5,6 +5,9 @@
   "_id": "e5nMmMPpV3WU9P92",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Dirty Trick","steps":[{"do":"warn","text":"E20.NotInEnvironmentOfExpertise","stop":true,"when":["check:outsideEnvironmentOfExpertise"]},{"do":"rollVsEach","skill":"survival","defense":"willpower","onHit":[{"do":"choose","prompt":"Which Condition for {target}?","options":[{"label":"Blinded","steps":[{"do":"applyCondition","condition":"blinded","to":"target"}]},{"label":"Stunned","steps":[{"do":"applyCondition","condition":"stunned","to":"target"}]},{"label":"Prone","steps":[{"do":"applyCondition","condition":"prone","to":"target"}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: rolls Survival against your target's Willpower. On a success, pick Blinded, Stunned or Prone to apply.</p>"

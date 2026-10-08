@@ -5,6 +5,7 @@
   "_id": "usl3gqnWhx0Uxe8q",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:data:system.traits.land","self:data:system.traits.sea"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: one occupant looking out from 30ft above the vehicle, and the ↓2 others take to notice the periscope.</p>"
@@ -23,7 +24,7 @@
     "benefit": "One occupant at a time can look outside as if positioned up to 30ft above the vehicle; noticing the periscope itself suffers -2 on the Alertness Skill Test.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land or Sea vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

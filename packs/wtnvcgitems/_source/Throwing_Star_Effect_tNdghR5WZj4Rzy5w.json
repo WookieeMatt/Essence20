@@ -5,9 +5,13 @@
   "_id": "tNdghR5WZj4Rzy5w",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Targeting: rolls the better of the two","from":"finesse","to":"targeting","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Targeting: rolls the better of the two","from":"targeting","to":"finesse","mode":"bestOf"}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the Throwing Star's throw: rolls Finesse at Short range for 1 Sharp damage. Change its Skill to Targeting on the sheet if you prefer.</p>"
+      "notes": "<p>Automatic: the Throwing Star's throw: rolls the better of Finesse and Targeting at Short range for 1 Sharp damage.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -24,7 +28,7 @@
     "damageValue": 1,
     "isSpecialized": false,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

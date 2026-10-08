@@ -5,6 +5,9 @@
   "_id": "BcFM3JhWdk5XHIZL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Move the target (Checkmate)","cost":{"action":"standard"},"steps":[{"do":"target","beforeCost":true},{"do":"pickPoint","beforeCost":true,"prompt":"Click the space the target should move to."},{"do":"rollVsEach","skill":"persuasion","defense":"willpower","onHit":[{"do":"moveTo","to":"target"}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: target someone, click the spot to move them to, and it spends your Standard action and rolls Persuasion against their Willpower. On a success their token moves there.</p><p>Left to the table: the Sprint-distance limit and the ↑3 when the move crosses a hazard.</p>"

@@ -5,6 +5,10 @@
   "_id": "uY9wPJH31z5kAtdB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Related to fighting (Community Martial Arts: ↑1)","when":[{"any":["essence:social","essence:smarts"]}],"upshift":1},
+      {"type":"RollModifier","label":"Community Martial Arts","when":["attack:unarmed","attack:melee"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: unarmed melee attacks start with ↑1 already added to the Roll Options Dialog's Upshift box. Roll Options Dialog: on Social and Smarts tests, a switch for ↑1 when the test is about fighting.</p>"

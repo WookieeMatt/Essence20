@@ -7,7 +7,7 @@ const MIN_LEVEL = 1;
 const MAX_LEVEL = 20;
 
 import Essence20CompendiumBrowser from "../apps/compendium-browser.mjs";
-import { useGearNanomitePower } from "../helpers/nanomite-gear.mjs";
+import { useGearNanomitePower } from "../items/gear/nanomite-gear.mjs";
 import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
 import ThreatBuilder from "../apps/threat-builder.mjs";
 import SheetOptions from "../apps/sheet-options.mjs";
@@ -21,16 +21,14 @@ import {
   onDeleteActiveEffect,
   onEditActiveEffect,
   onToggleActiveEffect,
-  prepareActiveEffectCategories,
-} from "../helpers/effects.mjs";
-import { applySystemActorsColorCssVariables, applySystemColorCssVariables, getNumActions } from "../helpers/actor.mjs";
-import {
-  needsShieldModulationChoice, pickShieldModulationDamageType, setShieldModulationDamageType,
-} from "../helpers/shield-modulation.mjs";
-import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../helpers/personal-shield.mjs";
-import { applyAegisDefeatCheck, isRecklessAbandonItem } from "../helpers/reckless-abandon.mjs";
+} from "../mechanics/characters/active-effect-controls.mjs";
+import { summarizeEffect } from "../mechanics/characters/effect-catalog.mjs";
+import { actorRulesContext, ruleChatContent } from "../rules/actor-view.mjs";
+import { applySystemActorsColorCssVariables, applySystemColorCssVariables } from "../util/system-color.mjs";
+import { getNumActions } from "../mechanics/actions/action-counts.mjs";
+import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../items/defenses/personal-shield.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
-import { announceLevelChange, levelSnapshot } from "../helpers/level-announce.mjs";
+import { announceLevelChange, levelSnapshot } from "../mechanics/characters/level-announce.mjs";
 import { prepareSystemActors,
   onAttachedActorHealthUpdate,
   onAttachedActorStunUpdate,
@@ -39,18 +37,15 @@ import { prepareSystemActors,
   onSystemActorsDelete,
   onVehicleRoleUpdate,
 } from "../sheet-handlers/vehicle-handler.mjs";
-import { onActivatePowerInfusion, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
-import { actorHasZordFeature } from "../helpers/zord-features.mjs";
-import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../helpers/warrior-mode.mjs";
-import { HIGH_GEAR_ID, isHighGearActive, toggleHighGear } from "../helpers/high-gear.mjs";
-import { getMegaWeaponAttacksRemaining, MEGA_WEAPON_ID, summonMegaWeapon } from "../helpers/zord-mega-weapon.mjs";
-import { onSummonZord } from "../helpers/zord-summon.mjs";
-import { onActivateSnortleAtTheSpooky } from "../helpers/snortle-at-the-spooky.mjs";
-import { onActivateConsummatePerformer } from "../helpers/consummate-performer.mjs";
+import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { actorHasZordFeature } from "../mechanics/vehicles/zord-features.mjs";
+import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../items/zords/warrior-mode.mjs";
+import { onSummonZord } from "../mechanics/vehicles/zord-summon.mjs";
+import { onActivateConsummatePerformer } from "../items/resources/consummate-performer.mjs";
 import {
   adjust, getNamedActionType, getSheetContext, isAiming, refund, spend, tradeStandardForFree,
-} from "../helpers/action-economy.mjs";
-import { runNamedAction } from "../helpers/named-actions.mjs";
+} from "../mechanics/actions/action-economy.mjs";
+import { runNamedAction } from "../mechanics/actions/named-actions.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onEditMorphToughnessBonus,
@@ -73,17 +68,18 @@ import {
   onShieldActivationToggle,
   onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
-import { onManageSelectTrait } from "../helpers/traits.mjs";
+import { onManageSelectTrait } from "../mechanics/characters/manage-traits.mjs";
 import { deleteSpecialization } from "../sheet-handlers/specialization-handler.mjs";
-import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon } from "../helpers/mounted.mjs";
-import { switchMythicForm } from "../helpers/mythically-modular.mjs";
-import { treatOngoingEffect } from "../helpers/ongoing-effects.mjs";
+import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon } from "../items/attacks/mounted-weapons.mjs";
+import { switchMythicForm } from "../items/attacks/mythically-modular.mjs";
+import { treatOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
+import { nestSubPerks, withSubPerksUnderParents } from "../mechanics/characters/sub-perks.mjs";
+import { missingFocusPickLevels, syncFocusSkillPicks } from "../mechanics/characters/focus-skills.mjs";
+import { currentEssence, currentEssenceUpdate, tracksEssenceDamage } from "../mechanics/combat/essence-current.mjs";
 
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
     actions: {
-      activatePowerInfusion: this.#onActivatePowerInfusion,
-      activateSnortleAtTheSpooky: this.#onActivateSnortleAtTheSpooky,
       activateConsummatePerformer: this.#onActivateConsummatePerformer,
       actionRestore: this.#onActionRestore,
       actionTradeForFree: this.#onActionTradeForFree,
@@ -99,7 +95,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       inlineEdit: this.#onInlineEdit,
       itemCreate: this.#onItemCreate,
       openCompendiumBrowser: this.#onOpenCompendiumBrowser,
+      openRuleSource: this.#onOpenRuleSource,
+      sendRuleToChat: this.#onSendRuleToChat,
       startingEssences: this.#onStartingEssences,
+      placeFocusSkills: this.#onPlaceFocusSkills,
       itemDelete: this.#onItemDelete,
       itemEdit: this.#onItemEdit,
       levelDown: this.#onLevelDown,
@@ -109,6 +108,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       recharge: this.#onRecharge,
       recoverSpellcastingDownshift: this.#onRecoverSpellcastingDownshift,
       rest: this.#onRest,
+      repairEssences: this.#onRepairEssences,
       rollable: this.#onRoll,
       growMonster: this.#onGrowMonster,
       threatAudit: this.#onThreatAudit,
@@ -123,7 +123,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       specializationDelete: this.#onSpecializationDelete,
       startSheetTour: this.#onStartSheetTour,
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
-      summonMegaWeapon: this.#onSummonMegaWeapon,
       summonZord: this.#onSummonZord,
       summonContact: this.#onSummonContact,
       systemActorOpen: this.#onSystemActorOpen,
@@ -135,7 +134,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       traitSelector: this.#onManageSelectTrait,
       transform: this.#onTransform,
       warriorMode: this.#onWarriorMode,
-      highGear: this.#onHighGear,
     },
     classes: ["essence20", "sheet", "actor", "theme-wrapper", "e20-window"],
     tag: 'form',
@@ -387,6 +385,22 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   _processFormData(event, form, formData) {
     const submitData = super._processFormData(event, form, formData);
     foundry.utils.deleteProperty(submitData, "system.level");
+    // A Zord's / Vehicle's current Essence is its score less the damage taken (mechanics/combat/essence-current.mjs):
+    // the typed current amount is stored as that damage, against the score shown when it was typed.
+    const typedCurrent = submitData.essenceCurrent;
+    delete submitData.essenceCurrent;
+    if (typedCurrent && typeof typedCurrent == 'object' && tracksEssenceDamage(this.actor)) {
+      for (const [key, typed] of Object.entries(typedCurrent)) {
+        if (typed === null || typed === '' || !Number.isFinite(Number(typed))) {
+          continue;
+        }
+
+        if (Number(typed) != currentEssence(this.actor, key)) {
+          foundry.utils.mergeObject(submitData, foundry.utils.expandObject(currentEssenceUpdate(this.actor, key, Number(typed))));
+        }
+      }
+    }
+
     return submitData;
   }
 
@@ -438,22 +452,19 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         const item = this.actor.items.get(itemId);
         const activating = !item.system.isActive;
         if (activating) {
-          const { canActivatePersonalShield } = await import("../helpers/extensions/gij2/shield.mjs");
+          const { canActivatePersonalShield } = await import("../items/defenses/personal-shield-uses.mjs");
           if (!canActivatePersonalShield(this.actor, item)) {
             return;
           }
         }
 
-        // Shield Modulation (Vanguard base, 13th level) - "when you activate your shield, choose
-        // one damage type." See helpers/shield-modulation.mjs's own doc comment for why this has
-        // to intercept the plain Activate toggle instead of getting its own control.
-        if (activating && needsShieldModulationChoice(this.actor, item)) {
-          const damageType = await pickShieldModulationDamageType();
-          if (!damageType) {
+        // Item rules' rolePointsActivating Triggers (Shield Modulation's "when you activate your shield, choose one
+        // damage type" - rules/plugins/effects/state-changes.mjs): a stopped one (a cancelled pick) cancels the activation.
+        if (activating) {
+          const { rolePointsActivating } = await import("../rules/plugins/effects/state-changes.mjs");
+          if (!(await rolePointsActivating(this.actor, item))) {
             return;
           }
-
-          await setShieldModulationDamageType(this.actor, damageType);
         }
 
         // Protector's Shield (Bodyguard Focus, 10th level, p.110) - "While your shield is up, you
@@ -463,7 +474,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         // activatable rolePoints item.
         if (isPersonalShieldItem(item)) {
           // "activating the shield requires a Standard action" (GI Joe CRB, Vanguard, p.108) - Quick
-          // Shield makes it a Free action (helpers/action-perks.mjs).
+          // Shield makes it a Free action (mechanics/actions/action-perks.mjs).
           if (activating) {
             const paid = await spend(this.actor, 'standard', { source: item.name, context: { kind: 'personalShield' } });
             if (paid.blocked) {
@@ -474,11 +485,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
           await applyProtectorsShieldHealthBonus(this.actor, activating);
         }
 
-        // Aegis (Tank Focus, 20th level, p.99) - see applyAegisDefeatCheck's own doc comment in
-        // reckless-abandon.mjs. Only meaningful when Reckless Abandon is being switched OFF.
-        if (isRecklessAbandonItem(item) && !activating) {
-          await applyAegisDefeatCheck(this.actor);
-        }
+        // (Aegis's deferred Defeat as Reckless Abandon switches off is a rolePointsDeactivated Trigger on the Perk.)
 
         await item.update({ 'system.isActive': activating });
       });
@@ -570,6 +577,15 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     context.system = actorData.system;
     context.flags = actorData.flags;
 
+    // A Zord's / Vehicle's / Megaform's current Essence, the score less the damage taken (mechanics/combat/essence-current.mjs):
+    // derived, so toObject leaves it out.
+    if (tracksEssenceDamage(this.actor)) {
+      for (const [key, essence] of Object.entries(context.system.essences ?? {})) {
+        essence.current = currentEssence(this.actor, key);
+        context.essenceDamaged ||= Number(essence.damage) > 0;
+      }
+    }
+
     // The header's Alt Mode badge shows which mode, not just that there is one.
     context.altModeName = actorData.system.isTransformed
       ? (this.actor.items.get(actorData.system.altModeId)?.name ?? null)
@@ -590,7 +606,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
     // Per-turn action budget for the header pip row. Null - and so the whole block is skipped -
     // whenever the actor isn't in the active encounter or the world has tracking switched off;
-    // see helpers/action-economy.mjs#getSheetContext. Read from this.actor rather than the
+    // see mechanics/actions/action-economy.mjs#getSheetContext. Read from this.actor rather than the
     // toObject(false) clone above, because the budget's own `max` is derived data.
     context.actionEconomy = getSheetContext(this.actor);
 
@@ -609,23 +625,15 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
     context.canMorphOrTransform = context.document.system.canMorph || context.document.system.canTransform;
 
-    // Warrior Mode (PR CRB, Zord Feature, p.140) - see helpers/warrior-mode.mjs's own doc
+    // Warrior Mode (PR CRB, Zord Feature, p.140) - see items/zords/warrior-mode.mjs's own doc
     // comment. Only ever true for a Zord actually holding the Feature, so the sidebar's toggle
     // button only shows up for one.
     context.hasWarriorMode = this.document.type == 'zord' && actorHasZordFeature(this.document, WARRIOR_MODE_ID);
     context.isWarriorModeActive = isWarriorModeActive(this.document);
 
-    // High Gear (A Jump Through Time, Zord Feature, p.83) - see helpers/high-gear.mjs's own doc
-    // comment. Same "only show the toggle on a Zord that actually holds the Feature" shape as
-    // Warrior Mode above.
-    context.hasHighGear = this.document.type == 'zord' && actorHasZordFeature(this.document, HIGH_GEAR_ID);
-    context.isHighGearActive = isHighGearActive(this.document);
+    // (High Gear is a Use button on the Feature itself now.)
 
-    // Zord Mega-Weapon System - see helpers/zord-mega-weapon.mjs. Same "only show the control on a
-    // Zord that actually holds the Feature" shape as Warrior Mode above; the remaining-attacks
-    // count doubles as the button's own summoned/not-summoned state.
-    context.hasMegaWeapon = this.document.type == 'zord' && actorHasZordFeature(this.document, MEGA_WEAPON_ID);
-    context.megaWeaponAttacksRemaining = getMegaWeaponAttacksRemaining(this.document);
+    // (Zord Mega-Weapon System's summon is a Use button on the Feature itself now.)
 
     return context;
   }
@@ -647,8 +655,13 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     return context;
   }
 
+  /**
+   * The Rules tab (PART id "effects"): the actor's Active Effects - its own and its items' - grouped
+   * so conditions, area effects and timed ones stand apart from the always-on ones, then a read-only
+   * summary of its items' rules (rules/actor-view.mjs).
+   */
   async _prepareEffectsContext(context) {
-    context.effects = prepareActiveEffectCategories(this.document.effects);
+    Object.assign(context, actorRulesContext(this.document, { summarize: summarizeEffect }));
     return context;
   }
 
@@ -918,8 +931,11 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     // (player-picked perks, directly-dropped gear, etc.) sort as equal and keep their existing
     // order (Array#sort is stable).
     const byGrantedLevel = (a, b) => (a.system.grantedLevel ?? Infinity) - (b.system.grantedLevel ?? Infinity);
-    for (const perkList of Object.values(perks)) {
-      perkList.sort(byGrantedLevel);
+    // A Perk picked from another Perk's list (Grid Tech I's Gridspeak Receivers) carries its parent's level and lists
+    // right under it, indented (user request 2026-10-07).
+    nestSubPerks(this.actor.items);
+    for (const [type, perkList] of Object.entries(perks)) {
+      perks[type] = withSubPerksUnderParents(perkList.sort(byGrantedLevel));
     }
 
     for (const itemList of [origins, influences, bonds, hangUps, spells, powers, weapons, armors, shields, gears, alterations, magicBaubles]) {
@@ -935,6 +951,8 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     context.features = features;
     context.gears = gears;
     context.focuses = focuses;
+    // Essence increases with no Skill point recorded yet (mechanics/characters/focus-skills.mjs), by Focus id.
+    context.focusMissingPicks = Object.fromEntries(focuses.map(focus => [focus.id, missingFocusPickLevels(this.actor, focus).length]));
     context.hangUps = hangUps;
     context.influences = influences;
     context.magicBaubles = magicBaubles;
@@ -1020,6 +1038,14 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     return Essence20CompendiumBrowser.openTo(target.dataset.type, { subtype: target.dataset.perkType || null });
   }
 
+  /** The Focus row's "place Skill point" button: asks for each Essence increase reached with no pick recorded. */
+  static async #onPlaceFocusSkills(event, target) {
+    const focus = this.actor.items.get(target.closest('[data-item-id]')?.dataset.itemId);
+    if (focus) {
+      await syncFocusSkillPicks(this.actor, focus, Number(this.actor.system.level) || 1, 0);
+    }
+  }
+
   /** The Skills tab's Starting Essences bar - see apps/starting-essences.mjs. */
   static #onStartingEssences() {
     return StartingEssences.open(this.actor);
@@ -1035,6 +1061,24 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onItemEdit(event) {
     onItemEdit(event);
+  }
+
+  /** The Rules tab's source links: open the item an effect or rule comes from. */
+  static async #onOpenRuleSource(event, target) {
+    event.preventDefault();
+    const item = target.dataset.uuid ? await fromUuid(target.dataset.uuid) : null;
+    item?.sheet?.render(true);
+  }
+
+  /** The Rules tab: post one rule (as the sheet shows it) to chat, with a link to its item. */
+  static async #onSendRuleToChat(event, target) {
+    event.preventDefault();
+    const item = target.dataset.uuid ? await fromUuid(target.dataset.uuid) : null;
+    const { type, summary, state } = target.dataset;
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content: ruleChatContent(item ?? { name: this.document.name }, { type, summary, state }),
+    });
   }
 
   static #onPerkUse(event, target) {
@@ -1075,17 +1119,13 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onSystemActorsDelete(event, this);
   }
 
-  static #onSummonMegaWeapon() {
-    summonMegaWeapon(this.document);
-  }
-
   static #onSummonZord(event, target) {
     onSummonZord(target, this.document);
   }
 
-  /** Summon a Contact from the Contacts tab - helpers/contacts.mjs. */
+  /** Summon a Contact from the Contacts tab - mechanics/companions/contacts.mjs. */
   static async #onSummonContact(event, target) {
-    const { onSummonContact } = await import("../helpers/contacts.mjs");
+    const { onSummonContact } = await import("../mechanics/companions/contacts.mjs");
     await onSummonContact(target, this.document);
   }
 
@@ -1095,14 +1135,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onMorph() {
     onMorph(this.document);
-  }
-
-  static #onActivatePowerInfusion(event) {
-    onActivatePowerInfusion(event);
-  }
-
-  static #onActivateSnortleAtTheSpooky(event) {
-    onActivateSnortleAtTheSpooky(event);
   }
 
   static #onActivateConsummatePerformer(event) {
@@ -1115,10 +1147,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onWarriorMode() {
     toggleWarriorMode(this.document);
-  }
-
-  static #onHighGear() {
-    toggleHighGear(this.document);
   }
 
   static #onInlineEdit(event) {
@@ -1154,6 +1182,23 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   /**
+   * A Zord's / Vehicle's Essence damage is temporary (mechanics/combat/essence-current.mjs): the Essence block's
+   * repair button takes it all off.
+   */
+  static async #onRepairEssences() {
+    const update = {};
+    for (const [key, essence] of Object.entries(this.actor.system.essences ?? {})) {
+      if (Number(essence?.damage) > 0) {
+        update[`system.essences.${key}.damage`] = 0;
+      }
+    }
+
+    if (Object.keys(update).length) {
+      await this.actor.update(update);
+    }
+  }
+
+  /**
    * Spend one action of a category by hand, from the header pip row. Manual adjustment is a
    * first-class control rather than a debug affordance: the overwhelming majority of items don't
    * declare an action cost yet, so this is how most actions actually get marked as taken.
@@ -1180,13 +1225,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       return;
     }
 
-    // Dodgy (MLP CRB, General Perk, p.123) can turn Defend into a Free action - see
-    // helpers/action-economy.mjs#getNamedActionType's own doc comment.
+    // A Perk that makes it cheaper (Dodgy's Free Defend) is an ActionCost rule spend() applies below.
     const actionType = getNamedActionType(this.actor, key);
 
     /* One aim per shot. Aim is a Free action and a character may well have Free actions left,
        so this is not a budget refusal and must be checked separately - see
-       helpers/action-economy.mjs#isAiming. The aim clears when the shot is taken. */
+       mechanics/actions/action-economy.mjs#isAiming. The aim clears when the shot is taken. */
     if (key == 'aim' && isAiming(this.actor)) {
       ui.notifications.warn(game.i18n.format('E20.ActionEconomyAlreadyAiming', {
         name: this.actor.name,
@@ -1194,7 +1238,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       return;
     }
 
-    // The key lets a Perk make this action cheaper - see helpers/action-perks.mjs.
+    // The key lets a Perk make this action cheaper - see mechanics/actions/action-perks.mjs.
     const result = await spend(this.actor, actionType, { source: game.i18n.localize(action.label), context: { key } });
     if (result.blocked && !result.cancelled) {
       ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
@@ -1203,7 +1247,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       }));
     }
 
-    /* What the action actually DOES, once its cost is paid - see helpers/named-actions.mjs.
+    /* What the action actually DOES, once its cost is paid - see mechanics/actions/named-actions.mjs.
        Only on a spend that went through: a refused Defend must not leave the actor defending
        for free. Returns null for the actions that are still cost-only. */
     if (!result.blocked) {
@@ -1235,8 +1279,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   /**
-   * "Alternatively, a character may trade in a Standard action for two Free actions"
-   * (GI Joe CRB p.193) - see helpers/action-economy.mjs#tradeStandardForFree.
+   * A Standard action swapped for two Free actions (GI Joe CRB p.193) - see mechanics/actions/action-economy.mjs#tradeStandardForFree.
    */
   static async #onActionTradeForFree() {
     await tradeStandardForFree(this.actor);
@@ -1268,10 +1311,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   /**
-   * Mythically Modular (Through the Shattered Grid p.116) - see helpers/mythically-modular.mjs.
+   * Mythically Modular (Through the Shattered Grid p.116) - see items/attacks/mythically-modular.mjs.
    */
   /**
-   * Nanomite equipment - uses the gear's linked nanomite Power. See helpers/nanomite-gear.mjs.
+   * Nanomite equipment - uses the gear's linked nanomite Power. See items/gear/nanomite-gear.mjs.
    */
   static async #onUseGearNanomite(event, target) {
     const gear = this.actor.items.get(target.dataset.itemId);
@@ -1288,7 +1331,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   /**
-   * Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see helpers/mounted.mjs's own doc
+   * Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see items/attacks/mounted-weapons.mjs's own doc
    * comment. One control toggling between the Standard-action Set Up and the Free-action Pick Up,
    * depending on the weapon's own current state.
    */
@@ -1308,7 +1351,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   /**
-   * Ongoing / Poison / Toxin (Cobra Codex p.93-94) - see helpers/ongoing-effects.mjs's own doc
+   * Ongoing / Poison / Toxin (Cobra Codex p.93-94) - see mechanics/combat/ongoing-effects.mjs's own doc
    * comment. "Until treated" - the header badge itself is the only control, clicking it clears
    * that one pending effect early.
    */

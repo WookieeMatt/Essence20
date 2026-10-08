@@ -5,6 +5,10 @@
   "_id": "TMNBoHPbIxrqzBfG",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Choose the weapon","steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","prompt":"Which weapon gains the Targeting System trait?","legacy":"flags.essence20.weaponId","ifUnset":true}]},
+      {"type":"WeaponTrait","label":"Targeting System","traits":["targetingSystem"],"items":["item:picked:weapon"],"when":["self:type:vehicle"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: pick one of the vehicle's weapons when you attach it; that weapon gains the Targeting System trait, so the driver can fire it using the vehicle's Targeting.</p>"

@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"sessionStart","label":"Nobility (1 fewer Story Point each session)","steps":[{"do":"updateActor","to":"partyActor","add":{"system.storyPoints":-1},"min":0},{"do":"chat","text":"Nobility ({name}): the group begins this session with 1 fewer Story Point."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when the Party's Story Points reset for a new session, the pool is 1 lower for each member with this Hang-Up, with a note in chat.</p>"

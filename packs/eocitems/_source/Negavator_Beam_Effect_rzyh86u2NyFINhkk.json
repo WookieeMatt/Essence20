@@ -5,6 +5,12 @@
   "_id": "rzyh86u2NyFINhkk",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Negavator Beam","when":["item:own","target:size>=huge"]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Negavator Beam","when":["item:own","target:size>=gigantic"]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Negavator Beam","when":["item:own","target:size>=towering"]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Negavator Beam","when":["item:own","target:size>=titanic"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: rolls the Negavator Beam's attack, adding +1 to +4 damage the bigger the target is, from Huge up.</p>"
@@ -18,7 +24,7 @@
     "damageType": "element",
     "damageValue": 3,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

@@ -5,13 +5,14 @@
   "_id": "NMxazTPfAnH4E4H9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:trained:armors.heavy"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: qualifies you for Heavy armor.</p><p>Left to the table: limiting the qualification to the one armor type you trained in.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Heavy Armor Training",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

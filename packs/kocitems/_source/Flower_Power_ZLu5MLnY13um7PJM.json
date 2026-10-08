@@ -5,6 +5,9 @@
   "_id": "ZLu5MLnY13um7PJM",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Flower Power","event":"afterRoll","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"save","to":"targets","skills":["acrobatics"],"dif":12,"status":"restrained","damageAlways":{"value":1,"type":"sharp"}},{"do":"save","to":"targets","title":"Climb out of Flower Power","skills":["brawn"],"dif":10,"status":"restrained","removeOnSuccess":true,"damageAlways":{"value":1,"type":"sharp"}}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Chat card: on a success, everyone caught takes 1 Sharp and gets a DIF 12 Acrobatics save or is Restrained, plus a DIF 10 Brawn card to climb out.</p><p>Left to the table: further thorn damage for anyone who brushes the plant later.</p>"

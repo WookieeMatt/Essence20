@@ -5,6 +5,11 @@
   "_id": "3IHBbGOucL4eAFAA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Hail Megatron!","when":["skill:infiltration","self:transformed"],"upshift":1},
+      {"type":"RollModifier","label":"Hail Megatron! (first-round Initiative: ↑1)","when":["roll:initiative","combat:round:1"],"upshift":1},
+      {"type":"RollModifier","label":"Smaller Cybertronian target (Hail Megatron!: ↑1)","when":["skill:intimidation","self:data:system.isTransformed=false","target:canTransform","target:sizeDiff<=-1"],"upshift":1}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: ↑1 on Infiltration in Alt Mode, ↑1 on Intimidation in Bot Mode against a targeted smaller Cybertronian, and ↑1 on Initiative rolled in the first round. The Skill Test ↑ is already in the Roll Options Dialog's starting total, not listed by name.</p><p>Left to the table: ↑2 Infiltration when your Alt Mode suits the setting, and taking a first attack instead of Initiative.</p>"

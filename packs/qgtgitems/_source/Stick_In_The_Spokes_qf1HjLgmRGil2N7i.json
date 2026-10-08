@@ -5,6 +5,11 @@
   "_id": "qf1HjLgmRGil2N7i",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Stick In The Spokes, forgo damage to disable the vehicle","key":"stickInTheSpokes","noDamage":true,"limit":{"per":"encounter"},"forget":true,"when":["attack",{"any":["item:damageType:blunt","item:damageType:sharp"]},"target:type:vehicle","target:levelDiff<=0"]},
+      {"type":"Trigger","event":"hit","label":"Stick In The Spokes: destroyed","outcome":"x2","when":["roll:switch:stickInTheSpokes"],"steps":[{"do":"applyCondition","condition":"defeated","to":"target"}]},
+      {"type":"Trigger","event":"hit","label":"Stick In The Spokes: inoperable","when":["roll:switch:stickInTheSpokes","not:target:status:defeated"],"steps":[{"do":"updateActor","to":"target","set":{"flags.essence20.stickInTheSpokesInoperable":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per combat, on a Blunt or Sharp attack against a targeted vehicle of your level or lower, a switch trades the damage for making it inoperable. A Critical Success Defeats it instead.</p>"

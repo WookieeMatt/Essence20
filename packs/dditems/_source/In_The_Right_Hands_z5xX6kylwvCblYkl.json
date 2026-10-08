@@ -5,6 +5,18 @@
   "_id": "z5xX6kylwvCblYkl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the form and who wields or wears it","steps":[{"do":"pick","key":"kind","from":"list","options":[["bodyArmor","E20.RightHands.bodyArmor"],["firearm","E20.RightHands.firearm"],["shield","E20.RightHands.shield"],["melee","E20.RightHands.melee"]],"prompt":"Which form does your Alt Mode take?","legacy":"actor.flags.essence20.rightHands.kind"},{"do":"unmark","key":"rightHands","to":"markedByMe:rightHands"},{"do":"pick","key":"wielder","from":"ally","auto":true,"prompt":"Who wields or wears it?"},{"do":"mark","key":"rightHands","to":"picked:wielder"}]},
+      {"type":"RollModifier","label":"In The Right Hands (Body Armor Segment)","scope":"marked","mark":"rightHands","upshift":1,"when":["holder:transformed","rule:data:flags.essence20.rules.choices.kind=bodyArmor","skill:brawn"]},
+      {"type":"RollModifier","label":"In The Right Hands (Energy Firearm)","scope":"marked","mark":"rightHands","upshift":1,"when":["holder:transformed","rule:data:flags.essence20.rules.choices.kind=firearm","skill:alertness"]},
+      {"type":"RollModifier","label":"In The Right Hands (Handheld Shield)","scope":"marked","mark":"rightHands","upshift":1,"when":["holder:transformed","rule:data:flags.essence20.rules.choices.kind=shield","skill:might","roll:shove"]},
+      {"type":"RollModifier","label":"In The Right Hands (Melee Weapon)","scope":"marked","mark":"rightHands","upshift":1,"when":["holder:transformed","rule:data:flags.essence20.rules.choices.kind=melee","skill:intimidation"]},
+      {"type":"Defense","label":"In The Right Hands (Body Armor Segment)","scope":"marked","mark":"rightHands","defense":"toughness","amount":2,"stack":"rightHandsToughness","when":["holder:transformed","rule:data:flags.essence20.rules.choices.kind=bodyArmor"]},
+      {"type":"Defense","label":"In The Right Hands (Body Armor Segment)","scope":"marked","mark":"rightHands","defense":"evasion","amount":2,"stack":"rightHandsEvasion","when":["holder:transformed","rule:data:flags.essence20.rules.choices.kind=bodyArmor"]},
+      {"type":"Defense","label":"In The Right Hands (Body Armor Segment)","defense":"toughness","amount":2,"stack":"rightHandsToughness","when":["self:transformed","rule:data:flags.essence20.rules.choices.kind=bodyArmor","self:marking:rightHands"]},
+      {"type":"Defense","label":"In The Right Hands (Body Armor Segment)","defense":"evasion","amount":2,"stack":"rightHandsEvasion","when":["self:transformed","rule:data:flags.essence20.rules.choices.kind=bodyArmor","self:marking:rightHands"]},
+      {"type":"RollModifier","label":"In The Right Hands (Handheld Shield)","scope":"markedTarget","mark":"rightHands","snag":true,"limit":{"per":"turn"},"when":["attack","holder:transformed","rule:data:flags.essence20.rules.choices.kind=shield"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick your form (body armor, firearm, shield or melee weapon) and who carries you. While you are in Alt Mode, they automatically get your Lend Assistance on that form's Skill, plus its armor bonus or shield Snag.</p>"

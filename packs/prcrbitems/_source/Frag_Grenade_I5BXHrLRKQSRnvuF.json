@@ -1,6 +1,6 @@
 {
   "folder": "UCLYWNFqe5XND1kq",
-  "name": "Frag Grenade",
+  "name": "Grenade",
   "type": "weapon",
   "_id": "I5BXHrLRKQSRnvuF",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
@@ -19,7 +19,7 @@
       "0c0b": {
         "uuid": "Compendium.essence20.pr_crb.Item.0BM1VVo7BJgyF5yv",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Frag Grenade Effect",
+        "name": "Grenade Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "athletics",
@@ -39,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"

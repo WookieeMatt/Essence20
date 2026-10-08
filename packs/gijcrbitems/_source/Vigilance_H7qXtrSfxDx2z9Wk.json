@@ -5,6 +5,9 @@
   "_id": "H7qXtrSfxDx2z9Wk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Vigilance","action":"contingency","to":"free","ask":"E20.ActionPerkAskContingencyAttack"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a Contingency action costs a Free action instead of a Standard action. The tracker asks you to confirm it's an attack on an enemy entering your range or reach.</p>"

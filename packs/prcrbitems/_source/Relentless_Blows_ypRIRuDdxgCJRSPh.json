@@ -5,6 +5,9 @@
   "_id": "ypRIRuDdxgCJRSPh",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Relentless Blows: two unarmed attacks","event":"powerUsed","when":["item:own"],"steps":[{"do":"bonusAttack","count":2,"cost":"none","only":"unarmed","optional":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (in combat): after spending the Power you get two extra Unarmed attacks this turn at no action cost.</p>"
@@ -17,7 +20,6 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,

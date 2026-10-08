@@ -5,6 +5,9 @@
   "_id": "hLWet58M7NV6c0Sn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick your free Limited medicine kit","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"gear","tags":["item:data:system.gearType=kits","item:name~medic"]},"system":{"availability":"limited"}},{"do":"setToggle","key":"granted","value":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: adds your free Limited medicine kit to your gear. The Smarts increases come with the Focus as you level.</p>"

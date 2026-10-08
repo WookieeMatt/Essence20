@@ -5,6 +5,10 @@
   "_id": "YJfkZpXX5dtsEFKE",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","path":"system.traits.sensors","op":"set","value":1,"when":["self:type:vehicle"]}
+    ],
+    "prerequisites": {"when":["not:self:data:system.traits.sensors"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the vehicle gains the Sensors trait, letting it put ranks in Alertness.</p>"
@@ -23,7 +27,7 @@
     "benefit": "The vehicle gains the Sensors trait.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle without the Sensors trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

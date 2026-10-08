@@ -13,7 +13,7 @@
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 119
+      "page": 120
     },
     "items": {
       "acd1": {
@@ -39,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"

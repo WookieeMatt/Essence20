@@ -5,6 +5,9 @@
   "_id": "XfLsm5inPHekj6rY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Morphed teammates gain Power","limit":{"per":"encounter"},"steps":[{"do":"updateActor","to":"allies:100000","filter":["target:data:system.isMorphed"],"add":{"system.powers.personal.value":"dice(1, @item.system.advances.currentValue)"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene): every Morphed teammate regains d2 Personal Power (d4 from 15th level).</p>"

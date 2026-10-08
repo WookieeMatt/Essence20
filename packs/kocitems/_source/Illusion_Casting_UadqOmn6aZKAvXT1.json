@@ -5,6 +5,9 @@
   "_id": "UadqOmn6aZKAvXT1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SpellCost","label":"Cast as an illusion - costs 1, has no real effect (Illusion Casting)","op":"set","value":1,"note":"An illusion - it affects nobody and deals no damage."}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when casting, a switch to cast an illusion version of the spell for a cost of 1. It looks real but has no effect.</p>"

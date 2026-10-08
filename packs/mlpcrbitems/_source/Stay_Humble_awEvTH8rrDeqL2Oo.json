@@ -5,6 +5,9 @@
   "_id": "awEvTH8rrDeqL2Oo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"anyFailed","label":"Stay Humble (failed Persuasion: +1 Friendship Point)","when":["skill:persuasion"],"steps":[{"do":"grantStoryPoint"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: whenever you fail a Persuasion test, the group gains a Friendship Point.</p>"

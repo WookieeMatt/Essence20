@@ -5,6 +5,10 @@
   "_id": "SivYuju5Qcwu3npg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Summon a Secret Police weapon (Riot Gear)","when":["combat:exists","not:self:windowUsed:riotGear:mission"],"cost":{"action":"standard"},"steps":[{"do":"choose","beforeCost":true,"prompt":"Which weapon does the Secret Police slip you?","options":[{"label":"Blow Gun (5 darts)","steps":[{"do":"setVar","key":"riot","value":"blowGun"}]},{"label":"Pistol","steps":[{"do":"setVar","key":"riot","value":"pistol"}]},{"label":"Shotgun","steps":[{"do":"setVar","key":"riot","value":"shotgun"}]},{"label":"Throwing Stars (5)","steps":[{"do":"setVar","key":"riot","value":"star"}]}]},{"do":"grant","when":["var:riot=blowGun"],"uuid":"Compendium.essence20.wtnv_citizens_guide.Item.pSsHrG2Bpd3mQnBD","until":"combat","system":{"quantity":5}},{"do":"grant","when":["var:riot=pistol"],"uuid":"Compendium.essence20.wtnv_citizens_guide.Item.5LaTMHTRv4kT9eJD","until":"combat"},{"do":"grant","when":["var:riot=shotgun"],"uuid":"Compendium.essence20.wtnv_citizens_guide.Item.8AEIEs18V1gbcRDs","until":"combat"},{"do":"grant","when":["var:riot=star"],"uuid":"Compendium.essence20.wtnv_citizens_guide.Item.JqxNIRYvDcOVmkhw","until":"combat","system":{"quantity":5}},{"do":"markWindow","flag":"riotGear","window":"mission"}]}
+    ],
+    "prerequisites": {"when":["self:hasType:focus:Secret Police"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Standard action, in combat, once per session; a new mission on the Scene Clock resets it): pick a Blow Gun, Pistol, Shotgun or 5 Throwing Stars. The weapon is added for this combat and removed when it ends.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Secret Police Politician Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

@@ -5,6 +5,9 @@
   "_id": "cvgYI2FTjeIrUcLK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reaction","who":"enemyOfAttacker","per":"card","outcome":"hit","when":["not:roll:edge"],"limit":{"per":"encounter","max":1},"steps":[{"do":"choose","prompt":"Which Skill?","options":[{"label":"Deception","steps":[{"do":"roll","skill":"deception","difDefense":"cleverness","onSuccess":[{"do":"lateSnag"}]}]},{"label":"Intimidation","steps":[{"do":"roll","skill":"intimidation","difDefense":"willpower","onSuccess":[{"do":"lateSnag"}]}]},{"label":"Persuasion","steps":[{"do":"roll","skill":"persuasion","difDefense":"willpower","onSuccess":[{"do":"lateSnag"}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per combat, after an enemy succeeds without Edge, roll Deception, Intimidation or Persuasion against them; on a success they roll with a Snag, and hits that now miss are cancelled.</p>"

@@ -5,6 +5,9 @@
   "_id": "WlpzIGEGQEL7B78w",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"No ally within 10 ft (On My Own)","when":["not:ally:within:10"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while no ally is within 10ft of you, your Skill Tests get ↑1, already counted in the Upshift number of your Roll Options Dialog.</p>"

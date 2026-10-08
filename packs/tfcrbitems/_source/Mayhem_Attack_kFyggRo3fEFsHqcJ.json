@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Free follow-up attack","when":[{"any":["combat","combat:round:0"]}],"limit":{"per":"turn"},"steps":[{"do":"bonusAttack","cost":"free"},{"do":"chat","text":"{name} can make another attack as a Free action."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: after an attack an ally helped with, you can spend a Free action to attack again with the same benefits.</p>"

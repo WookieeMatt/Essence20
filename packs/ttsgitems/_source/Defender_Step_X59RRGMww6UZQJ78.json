@@ -5,6 +5,9 @@
   "_id": "X59RRGMww6UZQJ78",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"allyTargeted","label":"Defender Step (an ally's Defense + your Combat Stance number)","prompt":true,"promptText":"E20.DefenderStepConfirmContent","when":["self:data:system.powers.personal.value>=1"],"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"heal","temporary":true,"amount":1,"to":"self","when":["calc:@owned.MPAZdtX3Ob76h90Y>0"]},{"do":"boostDefense","amount":"1 + min(1, @owned.yNtX8ky7O8v50C5l)"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when an ally you can see is attacked, a prompt asks whether to spend 1 Personal Power to step in; if you do, their Defense against that attack rises by your Combat Stance number.</p><p>Left to the table: moving your token, and whether you really end adjacent.</p>"

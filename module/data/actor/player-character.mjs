@@ -1,4 +1,4 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
@@ -17,7 +17,7 @@ export class PlayerCharacterActorData extends foundry.abstract.TypeDataModel {
       canSpellcast: makeBool(false),
       canTransform: makeBool(false),
       // The 12 Essence points spent at creation, before the Origin and Role add theirs - see
-      // helpers/starting-essences.mjs. 3 each is what every character got before these existed.
+      // mechanics/characters/starting-essences.mjs. 3 each is what every character got before these existed.
       essenceBase: new foundry.data.fields.SchemaField({
         strength: makeInt(3),
         speed: makeInt(3),

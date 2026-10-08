@@ -5,6 +5,10 @@
   "_id": "bf4nxa6WKKhuQcEH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Ignore a Hang-Up","when":["self:itemCount:hangUp>=1"],"steps":[{"do":"pick","key":"hangUp","from":"ownedItem","itemType":"hangUp","prompt":"Which Hang-Up do you ignore?"},{"do":"flagItem","item":"choice:hangUp","flag":"maturedIgnored","exclusive":["item:type:hangUp"],"loneEffect":true}]}
+    ],
+    "prerequisites": {"when":["self:count:hangUp>=1"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick one of your Hang-Ups; the system ignores it from then on.</p>"
@@ -15,7 +19,7 @@
       "book": "Cobra Codex",
       "page": 80
     },
-    "prerequisite": "At least one Influence Hang-Up",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

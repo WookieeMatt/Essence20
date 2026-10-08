@@ -5,6 +5,10 @@
   "_id": "su1NVWhDH3Zk7ma5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Profound Nano Infusion: a Restricted nanomite power","event":"added","steps":[{"do":"pickGrant","from":{"type":"power","availabilities":["restricted"],"tags":["item:data:system.type=nanomite"],"notOwned":true,"selectionLimit":true}}]}
+    ],
+    "prerequisites": {"when":["self:level>=12"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: pick one Restricted nanomite power when you take it. You can take it again for another.</p>"
@@ -15,44 +19,13 @@
       "book": "Quartermaster's Guide to Gear",
       "page": 30
     },
-    "prerequisite": "Level 12",
+    "prerequisite": "",
     "selectionLimit": 10,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "perks",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 1,
-    "items": {
-      "SDhU": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.mVwWAgFyNUDfoUJQ",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Disintegrate",
-        "type": "power"
-      },
-      "fid9": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.HwREY90wo09Hkdt1",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Dominate",
-        "type": "power"
-      },
-      "eGBf": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.WI0QTzlWkEusSQqY",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Mimic",
-        "type": "power"
-      },
-      "67J7": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.312ubjCA7mCBDoea",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Regeneration",
-        "type": "power"
-      },
-      "SnU6": {
-        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.GBsBp9umblOcz7lu",
-        "img": "systems/essence20/assets/icons/items/powers.svg",
-        "name": "Swiftness",
-        "type": "power"
-      }
-    }
+    "items": {}
   },
   "effects": [],
   "sort": 0,

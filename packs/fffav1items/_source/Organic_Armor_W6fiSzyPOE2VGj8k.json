@@ -5,6 +5,7 @@
   "_id": "W6fiSzyPOE2VGj8k",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["host:type:armor","not:host:trait:computerized"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: note your chosen environment and take the ↑1 on Intimidation and Infiltration there yourself. Factions that are Qualified in this upgrade see it at Requisition.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Battledress without the Computerized trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

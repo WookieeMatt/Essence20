@@ -5,6 +5,11 @@
   "_id": "34CRvsE7ncW4kmE8",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"HitRider","label":"Power Construct","option":{"damage":2,"damageType":"element"},"when":["attack:melee"]},
+      {"type":"Trigger","event":"takesDamage","label":"Melee attacker takes 1 Energy (Power Construct)","when":["damage:melee","target:data:uuid"],"steps":[{"do":"button","label":"Apply 1 Energy to {target} (Power Construct)","who":"gm","steps":[{"do":"damage","to":"target","amount":1,"damageType":"element"}]}]},
+      {"type":"Trigger","event":"droppedToZero","label":"Vanishes into the Morphin Grid (Power Construct)","when":["var:resource=health"],"steps":[{"do":"chat","text":"{name} disappears into the Morphin Grid, as if recalled for repairs."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the Zord's melee attacks gain a 2 Energy damage alternate; when melee damage is applied to it, a chat button deals 1 Energy damage back to the attacker; at 0 Health it returns to the Grid as with Recall for Repairs.</p>"

@@ -5,6 +5,10 @@
   "_id": "MRJ2g8hLTsD3XmiC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Lesson Plan: an Edge outside combat","side":"give","effect":"boost","edge":true,"when":["not:combat"]}
+    ],
+    "prerequisites": {"when":["self:hasType:origin:Teacher"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you Lend Assistance to an ally's Skill outside combat, their next test with it gets both ↑1 and an Edge, already set in their Roll Options Dialog.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Teacher Origin",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

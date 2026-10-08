@@ -5,6 +5,7 @@
   "_id": "1SGxuyt9B4hcB1qA",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["host:trait:element","host:data:system.elementChoice"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: gives the weapon the Ongoing trait. When an attack with it hits and deals damage, the target takes that damage again at the end of each of its turns for the weapon's Ongoing duration (1 round unless the weapon sets more), with a chat line each time.</p>"
@@ -25,7 +26,7 @@
       "ongoing"
     ],
     "type": "weapon",
-    "prerequisite": "Weapon that deals Element damage"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

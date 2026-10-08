@@ -5,6 +5,11 @@
   "_id": "FubfmphdFHTJR1s5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Set up your additional Zord","steps":[{"do":"pick","key":"zord","from":"ownedZords","auto":true,"prompt":"Which Zord?"},{"do":"grant","uuid":"Compendium.essence20.pr_crb.Item.QO0kY1y359tSnPTS","to":"picked:zord","filter":["not:target:hasItem:Compendium.essence20.pr_crb.Item.QO0kY1y359tSnPTS"]},{"do":"pickGrant","title":"Zord Feature 1","from":{"type":"feature","tags":["not:item:heldBy:picked:zord"]},"to":"picked:zord"},{"do":"pickGrant","title":"Zord Feature 2","from":{"type":"feature","tags":["not:item:heldBy:picked:zord"]},"to":"picked:zord"}]},
+      {"type":"SummonLimit","label":"Additional Zord (one of your Zords in a scene)"}
+    ],
+    "prerequisites": {"when":["self:level>=6","self:hasType:perk:Zord"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick which of your Zords is the extra one; it gains Auxiliary Zord and two Zord Feature picks. Automatic: only one of your Zords can be summoned per scene.</p>"
@@ -15,7 +20,7 @@
       "book": "A Jump Through Time",
       "page": 53
     },
-    "prerequisite": "Level 6 and Zord Role Perk",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

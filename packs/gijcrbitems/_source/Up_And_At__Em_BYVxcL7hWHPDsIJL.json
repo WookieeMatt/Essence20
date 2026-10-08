@@ -5,6 +5,9 @@
   "_id": "BYVxcL7hWHPDsIJL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"HealBonus","label":"Up And At 'Em (+1 Health and an Edge to a Defeated ally)","amount":1,"when":["target:status:defeated","calc:@owned.6wbY17kDGkxeGBPp>0"],"steps":[{"do":"bank","to":"target","edge":true,"until":"combat"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: an ally you revive with I've Got You (including through the Heal action or a Stim Dart) gets 1 more Health and a banked Edge.</p>"

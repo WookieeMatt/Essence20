@@ -5,9 +5,15 @@
   "_id": "4eA2ktw0cfdYV6Fs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Moved 15 ft before this attack (Bump & Run: ↑1)","upshift":1,"key":"bumpAndRun","forget":true,"when":["attack"]},
+      {"type":"Trigger","label":"Bump & Run (Critical Success: Stunned)","event":"hit","outcome":"double","when":["roll:switch:bumpAndRun"],"steps":[{"do":"applyCondition","to":"target","condition":"stunned","until":"endOfNextTurn","untilOf":"recipient"}]},
+      {"type":"Trigger","label":"Bump & Run (move 10 ft by the end of the turn)","event":"afterRoll","outcome":"any","when":["roll:switch:bumpAndRun","combat:exists"],"steps":[{"do":"markHere","key":"bumpRun","until":"roundOrScene"}]},
+      {"type":"Trigger","label":"Bump & Run (didn't move 10 ft: Impaired)","event":"turnEnd","when":["self:marked:bumpRun"],"steps":[{"do":"applyCondition","to":"self","condition":"impaired","until":"endOfNextTurn","when":["self:movedSince:bumpRun<10"]},{"do":"chat","text":"Bump & Run: {name} didn't move 10 ft after the attack and is Impaired until the end of their next turn.","when":["self:movedSince:bumpRun<10"]},{"do":"unmark","key":"bumpRun","to":"self"}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Roll Options Dialog: a switch for ↑1 when you moved 15 ft first; a Critical Success Stuns the target. Automatic: if your token hasn't moved 10 ft from that spot by the end of your turn, you are Impaired.</p>"
+      "notes": "<p>Roll Options Dialog: a switch for ↑1 when you moved 15 ft first; a Critical Success Stuns the target until the end of its next turn. Automatic: if your token hasn't moved 10 ft from that spot by the end of your turn, you are Impaired until the end of your next turn.</p>"
     },
     "originalId": "",
     "description": "",

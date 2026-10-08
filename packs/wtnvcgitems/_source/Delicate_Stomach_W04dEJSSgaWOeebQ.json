@@ -5,6 +5,10 @@
   "_id": "W04dEJSSgaWOeebQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"The pet gains its Hairball attack","event":"added","when":["self:type:companion","not:rule:granted:type:weapon"],"steps":[{"do":"createItem","data":{"name":"Hairball","type":"weapon","system":{"classification":{"size":"sidearm"},"availability":"standard","equipped":true,"hardpoint":{"type":"none"},"traits":[]},"flags":{"essence20":{"natural":true}}},"children":[{"name":"Hairball","type":"weaponEffect","system":{"classification":{"skill":"targeting","style":"projectile"},"damageType":"acid","damageValue":1,"numTargets":1,"numHands":"0","range":{"value":30,"long":60}}}]}]},
+      {"type":"Use","label":"Add the pet's Hairball attack","when":["self:type:companion","not:rule:granted:type:weapon"],"steps":[{"do":"createItem","data":{"name":"Hairball","type":"weapon","system":{"classification":{"size":"sidearm"},"availability":"standard","equipped":true,"hardpoint":{"type":"none"},"traits":[]},"flags":{"essence20":{"natural":true}}},"children":[{"name":"Hairball","type":"weaponEffect","system":{"classification":{"skill":"targeting","style":"projectile"},"damageType":"acid","damageValue":1,"numTargets":1,"numHands":"0","range":{"value":30,"long":60}}}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the pet gains a Hairball attack at Short range for 1 Acid damage (the Use button adds it if it's missing).</p>"

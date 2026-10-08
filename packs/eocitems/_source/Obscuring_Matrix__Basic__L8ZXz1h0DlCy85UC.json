@@ -5,6 +5,9 @@
   "_id": "L8ZXz1h0DlCy85UC",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","defense":"evasion","amount":"-@item.system.armorBonus.value","stacks":true,"when":["self:canTransform","not:rule:data:flags.essence20.parentId","rule:data:system.type=armor","rule:data:system.armorBonus.defense=evasion",{"any":["self:status:grappled","self:status:immobilized","self:status:prone","self:status:restrained"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while worn, +2 Evasion (computerized), lost while you are Grappled, Immobilized, Prone or Restrained.</p>"

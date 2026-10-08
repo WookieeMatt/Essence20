@@ -5,6 +5,10 @@
   "_id": "UgggFXZqiyKxwMuA",
   "img": "systems/essence20/assets/icons/gear/medical-pack.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Heal (Med Kit)","cost":{"action":"standard"},"when":["not:rule:data:flags.essence20.kitSpent"],"steps":[{"do":"setVar","key":"heal","value":1},{"do":"setVar","key":"heal","value":2,"when":["self:specializationNamed:science:medicine"]},{"do":"updateActor","to":"targetOrSelf","add":{"system.health.value":"@var.heal * @takeMine"},"max":"@recipient.system.health.max"},{"do":"setVar","key":"left","value":"@item.flags.essence20.usesLeft - 1","when":["rule:data:flags.essence20.usesLeft"]},{"do":"setVar","key":"left","value":9,"when":["not:rule:data:flags.essence20.usesLeft"]},{"do":"updateItem","set":{"flags.essence20.usesLeft":"@var.left"}},{"do":"updateItem","set":{"flags.essence20.kitSpent":true},"when":["calc:@var.left<=0"]},{"do":"chat","text":"{name} heals {@var.heal * @takeMine} Health with the Med Kit. Uses left: {var.left}."}]},
+      {"type":"Use","label":"Restock (Med Kit)","when":["rule:data:flags.essence20.kitSpent"],"steps":[{"do":"updateItem","set":{"flags.essence20.kitSpent":false,"flags.essence20.usesLeft":10}},{"do":"chat","text":"{name} restocks the Med Kit."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend one of its ten uses to heal 1 Health (2 with a Medicine Specialization). When it runs out, the button restocks it.</p>"
@@ -13,10 +17,9 @@
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 120
+      "page": 121
     },
     "quantity": 1,
-    "type": "",
     "gearType": "kits"
   },
   "effects": [],

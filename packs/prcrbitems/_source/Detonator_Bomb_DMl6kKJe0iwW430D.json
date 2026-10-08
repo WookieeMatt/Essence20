@@ -5,6 +5,7 @@
   "_id": "DMl6kKJe0iwW430D",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Grenade"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the grenade's range becomes Reach, and rolling it plants the bomb instead of throwing it. The chat card's Detonate button sets it off, rolling Technology against everyone in the blast.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Grenade"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {

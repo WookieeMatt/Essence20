@@ -5,6 +5,12 @@
   "_id": "cZtUjIzieAFxTwH2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"allyDefended","label":"Retribution (the enemy still struck your ally)","when":["var:outcome=hit"],"steps":[{"do":"unmark","key":"retributionEdge","to":"markedByMe:retributionEdge","perSetter":true},{"do":"mark","key":"retributionDamage","to":"target","perSetter":true,"exclusive":true,"until":"combat"}]},
+      {"type":"Trigger","event":"allyDefended","label":"Retribution (your Defender Step caused the miss)","when":["var:outcome=turned"],"steps":[{"do":"unmark","key":"retributionDamage","to":"markedByMe:retributionDamage","perSetter":true},{"do":"mark","key":"retributionEdge","to":"target","perSetter":true,"exclusive":true,"until":"combat"}]},
+      {"type":"DialogSwitch","label":"Spend 1 Personal Power for Retribution (+1 damage - the enemy still struck your ally)","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"damage":1,"forget":true,"when":["attack:melee","target:markedByMe:retributionDamage"],"steps":[{"do":"unmark","key":"retributionDamage","to":"markedByMe:retributionDamage","perSetter":true}]},
+      {"type":"DialogSwitch","label":"Spend 1 Personal Power for Retribution (Edge - your Defender Step caused the miss)","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"edge":true,"forget":true,"when":["attack:melee","target:markedByMe:retributionEdge"],"steps":[{"do":"unmark","key":"retributionEdge","to":"markedByMe:retributionEdge","perSetter":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: after you use Defender Step, your next melee attack gets a switch to spend 1 Personal Power for +1 damage (if the enemy still hit your ally) or an Edge (if your step made it miss).</p>"

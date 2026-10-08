@@ -5,9 +5,12 @@
   "_id": "mCsw25hT4y4q4ceG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Gain temporary Health (Not Dead Yet)","cost":{"action":"standard"},"limit":{"per":"scene"},"steps":[{"do":"choose","auto":true,"prompt":"Can another CSTO Personnel character see and hear you?","options":[{"label":"Yes: 2 temporary Health (once per adventure)","when":["not:self:windowUsed:notDeadYetEnhancedUsedThisMission:mission","scene:token:target:ally&target:hasType:origin:CSTO Personnel"],"steps":[{"do":"markWindow","flag":"notDeadYetEnhancedUsedThisMission","window":"mission"},{"do":"tempResource","kind":"health","amount":2,"to":"self"}]},{"label":"No: 1 temporary Health","steps":[{"do":"tempResource","kind":"health","amount":1,"to":"self"}]}]}]}
+    ],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button: gain 1 temporary Health, once per scene, or 2 when another CSTO Personnel ally is within 30 feet.</p><p>Left to the table: holding the 2-Health version to once per adventure (the system only limits it per Combat).</p>"
+      "status": "full",
+      "notes": "<p>Use button (Standard action, once per scene): gain 1 temporary Health, or 2 once per mission (adventure) when you say another CSTO Personnel character can see and hear you (offered while one is on the scene). The temporary Health goes at the end of the scene.</p>"
     },
     "originalId": "",
     "actionType": "standard",

@@ -5,6 +5,9 @@
   "_id": "mNVPUeKWqlQo3QIB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Traps and Obstacles (Proximity Bomb)","cost":{"action":"standard","resource":{"path":"system.energon.normal.value"},"amount":1},"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","filter":["item:data:system.classification.size","not:item:data:system.classification.size=integrated"],"prompt":"Which weapon?","beforeCost":true},{"do":"fitUpgrade","uuid":"Compendium.essence20.tf_crb.Item.I2nS9xXN8ioV5jJ5","onto":"choice:weapon","until":"untilUsed"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 Energon to add a Proximity Bomb upgrade to one of your non-Integrated weapons. The trap is used up when it goes off.</p>"

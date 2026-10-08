@@ -5,6 +5,10 @@
   "_id": "BOuJREcROMkMjbM1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Environment of expertise (Stalk: Edge)","edge":true,"when":["skill:infiltration","not:check:outsideEnvironmentOfExpertise","not:roll:initiative"]},
+      {"type":"ConditionImmunity","label":"Environment of expertise (Stalk: immune to surprised)","conditions":["surprised"],"when":["not:check:outsideEnvironmentOfExpertise"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in your environment of expertise (the scene's terrain, or the environment switch on your sheet) you can't be Surprised, and your Infiltration tests get an Edge, labelled Stalk in the Roll Options Dialog. The Speed increases come with the Focus.</p>"

@@ -5,9 +5,15 @@
   "_id": "N8E3QTLUKX6DOoEc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch Box Shot on","when":["not:self:toggle:on"],"limit":{"per":"encounter"},"steps":[{"do":"setToggle","key":"on","value":true}]},
+      {"type":"Use","label":"Switch Box Shot off","when":["self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":false}]},
+      {"type":"Trigger","label":"Box Shot is used up by the attack","event":"afterRoll","outcome":"any","when":["self:toggle:on","attack"],"steps":[{"do":"setToggle","key":"on","value":false}]},
+      {"type":"MultipleTargets","label":"Box Shot","when":["self:toggle:on"]}
+    ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: once per combat, your next attack rolls against two targets.</p><p>Left to the table: keeping the two targets within 10 ft of each other.</p>"
+      "notes": "<p>Use button: once per combat, your next attack rolls against two targets; making that attack switches it off.</p><p>Left to the table: keeping the two targets within 10 ft of each other.</p>"
     },
     "originalId": "",
     "description": "",

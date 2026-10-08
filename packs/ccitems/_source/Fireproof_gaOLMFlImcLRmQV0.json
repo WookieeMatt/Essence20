@@ -5,6 +5,10 @@
   "_id": "gaOLMFlImcLRmQV0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Fireproof (Fire Resistance)","path":"system.resistances.fire","op":"max","value":1,"when":["self:type:playerCharacter"]},
+      {"type":"DerivedStat","label":"Fireproof (Fire Immunity)","path":"system.immunities.fire","op":"max","value":1,"when":["self:type:playerCharacter","self:level>=10"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Fire Resistance from 3rd level, becoming Fire Immunity at 10th.</p>"

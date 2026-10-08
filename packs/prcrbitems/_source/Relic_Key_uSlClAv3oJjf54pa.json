@@ -5,6 +5,10 @@
   "_id": "uSlClAv3oJjf54pa",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Edge on the next roll (once per scene)","limit":{"per":"scene"},"when":["self:type:zord","not:rule:banked"],"steps":[{"do":"bank","to":"self","edge":true,"label":"Relic Key"}]},
+      {"type":"DriverlessEssence","label":"Relic Key: Smarts and Social 3 while no one drives","essence":3}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene): the Zord's next roll opens the Roll Options Dialog with Edge already selected. Automatic: while no one is driving, the Zord counts as Smarts and Social 3 for its Defenses.</p>"

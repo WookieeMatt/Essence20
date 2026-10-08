@@ -1,4 +1,4 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import {
   makeInt,
@@ -17,6 +17,7 @@ export class UpgradeItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
+      // Deprecated 2026-10-07: unused since rules (an AimBonus rule, scope host); remove from the data model in 6.1.
       aimShiftBonus: makeInt(0),
       armorBonus: new fields.SchemaField({
         defense: makeStrWithChoices(Object.keys(E20.defenses), 'toughness'),
@@ -31,6 +32,7 @@ export class UpgradeItemData extends foundry.abstract.TypeDataModel {
          Same choices as `traits` above, since anything grantable is also removable. */
       removedTraits: makeStrArrayWithChoices(Object.keys(E20.upgradeTraits)),
       type: makeStrWithChoices(Object.keys(E20.upgradeTypes), 'armor'),
+      // Deprecated 2026-10-07: shown from system.prerequisites now; remove from the data model in 6.1.
       prerequisite: makeStr(null),
       // Explosive Rounds / Manipulative (TF CRB, also GI Joe CRB) - some weapon Upgrades' printed
       // benefit is an entirely alternate weaponEffect (a different attack profile the weapon gains

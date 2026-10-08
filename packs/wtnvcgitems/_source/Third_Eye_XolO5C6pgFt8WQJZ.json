@@ -5,6 +5,10 @@
   "_id": "XolO5C6pgFt8WQJZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Relies on vision - ignore the first ↓1 (Third Eye)","ignoreDownshift":1,"forget":true}
+    ],
+    "prerequisites": {"when":["self:skill:weird>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: the Investigation Specialization. Roll Options Dialog: a switch for tests that rely on sight, which ignores the first ↓1.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Weird +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

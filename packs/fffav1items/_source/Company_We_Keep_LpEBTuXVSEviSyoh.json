@@ -5,6 +5,9 @@
   "_id": "LpEBTuXVSEviSyoh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick one from the list","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","required":true}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Granted: when added you pick one of the listed Genetic Alterations (including Enlarged).</p><p>Left to the table: taking the Monstro-Vipers as a Contact instead.</p>"
@@ -88,9 +91,9 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "perks",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",

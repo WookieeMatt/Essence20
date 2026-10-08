@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: attacks roll Might for Sharp damage, with an Energy damage alternate effect; its traits apply.</p>"
+      "notes": "<p>Automatic: attacks roll Finesse for Sharp damage, with an Energy damage alternate effect; its traits apply.</p>"
     },
     "originalId": "",
     "description": "",
@@ -22,7 +22,7 @@
         "name": "Turbo Blade Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "might",
+          "skill": "finesse",
           "style": "melee"
         },
         "damageValue": 1,
@@ -44,7 +44,7 @@
         "name": "Turbo Blade Alternate Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "might",
+          "skill": "finesse",
           "style": "melee"
         },
         "damageValue": 1,
@@ -61,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "light"

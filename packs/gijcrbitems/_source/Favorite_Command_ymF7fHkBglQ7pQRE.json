@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the Favorite Command Skill","steps":[{"do":"pick","key":"skill","from":"config","path":"skills","prompt":"Skill"},{"do":"updateItem","set":{"flags.essence20.favoriteSkill":"{var.picked}"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (on the pet), or the Skill picker on the sheet: choose its favourite Skill. Commanding the pet can then cost a Move action instead of a Standard action.</p>"

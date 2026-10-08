@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"essenceChanged","label":"Survivor (Smarts at 0: d20, 10+ stays at 1)","when":["var:essence=smarts","self:data:system.essences.smarts.value<=0"],"steps":[{"do":"table","formula":"1d20","rows":[{"min":10,"max":20,"text":"Smarts stays at 1.","steps":[{"do":"updateActor","set":{"system.essences.smarts.value":1}}]},{"min":1,"max":9,"text":"Smarts drops to 0."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Edge on Survival tests. Automatic: when your Smarts would drop to 0, a d20 is rolled and on 10 or more it stays at 1.</p>"

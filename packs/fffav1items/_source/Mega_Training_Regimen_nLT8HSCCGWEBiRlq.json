@@ -5,6 +5,17 @@
   "_id": "nLT8HSCCGWEBiRlq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Mega Training Regimen","when":["attack","not:roll:shove",{"any":["item:damageType:grapple","item:damageType:knocProne"]}],"snag":true},
+      {"type":"RollModifier","scope":"incoming","label":"Mega Training Regimen","when":["roll:shove","not:item:damageType:maneuver"],"snag":true},
+      {"type":"Qualification","label":"Mega Training Regimen (Qualified: Computerized armor)","access":"qualified","items":["item:type:armor","item:trait:computerized"]},
+      {"type":"Qualification","label":"Mega Training Regimen (Trained: all armor)","access":"trained","items":["item:type:armor"]},
+      {"type":"Qualification","label":"Mega Training Regimen (Qualified: Organic Armor upgrade)","upgrades":[{"any":["item:id:W6fiSzyPOE2VGj8k","item:data:name=organic armor"]}]},
+      {"type":"RollModifier","scope":"incoming","label":"Mega Training Regimen","when":["attack","item:damageType:maneuver"],"snag":true},
+      {"type":"RollModifier","when":["attack","item:type:weaponEffect",{"any":["item:data:parent.type=vehicle","item:data:parent.type=zord","weapon:data:system.hardpoint.type=integrated"]}],"upshift":1},
+      {"type":"RollModifier","label":"Driving a Huge or larger land vehicle (Mega Training Regimen: ↑1)","when":["skill:driving","vehicle:driving","vehicle:data:system.movement.ground.base>0",{"any":["vehicle:data:system.size=huge","vehicle:data:system.size=extended","vehicle:data:system.size=gigantic","vehicle:data:system.size=extended2","vehicle:data:system.size=towering","vehicle:data:system.size=extended3","vehicle:data:system.size=titanic"]},"not:roll:untrained"],"upshift":1,"stack":"q1VehicleQualification"},
+      {"type":"RollModifier","label":"Driving a Huge or larger land vehicle untrained (Mega Training Regimen: no Snag)","when":["skill:driving","vehicle:driving","vehicle:data:system.movement.ground.base>0",{"any":["vehicle:data:system.size=huge","vehicle:data:system.size=extended","vehicle:data:system.size=gigantic","vehicle:data:system.size=extended2","vehicle:data:system.size=towering","vehicle:data:system.size=extended3","vehicle:data:system.size=titanic"]},"roll:untrained",{"any":["not:self:hasItem:Compendium.essence20.ferocious_fighters.Item.VAhtHpKlv4gsR0OY","vehicle:data:system.traits.biomechanical","vehicle:name~biomech","vehicle:name~bio-mech","vehicle:name~cobra-la"]}],"immune":["snag"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: trained in all armor and Qualified in Computerized armor. Automatic: its Requisition and driving Qualifications; ↑1 on attacks with vehicle and hardpoint weapons; and attempts to Grapple, Shove or Trip you (Maneuver, Grapple and Knock Prone attacks, or a Shove) take a Snag. Both are labelled Mega Training Regimen in the Roll Options Dialog.</p>"

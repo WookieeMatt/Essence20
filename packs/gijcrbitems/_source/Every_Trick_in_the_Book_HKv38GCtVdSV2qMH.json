@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Every Trick in the Book (invisible attacker)","when":["attack","target:status:invisible"],"snag":true},
+      {"type":"ConditionImmunity","label":"Can't be Surprised (Every Trick in the Book)","conditions":["surprised"]},
+      {"type":"SneakAttackImmunity","label":"No Sneak Attack damage (Every Trick in the Book)"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you can't be Surprised, hidden or invisible attackers get no Edge against you, and you don't take Sneak Attack damage.</p>"

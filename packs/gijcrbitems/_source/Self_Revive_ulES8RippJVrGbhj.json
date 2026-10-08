@@ -5,6 +5,9 @@
   "_id": "ulES8RippJVrGbhj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Self-Revive","when":["self:status:defeated"],"limit":{"per":"encounter"},"steps":[{"do":"updateActor","set":{"system.health.value":1}},{"do":"removeCondition","condition":"defeated"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per combat, while you're Defeated, regain 1 Health and clear Defeated.</p>"

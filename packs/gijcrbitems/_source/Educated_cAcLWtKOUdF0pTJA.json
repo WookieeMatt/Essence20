@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Add a Story Point to the pool","limit":{"per":"encounter","key":"educated"},"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Story Point to the team's pool."}]}
+    ],
+    "prerequisites": {"when":["self:essence:smarts>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: adds a Story Point to the team pool for the session. Roll Options Dialog: once per day, a switch to count as Specialized on a Smarts skill. The extra language is noted on your sheet by you.</p>"
@@ -13,7 +17,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 131
     },
-    "prerequisite": "Smarts Essence 3",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -5,6 +5,9 @@
   "_id": "GiTU07xFJACmUYt2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reaction","label":"Shoot Out: contest the shot","attackOnly":true,"limit":{"per":"turn","max":1},"when":["attack:ranged","target:data:id","self:wielding:item:trait:ballistic&item:data:system.classification.style!=melee"],"steps":[{"do":"roll","skill":"wielded:item:trait:ballistic&item:data:system.classification.style!=melee","dif":"@var.total + 1","onSuccess":[{"do":"negateHit"},{"do":"chat","when":["var:margin>=0"],"text":"{name} wins the shoot-out - the shot has no effect."}],"onFail":[{"do":"convertRows"},{"do":"chat","when":["var:margin<0"],"text":"{name} loses the shoot-out - the shot hits."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per turn, when an enemy makes a ranged attack against you and you hold a Ballistic weapon, a button rolls your attack against theirs. Win and the attack misses; lose or tie and it hits.</p>"

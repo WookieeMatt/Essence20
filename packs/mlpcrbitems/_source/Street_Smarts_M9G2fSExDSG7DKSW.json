@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Edge on your next roll","limit":{"per":"encounter"},"steps":[{"do":"bank","label":"Street Smarts","edge":true}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per scene, your next Skill Test gets Edge, labelled Street Smarts in your Roll Options Dialog. Use it when you're cheating or working a test underhandedly. Left to the table: GM approval, the once-per-day limit, and losing Friendship Points for the scene if the test fails.</p>"

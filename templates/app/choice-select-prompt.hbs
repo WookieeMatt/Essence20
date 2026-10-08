@@ -16,9 +16,10 @@
   {{/if}}
   <div class="choice-buttons {{#if searchable}}choice-list{{/if}}">
     {{#each choices as |choice|}}
-      <div class="choice" data-search="{{choice.search}}" data-group="{{choice.group}}">
-        <button type="button" {{#if choice.name}} name="{{choice.name}}" {{/if}} value="{{choice.value}}" data-action="{{../type}}">
-          <span>{{choice.label}}</span>
+      <div class="choice{{#if choice.unmet}} is-unmet{{/if}}" data-search="{{choice.search}}" data-group="{{choice.group}}">
+        <button type="button" {{#if choice.name}} name="{{choice.name}}" {{/if}} value="{{choice.value}}" data-action="{{../type}}"
+          {{#if choice.unmet}}data-tooltip="{{choice.unmet}}"{{/if}} {{#if choice.blocked}}disabled{{/if}}>
+          <span>{{#if choice.unmet}}<i class="fas fa-times"></i> {{/if}}{{choice.label}}</span>
           {{#if choice.detail}}<span class="choice-detail">{{choice.detail}}</span>{{/if}}
         </button>
         {{#if choice.uuid}}

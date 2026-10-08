@@ -5,6 +5,10 @@
   "_id": "jkuNDvRt4D9jyDsn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Challenge a creature","cost":{"action":"free"},"limit":{"per":"encounter"},"steps":[{"do":"target","beforeCost":true},{"do":"table","formula":"min(1, @target.system.level) * (@actor.system.level - @target.system.level)","rows":[{"min":1,"max":1000,"text":"Target a creature of your level or higher.","steps":[{"do":"require","check":["var:rolled<=0"]}]}],"when":["not:target:type:vehicle"],"beforeCost":true},{"do":"table","formula":"min(1, @target.system.threatLevel) * (@actor.system.level - @target.system.threatLevel)","rows":[{"min":1,"max":1000,"text":"Target a creature of your level or higher.","steps":[{"do":"require","check":["var:rolled<=0"]}]}],"when":["target:type:vehicle"],"beforeCost":true},{"do":"require","check":[{"any":["not:combat:exists","not:self:actionUsed:standard"]}],"message":"Your Standard action is already spent this turn.","beforeCost":true},{"do":"pick","key":"duel","from":"list","prompt":"Does the challenged creature accept?","options":[["accept","E20.Tf2DukeAccept"],["refuse","E20.Tf2DukeRefuse"]],"beforeCost":true},{"do":"mark","key":"dukeRefused","to":"target","perSetter":true,"until":"nextTurnOrScene","when":["var:picked=refuse"]},{"do":"chat","text":"{target} refused: Edge on your Skill Tests targeting them until your next turn.","when":["var:picked=refuse"]},{"do":"chat","text":"{target} accepted the duel.","when":["var:picked=accept"]}]},
+      {"type":"RollModifier","label":"Duke It Out","edge":true,"when":["markedByMe:dukeRefused"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per combat, before you use your Standard action, target a creature of your level or higher and choose whether it accepts. If it refuses, your tests against it get Edge until your next turn starts, labelled Duke It Out in your Roll Options Dialog. If it accepts, a card walks you through the melee exchange.</p>"

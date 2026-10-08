@@ -5,9 +5,13 @@
   "_id": "2qb5dV11qvWsN4xJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Deconstructionist (equipment gains Snag for 1 turn on success)","key":"deconstructionist","forget":true,"when":["skill:technology"]},
+      {"type":"Trigger","event":"hit","label":"Deconstructionist","when":["roll:switch:deconstructionist"],"steps":[{"do":"bank","to":"target","label":"Deconstructionist","snag":true,"uses":99,"until":"endOfNextTurnOrScene","untilOf":"target","replace":true,"when":[{"any":["target:data:type=vehicle","target:data:type=zord"]},{"any":["target:data:type=zord","target:data:system.traits.computerized"]}]},{"do":"chat","text":"{target} isn't Computerized: Deconstructionist has no effect on it.","when":["target:data:type=vehicle","not:target:data:system.traits.computerized"]},{"do":"pick","key":"deconstructed","from":"targetItem","itemType":["weapon","armor","gear","shield"],"filter":["item:trait:computerized"],"prompt":"Which of its Computerized equipment did you disrupt?","when":["not:target:data:type=vehicle","not:target:data:type=zord"]},{"do":"bank","to":"target","label":"Deconstructionist","snag":true,"uses":99,"until":"endOfNextTurnOrScene","untilOf":"target","replace":true,"appliesWhen":["item:usesItem:{var.picked}"],"when":["not:target:data:type=vehicle","not:target:data:type=zord"]}]}
+    ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Roll Options Dialog: on Technology tests, tick the Deconstructionist switch. Automatic: on a success against a targeted vehicle, its next test takes a Snag, shown as Deconstructionist next to Snag in its Roll Options Dialog.</p><p>Left to the table: setting up the contest or DIF, the Snag on equipment that isn't a vehicle, and skipping distraction ↓ when you disrupt equipment.</p>"
+      "notes": "<p>Roll Options Dialog: on Technology tests, tick the Deconstructionist switch. Automatic: on a success against a Computerized vehicle, or a Zord, all its Skill Tests take a Snag until the end of its next turn (out of combat, the scene); a vehicle without the Computerized trait is unaffected. Against a creature, you pick the piece of its Computerized equipment you disrupted (only items with the Computerized trait, their own or from an upgrade, are offered) and only its tests using that item take the Snag. Shown as Deconstructionist next to Snag in its Roll Options Dialog. Left to the table: the Standard action, setting up the contest or DIF, and skipping distraction ↓ when you disrupt equipment.</p>"
     },
     "originalId": "",
     "actionType": "standard",

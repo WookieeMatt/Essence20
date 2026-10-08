@@ -5,6 +5,10 @@
   "_id": "OmoH5AtiMTb5BRS4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"day","maxUses":1,"shiftUp":1}
+    ],
+    "prerequisites": {"when":["self:hasType:origin:Brought Back"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Chat card: once per day, when a Skill Die on your Skill Test came up 1, a reroll button rerolls your Skill Die one size bigger (↑1), keeping your d20.</p><p>Left to the table: keeping it to once per session.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Brought Back Origin",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",
@@ -33,16 +37,7 @@
     },
     "type": "origin",
     "value": 0,
-    "version": "powerRangers",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "skillDice",
-      "maxUses": 1,
-      "reset": "day",
-      "bonus": 0,
-      "shiftUp": 1
-    }
+    "version": "powerRangers"
   },
   "effects": [],
   "sort": 0,

@@ -5,6 +5,9 @@
   "_id": "KeDQbX62owtITKDo",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Electric Discharge: Targeting against Evasion","event":"powerUsed","when":["item:own"],"steps":[{"do":"rollCheck","skill":"targeting","essence":"speed","shiftUp":1,"shiftDown":0,"defense":"evasion","damage":{"value":1,"type":"electric"}}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend a daily nanomite use for a Targeting attack at 10 ft for 1 Electric damage, with the Electric ↑1.</p><p>Left to the table: swapping in Finesse or Might against a target in reach.</p>"
@@ -17,7 +20,6 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,

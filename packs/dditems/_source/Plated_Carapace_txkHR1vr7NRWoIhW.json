@@ -5,6 +5,10 @@
   "_id": "txkHR1vr7NRWoIhW",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:has:Insecticon","self:has:Monstrosity"]}]},
+    "rules": [
+      {"type":"Defense","defense":"toughness","amount":2,"when":["self:transformed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while worn, +2 Toughness, rising to +4 in Alt Mode.</p>"
@@ -23,7 +27,7 @@
     "benefit": "+2 Toughness, +4 in Alt Mode.",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Insecticon or Monstrosity only"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

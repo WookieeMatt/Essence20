@@ -5,6 +5,10 @@
   "_id": "HBwUVB3ur8WV9fsF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"CQB Training (no Reach ↓ on ranged attacks)","immune":["reachDownshift"],"when":["attack:ranged"]}
+    ],
+    "prerequisites": {"when":["self:skill:targeting>=d2"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your ranged attacks against a target whose reach you are inside don't take the usual ↓1, so no Reach entry appears in your Roll Options Dialog.</p>"
@@ -15,7 +19,7 @@
       "book": "Quartermaster's Guide to Gear",
       "page": 28
     },
-    "prerequisite": "Targeting +d2",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -5,6 +5,11 @@
   "_id": "N36G5U8c8HSX3e9c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Easy In, Easy Out","scope":"incoming","when":["skill:alertness"],"snag":true},
+      {"type":"Trigger","label":"Invisible until your next turn (Easy In, Easy Out)","event":"conditionGained","when":["self:status:invisible","combat:exists","self:hasItem:Compendium.essence20.tf_crb.Item.aD6N6hTvFhsQFZnB"],"steps":[{"do":"setToggle","key":"easyInvisible","value":true}]},
+      {"type":"Trigger","label":"Invisibility ends (Easy In, Easy Out)","event":"turnStart","when":["self:toggle:easyInvisible"],"steps":[{"do":"chat","when":["self:status:invisible"],"text":"{name} is no longer invisible."},{"do":"removeCondition","condition":"invisible"},{"do":"setToggle","key":"easyInvisible","value":false}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Alertness Tests made against you (with you targeted) take a Snag, labelled Easy In, Easy Out in the roller's Roll Options Dialog. When you use Disappear in combat, you stay invisible until the start of your next turn.</p>"

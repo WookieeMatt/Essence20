@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Monster Hunter","when":["skill:survival",{"any":["target:tag:non-humanoid","target:tag:nonhumanoid","target:tag:monster"]},"not:target:tag:robot","not:target:tag:robotic","not:target:tag:bot","not:target:tag:cybertronian","not:target:tag:android","not:target:tag:drone","not:target:tag:machine","not:target:tag:cog","not:target:tag:zord","not:target:tag:mechanical","not:target:tag:vehicle","not:target:tag:computerized"],"edge":true},
+      {"type":"CriticalOption","label":"Snag on their next attack","effect":"nextAttackSnag","when":[{"any":["target:tag:non-humanoid","target:tag:nonhumanoid","target:tag:monster"]},"not:target:tag:robot","not:target:tag:robotic","not:target:tag:bot","not:target:tag:cybertronian","not:target:tag:android","not:target:tag:drone","not:target:tag:machine","not:target:tag:cog","not:target:tag:zord","not:target:tag:mechanical","not:target:tag:vehicle","not:target:tag:computerized"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Survival rolls against a targeted non-humanoid get Edge, labelled Monster Hunter in the Roll Options Dialog. Chat card: on a Critical Success against one, a button gives it a Snag on its next attack.</p>"

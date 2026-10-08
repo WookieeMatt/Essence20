@@ -5,6 +5,11 @@
   "_id": "9tIkV50YiO3xqxvi",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","when":["attack","item:damageType:maneuver","self:data:flags.essence20.digInActive"],"snag":true},
+      {"type":"Use","label":"Dig in or get up","steps":[{"do":"choose","auto":true,"options":[{"label":"Dig in","when":["not:self:data:flags.essence20.digInActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.digInActive":true}},{"do":"chat","text":"{name} digs in."}]},{"label":"Stop digging in","when":["self:data:flags.essence20.digInActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.digInActive":false}},{"do":"chat","text":"{name} is no longer dug in."}]}]}]},
+      {"type":"ConditionImmunity","label":"Dug in (immune to Prone)","conditions":["prone"],"when":["self:data:flags.essence20.digInActive"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Move action): dig in or stop. While dug in, Maneuver attacks against you (grapple, shove, trip) take a Snag, labelled Dig In in the attacker's Roll Options Dialog, and you can't be knocked Prone.</p>"

@@ -5,6 +5,10 @@
   "_id": "LyOKEFZd8vriKLOs",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Stun lasts 1 turn longer (Lingering)","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.damageType=stun"],"path":"system.damageValue","op":"add","value":1,"when":["rule:firstOnHost"]},
+      {"type":"ItemModifier","label":"Cover lasts 1 turn longer (Lingering)","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.damageType=cover"],"path":"system.damageValue","op":"add","value":1,"when":["rule:firstOnHost"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: the weapon's Stun and Cover effects last 1 turn longer.</p>"

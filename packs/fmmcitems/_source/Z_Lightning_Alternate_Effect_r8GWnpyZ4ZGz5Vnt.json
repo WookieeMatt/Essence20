@@ -14,7 +14,7 @@
     "damageType": "electric",
     "damageValue": 3,
     "shiftDown": 2,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 6,
     "radius": 0,
     "range": {

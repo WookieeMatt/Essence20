@@ -5,6 +5,7 @@
   "_id": "snZJ8EnTe129an2X",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["not:host:trait:amphibious"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains Amphibious, so it takes no penalty when the scene is set underwater.</p>"

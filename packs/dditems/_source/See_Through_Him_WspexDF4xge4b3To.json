@@ -5,6 +5,10 @@
   "_id": "WspexDF4xge4b3To",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Word of Unicron","self:skill:culture>=d6"]},
+    "rules": [
+      {"type":"RollModifier","edge":true,"when":["skill:alertness","self:data:system.energon.dark.value>=1"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you hold at least 1 Dark Energon, your Alertness Tests get Edge, labelled See Through Him in the Roll Options Dialog.</p>"
@@ -15,7 +19,7 @@
       "book": "Decepticon Directive",
       "page": 111
     },
-    "prerequisite": "Word of Unicron; Culture d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

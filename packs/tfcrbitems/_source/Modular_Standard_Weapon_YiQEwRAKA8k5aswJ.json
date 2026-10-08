@@ -5,6 +5,7 @@
   "_id": "YiQEwRAKA8k5aswJ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","host:data:system.classification.size=long","host:data:system.classification.size=heavy"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>When you attach it, choose a Standard weapon; its attacks are added to this weapon as alternate effects.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Medium or Larger"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

@@ -5,6 +5,10 @@
   "_id": "Zd2ZordFeatSlot1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Zord Feature: a Zord Feature for your Zord","when":["not:self:hasItem:Compendium.essence20.field_guide_action_adventure.Item.LoLucUviYKvUq5XR"],"steps":[{"do":"require","check":["self:ownsZord"],"message":"{name} has no Zord to give the Feature to."},{"do":"pickGrant","from":{"type":"feature","notOwned":true},"to":"ownZord"}]},
+      {"type":"Trigger","event":"added","label":"Zord Feature: a Zord Feature for your Zord Ultra Mode","when":["self:hasItem:Compendium.essence20.field_guide_action_adventure.Item.LoLucUviYKvUq5XR"],"steps":[{"do":"pickGrant","from":{"type":"feature","notOwned":true},"to":"self"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you gain this, you pick a Zord Feature to add to your Zord.</p>"
@@ -13,10 +17,10 @@
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 32
+      "page": 33
     },
     "prerequisite": "",
-    "selectionLimit": 4,
+    "selectionLimit": 5,
     "type": "role"
   },
   "effects": [],

@@ -5,6 +5,11 @@
   "_id": "L98MDWiqeH8fp2Fz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"x2","label":"Vibrating Palm (unarmed Critical Success: +1 Story Point)","when":["attack:unarmed"],"limit":{"per":"encounter"},"steps":[{"do":"grantStoryPoint","optional":true}]},
+      {"type":"Use","label":"Vibrating Palm (spend a Story Point: Defeat the target)","cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"target","max":1,"beforeCost":true},{"do":"updateActor","to":"target","set":{"system.health.value":0}},{"do":"applyCondition","condition":"defeated","to":"target"}]}
+    ],
+    "prerequisites": {"when":["self:level>=18","self:hasType:influence:Martial Artist",{"any":["self:skill:might>=d12","self:skill:finesse>=d12"]}]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: a Critical Success with an unarmed attack earns a Story Point. Use button: spend a Story Point to Defeat your current target outright.</p><p>Left to the table: holding the Story Point gain to once per mission (the system limits it per Combat).</p>"
@@ -16,7 +21,7 @@
       "page": 31
     },
     "items": {},
-    "prerequisite": "Level 18, Martial Artist Influence, Might or Finesse +d12",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

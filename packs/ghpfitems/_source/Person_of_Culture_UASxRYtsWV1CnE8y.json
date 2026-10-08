@@ -5,13 +5,17 @@
   "_id": "UASxRYtsWV1CnE8y",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Hint without a Story Point (DIF 15 Culture)","limit":{"per":"scene","onlyOnSuccess":true},"steps":[{"do":"roll","skill":"culture","dif":15,"onSuccess":[{"do":"chat","text":"{name} works out the hint with Culture - no Story Point spent."}],"onFail":[{"do":"spend","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} failed the Culture test; a Story Point is spent for the hint."}]}]}
+    ],
+    "prerequisites": {"when":["self:skill:culture>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: when you would spend a Story Point for a hint, roll the DIF 15 Culture test; on a success the point isn't spent (once per scene).</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Culture +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

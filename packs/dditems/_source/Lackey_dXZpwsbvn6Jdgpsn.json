@@ -5,6 +5,9 @@
   "_id": "dXZpwsbvn6Jdgpsn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Lackey: helped from any distance","side":"receive","effect":"anyRange"}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: allies can Lend Assistance to you from any distance, not just nearby.</p><p>Left to the table: whether they can actually get their help to you from where they are.</p>"

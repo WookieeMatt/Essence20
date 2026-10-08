@@ -5,6 +5,9 @@
   "_id": "101HiYiWfoxoO1hL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","upshift":6,"when":["item:type:weaponEffect",{"any":["item:damageType:emp","weapon:trait:electromagnetic"]},"target:data:system","not:target:data:system.traits.computerized","not:target:check:computerizedGear"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your Electromagnetic attacks treat living targets as robots when that helps you.</p><p>Left to the table: other robot rules, such as using Technology to give first aid to a living creature.</p>"

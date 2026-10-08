@@ -5,6 +5,16 @@
   "_id": "SyHx2pheoELFpvTF",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Toggle","key":"inEnvironment","label":"In the chosen environment (scene with no terrain set)","legacy":"flags.essence20.s1InEnvironmentNow"},
+      {"type":"Use","label":"Choose the environment","steps":[{"do":"pick","key":"environment","from":"list","prompt":"Choose the environment your camouflage is made for","options":[["arctic","E20.EnvironmentArctic"],["desert","E20.EnvironmentDesert"],["grasslands","E20.EnvironmentGrasslands"],["mountains","E20.EnvironmentMountains"],["sea","E20.EnvironmentSea"],["urban","E20.EnvironmentUrban"],["wetlands","E20.EnvironmentWetlands"],["woodlands","E20.EnvironmentWoodlands"]],"legacy":"flags.essence20.s1Environment"}]},
+      {"type":"Use","label":"In or out of the chosen environment (scene with no terrain set)","when":["not:terrain:set","rule:data:flags.essence20.rules.choices.environment"],"steps":[{"do":"setToggle","key":"inEnvironment","value":"toggle"},{"do":"chat","text":"{name} is in the chosen environment: the armor applies to Evasion and Toughness.","when":["self:toggle:inEnvironment"]},{"do":"chat","text":"{name} is no longer in the chosen environment.","when":["not:self:toggle:inEnvironment"]}]},
+      {"type":"Defense","defense":"evasion","amount":"@host.system.totalBonusToughness * (1 - @host.system.isPowerArmor)","when":["self:type:playerCharacter","not:self:morphed","terrain:set","terrain:{choice.environment}"]},
+      {"type":"Defense","defense":"evasion","amount":"@host.system.totalBonusToughness * (1 - @host.system.isPowerArmor)","when":["self:type:playerCharacter","not:self:morphed","not:terrain:set","rule:data:flags.essence20.rules.choices.environment","self:toggle:inEnvironment"]},
+      {"type":"Defense","defense":"toughness","amount":"@host.system.totalBonusEvasion * (1 - @host.system.isPowerArmor)","when":["self:type:playerCharacter","not:self:morphed","terrain:set","terrain:{choice.environment}"]},
+      {"type":"Defense","defense":"toughness","amount":"@host.system.totalBonusEvasion * (1 - @host.system.isPowerArmor)","when":["self:type:playerCharacter","not:self:morphed","not:terrain:set","rule:data:flags.essence20.rules.choices.environment","self:toggle:inEnvironment"]}
+    ],
+    "prerequisites": {"when":["host:trait:silent","not:host:trait:computerized"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose the terrain. In matching terrain the armor's Toughness bonus also applies to Evasion (and the reverse); on scenes with no terrain set, use the manual switch.</p>"
@@ -23,7 +33,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Silent, not Computerized"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

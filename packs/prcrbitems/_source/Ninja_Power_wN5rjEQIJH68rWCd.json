@@ -5,9 +5,21 @@
   "_id": "wN5rjEQIJH68rWCd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"element","label":"Element","from":"element","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:unarmed","self:morphed","self:data:flags.essence20.ninjaPowerActive"]},
+      {"type":"RollModifier","label":"Ninja Power","when":["essence:speed","self:morphed","self:data:flags.essence20.ninjaPowerActive"],"edge":true},
+      {"type":"DamageType","label":"Ninja Power (the chosen element)","to":"{choice.element}","priority":-2,"when":["attack:barehanded","skill:finesse","self:morphed","self:data:flags.essence20.ninjaPowerActive"]},
+      {"type":"Trigger","event":"morph","label":"Ninja Power (spend 1 Power to activate it)","prompt":true,"when":["not:self:data:flags.essence20.ninjaPowerActive","self:data:system.powers.personal.value>=1"],"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"updateActor","to":"self","set":{"flags.essence20.ninjaPowerActive":true}},{"do":"chat","text":"{lang.Pr3NinjaOnLine}"}]},
+      {"type":"Trigger","event":"unmorph","label":"Ninja Power ends","when":["self:data:flags.essence20.ninjaPowerActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.ninjaPowerActive":false}}]},
+      {"type":"Use","label":"Ninja jump (20 ft, Free)","cost":{"action":"free"},"when":["self:morphed","self:data:flags.essence20.ninjaPowerActive"],"steps":[{"do":"mark","key":"ninjaJump","to":"self","until":"endOfRound","when":["combat"]},{"do":"chat","text":"{lang.Pr3NinjaJumped}"}]},
+      {"type":"Use","label":"Switch Ninja Power off","when":["self:data:flags.essence20.ninjaPowerActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.ninjaPowerActive":false}},{"do":"chat","text":"{lang.Pr3NinjaOffLine}"}]},
+      {"type":"RollModifier","scope":"incoming","label":"Ninja Power jump (↓1)","downshift":1,"when":["attack","self:marked:ninjaJump"]}
+    ],
+    "prerequisites": {"when":["self:data:system.powers.personal.max>=4"]},
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: spend 1 Power to switch Ninja Power on (free to switch off). While Morphed: +1 Unarmed damage, Edge on Speed tests and your chosen element on Finesse Unarmed attacks. The jump option gives attacks against you ↓1 for the round; move your token yourself.</p>"
+      "notes": "<p>When you Morph you're asked whether to spend 1 Power to activate Ninja Power; it ends when you un-Morph (or switch it off with the Use button). While Morphed with it: +1 Unarmed damage, Edge on Speed tests and your chosen element on Finesse Unarmed attacks. Use button: the Free-action jump gives attacks against you ↓1 for the rest of the round; move your token yourself.</p>"
     },
     "originalId": "",
     "description": "",
@@ -15,12 +27,12 @@
       "book": "Power Rangers Core Rulebook",
       "page": 97
     },
-    "prerequisite": "Max Personal Power 4+",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
     "choice": null,
-    "choiceType": "elementDamageType",
-    "hasChoice": true,
+    "choiceType": "none",
+    "hasChoice": false,
     "numChoices": 1
   },
   "effects": [],

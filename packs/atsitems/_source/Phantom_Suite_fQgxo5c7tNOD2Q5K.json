@@ -5,6 +5,10 @@
   "_id": "fQgxo5c7tNOD2Q5K",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch Phantom Suite on","when":["not:self:data:flags.essence20.phantomSuiteActive"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"updateActor","set":{"flags.essence20.phantomSuiteActive":true}}]},
+      {"type":"Use","label":"Switch Phantom Suite off","when":["self:data:flags.essence20.phantomSuiteActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.phantomSuiteActive":false}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: while Morphed, spend 1 Personal Power to turn it on: ↑1 and Edge on Infiltration and your Phantom Suite Evasion bonus. It switches off by itself when an attack against your Evasion damages you.</p>"

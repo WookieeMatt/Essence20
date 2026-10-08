@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reaction","who":"allyOfTarget","within":5,"outcome":"hit","when":["attack:melee","not:target:self",{"any":["self:specializedIn:finesse","self:data:system.skills.finesse.isSpecialized"]},"self:wielding:item:data:system.classification.skill=finesse","self:skill:finesse>=d2"],"steps":[{"do":"lowerTotal","when":["self:skill:finesse=d2"],"amount":"1d2"},{"do":"lowerTotal","when":["self:skill:finesse=d4"],"amount":"1d4"},{"do":"lowerTotal","when":["self:skill:finesse=d6"],"amount":"1d6"},{"do":"lowerTotal","when":["self:skill:finesse=d8"],"amount":"1d8"},{"do":"lowerTotal","when":["self:skill:finesse=d10"],"amount":"1d10"},{"do":"lowerTotal","when":["self:skill:finesse=d12"],"amount":"1d12"},{"do":"lowerTotal","when":["self:skill:finesse=2d8"],"amount":"2d8"},{"do":"lowerTotal","when":["self:skill:finesse=3d6"],"amount":"3d6"}]}
+    ],
+    "prerequisites": {"when":["self:essence:speed>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when an adjacent ally is hit in melee and you wield a Finesse weapon with a Finesse Specialization, a button rolls your Finesse die to lower the attack, cancelling the hit if it drops below the target's Defense.</p>"
@@ -13,7 +17,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 93
     },
-    "prerequisite": "Speed 3 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

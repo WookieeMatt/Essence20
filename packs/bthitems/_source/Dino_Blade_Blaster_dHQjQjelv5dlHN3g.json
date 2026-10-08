@@ -61,15 +61,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:has:Dino Charge Morpher","self:has:Dino Saber"]},
     "requirements": {
-      "custom": "Requires a Dino Charge Morpher and a Dino Saber",
+      "custom": "",
       "skill": null,
       "shift": "none"
     },

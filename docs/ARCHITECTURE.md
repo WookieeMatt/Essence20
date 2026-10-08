@@ -50,7 +50,21 @@ essence20/
 │   ├── sheets/              one class per actor type + base-actor-sheet + item-sheet
 │   ├── sheet-handlers/      drag-drop and multi-step orchestration
 │   ├── apps/                ApplicationV2 windows
-│   ├── helpers/             infrastructure + one file per automated ability
+│   ├── rules/               the item-rules engine (system.rules): types, predicate, steps, triggers, adapter ...
+│   │   └── plugins/         engine pieces added through the register* functions, by topic (zords, combat, rolls,
+│   │                        dialog, cards, resources, picks, marks, effects, tags, shared); plugins/index.mjs
+│   │                        imports them in registration order
+│   ├── mechanics/           shared systems, not tied to one item
+│   │   ├── item-hooks.mjs   the registry item code registers with (roll sources, hit riders, Uses, dialog toggles ...)
+│   │   └── actions/ combat/ rolls/ resources/ characters/ vehicles/ companions/ world/
+│   ├── items/               item-specific code that is still code, grouped by mechanic
+│   │   ├── index.mjs        imports every item file that registers on load
+│   │   ├── attacks/ defenses/ movement/ rolls/ resources/ healing/ social/ magic/ forms/
+│   │   ├── zords/ vehicles/ gear/ senses/
+│   │   ├── shared/          lookups and helpers several item files share
+│   │   └── tests/           tests covering several item files at once
+│   ├── importers/           book / PDF / journal / map / stat-block importers
+│   ├── util/                small generic utilities (utils, localize, templates, config, enrichers)
 │   ├── canvas/              token ruler
 │   └── tours/               guided tour registration
 │
@@ -243,7 +257,7 @@ templates/actor/
     └── items/<type>/{container,details}.hbs
 ```
 
-> **Every partial must be registered in `module/helpers/templates.mjs`.** An unregistered `.hbs`
+> **Every partial must be registered in `module/util/templates.mjs`.** An unregistered `.hbs`
 > silently fails to load.
 
 Item rows on actor sheets use the `container.hbs` / `details.hbs` pair — collapsed row with chips,
@@ -363,19 +377,19 @@ Features that span layers. Each has a wiki page for the user-facing view.
 
 | Subsystem | Lives in | Notes |
 | --- | --- | --- |
-| **Roll pipeline** | `dice.mjs` + `helpers/roll-dialog.mjs` + `apps/roll-options-dialog.mjs` | Three phases; `addSource` contract |
-| **Action economy** | `helpers/action-economy.mjs`, `documents/combat.mjs`, `documents/token.mjs`, `apps/combat-tracker.mjs` | Budget on the actor, ledger on the combatant, four enforcement modes |
-| **Scene Clock** | `helpers/scene-clock.mjs`, surfaced in `apps/story-points.mjs` | Scene and Encounter counters, GM-advanced; replaces `game.combat.id` stamping |
-| **Story Points** | `helpers/story-points.mjs`, `helpers/party.mjs`, `apps/story-points.mjs` | Pool lives on the primary Party actor so it can be permissioned |
-| **Party / Squad** | `data/actor/party.mjs`, `sheets/party-sheet.mjs`, `apps/essence20-actor-directory.mjs`, `helpers/party.mjs`, `helpers/requisition.mjs` | Foundry core has no party concept; all custom |
-| **Active Effects** | `helpers/effect-catalog.mjs`, `apps/effect-wizard.mjs`, `scripts/check-effect-keys.mjs` | One vocabulary, four consumers |
-| **Areas of effect** | `helpers/aoe-targeting.mjs`, `helpers/aoe-expiry.mjs`, `data/aoe-schema.mjs` | Built on v14 Region placement, not `MeasuredTemplate` |
-| **Rerolls** | `helpers/reroll.mjs`, `data/reroll-schema.mjs`, `chat.mjs` | Config-driven; never hand-roll |
-| **Morph / Alt Mode** | `helpers/morph-state.mjs`, driven from `Actor#_onUpdate` | Status effect + header badge + chat line + token image |
-| **Importers** | `apps/{stat-block,book-description,adventure}-importer.mjs`, `helpers/book-*.mjs`, `helpers/pdf-reader.mjs` | PDFs are read in the browser and never uploaded |
-| **Compendium Browser** | `apps/compendium-browser*.mjs`, `helpers/compendium-browser.mjs` | Launched from the Compendium and Item directory footers |
+| **Roll pipeline** | `dice.mjs` + `mechanics/rolls/roll-dialog.mjs` + `apps/roll-options-dialog.mjs` | Three phases; `addSource` contract |
+| **Action economy** | `mechanics/actions/action-economy.mjs`, `documents/combat.mjs`, `documents/token.mjs`, `apps/combat-tracker.mjs` | Budget on the actor, ledger on the combatant, four enforcement modes |
+| **Scene Clock** | `mechanics/resources/scene-clock.mjs`, surfaced in `apps/story-points.mjs` | Scene and Encounter counters, GM-advanced; replaces `game.combat.id` stamping |
+| **Story Points** | `mechanics/resources/story-points.mjs`, `mechanics/resources/party.mjs`, `apps/story-points.mjs` | Pool lives on the primary Party actor so it can be permissioned |
+| **Party / Squad** | `data/actor/party.mjs`, `sheets/party-sheet.mjs`, `apps/essence20-actor-directory.mjs`, `mechanics/resources/party.mjs`, `mechanics/resources/requisition.mjs` | Foundry core has no party concept; all custom |
+| **Active Effects** | `mechanics/characters/effect-catalog.mjs`, `apps/effect-wizard.mjs`, `scripts/check-effect-keys.mjs` | One vocabulary, four consumers |
+| **Areas of effect** | `mechanics/combat/aoe-targeting.mjs`, `mechanics/combat/aoe-expiry.mjs`, `data/aoe-schema.mjs` | Built on v14 Region placement, not `MeasuredTemplate` |
+| **Rerolls** | `mechanics/rolls/reroll.mjs`, `data/reroll-schema.mjs`, `chat.mjs` | Config-driven; never hand-roll |
+| **Morph / Alt Mode** | `mechanics/characters/morph-state.mjs`, driven from `Actor#_onUpdate` | Status effect + header badge + chat line + token image |
+| **Importers** | `apps/{stat-block,book-description,adventure}-importer.mjs`, `helpers/book-*.mjs`, `importers/pdf-reader.mjs` | PDFs are read in the browser and never uploaded |
+| **Compendium Browser** | `apps/compendium-browser*.mjs`, `util/compendium-browser.mjs` | Launched from the Compendium and Item directory footers |
 | **Tours** | `tours/*.json`, `module/tours/` | Sheet tours build a throwaway demo actor |
-| **Enrichers** | `helpers/enrichers.mjs` | `@Check[skill=… dif=… defense=… spec=…]{label}`; DIF is GM-only |
+| **Enrichers** | `util/enrichers.mjs` | `@Check[skill=… dif=… defense=… spec=…]{label}`; DIF is GM-only |
 
 ---
 
@@ -476,13 +490,13 @@ Read settings through the `setting(key)` helper.
 | Change a computed stat | `documents/actor.mjs` `_prepare*` |
 | React to an actor changing | `Actor#_onUpdate` |
 | React to turn / round boundaries | `Combat#_onStartTurn` / `_onEndRound` |
-| Charge or block token movement | `TokenDocument#_preUpdateMovement` + `helpers/token-movement.mjs` |
+| Charge or block token movement | `TokenDocument#_preUpdateMovement` + `mechanics/combat/token-movement.mjs` |
 | Add a field | `data/**` + `template.json` (+ `effect-catalog.mjs` if targetable) |
 | Add a sheet control | the sheet's `actions` map |
 | Change drop behaviour | `sheet-handlers/` |
 | Add a roll modifier | `dice.mjs#_getAutomaticCombatModifiers` + **`addSource`** |
 | Add a chat card button | `chat.mjs` + `renderChatMessageHTML` |
-| Add an enum | `helpers/config.mjs` |
+| Add an enum | `util/config.mjs` |
 | Add a string | `lang/en.json` |
-| Add a partial | `templates/` + **register in `helpers/templates.mjs`** |
+| Add a partial | `templates/` + **register in `util/templates.mjs`** |
 | Automate an ability | a new `helpers/<ability>.mjs` + `.test.js` |

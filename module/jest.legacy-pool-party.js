@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 /**
  * A stand-in primary Party for unit tests, whose Story Point pool is the mocked world setting.
  *
- * The pool lives on the primary Party actor (helpers/story-points.mjs, helpers/party.mjs). Suites
+ * The pool lives on the primary Party actor (mechanics/resources/story-points.mjs, mechanics/resources/party.mjs). Suites
  * written before it moved there express it as the world setting it used to be -
  * `game.settings.get = jest.fn(() => 2)` meant two Story Points - so this Party reads its pool
  * from that mock and those suites keep meaning what they say. It is not an owner, so a spend

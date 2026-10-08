@@ -5,6 +5,9 @@
   "_id": "qnRFb2A0sLpSg2sL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"initiativeRolling","label":"We Improvise (first Initiative this combat: +1 Story Point)","when":["combat:exists","not:self:windowUsed:weImproviseUsedThisEncounter:encounter"],"steps":[{"do":"grantStoryPoint"},{"do":"storyPointsExpire","message":"E20.ResWeImproviseLost"},{"do":"markWindow","flag":"weImproviseUsedThisEncounter","window":"encounter"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your first Initiative roll in each combat adds a Story Point to the team's pool; any of those left unspent are removed when combat ends.</p>"

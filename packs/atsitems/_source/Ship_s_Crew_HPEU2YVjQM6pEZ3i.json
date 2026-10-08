@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Ship's Crew: help at any rank aboard","side":"give","effect":"anyRank","when":["vehicle:crew"]},
+      {"type":"RollModifier","label":"Ship's Crew","when":[{"any":["skill:driving","skill:technology"]},"vehicle:crew"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you crew a vehicle, your Driving and Technology rolls open the Roll Options Dialog with Edge already selected. Aboard, you can Lend Assistance even without ranks in the Skill.</p>"

@@ -5,6 +5,13 @@
   "_id": "QmOeCUODYACCKiWG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Set the Contingency","cost":{"action":"free"},"limit":{"per":"turn","max":1},"steps":[{"do":"setToggle","key":"armed","value":true,"until":"combat"},{"do":"chat","text":"{name} sets a Contingency."}]},
+      {"type":"Trigger","event":"turnStart","when":["self:toggle:armed"],"steps":[{"do":"setToggle","key":"armed","value":false}]},
+      {"type":"Reaction","who":"enemyOfAttacker","per":"card","attackOnly":true,"when":[{"any":["not:combat:exists","self:toggle:armed"]},{"any":["item:data:system.classification.style=explosive","weapon:trait:thrown"]},"self:wielding:item:data:system.classification.skill=targeting"],"steps":[{"do":"setToggle","key":"armed","value":false,"when":["self:hasItem:Compendium.essence20.quartermasters_guide_to_gear.Item.YDv7PPjj6qgqKI9e"]},{"do":"roll","skill":"targeting","dif":"@var.total","onSuccess":[{"do":"negateHit","rows":"all"},{"do":"chat","text":"{name} shoots the incoming weapon down - it misses its target (an explosive's blast is measured from where it was destroyed)."}],"when":["self:hasItem:Compendium.essence20.quartermasters_guide_to_gear.Item.YDv7PPjj6qgqKI9e"]},{"do":"choose","when":["not:self:hasItem:Compendium.essence20.quartermasters_guide_to_gear.Item.YDv7PPjj6qgqKI9e"],"prompt":"Is the incoming weapon within your weapon's normal range?","options":[{"label":"Yes","steps":[{"do":"setToggle","key":"armed","value":false},{"do":"roll","skill":"targeting","dif":"@var.total","onSuccess":[{"do":"negateHit","rows":"all"},{"do":"chat","text":"{name} shoots the incoming weapon down - it misses its target (an explosive's blast is measured from where it was destroyed)."}]}]},{"label":"No (Snag)","steps":[{"do":"setToggle","key":"armed","value":false},{"do":"roll","skill":"targeting","dif":"@var.total","snag":true,"onSuccess":[{"do":"negateHit","rows":"all"},{"do":"chat","text":"{name} shoots the incoming weapon down - it misses its target (an explosive's blast is measured from where it was destroyed)."}]}]}]}]},
+      {"type":"Reaction","who":"allyOfAttacker","per":"card","attackOnly":true,"when":[{"any":["not:combat:exists","self:toggle:armed"]},{"any":["item:data:system.classification.style=explosive","weapon:trait:thrown"]},"self:wielding:item:data:system.classification.skill=targeting"],"steps":[{"do":"setToggle","key":"armed","value":false,"when":["self:hasItem:Compendium.essence20.quartermasters_guide_to_gear.Item.YDv7PPjj6qgqKI9e"]},{"do":"roll","skill":"targeting","dif":"@var.total","onSuccess":[{"do":"negateHit","rows":"all"},{"do":"chat","text":"{name} shoots the incoming weapon down - it misses its target (an explosive's blast is measured from where it was destroyed)."}],"when":["self:hasItem:Compendium.essence20.quartermasters_guide_to_gear.Item.YDv7PPjj6qgqKI9e"]},{"do":"choose","when":["not:self:hasItem:Compendium.essence20.quartermasters_guide_to_gear.Item.YDv7PPjj6qgqKI9e"],"prompt":"Is the incoming weapon within your weapon's normal range?","options":[{"label":"Yes","steps":[{"do":"setToggle","key":"armed","value":false},{"do":"roll","skill":"targeting","dif":"@var.total","onSuccess":[{"do":"negateHit","rows":"all"},{"do":"chat","text":"{name} shoots the incoming weapon down - it misses its target (an explosive's blast is measured from where it was destroyed)."}]}]},{"label":"No (Snag)","steps":[{"do":"setToggle","key":"armed","value":false},{"do":"roll","skill":"targeting","dif":"@var.total","snag":true,"onSuccess":[{"do":"negateHit","rows":"all"},{"do":"chat","text":"{name} shoots the incoming weapon down - it misses its target (an explosive's blast is measured from where it was destroyed)."}]}]}]}]}
+    ],
+    "prerequisites": {"when":["self:has:Anti-Air Combat Training","self:level>=8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per turn, arm it as a Free action. Chat card: when an explosive or thrown attack comes in, roll Targeting against its total (with Snag if it's closer than your normal range); on a success every hit is negated.</p>"
@@ -16,7 +23,7 @@
       "page": 30
     },
     "actionType": "free",
-    "prerequisite": "Anti-Air Combat Training, Level 8",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

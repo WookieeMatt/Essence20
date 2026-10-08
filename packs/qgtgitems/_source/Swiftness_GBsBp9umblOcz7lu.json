@@ -5,6 +5,11 @@
   "_id": "GBsBp9umblOcz7lu",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Swiftness: Ground or Aerial","event":"powerUsed","when":["item:own"],"steps":[{"do":"choose","options":[{"label":"Ground +20 ft","steps":[{"do":"setToggle","key":"ground","value":"toggle","until":"scene"},{"do":"setToggle","key":"aerial","value":false}]},{"label":"Aerial +20 ft","steps":[{"do":"setToggle","key":"aerial","value":"toggle","until":"scene"},{"do":"setToggle","key":"ground","value":false}]}]}]},
+      {"type":"Movement","label":"Swiftness (+20 ft Ground)","movement":"ground","op":"add","value":20,"stage":"final","when":["self:toggle:ground"]},
+      {"type":"Movement","label":"Swiftness (+20 ft Aerial)","movement":"aerial","op":"add","value":20,"stage":"final","when":["self:toggle:aerial"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick +20ft Ground Movement or 20ft of Aerial Movement for the scene. It uses one of its two daily uses.</p>"
@@ -17,7 +22,6 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,

@@ -1,5 +1,5 @@
-import { checkIsLocked } from "../helpers/actor.mjs";
-import { slugifySpecializationName, titleCaseSpecializationName } from "../helpers/utils.mjs";
+import { checkIsLocked } from "../util/sheet-lock.mjs";
+import { slugifySpecializationName, titleCaseSpecializationName } from "../util/utils.mjs";
 
 /**
  * Adds a new Specialization to one of the actor's skills. The Skill Picker (module/apps/
@@ -71,7 +71,7 @@ export async function addSpecialization(actor, skill, name) {
  * specialization row.
  * @param {Actor} actor The actor losing the specialization.
  * @param {String} skill The skill the specialization is under.
- * @param {String} key The specialization's key (see helpers/utils.mjs#slugifySpecializationName).
+ * @param {String} key The specialization's key (see util/utils.mjs#slugifySpecializationName).
  * @returns {Promise|void}
  */
 export async function deleteSpecialization(actor, skill, key) {

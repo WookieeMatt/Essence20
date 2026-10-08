@@ -5,6 +5,12 @@
   "_id": "zitiiHIQ4miPU5pa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick the taught Skill (Instructor)","steps":[{"do":"pick","key":"skill","from":"skill","essence":"smarts","specializedOnly":true,"ifUnset":true,"legacy":"flags.essence20.pr2Instructor.skill","prompt":"Instructor: which Smarts Skill?"}]},
+      {"type":"RollModifier","label":"Instructor","upshift":1,"stack":"pr2Instructor","when":["skill:{choice.skill}"]},
+      {"type":"RollModifier","label":"Taught by an Instructor (no untrained Snag)","scope":"team","immune":["untrainedSnag"],"when":["skill:{choice.skill}","self:marked:instructor-{choice.skill}"]},
+      {"type":"Use","label":"Teach a teammate (Instructor)","steps":[{"do":"pick","key":"skill","from":"skill","essence":"smarts","specializedOnly":true,"ifUnset":true,"legacy":"flags.essence20.pr2Instructor.skill","prompt":"Instructor: which Smarts Skill?"},{"do":"pick","key":"student","from":"team","notSelf":true,"prompt":"Instructor: teach which teammate?"},{"do":"mark","to":"team+others","filter":["target:picked:student","rule:data:flags.essence20.rules.choices.skill=alertness"],"key":"instructor-alertness"},{"do":"mark","to":"team+others","filter":["target:picked:student","rule:data:flags.essence20.rules.choices.skill=culture"],"key":"instructor-culture"},{"do":"mark","to":"team+others","filter":["target:picked:student","rule:data:flags.essence20.rules.choices.skill=science"],"key":"instructor-science"},{"do":"mark","to":"team+others","filter":["target:picked:student","rule:data:flags.essence20.rules.choices.skill=survival"],"key":"instructor-survival"},{"do":"mark","to":"team+others","filter":["target:picked:student","rule:data:flags.essence20.rules.choices.skill=technology"],"key":"instructor-technology"},{"do":"chat","text":"{name} teaches a teammate the Instructor Skill"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: pick a Smarts Skill when gained; your rolls with it get ↑1, labelled Instructor in the Roll Options Dialog. Use button: teach that Skill to a teammate, who then rolls it without the untrained Snag.</p>"

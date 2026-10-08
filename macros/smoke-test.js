@@ -20,7 +20,7 @@
  * pack is an environment issue, not a regression. Read the detail column before assuming a bug.
  */
 (async () => {
-  const ACTOR_TYPES = ["companion", "megaform", "npc", "playerCharacter", "vehicle", "zord"];
+  const ACTOR_TYPES = ["companion", "megaform", "npc", "party", "playerCharacter", "vehicle", "zord"];
   const ITEM_TYPES = [
     "altMode", "alteration", "armor", "bond", "classFeature", "equipmentPackage",
     "faction", "feature", "focus", "gear", "hangUp", "influence", "magicBauble",

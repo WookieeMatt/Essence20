@@ -83,15 +83,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:perk:Lightspeed Response (Form)"]},
     "requirements": {
-      "custom": "Lightspeed Response",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

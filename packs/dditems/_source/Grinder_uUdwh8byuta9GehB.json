@@ -5,6 +5,11 @@
   "_id": "uUdwh8byuta9GehB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Grinder (while grappling: 2 Blunt damage)","key":"grinder","forget":true,"syntheticDamage":{"value":2,"type":"blunt"},"when":["skill:brawn"]},
+      {"type":"Trigger","event":"hit","outcome":"x2","label":"Grinder (Critical Success: Impaired)","when":["roll:switch:grinder"],"steps":[{"do":"applyCondition","condition":"impaired","to":"target"}]}
+    ],
+    "prerequisites": {"when":["self:skill:brawn>=d8"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: a switch on Brawn Tests while Grappling to attack for 2 Blunt damage; a Critical Success also leaves the target Impaired.</p><p>Left to the table: the attack's Anti-Tank trait.</p>"
@@ -15,7 +20,7 @@
       "book": "Decepticon Directive",
       "page": 65
     },
-    "prerequisite": "Brawn d8",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

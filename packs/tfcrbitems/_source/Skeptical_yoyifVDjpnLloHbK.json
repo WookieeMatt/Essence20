@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Skeptical: no help from allies","side":"receive","effect":"refuse"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: allies can't Lend Assistance to you.</p>"

@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DownshiftCancel","label":"Expertise (ignore the first ↓1 on the chosen Skill)","amount":1,"stack":"expertise","when":["skill:{choice.skill}"]},
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"skills":["{choice.skill}"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: pick a Skill when you gain it. On tests with that Skill the first ↓1 from any source is cancelled before your Roll Options Dialog opens, and the chat card shows a reroll button for any 1s on the Skill dice.</p>"
@@ -13,17 +18,9 @@
       "book": "My Little Pony Core Rulebook",
       "page": 123
     },
-    "hasChoice": true,
-    "choiceType": "skills",
+    "hasChoice": false,
+    "choiceType": "none",
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "skillDice",
-      "maxUses": 0,
-      "reset": "none",
-      "skills": []
-    },
     "selectionLimit": 3,
     "type": "general"
   },

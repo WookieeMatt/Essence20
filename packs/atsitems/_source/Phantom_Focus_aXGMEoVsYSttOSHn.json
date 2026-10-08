@@ -5,6 +5,17 @@
   "_id": "aXGMEoVsYSttOSHn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"option","label":"Option","from":"config","table":"phantomFocusOptions","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"Use","label":"Integrate your Phantom Ship","when":["rule:choiceHas:option:shipIntegration","vehicle:driving","not:vehicle:markedByMe:zord1ShipIntegration"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"mark","to":"drivenVehicle","key":"zord1ShipIntegration","until":"scene"},{"do":"chat","text":"{name} integrates the ship into the Phantom Suite."}]},
+      {"type":"Use","label":"End the ship integration","when":["rule:choiceHas:option:shipIntegration","vehicle:markedByMe:zord1ShipIntegration"],"steps":[{"do":"unmark","to":"drivenVehicle","key":"zord1ShipIntegration"},{"do":"chat","text":"{name} ends the ship integration."}]},
+      {"type":"RollModifier","scope":"driven","label":"Phantom Suite (integrated ship: ↑1, Edge)","upshift":1,"edge":true,"when":["rule:choiceHas:option:shipIntegration","self:markedByHolder:zord1ShipIntegration","holder:data:flags.essence20.phantomSuiteActive","skill:infiltration"]},
+      {"type":"Defense","scope":"driven","label":"Phantom Suite (integrated ship)","defense":"evasion","amount":"@sourced.fQgxo5c7tNOD2Q5K.system.advances.currentValue","when":["rule:choiceHas:option:shipIntegration","self:markedByHolder:zord1ShipIntegration","holder:data:flags.essence20.phantomSuiteActive","defense:evasion"]},
+      {"type":"Defense","scope":"driven","label":"Unseen Strike (integrated ship)","defense":"evasion","mode":"halve","outgoing":true,"limit":{"per":"turn"},"when":["rule:choiceHas:option:shipIntegration","self:markedByHolder:zord1ShipIntegration","holder:data:flags.essence20.phantomSuiteActive","holder:hasItem:Compendium.essence20.across_the_stars.Item.EYdpn9PL4iNrQPkh","attack","defense:evasion"]},
+      {"type":"Trigger","event":"morph","label":"Boosted Vigor (+3 temporary Health while Morphed)","when":["rule:choiceHas:option:boostedVigor"],"steps":[{"do":"updateActor","to":"self","add":{"system.health.bonus":3}}]},
+      {"type":"Trigger","event":"unmorph","label":"Boosted Vigor ends","when":["rule:choiceHas:option:boostedVigor"],"steps":[{"do":"updateActor","to":"self","add":{"system.health.bonus":-3}}]},
+      {"type":"Use","label":"Healing Light","when":["rule:choiceHas:option:healingLight","self:data:system.health.value>=1","self:data:system.powers.personal.value>=1"],"steps":[{"do":"pickAlly"},{"do":"spend","resource":{"path":"system.health.value"},"amount":1},{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"setVar","key":"healed","value":"2d2","quiet":true},{"do":"updateActor","to":"target","add":{"system.health.value":"@var.healed"},"max":"@recipient.system.health.max"},{"do":"chat","text":"{target} regains {var.healed} Health."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Pick an ability when you add it. Boosted Vigor and Phase Defense apply on their own while Morphed; Healing Light and Ship Integration have Use buttons. Multiversal Pocket is storytelling.</p>"
@@ -18,8 +29,8 @@
     "prerequisite": "",
     "selectionLimit": 2,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "phantomFocus"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "sort": 300000,

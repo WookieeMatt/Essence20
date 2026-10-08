@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Pony you hadn't met before this scene (Jarring: Snag)","when":[{"any":["skill:deception","skill:persuasion"]}],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch for a Snag on Deception or Persuasion against someone you hadn't met before this scene.</p>"

@@ -5,6 +5,11 @@
   "_id": "JPcfpND1LOVLDKIZ",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Enlarged (one size class larger)","when":["not:rule:data:flags.essence20.zord1OriginalSize","not:rule:data:flags.essence20.rules.choices.originalSize"],"steps":[{"do":"shiftSize","steps":1,"ladder":"class","record":"originalSize"}]},
+      {"type":"Trigger","event":"removed","label":"Enlarged (size back)","steps":[{"do":"restoreSize","record":"originalSize","legacy":"flags.essence20.zord1OriginalSize"}]},
+      {"type":"ArmorAccommodation","label":"Enlarged (Battledress needs a Restricted Accommodation)","level":"restricted"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +1 Size Class while you have it. Armor can't be equipped unless it has a Restricted Alteration Accommodation upgrade.</p>"

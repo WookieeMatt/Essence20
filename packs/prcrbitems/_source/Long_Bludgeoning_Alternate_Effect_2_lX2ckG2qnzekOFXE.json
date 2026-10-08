@@ -1,6 +1,6 @@
 {
   "folder": "xEobfe1YNl85DACZ",
-  "name": "Long Bludgeoning Alternate Effect 2",
+  "name": "Martial Arts Long Bludgeon Alternate Effect 2",
   "type": "weaponEffect",
   "_id": "lX2ckG2qnzekOFXE",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -14,7 +14,7 @@
     "damageType": "maneuver",
     "damageValue": null,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

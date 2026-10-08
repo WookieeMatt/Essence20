@@ -5,6 +5,11 @@
   "_id": "dDHjUwjLlGJhiQvI",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Spend 1 Power: Impaired on a hit (Cryogenic Touch)","key":"cryogenicTouch","forget":true,"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"when":["attack:unarmed"]},
+      {"type":"Trigger","label":"Impaired on a hit (Cryogenic Touch)","event":"hit","when":["roll:switch:cryogenicTouch"],"steps":[{"do":"applyCondition","condition":"impaired","to":"target"}]},
+      {"type":"DamageType","label":"Cryogenic Touch (Cold)","to":"cold","priority":-3,"when":["attack:barehanded"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your unarmed attacks deal Cold damage. Roll Options Dialog: a switch to spend 1 Personal Power so a hit leaves the target Impaired.</p>"
@@ -17,7 +22,6 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,

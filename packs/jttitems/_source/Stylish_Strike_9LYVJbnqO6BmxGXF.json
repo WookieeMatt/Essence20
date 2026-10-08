@@ -5,6 +5,9 @@
   "_id": "9LYVJbnqO6BmxGXF",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Stylish Strike","outcome":"x2","when":["attack:melee"],"steps":[{"do":"pickAlly","all":true},{"do":"removeCondition","condition":"frightened","to":"targets"},{"do":"removeCondition","condition":"impaired","to":"targets"},{"do":"removeCondition","condition":"mesmerized","to":"targets"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when one of your melee attacks is a Critical Success, Frightened, Impaired and Mesmerized are removed from all your allies in the scene.</p>"
@@ -17,7 +20,6 @@
     },
     "actionType": "free",
     "canActivate": false,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,

@@ -5,6 +5,11 @@
   "_id": "8VWSF76KXdk2qGpb",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Nameplate","limit":{"per":"rest"},"when":["self:type:vehicle"],"steps":[{"do":"mark","key":"nameplateReady","to":"self"}]},
+      {"type":"RollModifier","label":"Nameplate","scope":"crew","upshift":1,"consumeMark":"nameplateReady","when":["holder:marked:nameplateReady"]},
+      {"type":"RollModifier","label":"Nameplate","upshift":1,"consumeMark":"nameplateReady","when":["self:type:vehicle","self:marked:nameplateReady"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once a day, readies the Nameplate; the next test a crew member makes aboard gets ↑1. A Rest makes it available again.</p>"

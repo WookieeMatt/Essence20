@@ -5,6 +5,9 @@
   "_id": "L8wFtP1y6PQYJJVL",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Hard Hitter (Edge with the damage bonus applied)","late":true,"edge":true,"when":["roll:rolePointsDamage:own"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: a switch for Hard Hitter on an attack gives it Edge plus the listed bonus damage (+1 from 4th level, rising at 9th, 14th and 19th).</p><p>Left to the table: spending the 1 Personal Power, and only using it before you have attacked this turn against a single target.</p>"
@@ -45,8 +48,7 @@
       "max": null,
       "startingMax": null,
       "value": null
-    },
-    "level20Value": null
+    }
   },
   "effects": [],
   "sort": 0,

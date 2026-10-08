@@ -5,6 +5,7 @@
   "_id": "TSxzTyW9GUXt70Vr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:Television"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: an Edge on Alertness tests.</p><p>Left to the table: the Edge is meant only when something is being concealed, so switch the effect off otherwise.</p>"
@@ -25,7 +26,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Television Journalist Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

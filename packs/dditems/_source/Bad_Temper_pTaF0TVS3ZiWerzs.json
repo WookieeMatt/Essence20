@@ -5,6 +5,10 @@
   "_id": "pTaF0TVS3ZiWerzs",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"fumbled","label":"Bad Temper (a Fumble: ↓1 next round)","when":["combat:exists"],"steps":[{"do":"mark","key":"badTemper","to":"self","count":"@combat.round + 1","until":"throughNextRound"}]},
+      {"type":"RollModifier","label":"Bad Temper (↓1 the round after a Fumble)","downshift":1,"when":["self:marked:badTemper","calc:@mark.badTemper - @combat.round = 0"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: after you Fumble, your Skill Tests take ↓1 through the next round, labelled Bad Temper in the Roll Options Dialog.</p><p>Left to the table: not taking Free actions during that time.</p>"

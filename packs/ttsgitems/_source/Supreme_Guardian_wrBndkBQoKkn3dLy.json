@@ -5,6 +5,11 @@
   "_id": "wrBndkBQoKkn3dLy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Spend Eltarian Tech for +1 Energy damage each (Supreme Guardian)","when":["attack:melee","weapon:trait:powerWeapon"],"spend":{"resource":{"rolePoints":true}},"damage":"@spent"},
+      {"type":"Use","label":"Blinding light (on Morphing)","when":["self:morphed"],"steps":[{"do":"rollVsEach","skill":"technology","defense":"toughness","to":"nearbyEnemies:20","onHit":[{"do":"applyCondition","to":"target","condition":"blinded"}]}]},
+      {"type":"Trigger","event":"takesDamage","label":"Supreme Guardian (Energy damage: d20, 10+ regains 1 Eltarian Tech)","when":[{"any":["damage:element","damage:acid","damage:cold","damage:electric","damage:emp","damage:fire","damage:laser","damage:sonic"]}],"steps":[{"do":"table","formula":"1d20","quiet":true,"rows":[{"min":10,"max":1000,"steps":[{"do":"gainResource","resource":{"rolePoints":true},"amount":1}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (when you Morph): Technology test against each enemy within 20 ft; those you beat are Blinded. Roll Options Dialog: spend Eltarian Tech Points for +1 Energy damage each on melee Power Weapon hits. Automatic: taking Energy damage rolls a d20 to regain a Tech Point on 10+.</p><p>Left to the table: removing Blinded after 1d6 rounds.</p>"

@@ -1,0 +1,58 @@
+{
+  "folder": "S0TVSZfMxXIqPYj4",
+  "name": "Defensive Flexibility",
+  "type": "perk",
+  "_id": "7kHQ53hZFgwhSFVi",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"option","label":"Option","from":"config","table":"defensiveFlexibilityOptions","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"Defense","label":"Defensive Flexibility (+2 Toughness while Morphed)","defense":"toughness","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityToughness","when":["self:morphed","rule:choiceHas:option:defenseToughness"]},
+      {"type":"Defense","label":"Defensive Flexibility (+2 Evasion while Morphed)","defense":"evasion","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityEvasion","when":["self:morphed","rule:choiceHas:option:defenseEvasion"]},
+      {"type":"Defense","label":"Defensive Flexibility (+2 Willpower while Morphed)","defense":"willpower","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityWillpower","when":["self:morphed","rule:choiceHas:option:defenseWillpower"]},
+      {"type":"Defense","label":"Defensive Flexibility (+2 Cleverness while Morphed)","defense":"cleverness","mode":"addAfter","amount":2,"stack":"defensiveFlexibilityCleverness","when":["self:morphed","rule:choiceHas:option:defenseCleverness"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Acid Resistance)","path":"system.resistances.acid","value":true,"when":["rule:choiceHas:option:resistanceAcid"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Cold Resistance)","path":"system.resistances.cold","value":true,"when":["rule:choiceHas:option:resistanceCold"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Electric Resistance)","path":"system.resistances.electric","value":true,"when":["rule:choiceHas:option:resistanceElectric"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Emp Resistance)","path":"system.resistances.emp","value":true,"when":["rule:choiceHas:option:resistanceEmp"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Fire Resistance)","path":"system.resistances.fire","value":true,"when":["rule:choiceHas:option:resistanceFire"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Laser Resistance)","path":"system.resistances.laser","value":true,"when":["rule:choiceHas:option:resistanceLaser"]},
+      {"type":"DerivedStat","label":"Defensive Flexibility (Sonic Resistance)","path":"system.resistances.sonic","value":true,"when":["rule:choiceHas:option:resistanceSonic"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added you pick one option: +2 to one Defense while Morphed, or Resistance to one element. Add it again every 5 levels for another pick.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 45
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role",
+    "canActivate": false,
+    "hasChoice": false,
+    "choiceType": "none",
+    "numChoices": 1
+  },
+  "effects": [],
+  "sort": 200004,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1757700000000,
+    "modifiedTime": 1757700000000,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!7kHQ53hZFgwhSFVi"
+}

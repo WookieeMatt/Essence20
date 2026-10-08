@@ -5,6 +5,9 @@
   "_id": "0a01vmWtbbYYcNvA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Armor Expert","defense":"toughness","amount":2,"when":["self:wearing>=non"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +2 Toughness while you wear armor. The Strength increases come from the Focus.</p>"

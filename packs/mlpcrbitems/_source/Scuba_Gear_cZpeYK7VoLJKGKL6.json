@@ -5,6 +5,9 @@
   "_id": "cZpeYK7VoLJKGKL6",
   "img": "systems/essence20/assets/icons/gear/scuba-mask.svg",
   "system": {
+    "rules": [
+      {"type":"HazardProtection","label":"Breathing gear (Thick / Thin Atmosphere)","environments":["thickAtmosphere","thinAtmosphere"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while equipped, your Swim Movement equals your Ground Movement, and it lets you breathe underwater. Active Effect (off by default): switch on +2 Toughness in cold water.</p>"
@@ -16,7 +19,6 @@
       "page": 154
     },
     "quantity": 1,
-    "type": "",
     "gearType": "exploration"
   },
   "effects": [

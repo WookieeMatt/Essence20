@@ -5,6 +5,9 @@
   "_id": "pJcXVybdqjcWHpJq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ConditionImmunity","label":"Immune to blinded, deafened, frightened, immobilized, restrained, stunned","conditions":["blinded","deafened","frightened","immobilized","restrained","stunned"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you can't gain the Blinded, Deafened, Frightened, Immobilized, Restrained or Stunned Conditions.</p>"

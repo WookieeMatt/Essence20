@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Edge or Specialized on your next Smarts or Social test","limit":{"per":"scene"},"steps":[{"do":"choose","options":[{"label":"Edge","steps":[{"do":"bank","label":"Grid Gifted","edge":true,"appliesWhen":[{"any":["essence:smarts","essence:social"]}]}]},{"label":"Roll as if Specialized","steps":[{"do":"bank","label":"Grid Gifted","specialize":true,"appliesWhen":[{"any":["essence:smarts","essence:social"]}]}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: +1 Personal Power. Use button (once per scene): bank an Edge or a Specialized roll for your next Smarts or Social test.</p><p>Left to the table: picking your starting Grid Power.</p>"

@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"ones","target":"allDice","reset":"scene","maxUses":1,"recursive":false}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per scene, a reroll button lets you reroll the dice that came up 1, keeping the new results.</p>"
@@ -14,14 +17,6 @@
       "page": 27
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "ones",
-      "target": "allDice",
-      "recursive": false,
-      "maxUses": 1,
-      "reset": "scene"
-    },
     "selectionLimit": 1,
     "type": "origin"
   },

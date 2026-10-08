@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"For The Allspark!","when":["skill:infiltration","self:transformed"],"upshift":1},
+      {"type":"DialogSwitch","label":"Your Alt Mode fits the environment (For The Allspark!: ↑1)","when":["skill:infiltration","self:transformed"],"upshift":1},
+      {"type":"Trigger","event":"initiativeRolled","label":"Roll Out (convert as Initiative is rolled)","when":[{"any":["combat:round:0","combat:round:1"]},"self:canTransform","not:self:transformed","not:self:status:surprised","not:self:status:modeLock","self:itemCount:altMode>=1"],"steps":[{"do":"pick","key":"rollOutMode","from":"ownedItem","itemType":"altMode","prompt":"Roll Out: convert to an Alt Mode before combat begins, without spending an action."},{"do":"transformInto","item":"choice:rollOutMode"},{"do":"chat","text":"{name} rolls out in {var.mode}."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: in Alt Mode, Infiltration tests get ↑1, labelled For The Allspark! in the Roll Options Dialog, plus a switch there for another ↑1 when your Alt Mode fits the surroundings. When you roll Initiative in the first round, you are offered a free Convert to one of your Alt Modes.</p><p>Left to the table: the immunity to carbon-based diseases.</p>"

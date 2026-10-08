@@ -5,6 +5,9 @@
   "_id": "CbI36ZY491Lf8wwV",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Super Sticky Celebration String","event":"hit","when":["item:own"],"steps":[{"do":"applyCondition","to":"target","condition":"grappled","rounds":4},{"do":"applyCondition","to":"target","condition":"immobilized","rounds":4},{"do":"applyCondition","to":"target","condition":"impaired","rounds":4}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Cast: a Spellcasting attack against one target. A hit leaves them Grappled, Immobilized and Impaired for 4 rounds.</p><p>Left to the table: the DIF 30 Brawn test to break free early.</p>"

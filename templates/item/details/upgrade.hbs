@@ -17,13 +17,6 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Prerequisite --}}
-  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradePrerequisite'}}
-  {{#*inline "item-field-inputs"}}
-  <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
-  {{/inline}}
-  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
   {{!-- Benefit --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeBenefit'}}
   {{#*inline "item-field-inputs"}}
@@ -39,15 +32,6 @@
     <select name="system.armorBonus.defense">
       {{selectOptions config.defenses selected=system.armorBonus.defense}}
     </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-  {{/if}}
-
-  {{!-- Aim Shift Bonus --}}
-  {{#if (eq system.type 'weapon')}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeAimShiftBonus'}}
-    {{#*inline "item-field-inputs"}}
-    {{numberInput system.aimShiftBonus name="system.aimShiftBonus" min=0 step=1}}
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
   {{/if}}

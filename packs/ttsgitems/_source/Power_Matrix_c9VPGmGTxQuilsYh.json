@@ -5,6 +5,10 @@
   "_id": "c9VPGmGTxQuilsYh",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Draw from the Power Matrix","steps":[{"do":"setVar","key":"reserve","value":"3 * min(3, @count.named.Power_Matrix) - @actor.flags.essence20.zord2PowerMatrixSpent","beforeCost":true},{"do":"require","check":["var:reserve>0"],"message":"The Power Matrix is empty.","beforeCost":true},{"do":"require","check":["self:hasDriver"],"message":"Nobody is driving the Zord.","beforeCost":true},{"do":"askNumber","var":"drawn","min":1,"max":"@var.reserve","prompt":"How much Personal Power?"},{"do":"updateActor","to":"driver","add":{"system.powers.personal.value":"@var.drawn"}},{"do":"updateActor","add":{"flags.essence20.zord2PowerMatrixSpent":"@var.drawn"}},{"do":"chat","text":"{name} feeds {@var.drawn} Personal Power to its driver ({@var.reserve - @var.drawn} left)."}]},
+      {"type":"Trigger","event":"rest","scope":"zordOwner","label":"Power Matrix (refilled)","when":["holder:data:flags.essence20.zord2PowerMatrixSpent"],"steps":[{"do":"updateActor","to":"holder","set":{"flags.essence20.zord2PowerMatrixSpent":0}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the Zord holds a 3 Personal Power reserve per copy (up to three copies), refilled when the pilot rests. Use button: move reserve Power to the driver to pay for Zord Features.</p>"

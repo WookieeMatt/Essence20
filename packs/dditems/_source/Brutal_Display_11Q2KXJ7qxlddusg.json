@@ -5,9 +5,14 @@
   "_id": "11Q2KXJ7qxlddusg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Tear off a limb (Brutal Display)","cost":{"resource":{"path":"system.energon.normal.value"},"amount":1},"steps":[{"do":"require","beforeCost":true,"check":[{"any":["target:status:defeated","target:data:system.health.value<=0"]},{"any":["target:status:defeated","target:data:system.health.max>0"]}],"message":"Target the Defeated foe first."},{"do":"setTargets","beforeCost":true,"to":"alliesOfTarget:100000","filter":["not:target:self","target:within:100","not:target:status:defeated",{"any":["target:data:system.health.value>0","target:data:system.health.max<=0"]}]},{"do":"require","beforeCost":true,"check":["target:data:uuid"],"message":"None of its allies are within 100 ft."},{"do":"mark","key":"tf1BrutalDisplayRoll","to":"self","until":"turnOrScene"},{"do":"rollVsEach","skill":"intimidation","defense":"willpower"},{"do":"unmark","key":"tf1BrutalDisplayRoll","to":"self"}]},
+      {"type":"Trigger","label":"Success: Frightened (Brutal Display)","event":"hit","outcome":"plainSuccess","when":["self:marked:tf1BrutalDisplayRoll"],"steps":[{"do":"applyCondition","to":"target","condition":"frightened","until":"endOfNextTurn","untilOf":"recipient"}]},
+      {"type":"Trigger","label":"Critical Success: Frightened for a minute (Brutal Display)","event":"hit","outcome":"double","when":["self:marked:tf1BrutalDisplayRoll"],"steps":[{"do":"applyCondition","to":"target","condition":"frightened","rounds":10}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: after Defeating a foe unarmed, target it and spend an Energon Point. Intimidation is rolled against its allies within 100 ft, and those beaten become Frightened (longer on a Critical Success).</p>"
+      "notes": "<p>Use button: after Defeating a foe unarmed, target it and spend an Energon Point. Intimidation is rolled against its allies within 100 ft, and those beaten become Frightened until the end of their next turn (a minute on a Critical Success).</p>"
     },
     "originalId": "",
     "description": "",

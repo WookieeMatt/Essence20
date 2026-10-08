@@ -5,6 +5,7 @@
   "_id": "ThXrre0RHTcr1BEp",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:silent"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: ↑1 on Infiltration tests.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Silent"
+    "prerequisite": ""
   },
   "effects": [
     {

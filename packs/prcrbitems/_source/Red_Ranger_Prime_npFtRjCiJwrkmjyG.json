@@ -5,6 +5,9 @@
   "_id": "npFtRjCiJwrkmjyG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","self:morphed","weapon:trait:powerWeapon"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect (only while Morphed): Resistance to Blunt and Sharp damage, and Strength Skill tests open the Roll Options Dialog with Edge selected. Automatic: while Morphed, Power Weapon attacks deal +1 damage, listed on the chat card.</p>"

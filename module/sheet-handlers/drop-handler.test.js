@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { _onTransformerArmorUpgradeDrop, _onUpgradeDrop, onDropActor, verifyDropSelection } from "./drop-handler.mjs";
+import { _onTransformerArmorUpgradeDrop, _onUpgradeDrop, onDropActor, onDropItem, verifyDropSelection } from "./drop-handler.mjs";
 import { DETACHED_THIS_SCENE_FLAG } from "./vehicle-handler.mjs";
 
 function makeVehicle(actors, numDrivers, numPassengers) {
@@ -225,5 +225,19 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
     await onDropActor({ uuid: 'Actor.zord1' }, actorSheet);
 
     expect(droppedActor.unsetFlag).toHaveBeenCalledWith('essence20', 'warriorModeActive');
+  });
+});
+
+describe("an Alt Mode dropped straight onto a character", () => {
+  test("makes it able to transform (play-through 2026-10-07)", async () => {
+    const altMode = { type: 'altMode', name: 'Monstrosity', uuid: 'Compendium.x.Item.a' };
+    global.fromUuid = jest.fn(async () => altMode);
+    global.game = { ...(global.game ?? {}), user: { isGM: false }, settings: { get: () => 'off' }, i18n: { format: k => k, localize: k => k } };
+    global.ui = { ...(global.ui ?? {}), notifications: { info: jest.fn(), warn: jest.fn(), error: jest.fn() } };
+    const actor = { uuid: 'Actor.h', type: 'playerCharacter', system: { canTransform: false }, update: jest.fn(async () => true), getFlag: () => false, isOwner: true, flags: {} };
+    const dropFunc = jest.fn(async () => [{}]);
+    await onDropItem({ uuid: altMode.uuid }, actor, dropFunc);
+    expect(dropFunc).toHaveBeenCalled();
+    expect(actor.update).toHaveBeenCalledWith({ 'system.canTransform': true });
   });
 });

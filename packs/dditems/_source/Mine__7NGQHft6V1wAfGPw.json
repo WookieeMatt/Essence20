@@ -5,6 +5,10 @@
   "_id": "7NGQHft6V1wAfGPw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Grab it openly","cost":{"action":"free"},"steps":[{"do":"chat","text":"{name} grabs the item."}]},
+      {"type":"Use","label":"Grab it unnoticed (Infiltration)","cost":{"action":"free"},"steps":[{"do":"roll","skill":"infiltration","open":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spends a Free action to grab the item and, if you want to do it unseen, rolls Infiltration for onlookers to contest with Alertness.</p>"

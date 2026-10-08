@@ -5,6 +5,9 @@
   "_id": "Vza1muNXrpw4IyKG",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"beforeRoll","label":"Aura of Decay (1 Health to use it)","when":["item:own","roll:dataset:rollType=power"],"steps":[{"do":"loseHealth","amount":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: rolls Culture against the Toughness of everyone in the 20ft area for 2 Void damage, which ignores armor bonuses to Toughness. The 1 Health cost is taken automatically when you roll.</p>"
@@ -17,7 +20,6 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 3,

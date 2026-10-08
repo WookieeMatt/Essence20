@@ -5,6 +5,9 @@
   "_id": "MleI0VeS2nZpa47Z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"recursive":false}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Chat card: every Skill Test's chat card gets a Reroll button for Skill Die results of 1.</p><p>Left to the table: only use it when the action targets a member or symbol of authority.</p>"
@@ -17,15 +20,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "influence",
-    "reroll": {
-      "enabled": true,
-      "maxUses": 0,
-      "mode": "ones",
-      "reset": "none",
-      "target": "skillDice",
-      "recursive": false
-    }
+    "type": "influence"
   },
   "effects": [],
   "flags": {},

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"d20","reset":"mission","maxUses":3,"condition":"notSnagged"}
+    ],
+    "prerequisites": {"when":["self:level>=8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: a Reroll button for the d20 on a Skill test you didn't roll with a Snag, three times per mission.</p>"
@@ -13,15 +17,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 134
     },
-    "prerequisite": "Level 8",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "d20",
-      "maxUses": 3,
-      "reset": "mission",
-      "condition": "notSnagged"
-    },
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

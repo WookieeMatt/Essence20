@@ -5,6 +5,11 @@
   "_id": "0yRAH39SEINP3CGT",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Hydraulic Bounce","scope":"pilot","edge":true,"when":["skill:driving","check:vehicleInRoughTerrain"]},
+      {"type":"RollModifier","label":"Hydraulic Bounce","edge":true,"when":["skill:driving","check:vehicleInRoughTerrain"]}
+    ],
+    "prerequisites": {"when":["self:data:system.traits.land"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while the vehicle's token is in Rough Terrain, the driver's Driving tests get Edge, shown as Hydraulic Bounce next to Edge in the Roll Options Dialog.</p>"
@@ -23,7 +28,7 @@
     "benefit": "Edge on Driving Skill Tests to maneuver on Rough Terrain.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

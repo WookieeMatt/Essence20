@@ -5,6 +5,9 @@
   "_id": "vrV3LXAqkl6upsRv",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Vicious Edges","when":["attack:melee","target:data:statuses.size>0"],"scope":"host"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: melee hits with the upgraded weapon deal +1 damage to a target that has any Condition, noted on the chat card, and the weapon gains the Intimidating alternate effect as an extra attack option.</p>"

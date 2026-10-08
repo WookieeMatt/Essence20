@@ -5,6 +5,9 @@
   "_id": "CjNQHWxMjTQfcLTZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Swap Initiative with a friend who rolled lower","when":["combat:exists"],"steps":[{"do":"target","max":1},{"do":"swapInitiative","requireLower":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: after Initiative is rolled, swap places in the order with a targeted friend who rolled lower than you.</p>"

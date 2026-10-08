@@ -1,6 +1,6 @@
-import { promptUpgradeChoice } from "../helpers/weapon-upgrades.mjs";
+import { promptUpgradeChoice } from "../items/attacks/weapon-upgrades.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
-import { createId } from "../helpers/utils.mjs";
+import { createId } from "../util/utils.mjs";
 import { onPerkDelete, setPerkValues, setPerkAdvancesName } from "./perk-handler.mjs";
 
 /**
@@ -76,7 +76,7 @@ export async function grantItemEntry(key, item, owner, parentItem) {
 
   if (itemToCreate.type == 'perk' && itemToCreate.system.advances.canAdvance) {
     for (const ownerItem of owner.items) {
-      const ownerItemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats?.compendiumSource;
+      const ownerItemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats?.compendiumSource ?? ownerItem?.flags?.essence20?.rulesSource;
       if (ownerItemSourceId == itemToCreate.uuid) {
         const newValue = ownerItem.system.advances.currentValue + ownerItem.system.advances.increaseValue;
         await ownerItem.update({
@@ -299,7 +299,7 @@ export async function _attachItem(actor, targetItem, dropFunc) {
     // onAttachableParentDrop above) - system.linkedWeaponEffect names the compendium weaponEffect
     // this Upgrade grants, attached here exactly like a directly-dropped weaponEffect would be.
     // Elemental Projector, Biomechanical Weapon and the Modular upgrades need a choice when they go on
-    // (helpers/weapon-upgrades.mjs#promptUpgradeChoice).
+    // (items/attacks/weapon-upgrades.mjs#promptUpgradeChoice).
     if (newattachedItem.type == 'upgrade') {
       await promptUpgradeChoice(newattachedItem);
     }
@@ -307,6 +307,10 @@ export async function _attachItem(actor, targetItem, dropFunc) {
     if (newattachedItem.type == 'upgrade' && newattachedItem.system.linkedWeaponEffect) {
       await grantLinkedWeaponEffect(actor, newattachedItem, targetItem);
     }
+
+    // Its prerequisites, now that the item it went on is known (rules/prerequisites.mjs).
+    const { checkAttached } = await import("../rules/prerequisites.mjs");
+    await checkAttached(actor, newattachedItem, targetItem);
   }
 }
 
@@ -365,6 +369,8 @@ export function createEntry(droppedItem, targetItem) {
       entry['availability'] = droppedItem.system.availability;
       entry['benefit'] = droppedItem.system.benefit;
       entry['description'] = droppedItem.system.description;
+      // Deprecated 2026-10-07 (with system.prerequisite): the sheet shows the attached item's tags through its uuid
+      // (rules/prerequisites.mjs#prerequisiteText) and reads this copy only as a fallback when there are none. Drop it in 6.1.
       entry['prerequisite'] = droppedItem.system.prerequisite;
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
@@ -457,10 +463,11 @@ export function createEntry(droppedItem, targetItem) {
     break;
   case "weapon":
     if (droppedItem.type == "upgrade" && droppedItem.system.type == "weapon") {
-      entry['aimShiftBonus'] = droppedItem.system.aimShiftBonus;
+      // (No aimShiftBonus snapshot: a Laser Sight's Aim bonus is the upgrade's own AimBonus rule since 2026-10-07.)
       entry['availability'] = droppedItem.system.availability;
       entry['benefit'] = droppedItem.system.benefit;
       entry['description'] = droppedItem.system.description;
+      // Deprecated 2026-10-07 - see the armor branch above.
       entry['prerequisite'] = droppedItem.system.prerequisite;
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
@@ -567,7 +574,7 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null, 
     // nothing. flags.core.sourceId is set explicitly by createItemCopies() (and by Foundry's
     // own drag-drop-from-compendium handling), so prefer that and fall back to
     // compendiumSource for items that only have it set some other way.
-    const itemSourceId = actorItem.flags.core?.sourceId ?? actorItem._stats?.compendiumSource;
+    const itemSourceId = actorItem.flags.core?.sourceId ?? actorItem._stats?.compendiumSource ?? actorItem?.flags?.essence20?.rulesSource;
     const parentId = await actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
     const collectionId = await actor.items.get(actorItem._id).getFlag('essence20', 'collectionId');
 

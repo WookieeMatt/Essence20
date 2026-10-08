@@ -5,13 +5,14 @@
   "_id": "BIya60PVJFYtYL2u",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Technology (Explosives) Specialization"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: the free Technology (Explosives) kit and the Technology test against an explosive's Availability DIF to disarm it.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Technology (Explosives) Specialization",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

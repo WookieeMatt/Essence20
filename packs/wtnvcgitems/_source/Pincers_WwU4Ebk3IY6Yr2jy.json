@@ -5,6 +5,10 @@
   "_id": "WwU4Ebk3IY6Yr2jy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"The pet gains its Pincers attack","event":"added","when":["self:type:companion","not:rule:granted:type:weapon"],"steps":[{"do":"createItem","data":{"name":"Pincers","type":"weapon","system":{"classification":{"size":"sidearm"},"availability":"standard","equipped":true,"hardpoint":{"type":"none"},"traits":[]},"flags":{"essence20":{"natural":true}}},"children":[{"name":"Pincers","type":"weaponEffect","system":{"classification":{"skill":"might","style":"melee"},"damageType":"blunt","damageValue":1,"numTargets":1,"numHands":"0","range":{"reachMultiplier":1}}}]}]},
+      {"type":"Use","label":"Add the pet's Pincers attack","when":["self:type:companion","not:rule:granted:type:weapon"],"steps":[{"do":"createItem","data":{"name":"Pincers","type":"weapon","system":{"classification":{"size":"sidearm"},"availability":"standard","equipped":true,"hardpoint":{"type":"none"},"traits":[]},"flags":{"essence20":{"natural":true}}},"children":[{"name":"Pincers","type":"weaponEffect","system":{"classification":{"skill":"might","style":"melee"},"damageType":"blunt","damageValue":1,"numTargets":1,"numHands":"0","range":{"reachMultiplier":1}}}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Put it on your pet. Automatic: the pet gains a Pincers attack for 1 Blunt damage; the Use button adds it if it is missing.</p>"

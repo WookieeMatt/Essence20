@@ -5,6 +5,10 @@
   "_id": "MvPfmzW4mh7TsMJo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Dirty Blows, Impaired on a hit","key":"dirtyBlows","forget":true,"when":["attack:melee"]},
+      {"type":"Trigger","event":"hit","label":"Dirty Blows","when":["roll:switch:dirtyBlows"],"steps":[{"do":"applyCondition","condition":"impaired","until":"endOfNextTurn","untilOf":"recipient","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch on melee attacks for its alternate effect; a hit leaves the target Impaired until the end of its next turn.</p>"

@@ -5,6 +5,9 @@
   "_id": "9DMDz10v4IJ75MZQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Contingency attack with your Favorite Weapon (Fast Tracking: Edge)","edge":true,"forget":true,"when":["attack","check:favoriteWeaponRolled"],"defaultWhen":["check:contingencyLikely"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch for Edge on Contingency attacks with your Favorite Weapon; it's pre-ticked when you attack off-turn with a Contingency logged.</p>"

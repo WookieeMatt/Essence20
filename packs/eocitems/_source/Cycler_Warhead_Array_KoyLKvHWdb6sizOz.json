@@ -61,15 +61,14 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=towering"]},
     "requirements": {
-      "custom": "Towering",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

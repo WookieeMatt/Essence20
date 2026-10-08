@@ -5,6 +5,9 @@
   "_id": "Sm7INWZQAIXlu5HC",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Within 10 feet with a ranged weapon (Far-Sighted: Snag)","when":["skill:alertness","self:wielding:not:item:data:system.classification.style=melee"],"snag":true,"default":true,"forget":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Alertness tests while you carry a ranged weapon, a Snag switch (ticked by default) for when the test is within 10 ft of you.</p>"

@@ -5,6 +5,12 @@
   "_id": "psJCjvdROy5gEVGS",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","when":["self:type:vehicle"],"limit":{"per":"scene"},"steps":[{"do":"setToggle","key":"fly","value":true,"until":"rounds:3"},{"do":"chat","text":"{name} converts for flight: Aerial Movement equal to its Ground or Aquatic Movement for 3 rounds."}]},
+      {"type":"Movement","label":"Flight Conversion","movement":"aerial","op":"max","value":"max(@actor.system.movement.ground.total, @actor.system.movement.swim.total)","stage":"derived","when":["self:type:vehicle","self:toggle:fly"]},
+      {"type":"DerivedStat","label":"Flight Conversion (VTOL)","path":"system.traits.vtol","op":"set","value":true,"when":["self:type:vehicle","self:toggle:fly"]}
+    ],
+    "prerequisites": {"when":[{"any":["self:data:system.traits.land","self:data:system.traits.sea"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene, the vehicle gains Aerial Movement equal to its Ground or Aquatic Movement for 3 rounds.</p>"
@@ -23,7 +29,7 @@
     "benefit": "Once per scene, the vehicle gains Aerial Movement equal to its Ground or Aquatic Movement plus the VTOL trait for 3 turns, falling if it hasn't landed by the end.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land or Sea vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

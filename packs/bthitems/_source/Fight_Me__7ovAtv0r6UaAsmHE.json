@@ -5,6 +5,10 @@
   "_id": "7ovAtv0r6UaAsmHE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Mark a Threat","steps":[{"do":"target","max":1},{"do":"mark","key":"fightMe","to":"target"}]},
+      {"type":"RollModifier","label":"Fight Me!","scope":"marked","mark":"fightMe","downshift":1,"when":["attack","not:target:ruleHolder"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: mark a Threat you can see; it takes ↓1 on attacks against anyone but you. Use it again to switch targets.</p>"

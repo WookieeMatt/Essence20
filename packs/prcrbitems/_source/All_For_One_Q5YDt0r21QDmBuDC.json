@@ -5,6 +5,9 @@
   "_id": "Q5YDt0r21QDmBuDC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"All For One","event":"droppedToZero","limit":{"per":"rest"},"steps":[{"do":"targetSelf"},{"do":"button","label":"Give {name} 1 Health","intro":"{name} calls on the team (All For One - {var.resource} at 0).","who":"others","runAs":"clicker","once":false,"steps":[{"do":"require","check":["not:target:self","target:ally"],"message":"Only a teammate can answer."},{"do":"require","check":["self:data:system.health.value>=1"],"message":"No Health to give."},{"do":"claimCard"},{"do":"updateActor","add":{"system.health.value":-1},"min":0},{"do":"updateActor","to":"target","add":{"system.health.value":1},"min":0,"max":"@recipient.system.health.max"},{"do":"chat","text":"{name} gives {target} 1 Health."}]},{"do":"button","label":"Give {name} 1d2 Personal Power","intro":"{name} calls on the team (All For One - {var.resource} at 0).","who":"others","runAs":"clicker","once":false,"steps":[{"do":"require","check":["not:target:self","target:ally"],"message":"Only a teammate can answer."},{"do":"setVar","key":"give","value":"1d2"},{"do":"setVar","key":"left","value":"@actor.system.powers.personal.value - @var.give"},{"do":"require","check":["var:left>=0"],"message":"Not enough Personal Power to give."},{"do":"claimCard"},{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":"@var.give"},{"do":"updateActor","to":"target","add":{"system.powers.personal.value":"@var.give"},"min":0,"max":"@recipient.system.powers.personal.max"},{"do":"chat","text":"{name} gives {target} {var.give} Personal Power."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you hit 0 Health or 0 Personal Power, a chat card lets each teammate give you 1 Health or d2 Power, paid from their own. Once per day (resets on Rest).</p>"
@@ -17,8 +20,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role",
-    "canActivate": true
+    "type": "role"
   },
   "effects": [],
   "sort": 150000,

@@ -5,6 +5,12 @@
   "_id": "TBpflYvZ0lWQ65Cp",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Vanish (DIF 20 Infiltration)","cost":{"action":"free"},"when":["rule:data:flags.essence20.parentId"],"steps":[{"do":"roll","skill":"infiltration","dif":20,"onSuccess":[{"do":"mark","key":"shozoku"},{"do":"applyCondition","condition":"invisible"},{"do":"chat","text":"{name} vanishes until the start of their next turn, or until damaged."}],"onFail":[{"do":"chat","text":"{name} fails to vanish."}]}]},
+      {"type":"Trigger","label":"Arashikage Shozoku ends (turn start)","event":"turnStart","when":["self:marked:shozoku"],"steps":[{"do":"unmark","key":"shozoku"},{"do":"removeCondition","condition":"invisible","when":["not:self:marked:ghostHiding"]}]},
+      {"type":"Trigger","label":"Arashikage Shozoku ends (damage)","event":"takesDamage","when":["self:marked:shozoku"],"steps":[{"do":"unmark","key":"shozoku"},{"do":"removeCondition","condition":"invisible","when":["not:self:marked:ghostHiding"]}]}
+    ],
+    "prerequisites": {"when":["host:trait:silent","ask:Stealth upgrade"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (Free action): roll DIF 20 Infiltration. On a success you're Invisible until the start of your next turn, or until you take damage.</p><p>Left to the table: needing dim light.</p>"
@@ -23,7 +29,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Silent, Stealth"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 100000,

@@ -5,6 +5,9 @@
   "_id": "duMjTyfREHYmDFJs",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"BeforeRoll","label":"Arrogant (first turn: no attacks on lower Threat Levels)","cancel":true,"message":"E20.Tf2ArrogantWarn","when":["attack","combat:round:1","ownTurn","roll:anyTarget:target:threatVsLevel:<0",{"any":["not:attack:area","not:roll:anyTarget:target:threatVsLevel:>=0"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: on your first turn of a combat, an attack on a foe whose Threat Level is below your level is held: the roll doesn't happen and a message says why. An area attack is allowed if it also catches a foe at or above your level.</p>"

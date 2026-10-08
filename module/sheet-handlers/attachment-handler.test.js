@@ -117,7 +117,9 @@ describe("createEntry", () => {
       system: { type: "weapon", aimShiftBonus: 1, availability: "standard", benefit: "b", prerequisite: null, source: {}, traits: [], description: "" },
     };
     const entry = createEntry(dropped, { type: "weapon" });
-    expect(entry.aimShiftBonus).toBe(1);
+    expect(entry.availability).toBe("standard");
+    // The Aim bonus is the upgrade's own AimBonus rule now - nothing copied onto the weapon's entry.
+    expect(entry.aimShiftBonus).toBeUndefined();
   });
 
   test("a Perk can list a Power as well as a Perk (the Nano Infusion Perks' chosen nanomite power)", () => {

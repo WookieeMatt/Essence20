@@ -5,6 +5,9 @@
   "_id": "OjNB0uwTOwEQjo85",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","when":["combat:exists"],"cost":{"action":"standard"},"steps":[{"do":"countRecipients","to":"combatAllies","var":"allies","beforeCost":true},{"do":"warn","text":"E20.RulesExtSystems.NoAllies","stop":true,"when":["var:allies<1"],"beforeCost":true},{"do":"bonusAttack","cost":"none","psychicOnMiss":1,"to":"combatAllies"},{"do":"chat","text":"{name} orders every ally in the combat to attack at once."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (Standard action): every ally in the combat gets an immediate attack at no action cost; any ally who misses takes 1 Psychic damage.</p><p>Left to the table: leaving out allies who can't hear you.</p>"

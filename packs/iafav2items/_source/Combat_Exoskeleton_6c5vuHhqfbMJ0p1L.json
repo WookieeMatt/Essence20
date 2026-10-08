@@ -5,6 +5,9 @@
   "_id": "6c5vuHhqfbMJ0p1L",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Combat Exoskeleton","upshift":1,"when":[{"any":["skill:brawn","attack:melee"]},"not:roll:initiative"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while this upgrade is on your sheet on its own, or attached to the armor you have equipped, your Brawn tests and melee attacks get ↑1, already added to the shift in the Roll Options Dialog.</p>"

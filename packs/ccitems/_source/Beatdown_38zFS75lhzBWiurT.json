@@ -5,6 +5,12 @@
   "_id": "38zFS75lhzBWiurT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"Close Combat Heavy Bludgeon","uuid":"Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN","skipIfOwned":true},
+      {"type":"Use","label":"Beatdown: a weapon upgrade until the end of your turn","when":["combat:exists","calc:@level<10"],"cost":{"action":"free"},"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","prompt":"Which weapon?","beforeCost":true},{"do":"pickEntry","from":{"type":"upgrade","availabilities":["standard"],"fields":["system.type"],"tags":["item:data:system.type=weapon"]},"prompt":"Which upgrade?","beforeCost":true},{"do":"fitUpgrade","uuid":"{var.picked}","onto":"choice:weapon","until":"endOfTurn"}]},
+      {"type":"Use","label":"Beatdown: a weapon upgrade until the end of your turn","when":["combat:exists","calc:@level>=10","calc:@level<17"],"cost":{"action":"free"},"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","prompt":"Which weapon?","beforeCost":true},{"do":"pickEntry","from":{"type":"upgrade","availabilities":["standard","limited"],"fields":["system.type"],"tags":["item:data:system.type=weapon"]},"prompt":"Which upgrade?","beforeCost":true},{"do":"fitUpgrade","uuid":"{var.picked}","onto":"choice:weapon","until":"endOfTurn"}]},
+      {"type":"Use","label":"Beatdown: a weapon upgrade until the end of your turn","when":["combat:exists","calc:@level>=17"],"cost":{"action":"free"},"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","prompt":"Which weapon?","beforeCost":true},{"do":"pickEntry","from":{"type":"upgrade","availabilities":["standard","limited","restricted"],"fields":["system.type"],"tags":["item:data:system.type=weapon"]},"prompt":"Which upgrade?","beforeCost":true},{"do":"fitUpgrade","uuid":"{var.picked}","onto":"choice:weapon","until":"endOfTurn"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you always have an integrated close combat heavy bludgeon on your sheet, even when unarmed or your hands are full.</p>"

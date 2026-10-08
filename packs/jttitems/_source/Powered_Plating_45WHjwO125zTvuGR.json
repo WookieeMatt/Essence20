@@ -5,6 +5,9 @@
   "_id": "45WHjwO125zTvuGR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Powered Plating","when":["self:morphed","self:data:system.powers.personal.value>0"],"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":{"min":1,"max":"min(4, @actor.system.powers.personal.value)"},"prompt":"How much Personal Power (up to 4)?"},{"do":"updateActor","set":{"flags.essence20.poweredPlatingBonus":"@spent"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: while Morphed, spend up to 4 Personal Power for that much extra Toughness until you unmorph.</p>"

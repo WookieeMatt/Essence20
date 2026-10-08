@@ -5,6 +5,9 @@
   "_id": "o2kN3NZTFWHS494V",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Bellowbreath","event":"afterRoll","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"save","to":"targets","skills":["brawn"],"dif":15,"status":"prone"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Chat card: on a success, each target gets a DIF 15 Brawn save button, and failing knocks them Prone.</p>"

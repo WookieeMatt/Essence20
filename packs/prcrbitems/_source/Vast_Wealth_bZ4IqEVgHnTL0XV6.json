@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Flaunting your wealth (Vast Wealth: Edge)","when":["essence:social"],"edge":true},
+      {"type":"Use","label":"Buy your way past a Skill Test","limit":{"per":"mission","max":1},"steps":[{"do":"chat","text":"{name} automatically passes this Skill Test - money solves it."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Edge on Wealth tests. Use button: once per mission, buy your way past a test. Roll Options Dialog: on Social tests, a switch for Edge when you can flaunt your wealth.</p>"

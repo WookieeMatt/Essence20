@@ -5,6 +5,7 @@
   "_id": "EYfJvqZZk1PGHyY2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:City Council"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: an Edge on Deception, Persuasion and Performance tests.</p><p>Left to the table: the Edge is meant only while you wear the crown, so switch the effect off otherwise.</p>"
@@ -25,7 +26,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "City Council Politician Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

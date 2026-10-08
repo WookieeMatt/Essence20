@@ -5,9 +5,13 @@
   "_id": "QXmBBtzFDk0ZE61I",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Targeting: rolls the better of the two","from":"finesse","to":"targeting","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Targeting: rolls the better of the two","from":"targeting","to":"finesse","mode":"bestOf"}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: the Throwing Star's Maneuver: rolls Finesse at Short range with ↓2. Change its Skill to Targeting on the sheet if you prefer.</p>"
+      "notes": "<p>Automatic: the Throwing Star's Maneuver: rolls the better of Finesse and Targeting at Short range with ↓2.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -24,7 +28,7 @@
     "damageValue": null,
     "isSpecialized": false,
     "shiftDown": 2,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

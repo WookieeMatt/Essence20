@@ -5,6 +5,11 @@
   "_id": "1aVrzJLiNkghFT4p",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","when":["attack","item:damageType:maneuver","self:data:flags.essence20.unmovableActive"],"downshift":3},
+      {"type":"Use","label":"Unmovable on (1 Personal Power)","when":["not:self:data:flags.essence20.unmovableActive"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.unmovableActive":true}},{"do":"chat","text":"{name} is rooted to the spot."}]},
+      {"type":"Use","label":"Unmovable off","when":["self:data:flags.essence20.unmovableActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.unmovableActive":false}},{"do":"chat","text":"{name} is no longer rooted."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: switches it on; while it is on, Maneuver attacks against you take ↓3, labelled Unmovable in the attacker's Roll Options Dialog.</p><p>Left to the table: switching it off when you move.</p>"

@@ -1,61 +1,118 @@
+{{!-- The actor's Rules tab (rules/actor-view.mjs): its Active Effects, conditions and area effects
+     kept apart from what is always on, then a read-only summary of the rules its items give it.
+     The tab id stays "effects" so saved tab state and the Active Effects tour keep working. --}}
 <section class="tab effects {{tabs.effects.cssClass}}" data-tab="effects" data-group="primary">
-  <div class="effect-list-container">
+  <div class="effect-list-container e20-actor-rules">
+    <p class="e20-actor-rules-intro">{{localize "E20.ActorRules.Intro"}}</p>
+
+    <h3 class="e20-actor-rules-heading">
+      <i class="fa-solid fa-sliders"></i> {{localize "E20.ActorRules.EffectsHeading"}}
+    </h3>
     <ol class="items-list effects-list e20-border-accent">
-    {{#each effects as |section sid|}}
-    {{#unless section.hidden}}
-      <li class="items-header flexrow" data-effect-type="{{section.type}}">
-        <div class="item-name effect-name flexrow">{{localize section.name}}</div>
+    {{#each effectGroups as |group|}}
+    {{#unless group.hidden}}
+      <li class="items-header flexrow e20-effect-group is-{{group.type}}{{#if group.transient}} is-transient{{/if}}" data-effect-type="{{group.type}}">
+        <div class="item-name effect-name flexrow"><i class="{{group.icon}}"></i> {{localize group.label}}</div>
         <div class="effect-source">{{localize "E20.ItemSource"}}</div>
-        <div class="effect-duration">{{localize "E20.ActiveEffectDuration"}}</div>
+        <div class="effect-duration">{{#if group.transient}}{{localize "E20.ActorRules.Remaining"}}{{else}}{{localize "E20.ActiveEffectDuration"}}{{/if}}</div>
         <div class="item-controls effect-controls flexrow">
-          {{#if @root.editable}}
-            <a class="effect-control" data-action="createEffect" data-effect-type="{{section.type}}" data-tooltip="E20.ActiveEffectCreate">
+          {{#if (and @root.editable group.canCreate)}}
+            <a class="effect-control" data-action="createEffect" data-effect-type="{{group.type}}" data-tooltip="E20.ActiveEffectCreate">
               <i class="fas fa-plus"></i> {{localize "E20.ActiveEffectAdd"}}
             </a>
           {{/if}}
         </div>
       </li>
-      {{#if section.info}}
-        <ol class="info">
-        {{#each section.info}}
-            <li class="notification info">{{this}}</li>
-        {{/each}}
-       </ol>
-     {{/if}}
 
       <ol class="item-list">
-      {{#each section.effects as |effect|}}
-        <li class="item effect flexrow" data-effect-id="{{effect.id}}">
+      {{#each group.effects as |entry|}}
+        <li class="item effect flexrow e20-effect-entry{{#if group.transient}} is-transient{{/if}}{{#if entry.disabled}} is-disabled{{/if}}{{#if entry.suppressed}} is-suppressed{{/if}}" data-effect-id="{{entry.id}}">
           <div class="item-name effect-name flexrow">
-            <img class="item-image" src="{{effect.img}}"/>
-            <h4>{{effect.name}}</h4>
-            {{#if effect.e20Summaries.length}}
-              <ul class="effect-summaries">
-                {{#each effect.e20Summaries}}<li>{{this}}</li>{{/each}}
-              </ul>
+            <img class="item-image" src="{{entry.img}}"/>
+            <div class="e20-effect-text">
+              <h4>{{entry.name}}</h4>
+              {{#if entry.statuses.length}}
+                <span class="e20-effect-statuses">
+                  {{#each entry.statuses}}<span class="e20-effect-status">{{this}}</span>{{/each}}
+                </span>
+              {{/if}}
+              {{#if entry.suppressed}}<span class="e20-effect-note">{{localize "E20.ActorRules.Suppressed"}}</span>{{/if}}
+              {{#if entry.summaries.length}}
+                <ul class="effect-summaries">
+                  {{#each entry.summaries}}<li>{{this}}</li>{{/each}}
+                </ul>
+              {{/if}}
+            </div>
+          </div>
+          <div class="effect-source">
+            {{#if entry.sourceUuid}}
+              <a class="e20-rule-source-link" data-action="openRuleSource" data-uuid="{{entry.sourceUuid}}" data-tooltip="E20.ActorRules.OpenItem">{{entry.sourceName}}</a>
+            {{else}}
+              {{entry.sourceName}}
             {{/if}}
           </div>
-          <div class="effect-source">{{effect.sourceName}}</div>
-          <div class="effect-duration">{{effect.duration.name}}</div>
+          <div class="effect-duration">
+            {{#if entry.temporary}}<i class="fa-solid fa-hourglass-half"></i> {{/if}}{{entry.duration}}
+          </div>
           <div class="item-controls effect-controls flexrow">
             {{#if @root.editable}}
-              <a class="effect-control" data-action="toggleEffect" data-uuid="{{effect.uuid}}"
-                data-tooltip="{{#if effect.disabled}}E20.ActiveEffectEnable{{else}}E20.ActiveEffectDisable{{/if}}">
-                <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+              <a class="effect-control" data-action="toggleEffect" data-uuid="{{entry.uuid}}"
+                data-tooltip="{{#if entry.disabled}}E20.ActiveEffectEnable{{else}}E20.ActiveEffectDisable{{/if}}">
+                <i class="fas {{#if entry.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
               </a>
-              <a class="effect-control" data-action="editEffect" data-uuid="{{effect.uuid}}" data-tooltip="E20.ActiveEffectEdit">
+              <a class="effect-control" data-action="editEffect" data-uuid="{{entry.uuid}}" data-tooltip="E20.ActiveEffectEdit">
                 <i class="fas fa-edit"></i>
               </a>
-              <a class="effect-control" data-action="deleteEffect" data-key="{{effect._id}}" data-tooltip="E20.ActiveEffectDelete">
-                <i class="fas fa-trash"></i>
-              </a>
+              {{#if entry.canDelete}}
+                <a class="effect-control" data-action="deleteEffect" data-key="{{entry.id}}" data-tooltip="E20.ActiveEffectDelete">
+                  <i class="fas fa-trash"></i>
+                </a>
+              {{else}}
+                <span class="effect-control is-placeholder" data-tooltip="E20.ActorRules.DeleteOnItem"><i class="fas fa-lock"></i></span>
+              {{/if}}
             {{/if}}
           </div>
-          </li>
+        </li>
+      {{else}}
+        <li class="e20-effect-empty">{{localize "E20.ActorRules.NoEffects"}}</li>
       {{/each}}
       </ol>
     {{/unless}}
     {{/each}}
     </ol>
+
+    <h3 class="e20-actor-rules-heading">
+      <i class="fa-solid fa-scroll"></i> {{localize "E20.ActorRules.RulesHeading"}}
+      {{#if ruleCount}}<span class="e20-actor-rules-count">{{ruleCount}}</span>{{/if}}
+    </h3>
+    <div class="e20-actor-rule-sources" data-actor-rules>
+      {{#each ruleGroups as |group|}}
+        <div class="e20-actor-rule-source" data-item-id="{{group.id}}">
+          <div class="e20-actor-rule-source-header">
+            <a class="e20-rule-source-link" data-action="openRuleSource" data-uuid="{{group.uuid}}" data-tooltip="E20.ActorRules.OpenItem">
+              <img class="item-image" src="{{group.img}}"/>
+              <span class="e20-actor-rule-source-name">{{group.name}}</span>
+            </a>
+            <span class="e20-rule-type">{{group.typeLabel}}</span>
+            {{#if group.hostName}}<span class="e20-actor-rule-host">{{localize "E20.ActorRules.AttachedTo"}} {{group.hostName}}</span>{{/if}}
+          </div>
+          <ul class="e20-actor-rule-list">
+            {{#each group.rules as |rule|}}
+              <li class="e20-actor-rule{{#if rule.situational}} is-situational{{/if}}{{#if rule.linked}} is-linked{{/if}}">
+                <span class="e20-rule-type">{{rule.typeLabel}}</span>
+                <span class="e20-rule-summary">{{rule.summary}}</span>
+                {{#if rule.state}}<span class="e20-actor-rule-state">{{rule.state}}</span>{{/if}}
+                <span class="e20-actor-rule-controls">
+                  <a class="e20-actor-rule-control" data-action="openRuleSource" data-uuid="{{group.uuid}}" data-tooltip="E20.ActorRules.OpenItem" aria-label="{{localize 'E20.ActorRules.OpenItem'}}"><i class="fa-solid fa-up-right-from-square"></i></a>
+                  <a class="e20-actor-rule-control" data-action="sendRuleToChat" data-uuid="{{group.uuid}}" data-type="{{rule.typeLabel}}" data-summary="{{rule.summary}}" data-state="{{rule.state}}" data-tooltip="E20.ActorRules.SendToChat" aria-label="{{localize 'E20.ActorRules.SendToChat'}}"><i class="fa-solid fa-comment-dots"></i></a>
+                </span>
+              </li>
+            {{/each}}
+          </ul>
+        </div>
+      {{else}}
+        <p class="e20-actor-rules-empty">{{localize "E20.ActorRules.NoRules"}}</p>
+      {{/each}}
+    </div>
   </div>
 </section>

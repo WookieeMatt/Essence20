@@ -17,7 +17,7 @@
     },
     "items": {
       "aa2e": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.hb5fKPK5GNTSlKvY",
+        "uuid": "Compendium.essence20.tf_crb.Item.hb5fKPK5GNTSlKvY",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Close Combat Blade Effect",
         "type": "weaponEffect",
@@ -39,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"

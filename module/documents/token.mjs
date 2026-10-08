@@ -1,5 +1,5 @@
-import { isBraced, setAiming, setBraced } from "../helpers/action-economy.mjs";
-import { consumeForMovement } from "../helpers/token-movement.mjs";
+import { isBraced, setAiming, setBraced } from "../mechanics/actions/action-economy.mjs";
+import { consumeForMovement } from "../mechanics/combat/token-movement.mjs";
 
 export class Essence20TokenDocument extends TokenDocument {
   /**
@@ -12,7 +12,7 @@ export class Essence20TokenDocument extends TokenDocument {
    * hook elsewhere in this system - a subclass override is a first-class extension point, while a
    * hook is a shared bus every module also writes to.
    *
-   * Everything about what does and does not get charged lives in helpers/token-movement.mjs; this
+   * Everything about what does and does not get charged lives in mechanics/combat/token-movement.mjs; this
    * is only the wiring. Note that v14 fires this ONLY on the client initiating the move, which is
    * what makes movement enforcement advisory and why it sits behind its own opt-in setting.
    *

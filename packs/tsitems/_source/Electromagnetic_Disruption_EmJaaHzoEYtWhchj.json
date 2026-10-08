@@ -5,6 +5,11 @@
   "_id": "EmJaaHzoEYtWhchj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"option","label":"Option","from":"config","table":"electromagneticDisruptionOptions","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"Use","label":"Electromagnetic pulse","when":["rule:choiceHas:option:pulse"],"limit":{"per":"encounter"},"steps":[{"do":"damage","amount":1,"damageType":"emp","to":"nearbyEnemies:15"},{"do":"damage","amount":1,"damageType":"stun","to":"nearbyEnemies:15"}]}
+    ],
+    "prerequisites": {"when":["self:hasType:influence:Mutant Beast"]},
     "automation": {
       "status": "partial",
       "notes": "<p>When added, you pick an option. Use button (pulse option, once per scene): deals 1 Electromagnetic damage and 1 Stun to nearby enemies. Left to the table: the option that gives a natural weapon the Electromagnetic trait.</p>"
@@ -19,11 +24,11 @@
     "items": {},
     "canActivate": false,
     "choice": null,
-    "hasChoice": true,
-    "choiceType": "electromagneticDisruption",
+    "hasChoice": false,
+    "choiceType": "none",
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,
-    "prerequisite": "Mutant Beast Influence",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "influence",
     "version": "transformers"

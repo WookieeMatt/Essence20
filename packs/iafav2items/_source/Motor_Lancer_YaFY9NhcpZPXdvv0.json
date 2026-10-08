@@ -5,6 +5,11 @@
   "_id": "YaFY9NhcpZPXdvv0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Motor Lancer","when":["attack:melee","vehicle:crew"],"upshift":1},
+      {"type":"Use","label":"Motor Lancer: a two-handed melee weapon in one hand this turn","when":["combat:exists"],"cost":{"action":"free"},"steps":[{"do":"mark","key":"motorLancer","to":"self","until":"endOfTurn"},{"do":"chat","text":"{name} handles a two-handed melee weapon in one hand until the end of the turn."}]},
+      {"type":"ItemModifier","label":"Motor Lancer (a two-handed weapon in one hand)","stage":"item","priority":100,"items":["item:type:weapon","item:data:system.derivedHands>1"],"path":"system.derivedHands","op":"set","value":1,"when":["self:marked:motorLancer"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your melee attacks while you're driving or riding in a vehicle get ↑1, already added to the shift in the Roll Options Dialog. Use button: spend a Free action to wield a two-handed melee weapon in one hand until the end of your turn.</p>"

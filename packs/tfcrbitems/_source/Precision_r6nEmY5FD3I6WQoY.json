@@ -5,6 +5,9 @@
   "_id": "r6nEmY5FD3I6WQoY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Multiplier","label":"Precision (Critical Success at 10+ over the Defense)","doubleMargin":10,"when":["attack"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your attacks count as a Critical Success (double effect) whenever they beat the target's Defense by 10 or more, shown in the result on the attack's chat card.</p>"

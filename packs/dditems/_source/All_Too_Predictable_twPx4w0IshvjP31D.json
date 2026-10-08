@@ -5,6 +5,9 @@
   "_id": "twPx4w0IshvjP31D",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"anyDie","reset":"turn","maxUses":1,"condition":"vsPrimaryQuarry","recursive":false}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per turn, when you roll against your Primary Quarry, the roll's chat card gets a Reroll button to reroll one die of your choice.</p>"
@@ -17,27 +20,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role",
-    "reroll": {
-      "enabled": true,
-      "maxUses": 1,
-      "mode": "all",
-      "reset": "turn",
-      "target": "anyDie",
-      "cost": {
-        "resourcePath": "",
-        "amount": 0,
-        "worldStoryPoints": 0,
-        "rolePointsName": ""
-      },
-      "condition": "vsPrimaryQuarry",
-      "skills": [],
-      "essence": "any",
-      "recursive": false,
-      "minDieFaces": 0,
-      "grantsCanCritD2": false,
-      "bonus": 0
-    }
+    "type": "role"
   },
   "effects": [],
   "sort": 262500,

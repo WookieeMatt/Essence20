@@ -5,6 +5,10 @@
   "_id": "zu38NCr99BFPgEBJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSelect","label":"Focused Blast","when":["attack:area"],"options":[{"label":"Keep the blast"},{"label":"Forgo the blast: ↑1","upshift":1},{"label":"Forgo the blast: +1 damage","key":"tf1FocusedDamage"}]},
+      {"type":"HitRider","label":"Focused Blast","note":1,"when":["roll:switch:tf1FocusedDamage"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on area attacks, choose to drop the blast for ↑1, or for +1 damage on a hit.</p>"

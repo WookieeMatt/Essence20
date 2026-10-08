@@ -5,6 +5,10 @@
   "_id": "4yY2nOHsZuV0jT7M",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"One more target (Swift)","stacks":true,"items":["item:type:weaponEffect","item:onHost"],"path":"system.numTargets","op":"set","value":"max(@other.system.numTargets, 1) + 1"}
+    ],
+    "prerequisites": {"when":["ask:Weapon with a range in feet"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains Multiple Targets (2), or +1 to an existing Multiple Targets.</p>"

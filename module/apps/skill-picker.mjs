@@ -2,7 +2,7 @@ import { applyThemeClass } from "../settings.js";
 import {
   computeEssenceSpend, getNewEssenceOverspend, getSkillAttributionStatus, getSkillEssences,
   resetEssenceUpdate,
-} from "../helpers/skill-picker.mjs";
+} from "../mechanics/rolls/skill-picker-math.mjs";
 import { addSpecialization, deleteSpecialization } from "../sheet-handlers/specialization-handler.mjs";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;

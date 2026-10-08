@@ -5,6 +5,10 @@
   "_id": "m90eNtuZvLWouyRc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DieSubstitution","label":"Culture die, Specialized (Cultural Connection, 10th level)","mode":"best","skills":["culture"],"specialize":true,"when":[{"any":["skill:deception","skill:persuasion"]},"not:roll:dataset:shift=d20",{"any":["roll:dataset:shift","not:roll:untrained"]},{"any":["self:level>=10","self:data:system.threatLevel>=10"]}]},
+      {"type":"DieSubstitution","label":"Culture die (Cultural Connection)","mode":"best","skills":["culture"],"when":[{"any":["skill:deception","skill:persuasion"]},"not:roll:dataset:shift=d20",{"any":["roll:dataset:shift","not:roll:untrained"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: on Deception and Persuasion tests, if you're trained in that Skill and your Culture die is better, the roll uses your Culture die instead. From Role level 10 it also rolls as Specialized.</p>"

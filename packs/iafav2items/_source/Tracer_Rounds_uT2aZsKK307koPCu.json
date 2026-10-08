@@ -5,6 +5,10 @@
   "_id": "uT2aZsKK307koPCu",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"AlternateEffect","label":"Tracer Rounds: a Spot alternate","scope":"host","key":"spot","name":"E20.DamageSpot","changes":{"damageType":"spot","damageValue":1,"secondaryDamage.type":null,"secondaryDamage.value":0}}
+    ],
+    "prerequisites": {"when":["host:trait:ballistic"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains a Spot alternate attack in its attack list.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Ranged Weapon with the Ballistic trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

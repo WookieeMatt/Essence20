@@ -5,6 +5,10 @@
   "_id": "FZQlUV1KkyQxUi7s",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose a Resistance or Immunity","when":["not:self:toggle:on"],"steps":[{"do":"pick","key":"type","from":"damageType","prompt":"Which damage type?"},{"do":"pick","key":"tier","from":"list","options":[["resistances","E20.VersatileProtectionResistance"],["immunities","E20.VersatileProtectionImmunity"]],"prompt":"Resistance or Immunity?"},{"do":"updateActor","set":{"system.{choice.tier}.{choice.type}":true}},{"do":"setToggle","key":"on","value":true}]},
+      {"type":"Use","label":"Switch it off","when":["self:toggle:on"],"steps":[{"do":"updateActor","set":{"system.{choice.tier}.{choice.type}":false}},{"do":"setToggle","key":"on","value":false}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (Free): pick a damage type and whether you're Resistant or Immune to it; use it again to switch it off.</p><p>Left to the table: ending it when its duration runs out.</p>"

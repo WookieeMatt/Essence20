@@ -62,15 +62,14 @@
         "hasArmorPiercing": true
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Phantom Ranger"]},
     "requirements": {
-      "custom": "Phantom Ranger",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

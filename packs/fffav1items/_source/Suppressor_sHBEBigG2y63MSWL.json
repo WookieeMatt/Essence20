@@ -5,6 +5,7 @@
   "_id": "sHBEBigG2y63MSWL",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","host:data:system.classification.size=long"]},"ask:Targeting weapon","not:host:trait:silent"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the upgraded weapon gains the Silent trait.</p>"
@@ -25,7 +26,7 @@
       "silent"
     ],
     "type": "weapon",
-    "prerequisite": "Medium or long targeting weapon without the Silent trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

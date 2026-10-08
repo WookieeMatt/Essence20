@@ -5,6 +5,9 @@
   "_id": "VtsUIbJm3HfFn12M",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reaction","who":"allyOfAttacker","per":"card","outcome":"miss","cost":{"resource":{"storyPoints":true},"amount":1},"limit":{"per":"scene","max":1},"steps":[{"do":"convertRows"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per scene, when an ally fails a test, spend a Story Point to turn it into a success.</p>"

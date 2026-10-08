@@ -3,6 +3,11 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"skillTestPosted","label":"Out-rolled by an ally","when":["target:self","recent:sideHigher:5"],"steps":[{"do":"mark","key":"competitive","to":"self","until":"scene"},{"do":"chat","text":"{name} was out-rolled by an ally: Snag on the next Skill Test this scene."}]},
+      {"type":"Trigger","event":"skillTestPosted","label":"Out-rolled by an ally","when":["not:target:self","recent:selfLower:5"],"steps":[{"do":"mark","key":"competitive","to":"self","until":"scene"},{"do":"chat","text":"{name} was out-rolled by an ally: Snag on the next Skill Test this scene."}]},
+      {"type":"RollModifier","label":"Competitive","snag":true,"when":["self:marked:competitive"],"consumeMark":"competitive"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when an ally rolls the same Skill within 5 minutes of you and beats your result, a chat line says so and your next Skill Test this scene takes a Snag, listed as Competitive next to Snag in the Roll Options Dialog.</p>"

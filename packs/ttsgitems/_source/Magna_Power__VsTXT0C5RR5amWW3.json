@@ -5,6 +5,10 @@
   "_id": "VsTXT0C5RR5amWW3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Magna Power!: Morphed Toughness from Armor Training","steps":[{"do":"refreshMorphedToughness"}]},
+      {"type":"Trigger","event":"removed","label":"Magna Power!: Morphed Toughness off","steps":[{"do":"updateActor","set":{"system.canSetToughnessBonus":false,"system.defenses.toughness.morphed":0}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted by the Magna Defender Faction. Automatic: sets your Morphed Toughness bonus from your best armor training, applied whenever the Morphed toggle on your sheet is on.</p>"
@@ -28,7 +32,6 @@
     "choiceType": "none",
     "isRoleVariant": false,
     "hasChoice": false,
-    "hasMorphedToughnessBonus": true,
     "numChoices": 1,
     "prerequisite": "",
     "selectionLimit": 1,

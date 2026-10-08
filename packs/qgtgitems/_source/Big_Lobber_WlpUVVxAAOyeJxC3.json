@@ -5,6 +5,10 @@
   "_id": "WlpUVVxAAOyeJxC3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"WeaponTrait","label":"Big Lobber: thrown grenades are Indirect","traits":["indirect"],"items":[{"any":["item:trait:thrown","item:name~grenade"]}]}
+    ],
+    "prerequisites": {"when":["self:skill:science>=d2"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: grenades you throw gain the Indirect trait.</p>"
@@ -15,7 +19,7 @@
       "book": "Quartermaster's Guide to Gear",
       "page": 28
     },
-    "prerequisite": "Science +d2",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

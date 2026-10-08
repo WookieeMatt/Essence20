@@ -20,6 +20,14 @@
           </a>
         </div>
       {{/if}}
+      {{!-- General Perk / Grid Power picks the Role's levels gave and that are still to be made
+           (mechanics/characters/level-picks.mjs). --}}
+      {{#if @root.levelPicks}}
+        <a class="e20-level-picks" data-action="levelPicks"
+          data-tooltip="{{localize 'E20.LevelPickButton' picks=@root.levelPicks.tooltip}}">
+          <i class="fa-solid fa-star"></i> {{@root.levelPicks.count}}
+        </a>
+      {{/if}}
     {{/unless}}
   </div>
 </div>

@@ -5,6 +5,7 @@
   "_id": "amwW5U2k9S6zVthr",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","ask:Large weapon"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: the light the mounted flashlight gives.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Medium or Large"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

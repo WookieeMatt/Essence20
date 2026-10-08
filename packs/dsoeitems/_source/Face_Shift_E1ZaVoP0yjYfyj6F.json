@@ -5,6 +5,13 @@
   "_id": "E1ZaVoP0yjYfyj6F",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Change shape (press again to change back)","steps":[{"do":"changeShape"}]},
+      {"type":"ShapeOption","kind":"skill","key":"faceSkill","label":"E20.Mlp1FaceSkill"},
+      {"type":"RollModifier","upshift":1,"when":["shape:skill:faceSkill"]},
+      {"type":"DialogSwitch","label":"Passing as the individual (Face-Shift: Edge)","edge":true,"when":["check:shapeShifted"]}
+    ],
+    "prerequisites": {"when":["ask:Ability to change shape"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: when you change shape, copy an individual and pick a Skill they're known for to get ↑1 on it. Roll Options Dialog: a switch for Edge when passing yourself off as them.</p>"
@@ -15,7 +22,7 @@
       "book": "Dark Skies Over Equestria",
       "page": 20
     },
-    "prerequisite": "Ability to change shape",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

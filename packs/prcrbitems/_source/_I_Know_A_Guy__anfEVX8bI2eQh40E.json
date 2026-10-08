@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Reach your contact (DIF 12 Persuasion)","limit":{"per":"encounter"},"steps":[{"do":"roll","skill":"persuasion","dif":12}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per combat, roll the DIF 12 Persuasion test to reach your contact.</p><p>Left to the table: the once-per-day limit and what your contact provides.</p>"

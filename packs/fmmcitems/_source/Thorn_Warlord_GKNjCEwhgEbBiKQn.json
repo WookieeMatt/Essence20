@@ -5,6 +5,10 @@
   "_id": "GKNjCEwhgEbBiKQn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Thorn Warlord (Acid in Monster Form meets Evasion)","defense":"toughness","mode":"instead","from":["evasion"],"outgoing":true,"when":["check:monsterForm",{"any":["item:damageType:acid","item:data:system.secondaryDamage.type=acid"]}]},
+      {"type":"Trigger","label":"Thorn Warlord (2 Personal Power on hitting a Frightened or Impaired target)","event":"hit","when":["self:data:system.powers.personal",{"any":["target:status:frightened","target:status:impaired"]}],"steps":[{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":2}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 to all Defenses while Morphed. Automatic: you regain 2 Personal Power when you hit a Frightened or Impaired target, and in Monster Form your Acid attacks can't be defended with Toughness.</p>"

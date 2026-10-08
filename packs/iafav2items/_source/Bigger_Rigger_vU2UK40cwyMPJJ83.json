@@ -5,6 +5,10 @@
   "_id": "vU2UK40cwyMPJJ83",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SizeMatrixCancel","label":"Bigger Rigger","priority":1,"when":["defense:toughness",{"any":["target:type:vehicle","target:type:zord"]}]}
+    ],
+    "prerequisites": {"when":["self:has:Big Rigger","self:skill:driving>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when a smaller vehicle attacks your vehicle's Toughness, it gets no size ↑.</p>"
@@ -16,7 +20,7 @@
       "page": 63
     },
     "items": {},
-    "prerequisite": "Big Rigger, Driving +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

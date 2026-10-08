@@ -5,6 +5,9 @@
   "_id": "Pr3UniqWpnTwoHnd",
   "img": "systems/essence20/assets/icons/weapons/battle-axe.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","label":"Unique Weapon (Two-Handed Melee: -10 ft)","movement":"all","stage":"derivedHook","op":"add","value":-10,"when":["movement:has"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks roll Might for 2 Energy damage, and all your movement is 10 ft slower while it is equipped.</p>"
@@ -39,8 +42,6 @@
         }
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "heavy"

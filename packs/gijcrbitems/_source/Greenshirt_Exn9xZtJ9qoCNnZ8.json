@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Greenshirt: help only from fellow Greenshirts","side":"receive","effect":"refuse","when":["not:target:hasItem:Compendium.essence20.gi_joe_crb.Item.XVu6skoSL0A3Hnve"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: other characters can't Lend you Assistance unless they also have the Greenshirt Influence.</p>"

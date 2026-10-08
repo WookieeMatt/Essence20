@@ -5,6 +5,11 @@
   "_id": "h5tkU3gsCoMHGCFJ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Corroded: no healing until treated (Rust Derivatives)","when":["item:onHost","not:target:marked:o2Rusted"],"steps":[{"do":"mark","to":"target","key":"o2Rusted"},{"do":"chat","text":"{target} is corroded and can't regain Health until treated (DIF 20 Science or Technology, 10 minutes)."},{"do":"button","label":"Treat the corrosion of {target}","who":"anyone","runAs":"clicker","once":false,"steps":[{"do":"choose","prompt":"Treat with:","options":[{"label":"Science","steps":[{"do":"roll","skill":"science","dif":20,"onSuccess":[{"do":"unmark","to":"target","key":"o2Rusted"},{"do":"chat","text":"{name} treats {target}'s corrosion - they can heal again."}]}]},{"label":"Technology","steps":[{"do":"roll","skill":"technology","dif":20,"onSuccess":[{"do":"unmark","to":"target","key":"o2Rusted"},{"do":"chat","text":"{name} treats {target}'s corrosion - they can heal again."}]}]}]}]}]},
+      {"type":"Veto","on":"update","label":"No healing while corroded (Rust Derivatives)","marked":"o2Rusted","path":"system.health.value","change":"up","clamp":true,"message":"{name} can't regain Health until the corrosion is treated."},
+      {"type":"ItemModifier","label":"Rust Derivatives (1 Acid damage too)","stage":"item","slot":"end","priority":-100,"stacks":true,"items":["item:onHost","not:item:data:system.secondaryDamage.type"],"path":"system.secondaryDamage","op":"set","value":{"type":"acid","value":1}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the upgraded weapon deals +1 Acid damage, and a hit stops the target regaining Health. Chat card: a Treat button rolls DIF 20 Science or Technology to cure it.</p>"

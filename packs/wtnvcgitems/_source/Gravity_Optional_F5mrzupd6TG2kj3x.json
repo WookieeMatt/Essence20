@@ -5,6 +5,14 @@
   "_id": "F5mrzupd6TG2kj3x",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"aerial","stage":"base","op":"set","value":"5 + 5 * floor(@level / 5)","label":"Floating: Aerial Movement 5 ft + 5 per 5 levels","when":["check:gravityOptional"]},
+      {"type":"DialogSwitch","label":"Jump (triple the result)","when":["skill:athletics"],"forget":true,"steps":[{"do":"setToggle","key":"jump","value":true,"until":"turnOrScene"}]},
+      {"type":"Trigger","label":"Gravity Optional: jump","event":"afterRoll","outcome":"any","when":["skill:athletics","self:toggle:jump"],"steps":[{"do":"setToggle","key":"jump","value":false},{"do":"chat","text":"{name}'s jump result {var.total} is tripled to {@var.total * 3}."}]},
+      {"type":"Use","label":"Floating on","when":["not:self:data:flags.essence20.gravityOptionalActive"],"limit":{"per":"encounter"},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.gravityOptionalActive":true}},{"do":"chat","text":"{name} floats (once per scene)."}]},
+      {"type":"Use","label":"Floating off","when":["self:data:flags.essence20.gravityOptionalActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.gravityOptionalActive":false}},{"do":"chat","text":"{name} stops floating."}]}
+    ],
+    "prerequisites": {"when":["self:hasType:focus:Blood Space War Veteran"]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Athletics tests, a Jump switch that posts the tripled result. Use button (once per scene): float, giving you Aerial Movement of 5 ft plus 5 ft per five levels until you switch it off.</p>"
@@ -25,7 +33,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Blood Space War Veteran Soldier Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

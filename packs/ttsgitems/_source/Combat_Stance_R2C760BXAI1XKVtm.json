@@ -5,6 +5,11 @@
   "_id": "R2C760BXAI1XKVtm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose your Combat Stance foe","limit":{"per":"encounter","max":"1 + 999 * @owned.yNtX8ky7O8v50C5l"},"steps":[{"do":"target","max":1},{"do":"warn","text":"E20.CombatStanceTooWeak","stop":true,"when":["not:target:levelDiff>=-3"]},{"do":"mark","key":"combatStance","to":"target","exclusive":true},{"do":"chat","text":"{name} takes a Combat Stance against {target}."}]},
+      {"type":"RollModifier","label":"Combat Stance","upshift":"1 + @owned.yNtX8ky7O8v50C5l","when":["attack","markedByMe:combatStance"]},
+      {"type":"DialogSwitch","label":"Spend 1 Personal Power (Combat Stance: bonus damage)","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"damage":"1 + @owned.yNtX8ky7O8v50C5l","forget":true,"when":["attack","markedByMe:combatStance"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per scene, target a foe to make it your Combat Stance foe. Automatic: your attacks against it get ↑1, labelled Combat Stance in the Roll Options Dialog. Roll Options Dialog: a switch to spend 1 Personal Power for bonus damage on a hit.</p><p>Left to the table: ending the stance when the foe leaves, is Defeated or you unmorph.</p>"

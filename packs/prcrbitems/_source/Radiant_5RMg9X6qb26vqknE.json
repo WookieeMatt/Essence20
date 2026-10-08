@@ -5,6 +5,7 @@
   "_id": "5RMg9X6qb26vqknE",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Melee weapon without an Energy trait"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains the Laser trait, which adds Stun 1 and Spot alternate effects.</p>"

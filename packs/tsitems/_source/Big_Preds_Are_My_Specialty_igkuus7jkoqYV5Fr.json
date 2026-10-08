@@ -5,6 +5,9 @@
   "_id": "igkuus7jkoqYV5Fr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","upshift":"@target.size - @size","when":["skill:infiltration","target:sizeDiff>=1"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: Edge on Survival. Automatic: your Infiltration tests against a larger target get ↑1 for each Size Class it is larger than you, labelled Big Preds Are My Specialty in the Roll Options Dialog.</p><p>Left to the table: the Survival Edge is meant only for tracking larger enemies, and the Infiltration bonus only for surprising them.</p>"

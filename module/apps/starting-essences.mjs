@@ -1,14 +1,14 @@
 import { applyThemeClass, getGameLine } from "../settings.js";
-import { computeEssenceSpend } from "../helpers/skill-picker.mjs";
+import { computeEssenceSpend } from "../mechanics/rolls/skill-picker-math.mjs";
 import {
   checkStartingEssences, currentBase, ESSENCES, essencesOverspentBy, maxEssenceFor, MIN_ESSENCE,
   recommendedSpread, STARTING_ESSENCE_POINTS, startingEssencesUpdate,
-} from "../helpers/starting-essences.mjs";
+} from "../mechanics/characters/starting-essences.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
  * Spend a player character's 12 starting Essence points, within the book's limits - see
- * helpers/starting-essences.mjs for the rules and where they come from.
+ * mechanics/characters/starting-essences.mjs for the rules and where they come from.
  *
  * Opens by itself when a new character is created (essence20.mjs's createActor hook), and from
  * the bar above the Skills tab's Essence columns (pc-skills.hbs) any time after. Nothing is
@@ -41,8 +41,21 @@ export default class StartingEssences extends HandlebarsApplicationMixin(Applica
     }
 
     const app = new StartingEssences(actor);
+    // Registered with the actor, so deleting the actor closes this window too (it was left open, live test 2026-10-07).
+    if (actor.apps) {
+      actor.apps[app.id] = app;
+    }
+
     await app.render({ force: true });
     return app;
+  }
+
+  /** @override */
+  _onClose(options) {
+    super._onClose(options);
+    if (this._actor?.apps?.[this.id] === this) {
+      delete this._actor.apps[this.id];
+    }
   }
 
   static DEFAULT_OPTIONS = {

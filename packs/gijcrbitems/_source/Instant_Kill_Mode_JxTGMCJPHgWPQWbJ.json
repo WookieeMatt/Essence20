@@ -5,6 +5,10 @@
   "_id": "JxTGMCJPHgWPQWbJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Attacks are Free this turn","when":["combat"],"limit":{"per":"encounter"},"steps":[{"do":"setToggle","key":"active","value":true,"until":"endOfTurn"},{"do":"chat","text":"{name}'s attacks are Free actions for the rest of this turn."}]},
+      {"type":"ActionCost","label":"Instant Kill Mode","action":"attack","to":"free","when":["self:toggle:active"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: for the rest of this turn, your attacks are Free actions.</p><p>Left to the table: it's once per mission, but the button only blocks reuse within the same encounter.</p>"

@@ -5,6 +5,9 @@
   "_id": "0Zd1oSVp98kuGQ9E",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"skillDice","reset":"scene","maxUses":1,"condition":"rollFailed","recursive":false}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per scene, a reroll button appears on a failed Skill Test. The new result stands.</p>"
@@ -33,16 +36,7 @@
     },
     "type": "general",
     "value": 0,
-    "version": "powerRangers",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "skillDice",
-      "condition": "rollFailed",
-      "maxUses": 1,
-      "reset": "scene",
-      "recursive": false
-    }
+    "version": "powerRangers"
   },
   "effects": [],
   "sort": 0,

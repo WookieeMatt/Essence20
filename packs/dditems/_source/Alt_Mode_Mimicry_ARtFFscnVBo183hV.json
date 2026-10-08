@@ -5,6 +5,9 @@
   "_id": "ARtFFscnVBo183hV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Copy a chassis from another Origin","when":["calc:2 + 2 * @owned.pVpAdlWmS3psTgIp - @flagged.tf1Mimicry>0"],"steps":[{"do":"pickChassis","mode":"mimicry","flag":"tf1Mimicry"},{"do":"grant","uuid":"{var.chassis}","flags":{"tf1Mimicry":true}},{"do":"updateActor","set":{"system.canTransform":true}},{"do":"chat","text":"{name} gains a new Alt Mode: {var.chassisName}."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick an Alt Mode from a different Origin, within two Size Classes of your original. You get two picks (four with Alt Mode Mastery).</p>"

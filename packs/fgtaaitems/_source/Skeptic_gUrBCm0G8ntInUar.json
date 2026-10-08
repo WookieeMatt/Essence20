@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Skeptic","when":["skill:persuasion"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Persuasion tests made against you (with you targeted) get Edge, labelled Skeptic in the roller's Roll Options Dialog.</p>"

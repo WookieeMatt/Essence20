@@ -5,6 +5,9 @@
   "_id": "pqrUN5jaAbWJmgLf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Train a teammate","when":["not:combat:exists"],"steps":[{"do":"target","max":1},{"do":"warn","text":"E20.EngineOverrideNoValidTarget","stop":true,"when":["target:windowUsed:extraRoughTrainingUsedThisMission:mission"]},{"do":"pick","key":"skill","from":"skill","prompt":"Which Skill?"},{"do":"actAs","to":"target","steps":[{"do":"roll","skill":"{var.picked}","dif":15,"onSuccess":[{"do":"bank","edge":true,"appliesWhen":["skill:{var.picked}","not:roll:initiative"],"until":"combat","replace":true}],"onFail":[{"do":"bank","upshift":1,"appliesWhen":["skill:{var.picked}","not:roll:initiative"],"until":"combat","replace":true}]}]},{"do":"markWindow","flag":"extraRoughTrainingUsedThisMission","window":"mission","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (out of combat): a targeted teammate rolls a DIF 15 test in the Skill you pick. They bank Edge on their next test with it on a success, or ↑1 on a failure.</p>"

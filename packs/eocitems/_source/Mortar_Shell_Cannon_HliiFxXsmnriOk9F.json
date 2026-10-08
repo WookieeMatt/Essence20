@@ -39,15 +39,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "heavy"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=huge"]},
     "requirements": {
-      "custom": "Huge",
+      "custom": "",
       "skill": "brawn",
       "shift": "d4"
     },

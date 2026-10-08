@@ -5,6 +5,12 @@
   "_id": "7cL4aUwJwqvbhYCz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick a Limited Alteration (genetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["limited"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]},
+      {"type":"Use","label":"Pick a Limited Alteration (genetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["limited"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]},
+      {"type":"Trigger","event":"added","label":"Beast Mode: a Limited Alteration (genetic) for the scene","when":["rule:data:flags.essence20.beastMode","not:self:toggle:granted"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["limited"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"geneticAlteration":true},"until":"scene"},{"do":"setToggle","key":"granted","value":true}]}
+    ],
+    "prerequisites": {"when":[{"any":["self:has:Engrafted Mutation","self:level>=8"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained (or via the Use button), pick a Limited Alteration you don't already have; it is added as a genetic Alteration. You count as having genetic Alterations for Retrogen weapons, and Beast Mode offers its extra picks.</p>"
@@ -15,7 +21,7 @@
       "book": "Cobra Codex",
       "page": 80
     },
-    "prerequisite": "Engrafted Mutation or 8th Level",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

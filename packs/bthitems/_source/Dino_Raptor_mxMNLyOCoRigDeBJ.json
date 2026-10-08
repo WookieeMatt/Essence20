@@ -5,6 +5,7 @@
   "_id": "mxMNLyOCoRigDeBJ",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "prerequisites": {"when":["ask:On a dinosaur-themed Ranger team"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 Personal Power to call your Dino Raptor vehicle; in combat it arrives after 3d2 rounds.</p>"
@@ -20,6 +21,7 @@
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

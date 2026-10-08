@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skills","from":"skill","count":2,"excludeCopies":true,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DerivedStat","label":"Expertise: Up 2 on the picked Skill","path":"system.skills.{choice.skill}.shiftUp","op":"add","value":2,"when":["not:rule:data:system.value>0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: pick two skills when you gain it, and you get ↑2 on them. Commando gives a second copy at 7th level for two more (you can't repeat a skill).</p>"
@@ -16,10 +20,9 @@
     "prerequisite": "",
     "selectionLimit": 4,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "skills",
-    "numChoices": 2,
-    "value": 2
+    "hasChoice": false,
+    "choiceType": "none",
+    "numChoices": 2
   },
   "effects": [],
   "folder": "4txCmeGYg1JUzKEl",

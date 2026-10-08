@@ -5,6 +5,10 @@
   "_id": "4Wfhy9VD0mMGgJbx",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Bullbar","when":["attack:ram","self:transformed"],"edge":true},
+      {"type":"DerivedStat","label":"Bullbar","path":"system.tf2ShoveImmune","op":"set","value":1,"when":["self:canTransform","not:self:transformed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Alt Mode, your Ram attacks get Edge, shown as Bullbar next to Edge in the Roll Options Dialog. In Bot Mode you can't be shoved.</p>"
@@ -16,7 +20,6 @@
       "page": 134
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

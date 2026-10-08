@@ -5,9 +5,14 @@
   "_id": "S63cNsFogI1Ahh2C",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Holds what it grapples (Constrictor)","event":"hit","when":["self:type:companion",{"any":["item:damageType:grapple","item:damageType:maneuver","weapon:trait:grapple"]}],"steps":[{"do":"mark","key":"constrictorHold","to":"target","perSetter":true,"until":"combat"}]},
+      {"type":"Trigger","label":"Squeeze the grappled target (Constrictor)","event":"turnStart","when":["self:type:companion"],"steps":[{"do":"damage","to":"markedByMe:constrictorHold","amount":1,"damageType":"blunt","filter":["target:status:grappled"]}]}
+    ],
+    "prerequisites": {"when":["self:size=large"]},
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: the Grappling Specialization. Automatic: at the start of its turn it deals 1 Blunt damage to the target it is grappling.</p>"
+      "notes": "<p>Active Effect: the Grappling Specialization. Automatic: when the pet hits with a Grapple or Maneuver attack it holds that target, and at the start of its turn it deals 1 Blunt damage to a held target that is still Grappled.</p>"
     },
     "originalId": "",
     "description": "",
@@ -15,7 +20,7 @@
       "book": "Cobra Codex",
       "page": 103
     },
-    "prerequisite": "Large size",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

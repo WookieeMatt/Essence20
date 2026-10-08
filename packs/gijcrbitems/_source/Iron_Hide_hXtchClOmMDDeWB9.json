@@ -5,6 +5,9 @@
   "_id": "hXtchClOmMDDeWB9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"wouldBeDefeated","label":"Iron Hide (spend a Story Point, Brawn DIF 15)","prompt":true,"when":["not:damage:stun","self:canSpendStoryPoints"],"steps":[{"do":"spend","resource":{"storyPoints":true},"amount":1},{"do":"roll","skill":"brawn","dif":15,"onSuccess":[{"do":"negateDamage"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when a hit would Defeat you, you're offered to spend a Story Point and roll Brawn against DIF 15. On a success the damage is ignored.</p>"

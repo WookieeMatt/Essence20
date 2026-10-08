@@ -5,6 +5,7 @@
   "_id": "UUGzzHGM4Kik0JUz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:origin:News Hound"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing is automated. Once per session, ask the Host which choice is best; the Host answers at the table.</p>"
@@ -25,7 +26,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "News Hound Origin",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

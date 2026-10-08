@@ -11,7 +11,7 @@
       effect IS the Attack action, being the thing that rolls, so as siblings they read as a list of
       unrelated options with Attack sitting uselessly among them.
 
-      Context comes from helpers/action-economy.mjs#getActionsTabContext. The tab is always shown,
+      Context comes from mechanics/actions/action-economy.mjs#getActionsTabContext. The tab is always shown,
       including out of combat, where it is a reference: the actions and what they cost, with no
       budget numbers and no buttons for the rules' own actions, since there is no ledger to spend
       from. Items keep their buttons - rolling a weapon out of an encounter works fine and always
@@ -108,7 +108,7 @@
                    data-tooltip="{{#if action.alreadyAimed}}{{localize 'E20.ActionEconomyAimingAlready'}}{{else if action.automated}}{{localize 'E20.ActionEconomyTakeAction'}}{{else}}{{localize 'E20.ActionEconomySpendNamed'}}{{/if}}"
                    aria-label="{{localize 'E20.ActionEconomySpendNamed'}}">
                   {{!-- A filled icon for the actions that actually do something when taken, hollow
-                        for the ones that only spend their cost - see helpers/named-actions.mjs,
+                        for the ones that only spend their cost - see mechanics/actions/named-actions.mjs,
                         which lists why each of the rest is still cost-only. --}}
                   <i class="fas {{#if action.automated}}fa-circle-play{{else}}fa-circle{{/if}}"></i>
                 </a>

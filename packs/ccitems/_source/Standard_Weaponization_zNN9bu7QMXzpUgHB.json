@@ -5,6 +5,9 @@
   "_id": "zNN9bu7QMXzpUgHB",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick the Integrated weapon (Standard Weaponization)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","integrated":true,"from":{"type":"weapon","availabilities":["standard"],"tags":[{"any":["item:hasAttack:item:data:system.classification.style=melee","item:hasAttack:item:data:system.range.reachMultiplier>0"]}]}},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick an integrated weapon of the matching tier; it's added to your sheet as part of you.</p>"

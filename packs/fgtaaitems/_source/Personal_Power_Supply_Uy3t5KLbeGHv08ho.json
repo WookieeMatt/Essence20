@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Personal Power Supply","path":"system.powers.personal.max","op":"add","value":"1 + floor(@level / 5)"},
+      {"type":"DerivedStat","label":"Personal Power Supply","path":"system.powers.personal.regeneration","op":"add","value":2},
+      {"type":"Use","label":"Choose a Grid Power","when":["calc:@actor.system.powers.personal.max - @countSubtype.power.grid > 0"],"steps":[{"do":"pickGrant","from":{"type":"power","tags":["item:data:system.type=grid"]}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: gives you a Personal Power pool of 1, plus 1 more every 5 levels, and you regain 2 when you Rest. Use button: take a Grid Power in place of a General Perk, up to your Personal Power capacity.</p>"

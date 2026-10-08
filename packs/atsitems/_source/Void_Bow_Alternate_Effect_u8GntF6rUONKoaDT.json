@@ -14,7 +14,7 @@
     "damageType": "void",
     "damageValue": 1,
     "shiftDown": 1,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 2,
     "radius": 0,
     "range": {

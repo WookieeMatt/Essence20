@@ -1,19 +1,41 @@
 import { jest } from '@jest/globals';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { _isCritIsFumble, getRerollContext, hasMatchingSkillDie, keepOriginalD20, onApplyDamage } from "./chat.mjs";
+
+// Sudden Death, Fortitude, Extra Plates, Didn't Even Feel It, Invincibility Through Invisibility and Just a Graze are staged
+// applyingDamage Triggers on their pack items (rules/plugins/combat/applying-damage-stages.mjs); their uses count under
+// each rule's own limit (flags.essence20.ruleUses.<item id>-<index>, or the rule's limit key).
+await import('./rules/plugins/index.mjs');
+await import('./mechanics/companions/summons.mjs');
+const { setWorldLookups } = await import('./rules/predicate.mjs');
+const { rebuildIndex } = await import('./rules/index.mjs');
+const { isRecklessAbandonActive } = await import('./items/rolls/reckless-abandon.mjs');
+setWorldLookups({ recklessAbandon: isRecklessAbandonActive });
+
+function packRules(uuid) {
+  const id = String(uuid).split('.').pop();
+  for (const dir of readdirSync('packs')) {
+    const src = `packs/${dir}/_source`;
+    const file = existsSync(src) ? readdirSync(src).find(name => name.endsWith(`_${id}.json`)) : null;
+    if (file) {
+      return JSON.parse(readFileSync(`${src}/${file}`, 'utf8')).system.rules ?? [];
+    }
+  }
+
+  return [];
+}
+
+const perkItem = uuid => ({ id: String(uuid).split('.').pop(), type: 'perk', flags: { core: { sourceId: uuid } }, system: { rules: packRules(uuid) } });
+const used = (uuid, index = 0) => `ruleUses.${String(uuid).split('.').pop()}-${index}`;
 
 const JUST_A_GRAZE_ID = "Compendium.essence20.gi_joe_crb.Item.YXL5dCiLZvzDgZzJ";
 const FORTITUDE_ID = "Compendium.essence20.gi_joe_crb.Item.19odrVUOsp4dCiOV";
 const EXTRA_PLATES_ID = "Compendium.essence20.gi_joe_crb.Item.xr0PvYXRNAg9cU42";
 const DIDNT_EVEN_FEEL_IT_ID = "Compendium.essence20.gi_joe_crb.Item.y7hyuXOuARcKgahl";
-const HARD_CORPS_ID = "Compendium.essence20.sgt_slaughter_sourcebook.Item.IR8Rl7IXn0zKBBXV";
+// (Hard Corps is a staged applyingDamage Trigger rule on its item - rules/conv16-LeftA.test.js.)
 const INVINCIBILITY_THROUGH_INVISIBILITY_ID = "Compendium.essence20.ferocious_fighters.Item.kYYPAxXMpJRMnq6Z";
 const RECKLESS_ABANDON_ID = "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY";
 const SUDDEN_DEATH_ID = "Compendium.essence20.gi_joe_crb.Item.bfBFQH3sxny3BfEK";
-const IRON_HIDE_ID = "Compendium.essence20.gi_joe_crb.Item.hXtchClOmMDDeWB9";
-const INTERPOSE_ID = "Compendium.essence20.gi_joe_crb.Item.srCQjZFTPhm2bK3D";
-const BODY_SHIELD_ID = "Compendium.essence20.gi_joe_crb.Item.CBfLvmIWdbLuucts";
-const FE_BURN_ID = "Compendium.essence20.beneath_the_helmet.Item.y3RPr4nJWVtCtdil";
-const TERROR_ID = "Compendium.essence20.beneath_the_helmet.Item.yBBB0Mi6fr84YcSd";
 
 game.user = { isGM: true };
 game.combat = null;
@@ -28,7 +50,7 @@ describe("onApplyDamage", () => {
     disposition = 1, groundMovement = 30, isMorphed = false, terrorAvailable = undefined,
     invincibilityThroughInvisibilityFlag = undefined, isSurprised = false,
   } = {}) {
-    const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+    const items = [...perkIds.map(perkItem), ...armor.map(a => ({ type: 'armor', ...a }))];
     items.documentsByType = { armor };
     // A stable token (not recreated per call) - see interpose.test.js's own identical note on
     // why getNearbyAllyTokens' self-exclusion needs reference equality to hold across calls.
@@ -56,11 +78,11 @@ describe("onApplyDamage", () => {
           return undefined;
         }
 
-        if (key == 'extraPlatesLastTurn') {
+        if (key == used(EXTRA_PLATES_ID)) {
           return attackedFlag;
         }
 
-        if (key == 'didntEvenFeelItThisEncounter') {
+        if (key == 'ruleUses.didntEvenFeelIt') {
           return didntEvenFeelItFlag;
         }
 
@@ -68,7 +90,7 @@ describe("onApplyDamage", () => {
           return hardCorpsFlag;
         }
 
-        if (key == 'invincibilityThroughInvisibilityUsedThisEncounter') {
+        if (key == used(INVINCIBILITY_THROUGH_INVISIBILITY_ID)) {
           return invincibilityThroughInvisibilityFlag;
         }
 
@@ -107,21 +129,21 @@ describe("onApplyDamage", () => {
   }
 
   function makeAttacker({ perkIds = [], level = 20, usedSuddenDeathFlag = undefined } = {}) {
-    const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+    const items = perkIds.map(perkItem);
 
     return {
       name: 'Attacker',
       items,
       system: { level },
       getFlag: jest.fn((scope, key) => (
-        scope == 'essence20' && key == 'suddenDeathThisEncounter' ? usedSuddenDeathFlag : undefined
+        scope == 'essence20' && key == used(SUDDEN_DEATH_ID) ? usedSuddenDeathFlag : undefined
       )),
       setFlag: jest.fn(),
     };
   }
 
   // Places targetActor and allyActor on a scene distanceFeet apart, sharing a Disposition -
-  // the minimal canvas.tokens/canvas.grid fixture findEligibleProtector() (helpers/interpose.mjs)
+  // the minimal canvas.tokens/canvas.grid fixture the protector lookup (rules/plugins/combat/applying-damage.mjs)
   // needs, same technique interpose.test.js's own setScene() establishes.
   function setNearbyAlly(targetActor, allyActor, distanceFeet) {
     const targetToken = targetActor.getActiveTokens()[0];
@@ -141,6 +163,7 @@ describe("onApplyDamage", () => {
 
   beforeEach(() => {
     foundry.applications.api.DialogV2.wait.mockReset();
+    foundry.applications.api.DialogV2.confirm = jest.fn(async (...args) => (await foundry.applications.api.DialogV2.wait(...args)) == 'confirm');
     originalCanvas = global.canvas;
     global.canvas = undefined;
   });
@@ -163,13 +186,13 @@ describe("onApplyDamage", () => {
     const target = makeTarget({ perkIds: [JUST_A_GRAZE_ID] });
     fromUuid.mockResolvedValue(target);
     foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
-    game.combat = { id: 'combat1', round: 1 };
+    game.combat = { id: 'combat1', round: 1, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
     expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
     expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 9 }); // only 1 damage applied
-    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'justAGrazeLastRound', expect.anything());
+    expect(target.setFlag).toHaveBeenCalledWith('essence20', used(JUST_A_GRAZE_ID), expect.anything());
     game.combat = null;
   });
 
@@ -181,7 +204,7 @@ describe("onApplyDamage", () => {
     await onApplyDamage(makeMessage(), makeButton());
 
     expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-    expect(target.setFlag).not.toHaveBeenCalledWith('essence20', 'justAGrazeLastRound', expect.anything());
+    expect(target.setFlag).not.toHaveBeenCalledWith('essence20', used(JUST_A_GRAZE_ID), expect.anything());
   });
 
   test("doesn't prompt when the incoming damage is already 1 or less", async () => {
@@ -196,8 +219,8 @@ describe("onApplyDamage", () => {
 
   test("doesn't prompt again once already used this round", async () => {
     const target = makeTarget({ perkIds: [JUST_A_GRAZE_ID] });
-    target.getFlag = jest.fn((scope, key) => (key == 'justAGrazeLastRound' ? { combatId: 'combat1', round: 1 } : undefined));
-    game.combat = { id: 'combat1', round: 1 };
+    target.getFlag = jest.fn((scope, key) => (key == used(JUST_A_GRAZE_ID) ? { combatId: 'combat1', round: 1, turn: 0, count: 1 } : undefined));
+    game.combat = { id: 'combat1', round: 1, started: true };
     fromUuid.mockResolvedValue(target);
 
     await onApplyDamage(makeMessage(), makeButton());
@@ -218,13 +241,15 @@ describe("onApplyDamage", () => {
     game.user.isGM = true;
   });
 
-  test("Interpose redirects the hit to an adjacent ally when the GM confirms", async () => {
+  test("an Interpose rule redirects the hit to an adjacent ally when the GM confirms", async () => {
     const target = makeTarget();
-    const protector = makeTarget({ perkIds: [INTERPOSE_ID], health: 20 });
+    const protector = makeTarget({ health: 20 });
     protector.name = 'Protector';
+    // Interpose is its item's own applyingDamage rule (rules/plugins/combat/applying-damage.mjs).
+    protector.items.push({ type: 'perk', name: 'Interpose', flags: {}, system: { rules: [{ type: 'Trigger', event: 'applyingDamage', redirect: true, within: 5, priority: 1, steps: [] }] } });
     setNearbyAlly(target, protector, 5);
     fromUuid.mockResolvedValue(target);
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
+    foundry.applications.api.DialogV2.confirm = jest.fn(async () => true);
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -234,10 +259,12 @@ describe("onApplyDamage", () => {
 
   test("declining the Interpose prompt applies damage to the original target as normal", async () => {
     const target = makeTarget();
-    const protector = makeTarget({ perkIds: [INTERPOSE_ID], health: 20 });
+    const protector = makeTarget({ health: 20 });
+    // Interpose is its item's own applyingDamage rule (rules/plugins/combat/applying-damage.mjs).
+    protector.items.push({ type: 'perk', name: 'Interpose', flags: {}, system: { rules: [{ type: 'Trigger', event: 'applyingDamage', redirect: true, within: 5, priority: 1, steps: [] }] } });
     setNearbyAlly(target, protector, 5);
     fromUuid.mockResolvedValue(target);
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
+    foundry.applications.api.DialogV2.confirm = jest.fn(async () => false);
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -255,81 +282,14 @@ describe("onApplyDamage", () => {
     expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
   });
 
-  test("Fe-BURN! halves the damage and deals the other half to a nearby enemy when confirmed", async () => {
-    const target = makeTarget({
-      perkIds: [FE_BURN_ID, TERROR_ID], isMorphed: true, terrorAvailable: 2, disposition: 1,
-    });
-    const enemy = makeTarget({ disposition: -1, health: 20 });
-    setNearbyAlly(target, enemy, 5);
-    fromUuid.mockResolvedValue(target);
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
-
-    await onApplyDamage(makeMessage(), makeButton({ damage: '5' }));
-
-    // 5 damage halved to 2 (floor), the other 3 dealt to the adjacent enemy.
-    expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 8 });
-    expect(enemy.update).toHaveBeenCalledWith({ 'system.health.value': 17 });
-    // The actor un-Morphed.
-    expect(target.update).toHaveBeenCalledWith({ 'system.isMorphed': false });
-  });
-
-  test("declining the Fe-BURN! prompt applies the original damage with no retaliation", async () => {
-    const target = makeTarget({
-      perkIds: [FE_BURN_ID, TERROR_ID], isMorphed: true, terrorAvailable: 2, disposition: 1,
-    });
-    const enemy = makeTarget({ disposition: -1, health: 20 });
-    setNearbyAlly(target, enemy, 5);
-    fromUuid.mockResolvedValue(target);
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
-
-    await onApplyDamage(makeMessage(), makeButton({ damage: '5' }));
-
-    expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-    expect(enemy.update).not.toHaveBeenCalled();
-    expect(target.update).not.toHaveBeenCalledWith({ 'system.isMorphed': false });
-  });
-
-  test("no Fe-BURN! prompt without any accrued Terror", async () => {
-    const target = makeTarget({ perkIds: [FE_BURN_ID, TERROR_ID], isMorphed: true, terrorAvailable: 0 });
-    fromUuid.mockResolvedValue(target);
-
-    await onApplyDamage(makeMessage(), makeButton({ damage: '5' }));
-
-    expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
-    expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-  });
-
-  test("no Fe-BURN! prompt while not Morphed", async () => {
-    const target = makeTarget({ perkIds: [FE_BURN_ID, TERROR_ID], isMorphed: false, terrorAvailable: 2 });
-    fromUuid.mockResolvedValue(target);
-
-    await onApplyDamage(makeMessage(), makeButton({ damage: '5' }));
-
-    expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
-    expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-  });
-
-  test("Body Shield marks its own once-per-turn flag once the GM confirms", async () => {
-    const target = makeTarget();
-    const protector = makeTarget({ perkIds: [BODY_SHIELD_ID], health: 20 });
-    setNearbyAlly(target, protector, 5);
-    fromUuid.mockResolvedValue(target);
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
-
-    await onApplyDamage(makeMessage(), makeButton());
-
-    expect(protector.update).toHaveBeenCalledWith({ 'system.health.value': 15 });
-    expect(protector.setFlag).toHaveBeenCalledWith('essence20', 'bodyShieldUsedThisTurn', expect.anything());
-    game.combat = null;
-  });
-
   test("a redirected hit still runs the protector's own damage-reduction Perks (Fortitude)", async () => {
     const target = makeTarget();
-    const protector = makeTarget({ perkIds: [INTERPOSE_ID, FORTITUDE_ID], health: 20 });
+    const protector = makeTarget({ perkIds: [FORTITUDE_ID], health: 20 });
+    // Interpose is its item's own applyingDamage rule (rules/plugins/combat/applying-damage.mjs).
+    protector.items.push({ type: 'perk', name: 'Interpose', flags: {}, system: { rules: [{ type: 'Trigger', event: 'applyingDamage', redirect: true, within: 5, priority: 1, steps: [] }] } });
     setNearbyAlly(target, protector, 5);
     fromUuid.mockResolvedValue(target);
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
+    foundry.applications.api.DialogV2.confirm = jest.fn(async () => true);
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -368,19 +328,19 @@ describe("onApplyDamage", () => {
   test("Extra Plates reduces damage by 1 while wearing heavy armor", async () => {
     const target = makeTarget({ perkIds: [EXTRA_PLATES_ID], armor: [armorItem({ classification: 'heavy' })] });
     fromUuid.mockResolvedValue(target);
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
     expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 6 }); // 5 damage - 1
-    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'extraPlatesLastTurn', { combatId: 'combat1', round: 1, turn: 0 });
+    expect(target.setFlag).toHaveBeenCalledWith('essence20', used(EXTRA_PLATES_ID), { combatId: 'combat1', round: 1, turn: 0, count: 1 });
     game.combat = null;
   });
 
   test("Extra Plates also applies with super heavy (ultraHeavy) armor", async () => {
     const target = makeTarget({ perkIds: [EXTRA_PLATES_ID], armor: [armorItem({ classification: 'ultraHeavy' })] });
     fromUuid.mockResolvedValue(target);
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -391,7 +351,7 @@ describe("onApplyDamage", () => {
   test("Extra Plates doesn't apply without heavy/super heavy armor equipped", async () => {
     const target = makeTarget({ perkIds: [EXTRA_PLATES_ID], armor: [armorItem({ classification: 'light' })] });
     fromUuid.mockResolvedValue(target);
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -404,7 +364,7 @@ describe("onApplyDamage", () => {
       perkIds: [EXTRA_PLATES_ID], armor: [armorItem({ classification: 'heavy', equipped: false })],
     });
     fromUuid.mockResolvedValue(target);
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -416,10 +376,10 @@ describe("onApplyDamage", () => {
     const target = makeTarget({
       perkIds: [EXTRA_PLATES_ID],
       armor: [armorItem({ classification: 'heavy' })],
-      attackedFlag: { combatId: 'combat1', round: 1, turn: 0 },
+      attackedFlag: { combatId: 'combat1', round: 1, turn: 0, count: 1 },
     });
     fromUuid.mockResolvedValue(target);
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -431,10 +391,10 @@ describe("onApplyDamage", () => {
     const target = makeTarget({
       perkIds: [EXTRA_PLATES_ID],
       armor: [armorItem({ classification: 'heavy' })],
-      attackedFlag: { combatId: 'combat1', round: 1, turn: 0 },
+      attackedFlag: { combatId: 'combat1', round: 1, turn: 0, count: 1 },
     });
     fromUuid.mockResolvedValue(target);
-    game.combat = { id: 'combat1', round: 1, turn: 1 };
+    game.combat = { id: 'combat1', round: 1, turn: 1, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -454,57 +414,17 @@ describe("onApplyDamage", () => {
     expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 6 });
   });
 
-  test("Hard Corps ignores the damage and banks the debt when the GM confirms", async () => {
-    const target = makeTarget({ perkIds: [HARD_CORPS_ID] });
-    fromUuid.mockResolvedValue(target);
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
-
-    await onApplyDamage(makeMessage(), makeButton());
-
-    expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
-    expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 10 }); // 0 damage applied
-    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'hardCorpsIgnoredDamage', { combatId: 'combat1', amount: 5 });
-    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'hardCorpsUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
-    game.combat = null;
-  });
-
-  test("Hard Corps applies full damage when the GM cancels the prompt", async () => {
-    const target = makeTarget({ perkIds: [HARD_CORPS_ID] });
-    fromUuid.mockResolvedValue(target);
-    foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
-
-    await onApplyDamage(makeMessage(), makeButton());
-
-    expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-    expect(target.setFlag).not.toHaveBeenCalledWith('essence20', 'hardCorpsIgnoredDamage', expect.anything());
-    game.combat = null;
-  });
-
-  test("Hard Corps doesn't prompt again once already used this combat", async () => {
-    const target = makeTarget({ perkIds: [HARD_CORPS_ID], hardCorpsFlag: { epoch: 1, window: 'encounter', count: 1 } });
-    fromUuid.mockResolvedValue(target);
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
-
-    await onApplyDamage(makeMessage(), makeButton());
-
-    expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
-    expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-    game.combat = null;
-  });
-
   test("Invincibility Through Invisibility ignores the first attack outright, with no GM prompt", async () => {
     const target = makeTarget({ perkIds: [INVINCIBILITY_THROUGH_INVISIBILITY_ID] });
     fromUuid.mockResolvedValue(target);
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
     expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
     expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 10 }); // 0 damage applied
     expect(target.setFlag).toHaveBeenCalledWith(
-      'essence20', 'invincibilityThroughInvisibilityUsedThisEncounter', { epoch: 1, window: 'encounter', count: 1 },
+      'essence20', used(INVINCIBILITY_THROUGH_INVISIBILITY_ID), { epoch: 1, window: 'encounter', count: 1 },
     );
     game.combat = null;
   });
@@ -512,7 +432,7 @@ describe("onApplyDamage", () => {
   test("Invincibility Through Invisibility doesn't apply while Surprised, or once already used this combat", async () => {
     const surprised = makeTarget({ perkIds: [INVINCIBILITY_THROUGH_INVISIBILITY_ID], isSurprised: true });
     fromUuid.mockResolvedValue(surprised);
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
     await onApplyDamage(makeMessage(), makeButton());
     expect(surprised.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
 
@@ -530,33 +450,62 @@ describe("onApplyDamage", () => {
     const target = makeTarget({ perkIds: [DIDNT_EVEN_FEEL_IT_ID], recklessAbandonActive: true });
     fromUuid.mockResolvedValue(target);
     foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
     expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
     expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 10 }); // 0 damage applied
-    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'didntEvenFeelItThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
+    expect(target.setFlag).toHaveBeenCalledWith('essence20', 'ruleUses.didntEvenFeelIt', { epoch: 1, window: 'encounter', count: 1 });
     game.combat = null;
+  });
+
+  // Bug fix 2026-10-06: the once-per-encounter use was checked on the holder but marked on the hit actor.
+  test("Didn't Even Feel It redirected by Racer Abandon is spent on the driver who holds it, not the vehicle", async () => {
+    const RACER_ABANDON_ID = "Compendium.essence20.cobra_codex.Item.rNESO3bo1apEjd6p";
+    const driver = makeTarget({ perkIds: [DIDNT_EVEN_FEEL_IT_ID, RACER_ABANDON_ID], recklessAbandonActive: true });
+    driver.uuid = 'Actor.driver';
+    // Its index notes it holds a rule reaching another actor (renegadeVehicle), as its own prepare would.
+    driver.id = 'driver';
+    rebuildIndex(driver);
+    const vehicle = makeTarget();
+    vehicle.type = 'vehicle';
+    vehicle.system.actors = { d: { vehicleRole: 'driver', uuid: 'Actor.driver' } };
+    const previous = global.fromUuidSync;
+    global.fromUuidSync = uuid => (uuid == 'Actor.driver' ? driver : null);
+    fromUuid.mockResolvedValue(vehicle);
+    foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
+
+    try {
+      await onApplyDamage(makeMessage(), makeButton());
+    } finally {
+      global.fromUuidSync = previous;
+      game.combat = null;
+    }
+
+    expect(vehicle.update).toHaveBeenCalledWith({ 'system.health.value': 10 });
+    expect(driver.setFlag).toHaveBeenCalledWith('essence20', 'ruleUses.didntEvenFeelIt', { epoch: 1, window: 'encounter', count: 1 });
+    expect(vehicle.setFlag).not.toHaveBeenCalledWith('essence20', 'ruleUses.didntEvenFeelIt', expect.anything());
   });
 
   test("Didn't Even Feel It applies full damage when the GM cancels the prompt", async () => {
     const target = makeTarget({ perkIds: [DIDNT_EVEN_FEEL_IT_ID], recklessAbandonActive: true });
     fromUuid.mockResolvedValue(target);
     foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
     expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-    expect(target.setFlag).not.toHaveBeenCalledWith('essence20', 'didntEvenFeelItThisEncounter', expect.anything());
+    expect(target.setFlag).not.toHaveBeenCalledWith('essence20', 'ruleUses.didntEvenFeelIt', expect.anything());
     game.combat = null;
   });
 
   test("Didn't Even Feel It doesn't prompt without Reckless Abandon active", async () => {
     const target = makeTarget({ perkIds: [DIDNT_EVEN_FEEL_IT_ID], recklessAbandonActive: false });
     fromUuid.mockResolvedValue(target);
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -571,7 +520,7 @@ describe("onApplyDamage", () => {
       didntEvenFeelItFlag: { epoch: 1, window: 'encounter', count: 1 },
     });
     fromUuid.mockResolvedValue(target);
-    game.combat = { id: 'combat1', round: 3, turn: 1 }; // later round, same encounter
+    game.combat = { id: 'combat1', round: 3, turn: 1, started: true }; // later round, same encounter
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -584,12 +533,12 @@ describe("onApplyDamage", () => {
     const target = makeTarget({
       perkIds: [DIDNT_EVEN_FEEL_IT_ID], recklessAbandonActive: true,
       // A flag left over from an earlier encounter. What makes it stale is now the Scene Clock's
-      // encounter counter having moved on, not a different combat id - see helpers/scene-clock.mjs.
+      // encounter counter having moved on, not a different combat id - see mechanics/resources/scene-clock.mjs.
       didntEvenFeelItFlag: { epoch: 0, window: 'encounter', count: 1 },
     });
     fromUuid.mockResolvedValue(target);
     foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
-    game.combat = { id: 'newCombat', round: 1, turn: 0 };
+    game.combat = { id: 'newCombat', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -604,7 +553,7 @@ describe("onApplyDamage", () => {
     });
     fromUuid.mockResolvedValue(target);
     foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
-    game.combat = { id: 'combat1', round: 1, turn: 0 };
+    game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
 
     await onApplyDamage(makeMessage(), makeButton());
 
@@ -676,7 +625,7 @@ describe("onApplyDamage", () => {
     });
   });
 
-  describe("Essence damage types (helpers/essence-attack.mjs)", () => {
+  describe("Essence damage types (mechanics/combat/essence-attack.mjs)", () => {
     function makeEssenceTarget() {
       const target = makeTarget({ perkIds: [FORTITUDE_ID], health: 10 });
       target.system.essences = {
@@ -751,7 +700,7 @@ describe("onApplyDamage", () => {
 
   describe("Sudden Death (Blitzer Focus, 20th level, p.98)", () => {
     beforeEach(() => {
-      game.combat = { id: 'combat1', round: 1, turn: 0 };
+      game.combat = { id: 'combat1', round: 1, turn: 0, started: true };
     });
 
     afterEach(() => {
@@ -772,7 +721,7 @@ describe("onApplyDamage", () => {
 
       expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
       expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
-      expect(attacker.setFlag).toHaveBeenCalledWith('essence20', 'suddenDeathThisEncounter', { epoch: 1, window: 'encounter', count: 1 });
+      expect(attacker.setFlag).toHaveBeenCalledWith('essence20', used(SUDDEN_DEATH_ID), { epoch: 1, window: 'encounter', count: 1 });
     });
 
     test("applies normal damage instead when the GM cancels", async () => {
@@ -880,15 +829,13 @@ describe("onApplyDamage", () => {
     });
   });
 
-  describe("Imperial Machine Mantle (Power Rangers Adventures, p.90)", () => {
-    const MANTLE_ID = "Compendium.essence20.power_rangers_adventures.Item.CjYzIg9gVstsE0wg";
-
-    function mantleItem({ broken = false } = {}) {
+  // Imperial Machine Mantle falls to pieces through a criticallyHit Trigger on the upgrade (rules/conv15-items1.test.js).
+  describe("a Critical Success landing fires the target's criticallyHit Triggers", () => {
+    function critItem() {
       return {
-        type: 'upgrade',
-        flags: { core: { sourceId: MANTLE_ID } },
-        getFlag: jest.fn((scope, key) => (scope == 'essence20' && key == 'imperialMachineMantleBroken' ? broken : undefined)),
-        setFlag: jest.fn(),
+        id: 'mantle1', type: 'upgrade', name: 'Mantle', flags: {},
+        system: { rules: [{ type: 'Trigger', event: 'criticallyHit', steps: [{ do: 'updateItem', item: 'self', set: { 'flags.essence20.broken': true } }] }] },
+        update: jest.fn(async () => {}),
       };
     }
 
@@ -898,199 +845,28 @@ describe("onApplyDamage", () => {
       return makeMessage({ rolls: [{ dice: [{ faces: 6, values: [6] }] }] });
     }
 
-    test("breaks an intact Mantle when a Critical Success hits the wearer", async () => {
+    test("on a Critical Success", async () => {
       const target = makeTarget();
-      const mantle = mantleItem();
+      const mantle = critItem();
+      mantle.parent = target;
       target.items.push(mantle);
       fromUuid.mockResolvedValue(target);
 
       await onApplyDamage(makeCritMessage(), makeButton());
 
-      expect(mantle.setFlag).toHaveBeenCalledWith('essence20', 'imperialMachineMantleBroken', true);
+      expect(mantle.update).toHaveBeenCalledWith({ 'flags.essence20.broken': true });
     });
 
-    test("doesn't break the Mantle on a non-Critical hit", async () => {
+    test("not on an ordinary hit", async () => {
       const target = makeTarget();
-      const mantle = mantleItem();
+      const mantle = critItem();
+      mantle.parent = target;
       target.items.push(mantle);
       fromUuid.mockResolvedValue(target);
 
       await onApplyDamage(makeMessage(), makeButton());
 
-      expect(mantle.setFlag).not.toHaveBeenCalled();
-    });
-
-    test("no-ops on a Critical Success against a target with no Mantle", async () => {
-      const target = makeTarget();
-      fromUuid.mockResolvedValue(target);
-
-      await expect(onApplyDamage(makeCritMessage(), makeButton())).resolves.toBeUndefined();
-    });
-
-    test("doesn't re-flag an already-broken Mantle", async () => {
-      const target = makeTarget();
-      const mantle = mantleItem({ broken: true });
-      target.items.push(mantle);
-      fromUuid.mockResolvedValue(target);
-
-      await onApplyDamage(makeCritMessage(), makeButton());
-
-      expect(mantle.setFlag).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("Iron Hide (GI Joe CRB, Vanguard base, 1st level, p.107)", () => {
-    function makeIronHideTarget({ perkIds = [IRON_HIDE_ID], health = 5 } = {}) {
-      const target = makeTarget({ perkIds, health });
-      target._dice = { rollSkill: jest.fn() };
-      return target;
-    }
-
-    beforeEach(() => {
-      game.users = [{ isGM: true, active: true }];
-      game.settings = { get: jest.fn(() => 1) };
-      game.socket = { emit: jest.fn() };
-    });
-
-    afterEach(() => {
-      delete game.users;
-      delete game.settings;
-      delete game.socket;
-    });
-
-    test("prompts, spends a Story Point, and triggers the Brawn DIF 15 roll on confirm", async () => {
-      const target = makeIronHideTarget();
-      fromUuid.mockResolvedValue(target);
-      foundry.applications.api.DialogV2.wait.mockResolvedValue('confirm');
-
-      await onApplyDamage(makeMessage(), makeButton({ damage: '5' }));
-
-      expect(foundry.applications.api.DialogV2.wait).toHaveBeenCalled();
-      expect(game.socket.emit).toHaveBeenCalledWith('system.essence20', expect.objectContaining({
-        action: 'spendStoryPoints', amount: 1,
-      }));
-      expect(target._dice.rollSkill).toHaveBeenCalledWith(
-        expect.objectContaining({
-          skill: 'brawn', essence: 'strength', dif: '15', isIronHideAttempt: true, ironHideDamage: 5,
-        }),
-        target,
-      );
-      // The damage was already applied before the roll's own outcome is known.
-      expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 0 });
-    });
-
-    test("doesn't spend or roll when the GM cancels the prompt", async () => {
-      const target = makeIronHideTarget();
-      fromUuid.mockResolvedValue(target);
-      foundry.applications.api.DialogV2.wait.mockResolvedValue('cancel');
-
-      await onApplyDamage(makeMessage(), makeButton({ damage: '5' }));
-
-      expect(game.socket.emit).not.toHaveBeenCalled();
-      expect(target._dice.rollSkill).not.toHaveBeenCalled();
-    });
-
-    test("doesn't prompt without the Perk", async () => {
-      const target = makeIronHideTarget({ perkIds: [] });
-      fromUuid.mockResolvedValue(target);
-
-      await onApplyDamage(makeMessage(), makeButton({ damage: '5' }));
-
-      expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
-    });
-
-    test("doesn't prompt when the damage wouldn't actually Defeat the target", async () => {
-      const target = makeIronHideTarget({ health: 10 });
-      fromUuid.mockResolvedValue(target);
-
-      await onApplyDamage(makeMessage(), makeButton({ damage: '5' }));
-
-      expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
-    });
-
-    test("doesn't prompt for a Stun hit", async () => {
-      const target = makeIronHideTarget({ health: 20 });
-      target.system.stun = { value: 0 };
-      target.toggleStatusEffect = jest.fn();
-      fromUuid.mockResolvedValue(target);
-
-      await onApplyDamage(makeMessage(), makeButton({ damage: '5', damageType: 'stun' }));
-
-      expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
-    });
-
-    test("doesn't prompt with no GM connected or no Story Points available", async () => {
-      const target = makeIronHideTarget();
-      fromUuid.mockResolvedValue(target);
-
-      game.users = [{ isGM: false, active: true }];
-      await onApplyDamage(makeMessage(), makeButton({ damage: '5' }));
-      expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
-
-      game.users = [{ isGM: true, active: true }];
-      game.settings.get = jest.fn(() => 0);
-      await onApplyDamage(makeMessage(), makeButton({ damage: '5' }));
-      expect(foundry.applications.api.DialogV2.wait).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("CBRN Defender's own Hang-Up (Ferocious Fighters, New Influence, p.76)", () => {
-    const CBRN_DEFENDER_HANG_UP_ID = "Compendium.essence20.ferocious_fighters.Item.B6HYPvLAVgCtQk1n";
-
-    function makeHangUpAttacker({ hasHangUp = true } = {}) {
-      const items = hasHangUp
-        ? [{ type: 'hangUp', flags: { core: { sourceId: CBRN_DEFENDER_HANG_UP_ID } } }]
-        : [];
-      return {
-        name: 'Attacker',
-        items,
-        system: { level: 1 },
-        getFlag: jest.fn(() => undefined),
-        setFlag: jest.fn(),
-      };
-    }
-
-    afterEach(() => {
-      game.actors.get.mockReset();
-    });
-
-    test("marks the attacker's shiftDown flag when the target's Health drops to 0", async () => {
-      const target = makeTarget({ health: 5 });
-      const attacker = makeHangUpAttacker();
-      fromUuid.mockResolvedValue(target);
-      game.actors.get.mockReturnValue(attacker);
-      game.combat = { id: 'combat1' };
-
-      await onApplyDamage(makeMessage({ speaker: { actor: 'attacker1' } }), makeButton({ damage: '10' }));
-
-      expect(attacker.setFlag).toHaveBeenCalledWith(
-        'essence20', 'cbrnDefenderShiftDownActive', { combatId: 'combat1' },
-      );
-      game.combat = null;
-    });
-
-    test("doesn't mark anything without the Hang-Up, when Health doesn't reach 0, or against an already-Defeated target", async () => {
-      const survivingTarget = makeTarget({ health: 10 });
-      const attacker = makeHangUpAttacker();
-      fromUuid.mockResolvedValue(survivingTarget);
-      game.actors.get.mockReturnValue(attacker);
-      await onApplyDamage(makeMessage({ speaker: { actor: 'attacker1' } }), makeButton({ damage: '5' }));
-      expect(attacker.setFlag).not.toHaveBeenCalled();
-
-      const defeatedTarget = makeTarget({ health: 5 });
-      const noHangUpAttacker = makeHangUpAttacker({ hasHangUp: false });
-      fromUuid.mockResolvedValue(defeatedTarget);
-      game.actors.get.mockReturnValue(noHangUpAttacker);
-      await onApplyDamage(makeMessage({ speaker: { actor: 'attacker1' } }), makeButton({ damage: '10' }));
-      expect(noHangUpAttacker.setFlag).not.toHaveBeenCalled();
-
-      const alreadyDefeatedTarget = makeTarget({ health: 0 });
-      alreadyDefeatedTarget.statuses = new Set(['defeated']);
-      const anotherAttacker = makeHangUpAttacker();
-      fromUuid.mockResolvedValue(alreadyDefeatedTarget);
-      game.actors.get.mockReturnValue(anotherAttacker);
-      await onApplyDamage(makeMessage({ speaker: { actor: 'attacker1' } }), makeButton({ damage: '5' }));
-      expect(anotherAttacker.setFlag).not.toHaveBeenCalled();
+      expect(mantle.update).not.toHaveBeenCalled();
     });
   });
 
@@ -1169,70 +945,6 @@ describe("onApplyDamage", () => {
       await onApplyDamage(makeMessage(), makeButton({ damage: '5', damageType: 'blunt' }));
 
       expect(target.toggleStatusEffect).not.toHaveBeenCalled();
-    });
-  });
-
-  // Tough Enough: "you have resistance to the damage" of a non-attack effect against Toughness - that
-  // hit is halved, rounded up (helpers/combat.mjs#toughEnoughDamage), nothing is granted for later.
-  describe("Tough Enough (GI Joe CRB, Tank Focus, 6th level, p.99) - halves a non-attack effect against Toughness", () => {
-    const TOUGH_ENOUGH_ID = "Compendium.essence20.gi_joe_crb.Item.RoIa80w6EAZR0uFP";
-
-    function makeMessageWithFlags({ isAttack = false, defenseType = 'toughness' } = {}) {
-      return {
-        ...makeMessage(),
-        getFlag: jest.fn((scope, key) => {
-          if (scope != 'essence20') {
-            return undefined;
-          }
-
-          if (key == 'isAttack') {
-            return isAttack;
-          }
-
-          if (key == 'defenseType') {
-            return defenseType;
-          }
-
-          return undefined;
-        }),
-      };
-    }
-
-    test("halves the damage of a non-attack effect against Toughness (rounded up)", async () => {
-      const target = makeTarget({ perkIds: [TOUGH_ENOUGH_ID] });
-      fromUuid.mockResolvedValue(target);
-
-      await onApplyDamage(makeMessageWithFlags(), makeButton({ damageType: 'fire' }));
-
-      expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 7 });
-      expect(target.update).not.toHaveBeenCalledWith(expect.objectContaining({ 'system.resistances.fire': expect.anything() }));
-    });
-
-    test("takes full damage from an ordinary Attack against Toughness", async () => {
-      const target = makeTarget({ perkIds: [TOUGH_ENOUGH_ID] });
-      fromUuid.mockResolvedValue(target);
-
-      await onApplyDamage(makeMessageWithFlags({ isAttack: true }), makeButton({ damageType: 'fire' }));
-
-      expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-    });
-
-    test("takes full damage from a non-attack effect against a different Defense", async () => {
-      const target = makeTarget({ perkIds: [TOUGH_ENOUGH_ID] });
-      fromUuid.mockResolvedValue(target);
-
-      await onApplyDamage(makeMessageWithFlags({ defenseType: 'evasion' }), makeButton({ damageType: 'fire' }));
-
-      expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
-    });
-
-    test("takes full damage without the Perk", async () => {
-      const target = makeTarget();
-      fromUuid.mockResolvedValue(target);
-
-      await onApplyDamage(makeMessageWithFlags(), makeButton({ damageType: 'fire' }));
-
-      expect(target.update).toHaveBeenCalledWith({ 'system.health.value': 5 });
     });
   });
 });

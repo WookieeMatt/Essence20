@@ -17,13 +17,13 @@
       "b52e": {
         "uuid": "Compendium.essence20.pr_crb.Item.m3yGoT712SFkaV7W",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "\"I remember reading about....\"",
+        "name": "\"I remember reading about...\"",
         "type": "perk"
       }
     },
-    "baseAerialMovement": "0",
-    "baseAquaticMovement": "0",
-    "baseGroundMovement": "25",
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 25,
     "essences": [
       "speed",
       "smarts"
@@ -38,13 +38,7 @@
       "science",
       "technology"
     ],
-    "startingHealth": 1,
-    "bonusSkillLevels": "",
-    "groundMovement": "",
-    "benefit": {
-      "name": "",
-      "description": ""
-    }
+    "startingHealth": 1
   },
   "effects": [],
   "flags": {

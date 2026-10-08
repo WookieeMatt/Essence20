@@ -5,6 +5,10 @@
   "_id": "LccKe9ZdDPvS5YbD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Concentrate Fire","cost":{"resource":{"storyPoints":true},"amount":1},"limit":{"per":"encounter"},"steps":[{"do":"target","max":1,"beforeCost":true},{"do":"mark","key":"concentrateFire","to":"target","until":"encounter","exclusive":true}]},
+      {"type":"RollModifier","label":"Concentrate Fire","scope":"markedTarget","mark":"concentrateFire","upshift":2,"when":["attack"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button, once per encounter: spends a Story Point and marks your targeted enemy for the rest of the encounter. Every attack against it, yours or anyone else's, gets ↑2, labelled Concentrate Fire in the Roll Options Dialog. The mark ends with the encounter, or when you mark a new enemy.</p>"

@@ -5,6 +5,10 @@
   "_id": "dTlLdrlWAZeZHJ7B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Anti-Air Combat Training (ignore Evasive Maneuvers)","immune":["evasiveManeuvers"],"when":["attack"]}
+    ],
+    "prerequisites": {"when":["self:skill:targeting>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when an air vehicle's pilot has Evasive Maneuvers switched on, your attacks against it still go against its Toughness instead of being moved to Evasion. The chat card shows the Defense used.</p>"
@@ -15,7 +19,7 @@
       "book": "Quartermaster's Guide to Gear",
       "page": 28
     },
-    "prerequisite": "Targeting +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

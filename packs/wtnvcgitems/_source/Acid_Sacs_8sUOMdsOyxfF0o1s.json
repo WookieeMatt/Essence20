@@ -5,6 +5,11 @@
   "_id": "8sUOMdsOyxfF0o1s",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"HitRider","option":{"damage":1,"damageType":"acid","key":"acidSacs"},"when":["self:type:companion"]},
+      {"type":"HitRider","scope":"companion","option":{"damage":1,"damageType":"acid","key":"acidSacs"},"when":["self:data:system.type=pet","not:self:hasItem:Compendium.essence20.wtnv_citizens_guide.Item.8sUOMdsOyxfF0o1s"]}
+    ],
+    "prerequisites": {"when":[{"any":["self:hasType:perk:Quills","self:hasType:perk:Serrated Tail"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: the pet's hits offer an extra 1 Acid damage alongside the weapon's own damage.</p>"
@@ -25,7 +30,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Quills and/or Serrated Tail Animal Perks",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

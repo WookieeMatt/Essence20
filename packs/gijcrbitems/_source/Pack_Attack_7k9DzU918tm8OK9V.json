@@ -5,6 +5,10 @@
   "_id": "7k9DzU918tm8OK9V",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Pack Attack","edge":true,"when":["attack","link:rolledAgainst:partner:attack"]},
+      {"type":"RollModifier","label":"Pack Attack","scope":"companion","edge":true,"when":["attack","link:rolledAgainst:partner:attack"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you or your pet attacks a target the other has already attacked, that attack gets an Edge, labelled Pack Attack in the Roll Options Dialog.</p>"

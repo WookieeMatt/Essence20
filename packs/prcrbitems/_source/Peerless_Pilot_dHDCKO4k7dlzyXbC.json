@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Peerless Pilot (driving: Initiative Edge)","edge":true,"when":["roll:initiative","vehicle:driving","self:specializedAtLeast:driving:d6"]},
+      {"type":"RollModifier","label":"Peerless Pilot (driving: Edge)","edge":true,"when":["skill:driving","vehicle:driving","self:specializedAtLeast:driving:d6","not:roll:dataset:isInitiative"]},
+      {"type":"AutoDisembark","label":"Peerless Pilot (passes an emergency disembark from a vehicle you drive)","who":"driver"}
+    ],
+    "prerequisites": {"when":["self:skill:driving>=d6","ask:A Driving Specialization"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you're driving a vehicle and have a Driving Specialization at d6 or higher, your Initiative and Driving tests open the Roll Options Dialog with Edge selected (leave the switchable effect off). If the vehicle is wrecked, you pass the emergency disembark test automatically as its driver.</p>"

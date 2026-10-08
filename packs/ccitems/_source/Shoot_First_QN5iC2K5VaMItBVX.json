@@ -5,6 +5,9 @@
   "_id": "QN5iC2K5VaMItBVX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Attack now for a Story Point","when":[{"any":["combat","combat:round:0"]}],"cost":{"resource":{"storyPoints":true},"amount":1},"limit":{"per":"encounter"},"steps":[{"do":"bonusAttack","cost":"none"},{"do":"chat","text":"{name} can make an attack right away at no action cost."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per encounter, when you roll Initiative): spend a Story Point to make an attack right away without spending an action.</p>"

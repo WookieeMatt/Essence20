@@ -5,6 +5,9 @@
   "_id": "bDgQ7jyTgisY42kt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Eltarian Mettle","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"pick","key":"condition","from":"conditions","exclude":["defeated"],"beforeCost":true},{"do":"removeCondition","condition":"{choice.condition}"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 Personal Power to remove one Condition you have (other than Defeated), picked from a list.</p>"

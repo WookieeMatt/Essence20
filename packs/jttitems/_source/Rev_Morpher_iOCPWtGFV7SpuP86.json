@@ -5,6 +5,9 @@
   "_id": "iOCPWtGFV7SpuP86",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Rev Morpher","action":"morph","to":"move"}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: with action tracking on, Morphing takes a Move action instead of the usual Standard action.</p><p>Left to the table: calling R.P.M. Zord Attack Vehicles.</p>"

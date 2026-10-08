@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Just a Graze","event":"applyingDamage","stage":"lateReductions","priority":2,"prompt":true,"promptText":"E20.JustAGrazeConfirmContent","when":["var:damage>1"],"limit":{"per":"round"},"steps":[{"do":"setVar","key":"damage","value":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic, once per turn: when damage from an attack is applied to you, you're asked whether to reduce it to 1.</p>"

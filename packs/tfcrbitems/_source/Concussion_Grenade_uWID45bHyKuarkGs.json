@@ -17,7 +17,7 @@
     },
     "items": {
       "5bf6": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.biSzIazZJHL5DNGN",
+        "uuid": "Compendium.essence20.tf_crb.Item.biSzIazZJHL5DNGN",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Concussion Grenade Effect",
         "type": "weaponEffect",
@@ -39,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"

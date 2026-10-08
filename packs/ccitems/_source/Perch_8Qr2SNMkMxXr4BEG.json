@@ -5,6 +5,10 @@
   "_id": "8Qr2SNMkMxXr4BEG",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Perch","event":"turnStart","scope":"companion","when":["self:type:companion","self:size=small","combat:round:1"],"steps":[{"do":"grantActions","move":1}]}
+    ],
+    "prerequisites": {"when":["ask:A Perk that grants an animal pet"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you wear it, your Small animal pet gets an extra Move action in the first round of combat.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Perk that grants an animal pet"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

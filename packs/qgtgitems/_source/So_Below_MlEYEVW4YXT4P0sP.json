@@ -5,6 +5,9 @@
   "_id": "MlEYEVW4YXT4P0sP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"So Below (ranged attacks from higher ground ↓1)","scope":"incoming","downshift":1,"when":["attack:ranged","roll:elevationAbove:>0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ranged attacks against you from a token at a higher elevation take ↓1, listed as a So Below switch under Automatic Modifiers in the attacker's Roll Options Dialog. This works in or out of a vehicle.</p>"

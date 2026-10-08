@@ -5,6 +5,10 @@
   "_id": "FRue0q6oL8aRWswk",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"BeforeRoll","scope":"item","label":"Wing Missile Salvo (once per encounter)","early":true,"cancel":true,"message":"E20.LimitedWeaponEffectAlreadyUsed","when":["self:windowUsed:wingMissileSalvoUsedThisEncounter:encounter"]},
+      {"type":"Trigger","event":"afterRoll","outcome":"any","label":"Wing Missile Salvo used (once per encounter)","when":["item:own"],"steps":[{"do":"markWindow","flag":"wingMissileSalvoUsedThisEncounter","window":"encounter"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a Targeting attack at 60ft/150ft for 2 damage against up to 4 targets in a cone. It shares the Salvo's once-per-encounter limit.</p>"
@@ -24,7 +28,7 @@
     "damageValue": 2,
     "isSpecialized": false,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 4,
     "radius": 30,
     "range": {

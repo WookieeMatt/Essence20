@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Off-hand attack (Good with Both: ↓1)","downshift":1,"forget":true,"when":["item:type:weaponEffect","item:data:system.numHands=1","self:itemCount:weapon:equipped>=2"]}
+    ],
+    "prerequisites": {"when":[{"any":["self:skill:finesse>=d4","self:skill:targeting>=d4"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch for an off-hand attack with a one-handed weapon, which then takes only ↓1. Your main-hand attack takes no penalty.</p>"
@@ -13,7 +17,7 @@
       "book": "Across the Stars",
       "page": 69
     },
-    "prerequisite": "Finesse or Targeting d4 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

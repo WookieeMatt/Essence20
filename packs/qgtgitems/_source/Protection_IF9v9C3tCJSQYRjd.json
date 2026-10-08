@@ -5,6 +5,11 @@
   "_id": "IF9v9C3tCJSQYRjd",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Protection: scene boost on / off","event":"powerUsed","when":["item:own"],"steps":[{"do":"setToggle","key":"boost","value":"toggle","until":"scene"}]},
+      {"type":"Defense","label":"Protection (+1 toughness boost)","defense":"toughness","mode":"addAfter","amount":1,"when":["self:toggle:boost"]},
+      {"type":"FreeUse","label":"Protection (switching the boost off is free)","when":["self:toggle:boost"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Toughness, always on. Use button: spend one of its daily uses for another +1 Toughness for the scene.</p>"
@@ -17,7 +22,6 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,

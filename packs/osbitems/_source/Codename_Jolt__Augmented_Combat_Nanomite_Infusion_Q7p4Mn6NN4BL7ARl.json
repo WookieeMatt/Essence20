@@ -5,6 +5,10 @@
   "_id": "Q7p4Mn6NN4BL7ARl",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Codename Jolt: on / off","event":"powerUsed","when":["item:own"],"steps":[{"do":"setToggle","key":"on","value":"toggle"}]},
+      {"type":"RollModifier","label":"Codename Jolt (↑1)","upshift":1,"stack":"augmentedCombat","when":["self:toggle:on","item:type:weaponEffect"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: switches it on, and while it's on every weapon attack you roll gets ↑1, already counted in the upshift your Roll Options Dialog opens with. Press it again to switch it off. Left to the table: ending it after one minute.</p>"
@@ -17,7 +21,6 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,

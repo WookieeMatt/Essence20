@@ -5,6 +5,9 @@
   "_id": "m2hiT236MOKHKyvJ",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch on or off (Headlamp)","steps":[{"do":"tokenLight","bright":10,"dim":20,"angle":60}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: switches the headlamp's light on your token on and off.</p>"
@@ -16,7 +19,6 @@
       "page": 20
     },
     "quantity": 1,
-    "type": "tools",
     "gearType": "tools"
   },
   "effects": [],

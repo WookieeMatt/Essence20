@@ -5,6 +5,7 @@
   "_id": "EoQHD4l8e2ZTAcKw",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["host:data:system.classification.size=sidearm","ask:Melee weapon",{"any":["host:trait:blunt","host:trait:sharp"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: ↑2 on Infiltration tests to hide the weapon.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Sidearm melee weapon that deals Blunt or Sharp damage"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

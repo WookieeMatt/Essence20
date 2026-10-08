@@ -5,6 +5,10 @@
   "_id": "q0LPjcOQ0bnTSZTy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Fluster an enemy the drone flies past (Buzz The Tower)","limit":{"per":"scene"},"steps":[{"do":"require","beforeCost":true,"check":["link:hasCompanion:drone"],"message":"{name} has no drone."},{"do":"target","beforeCost":true},{"do":"choose","beforeCost":true,"prompt":"Which Skill does the drone use?","options":[{"label":"Acrobatics","steps":[{"do":"setVar","key":"skill","value":"acrobatics"}]},{"label":"Deception","steps":[{"do":"setVar","key":"skill","value":"deception"}]},{"label":"Driving","steps":[{"do":"setVar","key":"skill","value":"driving"}]}]},{"do":"choose","beforeCost":true,"prompt":"Against which Defense?","options":[{"label":"Willpower","steps":[{"do":"setVar","key":"defense","value":"willpower"}]},{"label":"Cleverness","steps":[{"do":"setVar","key":"defense","value":"cleverness"}]}]},{"do":"actAs","to":"firstCompanion:drone","steps":[{"do":"roll","skill":"{var.skill}","difDefense":"willpower","when":["var:defense=willpower"],"onSuccess":[{"do":"setVar","key":"flustered","value":1}]},{"do":"roll","skill":"{var.skill}","difDefense":"cleverness","when":["var:defense=cleverness"],"onSuccess":[{"do":"setVar","key":"flustered","value":1}]}]},{"do":"mark","key":"flustered","to":"target","until":"endOfNextTurn","untilOf":"recipient","when":["var:flustered=1"]},{"do":"chat","text":"{target} is flustered.","when":["var:flustered=1"]},{"do":"chat","text":"{target} isn't flustered.","when":["not:var:flustered=1"]}]},
+      {"type":"RollModifier","label":"Flustered (Buzz The Tower)","scope":"marked","mark":"flustered","snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene, your drone rolls Acrobatics, Deception or Driving against the targeted creature's Willpower or Cleverness. On a success, the target's tests take a Snag until the end of its next turn, shown as Buzz The Tower next to Snag in its Roll Options Dialog.</p>"

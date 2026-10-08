@@ -3,12 +3,12 @@ import {
   applyCompendiumMatches, buildSimpleItems, collectEffectContributions,
   collectUncancellableEffects, CONTACT_TYPES,
   createActorFromStatBlock,
-} from "../helpers/stat-block-import.mjs";
-import { parseStatBlock, splitStatBlocks } from "../helpers/stat-block-parser.mjs";
+} from "../importers/stat-block-import.mjs";
+import { parseStatBlock, splitStatBlocks } from "../importers/stat-block-parser.mjs";
 import {
   buildMatchIndex, countEffectBearingMatches, countMatches, findMatches, folderForGameVersion,
   loadCompendiumEntries,
-} from "../helpers/stat-block-match.mjs";
+} from "../importers/stat-block-match.mjs";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -23,7 +23,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
  * can usually be fixed by tidying the paste rather than by hand-editing fields afterwards.
  *
  * Pasting several blocks at once works without a mode switch: the paste is split on its own
- * "THREAT LEVEL:" lines (helpers/stat-block-parser.mjs#splitStatBlocks), every block is parsed,
+ * "THREAT LEVEL:" lines (importers/stat-block-parser.mjs#splitStatBlocks), every block is parsed,
  * the first is previewed, and Import creates all of them. A one-block paste is simply the
  * one-element case.
  */
@@ -205,7 +205,7 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
       .map(type => [type, game.i18n.localize(`TYPES.Actor.${type}`)]));
 
     // Biases compendium matching towards one game line's own books when the same Perk name is
-    // reprinted across several - see helpers/stat-block-match.mjs#selectMatch.
+    // reprinted across several - see importers/stat-block-match.mjs#selectMatch.
     context.gameVersion = this._gameVersion;
     context.gameVersionChoices = {
       "": game.i18n.localize("E20.StatBlockImportAnyGameLine"),
@@ -248,7 +248,7 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
 
     // Perks/Powers/Hang-Ups carry their compendium match status, since whether an entry arrives as
     // a real compendium copy (with its Active Effects) or as inert text is the single most
-    // important thing about an import - see helpers/stat-block-match.mjs's own doc comment.
+    // important thing about an import - see importers/stat-block-match.mjs's own doc comment.
     for (const section of ["perks", "powers", "hangUps"]) {
       const matched = this._matches?.[section] ?? [];
       context[section] = ir[section].map((entry, position) => {
@@ -290,7 +290,7 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
 
     // A matched Perk's Active Effect would otherwise double-count a bonus the printed block
     // already included. The builder nets those out of the residuals (see
-    // helpers/stat-block-import.mjs#collectEffectContributions); this reports what it did, and
+    // importers/stat-block-import.mjs#collectEffectContributions); this reports what it did, and
     // names anything it could not cancel arithmetically.
     context.effectCaution = null;
     context.effectNetted = null;

@@ -5,6 +5,9 @@
   "_id": "HJd2dd41bj3oY899",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Create an element grenade (Volatile Delivery)","cost":{"action":"free"},"limit":{"per":"scene"},"steps":[{"do":"grant","uuid":"Compendium.essence20.gi_joe_crb.Item.pcBbvGPdjOoeUnnj","until":"scene","system":{"quantity":1}},{"do":"updateItem","item":"justGranted","set":{"system.elementChoice":"{sourced.DgFY0ZmAtClAobiA.flags.essence20.rules.choices.element|fire}"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene as a Free action, add an Element grenade of your Energy Affinity's type; it goes inert at the end of the scene.</p>"

@@ -5,6 +5,10 @@
   "_id": "zhwJbYTopQB2RuuM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick your weapon upgrades (Upgrade Training)","when":["not:rule:data:flags.essence20.rules.choices.chosen"],"steps":[{"do":"choose","prompt":"Which Qualification do you take?","options":[{"label":"Three Limited weapon upgrades","steps":[{"do":"pickGrant","record":true,"key":"chosen","legacy":"flags.essence20.q2Chosen","title":"Pick a Limited weapon upgrade (1 of 3)","from":{"type":"upgrade","availabilities":["limited"],"tags":["item:data:system.type=weapon","not:item:pickedSource:chosen"]}},{"do":"grant","uuid":"{var.picked}","flags":{"qualified":true}},{"do":"pickGrant","record":true,"key":"chosen","title":"Pick a Limited weapon upgrade (2 of 3)","from":{"type":"upgrade","availabilities":["limited"],"tags":["item:data:system.type=weapon","not:item:pickedSource:chosen"]}},{"do":"grant","uuid":"{var.picked}","flags":{"qualified":true}},{"do":"pickGrant","record":true,"key":"chosen","title":"Pick a Limited weapon upgrade (3 of 3)","from":{"type":"upgrade","availabilities":["limited"],"tags":["item:data:system.type=weapon","not:item:pickedSource:chosen"]}},{"do":"grant","uuid":"{var.picked}","flags":{"qualified":true}}]},{"label":"One Restricted weapon upgrade","steps":[{"do":"pickGrant","record":true,"key":"chosen","title":"Pick a Restricted weapon upgrade","from":{"type":"upgrade","availabilities":["restricted"],"tags":["item:data:system.type=weapon","not:item:pickedSource:chosen"]}},{"do":"grant","uuid":"{var.picked}","flags":{"qualified":true}}]}]}]},
+      {"type":"Qualification","label":"Upgrade Training (Qualified: your chosen upgrades)","upgrades":["item:pickedSource:chosen"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick three Limited or one Restricted weapon upgrade. You're Qualified with them, and they don't raise a weapon's Availability when you Requisition.</p>"

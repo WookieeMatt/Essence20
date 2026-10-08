@@ -5,6 +5,10 @@
   "_id": "4yjmk8tENyBSPJrx",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"AlternateEffect","label":"Heavy Hitting: a Shove (↑1) alternate","scope":"host","key":"heavyHitting","name":"E20.WeaponAltShove","changes":{"damageType":"maneuver","damageValue":1,"accurateShiftUp":1,"shiftDown":0,"secondaryDamage.type":null,"secondaryDamage.value":0}}
+    ],
+    "prerequisites": {"when":["host:data:system.classification.size=long","ask:Melee weapon","host:trait:blunt"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon it's fitted to gains a Shove alternate attack in its attack list.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Long melee weapon that deals Blunt damage"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

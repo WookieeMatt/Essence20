@@ -5,6 +5,10 @@
   "_id": "mnze6jJ6eSYbS8Pr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Free upgrades","steps":[{"do":"pick","key":"armor","from":"ownedItem","itemType":"armor","equipped":true,"auto":true,"prompt":"Which armor is your Battledress?"},{"do":"fitUpgrade","uuid":"Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU","onto":"choice:armor","when":["not:rule:pickedItem:armor:item:hasUpgrade:Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU"]},{"do":"fitUpgrade","uuid":"Compendium.essence20.gi_joe_crb.Item.ThXrre0RHTcr1BEp","onto":"choice:armor","when":["not:rule:pickedItem:armor:item:hasUpgrade:Compendium.essence20.gi_joe_crb.Item.ThXrre0RHTcr1BEp"]}]}
+    ],
+    "prerequisites": {"when":["self:skill:infiltration>=d4"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when you gain this Perk, your equipped battledress gets the Silent and Stealth upgrades without changing its Availability.</p><p>Left to the table: battledress you put on later needs the upgrades added by hand.</p>"
@@ -15,7 +19,7 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 37
     },
-    "prerequisite": "Infiltration +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

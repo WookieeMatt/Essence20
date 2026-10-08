@@ -5,6 +5,7 @@
   "_id": "l9enKfeOdGypyAEW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:One or more Contacts"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: choose one of your Contacts. It starts with double Allegiance Points when you summon it.</p>"
@@ -15,7 +16,7 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 9
     },
-    "prerequisite": "One or more Contacts",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

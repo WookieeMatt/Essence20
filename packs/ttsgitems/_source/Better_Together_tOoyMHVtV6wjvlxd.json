@@ -5,6 +5,13 @@
   "_id": "tOoyMHVtV6wjvlxd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose your partner","steps":[{"do":"pick","key":"partner","from":"team","notSelf":true,"legacy":"flags.essence20.o3Partner","prompt":"Choose the ally you synchronize with."}]},
+      {"type":"Trigger","event":"lendAssistance","label":"In sync with your partner","when":["target:picked:partner"],"steps":[{"do":"mark","key":"betterTogether","to":"self","until":"endOfNextTurnOrScene"},{"do":"mark","key":"betterTogether","to":"target","until":"endOfNextTurnOrScene"},{"do":"chat","text":"Better Together: {name} and {target} gain ↑1 and an Edge until the end of the next turn."}]},
+      {"type":"Trigger","event":"assisted","label":"In sync with your partner","when":["target:picked:partner"],"steps":[{"do":"mark","key":"betterTogether","to":"self","until":"endOfNextTurnOrScene","untilOf":"target"},{"do":"mark","key":"betterTogether","to":"target","until":"endOfNextTurnOrScene","untilOf":"target"},{"do":"chat","text":"Better Together: {name} and {target} gain ↑1 and an Edge until the end of the next turn."}]},
+      {"type":"RollModifier","label":"Better Together","upshift":1,"edge":true,"stack":"betterTogether","when":["self:marked:betterTogether"]},
+      {"type":"RollModifier","label":"Better Together","scope":"marked","mark":"betterTogether","upshift":1,"edge":true,"stack":"betterTogether"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick your ally. Automatic: when either of you Lends Assistance to the other, you both get ↑1 and Edge on Skill Tests until the end of your next turn, labelled Better Together in the Roll Options Dialog.</p>"

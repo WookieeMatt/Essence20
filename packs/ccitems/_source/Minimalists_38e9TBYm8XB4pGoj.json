@@ -5,6 +5,9 @@
   "_id": "38e9TBYm8XB4pGoj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Qualification","label":"Minimalists (Qualified: Microtech upgrades)","upgrades":[{"any":["item:id:ihSql0Px1kNgTBfP","item:id:ERqpa98s445vypnL","item:data:name=microtech weapon","item:data:name=microtech battledress","item:data:name=microtech armor"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you count as Qualified with Microtech weapon and battledress upgrades, so they no longer raise the Availability of gear you requisition.</p>"

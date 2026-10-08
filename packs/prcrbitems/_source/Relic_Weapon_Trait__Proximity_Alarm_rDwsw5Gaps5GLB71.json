@@ -5,6 +5,7 @@
   "_id": "rDwsw5Gaps5GLB71",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:has:Grid Relic Weapon"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: the Relic warns you of danger within 60 feet.</p>"
@@ -15,7 +16,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 61
     },
-    "prerequisite": "Grid Relic Weapon",
+    "prerequisite": "",
     "selectionLimit": 3,
     "type": "role"
   },

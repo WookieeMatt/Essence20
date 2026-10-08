@@ -5,6 +5,9 @@
   "_id": "RO0a3eX8MIo5g1Tv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"skillDice","reset":"scene","maxUses":1,"condition":"rollFailed","cost":{"resourcePath":"system.health.value","amount":1}}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: once per scene, a reroll button appears on a failed Skill Test, and using it costs 1 Health.</p><p>Left to the table: taking the damage to an Essence instead, and needing this Perk before investing in Weird.</p>"
@@ -33,21 +36,7 @@
     },
     "type": "general",
     "value": 0,
-    "version": "powerRangers",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "skillDice",
-      "condition": "rollFailed",
-      "maxUses": 1,
-      "reset": "scene",
-      "cost": {
-        "resourcePath": "system.health.value",
-        "amount": 1,
-        "worldStoryPoints": 0,
-        "rolePointsName": ""
-      }
-    }
+    "version": "powerRangers"
   },
   "effects": [],
   "sort": 0,

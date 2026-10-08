@@ -5,6 +5,10 @@
   "_id": "7wsu99k8v620IB2N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Plan of Action","when":["not:self:hasItem:Compendium.essence20.gi_joe_crb.Item.j05tN97KZNzl5jTF"],"steps":[{"do":"pickAlly"},{"do":"bank","upshift":"max(1, @item.system.advances.currentValue)","to":"targets","grantDouble":true,"until":"combat","appliesWhen":["not:roll:initiative"]},{"do":"button","label":"Split Plan of Action","when":["calc:@item.system.advances.currentValue>=2"],"once":false,"steps":[{"do":"splitBank"}]}]},
+      {"type":"Use","label":"Plan of Action (Inspiration: up to two allies)","when":["self:hasItem:Compendium.essence20.gi_joe_crb.Item.j05tN97KZNzl5jTF"],"steps":[{"do":"pickAlly","max":2},{"do":"bank","upshift":"max(1, @item.system.advances.currentValue) + 1","to":"targets","grantDouble":true,"until":"combat","appliesWhen":["not:roll:initiative"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Move action): gives a chosen ally your current ↑ on their next Skill test. From 5th level, the chat card lets you split the total between two allies.</p>"

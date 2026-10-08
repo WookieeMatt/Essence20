@@ -5,6 +5,9 @@
   "_id": "Y8PlCnqD5txZKJWh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Talk Them Down","steps":[{"do":"warn","text":"E20.TalkThemDownOutnumbering","when":["calc:@count.allies.100000 - @count.enemies.100000 > 0"]},{"do":"warn","text":"E20.TalkThemDownOutnumbered","when":["calc:@count.enemies.100000 - @count.allies.100000 > 0"]},{"do":"rollVsEach","skill":"persuasion","defense":"willpower","onHit":[{"do":"applyCondition","condition":"frightened","to":"target"}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: roll Persuasion against the targeted enemy's Willpower, with the chat card noting whether either side is outnumbered. A success makes the target Frightened.</p><p>Left to the table: rolling Intimidation instead, needing an Edge on the attack, and the target dropping its weapons and surrendering.</p>"

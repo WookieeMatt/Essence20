@@ -3,6 +3,13 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Adjust the Omega Morpher","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"choose","beforeCost":true,"prompt":"Which mode?","options":[{"label":"Blast Mode","steps":[{"do":"setVar","key":"mode","value":"blast"}]},{"label":"Charged-Up Mode","steps":[{"do":"setVar","key":"mode","value":"chargedUp"}]},{"label":"Electro Mode","steps":[{"do":"setVar","key":"mode","value":"electro"}]},{"label":"Hyper Mode","steps":[{"do":"setVar","key":"mode","value":"hyper"}]},{"label":"Light Beam Mode","steps":[{"do":"setVar","key":"mode","value":"lightBeam"}]},{"label":"Muscle Mode","steps":[{"do":"setVar","key":"mode","value":"muscle"}]},{"label":"Power Mode","steps":[{"do":"setVar","key":"mode","value":"power"}]}]},{"do":"pick","key":"essence","from":"essence","beforeCost":true,"when":["var:mode=chargedUp"],"prompt":"Which Essence?"},{"do":"setToggle","key":"chargedUp","value":true,"until":"endOfTurn","when":["var:mode=chargedUp"]},{"do":"setToggle","key":"muscle","value":true,"until":"endOfTurn","when":["var:mode=muscle"]},{"do":"setToggle","key":"power","value":true,"until":"endOfTurn","when":["var:mode=power"]},{"do":"grantActions","move":1,"free":2,"when":["var:mode=hyper"]},{"do":"rollVsEach","skill":"targeting","defense":"evasion","when":["var:mode=blast"],"to":"nearbyEnemies:50","damage":{"value":1,"type":"element"}},{"do":"rollVsEach","skill":"targeting","defense":"evasion","when":["var:mode=electro"],"damage":{"value":1,"type":"electric"},"dataset":{"omegaEnhancementMode":"electro"}},{"do":"rollVsEach","skill":"targeting","defense":"evasion","when":["var:mode=lightBeam"],"damage":{"value":1,"type":"element"},"onHit":[{"do":"applyCondition","condition":"blinded","to":"target"}]}]},
+      {"type":"RollModifier","label":"Omega Enhancement: Charged-Up Mode","bonus":1,"when":["self:toggle:chargedUp","essence:{choice.essence}"]},
+      {"type":"RollModifier","label":"Omega Enhancement: Muscle Mode","bonus":3,"when":["self:toggle:muscle","skill:brawn"]},
+      {"type":"RollModifier","label":"Omega Enhancement: Power Mode","edge":true,"when":["self:toggle:power","skill:might"]}
+    ],
+    "prerequisites": {"when":["self:data:system.powers.personal.max>=6"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: while Morphed, spend 1 Personal Power at the start of your turn and pick a mode; attack modes roll and apply their effects, the others add their bonus for the turn.</p><p>Left to the table: Blast Mode's exact area, Muscle Mode's carrying capacity, and keeping to one Form.</p>"
@@ -13,7 +20,7 @@
       "book": "Across the Stars",
       "page": 70
     },
-    "prerequisite": "maximum Personal Power 6 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

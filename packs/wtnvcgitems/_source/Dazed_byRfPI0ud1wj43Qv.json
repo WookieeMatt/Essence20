@@ -5,6 +5,9 @@
   "_id": "byRfPI0ud1wj43Qv",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Dazed","defense":"evasion","amount":-1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Evasion becomes 9 plus your Speed.</p>"

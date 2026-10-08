@@ -5,6 +5,9 @@
   "_id": "adJm4dpjD04TICkd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Learn the target's Defenses","limit":{"per":"encounter","key":"quickStudy"},"steps":[{"do":"target","max":1},{"do":"chat","text":"{target}'s Defenses: Toughness {@target.system.defenses.toughness.total}, Evasion {@target.system.defenses.evasion.total}, Willpower {@target.system.defenses.willpower.total}, Cleverness {@target.system.defenses.cleverness.total}."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free action, once per scene): shows your target's Toughness, Evasion, Willpower and Cleverness in chat.</p>"

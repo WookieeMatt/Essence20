@@ -1,8 +1,8 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
-import { getActionsTabContext } from "../helpers/action-economy.mjs";
+import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
 import {
   getActiveVesselConditions, getVesselConditionStacks, openVesselRepairDialog, stackedName,
-} from "../helpers/vessel-conditions.mjs";
+} from "../mechanics/vehicles/vessel-conditions.mjs";
 
 export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
   static DEFAULT_OPTIONS = {
@@ -17,7 +17,7 @@ export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
         { id: "main", group: 'primary', label: "E20.TabMain" },
         { id: "actions", group: 'primary', label: "E20.TabActions" },
         { id: "passengers", group: 'primary', label: "E20.TabCrew" },
-        { id: "effects", group: 'primary', label: "E20.TabEffects" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
         { id: "notes", group: 'primary', label: "E20.TabNotes" },
 
       ],
@@ -75,7 +75,7 @@ export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
 
   /**
    * Repairing a Space Vessel Condition (Across the Stars p.26) - see
-   * helpers/vessel-conditions.mjs#openVesselRepairDialog.
+   * mechanics/vehicles/vessel-conditions.mjs#openVesselRepairDialog.
    * @this {Essence20VehicleActorSheet}
    * @private
    */

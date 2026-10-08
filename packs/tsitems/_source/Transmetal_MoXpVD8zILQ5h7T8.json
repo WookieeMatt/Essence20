@@ -5,6 +5,18 @@
   "_id": "MoXpVD8zILQ5h7T8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"movement","label":"Movement","from":"movement","only":["aerial","ground","swim"],"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"Movement","label":"Transmetal (Alt Mode Ground: 40ft)","movement":"ground","stage":"afterGravity","op":"add","value":40,"when":["rule:choiceHas:movement:ground","self:transformed","not:self:data:system.movement.ground.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Ground: up to 40ft)","movement":"ground","stage":"afterGravity","op":"add","value":"max(0, 40 - @actor.system.movement.ground.altMode)","when":["rule:choiceHas:movement:ground","self:transformed","self:data:system.movement.ground.altMode>0","not:self:data:system.movement.aerial.altMode>0","not:self:data:system.movement.burrow.altMode>0","not:self:data:system.movement.climb.altMode>0","not:self:data:system.movement.swim.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Ground: +20ft)","movement":"ground","stage":"afterGravity","op":"add","value":20,"when":["rule:choiceHas:movement:ground","self:transformed","self:data:system.movement.ground.altMode>0",{"any":["self:data:system.movement.aerial.altMode>0","self:data:system.movement.burrow.altMode>0","self:data:system.movement.climb.altMode>0","self:data:system.movement.swim.altMode>0"]}]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aerial: 40ft)","movement":"aerial","stage":"afterGravity","op":"add","value":40,"when":["rule:choiceHas:movement:aerial","self:transformed","not:self:data:system.movement.aerial.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aerial: up to 40ft)","movement":"aerial","stage":"afterGravity","op":"add","value":"max(0, 40 - @actor.system.movement.aerial.altMode)","when":["rule:choiceHas:movement:aerial","self:transformed","self:data:system.movement.aerial.altMode>0","not:self:data:system.movement.burrow.altMode>0","not:self:data:system.movement.climb.altMode>0","not:self:data:system.movement.ground.altMode>0","not:self:data:system.movement.swim.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aerial: +20ft)","movement":"aerial","stage":"afterGravity","op":"add","value":20,"when":["rule:choiceHas:movement:aerial","self:transformed","self:data:system.movement.aerial.altMode>0",{"any":["self:data:system.movement.burrow.altMode>0","self:data:system.movement.climb.altMode>0","self:data:system.movement.ground.altMode>0","self:data:system.movement.swim.altMode>0"]}]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aquatic: 40ft)","movement":"swim","stage":"afterGravity","op":"add","value":40,"when":["rule:choiceHas:movement:swim","self:transformed","not:self:data:system.movement.swim.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aquatic: up to 40ft)","movement":"swim","stage":"afterGravity","op":"add","value":"max(0, 40 - @actor.system.movement.swim.altMode)","when":["rule:choiceHas:movement:swim","self:transformed","self:data:system.movement.swim.altMode>0","not:self:data:system.movement.aerial.altMode>0","not:self:data:system.movement.burrow.altMode>0","not:self:data:system.movement.climb.altMode>0","not:self:data:system.movement.ground.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aquatic: +20ft)","movement":"swim","stage":"afterGravity","op":"add","value":20,"when":["rule:choiceHas:movement:swim","self:transformed","self:data:system.movement.swim.altMode>0",{"any":["self:data:system.movement.aerial.altMode>0","self:data:system.movement.burrow.altMode>0","self:data:system.movement.climb.altMode>0","self:data:system.movement.ground.altMode>0"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Toughness. When added, you pick Ground, Aerial or Aquatic; in Alt Mode that Movement becomes 40ft, or gets +20ft if your Alt Mode already moves more than one way.</p>"
@@ -18,8 +30,8 @@
     "items": {},
     "canActivate": false,
     "choice": null,
-    "choiceType": "altModeMovement",
-    "hasChoice": true,
+    "choiceType": "none",
+    "hasChoice": false,
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,
     "prerequisite": "",

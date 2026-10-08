@@ -5,6 +5,9 @@
   "_id": "s0uI9etsaZdaP3xN",
   "img": "systems/essence20/assets/icons/gear/candle.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Light or put out (Candle)","steps":[{"do":"tokenLight","bright":10,"dim":25}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: lights the carrier's token (10 ft bright, 25 ft dim light) and puts it out again.</p>"
@@ -16,7 +19,6 @@
       "page": 154
     },
     "quantity": 1,
-    "type": "",
     "gearType": "tools"
   },
   "effects": [],

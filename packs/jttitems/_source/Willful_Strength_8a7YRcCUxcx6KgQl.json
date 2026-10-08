@@ -5,6 +5,9 @@
   "_id": "8a7YRcCUxcx6KgQl",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Bonus Health from Survival","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"limit":{"per":"encounter"},"steps":[{"do":"gainResource","resource":{"path":"system.health.bonus"},"amount":"max(0, @skill.survival.rank - 1)"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per scene, spend 1 Personal Power for bonus Health based on your Survival rank.</p><p>Left to the table: removing that bonus Health when the scene ends.</p>"
@@ -17,7 +20,6 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,

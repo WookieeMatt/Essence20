@@ -5,6 +5,7 @@
   "_id": "IZdGn9P6MzzNIsbq",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["ask:Attack function","self:hasType:upgrade:Integrated Specialized Weapon"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: replace the drone's weapon with one a step less available than the drone.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "drone",
-    "prerequisite": "Attack function or Integrated Specialized Weapon upgrade"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

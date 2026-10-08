@@ -5,6 +5,11 @@
   "_id": "Gha7PEUJKSOmLnIx",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Veto","on":"create","label":"Only one Armor Matrix","when":["not:rule:data:flags.essence20.parentId"],"items":["item:type:upgrade",{"any":["item:id:z3Nb6mrcAZ1c8R3q","item:id:COIQnaWsN7JorDuv","item:id:Gha7PEUJKSOmLnIx","item:name~armor matrix"]},"not:item:data:flags.essence20.parentId"],"message":"{name} already has an Armor Matrix - a character can benefit from only one."},
+      {"type":"OnlyBest","label":"Only one Armor Matrix","key":"armorMatrix","defense":"toughness","when":["self:canTransform"],"items":["item:type:upgrade",{"any":["item:id:z3Nb6mrcAZ1c8R3q","item:id:COIQnaWsN7JorDuv","item:id:Gha7PEUJKSOmLnIx","item:name~armor matrix"]},"not:item:data:flags.essence20.parentId","item:data:system.armorBonus.defense=toughness"]}
+    ],
+    "prerequisites": {"when":["self:skill:brawn>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: adds its Toughness bonus. You can only have one armor matrix; a second can't be added, and if two are present only the best counts.</p>"
@@ -23,7 +28,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Brawn d4"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

@@ -5,6 +5,11 @@
   "_id": "ZnuLgh6jdUHi9F75",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"Trigger","label":"Savant Skill: the Story Point comes back","event":"rerolled","when":["var:source=storyPoint","var:failed=1","skill:{choice.skill}"],"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} regains the Story Point."}]},
+      {"type":"DialogSwitch","label":"Savant Skill: a flat 1d20 + 1d4 (no Edge, Snag or shifts)","setDie":"d4","forget":true,"when":["skill:{choice.skill}"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on your chosen Skill, a switch to roll 1d20+1d4 whatever your shifts. Automatic: if a Story Point reroll on that Skill still fails, the Story Point is refunded.</p>"
@@ -18,8 +23,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "skills"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "flags": {},

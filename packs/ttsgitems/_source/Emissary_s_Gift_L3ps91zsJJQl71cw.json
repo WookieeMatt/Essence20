@@ -5,6 +5,10 @@
   "_id": "L3ps91zsJJQl71cw",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose a Core Ranger Role Perk","when":["not:rule:data:flags.essence20.pr3Granted"],"steps":[{"do":"pickPerk","from":"role","pack":"pr_crb","maxLevel":"max(1, @level)","excludeName":"^(Extra Attack|General Perk|Grid Power|Zord|Zord Feature)$"},{"do":"updateItem","set":{"flags.essence20.pr3Granted":true}}]}
+    ],
+    "prerequisites": {"when":["self:level>=5","ask:GM approval"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once): pick a Role Perk from the core Ranger Roles at or below your level (Extra Attack, General Perk, Grid Power, Zord and Zord Feature are left out); it is added to your sheet.</p>"
@@ -16,7 +20,7 @@
       "page": 73
     },
     "items": {},
-    "prerequisite": "Level 5+. GM Approval",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

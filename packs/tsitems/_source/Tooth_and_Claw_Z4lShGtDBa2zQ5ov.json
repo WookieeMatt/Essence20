@@ -5,6 +5,12 @@
   "_id": "Z4lShGtDBa2zQ5ov",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"damageType","label":"Damage type","from":"config","table":"toothAndClawOptions","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Tooth and Claw (Accurate)","when":["attack:unarmed","self:transformed"],"upshift":1,"stack":"toothAndClaw"},
+      {"type":"DamageType","label":"Tooth and Claw (the chosen damage type)","to":"{choice.damageType}","priority":-1,"when":["self:transformed",{"any":["attack:unarmed","weapon:source:Compendium.essence20.gi_joe_crb.Item.OU9rXvoKfXtcpvFy","weapon:source:Compendium.essence20.tf_crb.Item.OU9rXvoKfXtcpvFy","weapon:source:Compendium.essence20.wtnv_citizens_guide.Item.Cwd1FASmKXWiAFom"]}]},
+      {"type":"DamageType","label":"Tooth and Claw (Sharp when nothing is chosen)","to":"sharp","priority":-1,"when":["self:transformed",{"any":["attack:unarmed","weapon:source:Compendium.essence20.gi_joe_crb.Item.OU9rXvoKfXtcpvFy","weapon:source:Compendium.essence20.tf_crb.Item.OU9rXvoKfXtcpvFy","weapon:source:Compendium.essence20.wtnv_citizens_guide.Item.Cwd1FASmKXWiAFom"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in Alt Mode your unarmed attacks get ↑1 (already applied when the Roll Options Dialog opens) and deal Sharp or Blunt damage, whichever you picked on the Perk (Sharp if you haven't picked).</p>"
@@ -18,8 +24,8 @@
     "items": {},
     "canActivate": false,
     "choice": null,
-    "choiceType": "toothAndClaw",
-    "hasChoice": true,
+    "choiceType": "none",
+    "hasChoice": false,
     "numChoices": 1,
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,

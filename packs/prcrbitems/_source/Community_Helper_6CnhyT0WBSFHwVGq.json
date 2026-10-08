@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"config","table":"communityHelperSkills","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Community Helper","when":["skill:{choice.skill}",{"any":["not:skill:brawn","not:attack"]}],"edge":true},
+      {"type":"RollModifier","label":"Community Helper (Initiative: Edge)","when":["roll:initiative","rule:choiceHas:skill:initiative","not:skill:initiative"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>When added you choose your service. Automatic: tests with its Skill open the Roll Options Dialog with Edge already selected (Brawn only outside attacks; for the military option, your Initiative).</p>"
@@ -14,8 +19,8 @@
       "page": 68
     },
     "prerequisite": "",
-    "hasChoice": true,
-    "choiceType": "communityHelperSkill",
+    "hasChoice": false,
+    "choiceType": "none",
     "numChoices": 1,
     "selectionLimit": 1,
     "type": "influence"

@@ -5,6 +5,10 @@
   "_id": "eOgtG24LKGR6OE0v",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick the obsession","steps":[{"do":"pick","key":"obsession","from":"list","options":[["athletics","E20.SkillAthletics"],["brawn","E20.SkillBrawn"],["intimidation","E20.SkillIntimidation"],["might","E20.SkillMight"],["acrobatics","E20.SkillAcrobatics"],["driving","E20.SkillDriving"],["finesse","E20.SkillFinesse"],["infiltration","E20.SkillInfiltration"],["initiative","E20.SkillInitiative"],["targeting","E20.SkillTargeting"],["alertness","E20.SkillAlertness"],["culture","E20.SkillCulture"],["science","E20.SkillScience"],["survival","E20.SkillSurvival"],["technology","E20.SkillTechnology"],["animalHandling","E20.SkillAnimalHandling"],["deception","E20.SkillDeception"],["performance","E20.SkillPerformance"],["persuasion","E20.SkillPersuasion"],["spellcasting","E20.SkillSpellcasting"],["streetwise","E20.SkillStreetwise"],["weird","E20.SkillWeird"]],"prompt":"Which Skill is your current obsession?"}]},
+      {"type":"RollModifier","downshift":1,"when":["roll:dataset:skill","not:roll:initiative","not:skill:{choice.obsession}"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick the Skill you are obsessed with. Automatic: other Skill Tests get ↓1, shown as a source in the Roll Options Dialog that you can untick when the test relates to your obsession.</p>"

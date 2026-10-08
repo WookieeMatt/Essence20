@@ -23,15 +23,14 @@
         "type": "weaponEffect"
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "automatic",
     "classification": {
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:origin:Griffon","self:hasType:perk:Screech"]},
     "requirements": {
-      "custom": "Griffon Origin, Screech Perk",
+      "custom": "",
       "skill": null,
       "shift": "none"
     },

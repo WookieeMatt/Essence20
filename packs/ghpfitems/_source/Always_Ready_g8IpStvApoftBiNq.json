@@ -5,15 +5,25 @@
   "_id": "g8IpStvApoftBiNq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"option","label":"Function","from":"config","table":"alwaysReadyOptions","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DialogSwitch","label":"Always Ready (Edge, once per scene)","when":["rule:choiceHas:option:admin",{"any":["skill:culture","skill:persuasion"]},"not:roll:dataset:isInitiative"],"edge":true,"clearSnag":true,"limit":{"per":"scene","key":"alwaysReady"}},
+      {"type":"DialogSwitch","label":"Always Ready (Edge, once per scene)","when":["rule:choiceHas:option:biologist",{"any":["skill:animalHandling","skill:science"]},"not:roll:dataset:isInitiative"],"edge":true,"clearSnag":true,"limit":{"per":"scene","key":"alwaysReady"}},
+      {"type":"DialogSwitch","label":"Always Ready (Edge, once per scene)","when":["rule:choiceHas:option:engineer",{"any":["skill:brawn","skill:technology"]},"not:roll:dataset:isInitiative"],"edge":true,"clearSnag":true,"limit":{"per":"scene","key":"alwaysReady"}},
+      {"type":"DialogSwitch","label":"Always Ready (Edge, once per scene)","when":["rule:choiceHas:option:pilot",{"any":["skill:alertness","skill:driving"]},"not:roll:dataset:isInitiative"],"edge":true,"clearSnag":true,"limit":{"per":"scene","key":"alwaysReady"}},
+      {"type":"DialogSwitch","label":"Always Ready (Edge, once per scene)","when":["rule:choiceHas:option:rescue",{"any":["skill:athletics","skill:survival"]},"not:roll:dataset:isInitiative"],"edge":true,"clearSnag":true,"limit":{"per":"scene","key":"alwaysReady"}},
+      {"type":"DialogSwitch","label":"Always Ready (Edge, once per scene)","when":["rule:choiceHas:option:security",{"any":["skill:intimidation","skill:targeting"]},"not:roll:dataset:isInitiative"],"edge":true,"clearSnag":true,"limit":{"per":"scene","key":"alwaysReady"}}
+    ],
+    "prerequisites": {"when":["self:hasType:origin:Coast Guard"]},
     "automation": {
       "status": "partial",
       "notes": "<p>On the sheet: choose the function you served. Roll Options Dialog: once per scene, a switch gives Edge on either of that function's two Skills.</p><p>Left to the table: limiting it to once per mission outside aquatic scenes.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Coast Guard Origin",
-    "hasChoice": true,
-    "choiceType": "alwaysReadyFunction",
+    "prerequisite": "",
+    "hasChoice": false,
+    "choiceType": "none",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

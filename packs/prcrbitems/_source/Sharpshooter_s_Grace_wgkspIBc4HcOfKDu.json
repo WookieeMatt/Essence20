@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Sharpshooter's Grace: no long-range Snag","immune":["longRangeSnag"],"when":["attack","not:attack:melee"]},
+      {"type":"RollModifier","label":"Sharpshooter's Grace: ↑2 within 30 ft","upshift":2,"when":["attack","not:attack:melee","target:within:30"]}
+    ],
+    "prerequisites": {"when":["self:skill:targeting>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your ranged attacks at targets past normal range take no Snag, and ranged attacks at targets within 30 ft get ↑2, labelled Sharpshooter's Grace in the Roll Options Dialog.</p>"
@@ -13,7 +18,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 98
     },
-    "prerequisite": "Targeting D6 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

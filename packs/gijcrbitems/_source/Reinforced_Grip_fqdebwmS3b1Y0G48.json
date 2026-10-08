@@ -5,6 +5,9 @@
   "_id": "fqdebwmS3b1Y0G48",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Attacks roll Might (Reinforced Grip)","stage":"item","stacks":true,"items":["item:type:weaponEffect","item:onHost"],"path":"system.classification.skill","op":"set","value":"might","priority":3}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon it's attached to attacks with Might instead of its usual skill.</p>"

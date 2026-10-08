@@ -5,6 +5,11 @@
   "_id": "ZMs9cLu6O89Lv7Oo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Bonded Proficiency","specialize":true,"when":["self:bondLinked","roll:bondAllySpecialized"]},
+      {"type":"RollModifier","label":"Bonded Proficiency","scope":"bondPartner","specialize":true,"when":["self:bondLinked","roll:bondAllySpecialized"]},
+      {"type":"RollModifier","label":"Bonded Proficiency","scope":"bondHolder","specialize":true,"when":["self:bondLinked","roll:bondAllySpecialized"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while linked, you and your bonded ally count as Specialized in any Skill the other is Specialized in.</p>"

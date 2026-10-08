@@ -5,6 +5,7 @@
   "_id": "cAXOpbALtpagSEtz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:origin:Caretaker"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: Edge on Science (Medicine) tests.</p><p>Left to the table: rolling a d2 Skill Die without a Snag when you aren't trained in Medicine.</p>"
@@ -25,7 +26,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Caretaker Origin",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

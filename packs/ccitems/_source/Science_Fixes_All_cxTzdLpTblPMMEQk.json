@@ -5,6 +5,9 @@
   "_id": "cxTzdLpTblPMMEQk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Science instead (Science Fixes All)","when":["skill:technology"],"useSkill":"science"}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll Options Dialog: a switch to roll Science in place of Technology.</p><p>Left to the table: moving your Skill ranks around when you take it.</p>"

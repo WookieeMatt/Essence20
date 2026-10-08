@@ -5,6 +5,10 @@
   "_id": "zwm8CrmmYvMj3bMc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"New Herd","action":"commandPet","to":"move"}
+    ],
+    "prerequisites": {"when":["self:hasType:focus:Rancher"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: commanding your pet costs a Move action instead of a Standard action.</p><p>Left to the table: other Animal Handling tests as a Move action in conflict, and the Edge against hostile animals.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Rancher Farmer Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

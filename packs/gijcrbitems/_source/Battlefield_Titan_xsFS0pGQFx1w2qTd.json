@@ -5,6 +5,10 @@
   "_id": "xsFS0pGQFx1w2qTd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ConditionImmunity","label":"Immune to Mesmerized and Frightened","conditions":["mesmerized","frightened"]},
+      {"type":"ConditionImmunity","label":"Allies within 10 ft: immune to Mesmerized and Frightened","conditions":["mesmerized","frightened"],"scope":"aura","radius":10,"affects":"allies"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you and allies within 10ft are immune to Mesmerized and Frightened.</p>"

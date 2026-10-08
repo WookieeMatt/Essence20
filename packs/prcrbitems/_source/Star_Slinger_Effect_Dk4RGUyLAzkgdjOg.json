@@ -9,12 +9,12 @@
     "actionType": "standard",
     "classification": {
       "skill": "targeting",
-      "style": "energy"
+      "style": "projectile"
     },
     "damageType": "element",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

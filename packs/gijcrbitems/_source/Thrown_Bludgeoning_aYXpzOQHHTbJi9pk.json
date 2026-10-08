@@ -1,6 +1,6 @@
 {
   "folder": "EPfL3S8nx5LSxuhK",
-  "name": "Thrown Bludgeoning",
+  "name": "Thrown Bludgeon",
   "type": "weapon",
   "_id": "aYXpzOQHHTbJi9pk",
   "img": "systems/essence20/assets/icons/weapons/boomerang.svg",
@@ -19,7 +19,7 @@
       "0f47": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.tXzl5XrXnSX091BF",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Thrown Bludgeoning Effect",
+        "name": "Thrown Bludgeon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -41,7 +41,7 @@
       "7fd4": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.teAtYR2ewLiQIFNp",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Thrown Bludgeoning Alternate Effect",
+        "name": "Thrown Bludgeon Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -61,8 +61,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"

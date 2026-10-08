@@ -5,6 +5,14 @@
   "_id": "TO3TazEeI35FUOOU",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Mobile Mode: pick a Movement type","event":"powerUsed","when":["item:own"],"steps":[{"do":"pick","key":"type","from":"config","path":"movementTypes"},{"do":"setToggle","key":"on","value":true,"until":"scene"}]},
+      {"type":"Movement","label":"Mobile Mode (aerial at least 30 ft)","movement":"aerial","op":"max","value":30,"stage":"final","when":["self:morphed","self:toggle:on","rule:data:flags.essence20.rules.choices.type=aerial"]},
+      {"type":"Movement","label":"Mobile Mode (burrow at least 30 ft)","movement":"burrow","op":"max","value":30,"stage":"final","when":["self:morphed","self:toggle:on","rule:data:flags.essence20.rules.choices.type=burrow"]},
+      {"type":"Movement","label":"Mobile Mode (climb at least 30 ft)","movement":"climb","op":"max","value":30,"stage":"final","when":["self:morphed","self:toggle:on","rule:data:flags.essence20.rules.choices.type=climb"]},
+      {"type":"Movement","label":"Mobile Mode (ground at least 30 ft)","movement":"ground","op":"max","value":30,"stage":"final","when":["self:morphed","self:toggle:on","rule:data:flags.essence20.rules.choices.type=ground"]},
+      {"type":"Movement","label":"Mobile Mode (swim at least 30 ft)","movement":"swim","op":"max","value":30,"stage":"final","when":["self:morphed","self:toggle:on","rule:data:flags.essence20.rules.choices.type=swim"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (1 Personal Power, while Morphed): pick a movement type and gain it at 30 ft until the end of the scene.</p>"

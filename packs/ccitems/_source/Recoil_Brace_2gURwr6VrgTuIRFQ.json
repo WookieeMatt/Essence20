@@ -5,6 +5,11 @@
   "_id": "2gURwr6VrgTuIRFQ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Wield this weapon one-handed until the end of your turn","when":["rule:data:flags.essence20.parentId"],"limit":{"per":"scene"},"steps":[{"do":"setToggle","key":"oneHanded","value":true,"until":"turnOrUntilCombat"},{"do":"chat","text":"{name} wields the braced weapon one-handed until the end of their turn (Recoil Brace)."}]},
+      {"type":"ItemModifier","label":"Recoil Brace (one-handed this turn)","when":["self:toggle:oneHanded"],"items":["item:isHost"],"path":"system.derivedHands","op":"min","value":1}
+    ],
+    "prerequisites": {"when":["ask:Two-handed weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene): the weapon counts as one-handed until the end of your turn.</p>"
@@ -23,7 +28,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Two-Handed Weapon"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

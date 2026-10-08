@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Uncovered a significant clue","limit":{"per":"encounter"},"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Story Point to the team's pool."}]},
+      {"type":"RollModifier","label":"Investigator (no Snag on Alertness)","when":["skill:alertness"],"immune":["snag"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Alertness tests never take a Snag; the roll drops it even if Snag is selected in the Roll Options Dialog. Use button (once per scene): gain a Story Point when you uncover a significant clue.</p>"

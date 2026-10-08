@@ -5,6 +5,9 @@
   "_id": "R7DMglLJxy9d9und",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Show Off: no help from allies","side":"receive","effect":"refuse"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: allies can't Lend Assistance to you.</p>"

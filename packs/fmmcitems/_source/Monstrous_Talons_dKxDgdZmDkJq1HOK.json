@@ -61,15 +61,14 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:hasType:role:Path of Cruelty","self:hasType:role:Path of Flame","self:hasType:role:Path of Frost","self:hasType:role:Path of Thorns"]}]},
     "requirements": {
-      "custom": "Path of Cruelty, Path of Flame, Path of Frost, or Path of Thorns",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

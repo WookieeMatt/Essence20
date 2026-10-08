@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"In the chosen location or with its people (Xeno-Location Study: Edge)","when":[{"any":["skill:animalHandling","skill:deception","skill:persuasion","skill:survival"]}],"edge":true},
+      {"type":"RollModifier","label":"Xeno-Location Study","when":["skill:culture"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Culture rolls open the Roll Options Dialog with Edge already selected. Roll Options Dialog: Animal Handling, Deception, Persuasion and Survival rolls show an In the chosen location or with its people switch for Edge. The language is storytelling.</p>"

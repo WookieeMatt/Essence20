@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Cutie Mark Perk","when":["skill:{choice.skill}"],"upshift":1}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: pick a Skill when you gain it; tests with it get ↑1, already counted in the Upshift number of your Roll Options Dialog.</p><p>Left to the table: a Specialization or abstract talent area instead of a Skill.</p>"
@@ -16,8 +20,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "hasChoice": true,
-    "choiceType": "skills"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "flags": {

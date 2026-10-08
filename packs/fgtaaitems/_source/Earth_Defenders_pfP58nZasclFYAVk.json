@@ -5,6 +5,9 @@
   "_id": "pfP58nZasclFYAVk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Earth Defenders","when":[{"any":["essence:smarts","essence:social"]},"not:target:tag:human",{"any":["target:tag:robot","target:tag:robotic","target:tag:bot","target:tag:cybertronian","target:tag:android","target:tag:drone","target:tag:machine","target:tag:cog","target:tag:zord","target:tag:mechanical","target:tag:non-human","target:tag:nonhuman","target:tag:alien","target:tag:monster","target:tag:non-humanoid","target:tag:animal","target:tag:creature"]}],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Smarts and Social tests against a targeted non-human get Edge, labelled Earth Defenders in the Roll Options Dialog.</p>"

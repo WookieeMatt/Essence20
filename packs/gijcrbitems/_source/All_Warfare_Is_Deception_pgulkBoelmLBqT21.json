@@ -5,6 +5,9 @@
   "_id": "pgulkBoelmLBqT21",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"skillDice","reset":"scene","maxUses":1,"skills":["deception","infiltration"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per scene, a reroll button on your Deception and Infiltration tests rerolls all your Skill dice.</p>"
@@ -16,14 +19,6 @@
       "page": 71
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "skillDice",
-      "skills": ["deception", "infiltration"],
-      "maxUses": 1,
-      "reset": "scene"
-    },
     "selectionLimit": 1,
     "type": "role"
   },

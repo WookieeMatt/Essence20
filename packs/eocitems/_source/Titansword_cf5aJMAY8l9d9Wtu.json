@@ -105,15 +105,14 @@
         "shiftDown": 2
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=towering"]},
     "requirements": {
-      "custom": "Towering",
+      "custom": "",
       "skill": "brawn",
       "shift": "d4"
     },

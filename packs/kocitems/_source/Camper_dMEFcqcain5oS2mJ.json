@@ -5,6 +5,12 @@
   "_id": "dMEFcqcain5oS2mJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Camper","when":["skill:survival","not:self:hp<half"],"edge":true},
+      {"type":"Use","label":"Set up camp (Camper)","when":["not:self:hp<half"],"steps":[{"do":"setToggle","key":"camp","value":true,"until":"scene"},{"do":"chat","text":"{name} sets up camp."},{"do":"forEach","to":"allParties","steps":[{"do":"choose","auto":true,"prompt":"Heal {target}: 1 Health or 2 Essence?","options":[{"label":"1 Health","when":["target:healthDamaged"],"steps":[{"do":"heal","to":"target","amount":1}]},{"label":"2 Essence","when":["target:essenceDamaged"],"steps":[{"do":"healEssence","to":"target","amount":2}]}]}]}]},
+      {"type":"RollModifier","label":"At camp (Camper: ↑1)","upshift":1,"when":["self:toggle:camp","not:self:hp<half"]},
+      {"type":"RollModifier","label":"At camp (Camper: ↑1)","scope":"party","upshift":1,"when":["holder:toggle:camp","not:holder:hp<half"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (at half Health or more): sets up camp for the scene. Your team gets ↑1 on tests while camping, and each heals 1 Health or 2 Essence Stress. Roll Options Dialog: Edge on Survival at half Health or more, listed as its own source - set the roll back to normal when it isn't about making camp.</p>"

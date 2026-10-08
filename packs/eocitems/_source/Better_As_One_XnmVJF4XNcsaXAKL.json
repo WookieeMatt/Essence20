@@ -5,6 +5,10 @@
   "_id": "XnmVJF4XNcsaXAKL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"MegaformSpecializations","label":"Better As One"},
+      {"type":"EnergonDonor","label":"Better As One"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Specializations apply to the Combiner form you're part of, and you can pay 1 of your own Energon for the Combiner's ↑1 when its pool is empty.</p>"

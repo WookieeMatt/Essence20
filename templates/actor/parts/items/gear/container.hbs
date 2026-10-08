@@ -1,5 +1,5 @@
 {{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.gears title='E20.ItemTypeGearPlural' dataType='gear'}}
-  {{!-- Nanomite equipment - see helpers/nanomite-gear.mjs --}}
+  {{!-- Nanomite equipment - see items/gear/nanomite-gear.mjs --}}
   {{#*inline "roll-button" item}}
     {{#if item.system.nanomite.powerUuid}}
       {{#unless (isGearNanomiteInert item)}}

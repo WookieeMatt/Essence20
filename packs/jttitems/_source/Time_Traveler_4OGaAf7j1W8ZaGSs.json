@@ -5,6 +5,9 @@
   "_id": "4OGaAf7j1W8ZaGSs",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"FumbleRange","label":"Time Traveler (Hang-Up: a d4 or lower Fumbles on 1-2)","upTo":2,"when":["roll:finalDie:<=d4"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when your final skill die for a test is d4 or smaller, a natural 2 on the d20 also counts as a Fumble.</p>"

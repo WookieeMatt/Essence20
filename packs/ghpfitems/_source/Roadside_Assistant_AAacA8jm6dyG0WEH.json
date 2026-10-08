@@ -5,13 +5,17 @@
   "_id": "AAacA8jm6dyG0WEH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"initiativeRolling","label":"Roadside Assistant (+1 Bonus Health to your vehicle)","limit":{"per":"encounter"},"when":["vehicle:crew"],"steps":[{"do":"updateActor","to":"crewedVehicle","add":{"system.health.bonus":1}}]}
+    ],
+    "prerequisites": {"when":["self:skill:driving>=d4","self:skill:technology>=d4"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when you roll Initiative, the vehicle you are piloting gains 1 Bonus Health (once per encounter).</p><p>Left to the table: the free Technology (Repair) kit, and giving the bonus when you are a passenger.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Driving +d4, Technology +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

@@ -5,6 +5,11 @@
   "_id": "rWoVOcNc3lXKDbhg",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Venom Monster Form (Toughness +2)","defense":"toughness","amount":2,"when":["self:data:flags.essence20.monsterFormActive"]},
+      {"type":"RollModifier","label":"Venom Monster Form (↑1)","upshift":1,"when":["self:data:flags.essence20.monsterFormActive",{"any":["skill:intimidation","skill:survival"]}]},
+      {"type":"Trigger","event":"hit","label":"Monster Form: melee follow-up (Path of Venom)","when":["self:data:flags.essence20.monsterFormActive","attack:melee"],"steps":[{"do":"button","whisper":"owners","who":"owner","label":"Follow-up attack on {target}","steps":[{"do":"rollFlat","skill":"survival","dif":"max(@target.system.defenses.toughness.total, @target.system.defenses.evasion.total)","onSuccess":[{"do":"button","who":"gm","label":"Apply 1 Poison to {target}","steps":[{"do":"damage","to":"target","amount":1,"damageType":"poison"}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: its Perks at the listed levels (Let's Go Psycho! comes with the Psycho Ranger faction), the Hard Hitter Role Points, Personal Power, Essence increases, Skills and Psycho Armor training.</p><p>Choices: General Perks and Grid Powers at their levels, and a Psycho Weapon from the Psycho Morpher's Use button.</p>"

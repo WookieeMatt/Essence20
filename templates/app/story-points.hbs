@@ -65,7 +65,7 @@
     </div>
   {{/if}}
   {{#if friendshipCircle}}
-    {{!-- Friendship Circle (MLP CRB, every Spirit Role, 1st level) - see helpers/friendship-circle.mjs --}}
+    {{!-- Friendship Circle (MLP CRB, every Spirit Role, 1st level) - see items/social/friendship-circle.mjs --}}
     <div class="sliced-border --col story-points__circle">
       <label class="sliced-border__label">{{localize "E20.FriendshipCircle"}}</label>
       {{#if friendshipCircle.pickActor}}
@@ -125,7 +125,7 @@
     </button>
   {{/if}}
   {{!-- Scene Clock: what refreshes once-per-scene abilities. Everyone sees which scene they
-        are in; only the GM can advance it. See helpers/scene-clock.mjs. --}}
+        are in; only the GM can advance it. See mechanics/resources/scene-clock.mjs. --}}
   <div class="story-points__scene">
     <span class="story-points__scene-label">
       {{localize "E20.SceneClockScene"}} {{sceneEpoch}}{{#if sceneLabel}} &mdash; {{sceneLabel}}{{/if}}

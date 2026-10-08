@@ -5,6 +5,9 @@
   "_id": "JCt7GIYBonchb4TV",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Don't-Notice-Me-Field (target, else you: Invisible this scene)","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"applyCondition","condition":"invisible","to":"targetOrSelf"},{"do":"markWindow","flag":"dontNoticeMeFieldActive","window":"scene","to":"targetOrSelf"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Cast: on a success (DIF 20), your target, or you, becomes Invisible for the scene. Its Infiltration tests get Edge, and Alertness tests aimed at it take a Snag, both listed as Don't-Notice-Me-Field in the Roll Options Dialog.</p><p>Left to the table: silence, and ending it early if they harm someone.</p>"

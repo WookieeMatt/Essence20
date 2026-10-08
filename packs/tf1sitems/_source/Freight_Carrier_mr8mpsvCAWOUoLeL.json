@@ -5,6 +5,7 @@
   "_id": "mr8mpsvCAWOUoLeL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:brawn>=d4","self:canTransform","ask:Alt Mode with Crew 1+"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: trading your Alt Mode's Crew capacity for room to carry Cybertronians, by their size.</p>"
@@ -29,7 +30,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Brawn +d4, Alt Mode with Crew 1 or more",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
     "value": 0,

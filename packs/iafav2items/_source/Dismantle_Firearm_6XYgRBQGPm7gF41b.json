@@ -5,6 +5,10 @@
   "_id": "6XYgRBQGPm7gF41b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ManeuverOption","label":"Dismantle Firearm","option":"dismantle","when":[{"any":["item:trait:ballistic","item:trait:reload"]}]}
+    ],
+    "prerequisites": {"when":["self:has:Snatch","self:skill:finesse>=d8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you disarm someone of a gun, you can dismantle it. It can't be used until someone reassembles it with a DIF 20 Technology test.</p>"
@@ -16,7 +20,7 @@
       "page": 30
     },
     "items": {},
-    "prerequisite": "Snatch, Finesse +d8",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

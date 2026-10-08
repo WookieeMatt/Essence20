@@ -5,6 +5,10 @@
   "_id": "oIo9wLE4jZZYfqEv",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","action":"drawWeapon","to":"free","ask":"E20.ActionPerkAskMediumWeapon","always":true}
+    ],
+    "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","host:data:system.classification.size=long"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: drawing a medium weapon costs a Free action instead of a Move action (the tracker asks you to confirm it is a medium weapon). A long weapon draws as a normal Move action.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Medium or Long"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

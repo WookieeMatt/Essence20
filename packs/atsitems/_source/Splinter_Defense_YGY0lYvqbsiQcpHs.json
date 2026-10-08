@@ -5,6 +5,9 @@
   "_id": "YGY0lYvqbsiQcpHs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Splinter Defense (a melee hit on you costs the attacker Initiative)","event":"targeted","outcome":"success","when":["attack:melee","combat:exists","calc:@hardenedArmor>0","not:target:markedByMe:splinterDefense"],"steps":[{"do":"mark","key":"splinterDefense","to":"target","perSetter":true,"until":"combat"},{"do":"writeInitiative","to":"target","value":"@initiative.target - @hardenedArmor"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when a foe hits you with a melee attack in combat, its Initiative in the Combat Tracker drops by your Hardened Armor bonus, once per foe each combat.</p>"

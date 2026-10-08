@@ -5,6 +5,9 @@
   "_id": "5hBral7hiCPv3GqF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Roll With The Punches","when":["not:rule:banked"],"limit":{"per":"encounter"},"steps":[{"do":"choose","prompt":"Which Defense do you double against the next attack?","options":[{"label":"Toughness","steps":[{"do":"bank","defense":"toughness","defenseMultiply":2,"until":"combat"}]},{"label":"Willpower","steps":[{"do":"bank","defense":"willpower","defenseMultiply":2,"until":"combat"}]},{"label":"Evasion","steps":[{"do":"bank","defense":"evasion","defenseMultiply":2,"until":"combat"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per combat, pick Toughness, Willpower or Evasion. That Defense is doubled against the next attack or effect that targets it.</p>"

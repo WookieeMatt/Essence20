@@ -5,6 +5,10 @@
   "_id": "6wbY17kDGkxeGBPp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"HealBonus","label":"I've Got You (+1 Health to a Defeated ally)","amount":1,"when":["target:status:defeated"]},
+      {"type":"Use","label":"I've Got You","steps":[{"do":"target"},{"do":"askNumber","var":"n","min":1,"max":6,"prompt":"Health to attempt to restore"},{"do":"roll","skill":"science","dif":"5 + 5 * @var.n","onSuccess":[{"do":"healAction","amount":"@var.n","to":"target"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you treat a Defeated ally with Science (Medicine), they come back with 1 extra Health.</p>"

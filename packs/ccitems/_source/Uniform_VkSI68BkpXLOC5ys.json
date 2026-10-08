@@ -5,6 +5,9 @@
   "_id": "VkSI68BkpXLOC5ys",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Identifying a Uniform wearer (Uniform: ↓1, ↓1 more per wearing ally)","scope":"incoming","downshift":"1 + @alliesWearing.VkSI68BkpXLOC5ys.100000","when":["ask:identify"],"forget":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch when trying to identify someone wearing it; it gives ↓1, plus ↓1 more for each ally in the scene also wearing a Uniform.</p>"

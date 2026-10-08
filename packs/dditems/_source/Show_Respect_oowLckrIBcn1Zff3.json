@@ -5,6 +5,11 @@
   "_id": "oowLckrIBcn1Zff3",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"A foe's Critical Success: respect owed","event":"afterRoll","watch":"enemy","outcome":"crit","when":["attack","roll:targets>=1","combat:exists","self:combatant"],"steps":[{"do":"mark","key":"respectOwed","to":"target","until":"combat"},{"do":"chat","text":"{name} owes {target} respect on their next turn."}]},
+      {"type":"Trigger","label":"Respect owed this turn","event":"turnStart","steps":[{"do":"mark","key":"respect","to":"markedByMe:respectOwed","until":"endOfTurn"},{"do":"unmark","key":"respectOwed","to":"markedByMe:respectOwed"}]},
+      {"type":"BeforeRoll","label":"Attacking a foe you owe respect","when":["attack","markedByMe:respect","calc:@count.enemies.100000 > 1"],"steps":[{"do":"warn","text":"E20.RulesExtItems2.RespectWarn"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Chat card: when a foe scores a Critical Success on an attack, a salute reminder posts, and on your next turn you get a warning if you attack that foe while others are around. Left to the table: actually holding the attack.</p>"

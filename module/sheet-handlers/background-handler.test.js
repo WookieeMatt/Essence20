@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { _showOriginSkillPrompt, setOriginValues } from './background-handler.mjs';
+import { _showOriginSkillPrompt, onOriginDelete, setOriginValues } from './background-handler.mjs';
 
 // setOriginValues' own item-copying/altMode dependencies (createItemCopies, Item.create,
 // fromUuid) are exercised elsewhere - these fixtures use an empty origin.system.items and no
@@ -156,5 +156,36 @@ describe("_showOriginSkillPrompt (Origin-drop skill-selection step)", () => {
 
     expect(actor.update).not.toHaveBeenCalled();
     expect(dropFunc).not.toHaveBeenCalled();
+  });
+});
+
+describe("onOriginDelete", () => {
+  function originActor(items) {
+    const list = items.map((item, i) => ({ _id: `i${i}`, flags: {}, getFlag: async () => null, ...item }));
+    const collection = Object.assign([...list], { get: id => list.find(item => item._id == id) });
+    return {
+      system: {
+        originEssencesIncrease: 'strength', originSkillsIncrease: 'athletics',
+        essences: { strength: { max: 3 } }, skills: { athletics: { shift: 'd4' } },
+      },
+      items: collection,
+      update: jest.fn(),
+    };
+  }
+
+  const origin = { system: { items: {} } };
+
+  test("keeps transforming when another Alt Mode is still on the character (play-through 2026-10-07)", async () => {
+    global.CONFIG = { E20: { skillShiftList: ['d20', 'd2', 'd4', 'd6'] } };
+    const actor = originActor([{ type: 'altMode', name: 'Mini-Con' }]);
+    await onOriginDelete(actor, origin);
+    expect(actor.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.canTransform': true }));
+  });
+
+  test("stops transforming when no Alt Mode is left", async () => {
+    global.CONFIG = { E20: { skillShiftList: ['d20', 'd2', 'd4', 'd6'] } };
+    const actor = originActor([{ type: 'perk', name: 'Something' }]);
+    await onOriginDelete(actor, origin);
+    expect(actor.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.canTransform': false }));
   });
 });

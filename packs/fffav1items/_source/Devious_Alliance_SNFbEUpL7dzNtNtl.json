@@ -5,6 +5,7 @@
   "_id": "SNFbEUpL7dzNtNtl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:deception>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: makes the test to gain a Contact, with Deception offered as one of the Skills.</p>"
@@ -15,7 +16,7 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 9
     },
-    "prerequisite": "Deception +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

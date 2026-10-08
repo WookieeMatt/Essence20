@@ -5,6 +5,9 @@
   "_id": "aLdjHmWG171RCSpA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Share your analysis (Target Breakdown)","steps":[{"do":"target","min":1,"max":1,"beforeCost":true},{"do":"setVar","key":"n","value":"@targetKeyed.flags.essence20.analyzeTargetCounts","beforeCost":true},{"do":"require","check":["var:n>=1"],"message":"You haven't used Analyze Target on that target.","beforeCost":true},{"do":"rememberTarget","var":"foe","beforeCost":true},{"do":"pick","key":"ally","from":"sideActors","prompt":"Which ally gets the upshift?","beforeCost":true},{"do":"spendActions","action":"free","count":"@var.n"},{"do":"bank","to":"picked:ally","upshift":"@var.n","appliesWhen":["attack","target:uuid:{var.foe}"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: with a target selected, spend one Free action per time you used Analyze Target on it and pick an ally. That ally's next attack on that target gets that many ↑, labelled Target Breakdown in their Roll Options Dialog.</p>"

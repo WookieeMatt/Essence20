@@ -5,6 +5,9 @@
   "_id": "ZCgcPAQzeMYTti7g",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSelect","label":"Subtle Snake (affiliation known)","when":["essence:social"],"options":[{"label":"E20.Gij3SubtleSnakeNone"},{"label":"E20.Gij3SubtleSnakeCobra","downshift":1},{"label":"E20.Gij3SubtleSnakeOutsider","snag":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Social tests, pick who you're dealing with; Cobra outside Python Patrol gives ↓1, non-Cobra gives a Snag.</p>"

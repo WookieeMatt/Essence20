@@ -1,6 +1,7 @@
 import { applyThemeClass } from "../settings.js";
-import { getGroupedItemPacks, getVisibleItemPacks } from "../helpers/compendium-browser.mjs";
+import { getGroupedItemPacks, getVisibleItemPacks } from "../util/compendium-browser.mjs";
 import CompendiumBrowserSourceConfig from "./compendium-browser-sources.mjs";
+import { checkPrerequisites } from "../rules/prerequisites.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -140,6 +141,8 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
       /* Values the user has REQUIRED, not excluded, keyed by facet - see FACETS. All empty means
          no facet filtering, which is the state the browser opens in. */
       requiredFacets: Object.fromEntries(Object.keys(FACETS).map(key => [key, new Set()])),
+      // "Qualifies for": an actor id - hides what that character doesn't meet the prerequisites of.
+      qualifiesActorId: "",
     };
   }
 
@@ -259,6 +262,7 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
       subtypeFilter: this._getSubtypeFilterContext(),
       facets: this._getFacetContexts(),
       search: this._filters.search,
+      qualifies: this._qualifiesOptions(),
       results,
       resultCount: results.length,
       isGM: game.user.isGM,
@@ -467,7 +471,7 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
 
     for (const pack of packs) {
       const index = await pack.getIndex({
-        fields: ["img", "type", "system.source.book", "system.source.page", "system.traits", "system.gearType", "system.availability", ...subtypeFields],
+        fields: ["img", "type", "system.source.book", "system.source.page", "system.traits", "system.gearType", "system.availability", "system.prerequisites", ...subtypeFields],
       });
 
       for (const entry of index.values()) {
@@ -491,6 +495,7 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
           book: pack.metadata.label,
           bookId: pack.metadata.id,
           page: entry.system?.source?.page ?? null,
+          prerequisites: entry.system?.prerequisites?.when?.length ? entry.system.prerequisites.when : null,
         });
       }
     }
@@ -528,8 +533,29 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
     return this._getBookAndSearchFiltered().filter(entry => {
       if (tabKeyForType(entry.type) !== activeType) return false;
       if (excluded?.has(getSecondaryFilterValue(entry, activeType))) return false;
+      if (!this._qualifies(entry)) return false;
       return this._matchesFacets(entry);
     });
+  }
+
+  /**
+   * The "Qualifies for" filter (rules/prerequisites.mjs): false only when the chosen character fails
+   * one of the entry's prerequisites. Anything the system can't decide - a GM approval, the item an
+   * Upgrade would go on - doesn't hide it.
+   */
+  _qualifies(entry) {
+    if (!this._filters.qualifiesActorId || !entry.prerequisites) {
+      return true;
+    }
+
+    const actor = game.actors.get(this._filters.qualifiesActorId);
+    return !actor || checkPrerequisites(actor, { name: entry.name, system: { prerequisites: { when: entry.prerequisites } } }).met;
+  }
+
+  /** The characters this user can check against, for the "Qualifies for" picker. */
+  _qualifiesOptions() {
+    const characters = game.actors.filter(actor => actor.isOwner && ['playerCharacter', 'npc'].includes(actor.type));
+    return characters.map(actor => ({ id: actor.id, name: actor.name, selected: actor.id == this._filters.qualifiesActorId }));
   }
 
   /**
@@ -655,6 +681,11 @@ export default class Essence20CompendiumBrowser extends HandlebarsApplicationMix
         this.render({ parts: ["filters", "results"] });
       });
     }
+
+    filtersEl.querySelector('select[name="qualifies"]')?.addEventListener("change", event => {
+      this._filters.qualifiesActorId = event.currentTarget.value;
+      this.render({ parts: ["tabs", "results"] });
+    });
 
     const searchInput = filtersEl.querySelector('input[name="search"]');
     if (searchInput) {

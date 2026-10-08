@@ -5,6 +5,10 @@
   "_id": "iDSVcsovl4V2uQmj",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","scope":"host","label":"Surging: double the element damage (Free action; a natural 1 hits you)","key":"surging","when":[{"any":["item:damageType:acid","item:damageType:cold","item:damageType:electric","item:damageType:emp","item:damageType:fire","item:damageType:laser","item:damageType:sonic"]}],"forget":true,"action":"free","baseDamageMultiply":2,"backfireOn":1}
+    ],
+    "prerequisites": {"when":[{"any":["host:trait:element","host:data:system.elementChoice"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch (Free action) that doubles the weapon's Element damage for that attack; if the d20 shows a 1, you suffer the attack's effect yourself.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Element"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

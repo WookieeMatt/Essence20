@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Alter your Zord","event":"added","steps":[{"do":"warn","text":"E20.ZordAlterationNoZord","stop":true,"when":["not:self:ownsZord"]},{"do":"choose","options":[{"label":"+2 Strength","steps":[{"do":"updateActor","to":"ownZord","add":{"system.essences.strength.value":2}}]},{"label":"+2 Speed","steps":[{"do":"updateActor","to":"ownZord","add":{"system.essences.speed.value":2}}]},{"label":"+1 Strength and +1 Speed","steps":[{"do":"updateActor","to":"ownZord","add":{"system.essences.strength.value":1,"system.essences.speed.value":1}}]},{"label":"Size up, +1 Health","steps":[{"do":"shiftSize","to":"ownZord","steps":1},{"do":"updateActor","to":"ownZord","add":{"system.health.max":1,"system.health.value":1}}]},{"label":"Size down (Huge at least), +10 ft Movement","steps":[{"do":"shiftSize","to":"ownZord","steps":-1,"min":"huge"},{"do":"updateActor","to":"ownZord","add":{"system.movement.aerial.base":10,"system.movement.climb.base":10,"system.movement.ground.base":10,"system.movement.swim.base":10}}]},{"label":"Resistance to an Element","steps":[{"do":"pick","key":"element","from":"config","path":"elementDamageTypes"},{"do":"updateActor","to":"ownZord","set":{"system.resistances.{choice.element}":true}}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>When you add it you pick an alteration and it is applied to your Zord: Essence, size, movement or an Element Resistance.</p><p>Left to the table: the matching Skill increases and the extra-damage Critical Effect option.</p>"

@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Snag on the next Skill Test after damage (Sensitive)","event":"takesDamage","when":["not:self:marked:sensitiveIgnore"],"steps":[{"do":"bank","label":"Sensitive","snag":true,"replace":true}]},
+      {"type":"Use","label":"Spend a Detail Oriented use: ignore it this round (Sensitive)","when":["self:hasItem:Compendium.essence20.mlp_crb.Item.FBIg9BWG2CyjqgBP",{"any":["not:self:data:flags.essence20.actionPerkDailyUses.detailOriented","self:data:flags.essence20.actionPerkDailyUses.detailOriented<3"]}],"steps":[{"do":"updateActor","add":{"flags.essence20.actionPerkDailyUses.detailOriented":1}},{"do":"mark","to":"self","key":"sensitiveIgnore","until":"roundOrScene"},{"do":"unbank"},{"do":"chat","text":"{name} ignores Sensitive this round."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: whenever you take damage, your next Skill Test takes a Snag, labelled Sensitive in your Roll Options Dialog. Use button: spend one of your daily Detail Oriented uses to shake it off and ignore it for the round.</p>"

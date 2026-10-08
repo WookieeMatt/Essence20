@@ -5,6 +5,9 @@
   "_id": "vy2UDq5CABjOouZm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Worth A Shot (roll Targeting instead, as if Specialized)","useSkill":"targeting","specialize":true,"when":["not:combat:exists","self:hasItemWhere:item:type:weapon&item:trait:ballistic"],"limit":{"per":"scene","max":"1 + @owned.x0Xnad3gsPQQmaaG"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: once per scene outside combat, a switch to roll Targeting instead of the called-for Skill, using your Ballistic weapon as a Standard Kit.</p>"

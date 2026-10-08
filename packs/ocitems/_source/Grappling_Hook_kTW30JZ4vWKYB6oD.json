@@ -5,6 +5,7 @@
   "_id": "kTW30JZ4vWKYB6oD",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:ballistic"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: firing the line and anchor out to the weapon's maximum range and using it as a bridge or zipline.</p>"
@@ -24,7 +25,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Weapon with the Ballistic trait"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 100000,

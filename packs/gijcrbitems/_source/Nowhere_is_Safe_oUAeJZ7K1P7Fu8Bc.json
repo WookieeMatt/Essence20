@@ -5,6 +5,10 @@
   "_id": "oUAeJZ7K1P7Fu8Bc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"HitRider","label":"Nowhere is Safe","note":1,"when":["check:multipleTargetsWeapon","not:target:status:totalCover"]},
+      {"type":"Trigger","event":"hit","label":"Nowhere is Safe (cover reduced)","when":["check:multipleTargetsWeapon"],"steps":[{"do":"removeCondition","condition":"cover","to":"target","filter":["target:status:cover","not:target:status:totalCover"]},{"do":"applyCondition","condition":"cover","to":"target","filter":["target:status:totalCover"]},{"do":"removeCondition","condition":"totalCover","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Multiple Targets attacks treat each target's cover as one step lower, and deal +1 damage to targets left with no cover.</p>"

@@ -5,6 +5,11 @@
   "_id": "pGXJEVMqygJhFDgn",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Glow (your token lights up, 20 ft)","event":"afterRoll","outcome":"success","when":["item:own","not:rule:data:flags.essence20.lit"],"steps":[{"do":"tokenLight","bright":20,"dim":20}]},
+      {"type":"Use","label":"Put out (Glow)","when":["rule:data:flags.essence20.lit"],"steps":[{"do":"tokenLight","bright":20,"dim":20}]},
+      {"type":"RollModifier","scope":"incoming","label":"Glow (Edge to spot you)","edge":true,"when":["skill:alertness","rule:data:flags.essence20.lit"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: on a success, your token lights up. Its Use button switches the light off again.</p>"

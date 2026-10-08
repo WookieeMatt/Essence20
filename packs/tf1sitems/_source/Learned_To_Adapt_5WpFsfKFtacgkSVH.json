@@ -5,6 +5,9 @@
   "_id": "5WpFsfKFtacgkSVH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick one from the list","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","required":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: pick any General Perk you meet the prerequisites for.</p>"
@@ -253,9 +256,9 @@
     },
     "canActivate": false,
     "choice": null,
-    "choiceType": "perks",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",

@@ -5,6 +5,10 @@
   "_id": "Lxmp3gfs8TmtUOI5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the damage type (Energic Shields)","steps":[{"do":"pick","key":"type","from":"list","legacy":"flags.essence20.riderChoice","prompt":"Damage type","options":[["acid","E20.DamageAcid"],["cold","E20.DamageCold"],["electric","E20.DamageElectric"],["element","E20.DamageElement"],["emp","E20.DamageEmp"],["fire","E20.DamageFire"],["laser","E20.DamageLaser"],["poison","E20.DamagePoison"],["psychic","E20.DamagePsychic"],["sonic","E20.DamageSonic"],["void","E20.DamageVoid"]]}]},
+      {"type":"Defense","label":"Energic Shields","defense":"toughness","mode":"addAfter","amount":3,"when":["attack","self:morphed","item:data:system.damageType={choice.type}"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a non-physical damage type. While Morphed you get +3 Toughness against that damage type.</p>"

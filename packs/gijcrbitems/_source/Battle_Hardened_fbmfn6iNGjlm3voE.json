@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"storyPointsPaid","label":"Story Point back on a 4","when":["var:pool=story"],"steps":[{"do":"table","formula":"1d4","quiet":true,"rows":[{"min":4,"max":4,"text":"E20.RulesExtItems2.BattleHardenedRefund","steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":"@var.amount"}]}]}]}
+    ],
+    "prerequisites": {"when":["self:level>=12"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: whenever you spend a Story Point, a d4 is rolled; on a 4 the point returns to the pool.</p>"
@@ -13,7 +17,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 130
     },
-    "prerequisite": "Level 12",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

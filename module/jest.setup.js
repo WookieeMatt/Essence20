@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { E20 } from './helpers/config.mjs';
+import { E20 } from './util/config.mjs';
 import { legacyPoolParty } from './jest.legacy-pool-party.js';
 
 /*
@@ -24,7 +24,7 @@ if (!String.prototype.capitalize) {
 }
 
 // Foundry also extends the built-in Math object with radian/degree conversions, used by
-// helpers/aoe-targeting.mjs's own angle math (matching the same conversions Foundry's own
+// mechanics/combat/aoe-targeting.mjs's own angle math (matching the same conversions Foundry's own
 // MeasuredTemplate/Region shape code uses internally).
 Math.toDegrees ??= function toDegrees(radians) {
   return radians * (180 / Math.PI);
@@ -75,14 +75,14 @@ global.Roll = class Roll {
 };
 
 // Just enough of ActiveEffect.applyChange (client/documents/active-effect.mjs) for
-// helpers/skill-effects.mjs's tests - OVERRIDE (the only mode real compendium Perks in this
+// mechanics/rolls/skill-effects.mjs's tests - OVERRIDE (the only mode real compendium Perks in this
 // codebase actually use) coerces the change's value to the current field's type, and ADD does a
 // numeric add or boolean OR. Real Foundry's own mode dispatch is far more elaborate (MULTIPLY,
 // UPGRADE, DOWNGRADE, per-field-type custom handlers); this only needs to be correct for the two
 // modes this system's own content uses.
 global.ActiveEffect = class ActiveEffect {
   // Minimal stand-in for ActiveEffect.implementation.fromStatusEffect(id) (real Foundry builds a
-  // full effect document from CONFIG.statusEffects) - just enough for helpers/actor.mjs's
+  // full effect document from CONFIG.statusEffects) - just enough for mechanics/world/token-sync.mjs's
   // syncAutoBlindStatus/syncAutoImmobilizedStatus tests, which only need something with an
   // updateSource() to flag as auto-applied before createEmbeddedDocuments.
   static async fromStatusEffect() {
@@ -114,7 +114,7 @@ global.fromUuid = jest.fn();
 global.fromUuidSync = jest.fn();
 
 // Declares the `canvas` global (Foundry's own scene/token layer) as undefined rather than
-// leaving it undeclared - helpers/allies.mjs#getNearbyAllyTokens and its siblings read it via
+// leaving it undeclared - mechanics/combat/nearby-allies.mjs#getNearbyAllyTokens and its siblings read it via
 // bare `canvas?.tokens`/`canvas?.grid`, and a bare identifier that was never assigned ANYWHERE
 // throws ReferenceError on read, not just returns undefined, unlike an actual missing object
 // property. Test files that exercise those helpers already set `global.canvas` to a real
@@ -197,7 +197,7 @@ global.foundry = {
   },
   dice: {
     terms: {
-      // Real behavior isn't needed for unit tests (helpers/reroll.mjs only needs `instanceof`
+      // Real behavior isn't needed for unit tests (mechanics/rolls/reroll.mjs only needs `instanceof`
       // checks against this) - test fixtures build their own plain {results, rolls} shape and
       // set this as their prototype.
       PoolTerm: class PoolTerm {},
@@ -207,7 +207,7 @@ global.foundry = {
     fields: new Proxy({}, {
       get: () => StubDataField,
     }),
-    // helpers/environment.mjs's own custom "Environment" Region Behavior extends this. Real
+    // mechanics/world/environment.mjs's own custom "Environment" Region Behavior extends this. Real
     // behavior isn't needed here - unit tests exercise getEnvironment()/the pure enviroSealed
     // helpers directly, never this class's own defineSchema().
     regionBehaviors: {

@@ -5,6 +5,19 @@ description when tagging, then clear this file.
 
 ## Action needed by GMs
 
+- **A world migration runs on first load.** It moves every Perk's old pick onto the new rules
+  pick, clears item fields the rules replaced (they stay in the data until 6.1), and repoints copies
+  of items that moved to another compendium. When it finishes, the GM gets a chat summary. Any
+  Perk listed there as "nothing picked yet" still needs its pick: open the character's **Rules**
+  tab and choose it there.
+- **Renamed items.** Generic weapons now carry their book names: Close Combat Bludgeon, Close
+  Combat Heavy Bludgeon, Short Bludgeon, Thrown Bludgeon and Long Bludgeon (was "...Bludgeoning"),
+  and in Power Rangers: Grenade, Martial Arts Long/Medium Blade, Martial Arts Long Bludgeon and Zeo
+  Laser Pistols. Power Rangers "Brawling" is now **Unarmed Combat**, and the 1st-printing "Strike"
+  is gone. Copies already on characters keep their old names until replaced.
+- **Moved items.** The 7 Spectrum Modification Perks now live in A Jump Through Time. The Pre Gen
+  weapons (Power Crossbow, Hammer, Spear, Tetsubo) have their own **Power Rangers Pre Gen
+  Characters** compendium. Existing copies still find their automation.
 - **Equipped armor now counts toward Defenses automatically.** A Player Character's equipped
   Armor items (and armor Upgrades attached to them) now add their Toughness/Evasion bonus to the
   character's Defenses. Previously this bonus was never applied, so some tables typed the armor
@@ -16,6 +29,87 @@ description when tagging, then clear this file.
   type set on the character sheet, and worn armor doesn't add to it. The Power Armor items (Mighty
   Morphin, Zeo, Turbo, In Space and Metallic Body Armor, Power Rangers Core Rulebook Table 8-5)
   represent that Morphed suit, so marking one "equipped" never adds a separate armor bonus.
+
+## The rules engine
+
+Item automation is now data on the item, in a **Rules** tab, instead of hard-coded per
+compendium item. That means a copy of a book item, or a homebrew item built in the sheet, works
+the same as the original.
+
+- **Every item's Rules tab** lists what it does in plain English, with an editor for building
+  your own. Active Effects show there too, as "always on" entries.
+- **The character sheet's Rules tab** lists every rule affecting that character. Each line can
+  open the item it comes from or post the rule to chat.
+- **Picks are asked once, when the item is added.** This covers Expertise, Cutie Mark Perk and
+  any Perk with a choice: one dialog per character. Long lists get a search box. If you cancel a
+  pick on an item you dropped, the item isn't added. A pick that comes with a Role must be made.
+  You can change a pick later from the Rules tab.
+- **Level-ups ask for your General Perk and Grid Power picks** at the levels your
+  Role's own table gives them. General Perks come from every enabled book. Sub-Perks show under
+  their parent Perk.
+- **Prerequisites** are checked when an item is added. A world setting chooses Off, Warn
+  (default) or Strict. Strict asks the GM to confirm a drop that doesn't qualify. Warn and Strict
+  both tell the GM when a character takes something they don't qualify for. Items a Role grants
+  are never blocked.
+- **Weapons the book prints with two Skills** ("Finesse or Might", "Athletics or Targeting" and
+  so on) roll whichever Skill is better. This includes every line's Unarmed Combat / Unarmed
+  Strike, Pillage, Power Fist, Natural Weapons, Psycho Strike and the TF/G.I. JOE melee weapons.
+  Power Rangers Martial Arts Long Bludgeon is Might only, as printed.
+- **Focus Skill increases.** When a Focus raises an Essence (1st and 10th level), the sheet asks which of the Focus's
+  Skills gets the point: train one a step, or take a Specialization in it where the book allows. Levelling back down,
+  or deleting the Focus, takes that rank or Specialization back off. Characters made before this keep what they placed
+  by hand in the Skill Picker; a + on the Focus row lets them place it, or mark it "Already placed by hand". Deleting
+  a Focus any way (sheet, macro or API) takes its Essence and Skill point back off.
+- **Weapon Brawn requirements apply.** A weapon you lack the Brawn for gives ↓1 per die short on its attacks, as a
+  line in the Roll Options Dialog (G.I. JOE p.117, Transformers p.97, Power Rangers p.81). "Brawn d4/Huge" weapons
+  waive it for a big enough character; a Transformer's Integrated Hardpoint lowers it one die; The Heavy, Pack Mule,
+  Over Brawn and now Ordnance Expert (↑4 for weapons) all count.
+- **Weapon requirements are prerequisites.** The free-text requirements on about 100 weapons (Skill ranks, sizes,
+  Origins and Perks, Psycho Ranger or Path weapons) are checked like any other prerequisite when the weapon is added.
+- **Power Rangers:** the Grid Relic Weapon asks for its 2 Relic Weapon Traits; five of them are
+  automated. The Power Rangers Expertise offers only Skills at d4 or better.
+
+## Other changes
+
+- **Power Shield** follows the book now:
+  - Using it puts the shield on the summoner as +2 armor to Toughness, which counts whether they're Morphed or not.
+  - The chat card's **Hand the Power Shield** button passes it to the character you target, or one you pick from the
+    scene, and takes it from whoever had it.
+  - It lasts until the summoner un-Morphs, wherever it is (no more 10-round timer).
+- **Defensive Shields** is automated: taking it asks which teammate (or yourself) gets +1 Morphed Toughness. That
+  becomes an effect on their sheet, and removing the Perk takes it back.
+- **The "Power Ranger Core Rulebook - Applied Effects" compendium is gone.** Foundry can't show Active Effects in a
+  compendium, so it was always empty. Its five effects are all handled by their items now.
+
+- **NPC and Companion Essences have a base.** Each Essence shows current / score, with an always-editable Base
+  underneath. The Base is the printed score; effects and rules raise the score on top of it instead of overwriting
+  it, and the score itself is locked. The current amount Essence damage spends keeps its damage when the score
+  changes. Existing NPCs take their current score as their base automatically. The stat-block importer and Threat
+  Builder fill in the base.
+- **Vehicles show their Essences** on the Main tab, laid out like a Zord's (score with its Base underneath).
+- **Zords, Vehicles and Megaforms take Essence damage, temporarily.** The books don't cover it; the ruling is that
+  the damage comes off what is left (current / score) and never lowers the score or the Base. Type the current amount
+  to adjust it, and the **Repair** button that appears beside the Essences clears it all.
+- **Rules reading `@essence`** now use the Essence score, not what is left after Essence damage
+  (`@essence.<x>.current` gives the remainder).
+- **Fixed a "Maximum call stack size exceeded" error** when loading a scene with unlinked tokens.
+- **New setting: Morphed / Alt Mode token icons.** Options are Show, Hide when the token art
+  changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.
+- **Guided tours** cover the new Rules tabs, Perk picks and level-up picks.
+- **Ram and Flyby** use no hands and no hardpoint.
+- **Vehicle crew:** closing the "Swap Driver and Passenger?" dialog now cancels instead of swapping, and a swap updates both seats together.
+- **Older copies of Perks that pick sub-Perks** (e.g. a Grid Relic Weapon taken before this release) can now make their
+  picks from the Rules tab: they use the compendium's list when their own is empty.
+- **Clearer form errors:** refusing a bad Essence Progression, Vehicle role or Essence pick no longer shows an
+  "Error:" prefix, and the Essence Progression message says what to fix.
+- **Essence Alterations** (Absolute Yield and the other Cobra Codex ones) finish again: after the bonus Skill pick the
+  window for the Essence that pays the cost used to vanish, and the Alteration was never added.
+- **Transformers:** deleting the Alt Mode a character is currently in returns them to Bot Mode (they used to stay transformed into the deleted mode).
+- **Shields with a Brawn requirement** give the same ↓ shortfall as armor.
+- **The Specialization item's Details tab** can be edited again (Skill, die, Specialized).
+- **Transformers core weapons** now use their own book's effects. They used to pull in the
+  G.I. JOE and Power Rangers copies, so Long Bludgeon came with a Power Rangers "Martial Arts"
+  attack.
 
 ## Changes you'll notice at the table
 

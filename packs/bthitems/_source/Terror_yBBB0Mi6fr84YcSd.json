@@ -5,9 +5,14 @@
   "_id": "yBBB0Mi6fr84YcSd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Spend Terror for +1 damage each (Terror)","when":["attack"],"spend":{"resource":{"rolePoints":true}},"damage":"@spent"},
+      {"type":"Trigger","event":"hit","outcome":"success","label":"Terror: 1 Terror","when":["roll:damaging",{"any":["roll:edge","self:hasItem:Compendium.essence20.beneath_the_helmet.Item.GJCOxtuot74Jnfs4"]},"not:target:immune:frightened"],"steps":[{"do":"gainResource","resource":{"rolePoints":true},"amount":1}]},
+      {"type":"Trigger","event":"hit","outcome":"success","label":"Terror: 1 Terror (Absolute Menace with Edge)","when":["roll:edge","roll:dataset:absoluteMenace","not:target:immune:frightened"],"steps":[{"do":"gainResource","resource":{"rolePoints":true},"amount":1}]}
+    ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Automatic: you gain 1 Terror (tracked on your sheet, up to your Terror Capacity) when a roll you made with Edge deals attack damage, or Frightens a target through Menacing Glare or Absolute Menace, unless the target can't be Frightened. Roll Options Dialog: a Spend Terror box on your attacks adds that much damage.</p><p>Left to the table: losing all Terror when a new day starts.</p>"
+      "notes": "<p>Automatic: you gain 1 Terror (tracked on your sheet, up to your Terror Capacity) when a roll you made with Edge deals attack damage, or Frightens a target through Menacing Glare or Absolute Menace, unless the target can't be Frightened. Roll Options Dialog: a Spend Terror box on your attacks adds that much damage. Left to the table: losing all Terror when a new day starts, and the Terror for other Conditions an Edge roll inflicts.</p>"
     },
     "originalId": "",
     "description": "",

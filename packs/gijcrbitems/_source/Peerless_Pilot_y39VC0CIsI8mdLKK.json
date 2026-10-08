@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Peerless Pilot (driving, Specialized: Initiative Edge)","when":["roll:initiative","vehicle:driving","self:specializedIn:driving"],"edge":true},
+      {"type":"RollModifier","label":"Peerless Pilot (driving, Specialized: Driving ↑2)","when":["skill:driving","vehicle:driving","self:specializedIn:driving","not:roll:dataset:isInitiative"],"upshift":2},
+      {"type":"AutoDisembark","label":"Peerless Pilot (passes an emergency disembark from a vehicle you pilot)","who":"pilots"}
+    ],
+    "prerequisites": {"when":["self:skill:driving>=d6","ask:A Driving Specialization"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic, while you drive a vehicle and have at least one Driving Specialization: your Initiative roll opens with Edge selected, and your Driving tests get ↑2, already added in the Roll Options Dialog. You also pass the emergency disembark test from a vehicle you pilot.</p>"
@@ -13,7 +19,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 132
     },
-    "prerequisite": "Driving d6, with at least one Driving Specialization",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

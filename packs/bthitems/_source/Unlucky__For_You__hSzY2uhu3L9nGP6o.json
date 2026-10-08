@@ -5,6 +5,11 @@
   "_id": "hSzY2uhu3L9nGP6o",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Unlucky (For You) (Snag on their next Skill Test)","when":["attack","combat:exists","not:target:markedByMe:unluckyForYou"],"steps":[{"do":"mark","key":"unluckyForYou","to":"target","perSetter":true,"until":"combat"},{"do":"bank","to":"target","snag":true},{"do":"mark","key":"unluckyWatch","to":"target","perSetter":true,"until":"nextTurn"}]},
+      {"type":"Trigger","event":"afterRoll","watch":"any","outcome":"allFailed","label":"Unlucky (For You): their next Skill Test failed (1 Terror)","when":["target:markedByMe:unluckyWatch","not:target:immune:frightened","self:hasItem:Compendium.essence20.beneath_the_helmet.Item.yBBB0Mi6fr84YcSd"],"steps":[{"do":"gainResource","resource":{"rolePoints":true},"amount":1},{"do":"chat","text":"{lang.O1UnluckyTerror}"}]},
+      {"type":"Trigger","event":"afterRoll","watch":"any","outcome":"any","label":"Unlucky (For You): their next Skill Test is made","when":["target:markedByMe:unluckyWatch"],"steps":[{"do":"unmark","key":"unluckyWatch","to":"target","perSetter":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: after you succeed against a target, their next Skill Test is watched; if it fails before your next turn starts, you gain 1 Terror.</p>"

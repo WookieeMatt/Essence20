@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Dig Deep","limit":{"per":"scene"},"steps":[{"do":"mark","key":"digDeep","to":"self","until":"combat"},{"do":"mark","key":"digDeepSnag","to":"self","until":"endOfNextTurnOrScene","when":["combat:exists"]},{"do":"mark","key":"digDeepSnagOnce","to":"self","until":"scene","when":["not:combat:exists"]}]},
+      {"type":"DamageReduction","label":"Dig Deep (ignore 1 damage)","amount":1,"consumeMark":"digDeep","quiet":true},
+      {"type":"RollModifier","label":"Dig Deep","snag":true,"when":["self:marked:digDeepSnag"]},
+      {"type":"RollModifier","label":"Dig Deep","snag":true,"consumeMark":"digDeepSnagOnce","when":["self:marked:digDeepSnagOnce"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button, once per scene: the next damage applied to you is reduced by 1, and your Skill Tests take a Snag until the end of your next turn, labelled Dig Deep in the Roll Options Dialog. Out of combat the Snag goes on your next Skill Test only.</p><p>Left to the table: restoring 1d2 Health by giving up your turn.</p>"

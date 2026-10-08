@@ -5,6 +5,9 @@
   "_id": "rraj81QR8KEg6nfC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"The Sound of Angels","event":"afterRoll","when":["attack",{"any":["item:data:system.classification.style=explosive","allOf:item:data:parent.type=vehicle&item:data:parent.system.movement.aerial.base>0","allOf:weapon:trait:ballistic&attackHands:2"]}],"steps":[{"do":"target","min":0},{"do":"rememberTarget","var":"foe"},{"do":"checkAllies","within":50,"prompt":"Give allies Lend Assistance's benefit against {target} (a Free action each):"},{"do":"lendAssistEdge","to":"targets","against":"{var.foe}","actionEach":"free"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: after you attack with a two-handed ballistic weapon, an explosive or an air vehicle's weapon, a prompt lets you pick allies; each costs you a Free action and gets your Lend Assistance against that target.</p>"

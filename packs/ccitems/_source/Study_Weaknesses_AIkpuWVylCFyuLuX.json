@@ -5,6 +5,9 @@
   "_id": "AIkpuWVylCFyuLuX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Study Weaknesses","cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"target","max":1,"beforeCost":true},{"do":"targetFacts"},{"do":"chat","text":"{target}'s lowest Defense: {var.lowestDefense}."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free): spend a Story Point and a chat card names your target's lowest Defense.</p>"

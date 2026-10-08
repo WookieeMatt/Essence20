@@ -5,13 +5,19 @@
   "_id": "b5WD6Y13Fvhl6ZTe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Tactical Gymnastics (Acrobatics Ranks to Evasion, no armor)","defense":"evasion","early":true,"amount":"@skill.acrobatics.rank + @actor.system.skills.acrobatics.isSpecialized","when":["self:itemCount:armor:equipped<1"]},
+      {"type":"Defense","label":"Tactical Gymnastics (Evasion against Ballistic attacks)","defense":"any","mode":"best","early":true,"from":["evasion"],"plus":"@skill.acrobatics.rank + @actor.system.skills.acrobatics.isSpecialized","when":["weapon:trait:ballistic","self:itemCount:armor:equipped<1"]},
+      {"type":"Defense","label":"Tactical Gymnastics (Evasion against Ballistic attacks)","defense":"any","mode":"best","early":true,"from":["evasion"],"when":["weapon:trait:ballistic","self:itemCount:armor:equipped>=1"]}
+    ],
+    "prerequisites": {"when":["self:skill:acrobatics>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you wear no armor, you add your Acrobatics Ranks to Evasion, and you can use Evasion against Ballistic attacks.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Acrobatics +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

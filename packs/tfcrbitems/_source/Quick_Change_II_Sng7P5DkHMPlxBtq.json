@@ -5,6 +5,9 @@
   "_id": "Sng7P5DkHMPlxBtq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Quick Change II","action":"conversion","to":"free","ask":"E20.ActionPerkAskQuickChange","when":["not:self:hasItem:Compendium.essence20.tf_crb.Item.pgWBzR5IRAhucHzo","not:self:hasItem:Compendium.essence20.tf_crb.Item.vNbbACKhZhbz9T54"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you convert, the action tracker offers to charge it as a Free action. Confirm when it's one of the conversion sequences you picked for Quick Change.</p>"

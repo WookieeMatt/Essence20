@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"resourceSpent","label":"A d4 per Energon spent, each 4 comes back","when":["var:resource=energon"],"steps":[{"do":"setVar","key":"regained","value":"atLeast(@var.spent, 4, 4)","quiet":true},{"do":"gainResource","resource":{"path":"system.energon.normal.value"},"amount":"@var.regained","overMax":true,"when":["var:regained>0"]},{"do":"chat","text":"{name} regains {var.regained} Energon Point(s).","when":["var:regained>0"]}]}
+    ],
+    "prerequisites": {"when":["self:level>=12"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: each time you spend an Energon Point, a d4 is rolled; on a 4 you get that point back.</p>"
@@ -13,7 +17,7 @@
       "book": "Transformers Core Rulebook",
       "page": 109
     },
-    "prerequisite": "Level 12",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

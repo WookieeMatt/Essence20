@@ -5,6 +5,10 @@
   "_id": "2FlXYjY1AFSFq8Jz",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Sky Morpher (driving your own Zord: ↑1)","upshift":1,"when":["skill:driving","vehicle:driving","vehicle:ownZord"]},
+      {"type":"RollModifier","scope":"driven","label":"Sky Morpher (driving your own Zord: ↑1)","upshift":1,"when":["skill:driving","self:type:zord","self:ownedByHolder"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you drive your own Zord, Driving tests get ↑1, listed as Sky Morpher in the Roll Options Dialog.</p>"

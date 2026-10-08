@@ -5,6 +5,10 @@
   "_id": "V7yh8guXzkF1qqAK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Armored Connection","defense":"toughness","amount":2,"when":["self:bondHolder","self:bondLinked"]},
+      {"type":"Defense","label":"Armored Connection","scope":"bondPartner","defense":"toughness","amount":2,"when":["self:bondLinked"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: you and your bonded ally each get +2 Toughness while linked.</p>"

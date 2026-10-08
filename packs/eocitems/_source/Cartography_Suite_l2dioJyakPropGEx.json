@@ -5,6 +5,11 @@
   "_id": "l2dioJyakPropGEx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Survey this area (Cartography Suite)","steps":[{"do":"recordScene","path":"flags.essence20.s2CartographySurvey"}]},
+      {"type":"SurpriseExemption","label":"Move when Surprised in the surveyed area (Cartography Suite)","mode":"move","when":["self:onRecordedScene:flags.essence20.s2CartographySurvey"]},
+      {"type":"SurpriseExemption","label":"Allies move when Surprised in the surveyed area (Cartography Suite)","mode":"move","scope":"aura","radius":60,"affects":"allies","when":["holder:onRecordedScene:flags.essence20.s2CartographySurvey"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: survey the current scene; there, you and allies within 60 ft keep your Move actions while Surprised. Left to the table: faster travel pace, since journeys aren't tracked.</p>"

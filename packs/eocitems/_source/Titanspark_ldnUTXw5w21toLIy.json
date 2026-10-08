@@ -5,6 +5,9 @@
   "_id": "ldnUTXw5w21toLIy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Size","label":"Titanspark (one Size Class larger)","steps":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Size is one Size Class larger. Active Effect: +1 Health.</p>"

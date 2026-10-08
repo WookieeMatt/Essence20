@@ -5,6 +5,11 @@
   "_id": "pi0wUVrd4tb1emod",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"One Size Class larger (Caterpillar Tread)","when":["self:canTransform","roll:shove","not:self:transformed"],"upshift":1},
+      {"type":"RollModifier","label":"Treated as having moved 20ft (Caterpillar Tread)","when":["self:canTransform","roll:shove","not:self:transformed"],"upshift":1},
+      {"type":"DialogSwitch","label":"Navigating Rough Terrain (Caterpillar Tread: Edge)","when":["self:canTransform","skill:driving","self:transformed"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: in Alt Mode, a switch for Edge on Driving through Rough Terrain. In Bot Mode, shoves count you as one Size Class larger and as having moved 20ft.</p>"
@@ -16,7 +21,6 @@
       "page": 134
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

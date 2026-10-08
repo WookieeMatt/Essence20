@@ -5,6 +5,9 @@
   "_id": "Ht8KDCTIQXLo1YI3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Talk Them Down","steps":[{"do":"target","max":1},{"do":"warn","text":"E20.TalkThemDownNotEligible","stop":true,"when":[{"any":["not:target:data:system.health.max>0","not:calc:@target.system.health.value * 2 - @target.system.health.max <= 0","not:target:levelDiff<0"]}]},{"do":"rollVsEach","skill":"persuasion","defense":"willpower","onHit":[{"do":"applyCondition","condition":"defeated","to":"target"}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: checks the target is at half Health or lower with a Threat Level below your level, then rolls Persuasion against it; on a success it is Defeated.</p><p>Left to the table: rolling Deception or Intimidation instead.</p>"

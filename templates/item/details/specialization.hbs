@@ -1,2 +1,28 @@
 <div>
-<div>
+
+  {{!-- Skill --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpecializationSkill'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.skill">
+    {{selectOptions config.skills selected=system.skill}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Shift --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpecializationShift'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.shift">
+    {{selectOptions config.skillShifts selected=system.shift}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Is Specialized? --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpecializationIsSpecialized'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="checkbox" name="system.isSpecialized" {{checked system.isSpecialized}} />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+</div>

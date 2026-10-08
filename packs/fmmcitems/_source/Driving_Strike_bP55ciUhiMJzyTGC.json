@@ -5,6 +5,9 @@
   "_id": "bP55ciUhiMJzyTGC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSelect","label":"Driving Strike (1 Personal Power, before the melee attack)","when":["attack:melee","self:data:system.powers.personal.value>0"],"options":[{"label":"No Driving Strike"},{"label":"Ignore the target's armor bonus to Defense","key":"ignoreArmor","pay":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1}]},{"label":"Reroll the Skill dice","key":"rerollSkillDice","pay":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on a melee attack, choose to ignore the target's armor bonuses or to reroll your Skill dice. Choosing either spends 1 Personal Power automatically.</p>"

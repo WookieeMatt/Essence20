@@ -5,6 +5,9 @@
   "_id": "TU96vM4aq15QOfM4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Add 2 Story Points to the pool","limit":{"per":"encounter"},"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":2},{"do":"chat","text":"{name} adds 2 Story Points to the group's pool."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: at the start of a session, adds 2 Story Points to the group's pool.</p>"

@@ -5,6 +5,12 @@
   "_id": "uQQbRbwADVtVwsym",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Earth Defense Command Benefits (zero-G attack)","when":["attack","environment:zeroGravity"],"upshift":2},
+      {"type":"RollModifier","label":"Earth Defense Command Benefits (Driving an aerial vehicle)","when":["skill:driving","not:self:type:vehicle","vehicle:driving","vehicle:type:vehicle","vehicle:data:system.movement.aerial.total>0"],"upshift":2},
+      {"type":"RollModifier","label":"Earth Defense Command Benefits (Driving an aerial vehicle)","when":["skill:driving","self:type:vehicle","self:data:system.movement.aerial.total>0"],"upshift":2},
+      {"type":"Use","label":"Space Kit (a free Limited Kit this mission)","limit":{"per":"mission"},"steps":[{"do":"makeKit","tier":"limited","skills":["driving","culture","science","technology"],"prompt":"E20.S1SpaceKitPrompt","none":"E20.S1SpaceKitNoSpec"},{"do":"chat","text":"{name} receives a free Limited {var.kit} kit for this mission."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: its weapon Qualifications. Automatic: ↑2 on attacks in scenes set to zero gravity and on Driving tests while piloting a vehicle with Aerial Movement, labelled Earth Defense Command Benefits in the Roll Options Dialog. Use button: a Space Kit once per mission. The extra language is noted on the sheet.</p>"

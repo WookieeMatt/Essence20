@@ -5,6 +5,10 @@
   "_id": "dtB9EUFE45oZNAOR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Signature Weapon one-handed until the end of your turn","cost":{"action":"free"},"when":[{"any":["self:hasItem:Compendium.essence20.gi_joe_crb.Item.PFuzUrcYw14JRLf9","self:hasItem:Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN","self:hasItem:Compendium.essence20.gi_joe_crb.Item.vy8VGcdoFiacJ3bT","self:hasItem:Compendium.essence20.gi_joe_crb.Item.Jnjio1DtAx0QgE85"]}],"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","filter":[{"any":["item:source:Compendium.essence20.gi_joe_crb.Item.PFuzUrcYw14JRLf9","item:source:Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN","item:source:Compendium.essence20.gi_joe_crb.Item.vy8VGcdoFiacJ3bT","item:source:Compendium.essence20.gi_joe_crb.Item.Jnjio1DtAx0QgE85"]}],"auto":true,"beforeCost":true},{"do":"setToggle","key":"oneHanded","value":true,"until":"turnOrUntilCombat"},{"do":"chat","text":"{name} wields their Signature Weapon one-handed until the end of their turn (Let It Rip)."}]},
+      {"type":"ItemModifier","label":"Let It Rip (Signature Weapon one-handed this turn)","when":["self:toggle:oneHanded"],"items":["item:type:weapon","item:picked:weapon"],"path":"system.derivedHands","op":"min","value":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free action): your Signature Weapon counts as one-handed until the end of the turn.</p>"

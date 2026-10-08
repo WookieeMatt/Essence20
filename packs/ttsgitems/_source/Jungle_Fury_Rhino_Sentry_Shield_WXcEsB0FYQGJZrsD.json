@@ -5,6 +5,9 @@
   "_id": "WXcEsB0FYQGJZrsD",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Cover (Jungle Fury Rhino Sentry Shield: ↓2)","scope":"incoming","when":["attack:ranged","rule:data:system.equipped","rule:data:system.active","not:self:status:cover","not:self:status:totalCover"],"downshift":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: equip it for +2 Toughness, or switch it to active for +3 Toughness. Automatic: while it is active, ranged attacks against you take ↓2 for cover, labelled with the shield in the attacker's Roll Options Dialog. Shield bashes roll Might for 1 Blunt damage.</p>"

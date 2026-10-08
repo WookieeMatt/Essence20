@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Edge on your next Smarts test","when":["not:rule:banked"],"limit":{"per":"scene","max":2},"steps":[{"do":"bank","label":"Stargazer","edge":true,"appliesWhen":["essence:smarts"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (twice per scene): bank an Edge for your next Smarts-based Skill Test.</p>"

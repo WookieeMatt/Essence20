@@ -5,6 +5,11 @@
   "_id": "GQt4IlyXGHCbLxNP",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Reinforced Shell (Bot Mode: no shell bonus)","defense":"toughness","amount":"0 - @item.system.armorBonus.value","stack":"reinforcedShell","when":["not:self:transformed","not:self:morphed",{"any":["rule:data:flags.essence20.parentId","self:canTransform","rule:data:flags.essence20.alterationWorn"]}]},
+      {"type":"HitRider","label":"Reinforced Shell (Bot Mode: +1 unarmed Stun)","note":1,"when":["attack:unarmed","item:damageType:stun","not:self:transformed"]}
+    ],
+    "prerequisites": {"when":[{"any":["self:has:Carapaced","ask:Monstrous","self:has:Fuzor"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +2 Toughness while you are in Alt Mode (or when attached to worn armor), and your Unarmed Combat deals 1 more Stun in Bot Mode.</p>"
@@ -23,7 +28,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Carapaced, Monstrous, or Fuzor (Twofer)"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

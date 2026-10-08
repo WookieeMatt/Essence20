@@ -5,6 +5,9 @@
   "_id": "epppqB70RpfXJ1jN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Frag It","when":["attack:area"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks against you with an area (a blast, cone or radius) take a Snag, shown as Frag It next to Snag in the attacker's Roll Options Dialog.</p>"

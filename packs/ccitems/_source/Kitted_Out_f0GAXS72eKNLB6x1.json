@@ -5,6 +5,10 @@
   "_id": "f0GAXS72eKNLB6x1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Gain the Restricted Technology kit (Kitted Out)","when":["not:rule:granted"],"steps":[{"do":"pick","key":"spec","from":"specializations","skill":"technology","prompt":"Which Technology Specialization?"},{"do":"createItem","data":{"name":"Restricted Technology ({choice.spec}) Kit","type":"gear","system":{"gearType":"kits","quantity":1},"flags":{"essence20":{"kit":{"tier":"restricted","skill":"technology","spec":null,"essence":null}}}}},{"do":"updateItem","item":"justGranted","set":{"flags.essence20.kit.spec":"{choice.spec}"}}]},
+      {"type":"KitModifier","label":"Kitted Out","respecialize":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: gain a Restricted Technology kit, or change the Specialization of any kit within its Skill.</p>"

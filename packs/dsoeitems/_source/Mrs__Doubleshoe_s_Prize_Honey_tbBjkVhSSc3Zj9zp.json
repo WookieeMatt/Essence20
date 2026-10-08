@@ -5,6 +5,10 @@
   "_id": "tbBjkVhSSc3Zj9zp",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Cooking with Prize Honey (Prize Honey: ↑2)","when":["not:rule:data:flags.essence20.usesLeft<=0"],"upshift":2},
+      {"type":"Use","label":"Eat it: heal up to 3 Health","when":["not:rule:data:flags.essence20.usesLeft<=0"],"steps":[{"do":"updateActor","to":"targetOrSelf","filter":["target:data:system.health"],"add":{"system.health.value":3},"max":"@recipient.system.health.max"},{"do":"chat","text":"{target} eats the Prize Honey (heals up to 3 Health).","when":["target:data:uuid"]},{"do":"chat","text":"{name} eats the Prize Honey (heals up to 3 Health).","when":["not:target:data:uuid"]},{"do":"setVar","key":"fresh","value":1,"when":["not:rule:data:flags.essence20.usesLeft>0"]},{"do":"updateItem","item":"self","set":{"flags.essence20.usesLeft":2},"when":["var:fresh"]},{"do":"updateItem","item":"self","add":{"flags.essence20.usesLeft":-1},"when":["not:var:fresh"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: heal the target up to 3 Health, three uses. Roll Options Dialog: a switch for ↑2 when cooking with it.</p>"

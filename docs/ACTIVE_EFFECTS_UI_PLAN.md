@@ -43,7 +43,7 @@ existing Specializations offered as suggestions, and a slug is turned back into 
 display rather than showing "deepSeaBiology" in a sentence. Granting one writes two changes
 (`.name` and `.granted`) from a single text box, which is why the catalog grew `buildChanges()`
 alongside `buildChange()`.
-**Phase 5 notes.** The drift audit (`helpers/effect-catalog-audit.mjs`) checks both directions
+**Phase 5 notes.** The drift audit (`mechanics/characters/effect-catalog-audit.mjs`) checks both directions
 against the real actor DataModels: every catalog key resolves to a live schema field, and every
 numeric/boolean schema field is either offered, ignored as bookkeeping, or listed as a
 deliberate omission. It is developer tooling - `game.essence20.auditEffectCatalog()`, or
@@ -118,7 +118,7 @@ Three structural changes, confirmed in the local 14.364.0 source:
 `effect.system.changes`. This system's `RerollEffectData` already does
 `...super.defineSchema()`, so it inherits the field correctly and needs no edit.
 `BaseActiveEffect.shimData` adds a non-enumerable `changes` getter forwarding to
-`system.changes`, so `helpers/skill-effects.mjs`'s `effect.changes ?? []` keeps working —
+`system.changes`, so `mechanics/rolls/skill-effects.mjs`'s `effect.changes ?? []` keeps working —
 **deprecated, removed in v16**.
 
 **(b) `mode` (number) became `type` (string).** Core types: `custom`, `multiply`, `add`,
@@ -149,7 +149,7 @@ What this plan uses:
   `final`-phase change can target a computed total an `initial` one would have had clobbered. The
   wizard writes `initial` and doesn't expose phase — see §4's note on computed fields.
 
-## 4. The key catalog — `module/helpers/effect-catalog.mjs`
+## 4. The key catalog — `module/mechanics/characters/effect-catalog.mjs`
 
 The wizard's content, and the part that outlives it. A declarative table, **not** a live
 DataModel schema walk: it has to run in plain Node for the Jest tests and the CI script
@@ -266,7 +266,7 @@ An `ApplicationV2` in the house style (`serializeFormSubmits(HandlebarsApplicati
     filled it in - that left an orphan behind on every cancel.)
 - **No sheet subclass.** Launch points are a `getHeaderControlsActiveEffectConfig` hook entry and
   a new `data-action="effectWizard"` control in `templates/{item,actor}/tabs/effects.hbs` beside
-  the existing `createEffect` one, handled in `module/helpers/effects.mjs`.
+  the existing `createEffect` one, handled in `module/mechanics/characters/active-effect-controls.mjs`.
 
 **Writing changes** goes through one small helper pair in `effect-catalog.mjs` —
 `readChanges(effect)` / `writeChanges(effect, rows)` — that targets `system.changes` on v14 and
@@ -276,7 +276,7 @@ the shim.
 
 ## 6. Reading effects at a glance
 
-`prepareActiveEffectCategories` (`module/helpers/effects.mjs`) gains a `summaries` array per
+`prepareActiveEffectCategories` (`module/mechanics/characters/active-effect-controls.mjs`) gains a `summaries` array per
 effect — the same catalog sentences, joined. `templates/item/tabs/effects.hbs` and
 `templates/actor/tabs/effects.hbs` render them as a muted line under the effect name, so a Perk's
 Effects tab reads "Infiltration is shifted up by 1" instead of showing only an icon and a name.
@@ -284,8 +284,8 @@ Small change, outsized payoff when reviewing a compendium item — and it's the 
 "I don't know what the keys look like" problem, since it makes existing effects legible without
 opening them.
 
-Same commit moves the system's own reads onto `readChanges()` (`helpers/skill-effects.mjs`,
-`helpers/effects.mjs`) — v14 shims `effect.changes`, v16 removes it.
+Same commit moves the system's own reads onto `readChanges()` (`mechanics/rolls/skill-effects.mjs`,
+`mechanics/characters/active-effect-controls.mjs`) — v14 shims `effect.changes`, v16 removes it.
 
 ## 7. Validation
 
@@ -307,7 +307,7 @@ as core rendered it.
 
 New:
 
-- `module/helpers/effect-catalog.mjs` — catalog + `parseKey()` / `buildKey()` / `summarize()` /
+- `module/mechanics/characters/effect-catalog.mjs` — catalog + `parseKey()` / `buildKey()` / `summarize()` /
   `suggestKey()` / `readChanges()` / `writeChanges()`.
 - `module/helpers/effect-catalog.test.js` — Jest.
 - `module/apps/effect-wizard.mjs` — the wizard.
@@ -319,8 +319,8 @@ New:
 Modified:
 
 - `module/essence20.mjs` — the `getHeaderControlsActiveEffectConfig` hook.
-- `module/helpers/effects.mjs` — wizard launch handler, summaries, `readChanges()`.
-- `module/helpers/skill-effects.mjs` — `readChanges()` instead of the shimmed `effect.changes`.
+- `module/mechanics/characters/active-effect-controls.mjs` — wizard launch handler, summaries, `readChanges()`.
+- `module/mechanics/rolls/skill-effects.mjs` — `readChanges()` instead of the shimmed `effect.changes`.
 - `templates/item/tabs/effects.hbs`, `templates/actor/tabs/effects.hbs` — wizard control + summary line.
 - `lang/en.json` — `E20.EffectGroup*`, `E20.EffectProp*`, `E20.EffectSummary*`, `E20.EffectWizard*`.
 - `.github/workflows/github-actions-unit-tests.yml` — the new check step.
@@ -451,7 +451,7 @@ Answer, per field, measured rather than reasoned — a field that derived data *
 (`system.x = ...`) discards any initial-phase change, so the effect reads correctly on the sheet
 and does nothing. Exactly the silent failure a misspelled key produces.
 
-`game.essence20.probeClobberedKeys()` (`helpers/effect-catalog-audit.mjs`) applies every numeric
+`game.essence20.probeClobberedKeys()` (`mechanics/characters/effect-catalog-audit.mjs`) applies every numeric
 key the catalog offers to a throwaway actor, in both phases, and reports what does not stick. No
 static check can see this — it is runtime behaviour, not schema. It is manual tooling because it
 creates and deletes an Actor.

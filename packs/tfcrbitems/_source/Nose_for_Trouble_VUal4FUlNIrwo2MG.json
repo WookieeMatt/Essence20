@@ -3,6 +3,13 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:streetwise>=d6"]},
+    "rules": [
+      {"type":"DialogSwitch","label":"Setting or disarming a trap (Nose for Trouble: Edge)","edge":true},
+      {"type":"DialogSwitch","label":"Searching for clues or traps (Nose for Trouble: roll Streetwise)","when":["skill:alertness"],"upshift":"max(0, @skill.streetwise.rank - @skill.alertness.rank)","downshift":"max(0, @skill.alertness.rank - @skill.streetwise.rank)"},
+      {"type":"Use","label":"Change the location in a minor way","cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"chat","text":"{name} spends a Story Point to change the location in a minor way."}]},
+      {"type":"DialogSwitch","forget":true,"label":"Roll Streetwise for Initiative (Nose for Trouble)","when":["roll:initiative"],"useSkill":"streetwise"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: switches to roll Streetwise for searching or finding traps, and for Edge on setting or disarming traps. Automatic: Streetwise for Initiative when sneaking. Use button: spend a Story Point to tweak a detail of your location.</p>"
@@ -13,7 +20,7 @@
       "book": "Transformers Core Rulebook",
       "page": 110
     },
-    "prerequisite": "Streetwise d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

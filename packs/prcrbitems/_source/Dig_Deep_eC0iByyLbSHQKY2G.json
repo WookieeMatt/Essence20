@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Dig Deep","when":[{"any":["not:self:windowUsed:digDeepPrCrbDamageUsedThisEncounter:encounter","not:self:windowUsed:digDeepPrCrbUsedThisEncounter:encounter"]}],"steps":[{"do":"choose","auto":true,"prompt":"Benefit to use","options":[{"label":"Ignore 1 damage (suffer Snag until the end of your next turn)","when":["not:self:windowUsed:digDeepPrCrbDamageUsedThisEncounter:encounter"],"steps":[{"do":"mark","key":"digDeep","to":"self","until":"combat"},{"do":"bank","snag":true,"until":"combat"},{"do":"markWindow","flag":"digDeepPrCrbDamageUsedThisEncounter","window":"encounter"}]},{"label":"Heal 1d2 (forfeit your entire turn)","when":["not:self:windowUsed:digDeepPrCrbUsedThisEncounter:encounter"],"steps":[{"do":"updateActor","add":{"system.health.value":"1d2"},"max":"@actor.system.health.max"},{"do":"markWindow","flag":"digDeepPrCrbUsedThisEncounter","window":"encounter"}]}]}]},
+      {"type":"DamageReduction","label":"Dig Deep (ignore 1 damage)","amount":1,"consumeMark":"digDeep","quiet":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene each): ignore 1 damage and take a Snag on your tests until the end of your next turn, or give up your turn to heal d2 Health.</p>"

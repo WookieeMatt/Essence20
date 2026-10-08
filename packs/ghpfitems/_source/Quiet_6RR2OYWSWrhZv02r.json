@@ -5,6 +5,9 @@
   "_id": "6RR2OYWSWrhZv02r",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Quiet (Snag on Intimidation)","when":["skill:intimidation"],"snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Intimidation tests always take a Snag; the roll applies it even if you pick Normal in the Roll Options Dialog.</p>"

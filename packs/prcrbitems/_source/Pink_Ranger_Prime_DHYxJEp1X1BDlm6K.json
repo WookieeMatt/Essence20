@@ -5,6 +5,9 @@
   "_id": "DHYxJEp1X1BDlm6K",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","self:morphed","item:data:system.classification.skill=targeting"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect (only while Morphed): +2 to all four Defenses, and Speed Skill tests open the Roll Options Dialog with Edge selected. Automatic: while Morphed, Targeting attacks deal +1 damage, listed on the chat card.</p>"

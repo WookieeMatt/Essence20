@@ -5,6 +5,9 @@
   "_id": "KakotlRk6PO2CRqu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick your Thick Skin Defenses","steps":[{"do":"pick","key":"thick7","from":"defense","prompt":"The 7th-level +1 goes to which Defense?","when":["self:level>=7"]},{"do":"pick","key":"thick15","from":"defense","notChoices":["thick7"],"prompt":"The 15th-level +1 goes to which Defense (a different one)?","when":["self:level>=15"]},{"do":"updateItem","item":"self","set":{"flags.essence20.rules.choices.thick7":""},"when":["not:self:level>=7"]},{"do":"updateItem","item":"self","set":{"flags.essence20.rules.choices.thick15":""},"when":["not:self:level>=15"]},{"do":"setEffects","effects":[{"changeKey":"defenses.toughness.bonus","on":[{"any":["rule:data:flags.essence20.rules.choices.thick7=toughness","rule:data:flags.essence20.rules.choices.thick15=toughness"]}]},{"changeKey":"defenses.evasion.bonus","on":[{"any":["rule:data:flags.essence20.rules.choices.thick7=evasion","rule:data:flags.essence20.rules.choices.thick15=evasion"]}]},{"changeKey":"defenses.willpower.bonus","on":[{"any":["rule:data:flags.essence20.rules.choices.thick7=willpower","rule:data:flags.essence20.rules.choices.thick15=willpower"]}]},{"changeKey":"defenses.cleverness.bonus","on":[{"any":["rule:data:flags.essence20.rules.choices.thick7=cleverness","rule:data:flags.essence20.rules.choices.thick15=cleverness"]}]},{"name":"15th","on":["self:level>=15"]},{"on":["self:level>=7"]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Health at 7th level. Use button: pick a Defense for +1 at 7th, and a different one plus another +1 Health at 15th.</p>"

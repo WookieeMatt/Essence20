@@ -5,6 +5,14 @@
   "_id": "LoacxRINdDlGunmy",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"BeforeRoll","scope":"item","label":"Energy Attack (once per encounter)","early":true,"cancel":true,"message":"E20.LimitedWeaponEffectAlreadyUsed","when":["self:windowUsed:powerDaggersEnergyAttackUsedThisEncounter:encounter"]},
+      {"type":"Trigger","event":"afterRoll","outcome":"any","label":"Energy Attack used (once per encounter)","when":["item:own"],"steps":[{"do":"markWindow","flag":"powerDaggersEnergyAttackUsedThisEncounter","window":"encounter"}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Energy Attack rolls Finesse for 3 damage at ↓1. Once per encounter: after one use it won't roll again until the next encounter.</p>"
+    },
     "originalId": "",
     "actionType": "standard",
     "classification": {
@@ -14,7 +22,7 @@
     "damageType": "element",
     "damageValue": 3,
     "shiftDown": 1,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

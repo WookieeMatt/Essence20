@@ -5,6 +5,11 @@
   "_id": "2SHHZs1qVMFBB2kW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Toggle","key":"on","label":"Speed boosts into Strength","legacy":"flags.essence20.redirectFrom"},
+      {"type":"Use","label":"Switch Speed boosts into Strength on or off (Rough and Takes No Guff)","steps":[{"do":"setToggle","key":"on"},{"do":"chat","when":["self:toggle:on"],"text":"{name}'s Officer Speed boosts go to Strength."},{"do":"chat","when":["not:self:toggle:on"],"text":"{name}'s Officer Speed boosts go to Speed."}]},
+      {"type":"EssenceRedirect","label":"Rough and Takes No Guff","from":"speed","to":"strength","roleName":"officer","when":["self:toggle:on"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: switches your Officer Speed Essence increases to go into Strength instead (press again to switch back).</p>"

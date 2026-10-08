@@ -5,6 +5,11 @@
   "_id": "TIgFDX4ksgRqR3g9",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:alertness>=d2"]},
+    "rules": [
+      {"type":"RollModifier","label":"Enhanced Sensors","when":["skill:alertness","not:self:hasItem:Compendium.essence20.gi_joe_crb.Item.WvjGJ5AcC0z07d0J","not:self:hasItem:Compendium.essence20.tf_crb.Item.rl8hs6ezb6VSDahM","not:self:hasItem:Compendium.essence20.pr_crb.Item.qKoTBo1FKzCq1qTt"],"edge":true},
+      {"type":"DialogSwitch","label":"Your enhanced sense applies (Enhanced Sensors: ↑1)","when":["not:skill:alertness","not:self:hasItem:Compendium.essence20.gi_joe_crb.Item.WvjGJ5AcC0z07d0J"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the drone's Alertness tests get an Edge, labelled Enhanced Sensors in its Roll Options Dialog. On its other Skill Tests, the dialog has a switch for ↑1 to tick when its enhanced sense helps with the test.</p>"
@@ -23,7 +28,7 @@
     "benefit": "",
     "traits": [],
     "type": "drone",
-    "prerequisite": "Alertness d2"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

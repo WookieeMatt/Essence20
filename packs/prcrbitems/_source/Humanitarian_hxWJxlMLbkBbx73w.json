@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Heal 1 Health (DIF 12 Survival)","steps":[{"do":"target","min":0},{"do":"roll","skill":"survival","dif":12,"onSuccess":[{"do":"heal","amount":1,"to":"targetOrSelf"}]}]}
+    ],
+    "prerequisites": {"when":["self:essence:social>=3"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: Edge on Persuasion and Alertness. Use button: roll DIF 12 Survival to heal the targeted person 1 Health.</p><p>Left to the table: limiting these to humans, and the Edge on getting supplies from people (a switchable effect).</p>"
@@ -13,7 +17,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 96
     },
-    "prerequisite": "Social 3 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -5,6 +5,10 @@
   "_id": "y9F6PkCIw7g6tiqL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Target 3+ levels lower (Grid Soldier: ↑1)","when":["target:levelDiff<=-3"],"upshift":1},
+      {"type":"Use","label":"Remove Impaired from yourself or an ally within 5 ft (1 Personal Power)","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"target","min":0,"max":1,"beforeCost":true},{"do":"require","beforeCost":true,"message":"Target yourself or an Impaired ally within 5 ft.","check":["self:onCanvas",{"any":["allOf:not:target:exists&self:status:impaired","allOf:target:self&self:status:impaired","allOf:target:sameDisposition&target:within:5&target:status:impaired"]}]},{"do":"removeCondition","condition":"impaired","to":"targetOrSelf"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: rolls against a targeted enemy whose level or Threat Level is 3 or more below yours get ↑1, listed as Grid Soldier in the Roll Options Dialog. Use button: spend 1 Personal Power to remove Impaired from you or a targeted nearby ally.</p>"

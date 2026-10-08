@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"UntrainedSnagImmunity","label":"Green","limit":{"per":"encounter","max":3},"freeOutOfCombat":true}
+    ],
+    "prerequisites": {"when":["self:level<=4"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: up to three of your unskilled rolls per combat skip the Snag.</p><p>Left to the table: tracking the three-per-day limit outside combat.</p>"
@@ -13,7 +17,7 @@
       "book": "Transformers Core Rulebook",
       "page": 109
     },
-    "prerequisite": "Level 4 or lower",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

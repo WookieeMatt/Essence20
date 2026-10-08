@@ -5,6 +5,10 @@
   "_id": "2ehuQcJ1nwOvxSKl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CriticalOption","status":"stunned"},
+      {"type":"ItemModifier","label":"Scramble Wave (1 Electromagnetic damage too)","stage":"item","slot":"start","priority":-100,"items":["item:type:weaponEffect","not:item:data:system.secondaryDamage.type","not:item:data:system.damageType=stun","not:item:data:system.damageType=cover","not:item:data:system.damageType=spot","not:item:data:system.damageType=maneuver","not:item:data:system.damageType=grapple","not:item:data:system.damageType=intimidate","not:item:data:system.damageType=knocProne","not:item:data:system.damageType=blindingBlast","not:item:data:system.damageType=frightened","not:item:data:system.damageType=impaired","not:item:data:system.damageType=mesmerized","not:item:data:system.damageType=restrained","not:item:data:system.damageType=unconscious","not:item:data:system.damageType=modelock","not:item:data:system.damageType=special","not:item:data:system.damageType=deafened"],"path":"system.secondaryDamage","op":"set","value":{"type":"emp","value":1}}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your attacks deal +1 Electromagnetic damage, and a Critical Success offers to Stun the target until the end of its next turn. Left to the table: the extra damage on attacks that already deal a second damage type.</p>"

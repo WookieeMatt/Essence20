@@ -1,6 +1,6 @@
 {
   "folder": "5zj2CgvpGqW2KOa8",
-  "name": "Zeo Laser Pistol (Green) Effect",
+  "name": "Zeo Laser Pistols (Green) Effect",
   "type": "weaponEffect",
   "_id": "zHPyFSE6jFRYUYtA",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -14,7 +14,7 @@
     "damageType": "poison",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

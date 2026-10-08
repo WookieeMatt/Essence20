@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Qualification","label":"If It Shoots... (Trained: any non-Unique weapon)","access":"trained","items":["item:type:weapon","item:data:system.availability!=unique"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: you're trained in every weapon type except Unique weapons.</p>"

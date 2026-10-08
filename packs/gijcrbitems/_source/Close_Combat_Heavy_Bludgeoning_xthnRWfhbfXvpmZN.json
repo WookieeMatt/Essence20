@@ -1,6 +1,6 @@
 {
   "folder": "EPfL3S8nx5LSxuhK",
-  "name": "Close Combat Heavy Bludgeoning",
+  "name": "Close Combat Heavy Bludgeon",
   "type": "weapon",
   "_id": "xthnRWfhbfXvpmZN",
   "img": "systems/essence20/assets/icons/weapons/hammer.svg",
@@ -19,7 +19,7 @@
       "8fa4": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.JWm06vX4u4QSDf4D",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Heavy Bludgeoning Effect",
+        "name": "Close Combat Heavy Bludgeon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -45,7 +45,7 @@
       "a47f": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.SdBelSCDxdO7XM0j",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Heavy Bludgeoning Alternate Effect",
+        "name": "Close Combat Heavy Bludgeon Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -65,8 +65,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

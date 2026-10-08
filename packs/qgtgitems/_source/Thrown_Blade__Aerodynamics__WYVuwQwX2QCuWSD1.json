@@ -5,8 +5,8 @@
   "img": "systems/essence20/assets/icons/weapons/shuriken.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: attacks roll its thrown blade effect with the listed damage and range; it is Silent.</p><p>Left to the table: the Aerodynamics upgrade doubling its range.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its thrown blade effect with the listed damage and range; it is Silent. Its attached Aerodynamics upgrade doubles both ranges (to 40/60 ft).</p>"
     },
     "originalId": "",
     "description": "",

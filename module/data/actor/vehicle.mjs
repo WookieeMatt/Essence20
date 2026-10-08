@@ -1,10 +1,11 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import { makeBool, makeInt, makeStr } from "../generic-makers.mjs";
 
 import { common } from './templates/common.mjs';
 import { machine } from './templates/machine.mjs';
 import { migrateNonPcStats } from './templates/stat-migration.mjs';
+import { migrateMachineEssences } from '../../mechanics/vehicles/machine-essences.mjs';
 
 const fields = foundry.data.fields;
 
@@ -38,10 +39,10 @@ export class VehicleActorData extends foundry.abstract.TypeDataModel {
       // Zords don't use this Vehicle Trait system the way ordinary vehicles do (they have their
       // own, separate Megaform/Zord Trait system instead - see megaform-trait.mjs).
       traits: makeVehicleTraitsSchema(),
-      // Shielded (Across the Stars p.87): "the first listed number of Attacks or damaging effects
-      // against this vessel suffer a Snag" each turn - the listed number.
+      // Shielded (Across the Stars p.87): the first N attacks or damaging effects on the vessel
+      // each turn take a Snag - N here.
       shieldedRating: makeInt(0),
-      // Defeat of a Vehicle (GI Joe CRB, p.214-215): set by helpers/vehicle-defeat.mjs once this
+      // Defeat of a Vehicle (GI Joe CRB, p.214-215): set by mechanics/vehicles/vehicle-defeat.mjs once this
       // Vehicle crashes (forced Prone/impassable terrain, or passing its 0-Health Brawn Test).
       // Deliberately a flag read by Essence20Actor#_prepareVehicleData() to zero the DISPLAYED
       // Movement each render (system.movementIsReadOnly, same pattern _prepareMegaformData()
@@ -53,6 +54,7 @@ export class VehicleActorData extends foundry.abstract.TypeDataModel {
 
   static migrateData(source) {
     migrateNonPcStats(source);
+    migrateMachineEssences(source);
     return super.migrateData(source);
   }
 }

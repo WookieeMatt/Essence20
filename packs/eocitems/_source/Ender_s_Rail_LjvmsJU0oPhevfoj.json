@@ -61,15 +61,14 @@
         "shiftDown": 2
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "prototype",
     "classification": {
       "size": "heavy"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=towering"]},
     "requirements": {
-      "custom": "Towering",
+      "custom": "",
       "skill": "brawn",
       "shift": "d6"
     },

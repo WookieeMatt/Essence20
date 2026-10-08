@@ -5,6 +5,7 @@
   "_id": "R9mkh58VW1XE3gBV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:weird>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Granted: a Hammer weapon, kept in your pocket dimension.</p>"
@@ -32,7 +33,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Weird +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

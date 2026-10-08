@@ -5,6 +5,7 @@
   "_id": "joqhB1iN18v9ITpW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:perk:Snatch","self:skill:finesse>=d6"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: after a successful Disarm, move the weapon to your sheet yourself.</p>"
@@ -15,7 +16,7 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 39
     },
-    "prerequisite": "Snatch General Perk, Finesse +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

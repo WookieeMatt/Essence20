@@ -5,6 +5,9 @@
   "_id": "vFuXVVp6vIDFNbci",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Treat a healthy ally (Temporary Health)","steps":[{"do":"pickAlly","filter":["target:data:system.health.value>=$system.health.max","target:data:system.health.bonus<=0","not:target:markedByMe:preventativeMeasures"]},{"do":"warn","text":"E20.PreventativeMeasuresNoEligibleTarget","stop":true,"when":[{"any":["target:data:system.health.value<$system.health.max","target:data:system.health.bonus>0","target:markedByMe:preventativeMeasures"]}]},{"do":"choose","prompt":"Which Skill?","options":[{"label":"Science","steps":[{"do":"setVar","key":"skill","value":"science"}]},{"label":"Technology","steps":[{"do":"setVar","key":"skill","value":"technology"}]}]},{"do":"askNumber","var":"amount","min":1,"max":6,"prompt":"Health to attempt to restore"},{"do":"mark","key":"preventativeMeasures","to":"target","perSetter":true,"until":"calendarDay"},{"do":"roll","skill":"{var.skill}","dif":"5 + 5 * @var.amount","onSuccess":[{"do":"heal","to":"target","amount":"@var.amount","temporary":true}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: roll Science or Technology on an unhurt ally who has no Temporary Health; they gain Temporary Health equal to what the roll would have healed or repaired.</p>"

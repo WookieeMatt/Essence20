@@ -5,6 +5,10 @@
   "_id": "CTt9gmibpffGC0N4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Cover","mode":"reduce","amount":1,"label":"Cover ↓1 less on its ranged attacks"},
+      {"type":"MovementAction","label":"Rough Terrain ignored in the surveyed area (Lay of the Land)","ignoreRoughTerrain":true,"when":["self:onRecordedScene:flags.essence20.s2CartographySurvey"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: Edge on Infiltration and Survival. Automatic: you ignore the cover penalty from terrain on ranged attacks, and Rough Terrain in the scene you surveyed. Left to the table: the Edge and cover benefits outside your surveyed terrain.</p>"

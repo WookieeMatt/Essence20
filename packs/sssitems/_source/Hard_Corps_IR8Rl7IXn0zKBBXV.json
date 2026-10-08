@@ -3,9 +3,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Hard Corps","event":"applyingDamage","stage":"lateReductions","priority":-1,"prompt":true,"promptText":"E20.HardCorpsConfirmContent","limit":{"per":"encounter"},"steps":[{"do":"mark","key":"hardCorps","to":"self","count":"@var.damage","text":"{combat.id}"},{"do":"setVar","key":"damage","value":0},{"do":"setVar","key":"dropSecondary","value":1}]},
+      {"type":"Trigger","label":"Hard Corps (the scene ended)","event":"sceneStart","when":["self:marked:hardCorps"],"steps":[{"do":"applyCondition","condition":"defeated","to":"self","when":["calc:@actor.system.health.value - @mark.hardCorps < 0"]},{"do":"unmark","key":"hardCorps","to":"self"}]},
+      {"type":"Trigger","label":"Hard Corps","event":"combatEnd","when":["self:markText:hardCorps=$var.combatId"],"steps":[{"do":"applyCondition","condition":"defeated","to":"self","when":["calc:@actor.system.health.value - @mark.hardCorps < 0"]},{"do":"unmark","key":"hardCorps","to":"self"}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Chat card: once per combat, when an attack's damage is applied to you, you can ignore it until combat ends. If your Health is then below that damage, you're Defeated.</p>"
+      "notes": "<p>Chat card: once per combat, when an attack's damage is applied to you, you can ignore it until combat (or, failing that, the scene) ends. If your Health is then below that damage, you're Defeated.</p>"
     },
     "originalId": "",
     "description": "",

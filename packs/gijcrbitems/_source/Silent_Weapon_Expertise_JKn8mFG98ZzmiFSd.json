@@ -5,6 +5,9 @@
   "_id": "JKn8mFG98ZzmiFSd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Silent Weapon Expertise","when":["attack","weapon:trait:silent"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: you're trained in Silent weapons. Automatic: attacks with Silent weapons get ↑1, already added to the shift in the Roll Options Dialog.</p>"

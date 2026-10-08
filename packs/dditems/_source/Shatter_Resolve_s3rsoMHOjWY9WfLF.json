@@ -5,6 +5,9 @@
   "_id": "s3rsoMHOjWY9WfLF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Target's Willpower/Cleverness vs Deception/Persuasion (Shatter Resolve: -2)","defense":"any","amount":-2,"outgoing":true,"when":[{"any":["defense:willpower","defense:cleverness"]},{"any":["skill:deception","skill:persuasion"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when your Deception or Persuasion Test targets Willpower or Cleverness, that Defense counts as 2 lower; the chat card shows the lowered value.</p>"

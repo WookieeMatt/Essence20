@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AllyFilter","label":"Frenemy","anyDisposition":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: abilities that target a nearby friend can target any nearby creature for you, friend or not.</p>"

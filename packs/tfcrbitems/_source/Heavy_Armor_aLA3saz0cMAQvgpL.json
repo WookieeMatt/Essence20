@@ -5,6 +5,7 @@
   "_id": "aLA3saz0cMAQvgpL",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:might>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while the armor is worn: +2 Toughness and the Deflective trait, so Armor Piercing attacks ignore this bonus.</p>"
@@ -25,7 +26,7 @@
       "deflective"
     ],
     "type": "armor",
-    "prerequisite": "Might d6"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

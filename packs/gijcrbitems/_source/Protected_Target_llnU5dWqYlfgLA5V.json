@@ -5,6 +5,9 @@
   "_id": "llnU5dWqYlfgLA5V",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Name your Protected Target","limit":{"per":"encounter"},"steps":[{"do":"target","max":1},{"do":"pick","key":"protected","from":"target","auto":true},{"do":"updateActor","to":"protectedTarget","add":{"system.health.bonus":-1},"min":0,"filter":["not:target:uuid:{choice.protected}"]},{"do":"updateActor","to":"target","add":{"system.health.bonus":1},"when":["not:self:data:flags.essence20.protectedTargetUuid={choice.protected}"]},{"do":"updateActor","set":{"flags.essence20.protectedTargetUuid":"{choice.protected}"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per encounter, name your targeted ally as your protected target. They gain +1 Temporary Health, which moves with the designation, and your other Bodyguard Perks read who it is.</p>"

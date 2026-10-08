@@ -5,6 +5,10 @@
   "_id": "O4IT5jCPRBqGkXGr",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Two-handed weapons in one hand (Hyperkinetic Support Harness)","stage":"item","stacks":false,"items":["item:type:weapon","item:data:system.derivedHands>1"],"path":"system.derivedHands","op":"set","value":1,"priority":10}
+    ],
+    "prerequisites": {"when":["self:skill:brawn>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: lets you wield a two-handed weapon in one hand.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Brawn +d6"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

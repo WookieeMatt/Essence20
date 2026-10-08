@@ -5,6 +5,7 @@
   "_id": "OGr26370hhjO7nwN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Defeated the Joes at Red Quarry"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: the temporary Contact this reward grants.</p>"
@@ -15,7 +16,7 @@
       "book": "Cobra Codex",
       "page": 231
     },
-    "prerequisite": "Defeated the Joes at the Red Quarry choke point",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -17,7 +17,7 @@
     },
     "items": {
       "03af": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.O6FfE5SvgKn7M2ej",
+        "uuid": "Compendium.essence20.tf_crb.Item.O6FfE5SvgKn7M2ej",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Short Blade Effect",
         "type": "weaponEffect",
@@ -61,8 +61,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"

@@ -5,6 +5,9 @@
   "_id": "mRwjbhGpqWu7hqDM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Energon Battery: highest Essence","path":"system.energon.normal.max","op":"add","value":"max(@essence.strength, @essence.speed, @essence.smarts, @essence.social) - min(@essence.strength, @essence.speed, @essence.smarts, @essence.social)","when":["self:canTransform"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your personal Energon Points equal your highest Essence score instead of your lowest.</p>"

@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"wouldBeDefeated","label":"It's Morphin Time!: demorph at 1 Health, unconscious","when":["self:morphed"],"steps":[{"do":"leaveAt","value":1},{"do":"setForm","form":"morphed","value":false},{"do":"applyCondition","condition":"unconscious"}]},
+      {"type":"Trigger","event":"roleDropped","label":"It's Morphin Time!: Morphed Toughness follows the new Armor Training","steps":[{"do":"refreshMorphedToughness"}]},
+      {"type":"Trigger","event":"added","label":"It's Morphin Time!: Morphed Toughness from Armor Training","steps":[{"do":"refreshMorphedToughness"}]},
+      {"type":"Trigger","event":"removed","label":"It's Morphin Time!: Morphed Toughness off","steps":[{"do":"updateActor","set":{"system.canSetToughnessBonus":false,"system.defenses.toughness.morphed":0}}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>On the sheet: the Morph button switches you into your Morphed form, with Toughness from your Armor Training and your Morphed art. Automatic: dropping to 0 Health while Morphed returns you to normal at 1 Health, Unconscious.</p><p>Left to the table: tripled jump distances.</p>"
@@ -16,8 +22,7 @@
     "actionType": "standard",
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "faction",
-    "hasMorphedToughnessBonus": true
+    "type": "faction"
   },
   "effects": [],
   "flags": {

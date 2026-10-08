@@ -5,6 +5,10 @@
   "_id": "zherN6ArBKv6wyGc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Ignite (a Fire hit sets the target alight)","event":"hit","when":["item:damageType:fire","not:target:marked:burning"],"steps":[{"do":"mark","key":"burning","to":"target","until":"combat","count":0},{"do":"button","who":"targets","label":"Fight the fire (Free action: ↓1 on its next attack)","intro":"{target} catches fire!","once":false,"steps":[{"do":"require","check":["target:marked:burning"],"message":"{target} is not on fire."},{"do":"spendActionOf","action":"free","to":"target"},{"do":"mark","key":"burning","to":"target","until":"combat","count":1,"add":true},{"do":"chat","text":"{target} fights the fire: its next attack has ↓{@target.mark.burning}."}]},{"do":"button","who":"targets","label":"Drop and roll (Move action: put the fire out)","intro":"{target} can put the fire out by dropping prone.","steps":[{"do":"require","check":["target:marked:burning"],"message":"{target} is not on fire."},{"do":"spendActionOf","action":"move","to":"target"},{"do":"applyCondition","to":"target","condition":"prone"},{"do":"unmark","key":"burning","to":"target"},{"do":"chat","text":"The fire on {target} goes out."}]}]},
+      {"type":"Trigger","label":"Ignite (the fire attacks at the end of the burning creature's turn)","scope":"marked","mark":"burning","event":"turnEnd","steps":[{"do":"holderRoll","skill":"science","dif":"@actor.system.defenses.evasion.total","downshift":"@mark.burning","edgeWhen":["self:hasItem:Compendium.essence20.cobra_codex.Item.20lv1ecNs4ORVwWu"],"onSuccess":[{"do":"damage","to":"self","amount":1,"damageType":"fire"},{"do":"updateActor","to":"self","set":{"flags.essence20.ruleMarks.burning.count":0}}],"onFail":[{"do":"unmark","key":"burning","to":"self"},{"do":"chat","text":"The fire on {name} goes out."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a Fire hit sets the target burning. At the end of its turn you roll Science against its Evasion to deal 1 Fire or let it go out. Chat card: buttons to fight the flames or drop and roll.</p>"

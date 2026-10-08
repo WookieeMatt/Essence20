@@ -5,6 +5,12 @@
   "_id": "EITAjh6GBuc2SVSY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Bend Physics (+2 Evasion vs ranged)","defense":"evasion","amount":2,"when":["self:type:playerCharacter","self:morphed","attack:ranged"]},
+      {"type":"Defense","scope":"team","stacks":false,"label":"Bend Physics (+2 Evasion vs ranged)","defense":"evasion","amount":2,"when":["self:morphed","attack:ranged","not:self:hasItem:Compendium.essence20.beneath_the_helmet.Item.EITAjh6GBuc2SVSY"]},
+      {"type":"Movement","label":"Bend Physics (Movement ×2)","movement":"all","stage":"derivedHook","op":"multiply","value":2,"when":["self:type:playerCharacter","self:morphed"]},
+      {"type":"Movement","scope":"team","stacks":false,"label":"Bend Physics (Movement ×2)","movement":"all","stage":"derivedHook","op":"multiply","value":2,"when":["self:morphed","not:self:hasItem:Compendium.essence20.beneath_the_helmet.Item.EITAjh6GBuc2SVSY"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while Morphed, you and your team have doubled Movement on the sheet and +2 Evasion against ranged attacks, added to the Defense the attack's chat card checks against.</p>"

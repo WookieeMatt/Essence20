@@ -5,6 +5,11 @@
   "_id": "KFoF9nEHJrRaJzZA",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Choose the Limited shield this weapon counts as","when":["rule:data:flags.essence20.parentId","not:rule:granted"],"steps":[{"do":"pickGrant","from":{"type":"shield","availabilities":["limited"]},"system":{"active":false}},{"do":"linkToHost","name":"E20.O1DeflectingName","warn":"E20.O1DeflectingRaised"}]},
+      {"type":"Use","label":"Choose the Limited shield this weapon counts as","when":["rule:data:flags.essence20.parentId","not:rule:granted"],"steps":[{"do":"pickGrant","from":{"type":"shield","availabilities":["limited"]},"system":{"active":false}},{"do":"linkToHost","name":"E20.O1DeflectingName","warn":"E20.O1DeflectingRaised"}]}
+    ],
+    "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","host:data:system.classification.size=long","host:data:system.classification.size=heavy"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: pick a Limited shield when attached; it is added as a shield equipped with the weapon, and you are warned when attacking while it is raised.</p>"
@@ -23,7 +28,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Medium or larger weapon"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

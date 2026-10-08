@@ -5,6 +5,12 @@
   "_id": "CUV2gVVGb7U7yU5J",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Poison immunity with a medicine kit (Proper Protection)","path":"system.immunities.poison","op":"set","value":1,"when":["check:medicineKit"]},
+      {"type":"DerivedStat","label":"Disease immunity with a medicine kit (Proper Protection)","path":"system.immunities.disease","op":"set","value":1,"when":["check:medicineKit"]},
+      {"type":"ConditionImmunity","label":"Immune to poisoned with a medicine kit (Proper Protection)","conditions":["poisoned"],"when":["check:medicineKit"]},
+      {"type":"CureNote","label":"Curing poison or disease (Proper Protection: a Critical Success)","text":"E20.O2ProperProtectionCrit"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you carry a medicine kit you are immune to poison and disease, and the Poisoned Condition won't land on you. When you use the Heal action to cure poison, a success counts as a critical success.</p>"

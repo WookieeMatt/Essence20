@@ -5,6 +5,10 @@
   "_id": "uDOOefcrciVe7398",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","when":["attack","weapon:trait:powerWeapon"],"upshift":1,"stack":"teamWeaponFocus"},
+      {"type":"RollModifier","scope":"aura","radius":9999,"affects":"allies","when":["attack","weapon:trait:powerWeapon"],"upshift":1,"stack":"teamWeaponFocus"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks with a Power Weapon get ↑1, labelled Power Focusers in the Roll Options Dialog, for you and every ally in the scene while you hold this Perk.</p>"

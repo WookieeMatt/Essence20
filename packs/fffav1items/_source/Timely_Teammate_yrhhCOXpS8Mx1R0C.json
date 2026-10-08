@@ -5,6 +5,10 @@
   "_id": "yrhhCOXpS8Mx1R0C",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Trade Initiative with an ally","when":["combat:exists"],"limit":{"per":"encounter"},"steps":[{"do":"target","max":1},{"do":"swapInitiative"}]}
+    ],
+    "prerequisites": {"when":["self:skill:initiative>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: after Initiative is rolled, trade places in the order with a willing ally.</p>"
@@ -15,7 +19,7 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 39
     },
-    "prerequisite": "Initiative +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

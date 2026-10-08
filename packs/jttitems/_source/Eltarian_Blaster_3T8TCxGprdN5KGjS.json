@@ -66,8 +66,9 @@
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["ask:Access to alien technology"]},
     "requirements": {
-      "custom": "Access to Alien Technology",
+      "custom": "",
       "skill": "science",
       "shift": "d2"
     },

@@ -5,6 +5,10 @@
   "_id": "ALq37Ch25nKvZ454",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Call on your teammates to follow (Follow Me!)","steps":[{"do":"require","check":["self:combatant","not:self:initiative"],"message":"Only in a combat, before you roll Initiative."},{"do":"targetSelf"},{"do":"button","label":"Follow {name}","intro":"{name} leads: follow before they roll Initiative and yours becomes 1d4 lower than theirs.","who":"anyone","runAs":"clicker","once":false,"steps":[{"do":"require","check":["self:combatant","not:self:initiative","not:target:initiative","not:target:self"],"message":"Too late to follow - or not in this combat."},{"do":"mark","key":"followMe","to":"target","perSetter":true,"until":"combat"},{"do":"chat","text":"{name} follows {target}."}]}]},
+      {"type":"Trigger","label":"Follow Me!","event":"initiativeRolled","steps":[{"do":"targetRecipients","to":"markers:followMe","filter":["not:target:initiative"]},{"do":"countTargets","var":"n"},{"do":"require","check":["var:n>=1"]},{"do":"clearMarks","key":"followMe","to":"self"},{"do":"setVar","key":"lead","value":"@initiative + @var.n"},{"do":"writeInitiative","to":"self","value":"@var.lead"},{"do":"writeInitiative","to":"targets","value":"max(1, @var.lead - 1d4)"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (in combat, before you roll Initiative): teammates click Follow on the card. When your Initiative lands, you get +1 per follower and each follower is set d4 below you (minimum 1).</p>"

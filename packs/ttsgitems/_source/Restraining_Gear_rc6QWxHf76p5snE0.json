@@ -5,6 +5,10 @@
   "_id": "rc6QWxHf76p5snE0",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Restraining Gear","event":"hit","when":["attack:melee"],"steps":[{"do":"button","label":"Restrain {target}? (1 Personal Power)","intro":"{name}'s melee hit can try to restrain {target}.","who":"anyone","steps":[{"do":"spendFor","resource":{"path":"system.powers.personal.value"},"amount":1,"to":"driverOrSelf"},{"do":"contest","plain":true,"skills":["brawn","might"],"against":{"skills":["brawn","might"]},"to":"target","onWin":[{"do":"applyCondition","condition":"restrained","to":"target"}]}]}]},
+      {"type":"Trigger","label":"Restraining Gear (Megaform)","scope":"megaform","stacks":false,"event":"hit","when":["attack:melee"],"steps":[{"do":"button","label":"Restrain {target}? (1 Personal Power)","intro":"{name}'s melee hit can try to restrain {target}.","who":"anyone","steps":[{"do":"spendFor","resource":{"path":"system.powers.personal.value"},"amount":1,"to":"driverOrSelf"},{"do":"contest","plain":true,"skills":["brawn","might"],"against":{"skills":["brawn","might"]},"to":"target","onWin":[{"do":"applyCondition","condition":"restrained","to":"target"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: after the Zord (or a Megaform it's part of) hits in melee, a button spends 1 Personal Power for an opposed Brawn or Might test; on a win the target is Restrained.</p>"

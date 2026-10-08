@@ -5,6 +5,9 @@
   "_id": "U5xY4e0Wro9XyooS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"1 Power: heal a Morphed ally within 60 ft 1 Health","when":["self:data:system.powers.personal.value>=1"],"steps":[{"do":"pickAlly","within":60,"filter":["target:morphed"]},{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"heal","to":"target","amount":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 Personal Power to heal a Morphed teammate within 60 feet 1 Health.</p>"

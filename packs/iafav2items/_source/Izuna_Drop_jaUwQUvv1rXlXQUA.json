@@ -5,6 +5,10 @@
   "_id": "jaUwQUvv1rXlXQUA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Grapple a foe as you fall","cost":{"action":"free"},"steps":[{"do":"target","max":1,"beforeCost":true},{"do":"warn","text":"E20.S1IzunaNoTarget","stop":true,"when":["target:self"],"beforeCost":true},{"do":"askNumber","var":"feet","min":0,"max":10000,"prompt":"How far did you fall (feet)?","beforeCost":true},{"do":"setVar","key":"fall","value":"min(20, floor(@var.feet / 10))"},{"do":"setVar","key":"overflow","value":"@var.fall - min(@var.fall, max(0, @target.system.health.value))"},{"do":"choose","auto":true,"options":[{"label":"Acrobatics","when":["calc:@skill.acrobatics.rank - @skill.athletics.rank > 0"],"steps":[{"do":"setVar","key":"grapple","value":"acrobatics"}]},{"label":"Athletics","when":["calc:@skill.acrobatics.rank - @skill.athletics.rank <= 0"],"steps":[{"do":"setVar","key":"grapple","value":"athletics"}]}]},{"do":"roll","skill":"{var.grapple}","difDefense":"toughness","onSuccess":[{"do":"damage","to":"target","amount":"@var.fall","damageType":"blunt","when":["target:userOwns"]},{"do":"applyCondition","to":"target","condition":"prone","when":["target:userOwns","var:fall>0"]},{"do":"button","who":"gm","label":"Apply the fall to {target}","when":["not:target:userOwns"],"steps":[{"do":"damage","to":"target","amount":"@var.fall","damageType":"blunt"},{"do":"applyCondition","to":"target","condition":"prone","when":["var:fall>0"]}]},{"do":"damage","to":"self","amount":"@var.overflow","damageType":"blunt","when":["var:overflow>0"]}],"onFail":[{"do":"damage","to":"self","amount":"@var.fall","damageType":"blunt","when":["var:fall>0"]},{"do":"applyCondition","to":"self","condition":"prone","when":["var:fall>0"]}]}]}
+    ],
+    "prerequisites": {"when":[{"any":["self:skill:athletics>=d10","self:skill:acrobatics>=d10"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: enter the fall height and grapple with your better of Athletics or Acrobatics against Toughness. On a hit the target takes the fall damage and goes Prone; any excess comes back to you. The GM gets a button for targets you don't own.</p>"
@@ -16,7 +20,7 @@
       "page": 30
     },
     "items": {},
-    "prerequisite": "Athletics or Acrobatics +d10",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

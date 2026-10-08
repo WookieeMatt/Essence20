@@ -72,8 +72,9 @@
       "ingested": false,
       "inhaled": false
     },
+    "prerequisites": {"when":["self:skill:targeting>=d4","self:skill:technology>=d4"]},
     "requirements": {
-      "custom": "Targeting d4, Technology d4",
+      "custom": "",
       "skill": "might",
       "shift": "d4"
     },

@@ -5,6 +5,9 @@
   "_id": "3CyKdsMYYq0lGj06",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Defeated in combat: allies gain Edge (Martyr)","event":"defeated","when":["combat:exists"],"steps":[{"do":"bank","to":"combatAllies","edge":true,"uses":1000,"until":"combat","appliesWhen":["not:roll:initiative"]},{"do":"chat","text":"{name} has fallen: allies gain an Edge for the rest of this combat."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: if you are Defeated in combat, a chat card says so, and for the rest of that combat your allies' Skill Tests get Edge, labelled with your name in their Roll Options Dialog.</p>"

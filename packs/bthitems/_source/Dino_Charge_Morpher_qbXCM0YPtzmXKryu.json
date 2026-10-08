@@ -39,15 +39,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:has:Dino Charger"]},
     "requirements": {
-      "custom": "Requires a Dino Charger",
+      "custom": "",
       "skill": null,
       "shift": "none"
     },

@@ -5,13 +5,14 @@
   "_id": "TxdS0aTAQStm56Mx",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:trained:armors.medium"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: qualifies you for Medium armor.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Medium Armor Training",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

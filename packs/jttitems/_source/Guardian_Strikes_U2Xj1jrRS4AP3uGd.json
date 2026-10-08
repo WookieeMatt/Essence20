@@ -5,6 +5,10 @@
   "_id": "U2Xj1jrRS4AP3uGd",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Guardian Strikes, forgo damage to impose a Condition on a hit","key":"guardianStrikes","noDamage":true,"forget":true,"when":["attack:melee","item:data:system.numHands=2"]},
+      {"type":"Trigger","event":"hit","label":"Guardian Strikes","when":["roll:switch:guardianStrikes"],"steps":[{"do":"choose","prompt":"Inflict which Condition?","options":[{"label":"Impaired","steps":[{"do":"applyCondition","condition":"impaired","to":"target"}]},{"label":"Prone","steps":[{"do":"applyCondition","condition":"prone","to":"target"}]},{"label":"Restrained","steps":[{"do":"applyCondition","condition":"restrained","to":"target"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: with a two-handed melee weapon, a switch to deal no damage; on a hit you pick Impaired, Prone or Restrained for the target until your next turn. Use it only on targets of Large Size or smaller.</p>"
@@ -17,7 +21,6 @@
     },
     "actionType": "free",
     "canActivate": false,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,

@@ -5,13 +5,17 @@
   "_id": "b4v1GUBwSqnCTozq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Disarming Shot (↓3, aim for a 1-handed weapon in their hand)","downshift":3,"key":"disarmingShot","when":["attack","not:attack:melee"]}
+    ],
+    "prerequisites": {"when":["self:skill:targeting>=d8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on a ranged attack, a switch aims at a one-handed weapon at ↓3. A hit knocks it from the target's hand; a Critical Success also offers to set it off on them.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Targeting +d8",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

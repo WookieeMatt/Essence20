@@ -5,6 +5,9 @@
   "_id": "5gPWxUEkFKDQf6lM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"1 Power: +1 damage on your and Morphed allies' next attack","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"bank","label":"Environmental Assist","damage":1,"appliesWhen":["attack"],"until":"encounter"},{"do":"pickAlly","all":true,"filter":["target:morphed"]},{"do":"bank","to":"targets","label":"Environmental Assist","damage":1,"appliesWhen":["attack"],"until":"encounter"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 Personal Power; you and Rangers within 60ft deal +1 damage until the start of your next turn.</p>"

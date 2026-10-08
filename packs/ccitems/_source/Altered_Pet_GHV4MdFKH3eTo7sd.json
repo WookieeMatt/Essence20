@@ -5,6 +5,9 @@
   "_id": "GHV4MdFKH3eTo7sd",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Standard Alteration","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["standard"]}},{"do":"setToggle","key":"granted","value":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once): pick a Standard Alteration for your pet; it is added to the pet.</p>"

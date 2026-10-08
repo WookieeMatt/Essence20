@@ -5,6 +5,7 @@
   "_id": "6LofUhzFK9SIxtUX",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:computerized","ask:A Perk that grants a drone pet"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: turning the armor into a drone pet that can also take drone upgrades.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Computerized, Perk that grants a drone pet"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

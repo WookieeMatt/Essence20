@@ -5,6 +5,10 @@
   "_id": "1MCKcleeXZZf5PQF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Science instead (Explosive Engineer)","when":["item:type:weaponEffect","item:data:system.classification.style=explosive",{"any":["not:self:hasItem:Compendium.essence20.general_hawk_s_personel_files.Item.rT04k3umqXPAlsA3","not:item:name~grenade"]},{"any":["not:self:hasItem:Compendium.essence20.general_hawk_s_personel_files.Item.rT04k3umqXPAlsA3","not:weapon:name~grenade"]}],"useSkill":"science"},
+      {"type":"DialogSwitch","forget":true,"label":"Roll Technology instead (Explosive Engineer)","when":["item:type:weaponEffect","item:data:system.classification.style=explosive",{"any":["not:self:hasItem:Compendium.essence20.general_hawk_s_personel_files.Item.rT04k3umqXPAlsA3","not:item:name~grenade"]},{"any":["not:self:hasItem:Compendium.essence20.general_hawk_s_personel_files.Item.rT04k3umqXPAlsA3","not:weapon:name~grenade"]}],"useSkill":"technology"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on an attack with explosives, a switch rolls Science or Technology in place of the attack Skill.</p>"

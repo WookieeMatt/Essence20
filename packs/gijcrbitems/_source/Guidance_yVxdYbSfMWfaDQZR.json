@@ -5,6 +5,11 @@
   "_id": "yVxdYbSfMWfaDQZR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Give an ally your Environmental Expertise","cost":{"resource":{"rolePoints":true},"amount":1},"steps":[{"do":"pickAlly"},{"do":"mark","key":"guidance","to":"target","until":"combat"},{"do":"chat","text":"{target} has {name}'s Environmental Expertise on their next roll."}]},
+      {"type":"RollModifier","label":"Guidance","scope":"marked","mark":"guidance","edge":true,"when":["not:attack","not:roll:initiative"],"consumeMark":"guidance","consumeFrom":"roller"},
+      {"type":"RollModifier","label":"Guidance","scope":"marked","mark":"guidance","specialize":true,"when":["attack"],"consumeMark":"guidance","consumeFrom":"roller"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend an Adaptation Point to give an ally your Environmental Expertise benefits on their next roll.</p>"

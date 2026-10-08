@@ -5,6 +5,9 @@
   "_id": "LN0w8SB1fHhidIVp",
   "img": "systems/essence20/assets/icons/gear/caltrops.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Scatter the caltrops","steps":[{"do":"button","label":"Cross the caltrops","intro":"Caltrops cover a 5-foot square. Anyone crossing must pass a DIF 15 Acrobatics Skill Test.","who":"anyone","runAs":"clicker","once":false,"steps":[{"do":"roll","skill":"acrobatics","dif":15,"onSuccess":[{"do":"chat","text":"{name} picks a way through the caltrops."}],"onFail":[{"do":"chat","text":"{name} steps on the caltrops and stops moving."},{"do":"essenceDamage","essence":"speed","amount":1,"to":"self"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: scatter the caltrops. The chat card has a button for anyone crossing them to roll a DIF 15 Acrobatics test; a failure deals 1 Speed Essence damage.</p>"
@@ -13,10 +16,9 @@
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 119
+      "page": 120
     },
     "quantity": 1,
-    "type": "",
     "gearType": "tools"
   },
   "effects": [],

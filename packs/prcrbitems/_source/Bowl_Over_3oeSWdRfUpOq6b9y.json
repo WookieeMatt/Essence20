@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Push an adjacent creature while Sprinting (Bowl-Over)","when":["combat:exists"],"cost":{"action":"free"},"steps":[{"do":"require","beforeCost":true,"check":["self:sprinting"],"message":"{name} isn't Sprinting."},{"do":"shove","bowlOver":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (in combat, while Sprinting): Push a target with a Free action; if it works, the target is also knocked Prone.</p>"

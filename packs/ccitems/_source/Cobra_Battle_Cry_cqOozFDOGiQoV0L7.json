@@ -5,6 +5,10 @@
   "_id": "cqOozFDOGiQoV0L7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Deception for Initiative (Cobra Battle Cry)","when":["roll:initiative"],"useSkill":"deception"},
+      {"type":"DialogSwitch","forget":true,"label":"Roll Intimidation for Initiative (Cobra Battle Cry)","when":["roll:initiative"],"useSkill":"intimidation"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: your Initiative rolls show switches to roll Deception or Intimidation instead.</p>"

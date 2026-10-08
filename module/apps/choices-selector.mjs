@@ -7,6 +7,7 @@ import { _flipDriverAndPassenger } from "../sheet-handlers/vehicle-handler.mjs";
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { choicePrerequisites } from "../rules/prerequisites.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /** More choices than this and the dialog gets a search box. */
@@ -34,6 +35,9 @@ export default class ChoicesSelector extends serializeFormSubmits(HandlebarsAppl
 
   static DEFAULT_OPTIONS = {
     actions: {
+      // A caller-supplied handler (selector._onChoose) - e.g. a level's General Perk / Grid Power pick
+      // (mechanics/characters/level-picks.mjs), which needs none of the item-type dispatch below.
+      choose: ChoicesSelector.choose,
       focus: ChoicesSelector.focus,
       influence: ChoicesSelector.influence,
       origin: ChoicesSelector.origin,
@@ -94,6 +98,15 @@ export default class ChoicesSelector extends serializeFormSubmits(HandlebarsAppl
         ...choice,
         search: `${choice.label ?? ''} ${choice.detail ?? ''}`.toLowerCase(),
       }]));
+    }
+
+    // Options the character doesn't meet the prerequisites of (rules/prerequisites.mjs): marked, with
+    // what's missing; a player can't pick them in strict mode.
+    if (this._actor) {
+      context.choices = Object.fromEntries(Object.entries(context.choices).map(([key, choice]) => {
+        const unmet = choice.uuid ? choicePrerequisites(this._actor, choice.uuid) : null;
+        return [key, unmet ? { ...choice, unmet: game.i18n.format('E20.Prerequisites.Missing', { missing: unmet.missing }), blocked: unmet.blocked } : choice];
+      }));
     }
 
     const groups = [...new Set(choices.map(choice => choice.group).filter(Boolean))].sort();
@@ -160,6 +173,11 @@ export default class ChoicesSelector extends serializeFormSubmits(HandlebarsAppl
     });
     apply();
     search.focus();
+  }
+
+  static choose(event, selection) {
+    this._onChoose?.(selection.value);
+    this.close();
   }
 
   static attach(event, selection) {

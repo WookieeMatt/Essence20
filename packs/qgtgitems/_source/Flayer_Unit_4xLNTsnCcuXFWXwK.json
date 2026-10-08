@@ -5,6 +5,7 @@
   "_id": "4xLNTsnCcuXFWXwK",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["self:data:system.traits.land"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: once per scene, the ground the vehicle crosses becomes Rough Terrain.</p>"
@@ -23,7 +24,7 @@
     "benefit": "Once per scene, ground the vehicle crosses during its turn becomes Rough Terrain in its wake.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

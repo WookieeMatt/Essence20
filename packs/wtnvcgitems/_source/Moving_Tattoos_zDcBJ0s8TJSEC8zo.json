@@ -5,6 +5,7 @@
   "_id": "zDcBJ0s8TJSEC8zo",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:weird>=d4"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing is automated. Left to the table: using a tattoo as an extra limb outside combat, and the Absorb Specialization for hiding what it holds.</p>"
@@ -25,7 +26,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Weird +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

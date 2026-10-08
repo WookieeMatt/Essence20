@@ -5,6 +5,10 @@
   "_id": "hPUmdnAN0FjRaal3",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ReloadSkip","label":"Extended Mag","when":["item:isHost"],"limit":{"per":"scene"},"message":"E20.ExtendedMagSkippedReload","priority":1,"stacks":true}
+    ],
+    "prerequisites": {"when":[{"any":["host:trait:burstFire","host:trait:reload"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per scene, the weapon skips a reload.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Weapon with the Burst-Fire or Reload Traits"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

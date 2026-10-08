@@ -5,6 +5,9 @@
   "_id": "TQCvGZe5npeJ4heO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Clear Frightened and Impaired (allies within 30 ft)","cost":{"action":"standard"},"limit":{"per":"rest","max":"@actor.system.essences.social.max"},"steps":[{"do":"removeCondition","condition":"frightened","to":"allies:30"},{"do":"removeCondition","condition":"impaired","to":"allies:30"},{"do":"chat","text":"{name} clears Frightened and Impaired from allies within 30 ft."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Standard action, clear Frightened and Impaired from allies within 30 ft. Uses per day equal your Social and refresh on a Rest.</p>"

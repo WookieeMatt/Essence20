@@ -5,6 +5,9 @@
   "_id": "CBfLvmIWdbLuucts",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"applyingDamage","redirect":true,"within":5,"priority":2,"limit":{"per":"turn"},"label":"Body Shield (take the hit for an adjacent character)","steps":[]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when damage is applied to an adjacent ally, the GM is offered to send it to you instead, once per turn.</p><p>Left to the table: swapping places, and checking the attack against your own Defense.</p>"

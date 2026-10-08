@@ -5,6 +5,9 @@
   "_id": "wC7hyjoYTVRQo5LZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Intimidation against enemies within 60 ft","when":["combat:roundIs:1"],"steps":[{"do":"rollVsEach","skill":"intimidation","defense":"willpower","to":"enemies:60","onHit":[{"do":"applyCondition","condition":"surprised","to":"target"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (first round of combat): rolls Intimidation against the Willpower of each enemy within 60 feet, and Surprises every enemy it beats.</p>"

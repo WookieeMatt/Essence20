@@ -5,6 +5,12 @@
   "_id": "EmL1IgnaX55NTMve",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Attack again (↓1)","event":"hit","when":["item:type:weaponEffect","not:weapon:type:weapon","self:hasItem:Compendium.essence20.enigma_of_combination.Item.N8nkrj2hSrLv9NFP","not:roll:dataset:o3AgainStep"],"steps":[{"do":"button","label":"Attack again (↓1)","limit":{"per":"turn","max":2,"key":"againAndAgain"},"steps":[{"do":"attack","item":"rolled","to":"target","dataset":{"o3AgainStep":1}}]}]},
+      {"type":"Trigger","label":"Attack again (↓3)","event":"hit","when":["item:type:weaponEffect","not:weapon:type:weapon","self:hasItem:Compendium.essence20.enigma_of_combination.Item.N8nkrj2hSrLv9NFP","roll:dataset:o3AgainStep=1"],"steps":[{"do":"button","label":"Attack again (↓3)","limit":{"per":"turn","max":2,"key":"againAndAgain"},"steps":[{"do":"attack","item":"rolled","to":"target","dataset":{"o3AgainStep":2}}]}]},
+      {"type":"RollModifier","label":"Again and Again: second attack (↓1)","downshift":1,"when":["roll:dataset:o3AgainStep=1"]},
+      {"type":"RollModifier","label":"Again and Again: third attack (↓3)","downshift":3,"when":["roll:dataset:o3AgainStep=2"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: after a weaponless (Puissance) attack hits, a button repeats it at ↓1, then again at ↓3; at most two extra attacks per turn.</p>"

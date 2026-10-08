@@ -5,6 +5,9 @@
   "_id": "UkpZPsRt0YoBHcQl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Explosive Ammo","cost":{"action":"free","resource":{"path":"system.energon.normal.value"},"amount":1},"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","filter":["item:hasAttack:not:item:data:system.classification.style=melee"],"prompt":"Which weapon?","beforeCost":true},{"do":"pick","key":"element","from":"list","options":[["","—"],["acid","Acid"],["cold","Cold"],["electric","Electric"],["emp","Electromagnetic"],["fire","Fire"],["laser","Laser"],["sonic","Sonic"]],"prompt":"Element (Tooled Munitions)","when":["calc:@owned.g3hbfgEElXvJP6x9>0"],"beforeCost":true},{"do":"setVar","key":"element","value":"{var.picked}","when":["calc:@owned.g3hbfgEElXvJP6x9>0"],"beforeCost":true},{"do":"mutateWeapon","onto":"choice:weapon","set":{"explosiveAmmo":true,"blastAdd":5,"blastSet":0,"untilFumble":true},"when":["rule:pickedItem:weapon:item:hasAttack:item:data:system.radius>0"]},{"do":"mutateWeapon","onto":"choice:weapon","set":{"explosiveAmmo":true,"blastAdd":0,"blastSet":10,"untilFumble":true},"when":["not:rule:pickedItem:weapon:item:hasAttack:item:data:system.radius>0"]},{"do":"mutateWeapon","onto":"choice:weapon","set":{"damageType":"{var.element}"},"when":["var:element"]},{"do":"chat","text":"{name} loads Explosive Ammo."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free, 1 Energon): give a ranged weapon a 10 ft blast, or +5 ft to an existing blast, until you Fumble with it. With Tooled Munitions you can also switch its damage to an Element.</p>"

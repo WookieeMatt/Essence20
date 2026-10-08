@@ -5,6 +5,9 @@
   "_id": "y4dfWDqQQt6V5Sk6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"+20 ft of a new Movement type","event":"added","steps":[{"do":"warn","text":"E20.PrimalMovementNoNewType","stop":true,"when":["self:data:system.movement.aerial.base>0","self:data:system.movement.burrow.base>0","self:data:system.movement.climb.base>0","self:data:system.movement.ground.base>0","self:data:system.movement.swim.base>0"]},{"do":"choose","options":[{"label":"Aerial","when":["not:self:data:system.movement.aerial.base>0"],"steps":[{"do":"updateActor","add":{"system.movement.aerial.bonus":20}}]},{"label":"Burrow","when":["not:self:data:system.movement.burrow.base>0"],"steps":[{"do":"updateActor","add":{"system.movement.burrow.bonus":20}}]},{"label":"Climb","when":["not:self:data:system.movement.climb.base>0"],"steps":[{"do":"updateActor","add":{"system.movement.climb.bonus":20}}]},{"label":"Ground","when":["not:self:data:system.movement.ground.base>0"],"steps":[{"do":"updateActor","add":{"system.movement.ground.bonus":20}}]},{"label":"Swim","when":["not:self:data:system.movement.swim.base>0"],"steps":[{"do":"updateActor","add":{"system.movement.swim.bonus":20}}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>When added, you pick a Movement type your Bot Mode doesn't have, and you gain it at 20ft.</p>"

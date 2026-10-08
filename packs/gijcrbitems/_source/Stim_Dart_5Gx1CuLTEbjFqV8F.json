@@ -5,6 +5,9 @@
   "_id": "5Gx1CuLTEbjFqV8F",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Fire a stim dart (targeted ally, or yourself)","cost":{"action":"standard"},"limit":{"per":"mission","max":"@count.named.stim_dart"},"steps":[{"do":"require","beforeCost":true,"check":[{"any":["not:target:data:uuid","target:self","target:within:20","not:self:onCanvas","not:target:onCanvas"]}],"message":"Out of range (20 ft)."},{"do":"roll","skill":"targeting","difDefense":"evasion","when":["target:data:uuid","not:target:self","not:target:within:5"],"onFail":[{"do":"chat","text":"{name}'s stim dart misses {target}."},{"do":"setVar","key":"missed","value":1}]},{"do":"healAction","to":"target","amount":2,"when":["not:var:missed","target:data:uuid","target:status:defeated"]},{"do":"chat","text":"{name}'s stim dart revives {target}.","when":["not:var:missed","target:data:uuid","target:status:defeated"]},{"do":"heal","to":"target","temporary":true,"amount":2,"when":["not:var:missed","target:data:uuid","not:target:status:defeated"]},{"do":"healAction","to":"self","amount":2,"when":["not:target:data:uuid","self:status:defeated"]},{"do":"heal","to":"self","temporary":true,"amount":2,"when":["not:target:data:uuid","not:self:status:defeated"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: fire a dart at an ally within 20 ft (a Targeting attack beyond adjacent). It gives +2 Temporary Health to a conscious ally, or revives a Defeated one with your I've Got You and Up And At 'Em benefits. One dart per mission, plus any extra darts you carry.</p>"

@@ -5,6 +5,9 @@
   "_id": "tH1Z3Ou3IET70t4K",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Rope Trick","event":"hit","when":["item:own"],"steps":[{"do":"applyCondition","to":"target","condition":"immobilized"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: a Spellcasting attack with the magic lasso. A hit leaves the target Immobilized.</p>"

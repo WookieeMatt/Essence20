@@ -6,11 +6,25 @@
       <div class="flexrow e20-align-center e20-gap-2">
         <span class="header-item-name">{{item.name}}</span>
         <div class="item-controls e20-flex-grow-0">
+          {{!-- An Essence increase reached with no Skill point recorded (a character made before the prompt existed, or
+               "Later") - mechanics/characters/focus-skills.mjs. --}}
+          {{#if (lookup @root.focusMissingPicks item._id)}}
+          <a class="item-control" data-action="placeFocusSkills" data-tooltip="{{localize 'E20.FocusSkillPlaceMissing'}}" aria-label="{{localize 'E20.FocusSkillPlaceMissing'}}">
+            <i class="fa-solid fa-circle-plus"></i>
+          </a>
+          {{/if}}
           <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
             <i class="fas fa-trash"></i>
           </a>
         </div>
       </div>
+      {{!-- The skills the Focus's Essence increase must go into (e.g. GI Joe CRB p.81) - book data, shown so the
+            player can place that rank in the Skill Picker. --}}
+      {{#if item.system.skills.length}}
+      <div class="chip-section">
+        <span class="chip" name="chip.focus.skills">{{localize 'E20.FocusIncreaseSkills'}}: {{#each item.system.skills as |skill|}}{{lookup @root.config.originSkills skill}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+      </div>
+      {{/if}}
     </li>
   {{/each}}
 {{else}}

@@ -5,6 +5,10 @@
   "_id": "Q09tkHIaVX65lokl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Inundation (Outwitted)","when":["roll:dataset:isOutwit"],"steps":[{"do":"mark","key":"outwitted","to":"target","perSetter":true}]},
+      {"type":"RollModifier","label":"Inundation","edge":true,"when":[{"any":["skill:deception","skill:intimidation"]},"target:data:name","target:markedByMe:outwitted"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once your Outwit has succeeded against an enemy, your later Deception and Intimidation rolls against that enemy get an Edge, labelled Inundation in the Roll Options Dialog.</p>"

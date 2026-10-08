@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Choose your S.P.D. asset","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"choose","prompt":"Which asset does S.P.D. award you?","options":[{"label":"Delta Blasters (5)","steps":[{"do":"grant","uuid":"Compendium.essence20.across_the_stars.Item.4oahai24Cxroir20","system":{"quantity":5}},{"do":"setToggle","key":"granted","value":true}]},{"label":"DeltaMax Striker","steps":[{"do":"grant","uuid":"Compendium.essence20.across_the_stars.Item.jUWANIOv9MCwKnN9"},{"do":"setToggle","key":"granted","value":true}]},{"label":"Delta Patrol Cycle","steps":[{"do":"chat","text":"{name} is awarded a Delta Patrol Cycle - add the vehicle actor to their crew."},{"do":"setToggle","key":"granted","value":true}]},{"label":"R.I.C.","steps":[{"do":"grant","uuid":"Compendium.essence20.across_the_stars.Item.GGu11SYwOALYkJ61"},{"do":"setToggle","key":"granted","value":true}]},{"label":"Xenotech","steps":[{"do":"pickGrant","from":{"type":"weapon","availabilities":["limited"]}},{"do":"setToggle","key":"granted","value":true}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: choose five Delta Blasters, the DeltaMax Striker, an R.I.C., or a Limited weapon as Xenotech, and it is added to your sheet.</p><p>Left to the table: the Delta Patrol Cycle (add the vehicle yourself) and GM approval for Xenotech.</p>"

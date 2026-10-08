@@ -1,6 +1,6 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
-import { getActionsTabContext } from "../helpers/action-economy.mjs";
-import { confirmStopBeingContact, npcUseToggle } from "../helpers/contacts.mjs";
+import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
+import { confirmStopBeingContact, npcUseToggle } from "../mechanics/companions/contacts.mjs";
 
 export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
   static DEFAULT_OPTIONS = {
@@ -40,7 +40,7 @@ export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
         { id: "actions", group: 'primary', label: "E20.TabActions" },
         { id: "contact", group: 'primary', label: "E20.TabContact" },
         { id: "altmode", group: 'primary', label: "E20.TabAltMode" },
-        { id: "effects", group: 'primary', label: "E20.TabEffects" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
         { id: "notes", group: 'primary', label: "E20.TabNotes" },
       ],
       initial: "npc",
@@ -100,7 +100,7 @@ export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
     const visibility = {
       npc: this.actor.system.isNPC,
       // Always shown, including out of combat, where it is a reference - see
-      // helpers/action-economy.mjs#getActionsTabContext.
+      // mechanics/actions/action-economy.mjs#getActionsTabContext.
       actions: true,
       contact: this.actor.system.isContact,
       altmode: this.actor.system.canTransform,

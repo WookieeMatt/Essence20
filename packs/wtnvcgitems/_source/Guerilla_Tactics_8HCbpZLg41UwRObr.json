@@ -5,6 +5,7 @@
   "_id": "8HCbpZLg41UwRObr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:StrexCorp Rebel"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Granted: the Grappling Hook weapon. Active Effect: Edge on Wealth tests.</p><p>Left to the table: the Edge is meant only for getting contraband.</p>"
@@ -32,7 +33,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "StrexCorp Rebel Soldier Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Iron Hands","when":["attack",{"any":["attack:unarmed","weapon:id:OU9rXvoKfXtcpvFy","weapon:id:Cwd1FASmKXWiAFom"]},"item:data:system.classification.skill=might"]}
+    ],
+    "prerequisites": {"when":["self:essence:strength>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your unarmed Might attacks deal +1 damage, listed as an Iron Hands bonus on the attack's chat card.</p>"
@@ -13,7 +17,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 96
     },
-    "prerequisite": "Strength 3 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

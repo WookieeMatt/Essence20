@@ -39,15 +39,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "long"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:skill:alertness>=d2"]},
     "requirements": {
-      "custom": "Alertness d2",
+      "custom": "",
       "skill": "brawn",
       "shift": "d2"
     },

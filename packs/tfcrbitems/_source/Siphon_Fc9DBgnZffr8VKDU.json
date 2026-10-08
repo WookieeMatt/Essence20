@@ -5,6 +5,9 @@
   "_id": "Fc9DBgnZffr8VKDU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Siphon Energon from a target","steps":[{"do":"target","max":1,"beforeCost":true},{"do":"choose","prompt":"Against which Defense","options":[{"label":"Toughness","steps":[{"do":"rollVsEach","skill":"technology","defense":"toughness","to":"target","onHit":[{"do":"loseHealth","amount":1,"to":"target"},{"do":"gainResource","resource":{"path":"system.energon.normal.value"},"amount":1,"overMax":true,"to":"self"}]}]},{"label":"Evasion","steps":[{"do":"rollVsEach","skill":"technology","defense":"evasion","to":"target","onHit":[{"do":"loseHealth","amount":1,"to":"target"},{"do":"gainResource","resource":{"path":"system.energon.normal.value"},"amount":1,"overMax":true,"to":"self"}]}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: target an adjacent Cybertronian and roll Technology against its Toughness or Evasion. On a success it takes 1 damage and you gain 1 Energon.</p>"

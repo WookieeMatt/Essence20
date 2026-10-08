@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Non-animal you've only just met (Bad with People: ↓1)","when":["essence:social"],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a ↓1 switch on Social tests with non-animals you have only just met.</p>"

@@ -5,6 +5,10 @@
   "_id": "0JiAkBjJzsuezfaI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Mass Shift","limit":{"per":"scene"},"steps":[{"do":"choose","prompt":"Benefit","options":[{"label":"+1 to a Defense","steps":[{"do":"pick","key":"defense","from":"list","options":[["toughness","E20.DefenseToughness"],["evasion","E20.DefenseEvasion"],["willpower","E20.DefenseWillpower"],["cleverness","E20.DefenseCleverness"]],"prompt":"Defense (if chosen)"},{"do":"fireEvent","event":"massShiftUsed"},{"do":"bank","defense":"toughness","defenseBonus":1,"until":"combat","when":["var:picked=toughness"]},{"do":"bank","defense":"evasion","defenseBonus":1,"until":"combat","when":["var:picked=evasion"]},{"do":"bank","defense":"willpower","defenseBonus":1,"until":"combat","when":["var:picked=willpower"]},{"do":"bank","defense":"cleverness","defenseBonus":1,"until":"combat","when":["var:picked=cleverness"]}]},{"label":"↑1 on a Skill","steps":[{"do":"pick","key":"skill","from":"skill","prompt":"Skill (if chosen)"},{"do":"fireEvent","event":"massShiftUsed"},{"do":"bank","upshift":1,"appliesWhen":["skill:{choice.skill}"],"until":"combat"}]},{"label":"Double your Reach","steps":[{"do":"fireEvent","event":"massShiftUsed"},{"do":"mark","key":"massShiftReach","to":"self","until":"scene"}]},{"label":"1 Temporary Health","steps":[{"do":"fireEvent","event":"massShiftUsed"},{"do":"updateActor","add":{"system.health.bonus":1}}]}]}]},
+      {"type":"ItemModifier","label":"Mass Shift (Melee Reach x2)","items":["item:type:weaponEffect","item:data:system.classification.style=melee"],"path":"system.totalReach","op":"max","value":"@reach.size * 2","when":["self:marked:massShiftReach"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per scene, as a Move action, pick +1 to a Defense, ↑1 on a Skill, double Reach, or 1 Temporary Health.</p><p>Left to the table: extra Mass Shifts your daily count allows, and keeping the Defense or Skill bonus all scene (it is spent on your next matching roll or attack).</p>"

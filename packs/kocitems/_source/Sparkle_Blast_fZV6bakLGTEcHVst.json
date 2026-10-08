@@ -5,6 +5,9 @@
   "_id": "fZV6bakLGTEcHVst",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Sparkle Blast (Blinded 3 rounds)","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"choose","auto":true,"options":[{"label":"Targets","when":["target:data:name","not:target:self"],"steps":[{"do":"applyCondition","condition":"blinded","rounds":3,"to":"targets","filter":["not:target:self"]}]},{"label":"Enemies within 30 ft","when":[{"any":["not:target:data:name","target:self"]}],"steps":[{"do":"applyCondition","condition":"blinded","rounds":3,"to":"nearbyEnemies:30"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: place the area, and everyone caught inside (except you) is Blinded for 3 rounds.</p>"

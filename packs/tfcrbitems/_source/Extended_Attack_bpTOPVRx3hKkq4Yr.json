@@ -5,9 +5,13 @@
   "_id": "bpTOPVRx3hKkq4Yr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Extend a Melee weapon's reach until your next turn","cost":{"action":"move"},"when":["not:self:toggle:on"],"steps":[{"do":"pick","key":"extended","from":"ownedItem","itemType":"weapon","prompt":"Which Melee weapon?","beforeCost":true},{"do":"setToggle","key":"on","value":true,"until":"nextTurnOrScene"},{"do":"chat","text":"{name} extends their reach - one Melee weapon's Reach is doubled until their next turn."}]},
+      {"type":"ItemModifier","label":"Extended Attack (Melee Reach ×2)","items":["item:type:weaponEffect","item:data:system.classification.style=melee","item:picked:extended"],"path":"system.totalReach","op":"max","value":"@reach.size * 2","when":["self:toggle:on"]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: as a Move action, double the Reach of your Melee weapons until your next turn starts.</p>"
+      "notes": "<p>Use button: as a Move action, pick one of your Melee weapons; its Reach is doubled until your next turn starts (out of combat, the scene).</p>"
     },
     "originalId": "",
     "actionType": "move",

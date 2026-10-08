@@ -5,6 +5,9 @@
   "_id": "lET3yffxwg5YWXBJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AttackCount","count":"max(1, @sum.equippedTrait.ballistic.weapon.system.equipped)","when":["weapon:trait:ballistic"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you take the Attack action, you get one attack for each equipped ballistic weapon.</p>"

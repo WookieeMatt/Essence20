@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Escapist","scope":"incoming","when":["skill:deception"],"edge":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Deception tests made against you (with you targeted) get Edge, labelled Escapist in the roller's Roll Options Dialog.</p>"

@@ -5,6 +5,9 @@
   "_id": "oj7vUwpB9EW8stUG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Together We Stand","event":"roundStart","when":["combat:roundIs:1"],"steps":[{"do":"setVar","key":"team","value":"@teamCombatants"},{"do":"require","check":["var:team>=2"]},{"do":"tempResource","kind":"health","amount":"1d2","to":"teamCombatants","filter":["not:target:marked:togetherWeStand"],"quiet":true},{"do":"tempResource","kind":"energon","amount":"1d2","to":"teamCombatants","filter":["not:target:marked:togetherWeStand"],"quiet":true},{"do":"mark","key":"togetherWeStand","to":"teamCombatants","until":"combat"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: in round 1 of combat, if two or more Party members are fighting, each gains 1d2 temporary Health and 1d2 Energon over their maximum. Both are removed when the scene ends.</p>"

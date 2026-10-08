@@ -5,6 +5,9 @@
   "_id": "NyZxFpc8Aop7PDDa",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"1 of your Health: heal an adjacent ally 2 Health","when":["self:data:system.health.value>=1"],"steps":[{"do":"pickAlly","within":5},{"do":"spend","resource":{"path":"system.health.value"},"amount":1},{"do":"heal","to":"target","amount":2}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Standard action, take 1 damage yourself to heal an adjacent creature 2 Health.</p>"

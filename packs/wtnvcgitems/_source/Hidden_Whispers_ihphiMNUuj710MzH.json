@@ -5,6 +5,10 @@
   "_id": "ihphiMNUuj710MzH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"↑3 on your next roll","limit":{"per":"encounter"},"steps":[{"do":"bank","label":"Hidden Whispers","upshift":3}]}
+    ],
+    "prerequisites": {"when":["self:hasType:focus:Mayoral Candidate"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene): ↑3 on your next Skill Test.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Mayoral Candidate Politician Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

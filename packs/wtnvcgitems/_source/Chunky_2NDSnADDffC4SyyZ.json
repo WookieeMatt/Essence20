@@ -5,6 +5,10 @@
   "_id": "2NDSnADDffC4SyyZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:size=common"]},
+    "rules": [
+      {"type":"RollModifier","label":"Chunky","when":["roll:shove"],"edge":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: the pet's Shoves get an Edge, listed in the Roll Options Dialog.</p><p>Left to the table: spending the pet's Free action for it.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Common size",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

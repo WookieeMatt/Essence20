@@ -5,6 +5,9 @@
   "_id": "WafAMRknIe5AL40t",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"1 Energon: restore an adjacent ally 1 Health","when":["self:data:system.energon.normal.value>=1"],"steps":[{"do":"pickAlly","within":5},{"do":"spend","resource":{"path":"system.energon.normal.value"},"amount":1},{"do":"heal","to":"target","amount":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: when treating an adjacent Cybertronian, spend an Energon Point as a Free action to restore 1 Health.</p>"
@@ -23,7 +26,6 @@
       "currentValue": 0,
       "increaseValue": 1
     },
-    "canActivate": true,
     "choice": null,
     "choiceType": "none",
     "isRoleVariant": false,

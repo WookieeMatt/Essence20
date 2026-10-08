@@ -5,6 +5,10 @@
   "_id": "NQXcQL05DLCs75xb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Swap Initiative with your target (Timeline Anomaly)","limit":{"per":"session"},"steps":[{"do":"target","min":1,"max":1,"beforeCost":true},{"do":"swapInitiative"}]}
+    ],
+    "prerequisites": {"when":["self:skill:weird>=d8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Standard action, once per session): swap your Initiative with a targeted Citizen.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Weird +d8",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

@@ -5,6 +5,9 @@
   "_id": "57KqLyhUgAHpCskm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Team Player","event":"lendAssistance","steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you Lend Assistance and the helped test succeeds, a Story Point is added to the team pool.</p>"

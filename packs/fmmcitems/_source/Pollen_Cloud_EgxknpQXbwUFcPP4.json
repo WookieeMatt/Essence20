@@ -61,15 +61,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Path of Thorns"]},
     "requirements": {
-      "custom": "Path of Thorns",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

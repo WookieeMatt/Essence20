@@ -5,6 +5,10 @@
   "_id": "fFWlwBeGb6aYYtGP",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"pilot","upshift":2,"when":["skill:initiative"]},
+      {"type":"RollModifier","upshift":2,"when":["self:type:vehicle","skill:initiative"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Initiative tests by the vehicle and its driver get ↑2, listed as a Racing Stripes switch under Automatic Modifiers in the Roll Options Dialog.</p>"

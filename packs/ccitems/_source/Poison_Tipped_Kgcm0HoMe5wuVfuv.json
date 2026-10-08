@@ -5,6 +5,9 @@
   "_id": "Kgcm0HoMe5wuVfuv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"PoisonCoating","label":"Poison Tipped (a Fumbled coating keeps the vial)","keepVialOnFumble":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: fumbling the test to coat a weapon with poison no longer uses up the dose.</p>"

@@ -5,6 +5,9 @@
   "_id": "y3RPr4nJWVtCtdil",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"applyingDamage","label":"Fe-BURN! (halve this hit, burn an adjacent enemy)","prompt":true,"promptText":"{name} has Fe-BURN! and {@rolePoints} accrued Terror - spend it all to halve this damage and retaliate against a nearby enemy?","when":["self:morphed","calc:@owned.yBBB0Mi6fr84YcSd>0","calc:@rolePoints>=1"],"steps":[{"do":"spend","resource":{"rolePoints":true},"amount":"@rolePoints"},{"do":"damage","amount":"@var.damage - floor(@var.damage / 2)","damageType":"element","to":"nearbyEnemies:5","first":1},{"do":"unmorph"},{"do":"setVar","key":"damage","value":"floor(@var.damage / 2)"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic prompt: while Morphed with Terror, when an attack damages you, you can spend all your Terror to halve the damage, burn an adjacent enemy for the other half, and un-Morph.</p><p>Left to the table: hitting extra adjacent enemies for each Terror beyond the first.</p>"

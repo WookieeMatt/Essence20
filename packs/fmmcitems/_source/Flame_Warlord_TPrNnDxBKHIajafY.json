@@ -5,6 +5,10 @@
   "_id": "TPrNnDxBKHIajafY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CardDamage","label":"Flame Warlord (+1 damage on a Critical Success)","add":1,"when":["var:multiplier>=2"]},
+      {"type":"DamageModifier","label":"Flame Warlord (-1 non-Energy damage in Monster Form)","direction":"taken","amount":-1,"exceptTypes":["element","acid","cold","electric","emp","fire","laser","sonic"],"when":["check:monsterForm"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 to all Defenses while Morphed. Automatic: your Critical Successes deal +1 damage, already added to the damage on the chat card, and in Monster Form damage applied to you that isn't Energy-type is reduced by 1.</p>"

@@ -5,6 +5,13 @@
   "_id": "rWrU13LenH7mukyV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Create a Holographic double","cost":{"action":"standard"},"when":[{"any":["not:self:marked:holoDoubles","self:data:flags.essence20.ruleMarks.holoDoubles.count<1"]}],"steps":[{"do":"mark","key":"holoDoubles","count":1,"add":true,"until":"scene"}]},
+      {"type":"Use","label":"Create another Holographic double","cost":{"action":"free"},"when":["self:marked:holoDoubles","self:data:flags.essence20.ruleMarks.holoDoubles.count>=1","self:data:flags.essence20.ruleMarks.holoDoubles.count<8"],"steps":[{"do":"mark","key":"holoDoubles","count":1,"add":true,"until":"scene"}]},
+      {"type":"RollModifier","label":"Holographic Doubles","scope":"incoming","downshift":"@mark.holoDoubles","when":["attack"]},
+      {"type":"Trigger","label":"A double disappears (Holographic Doubles)","event":"afterRoll","when":["self:marked:holoDoubles","self:data:flags.essence20.ruleMarks.holoDoubles.count>0"],"steps":[{"do":"mark","key":"holoDoubles","count":-1,"add":true,"until":"scene"}]},
+      {"type":"Trigger","label":"A double disappears (Holographic Doubles)","event":"targeted","outcome":"failure","when":["attack","self:marked:holoDoubles","self:data:flags.essence20.ruleMarks.holoDoubles.count>0"],"steps":[{"do":"mark","key":"holoDoubles","count":-1,"add":true,"until":"scene"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: a Standard action makes the first double and a Free action each extra one. Attacks against you take ↓1 per double, labelled Holographic Doubles in the attacker's Roll Options Dialog; one double vanishes each time you are missed and each time you roll.</p>"

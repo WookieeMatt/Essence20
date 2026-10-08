@@ -5,6 +5,10 @@
   "_id": "OBjcj6ordJi60Cdd",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"turnStart","label":"Artificial Intelligence","when":["self:type:companion","self:data:flags.essence20.petCommand","not:self:commanded"],"steps":[{"do":"chat","text":"{name} gives itself the last Command it was issued."}]}
+    ],
+    "prerequisites": {"when":["ask:Smarts d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: on any turn you don't command the drone, it repeats its last Command on its own.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "drone",
-    "prerequisite": "Smarts d6"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

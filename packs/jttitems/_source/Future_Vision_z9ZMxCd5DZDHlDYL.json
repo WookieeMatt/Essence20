@@ -5,6 +5,10 @@
   "_id": "z9ZMxCd5DZDHlDYL",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Future Vision: a reroll per Power spent","event":"powerUsed","when":["item:own","var:spent>0"],"steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.rules.toggles.futureVision":true,"flags.essence20.futureVisionUses":"@var.spent"}}]},
+      {"type":"Reroll","when":["self:toggle:futureVision"],"mode":"all","target":"allDice","reset":"scene","maxUses":"@item.flags.essence20.futureVisionUses","recursive":false}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend up to 3 Personal Power; each gives one Skill test reroll this scene, offered as a chat card button.</p><p>Left to the table: turning a failed reroll into a Fumble.</p>"
@@ -17,30 +21,9 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": true,
     "maxPowerCost": 3,
     "powerCost": 1,
-    "reroll": {
-      "enabled": false,
-      "maxUses": 1,
-      "mode": "all",
-      "reset": "scene",
-      "target": "allDice",
-      "cost": {
-        "resourcePath": "",
-        "amount": 0,
-        "worldStoryPoints": 0,
-        "rolePointsName": ""
-      },
-      "condition": "none",
-      "skills": [],
-      "essence": "any",
-      "recursive": false,
-      "minDieFaces": 0,
-      "grantsCanCritD2": false,
-      "bonus": 0
-    },
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

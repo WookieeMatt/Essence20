@@ -5,6 +5,11 @@
   "_id": "wW4xugDI7Sea2Btg",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"The Promise of Riches (no untrained Snag driving)","when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:aerial","vehicle:moves:ground","vehicle:moves:swim"]}],"immune":["untrainedSnag"]},
+      {"type":"Qualification","label":"The Promise of Riches (Trained: Limited weapons and battledress)","access":"trained","items":[{"any":["item:type:weapon","item:type:armor"]},{"any":["item:data:system.availability=automatic","item:data:system.availability=standard","item:data:system.availability=limited"]}]},
+      {"type":"RollModifier","label":"The Promise of Riches (↑1 on Driving, with Ranks)","stack":"vehicleQualification","upshift":1,"when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:aerial","vehicle:moves:ground","vehicle:moves:swim"]},{"any":["self:skill:driving>=d2","self:data:system.skills.driving.isSpecialized"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Health. Automatic: you're trained with Limited weapons and battledress, and driving a Land, Sea or Air vehicle has no untrained Snag on Driving; with Ranks in Driving you also get ↑1, already counted in the Upshift number of your Roll Options Dialog.</p>"

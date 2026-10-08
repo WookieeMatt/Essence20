@@ -5,6 +5,9 @@
   "_id": "j9UxxlSMLRUcwGVk",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Cover","label":"E20.UpgradeScopeSmoke","scope":"host","mode":"giveBack"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: it cancels the Cover penalty for smoke or darkness (untick it when the Cover is solid), and removes the Snag against an Invisible target.</p>"

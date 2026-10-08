@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Programmable (↑ up to 3, the die no higher than d12)","spend":{"max":3},"upshift":"@spent","capDie":"d12"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: add up to ↑3 on any Skill Test, one per Free action spent. Your Skill still can't go above d12.</p>"

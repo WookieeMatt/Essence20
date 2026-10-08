@@ -5,6 +5,9 @@
   "_id": "x4PS0cKR25og3lC0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AttackChoice","title":"E20.BringItAllDownPickTitle","prompt":"E20.BringItAllDownPickLabel","none":"E20.BringItAllDownOptionNone","when":["item:type:weaponEffect","item:data:system.classification.style=explosive"],"options":[{"label":"E20.BringItAllDownOptionShiftUp","shiftUp":2},{"label":"E20.BringItAllDownOptionRadius","radiusMultiplier":2},{"label":"E20.BringItAllDownOptionDamage","damage":2},{"label":"E20.BringItAllDownOptionArmorPiercing","armorPiercing":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacking with an explosive asks which bonus to use: ↑2, +2 damage, Armor-Piercing, or double blast radius (pick that one only for a Contingency attack).</p>"

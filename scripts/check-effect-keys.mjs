@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Validates every Active Effect change key stored in packs/&lt;pack&gt;/_source/*.json against the
- * effect catalog (module/helpers/effect-catalog.mjs) - the same vocabulary the Effect Wizard
+ * effect catalog (module/mechanics/characters/effect-catalog.mjs) - the same vocabulary the Effect Wizard
  * offers. Catches the failure mode this system has shipped repeatedly: a key with a typo in it
  * looks completely normal on the sheet and simply never applies, because Foundry resolves it to
  * nothing and moves on silently.
@@ -23,7 +23,7 @@ import { readFileSync, readdirSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
-import { isKnownKey, parseKey, suggestKey, readChanges } from "../module/helpers/effect-catalog.mjs";
+import { isKnownKey, parseKey, suggestKey, readChanges } from "../module/mechanics/characters/effect-catalog.mjs";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
 const PACKS = join(ROOT, "packs");

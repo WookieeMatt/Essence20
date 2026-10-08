@@ -5,6 +5,9 @@
   "_id": "nDEA1W86XvYR2ab4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Make the extra Unarmed attack (Monstrous Attack)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"choose","prompt":"Blunt or Sharp?","options":[{"label":"Blunt","steps":[{"do":"createItem","data":{"name":"Monstrous Attack (Blunt)","type":"weaponEffect","system":{"classification":{"skill":"might","style":"melee"},"damageType":"blunt","damageValue":2,"numTargets":1,"numHands":"1","range":{"reachMultiplier":2}}}}]},{"label":"Sharp","steps":[{"do":"createItem","data":{"name":"Monstrous Attack (Sharp)","type":"weaponEffect","system":{"classification":{"skill":"might","style":"melee"},"damageType":"sharp","damageValue":2,"numTargets":1,"numHands":"1","range":{"reachMultiplier":2}}}}]}]},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: adds a new unarmed attack with double reach that deals 2 Blunt or Sharp damage. Take the Perk again for another one.</p>"

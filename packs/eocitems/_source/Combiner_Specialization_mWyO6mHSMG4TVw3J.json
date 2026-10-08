@@ -5,6 +5,9 @@
   "_id": "mWyO6mHSMG4TVw3J",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Combiner Specialization","steps":[{"do":"choose","auto":true,"prompt":"Choose your Combiner Perk","options":[{"label":"Gestalt Combiner","when":["calc:@owned.a4BfJxhUC7hAhgdZ + @owned.ZIJnA0z3Mrp8pfbd=0"],"steps":[{"do":"grant","uuid":"Compendium.essence20.enigma_of_combination.Item.a4BfJxhUC7hAhgdZ"}]},{"label":"Matched Combiner","when":["calc:@owned.a4BfJxhUC7hAhgdZ + @owned.ZIJnA0z3Mrp8pfbd=0"],"steps":[{"do":"grant","uuid":"Compendium.essence20.enigma_of_combination.Item.ZIJnA0z3Mrp8pfbd"}]},{"label":"+1 Health","when":["not:calc:@owned.a4BfJxhUC7hAhgdZ + @owned.ZIJnA0z3Mrp8pfbd=0"],"steps":[{"do":"updateActor","to":"self","add":{"system.health.bonus":1}}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: pick Gestalt Combiner or Matched Combiner; if you already have one, you get +1 Health instead.</p>"
@@ -18,24 +21,9 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role",
-    "hasChoice": true,
-    "choiceType": "perks",
-    "items": {
-      "cs01": {
-        "uuid": "Compendium.essence20.enigma_of_combination.Item.a4BfJxhUC7hAhgdZ",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Gestalt Combiner",
-        "type": "perk",
-        "role": null
-      },
-      "cs02": {
-        "uuid": "Compendium.essence20.enigma_of_combination.Item.ZIJnA0z3Mrp8pfbd",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Matched Combiner",
-        "type": "perk",
-        "role": null
-      }
-    }
+    "hasChoice": false,
+    "choiceType": "none",
+    "items": {}
   },
   "effects": [],
   "sort": 100000,

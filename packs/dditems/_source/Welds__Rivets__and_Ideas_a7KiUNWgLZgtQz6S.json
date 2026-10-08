@@ -5,6 +5,9 @@
   "_id": "a7KiUNWgLZgtQz6S",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Welds, Rivets, and Ideas (Technology DIF 12)","steps":[{"do":"roll","skill":"technology","dif":12,"onSuccess":[{"do":"pickEntry","from":{"types":["gear","upgrade"],"availabilities":["automatic","standard","limited"],"fields":["system.type"]},"prompt":"Emulate which item for the rest of the scene?"},{"do":"giveCopy","uuid":"{var.picked}"}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: roll DIF 12 Technology; on a success pick a piece of equipment or upgrade of Limited Availability or lower to add. Left to the table: removing it at the end of the scene.</p>"

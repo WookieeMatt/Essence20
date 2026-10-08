@@ -5,6 +5,10 @@
   "_id": "0Q21VhUK1PNu1pTM",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Blast radius doubled (Eruptive)","stacks":true,"items":["item:type:weaponEffect","item:onHost","item:data:system.radius>0","item:data:_source.system.radius>0"],"path":"system.radius","op":"set","value":"2 * @other.system.radius - 10 * @host.flags.essence20.mutation.airburstNext - @host.flags.essence20.mutation.blastAdd * (1 + 2 * @host.flags.essence20.mutation.tripleNext)"}
+    ],
+    "prerequisites": {"when":["ask:Explosive weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the explosive's blast radius is doubled.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Explosive"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {

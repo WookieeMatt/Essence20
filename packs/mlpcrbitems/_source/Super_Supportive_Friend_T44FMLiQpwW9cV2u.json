@@ -5,6 +5,9 @@
   "_id": "T44FMLiQpwW9cV2u",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Super Supportive Friend (allies within 60 ft)","outcome":"anySucceeded","when":["skill:choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ"],"steps":[{"do":"pickAlly","all":true,"within":60},{"do":"bank","to":"targets","replace":true,"label":"Super Supportive Friend","edge":true,"appliesWhen":["not:roll:initiative"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when you succeed at a test with your Empathy Skill, every friendly token within 60 ft gets Edge on its next Skill Test, labelled Supportive Friend in its Roll Options Dialog. Left to the table: dropping the Edge if it isn't used this round.</p>"

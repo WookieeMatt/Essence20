@@ -5,6 +5,11 @@
   "_id": "OZrtQuRwCCzeKfV9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Support Yourself (Supportive Friend)","outcome":"anySucceeded","when":["skill:choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ","self:has:Supportive Friend","not:self:has:Extra Supportive Friend","not:self:has:Super Supportive Friend"],"steps":[{"do":"bank","to":"self","replace":true,"label":"Supportive Friend","upshift":1,"appliesWhen":["not:roll:initiative"]}]},
+      {"type":"Trigger","event":"afterRoll","label":"Support Yourself (Extra Supportive Friend)","outcome":"anySucceeded","when":["skill:choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ","self:has:Extra Supportive Friend","not:self:has:Super Supportive Friend"],"steps":[{"do":"bank","to":"self","replace":true,"label":"Extra Supportive Friend","upshift":2,"appliesWhen":["not:roll:initiative"]}]},
+      {"type":"Trigger","event":"afterRoll","label":"Support Yourself (Super Supportive Friend)","outcome":"anySucceeded","when":["skill:choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ","self:has:Super Supportive Friend"],"steps":[{"do":"bank","to":"self","replace":true,"label":"Super Supportive Friend","edge":true,"appliesWhen":["not:roll:initiative"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when your Supportive Friend bonus goes out to nearby friends, you get it too. Left to the table: sharing in the benefit of your other abilities that help friends.</p>"

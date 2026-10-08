@@ -5,6 +5,11 @@
   "_id": "a5DNgno8XV7pVBzO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Snatch (a two-handed weapon)","downshift":1,"when":["item:data:system.damageType=maneuver","target:wielding:weapon:data:system.derivedHands>=2"]},
+      {"type":"ManeuverOption","label":"Snatch","option":"disarm"}
+    ],
+    "prerequisites": {"when":["self:skill:finesse>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Disarm is offered in the Maneuver prompt, with ↓1 against two-handed weapons.</p>"
@@ -15,7 +20,7 @@
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 37
     },
-    "prerequisite": "Finesse +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

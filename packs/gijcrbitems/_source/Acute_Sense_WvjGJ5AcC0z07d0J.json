@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"sense","label":"Sense","from":"sense","notHeld":true,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DerivedStat","label":"Acute sense (the picked sense)","path":"system.senses.{choice.sense}.acute","value":true},
+      {"type":"RollModifier","label":"Acute Sense","when":["skill:alertness"],"edge":true},
+      {"type":"DialogSwitch","label":"Your chosen sense applies (Acute Sense: ↑1)","when":["not:skill:alertness"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: choose your sense. Automatic: your Alertness tests have Edge already selected in the Roll Options Dialog. Roll Options Dialog: on other tests, an Acute Sense switch gives ↑1 when your sense applies.</p>"
@@ -16,8 +22,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "senses"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "flags": {

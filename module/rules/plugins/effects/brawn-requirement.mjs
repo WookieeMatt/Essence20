@@ -1,0 +1,55 @@
+import { registerRuleType } from "../../types.mjs";
+import { rulesOfType } from "../../index.mjs";
+import { contextFor, evaluate } from "../../predicate.mjs";
+import { resolveValue } from "../../formula.mjs";
+
+/**
+ * `BrawnRequirement` {amount?, ignore?, carrying?, stack?} (round 10, group C) - the actor's Brawn counts `amount`
+ * die sizes higher against equipment's Brawn requirement (items/defenses/armor-brawn-reinforced-shell.mjs
+ * #brawnRequirementBonus), or the requirement is ignored outright. `carrying: true` also raises it for carrying
+ * capacity (mechanics/resources/kits.mjs#carryPercent). Rules sharing a `stack` group count once (the biggest). Over Brawn,
+ * The Heavy, Pack Mule. `equipment: weapon|armor` limits a rule to that kind of requirement (Ordnance Expert: Brawn ↑4 for
+ * weapon requirements only, GI Joe CRB).
+ *
+ * Kept apart from the other plug-ins (and light on imports): kits.mjs and armor-rules.mjs read it.
+ */
+
+registerRuleType('BrawnRequirement', {
+  // carryingOnly (round 15, uses): the offset counts for carrying capacity only, not equipment requirements (Loader).
+  params: {
+    amount: { kind: 'formula' }, ignore: { kind: 'bool' }, carrying: { kind: 'bool' }, carryingOnly: { kind: 'bool' }, stack: { kind: 'string' },
+    equipment: { kind: 'enum', options: ['weapon', 'armor'] },
+  },
+  scopes: ['self'],
+  validate: rule => (rule.amount !== undefined || rule.ignore ? [] : ['give an amount or ignore']),
+});
+
+/**
+ * How many die sizes higher the actor's Brawn counts - Infinity when a rule ignores the requirement.
+ * @param {Actor} actor
+ * @param {'requirement'|'carrying'} use
+ * @param {'weapon'|'armor'|null} [equipment]   The kind of gear whose requirement this is; a rule naming another kind skips it.
+ * @returns {Number}
+ */
+export function ruleBrawnBonus(actor, use = 'requirement', equipment = null) {
+  const live = rulesOfType(actor, 'BrawnRequirement', 'self')
+    .filter(({ rule }) => (use != 'carrying' ? !rule.carryingOnly : rule.carrying || rule.carryingOnly))
+    .filter(({ rule }) => !rule.equipment || (use == 'requirement' && rule.equipment == equipment))
+    .filter(({ rule, item }) => evaluate(rule.when, contextFor({ self: actor, ruleItem: item, combat: null })) === true);
+  if (use == 'requirement' && live.some(({ rule }) => rule.ignore)) {
+    return Infinity;
+  }
+
+  const best = new Map();
+  let total = 0;
+  for (const entry of live.filter(({ rule }) => !rule.ignore)) {
+    const amount = Math.round(resolveValue(entry.rule.amount ?? 0, { actor, item: entry.item }, 0));
+    if (!entry.rule.stack) {
+      total += amount;
+    } else if (!best.has(entry.rule.stack) || amount > best.get(entry.rule.stack)) {
+      best.set(entry.rule.stack, amount);
+    }
+  }
+
+  return total + [...best.values()].reduce((sum, amount) => sum + amount, 0);
+}

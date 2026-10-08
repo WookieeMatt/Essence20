@@ -5,6 +5,9 @@
   "_id": "L5KOGeqX43EdO3b3",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Throw it (Smoke Bomb)","cost":{"action":"standard"},"steps":[{"do":"pickPoint","beforeCost":true,"prompt":"Click where the smoke bomb lands."},{"do":"placeZone","key":"smokeBomb","until":"scene","modifier":{"when":["skill:alertness"],"downshift":1}},{"do":"spendQuantity","item":"self","amount":1,"deleteAtZero":true}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: creates a 10 ft cloud. Creatures inside take ↓1 on Alertness for the scene.</p><p>Left to the table: cover from the smoke, if you use the optional cover rule.</p>"
@@ -16,7 +19,6 @@
       "page": 20
     },
     "quantity": 1,
-    "type": "tools",
     "gearType": "tools"
   },
   "effects": [],

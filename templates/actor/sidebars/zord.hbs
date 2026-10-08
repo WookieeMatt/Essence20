@@ -26,16 +26,6 @@
         {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
       </span>
     </div>
-    {{#if @root.hasMegaWeapon}}
-    <a class="essence20-sidebar-action-button" data-action="summonMegaWeapon" data-tooltip="{{localize 'E20.MegaWeaponTooltip'}}">
-      <i class="fas fa-khanda"></i>
-      {{#if @root.megaWeaponAttacksRemaining}}
-        {{localize 'E20.MegaWeaponAttacksLeft'}}: {{@root.megaWeaponAttacksRemaining}}
-      {{else}}
-        {{localize 'E20.MegaWeaponSummonButton'}}
-      {{/if}}
-    </a>
-    {{/if}}
     {{#if @root.hasWarriorMode}}
     <a class="essence20-sidebar-action-button" data-action="warriorMode" data-tooltip="{{localize 'E20.WarriorModeTooltip'}}">
       <i class="fas fa-person-military-rifle"></i>
@@ -43,16 +33,6 @@
         {{localize 'E20.WarriorModeButtonDeactivate'}}
       {{else}}
         {{localize 'E20.WarriorModeButtonActivate'}}
-      {{/if}}
-    </a>
-    {{/if}}
-    {{#if @root.hasHighGear}}
-    <a class="essence20-sidebar-action-button" data-action="highGear" data-tooltip="{{localize 'E20.HighGearTooltip'}}">
-      <i class="fas fa-gauge-high"></i>
-      {{#if @root.isHighGearActive}}
-        {{localize 'E20.HighGearButtonDeactivate'}}
-      {{else}}
-        {{localize 'E20.HighGearButtonActivate'}}
       {{/if}}
     </a>
     {{/if}}

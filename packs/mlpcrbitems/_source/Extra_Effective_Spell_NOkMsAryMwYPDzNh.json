@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SpellCost","label":"Extra Effective Spell: double the Cost to double the effect","op":"multiply","value":2,"note":"Extra Effective: the effect is doubled."}
+    ],
+    "prerequisites": {"when":["self:has:Magical","self:skill:spellcasting>=d4"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when you cast, a prompt offers to pay double the spell's cost, and the chat card notes the doubled effect. Left to the table: actually doubling the spell's effect.</p>"
@@ -13,7 +17,7 @@
       "book": "My Little Pony Core Rulebook",
       "page": 123
     },
-    "prerequisite": "Magical and Spellcasting d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

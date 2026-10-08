@@ -14,7 +14,7 @@
     "damageType": "fire",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 3,
     "radius": 15,
     "range": {

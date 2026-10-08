@@ -5,6 +5,7 @@
   "_id": "4vYOyC2EuKgrEDNW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:focus:Rancher"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: adds the Night Vale Community Adoption Center Perk if you don't have it, then builds your animal pet as a linked companion.</p><p>Left to the table: the pet's five Animal Perks instead of three.</p>"
@@ -25,7 +26,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Rancher Farmer Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

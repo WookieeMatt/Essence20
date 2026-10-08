@@ -1,22 +1,14 @@
 import PowerCostSelector from "../apps/power-cost-selector.mjs";
-import { parseId } from "../helpers/utils.mjs";
-import { onPowerUse } from "../helpers/power-use.mjs";
-import { spendDailyUse } from "../helpers/nanomite-uses.mjs";
+import { parseId } from "../util/utils.mjs";
+import { onPowerUse } from "../mechanics/characters/power-use.mjs";
+import { spendDailyUse } from "../mechanics/resources/nanomite-uses.mjs";
 
-// Zeo Crystal Wielder (Through the Shattered Grid, Zeo Rangers Team Perk, p.27): "It costs you 1
-// less Personal Power to activate the Zeo Crystal Boost Grid Power."
-const ZEO_CRYSTAL_BOOST_ID = "Compendium.essence20.across_the_stars.Item.NiEaLWcx8N48fvvN";
-const ZEO_CRYSTAL_WIELDER_ID = "Compendium.essence20.through_the_shattered_grid.Item.lNCrjjiiUhI6ROal";
-const sourceOf = item => item?.flags?.core?.sourceId ?? item?._stats?.compendiumSource;
-
-/** A fixed-cost Power's Personal Power cost for this actor, after discounts. */
-export function fixedPowerCost(actor, power) {
-  const cost = parseInt(power.system.powerCost) || 0;
-  if (sourceOf(power) == ZEO_CRYSTAL_BOOST_ID && actor?.items?.some(item => sourceOf(item) == ZEO_CRYSTAL_WIELDER_ID)) {
-    return Math.max(0, cost - 1);
-  }
-
-  return cost;
+/**
+ * A fixed-cost Power's Personal Power cost for this actor. Discounts are ItemModifier rules on the derived
+ * powerCost (Zeo Crystal Wielder's -1 on Zeo Crystal Boost).
+ */
+export function fixedPowerCost(_actor, power) {
+  return parseInt(power.system.powerCost) || 0;
 }
 
 /**
@@ -53,7 +45,7 @@ export async function onPowerDrop(actor, power, dropFunc) {
 /**
  * Handles determining the cost of a Power activation, then - once the cost is actually spent (or
  * confirmed there's nothing to spend) - dispatches to the Power's own bespoke mechanic via
- * helpers/power-use.mjs#onPowerUse. That dispatch is the Power-side equivalent of Perks' own
+ * mechanics/characters/power-use.mjs#onPowerUse. That dispatch is the Power-side equivalent of Perks' own
  * onPerkUse - see that file's own doc comment for why nothing analogous existed here before.
  * @param {Actor} actor The Actor activating the Power
  * @param {Power} power The Power being activated
@@ -74,8 +66,7 @@ export async function powerCost(actor, power, payer = actor) {
 
   // Sorcerous Powers (Finster's Monster-Matic Cookbook, "Building Sorcerous Powers," p.274):
   // powerCost is a ONE-TIME budget spent to BUILD the Power when the Sorcery Perk is taken (or a
-  // new level's points are gained) - "Once you have created a Power, you can use it as often as
-  // the Power dictates." It is never spent again on activation, unlike a Grid Power's Personal
+  // new level's points are gained) - a built Power is used as often as it says. It is never spent again on activation, unlike a Grid Power's Personal
   // Power cost - see documents/actor.mjs#_prepareSorcerousPower's own committed-vs-available
   // tracking of that same budget. Dispatches straight to the Power's own effect with nothing spent.
   if (powerType == "sorcerous") {
@@ -84,7 +75,7 @@ export async function powerCost(actor, power, payer = actor) {
   }
 
   // G.I. Joe nanomite powers cost no Power points - they're limited to uses per day instead. See
-  // helpers/nanomite-uses.mjs.
+  // mechanics/resources/nanomite-uses.mjs.
   if (power.system.type == "nanomite") {
     if (await spendDailyUse(actor, power)) {
       await onPowerUse(actor, power, 0);

@@ -5,6 +5,9 @@
   "_id": "7VyNmcnl9DuuIKlp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Knock Down, Drag Out","when":["attack","self:has:Stunning Surprise",{"any":["target:status:surprised","self:status:invisible"]},"self:levelDiff>=3"],"steps":[{"do":"applyCondition","condition":"unconscious","rounds":1,"to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when Stunning Surprise hits a target at least 3 levels lower than you, it is knocked Unconscious for 1 round.</p>"

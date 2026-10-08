@@ -5,6 +5,9 @@
   "_id": "j5arWXvkd5fHbe0Q",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Additional Attack Type: build the new attack","removeOnStop":true,"steps":[{"do":"choose","prompt":"Add which kind of attack?","options":[{"label":"Melee Weapon Attack","steps":[{"do":"setVar","key":"attackName","value":"E20.ZordFeatureAttackMelee"},{"do":"setVar","key":"attackSkill","value":"might"},{"do":"setVar","key":"attackStyle","value":"melee"}]},{"label":"Ranged Weapon Attack","steps":[{"do":"setVar","key":"attackName","value":"E20.ZordFeatureAttackRanged"},{"do":"setVar","key":"attackSkill","value":"targeting"},{"do":"setVar","key":"attackStyle","value":"projectile"},{"do":"setVar","key":"rangeValue","value":50},{"do":"setVar","key":"rangeLong","value":120}]}]},{"do":"pick","key":"damageType","from":"damageType","prompt":"Choose a damage type"},{"do":"createItem","unlinked":true,"knownTraits":true,"data":{"name":"{var.attackName}","type":"weapon","system":{"traits":["{var.picked}"]}},"children":[{"name":"E20.ZordFeatureAttackEffectName","nameData":{"name":"{var.attackName}"},"type":"weaponEffect","system":{"classification":{"skill":"{var.attackSkill}","style":"{var.attackStyle}"},"damageType":"{var.picked}","damageValue":2,"defenseType":"toughness","range":{"min":null,"reachMultiplier":1,"long":"{var.rangeLong}","value":"{var.rangeValue}"}}}]},{"do":"notify","text":"E20.ZordFeatureAttackTypeAdded","data":{"name":"{var.attackName}"}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>When added to a Zord you pick melee or ranged, and the Zord gets a basic attack of that type.</p>"

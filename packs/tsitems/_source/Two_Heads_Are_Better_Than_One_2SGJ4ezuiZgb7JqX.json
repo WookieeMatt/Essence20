@@ -5,6 +5,10 @@
   "_id": "2SGJ4ezuiZgb7JqX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Mark a target","limit":{"per":"encounter"},"steps":[{"do":"target","max":1},{"do":"mark","key":"twoHeads","to":"target","exclusive":true}]},
+      {"type":"RollModifier","label":"Two Heads Are Better Than One","edge":true,"consumeMark":"twoHeads","consumeFrom":"target","when":["attack","markedByMe:twoHeads"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: ↑1 on Alertness. Use button (once per scene): mark a target, and your first attack against it gets an Edge.</p>"

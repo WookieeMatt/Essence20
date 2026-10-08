@@ -5,6 +5,7 @@
   "_id": "WgaIlUQYRCtdYQ83",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["host:trait:computerized","ask:A Perk that grants a drone pet"]},
     "automation": {
       "status": "manual",
       "notes": "<p>The system applies nothing specific for this upgrade. Left to the table: docking and charging your drone.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Computerized, Perk that grants a drone pet"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

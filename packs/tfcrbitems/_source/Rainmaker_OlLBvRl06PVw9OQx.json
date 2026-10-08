@@ -3,6 +3,10 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "rules": [
+      {"type":"Grant","label":"Ram (special attack)","uuid":"Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m","skipIfOwned":true},
+      {"type":"Use","label":"Get the Ram attack back","when":["not:self:hasItem:Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m"],"steps":[{"do":"grant","uuid":"Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: converting into this Alt Mode makes you Long with 45ft Ground Movement; Limited Articulation blocks Athletics and Finesse tests while you're in it. Its Ram attack is added when you take the Alt Mode (Use button re-adds it). Left to the table: carrying Crew and firing from the Firepoints.</p>"
@@ -12,13 +16,6 @@
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 52
-    },
-    "crew": 0,
-    "firepoints": 0,
-    "movement": {
-      "aerial": 0,
-      "aquatic": 0,
-      "ground": 0
     },
     "botModeSize": "large",
     "altModeMovement": {

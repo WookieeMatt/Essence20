@@ -5,6 +5,11 @@
   "_id": "GNuActe2QRVyWH3o",
   "img": "systems/essence20/assets/icons/weapons/excalibur.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","defense":"toughness","amount":1,"stacks":true,"when":["not:self:toggle:shieldMode"]},
+      {"type":"Defense","defense":"evasion","amount":2,"stacks":true,"when":["self:toggle:shieldMode"]},
+      {"type":"Use","label":"Switch between weapon and shield","cost":{"action":"move"},"steps":[{"do":"setToggle","key":"shieldMode"},{"do":"chat","text":"Now used as a shield.","when":["self:toggle:shieldMode"]},{"do":"chat","text":"Now used as a weapon.","when":["not:self:toggle:shieldMode"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks roll Finesse for 2 Sharp damage, with a three-target sweep; its traits and upgrades apply. While equipped it gives +1 Toughness; Use button: switch to riot-shield mode (+2 Evasion, no attacks) as a Move action.</p>"
@@ -149,7 +154,6 @@
     },
     "equipped": true,
     "isPoison": false,
-    "isToxin": false,
     "requirements": {
       "custom": "",
       "skill": "athletics",

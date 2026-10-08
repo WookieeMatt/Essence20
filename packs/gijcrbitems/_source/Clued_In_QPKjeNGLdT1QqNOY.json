@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Spend a Story Point for a clue","cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"chat","text":"{name} spends a Story Point for a clue, or a yes-or-no answer from the GM."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spends a Story Point and posts a chat card. The GM then gives you a clue or answers one yes-or-no question.</p>"

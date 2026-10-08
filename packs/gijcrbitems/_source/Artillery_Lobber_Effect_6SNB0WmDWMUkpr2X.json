@@ -5,6 +5,9 @@
   "_id": "6SNB0WmDWMUkpr2X",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Knocked Prone (Artillery Lobber)","when":["item:own"],"steps":[{"do":"applyCondition","condition":"prone","to":"target"}]}
+    ],
     "originalId": "",
     "actionType": "standard",
     "classification": {
@@ -14,7 +17,7 @@
     "damageType": "sharp",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 12,
     "radius": 10,
     "range": {

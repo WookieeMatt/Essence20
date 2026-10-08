@@ -5,6 +5,13 @@
   "_id": "kow4o1ubo29p8b0D",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Drone Defenses","defense":"toughness","amount":"@item.system.armorBonus.value","stack":"droneDefenses-toughness","when":["self:data:type=companion","self:data:system.type=drone","rule:data:system.type=drone","rule:data:system.armorBonus.defense=toughness","rule:data:system.armorBonus.value>0"]},
+      {"type":"Defense","label":"Drone Defenses","defense":"evasion","amount":"@item.system.armorBonus.value","stack":"droneDefenses-evasion","when":["self:data:type=companion","self:data:system.type=drone","rule:data:system.type=drone","rule:data:system.armorBonus.defense=evasion","rule:data:system.armorBonus.value>0"]},
+      {"type":"Defense","label":"Drone Defenses","defense":"willpower","amount":"@item.system.armorBonus.value","stack":"droneDefenses-willpower","when":["self:data:type=companion","self:data:system.type=drone","rule:data:system.type=drone","rule:data:system.armorBonus.defense=willpower","rule:data:system.armorBonus.value>0"]},
+      {"type":"Defense","label":"Drone Defenses","defense":"cleverness","amount":"@item.system.armorBonus.value","stack":"droneDefenses-cleverness","when":["self:data:type=companion","self:data:system.type=drone","rule:data:system.type=drone","rule:data:system.armorBonus.defense=cleverness","rule:data:system.armorBonus.value>0"]}
+    ],
+    "prerequisites": {"when":["self:has:Basic Defenses"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: adds its bonus to the drone's chosen Defense as though it wore battledress (the best bonus per Defense counts).</p>"
@@ -23,7 +30,7 @@
     "benefit": "",
     "traits": [],
     "type": "drone",
-    "prerequisite": "Basic Defenses"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

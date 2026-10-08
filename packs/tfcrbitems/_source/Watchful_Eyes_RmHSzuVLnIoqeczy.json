@@ -5,6 +5,9 @@
   "_id": "RmHSzuVLnIoqeczy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Alertness vs DIF 10: Snag targeted enemies (Watchful Eyes)","event":"afterRoll","outcome":"success","when":["skill:alertness","var:dif=10"],"steps":[{"do":"target","min":0},{"do":"bank","to":"targets","filter":["target:enemy"],"when":["combat:exists"],"snag":true,"appliesWhen":["not:roll:initiative",{"any":["not:combat:exists","ownTurn"]}],"until":"endOfNextTurn","untilOf":"recipient"},{"do":"bank","to":"targets","filter":["target:enemy"],"when":["not:combat:exists"],"snag":true,"appliesWhen":["not:roll:initiative",{"any":["not:combat:exists","ownTurn"]}],"until":"scene"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: when you roll Alertness against a DIF of 10 and succeed, each enemy you have targeted takes a Snag on its first Skill Test on its next turn, labelled Watchful Eyes in that enemy's Roll Options Dialog.</p><p>Left to the table: how many enemies you may pick (one, plus one per 5 over the DIF, doubled on a Critical Success).</p>"

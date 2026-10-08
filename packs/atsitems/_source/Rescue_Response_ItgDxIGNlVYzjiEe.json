@@ -5,6 +5,9 @@
   "_id": "ItgDxIGNlVYzjiEe",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Rescue Response","when":[{"any":["skill:science","skill:technology"]},"self:morphed"],"upshift":1}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: while Morphed, every Science and Technology roll gets ↑1, already counted in the Roll Options Dialog's Shift Up box.</p><p>Left to the table: limiting it to helping, repairing or healing someone, once per turn as a Free action (lower Shift Up by 1 on other rolls).</p>"
@@ -17,7 +20,6 @@
     },
     "actionType": "free",
     "canActivate": false,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,

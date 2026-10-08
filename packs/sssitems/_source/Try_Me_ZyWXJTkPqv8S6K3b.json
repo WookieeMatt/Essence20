@@ -5,6 +5,10 @@
   "_id": "ZyWXJTkPqv8S6K3b",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Challenge everyone within 20 ft to a fist fight","limit":{"per":"encounter"},"cost":{"action":"standard"},"steps":[{"do":"notify","text":"E20.NoOneInRange","level":"warn","stop":true,"beforeCost":true,"when":["not:enemy:within:20"]},{"do":"focus","to":"enemies:20"},{"do":"postCard","key":"tryMe","text":"E20.TryMeIssued"}]},
+      {"type":"CardButtons","card":"tryMe","each":"target","who":"gm","label":"{target} accepts","steps":[{"do":"placeBeside","to":"target"},{"do":"contest","skills":["might","finesse"],"best":true,"tieWins":true,"against":{"skills":["might","finesse"],"best":true},"to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per combat, posts a challenge to enemies within 20ft; the GM accepts for each one, and you roll contested unarmed tests.</p>"

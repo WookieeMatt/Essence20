@@ -5,6 +5,9 @@
   "_id": "aFgXXk1gMMb4saVf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Move a creature one place in the Initiative order","when":["combat:exists","not:combat:round:0","not:combat:round:1"],"cost":{"resource":{"path":"system.energon.normal.value"},"amount":1},"steps":[{"do":"target","max":1,"beforeCost":true},{"do":"choose","beforeCost":true,"prompt":"Move {target}...","options":[{"label":"Up one place","steps":[{"do":"setVar","key":"dir","value":"up"}]},{"label":"Down one place","steps":[{"do":"setVar","key":"dir","value":"down"}]}]},{"do":"require","beforeCost":true,"when":["var:dir=up"],"check":["target:turnNeighbour:up"],"message":"No one to move past that way."},{"do":"require","beforeCost":true,"when":["var:dir=down"],"check":["target:turnNeighbour:down"],"message":"No one to move past that way."},{"do":"writeInitiative","to":"target","when":["var:dir=up"],"value":"@turnOrder.up + 0.01","exact":true},{"do":"writeInitiative","to":"target","when":["var:dir=down"],"value":"@turnOrder.down - 0.01","exact":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 Energon to move a creature up or down one place in the Initiative order.</p>"

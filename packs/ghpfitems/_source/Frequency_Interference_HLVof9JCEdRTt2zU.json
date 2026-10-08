@@ -5,13 +5,17 @@
   "_id": "HLVof9JCEdRTt2zU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Jam computerized equipment (Frequency Interference)","cost":{"action":"standard"},"steps":[{"do":"target","min":1,"max":1,"beforeCost":true},{"do":"require","check":["not:target:self","target:withinOrUnknown:100"],"message":"Pick another creature within 100 ft.","beforeCost":true},{"do":"pick","key":"jam","from":"targetItem","filter":["item:trait:computerized","not:item:marked:jammed"],"prompt":"Which piece of computerized equipment?","beforeCost":true},{"do":"setVar","key":"dif","value":"@availabilityDif.jam"},{"do":"rollPlain","skill":"technology","to":"operator","var":"dif"},{"do":"roll","skill":"technology","dif":"@var.dif","onSuccess":[{"do":"markItem","item":"choice:jam","key":"jammed","effects":{"blockRolls":true,"noArmorDefense":true}},{"do":"button","label":"Reboot {var.itemName} (a Move action)","intro":"{target}'s {var.itemName} stops working until it is rebooted.","who":"targets","steps":[{"do":"spendActionFor","action":"move","to":"target"},{"do":"unmarkItem","item":"{var.itemUuid}","key":"jammed"},{"do":"chat","text":"{target} reboots the equipment."}]}],"onFail":[{"do":"chat","text":"{name} fails to jam it."}]}]}
+    ],
+    "prerequisites": {"when":["ask:Technology (Computers) Specialization"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: target a Computerized item within 100ft and roll a contested Technology test (or against its Availability). A jammed weapon can't attack and jammed armor loses its bonus until a chat-card Reboot button (a Move action) clears it.</p><p>Left to the table: the free Technology (Computers) kit.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Technology (Computers) Specialization",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

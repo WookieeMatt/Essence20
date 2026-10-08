@@ -5,6 +5,7 @@
   "_id": "vCBvQRJV2auFxy1a",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:origin:Dragon"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Granted: the Fire Breath weapon.</p><p>Left to the table: choosing Fire damage for your unarmed melee attacks.</p>"
@@ -32,7 +33,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Dragon Origin",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

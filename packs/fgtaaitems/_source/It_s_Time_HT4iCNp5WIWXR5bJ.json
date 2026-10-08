@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Morph","when":["not:self:morphed"],"steps":[{"do":"setForm","form":"morphed","value":true,"silent":true}]},
+      {"type":"Use","label":"Unmorph","when":["self:morphed"],"steps":[{"do":"setForm","form":"morphed","value":false,"silent":true}]}
+    ],
+    "prerequisites": {"when":["self:count:role>=1","not:self:hasType:perk:It's Morphin Time!"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: Morph or unmorph.</p><p>Left to the table: turning it off when the scene ends.</p>"
@@ -13,7 +18,7 @@
       "book": "Field Guide to Action and Adventure",
       "page": 70
     },
-    "prerequisite": "Role without the It's Morphin Time! Faction Perk",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

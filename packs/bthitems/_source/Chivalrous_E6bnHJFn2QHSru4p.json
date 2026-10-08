@@ -5,6 +5,10 @@
   "_id": "E6bnHJFn2QHSru4p",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Add a Story Point to the pool","limit":{"per":"encounter"},"steps":[{"do":"gainResource","resource":{"storyPoints":true},"amount":1},{"do":"chat","text":"{name} adds a Story Point to the team's pool."}]},
+      {"type":"RollModifier","label":"Chivalrous (Diplomacy)","when":["skill:persuasion","roll:specialization=diplomacy"],"upshift":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Persuasion rolls made with a Specialization named Diplomacy get ↑2, already counted in the Roll Options Dialog's Shift Up box. Use button: add your extra Story Point to the pool. For the once-a-day Specialized Social test, tick Specialized in the Roll Options Dialog.</p>"

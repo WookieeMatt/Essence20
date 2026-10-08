@@ -5,6 +5,10 @@
   "_id": "Px86Wo4MyldPjl5X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"FanningShots","label":"Storm of Lead (Fanning +1, first shot ↑1)","extraShots":1,"firstShotUpshift":1}
+    ],
+    "prerequisites": {"when":["self:skill:targeting>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: with a Fanning weapon you can fan one extra shot, and your first shot gets ↑1. Choose the number of shots in the Roll Options Dialog.</p>"
@@ -15,7 +19,7 @@
       "book": "A Jump Through Time",
       "page": 56
     },
-    "prerequisite": "Targeting Skill d4 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -5,6 +5,12 @@
   "_id": "0fKppLmw0TSNAn5z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Change shape (press again to change back)","steps":[{"do":"changeShape"}]},
+      {"type":"ShapeOption","kind":"skill","key":"morphSkill","label":"E20.Mlp1MorphSkill"},
+      {"type":"RollModifier","upshift":2,"when":["shape:skill:morphSkill"]}
+    ],
+    "prerequisites": {"when":["ask:Ability to change shape"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: when you change shape, pick a Skill the creature is known for to get ↑2 on it while in that shape.</p>"
@@ -15,7 +21,7 @@
       "book": "Dark Skies Over Equestria",
       "page": 20
     },
-    "prerequisite": "Ability to change shape",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

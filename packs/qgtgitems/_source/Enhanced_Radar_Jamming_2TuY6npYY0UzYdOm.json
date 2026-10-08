@@ -5,6 +5,12 @@
   "_id": "2TuY6npYY0UzYdOm",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","when":["self:type:vehicle"],"steps":[{"do":"setToggle","key":"jam"},{"do":"chat","text":"{name}'s jammer is on.","when":["self:toggle:jam"]},{"do":"chat","text":"{name}'s jammer is off.","when":["not:self:toggle:jam"]}]},
+      {"type":"RollModifier","label":"Enhanced Radar Jamming","scope":"aura","radius":5280,"affects":"all","snag":true,"when":["skill:technology","self:toggle:jam"]},
+      {"type":"RollModifier","label":"Enhanced Radar Jamming","snag":true,"when":["skill:technology","self:toggle:jam","self:onCanvas"]}
+    ],
+    "prerequisites": {"when":["self:has:Radar Jammer"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: switch the jammer on or off. While on, Technology tests made within a mile of the vehicle get a Snag in the Roll Options Dialog.</p><p>Left to the table: signals that are blocked outright within 100ft.</p>"
@@ -23,7 +29,7 @@
     "benefit": "The vehicle's jamming automatically blocks all signals within 100ft, and imposes Snag on signals within 1 mile while active.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Radar Jammer"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

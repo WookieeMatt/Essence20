@@ -39,15 +39,13 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
     "requirements": {
-      "custom": "Nil",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

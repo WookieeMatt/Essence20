@@ -5,6 +5,10 @@
   "_id": "id5IVoPuSC03mKfZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","item:damageType:grapple"]},
+      {"type":"DamageType","label":"Grapple deals Blunt (Bear Hug)","to":"blunt","when":["attack","item:damageType:grapple"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Grapple attacks also deal 1 Blunt damage.</p>"

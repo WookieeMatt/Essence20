@@ -1,6 +1,6 @@
 {
   "folder": "3biTo5jNrvQrycM8",
-  "name": "Close Combat Bludgeoning Alternate Effect 1",
+  "name": "Close Combat Bludgeon Alternate Effect 1",
   "type": "weaponEffect",
   "_id": "2X1w4UM04U6LliE0",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -14,7 +14,7 @@
     "damageType": "blunt",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

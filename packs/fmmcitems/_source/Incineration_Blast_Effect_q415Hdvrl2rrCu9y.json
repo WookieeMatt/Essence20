@@ -5,6 +5,10 @@
   "_id": "q415Hdvrl2rrCu9y",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Incineration Blast: smoldering on a Critical Success","event":"hit","outcome":"crit","when":["item:own"],"steps":[{"do":"mark","to":"target","key":"pr2IncinerationSmolder","until":"endOfNextTurn","untilOf":"recipient"},{"do":"chat","text":"{target} is smoldering: moving on its next turn deals 1 Fire damage."}]},
+      {"type":"Trigger","label":"Incineration Blast: smoldering target moved","event":"movedOnTurn","watch":"any","when":["markedByMe:pr2IncinerationSmolder"],"steps":[{"do":"unmark","to":"target","key":"pr2IncinerationSmolder"},{"do":"damage","to":"target","amount":1,"damageType":"fire"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: rolls Targeting against everyone in a 30ft area for 2 Fire damage. On a Critical Success the target is marked, and if it moves on its next turn it takes 1 Fire damage automatically.</p>"
@@ -19,7 +23,7 @@
     "damageValue": 2,
     "defenseType": "evasion",
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 6,
     "radius": 30,
     "range": {

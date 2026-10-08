@@ -5,6 +5,9 @@
   "_id": "5kUbeIW2DrjbcScE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"single","target":"anyDie","reset":"scene","maxUses":1,"keepBetter":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once per scene, a button to reroll one die, keeping the better result.</p>"
@@ -16,17 +19,8 @@
       "page": 0
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "single",
-      "target": "anyDie",
-      "maxUses": 1,
-      "reset": "scene",
-      "keepBetter": true
-    },
     "selectionLimit": 1,
-    "type": "role",
-    "canActivate": true
+    "type": "role"
   },
   "effects": [],
   "sort": 900000,

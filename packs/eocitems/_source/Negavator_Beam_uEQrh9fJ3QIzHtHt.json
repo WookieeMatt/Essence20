@@ -39,15 +39,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "prototype",
     "classification": {
       "size": "heavy"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=gigantic"]},
     "requirements": {
-      "custom": "Gigantic",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

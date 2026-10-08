@@ -5,6 +5,10 @@
   "_id": "Xi2sHKmBi21c3wbu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch Volley on","when":["not:self:data:flags.essence20.volleyActive"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"updateActor","set":{"flags.essence20.volleyActive":true}}]},
+      {"type":"Use","label":"Switch Volley off","when":["self:data:flags.essence20.volleyActive"],"steps":[{"do":"updateActor","set":{"flags.essence20.volleyActive":false}}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend 1 Personal Power to switch Volley on; your ranged attack then rolls separately against each target you select. Switching it off is free.</p><p>Left to the table: staying still, and the Volley Shots cap on targets.</p>"

@@ -5,6 +5,9 @@
   "_id": "jw8ggFiT6xdr0uMc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"HazardProtection","label":"Environmental Aegis (breathing and temperature, Morphed)","categories":["breathing","temperature"],"when":["self:morphed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while Morphed, the Extreme Cold, Extreme Heat, Thick, Thin and Toxic Atmosphere and Vacuum hazards the GM sets on a scene skip you, so they cost you no Health or Essence and don't leave you Impaired.</p>"

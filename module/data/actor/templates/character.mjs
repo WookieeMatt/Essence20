@@ -1,4 +1,4 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../../util/config.mjs";
 
 import { makeBool, makeInt, makeStr, makeStrWithChoices, makeStrArrayWithChoices } from "../../generic-makers.mjs";
 
@@ -39,6 +39,25 @@ function makeSkillRankAllocation() {
     string: makeStr(''),
   });
 }
+
+/**
+ * NPC / Companion Essences: the typed base, the worked-out score (max) and the current amount (value) - see
+ * mechanics/characters/creature-essences.mjs.
+ */
+export function makeBasedEssenceFields() {
+  return new fields.SchemaField({
+    base: makeInt(3),
+    max: makeInt(3),
+    value: makeInt(3),
+  });
+}
+
+export const basedEssences = () => new fields.SchemaField({
+  strength: makeBasedEssenceFields(),
+  speed: makeBasedEssenceFields(),
+  smarts: makeBasedEssenceFields(),
+  social: makeBasedEssenceFields(),
+});
 
 export function makeEssenceFields() {
   return new fields.SchemaField({

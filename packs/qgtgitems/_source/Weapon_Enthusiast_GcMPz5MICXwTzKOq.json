@@ -5,6 +5,9 @@
   "_id": "GcMPz5MICXwTzKOq",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Weapon Enthusiast (no Lend Assistance with your weapon type)","immune":["lendAssistance"],"when":["attack",{"any":["item:weaponType:flagOf:pwpCtdsf8l7T6Sii","item:weaponType:flagOf:GcMPz5MICXwTzKOq"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Lend Assistance doesn't help your attacks with weapons of your chosen type (set by the Perk's Use button).</p>"

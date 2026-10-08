@@ -5,6 +5,9 @@
   "_id": "EC7Xzefmh7AEHBrr",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Teaching magic (Mired in Academia: Snag)","snag":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a Snag switch for tests to teach anyone about magic.</p>"

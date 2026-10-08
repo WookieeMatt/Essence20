@@ -1,7 +1,7 @@
-import { spend } from "../helpers/action-economy.mjs";
+import { spend } from "../mechanics/actions/action-economy.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
-import { checkIsLocked } from "../helpers/actor.mjs";
-import { onPerkUse } from "../helpers/banked-buffs.mjs";
+import { checkIsLocked } from "../util/sheet-lock.mjs";
+import { onPerkUse } from "../mechanics/resources/banked-buffs.mjs";
 import { onAlterationDelete } from "./alteration-handler.mjs";
 import { deleteAttachmentsForItem, setEntryAndAddItem } from "./attachment-handler.mjs";
 import { onOriginDelete } from "./background-handler.mjs";
@@ -95,7 +95,7 @@ export async function onItemEdit(event) {
 
 /**
  * Handles the sheet's "Use" control on a bankable Perk (Think On It, Plan of Action - see
- * helpers/banked-buffs.mjs for the full registry and what "Use" actually does for each).
+ * mechanics/resources/banked-buffs.mjs for the full registry and what "Use" actually does for each).
  *
  * Takes the matched [data-action] element directly, NOT the originating click event - Foundry's
  * own ApplicationV2 action dispatcher (#onClickAction in its core code) invokes a registered
@@ -186,7 +186,7 @@ export async function onItemDelete(event, actorSheet) {
     } else if (item.type == "faction") {
       onFactionDelete(item, actor);
     } else if (item.type == "focus") {
-      onFocusDelete(actor, item);
+      await onFocusDelete(actor, item);
     } else if (item.type == 'influence') {
       deleteAttachmentsForItem(item, actor);
     } else if (item.type == "origin") {
@@ -199,7 +199,8 @@ export async function onItemDelete(event, actorSheet) {
       deleteAttachmentsForItem(item, actor);
     }
 
-    item.delete();
+    // A Focus was undone just above - tell Item#_onDelete not to undo it again.
+    item.delete(item.type == "focus" ? { essence20FocusHandled: true } : {});
     li.slideUp(200, () => actorSheet.render(false));
   }
 }
@@ -309,8 +310,8 @@ export async function onShieldActivationToggle(target, actorSheet) {
     });
   }
 
-  // "You must spend a Move action to raise your shield ... another Move action to lower your shield"
-  // (Cobra Codex p.98). Hold The Line makes either one a Free action (helpers/action-perks.mjs).
+  // Raising a shield is a Move action, and lowering it another
+  // (Cobra Codex p.98). Hold The Line makes either one a Free action (mechanics/actions/action-perks.mjs).
   const paid = await spend(actor, 'move', { source: currentShield.name, context: { kind: 'shieldToggle' } });
   if (paid.blocked) {
     return;

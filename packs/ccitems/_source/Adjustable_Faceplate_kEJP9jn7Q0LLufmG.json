@@ -5,6 +5,11 @@
   "_id": "kEJP9jn7Q0LLufmG",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","defense":"toughness","amount":1,"when":["self:type:playerCharacter","not:self:morphed","not:rule:data:flags.essence20.gij1Faceplate=open"]},
+      {"type":"Defense","defense":"evasion","amount":1,"when":["self:type:playerCharacter","not:self:morphed","rule:data:flags.essence20.gij1Faceplate=open"]},
+      {"type":"Use","label":"Set the faceplate","steps":[{"do":"choose","prompt":"Set the faceplate:","options":[{"label":"Closed (+1 Toughness)","steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.gij1Faceplate":"closed"}},{"do":"chat","text":"{name} closes the faceplate."}]},{"label":"Open (+1 Evasion)","steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.gij1Faceplate":"open"}},{"do":"chat","text":"{name} opens the faceplate."}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: switch the faceplate open or closed. While closed and the armor is worn (not Morphed), you get +1 Toughness and Evasion.</p>"

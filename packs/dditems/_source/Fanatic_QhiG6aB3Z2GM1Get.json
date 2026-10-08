@@ -5,6 +5,9 @@
   "_id": "QhiG6aB3Z2GM1Get",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ShiftCap","label":"Fanatic","maxDown":2,"when":[{"any":["scene:token:target:ally&target:tag:commander","scene:token:target:ally&target:hasItem:name~word of unicron"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while a friendly token on the scene is tagged commander or has Word of Unicron, your rolls never end up worse than ↓2 overall. The Roll Options Dialog adds a Fanatic ↑ to cancel anything beyond that.</p>"

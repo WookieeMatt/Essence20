@@ -5,6 +5,11 @@
   "_id": "AgWI1lccUBTgj3gT",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":["self:skill:brawn>=d4"]},
+    "rules": [
+      {"type":"RollModifier","when":["skill:intimidation"],"upshift":1},
+      {"type":"HitRider","label":"Unarmed hits deal Sharp (Pit Plate)","damageType":"sharp","retypeFrom":"blunt","retypeCrit":true,"when":["attack:unarmed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while worn, +2 Toughness on the sheet, ↑1 on Intimidation Tests (labelled Pit Plates in the Roll Options Dialog), and your unarmed hits deal Sharp damage.</p>"
@@ -23,7 +28,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Brawn d4"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

@@ -5,6 +5,9 @@
   "_id": "As1eUnG5W54GwotE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick the improvement (Inventive Application)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"choose","prompt":"Which improvement?","options":[{"label":"Replace your Energy-based Sidearm","steps":[{"do":"pickGrant","from":{"type":"weapon","tags":["item:data:system.classification.size=sidearm","not:item:hasAttack:item:data:system.damageValue>2"]}},{"do":"deleteItem","item":"firstWithAttached:item:type:weapon&item:data:system.classification.size=sidearm&not:item:data:flags.essence20.grantedBy","all":true}]},{"label":"Replace your Versatile Power Weapon","steps":[{"do":"pickGrant","from":{"type":"weapon","tags":["item:trait:powerWeapon","not:item:hasAttack:item:data:system.damageValue>2"]}},{"do":"deleteItem","item":"firstWithAttached:item:type:weapon&item:trait:powerWeapon&not:item:data:flags.essence20.grantedBy","all":true}]},{"label":"Heavier armor","steps":[{"do":"updateActor","set":{"system.trained.armors.heavy":true},"when":["self:data:system.trained.armors.medium"]},{"do":"updateActor","set":{"system.trained.armors.medium":true},"when":["not:self:data:system.trained.armors.medium"]},{"do":"refreshMorphedToughness"}]},{"label":"A free weapon upgrade","steps":[{"do":"pickGrant","from":{"type":"upgrade","tags":["item:data:system.type=weapon"]}}]}]},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: swap your Sidearm or Power Weapon, move to a heavier shell, or add a free upgrade.</p>"

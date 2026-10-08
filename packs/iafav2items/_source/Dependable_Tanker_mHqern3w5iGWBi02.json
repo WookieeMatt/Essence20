@@ -5,6 +5,9 @@
   "_id": "mHqern3w5iGWBi02",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Spend 1 Story Point (Dependable Tanker: Edge)","when":[{"any":["skill:driving","skill:technology"]},"not:roll:dataset:isInitiative"],"edge":true,"clearSnag":true,"cost":{"resource":{"storyPoints":true},"amount":1}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: on Driving and Technology tests, spend a Story Point for an Edge. Use it on tests involving vehicles.</p>"

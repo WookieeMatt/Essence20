@@ -5,6 +5,10 @@
   "_id": "oGVp2hIxNBT8g1QW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Intimidation instead (Fear Is Universal)","when":[{"any":["skill:animalHandling","skill:deception","skill:persuasion"]}],"useSkill":"intimidation"},
+      {"type":"SkillImmunityOverride","label":"Fear Is Universal (a Story Point: affect a creature immune to the Skill)","cost":{"storyPoints":1}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when you hit a creature immune to the Skill you used, you are asked whether to spend a Story Point to affect it anyway.</p>"

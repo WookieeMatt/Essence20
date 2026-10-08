@@ -5,6 +5,9 @@
   "_id": "Rr7ucZahtHI9yXwA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Duty Of The Graphite","when":["self:data:system.powers.personal.value>=2"],"cost":{"resource":{"rolePoints":true},"amount":1},"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":2},{"do":"rollVsEach","skill":"persuasion","defense":"cleverness","onHit":[{"do":"applyCondition","condition":"blinded","to":"target"}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spend 1 Grid Surge and 2 Personal Power; on arrival you roll against a chosen enemy's Cleverness and Blind them to your allies on a success.</p><p>Left to the table: moving your token to the other Rangers.</p>"

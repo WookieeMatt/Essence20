@@ -5,6 +5,12 @@
   "_id": "985JSL4ANRcKb1EX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Forgiving (remember an aggressor)","event":"targeted","when":[{"any":["attack","skill:intimidation"]},"not:target:self"],"steps":[{"do":"mark","to":"target","key":"forgivingAggressor","perSetter":true}]},
+      {"type":"RollModifier","label":"Forgiving (Empathy against an aggressor)","when":["skill:choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ","markedByMe:forgivingAggressor"],"edge":true},
+      {"type":"Trigger","label":"Forgiving (aggression forgiven)","event":"hit","when":["skill:choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ","markedByMe:forgivingAggressor"],"steps":[{"do":"unmark","to":"target","key":"forgivingAggressor","perSetter":true}]},
+      {"type":"Trigger","label":"Forgiving (aggression forgiven)","event":"miss","when":["skill:choiceOf:Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ","markedByMe:forgivingAggressor"],"steps":[{"do":"unmark","to":"target","key":"forgivingAggressor","perSetter":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: anyone who attacks or Intimidates you is remembered. Your next test with your Empathy Skill targeting them gets Edge, labelled Forgiving in your Roll Options Dialog.</p>"

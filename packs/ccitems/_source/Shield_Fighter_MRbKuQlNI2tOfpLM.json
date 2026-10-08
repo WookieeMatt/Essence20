@@ -5,9 +5,13 @@
   "_id": "MRbKuQlNI2tOfpLM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Give the shield an Element (1 Personal Shield use)","cost":{"action":"free","resource":{"rolePoints":"Personal Shield"},"amount":"1 - @actor.system.useUnlimitedResource"},"steps":[{"do":"pick","key":"element","from":"list","beforeCost":true,"prompt":"Which Element?","options":[["acid","E20.DamageAcid"],["cold","E20.DamageCold"],["electric","E20.DamageElectric"],["emp","E20.DamageEmp"],["fire","E20.DamageFire"],["laser","E20.DamageLaser"],["sonic","E20.DamageSonic"]]},{"do":"mark","to":"self","key":"o1ShieldElement","until":"rounds:10"},{"do":"chat","text":"{name}'s shield gains the {choice.element} trait for 1 minute."}]},
+      {"type":"HitRider","label":"Shield Fighter","option":{"damage":"@var.damage","damageType":"{choice.element}","label":"Shield Fighter: as Element"},"when":["self:marked:o1ShieldElement",{"any":["weapon:source:Compendium.essence20.gi_joe_crb.Item.8lNIijY5XompKHH7","weapon:source:Compendium.essence20.gi_joe_crb.Item.ZNokHTRBa5aindap"]}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: Close Combat Blade and Close Combat Bludgeoning.</p><p>Use button (Free): spend a Personal Shield use to give those weapons an Element for a minute; their hits then offer the Element effect.</p>"
+      "notes": "<p>Granted: Close Combat Blade and Close Combat Bludgeon.</p><p>Use button (Free): spend a Personal Shield use to give those weapons an Element for a minute; their hits then offer the Element effect.</p>"
     },
     "originalId": "",
     "actionType": "free",
@@ -29,7 +33,7 @@
       "sf02": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.ZNokHTRBa5aindap",
         "img": "icons/svg/sword.svg",
-        "name": "Close Combat Bludgeoning",
+        "name": "Close Combat Bludgeon",
         "type": "weapon"
       }
     }

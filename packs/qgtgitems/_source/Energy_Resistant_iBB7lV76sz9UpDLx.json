@@ -5,6 +5,10 @@
   "_id": "iBB7lV76sz9UpDLx",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Choose the Element","steps":[{"do":"pick","key":"element","from":"list","prompt":"Choose an Element to be Resistant to","options":[["acid","E20.DamageAcid"],["cold","E20.DamageCold"],["electric","E20.DamageElectric"],["emp","E20.DamageEmp"],["fire","E20.DamageFire"],["laser","E20.DamageLaser"],["sonic","E20.DamageSonic"]],"legacy":"flags.essence20.elementChoice","ifUnset":true}]},
+      {"type":"DerivedStat","label":"Energy Resistant ({choice.element})","path":"system.resistances.{choice.element}","op":"set","value":true,"when":["self:type:vehicle"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when attached you choose an Element; the vehicle gains Resistance to it.</p>"

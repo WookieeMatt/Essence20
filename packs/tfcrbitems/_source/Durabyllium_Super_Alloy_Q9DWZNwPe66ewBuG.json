@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Durabyllium Super-Alloy","when":["attack",{"any":["item:damageType:blunt","item:damageType:cold","item:damageType:fire"]}],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 Toughness. Automatic: Blunt, Cold and Fire attacks against you take ↓1, labelled Durabyllium Super-Alloy in the attacker's Roll Options Dialog.</p>"

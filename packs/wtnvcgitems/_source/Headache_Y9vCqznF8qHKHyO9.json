@@ -5,6 +5,10 @@
   "_id": "Y9vCqznF8qHKHyO9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"HitRider","label":"Headache","option":{"key":"headache","damage":"max(0, @actor.system.essences.strength.max - @actor.system.essences.strength.value) + max(0, @actor.system.essences.speed.max - @actor.system.essences.speed.value) + max(0, @actor.system.essences.smarts.max - @actor.system.essences.smarts.value) + max(0, @actor.system.essences.social.max - @actor.system.essences.social.value)","damageType":"psychic"},"when":["attack:unarmed","calc:max(0, @actor.system.essences.strength.max - @actor.system.essences.strength.value) + max(0, @actor.system.essences.speed.max - @actor.system.essences.speed.value) + max(0, @actor.system.essences.smarts.max - @actor.system.essences.smarts.value) + max(0, @actor.system.essences.social.max - @actor.system.essences.social.value) > 0"]}
+    ],
+    "prerequisites": {"when":["self:skill:weird>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: once you've taken Essence damage, your unarmed melee hits show a Headache button that deals extra Psychic damage equal to it.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Weird +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

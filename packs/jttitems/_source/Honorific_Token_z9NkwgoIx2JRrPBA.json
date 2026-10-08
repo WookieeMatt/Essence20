@@ -5,9 +5,12 @@
   "_id": "z9NkwgoIx2JRrPBA",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Regain a Story Point","cost":{"action":"move"},"limit":{"per":"rest"},"steps":[{"do":"gainResource","resource":{"storyPoints":true}}]}
+    ],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button: spend a Move action to regain a Story Point.</p><p>Left to the table: holding it to once per day (the system limits it per Combat).</p>"
+      "status": "full",
+      "notes": "<p>Use button: spend a Move action to regain a Story Point, once per day (it comes back after a Rest).</p>"
     },
     "originalId": "",
     "description": "",

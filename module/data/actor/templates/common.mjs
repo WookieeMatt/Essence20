@@ -1,4 +1,4 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../../util/config.mjs";
 
 import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
@@ -62,7 +62,7 @@ export function makeSkillFields(essence, canBeInitiative=false, init='d20', isCh
     shiftUp: makeInt(0),
     snag: makeBool(false),
     // Specializations under this skill, keyed by a slug of their own name (see
-    // helpers/utils.mjs#slugifySpecializationName) rather than an opaque random id, so a Perk's
+    // util/utils.mjs#slugifySpecializationName) rather than an opaque random id, so a Perk's
     // Active Effect can target one directly - e.g. system.skills.science.specializations.
     // medicine.shiftUp (ADD) or .edge (OVERRIDE true), or even grant the entry itself outright
     // via one OVERRIDE change per field (.name, .granted, etc. - see
@@ -73,7 +73,7 @@ export function makeSkillFields(essence, canBeInitiative=false, init='d20', isCh
     // item/templates/parent-item.mjs) for this same shape of "id -> record" actor data. Each
     // entry: {name, shift, isSpecialized, edge, shiftUp, shiftDown, snag, granted}. `granted`
     // distinguishes a specialization a Perk/Item gave the actor for free from one the player
-    // bought with a skill point - see helpers/skill-picker.mjs#computeEssenceSpend, which only
+    // bought with a skill point - see mechanics/rolls/skill-picker-math.mjs#computeEssenceSpend, which only
     // tallies the latter. See essence20-specialization-redesign for the full design this
     // replaces (a standalone `specialization` Item type, still readable via a Release N
     // migration - see migration.mjs).
@@ -86,7 +86,7 @@ export function makeSkillFields(essence, canBeInitiative=false, init='d20', isCh
   // Joe CRB's Terrifying Presence: system.skills.intimidation.essences.social = true, on top of
   // Intimidation's default strength: true). Always present (not gated on essence === 'any' the
   // way it used to be) since any skill could become multi-Essence this way - see
-  // helpers/skill-picker.mjs#computeEssenceSpend, which only actually reads this once a skill's
+  // mechanics/rolls/skill-picker-math.mjs#computeEssenceSpend, which only actually reads this once a skill's
   // own `essences` has more than one flag true; it's a no-op default the rest of the time. The
   // Skill Picker (module/apps/skill-picker.mjs) is where this gets split, mirroring how
   // character-sheet.mjs#_prepareSkillRankAllocation already tallies ordinary skills.
@@ -121,7 +121,7 @@ export const common = () => ({
   /* Per-turn action budgets, on the shared common template so every actor type inherits them -
      playerCharacter, npc, companion, vehicle, zord, megaform. Only the BUDGET lives here; what an
      actor has actually spent this turn is a per-encounter ledger on the Combatant instead (see
-     helpers/action-economy.mjs), so it can never go stale on the actor, and two unlinked tokens of
+     mechanics/actions/action-economy.mjs), so it can never go stale on the actor, and two unlinked tokens of
      the same actor get separate ledgers.
 
      There is no `reaction` budget, because Essence20 has no reactions. The readied-action
@@ -135,7 +135,7 @@ export const common = () => ({
   actions: new fields.SchemaField({
     enabled: makeBool(true),
     // Speed 1: "Move OR Standard action... then ends their turn" (CRB p.193). Spending either one
-    // consumes the other, which getRemaining honours - see helpers/action-economy.mjs.
+    // consumes the other, which getRemaining honours - see mechanics/actions/action-economy.mjs.
     shared: makeBool(false),
     free: makeActionBudget(),
     move: makeActionBudget(),

@@ -5,6 +5,10 @@
   "_id": "P0ZTAlcenVw2p4P1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Warfighter (Targeting weapons)","when":["attack","item:data:system.classification.skill=targeting"],"specialize":true},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":2,"when":["attack","item:data:system.classification.skill=targeting"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks with Targeting weapons open the Roll Options Dialog with Specialized ticked, and they deal +2 damage on a hit.</p>"

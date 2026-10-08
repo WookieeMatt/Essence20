@@ -5,9 +5,21 @@
   "_id": "NiEaLWcx8N48fvvN",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","self:data:flags.essence20.zeoCrystalBoostOption=weapon","weapon:trait:powerWeapon"]},
+      {"type":"PowerGate","label":"Zeo Crystal Boost: once per scene","when":["not:self:limitUsed:zeoCrystalBoost:encounter"]},
+      {"type":"Trigger","event":"powerUsed","label":"Zeo Crystal Boost: insert the crystal","when":["item:own"],"limit":{"per":"encounter","key":"zeoCrystalBoost"},"steps":[{"do":"choose","prompt":"E20.ZeoCrystalBoostPickOptionLabel","options":[{"label":"E20.ZeoCrystalBoostMorpher","steps":[{"do":"setVar","key":"option","value":"morpher"},{"do":"setVar","key":"where","value":"{lang.ZeoCrystalBoostMorpher}"}]},{"label":"E20.ZeoCrystalBoostWeapon","steps":[{"do":"setVar","key":"option","value":"weapon"},{"do":"setVar","key":"where","value":"{lang.ZeoCrystalBoostWeapon}"}]},{"label":"E20.ZeoCrystalBoostZordDriving","steps":[{"do":"setVar","key":"option","value":"zordDriving"},{"do":"setVar","key":"where","value":"{lang.ZeoCrystalBoostZordDriving}"}]},{"label":"E20.ZeoCrystalBoostZordAttackDamage","steps":[{"do":"setVar","key":"option","value":"zordAttackDamage"},{"do":"setVar","key":"where","value":"{lang.ZeoCrystalBoostZordAttackDamage}"}]},{"label":"E20.ZeoCrystalBoostMegaformTeam","steps":[{"do":"setVar","key":"option","value":"megaformTeam"},{"do":"setVar","key":"where","value":"{lang.ZeoCrystalBoostMegaformTeam}"}]}]},{"do":"updateActor","to":"self","set":{"flags.essence20.zeoCrystalBoostOption":"{var.option}","flags.essence20.zeoCrystalBoostZordAttackConsumed":false}},{"do":"chat","text":"{lang.RulesExtConvB18.ZeoCrystalInserted}"}]},
+      {"type":"Trigger","event":"sceneStart","label":"Zeo Crystal Boost ends with the scene","when":["self:data:flags.essence20.zeoCrystalBoostOption"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.zeoCrystalBoostOption":false}}]},
+      {"type":"RollModifier","label":"Zeo Crystal Boost (Morpher: unarmed attacks ↑1)","upshift":1,"when":["attack:unarmed","self:data:flags.essence20.zeoCrystalBoostOption=morpher"]},
+      {"type":"Defense","label":"Zeo Crystal Boost (Morpher)","defense":"any","amount":1,"when":["self:data:flags.essence20.zeoCrystalBoostOption=morpher"]},
+      {"type":"RollModifier","label":"Zeo Crystal Boost (Zord: Driving ↑1)","upshift":1,"when":["skill:driving","vehicle:driving","vehicle:type:zord","self:data:flags.essence20.zeoCrystalBoostOption=zordDriving"]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":2,"scope":"driven","when":["attack","self:type:zord","holder:data:flags.essence20.zeoCrystalBoostOption=zordAttackDamage","not:holder:data:flags.essence20.zeoCrystalBoostZordAttackConsumed"]},
+      {"type":"Trigger","event":"hit","scope":"driven","oncePerRoll":true,"label":"Zeo Crystal Boost: the Zord's +2 is used","when":["attack","self:type:zord","holder:data:flags.essence20.zeoCrystalBoostOption=zordAttackDamage","not:holder:data:flags.essence20.zeoCrystalBoostZordAttackConsumed"],"steps":[{"do":"updateActor","to":"holder","set":{"flags.essence20.zeoCrystalBoostZordAttackConsumed":true}}]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"scope":"drivenMegaform","stacks":false,"when":["attack","megaform:everyDriver:self:data:flags.essence20.zeoCrystalBoostOption=megaformTeam"]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: once per scene, spend 2 Personal Power and choose Morpher, Power Weapon or Zord; that option's bonus lasts for the scene (the Zord damage option is a single +2).</p>"
+      "notes": "<p>Activate (once per scene): spend 2 Personal Power and choose where the crystal goes - Morpher (↑1 on unarmed attacks, +1 to all Defenses), Power Weapon (+1 damage), Zord (↑1 on Driving while piloting it, or +2 damage on its next successful attack) or your team's Megazord (+1 damage on its attacks while every pilot chose it). The choice lasts until the scene ends.</p>"
     },
     "originalId": "",
     "description": "",
@@ -17,7 +29,6 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 2,

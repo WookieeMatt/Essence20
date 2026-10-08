@@ -17,7 +17,7 @@
     },
     "items": {
       "d695": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.5K1meYTN9tX4PlXi",
+        "uuid": "Compendium.essence20.tf_crb.Item.5K1meYTN9tX4PlXi",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Rocket Launcher Effect",
         "type": "weaponEffect",
@@ -39,15 +39,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "heavy"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:skill:brawn>=d4","self:size>=huge"]}]},
     "requirements": {
-      "custom": "Huge",
+      "custom": "",
       "skill": "brawn",
       "shift": "d4"
     },

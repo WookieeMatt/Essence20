@@ -5,6 +5,10 @@
   "_id": "zsuQoBsso5SddTAs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Science instead (How Strange!)","when":["skill:weird"],"useSkill":"science"}
+    ],
+    "prerequisites": {"when":["self:hasType:role:Scientist"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: ↑2 on Weird. Roll Options Dialog: on Weird tests, an option to roll your Science Skill instead.</p>"
@@ -25,7 +29,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Scientist Role",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

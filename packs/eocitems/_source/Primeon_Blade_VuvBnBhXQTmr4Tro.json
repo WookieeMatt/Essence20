@@ -5,6 +5,9 @@
   "_id": "VuvBnBhXQTmr4Tro",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Primeon Blade (1 damage to a component)","when":["item:own","target:combinerForm","roll:damaging"],"steps":[{"do":"forEach","to":"targetParticipants","steps":[{"do":"button","label":"Primeon Blade: {target}","intro":"1 extra damage to {target}","steps":[{"do":"damage","amount":1,"damageType":"element","to":"target"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and traits; the alternate effect adds elemental damage. Chat card: a hit on a Combiner form gives each component a button for +1 Energy damage.</p>"
@@ -65,8 +68,6 @@
         }
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "long"

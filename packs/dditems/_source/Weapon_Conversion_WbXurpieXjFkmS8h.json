@@ -5,6 +5,9 @@
   "_id": "WbXurpieXjFkmS8h",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Convert a two-handed ranged weapon to one hand","when":["self:holdsItem:item:type:weaponEffect&item:data:system.numHands=2&not:item:data:system.classification.style=melee"],"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weaponEffect","filter":["item:data:system.numHands=2","not:item:data:system.classification.style=melee"],"auto":true},{"do":"updateItem","item":"choice:weapon","set":{"system.numHands":1},"add":{"system.shiftDown":1},"multiply":{"system.range.value":0.5,"system.range.long":0.5}},{"do":"updateItem","item":"choice:weapon","parent":true,"appendTraits":["inaccurate"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: permanently turn a two-handed ranged weapon into a one-handed one with Inaccurate (↓1) and half its range.</p>"

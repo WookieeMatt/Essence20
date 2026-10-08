@@ -5,6 +5,9 @@
   "_id": "YCLo0a3kpBeB67HW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Adjust a Perk","limit":{"per":"scene","max":1},"steps":[{"do":"pick","key":"perk","from":"ownedItem","itemType":"perk","prompt":"Which Perk?"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: once per scene, marks which of your Perks you are adjusting.</p><p>Left to the table: applying the +1 or -1 change to that Perk.</p>"

@@ -5,6 +5,10 @@
   "_id": "dyNyzaagojOboB3y",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Complete darkness (Tritium Sights: ↑1)","scope":"host","when":["attack","check:completeDarkness"],"defaultWhen":["check:completeDarkness"],"upshift":1,"forget":true}
+    ],
+    "prerequisites": {"when":["ask:Targeting weapon"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ↑1 on attacks with the weapon in complete darkness (read from the scene's darkness, or a Roll Options Dialog switch).</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Any targeting weapon"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

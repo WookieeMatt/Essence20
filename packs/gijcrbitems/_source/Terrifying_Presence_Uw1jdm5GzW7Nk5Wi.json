@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"BeforeRoll","label":"Terrifying Presence (choose a rider)","when":["skill:intimidation","roll:dataset:defenseType=willpower"],"steps":[{"do":"choose","prompt":"Terrifying Presence: apply which effect","options":[{"label":"None","steps":[]},{"label":"Inflict 1 additional damage","steps":[{"do":"setDataset","key":"stepDamage","data":{"value":1,"type":"psychic"}}]},{"label":"Inflict Frightened (flee for one round)","steps":[{"do":"setDataset","key":"terrifyingPresence","data":"frightened"}]},{"label":"Stun the target for one round","steps":[{"do":"setDataset","key":"terrifyingPresence","data":"stunned"}]}]}]},
+      {"type":"Trigger","event":"afterRoll","label":"Terrifying Presence (Frightened)","when":["roll:dataset:terrifyingPresence=frightened","roll:firstRow:success","roll:targets>=1"],"steps":[{"do":"target","min":0},{"do":"applyCondition","condition":"frightened","to":"target"}]},
+      {"type":"Trigger","event":"afterRoll","label":"Terrifying Presence (Stunned)","when":["roll:dataset:terrifyingPresence=stunned","roll:firstRow:success","roll:targets>=1"],"steps":[{"do":"target","min":0},{"do":"applyCondition","condition":"stunned","to":"target"}]}
+    ],
+    "prerequisites": {"when":["self:skill:intimidation>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Intimidation also counts as a Social skill for you. Automatic: when you attack a Willpower Defense with Intimidation, you choose +1 damage, or on a hit making the target Frightened or Stunned.</p>"
@@ -13,7 +19,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 134
     },
-    "prerequisite": "Intimidation d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

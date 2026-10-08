@@ -5,6 +5,9 @@
   "_id": "IYN4Bki5gbGXPkki",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SenseMultiplier","label":"Used to the Dark","multiply":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: if something else gives you darkvision, its range is doubled.</p>"

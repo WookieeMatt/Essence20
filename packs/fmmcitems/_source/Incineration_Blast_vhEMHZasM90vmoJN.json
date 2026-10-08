@@ -39,15 +39,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Path of Flame"]},
     "requirements": {
-      "custom": "Path of Flame",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

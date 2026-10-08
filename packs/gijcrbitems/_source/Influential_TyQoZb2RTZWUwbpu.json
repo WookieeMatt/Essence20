@@ -5,6 +5,9 @@
   "_id": "TyQoZb2RTZWUwbpu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Influential","scope":"aura","radius":30,"affects":"allies","upshift":1,"stacks":false,"stack":"influential","when":["holder:choiceOf:Compendium.essence20.gi_joe_crb.Item.qHLeKSMin2F19O3C","not:roll:initiative"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: allies within 30 ft of you get ↑1 on any Skill Test with the Skill chosen on your Field Perk, already added to the shift in their Roll Options Dialog.</p>"

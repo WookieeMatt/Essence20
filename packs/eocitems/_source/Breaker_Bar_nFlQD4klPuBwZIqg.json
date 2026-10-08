@@ -61,15 +61,14 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:skill:technology>=d2"]},
     "requirements": {
-      "custom": "Technology d2",
+      "custom": "",
       "skill": "brawn",
       "shift": "d4"
     },

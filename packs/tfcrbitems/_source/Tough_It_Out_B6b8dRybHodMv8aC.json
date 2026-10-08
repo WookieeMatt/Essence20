@@ -5,6 +5,9 @@
   "_id": "B6b8dRybHodMv8aC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Repair your own damage (Brawn)","limit":{"per":"encounter"},"cost":{"action":"standard"},"steps":[{"do":"askNumber","var":"amount","min":1,"max":6,"prompt":"Health to attempt to restore","beforeCost":true},{"do":"roll","skill":"brawn","dif":"5 + 5 * @var.amount","onSuccess":[{"do":"heal","to":"self","amount":"@var.amount"}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per combat, Standard action): roll Brawn to Repair your own damage, at the same DIF as a Technology repair.</p>"

@@ -5,6 +5,11 @@
   "_id": "JQE2rcrT4GSEHJCD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Intimidation vs Willpower: attack me","steps":[{"do":"target","max":1},{"do":"rollVsEach","skill":"intimidation","defense":"willpower","to":"target","onHit":[{"do":"mark","key":"faceMe","to":"target","until":"combat"}]}]},
+      {"type":"RollModifier","label":"Face Me!: attacking someone else (↓2)","scope":"marked","mark":"faceMe","downshift":2,"when":["attack","target:data:uuid","not:target:ruleHolder"]},
+      {"type":"Trigger","label":"Face Me! answered","scope":"marked","mark":"faceMe","event":"afterRoll","outcome":"any","when":["attack","roll:targets>=1"],"steps":[{"do":"unmark","key":"faceMe","to":"self"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Move action): roll Intimidation against a targeted foe's Willpower. On a success, that foe's next attack takes ↓2 if it targets anyone but you, labelled Face Me! in its Roll Options Dialog.</p>"

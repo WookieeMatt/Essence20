@@ -5,6 +5,15 @@
   "_id": "nZYtfaowY0EH3Z0R",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:data:system.powers.personal.max>=2","self:skill:survival>=d4"]},
+    "rules": [
+      {"type":"Defense","defense":"evasion","amount":2,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R"]},
+      {"type":"Defense","label":"Ranger Operator (+2 Toughness instead of the armor bonus)","defense":"toughness","amount":"2 - @actor.system.defenses.toughness.morphed","when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R"]},
+      {"type":"RollModifier","label":"Ranger Operator (Driving and Survival: ↑1)","upshift":1,"when":["self:morphed","self:data:flags.essence20.zord1Form.uuid=Compendium.essence20.jump_through_time.Item.nZYtfaowY0EH3Z0R",{"any":["skill:driving","skill:survival"]}]},
+      {"type":"Form","label":"Ranger Operator (with the Morph)","cost":0,"swaps":[{"replaces":"both","uuids":["Compendium.essence20.jump_through_time.Item.RNP5lNTQLostQKSB"],"when":["self:advancedRole"]},{"replaces":"blaster","uuids":["Compendium.essence20.jump_through_time.Item.PaBwCwRPJ83dYT5y"],"when":["not:self:advancedRole"]},{"replaces":"power","uuids":["Compendium.essence20.jump_through_time.Item.LbdzQcgY043JTTGy"],"when":["not:self:advancedRole"]}]},
+      {"type":"Use","label":"Unlock this Form","when":["self:morphed","not:form:active"],"steps":[{"do":"formStart"}]},
+      {"type":"Use","label":"End this Form","when":["form:active"],"steps":[{"do":"formEnd"},{"do":"chat","text":"{name} ends the Form."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: pick this Form when you Morph. You get +2 Toughness and Evasion in place of your armor-training bonus, ↑1 on Driving and Survival (already counted in the Upshift number of your Roll Options Dialog), and the Form's weapons replace your Blade Blaster until you de-Morph.</p><p>Left to the table: swapping your Morpher for an R.P.M. Morpher.</p>"
@@ -15,7 +24,7 @@
       "book": "A Jump Through Time",
       "page": 55
     },
-    "prerequisite": "Maximum Personal Power of 2 or higher, Survival Skill of d4 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

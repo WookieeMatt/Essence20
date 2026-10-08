@@ -5,6 +5,9 @@
   "_id": "H1ITRVeP9229PlfU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Gain a Microtech upgrade (Integrated Offense)","when":["calc:floor(@level / 2) - @item.flags.essence20.grantedCount > 0"],"steps":[{"do":"choose","prompt":"Which Microtech upgrade?","options":[{"label":"Microtech Weapon","steps":[{"do":"grant","uuid":"Compendium.essence20.gi_joe_crb.Item.ihSql0Px1kNgTBfP"}]},{"label":"Microtech Battledress","steps":[{"do":"grant","uuid":"Compendium.essence20.gi_joe_crb.Item.ERqpa98s445vypnL"}]}]},{"do":"updateItem","add":{"flags.essence20.grantedCount":1}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick Microtech Weapon or Microtech Battledress upgrades, up to half your Technician level in total.</p>"

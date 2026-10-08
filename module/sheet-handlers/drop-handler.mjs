@@ -1,6 +1,5 @@
-import { promptVehicleUpgradeChoice } from "../helpers/vehicle-upgrades.mjs";
-import { checkIsLocked } from "../helpers/actor.mjs";
-import { createId, parseId } from "../helpers/utils.mjs";
+import { checkIsLocked } from "../util/sheet-lock.mjs";
+import { createId, parseId } from "../util/utils.mjs";
 import { onAlterationDrop } from "./alteration-handler.mjs";
 import { _attachItem, onAttachmentDrop, onAttachableParentDrop, onEquipmentPackageDrop } from "./attachment-handler.mjs";
 import { onInfluenceDrop, onOriginDrop } from "./background-handler.mjs";
@@ -9,11 +8,12 @@ import { setPerkValues } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
 import { onZordFeatureDrop } from "./zord-feature-handler.mjs";
-import { getCombineReadyRound, isCombineReady, rollCombineTimer } from "../helpers/combiner-timer.mjs";
+import { getCombineReadyRound, isCombineReady, rollCombineTimer } from "../mechanics/vehicles/combiner-timer.mjs";
 import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
 import { DETACHED_THIS_SCENE_FLAG } from "./vehicle-handler.mjs";
-import { hasUsedThisEncounter } from "../helpers/perks.mjs";
-import { clearWarriorMode } from "../helpers/warrior-mode.mjs";
+import { hasUsedThisEncounter } from "../mechanics/characters/perks.mjs";
+import { clearWarriorMode } from "../items/zords/warrior-mode.mjs";
+import { confirmGmDrop } from "../rules/prerequisites.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -36,6 +36,11 @@ export async function onDropItem(data, actor, dropFunc) {
     return await _onDropDefault(data, dropFunc, false);
   }
 
+  // Strict prerequisites: a GM is asked before adding an item the character doesn't qualify for.
+  if (!(await confirmGmDrop(actor, sourceItem))) {
+    return false;
+  }
+
   let result = null;
 
   switch (sourceItem.type) {
@@ -44,6 +49,15 @@ export async function onDropItem(data, actor, dropFunc) {
     break;
   case 'armor':
     result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
+    break;
+  // An Alt Mode dropped straight on (a Mini-Con, a Monstrosity form) makes the character able to transform, as one
+  // that comes with an Origin does (background-handler.mjs) - play-through 2026-10-07: the button never showed.
+  case 'altMode':
+    result = await dropFunc();
+    if (result && !actor.system.canTransform && 'canTransform' in (actor.system ?? {})) {
+      await actor.update({ 'system.canTransform': true });
+    }
+
     break;
   case 'equipmentPackage':
     result = await onEquipmentPackageDrop(actor, sourceItem);
@@ -196,8 +210,8 @@ export async function _onUpgradeDrop(upgrade, actor, dropFunc) {
   if (actor.type == 'companion' && actor.system.type == 'drone' && upgrade.system.type == 'drone') {
     return dropFunc();
   } else if (actor.type == 'vehicle' && upgrade.system.type == 'drone' && ['ridingRig', 'jetPack'].includes(actor.flags?.essence20?.personalVehicle)) {
-    // Riding Rig / Skybound (Cobra Codex p.60, 65): "you can requisition Drone Upgrades for it if it meets
-    // all other prerequisites of the Upgrade."
+    // Riding Rig / Skybound (Cobra Codex p.60, 65): Drone Upgrades can be requisitioned for it when it
+    // meets their other prerequisites.
     return dropFunc();
   } else if (actor.system.canTransform && upgrade.system.type == 'armor') {
     return _onTransformerArmorUpgradeDrop(upgrade, actor, dropFunc);
@@ -208,13 +222,8 @@ export async function _onUpgradeDrop(upgrade, actor, dropFunc) {
     // directly to the Vehicle actor itself, not to a sub-item on its sheet the way an
     // armor/weapon Upgrade attaches to a piece of gear - embedded plainly, same as a Perk.
     // Energy Resistant, Energized Plating, Double-Barrel and Targeting System then ask their
-    // choice (helpers/vehicle-upgrades.mjs).
-    const created = await dropFunc();
-    if (created?.[0]) {
-      await promptVehicleUpgradeChoice(created[0]);
-    }
-
-    return created;
+    // choice (a pick step in their 'added' Trigger rules).
+    return dropFunc();
   } else {
     ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
     return false;
@@ -241,7 +250,7 @@ export async function onDropActor(data, actorSheet) {
   case 'playerCharacter':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'npc') {
       // Only a Contact can be added: an NPC that isn't one yet is offered the switch, or refused.
-      const { offerMakeContact } = await import("../helpers/contacts.mjs");
+      const { offerMakeContact } = await import("../mechanics/companions/contacts.mjs");
       if (!(await offerMakeContact(droppedActor))) {
         return false;
       }
@@ -250,8 +259,8 @@ export async function onDropActor(data, actorSheet) {
       dropIsValid = true;
     } else if (['companion', 'vehicle'].includes(droppedActor.type)) {
       // A pet, drone, Mini-Con or companion - or a personal vehicle - becomes this character's
-      // (helpers/companion-link.mjs).
-      const { linkCompanion } = await import("../helpers/companion-link.mjs");
+      // (mechanics/companions/companion-link.mjs).
+      const { linkCompanion } = await import("../mechanics/companions/companion-link.mjs");
       await linkCompanion(targetActor, droppedActor);
       dropIsValid = true;
     }
@@ -270,14 +279,14 @@ export async function onDropActor(data, actorSheet) {
       dropIsValid = true;
 
       // Warrior Mode (PR CRB, Zord Feature, p.140): "...lasts until...the Zord is involved in a
-      // Combiner Megaform." This IS that moment - see helpers/warrior-mode.mjs's own doc comment.
+      // Combiner Megaform." This IS that moment - see items/zords/warrior-mode.mjs's own doc comment.
       if (droppedActor.type == 'zord') {
         await clearWarriorMode(droppedActor);
       }
 
       // Combiner join timer (PR CRB p.139) - re-rolled whenever the roster changes, since every
       // participant rolls its own time and the highest sets the round. Advisory: this warns rather
-      // than refusing the link, see helpers/combiner-timer.mjs's own doc comment for why.
+      // than refusing the link, see mechanics/vehicles/combiner-timer.mjs's own doc comment for why.
       if (!isCombineReady(targetActor)) {
         ui.notifications.warn(game.i18n.format('E20.CombinerTimerNotReady', {
           round: getCombineReadyRound(targetActor),
@@ -307,10 +316,10 @@ export async function onDropActor(data, actorSheet) {
       _selectVehicleLocation(droppedActor, targetActor);
       dropIsValid = true;
     } else if (droppedActor.type == 'zord') {
-      // Carrier (PR CRB, Zord Feature, p.136): "holds up to five Vehicular Scale Zords and their Crew
-      // inside itself" (helpers/team-actions.mjs).
-      const { carrierCapacityLeft, TEAM } = await import("../helpers/team-actions.mjs");
-      const isCarrier = targetActor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource) == TEAM.carrier);
+      // Carrier (PR CRB, Zord Feature, p.136): carries up to five Vehicular-Scale Zords and their
+      // Crew (mechanics/actions/team-actions.mjs).
+      const { carrierCapacityLeft, TEAM } = await import("../mechanics/actions/team-actions.mjs");
+      const isCarrier = targetActor.items?.some?.(item => (item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource) == TEAM.carrier);
       if (isCarrier && carrierCapacityLeft(targetActor) > 0) {
         await setEntryAndAddActor(droppedActor, targetActor, 'passenger');
         dropIsValid = true;

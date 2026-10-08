@@ -5,6 +5,11 @@
   "_id": "aG0STSzCZ2fBP1td",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Bot-Hunter","when":[{"any":["target:tag:robot","target:tag:robotic","target:tag:bot","target:tag:cybertronian","target:tag:android","target:tag:drone","target:tag:machine","target:tag:cog","target:tag:zord","target:tag:mechanical","target:tag:vehicle","target:tag:computerized"]},"not:target:type:playerCharacter"],"upshift":1},
+      {"type":"Defense","label":"Bot-Hunter","defense":"any","amount":1,"when":[{"any":["target:tag:robot","target:tag:robotic","target:tag:bot","target:tag:cybertronian","target:tag:android","target:tag:drone","target:tag:machine","target:tag:cog","target:tag:zord","target:tag:mechanical"]},"not:target:type:playerCharacter"]}
+    ],
+    "prerequisites": {"when":["ask:See book"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: rolls against a targeted mechanical non-player creature get ↑1, listed as Bot-Hunter in your Roll Options Dialog, and attacks against you from robotic non-player creatures must beat your Defense +1 when the hit is checked.</p>"
@@ -15,7 +20,7 @@
       "book": "A Jump Through Time",
       "page": 54
     },
-    "prerequisite": "See book",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

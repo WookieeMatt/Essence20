@@ -5,9 +5,15 @@
   "_id": "4XblFV97cS63ueDM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Growing Smolder","cost":{"action":"free"},"limit":{"per":"turn"},"when":["not:self:actionLog:flag:attack>=1"],"steps":[{"do":"mark","key":"growingSmolder","to":"self","count":1,"add":true,"until":"endOfNextTurnOrScene"},{"do":"mark","key":"growingSmolderWait","to":"self","until":"nextTurnOrScene"},{"do":"chat","text":"{name} bides their time: ↑{@min(3, @mark.growingSmolder)} and +{@min(3, @mark.growingSmolder)} Fire damage on their attacks next turn."}]},
+      {"type":"RollModifier","label":"Growing Smolder","upshift":"min(3, @mark.growingSmolder)","when":["attack","self:marked:growingSmolder","not:self:marked:growingSmolderWait"]},
+      {"type":"HitRider","label":"Growing Smolder","option":{"damage":"min(3, @mark.growingSmolder)","damageType":"fire","key":"growingSmolder"},"when":["attack","self:marked:growingSmolder","not:self:marked:growingSmolderWait"]},
+      {"type":"Trigger","event":"afterRoll","label":"Growing Smolder lost (attacked this turn)","when":["attack","self:marked:growingSmolderWait"],"steps":[{"do":"unmark","key":"growingSmolderWait","to":"self"},{"do":"unmark","key":"growingSmolder","to":"self"}]}
+    ],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button (once per turn): banks a cumulative ↑1 (up to ↑3) and +1 damage for your next attack. That attack's Upshift number in the Roll Options Dialog already includes it, and the chat card shows the damage as \"Includes +N from Growing Smolder\".</p><p>Left to the table: only using it on a turn when you made no attacks.</p>"
+      "status": "full",
+      "notes": "<p>Use button (Free action, once per turn, not on a turn you have already attacked - read from the combat's action ledger): your attacks on your next turn gain ↑1, and each hit's chat card gets an extra Apply button for 1 Fire damage, cumulative (up to ↑3 / 3 Fire) when you use it again on that turn instead of attacking. Attacking on the turn you used it loses the bonus.</p>"
     },
     "originalId": "",
     "description": "",

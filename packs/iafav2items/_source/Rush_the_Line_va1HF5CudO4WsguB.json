@@ -5,6 +5,11 @@
   "_id": "va1HF5CudO4WsguB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"ground","stage":"adjust","op":"multiply","value":2,"label":"Rushing: Ground Movement doubled","when":["check:rushTheLine"]},
+      {"type":"Use","label":"Rush the Line (1 Story Point, once per turn)","cost":{"resource":{"storyPoints":true},"amount":1},"limit":{"per":"turn"},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.rushTheLineActive":true}},{"do":"bank","edge":true,"appliesWhen":["attack:melee"]},{"do":"chat","text":"{name} rushes the line: ground Movement doubled, Edge on the next melee attack."}]},
+      {"type":"Trigger","event":"turnEnd","label":"Rush the Line ends","when":["self:data:flags.essence20.rushTheLineActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.rushTheLineActive":false}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend a Story Point to double your Ground Movement until the end of your turn; your next melee attack that turn gains Edge.</p>"

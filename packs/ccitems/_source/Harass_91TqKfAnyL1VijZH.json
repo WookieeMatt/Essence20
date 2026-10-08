@@ -5,6 +5,10 @@
   "_id": "91TqKfAnyL1VijZH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Harass","limit":{"per":"turn"},"steps":[{"do":"setToggle","key":"harass","value":true,"until":"nextTurnOrScene"}]},
+      {"type":"RollModifier","label":"Harass","edge":true,"when":["attack","self:toggle:harass"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free action, once per turn): Edge on every attack you make until the start of your next turn, listed in the Roll Options Dialog.</p>"

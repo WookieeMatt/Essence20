@@ -317,20 +317,20 @@
       "flags": {}
     },
     {
-      "name": "pr_crb",
-      "label": "Power Ranger Core Rulebook",
+      "name": "power_rangers_pre_gens",
+      "label": "Power Rangers Pre Gen Characters",
       "system": "essence20",
-      "path": "packs/prcrbitems",
+      "path": "packs/prpgitems",
       "type": "Item",
       "private": false,
       "flags": {}
     },
     {
-      "name": "pr_crb_effects",
-      "label": "Power Ranger Core Rulebook - Applied Effects",
+      "name": "pr_crb",
+      "label": "Power Ranger Core Rulebook",
       "system": "essence20",
-      "path": "packs/prcrbeffects",
-      "type": "ActiveEffect",
+      "path": "packs/prcrbitems",
+      "type": "Item",
       "private": false,
       "flags": {}
     },
@@ -475,13 +475,13 @@
       "sorting": "m",
       "packs": [
         "pr_crb",
-        "pr_crb_effects",
         "across_the_stars",
         "beneath_the_helmet",
         "jump_through_time",
         "finster_s_monster_matic_cookbook",
         "through_the_shattered_grid",
-        "power_rangers_adventures"
+        "power_rangers_adventures",
+        "power_rangers_pre_gens"
       ]
     },
     {
@@ -517,6 +517,6 @@
     "verified": "14"
   },
   "flags": {
-    "needsMigrationVersion": "6.0.0"
+    "needsMigrationVersion": "6.0.4"
   }
 }

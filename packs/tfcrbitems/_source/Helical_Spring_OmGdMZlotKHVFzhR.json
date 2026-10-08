@@ -5,6 +5,10 @@
   "_id": "OmGdMZlotKHVFzhR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Helical Spring","event":"untransform","steps":[{"do":"chat","text":"{name} can move 10ft as part of converting to Bot Mode."}]},
+      {"type":"Trigger","label":"Helical Spring","event":"transform","steps":[{"do":"chat","text":"{name} can Ram without moving 10ft first."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when you Convert, a reminder that you can move 10ft into Bot Mode, or Flyby or Ram in Alt Mode without moving first, once per turn.</p>"

@@ -1,4 +1,4 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import { makeBool, makeInt, makeStr, makeStrArray, makeStrArrayWithChoices } from "../generic-makers.mjs";
 
@@ -30,11 +30,6 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
       combinedHealthValue: makeInt(0),
       hasEnhancedAttack: makeBool(false),
       hasEnhancedInitiative: makeBool(false),
-      // Light Chassis (PR CRB, Zord Feature, p.137) - see actor.mjs's own LIGHT_CHASSIS_ID
-      // comment. Set when any linked participant holds the Feature; consumed in dice.mjs's
-      // prepareInitiativeRoll as an upshift (Enhanced Initiative just above is an Edge instead,
-      // since that's what its own RAW text grants).
-      hasLightChassisInitiativeUpshift: makeBool(false),
       hasTitanHardpoint: makeBool(false),
       hasAssaultWeapon: makeBool(false),
       isDefeated: makeBool(false),

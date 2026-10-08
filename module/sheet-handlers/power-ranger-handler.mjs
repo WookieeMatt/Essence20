@@ -1,25 +1,8 @@
-import { changeTokenImage } from "../helpers/actor.mjs";
-import { payForMorph, warnMissingStateImage } from "../helpers/morph-state.mjs";
-import { activatePowerInfusion } from "../helpers/power-infusion.mjs";
-import { applyBoostedVigor } from "../helpers/phantom-focus.mjs";
-import { clearPoweredPlating } from "../helpers/powered-plating.mjs";
-import { applyGrowthBoostHealth } from "../helpers/growth-boost.mjs";
-import { deactivateMysteriousAura } from "../helpers/mysterious-aura.mjs";
-import { clearEmotionalMasteryOnMorphOff } from "../helpers/emotional-mastery.mjs";
-
-/**
- * Handles the "Activate" button on a granted Power Infusion Perk (PR CRB p.41) - see
- * helpers/power-infusion.mjs for the actual activation logic.
- * @param {Event} event   The originating click event.
- */
-export async function onActivatePowerInfusion(event) {
-  const item = await fromUuid(event.target.dataset.uuid);
-  if (!item?.parent) {
-    return;
-  }
-
-  await activatePowerInfusion(item.parent);
-}
+import { changeTokenImage } from "../mechanics/world/token-sync.mjs";
+import { payForMorph, warnMissingStateImage } from "../mechanics/characters/morph-state.mjs";
+import { clearPoweredPlating } from "../items/defenses/powered-plating.mjs";
+import { deactivateMysteriousAura } from "../items/defenses/mysterious-aura.mjs";
+import { clearEmotionalMasteryOnMorphOff } from "../items/resources/emotional-mastery.mjs";
 
 /**
  * Handle morphing an Actor
@@ -47,15 +30,7 @@ export async function onMorph(actor, { free = false } = {}) {
 
   changeTokenImage(actor, newImage);
 
-  // Boosted Vigor (Across the Stars, Phantom Ranger, Phantom Focus choice, p.62) - see
-  // helpers/phantom-focus.mjs's own doc comment. Applied right here, before isMorphed itself
-  // flips, so isAboutToMorph reflects the state actually being entered.
-  await applyBoostedVigor(actor, !actor.system.isMorphed);
-
-  // Growth Boost (A Jump Through Time, Orange Ranger, Modified Shell III option, p.33) - see
-  // helpers/growth-boost.mjs's own doc comment. Same Morph-time toggle shape as Boosted Vigor
-  // just above.
-  await applyGrowthBoostHealth(actor, !actor.system.isMorphed);
+  // (Boosted Vigor's +3 and Growth Boost's +2 temporary Health while Morphed are morph / unmorph Triggers on those items.)
 
   // Powered Plating (A Jump Through Time, Orange Ranger, Modified Shell I option, p.32) - "until
   // you are no longer Morphed" - cleared right here on the way OUT of Morphed (actor.system.isMorphed
@@ -72,7 +47,7 @@ export async function onMorph(actor, { free = false } = {}) {
   }
 
   // Emotional Mastery (A Jump Through Time, Purple Ranger, p.37) - see
-  // helpers/emotional-mastery.mjs's own doc comment. Same "clear on the way OUT of Morphed" idiom
+  // items/resources/emotional-mastery.mjs's own doc comment. Same "clear on the way OUT of Morphed" idiom
   // as Powered Plating/Mysterious Aura just above, except a Heart's Calling option (18th level)
   // is deliberately kept active, per its own "works even when you are not Morphed" text.
   if (actor.system.isMorphed) {

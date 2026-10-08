@@ -5,6 +5,10 @@
   "_id": "YGr6vNEv9MKoVlyS",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Draw an Adept Armament as a Free action (Quick Draw)","action":"drawWeapon","to":"free","ask":"E20.ActionPerkAskAdeptDraw"},
+      {"type":"Use","label":"Pick another Adept Armament (Quick Draw)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickMany","key":"adept","from":"ownedItem","itemType":"weapon","filter":["not:item:data:flags.essence20.adeptArmament"],"count":1,"prompt":"Choose up to 1 weapon(s) as Adept Armaments."},{"do":"updateItem","item":"choice:adept","all":true,"set":{"flags.essence20.adeptArmament":true}},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: drawing an Adept Armament costs one step less (you're asked which weapon you're drawing). Use button: pick one more Adept Armament.</p>"

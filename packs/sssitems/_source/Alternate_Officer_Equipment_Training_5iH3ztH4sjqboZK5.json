@@ -5,6 +5,11 @@
   "_id": "5iH3ztH4sjqboZK5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Take the Alternate Officer training","when":[{"any":["not:rule:data:flags.essence20.d21OfficerApplied","not:rule:data:flags.essence20.rules.choices.officerWeapon"]}],"steps":[{"do":"updateActor","when":["not:rule:data:flags.essence20.d21OfficerApplied"],"set":{"system.trained.armors.light":true,"system.trained.armors.medium":false,"system.trained.weapons.ballistic":false,"system.trained.weapons.blunt":true,"system.trained.weapons.closeCombatHeavyBlade":true,"system.trained.weapons.explosives":true,"system.trained.weapons.finesse":true,"system.trained.weapons.mightMelee":true}},{"do":"updateItem","item":"self","when":["not:rule:data:flags.essence20.d21OfficerApplied"],"set":{"flags.essence20.d21OfficerApplied":true}},{"do":"pickGrant","record":true,"key":"officerWeapon","max":1,"legacy":"flags.essence20.d21OfficerWeapon","title":"Pick a Limited melee weapon","from":{"type":"weapon","availabilities":["limited"],"tags":[{"any":["item:hasAttack:item:data:system.classification.style=melee","item:hasAttack:item:data:system.range.reachMultiplier>0"]}]}},{"do":"grant","uuid":"{var.picked}","flags":{"qualified":true}}]},
+      {"type":"Qualification","label":"Alternate Officer (Qualified: your chosen Limited melee weapon)","access":"qualified","items":["item:type:weapon","item:pickedSource:officerWeapon"]}
+    ],
+    "prerequisites": {"when":["self:has:Officer","self:level>=1"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: swaps your Officer training for Light Armor, melee weapons and explosives, then asks for one Limited melee weapon. You get a copy of it, and Requisition counts it as Qualified.</p>"
@@ -15,7 +20,7 @@
       "book": "Sgt Slaughter Sourcebook",
       "page": 9
     },
-    "prerequisite": "Officer, 1st level",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"
   },

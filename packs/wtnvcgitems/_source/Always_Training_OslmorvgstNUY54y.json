@@ -5,6 +5,7 @@
   "_id": "OslmorvgstNUY54y",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:hasType:influence:Athletic"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: untrained Strength and Speed Skill tests still roll a d2 Skill Die and take no Snag for being untrained.</p>"
@@ -25,7 +26,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Athletic Influence",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

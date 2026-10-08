@@ -5,13 +5,18 @@
   "_id": "erZl8Udy03P7vHTe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Athletics (Swimming) Specialization"]},
+    "rules": [
+      {"type":"RollModifier","label":"Diver","when":["skill:alertness","environment:underwater"],"upshift":1},
+      {"type":"Use","label":"Swimming kit and Scuba Gear","limit":{"per":"mission","max":1},"steps":[{"do":"createItem","data":{"name":"Limited Athletics (Swimming) Kit","type":"gear","system":{"gearType":"kits","quantity":1},"flags":{"essence20":{"kit":{"tier":"limited","skill":"athletics","spec":"Swimming","essence":null}}}}},{"do":"grant","uuid":"Compendium.essence20.gi_joe_crb.Item.cZpeYK7VoLJKGKL6","flags":{"grantedBy":null}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +10ft Aquatic Movement. Automatic: ↑1 on Alertness in scenes set to underwater, labelled Diver in the Roll Options Dialog. Use button (once per mission): adds the free Athletics (Swimming) kit and scuba gear.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Athletics (Swimming) Specialization",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",
@@ -21,6 +26,7 @@
   },
   "effects": [
     {
+      "name": "Diver",
       "img": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.general_hawk_s_personel_files.Item.erZl8Udy03P7vHTe",
       "duration": {

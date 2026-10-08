@@ -5,6 +5,10 @@
   "_id": "HH4q8lx09mV2hhcv",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","defense":"evasion","amount":"-@item.system.armorBonus.value","stacks":true,"when":["self:canTransform","not:rule:data:flags.essence20.parentId","rule:data:system.type=armor","rule:data:system.armorBonus.defense=evasion",{"any":["self:status:grappled","self:status:immobilized","self:status:prone","self:status:restrained"]}]}
+    ],
+    "prerequisites": {"when":["self:skill:technology>=d2"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while worn, +4 Evasion (computerized), lost while you are Grappled, Immobilized, Prone or Restrained.</p>"
@@ -25,7 +29,7 @@
       "computerized"
     ],
     "type": "armor",
-    "prerequisite": "Technology d2"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

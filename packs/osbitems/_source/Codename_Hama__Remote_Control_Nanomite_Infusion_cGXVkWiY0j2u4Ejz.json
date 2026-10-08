@@ -17,7 +17,6 @@
     },
     "actionType": "standard",
     "canActivate": false,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,

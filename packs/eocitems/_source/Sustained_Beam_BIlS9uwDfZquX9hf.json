@@ -5,6 +5,9 @@
   "_id": "BIlS9uwDfZquX9hf",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Attack the same target again with Edge (Sustained Beam)","when":["item:onHost","not:roll:dataset:rulesFollowUp=sustainedBeam","not:self:limitUsed:tf2SustainedBeam:round"],"steps":[{"do":"button","label":"Sustained Beam: attack {target} again (1 Energon, Free action)","usedWhenDone":true,"limit":{"per":"round","max":1,"key":"tf2SustainedBeam"},"steps":[{"do":"require","check":["self:data:system.energon.normal.value>=1"],"message":"{name} has no Energon to spend."},{"do":"spendAction","action":"free"},{"do":"spend","resource":{"path":"system.energon.normal.value"},"amount":1},{"do":"bank","edge":true,"label":"Sustained Beam","appliesWhen":["attack"],"uses":1},{"do":"attack","item":"rolled","to":"target","dataset":{"rulesFollowUp":"sustainedBeam"}}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: after a hit with the upgraded weapon, a button (once per round, 1 Energon, Free action) attacks a new target with Edge. The follow-up attack can't chain again.</p>"

@@ -5,6 +5,15 @@
   "_id": "84d0XTJwKCYMJUgY",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"rolePointsActivated","label":"Reckless Abandon starts (a minute)","steps":[{"do":"mark","key":"recklessMinute","to":"self","until":"combat","count":"@combat.round","when":["combat:exists"]}]},
+      {"type":"Trigger","event":"rolePointsDeactivated","label":"Reckless Abandon ends","steps":[{"do":"unmark","key":"recklessMinute","to":"self"}]},
+      {"type":"Trigger","event":"turnStart","label":"A minute is up","when":["rule:data:system.isActive","self:marked:recklessMinute","calc:@combat.round - @mark.recklessMinute >= 10"],"steps":[{"do":"updateItem","item":"self","set":{"system.isActive":false}},{"do":"chat","text":"{name}'s Reckless Abandon has lasted a minute and ends."}]},
+      {"type":"Trigger","event":"turnStart","label":"No enemies left","when":["rule:data:system.isActive","not:self:enemiesStanding","not:self:hasItem:Compendium.essence20.gi_joe_crb.Item.yNHekVUMoKALrAWH"],"steps":[{"do":"updateItem","item":"self","set":{"system.isActive":false}},{"do":"chat","text":"No enemies left in sight - {name}'s Reckless Abandon ends."}]},
+      {"type":"Trigger","event":"takesDamage","label":"Defeated","when":["rule:data:system.isActive","self:data:system.health.value<=0","not:self:hasItem:Compendium.essence20.gi_joe_crb.Item.0ZTjZ36gN74889am","not:self:hasItem:Compendium.essence20.gi_joe_crb.Item.yNHekVUMoKALrAWH"],"steps":[{"do":"updateItem","item":"self","set":{"system.isActive":false}},{"do":"chat","text":"{name} is Defeated - Reckless Abandon ends."}]},
+      {"type":"Veto","on":"kitUse","label":"No kits while fighting with Reckless Abandon","when":["rule:data:system.isActive"],"message":"E20.Gij2RecklessNoKits"},
+      {"type":"RollModifier","label":"Reckless Abandon (↑2 on Strength Skill Tests)","upshift":2,"when":["essence:strength","not:roll:initiative","self:recklessAbandon","not:self:wearing>=medium",{"any":["not:vehicle:driving","not:vehicle:type:vehicle","not:self:hasItem:Compendium.essence20.cobra_codex.Item.rNESO3bo1apEjd6p","self:hasItem:Compendium.essence20.cobra_codex.Item.UquFEmbtdvb08ipH"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: Activate spends a daily use. While it's on and you're in light armor or none, you get ↑2 on Strength tests and bonus Health for your level. Uses and bonus Health grow as you level.</p>"
@@ -51,8 +60,7 @@
       "max": 0,
       "startingMax": 2,
       "value": 0
-    },
-    "level20Value": null
+    }
   },
   "effects": [],
   "sort": 0,

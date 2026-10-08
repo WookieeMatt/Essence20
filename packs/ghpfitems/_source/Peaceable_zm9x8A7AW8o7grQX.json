@@ -5,6 +5,9 @@
   "_id": "zm9x8A7AW8o7grQX",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Peaceable (damaging attack)","when":["attack","item:data:system.damageType","not:item:damageType:stun","self:hasItem:Compendium.essence20.general_hawk_s_personel_files.Item.BHum6Sd6Zz7cra5b"],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the Peaceable Perk's penalty on attacks that deal damage becomes ↓2, already counted in the Downshift number of your Roll Options Dialog.</p>"

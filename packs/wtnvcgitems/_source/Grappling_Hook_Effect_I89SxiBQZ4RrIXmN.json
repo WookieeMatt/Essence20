@@ -5,9 +5,13 @@
   "_id": "I89SxiBQZ4RrIXmN",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Finesse: rolls the better of the two","from":"athletics","to":"finesse","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Finesse: rolls the better of the two","from":"finesse","to":"athletics","mode":"bestOf"}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a two-handed thrown Athletics Maneuver at 100ft/200ft range.</p>"
+      "notes": "<p>Automatic: rolls the better of Athletics and Finesse.</p><p>Automatic: a two-handed thrown Maneuver at 100ft/200ft range.</p>"
     },
     "originalId": "",
     "actionType": "standard",
@@ -24,7 +28,7 @@
     "damageValue": 0,
     "isSpecialized": false,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {

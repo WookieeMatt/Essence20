@@ -5,6 +5,7 @@
   "_id": "nx3HyAPnwVWIKPVZ",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["host:data:system.classification.size=medium","host:data:system.classification.size=long","host:data:system.classification.size=heavy"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic while attached: you pick a Limited weapon when you attach it, and that weapon's attacks are added to this one.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Medium or Larger weapon"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

@@ -5,6 +5,9 @@
   "_id": "8JpfjvHVDHWKjMc9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Hit a Stunned target (Opportunist: Stun 1 round longer)","event":"hit","when":["attack",{"any":["target:status:stunned","target:data:system.stun.value>0"]}],"steps":[{"do":"extendCondition","condition":"stunned","rounds":1,"to":"target"},{"do":"updateActor","to":"target","add":{"system.stun.value":1},"when":["not:target:status:stunned:timed","target:data:system.stun.value>0"]},{"do":"chat","text":"{target}'s Stun lasts 1 round longer.","when":["not:target:status:stunned:timed"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you hit a Stunned target, its Stun lasts 1 round longer.</p>"

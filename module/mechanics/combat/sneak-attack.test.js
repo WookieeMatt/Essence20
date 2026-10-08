@@ -1,0 +1,541 @@
+import { jest } from '@jest/globals';
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import {
+  checkPredatorSneakAttackEligibility,
+  checkSneakAttackEligibility,
+  getPredatorSneakAttackDamage,
+  getSneakAttackDamage,
+  hasPredatorSneakAttack,
+  isSneakAttackDamageItem,
+  markSneakAttackUsed,
+} from './sneak-attack.mjs';
+
+// Everything's a Weapon, Never Heard It Coming, Focused Charge, Sudden Strike, In My Sights and Ballistic Advantage answer through their pack items'
+// SneakAttackGrant rules (rules/plugins/combat/sneak-attack-grant.mjs) - read from the pack sources here.
+const PACKS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', 'packs');
+const PACK_RULES = Object.fromEntries([
+  ['gi_joe_crb', 'gijcrbitems/_source/Everything_s_A_Weapon_hx4KzTl8iQ8Z22eq.json'],
+  ['gi_joe_crb', 'gijcrbitems/_source/Never_Heard_It_Coming_jIUKR6chHdKQO2vr.json'],
+  ['cobra_codex', 'ccitems/_source/Focused_Charge_mQ0s9B2it1mqho3H.json'],
+  ['cobra_codex', 'ccitems/_source/Sudden_Strike_G3cypoJyLtlLogzO.json'],
+  ['gi_joe_crb', 'gijcrbitems/_source/In_My_Sights_MD54SjlTYiCTvmBB.json'],
+  ['gi_joe_crb', 'gijcrbitems/_source/Ballistic_Advantage_civSjmz83aDYPwvo.json'],
+].map(([book, file]) => {
+  const doc = JSON.parse(readFileSync(join(PACKS, file), 'utf8'));
+  return [`Compendium.essence20.${book}.Item.${doc._id}`, doc.system.rules];
+}));
+
+const SNEAK_ATTACK_DAMAGE_ID = "Compendium.essence20.gi_joe_crb.Item.Mrmbqza0XxVpKj6U";
+const SNEAK_ATTACK_PERK_ID = "Compendium.essence20.gi_joe_crb.Item.vyOjiJFMtryduiFO";
+const PREDATOR_FOCUS_ID = "Compendium.essence20.gi_joe_crb.Item.CCUJG5H6eEYRzdBQ";
+const EVERY_TRICK_IN_THE_BOOK_ID = "Compendium.essence20.gi_joe_crb.Item.HKv38GCtVdSV2qMH";
+
+global.game = {
+  i18n: {
+    localize: (key) => key,
+  },
+  user: {
+    targets: {
+      first: jest.fn(() => undefined),
+    },
+  },
+  combat: null,
+};
+
+global.canvas = {
+  grid: {
+    measurePath: jest.fn(() => ({ distance: 0 })),
+  },
+  tokens: {
+    placeables: [],
+  },
+};
+
+/* isSneakAttackDamageItem */
+describe("isSneakAttackDamageItem", () => {
+  test("false for a null/undefined item", () => {
+    expect(isSneakAttackDamageItem(null)).toBe(false);
+    expect(isSneakAttackDamageItem(undefined)).toBe(false);
+  });
+
+  test("true when flags.core.sourceId matches the known compendium Item", () => {
+    const item = { flags: { core: { sourceId: SNEAK_ATTACK_DAMAGE_ID } } };
+    expect(isSneakAttackDamageItem(item)).toBe(true);
+  });
+
+  test("true when only _stats.compendiumSource matches (no flags.core.sourceId set)", () => {
+    const item = { flags: {}, _stats: { compendiumSource: SNEAK_ATTACK_DAMAGE_ID } };
+    expect(isSneakAttackDamageItem(item)).toBe(true);
+  });
+
+  test("false for any other Role Points Item (e.g. Power Strike)", () => {
+    const item = { flags: { core: { sourceId: "Compendium.essence20.pr_crb.Item.v3tBCzRQx5pqNSHo" } } };
+    expect(isSneakAttackDamageItem(item)).toBe(false);
+  });
+});
+
+/* getSneakAttackDamage */
+describe("getSneakAttackDamage", () => {
+  test("returns the actor's own Sneak Attack Damage bonus value", () => {
+    const actor = {
+      _getBaseRolePoints: () => ({
+        flags: { core: { sourceId: SNEAK_ATTACK_DAMAGE_ID } },
+        system: { bonus: { value: 3 } },
+      }),
+    };
+    expect(getSneakAttackDamage(actor)).toBe(3);
+  });
+
+  test("returns 0 without Sneak Attack Damage as the base Role Points item", () => {
+    const actor = {
+      _getBaseRolePoints: () => ({
+        flags: { core: { sourceId: "Compendium.essence20.pr_crb.Item.v3tBCzRQx5pqNSHo" } },
+        system: { bonus: { value: 5 } },
+      }),
+    };
+    expect(getSneakAttackDamage(actor)).toBe(0);
+  });
+
+  test("returns 0 with no base Role Points item at all", () => {
+    const actor = { _getBaseRolePoints: () => undefined };
+    expect(getSneakAttackDamage(actor)).toBe(0);
+  });
+});
+
+/* checkSneakAttackEligibility */
+describe("checkSneakAttackEligibility", () => {
+  const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
+  const EVERYTHING_A_WEAPON_ID = `${GI_JOE_CRB}hx4KzTl8iQ8Z22eq`;
+  const EVERY_TRICK_IN_THE_BOOK_ID = `${GI_JOE_CRB}HKv38GCtVdSV2qMH`;
+  const NEVER_HEARD_IT_COMING_ID = `${GI_JOE_CRB}jIUKR6chHdKQO2vr`;
+  const IN_MY_SIGHTS_ID = `${GI_JOE_CRB}MD54SjlTYiCTvmBB`;
+  const BALLISTIC_ADVANTAGE_ID = `${GI_JOE_CRB}civSjmz83aDYPwvo`;
+  const COBRA_CODEX = "Compendium.essence20.cobra_codex.Item.";
+  const FOCUSED_CHARGE_ID = `${COBRA_CODEX}mQ0s9B2it1mqho3H`;
+  const SUDDEN_STRIKE_ID = `${COBRA_CODEX}G3cypoJyLtlLogzO`;
+
+  const makeWeaponEffect = () => ({
+    flags: { essence20: { parentId: 'weapon1' } },
+  });
+
+  // actor.items needs to behave like a real Foundry EmbeddedCollection - array-like (.some(),
+  // used by mechanics/characters/perks.mjs#actorHasPerk) AND .get()-able (used by this file's own weapon
+  // lookup) - a plain array with a .get() method attached satisfies both.
+  const makeActor = ({ traits = ['silent'], hasToken = true, perkIds = [] } = {}) => {
+    // Every Trick in the Book answers through its SneakAttackImmunity rule (rules/plugins/combat/immunity-readers.mjs).
+    const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } }, system: perkId == EVERY_TRICK_IN_THE_BOOK_ID ? { rules: [{ type: 'SneakAttackImmunity' }] } : PACK_RULES[perkId] ? { rules: PACK_RULES[perkId] } : {} }));
+    items.get = jest.fn(id => (id == 'weapon1' ? { system: { traits, range: {} } } : null));
+
+    return {
+      items,
+      getActiveTokens: jest.fn(() => (hasToken ? [{ center: { x: 0, y: 0 }, document: { disposition: 1 } }] : [])),
+    };
+  };
+
+  const makeTargetToken = () => ({ center: { x: 100, y: 0 }, document: { disposition: -1 } });
+
+  beforeEach(() => {
+    game.user.targets.first.mockReturnValue(undefined);
+    game.combat = null;
+    canvas.tokens.placeables = [];
+    canvas.grid.measurePath.mockReturnValue({ distance: 0 });
+  });
+
+  test("ineligible when the weapon has no 'silent' trait", () => {
+    const actor = makeActor({ traits: ['sharp'] });
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+    expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNotSilent' });
+  });
+
+  test("ineligible when there's no targeted token", () => {
+    const actor = makeActor();
+    game.user.targets.first.mockReturnValue(undefined);
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+    expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNoTarget' });
+  });
+
+  test("ineligible when the actor has no token on the scene", () => {
+    const actor = makeActor({ hasToken: false });
+    game.user.targets.first.mockReturnValue(makeTargetToken());
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+    expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNoTarget' });
+  });
+
+  test("ineligible when the target is more than 20 feet away", () => {
+    const actor = makeActor();
+    game.user.targets.first.mockReturnValue(makeTargetToken());
+    canvas.grid.measurePath.mockReturnValue({ distance: 25 });
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+    expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonOutOfRange' });
+  });
+
+  test("ineligible with no Edge and no ally within 20 feet of the target", () => {
+    const actor = makeActor();
+    game.user.targets.first.mockReturnValue(makeTargetToken());
+    canvas.grid.measurePath.mockReturnValue({ distance: 10 });
+    canvas.tokens.placeables = [];
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), false);
+    expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNoEdgeNoAlly' });
+  });
+
+  test("eligible with no Edge, when an ally token is within 20 feet of the target", () => {
+    const actor = makeActor();
+    const attackerToken = actor.getActiveTokens()[0];
+    game.user.targets.first.mockReturnValue(makeTargetToken());
+    const allyToken = { center: {}, document: { disposition: attackerToken.document.disposition }, actor: {} };
+    canvas.tokens.placeables = [attackerToken, allyToken];
+    // First measurePath call is attacker->target (in range), second is ally->target (in range).
+    canvas.grid.measurePath.mockReturnValueOnce({ distance: 10 }).mockReturnValueOnce({ distance: 15 });
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), false);
+    expect(result).toEqual({ eligible: true, reason: 'E20.SneakAttackReasonEligible' });
+  });
+
+  test("eligible with Edge on the attack alone, even with no ally nearby", () => {
+    const actor = makeActor();
+    game.user.targets.first.mockReturnValue(makeTargetToken());
+    canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+    expect(result).toEqual({ eligible: true, reason: 'E20.SneakAttackReasonEligible' });
+  });
+
+  test("ineligible when already used this round of the current combat", () => {
+    const actor = makeActor();
+    actor.getFlag = jest.fn(() => ({ combatId: 'combat1', round: 2 }));
+    game.combat = { id: 'combat1', round: 2 };
+    game.user.targets.first.mockReturnValue(makeTargetToken());
+    canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+    expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonAlreadyUsed' });
+  });
+
+  test("eligible again once a new combat round starts (stale flag from a prior round)", () => {
+    const actor = makeActor();
+    actor.getFlag = jest.fn(() => ({ combatId: 'combat1', round: 1 }));
+    game.combat = { id: 'combat1', round: 2 };
+    game.user.targets.first.mockReturnValue(makeTargetToken());
+    canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+    expect(result.eligible).toBe(true);
+  });
+
+  test("eligible again once a new combat encounter starts (stale flag from a prior combat)", () => {
+    const actor = makeActor();
+    actor.getFlag = jest.fn(() => ({ combatId: 'oldCombat', round: 3 }));
+    game.combat = { id: 'newCombat', round: 1 };
+    game.user.targets.first.mockReturnValue(makeTargetToken());
+    canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+    expect(result.eligible).toBe(true);
+  });
+
+  test("the once-per-round condition isn't enforced outside of combat", () => {
+    const actor = makeActor();
+    actor.getFlag = jest.fn(() => ({ combatId: 'combat1', round: 2 }));
+    game.combat = null;
+    game.user.targets.first.mockReturnValue(makeTargetToken());
+    canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+    const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+    expect(result.eligible).toBe(true);
+  });
+
+  describe("Everything's a Weapon (12th level)", () => {
+    test("a non-silent weapon still qualifies", () => {
+      const actor = makeActor({ traits: ['sharp'], perkIds: [EVERYTHING_A_WEAPON_ID] });
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+      expect(result.eligible).toBe(true);
+    });
+  });
+
+  describe("Every Trick in the Book (12th level, target-side immunity)", () => {
+    test("the target is never a valid Sneak Attack target", () => {
+      const actor = makeActor();
+      const targetActor = makeActor({ perkIds: [EVERY_TRICK_IN_THE_BOOK_ID] });
+      game.user.targets.first.mockReturnValue({ ...makeTargetToken(), actor: targetActor });
+      canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonTargetImmune' });
+    });
+
+    test("doesn't affect a target without the Perk", () => {
+      const actor = makeActor();
+      const targetActor = makeActor();
+      game.user.targets.first.mockReturnValue({ ...makeTargetToken(), actor: targetActor });
+      canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+      expect(result.eligible).toBe(true);
+    });
+  });
+
+  describe("Never Heard It Coming (Infiltrator Focus, 10th level)", () => {
+    test("extends the range cap to 60 feet", () => {
+      const actor = makeActor({ perkIds: [NEVER_HEARD_IT_COMING_ID] });
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 45 });
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+      expect(result.eligible).toBe(true);
+    });
+
+    test("still caps at 60 feet", () => {
+      const actor = makeActor({ perkIds: [NEVER_HEARD_IT_COMING_ID] });
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 65 });
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), true);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonOutOfRange' });
+    });
+  });
+
+  // SneakAttackGrant rules on the Perks (the weapon: tag finds the effect's weapon through its actor).
+  describe("In My Sights (Sniper Focus, 3rd level)", () => {
+    test("a sniper-quality (non-silent) weapon qualifies, range = the weaponEffect's own", () => {
+      // Correction: system.range lives on the weaponEffect itself, not the parent weapon (whose
+      // own schema has no range field at all) - this test used to set range on the parent weapon
+      // mock, silently passing while the real code always fell through to the flat 20ft fallback.
+      const actor = makeActor({ traits: ['sniper'], perkIds: [IN_MY_SIGHTS_ID] });
+      const weaponEffect = { ...makeWeaponEffect(), actor, system: { range: { long: 150 } } };
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 100 });
+      const result = checkSneakAttackEligibility(actor, weaponEffect, true);
+      expect(result.eligible).toBe(true);
+    });
+
+    test("caps at the weaponEffect's own range - even further beyond it is ineligible", () => {
+      const actor = makeActor({ traits: ['sniper'], perkIds: [IN_MY_SIGHTS_ID] });
+      const weaponEffect = { ...makeWeaponEffect(), actor, system: { range: { long: 150 } } };
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 200 });
+      const result = checkSneakAttackEligibility(actor, weaponEffect, true);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonOutOfRange' });
+    });
+
+    test("a sniper weapon without the Perk still caps at 20 feet", () => {
+      const actor = makeActor({ traits: ['sniper'] });
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 100 });
+      const result = checkSneakAttackEligibility(actor, { ...makeWeaponEffect(), actor }, true);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNotSilent' });
+    });
+  });
+
+  describe("Ballistic Advantage (Sniper Focus, 17th level)", () => {
+    test("no range cap at all with a sniper-quality weapon", () => {
+      const actor = makeActor({ traits: ['sniper'], perkIds: [BALLISTIC_ADVANTAGE_ID] });
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 500 });
+      const result = checkSneakAttackEligibility(actor, { ...makeWeaponEffect(), actor }, true);
+      expect(result.eligible).toBe(true);
+    });
+
+    test("doesn't help a non-sniper weapon", () => {
+      const actor = makeActor({ traits: ['silent'], perkIds: [BALLISTIC_ADVANTAGE_ID] });
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 500 });
+      const result = checkSneakAttackEligibility(actor, { ...makeWeaponEffect(), actor }, true);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonOutOfRange' });
+    });
+  });
+
+  describe("Focused Charge (Cobra Codex, Saboteur Focus, 3rd level)", () => {
+    test("an explosive weaponEffect qualifies with the Perk, even without Edge/ally range checks failing", () => {
+      const actor = makeActor({ traits: ['sharp'], perkIds: [FOCUSED_CHARGE_ID] });
+      const weaponEffect = { ...makeWeaponEffect(), system: { classification: { style: 'explosive' } } };
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 10 });
+      const result = checkSneakAttackEligibility(actor, weaponEffect, true);
+      expect(result.eligible).toBe(true);
+    });
+
+    test("an electromagnetic-trait weapon qualifies with the Perk", () => {
+      const actor = makeActor({ traits: ['electromagnetic'], perkIds: [FOCUSED_CHARGE_ID] });
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      canvas.grid.measurePath.mockReturnValue({ distance: 10 });
+      // The rule's weapon: tag finds the weapon through the effect's owner, as an embedded item has one.
+      const result = checkSneakAttackEligibility(actor, { ...makeWeaponEffect(), parent: actor }, true);
+      expect(result.eligible).toBe(true);
+    });
+
+    test("an explosive weaponEffect does not qualify without the Perk", () => {
+      const actor = makeActor({ traits: ['sharp'] });
+      const weaponEffect = { ...makeWeaponEffect(), system: { classification: { style: 'explosive' } } };
+      game.user.targets.first.mockReturnValue(makeTargetToken());
+      const result = checkSneakAttackEligibility(actor, weaponEffect, true);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNotSilent' });
+    });
+  });
+
+  describe("Sudden Strike (Cobra Codex, Commando Be Ruthless replacement Perk)", () => {
+    beforeEach(() => {
+      game.actors = { party: { isOwner: true, system: { storyPoints: 1 } } };
+      game.users = [{ isGM: true, active: true }];
+    });
+
+    afterEach(() => {
+      delete game.actors;
+      delete game.users;
+    });
+
+    test("bypasses every other check when the actor has a Story Point available and hasn't used it this combat", () => {
+      const actor = makeActor({ traits: ['sharp'], hasToken: false, perkIds: [SUDDEN_STRIKE_ID] });
+      // No target, no token, no range/Edge/ally - every ordinary gate would fail.
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), false);
+      expect(result.eligible).toBe(true);
+    });
+
+    test("marks viaSuddenStrike only when the ordinary checks would fail", () => {
+      const actor = makeActor({ traits: ['sharp'], hasToken: false, perkIds: [SUDDEN_STRIKE_ID] });
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), false);
+      expect(result.viaSuddenStrike).toBe(true);
+    });
+
+    test("falls through to the ordinary checks once already used this combat", () => {
+      const actor = makeActor({ traits: ['sharp'], hasToken: false, perkIds: [SUDDEN_STRIKE_ID] });
+      actor.getFlag = jest.fn((scope, key) => (
+        // Its limit's own counter (rules/limits.mjs - the test's items have no id).
+        key == 'ruleUses.x-0' ? { epoch: 1, window: 'encounter', count: 1 } : undefined
+      ));
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), false);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNotSilent' });
+    });
+
+    test("falls through to the ordinary checks with no Story Point available", () => {
+      game.actors = { party: { isOwner: true, system: { storyPoints: 0 } } };
+      const actor = makeActor({ traits: ['sharp'], hasToken: false, perkIds: [SUDDEN_STRIKE_ID] });
+      const result = checkSneakAttackEligibility(actor, makeWeaponEffect(), false);
+      expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNotSilent' });
+    });
+  });
+});
+
+/* markSneakAttackUsed */
+describe("markSneakAttackUsed", () => {
+  test("records the current combat's id and round on the actor", async () => {
+    const actor = { setFlag: jest.fn() };
+    game.combat = { id: 'combat1', round: 3 };
+    await markSneakAttackUsed(actor);
+    expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'sneakAttackLastRound', { combatId: 'combat1', round: 3 });
+  });
+
+  test("no-ops outside of combat", async () => {
+    const actor = { setFlag: jest.fn() };
+    game.combat = null;
+    await markSneakAttackUsed(actor);
+    expect(actor.setFlag).not.toHaveBeenCalled();
+  });
+});
+
+/* hasPredatorSneakAttack */
+describe("hasPredatorSneakAttack", () => {
+  function makeActorWithParent(parentSourceId) {
+    const parent = { _id: 'parent1', flags: { core: { sourceId: parentSourceId } } };
+    const perkItem = {
+      type: 'perk',
+      flags: { core: { sourceId: SNEAK_ATTACK_PERK_ID }, essence20: { parentId: 'parent1' } },
+    };
+    const items = [perkItem, parent];
+    items.get = jest.fn(id => items.find(i => i._id == id));
+
+    return { items };
+  }
+
+  test("true when granted by the Predator Focus", () => {
+    const actor = makeActorWithParent(PREDATOR_FOCUS_ID);
+    expect(hasPredatorSneakAttack(actor)).toBe(true);
+  });
+
+  test("false when granted by Commando's own base Role grant instead", () => {
+    const actor = makeActorWithParent("Compendium.essence20.gi_joe_crb.Item.M2ZYoyByNLkHtLzw");
+    expect(hasPredatorSneakAttack(actor)).toBe(false);
+  });
+
+  test("false when the actor has no Sneak Attack Perk at all", () => {
+    const items = [];
+    items.get = jest.fn(() => undefined);
+    expect(hasPredatorSneakAttack({ items })).toBe(false);
+  });
+});
+
+/* getPredatorSneakAttackDamage */
+describe("getPredatorSneakAttackDamage", () => {
+  test.each([
+    [1, 1], [3, 1], [4, 2], [7, 2], [8, 3], [12, 3], [13, 4],
+    [16, 4], [17, 5], [19, 5], [20, 6],
+  ])("level %i -> %i", (level, expected) => {
+    expect(getPredatorSneakAttackDamage(level)).toBe(expected);
+  });
+});
+
+/* checkPredatorSneakAttackEligibility */
+describe("checkPredatorSneakAttackEligibility", () => {
+  const weaponEffect = { flags: { essence20: { parentId: 'weapon1' } } };
+
+  function makeActor({ traits = ['silent'] } = {}) {
+    const items = [];
+    items.get = jest.fn(id => (id == 'weapon1' ? { system: { traits } } : null));
+    return { items };
+  }
+
+  beforeEach(() => {
+    game.user.targets.first.mockReturnValue(undefined);
+    game.combat = null;
+  });
+
+  test("not eligible without a silent weapon", () => {
+    const result = checkPredatorSneakAttackEligibility(makeActor({ traits: ['sharp'] }), weaponEffect);
+    expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonNotSilent' });
+  });
+
+  test("not eligible against a target with Every Trick in the Book", () => {
+    const targetItems = [{ type: 'perk', flags: { core: { sourceId: EVERY_TRICK_IN_THE_BOOK_ID } }, system: { rules: [{ type: 'SneakAttackImmunity' }] } }];
+    const targetActor = { items: targetItems };
+    game.user.targets.first.mockReturnValue({ actor: targetActor });
+
+    const result = checkPredatorSneakAttackEligibility(makeActor(), weaponEffect);
+    expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonTargetImmune' });
+  });
+
+  test("not eligible once already used this round", () => {
+    const actor = makeActor();
+    actor.getFlag = jest.fn(() => ({ combatId: 'combat1', round: 2 }));
+    game.combat = { id: 'combat1', round: 2 };
+
+    const result = checkPredatorSneakAttackEligibility(actor, weaponEffect);
+    expect(result).toEqual({ eligible: false, reason: 'E20.SneakAttackReasonAlreadyUsed' });
+  });
+
+  test("not auto-eligible when every checkable condition passes but the environment/awareness can't be detected", () => {
+    const result = checkPredatorSneakAttackEligibility(makeActor(), weaponEffect);
+    expect(result).toEqual({ eligible: false, reason: 'E20.PredatorSneakAttackReasonManual' });
+  });
+
+  describe("environment of expertise from the scene's terrain", () => {
+    function onTerrain(terrain) {
+      const scene = { getFlag: (scope, key) => (key == 'terrain' ? terrain : undefined) };
+      return {
+        ...makeActor(),
+        documentName: 'Actor',
+        getActiveTokens: () => [{ regions: [], parent: scene }],
+        system: { environments: ['mountains'] },
+      };
+    }
+
+    test("not eligible outside every environment of expertise", () => {
+      const result = checkPredatorSneakAttackEligibility(onTerrain('sea'), weaponEffect);
+      expect(result).toEqual({ eligible: false, reason: 'E20.PredatorSneakAttackReasonOutsideEnvironment' });
+    });
+
+    test("auto-eligible in an environment of expertise against a Surprised target", () => {
+      game.user.targets.first.mockReturnValue({ actor: { items: [], statuses: new Set(['surprised']) } });
+      const result = checkPredatorSneakAttackEligibility(onTerrain('mountains'), weaponEffect);
+      expect(result).toEqual({ eligible: true, reason: 'E20.SneakAttackReasonEligible' });
+    });
+
+    test("still manual in an environment of expertise when the target isn't Surprised", () => {
+      game.user.targets.first.mockReturnValue({ actor: { items: [], statuses: new Set() } });
+      const result = checkPredatorSneakAttackEligibility(onTerrain('mountains'), weaponEffect);
+      expect(result).toEqual({ eligible: false, reason: 'E20.PredatorSneakAttackReasonManual' });
+    });
+  });
+});

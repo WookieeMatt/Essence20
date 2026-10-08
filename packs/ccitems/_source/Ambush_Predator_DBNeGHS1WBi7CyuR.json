@@ -5,6 +5,9 @@
   "_id": "DBNeGHS1WBi7CyuR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Free attack after moving","when":[{"any":["combat","combat:round:0"]}],"limit":{"per":"turn"},"steps":[{"do":"bonusAttack","cost":"free"},{"do":"chat","text":"{name} can make an attack as a Free action."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per turn you can make an extra attack as a Free action at the end of your movement.</p>"

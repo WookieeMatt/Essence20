@@ -5,6 +5,9 @@
   "_id": "WfrRHdgPpZiOLT8V",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Cybertroid Catalyst: second lowest Essence","path":"system.energon.normal.max","op":"add","value":"min(max(@essence.strength, @essence.speed), max(@essence.strength, @essence.smarts), max(@essence.strength, @essence.social), max(@essence.speed, @essence.smarts), max(@essence.speed, @essence.social), max(@essence.smarts, @essence.social)) - min(@essence.strength, @essence.speed, @essence.smarts, @essence.social)","when":["self:canTransform","not:self:hasItem:Compendium.essence20.tf_crb.Item.mRwjbhGpqWu7hqDM"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your maximum Energon equals your second-lowest Essence instead of your lowest.</p><p>Left to the table: the extra Energon Point each time you gain Energon.</p>"

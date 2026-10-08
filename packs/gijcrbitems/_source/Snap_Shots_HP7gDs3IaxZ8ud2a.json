@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","action":"attack","to":"twoFree","ask":"E20.ActionPerkAskSnapShots","limit":{"per":"turn","max":1},"when":[{"any":["weapon:data:system.classification.size=sidearm","allOf:weapon:trait:thrown&item:data:system.classification.skill=finesse"]},"self:actionLog:flag:snapShotWeapon>=1"]}
+    ],
+    "prerequisites": {"when":["self:skill:targeting>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: after attacking with a pistol or thrown Finesse weapon, one more attack with the same kind of weapon costs two Free actions, once per turn. The tracker offers it.</p>"
@@ -13,7 +17,7 @@
       "book": "GI Joe Core Rulebook",
       "page": 134
     },
-    "prerequisite": "Targeting d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

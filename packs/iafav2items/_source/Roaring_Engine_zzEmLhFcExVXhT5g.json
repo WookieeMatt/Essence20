@@ -5,6 +5,9 @@
   "_id": "zzEmLhFcExVXhT5g",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Driving instead (Roaring Engine)","when":["skill:intimidation","vehicle:driving"],"useSkill":"driving"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: while you're driving, a switch to roll Driving in place of Intimidation.</p>"

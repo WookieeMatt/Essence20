@@ -5,9 +5,12 @@
   "_id": "KVwQulJAxVwEcpBw",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSelect","label":"Spiked","scope":"incoming","default":0,"when":["item:type:weaponEffect",{"any":["self:type:vehicle","self:type:zord"]},"attack:melee",{"any":["item:data:system.classification.skill=might","item:data:system.classification.skill=finesse"]}],"options":[{"label":"Take ↓1 on the attack","downshift":1},{"label":"Take 1 Sharp damage instead","steps":[{"do":"damage","to":"target","amount":1,"damageType":"sharp"}]}]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Roll Options Dialog: a Might or Finesse melee attack against the vehicle takes ↓1; unticking it means the attacker takes 1 Sharp damage instead.</p>"
+      "notes": "<p>Roll Options Dialog: a Might or Finesse melee attack against the vehicle gets a Spiked choice: take ↓1, or take 1 Sharp damage instead.</p>"
     },
     "originalId": "",
     "description": "",

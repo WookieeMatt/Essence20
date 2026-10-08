@@ -5,13 +5,18 @@
   "_id": "PPMvpsNSpvUMFwMs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Contort (double your Reach this turn)","steps":[{"do":"choose","options":[{"label":"Stop contorting","when":["self:marked:contort"],"steps":[{"do":"unmark","key":"contort","to":"self"},{"do":"chat","text":"{name} stops contorting."}]},{"label":"Pay a Move action","when":["not:self:marked:contort","combat:exists"],"steps":[{"do":"spendAction","action":"move"},{"do":"mark","key":"contort","to":"self","until":"turnOrUntilCombat"},{"do":"chat","text":"{name} contorts, doubling their Reach until the end of their turn."}]},{"label":"Pay 2 Free actions","when":["not:self:marked:contort","combat:exists"],"steps":[{"do":"spendAction","action":"free"},{"do":"spendAction","action":"free"},{"do":"mark","key":"contort","to":"self","until":"turnOrUntilCombat"},{"do":"chat","text":"{name} contorts, doubling their Reach until the end of their turn."}]},{"label":"Contort","when":["not:self:marked:contort","not:combat:exists"],"steps":[{"do":"mark","key":"contort","to":"self","until":"turnOrUntilCombat"},{"do":"chat","text":"{name} contorts, doubling their Reach until the end of their turn."}]}],"auto":true}]},
+      {"type":"ItemModifier","label":"Contort (Reach doubled)","items":["item:type:weaponEffect","item:data:system.classification.style=melee"],"path":"system.totalReach","op":"max","value":"@reach.size * max(1, @other.system.range.reachMultiplier) * 2","when":["self:marked:contort"]}
+    ],
+    "prerequisites": {"when":["self:skill:acrobatics>=d6"]},
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: pay a Move action or 2 Free actions to double your melee Reach until the end of your turn.</p><p>Left to the table: squeezing through spaces two Size Classes smaller without Rough Terrain.</p>"
     },
     "originalId": "",
     "description": "",
-    "prerequisite": "Acrobatics +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "General Hawk's Personnel Files",

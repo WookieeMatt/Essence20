@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","snag":true,"when":["attack","defense:evasion"]},
+      {"type":"MissImmunity","label":"A miss against Evasion has no effect (Seconds Between Click & Boom)","when":["defense:evasion"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks against your Evasion take a Snag, labelled Seconds Between Click &amp; Boom in the attacker's Roll Options Dialog. When such an attack misses you, the miss effects the system applies (Trigger Happy's Frightened, Explosive Aftershock, a Wrecker weapon's Rough Terrain) are skipped.</p>"

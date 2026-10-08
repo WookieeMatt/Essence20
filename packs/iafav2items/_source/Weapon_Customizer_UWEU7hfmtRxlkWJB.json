@@ -5,6 +5,11 @@
   "_id": "UWEU7hfmtRxlkWJB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Mark or unmark a customized weapon","steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon"},{"do":"choose","auto":true,"options":[{"label":"Customized","when":["not:rule:pickedItem:weapon:item:data:flags.essence20.customized"],"steps":[{"do":"updateItem","item":"choice:weapon","set":{"flags.essence20.customized":true}},{"do":"chat","text":"{name} customized a weapon: it's Temperamental now."}]},{"label":"Not customized","when":["rule:pickedItem:weapon:item:data:flags.essence20.customized"],"steps":[{"do":"updateItem","item":"choice:weapon","set":{"flags.essence20.customized":false}},{"do":"chat","text":"The weapon is no longer marked as customized."}]}]}]},
+      {"type":"WeaponTrait","label":"Customized weapon: Temperamental","traits":["temperamental"],"items":["item:data:flags.essence20.customized"]}
+    ],
+    "prerequisites": {"when":["self:skill:technology>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: mark a weapon you fitted with an upgrade whose prerequisites you ignored. It gains the Temperamental trait automatically.</p>"
@@ -16,7 +21,7 @@
       "page": 64
     },
     "items": {},
-    "prerequisite": "Technology +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

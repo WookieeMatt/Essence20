@@ -5,6 +5,10 @@
   "_id": "E0XzDTQLQZ9Pcplj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Quantum Morph: Morphed Toughness from Armor Training","steps":[{"do":"refreshMorphedToughness"}]},
+      {"type":"Trigger","event":"removed","label":"Quantum Morph: Morphed Toughness off","steps":[{"do":"updateActor","set":{"system.canSetToughnessBonus":false,"system.defenses.toughness.morphed":0}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: gives you the Morph button, and sets your Morphed Toughness bonus from your armor training.</p>"
@@ -18,9 +22,7 @@
     "actionType": "standard",
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role",
-    "canActivate": true,
-    "hasMorphedToughnessBonus": true
+    "type": "role"
   },
   "effects": [],
   "sort": 200000,

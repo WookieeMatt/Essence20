@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Riding, not driving (Wheel Struggle: Snag)","snag":true,"when":["vehicle:crew","not:vehicle:driving"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you ride in a vehicle you aren't driving, all your Skill Tests take a Snag, labelled Wheel Struggle in your Roll Options Dialog.</p>"

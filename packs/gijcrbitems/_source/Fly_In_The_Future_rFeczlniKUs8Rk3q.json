@@ -3,9 +3,15 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Toggle","key":"evasive","label":"Flying evasively"},
+      {"type":"Use","label":"Evasive maneuvers until your next turn (halves your Aerial vehicle's speed)","when":["self:crewsAerial","not:self:toggle:evasive"],"steps":[{"do":"setToggle","key":"evasive","value":true,"until":"nextTurnOrScene"},{"do":"chat","text":"{name} flies evasively: attacks against the vehicle target its Evasion until their next turn."}]},
+      {"type":"Use","label":"Stop evasive maneuvers","when":["self:toggle:evasive"],"steps":[{"do":"setToggle","key":"evasive","value":false},{"do":"chat","text":"{name} stops flying evasively."}]},
+      {"type":"EvasiveManeuvers","label":"Fly In The Future","scope":"vehicle","when":["self:toggle:evasive"]}
+    ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: halve your aerial vehicle's speed so attacks against it target Evasion instead of Toughness until its next turn.</p><p>Left to the table: boarding or leaving a vehicle only costs you 5 ft of movement.</p>"
+      "notes": "<p>Use button: halve your aerial vehicle's speed so attacks against it target Evasion instead of Toughness until the start of your next turn (out of combat, the scene); a second button ends it early.</p><p>Left to the table: boarding or leaving a vehicle only costs you 5 ft of movement.</p>"
     },
     "originalId": "",
     "description": "",

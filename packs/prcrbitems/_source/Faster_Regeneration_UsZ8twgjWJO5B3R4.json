@@ -4,6 +4,9 @@
   "_id": "UsZ8twgjWJO5B3R4",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Faster Regeneration: heal d2","event":"powerUsed","when":["item:own"],"limit":{"per":"encounter"},"steps":[{"do":"updateActor","to":"self","add":{"system.health.value":"1d2"},"max":"@recipient.system.health.max"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene): spend 1 Power to heal d2 Health.</p>"
@@ -16,17 +19,13 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",
-    "usesPer": 1,
-    "isVariable": false,
-    "usesPerScene": 1,
-    "timesSelected": 1
+    "usesPer": 1
   },
   "effects": [],
   "folder": "7T0RaytDHGwWT02Z",

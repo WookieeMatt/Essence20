@@ -5,6 +5,10 @@
   "_id": "75H9N2YqaSDUhiCQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"SpellCostDefer","label":"Power Conservationist"}
+    ],
+    "prerequisites": {"when":["self:skill:spellcasting>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a spell's casting cost is applied after your Spellcasting test instead of before it. Costs to augment the spell are still paid first.</p>"
@@ -16,7 +20,7 @@
       "page": 38
     },
     "items": {},
-    "prerequisite": "Spellcasting +d6 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

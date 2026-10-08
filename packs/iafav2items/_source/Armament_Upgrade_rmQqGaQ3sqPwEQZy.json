@@ -5,6 +5,9 @@
   "_id": "rmQqGaQ3sqPwEQZy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Armament Upgrade","when":["combat:exists"],"cost":{"action":"standard"},"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","prompt":"Which weapon?","beforeCost":true},{"do":"pickEntry","from":{"type":"upgrade","availabilities":["standard","limited"],"fields":["system.type"],"tags":["item:data:system.type=weapon"]},"prompt":"Which upgrade?","beforeCost":true},{"do":"roll","skill":"technology","dif":"10 + @var.pickedDif","onSuccess":[{"do":"fitUpgrade","uuid":"{var.picked}","onto":"choice:weapon","until":"endOfNextTurn"}],"onFail":[{"do":"chat","text":"{name}'s Armament Upgrade fails."}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Standard action): pick a Standard or Limited weapon upgrade and roll Technology against its DIF. On a success it's attached to your weapon until the end of your next turn.</p>"

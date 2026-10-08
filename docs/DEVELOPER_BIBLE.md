@@ -248,7 +248,7 @@ docs/                design plans, and this bible
 | A roll's modifiers or outcome | `dice.mjs` (section 6) |
 | A chat card | `chat.mjs` |
 | One Perk's behaviour | its own file in `helpers/` (section 9) |
-| A constant, enum or list | `helpers/config.mjs` (`CONFIG.E20`) |
+| A constant, enum or list | `util/config.mjs` (`CONFIG.E20`) |
 | A user-visible string | `lang/en.json` — **never hardcode English** |
 
 ### The two kinds of file in `helpers/`
@@ -300,7 +300,7 @@ Two rules:
 1. `module/data/<actor|item>/<type>.mjs` — add it to the schema, using the builders in
    `data/generic-makers.mjs`.
 2. `template.json` — add it under the same type.
-3. If it should be Active-Effect-targetable, add it to `helpers/effect-catalog.mjs` (§7).
+3. If it should be Active-Effect-targetable, add it to `mechanics/characters/effect-catalog.mjs` (§7).
 4. If it needs migrating on existing worlds, add a step in `module/migration.mjs` and bump
    `needsMigrationVersion` in `system.json`.
 5. Surface it: the relevant `templates/` partial, plus a label in `lang/en.json`.
@@ -313,7 +313,7 @@ The short version, and the two steps people forget:
 - Declare it in **both** `system.json` (`documentTypes`) and `template.json`.
 - `lang/en.json` needs `ACTOR.TypeMyactor` / `ITEM.TypeMyitem` with **exactly** that
   capitalisation, or the type will not appear in the Create dialog.
-- **Every new `.hbs` partial must be registered in `module/helpers/templates.mjs`.** An
+- **Every new `.hbs` partial must be registered in `module/util/templates.mjs`.** An
   unregistered partial simply does not load, with no error that points at the cause.
 
 [wa]: https://github.com/WookieeMatt/Essence20/wiki/Adding-an-Actor-Type
@@ -395,7 +395,7 @@ Hang-Ups, gear, the target, and the situation, accumulating `shiftUp` / `shiftDo
 `_applyFlameWarlordCritDamage`, ...).
 
 Between phases 2 and 3 the **Roll Options dialog** (`apps/roll-options-dialog.mjs`, built through
-`helpers/roll-dialog.mjs`) shows the player what was computed and lets them adjust it.
+`mechanics/rolls/roll-dialog.mjs`) shows the player what was computed and lets them adjust it.
 
 **Phase 3 — `_rollSkillHelper`** builds the formula, evaluates it, and either posts a plain roll
 message or resolves the result against targets.
@@ -464,7 +464,7 @@ write an effect and no JavaScript.**
 
 ### The catalog
 
-`module/helpers/effect-catalog.mjs` is the single source of truth for what an effect can target,
+`module/mechanics/characters/effect-catalog.mjs` is the single source of truth for what an effect can target,
 expressed in game vocabulary rather than schema paths. It is a hand-authored table, deliberately
 not a walk of the DataModel schemas, because it must run under plain Node for the tests and the CI
 script where `foundry.data.fields` does not exist.
@@ -546,7 +546,7 @@ the same shape.
 Nothing else in the codebase knows how that ability works.
 
 ```
-module/helpers/lucky-charm.mjs
+module/items/magic/lucky-charm.mjs
 module/helpers/lucky-charm.test.js
 ```
 
@@ -580,12 +580,12 @@ import { hasUsedThisEncounter } from "./perks.mjs";
 
 The counters work identically in and out of combat. An older pattern stamped uses with
 `game.combat.id`, which read as "never used" outside combat and made once-per-scene abilities
-unlimited during roleplay. That was a correctness bug, and it is why `helpers/scene-clock.mjs`
+unlimited during roleplay. That was a correctness bug, and it is why `mechanics/resources/scene-clock.mjs`
 exists.
 
 ### Rerolls
 
-Do not write reroll bookkeeping. `module/helpers/reroll.mjs` handles usage tracking, reset windows,
+Do not write reroll bookkeeping. `module/mechanics/rolls/reroll.mjs` handles usage tracking, reset windows,
 resource costs and preconditions, reading its config off whichever item carries it (schema in
 `module/data/reroll-schema.mjs`). Put the config on the compendium item; the engine does the rest.
 
@@ -593,14 +593,14 @@ resource costs and preconditions, reading its config off whichever item carries 
 
 "Bank a bonus now, spend it on a later roll" is an established pattern:
 `bankPendingBonus` / `getPendingBonus` / `clearPendingBonus` in `perks.mjs`, consumed in
-`_getAutomaticCombatModifiers`. See `helpers/banked-buffs.mjs`.
+`_getAutomaticCombatModifiers`. See `mechanics/resources/banked-buffs.mjs`.
 
 ### Rules you cannot enforce
 
 Some rules have no mechanism behind them — "the vehicle's Movement is reduced to 0 until the driver
 restarts the engines", when nothing anywhere restarts an engine. The idiom is a **plain, visible
 marker flag** that the GM manages by hand, documented as such in the header comment, rather than a
-half-enforcement that surprises people. See `helpers/undo-engine.mjs`.
+half-enforcement that surprises people. See `items/vehicles/undo-engine.mjs`.
 
 This is a judgement call you will face often. The rule of thumb: **an ability that does the wrong
 thing is worse than one that does nothing**, because the player stops checking.
@@ -621,7 +621,7 @@ Every rule-implementing file opens with a doc comment that does four things:
 3. **Says how it is built**, and which existing pattern it follows.
 4. **Says what was deliberately *not* built, and why.**
 
-A real one, from `helpers/lucky-charm.mjs`:
+A real one, from `items/magic/lucky-charm.mjs`:
 
 ```js
 /**
@@ -669,7 +669,7 @@ A sheet class should route a click to a function somewhere else. If a handler in
 
 ### One file per ability, named after it
 
-Not grouped by book, not grouped by type. `helpers/whirlwind-strike.mjs`. This is why the folder
+Not grouped by book, not grouped by type. `items/attacks/whirlwind-strike.mjs`. This is why the folder
 has hundreds of files, and it is the reason you can find any ability in one search.
 
 ### Prefer content over code
@@ -702,11 +702,11 @@ Target the `bonus` input, not the total. Find offenders with
 
 **A dropped item's origin lives in one of two places.** `flags.core.sourceId` *or*
 `_stats.compendiumSource`, depending on when and how it was created. Always use `findPerk` /
-`actorHasPerk` from `helpers/perks.mjs`, which check both. A hand-rolled lookup checking one will
+`actorHasPerk` from `mechanics/characters/perks.mjs`, which check both. A hand-rolled lookup checking one will
 work in your test world and fail in someone else's.
 
 **An unregistered Handlebars partial does not load.** Every `.hbs` must be listed in
-`module/helpers/templates.mjs`. The failure gives you no clue where to look.
+`module/util/templates.mjs`. The failure gives you no clue where to look.
 
 **`context.actor` is not set on actor sheets.** `@root.actor` in a template is undefined — use
 `@root.document` or `@root.system`. (`@root.actors`, plural, is a different thing and *is* set,
@@ -716,7 +716,7 @@ by `sheet-handlers/vehicle-handler.mjs`, for attachment collections.)
 cannot find out why their dice changed. See §6.
 
 **`game.combat` is not a scene.** Once-per-scene abilities stamped with a combat id read as
-"never used" outside combat, making them unlimited in roleplay. Use `helpers/scene-clock.mjs`.
+"never used" outside combat, making them unlimited in roleplay. Use `mechanics/resources/scene-clock.mjs`.
 
 **`css/essence20.css` is generated.** Edit `sass/`. If your styles are not showing, you did not
 run `npm run build`.

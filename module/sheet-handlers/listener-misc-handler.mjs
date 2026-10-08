@@ -1,14 +1,14 @@
-import { runRest } from "../helpers/extensions.mjs";
-import { restBff } from "../helpers/bff.mjs";
-import { restBond } from "../helpers/bonded.mjs";
-import { restContact } from "../helpers/contacts.mjs";
-import { restKits } from "../helpers/kits.mjs";
-import { imperfectionOf } from "../helpers/grants.mjs";
-import { clearDefenseDamage } from "../helpers/essence-damage.mjs";
-import { getCrewedVehicle, resetDailyVehicleUses } from "../helpers/vehicle-upgrades.mjs";
-import { resetDailyActionPerkUses } from "../helpers/action-perks.mjs";
+import { runRest } from "../mechanics/item-hooks.mjs";
+import { restBond } from "../mechanics/companions/bonded-partners.mjs";
+import { restContact } from "../mechanics/companions/contacts.mjs";
+import { restKits } from "../mechanics/resources/kits.mjs";
+import { imperfectionOf } from "../mechanics/resources/grants.mjs";
+import { clearDefenseDamage } from "../mechanics/combat/essence-damage.mjs";
+import { currentEssence, currentEssenceUpdate, essenceScore } from "../mechanics/combat/essence-current.mjs";
+import { getCrewedVehicle, resetDailyVehicleUses } from "../mechanics/vehicles/vehicle-upgrades.mjs";
+import { resetDailyActionPerkUses } from "../mechanics/actions/action-perks.mjs";
 import { powerCost } from "./power-handler.mjs";
-import { resetDailyPowerUses } from "../helpers/nanomite-uses.mjs";
+import { resetDailyPowerUses } from "../mechanics/resources/nanomite-uses.mjs";
 import RollerSelector from "../apps/roller-selector.mjs";
 import DefenseModificationSelector from "../apps/defense-modification.mjs";
 
@@ -132,8 +132,7 @@ export async function spendRolePoint(actor, item) {
 async function _applyRestBenefits(actor, completeMessageKey) {
   const normalEnergon = actor.system.energon.normal;
   let maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
-  // A Hint of Independence's Energon Hunger: "Anytime you regenerate Energon, roll 1d4; on a 4, you
-  // regenerate 1 less than the normal amount."
+  // A Hint of Independence's Energon Hunger: on each Energon regain, a 4 on 1d4 means 1 less.
   if (imperfectionOf(actor)?.n == 5 && maxEnergonRestore > 0 && (await new Roll('1d4').evaluate()).total == 4) {
     maxEnergonRestore -= 1;
   }
@@ -177,13 +176,13 @@ async function _applyRestBenefits(actor, completeMessageKey) {
   }
 
   // Recovering Essence damage
+  // A Zord's / Vehicle's is kept apart from its score (mechanics/combat/essence-current.mjs).
   for (const essence of Object.keys(actor.system.essences)) {
-    if (actor.system.essences[essence].value < actor.system.essences[essence].max) {
-      const essenceString = `system.essences.${essence}.value`;
-      const essenceRestore = actor.system.essences[essence].value + 1;
-      await actor.update({
-        [essenceString]: essenceRestore,
-      });
+    const current = currentEssence(actor, essence);
+    const score = essenceScore(actor, essence);
+    if (current !== null && score !== null && current < score) {
+      const essenceRestore = current + 1;
+      await actor.update(currentEssenceUpdate(actor, essence, essenceRestore));
 
       ui.notifications.info(game.i18n.format('E20.RestEssenceRestored', { essenceRestore: essenceRestore, essence: CONFIG.E20.essences[essence] }));
     }
@@ -202,22 +201,21 @@ async function _applyRestBenefits(actor, completeMessageKey) {
     ui.notifications.info(game.i18n.localize("E20.RestPowerUsesReset"));
   }
 
-  // ...and Perks usable a number of times a day (Detail Oriented) - helpers/action-perks.mjs.
+  // ...and Perks usable a number of times a day (Detail Oriented) - mechanics/actions/action-perks.mjs.
   await resetDailyActionPerkUses(actor);
 
-  // ...and any Defense damage (helpers/essence-damage.mjs).
+  // ...and any Defense damage (mechanics/combat/essence-damage.mjs).
   await clearDefenseDamage(actor);
 
-  // ...and what kits and gear recharge overnight (helpers/kits.mjs).
+  // ...and what kits and gear recharge overnight (mechanics/resources/kits.mjs).
   await restKits(actor);
 
-  // ...and About Twenty-Percent Cooler, a Powermaster's module, and daily Contacts.
-  await restBff(actor);
+  // ...and a Powermaster's module, and daily Contacts. (About Twenty-Percent Cooler's three a day are a rule limit per rest.)
   await restBond(actor);
   await restContact(actor);
   await runRest(actor);
 
-  // ...and the vehicle they crew (Nameplate) - helpers/vehicle-upgrades.mjs.
+  // ...and the vehicle they crew (Nameplate) - mechanics/vehicles/vehicle-upgrades.mjs.
   const crewed = getCrewedVehicle(actor);
   if (crewed) {
     await resetDailyVehicleUses(crewed.vehicle);
@@ -234,7 +232,8 @@ async function _applyRestBenefits(actor, completeMessageKey) {
     "system.energon.primal.value": 0,
     "system.energon.red.value": 0,
     "system.energon.synthEn.value": 0,
-  });
+  // A Rest, not a spend (item rules' resourceSpent Triggers skip it - rules/triggers.mjs).
+  }, { essence20Rest: true });
 }
 
 /**

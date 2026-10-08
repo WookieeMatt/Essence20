@@ -5,6 +5,10 @@
   "_id": "pU3dKGNWYAhgRY6B",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Set your allies' Initiative behind yours","when":["combat:exists","self:initiative"],"limit":{"per":"encounter"},"steps":[{"do":"writeInitiative","to":"allies:100000","value":"max(1, @initiative - 1d4)"}]}
+    ],
+    "prerequisites": {"when":["self:skill:initiative>=d6","self:skill:persuasion>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per combat, sets your nearby allies' Initiative to your result minus 1d4 (minimum 1).</p>"
@@ -15,7 +19,7 @@
       "book": "Quartermaster's Guide to Gear",
       "page": 31
     },
-    "prerequisite": "Initiative +d6, Persuasion +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

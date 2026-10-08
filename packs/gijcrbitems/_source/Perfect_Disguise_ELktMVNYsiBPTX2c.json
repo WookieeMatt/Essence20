@@ -5,9 +5,17 @@
   "_id": "ELktMVNYsiBPTX2c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Perfect Disguise","when":[{"any":["skill:deception","skill:persuasion","skill:intimidation","skill:streetwise"]},"self:data:flags.essence20.perfectDisguiseActive","not:roll:dataset:isInitiative"],"edge":true},
+      {"type":"Use","label":"Take on a disguise","when":["not:self:data:flags.essence20.perfectDisguiseActive"],"limit":{"per":"mission"},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.perfectDisguiseActive":true}},{"do":"chat","text":"{name} takes on a perfect disguise."}]},
+      {"type":"Use","label":"Drop the disguise","when":["self:data:flags.essence20.perfectDisguiseActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.perfectDisguiseActive":false}},{"do":"chat","text":"{name} drops the disguise."}]},
+      {"type":"RollModifier","label":"Attacking in disguise (Perfect Disguise: Edge)","edge":true,"when":["attack","self:data:flags.essence20.perfectDisguiseActive"]},
+      {"type":"Trigger","event":"afterRoll","label":"End the disguise (seen attacking a supposed ally)","prompt":true,"when":["attack","roll:targets>=1","self:data:flags.essence20.perfectDisguiseActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.perfectDisguiseActive":false}},{"do":"chat","text":"{name} drops the disguise."}]},
+      {"type":"SneakAttackGrant","label":"Attacking in disguise (Perfect Disguise: sneak attacks)","bypass":true,"reason":"E20.SneakAttackReasonDisguise","when":["self:data:flags.essence20.perfectDisguiseActive"]}
+    ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Use button: switches the disguise on (once per encounter). While on, your Deception, Persuasion, Intimidation and Streetwise rolls open with Edge selected, and your attacks count as sneak attacks. Your first attack ends it.</p><p>Left to the table: the once-per-Mission limit and whether the person can be copied.</p>"
+      "notes": "<p>Use button: switches the disguise on (once per mission), or drops it. While on, your Deception, Persuasion, Intimidation and Streetwise rolls open with Edge selected, and your attacks get an Edge and count as sneak attacks (still once a round). After each attack you're asked whether you were seen attacking a supposed ally; yes ends the disguise.</p><p>Left to the table: whether the person can be copied, staying in character, and whether a target is fooled.</p>"
     },
     "originalId": "",
     "description": "",

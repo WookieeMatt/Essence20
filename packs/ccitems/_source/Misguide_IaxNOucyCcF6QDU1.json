@@ -5,6 +5,10 @@
   "_id": "IaxNOucyCcF6QDU1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Misguide a creature's movement (Misguide)","when":["combat:exists"],"cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"require","beforeCost":true,"check":["not:check:outsideEnvironmentOfExpertise"],"message":"Only in your environment of expertise."},{"do":"focus","beforeCost":true,"to":"targetOrCombatant"},{"do":"require","beforeCost":true,"check":["not:target:self"],"message":"Target the creature to misguide."},{"do":"mark","to":"target","key":"misguided","until":"endOfTurn","when":["target:ownTurn"]},{"do":"mark","to":"target","key":"misguided","until":"endOfNextTurn","untilOf":"recipient","when":["not:target:ownTurn"]},{"do":"chat","text":"{target} moves as though through Rough Terrain on its turn."}]},
+      {"type":"RoughTerrainImposer","label":"Misguided creatures move through Rough Terrain (Misguide)","when":["target:marked:misguided","target:ownTurn"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (in combat): target the creature whose turn it is, or one whose turn is coming, and spend the Story Point. Its movement that turn costs as if it were in Rough Terrain.</p>"

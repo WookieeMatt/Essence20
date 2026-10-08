@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Lend Assistance with the Favorite Command (Assistant)","cost":{"action":"free"},"steps":[{"do":"require","beforeCost":true,"check":[{"any":["self:hasItem:Compendium.essence20.gi_joe_crb.Item.ymF7fHkBglQ7pQRE","self:hasItem:Compendium.essence20.mlp_crb.Item.rPnaWCU06W8c0Zua","self:hasItem:Compendium.essence20.wtnv_citizens_guide.Item.GeHPKfuWe24HpYcQ"]}],"message":"{name} needs a Favorite Command first."},{"do":"lendAssist"}]}
+    ],
+    "prerequisites": {"when":["self:has:Favorite Command"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button on the pet: it Lends Assistance with its Favorite Command as a Free action.</p>"
@@ -14,7 +18,7 @@
       "page": 165
     },
     "actionType": "free",
-    "prerequisite": "Favorite Command",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

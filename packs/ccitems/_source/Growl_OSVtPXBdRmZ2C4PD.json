@@ -5,9 +5,14 @@
   "_id": "OSVtPXBdRmZ2C4PD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Growl","cost":{"action":"free"},"steps":[{"do":"target","beforeCost":true},{"do":"require","check":["combat:exists"],"message":"Growl needs a combat.","beforeCost":true},{"do":"require","check":["target:withinReach"],"message":"Growl: the target must be within your reach.","beforeCost":true},{"do":"require","check":["not:target:markedByMe:growlTried"],"message":"Growl has already been used against that target this turn.","beforeCost":true},{"do":"mark","key":"growlTried","to":"target","perSetter":true,"until":"turnOrUntilCombat"},{"do":"roll","open":true,"sheetShifts":false,"skill":"intimidation","essence":"strength","dataset":{"defenseType":"willpower","isGrowl":true}}]},
+      {"type":"Trigger","label":"Growl","event":"hit","when":["roll:dataset:isGrowl","var:row=0"],"steps":[{"do":"mark","key":"growl","to":"target","perSetter":true,"until":"endOfTurn"}]},
+      {"type":"RollModifier","label":"Growl","key":"growl","upshift":1,"when":["attack","target:markedByMe:growl"]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button: with a target selected, roll Intimidation against its Willpower. On a success your next attack against it gets ↑1, labelled Growl in the Roll Options Dialog. Once per target per turn.</p>"
+      "notes": "<p>Use button (Free action): with a target within your reach selected, roll Intimidation against its Willpower. On a success your attacks against it get ↑1 for the rest of this turn, labelled Growl in the Roll Options Dialog. Once per target per turn.</p>"
     },
     "originalId": "",
     "description": "",

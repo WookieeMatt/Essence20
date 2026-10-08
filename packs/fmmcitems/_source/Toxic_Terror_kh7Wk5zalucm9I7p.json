@@ -5,6 +5,11 @@
   "_id": "kh7Wk5zalucm9I7p",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch Toxic Terror on","when":["not:self:windowUsed:toxicTerrorActive:scene"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"markWindow","flag":"toxicTerrorActive","window":"scene"}]},
+      {"type":"Use","label":"Switch Toxic Terror off","when":["self:windowUsed:toxicTerrorActive:scene"],"steps":[{"do":"markWindow","flag":"toxicTerrorActive","clear":true}]},
+      {"type":"Trigger","label":"Toxic Terror","event":"hit","when":[{"any":["attack:unarmed","weapon:id:OU9rXvoKfXtcpvFy","weapon:id:Cwd1FASmKXWiAFom"]},"self:windowUsed:toxicTerrorActive:scene"],"steps":[{"do":"markWindow","flag":"toxicTerrorStacks","window":"scene","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (1 Personal Power): switches it on for the rest of the scene; click again to end it early. While it is on, each of your Unarmed hits stacks another ↓1 on the target's Strength and Speed Skill Tests, already counted in the Downshift number of its Roll Options Dialog. Both end on their own when the GM starts a new scene.</p>"

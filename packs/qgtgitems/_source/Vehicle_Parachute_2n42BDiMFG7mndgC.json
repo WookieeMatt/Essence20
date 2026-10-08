@@ -5,6 +5,7 @@
   "_id": "2n42BDiMFG7mndgC",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:data:system.traits.land","self:data:system.traits.sea"]}]},
     "automation": {
       "status": "manual",
       "notes": "<p>Nothing applies automatically.</p><p>Left to the table: air-dropping the vehicle without falling damage, and it can't maneuver until it lands.</p>"
@@ -23,7 +24,7 @@
     "benefit": "The vehicle can be air-dropped without taking falling damage, but can't maneuver until it lands.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Land or Sea vehicle"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

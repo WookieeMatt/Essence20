@@ -5,6 +5,11 @@
   "_id": "jGa15CyuKXhq3IV2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Maximize Flaws (1 Personal Power: mark the target this turn)","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"require","check":["combat"],"beforeCost":true},{"do":"target","max":1,"beforeCost":true},{"do":"mark","key":"maximizeFlaws","to":"target","perSetter":true,"until":"endOfTurn"}]},
+      {"type":"RollModifier","label":"Maximize Flaws (ignore its Resistance)","immune":["resistanceSnag"],"when":["attack","target:markedByMe:maximizeFlaws"]},
+      {"type":"RollModifier","label":"Maximize Flaws (Edge: no Resistance to ignore)","edge":true,"when":["attack","target:markedByMe:maximizeFlaws","not:roll:dataset:targetResists"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spends 1 Personal Power and locks onto your target. For the rest of your turn your attacks on it skip the Snag its Resistance would give, or, if it has no Resistance to that damage, get Edge labelled Maximize Flaws in the Roll Options Dialog.</p>"

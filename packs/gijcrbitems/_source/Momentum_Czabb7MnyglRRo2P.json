@@ -5,6 +5,9 @@
   "_id": "Czabb7MnyglRRo2P",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","when":["combat:exists"],"cost":{"action":"standard"},"steps":[{"do":"target","max":1,"beforeCost":true},{"do":"warn","text":"E20.RulesExtSystems.NeedsAlly","stop":true,"when":["target:self"],"beforeCost":true},{"do":"warn","text":"E20.RulesExtSystems.AllyNotInCombat","stop":true,"when":["not:target:combatant"],"beforeCost":true},{"do":"grantActions","standard":"@target.system.actions.standard.max","move":"@target.system.actions.move.max","free":"@target.system.actions.free.max","to":"target"},{"do":"chat","text":"{name} grants {target} an immediate bonus turn."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend your Standard action to give an ally an immediate bonus turn.</p>"

@@ -5,6 +5,15 @@
   "_id": "MejI6WIShcA0GdoW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Feet Wet in wetlands (Ship Shape: non-combat tests)","when":["not:attack","not:roll:initiative","self:hasItem:Compendium.essence20.quartermasters_guide_to_gear.Item.7u3xCPPjxJlI7c61","terrain:set","terrain:wetlands","not:check:aboardAquaticVessel"],"edge":true},
+      {"type":"RollModifier","label":"Feet Wet in wetlands (Ship Shape: attacks are Specialized)","when":["attack","self:hasItem:Compendium.essence20.quartermasters_guide_to_gear.Item.7u3xCPPjxJlI7c61","terrain:set","terrain:wetlands","not:check:aboardAquaticVessel"],"specialize":true},
+      {"type":"MovementAction","label":"Feet Wet in wetlands (Ship Shape: ignores Rough Terrain)","ignoreRoughTerrain":true,"when":["self:hasItem:Compendium.essence20.quartermasters_guide_to_gear.Item.7u3xCPPjxJlI7c61","terrain:set","terrain:wetlands"]},
+      {"type":"RollModifier","label":"Feet Wet (Ship Shape: the aquatic vehicle you drive, non-combat tests)","scope":"driven","when":["self:type:vehicle","not:attack","not:roll:initiative",{"any":["self:data:system.movement.swim.base>0","self:data:system.movement.swim.total>0"]}],"edge":true},
+      {"type":"RollModifier","label":"Feet Wet (Ship Shape: the aquatic vehicle you drive, attacks are Specialized)","scope":"driven","when":["self:type:vehicle","attack",{"any":["self:data:system.movement.swim.base>0","self:data:system.movement.swim.total>0"]}],"specialize":true},
+      {"type":"MovementAction","label":"Feet Wet (Ship Shape: the aquatic vehicle you drive ignores Rough Terrain)","scope":"driven","ignoreRoughTerrain":true,"when":["self:type:vehicle",{"any":["self:data:system.movement.swim.base>0","self:data:system.movement.swim.total>0"]}]},
+      {"type":"Movement","label":"Ship Shape (the aquatic vehicle you drive moves half again, rounded down)","scope":"driven","movement":"all","stage":"afterDerived","op":"multiply","value":1.5,"round":"floor","when":["self:type:vehicle",{"any":["self:data:system.movement.swim.base>0","self:data:system.movement.swim.total>0"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Feet Wet benefits also work in wetlands. An aquatic vehicle you drive gets the Feet Wet benefits and half again its Movement (rounded down).</p>"

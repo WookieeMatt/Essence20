@@ -5,6 +5,9 @@
   "_id": "bLBiNpqobnTDH769",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Gate a helper (Willpower)","steps":[{"do":"chat","text":"Allies helping {name} must first beat Willpower {@actor.system.defenses.willpower.total} with Deception, Intimidation or Persuasion."},{"do":"button","label":"Roll to help (Disenfranchised)","who":"anyone","runAs":"clicker","once":false,"steps":[{"do":"choose","prompt":"Roll which Skill?","options":[{"label":"Deception","steps":[{"do":"roll","skill":"deception","dif":"@item.parent.system.defenses.willpower.total","onSuccess":[{"do":"chat","text":"{name} passes the Disenfranchised check and may help."}],"onFail":[{"do":"chat","text":"{name} fails the Disenfranchised check."}]}]},{"label":"Intimidation","steps":[{"do":"roll","skill":"intimidation","dif":"@item.parent.system.defenses.willpower.total","onSuccess":[{"do":"chat","text":"{name} passes the Disenfranchised check and may help."}],"onFail":[{"do":"chat","text":"{name} fails the Disenfranchised check."}]}]},{"label":"Persuasion","steps":[{"do":"roll","skill":"persuasion","dif":"@item.parent.system.defenses.willpower.total","onSuccess":[{"do":"chat","text":"{name} passes the Disenfranchised check and may help."}],"onFail":[{"do":"chat","text":"{name} fails the Disenfranchised check."}]}]}]}]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: posts a chat card where a helper rolls Deception, Intimidation or Persuasion against your Willpower. Left to the table: stopping ally benefits that the roll fails to earn.</p>"

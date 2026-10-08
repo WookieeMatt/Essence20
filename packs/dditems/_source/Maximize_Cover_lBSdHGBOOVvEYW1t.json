@@ -5,6 +5,9 @@
   "_id": "lBSdHGBOOVvEYW1t",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Cover","mode":"base","amount":3,"against":true,"label":"Cover is ↓3 instead of ↓2 against it"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you're in Cover, attacks against you take ↓3 instead of ↓2, shown on the Cover line in the attacker's Roll Options Dialog.</p>"

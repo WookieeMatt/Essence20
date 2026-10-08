@@ -5,6 +5,10 @@
   "_id": "OUtZ1DohGv4l9A5j",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"targeted","label":"The Tough Get Going (Ground Movement doubled this round)","outcome":"failure","limit":{"per":"round"},"when":["defense:toughness"],"steps":[{"do":"mark","key":"toughGetGoing","to":"self","until":"roundOrScene"}]}
+    ],
+    "prerequisites": {"when":["self:essence:strength>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: once per round, when an attack against your Toughness misses, your Ground Movement doubles for the rest of the round so you can move.</p>"
@@ -16,7 +20,7 @@
       "page": 95
     },
     "items": {},
-    "prerequisite": "Strength Essence 3+",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

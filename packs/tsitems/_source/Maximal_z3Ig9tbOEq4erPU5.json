@@ -5,6 +5,11 @@
   "_id": "z3Ig9tbOEq4erPU5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DialogSwitch","label":"Maximal: Edge (chosen Specialization)","when":["skill:{choice.skill}",{"any":["skill:persuasion","skill:science","skill:technology"]},"roll:dataset:specializationKey"],"edge":true,"default":true,"forget":true},
+      {"type":"DialogSwitch","label":"Maximal: Edge (chosen Specialization)","when":["skill:{choice.skill}",{"any":["skill:persuasion","skill:science","skill:technology"]},"not:roll:dataset:specializationKey"],"edge":true,"forget":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>On the sheet: pick Persuasion, Science or Technology as the Perk's Skill. Roll Options Dialog: tests with that Skill show a Maximal switch for Edge, on by default when you roll a Specialization; tick it when your chosen Specialization comes into play.</p>"
@@ -18,8 +23,8 @@
     "items": {},
     "canActivate": false,
     "choice": null,
-    "choiceType": "skills",
-    "hasChoice": true,
+    "choiceType": "none",
+    "hasChoice": false,
     "numChoices": 1,
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,

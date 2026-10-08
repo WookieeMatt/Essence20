@@ -5,6 +5,10 @@
   "_id": "zey1cJ2IuWlTsjN2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"option","label":"Option","from":"config","table":"viciousOrVenomOptions","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","rule:choiceHas:option",{"any":["attack:unarmed","weapon:source:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8","weapon:source:Compendium.essence20.technorganic_secrets.Item.IJTQr6XGgmfxDPoY","weapon:source:Compendium.essence20.technorganic_secrets.Item.au05ekMECrDqVlkm"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: +1 Toughness. On the sheet: pick Acidic Saliva, Razor-Sharp or Venomous. Automatic: once picked, attacks with a Natural Weapon item (or an attack not tied to any weapon) deal +1 damage, listed on the attack's chat card.</p><p>Left to the table: the extra 1 uses the attack's own damage type, so treat it as Acid, Sharp or Poison yourself when that matters.</p>"
@@ -18,9 +22,9 @@
     "items": {},
     "canActivate": false,
     "choice": null,
-    "choiceType": "viciousOrVenom",
+    "choiceType": "none",
     "isRoleVariant": false,
-    "hasChoice": true,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "",

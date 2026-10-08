@@ -1,19 +1,12 @@
-import { afterSpectrumShifted, spectrumShiftedRetains } from "../helpers/extensions/pr1/spectrum.mjs";
-import { essenceRedirect } from "../helpers/grants.mjs";
+import { afterSpectrumShifted, spectrumShiftedRetains } from "../mechanics/characters/spectrum-shifted.mjs";
+import { essenceRedirect } from "../mechanics/resources/grants.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
-import { onPerkDelete, onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
+import { onPerkDelete, onPerkDrop } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
-import {
-  actorHadMagicalBeforeGrant,
-  actorHasPrincessPerk,
-  applySpellcastingUpshift,
-  roleGrantsPrincessPerk,
-} from "../helpers/princess-perks.mjs";
-
-const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
+import { removeFocusSkillPicks, syncFocusSkillPicks } from "../mechanics/characters/focus-skills.mjs";
 
 /**
  * Performs a Spectrum Shift: retroactively swaps the Actor's current Role for a new one, per
@@ -43,9 +36,9 @@ export async function performSpectrumShift(actor, newRole) {
   for (const item of [...actor.items]) {
     if (item.getFlag('essence20', 'parentId') == oldRole.id) {
       // Spectrum Shifted (A Jump Through Time p.42, Table 2-16) - see
-      // helpers/extensions/pr1/spectrum.mjs for which Perks and pools each old Role keeps.
+      // mechanics/characters/spectrum-shifted.mjs for which Perks and pools each old Role keeps.
       if (newRole.system.hasSpectrumShifted && ['perk', 'rolePoints'].includes(item.type)) {
-        const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource;
+        const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
         const oldAttachment = Object.values(oldRole.system.items).find(entry => entry.uuid == sourceId);
         if (await spectrumShiftedRetains(actor, oldRole, item, oldAttachment)) {
           await item.setFlag('essence20', 'parentId', newRoleItem._id);
@@ -154,7 +147,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   const currentEssenceLevel = essenceLevel ?? newLevel ?? actor.system.level;
   for (const roleEssence in role.system.essenceLevels) {
     const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[roleEssence], previousLevel);
-    // Cordial / Rough and Takes No Guff move an increase to another Essence (helpers/grants.mjs).
+    // Cordial / Rough and Takes No Guff move an increase to another Essence (mechanics/resources/grants.mjs).
     const essence = totalChange > 0 ? essenceRedirect(actor, role, roleEssence) : roleEssence;
     const essenceMax = actor.system.essences[essence].max + totalChange;
     const essenceMaxString = `system.essences.${essence}.max`;
@@ -233,24 +226,20 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   const lastPerkLevel = previousPerkLevel ?? previousLevel;
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
     // Drop or level up
-    // MLP CRB "Princess of X" capstones (p.86-87/91/97): "If you already have Magical, you gain
-    // an ongoing upshift 1 to Spellcasting" - "already have" must be checked BEFORE this exact
-    // grant also hands out a fresh copy of Magical alongside the Princess Perk itself. See
-    // helpers/princess-perks.mjs's own doc comment.
-    const grantsPrincessPerk = roleGrantsPrincessPerk(role) && !actorHasPrincessPerk(actor);
-    const hadMagicalBeforeGrant = grantsPrincessPerk && actorHadMagicalBeforeGrant(actor);
-
     await createItemCopies(role.system.items, actor, "perk", role, lastPerkLevel, currentPerkLevel);
-
-    if (grantsPrincessPerk && hadMagicalBeforeGrant && actorHasPrincessPerk(actor)) {
-      await applySpellcastingUpshift(actor);
-    }
   } else {
     // Level down
     await deleteAttachmentsForItem(role, actor, lastPerkLevel, currentPerkLevel);
   }
 
   actor.setFlag('essence20', 'roleDrop', false);
+
+  // A base Role dropped onto a character above 1st level: the General Perks / Grid Powers its levels so far give
+  // are picks waiting to be made (mechanics/characters/level-picks.mjs). An additive Role starts at its own level 1.
+  if (!newLevel && !previousLevel && !role.system.isAdditive) {
+    const { updateLevelPicks } = await import("../mechanics/characters/level-picks.mjs");
+    await updateLevelPicks(actor, 0, actor.system.level);
+  }
 }
 
 /**
@@ -317,7 +306,8 @@ export async function onFocusDrop(actor, focus, dropFunc) {
     return false;
   }
 
-  const sourceId = role[0]._stats.compendiumSource;
+  // A homebrew Role that acts as a book Role (Rules tab) takes that Role's Focuses.
+  const sourceId = role[0]._stats?.compendiumSource ?? role[0].flags?.core?.sourceId ?? role[0].flags?.essence20?.rulesSource;
 
   if (sourceId != attachedRole[0].uuid) {
     ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
@@ -407,6 +397,10 @@ export async function _setFocusValues(focus, actor, newLevel=null, previousLevel
       [essenceMaxString]: essenceMax,
       [essenceValueString]: essenceValue,
     });
+
+    // The Skill rank each increase brings (mechanics/characters/focus-skills.mjs): asked for an increase gained,
+    // taken back for one lost.
+    await syncFocusSkillPicks(actor, focus, newLevel ?? actor.system.level, previousLevel ?? 0);
   }
 
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
@@ -446,6 +440,8 @@ export async function onFocusDelete(actor, focus) {
   // See _setFocusValues's own comment above - a Focus granting no Essence Increase at all never
   // set system.focusEssence to begin with, so there's nothing to lower back down here either.
   if (actor.system.focusEssence) {
+    // The Skill ranks / Specializations its increases placed come back off too.
+    await removeFocusSkillPicks(actor, focus);
     const previousLevel = actor.getFlag('essence20', 'previousLevel');
     const totalDecrease = roleValueChange(0, focus.system.essenceLevels, previousLevel);
     const essenceMax = Math.max(0, actor.system.essences[actor.system.focusEssence].max + totalDecrease);
@@ -595,12 +591,10 @@ export async function onRoleDrop(actor, role, dropFunc) {
   await _trainingUpdate(actor, 'weapons', 'trained', true, role);
   await _trainingUpdate(actor, 'armors', 'trained', true, role, true);
 
-  // Morphed toughness bonus updates
-  for (const item of actor.items) {
-    if (item._stats.compendiumSource == MORPHIN_TIME_PERK_ID) {
-      setMorphedToughnessBonus(actor);
-    }
-  }
+  // roleDropped Triggers - It's Morphin Time!'s Morphed Toughness follows the new Armor Training
+  // (rules/plugins/effects/role-dropped-event.mjs).
+  const { fireRoleDropped } = await import("../rules/plugins/effects/role-dropped-event.mjs");
+  await fireRoleDropped(actor);
 }
 
 /**
@@ -646,6 +640,11 @@ export async function onLevelChange(actor, newLevel) {
   }
 
   await actor.setFlag('essence20', 'previousLevel', newLevel);
+
+  // The General Perk / Grid Power picks the Role's levels give (mechanics/characters/level-picks.mjs): offered on the
+  // way up, taken back on the way down. Only this client - the one that changed the level - runs it.
+  const { updateLevelPicks } = await import("../mechanics/characters/level-picks.mjs");
+  await updateLevelPicks(actor, previousLevel, newLevel);
 }
 
 /**
@@ -776,7 +775,7 @@ export async function onRoleDelete(actor, role) {
   // Focus updates - a Focus is tied to the base Role, not any additive one.
   if (!isAdditive && focus[0]) {
     await onFocusDelete(actor, focus[0]);
-    await focus[0].delete();
+    await focus[0].delete({ essence20FocusHandled: true });
   }
 
   // Training updates
@@ -803,6 +802,10 @@ export async function onRoleDelete(actor, role) {
   }
 
   await deleteAttachmentsForItem(role, actor);
+
+  // The General Perks / Grid Powers picked for this Role's levels go with it, as its Role Perks do.
+  const { clearLevelPicks } = await import("../mechanics/characters/level-picks.mjs");
+  await clearLevelPicks(actor, isAdditive ? 'additive' : 'base');
 }
 
 /**

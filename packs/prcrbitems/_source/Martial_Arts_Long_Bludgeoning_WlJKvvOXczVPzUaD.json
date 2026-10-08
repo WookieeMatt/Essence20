@@ -1,6 +1,6 @@
 {
   "folder": "UCLYWNFqe5XND1kq",
-  "name": "Martial Arts Long Bludgeoning",
+  "name": "Martial Arts Long Bludgeon",
   "type": "weapon",
   "_id": "WlJKvvOXczVPzUaD",
   "img": "systems/essence20/assets/icons/weapons/bo.svg",
@@ -19,7 +19,7 @@
       "2670": {
         "uuid": "Compendium.essence20.pr_crb.Item.lX2ckG2qnzekOFXE",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Bludgeoning Alternate Effect 2",
+        "name": "Martial Arts Long Bludgeon Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
           "skill": "might",
@@ -41,7 +41,7 @@
       "886c": {
         "uuid": "Compendium.essence20.pr_crb.Item.Jt5FmeFqopWQkHbb",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Bludgeoning Effect",
+        "name": "Martial Arts Long Bludgeon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "might",
@@ -63,7 +63,7 @@
       "f978": {
         "uuid": "Compendium.essence20.pr_crb.Item.91alKZovkgruZU9i",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Bludgeoning Alternate Effect 1",
+        "name": "Martial Arts Long Bludgeon Alternate Effect 1",
         "type": "weaponEffect",
         "classification": {
           "skill": "might",
@@ -85,7 +85,7 @@
       "b2e7": {
         "uuid": "Compendium.essence20.pr_crb.Item.d0km91rD8rvzywo3",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Bludgeoning Alternate Effect 3",
+        "name": "Martial Arts Long Bludgeon Alternate Effect 3",
         "type": "weaponEffect",
         "classification": {
           "skill": "might",
@@ -105,8 +105,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "long"

@@ -43,11 +43,11 @@ document"), so Region was and remains the right base.
 
 ### Behaviour
 
-- **`module/helpers/aoe-targeting.mjs`** — placement. A circle is positioned freely at the cursor;
+- **`module/mechanics/combat/aoe-targeting.mjs`** — placement. A circle is positioned freely at the cursor;
   a cone keeps its apex on the caster and only *turns* to follow the cursor (`onMove` returns
   `false` to suppress core's default translate, which still leaves core to commit and redraw); an
   emanation is anchored to the caster and needs no gesture at all.
-- **`module/helpers/aoe-expiry.mjs`** — the one thing core doesn't do. The effect registry expires
+- **`module/mechanics/combat/aoe-expiry.mjs`** — the one thing core doesn't do. The effect registry expires
   the *effect*; nothing expires the *region*. Wired into `Combat#_onEndRound` (rounds),
   `updateWorldTime` (minutes/hours/days), `deleteCombat` (scenes) and `ready` (reconcile).
   The `_onEndRound` half judges by **`context.round`**, the round that just ended — the hook runs
@@ -103,7 +103,7 @@ the nine unmatched powers were chased individually.
 - *Ranged blasts* — Arcane Blast, Fireball, Volcanic Eruption ("Blast [Nft radius]") and Icy Breath
   ("Range 20ft cone"), each written as "Targeting (Sorcery) attack" with a damage value and type.
   These are weaponEffects in a Power's clothing, so they route down the roll path that already
-  exists (`helpers/power-attack.mjs`, dispatched from `onPowerUse`) rather than getting one of
+  exists (`mechanics/characters/attack-powers.mjs`, dispatched from `onPowerUse`) rather than getting one of
   their own.
 
 Note that `item.roll()` is **never reached for a Power** — `listener-misc-handler.mjs` returns
@@ -245,7 +245,7 @@ higher)"*. The `magicBauble` branch took the bauble's shift **unconditionally**,
 spellcaster drinking a d2 potion was downgraded to the potion's rank. A bauble is a floor under an
 untrained pony, never a ceiling on a skilled one.
 
-Now uses `betterShift()` (`helpers/utils.mjs`), which compares by index in
+Now uses `betterShift()` (`util/utils.mjs`), which compares by index in
 `CONFIG.E20.skillShiftList` — ordered best-first, so the better shift is the LOWER index, the same
 convention `dice.mjs#_getFinalShift` uses. An unrecognised shift loses to a recognised one rather
 than winning on `indexOf`'s -1. Verified live: caster d8 + bauble d2 rolls d8; caster d20 + bauble
@@ -283,7 +283,7 @@ chip, a number input on the item sheet) with no `[object Object]`.
 ## Pushing Yourself variants (2026-09-19)
 
 The three printed things that change how Pushing works now apply, through
-`getPushRules(actor)` in `helpers/token-movement.mjs`. It returns
+`getPushRules(actor)` in `mechanics/combat/token-movement.mjs`. It returns
 `{feetPerFreeAction, capMultiplier, canPush}` and `planPush` takes it, so the drag ruler and the
 movement charge agree by construction rather than by each re-deriving the rules.
 
@@ -516,9 +516,9 @@ than a human choice:
 
 - **Jury Rig** (`standard`, scan says free) — a false positive. The book says the benefits last
   longer *if* you make the Skill Test as a Free action; that is a conditional bonus, not the base
-  cost. `helpers/jury-rig.mjs` implements it.
+  cost. `items/vehicles/jury-rig.mjs` implements it.
 - **Animal Gait** (`free`, scan says standard) — Cobra Codex p.61 does print "as a Standard
-  action", but `helpers/animal-gait.mjs` exists, so the `free` looks deliberate. Wants a ruling.
+  action", but `items/movement/animal-gait.mjs` exists, so the `free` looks deliberate. Wants a ruling.
 - **Favorite Command** (`free`, scan says move) — GI Joe CRB p.167 and the WTNV Citizens’ Guide
   both print "as a Move action instead of a Standard action". This one is probably a genuine fix,
   but it changes an authored value, so it is left for review.
@@ -703,7 +703,7 @@ findable entry.
 ### Rulings on the held-back Perks (2026-09-20)
 
 - **Animal Gait is `standard`** (was `free`). Cobra Codex p.61 prints "as a Standard action", and
-  `helpers/animal-gait.mjs` quotes that same line in its own doc comment - the helper agreed with
+  `items/movement/animal-gait.mjs` quotes that same line in its own doc comment - the helper agreed with
   the book all along and only the compendium disagreed. Note the helper’s aside that "Standard
   actions aren’t budgeted" predates the action economy and is no longer true.
 - **Favorite Command is `none`** (was `free`). It re-costs the *Command* action from Standard to
@@ -893,7 +893,7 @@ standard`, `Aim -> free`. Test items removed and the turn reset afterwards.
 ## Making the actions do something
 
 Spending was all that happened: taking Defend charged a Standard action and then left the player to
-remember, unaided, that everything attacking them this round is Snagged. `helpers/named-actions.mjs`
+remember, unaided, that everything attacking them this round is Snagged. `mechanics/actions/named-actions.mjs`
 is the other half, and it is deliberately the only place that knows what an action *does*, so the
 sheet stays wiring. The Actions tab marks the wired ones with a filled icon, so a player can tell at
 a glance which the system will run for them.
@@ -1137,7 +1137,7 @@ worth remembering whenever a Perk that should be activatable silently is not.
 
 ## Takedown, and the stale-snapshot bug it exposed
 
-**Takedown was already built.** `helpers/takedown.mjs` has the Might-or-Finesse picker and fires a
+**Takedown was already built.** `items/attacks/takedown.mjs` has the Might-or-Finesse picker and fires a
 real roll against the target's Toughness; `dice.mjs`'s post-hit processing carries the whole
 outcome matrix from GI Joe CRB p.74, Takedown Expert's Edge and its Immobilized included:
 
@@ -1406,7 +1406,7 @@ before this - opened a dialog titled "<actor> d20 **undefined** Skill Roll". The
 label from `E20.originSkills`, which is conditioning plus `E20.skills`, and Wealth is deliberately
 in neither: it is a real `system.skills.wealth` field that the sheets present separately as the
 Wealth Die. A Role's own skill die had the same gap, being named by the Role rather than an enum.
-`helpers/roll-dialog.mjs` now falls back through both. (The label has to be localized at the point
+`mechanics/rolls/roll-dialog.mjs` now falls back through both. (The label has to be localized at the point
 of use - `preLocalize` has already turned those tables into real strings, so passing the key
 through would have printed `E20.Wealth` verbatim.)
 

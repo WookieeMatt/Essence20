@@ -5,6 +5,10 @@
   "_id": "KQWE1o3PjguwjAD0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"A Ruthless Point went unspent (Ruthless Efficiency)","event":"personalPointUnspent","when":[{"any":["target:self","target:sameType"]}],"steps":[{"do":"mark","key":"ruthlessEfficiency","to":"self"}]},
+      {"type":"Trigger","label":"Ruthless Efficiency","event":"turnStart","when":["self:marked:ruthlessEfficiency"],"steps":[{"do":"unmark","key":"ruthlessEfficiency","to":"self"},{"do":"givePersonalPoints","to":"self","count":1,"ownTurn":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when anyone on your side ends a turn with an unspent Ruthless Point, you start your next turn with a Ruthless Point.</p>"

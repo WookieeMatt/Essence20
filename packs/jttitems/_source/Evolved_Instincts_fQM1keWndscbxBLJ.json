@@ -5,6 +5,10 @@
   "_id": "fQM1keWndscbxBLJ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Evolved Instincts (melee within 2 Size Classes)","upshift":1,"when":["attack:melee","self:sizeDiff<=2","self:sizeDiff>=-2"]},
+      {"type":"RollModifier","label":"Evolved Instincts (melee within 2 Size Classes of the Zord)","scope":"pilot","upshift":1,"when":["attack:melee","holder:versusTarget:sizeDiff<=2","holder:versusTarget:sizeDiff>=-2"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: the Zord gets +1 Evasion on its sheet. Automatic: melee attacks by the Zord, or by its driver, against a creature within two Sizes of the Zord get ↑1, listed as Evolved Instincts in the Roll Options Dialog.</p>"

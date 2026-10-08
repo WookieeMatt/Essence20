@@ -1,6 +1,6 @@
 {
   "folder": "p4ye6pAYbYyizfgq",
-  "name": "Long Bludgeoning",
+  "name": "Long Bludgeon",
   "type": "weapon",
   "_id": "WlJKvvOXczVPzUaD",
   "img": "systems/essence20/assets/icons/weapons/bo.svg",
@@ -17,9 +17,9 @@
     },
     "items": {
       "ed18": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.Jt5FmeFqopWQkHbb",
+        "uuid": "Compendium.essence20.tf_crb.Item.Jt5FmeFqopWQkHbb",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Bludgeoning Effect",
+        "name": "Long Bludgeon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -39,9 +39,9 @@
         "shiftDown": 0
       },
       "b6f0": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.91alKZovkgruZU9i",
+        "uuid": "Compendium.essence20.tf_crb.Item.91alKZovkgruZU9i",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Bludgeoning Alternate Effect",
+        "name": "Long Bludgeon Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -61,9 +61,9 @@
         "shiftDown": 1
       },
       "6a5c": {
-        "uuid": "Compendium.essence20.pr_crb.Item.lX2ckG2qnzekOFXE",
+        "uuid": "Compendium.essence20.tf_crb.Item.lX2ckG2qnzekOFXE",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Bludgeoning Alternate Effect 2",
+        "name": "Long Bludgeon Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -83,8 +83,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

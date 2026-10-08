@@ -5,6 +5,7 @@
   "_id": "mKnlJ1qv2DPP1Gno",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Weapon with a blast or area effect"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: gives the weapon the Wrecker trait, which the system applies.</p>"

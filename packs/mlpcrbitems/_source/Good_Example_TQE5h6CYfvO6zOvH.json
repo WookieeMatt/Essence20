@@ -5,6 +5,9 @@
   "_id": "TQE5h6CYfvO6zOvH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Good Example","action":"lendAssistance","to":"free","ask":"E20.ActionPerkAskPersuasion"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Lend Assistance on a Persuasion test costs you only a Free action (you're asked which Skill it is).</p>"

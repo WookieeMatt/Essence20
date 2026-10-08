@@ -5,6 +5,9 @@
   "_id": "IOum6G4uZdTDh4J9",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick the Integrated weapon (Martial Weaponization)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","integrated":true,"from":{"type":"weapon","availabilities":["standard","limited"],"tags":["item:hasAttack:item:data:system.classification.style&item:data:system.classification.style!=melee",{"any":["item:data:system.classification.size=medium","item:data:system.classification.size=sidearm"]},"not:item:hasAttack:item:data:system.numHands=0","not:item:hasAttack:item:data:system.numHands>1"]}},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick an integrated weapon that fits the Alteration; it is added to your sheet.</p>"

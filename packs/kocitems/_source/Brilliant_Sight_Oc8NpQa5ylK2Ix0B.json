@@ -5,6 +5,10 @@
   "_id": "Oc8NpQa5ylK2Ix0B",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"SpellCost","label":"See through fog and light obstructions too (+1 cost)","op":"add","value":1,"when":["item:own"],"quiet":true,"steps":[{"do":"updateActor","set":{"flags.essence20.brilliantSightFog":true}}]},
+      {"type":"Trigger","event":"afterRoll","outcome":"anySucceeded","label":"Brilliant Sight","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"createItem","to":"targetOrSelf","until":"scene","data":{"name":"Brilliant Sight","type":"gear","system":{"equipped":true,"gearType":"other","visionGrant":{"enabled":true,"mode":"darkvision","range":120}}}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: on a success, the target's token gets darkvision for the scene. When casting you can pay 1 more for the version that also sees through fog.</p>"

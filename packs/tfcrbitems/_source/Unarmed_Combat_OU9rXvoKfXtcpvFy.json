@@ -17,7 +17,7 @@
     },
     "items": {
       "6c1f": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.eDjovjfygGq8dlQy",
+        "uuid": "Compendium.essence20.tf_crb.Item.eDjovjfygGq8dlQy",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Unarmed Combat Effect",
         "type": "weaponEffect",
@@ -39,7 +39,7 @@
         "shiftDown": 0
       },
       "a441": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.gA0rOFD3lmwzkZq4",
+        "uuid": "Compendium.essence20.tf_crb.Item.gA0rOFD3lmwzkZq4",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Unarmed Combat Alternate Effect 1",
         "type": "weaponEffect",
@@ -61,7 +61,7 @@
         "shiftDown": 1
       },
       "06b0": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.BSh9BDy2b17XOzYm",
+        "uuid": "Compendium.essence20.tf_crb.Item.BSh9BDy2b17XOzYm",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Unarmed Combat Alternate Effect 2",
         "type": "weaponEffect",
@@ -83,8 +83,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "automatic",
     "classification": {
       "size": "integrated"

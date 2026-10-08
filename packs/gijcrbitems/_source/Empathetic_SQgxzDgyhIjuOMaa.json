@@ -5,6 +5,7 @@
   "_id": "SQgxzDgyhIjuOMaa",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["self:essence:social>=2"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: a drone with this upgrade loses its robotic immunity to Conditions that affect Social, so they can be applied to it.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "drone",
-    "prerequisite": "Social 2"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

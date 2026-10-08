@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Spacewalker (Athletics, Acrobatics in low or zero gravity)","when":[{"any":["skill:athletics","skill:acrobatics"]},{"any":["environment:lowGravity","environment:zeroGravity"]},"not:vehicle:type:vehicle","not:roll:initiative"],"edge":true},
+      {"type":"RollModifier","label":"Spacewalker (zero gravity)","when":["environment:zeroGravity","not:skill:athletics","not:skill:acrobatics","not:vehicle:type:vehicle","not:roll:initiative"],"upshift":1},
+      {"type":"Defense","defense":"evasion","amount":5,"when":[{"any":["environment:outside:lowGravity","environment:outside:zeroGravity"]}]}
+    ],
+    "prerequisites": {"when":["self:skill:athletics>=d4","ask:Spacewalk Specialization"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic when the scene's environment is Low or Zero Gravity and you are not crewing a vehicle: Edge on Athletics and Acrobatics, and ↑1 on other rolls in Zero Gravity, labelled Spacewalker in the Roll Options Dialog. You also get +5 Evasion there, shown on the sheet.</p>"
@@ -13,7 +19,7 @@
       "book": "Across the Stars",
       "page": 71
     },
-    "prerequisite": "Athletics (Spacewalk) d4 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

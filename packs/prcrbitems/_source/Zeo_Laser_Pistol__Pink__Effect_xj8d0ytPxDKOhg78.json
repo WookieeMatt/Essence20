@@ -1,6 +1,6 @@
 {
   "folder": "5zj2CgvpGqW2KOa8",
-  "name": "Zeo Laser Pistol (Pink) Effect",
+  "name": "Zeo Laser Pistols (Pink) Effect",
   "type": "weaponEffect",
   "_id": "xj8d0ytPxDKOhg78",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -14,7 +14,7 @@
     "damageType": "element",
     "damageValue": 2,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

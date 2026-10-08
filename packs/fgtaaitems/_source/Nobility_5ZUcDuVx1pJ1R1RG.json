@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"They recognize your nobility (Nobility: ↑1)","when":["essence:social"],"upshift":1},
+      {"type":"Use","label":"Wealth test result of 25","limit":{"per":"mission","max":1},"steps":[{"do":"chat","text":"{name} calls on the family: the Wealth test is a 25."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per mission): your Wealth test counts as a 25. Active Effect: a switchable ↑1 on Social tests with those who recognize your rank. Your servant is narrative.</p>"

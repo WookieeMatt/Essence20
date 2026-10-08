@@ -5,6 +5,10 @@
   "_id": "lYMLqH3adOzo8Nmd",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"A ingested poison (Pill Form)","stage":"item","stacks":true,"items":["item:type:weapon","item:isHost","item:data:system.isPoison"],"path":"system.poisonApplication","op":"set","value":{"contact":false,"ingested":true,"inhaled":false},"priority":3}
+    ],
+    "prerequisites": {"when":["host:data:system.isPoison","host:data:system.poisonType=poison",{"any":["host:data:system.poisonApplication.contact","host:data:system.poisonApplication.inhaled"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the poison it's attached to counts as an ingested poison.</p>"
@@ -23,7 +27,7 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Contact of Inhaled Poison"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

@@ -5,6 +5,11 @@
   "_id": "ymtH7qBwRKqohlyF",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:essence:smarts>=3"]},
+    "rules": [
+      {"type":"Use","label":"Specialized in Smarts for the scene","limit":{"per":"mission","max":1},"steps":[{"do":"setToggle","key":"onAir","value":true,"until":"encounter"}]},
+      {"type":"RollModifier","label":"Public Television","when":["essence:smarts","self:toggle:onAir"],"specialize":true}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per day; a new mission on the Scene Clock resets it): for the rest of the scene, every Smarts test opens the Roll Options Dialog with Specialized already ticked.</p>"
@@ -25,7 +30,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Smarts 3+",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

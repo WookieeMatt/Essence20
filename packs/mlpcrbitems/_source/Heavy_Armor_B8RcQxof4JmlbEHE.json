@@ -5,6 +5,9 @@
   "_id": "B8RcQxof4JmlbEHE",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"MLP armor (↓2 Athletics, Acrobatics, Infiltration, Initiative)","when":[{"any":["skill:athletics","skill:acrobatics","skill:infiltration","roll:initiative"]}],"downshift":2}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +3 Toughness while equipped, and ↓2 on Athletics, Acrobatics, Infiltration and Initiative tests, listed in the Roll Options Dialog.</p>"

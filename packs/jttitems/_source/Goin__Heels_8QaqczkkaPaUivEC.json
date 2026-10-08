@@ -5,6 +5,11 @@
   "_id": "8QaqczkkaPaUivEC",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Ahead of the target in Initiative (Goin' Heels: ↑1)","upshift":1,"when":["attack","weapon:data:system.classification.skill=targeting","weapon:data:system.classification.size=sidearm","weapon:data:system.numHands=1","combat:aheadOfTarget"]},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","weapon:data:system.classification.skill=targeting","weapon:data:system.classification.size=sidearm","weapon:data:system.numHands=1","target:data:system","combat:highestInitiative"]}
+    ],
+    "prerequisites": {"when":["self:skill:initiative>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ↑1 on one-handed sidearm Targeting attacks against targets later in Initiative, plus 1 damage while you're highest in Initiative. Listed in the Roll Options Dialog.</p>"
@@ -15,7 +20,7 @@
       "book": "A Jump Through Time",
       "page": 54
     },
-    "prerequisite": "Initiative Skill at d4 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

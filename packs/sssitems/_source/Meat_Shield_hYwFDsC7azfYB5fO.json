@@ -5,9 +5,34 @@
   "_id": "hYwFDsC7azfYB5fO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Switch Meat Shield on","when":["not:self:toggle:on"],"steps":[{"do":"pick","key":"resist","from":"list","options":[["acid","E20.DamageAcid"],["blunt","E20.DamageBlunt"],["cold","E20.DamageCold"],["electric","E20.DamageElectric"],["emp","E20.DamageEmp"],["fire","E20.DamageFire"],["laser","E20.DamageLaser"],["poison","E20.DamagePoison"],["psychic","E20.DamagePsychic"],["sharp","E20.DamageSharp"],["sonic","E20.DamageSonic"],["stun","E20.DamageStun"],["void","E20.DamageVoid"]],"prompt":"Meat Shield: Resistance to which damage type?","when":["self:level>=13","not:self:level>=18"],"beforeCost":true},{"do":"pick","key":"immune","from":"list","options":[["acid","E20.DamageAcid"],["blunt","E20.DamageBlunt"],["cold","E20.DamageCold"],["electric","E20.DamageElectric"],["emp","E20.DamageEmp"],["fire","E20.DamageFire"],["laser","E20.DamageLaser"],["poison","E20.DamagePoison"],["psychic","E20.DamagePsychic"],["sharp","E20.DamageSharp"],["sonic","E20.DamageSonic"],["stun","E20.DamageStun"],["void","E20.DamageVoid"]],"prompt":"Meat Shield: immunity to which damage type?","when":["self:level>=18"],"beforeCost":true},{"do":"setToggle","key":"on","value":true,"until":"nextTurn"}],"cost":{"action":"free"}},
+      {"type":"Use","label":"Switch Meat Shield off","when":["self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":false}]},
+      {"type":"Defense","label":"Meat Shield","defense":"toughness","mode":"addAfter","stack":"meatShield","amount":"2 * min(1, max(0, @level - 6)) + min(1, max(0, @level - 11)) + min(1, max(0, @level - 19))"},
+      {"type":"Defense","label":"Meat Shield","defense":"evasion","mode":"addAfter","stack":"meatShield","amount":"2 * min(1, max(0, @level - 6)) + min(1, max(0, @level - 11)) + min(1, max(0, @level - 19))"},
+      {"type":"Defense","label":"Meat Shield","defense":"toughness","mode":"addAfter","stack":"meatShield","amount":"(2 + min(8, max(0, floor((@level - 1) / 2)))) * (1 - min(1, max(0, @level - 19))) + 15 * min(1, max(0, @level - 19))","when":["self:toggle:on"]},
+      {"type":"Defense","label":"Meat Shield","defense":"evasion","mode":"addAfter","stack":"meatShield","amount":"(2 + min(8, max(0, floor((@level - 1) / 2)))) * (1 - min(1, max(0, @level - 19))) + 15 * min(1, max(0, @level - 19))","when":["self:toggle:on"]},
+      {"type":"Defense","label":"Meat Shield (ally within Reach)","scope":"aura","radius":5,"affects":"allies","defense":"toughness","mode":"addAfter","stack":"meatShield","amount":"(2 + min(8, max(0, floor((@level - 1) / 2)))) * (1 - min(1, max(0, @level - 19))) + 15 * min(1, max(0, @level - 19))","when":["self:toggle:on","holder:level>=5"]},
+      {"type":"Defense","label":"Meat Shield (ally within Reach)","scope":"aura","radius":5,"affects":"allies","defense":"evasion","mode":"addAfter","stack":"meatShield","amount":"(2 + min(8, max(0, floor((@level - 1) / 2)))) * (1 - min(1, max(0, @level - 19))) + 15 * min(1, max(0, @level - 19))","when":["self:toggle:on","holder:level>=5"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance)","path":"system.resistances.{choice.resist}","value":true,"when":["self:toggle:on","self:level>=13","not:self:level>=18"]},
+      {"type":"DerivedStat","label":"Meat Shield (Immunity)","path":"system.immunities.{choice.immune}","value":true,"when":["self:toggle:on","self:level>=18"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: acid)","path":"system.resistances.acid","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=acid"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: blunt)","path":"system.resistances.blunt","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=blunt"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: cold)","path":"system.resistances.cold","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=cold"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: electric)","path":"system.resistances.electric","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=electric"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: emp)","path":"system.resistances.emp","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=emp"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: fire)","path":"system.resistances.fire","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=fire"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: laser)","path":"system.resistances.laser","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=laser"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: poison)","path":"system.resistances.poison","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=poison"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: psychic)","path":"system.resistances.psychic","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=psychic"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: sharp)","path":"system.resistances.sharp","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=sharp"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: sonic)","path":"system.resistances.sonic","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=sonic"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: stun)","path":"system.resistances.stun","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=stun"]},
+      {"type":"DerivedStat","label":"Meat Shield (Resistance: void)","path":"system.resistances.void","value":true,"when":["self:toggle:on","self:level>=18","not:rule:data:flags.essence20.rules.choices.immune=void"]}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Use button (Free action): a Toughness and Evasion bonus by level until your next turn, shared with allies in reach from 5th level. The permanent bonus from 7th level and the Resistance or immunity at 13th and 18th are applied too.</p>"
+      "notes": "<p>Use button (Free action): a Toughness and Evasion bonus by level until the start of your next turn (out of combat, until you switch it off), also given to allies within 5 ft from 5th level. From 13th level you pick a damage type you resist while it lasts; from 18th, a damage type you are immune to, with Resistance to every other. Automatic: the permanent bonus from 7th level, which doesn't add to the temporary one.</p>"
     },
     "originalId": "",
     "actionType": "free",

@@ -5,6 +5,10 @@
   "_id": "o4HgDxoKWVtieWZJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"I Still Function","when":["self:status:defeated"],"cost":{"resource":{"storyPoints":true},"amount":1},"limit":{"per":"encounter"},"steps":[{"do":"setVar","key":"r","value":"1d6"},{"do":"updateActor","set":{"system.health.value":"@var.r"},"when":["calc:@var.r - @skill.conditioning.rank - @actor.system.skills.conditioning.isSpecialized <= 0"]},{"do":"removeCondition","condition":"defeated","when":["calc:@var.r - @skill.conditioning.rank - @actor.system.skills.conditioning.isSpecialized <= 0"]}]}
+    ],
+    "prerequisites": {"when":["self:data:system.conditioning>=3"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per scene, while Defeated): spend a Story Point and roll 1d6. If it's no higher than your Conditioning, you regain that much Health and are no longer Defeated.</p>"
@@ -15,7 +19,7 @@
       "book": "Decepticon Directive",
       "page": 66
     },
-    "prerequisite": "Conditioning +3 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

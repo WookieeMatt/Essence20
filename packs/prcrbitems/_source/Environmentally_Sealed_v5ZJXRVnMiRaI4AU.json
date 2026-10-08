@@ -5,6 +5,9 @@
   "_id": "v5ZJXRVnMiRaI4AU",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"HazardProtection","label":"Environmentally Sealed (breathing hazards, Morphed)","categories":["breathing"],"when":["self:morphed"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: while Morphed you ignore breathing hazards (toxic air, vacuum, underwater) when the scene's environment is set.</p><p>Left to the table: other inhalation threats, such as gas attacks.</p>"
@@ -17,7 +20,6 @@
     },
     "actionType": "free",
     "canActivate": false,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,

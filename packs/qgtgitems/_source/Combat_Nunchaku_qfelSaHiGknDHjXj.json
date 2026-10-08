@@ -5,6 +5,11 @@
   "_id": "qfelSaHiGknDHjXj",
   "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","defense":"evasion","amount":1,"stacks":true,"when":["not:self:toggle:shieldMode"]},
+      {"type":"Defense","defense":"toughness","amount":1,"stacks":true,"when":["self:toggle:shieldMode"]},
+      {"type":"Use","label":"Switch between weapon and shield","cost":{"action":"move"},"steps":[{"do":"setToggle","key":"shieldMode"},{"do":"chat","text":"Now used as a shield.","when":["self:toggle:shieldMode"]},{"do":"chat","text":"Now used as a weapon.","when":["not:self:toggle:shieldMode"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: attacks roll Finesse for Stun, with a Blunt alternate. While equipped it gives +1 Evasion; Use button: switch to shield mode (+1 Toughness instead, no attacks) as a Move action.</p>"
@@ -83,7 +88,6 @@
     },
     "equipped": true,
     "isPoison": false,
-    "isToxin": false,
     "requirements": {
       "custom": "",
       "skill": "athletics",

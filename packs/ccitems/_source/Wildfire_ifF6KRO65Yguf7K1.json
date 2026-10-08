@@ -5,6 +5,13 @@
   "_id": "ifF6KRO65Yguf7K1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"aerial","op":"add","value":10,"label":"Wielding a Fire weapon (Wildfire: +10 ft)","when":["check:equippedFireWeapon","self:data:system.movement.aerial.total>0"]},
+      {"type":"Movement","movement":"ground","op":"add","value":10,"label":"Wielding a Fire weapon (Wildfire: +10 ft)","when":["check:equippedFireWeapon","self:data:system.movement.ground.total>0"]},
+      {"type":"Movement","movement":"climb","op":"add","value":10,"label":"Wielding a Fire weapon (Wildfire: +10 ft)","when":["check:equippedFireWeapon","self:data:system.movement.climb.total>0"]},
+      {"type":"Movement","movement":"swim","op":"add","value":10,"label":"Wielding a Fire weapon (Wildfire: +10 ft)","when":["check:equippedFireWeapon","self:data:system.movement.swim.total>0"]},
+      {"type":"Movement","movement":"burrow","op":"add","value":10,"label":"Wielding a Fire weapon (Wildfire: +10 ft)","when":["check:equippedFireWeapon","self:data:system.movement.burrow.total>0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: +10 ft to all your Movements while you have a Fire-trait weapon equipped.</p>"

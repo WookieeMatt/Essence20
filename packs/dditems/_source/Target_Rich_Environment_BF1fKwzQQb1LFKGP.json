@@ -5,6 +5,9 @@
   "_id": "BF1fKwzQQb1LFKGP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"One attack with the favorite weapon at every enemy in range (a Story Point, a whole turn)","limit":{"per":"scene","max":1},"steps":[{"do":"pick","key":"attack","from":"ownedItem","itemType":"weaponEffect","filter":["check:favoriteWeaponRolled"],"auto":true,"beforeCost":true,"prompt":"Which attack of the favorite weapon?"},{"do":"require","beforeCost":true,"check":["self:canSpendStoryPoints"],"message":"No Story Point to spend."},{"do":"attackEach","item":"choice:attack","filter":["not:target:ally","not:target:status:defeated",{"any":["target:data:system.health.value>0","target:data:system.health.max<=0"]}],"action":"wholeTurn","pay":[{"do":"spend","resource":{"storyPoints":true},"amount":1}],"message":"No enemies within the weapon's range."},{"do":"chat","text":"{name} attacks every enemy in range ({var.attacked})."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per scene, spend a Story Point and your whole turn to attack every enemy within your favorite weapon's normal range with one roll.</p>"

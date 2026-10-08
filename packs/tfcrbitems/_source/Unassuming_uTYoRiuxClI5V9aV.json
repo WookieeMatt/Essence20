@@ -5,6 +5,9 @@
   "_id": "uTYoRiuxClI5V9aV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Qualification","label":"Unassuming","access":"qualified","items":["item:type:weapon","item:data:system.availability=limited","item:hasAttack:item:type:weaponEffect","not:item:hasAttack:item:data:system.numHands>=0&item:data:system.numHands!=1"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: ↑1 on Deception and Infiltration. Automatic: you count as Qualified with one-handed Limited weapons when requisitioning.</p>"

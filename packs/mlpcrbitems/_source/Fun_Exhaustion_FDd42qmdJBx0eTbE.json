@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Assist","label":"Can't assist anyone this scene","side":"give","effect":"refuse","message":"E20.LendAssistanceFunExhaustion","when":["self:windowUsed:funExhaustionBlocked:scene"]},
+      {"type":"Assist","label":"Can't be assisted this scene","side":"receive","effect":"refuse","when":["self:windowUsed:funExhaustionBlocked:scene"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your second and later Party Power uses in a scene still give the Friendship Point, but for the rest of that scene you can't Lend Assistance and nobody can Lend Assistance to you. Left to the table: counting uses across the whole day.</p>"

@@ -5,6 +5,9 @@
   "_id": "Jiap1rwBSt9AvCt7",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Power Quake","when":["self:morphed"],"cost":{"action":"standard"},"steps":[{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":{"min":1,"max":"min(3, @actor.system.powers.personal.value)"}},{"do":"save","to":"all:15","skills":["athletics","acrobatics"],"dif":"12 + 3 * @spent","status":"prone"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 to 3 Power. The chat card lets everyone within 15 feet roll Athletics or Acrobatics at DIF 12 + 3 per Power spent; anyone who fails is knocked Prone.</p>"
@@ -17,7 +20,6 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": true,
     "maxPowerCost": 3,
     "powerCost": 1,

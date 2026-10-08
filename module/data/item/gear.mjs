@@ -1,4 +1,4 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
@@ -16,7 +16,7 @@ export class GearItemData extends foundry.abstract.TypeDataModel {
       gearType: makeStrWithChoices(Object.keys(E20.gearTypes), 'clothes'),
       quantity: makeInt(1),
       // Nanomite equipment (Quartermaster's Guide to Gear p.92) - one linked nanomite Power and its
-      // uses, 1 for the usual single-use gear. See helpers/nanomite-gear.mjs.
+      // uses, 1 for the usual single-use gear. See items/gear/nanomite-gear.mjs.
       nanomite: new fields.SchemaField({
         powerUuid: new fields.StringField({ required: false, nullable: true, blank: true, initial: null }),
         uses: makeInt(1),

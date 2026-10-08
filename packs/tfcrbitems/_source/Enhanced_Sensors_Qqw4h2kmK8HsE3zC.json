@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Give the Mini-Con Acute Senses (Enhanced Sensors)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"require","check":[{"any":["self:type:companion","link:hasCompanion:miniCon"]}]},{"do":"grant","to":"selfOrCompanion:miniCon","uuid":"Compendium.essence20.tf_crb.Item.rl8hs6ezb6VSDahM"},{"do":"updateItem","set":{"flags.essence20.granted":true}}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: your Mini-Con gains the Acute Sense Perk; take it again for each extra sense.</p>"

@@ -5,6 +5,9 @@
   "_id": "94NUwERfVYs0Tgmh",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Use","when":["self:type:vehicle"],"cost":{"action":"standard"},"limit":{"per":"encounter"},"steps":[{"do":"applyCondition","condition":"cover","rounds":1,"to":"all:30"},{"do":"applyCondition","condition":"cover","rounds":1,"to":"self","when":["self:onCanvas"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per combat, as a Standard action, fills a 30ft radius around the vehicle with smoke, giving everyone inside Cover for a round.</p>"

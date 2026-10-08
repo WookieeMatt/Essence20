@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Perk from another Role","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickPerk","from":"role","line":"same","notOwn":true,"minLevel":2,"maxLevel":"floor(@level / 2)","notOwnPerkNames":true},{"do":"setToggle","key":"granted","value":true}]}
+    ],
+    "prerequisites": {"when":["self:level>=4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick one Perk from another Role, from level 2 up to half your level, that doesn't share a name with one of your own Role's Perks.</p>"
@@ -13,7 +17,7 @@
       "book": "Transformers Core Rulebook",
       "page": 108
     },
-    "prerequisite": "Level 4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

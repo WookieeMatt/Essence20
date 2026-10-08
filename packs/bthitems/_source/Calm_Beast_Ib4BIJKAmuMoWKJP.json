@@ -5,6 +5,9 @@
   "_id": "Ib4BIJKAmuMoWKJP",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Calm Beast (Calming)","when":["skill:animalHandling","roll:specialization=calming"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Animal Handling rolls made with a Specialization named Calming get ↑1, already counted in the Roll Options Dialog's Shift Up box.</p>"
@@ -22,7 +25,6 @@
       "currentValue": 0,
       "increaseValue": 1
     },
-    "canActivate": true,
     "choice": null,
     "choiceType": "none",
     "isRoleVariant": false,

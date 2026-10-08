@@ -5,6 +5,10 @@
   "_id": "6HJlO4qnOTRqrOmF",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"stack":"keyToWhinnypeg","label":"Dealing with Whinnypeg VIPs (Key to Whinnypeg: ↑2)","when":[{"any":["skill:animalHandling","skill:deception","skill:performance","skill:persuasion","skill:streetwise"]},"not:rule:data:system.quantity<=0"],"upshift":2},
+      {"type":"DialogSwitch","forget":true,"stack":"keyToWhinnypeg","label":"Dealing with other VIPs (Key to Whinnypeg: ↑1)","when":[{"any":["skill:animalHandling","skill:deception","skill:performance","skill:persuasion","skill:streetwise"]},"not:rule:data:system.quantity<=0"],"upshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: while you carry it, Social tests get a choice of ↑2 with Whinnypeg's important ponies or ↑1 with others.</p>"

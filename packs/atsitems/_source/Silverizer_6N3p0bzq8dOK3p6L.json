@@ -61,15 +61,14 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Silver Ranger"]},
     "requirements": {
-      "custom": "Silver Ranger",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

@@ -3,6 +3,9 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"First turn of the combat: Standard action spent","event":"turnStart","when":["not:self:marked:vainglorious"],"steps":[{"do":"mark","key":"vainglorious","to":"self","until":"combat"},{"do":"spendAction","action":"standard"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: on your first turn of each combat, your Standard action is spent on your speech or preening.</p>"

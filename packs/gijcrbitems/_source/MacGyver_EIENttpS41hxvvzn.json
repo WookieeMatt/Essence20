@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Repair a friendly vehicle 1 Health","steps":[{"do":"pickAlly","filter":["target:type:vehicle"]},{"do":"heal","to":"target","amount":1}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: restore 1 Health to a friendly vehicle.</p><p>Left to the table: repairing other equipment, and fixing or jamming a machine for a scene.</p>"

@@ -5,6 +5,10 @@
   "_id": "j9UxxlSMLRUcwGVk",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"host","label":"Thermal Scope (invisible target)","when":["attack","target:status:invisible"],"edge":true},
+      {"type":"Cover","label":"E20.UpgradeScopeSmoke","scope":"host","mode":"giveBack"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when the target has Cover, the Roll Options Dialog adds a matching ↑ labelled \"Scope: firing through smoke or darkness\" that cancels the Cover penalty; untick it when the cover is solid. Against an Invisible target, an Edge labelled Thermal Scope cancels the Invisible Snag.</p>"

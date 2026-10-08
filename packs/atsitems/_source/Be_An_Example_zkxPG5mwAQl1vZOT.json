@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"↑1 on your Origin Skill","cost":{"action":"free"},"when":["not:rule:banked"],"steps":[{"do":"setVar","key":"skill","value":"{actor.system.originSkillsIncrease}","beforeCost":true},{"do":"pick","key":"skill","from":"skill","when":["not:var:skill"],"beforeCost":true,"prompt":"Which Skill?"},{"do":"setVar","key":"skill","value":"{var.picked}","when":["not:var:skill"],"beforeCost":true},{"do":"bank","upshift":1,"appliesWhen":["skill:{var.skill}"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button (Free action): your next roll with the Skill you raised through this Origin gains ↑1.</p>"

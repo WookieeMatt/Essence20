@@ -5,9 +5,12 @@
   "_id": "SDwpvAzQX0pYSHyc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Deadstick","cost":{"action":"standard"},"steps":[{"do":"target","beforeCost":true},{"do":"require","check":[{"any":["target:tag:robot","target:tag:robotic","target:tag:bot","target:tag:cybertronian","target:tag:android","target:tag:drone","target:tag:machine","target:tag:cog","target:tag:zord","target:tag:mechanical"]},"target:notBeyond:100"],"message":"Deadstick only works on a robot within 100 ft.","beforeCost":true},{"do":"choose","prompt":"Against which Defense?","options":[{"label":"Willpower","steps":[{"do":"rollVsEach","skill":"technology","defense":"willpower","onHit":[{"do":"applyCondition","condition":"stunned","to":"target","rounds":1}]}]},{"label":"Cleverness","steps":[{"do":"rollVsEach","skill":"technology","defense":"cleverness","onHit":[{"do":"applyCondition","condition":"stunned","to":"target","rounds":1}]}]}]}]}
+    ],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Use button: as a Standard action, roll Technology against your target's Willpower or Cleverness; on a success it is Stunned for 1 round.</p><p>Left to the table: only using it on robots.</p>"
+      "status": "full",
+      "notes": "<p>Use button: as a Standard action, target a robot within 100 ft and roll Technology against its Willpower or Cleverness; on a success it is Stunned for 1 round.</p>"
     },
     "originalId": "",
     "actionType": "standard",

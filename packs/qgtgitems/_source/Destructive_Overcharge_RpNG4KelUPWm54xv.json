@@ -5,6 +5,10 @@
   "_id": "RpNG4KelUPWm54xv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Rig it to explode (Destructive Overcharge)","cost":{"action":"standard"},"steps":[{"do":"target","min":0,"beforeCost":true},{"do":"rememberTarget","var":"holder","required":false,"when":["not:target:self"],"beforeCost":true},{"do":"pick","key":"rigged","from":"ownedItem","filter":[{"any":["item:trait:computerized","item:trait:element"]}],"prompt":"Which of your Computerized or Element items do you overcharge?","when":["not:var:holder"],"beforeCost":true},{"do":"pickPoint","at":"targetOrSelf","beforeCost":true},{"do":"chat","text":"{name} overcharges it - it explodes at the end of their next turn."},{"do":"scheduleCard","turnEnds":2,"steps":[{"do":"button","label":"Explode","intro":"The equipment {name} overcharged is about to blow.","steps":[{"do":"choose","prompt":"The blast is a Technology test against which Defense?","options":[{"label":"Toughness","steps":[{"do":"setVar","key":"defense","value":1}]},{"label":"Evasion","steps":[{"do":"setVar","key":"defense","value":2}]}]},{"do":"pickPoint","at":"actorOrKept","actor":"{var.holder}"},{"do":"damageCard","actor":"{var.holder}","amount":3,"damageType":"fire","title":"The overcharged equipment burns whoever holds it."},{"do":"blast","radius":20,"skill":"technology","defense":"@var.defense","damage":1,"damageType":"fire","title":"The overcharged equipment explodes in a 20 ft blast."}]}]}]}
+    ],
+    "prerequisites": {"when":["self:skill:technology>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: as a Standard action, overcharge a Computerized or Element item. Chat card: at the end of your next turn it explodes, burning its holder and rolling your Technology against everyone within 20 ft.</p>"
@@ -16,7 +20,7 @@
       "page": 30
     },
     "actionType": "standard",
-    "prerequisite": "Technology +d4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

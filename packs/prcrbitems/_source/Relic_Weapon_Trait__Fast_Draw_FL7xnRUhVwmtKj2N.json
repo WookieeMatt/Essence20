@@ -5,9 +5,13 @@
   "_id": "FL7xnRUhVwmtKj2N",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Relic Weapon Trait: Fast Draw (Initiative Edge, Grid Relic in hand)","edge":true,"when":["roll:initiative","self:wielding:item:data:flags.essence20.pr2GridRelic"]}
+    ],
+    "prerequisites": {"when":["self:has:Grid Relic Weapon"]},
     "automation": {
       "status": "partial",
-      "notes": "<p>Active Effect (starts off): Edge on Initiative. Switch it on while the Relic is in your hand.</p><p>Left to the table: summoning the Relic as a Free action while Morphed.</p>"
+      "notes": "<p>Automatic: Edge on Initiative while the Grid Relic is equipped. Left to the table: summoning it to your hand as a Free action while Morphed.</p>"
     },
     "originalId": "",
     "description": "",
@@ -15,56 +19,11 @@
       "book": "Power Rangers Core Rulebook",
       "page": 61
     },
-    "prerequisite": "Grid Relic Weapon",
+    "prerequisite": "",
     "selectionLimit": 3,
     "type": "role"
   },
-  "effects": [
-    {
-      "name": "Relic Weapon Trait: Fast Draw",
-      "origin": "Item.FL7xnRUhVwmtKj2N",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "8FZj8v1En3C5u94U",
-      "changes": [
-        {
-          "key": "system.skills.initiative.edge",
-          "mode": 5,
-          "value": "true",
-          "priority": null
-        }
-      ],
-      "description": "",
-      "transfer": true,
-      "statuses": [],
-      "flags": {},
-      "tint": "#ffffff",
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!FL7xnRUhVwmtKj2N.8FZj8v1En3C5u94U"
-    }
-  ],
+  "effects": [],
   "sort": 0,
   "ownership": {
     "default": 0

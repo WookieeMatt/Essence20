@@ -5,6 +5,9 @@
   "_id": "15b9YumuRnzL16XW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick the free armor and upgrades (Custom Gear)","when":["not:rule:data:flags.essence20.granted"],"steps":[{"do":"forEach","to":"self","steps":[{"do":"pickGrant","from":{"type":"armor","tags":[{"any":["item:data:system.classification=light","item:data:system.classification=medium"]}]}}]},{"do":"forEach","to":"self","steps":[{"do":"pickGrant","from":{"type":"upgrade","availabilities":["limited"],"tags":["item:data:system.type=armor"]}}]},{"do":"forEach","to":"self","steps":[{"do":"pickGrant","from":{"type":"upgrade","availabilities":["limited"],"tags":["item:data:system.type=weapon"]}}]},{"do":"updateItem","set":{"flags.essence20.granted":true},"when":["rule:granted"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: pick a light or medium armor, a Limited armor upgrade and a Limited weapon upgrade, and they're added to your sheet.</p>"

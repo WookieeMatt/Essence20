@@ -5,6 +5,11 @@
   "_id": "LjibCLhbxNxaQnrU",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DamageReduction","label":"Protomatter Injection Layer","amount":1,"minDamage":2,"counter":{"path":"flags.essence20.protomatterUsed","max":3},"quiet":true},
+      {"type":"Use","label":"Replenish (Protomatter Injection Layer)","steps":[{"do":"require","check":["self:data:system.energon.normal.value>=2"],"message":"{name} needs 2 Energon to replenish it."},{"do":"roll","skill":"technology","dif":12,"onSuccess":[{"do":"spend","resource":{"path":"system.energon.normal.value"},"amount":2},{"do":"updateItem","set":{"flags.essence20.protomatterUsed":0}},{"do":"chat","text":"{name} replenishes the Protomatter Injection Layer."}],"onFail":[{"do":"chat","text":"{name}'s repairs don't take."}]}]}
+    ],
+    "prerequisites": {"when":["self:data:system.conditioning>=1"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the first three hits of 2 or more damage each lose 1 damage. Use button: replenish it with a DIF 12 Technology test and 2 Energon.</p>"
@@ -23,7 +28,7 @@
     "benefit": "",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Conditioning +1"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

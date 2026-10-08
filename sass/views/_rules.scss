@@ -1,0 +1,470 @@
+// The item sheet's Rules tab (templates/item/tabs/rules.hbs, module/rules/sheet.mjs).
+// The tab is a direct PART of .window-content, which Foundry keeps `overflow: hidden` - the PART's
+// `scrollable` option only remembers the scroll position, it doesn't make anything scroll. A long
+// list of rules (or the JSON editor) scrolls inside the tab rather than being cut off.
+.essence20.item .window-content > section.tab.rules {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.essence20 .e20-rules {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  color: var(--e20-theme-text-color);
+
+  .e20-rules-intro,
+  .e20-rules-empty {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+  }
+
+  // "Acts as" (rules/sheet.mjs#actsAsContext): a drop target for a compendium item.
+  .e20-acts-as {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px dashed var(--e20-theme-border-color);
+    border-radius: 4px;
+  }
+
+  // Prerequisites (rules/prerequisites.mjs): ✓ met, ✗ unmet, ? for the GM, against the owner.
+  .e20-prerequisites {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px dashed var(--e20-theme-border-color);
+    border-radius: 4px;
+  }
+
+  .e20-prerequisite-lines {
+    margin: 0;
+    padding: 0 0 0 0.25rem;
+    list-style: none;
+
+    li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+    }
+
+    .is-met i { color: var(--color-level-success, #2e7d32); }
+    .is-unmet i { color: var(--color-level-error, #c0392b); }
+    .is-ask i,
+    .is-none i { opacity: 0.6; }
+  }
+
+  .e20-rules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .e20-rule {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--e20-theme-border-color);
+    border-radius: 4px;
+    background: var(--e20-theme-panel-bg);
+
+    &.is-disabled {
+      opacity: 0.55;
+    }
+
+    &.has-errors {
+      border-color: var(--color-level-error, #c0392b);
+    }
+  }
+
+  .e20-rule-line {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .e20-rule-type {
+    flex: none;
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    opacity: 0.75;
+  }
+
+  .e20-rule-summary {
+    flex: 1;
+  }
+
+  .e20-rule-control {
+    flex: none;
+    cursor: pointer;
+  }
+
+  .e20-rule-state {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+  }
+
+  .e20-rule-pool {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .e20-rule-errors {
+    margin: 0;
+    padding-left: 1.1rem;
+    font-size: 0.85rem;
+    color: var(--color-level-error, #c0392b);
+  }
+
+  .e20-rules-add {
+    display: flex;
+    gap: 0.4rem;
+
+    select {
+      flex: 1;
+    }
+
+    button {
+      flex: none;
+      width: auto;
+    }
+  }
+
+  .e20-rules-json {
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    textarea {
+      width: 100%;
+      margin-top: 0.35rem;
+      font-family: var(--font-monospace, monospace);
+      font-size: 0.8rem;
+      resize: vertical;
+    }
+  }
+
+  .e20-rules-json-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+
+    button {
+      flex: none;
+      width: auto;
+    }
+  }
+
+  .e20-rules-json-error {
+    flex: 1;
+    font-size: 0.85rem;
+    color: var(--color-level-error, #c0392b);
+  }
+}
+
+// Effect summary lines under an "Always on" entry.
+.essence20 .e20-rules .e20-rule-details {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+// "Add to this item" - one button per kind, in game words, with a one-line hint.
+.essence20.e20-rules-add-dialog {
+  // The list of choices outgrew the screen: the window stops at 90% of its height and the choices
+  // scroll inside it, with Cancel kept in view below them. (DialogV2's .window-content is
+  // overflow: hidden, so its form has to be a column whose list may shrink - min-height: 0.)
+  max-height: 90vh;
+
+  .window-content {
+    min-height: 0;
+  }
+
+  .window-content > form.dialog-form {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  // flex-start: Foundry centres a dialog's content, and centred content that overflows spills above
+  // the top edge too, where it can't be scrolled to.
+  .dialog-content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    justify-content: flex-start;
+  }
+
+  .form-footer {
+    flex: none;
+  }
+
+  // Two columns, so all thirteen fit on a laptop screen; the Active Effect choice spans both.
+  .e20-rules-add-choices {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.3rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .e20-rules-add-choices li:first-child {
+    grid-column: 1 / -1;
+  }
+
+  // Each item fills its grid cell, so the two choices in a row are the same height.
+  .e20-rules-add-choices li {
+    display: flex;
+  }
+
+  .e20-rules-add-choices button {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1.5rem 1fr;
+    grid-template-rows: auto 1fr;
+    column-gap: 0.4rem;
+    align-content: start;
+    align-items: start;
+    width: 100%;
+    height: auto;
+    padding: 0.35rem 0.5rem;
+    text-align: left;
+    line-height: 1.2;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+
+    i {
+      grid-row: 1 / span 2;
+      align-self: center;
+      justify-self: center;
+      transition: color 0.15s ease;
+    }
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--e20-theme-accent);
+      background: color-mix(in srgb, var(--e20-theme-accent) 14%, transparent);
+      box-shadow: 0 0 0 1px var(--e20-theme-accent), 0 0 6px color-mix(in srgb, var(--e20-theme-accent) 45%, transparent);
+      outline: none;
+
+      i,
+      .e20-rules-add-label {
+        color: var(--e20-theme-accent);
+      }
+    }
+  }
+
+  .e20-rules-add-label {
+    font-weight: bold;
+  }
+
+  .e20-rules-add-hint {
+    font-size: 0.8rem;
+    opacity: 0.75;
+  }
+
+  // The heading between the Active Effect choice and the rule kinds - a full row.
+  .e20-rules-add-choices li.e20-rules-add-heading {
+    grid-column: 1 / -1;
+    margin: 0.4rem 0 0.1rem;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+}
+
+// The guided rule editor (apps/rule-editor.mjs).
+.essence20.e20-rule-editor {
+  // A long rule (nested steps) scrolls inside the window rather than running off the screen.
+  // min-height: 0 lets it shrink with the window once it's resized (a flex child otherwise keeps its
+  // content's height and runs off the bottom instead of scrolling).
+  .window-content {
+    flex: 1;
+    min-height: 0;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .e20-editor-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .e20-editor-preview {
+    margin: 0;
+    padding: 0.35rem 0.5rem;
+    border-left: 3px solid var(--e20-theme-border-color);
+    font-style: italic;
+  }
+
+  .e20-editor-errors {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--color-level-error, #c0392b);
+  }
+
+  .e20-editor-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .e20-editor-field {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.5rem;
+
+    &.is-wide {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+
+      > label {
+        font-weight: bold;
+      }
+    }
+
+    > label {
+      margin: 0;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+    }
+
+    input[type="checkbox"] {
+      justify-self: start;
+    }
+  }
+
+  .e20-editor-hint {
+    grid-column: 2;
+    margin: 0;
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+
+  .e20-editor-custom {
+    margin-top: 0.2rem;
+  }
+
+  // Advanced settings stay out of the way until asked for.
+  .e20-editor-field.is-advanced {
+    display: none;
+  }
+
+  .show-advanced .e20-editor-field.is-advanced {
+    display: grid;
+  }
+
+  .e20-tags,
+  .e20-steps,
+  .e20-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .e20-tag-row {
+    display: grid;
+    grid-template-columns: auto 11rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .e20-tag-not {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  .e20-step,
+  .e20-choice {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.4rem 0.5rem;
+    border: 1px solid var(--e20-theme-border-color);
+    border-radius: 4px;
+    // A light tint of the window, not the panel colour - the panel is pale in some themes and
+    // washed out the field labels.
+    background: rgba(127, 127, 127, 0.08);
+  }
+
+  .e20-step-head {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    select,
+    input {
+      flex: 1;
+    }
+  }
+
+  .e20-editor-controls {
+    display: flex;
+    gap: 0.35rem;
+  }
+
+  .e20-editor-control,
+  .e20-editor-add {
+    cursor: pointer;
+  }
+
+  .e20-editor-add {
+    align-self: flex-start;
+    font-size: 0.9rem;
+  }
+
+  .e20-editor-advanced-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+  }
+
+  .e20-editor-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+
+    button {
+      flex: none;
+      width: auto;
+    }
+  }
+}
+
+// Chooser options whose prerequisites aren't met (apps/choices-selector.mjs).
+.essence20 .choice.is-unmet button {
+  opacity: 0.6;
+
+  i {
+    color: var(--color-level-error, #c0392b);
+  }
+}

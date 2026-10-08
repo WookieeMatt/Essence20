@@ -5,6 +5,9 @@
   "_id": "r810HCughuqpIhaZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Pinpoint: Armor Upgrades to ignore","spend":{"max":3},"ignoreArmorUpgrades":true,"key":"pinpoint","when":["attack","not:attack:melee",{"any":["not:combat:exists","roll:aimed"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when you Aim, choose to ignore one of the target's Armor Upgrades per Free action spent Aiming instead of taking the ↑.</p>"

@@ -5,6 +5,10 @@
   "_id": "Ysyt5rIcVK42NHPp",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"hit","label":"Pack Mule (the target is weighed down for 3 rounds)","when":["item:own","combat:exists"],"steps":[{"do":"mark","key":"packMule","to":"target","until":"throughRoundPlus2"}]},
+      {"type":"RollModifier","scope":"marked","mark":"packMule","label":"Pack Mule (↓2 on Strength and Speed)","downshift":2,"when":[{"any":["essence:strength","essence:speed"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Cast: a Spellcasting attack against one target. On a hit in Combat, its Strength and Speed Skill Tests take ↓2 for 3 rounds, already counted in the Downshift number of its Roll Options Dialog.</p>"

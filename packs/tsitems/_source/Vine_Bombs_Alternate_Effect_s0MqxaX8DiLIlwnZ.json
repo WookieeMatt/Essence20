@@ -5,9 +5,13 @@
   "_id": "s0MqxaX8DiLIlwnZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Targeting: rolls the better of the two","from":"athletics","to":"targeting","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Athletics or Targeting: rolls the better of the two","from":"targeting","to":"athletics","mode":"bestOf"}
+    ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: a thrown attack for 2 Stun at ↓2.</p>"
+      "notes": "<p>Automatic: rolls the better of Athletics and Targeting.</p><p>Automatic: a thrown attack for 2 Stun at ↓2.</p>"
     },
     "originalId": "",
     "actionType": "standard",

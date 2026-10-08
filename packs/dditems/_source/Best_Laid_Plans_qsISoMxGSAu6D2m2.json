@@ -5,6 +5,10 @@
   "_id": "qsISoMxGSAu6D2m2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Plan the scene (Best-Laid Plans: DIF 10)","steps":[{"do":"choose","prompt":"Which Skill do you plan with?","options":[{"label":"Alertness","steps":[{"do":"roll","skill":"alertness","dif":10,"onSuccess":[{"do":"mark","key":"bestLaidPlans","to":"self","count":"max(1, 1 + floor((@var.rollTotal - 10) / 5))","until":"scene"},{"do":"chat","text":"{name}'s plans are ready: {@mark.bestLaidPlans} d20 reroll(s) this scene for {name} and the Party."}],"onFail":[{"do":"chat","text":"{name}'s plans fall through."}]}]},{"label":"Culture","steps":[{"do":"roll","skill":"culture","dif":10,"onSuccess":[{"do":"mark","key":"bestLaidPlans","to":"self","count":"max(1, 1 + floor((@var.rollTotal - 10) / 5))","until":"scene"},{"do":"chat","text":"{name}'s plans are ready: {@mark.bestLaidPlans} d20 reroll(s) this scene for {name} and the Party."}],"onFail":[{"do":"chat","text":"{name}'s plans fall through."}]}]}]}]},
+      {"type":"CardOffer","label":"Best-Laid Plans: reroll the d20 ({count} left)","whose":"party","pressedBy":"roller","when":["card:hasD20"],"pool":{"mark":"bestLaidPlans"},"reroll":{"target":"d20"}}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: roll the planning test. Each success builds a pool of d20 rerolls for the scene, shared with your Party; members get a reroll button on their roll cards.</p>"

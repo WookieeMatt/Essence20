@@ -5,6 +5,11 @@
   "_id": "03a1UE6KBI1LIHOq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Set how many Smarts increases went to Toughness (Thick Skulls)","steps":[{"do":"askNumber","var":"n","min":0,"max":"@actor.system.essences.smarts.max","prompt":"How many of your Smarts increases raised Toughness instead of Willpower?"},{"do":"updateItem","set":{"flags.essence20.toToughness":"@var.n"}},{"do":"chat","text":"{name}: {var.n} Smarts increase(s) went to Toughness."}]},
+      {"type":"Defense","label":"Thick Skulls","defense":"toughness","amount":"@item.flags.essence20.toToughness"},
+      {"type":"Defense","label":"Thick Skulls","defense":"willpower","amount":"0 - @item.flags.essence20.toToughness"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: set how many of your Smarts increases go to Toughness instead of Willpower; your Defenses update to match.</p>"

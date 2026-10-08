@@ -5,6 +5,9 @@
   "_id": "BrMqHsZVG2OOo21W",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Petite Pony's Shrink Drink","event":"afterRoll","outcome":"any","when":["item:own","roll:firstRow:success"],"steps":[{"do":"sizeChange","key":"sizePotion","set":"small","until":"scene"}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Roll it from the sheet (uses its own Spellcasting die). On a success your size becomes Small, the smallest size the system tracks.</p><p>Left to the table: shrinking all the way to Tiny, setting your size back when the scene ends, and your gear not shrinking with you.</p>"

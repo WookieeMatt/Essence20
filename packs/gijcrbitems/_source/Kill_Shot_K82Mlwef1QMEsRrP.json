@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollDice","label":"Ranged sniper attack with an Edge (Kill Shot: a third d20)","thirdD20":true,"when":["attack:ranged","roll:edge","weapon:trait:sniper"]},
+      {"type":"Reroll","mode":"single","target":"skillDice","reset":"none","maxUses":0,"skills":["targeting"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ranged sniper attacks made with an Edge roll a third d20 and keep the highest. Chat card: reroll any one Targeting die and keep the result you want.</p>"
@@ -14,14 +18,6 @@
       "page": 75
     },
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "single",
-      "target": "skillDice",
-      "skills": ["targeting"],
-      "maxUses": 0,
-      "reset": "none"
-    },
     "selectionLimit": 1,
     "type": "role"
   },

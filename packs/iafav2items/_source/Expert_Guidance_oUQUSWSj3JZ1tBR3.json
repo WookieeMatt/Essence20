@@ -5,6 +5,10 @@
   "_id": "oUQUSWSj3JZ1tBR3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RequisitionShift","label":"Expert Guidance","upshift":2,"items":["item:data:system.totalAvailability=theoretical"]}
+    ],
+    "prerequisites": {"when":["self:skill:technology>=d8"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: ↑2 on Requisition tests for Theoretical equipment.</p>"
@@ -16,7 +20,7 @@
       "page": 94
     },
     "items": {},
-    "prerequisite": "Technology +d8",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

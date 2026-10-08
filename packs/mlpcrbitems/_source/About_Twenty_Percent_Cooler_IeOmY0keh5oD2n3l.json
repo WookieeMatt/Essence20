@@ -5,6 +5,9 @@
   "_id": "IeOmY0keh5oD2n3l",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"About Twenty-Percent Cooler (↑1)","upshift":1,"forget":true,"limit":{"per":"rest","max":3},"when":["picked:b7qT0W4L9Ito2EB2:bffs:target:skillDieAtLeast:d4"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: when one of your BFFs has the Skill you're rolling at d4 or better, an About Twenty-Percent Cooler (↑1) switch appears. Ticking it spends one of your three uses, and a Rest gives them back.</p>"

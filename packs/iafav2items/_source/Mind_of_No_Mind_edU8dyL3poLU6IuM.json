@@ -5,6 +5,11 @@
   "_id": "edU8dyL3poLU6IuM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ConditionImmunity","label":"Immune to frightened","conditions":["frightened"]},
+      {"type":"Use","label":"↑1 on your next Alertness test","limit":{"per":"encounter"},"steps":[{"do":"bank","label":"Mind of No Mind","upshift":1,"appliesWhen":["skill:alertness"]}]}
+    ],
+    "prerequisites": {"when":["self:essence:smarts>=4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +2 Willpower. Automatic: immune to Frightened. Use button: ↑1 on one Alertness test, once per scene.</p>"
@@ -16,7 +21,7 @@
       "page": 30
     },
     "items": {},
-    "prerequisite": "Smarts Essence 4",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

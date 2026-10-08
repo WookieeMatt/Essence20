@@ -5,6 +5,10 @@
   "_id": "c6Kh8WrtHYfsXZmK",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Illuminate: on for 10 rounds","event":"powerUsed","when":["item:own","not:self:toggle:on"],"steps":[{"do":"setToggle","key":"on","value":true,"until":"rounds:10"},{"do":"chat","text":"{name}'s Martial Arts attacks deal Energy damage."}]},
+      {"type":"DamageType","label":"Illuminate (Energy damage)","to":"energy","when":["self:toggle:on","item:type:weaponEffect","weapon:trait:martialArts"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button (while Morphed): spend 1 Power; for 10 rounds your Martial Arts attacks deal Energy damage. It ends on its own, or when the Combat ends.</p><p>Left to the table: the light itself.</p>"
@@ -17,7 +21,6 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,

@@ -5,6 +5,10 @@
   "_id": "8M5milnnYu2fyJnr",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Its special attack arrives with it","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.IJTQr6XGgmfxDPoY"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.IJTQr6XGgmfxDPoY"},{"do":"fitAttack","types":["blunt","sharp"]}]},
+      {"type":"Use","label":"Get its special attack back","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.IJTQr6XGgmfxDPoY"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.IJTQr6XGgmfxDPoY"},{"do":"fitAttack","types":["blunt","sharp"]}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: converting into this Alt Mode makes you Small with 15ft Ground and 50ft Aerial Movement. Taking it adds the Natural Weapon Flyby (you pick Blunt or Sharp); a hit offers a Prone button.</p><p>Left to the table: moving 10 feet before the attack.</p>"

@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CardOffer","label":"One-Upping ({holder}): ↑1 on this Skill","whose":"any","pressedBy":"holderOwner","once":true,"when":["card:failed","card:skill","not:target:self"],"steps":[{"do":"bank","upshift":1,"appliesWhen":["skill:{var.skill}"],"until":"combat","replace":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: when an ally fails or Fumbles a Skill Test, you see a One-Upping button. It gives your next roll of that same Skill ↑1.</p>"

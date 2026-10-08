@@ -5,6 +5,10 @@
   "_id": "peGPrJKYlx79ybbu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"No d2 on a Skill for its next test","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"pick","key":"skill","from":"skill","beforeCost":true},{"do":"mark","key":"agelessKnowledge","to":"self","until":"combat"}]},
+      {"type":"DieSubstitution","label":"Ageless Knowledge: d4 instead of d2","mode":"floor","die":"d4","from":["d2"],"consumeMark":"agelessKnowledge","when":["self:marked:agelessKnowledge","skill:{choice.skill}"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: spend 1 Personal Power (Morphed or not) and pick a Skill; your next roll with it ignores the unskilled penalty.</p>"

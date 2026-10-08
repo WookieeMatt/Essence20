@@ -5,6 +5,11 @@
   "_id": "eT4g9EfrFtvjMqWu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick a Limited Alteration (cybernetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["limited"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"cyberneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]},
+      {"type":"Use","label":"Pick a Limited Alteration (cybernetic)","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted","not:rule:data:flags.essence20.beastMode"],"steps":[{"do":"pickGrant","from":{"type":"alteration","availabilities":["limited"],"notOwned":true,"byOriginalId":true},"viaDrop":true,"flags":{"cyberneticAlteration":true}},{"do":"setToggle","key":"granted","value":true}]}
+    ],
+    "prerequisites": {"when":[{"any":["self:has:Cybernetic Part","self:level>=8"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when gained (or via the Use button), pick a Limited Alteration you don't already have; it is added as a cybernetic part. You also count as having computerized gear against Electromagnetic attacks.</p>"
@@ -15,7 +20,7 @@
       "book": "Cobra Codex",
       "page": 80
     },
-    "prerequisite": "Cybernetic Part or 8th Level",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

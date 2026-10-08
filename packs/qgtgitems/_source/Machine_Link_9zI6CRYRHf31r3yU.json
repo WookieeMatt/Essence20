@@ -5,6 +5,10 @@
   "_id": "9zI6CRYRHf31r3yU",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Machine Link","when":["attack","weapon:trait:computerized"],"downshift":1,"stack":"machineLink"},
+      {"type":"RollModifier","scope":"aura","radius":5,"affects":"all","label":"Machine Link (nearby)","when":["attack","weapon:trait:computerized"],"downshift":1,"stack":"machineLink"}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: while you or anyone within 5 ft of you has this Alteration, your attacks with Computerized weapons take ↓1, already counted in the Shift Down box of the Roll Options Dialog.</p><p>Left to the table: the satellite phone and radio scanner benefits, and the ↓1 on other Computerized equipment tests.</p>"

@@ -5,6 +5,10 @@
   "_id": "CwsHTrQION565onG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"initiativeRolling","label":"\"Friendly\" Fire (Spoofed Initiative readies an Edge)","when":["combat:exists","roll:switch:spoof"],"steps":[{"do":"mark","key":"friendlyFire","to":"self","until":"combat"}]},
+      {"type":"RollModifier","label":"\"Friendly\" Fire (Edge on your first attack after a Spoofed Initiative)","edge":true,"when":["attack","self:marked:friendlyFire"],"consumeMark":"friendlyFire"}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you roll Initiative with Deception or Infiltration through Spoof, your first attack in that combat opens the Roll Options Dialog with Edge already selected.</p>"

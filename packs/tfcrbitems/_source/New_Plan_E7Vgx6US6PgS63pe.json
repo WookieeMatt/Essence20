@@ -5,6 +5,9 @@
   "_id": "E7Vgx6US6PgS63pe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"New Plan: the Contingency never came","when":["combat:exists"],"limit":{"per":"turn"},"steps":[{"do":"require","check":["calc:@ledger.lastTurnContingency>0"],"beforeCost":true},{"do":"choose","options":[{"label":"Another Move action","steps":[{"do":"grantActions","move":1}]},{"label":"Two Free actions","steps":[{"do":"grantActions","free":2}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when a Contingency action's trigger never happens, you get an extra Move action or two Free actions on your next turn.</p>"

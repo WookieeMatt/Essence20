@@ -5,6 +5,10 @@
   "_id": "GiVoFUU6sd9A9V5X",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Standard shield","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"shield","availabilities":["standard"]}},{"do":"setToggle","key":"granted","value":true}]},
+      {"type":"Trigger","label":"Pick a Standard shield","event":"added","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"shield","availabilities":["standard"]}},{"do":"setToggle","key":"granted","value":true}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you gain it you pick a Standard shield, which is added to your sheet (the Use button re-opens the pick if needed). Nothing stops you pairing it with a Medium weapon.</p>"

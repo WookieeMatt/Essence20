@@ -5,6 +5,13 @@
   "_id": "5LrQ4TGjgWKsomL7",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Optimized Seating (passengers)","path":"system.crew.numPassengers","op":"multiply","value":2,"when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Optimized Seating: -10 ft Movement","movement":"ground","stage":"vehicle","op":"add","value":-10,"when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Optimized Seating: -10 ft Movement","movement":"aerial","stage":"vehicle","op":"add","value":-10,"when":["self:type:vehicle"]},
+      {"type":"Movement","label":"Optimized Seating: -10 ft Movement","movement":"swim","stage":"vehicle","op":"add","value":-10,"when":["self:type:vehicle"]}
+    ],
+    "prerequisites": {"when":["self:data:system.crew.numPassengers>=1"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the vehicle's passenger capacity is doubled and each of its Movement types drops by 10ft.</p>"
@@ -23,7 +30,7 @@
     "benefit": "Doubles the vehicle's non-driver, non-gunner passenger capacity, but decreases every Movement type by 10ft.",
     "traits": [],
     "type": "vehicle",
-    "prerequisite": "Vehicle with capacity for at least one non-driver passenger"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

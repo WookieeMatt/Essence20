@@ -3,6 +3,12 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"sense","label":"Sense","from":"sense","notHeld":true,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DerivedStat","label":"Acute sense (the picked sense)","path":"system.senses.{choice.sense}.acute","value":true},
+      {"type":"RollModifier","label":"Acute Sense","when":["skill:alertness"],"edge":true},
+      {"type":"DialogSwitch","label":"Your chosen sense applies (Acute Sense: ↑1)","when":["not:skill:alertness"],"upshift":1}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Granted: pick your sharp sense. Active Effect: Edge on Alertness. Roll Options Dialog: a ↑1 switch on other tests your sense helps with.</p><p>Left to the table: the Alertness Edge applies to every Alertness test, even when your chosen sense doesn't.</p>"
@@ -16,8 +22,8 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "senses"
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [
     {

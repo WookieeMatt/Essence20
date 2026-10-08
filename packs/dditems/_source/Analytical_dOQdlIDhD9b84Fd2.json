@@ -5,6 +5,10 @@
   "_id": "dOQdlIDhD9b84Fd2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Analytical","when":[{"any":["skill:science","skill:technology"]}],"specialize":true}
+    ],
+    "prerequisites": {"when":[{"any":["self:skill:science>=d6","self:skill:technology>=d6"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Science and Technology Tests open the Roll Options Dialog with Specialized already ticked.</p>"
@@ -15,7 +19,7 @@
       "book": "Decepticon Directive",
       "page": 64
     },
-    "prerequisite": "Science or Technology d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

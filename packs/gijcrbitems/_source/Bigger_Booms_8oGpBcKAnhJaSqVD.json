@@ -5,6 +5,9 @@
   "_id": "8oGpBcKAnhJaSqVD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"AreaRadius","label":"Bigger Booms","add":10,"items":["item:data:system.classification.style=explosive"]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Automatic: your explosive attacks place their area 10 feet larger.</p><p>Left to the table: your Qualified explosive weapon, and the extra loadout hands (raise your Hands on the sheet yourself).</p>"

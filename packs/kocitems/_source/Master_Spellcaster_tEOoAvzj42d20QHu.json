@@ -5,6 +5,11 @@
   "_id": "tEOoAvzj42d20QHu",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Master Spellcaster (Superior cost -1)","items":["item:type:spell","item:data:system.tier=superior"],"path":"system.cost","op":"add","value":-1},
+      {"type":"ItemModifier","label":"Master Spellcaster (cost at least 1)","items":["item:type:spell","item:data:system.tier=superior"],"path":"system.cost","op":"max","value":1}
+    ],
+    "prerequisites": {"when":["self:has:Efficient Spellcaster","self:skill:spellcasting>=d12"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: Superior spells cost you 1 less to cast (minimum 1).</p>"
@@ -16,7 +21,7 @@
       "page": 38
     },
     "items": {},
-    "prerequisite": "Efficient Spellcaster, and Spellcasting +d12",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

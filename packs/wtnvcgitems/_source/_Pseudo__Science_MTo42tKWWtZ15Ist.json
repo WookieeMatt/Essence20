@@ -5,6 +5,11 @@
   "_id": "MTo42tKWWtZ15Ist",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"\"Pseudo\"-Science (until the next mission)","when":["not:self:windowUsed:pseudoScienceActive:mission"],"steps":[{"do":"markWindow","flag":"pseudoScienceActive","window":"mission"}]},
+      {"type":"DialogSwitch","label":"\"Pseudo\"-Science, use Science","useSkill":"science","forget":true,"when":["self:windowUsed:pseudoScienceActive:mission","not:roll:initiative"]}
+    ],
+    "prerequisites": {"when":["self:hasType:focus:Night Vale Community College"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button (once per session): until the GM starts a new mission, the Roll Options Dialog offers a switch to roll Science in place of any other Skill. After that the Use button is ready again.</p>"
@@ -25,7 +30,7 @@
     "hasChoice": false,
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
-    "prerequisite": "Night Vale Community College Scientist Focus",
+    "prerequisite": "",
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

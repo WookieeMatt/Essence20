@@ -5,6 +5,9 @@
   "_id": "U8uQSqS78rqyUOu2",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Skyward (land or sea vehicle)","when":["skill:driving","vehicle:driving",{"any":["vehicle:moves:ground","vehicle:moves:swim"]}],"downshift":1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: while you drive a vehicle with Ground or Aquatic Movement, your Driving tests take ↓1, already counted in the Shift Down box of the Roll Options Dialog.</p>"

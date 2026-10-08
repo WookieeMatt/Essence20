@@ -5,9 +5,14 @@
   "_id": "fPnUOnzp4glrlvtR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skills","label":"Skills","from":"skill","count":3,"only":["alertness","culture","science","survival","technology","animalHandling","deception","performance","persuasion","streetwise"],"required":true},
+      {"type":"RollModifier","label":"Relic Weapon Trait: Intelligence (Edge)","edge":true,"when":["skill:{choice.skills}"]}
+    ],
+    "prerequisites": {"when":["self:has:Grid Relic Weapon"]},
     "automation": {
-      "status": "manual",
-      "notes": "<p>Left to the table: the Relic's own Smarts and Social 6, and Edge on the three Smarts or Social Skills you choose.</p>"
+      "status": "partial",
+      "notes": "<p>When added you pick three Smarts or Social Skills. Automatic: Edge on tests with them. Left to the table: the Relic's own Smarts and Social of 6.</p>"
     },
     "originalId": "",
     "description": "",
@@ -15,7 +20,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 61
     },
-    "prerequisite": "Grid Relic Weapon",
+    "prerequisite": "",
     "selectionLimit": 3,
     "type": "role"
   },

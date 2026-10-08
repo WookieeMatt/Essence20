@@ -5,6 +5,9 @@
   "_id": "6bg86Fau84u1m9Vg",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "rules": [
+      {"type":"CriticalOption","defense":"evasion","when":["item:onHost"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: on a Critical Success, a button deals 1 damage to the target's Evasion until they rest.</p>"

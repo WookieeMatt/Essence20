@@ -5,6 +5,10 @@
   "_id": "K2mYSJgYuViWFMAb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"single","target":"anyDie","reset":"none","maxUses":0,"skills":["culture","streetwise"],"recursive":false}
+    ],
+    "prerequisites": {"when":["self:skill:culture>=d4"]},
     "automation": {
       "status": "full",
       "notes": "<p>Chat card: on Culture and Streetwise tests, a reroll button for any one die (you keep the new result). Use it when you're recalling a people, place or item. The languages are for your notes.</p>"
@@ -15,34 +19,9 @@
       "book": "A Jump Through Time",
       "page": 57
     },
-    "prerequisite": "Culture Skill at d4 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general",
-    "reroll": {
-      "enabled": true,
-      "maxUses": 0,
-      "mode": "single",
-      "reset": "none",
-      "target": "anyDie",
-      "cost": {
-        "resourcePath": "",
-        "amount": 0,
-        "worldStoryPoints": 0,
-        "rolePointsName": ""
-      },
-      "condition": "none",
-      "skills": [
-        "culture",
-        "streetwise"
-      ],
-      "scopeToOriginSkill": false,
-      "essence": "any",
-      "recursive": false,
-      "minDieFaces": 0,
-      "grantsCanCritD2": false,
-      "bonus": 0,
-      "keepBetter": false
-    }
+    "type": "general"
   },
   "effects": [],
   "flags": {},

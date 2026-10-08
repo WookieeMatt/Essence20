@@ -5,6 +5,9 @@
   "_id": "CVl4P0zoArmY5mp1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Wild Idea: add your Do Or Die die as a bonus Skill Die (1 Moxie)","forget":true,"cost":{"resource":{"rolePoints":"Moxie"},"amount":1},"bonusDie":{"dice":["d2","d4","d6","d8"],"index":"min(3, floor((max(1, @level - @actor.system.oldHandTransitionLevel + min(1, @actor.system.oldHandTransitionLevel)) - 1) / 5))"},"when":["self:hasItem:Compendium.essence20.general_hawk_s_personel_files.Item.4NG56r746V7BLt8W"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Roll Options Dialog: a switch spends a Moxie Point to add your Do Or Die die as a bonus Skill Die, keeping the highest.</p>"

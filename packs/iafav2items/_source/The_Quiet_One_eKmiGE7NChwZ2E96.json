@@ -5,6 +5,11 @@
   "_id": "eKmiGE7NChwZ2E96",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Edge on Infiltration this turn","when":["combat:ally:target:stamped:quietOneNoisyActionThisRound"],"steps":[{"do":"mark","key":"quietOne","to":"self","until":"endOfTurn"}]},
+      {"type":"RollModifier","label":"The Quiet One","edge":true,"when":["skill:infiltration","self:marked:quietOne"]}
+    ],
+    "prerequisites": {"when":["self:skill:infiltration>=d6"]},
     "automation": {
       "status": "full",
       "notes": "<p>Use button: when an ally drove or made a non-Silent attack this round, spend a Free action for Edge on Infiltration tests this turn.</p>"
@@ -16,7 +21,7 @@
       "page": 64
     },
     "items": {},
-    "prerequisite": "Infiltration +d6",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

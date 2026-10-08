@@ -5,6 +5,7 @@
   "_id": "tJizsY43USPcTAd6",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Weapon with a range in feet and an Energy trait other than Cold"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains the Cold trait, which adds a Stun 1 alternate effect (or +1 to its Stun).</p>"

@@ -5,6 +5,12 @@
   "_id": "BVrwQKqvOdyNW0KR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack:unarmed"]},
+      {"type":"Trigger","event":"morph","label":"Growth Boost (+2 temporary Health while Morphed)","steps":[{"do":"updateActor","to":"self","add":{"system.health.bonus":2}}]},
+      {"type":"Trigger","event":"unmorph","label":"Growth Boost ends","steps":[{"do":"updateActor","to":"self","add":{"system.health.bonus":-2}}]},
+      {"type":"CarryCapacity","label":"Growth Boost (double carrying while Morphed)","multiply":2,"when":["self:morphed"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: Edge on Brawn. Automatic: +1 unarmed damage, and while Morphed +2 temporary Health and double carrying capacity.</p>"

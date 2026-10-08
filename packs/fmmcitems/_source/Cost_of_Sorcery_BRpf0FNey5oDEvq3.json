@@ -5,6 +5,10 @@
   "_id": "BRpf0FNey5oDEvq3",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"fumbled","label":"Fumbled a Sorcerous Power (Cost of Sorcery: lose 1 Health)","when":["item:type:power","item:data:system.type=sorcerous"],"steps":[{"do":"loseHealth","amount":1}]},
+      {"type":"Trigger","event":"afterRoll","outcome":"fumbled","label":"Fumbled a Sorcerous attack (Cost of Sorcery: lose 1 Health)","when":["weapon:trait:sorcerous"],"steps":[{"do":"loseHealth","amount":1}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: added automatically with the Sorcery Perk. Automatic: when you Fumble a test with a Sorcerous Power or a Sorcerous-trait attack, you lose 1 Health that nothing can prevent.</p>"

@@ -5,6 +5,7 @@
   "_id": "PclnORMt8ipdjjLT",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["self:size>=large"]},
     "automation": {
       "status": "manual",
       "notes": "<p>Left to the table: riding the drone as a vehicle of its size.</p>"
@@ -23,7 +24,7 @@
     "benefit": "",
     "traits": [],
     "type": "drone",
-    "prerequisite": "Large"
+    "prerequisite": ""
   },
   "effects": [],
   "flags": {},

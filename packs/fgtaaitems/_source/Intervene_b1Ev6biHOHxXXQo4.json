@@ -5,6 +5,10 @@
   "_id": "b1Ev6biHOHxXXQo4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","watch":"ally","label":"An ally's Stun or Maneuver attack (Intervene)","when":["attack",{"any":["item:data:system.damageType=stun","item:data:system.damageType=maneuver"]},"roll:targets>=1"],"steps":[{"do":"mark","key":"intervene","to":"target","until":"combat"}]},
+      {"type":"RollModifier","label":"Intervene","scope":"markedTarget","mark":"intervene","snag":true,"consumeMark":"intervene","when":["attack",{"any":["item:data:system.damageType=blunt","item:data:system.damageType=sharp"]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when an ally on your side of the scene makes a Stun or Maneuver attack, the next Blunt or Sharp attack against that ally takes a Snag for their Resistance, labelled Intervene in the attacker's Roll Options Dialog.</p>"

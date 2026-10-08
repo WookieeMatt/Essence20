@@ -5,6 +5,10 @@
   "_id": "RH3AFV38EBAfTvW1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"One With Your Weapon","action":"drawWeapon","to":"free","ask":"E20.ActionPerkAskOneWithYourWeapon"},
+      {"type":"ItemModifier","label":"One With Your Weapon (no alternate effect ↓)","items":["item:type:weaponEffect","weapon:trait:martialArts","weapon:trait:silent"],"path":"system.shiftDown","op":"set","value":0}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when you attack with an alternate effect of a weapon that has both the Silent and Martial Arts traits, that effect's own ↓ is dropped, so it never appears in the Downshift count of your Roll Options Dialog. Actions panel: when you pay for Draw Weapon, you're asked whether you're switching between Silent Martial Arts weapons; answering yes makes it a Free action.</p>"

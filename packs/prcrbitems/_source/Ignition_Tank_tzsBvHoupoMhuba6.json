@@ -5,6 +5,7 @@
   "_id": "tzsBvHoupoMhuba6",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Weapon with a range in feet and an Energy trait other than Fire"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains the Fire trait, so it deals +1 damage against targets defending with Evasion.</p>"

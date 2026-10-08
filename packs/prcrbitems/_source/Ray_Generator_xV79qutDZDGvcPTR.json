@@ -5,6 +5,7 @@
   "_id": "xV79qutDZDGvcPTR",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "prerequisites": {"when":["ask:Weapon with a range in feet and an Energy trait other than Laser"]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: the weapon gains the Laser trait, which adds Stun 1 and Spot alternate effects.</p>"

@@ -3,6 +3,9 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Spend a Story Point for a contact","cost":{"resource":{"storyPoints":true},"amount":1},"steps":[{"do":"chat","text":"{name} spends a Story Point to bring in a useful ally or an old friendly contact."}]}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Use button: spends a Story Point and posts it to chat.</p><p>Left to the table: who the ally or old friend is, and the once-per-scene limit.</p>"

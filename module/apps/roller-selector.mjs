@@ -1,5 +1,5 @@
 ﻿import { handleActorSelector } from "../sheet-handlers/listener-misc-handler.mjs";
-import { getFormData } from "../helpers/application.mjs";
+import { getFormData } from "../util/application.mjs";
 import { applyThemeClass } from "../settings.js";
 
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";

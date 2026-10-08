@@ -5,6 +5,10 @@
   "_id": "psPOXCaZFo7yiRzD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CardDamage","label":"Smash! (+1 damage per Size Class larger)","add":"@size - @target.size","when":["attack:barehanded","self:sizeDiff>=1"]},
+      {"type":"Trigger","event":"hit","label":"Smash! (a smaller target is knocked Prone)","when":["attack:barehanded","self:sizeDiff>=1"],"steps":[{"do":"applyCondition","condition":"prone","to":"target"}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: when an attack that uses no weapon (Unarmed or a natural attack) hits a smaller target, the damage on the chat card already includes +1 per Size Class you are larger, and the target gets the Prone condition.</p>"

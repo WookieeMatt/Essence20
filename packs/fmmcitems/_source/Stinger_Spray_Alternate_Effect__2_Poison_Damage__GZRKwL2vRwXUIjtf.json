@@ -5,6 +5,9 @@
   "_id": "GZRKwL2vRwXUIjtf",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"BeforeRoll","label":"Stinger Spray (1 Personal Power per attack)","scope":"item","steps":[{"do":"warn","text":"E20.D21StingerSprayNeedsForm","when":["not:check:monsterForm"]},{"do":"warn","text":"E20.D21StingerSprayNoPower","stop":true,"when":["self:data:system.powers.personal.value<1"]},{"do":"spend","resource":{"path":"system.powers.personal.value"},"amount":1},{"do":"chat","text":"{name} spends 1 Personal Power on Stinger Spray."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: rolls Targeting at ↓1 against the Toughness of up to 3 targets for 2 Poison damage. The 1 Personal Power is spent as you roll.</p>"
@@ -19,7 +22,7 @@
     "damageValue": 2,
     "defenseType": "toughness",
     "shiftDown": 1,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 3,
     "radius": 0,
     "range": {

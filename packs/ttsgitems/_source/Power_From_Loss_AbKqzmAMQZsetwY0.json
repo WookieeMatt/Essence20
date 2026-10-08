@@ -5,6 +5,10 @@
   "_id": "AbKqzmAMQZsetwY0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ConditionImmunity","label":"Immune to mesmerized","conditions":["mesmerized"]},
+      {"type":"Reroll","mode":"all","target":"allDice","reset":"scene","maxUses":1,"keepBetter":true}
+    ],
     "automation": {
       "status": "partial",
       "notes": "<p>Active Effect: +2 Willpower. Automatic: the Mesmerized condition can't be applied to you. Chat card: once per scene, a Power From Loss reroll button on your Skill Test rerolls the dice and keeps the better result.</p><p>Left to the table: only using the reroll in scenes with an enemy who Defeated a Ranger or ally.</p>"
@@ -17,14 +21,6 @@
     },
     "items": {},
     "prerequisite": "",
-    "reroll": {
-      "enabled": true,
-      "mode": "all",
-      "target": "allDice",
-      "maxUses": 1,
-      "reset": "scene",
-      "keepBetter": true
-    },
     "selectionLimit": 1,
     "type": "general"
   },

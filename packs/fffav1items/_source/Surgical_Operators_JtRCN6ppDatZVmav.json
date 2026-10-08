@@ -5,6 +5,13 @@
   "_id": "JtRCN6ppDatZVmav",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Treating a poison or toxin (Surgical Operators: Edge)","when":["skill:science"],"edge":true},
+      {"type":"Qualification","label":"Surgical Operators (Qualified: Injection weapons)","access":"qualified","items":["item:type:weapon","item:trait:injection"]},
+      {"type":"Qualification","label":"Surgical Operators (Qualified: Anti-V.E.N.O.M., Rebreather)","upgrades":[{"any":["item:id:3X0MqAV7JsYEiv5A","item:data:name=anti-v.e.n.o.m.","item:data:name=rebreather"]}]},
+      {"type":"RollModifier","label":"Driving a vehicle with passenger seats (Surgical Operators: ↑1)","when":["skill:driving","vehicle:driving","vehicle:data:system.crew.numPassengers>0","not:roll:untrained"],"upshift":1,"stack":"q1VehicleQualification"},
+      {"type":"RollModifier","label":"Driving a vehicle with passenger seats untrained (Surgical Operators: no Snag)","when":["skill:driving","vehicle:driving","vehicle:data:system.crew.numPassengers>0","roll:untrained",{"any":["not:self:hasItem:Compendium.essence20.ferocious_fighters.Item.VAhtHpKlv4gsR0OY","vehicle:data:system.traits.biomechanical","vehicle:name~biomech","vehicle:name~bio-mech","vehicle:name~cobra-la"]}],"immune":["snag"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Active Effect: +1 Willpower. Roll Options Dialog: on Science tests, tick the Surgical Operators switch when you're treating a poison or toxin to get Edge. Automatic: the Requisition and driving Qualifications it lists.</p>"

@@ -13,7 +13,7 @@
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 136
+      "page": 134
     },
     "items": {
       "SX0q": {
@@ -39,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "automatic",
     "classification": {
       "size": "integrated"

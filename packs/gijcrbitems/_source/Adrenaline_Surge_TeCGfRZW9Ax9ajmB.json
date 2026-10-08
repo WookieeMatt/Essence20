@@ -5,6 +5,9 @@
   "_id": "TeCGfRZW9Ax9ajmB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Take an extra turn","when":["combat"],"limit":{"per":"encounter"},"steps":[{"do":"grantActions","standard":"@actor.system.actions.standard.max","move":"@actor.system.actions.move.max","free":"@actor.system.actions.free.max"},{"do":"chat","text":"{name} takes an extra turn."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: once per combat, take an extra turn.</p>"

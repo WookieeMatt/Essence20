@@ -5,6 +5,10 @@
   "_id": "QIoKmEIelV7it5xE",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"A Dreadnok in the scene: Free action (Dreadnok Recruit)","event":"turnStart","when":[{"any":["scene:token:not:target:type:playerCharacter&target:name~dreadnok","self:marked:dreadnokPresent"]}],"steps":[{"do":"chat","text":"{name} spends a Free action looking over their shoulder."},{"do":"spendAction","action":"free"}]},
+      {"type":"Use","label":"A Dreadnok is in this scene","when":["not:self:marked:dreadnokPresent"],"steps":[{"do":"mark","to":"self","key":"dreadnokPresent","until":"scene"},{"do":"chat","text":"A Dreadnok is watching {name} this scene."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: at the start of your turn, a Free action is spent if a Dreadnok NPC or Contact is in the scene. The Hang-Up's Use button marks one as present when it isn't on the map.</p>"

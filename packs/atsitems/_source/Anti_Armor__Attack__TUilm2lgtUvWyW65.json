@@ -5,6 +5,12 @@
   "_id": "TUilm2lgtUvWyW65",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick the Anti-Armor weapon","when":["self:type:zord"],"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","auto":true,"prompt":"Which of the Zord's weapons gains Anti-Tank and Wrecker?","legacy":"flags.essence20.zord1AntiArmorWeapon"}]},
+      {"type":"Use","label":"Pick the Anti-Armor weapon","when":["self:type:zord"],"steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","auto":true,"prompt":"Which of the Zord's weapons gains Anti-Tank and Wrecker?","legacy":"flags.essence20.zord1AntiArmorWeapon"}]},
+      {"type":"WeaponTrait","label":"Anti-Tank and Wrecker (Anti-Armor)","traits":["antiTank","wrecker"],"items":["item:picked:weapon"]},
+      {"type":"Trigger","event":"hit","outcome":"crit","label":"Critical: armor -2 for the scene (Anti-Armor)","when":["item:picked:weapon"],"steps":[{"do":"shredArmor","to":"target","amount":2},{"do":"chat","text":"{target}'s armor counts 2 less for the rest of the scene."}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted on drop: pick one of the Zord's weapons, which gains the Anti-Tank and Wrecker traits. Automatic: each Critical Success with that weapon lowers the target's armor bonus to Toughness by 2 for the rest of the scene (stacking), noted on the attack's chat card.</p>"

@@ -5,6 +5,12 @@
   "_id": "Zord1TargetMastr",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"MegaformMirror","label":"Target Master (your weapons on your Megaforms)","items":[{"any":["item:type:weapon","item:attachedAttack"]}]},
+      {"type":"Trigger","event":"added","label":"Target Master","steps":[{"do":"megaformSync"}]},
+      {"type":"Use","label":"Share with my Megaforms","steps":[{"do":"megaformSync"},{"do":"require","check":["var:megaformCount>0"]},{"do":"chat","text":"{name}'s gear is shared with {var.megaforms}."}]}
+    ],
+    "prerequisites": {"when":["host:type:armor",{"any":["host:data:system.classification=medium","host:data:system.classification=heavy","host:data:system.classification=ultraHeavy"]}]},
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your weapons (and their effects) are copied onto any Megaform you join, so the Megaform can attack with them.</p>"
@@ -24,7 +30,7 @@
     "benefit": "Grants the Combiner trait; a Megaform you join can attack with your weapons.",
     "traits": [],
     "type": "armor",
-    "prerequisite": "Medium or heavier armor"
+    "prerequisite": ""
   },
   "effects": [],
   "sort": 0,

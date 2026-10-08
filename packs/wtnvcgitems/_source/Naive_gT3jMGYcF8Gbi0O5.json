@@ -5,6 +5,9 @@
   "_id": "gT3jMGYcF8Gbi0O5",
   "img": "systems/essence20/assets/icons/items/hangup.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Naive","defense":"willpower","amount":-1}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Automatic: your Willpower Defense becomes 9 + your Smarts.</p>"

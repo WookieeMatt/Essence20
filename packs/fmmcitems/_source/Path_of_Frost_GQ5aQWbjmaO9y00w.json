@@ -5,6 +5,11 @@
   "_id": "GQ5aQWbjmaO9y00w",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Frost Monster Form (Toughness +2)","defense":"toughness","amount":2,"when":["self:data:flags.essence20.monsterFormActive"]},
+      {"type":"RollModifier","label":"Frost Monster Form (↑1)","upshift":1,"when":["self:data:flags.essence20.monsterFormActive",{"any":["skill:brawn","skill:might","skill:initiative"]}]},
+      {"type":"Trigger","event":"takesDamage","label":"Monster Form: freezing burst at 2+ damage from an attack (Path of Frost)","when":["self:data:flags.essence20.monsterFormActive","damage>=2","damage:attack"],"steps":[{"do":"button","whisper":"owners","who":"owner","label":"Brawn against everyone within 10 ft","intro":"{name} can freeze every creature within 10 feet in place.","usedWhenDone":true,"steps":[{"do":"collect","to":"all:10","required":true},{"do":"rollVsEach","skill":"brawn","defense":"toughness","onHit":[{"do":"applyCondition","to":"target","condition":"immobilized","until":"endOfNextTurn"}]}]}]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Granted: its Perks at the listed levels (Let's Go Psycho! comes with the Psycho Ranger faction), the Static Modifier Role Points, Personal Power, Essence increases, Skills and Psycho Armor training.</p><p>Choices: General Perks and Grid Powers at their levels, and a Psycho Weapon from the Psycho Morpher's Use button.</p>"

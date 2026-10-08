@@ -5,6 +5,11 @@
   "_id": "CjJGz1LLzFoveqZK",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Ladder (Bot Mode: unarmed Reach ×2)","items":["item:type:weaponEffect","not:item:data:flags.essence20.parentId","item:data:system.classification.style=melee"],"path":"system.totalReach","op":"max","value":"@reach.size * 2","when":["self:data:system.canTransform","not:self:transformed"]},
+      {"type":"Use","label":"Extend or stow the ladder (Alt Mode, Free action)","steps":[{"do":"warn","text":"The ladder can only be extended in Alt Mode.","stop":true,"when":["not:self:toggle:out","not:self:transformed"]},{"do":"spendAction","action":"free","when":["not:self:toggle:out"]},{"do":"setToggle","key":"out","until":"scene"},{"do":"chat","text":"{name} extends their ladder.","when":["self:toggle:out"]},{"do":"chat","text":"{name} stows their ladder.","when":["not:self:toggle:out"]}]},
+      {"type":"DialogSwitch","scope":"alliesAnywhere","label":"Using {holder}'s ladder: ↑2","upshift":2,"forget":true,"stack":"tf3Ladder","when":[{"any":["skill:athletics","skill:acrobatics"]},"holder:transformed","holder:toggle:out","holder:asOther:sizeDiff>=0"]}
+    ],
     "automation": {
       "status": "full",
       "notes": "<p>Use button: in Alt Mode, extend or stow the ladder as a Free action; allies your size or smaller then get a ↑2 switch on Athletics and Acrobatics. In Bot Mode your unarmed Reach doubles.</p>"
@@ -16,7 +21,6 @@
       "page": 134
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],
