@@ -329,6 +329,17 @@ export async function onDropActor(data, actorSheet) {
       }
     }
 
+    // A Zord combines through the Combiner Zord Feature (PR CRB p.139), or a Versatile Combiner / Adaptable Future Tech
+    // partner already in the Megazord (Through the Shattered Grid p.35, p.117) - refused at the drop, not warned after.
+    if (droppedActor.type == 'zord' && !targetActor.system.subtype?.includes?.('megaformCombiner')) {
+      const { ineligibleZords } = await import("../items/zords/zord-feature-picks.mjs");
+      const present = getMegaformParticipants(targetActor).filter(actor => actor.type == 'zord');
+      if (ineligibleZords([...present, droppedActor]).includes(droppedActor)) {
+        ui.notifications.warn(game.i18n.format('E20.Zord2NeedsCombinerFeature', { name: droppedActor.name }));
+        return false;
+      }
+    }
+
     // A Warzord combining (Across the Stars p.105): its Ranger spends 1 Story Point per Zord combining with it.
     if (!(await payWarzordStoryPoints(targetActor, droppedActor))) {
       return false;

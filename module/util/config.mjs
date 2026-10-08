@@ -1465,8 +1465,8 @@ E20.actorReach = {
 
 // Subtypes of megaforms
 E20.megaformSubtypes = {
-  megaformCombiner: "E20.MegaformSubtypeCombiner",
   megaformZord: "E20.MegaformSubtypeZord",
+  megaformCombiner: "E20.MegaformSubtypeCombiner",
 };
 preLocalize("megaformSubtypes");
 

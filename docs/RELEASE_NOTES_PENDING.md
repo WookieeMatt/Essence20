@@ -76,6 +76,11 @@ the same as the original.
   and the form is one Size Class above its largest part). A Zord can't join a Transformers Combiner: a Zord and
   Cybertronian mix uses the Megazord rules. Anything that can't count is now refused with the reason, instead of being
   linked and silently ignored.
+- **A new Megaform's type follows the game line:** a Power Rangers world makes a Megazord, and any other world
+  (including "All") makes a Transformers Combiner. The type select now reads "Power Rangers Megazord" / "Transformers
+  Combiner". Existing Megaforms saved with no type become Megazords.
+- **A Zord without the Combiner Zord Feature** (and no Versatile Combiner or Adaptable Future Tech partner already in
+  the Megazord) is refused when dropped, instead of being linked with a warning.
 - **Megazords:**
   - Use every participant's weapons and attacks, rolled with the Megazord's own skill.
   - Are Towering by default; set Titanic on the sheet if that's the size you chose.

@@ -119,3 +119,9 @@ describe('changing a Megaform\'s subtype with people in it', () => {
     expect(subtypeChangeBlockers(combiner, ['megaformZord'])).toEqual([humanActor]);
   });
 });
+
+test("a new Megaform's type follows the game line: Power Rangers - a Megazord, anything else - a Combiner", async () => {
+  const { defaultMegaformSubtype } = await import('../../documents/actor.mjs');
+  expect(defaultMegaformSubtype('powerRangers')).toBe('megaformZord');
+  expect(['transformers', '', 'giJoe'].map(defaultMegaformSubtype)).toEqual(['megaformCombiner', 'megaformCombiner', 'megaformCombiner']);
+});
