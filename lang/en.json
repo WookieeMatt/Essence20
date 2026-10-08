@@ -1166,7 +1166,7 @@
         "Trigger": { "Label": "When something happens…", "Hint": "Runs on its own: turn start, damage taken, about to be Defeated, Morphing, a roll…" },
         "Reaction": { "Label": "Answer a roll…", "Hint": "A button on someone's attack or check card - cancel the hit, lower the total, a late Snag, turn a miss into a hit…" },
         "effect": { "Label": "Change a stat (Active Effect)", "Hint": "An Active Effect: a flat, always-on change while the item counts - Health, a Defense, an Essence, a skill's shift. Opens the Effect Wizard." },
-        "RulesHeading": "Everything below is a rule: it only applies when something is true, gives a button, or asks a choice.",
+        "RulesHeading": "Everything below is a rule: it only applies when a condition is met, a button is clicked, or a choice is selected.",
         "RollModifier": { "Label": "Change a roll", "Hint": "↑ or ↓, Edge or Snag, applied on its own whenever its condition is met." },
         "DialogSwitch": { "Label": "Add a roll option", "Hint": "A switch in the Roll Options Dialog the player ticks when it applies." },
         "Reroll": { "Label": "Reroll", "Hint": "Offer a reroll after the roll." },
