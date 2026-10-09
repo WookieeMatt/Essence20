@@ -202,7 +202,7 @@ export function isSealedAboard(actor) {
 export async function resetDailyVehicleUses(vehicle) {
   const clears = restClears(vehicle);
   if (clears.length) {
-    await vehicle.update(Object.fromEntries(clears.map(key => [key, null])));
+    await vehicle.update(Object.fromEntries(clears.map(key => [key, new foundry.data.operators.ForcedDeletion()])));
   }
 }
 

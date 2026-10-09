@@ -20,6 +20,7 @@ export const ZORD2 = {
   titanHardpoint: C('enigma_of_combination', 'qrZRunCUyEGT9HE7'),
   universalReceptors: C('enigma_of_combination', 'MXwHqZJjYC94DVJx'),
   eocCoreBody: C('enigma_of_combination', 'Zd2CoreBodyEoC01'),
+  additionalMovement: C('enigma_of_combination', '1qvmixV4VyiQVvsO'),
   eocEnhancedAttack: C('enigma_of_combination', 'Zd2EnhAttackEoC1'),
   // Power Rangers
   enhancedMeleeAttack: C('pr_crb', 'X6BPzpHr2cBq3jbt'),

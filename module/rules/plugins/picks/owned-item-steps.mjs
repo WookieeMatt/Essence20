@@ -50,7 +50,7 @@ registerStep('flagItem', async (step, ctx) => {
     if (Array.isArray(step.exclusive)) {
       for (const other of itemsWhere(actor, step.exclusive, ctx.item)) {
         if (other.id != chosen.id && other.flags?.essence20?.[flag]) {
-          await write(other, 'update', [{ [`flags.essence20.-=${flag}`]: null }]);
+          await write(other, 'update', [{ [`flags.essence20.${flag}`]: new foundry.data.operators.ForcedDeletion() }]);
           if (step.loneEffect) {
             await loneEffect(other, false);
           }

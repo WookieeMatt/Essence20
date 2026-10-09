@@ -152,6 +152,7 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
     originalGame = global.game;
     global.fromUuid = jest.fn();
     global.ui.notifications.error.mockClear();
+    global.ui.notifications.warn.mockClear();
   });
   afterEach(() => {
     global.game = originalGame;
@@ -170,7 +171,7 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
     await onDropActor({ uuid: 'Actor.zord1' }, actorSheet);
 
     // jest.setup.js's game.i18n.format stub just echoes the key back, ignoring the data arg.
-    expect(global.ui.notifications.error).toHaveBeenCalledWith('E20.DetachableCannotReattach');
+    expect(global.ui.notifications.warn).toHaveBeenCalledWith('E20.DetachableCannotReattach');
     expect(actorSheet.actor.update).not.toHaveBeenCalled();
   });
 
@@ -180,6 +181,8 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
       uuid: 'Actor.zord1',
       name: 'Test Zord',
       img: 'icon.svg',
+      // The Combiner Zord Feature - a Zord combines through it (PR CRB p.139).
+      items: [{ flags: { core: { sourceId: 'Compendium.essence20.pr_crb.Item.ZZMBVjmosr0VViMU' } } }],
       getFlag: (scope, key) => (key == DETACHED_THIS_SCENE_FLAG ? { epoch: 0, window: 'encounter', count: 1 } : undefined),
     };
     global.fromUuid.mockResolvedValue(droppedActor);
@@ -188,13 +191,24 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
 
     await onDropActor({ uuid: 'Actor.zord1' }, actorSheet);
 
-    expect(global.ui.notifications.error).not.toHaveBeenCalled();
+    expect(global.ui.notifications.warn).not.toHaveBeenCalledWith('E20.DetachableCannotReattach');
     expect(actorSheet.actor.update).toHaveBeenCalled();
+  });
+
+  test("refuses a Zord without the Combiner Zord Feature (PR CRB p.139), instead of linking it and warning", async () => {
+    const droppedActor = { type: 'zord', uuid: 'Actor.zord1', name: 'Plain Zord', img: 'icon.svg', getFlag: () => undefined, items: [] };
+    global.fromUuid.mockResolvedValue(droppedActor);
+    global.game = { ...originalGame, combat: null };
+    const actorSheet = makeMegaformSheet();
+
+    expect(await onDropActor({ uuid: 'Actor.zord1' }, actorSheet)).toBe(false);
+    expect(global.ui.notifications.warn).toHaveBeenCalledWith('E20.Zord2NeedsCombinerFeature');
+    expect(actorSheet.actor.update).not.toHaveBeenCalled();
   });
 
   test("allows a Zord that was never flagged to attach normally", async () => {
     const droppedActor = {
-      type: 'zord', uuid: 'Actor.zord1', name: 'Test Zord', img: 'icon.svg', getFlag: () => undefined,
+      type: 'zord', uuid: 'Actor.zord1', name: 'Test Zord', img: 'icon.svg', getFlag: () => undefined, items: [{ flags: { core: { sourceId: 'Compendium.essence20.pr_crb.Item.ZZMBVjmosr0VViMU' } } }],
     };
     global.fromUuid.mockResolvedValue(droppedActor);
     global.game = { ...originalGame, combat: null };
@@ -202,7 +216,7 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
 
     await onDropActor({ uuid: 'Actor.zord1' }, actorSheet);
 
-    expect(global.ui.notifications.error).not.toHaveBeenCalled();
+    expect(global.ui.notifications.warn).not.toHaveBeenCalledWith('E20.DetachableCannotReattach');
     expect(actorSheet.actor.update).toHaveBeenCalled();
   });
 
@@ -213,6 +227,8 @@ describe("onDropActor - Detachable reattach block (Across the Stars, p.104)", ()
       uuid: 'Actor.zord1',
       name: 'Test Zord',
       img: 'icon.svg',
+      // The Combiner Zord Feature - a Zord combines through it (PR CRB p.139).
+      items: [{ flags: { core: { sourceId: 'Compendium.essence20.pr_crb.Item.ZZMBVjmosr0VViMU' } } }],
       getFlag: jest.fn((scope, key) => flagStore[key]),
       unsetFlag: jest.fn((scope, key) => {
         delete flagStore[key];

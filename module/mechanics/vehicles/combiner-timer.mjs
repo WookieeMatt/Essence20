@@ -19,6 +19,8 @@ import { ruleJoinDieSteps } from "../../rules/plugins/zords/join-die.mjs";
 /** Reduction order for a JoinDie rule (Fast Modulation's "d6 to d4, d4 to d2"). */
 const COMBINE_DICE = ['d6', 'd4', 'd2'];
 const COMBINE_READY_ROUND_FLAG = 'combineReadyRound';
+// The participants already rolled for (uuids): a later drop rolls only for the new ones, never the whole roster again.
+const COMBINE_ROLLED_FLAG = 'combineRolled';
 
 /**
  * The Zord's join-time die: d6, made smaller by its JoinDie rules (Fast Modulation, PR CRB p.137 - every copy one type,
@@ -64,6 +66,11 @@ export async function rollCombineTimer(megaformActor) {
     return null;
   }
 
+  // A Power Rangers rule: a Transformers Combiner merges by its own rules (Enigma of Combination p.43), with no timer.
+  if (megaformActor.system.subtype.includes?.('megaformCombiner')) {
+    return null;
+  }
+
   const participants = getMegaformParticipants(megaformActor);
   if (!participants.length) {
     return null;
@@ -71,21 +78,37 @@ export async function rollCombineTimer(megaformActor) {
 
   if (!game.combat?.started) {
     await megaformActor.unsetFlag('essence20', COMBINE_READY_ROUND_FLAG);
+    await megaformActor.unsetFlag('essence20', COMBINE_ROLLED_FLAG);
     return null;
   }
 
-  const times = [];
-  for (const participant of participants) {
-    times.push(await rollParticipantTime(participant));
+  // The time counts from when each Zord entered the fight (its Call to Action arrival round, zord-summon.mjs, else the
+  // start of combat), not from the drop - and a Zord already rolled for keeps its roll.
+  const rolled = new Set(megaformActor.getFlag('essence20', COMBINE_ROLLED_FLAG) ?? []);
+  // Only Zords wait for a worthy foe; a Cybertronian joining them (Field Guide p.134) adds no time of its own.
+  const fresh = participants.filter(participant => participant.type == 'zord' && !rolled.has(participant.uuid));
+  const current = getCombineReadyRound(megaformActor);
+  if (!fresh.length) {
+    return current;
   }
 
-  const readyRound = game.combat.round + Math.max(...times);
+  const rounds = [];
+  let longest = 0;
+  for (const participant of fresh) {
+    const time = await rollParticipantTime(participant);
+    longest = Math.max(longest, time);
+    const entered = Number(participant.getFlag?.('essence20', 'zordSummonReadyRound')) || 1;
+    rounds.push(entered + time);
+  }
+
+  const readyRound = Math.max(current ?? -Infinity, ...rounds);
   await megaformActor.setFlag('essence20', COMBINE_READY_ROUND_FLAG, readyRound);
+  await megaformActor.setFlag('essence20', COMBINE_ROLLED_FLAG, [...rolled, ...fresh.map(participant => participant.uuid)]);
 
   ChatMessage.create({
     content: game.i18n.format('E20.CombinerTimerRolled', {
       name: megaformActor.name,
-      rounds: Math.max(...times),
+      rounds: longest,
       round: readyRound,
     }),
     speaker: ChatMessage.getSpeaker({ actor: megaformActor }),

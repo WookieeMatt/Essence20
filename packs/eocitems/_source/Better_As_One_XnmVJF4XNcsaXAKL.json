@@ -11,7 +11,7 @@
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Specializations apply to the Combiner form you're part of, and you can pay 1 of your own Energon for the Combiner's ↑1 when its pool is empty.</p>"
+      "notes": "<p>Automatic: your Specializations apply to the Combiner form you're part of, and you can pay 1 of your own Energon for the Combiner's ↑1 instead of its pool (you're asked who pays; with its pool empty, you do).</p>"
     },
     "originalId": "",
     "description": "",

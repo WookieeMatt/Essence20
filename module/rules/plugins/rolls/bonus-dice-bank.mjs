@@ -63,7 +63,7 @@ export async function bonusDicePreRoll(actor, dataset, item) {
     },
   };
   if (legacy) {
-    update['flags.essence20.-=pr1ProspectorDie'] = null;
+    update['flags.essence20.pr1ProspectorDie'] = new foundry.data.operators.ForcedDeletion();
   }
 
   await actor.update(update);

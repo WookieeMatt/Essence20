@@ -20,7 +20,7 @@ beforeAll(() => {
     statusEffects: [],
   };
   global.foundry = {
-    utils: {
+    data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: {
       randomID: () => 'r',
       escapeHTML: s => s,
       getProperty: (o, p) => p.split('.').reduce((a, k) => a?.[k], o),

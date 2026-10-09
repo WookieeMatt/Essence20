@@ -1,7 +1,10 @@
 import { jest } from '@jest/globals';
+import { finishParticipantHealth } from '../../mechanics/vehicles/megaform-bonus-health.mjs';
 import { ZORD2, megaformsContaining } from '../zords/combiner-roster-helpers.mjs';
 import { desiredAttacks, scaledEffect, strongest, countGeneratedUse, perSceneExhausted } from '../zords/megaform-attacks.mjs';
-import { applyFocus, coreBodyDerived, focusToggles, mergeCost, mergeReach, storyPointCost, tokenGap } from '../zords/combiner-merge.mjs';
+import {
+  applyFocus, beginGuestMerge, coreBodyDerived, focusToggles, heldUntil, holdsMergePerk, mergeCost, mergeReach, modeLocked, storyPointCost, tokenGap,
+} from '../zords/combiner-merge.mjs';
 import { ineligibleZords } from '../zords/zord-feature-picks.mjs';
 import { spectrumOf } from '../../rules/plugins/zords/zord-owner-spectrum.mjs';
 import { roughRegionsAt } from '../../rules/plugins/combat/clear-rough-terrain.mjs';
@@ -143,11 +146,44 @@ test('Core Body doubles a component\'s share on a Gigantic+ Combiner', () => {
     participantHealth: [{ name: 'Hook', value: 4, max: 5 }, { name: 'Scrapper', value: 5, max: 5 }],
     combinedHealthMax: 10, combinedHealthValue: 9, health: { max: 10, value: 9 },
   });
+  // The doubling is Megaform-only extra Health damage uses first (mechanics/vehicles/megaform-bonus-health.mjs).
   coreBodyDerived(form);
-  expect(form.system).toMatchObject({ combinedHealthMax: 15, combinedHealthValue: 13, health: { max: 15, value: 13 } });
-  expect(form.system.participantHealth[0]).toEqual({ name: 'Hook', value: 8, max: 10 });
+  finishParticipantHealth(form, [body, other]);
+  expect(form.system).toMatchObject({ combinedHealthMax: 15, combinedHealthValue: 14, health: { max: 15, value: 14 } });
+  expect(form.system.participantHealth[0]).toEqual({ name: 'Hook', value: 9, max: 10 });
   global.game.actors.push(form);
   expect(megaformsContaining(body)).toEqual([form]);
+});
+
+describe('Enigma of Combination p.43-49: Mode Lock, Other Cybertronians, holding together', () => {
+  test('Mode Lock refuses the merge', () => {
+    global.ui = { notifications: { warn: jest.fn() } };
+    expect(modeLocked({ name: 'Bot', statuses: new Set(['modeLock']) })).toBe(true);
+    expect(modeLocked({ name: 'Bot', statuses: new Set() })).toBe(false);
+  });
+
+  test('a Combiner Perk merges on its own; a guest needs someone who can, and only one guest at a time', async () => {
+    global.ui = { notifications: { warn: jest.fn() } };
+    const perk = actor('playerCharacter', [item('perk', { source: ZORD2.gestaltCombiner })]);
+    const guest = actor('playerCharacter', [], { energon: { normal: { value: 6 } } });
+    expect([holdsMergePerk(perk), holdsMergePerk(guest)]).toEqual([true, false]);
+
+    const lonely = actor('megaform', [], { subtype: ['megaformCombiner'], actors: {} });
+    expect(await beginGuestMerge(guest, lonely)).toBeNull();
+    expect(global.ui.notifications.warn).toHaveBeenCalledWith('E20.Zord2GuestNeedsCombiner');
+
+    global.game.actors = [perk];
+    const full = actor('megaform', [], { subtype: ['megaformCombiner'], actors: { a: { uuid: perk.uuid }, b: { uuid: 'Actor.x', guestEpoch: 1 } } });
+    expect(await beginGuestMerge(guest, full)).toBeNull();
+    expect(global.ui.notifications.warn).toHaveBeenCalledWith('E20.Zord2OneGuest');
+  });
+
+  test('a postponed break-apart holds until the round it names, in that combat only', () => {
+    const form = { flags: { essence20: { zord2HoldTogether: { combatId: 'c1', round: 4 } } } };
+    expect(heldUntil(form, { id: 'c1' })).toBe(4);
+    expect(heldUntil(form, { id: 'c2' })).toBeNull();
+    expect(heldUntil({ flags: {} }, { id: 'c1' })).toBeNull();
+  });
 });
 
 test('focusing a component: Snag, or ↓1 with Gestalt Hunter', () => {

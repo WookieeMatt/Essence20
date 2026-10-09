@@ -61,7 +61,13 @@
             {{!-- Call to Action (PR CRB, Zord Feature, p.136-137) - see mechanics/vehicles/zord-summon.mjs's
                  own doc comment. Only meaningful from the piloting Ranger's own sheet, not a
                  Megaform's read-only participant list. --}}
-            {{#unless (isZordSummonReady attachedActor)}}
+            {{!-- Arrived this combat (PR CRB p.135): no second summon - board it (mechanics/vehicles/zord-arrival.mjs). --}}
+            {{#if (zordHasArrived attachedActor)}}
+              <span class="e20-nowrap"><i class="fas fa-flag-checkered"></i> {{localize 'E20.ZordArrivedLabel'}}</span>
+              <a class="e20-nowrap" data-action="zordBoard" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.ZordBoardTooltip'}}">
+                <i class="fas fa-person-walking-arrow-right"></i> {{localize 'E20.ZordBoard'}}
+              </a>
+            {{else unless (isZordSummonReady attachedActor)}}
               <div class="e20-nowrap">
                 <a data-action="summonZord" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.ZordSummonTooltip'}}">
                   <i class="fas fa-hourglass-half"></i>
@@ -72,7 +78,19 @@
               <a class="e20-nowrap" data-action="summonZord" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.ZordSummonTooltip'}}">
                 <i class="fas fa-bolt"></i> {{localize 'E20.ZordSummonButton'}}
               </a>
+            {{/if}}
+            {{!-- Its starting Spectrum and team Zord Features (PR CRB p.134) - mechanics/vehicles/zord-auto-features.mjs. --}}
+            {{#unless (zordAutoFeaturesDone attachedActor)}}
+              <a class="e20-nowrap" data-action="zordAutoFeatures" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.ZordAutoButtonTip'}}">
+                <i class="fas fa-list-check"></i> {{localize 'E20.ZordAutoButton'}}
+              </a>
             {{/unless}}
+            {{!-- Zord growth at the Ranger's 5th/10th/15th/20th level (PR CRB p.134) - mechanics/vehicles/zord-growth.mjs. --}}
+            {{#if (zordGrowthMissing @root.document attachedActor)}}
+              <a class="e20-nowrap" data-action="zordGrowth" data-tooltip="{{localize 'E20.ZordGrowthButtonTip'}}">
+                <i class="fas fa-arrow-up-right-dots"></i> {{localize 'E20.ZordGrowthButton'}} ({{zordGrowthMissing @root.document attachedActor}})
+              </a>
+            {{/if}}
           {{/unless}}
           {{#if (eq @root.document.type "megaform")}}
             {{!-- Ranger only exists on a Zord (zord.mjs's own system.ranger field) - a Transformers

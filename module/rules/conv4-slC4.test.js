@@ -30,7 +30,7 @@ function setPath(object, path, value) {
 function updater(doc) {
   return async data => {
     for (const [key, value] of Object.entries(data)) {
-      const match = /^(.*)\.-=([^.]+)$/.exec(key);
+      const match = (__isForcedDeletion(value) ? /^(.*)\.([^.]+)$/.exec(key) : /^(.*)\.-=([^.]+)$/.exec(key));
       if (match) {
         const parent = match[1].split('.').reduce((at, part) => at?.[part], doc);
         delete parent?.[match[2]];

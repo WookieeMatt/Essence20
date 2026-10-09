@@ -24,6 +24,7 @@ import {
   chat, isCombinerForm, isGiganticOrLarger, isResponsible, itemsOf, megaformsContaining, rosterOf, sourceOf, T, traitsOf,
 } from "./combiner-roster-helpers.mjs";
 import { isUnarmedAttack } from "../shared/unarmed-attacks.mjs";
+import { canBeParticipant } from "../../mechanics/vehicles/megaform-participants.mjs";
 
 const GEN = 'zord2Gen';
 const SIG = 'zord2Sig';
@@ -33,6 +34,7 @@ export const EFFECT_FLAG = 'zord2EffectId';
 export const WEAPON_UUID_FLAG = 'zord2WeaponUuid';
 
 const flagOf = (doc, key) => doc?.flags?.essence20?.[key];
+const isUp = actor => !(Number(actor?.system?.health?.max) > 0 && Number(actor?.system?.health?.value) <= 0);
 
 export const usesKey = weapon => `zord2Use_${String(flagOf(weapon, GEN) ?? weapon?.id ?? '').replace(/[^A-Za-z0-9_-]/g, '_')}`;
 
@@ -104,7 +106,9 @@ export function desiredAttacks(megaform, roster = rosterOf(megaform)) {
 
     const multiplier = parts.length <= 3 ? 2 : 3;
     const enhanced = new Set();
-    for (const component of parts) {
+    // A member at 0 Health adds no attacks (EoC p.45); the form's size (the multiplier) still counts every member.
+    const active = parts.filter(isUp);
+    for (const component of active) {
       for (const trait of traitsOf(component, 'enhancedAttack')) {
         const attack = enhancedChoice(component, trait);
         if (attack) {
@@ -119,7 +123,7 @@ export function desiredAttacks(megaform, roster = rosterOf(megaform)) {
     }
 
     const pick = (filter, label, damageMultiplier, reach) => {
-      const candidates = parts.flatMap(component => attacksOf(component).filter(a => !flagOf(a.weapon, GEN) && filter(a))
+      const candidates = active.flatMap(component => attacksOf(component).filter(a => !flagOf(a.weapon, GEN) && filter(a))
         .map(a => ({ ...a, component })));
       const best = strongest(candidates);
       if (best) {
@@ -161,7 +165,8 @@ export function desiredAttacks(megaform, roster = rosterOf(megaform)) {
   }
 
   // Power Rangers Megazord.
-  for (const zord of roster.filter(a => a.type == 'zord')) {
+  // A Zord (or a Cybertronian joining them, Field Guide p.134) at 0 Health no longer contributes attacks (PR CRB p.140).
+  for (const zord of roster.filter(a => canBeParticipant(megaform, a) && isUp(a))) {
     for (const [type, filter, label] of [['enhancedMeleeAttack', isMelee, 'Melee'], ['enhancedRangedAttack', isRanged, 'Ranged']]) {
       const traits = traitsOf(zord, type);
       if (!traits.length) {
@@ -343,6 +348,11 @@ if (typeof Hooks != 'undefined') {
   Hooks.on('updateActor', (actor, changes) => {
     if (actor.type == 'megaform' && (changes?.system?.actors !== undefined || changes?.system?.size !== undefined)) {
       queueSync(actor);
+    }
+
+    // A member dropping to 0 Health (or getting back up) changes which attacks its forms have.
+    if (actor.type != 'megaform' && changes?.system?.health?.value !== undefined) {
+      syncFor(actor);
     }
   });
   Hooks.on('createItem', onItemChange);

@@ -404,6 +404,46 @@ describe("collectEffectContributions", () => {
   });
 });
 
+describe("collectEffectContributions - Rules", () => {
+  const withRules = (name, ...rules) => ({ name, type: 'perk', system: { rules }, effects: [] });
+
+  test("an always-on Defense or Movement rule is netted, 'any' / 'all' to each of them", () => {
+    const contributions = collectEffectContributions([
+      withRules('Dazed', { type: 'Defense', defense: 'evasion', amount: -1 }),
+      withRules('Warded', { type: 'Defense', defense: 'any', amount: 1 }),
+      withRules('Eltarian Training', { type: 'Movement', movement: 'ground', stage: 'adjust', op: 'add', value: 10 }),
+      withRules('Sturdy', { type: 'DerivedStat', path: 'system.health.bonus', op: 'add', value: 2 }),
+    ]);
+    expect(contributions.defenses).toEqual({ toughness: 1, evasion: 0, willpower: 1, cleverness: 1 });
+    expect(contributions.movement).toEqual({ ground: 10 });
+    expect(contributions.health).toBe(2);
+    expect(contributions.unnetted).toEqual([]);
+  });
+
+  test("a conditional, scoped or disabled rule isn't in the printed number: left alone", () => {
+    const contributions = collectEffectContributions([
+      withRules('Dogfighter', { type: 'Defense', defense: 'evasion', amount: 2, scope: 'driven' }),
+      withRules('Lightspeed Boost', { type: 'Defense', defense: 'evasion', amount: 2, when: ['self:type:zord'] }),
+      withRules('Off', { type: 'Defense', defense: 'evasion', amount: 2, disabled: true }),
+    ]);
+    expect(contributions.defenses).toEqual({});
+    expect(contributions.unnetted).toEqual([]);
+  });
+
+  test("formulas, best-of and set rules can't be netted: named for the GM", () => {
+    const contributions = collectEffectContributions([
+      withRules('Mind Palace', { type: 'Defense', defense: 'willpower', amount: 'min(3, floor((@level + 1) / 6))' }),
+      withRules('Evasive', { type: 'Defense', defense: 'any', mode: 'best', early: true, from: ['evasion'] }),
+      withRules('Static Electricity', { type: 'Movement', movement: 'ground', stage: 'base', op: 'set', value: 35 }),
+      withRules('Grid Connection', { type: 'DerivedStat', path: 'system.powers.personal.max', op: 'add', value: 1 }),
+    ]);
+    expect(contributions.defenses).toEqual({});
+    expect(contributions.unnetted.map(entry => [entry.item, entry.reason])).toEqual([
+      ['Mind Palace', 'formula'], ['Evasive', 'notAdditive'], ['Static Electricity', 'notAdditive'],
+    ]);
+  });
+});
+
 describe("collectUncancellableEffects", () => {
   test("flags a skill shift, which cannot be cancelled arithmetically", () => {
     const found = collectUncancellableEffects([{
@@ -753,5 +793,90 @@ describe("buildWeaponData - weapon size", () => {
   test("an attack with no printed size leaves the weapon's own default", () => {
     const { weapon } = buildWeaponData({ name: 'Rifle', skill: 'targeting', traits: [], alternateEffects: [] });
     expect(weapon.system.classification).toBeUndefined();
+  });
+});
+
+describe("Cybertronians: Alt Modes", () => {
+  // Made up for the test - not a book stat block.
+  const block = [
+    'Test Jet',
+    'THREAT LEVEL: 6',
+    'SIZE: Large/Huge HEALTH: 8',
+    'MOVEMENT: 30ft Ground (Bot Mode); 90 ft (30ft)',
+    'Aerial (Alt Mode)',
+    'STRENGTH: 3 SPEED: 4',
+    'SMARTS: 2 SOCIAL: 1',
+    'TOUGHNESS: 12 EVASION: 14',
+    'WILLPOWER: 11 CLEVERNESS: 12',
+    'ATTACKS',
+    'Wing Blade (Might): +d4, Reach (2 Sharp damage)',
+    'Hands: 1',
+    'Requirements: Bot Mode only',
+    'Traits: Computerized',
+    'Nose Cannon (Targeting): +d6, Range 50ft/100ft (2 Fire damage)',
+    'Alternate Effects: 3 Fire damage',
+    'Requirements: Alt Mode only',
+    'Traits: Computerized',
+  ].join('\n');
+
+  test("the parser reads both Sizes, each Mode's movement and each attack's Mode", () => {
+    const ir = parseStatBlock(block);
+    expect(ir.size).toBe('large');
+    expect(ir.movement).toMatchObject({ ground: 30, aerial: null });
+    expect(ir.altMode).toEqual({ size: 'huge', movement: { ground: null, aerial: 90, swim: null, climb: null } });
+    expect(ir.attacks.map(attack => attack.mode)).toEqual(['bot', 'alt']);
+    expect(parseStatBlock('X\nTHREAT LEVEL: 1\nATTACKS\nZap (Finesse): +d4, Reach (Stun 1)').attacks[0]).toMatchObject({ damageValue: 1, damageType: 'stun' });
+    // A Requirements line after the Alternate Effects no longer swallows them.
+    expect(ir.attacks[1].alternateEffects.map(effect => effect.damageValue)).toEqual([3]);
+  });
+
+  test("the actor can transform, into an Alt Mode item; weapons get the Hardpoint for their Mode", () => {
+    const ir = parseStatBlock(block);
+    expect(buildActorData(ir, { type: 'npc' }).system.canTransform).toBe(true);
+    expect(buildActorData(ir, { type: 'vehicle' }).system.canTransform).toBeUndefined();
+    const altMode = buildSimpleItems(ir, { type: 'npc' }).find(item => item.type == 'altMode');
+    expect(altMode.system).toEqual({ altModesize: 'huge', botModeSize: 'large', altModeMovement: { ground: 0, aerial: 90, aquatic: 0 } });
+    expect(buildWeaponData(ir.attacks[0]).weapon.system).toMatchObject({
+      hardpoint: { type: 'external' }, modeRequirement: 'botMode', requirements: { custom: 'Bot Mode only' },
+    });
+    expect(buildWeaponData(ir.attacks[1]).weapon.system).toMatchObject({ hardpoint: { type: 'integrated' }, modeRequirement: 'altMode' });
+    expect(buildWeaponData(ir.attacks[1]).weapon.system.hardpoint.altModeVisibility).toBeUndefined();
+  });
+
+  test("Alternate Effects: one per comma, each with its printed ↓, named after the weapon, in order", () => {
+    const ir = parseStatBlock(['Test Jet', 'THREAT LEVEL: 6', 'ATTACKS',
+      'Rifle (Targeting): +d8, Range 150ft/600ft (1 Sharp damage)',
+      'Alternate Effects: 2 Sharp damage (↓1), 3 Sharp damage (1)',
+      'Hands: 2',
+      'Missile (Targeting): +d8, Range 500ft/1,000ft (1 Fire damage Blast: 50ft radius)',
+      'Alternate Effects: 2 Fire damage, 2 Fire damage Blast: 20ft radius (↓1)',
+      'Requirements: Alt Mode only',
+      'Bite (Might): +d4, Reach (2 Sharp damage)',
+      'Alternate Effects: Trip',
+      'Requirements: Bot Mode and Spider Alt Mode Only'].join('\n'));
+    const rifle = buildWeaponData(ir.attacks[0]).effects;
+    expect(rifle.map(effect => [effect.name, effect.system.damageValue, effect.system.shiftDown ?? 0])).toEqual([
+      ['Rifle', 1, 0], ['Rifle Alternate Effect 1', 2, 1], ['Rifle Alternate Effect 2', 3, 1],
+    ]);
+    const missile = buildWeaponData(ir.attacks[1]).effects;
+    expect(missile.map(effect => [effect.system.damageValue, effect.system.radius, effect.system.shiftDown ?? 0])).toEqual([[1, 50, 0], [2, 0, 0], [2, 20, 1]]);
+    const bite = buildWeaponData(ir.attacks[2]);
+    expect(bite.effects[1]).toMatchObject({ name: 'Bite Alternate Effect', system: { description: 'Trip' } });
+    // Both Modes named: no single Mode requirement, the text kept.
+    expect(bite.weapon.system.modeRequirement).toBeUndefined();
+    expect(bite.weapon.system.requirements.custom).toBe('Bot Mode and Spider Alt Mode Only');
+  });
+
+  test("a Mode Conversion Perk alone makes it a Cybertronian, its Alt Mode copying the Bot Mode", () => {
+    const ir = parseStatBlock(['Test Bot', 'THREAT LEVEL: 2', 'SIZE: Common HEALTH: 3', 'MOVEMENT: 30ft Ground',
+      'PERKS', 'Mode Conversion: Converts as a Standard action.'].join('\n'));
+    expect(ir.altMode).toEqual({ size: 'common', movement: { ground: 30, aerial: null, swim: null, climb: null } });
+    expect(ir.diagnostics.some(entry => entry.severity == 'info' && /Alt Mode movement/.test(entry.message))).toBe(true);
+  });
+
+  test("an ordinary Threat has no Alt Mode", () => {
+    const ir = parseStatBlock(['Thug', 'THREAT LEVEL: 1', 'SIZE: Common HEALTH: 2', 'MOVEMENT: 30ft Ground'].join('\n'));
+    expect(ir.altMode).toBeNull();
+    expect(buildSimpleItems(ir).some(item => item.type == 'altMode')).toBe(false);
   });
 });

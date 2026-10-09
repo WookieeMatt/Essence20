@@ -1,6 +1,6 @@
 import { E20 } from "../../util/config.mjs";
 
-import { makeBool, makeInt, makeStr, makeStrArray, makeStrArrayWithChoices } from "../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrArray, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { common } from './templates/common.mjs';
 import { machine } from './templates/machine.mjs';
@@ -9,12 +9,23 @@ import { zordBase } from './templates/zord-base.mjs';
 const fields = foundry.data.fields;
 
 export class MegaformActorData extends foundry.abstract.TypeDataModel {
+  /** A Megaform saved with no type (the old empty default) is a Power Rangers Megazord. Whole records only. */
+  static migrateData(source, options) {
+    if (!options?.partial && Array.isArray(source?.subtype) && !source.subtype.length) {
+      source.subtype = ['megaformZord'];
+    }
+
+    return super.migrateData(source, options);
+  }
+
   static defineSchema() {
     return {
       ...common(),
       ...machine(),
       ...zordBase(),
-      subtype: makeStrArrayWithChoices(Object.keys(E20.megaformSubtypes), 'megaformZord'),
+      // A new Megaform is a Power Rangers Megazord unless set otherwise. (makeStrArrayWithChoices's initial is each
+      // entry's, not the list's - the list started empty and the sheet's select fell to its first option, Combiner.)
+      subtype: new fields.ArrayField(makeStrWithChoices(Object.keys(E20.megaformSubtypes), null), { initial: ['megaformZord'] }),
       zordIds: makeStrArray(),
       // Combiner-subtype only: how many Energon Points the component members actually spent
       // to merge into this form (2/member for a Matched Combiner, 3/member for a Gestalt,
@@ -42,6 +53,18 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
         name: makeStr(''),
         value: makeInt(0),
       })),
+      // A Transformers Combiner's Hardpoints (Enigma of Combination p.44): two External, plus one Integrated for each
+      // component - the bases are worked out in Essence20Actor#_prepareMegaformCombinerData, the rest is the same
+      // tally a Transformer's are (Essence20Actor#_prepareLoadout). A Megazord has none.
+      hardpoints: new fields.SchemaField({
+        external: new fields.SchemaField({ base: makeInt(2), bonus: makeInt(0), max: makeInt(0), used: makeInt(0), over: makeBool(false) }),
+        integrated: new fields.SchemaField({ base: makeInt(0), bonus: makeInt(0), max: makeInt(0), used: makeInt(0), over: makeBool(false) }),
+      }),
+      loadout: new fields.SchemaField({
+        handsMax: makeInt(6),
+        handsUsed: makeInt(0),
+        handsOver: makeBool(false),
+      }),
     };
   }
 }

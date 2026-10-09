@@ -21,7 +21,7 @@ const wait = jest.fn();
 const MOTOR_LANCER = "Compendium.essence20.intercontinental_adventures.Item.YaFY9NhcpZPXdvv0";
 
 global.foundry = {
-  utils: {
+  data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: {
     randomID: jest.fn(() => `id${++idCounter}`),
     escapeHTML: s => s,
   },

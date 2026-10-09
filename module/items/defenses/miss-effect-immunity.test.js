@@ -3,7 +3,7 @@ import { jest } from '@jest/globals';
 beforeAll(() => {
   global.Hooks = { on: jest.fn(), once: jest.fn() };
   global.ui = { notifications: { warn: jest.fn(), info: jest.fn() } };
-  global.foundry = { utils: { escapeHTML: s => s, setProperty: () => {} } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { escapeHTML: s => s, setProperty: () => {} } };
 });
 
 const hooks = await import('./miss-effect-immunity.mjs');

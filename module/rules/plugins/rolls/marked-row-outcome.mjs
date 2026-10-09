@@ -69,7 +69,7 @@ export function markedRowOutcomes(actor, roll = {}) {
         return;
       }
 
-      const update = Object.fromEntries(names.map(name => [`flags.essence20.ruleMarks.-=${name}`, null]));
+      const update = Object.fromEntries(names.map(name => [`flags.essence20.ruleMarks.${name}`, new foundry.data.operators.ForcedDeletion()]));
       const { needsGmRelay, relayToGm } = await import("../../../mechanics/world/gm-relay.mjs");
       await (needsGmRelay(actor) ? relayToGm(actor, 'update', [update]) : actor.update(update));
     },

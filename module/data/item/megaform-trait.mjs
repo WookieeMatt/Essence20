@@ -20,7 +20,9 @@ export class MegaformTraitItemData extends foundry.abstract.TypeDataModel {
       // flat bonus. RAW has a single Skill Expertise grant choose two Skills - modeled the same
       // way Accurate Combiner's own "may be taken twice" already is, as two separate items rather
       // than a multi-select field.
-      skill: makeStrWithChoices(Object.keys(E20.skills), 'athletics'),
+      // Can be empty: a Core Essence a stat block gives without naming its Skill ("Core Essence [Speed]") raises none,
+      // rather than the default Athletics (a Strength Skill).
+      skill: new foundry.data.fields.StringField({ choices: Object.keys(E20.skills), initial: 'athletics', nullable: true }),
       // Only used by the Move type: which Megaform movement type it grants/boosts.
       movementType: makeStrWithChoices(Object.keys(E20.movementTypes), 'ground'),
       // Only used by the Accurate Combiner type (Across the Stars, p.104): whether this

@@ -14,7 +14,7 @@ global.game = {
   users: [{ isGM: true, active: true }], socket: { emit: jest.fn() },
   actors: { party: legacyPoolParty() },
 };
-global.foundry = { applications: { api: { DialogV2: { wait: jest.fn() } } } };
+global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, applications: { api: { DialogV2: { wait: jest.fn() } } } };
 
 function makeActor({ id = 'actor1', name = 'Actor' } = {}) {
   return {

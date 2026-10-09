@@ -6,7 +6,7 @@ import {
   switchMythicForm,
 } from './mythically-modular.mjs';
 
-global.foundry = { utils: { randomID: jest.fn(() => 'spend1') } };
+global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { randomID: jest.fn(() => 'spend1') } };
 
 function makeWeapon(id, { equipped = true, traits = ['mythicallyModular'] } = {}) {
   return { id, name: `Form ${id}`, type: 'weapon', system: { equipped, traits, upgradeTraits: [] } };

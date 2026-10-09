@@ -15,7 +15,7 @@ import { Essence20TokenDocument } from '../../documents/token.mjs';
 
 let idCounter = 0;
 
-global.foundry = { utils: { randomID: jest.fn(() => `id${++idCounter}`) } };
+global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { randomID: jest.fn(() => `id${++idCounter}`) } };
 
 
 function makeActor({ enabled = true, ground = 30, aerial = 0, move = 1, free = 0, name = 'Duke' } = {}) {

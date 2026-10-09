@@ -3,6 +3,7 @@ import { jest } from '@jest/globals';
 import { applyModularIntegration } from "../items/defenses/modular-armor.mjs";
 import { setWorldLookups } from "../rules/predicate.mjs";
 import { readFileSync } from "node:fs";
+import { finishParticipantHealth } from "../mechanics/vehicles/megaform-bonus-health.mjs";
 
 // The Megaform contributions are rules on their items now (round 16, part a - rules/plugins/zords/megaform-contributions.mjs):
 // the fixtures carry the pack items' own rules.
@@ -1209,6 +1210,8 @@ describe("_prepareMegaformZordData", () => {
     const actor = makeMegazordActor([coreBody, plain]);
 
     actor._prepareMegaformZordData();
+    // The extra Health is collected in prep and the rows built at the end (mechanics/vehicles/megaform-bonus-health.mjs).
+    finishParticipantHealth(actor, [coreBody, plain]);
 
     expect(actor.system.combinedHealthMax).toBe((5 * 2) + 4);
     expect(actor.system.combinedHealthValue).toBe((5 * 2) + 4);
@@ -1222,6 +1225,7 @@ describe("_prepareMegaformZordData", () => {
     const actor = makeMegazordActor([coreBody]);
 
     actor._prepareMegaformZordData();
+    finishParticipantHealth(actor, [coreBody]);
 
     expect(actor.system.combinedHealthMax).toBe((5 * 2) + 3);
   });
@@ -1233,6 +1237,7 @@ describe("_prepareMegaformZordData", () => {
     const actor = makeMegazordActor([holder, otherHolder, plain]);
 
     actor._prepareMegaformZordData();
+    finishParticipantHealth(actor, [holder, otherHolder, plain]);
 
     // 5+4+3 base, plus +1 per participant (3) applied ONCE despite two holders - not +6.
     expect(actor.system.combinedHealthMax).toBe(5 + 4 + 3 + 3);
@@ -1429,6 +1434,53 @@ describe("_prepareMegaformCombinerData", () => {
 
   beforeEach(() => {
     global.fromUuidSync.mockReset();
+  });
+
+  test("a duo / trio is one Size CLASS larger than its largest member - never Long or Extended (EoC p.42)", () => {
+    const actor = makeCombinerActor([makeComponent({ name: 'A', health: 5, size: 'large' }), makeComponent({ name: 'B', health: 5, size: 'large' })]);
+    actor._prepareMegaformCombinerData();
+    expect(actor.system.size).toBe('huge');
+
+    const huge = makeCombinerActor([makeComponent({ name: 'A', health: 5, size: 'huge' }), makeComponent({ name: 'B', health: 5, size: 'extended' })]);
+    huge._prepareMegaformCombinerData();
+    expect(huge.system.size).toBe('gigantic');
+  });
+
+  test("Willpower and Cleverness are 10 + the form's own Smarts / Social, not a Megazord's pilot stand-in (EoC p.42)", () => {
+    const actor = makeCombinerActor([makeComponent({ name: 'A', health: 5 }), makeComponent({ name: 'B', health: 5 })]);
+    actor.system.defenses.willpower = { base: null, usesDrivers: true };
+    actor.system.defenses.cleverness = { base: null, usesDrivers: true };
+    actor._prepareMegaformCombinerData();
+    expect(actor.system.defenses.willpower).toMatchObject({ base: 10, usesDrivers: false });
+    expect(actor.system.defenses.cleverness).toMatchObject({ base: 10, usesDrivers: false });
+  });
+
+  test("Commander raises the two Essences its stat block names, else the holder's two highest (EoC p.42)", () => {
+    const commander = (flags = {}) => ({ type: 'megaformTrait', system: { type: 'commander' }, flags: { essence20: flags } });
+    const members = () => Array.from({ length: 4 }, (_, i) => makeComponent({ name: `M${i}`, health: 5 }));
+
+    const named = members();
+    named[0].items.push(commander({ commanderEssences: ['smarts', 'social'] }));
+    const namedForm = makeCombinerActor(named);
+    namedForm._prepareMegaformCombinerData();
+    expect(Object.fromEntries(Object.entries(namedForm.system.essences).map(([key, essence]) => [key, essence.value])))
+      .toEqual({ strength: 3, speed: 2, smarts: 3, social: 3 });
+
+    const unnamed = members();
+    unnamed[0].items.push(commander());
+    const unnamedForm = makeCombinerActor(unnamed);
+    unnamedForm._prepareMegaformCombinerData();
+    expect(unnamedForm.system.essences.strength.value).toBe(4);
+  });
+
+  test("movement: a type only some members have isn't the form's (EoC p.42)", () => {
+    const flier = makeComponent({ name: 'A', health: 5 });
+    flier.system.movement.aerial = { total: 60 };
+    const actor = makeCombinerActor([flier, makeComponent({ name: 'B', health: 5 })]);
+    actor.system.movement.aerial = {};
+    actor._prepareMegaformCombinerData();
+    expect(actor.system.movement.ground.base).toBe(30);
+    expect(actor.system.movement.aerial.base).toBe(0);
   });
 
   test("zeroes Essences/Defenses/Movement with no participants, instead of leaving them at their own zordBase-inherited schema defaults", () => {
@@ -2461,7 +2513,7 @@ describe("Party member roster", () => {
     test("removes the roster entry matching the given UUID", async () => {
       const party = makeParty({ a: { uuid: 'Actor.pc1' }, b: { uuid: 'Actor.pc2' } });
       await party.removeMember('Actor.pc2');
-      expect(party.update).toHaveBeenCalledWith({ 'system.actors.-=b': null });
+      expect(party.update).toHaveBeenCalledWith({ 'system.actors.b': expect.any(foundry.data.operators.ForcedDeletion) });
     });
 
     test("no-ops when the UUID isn't on the roster", async () => {

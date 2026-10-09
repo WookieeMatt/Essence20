@@ -11,7 +11,7 @@ beforeAll(async () => {
     skills: {},
     skillsByEssence: { strength: ['athletics', 'brawn'], speed: ['driving', 'targeting'], smarts: ['alertness'], social: ['persuasion'] },
   } };
-  global.foundry = { applications: { api: { DialogV2: { wait } } } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, applications: { api: { DialogV2: { wait } } } };
   ext = await import('../../mechanics/item-hooks.mjs');
   commander = await import('./commander-combiner-feature.mjs');
 });

@@ -513,7 +513,7 @@ registerRoundStart(async combat => {
 registerRest(async actor => {
   const clears = restClears(actor);
   if (clears.length) {
-    await actor.update(Object.fromEntries(clears.map(key => [key, null])));
+    await actor.update(Object.fromEntries(clears.map(key => [key, new foundry.data.operators.ForcedDeletion()])));
   }
 
   await fireTriggers(actor, 'rest');

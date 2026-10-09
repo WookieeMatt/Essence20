@@ -1,5 +1,10 @@
+import { getGameLine } from "../settings.js";
 import { runDerived } from "../mechanics/item-hooks.mjs";
 import { COMMANDER_SKILLS_FLAG } from "../items/zords/commander-combiner-feature.mjs";
+import { ZORD2 } from "../items/zords/combiner-roster-helpers.mjs";
+import { addParticipantBonus, finishParticipantHealth, resetParticipantBonuses } from "../mechanics/vehicles/megaform-bonus-health.mjs";
+import { getMegaformParticipants, subtypeChangeBlockers } from "../mechanics/vehicles/megaform-participants.mjs";
+import { SIZE_CLASSES, sizeClassIndex } from "../mechanics/combat/size-classes.mjs";
 import { linkedBonuses } from "../mechanics/companions/companions.mjs";
 import { BOND } from "../mechanics/companions/bonded-partners.mjs";
 import { vehicleHands } from "../mechanics/companions/summons.mjs";
@@ -179,6 +184,24 @@ export class Essence20Actor extends Actor {
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
 
+    // A new Megaform with no type takes the world's game line: a Power Rangers world makes Megazords, any other (All
+    // included) Transformers Combiners. The sheet's type select changes it.
+    if (this.type == 'megaform' && data?.system?.subtype === undefined) {
+      this.updateSource({ 'system.subtype': [defaultMegaformSubtype(getGameLine())] });
+    }
+
+    // A new Zord's, Vehicle's or Megaform's token is its Size (a baseline Zord is Huge - 3x3), not Foundry's 1x1. A
+    // Megazord is at least Towering (its Size is worked out from its Zords - mechanics/vehicles/megaform-participants.mjs
+    // resizes it as they join). A token size the creator gave is kept; later Size changes resize it in _preUpdate.
+    if (['zord', 'vehicle', 'megaform'].includes(this.type)
+      && data?.prototypeToken?.width === undefined && data?.prototypeToken?.height === undefined) {
+      const megazord = this.type == 'megaform' && !this._source.system?.subtype?.includes?.('megaformCombiner');
+      const size = CONFIG.E20.tokenSizes?.[megazord && sizeClassIndex(this._source.system?.size) < sizeClassIndex('towering') ? 'towering' : this._source.system?.size];
+      if (size) {
+        this.updateSource({ 'prototypeToken.width': size.width, 'prototypeToken.height': size.height });
+      }
+    }
+
     // A Zord / Vehicle created with only Essence values (an importer, a script) takes them as its base.
     if (usesEssenceBase(this)) {
       for (const [key, essence] of Object.entries(data?.system?.essences ?? {})) {
@@ -265,6 +288,35 @@ export class Essence20Actor extends Actor {
   /** @override */
   async _preUpdate(changed, options, user) {
     await super._preUpdate(changed, options, user);
+
+    // A Megaform changing between Megazord and Combiner keeps only a roster that still counts: anyone who wouldn't (a
+    // mixed Megazord's Zords, a Combiner's non-transforming characters) has to leave first. A change that stands drops the
+    // old kind's timers (mechanics/vehicles/megaform-participants.mjs).
+    const newSubtype = foundry.utils.getProperty(changed, 'system.subtype');
+    if (this.type == 'megaform' && newSubtype !== undefined) {
+      const toCombiner = [newSubtype].flat().includes('megaformCombiner');
+      if (toCombiner != this.system.subtype.includes('megaformCombiner')) {
+        const blockers = subtypeChangeBlockers(this, newSubtype);
+        if (blockers.length) {
+          ui.notifications.warn(game.i18n.format(toCombiner ? 'E20.MegaformSubtypeBlockedCombiner' : 'E20.MegaformSubtypeBlockedMegazord', {
+            form: this.name, names: blockers.map(actor => actor.name).join(', '),
+          }));
+          // Only the type change is dropped (the rest of the save still lands), and the open sheet is drawn again so its
+          // type select goes back to the type it still has.
+          delete changed.system.subtype;
+          setTimeout(() => this.sheet?.rendered && this.sheet.render(), 0);
+          if (!Object.keys(changed.system).length) {
+            delete changed.system;
+          }
+        } else {
+          for (const flag of toCombiner ? ['combineReadyRound', 'combineRolled'] : ['zord2HoldTogether', 'zord2Merge', 'zord2Invigorated']) {
+            if (this.flags?.essence20?.[flag] !== undefined) {
+              foundry.utils.setProperty(changed, `flags.essence20.${flag}`, new foundry.data.operators.ForcedDeletion());
+            }
+          }
+        }
+      }
+    }
 
     // A Zord's / Vehicle's Essence value is worked out from its base: a write to the value moves the base.
     if (usesEssenceBase(this)) {
@@ -359,6 +411,16 @@ export class Essence20Actor extends Actor {
    * is queried and has a roll executed directly from it).
    */
   prepareDerivedData() {
+    // No Zord / Vehicle Essence goes past 15 (Increase (Essence), PR CRB p.137: "to a maximum of 15") - after Active
+    // Effects, before anything reads it.
+    if (usesEssenceBase(this)) {
+      for (const essence of Object.values(this.system.essences ?? {})) {
+        if (Number.isFinite(essence?.value) && essence.value > 15) {
+          essence.value = 15;
+        }
+      }
+    }
+
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
     this._prepareNpcData();
@@ -412,9 +474,9 @@ export class Essence20Actor extends Actor {
     // Integrated (0 hands). Before the Load Out tally below, which reads derivedHands.
     applyModularIntegration(this);
 
-    // Load Out (hands carried vs the six-hand limit) and Hardpoint allocation. Only the two
-    // types that carry equipment personally - a vehicle or Megaform has no hands to fill.
-    if (this.type == 'playerCharacter' || this.type == 'npc') {
+    // Load Out (hands carried vs the six-hand limit) and Hardpoint allocation. The two types that carry equipment
+    // personally, and a Transformers Combiner form, which has Hardpoints of its own (EoC p.44).
+    if (this.type == 'playerCharacter' || this.type == 'npc' || (this.type == 'megaform' && this.system.subtype?.includes?.('megaformCombiner'))) {
       this._prepareLoadout();
     }
 
@@ -425,6 +487,12 @@ export class Essence20Actor extends Actor {
 
     // Extensions' derived data - Health, Defenses and Movement adjustments (mechanics/item-hooks.mjs).
     runDerived(this);
+
+    // A Megaform's Health rows: each participant's own Health plus its Megaform-only extra (Core Body, Layered Systems,
+    // Roller Drum...), once every extension has added its part (mechanics/vehicles/megaform-bonus-health.mjs).
+    if (this.type == 'megaform') {
+      finishParticipantHealth(this, getMegaformParticipants(this));
+    }
 
     // Item rules' Movement at stage afterDerived: after every derived adjustment above (rules/adapter.mjs#ruleMovementStages).
     const lateMovement = ruleMovementStages(this);
@@ -694,7 +762,7 @@ export class Essence20Actor extends Actor {
   async removeMember(uuid) {
     const key = Object.entries(this.system.actors).find(([, entry]) => entry.uuid == uuid)?.[0];
     if (key) {
-      await this.update({ [`system.actors.-=${key}`]: null });
+      await this.update({ [`system.actors.${key}`]: new foundry.data.operators.ForcedDeletion() });
     }
   }
 
@@ -751,6 +819,13 @@ export class Essence20Actor extends Actor {
       // The flag sits on the weapon's effect (weaponEffect isRam / isFlyby), listed in system.items and attached as
       // its own item (parentId) - live test 2026-10-07 found the weapon itself never carries it.
       if (this._isAltModeAttack(item)) {
+        continue;
+      }
+
+      // A Megaform's own attacks built from its parts (items/zords/megaform-attacks.mjs - the Combiner's strike and ranged
+      // attack, Titan Hardpoint's weapon in its own Titan Hardpoint) and its participants' mirrored weapons take none of
+      // its Hardpoints.
+      if (this.type == 'megaform' && (item.flags?.essence20?.zord2Gen || item.flags?.essence20?.zord1MirrorOf)) {
         continue;
       }
 
@@ -1451,6 +1526,8 @@ export class Essence20Actor extends Actor {
    * distinction.
    */
   _prepareMegaformData() {
+    // Each participant's Megaform-only extra Health is collected again (mechanics/vehicles/megaform-bonus-health.mjs).
+    resetParticipantBonuses(this);
     if (this.system.subtype.includes('megaformCombiner')) {
       this._prepareMegaformCombinerData();
     } else {
@@ -1478,9 +1555,8 @@ export class Essence20Actor extends Actor {
     const BASE_ARMOR_BONUS = 3;
     const MAX_ESSENCE = 15;
 
-    const participants = Object.values(system.actors)
-      .map(entry => fromUuidSync(entry.uuid))
-      .filter(actor => actor?.type == 'zord');
+    // Zords, and any Cybertronian joining them (Field Guide p.134) - mechanics/vehicles/megaform-participants.mjs.
+    const participants = getMegaformParticipants(this, 'megazord');
 
     // Foundry's Actor World Collection initializes every actor in whatever order the DB returns
     // them, with no dependency graph - if this Megaform happens to be prepared before a linked
@@ -1536,8 +1612,41 @@ export class Essence20Actor extends Actor {
     // values that will just be recalculated away on the next render.
     system.movementIsReadOnly = true;
 
-    let strength = Math.max(...participants.map(zord => zord.system.essences.strength.value));
-    let speed = Math.max(...participants.map(zord => zord.system.essences.speed.value));
+    // A Zord at 0 Health no longer contributes in any way to the Megaform's abilities, attacks or features (PR CRB
+    // p.140) - it still counts for Health and for Defeat. With every Zord down, the last numbers stand.
+    const upZords = participants.filter(zord => !(Number(zord.system.health.max) > 0 && Number(zord.system.health.value) <= 0));
+    const active = upZords.length ? upZords : participants;
+
+    // The highest scores among the Combiner components AND their Crew (PR CRB p.140), to a maximum of 15.
+    const crew = active.flatMap(zord => Object.values(zord.system.actors ?? {})
+      .filter(entry => ['playerCharacter', 'npc'].includes(entry?.type))
+      .map(entry => fromUuidSync(entry.uuid)).filter(Boolean));
+    const scoreOf = (actor, essence) => {
+      const own = actor.system?.essences?.[essence];
+      return Number(own?.max ?? own?.value) || 0;
+    };
+
+    let strength = Math.max(...[...active, ...crew].map(part => scoreOf(part, 'strength')));
+    let speed = Math.max(...[...active, ...crew].map(part => scoreOf(part, 'speed')));
+    // Smarts and Social: a Zord has none of its own (its pilot's), so the Megazord's are its Crew's best - what its
+    // Willpower / Cleverness use (mechanics/combat/combat.mjs#getDefenseValue).
+    for (const essence of ['smarts', 'social']) {
+      const best = Math.max(0, ...crew.map(pilot => scoreOf(pilot, essence)));
+      if (system.essences[essence]) {
+        system.essences[essence].value = crew.length ? Math.min(MAX_ESSENCE, best) : null;
+      }
+    }
+
+    // Size: Towering, or Titanic if the team chose that (PR CRB p.144's Megazords; Beneath the Helmet p.74 step 10) -
+    // never smaller.
+    // A Megaform with a Cybertronian in it is one Size Class larger than its largest component, Titanic at most (Field
+    // Guide p.134).
+    if (participants.some(part => part.type != 'zord')) {
+      const largest = Math.max(0, ...participants.map(part => sizeClassIndex(part.system.size)));
+      system.size = SIZE_CLASSES[Math.min(SIZE_CLASSES.length - 1, largest + 1)];
+    } else if (sizeClassIndex(system.size) < sizeClassIndex('towering')) {
+      system.size = 'towering';
+    }
 
     // The Megaform only has a basic Ground Movement type unless a Move trait grants
     // another; set that baseline now so the Move trait loop below can add to it.
@@ -1545,7 +1654,7 @@ export class Essence20Actor extends Actor {
       system.movement[movementType].base = 0;
     }
 
-    system.movement.ground.base = Math.min(...participants.map(
+    system.movement.ground.base = Math.min(...active.map(
       zord => zord.system.movement.ground.total || zord.system.movement.ground.base,
     ));
 
@@ -1557,11 +1666,10 @@ export class Essence20Actor extends Actor {
     let combinedHealthMax = 0;
     let combinedHealthValue = 0;
 
-    for (const zord of participants) {
+    for (const zord of active) {
       const hasCoreBody = zord.items.some(
         item => item.type == 'megaformTrait' && item.system.type == 'coreBody',
       );
-      const healthMultiplier = hasCoreBody ? 2 : 1;
       let layeredSystemsBonus = 0;
 
       // The participant's MegaformArmor rules (Hardened Chassis) - the armor part of the Megaform's Defenses.
@@ -1643,8 +1751,15 @@ export class Essence20Actor extends Actor {
         }
       }
 
-      combinedHealthMax += (zord.system.health.max * healthMultiplier) + layeredSystemsBonus;
-      combinedHealthValue += (Math.max(0, zord.system.health.value) * healthMultiplier) + layeredSystemsBonus;
+      // Core Body doubles this Zord's Health while in the Megaform; Layered Systems adds to it after that. Extra Health
+      // that damage through the Megaform uses up first (mechanics/vehicles/megaform-bonus-health.mjs).
+      addParticipantBonus(this, zord, (hasCoreBody ? zord.system.health.max : 0) + layeredSystemsBonus);
+    }
+
+    // Every Zord's own Health, before the extras above (finishParticipantHealth adds them).
+    for (const zord of participants) {
+      combinedHealthMax += zord.system.health.max;
+      combinedHealthValue += Math.max(0, zord.system.health.value);
     }
 
     // Tenacious Bonds (A Jump Through Time, p.84): +1 Health to every component Zord, after the
@@ -1652,8 +1767,9 @@ export class Essence20Actor extends Actor {
     // per participant (not per instance of the trait across multiple holders), so this is a
     // single conditional add after the main loop rather than accumulated inside it.
     if (hasTenaciousBonds) {
-      combinedHealthMax += participants.length;
-      combinedHealthValue += participants.length;
+      for (const zord of participants) {
+        addParticipantBonus(this, zord, 1);
+      }
     }
 
     system.essences.strength.value = Math.min(MAX_ESSENCE, strength);
@@ -1732,12 +1848,20 @@ export class Essence20Actor extends Actor {
   _prepareMegaformCombinerData() {
     const system = this.system;
     const MAX_ESSENCE = 15;
-    const sizeOrder = Object.keys(CONFIG.E20.actorSizes);
+    // Size CLASSES only (mechanics/combat/size-classes.mjs): Long and the Extended sizes are the elongated footprints of
+    // the class before them, so "one Size Class larger" (EoC p.42) must not land on them - two Large members are Huge,
+    // not Long. An elongated member counts as its class.
+    const sizeOrder = SIZE_CLASSES;
     const giganticIndex = sizeOrder.indexOf('gigantic');
+    const sizeClassOf = sizeClassIndex;
 
-    const participants = Object.values(system.actors)
-      .map(entry => fromUuidSync(entry.uuid))
-      .filter(actor => actor?.type && actor.type != 'zord' && actor.type != 'vehicle' && actor.type != 'megaform');
+    const participants = getMegaformParticipants(this, 'combiner');
+
+    // Hardpoints (EoC p.44): two External, plus one Integrated per component member.
+    if (system.hardpoints) {
+      system.hardpoints.external.base = 2;
+      system.hardpoints.integrated.base = participants.length;
+    }
 
     // See _prepareMegaformZordData's identical call for why this is needed - without it, a
     // Megaform that initializes before a linked component actor would aggregate that
@@ -1790,13 +1914,13 @@ export class Essence20Actor extends Actor {
     // Size Class: one larger than the largest component for a duo/trio, or Towering/Titanic
     // for a Gestalt (4+ components).
     const largestComponentIndex = Math.max(
-      ...participants.map(component => Math.max(0, sizeOrder.indexOf(component.system.size))),
+      ...participants.map(component => Math.max(0, sizeClassOf(component.system.size))),
     );
     if (participants.length <= 3) {
       system.size = sizeOrder[Math.min(sizeOrder.length - 1, largestComponentIndex + 1)];
     } else {
       const hasGiganticOrLarger = participants.some(
-        component => sizeOrder.indexOf(component.system.size) >= giganticIndex,
+        component => sizeClassOf(component.system.size) >= giganticIndex,
       );
       system.size = hasGiganticOrLarger ? 'titanic' : 'towering';
     }
@@ -1837,6 +1961,16 @@ export class Essence20Actor extends Actor {
       }
     }
 
+    // A Combiner is one being with its own Smarts and Social (EoC p.42: its highest Essences "set the base Defenses"):
+    // Willpower and Cleverness are 10 + the Essence like anyone's, not a Megazord's pilot stand-in (the zordBase schema's
+    // null base, which left them at the bare Essence - 9 and 8 for Bruticus instead of 19 and 18).
+    for (const defenseType of ['willpower', 'cleverness']) {
+      if (system.defenses[defenseType]) {
+        system.defenses[defenseType].base = 10;
+        system.defenses[defenseType].usesDrivers = false;
+      }
+    }
+
     // Defenses get the LOWEST armor bonus among components, not the highest - NPCs and other
     // actor types without a granular defense.armor field contribute +0. Written into .armor
     // (not .value/.total directly) so the shared Essence20Actor#_prepareDefenses(), which now
@@ -1859,11 +1993,19 @@ export class Essence20Actor extends Actor {
     // runs for all of them), so this always reads a fresh value - no more falling back to .base
     // for a possibly-stale NPC/Vehicle component. .total itself is left to the shared
     // _prepareMovement() below, which reads the .base this sets and folds in .bonus/Perks.
+    // A type only some members have is not the form's (a lone flier doesn't make the form fly - EoC's own stat blocks
+    // get Aerial from Additional Movement): the slowest rate counts only when every member has the type.
+    // Bot Mode rates (EoC p.42): a member still in an Alt Mode counts its Bot Mode's, not the Alt Mode's movement.
+    const botModeRate = (component, movementType) => {
+      const movement = component.system.movement?.[movementType];
+      return component.system.isTransformed
+        ? (Number(movement?.base) || 0) + (Number(movement?.bonus) || 0)
+        : Number(movement?.total) || 0;
+    };
+
     for (const movementType of Object.keys(system.movement)) {
-      const rates = participants
-        .map(component => component.system.movement?.[movementType]?.total)
-        .filter(rate => rate);
-      system.movement[movementType].base = rates.length ? Math.min(...rates) : 0;
+      const rates = participants.map(component => botModeRate(component, movementType));
+      system.movement[movementType].base = rates.length && rates.every(rate => rate > 0) ? Math.min(...rates) : 0;
     }
 
     // Combiner Features always apply - reusing the same megaformTrait items as a Megazord's
@@ -1885,6 +2027,8 @@ export class Essence20Actor extends Actor {
     let hasTenaciousBonds = false;
     let hasCommander = false;
     let commanderSkills = null;
+    let commanderHolder = null;
+    let commanderEssences = null;
     let layeredSystemsBonus = 0;
     let hasEnhancedInitiative = false;
     let hasTitanHardpoint = false;
@@ -1922,7 +2066,14 @@ export class Essence20Actor extends Actor {
 
           break;
         case 'move':
-          system.movement[item.system.movementType].base += item.system.value;
+          // Additional Movement (EoC p.42) GIVES the form a second Movement Type (its Alt Mode's, at the speed set on the
+          // item); Enhanced Move adds +10 feet to one the form already has.
+          if (sourceOfItem(item) == ZORD2.additionalMovement) {
+            system.movement[item.system.movementType].base = Math.max(system.movement[item.system.movementType].base, Number(item.system.value) || 0);
+          } else if (system.movement[item.system.movementType].base > 0) {
+            system.movement[item.system.movementType].base += item.system.value;
+          }
+
           break;
         case 'tenaciousBonds':
           hasTenaciousBonds = true;
@@ -1955,14 +2106,17 @@ export class Essence20Actor extends Actor {
           hasTitanHardpoint = true;
           break;
         case 'commander':
-          // Enigma of Combination, p.42: +1 to the Combined Form's two highest Essence Scores,
-          // once per Combiner however many hold it - a flat, non-stacking flag (like
-          // Tenacious Bonds above), applied once after every other Essence bonus is tallied so it
-          // reads the Combiner's own final scores, not a snapshot from before this loop finishes.
+          // Enigma of Combination, p.42: the HOLDER notes their own two highest Essence Scores and the
+          // Combined Form's scores in those two Essences go up by 1 - once per Combiner however many hold it
+          // (the first holder's), applied after every other Essence bonus is tallied.
           // The holder's per-Essence Skill picks (the item's Use button, extensions/r2misc/
           // commander.mjs) ride along - the first holder with picks wins, since it applies once.
           hasCommander = true;
+          commanderHolder ??= component;
           commanderSkills ??= item.flags?.essence20?.[COMMANDER_SKILLS_FLAG] ?? null;
+          // The two Essences a stat block names ("Commander [Strength, Speed]" - stat block import) - RAW's "choose in
+          // the case of equal values", made ahead of time.
+          commanderEssences ??= item.flags?.essence20?.commanderEssences ?? null;
           break;
         }
       }
@@ -1984,8 +2138,14 @@ export class Essence20Actor extends Actor {
       // are raised here give their picked Skill ↑1 - the same upshift Core Essence gives its one
       // Skill above. An Essence with no pick (or a pick that isn't one of its Skills) raises none.
       const essenceOrder = ['strength', 'speed', 'smarts', 'social'];
-      const topTwoEssences = [...essenceOrder]
-        .sort((a, b) => system.essences[b].value - system.essences[a].value)
+      const holderScore = essence => {
+        const own = commanderHolder?.system?.essences?.[essence];
+        return Number(own?.max ?? own?.value) || 0;
+      };
+
+      const named = (commanderEssences ?? []).filter(essence => essenceOrder.includes(essence));
+      const topTwoEssences = named.length == 2 ? named : [...essenceOrder]
+        .sort((a, b) => holderScore(b) - holderScore(a))
         .slice(0, 2);
       for (const essence of topTwoEssences) {
         system.essences[essence].value = Math.min(MAX_ESSENCE, system.essences[essence].value + 1);
@@ -2150,4 +2310,14 @@ export class Essence20Actor extends Actor {
   transform(altModeUuid=null) {
     onTransformUuid(this, altModeUuid);
   }
+}
+
+/**
+ * The Megaform type a new one starts as, by the world's game line (settings.js#getGameLine): Power Rangers - a Megazord;
+ * anything else, All included - a Transformers Combiner.
+ * @param {String} gameLine
+ * @returns {String}
+ */
+export function defaultMegaformSubtype(gameLine) {
+  return gameLine == 'powerRangers' ? 'megaformZord' : 'megaformCombiner';
 }

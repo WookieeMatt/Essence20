@@ -109,9 +109,9 @@ export async function recordUse(actor, rule, item, index, combat = globalThis.ga
   await actor.setFlag('essence20', flag, record);
 }
 
-/** The flag updates that clear every rest-limited use on an actor. */
+/** The flag paths of every rest-limited use on an actor - the caller deletes them (a ForcedDeletion each). */
 export function restClears(actor) {
   const uses = actor?.flags?.essence20?.ruleUses ?? {};
   return Object.entries(uses).filter(([, record]) => record && record.combatId === undefined && record.epoch === undefined && record.session === undefined)
-    .map(([key]) => `flags.essence20.ruleUses.-=${key}`);
+    .map(([key]) => `flags.essence20.ruleUses.${key}`);
 }

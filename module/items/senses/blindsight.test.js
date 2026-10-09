@@ -84,7 +84,7 @@ describe("registerBlindsightDetectionMode", () => {
 
   beforeEach(() => {
     global.CONFIG = { Canvas: { detectionModes: { senseAll: new FakeDetectionMode({ id: 'senseAll' }) } } };
-    global.foundry = { canvas: { perception: { DetectionMode: { DETECTION_TYPES: { MOVE: 'move', SIGHT: 'sight' } } } } };
+    global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, canvas: { perception: { DetectionMode: { DETECTION_TYPES: { MOVE: 'move', SIGHT: 'sight' } } } } };
   });
 
   afterEach(() => {

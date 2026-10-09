@@ -124,6 +124,9 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       startSheetTour: this.#onStartSheetTour,
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
       summonZord: this.#onSummonZord,
+      zordGrowth: this.#onZordGrowth,
+      zordBoard: this.#onZordBoard,
+      zordAutoFeatures: this.#onZordAutoFeatures,
       summonContact: this.#onSummonContact,
       systemActorOpen: this.#onSystemActorOpen,
       systemActorsDelete: this.#onSystemActorsDelete,
@@ -1121,6 +1124,35 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onSummonZord(event, target) {
     onSummonZord(target, this.document);
+  }
+
+  /** The Zords tab's Board button: this character takes the arrived Zord's driver seat (mechanics/vehicles/zord-arrival.mjs). */
+  static async #onZordBoard(event, target) {
+    const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
+    const { boardZord } = await import("../mechanics/vehicles/zord-arrival.mjs");
+    await boardZord(zord, this.document);
+  }
+
+  /** The Zords tab's starting-Features button (mechanics/vehicles/zord-auto-features.mjs). */
+  static async #onZordAutoFeatures(event, target) {
+    const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
+    if (zord) {
+      const { autoFeaturesDone, offerAutoFeatures } = await import("../mechanics/vehicles/zord-auto-features.mjs");
+      // A button drawn before the Features were added (another sheet, another client) - say so, and draw it again.
+      if (autoFeaturesDone(zord)) {
+        ui.notifications.info(game.i18n.format('E20.ZordAutoAlreadyDone', { name: zord.name }));
+      } else {
+        await offerAutoFeatures(this.document, zord);
+      }
+
+      this.render();
+    }
+  }
+
+  /** The Zords tab's growth button: the choices this Ranger's Zords are still owed (mechanics/vehicles/zord-growth.mjs). */
+  static async #onZordGrowth() {
+    const { offerZordGrowth } = await import("../mechanics/vehicles/zord-growth.mjs");
+    await offerZordGrowth(this.document);
   }
 
   /** Summon a Contact from the Contacts tab - mechanics/companions/contacts.mjs. */

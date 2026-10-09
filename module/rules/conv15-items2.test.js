@@ -212,8 +212,8 @@ const setPath = (object, key, value) => {
 async function applyUpdate(doc, data) {
   for (const [key, value] of Object.entries(data)) {
     const parts = key.split('.');
-    if (parts[parts.length - 1].startsWith('-=')) {
-      const last = parts.pop().slice(2);
+    if (parts[parts.length - 1].startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
+      const last = parts.pop().replace(/^-=/, '');
       delete getPath(doc, parts.join('.'))?.[last];
     } else {
       setPath(doc, key, value);
@@ -403,7 +403,7 @@ beforeEach(() => {
   global.fromUuid = async uuid => global.fromUuidSync(uuid);
   global.Roll = { fromData: data => ({ ...data, total: 15 }) };
   global.foundry = {
-    utils: { getProperty: getPath, setProperty: setPath, hasProperty: (o, k) => getPath(o, k) !== undefined, deepClone: v => JSON.parse(JSON.stringify(v)), randomID: () => `r${nextId++}` },
+    data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { getProperty: getPath, setProperty: setPath, hasProperty: (o, k) => getPath(o, k) !== undefined, deepClone: v => JSON.parse(JSON.stringify(v)), randomID: () => `r${nextId++}` },
     applications: { api: { DialogV2: { wait: jest.fn(async () => null), prompt: jest.fn(async () => numbers.shift() ?? null), confirm: jest.fn(async () => true) } } },
   };
 });

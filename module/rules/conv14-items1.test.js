@@ -131,8 +131,8 @@ function setPath(object, key, value) {
   const keys = key.split('.');
   const last = keys.pop();
   const parent = keys.reduce((o, k) => (o[k] ??= {}), object);
-  if (last.startsWith('-=')) {
-    delete parent[last.slice(2)];
+  if (last.startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
+    delete parent[last.replace(/^-=/, '')];
   } else {
     parent[last] = value;
   }

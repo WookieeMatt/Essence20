@@ -30,10 +30,10 @@ function applyUpdate(doc, data) {
   for (const [key, value] of Object.entries(data)) {
     const parts = key.split('.');
     const last = parts.pop();
-    if (last.startsWith('-=')) {
+    if (last.startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
       const parent = parts.reduce((at, part) => at?.[part], doc);
       if (parent) {
-        delete parent[last.slice(2)];
+        delete parent[last.replace(/^-=/, '')];
       }
     } else {
       setPath(doc, key, value);

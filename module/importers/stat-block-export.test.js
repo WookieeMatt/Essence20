@@ -175,3 +175,21 @@ Landslide (2 Allegiance Points): Enemies are knocked Prone.`;
     expect(irToStatBlockText(parseStatBlock(BLOCK))).not.toContain('CONTACT');
   });
 });
+
+test("a Cybertronian's Alt Mode survives export and re-import", () => {
+  const ir = {
+    name: 'Test Jet', threatLevel: 6, size: 'large', health: 8, conditioning: 0,
+    essences: { strength: 3, speed: 4, smarts: 2, social: 1 },
+    defenses: { toughness: 12, evasion: 14, willpower: 11, cleverness: 12 },
+    movement: { ground: 30, aerial: null, swim: null, climb: null },
+    altMode: { size: 'huge', movement: { ground: null, aerial: 90, swim: null, climb: null } },
+    languages: [], skills: [], perks: [], powers: [], hangUps: [], equipment: [], contact: null, diagnostics: [],
+    attacks: [{ name: 'Nose Cannon', skill: 'targeting', shift: 'd6', isSpecialized: false, numHands: null, traits: [], alternateEffects: [],
+      damageValue: 2, damageType: 'fire', isReach: false, range: { value: 50, long: 100, min: null, reachMultiplier: null }, radius: 0, shape: null, defenseType: null, mode: 'alt' }],
+  };
+  const back = parseStatBlock(irToStatBlockText(ir));
+  expect(back.size).toBe('large');
+  expect(back.altMode).toEqual(ir.altMode);
+  expect(back.movement.ground).toBe(30);
+  expect(back.attacks[0].mode).toBe('alt');
+});

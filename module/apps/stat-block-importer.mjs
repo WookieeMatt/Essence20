@@ -1,6 +1,6 @@
 import { applyThemeClass } from "../settings.js";
 import {
-  applyCompendiumMatches, buildSimpleItems, collectEffectContributions,
+  addStatBlockToActor, applyCompendiumMatches, buildSimpleItems, collectEffectContributions,
   collectUncancellableEffects, CONTACT_TYPES,
   createActorFromStatBlock,
 } from "../importers/stat-block-import.mjs";
@@ -27,6 +27,11 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
  * the first is previewed, and Import creates all of them. A one-block paste is simply the
  * one-element case.
  */
+/** The Megaforms a Combiner's own stat block can go onto, by name. */
+function megaforms() {
+  return (game.actors?.filter(actor => actor.type == 'megaform') ?? []).sort((a, b) => a.name.localeCompare(b.name));
+}
+
 export default class StatBlockImporter extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(options = {}) {
     super({ id: "essence20-stat-block-importer", ...options });
@@ -38,6 +43,8 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
     this._actorType = 'npc';
     this._folderId = '';
     this._gameVersion = '';
+    // An existing Megaform to add the block to (a Combiner's own stat block), or '' for a new actor.
+    this._targetId = '';
     // Built once per app instance from the enabled Item packs - see #ensureMatchIndex.
     this._matchIndex = null;
     this._matches = null;
@@ -78,13 +85,26 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
    */
   static async #onSubmit(event, form, formData) {
     const data = formData.object;
+    const pasted = (data.statBlockText ?? '') != this._text;
     this._text = data.statBlockText ?? '';
     this._actorType = data.actorType || 'npc';
     this._folderId = data.folderId ?? '';
     this._gameVersion = data.gameVersion ?? '';
+    this._targetId = data.targetId ?? '';
     const blocks = this._text.trim() ? splitStatBlocks(this._text) : [];
     this._irs = blocks.map(block => parseStatBlock(block));
     this._ir = this._irs[0] ?? null;
+    // A new paste named like one of the Megaforms (Bruticus) goes onto it.
+    if (pasted) {
+      const name = this._ir?.name?.trim().toLowerCase();
+      this._targetId = (name && megaforms().find(actor => actor.name.trim().toLowerCase() == name)?.id) || '';
+    }
+
+    // A new paste that reads as a Zord (Zord Features, "or pilot's Driving") imports as one; the GM can still change it.
+    if (pasted && this._ir?.suggestedType) {
+      this._actorType = this._ir.suggestedType;
+    }
+
     await this.#refreshMatches();
     this.render();
   }
@@ -114,6 +134,21 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
 
   static async #onImport() {
     if (!this._irs.length) {
+      return;
+    }
+
+    const target = this._targetId ? game.actors.get(this._targetId) : null;
+    if (target) {
+      try {
+        const { added, adjusted } = await addStatBlockToActor(target, this._ir, { matches: this._matches, raw: this._text });
+        ui.notifications.info(game.i18n.format("E20.StatBlockImportAdded", { name: target.name, count: added, adjusted: Object.keys(adjusted).length }));
+        target.sheet.render(true);
+        this.close();
+      } catch (err) {
+        console.error("essence20 | Stat block import failed", err);
+        ui.notifications.error(game.i18n.localize("E20.StatBlockImportFailed"));
+      }
+
       return;
     }
 
@@ -175,6 +210,11 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
       { label: game.i18n.localize("E20.StatBlockImportHealth"), value: ir.health ?? missing },
       { label: game.i18n.localize("E20.SkillConditioning"), value: ir.conditioning || 0 },
       { label: game.i18n.localize("E20.StatBlockImportMovement"), value: movement || missing },
+      ...(ir.altMode ? [{ label: game.i18n.localize("E20.StatBlockImportAltMode"), value: [
+        CONFIG.E20.actorSizes[ir.altMode.size] ?? ir.altMode.size,
+        Object.entries(ir.altMode.movement ?? {}).filter(([, value]) => value !== null)
+          .map(([type, value]) => `${value}ft ${CONFIG.E20.movementTypes[type] ?? type}`).join(', '),
+      ].filter(Boolean).join(' - ') }] : []),
       { label: game.i18n.localize("E20.StatBlockImportLanguages"), value: ir.languages.join(', ') || missing },
     ];
   }
@@ -203,6 +243,11 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
 
     context.actorTypeChoices = Object.fromEntries(["npc", "vehicle", "zord"]
       .map(type => [type, game.i18n.localize(`TYPES.Actor.${type}`)]));
+    context.targetId = this._targetId;
+    context.targetChoices = {
+      "": game.i18n.localize("E20.StatBlockImportNewActor"),
+      ...Object.fromEntries(megaforms().map(actor => [actor.id, actor.name])),
+    };
 
     // Biases compendium matching towards one game line's own books when the same Perk name is
     // reprinted across several - see importers/stat-block-match.mjs#selectMatch.
@@ -240,6 +285,7 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
         attack.damageValue !== null ? `${attack.damageValue} ${attack.damageType ?? '?'}` : null,
         attack.range?.value ? `${attack.range.value}/${attack.range.long}ft` : null,
         attack.isReach ? 'Reach' : null,
+        attack.mode ? game.i18n.localize(attack.mode == 'alt' ? "E20.ModeAltMode" : "E20.ModeBotMode") : null,
         attack.alternateEffects.length
           ? game.i18n.format("E20.StatBlockImportAltEffects", { count: attack.alternateEffects.length })
           : null,
@@ -249,9 +295,9 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
     // Perks/Powers/Hang-Ups carry their compendium match status, since whether an entry arrives as
     // a real compendium copy (with its Active Effects) or as inert text is the single most
     // important thing about an import - see importers/stat-block-match.mjs's own doc comment.
-    for (const section of ["perks", "powers", "hangUps"]) {
+    for (const section of ["perks", "powers", "hangUps", "zordFeatures", "megaformTraits"]) {
       const matched = this._matches?.[section] ?? [];
-      context[section] = ir[section].map((entry, position) => {
+      context[section] = (ir[section] ?? []).map((entry, position) => {
         const match = matched[position]?.match ?? null;
         return {
           name: entry.name,
@@ -298,6 +344,7 @@ export default class StatBlockImporter extends serializeFormSubmits(HandlebarsAp
       const { items } = await applyCompendiumMatches(buildSimpleItems(ir, { type: this._actorType }), this._matches);
       const contributions = collectEffectContributions(items);
       const nettedCount = Object.keys(contributions.defenses).length
+        + Object.keys(contributions.essences ?? {}).length
         + Object.keys(contributions.movement).length
         + (contributions.health ? 1 : 0);
 

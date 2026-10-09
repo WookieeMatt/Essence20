@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import { applyHealSkillTestResult, computeRestoreHealthDif, pickHealSkillTestAmount } from './heal-skill-test.mjs';
 
 global.game = { i18n: { localize: (k) => k } };
-global.foundry = { applications: { api: { DialogV2: { wait: jest.fn() } } } };
+global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, applications: { api: { DialogV2: { wait: jest.fn() } } } };
 
 describe("computeRestoreHealthDif", () => {
   test("RAW's own formula: 5 + 5 per Health", () => {

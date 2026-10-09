@@ -244,7 +244,7 @@ export function hitRiderOnAttack(attacker, target, result, rider = {}, tools = {
 
   // A mark used up (consumeMark) - gone before the attack's next hit is read (attackRiders awaits each).
   if (hit.consumed.size && attacker?.update) {
-    return attacker.update(Object.fromEntries([...hit.consumed].map(key => [`flags.essence20.ruleMarks.-=${key}`, null])));
+    return attacker.update(Object.fromEntries([...hit.consumed].map(key => [`flags.essence20.ruleMarks.${key}`, new foundry.data.operators.ForcedDeletion()])));
   }
 }
 

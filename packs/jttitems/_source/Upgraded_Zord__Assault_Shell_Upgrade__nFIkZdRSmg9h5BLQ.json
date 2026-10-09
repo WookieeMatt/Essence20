@@ -33,7 +33,7 @@
       "_id": "dY48FfYttIitNT43",
       "changes": [
         {
-          "key": "system.defenses.toughness.bonus",
+          "key": "system.defenses.toughness.armor",
           "mode": 2,
           "value": "2",
           "priority": null

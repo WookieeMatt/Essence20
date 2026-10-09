@@ -26,6 +26,7 @@
         {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
       </span>
     </div>
+    {{> "systems/essence20/templates/actor/parts/misc/sidebar-transform-morph.hbs"}}
 
     {{!-- Wealth Die. Off by default and switched on from the sheet options gear in the header
          (system.canShowWealthDie), the same as on a character - where it also lives in the

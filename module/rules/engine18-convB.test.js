@@ -95,7 +95,7 @@ beforeEach(() => {
   global.ui = { notifications: { warn: jest.fn(), info: jest.fn() } };
   global.ChatMessage = { create: jest.fn(async data => data), getSpeaker: () => ({}) };
   global.CONFIG = { E20: { skills: {}, skillToEssence: {} } };
-  global.foundry = { utils: { setProperty: setPath, getProperty: getPath, hasProperty: (o, p) => getPath(o, p) !== undefined }, applications: { api: { DialogV2: { confirm: jest.fn(async () => false) } } } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { setProperty: setPath, getProperty: getPath, hasProperty: (o, p) => getPath(o, p) !== undefined }, applications: { api: { DialogV2: { confirm: jest.fn(async () => false) } } } };
   relay.needsGmRelay.mockReset().mockReturnValue(false);
   relay.relayToGm.mockClear();
   storyPoints.setStoryPoints.mockClear();

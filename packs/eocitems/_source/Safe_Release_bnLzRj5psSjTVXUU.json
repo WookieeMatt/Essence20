@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: when the Combiner form is Defeated it breaks apart and its components fall Prone and lose their Energon. A component with this feature left at 0 Health from a Gigantic or larger form ends at 1 Health instead.</p>"
+      "notes": "<p>Automatic: when the Combiner form is Defeated it breaks apart and its components fall Prone; the form's Energon pool is lost. A component with this feature left at 0 Health from a Gigantic or larger form ends at 1 Health instead.</p>"
     },
     "originalId": "",
     "description": "",

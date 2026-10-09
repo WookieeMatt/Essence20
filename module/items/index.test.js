@@ -5,7 +5,7 @@ beforeAll(() => {
   global.Hooks = { on: jest.fn(), once: jest.fn(), callAll: jest.fn() };
   global.game = { i18n: { localize: k => k, format: k => k }, user: { targets: new Set() }, actors: [] };
   global.CONFIG = { E20: {}, statusEffects: [] };
-  global.foundry = { utils: { randomID: () => 'r' }, applications: { api: {} } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { randomID: () => 'r' }, applications: { api: {} } };
 });
 
 test('the extension index imports cleanly', async () => {

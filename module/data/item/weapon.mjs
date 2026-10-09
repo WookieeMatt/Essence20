@@ -43,6 +43,9 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
         ingested: makeBool (false),
         inhaled: makeBool (false),
       }),
+      // "Requirements: Bot Mode only" / "Alt Mode only" (Transformers): the Mode a Cybertronian must be in to attack with
+      // it. Separate from the Hardpoint, which is where the weapon sits, not when it can be used.
+      modeRequirement: makeStrWithChoices(Object.keys(E20.weaponModeRequirements), null),
       requirements: new fields.SchemaField({
         custom: makeStr(null),
         skill: makeStrWithChoices(Object.keys(E20.skills), null),

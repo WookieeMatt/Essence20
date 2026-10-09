@@ -38,7 +38,7 @@ export async function consumeOwnMark(consume) {
   }
 
   const { needsGmRelay, relayToGm } = await import("../../../mechanics/world/gm-relay.mjs");
-  const update = { [`flags.essence20.ruleMarks.-=${name}`]: null };
+  const update = { [`flags.essence20.ruleMarks.${name}`]: new foundry.data.operators.ForcedDeletion() };
   await (needsGmRelay(actor) ? relayToGm(actor, 'update', [update]) : actor.update(update));
 }
 

@@ -80,5 +80,13 @@ import "./forms/ranger-form-perks.mjs";
 import "./zords/combiner-merge.mjs";
 import "./zords/combiner-roster-helpers.mjs";
 import "./zords/megaform-attacks.mjs";
+// Strength "with associated skill ranks" (Auxiliary Zord, Carrier, Warzord).
+import "./zords/essence-skill-ranks.mjs";
+// Titan-Class's Energon Point a round (EoC p.49).
+import "./attacks/titan-class.mjs";
+// Call to Action's arrival: the notice, Place and Board (PR CRB p.135).
+import "../mechanics/vehicles/zord-arrival.mjs";
+// Recall for Repairs' Use button (PR CRB p.136).
+import "../mechanics/vehicles/zord-recall.mjs";
 import "./zords/zord-feature-picks.mjs";
 import "./attacks/shield-mode-unusable-weapons.mjs";

@@ -42,7 +42,7 @@ const deletePath = (object, key) => {
 
 async function applyUpdate(doc, data) {
   for (const [key, value] of Object.entries(data)) {
-    if (key.split('.').pop().startsWith('-=')) {
+    if (key.split('.').pop().startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
       deletePath(doc, key);
     } else {
       setPath(doc, key, value);

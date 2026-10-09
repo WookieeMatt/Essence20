@@ -33,8 +33,8 @@ function setPath(object, key, value) {
   const keys = key.split('.');
   const last = keys.pop();
   const at = keys.reduce((node, k) => (node[k] ??= {}), object);
-  if (last.startsWith('-=')) {
-    delete at[last.slice(2)];
+  if (last.startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
+    delete at[last.replace(/^-=/, '')];
   } else {
     at[last] = value;
   }
@@ -105,7 +105,7 @@ beforeEach(() => {
   };
   global.ui = { notifications: { warn: jest.fn(), info: jest.fn() } };
   global.fromUuidSync = uuid => byUuid.get(uuid) ?? null;
-  global.foundry = { utils: { setProperty: setPath, getProperty: getPath } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { setProperty: setPath, getProperty: getPath } };
   spend.mockReset();
   spend.mockImplementation(async () => ({ blocked: false }));
   chooseSelect.mockClear();

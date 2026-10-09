@@ -41,7 +41,7 @@ function flagged(obj) {
 }
 
 global.foundry = {
-  utils: {
+  data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: {
     getProperty: (obj, path) => path.split('.').reduce((o, p) => o?.[p], obj),
     setProperty: (obj, path, value) => {
       const parts = path.split('.');

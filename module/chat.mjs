@@ -30,7 +30,7 @@ import { claimConsummatePerformer } from "./items/resources/consummate-performer
 import { canOfferHighDensityFollowUp, hasDifferentTarget, rollHighDensityFollowUp } from "./items/attacks/high-density.mjs";
 import { ruleSelfRedirect, takeSelfRedirect } from "./rules/plugins/combat/self-redirect.mjs";
 import { applyMegaformDamage } from "./mechanics/vehicles/megaform-damage.mjs";
-import { handleVehicleZeroHealthTransition } from "./mechanics/vehicles/vehicle-defeat.mjs";
+import "./mechanics/vehicles/vehicle-defeat.mjs";
 
 export { _isCritIsFumble };
 
@@ -644,8 +644,6 @@ export async function onApplyDamage(message, button) {
     }
   }
 
-  const previousHealth = target.system.health.value;
-  const wasAlreadyDefeated = !!target.statuses?.has?.('defeated');
   // Rise Again (its wouldBeDefeated Trigger rule reads damage:crit) - the only caller that ever has a
   // real crit/fumble result to thread through (a synthetic damage source, e.g. Psychoanalyst's own
   // psychoanalystDamage, has no underlying d20 roll to check and correctly defaults to false).
@@ -673,23 +671,8 @@ export async function onApplyDamage(message, button) {
   const source = game.actors?.get?.(message.speaker?.actor) ?? null;
   const amount = await applyDamage(target, damage, button.dataset.damageType, isCrit, { ignoreImmunity: button.dataset.ignoreImmunity == 'true', source });
   const secondaryAmount = secondary?.value > 0 ? await applyDamage(target, secondary.value, secondary.type, isCrit, { source }) : 0;
-  // Health actually lost to this hit - Stun never reduces Health (see applyDamage), and nor does a
-  // second damage that is Essence damage.
-  const secondaryHitsHealth = !!secondary && secondary.type != 'stun' && !isEssenceDamageType(secondary.type);
-  const healthLost = (button.dataset.damageType != 'stun' ? amount : 0)
-    + (secondaryHitsHealth ? secondaryAmount : 0);
-  const hitsHealth = button.dataset.damageType != 'stun' || (secondaryAmount > 0 && secondaryHitsHealth);
-
-  // The target's Health reaching 0 from this hit (an ordinary damage type - computed from applyDamage's own
-  // returned amount, since a Stun hit's returned "amount" is Stun dealt, not Health lost).
-  const isDefeatedByHealthLoss = hitsHealth && (previousHealth - healthLost) <= 0;
-
-  // Defeat of a Vehicle / Recall for Repairs - see mechanics/vehicles/vehicle-defeat.mjs's own doc comment.
-  // Scoped to isDefeatedByHealthLoss (excludes Stun) since RAW's own trigger is "reaches 0 Health," which
-  // Stun damage never touches.
-  if (isDefeatedByHealthLoss && !wasAlreadyDefeated && (target.type == 'vehicle' || target.type == 'zord')) {
-    await handleVehicleZeroHealthTransition(target);
-  }
+  // Defeat of a Vehicle / Recall for Repairs runs from applyDamage's after-damage hook now (every damage path, a
+  // Zord inside a Megazord too) - mechanics/vehicles/vehicle-defeat.mjs.
 
   button.disabled = true;
   const appliedKeys = message.getFlag('essence20', 'damageAppliedKeys') || [];

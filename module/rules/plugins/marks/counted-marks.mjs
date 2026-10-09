@@ -31,7 +31,7 @@ export async function consumeOneMark(consume) {
     if (left > 0) {
       update[`flags.essence20.ruleMarks.${name}.count`] = left;
     } else {
-      update[`flags.essence20.ruleMarks.-=${name}`] = null;
+      update[`flags.essence20.ruleMarks.${name}`] = new foundry.data.operators.ForcedDeletion();
     }
   }
 

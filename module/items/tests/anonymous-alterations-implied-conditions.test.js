@@ -17,7 +17,7 @@ beforeAll(() => {
     },
     statusEffects: [],
   };
-  global.foundry = { utils: { getProperty: (o, p) => p.split('.').reduce((a, k) => a?.[k], o), escapeHTML: s => s }, applications: { api: {} } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { getProperty: (o, p) => p.split('.').reduce((a, k) => a?.[k], o), escapeHTML: s => s }, applications: { api: {} } };
   global.ui = { notifications: { warn: jest.fn(), info: jest.fn() } };
   global.canvas = null;
   global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };

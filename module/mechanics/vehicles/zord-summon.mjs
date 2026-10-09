@@ -57,6 +57,8 @@ export async function rollSummonTimer(pilotActor, zordActor) {
 
   const readyRound = game.combat.round + rounds;
   await zordActor.setFlag('essence20', SUMMON_READY_ROUND_FLAG, readyRound);
+  // Who called it (its arrival card's Board seats them - zord-arrival.mjs); a fresh call hasn't arrived yet.
+  await zordActor.update?.({ 'flags.essence20.zordSummoner': pilotActor?.uuid ?? null, 'flags.essence20.zordArrived': new foundry.data.operators.ForcedDeletion() });
 
   ChatMessage.create({
     content: game.i18n.format('E20.ZordSummonTimerRolled', {
@@ -110,5 +112,34 @@ export async function onSummonZord(target, pilotActor) {
   }
 
   const zordActor = await fromUuid(zordUuid);
+  if (zordActor?.type == 'zord') {
+    // Recalled for repairs in this scene: it stays in its lair until the scene is over (PR CRB p.136).
+    const { recalledThisScene, returnFromRepairs } = await import("./zord-recall.mjs");
+    if (recalledThisScene(zordActor)) {
+      ui.notifications.warn(game.i18n.format('E20.ZordStillRepairing', { name: zordActor.name }));
+      return;
+    }
+
+    // The call itself is a Standard action (PR CRB p.135) - mechanics/actions/action-economy.mjs.
+    const { spend } = await import("../actions/action-economy.mjs");
+    const paid = await spend(pilotActor, 'standard', { source: zordActor.name });
+    if (paid?.blocked) {
+      return;
+    }
+
+    // Back from an earlier scene's repairs: full Health, no lingering Conditions.
+    await returnFromRepairs(zordActor);
+
+    // Outside a combat there are no rounds to wait out (PR CRB p.135's 3d2 counts game rounds): it answers the call
+    // straight away - its arrival card, to Place it on the map and Board it (zord-arrival.mjs).
+    if (!game.combat?.started) {
+      await zordActor.unsetFlag('essence20', SUMMON_READY_ROUND_FLAG);
+      await zordActor.setFlag('essence20', 'zordSummoner', pilotActor?.uuid ?? null);
+      const { postArrival } = await import("./zord-arrival.mjs");
+      await postArrival(zordActor);
+      return;
+    }
+  }
+
   await rollSummonTimer(pilotActor, zordActor);
 }

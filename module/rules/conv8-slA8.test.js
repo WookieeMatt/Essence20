@@ -36,7 +36,7 @@ let nextId = 1;
 
 const getPath = (object, key) => key.split('.').reduce((o, k) => o?.[k], object);
 function setPath(object, key, value) {
-  const deletion = key.match(/^(.*)\.-=(.+)$/);
+  const deletion = (__isForcedDeletion(value) ? key.match(/^(.*)\.([^.]+)$/) : key.match(/^(.*)\.-=(.+)$/));
   if (deletion) {
     delete getPath(object, deletion[1])?.[deletion[2]];
     return;

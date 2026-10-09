@@ -36,8 +36,8 @@ function setPath(object, path, value) {
   const keys = path.split('.');
   const last = keys.pop();
   const at = keys.reduce((node, key) => (node[key] ??= {}), object);
-  if (last.startsWith('-=')) {
-    delete at[last.slice(2)];
+  if (last.startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
+    delete at[last.replace(/^-=/, '')];
   } else {
     at[last] = value;
   }

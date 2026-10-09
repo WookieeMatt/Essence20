@@ -5395,7 +5395,7 @@ select.e20-select-searchable optgroup[hidden] {
 .essence20.story-points .story-points__btn:not(:disabled):hover {
   /* Sci-fi keeps its fixed grey (the TODO below still stands for it); the MLP modes get a
      hover that belongs to their own palette instead of a grey flash on a purple control. */
-  background: #3e3e3e;
+  background: rgb(61.5, 61.5, 61.5);
 }
 .essence20.story-points .story-points__btn.--bottom {
   width: 100%;
@@ -7093,16 +7093,24 @@ select.e20-select-searchable optgroup[hidden] {
 }
 
 .essence20 .stat-block-importer-options {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
 .essence20 .stat-block-importer-options label {
   display: flex;
-  flex: 1 1 50%;
   flex-direction: column;
   gap: 0.25rem;
   min-width: 0;
+}
+.essence20 .stat-block-importer-options label span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.essence20 .stat-block-importer-options label select {
+  width: 100%;
 }
 
 .essence20 .stat-block-importer-name {
@@ -8723,3 +8731,5 @@ select.e20-select-searchable optgroup[hidden] {
   min-width: 500px;
   min-height: auto;
 }
+
+/*# sourceMappingURL=essence20.css.map */

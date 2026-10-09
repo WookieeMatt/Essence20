@@ -75,7 +75,7 @@ function makeActor(name, rules = [], extra = {}) {
 
 beforeEach(() => {
   global.game = { combat: null, user: { targets: new Set() }, i18n: { localize: key => key, format: key => key, has: () => false }, settings: { get: () => 1 } };
-  global.foundry = { utils: { getProperty: getPath, setProperty: setPath, deepClone: value => JSON.parse(JSON.stringify(value)) }, applications: { api: { DialogV2: { confirm: jest.fn(async () => true) } } } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { getProperty: getPath, setProperty: setPath, deepClone: value => JSON.parse(JSON.stringify(value)) }, applications: { api: { DialogV2: { confirm: jest.fn(async () => true) } } } };
   global.canvas = undefined;
   storyPoints.canWrite = true;
   storyPoints.granted.length = 0;

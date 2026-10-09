@@ -33,6 +33,7 @@ import { ruleDefersSpellCost } from "../rules/plugins/resources/spell-cost-defer
 import { runPreCast } from "../rules/plugins/picks/pre-cast.mjs";
 import { ruleAvailabilitySteps } from "../rules/plugins/resources/availability-shift.mjs";
 import { prerequisiteText } from "../rules/prerequisites.mjs";
+import { handsForSize } from "../items/attacks/weapon-upscale.mjs";
 
 const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
 
@@ -470,6 +471,14 @@ export class Essence20Item extends Item {
     const explicit = this.system.hands;
     const sizeDefault = CONFIG.E20.weaponSizeHands[this.system.classification?.size];
     this.system.derivedHands = explicit ?? sizeDefault ?? 1;
+
+    // A weapon made for a very different Size Class than its wielder (EoC p.48): three or more smaller takes 1 hand /
+    // Hardpoint, three larger takes 2, four or more larger can't be wielded normally - items/attacks/weapon-upscale.mjs.
+    const bySize = this.parent?.documentName == 'Actor' ? handsForSize(this, this.parent) : null;
+    this.system.tooLargeToWield = !!bySize?.tooLarge;
+    if (bySize?.hands) {
+      this.system.derivedHands = bySize.hands;
+    }
   }
 
   /**
@@ -499,7 +508,11 @@ export class Essence20Item extends Item {
       this.system.effectiveBrawnReq = req;
     }
 
-    if (hardpoint.type == 'external') {
+    // A printed Mode requirement says it outright; otherwise the Hardpoint implies one.
+    const modeRequirement = this.system.modeRequirement;
+    if (modeRequirement) {
+      this.system.derivedMode = modeRequirement == 'altMode' ? 'modeAltMode' : 'modeBotMode';
+    } else if (hardpoint.type == 'external') {
       this.system.derivedMode = 'modeBotMode';
     } else if (isIntegrated) {
       this.system.derivedMode = hardpoint.altModeVisibility == 'hidden' ? 'modeAltMode' : 'modeAny';

@@ -3,7 +3,8 @@ import { getMegaformParticipants } from "./megaform-participants.mjs";
 
 /**
  * Megaform damage distribution (Power Rangers Core Rulebook, p.142): each participant keeps its own
- * Health, and damage to the Megaform is split evenly among them (rounded up, at least 1 each) unless
+ * Health, and damage to the Megaform is split evenly among them (rounded up, at least 1 each; a Transformers Combiner
+ * divides the total itself instead - splitShares below) unless
  * the attacker takes a Snag to aim at one participant. A participant already at 0 Health stops
  * soaking any share (same page) - excluded from the split entirely, not given a $0 share that still counts toward the
  * participant total. This is the entry point a Megaform actor needs instead of the ordinary
@@ -50,6 +51,12 @@ export async function applyMegaformDamage(megaformActor, damageValue, damageType
     return 0;
   }
 
+  // The Megaform's own immunities cover the whole form (Grounding: Electromagnetic, A Jump Through Time p.84) - each
+  // participant's own are still checked as its share lands.
+  if (megaformActor.system?.immunities?.[damageType]) {
+    return 0;
+  }
+
   let amount = damageValue;
   if (damageType == 'electric' && participants.some(p => hasMegaformTrait(p, 'grounding'))) {
     amount = Math.max(1, amount - 1);
@@ -74,13 +81,14 @@ export async function applyMegaformDamage(megaformActor, damageValue, damageType
   }
 
   if (focusTarget) {
-    return await applyDamage(focusTarget, amount, damageType);
+    return await applyDamage(focusTarget, amount, damageType, false, { megaform: megaformActor });
   }
 
-  const perParticipantAmount = Math.max(1, Math.ceil(amount / participants.length));
   let totalApplied = 0;
-  for (const participant of participants) {
-    totalApplied += await applyDamage(participant, perParticipantAmount, damageType);
+  for (const [participant, share] of splitShares(megaformActor, participants, amount)) {
+    if (share > 0) {
+      totalApplied += await applyDamage(participant, share, damageType, false, { megaform: megaformActor });
+    }
   }
 
   const compensationHolders = participants.filter(participant => hasMegaformTrait(participant, 'compensation'));
@@ -107,6 +115,35 @@ export async function applyMegaformDamage(megaformActor, damageValue, damageType
   }
 
   return totalApplied;
+}
+
+/**
+ * Each participant's share of a hit on the whole Megaform.
+ *  - Megazord (PR CRB p.142): an even split rounded up, at least 1 each.
+ *  - Transformers Combiner (Enigma of Combination p.45): the total itself, as evenly as it divides - the points left
+ *    over go to members picked at random, never a second point to one before every member has had one.
+ * @param {Actor} megaformActor
+ * @param {Actor[]} participants
+ * @param {Number} amount
+ * @param {Function} [random]
+ * @returns {Array<[Actor, Number]>}
+ */
+export function splitShares(megaformActor, participants, amount, random = Math.random) {
+  if (!megaformActor?.system?.subtype?.includes?.('megaformCombiner')) {
+    const share = Math.max(1, Math.ceil(amount / participants.length));
+    return participants.map(participant => [participant, share]);
+  }
+
+  const total = Math.max(0, Math.round(Number(amount) || 0));
+  const base = Math.floor(total / participants.length);
+  const shares = new Map(participants.map(participant => [participant, base]));
+  const pool = [...participants];
+  for (let left = total - base * participants.length; left > 0; left--) {
+    const [picked] = pool.splice(Math.floor(random() * pool.length), 1);
+    shares.set(picked, shares.get(picked) + 1);
+  }
+
+  return [...shares];
 }
 
 /**

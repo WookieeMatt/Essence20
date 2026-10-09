@@ -69,7 +69,7 @@ async function useDefenderTorozord(item) {
   if (existing && Object.keys(existing.system?.actors ?? {}).length) {
     // Separate: the borrowed Combiner traits only ever work for this one Megaform.
     const update = {};
-    for (const key of Object.keys(existing.system.actors)) update[`system.actors.-=${key}`] = null;
+    for (const key of Object.keys(existing.system.actors)) update[`system.actors.${key}`] = new foundry.data.operators.ForcedDeletion();
     await existing.update(update);
     for (const zord of zords) {
       const granted = itemsOf(zord).filter(i => flagOf(i, DT_FLAG)).map(i => i.id);

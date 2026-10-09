@@ -32,8 +32,8 @@ function makeActor(name, rules = [], { type = 'playerCharacter', x = 0, flags = 
         const parts = key.split('.');
         const last = parts.pop();
         const node = parts.reduce((at, part) => (at[part] ??= {}), this);
-        if (last.startsWith('-=')) {
-          delete node[last.slice(2)];
+        if (last.startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
+          delete node[last.replace(/^-=/, '')];
         } else {
           node[last] = value;
         }
@@ -159,7 +159,7 @@ describe('AttackResistance choiceOf / fromMark / consumeMark', () => {
     expect(ruleResistsAttack(actor, 'cold')).toBe(false);
     expect(actor.update).not.toHaveBeenCalled();
     expect(ruleResistsAttack(actor, 'fire')).toBe(true);
-    expect(actor.update).toHaveBeenCalledWith({ 'flags.essence20.ruleMarks.-=banked': null });
+    expect(actor.update).toHaveBeenCalledWith({ 'flags.essence20.ruleMarks.banked': expect.any(foundry.data.operators.ForcedDeletion) });
     const kept = makeActor('Holder', [{ type: 'AttackResistance', fromMark: 'banked' }], { flags: { ruleMarks: { banked: { text: 'fire' } } } });
     expect(ruleResistsAttack(kept, 'fire')).toBe(true);
     expect(ruleResistsAttack(kept, 'fire')).toBe(true);

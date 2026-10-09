@@ -1,10 +1,20 @@
 <section class="tab combiners {{tabs.combiners.cssClass}}" data-tab="combiners" data-group="primary">
-  {{#if system.participantHealth.length}}
+  {{!-- A Transformers Combiner's Hardpoints (Enigma of Combination p.44): two External, one Integrated per member. --}}
+  {{#inArray system.subtype 'megaformCombiner'}}
+  {{#if system.hardpoints}}
+  <div class="chip-section loadout-summary">
+    <span class="chip loadout-chip{{#if system.hardpoints.integrated.over}} is-over{{/if}}" data-tooltip="{{localize 'E20.CombinerHardpointsHint'}}">
+      {{localize 'E20.HardpointIntegrated'}}: {{system.hardpoints.integrated.used}} / {{system.hardpoints.integrated.max}}
+    </span>
+    <span class="chip loadout-chip{{#if system.hardpoints.external.over}} is-over{{/if}}" data-tooltip="{{localize 'E20.CombinerHardpointsHint'}}">
+      {{localize 'E20.HardpointExternal'}}: {{system.hardpoints.external.used}} / {{system.hardpoints.external.max}}
+    </span>
+  </div>
+  {{/if}}
+  {{/inArray}}
+  {{!-- No combined Health: a Megaform has none of its own (each participant's is its own - the sidebar lists them). --}}
+  {{#if (or system.isDefeated system.hasEnhancedAttack system.hasAssaultWeapon system.hasEnhancedInitiative system.hasTitanHardpoint)}}
   <div class="stats-container flexrow e20-flex-group-center e20-border-accent megaform-summary">
-    <div class="flexcol e20-flex-group-center">
-      <label>{{localize 'E20.MegaformCombinedHealth'}}</label>
-      <span>{{system.combinedHealthValue}} / {{system.combinedHealthMax}}</span>
-    </div>
     {{#if system.isDefeated}}
     <div class="flexcol e20-flex-group-center">
       <label>{{localize 'E20.MegaformDefeated'}}</label>

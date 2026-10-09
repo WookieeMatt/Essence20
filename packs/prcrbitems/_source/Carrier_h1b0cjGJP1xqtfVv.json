@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Active Effect: +2 Strength and +2 Health for the Zord. On the sheet: Zords listed on the Carrier (up to five) take no damage while carried, and it stops carrying them at 0 Health.</p>"
+      "notes": "<p>Active Effect: +2 Strength and +2 Health for the Zord. On the sheet: Zords listed on the Carrier (up to five) take no damage while carried, and it stops carrying them at 0 Health. Gaining it asks where its two Strength Skill Ranks go.</p>"
     },
     "originalId": "",
     "description": "",

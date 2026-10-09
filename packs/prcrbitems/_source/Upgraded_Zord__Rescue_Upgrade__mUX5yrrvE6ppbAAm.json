@@ -68,7 +68,7 @@
           "priority": null
         },
         {
-          "key": "system.defenses.toughness.bonus",
+          "key": "system.defenses.toughness.armor",
           "mode": 2,
           "value": "1",
           "priority": null

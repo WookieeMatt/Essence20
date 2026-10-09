@@ -125,6 +125,11 @@ const ATTACK_SUBLABELS = [
   'special effect',
   'hands',
   'traits',
+  // Transformers attacks: "Requirements: Bot Mode only", "Upgrades: Piercing".
+  'requirements',
+  'requirement',
+  'upgrades',
+  'upgrade',
 ];
 
 /* ------------------------------------------------------------------ *
@@ -253,6 +258,11 @@ function makeIr() {
     attacks: [],
     equipment: [],
     contact: null,
+    // A Cybertronian's Alt Mode (SIZE: Huge/Extended, "... Aerial (Alt Mode)" movement): {size, movement}, else null.
+    altMode: null,
+    // A Power Rangers Zord's "Zord Features:" ({name, matchNames}) and the Megaform Traits they name ({name, matchNames}).
+    zordFeatures: [],
+    megaformTraits: [],
     diagnostics: [],
   };
 
@@ -309,7 +319,8 @@ function parseHeader(ir, headerText) {
     addDiagnostic(ir, 'warning', null, 'No "THREAT LEVEL:" found in the header block.');
   }
 
-  const size = headerText.match(/SIZE:\s*([A-Za-z]+)(?:\s+(I{1,3}|[23])\b)?/i);
+  // A Cybertronian prints both Modes' Sizes: "SIZE: Huge/Extended" - Bot Mode, then Alt Mode.
+  const size = headerText.match(/SIZE:\s*([A-Za-z]+)(?:\s+(I{1,3}|[23])\b)?(?:\s*\/\s*([A-Za-z]+)(?:\s+(I{1,3}|[23])\b)?)?/i);
   if (size) {
     const printed = size[2] ? `${size[1]} ${size[2]}` : size[1];
     const resolved = resolve(printed, SIZE_LOOKUP, SIZE_ALIASES);
@@ -317,6 +328,16 @@ function parseHeader(ir, headerText) {
       ir.size = resolved;
     } else {
       addDiagnostic(ir, 'error', printed, `Unrecognized Size class "${printed}".`);
+    }
+
+    if (size[3]) {
+      const printedAlt = size[4] ? `${size[3]} ${size[4]}` : size[3];
+      const altSize = resolve(printedAlt, SIZE_LOOKUP, SIZE_ALIASES);
+      if (altSize) {
+        altModeOf(ir).size = altSize;
+      } else {
+        addDiagnostic(ir, 'error', printedAlt, `Unrecognized Alt Mode Size class "${printedAlt}".`);
+      }
     }
   } else {
     addDiagnostic(ir, 'warning', null, 'No "SIZE:" found in the header block.');
@@ -342,6 +363,31 @@ function parseHeader(ir, headerText) {
       ir.defenses[name] = value;
     }
   }
+
+  // A Zord prints its armor beside the Defense: "TOUGHNESS: 21 (2 Plating Armor)".
+  const armorPattern = new RegExp(`\\b(${DEFENSE_NAMES.join('|')}):\\s*\\d+\\s*\\(\\s*(\\d+)\\s+(?:Plating\\s+)?Armor\\s*\\)`, 'gi');
+  for (const match of headerText.matchAll(armorPattern)) {
+    ir.armor ??= {};
+    ir.armor[match[1].toLowerCase()] = Number.parseInt(match[2], 10);
+  }
+
+  // A Megazord / Combiner prints its participants' Health: "HEALTH (9/9/7/7/7)", "HEALTH: 16/12/9/9/8" - its own comes
+  // from them, so this is a block to import onto that Megaform ("Import into").
+  if (/HEALTH:\s*\(?\s*\d+(?:\s*\/\s*\d+)+\s*\)?/i.test(headerText)) {
+    ir.isMegaform = true;
+    addDiagnostic(ir, 'info', null, 'Health is printed per participant: a Megaform\'s Health comes from its members. Import it into that Megaform.');
+  }
+}
+
+/**
+ * The Power Rangers Zord blocks print their labels without colons ("SIZE Gigantic | HEALTH 8", "GROUND MOVEMENT 40ft"):
+ * a colon is put after each one, so the rest of the grammar reads them as it reads everything else. Upper case only -
+ * the same words in prose are left alone.
+ */
+const BARE_LABEL = /(^|\|\s*)(THREAT LEVEL|SIZE|HEALTH|STRENGTH|SPEED|SMARTS|SOCIAL|TOUGHNESS|EVASION|WILLPOWER|CLEVERNESS|(?:GROUND|AERIAL|SWIM|CLIMB) MOVEMENT|MOVEMENT)(?=\s+[^\s:]|\s*$)/g;
+
+function addLabelColons(line) {
+  return line.replace(BARE_LABEL, '$1$2:');
 }
 
 /**
@@ -360,11 +406,41 @@ function parseMovement(ir, headerText) {
   }
 
   const pairPattern = new RegExp(`(\\d+)\\s*(?:ft|feet)\\.?\\s*(${MOVEMENT_NAMES.join('|')})`, 'gi');
-  for (const match of combined[1].matchAll(pairPattern)) {
-    const type = match[2].toLowerCase();
-    if (ir.movement[type] === null) {
-      ir.movement[type] = Number.parseInt(match[1], 10);
+  // A Cybertronian tags each part with its Mode: "40ft Ground (Bot Mode); 80 ft (40ft) Aerial (Alt Mode)". The
+  // bracketed distance after a speed (a take-off run) isn't a movement of its own.
+  for (const part of combined[1].split(';')) {
+    const isAlt = /\(\s*Alt\s*Mode\s*\)/i.test(part);
+    const target = isAlt ? altModeOf(ir).movement : ir.movement;
+    for (const match of part.replace(/\(\s*\d+\s*(?:ft|feet)\.?\s*\)/gi, ' ').matchAll(pairPattern)) {
+      const type = match[2].toLowerCase();
+      if (target[type] === null || target[type] === undefined) {
+        target[type] = Number.parseInt(match[1], 10);
+      }
     }
+  }
+}
+
+/** The IR's Alt Mode, made on first use. */
+function altModeOf(ir) {
+  ir.altMode ??= { size: null, movement: Object.fromEntries(MOVEMENT_NAMES.map(type => [type, null])) };
+  return ir.altMode;
+}
+
+/**
+ * After the whole block is read: an attack that needs a Mode, or a Mode Conversion Perk, makes it a Cybertronian too,
+ * and a Mode the block didn't print takes the Bot Mode's (its Size, its movement).
+ */
+function finishAltMode(ir) {
+  const hasModes = ir.attacks.some(attack => attack.mode) || ir.perks.some(perk => /^mode conversion$/i.test(perk.name));
+  if (!ir.altMode && !hasModes) {
+    return;
+  }
+
+  const altMode = altModeOf(ir);
+  altMode.size ??= ir.size;
+  if (MOVEMENT_NAMES.every(type => altMode.movement[type] === null)) {
+    altMode.movement = { ...ir.movement };
+    addDiagnostic(ir, 'info', null, 'No Alt Mode movement printed: it uses the Bot Mode movement.');
   }
 }
 
@@ -416,6 +492,7 @@ function splitSections(lines) {
   let current = null;
   let allegiancePoints = null;
 
+  const inlineSections = new Set();
   for (let index = 0; index < lines.length; index++) {
     const line = lines[index];
     const allegiance = line.match(ALLEGIANCE_LINE);
@@ -446,6 +523,23 @@ function splitSections(lines) {
       continue;
     }
 
+    // A list on its heading's line, comma-separated and wrapping onto the next ones: "Skills: Conditioning +4, Driving
+    // (Autopilot) +d2," / "Zord Features: Call to Action, ..." (Power Rangers Zords). The attacks follow with no
+    // heading of their own, so an attack line after one of these lists starts them.
+    const inline = line.match(INLINE_LIST);
+    if (inline) {
+      current = INLINE_SECTIONS[inline[1].toLowerCase().replace(/\s+/g, ' ')];
+      inlineSections.add(current);
+      sections[current] ??= [];
+      sections[current].push(inline[2]);
+      continue;
+    }
+
+    if (inlineSections.has(current) && isAttackStart(line)) {
+      current = 'attacks';
+      sections[current] ??= [];
+    }
+
     if (current) {
       sections[current].push(line);
     } else {
@@ -453,8 +547,16 @@ function splitSections(lines) {
     }
   }
 
+  // An inline list is one comma-separated run, however it wrapped: one entry per line from here on.
+  for (const key of inlineSections) {
+    sections[key] = splitTopLevel(sections[key].join(' '));
+  }
+
   return { headerLines, sections, allegiancePoints };
 }
+
+const INLINE_LIST = /^(Skills|Zord Features)\s*:\s*(.+)$/i;
+const INLINE_SECTIONS = { 'skills': 'skills', 'zord features': 'zordFeatures' };
 
 /**
  * Groups a section's lines into entries, joining continuation lines onto the entry above them.
@@ -559,6 +661,76 @@ function isAttackSublabel(line) {
   return ATTACK_SUBLABELS.includes(label);
 }
 
+/**
+ * One sub-label's text, up to the next sub-label - by position, so a colon inside it ("2 Fire damage Blast: 20ft
+ * radius") doesn't cut it short.
+ * @param {String} body    The attack's sub-labels, joined.
+ * @param {String} label   A regex source for the label, e.g. 'Alternate Effects?'.
+ * @returns {String|null}
+ */
+function sublabelText(body, label) {
+  const start = new RegExp(`\\b${label}:\\s*`, 'i').exec(body);
+  if (!start) {
+    return null;
+  }
+
+  const rest = body.slice(start.index + start[0].length);
+  const labels = [...ATTACK_SUBLABELS].sort((a, b) => b.length - a.length).join('|');
+  const next = rest.search(new RegExp(`\\s(?:${labels})\\s*:`, 'i'));
+  return (next === -1 ? rest : rest.slice(0, next)).trim();
+}
+
+/**
+ * An Alternate Effect's printed ↓: the last entry of the bracket it ends on - "(↓1)", or "(Reach, ↓1)" in "2 Sharp
+ * damage—Multiple (2) Targets (Reach, ↓1)". A bare number with no arrow ("(1)", the arrow lost in the copy) counts too,
+ * except where it's a count ("Multiple Targets (2)").
+ * @param {String} printed
+ * @returns {Number}
+ */
+function printedShiftDown(printed) {
+  const bracket = printed.match(/\(([^()]*)\)\s*$/);
+  if (!bracket) {
+    return 0;
+  }
+
+  const parts = bracket[1].split(',');
+  const last = parts.at(-1).trim().match(/^([^\d\s]{0,2})\s*(\d+)$/);
+  if (!last || isUpArrow(last[1])) {
+    return 0;
+  }
+
+  const before = printed.slice(0, bracket.index);
+  if (parts.length == 1 && !last[1] && /\b(?:Targets?|Multiple|Multi-Weapon)\s*$/i.test(before)) {
+    return 0;
+  }
+
+  return Number.parseInt(last[2], 10);
+}
+
+/** An up arrow, as a PDF copy gives it ("↑", or the symbol font's U+F0E1). */
+function isUpArrow(symbol) {
+  return /[↑\uF0E1]/.test(symbol ?? '');
+}
+
+/** A list split on its commas, but not those inside brackets or in a number ("1,000ft"). */
+function splitTopLevel(text) {
+  const parts = [];
+  let depth = 0;
+  let current = '';
+  for (const [i, char] of [...text].entries()) {
+    depth += char == '(' ? 1 : char == ')' ? -1 : 0;
+    if (char == ',' && depth <= 0 && !/\d/.test(text[i + 1] ?? '')) {
+      parts.push(current);
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+
+  parts.push(current);
+  return parts.map(part => part.trim()).filter(Boolean);
+}
+
 /** An attack entry opens with `Name (Skill):` and is not one of the sub-labels. */
 function isAttackStart(line) {
   return !isAttackSublabel(line) && /^.+\([^)]+\)\s*:/.test(line);
@@ -585,8 +757,10 @@ function parseEffectClauses(ir, body, sourceLine) {
 
   // Stun is printed bare, with no "damage" after it - "(1 Stun)" on Unarmed Combat across the GI
   // Joe books - so it has its own pattern; the general one never matched it, and the attack came
-  // in with no damage at all.
-  const damage = body.match(/(\d+)\s+([A-Za-z]+)\s+damage/i) ?? body.match(/\((\d+)\s+(Stun)\)/i);
+  // in with no damage at all. Transformers prints it number last, "(Stun 1)".
+  const stunLast = body.match(/\(Stun\s+(\d+)\)/i);
+  const damage = body.match(/(\d+)\s+([A-Za-z]+)\s+damage/i) ?? body.match(/\((\d+)\s+(Stun)\)/i)
+    ?? (stunLast ? [stunLast[0], stunLast[1], 'Stun'] : null);
   if (damage) {
     effect.damageValue = Number.parseInt(damage[1], 10);
     const type = resolve(damage[2], DAMAGE_LOOKUP, DAMAGE_ALIASES);
@@ -597,7 +771,7 @@ function parseEffectClauses(ir, body, sourceLine) {
     }
   }
 
-  const reach = body.match(/\bReach\b(?:\s*x\s*(\d+))?/i);
+  const reach = body.match(/\bReach\b(?:\s*[x×]\s*(\d+))?/i);
   if (reach) {
     effect.isReach = true;
     effect.range.reachMultiplier = reach[1] ? Number.parseInt(reach[1], 10) : null;
@@ -609,9 +783,15 @@ function parseEffectClauses(ir, body, sourceLine) {
     effect.range.long = Number.parseInt(range[2], 10);
   }
 
-  const min = body.match(/\bmin\s*(\d+)\s*(?:ft|feet)?/i);
+  const min = body.match(/\bmin\.?\s*(\d+)\s*(?:ft|feet)?/i);
   if (min) {
     effect.range.min = Number.parseInt(min[1], 10);
+  }
+
+  // "Multiple (2) Targets" / "Multiple Targets (5, 30 ft cone)": how many it hits.
+  const targets = body.match(/\bMultiple\s*\(\s*(\d+)\s*\)\s*Targets?\b/i) ?? body.match(/\bMultiple\s+Targets?\s*\(\s*(\d+)\b/i);
+  if (targets) {
+    effect.numTargets = Number.parseInt(targets[1], 10);
   }
 
   const blast = body.match(/\bBlast:?\s*(\d+)\s*(?:ft|feet)?\s*(radius|cone)/i);
@@ -646,7 +826,10 @@ function parseAttacks(ir, lines) {
       continue;
     }
 
-    const [, name, printedSkill, rest] = head;
+    const [, name, printedHead, rest] = head;
+    // "Golden Claw (1/scene, Might)": the uses come before the Skill.
+    const uses = printedHead.match(/^\s*(\d+)\s*\/\s*scene\s*,\s*(.+)$/i);
+    const printedSkill = uses ? uses[2] : printedHead;
     const skill = resolve(printedSkill, SKILL_LOOKUP, SKILL_ALIASES);
     if (!skill) {
       addDiagnostic(ir, 'error', entry, `Unrecognized Skill "${printedSkill}" on attack "${name.trim()}".`);
@@ -672,14 +855,24 @@ function parseAttacks(ir, lines) {
       ...parseEffectClauses(ir, primaryBody, entry),
     };
 
+    if (uses) {
+      attack.usesPerScene = Number.parseInt(uses[1], 10);
+    }
+
+    // "+d6 with ↓1 or pilot's Driving with ↓1" (the arrow can come through as anything - see printedShift).
+    const withShift = primaryBody.match(/\+\s*d\d+\s*\*?\s+with\s+([^\d\s]{0,2})\s*(\d+)/i);
+    if (withShift && !isUpArrow(withShift[1])) {
+      attack.shiftDown = Number.parseInt(withShift[2], 10);
+    }
+
     const hands = detailBody.match(/\bHands:\s*(\d+)/i);
     if (hands) {
       attack.numHands = Number.parseInt(hands[1], 10);
     }
 
-    const traits = detailBody.match(/\bTraits:\s*([^:]+?)(?=\s+(?:Alternate|Special|Hands)\b|$)/i);
+    const traits = sublabelText(detailBody, 'Traits');
     if (traits) {
-      for (const printed of traits[1].split(',').map(trait => trait.trim()).filter(Boolean)) {
+      for (const printed of traits.split(',').map(trait => trait.trim()).filter(Boolean)) {
         // The books print "Integrated" among the traits, but this system keeps it as the weapon's
         // Size (E20.weaponSizes, system.classification.size) - not a trait, so it is read as one.
         if (normalizeKey(printed) === 'integrated') {
@@ -696,12 +889,34 @@ function parseAttacks(ir, lines) {
       }
     }
 
-    const alternates = detailBody.match(/\bAlternate Effects?:\s*([^:]+?)(?=\s+(?:Special|Hands|Traits)\b|$)/i);
-    if (alternates) {
-      attack.alternateEffects.push({
-        name: alternates[1].trim(),
-        ...parseEffectClauses(ir, alternates[1], entry),
-      });
+    // "Alternate Effects: 2 Sharp damage (↓1), 3 Sharp damage (↓3)" - one Alternate Effect per comma, each with its own
+    // printed ↓. The arrow comes through a PDF copy as "↓", as a symbol-font character (Enigma of Combination's U+F0E2),
+    // as nothing at all, or as something else again - so whatever sits before the number counts, unless it's an up arrow.
+    // An Alternate Effect that prints no range of its own fires at the weapon's.
+    const alternates = sublabelText(detailBody, 'Alternate Effects?');
+    for (const printed of splitTopLevel(alternates ?? '')) {
+      const alternate = {
+        name: printed,
+        ...parseEffectClauses(ir, printed, entry),
+        shiftDown: printedShiftDown(printed),
+      };
+      if (!alternate.range.value && !alternate.isReach) {
+        alternate.range = { ...attack.range };
+        alternate.isReach = attack.isReach;
+      }
+
+      attack.alternateEffects.push(alternate);
+    }
+
+    // "Requirements: Bot Mode only" / "Alt Mode only" (Transformers) - kept as printed, and the Mode when it names one.
+    const requirements = sublabelText(detailBody, 'Requirements?');
+    if (requirements) {
+      attack.requirements = requirements;
+      const bot = /\bBot[- ]?Mode\b/i.test(requirements);
+      const alt = /\bAlt[- ]?Mode\b/i.test(requirements);
+      if (bot != alt) {
+        attack.mode = bot ? 'bot' : 'alt';
+      }
     }
 
     ir.attacks.push(attack);
@@ -871,7 +1086,7 @@ export function splitStatBlocks(text) {
  */
 export function parseStatBlock(text) {
   const ir = makeIr();
-  const lines = preprocessStatBlock(text).filter(line => line.length);
+  const lines = preprocessStatBlock(text).filter(line => line.length).map(addLabelColons);
 
   if (!lines.length) {
     addDiagnostic(ir, 'error', null, 'Nothing to parse - the pasted text was empty.');
@@ -896,8 +1111,12 @@ export function parseStatBlock(text) {
   ir.perks = parseNamedEntries(ir, sections.perks ?? []);
   ir.hangUps = parseNamedEntries(ir, sections.hangUps ?? []);
   ir.contact = parseContact(ir, sections, allegiancePoints);
+  parseZordFeatures(ir, sections.zordFeatures ?? []);
+  combinerTraitsFromPerks(ir);
 
   resolveSkillsFromAttacks(ir);
+  finishAltMode(ir);
+  finishZord(ir, sections);
 
   return ir;
 }
@@ -936,4 +1155,131 @@ function resolveSkillsFromAttacks(ir) {
     diagnostic.message =
       `Skill "${unresolved[1]}" is not in E20.skills; read as "${match.skill}" from the attack of the same name.`;
   }
+}
+
+/* ------------------------------------------------------------------ *
+ * Zords (Power Rangers CRB Ch.9)                                      *
+ * ------------------------------------------------------------------ */
+
+/** The compendium spells some Features differently from the stat blocks ("Enhanced (Claws)", "Movement Boost"). */
+const FEATURE_ALIASES = { enhanced: 'Enhance', 'movement boost': 'Movement Booster' };
+const ESSENCE_WORD = /\s+(Strength|Speed|Smarts|Social)$/i;
+
+/**
+ * "Zord Features: Call to Action, Combiner (Core Body), Increase (Strength), Enhance (Tail Cannons)". Each is matched
+ * against the compendium by the names it could have there - itself, its name before the brackets, or that with the
+ * compendium's own placeholder ("Increase (Essence)", "Enhance (Attack)"). A Combiner / Megaform Trait names its
+ * Megaform Trait in the brackets, which is matched too ("Core Ability Speed" is the Core Ability trait).
+ */
+function parseZordFeatures(ir, entries) {
+  for (const printed of entries) {
+    const [, rawBase, option] = printed.match(/^(.+?)\s*(?:\(([^)]*)\))?$/) ?? [null, printed, null];
+    const base = FEATURE_ALIASES[rawBase.toLowerCase()] ?? rawBase;
+    ir.zordFeatures.push({
+      name: printed,
+      text: '',
+      matchNames: [...new Set([printed, base, `${base} (Essence)`, `${base} (Attack)`])],
+    });
+
+    if (option && /^(Combiner|Megaform Trait)$/i.test(base) && !/^\d+$/.test(option)) {
+      ir.megaformTraits.push(megaformTraitEntry(option));
+    }
+  }
+}
+
+const MOVEMENT_WORDS = { ground: 'ground', aerial: 'aerial', air: 'aerial', flying: 'aerial', swim: 'swim', aquatic: 'swim', water: 'swim', climb: 'climb' };
+
+/**
+ * A Megaform Trait / Combiner feature as an IR entry: the names it can have in the compendium, and what its brackets
+ * choose - "Core Essence [Speed]", "Enhanced Move [Aerial]", "Skill Expertise [Might]", "Commander [Strength, Speed]",
+ * or a Zord's "Core Ability Speed". `overrides` is merged onto the item (importers/stat-block-import.mjs).
+ */
+function megaformTraitEntry(printed) {
+  const [, rawName, bracket] = printed.match(/^(.+?)\s*(?:\[([^\]]*)\])?\s*$/) ?? [null, printed, null];
+  const choices = (bracket ?? '').split(',').map(word => word.trim()).filter(Boolean);
+  const trailing = rawName.match(ESSENCE_WORD);
+  const name = rawName.replace(/\bRange\b/i, 'Ranged').trim();
+  const base = trailing ? name.replace(ESSENCE_WORD, '').trim() : name;
+  if (trailing) {
+    choices.unshift(trailing[1]);
+  }
+
+  const essences = choices.map(word => word.toLowerCase()).filter(word => ESSENCE_NAMES.includes(word));
+  const movement = choices.map(word => MOVEMENT_WORDS[word.toLowerCase()]).find(Boolean);
+  const skill = choices.map(word => skillKeyOf(word)).find(Boolean);
+  const system = {};
+  const flags = {};
+  if (/^commander$/i.test(base)) {
+    if (essences.length == 2) {
+      flags.commanderEssences = essences;
+    }
+  } else if (essences.length) {
+    system.essence = essences[0];
+    // Core Essence raises "one associated Skill" - the compendium item's own default (Athletics) is only right for
+    // Strength, so with no Skill named none is raised rather than the wrong one.
+    system.skill = skill ?? null;
+  } else if (skill) {
+    system.skill = skill;
+  }
+
+  if (movement) {
+    system.movementType = movement;
+  }
+
+  return { name: printed, text: '', matchNames: [...new Set([name, base])], overrides: { system, flags } };
+}
+
+/** Commas that separate, not those inside "[Strength, Speed]". */
+function splitOutsideBrackets(text) {
+  const parts = [];
+  let depth = 0;
+  let current = '';
+  for (const char of text) {
+    depth += '[('.includes(char) ? 1 : ')]'.includes(char) ? -1 : 0;
+    if (char == ',' && depth <= 0) {
+      parts.push(current);
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+
+  parts.push(current);
+  return parts.map(part => part.trim()).filter(Boolean);
+}
+
+/**
+ * A Transformers member's "Gestalt Combiner (Commander [Strength, Speed])" / "Matched Combiner (Core Essence [Speed])"
+ * Perk names the Combiner feature it brings: that feature is a Megaform Trait on the member, which the Combiner form
+ * reads (documents/actor.mjs#_prepareMegaformCombinerData). The Perk itself is matched by its name before the brackets.
+ */
+function combinerTraitsFromPerks(ir) {
+  for (const perk of ir.perks) {
+    const match = perk.name.match(/^((?:Gestalt|Matched)\s+Combiner)\s*\((.+)\)\s*$/i);
+    const base = perk.name.replace(/\s*\([^)]*\)\s*$/, '').trim();
+    if (base != perk.name) {
+      perk.matchNames = [base];
+    }
+
+    if (match) {
+      perk.matchNames = [match[1]];
+      ir.megaformTraits.push(...splitOutsideBrackets(match[2]).map(megaformTraitEntry));
+    }
+  }
+}
+
+/** A Zord's block (Zord Features, or attacks "or pilot's Driving"): no Threat Level to miss, and it's a Zord to import. */
+function finishZord(ir, sections) {
+  const piloted = (sections.attacks ?? []).some(line => /\bpilot['’]s\b/i.test(line));
+  if (!ir.zordFeatures.length && !piloted) {
+    return;
+  }
+
+  ir.suggestedType = 'zord';
+  ir.diagnostics = ir.diagnostics.filter(entry => !/THREAT LEVEL/.test(entry.message));
+}
+
+/** A printed Skill name's key ("Social" isn't one - see importers/stat-block-rules.mjs), or null. */
+export function skillKeyOf(printed) {
+  return resolve(printed, SKILL_LOOKUP, SKILL_ALIASES);
 }
