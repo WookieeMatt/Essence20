@@ -89,7 +89,7 @@ export function armorBonusFor(ir, defense) {
 }
 
 /* ------------------------------------------------------------------ *
- * Netting out Active Effects the printed block already accounts for   *
+ * Netting out Active Effects and Rules the printed block accounts for *
  * ------------------------------------------------------------------ */
 
 /** `CONST.ACTIVE_EFFECT_MODES.ADD` - the v13 numeric mode still stored in the shipped packs. */
@@ -132,6 +132,8 @@ const MOVEMENT_CONTRIBUTION = /^system\.movement\.(ground|aerial|swim|climb)\.(b
  *  - a disabled or non-transferring effect is not applying in the first place;
  *  - a skill `shiftUp` moves a die up a ladder rather than adding to a total, so cancelling it
  *    would mean downshifting the printed die - a different operation, deliberately not attempted.
+ *
+ * The item's Rules count the same way - see collectRuleContributions.
  *
  * Anything that cannot be cancelled is returned in `unnetted` so the importer can say so plainly
  * rather than quietly producing a wrong number.
@@ -177,9 +179,83 @@ export function collectEffectContributions(items) {
         }
       }
     }
+
+    collectRuleContributions(item, contributions);
   }
 
   return contributions;
+}
+
+const DEFENSE_NAMES = ['toughness', 'evasion', 'willpower', 'cleverness'];
+const MOVEMENT_NAMES = ['ground', 'aerial', 'swim', 'climb'];
+const HEALTH_PATH = /^system\.health\.(bonus|origin|max)$|^system\.conditioning$/;
+
+/**
+ * The same for the item's Rules (rules engine, system.rules): the always-on ones that change a printed Defense,
+ * Movement or Health - a Defense rule adding to a Defense, a Movement rule adding to a Movement, a DerivedStat adding
+ * to one of the fields above. Only a rule with no condition, on its own holder (no scope beyond self), counts: a
+ * conditional one isn't in the printed number. Anything else that still changes those numbers - a formula amount, a
+ * "best of" / halve / set / max - goes in `unnetted`.
+ */
+function collectRuleContributions(item, contributions) {
+  const rules = Array.isArray(item?.system?.rules) ? item.system.rules : [];
+  const add = (bucket, name, value) => {
+    if (bucket == 'health') {
+      contributions.health += value;
+    } else {
+      contributions[bucket][name] = (contributions[bucket][name] ?? 0) + value;
+    }
+  };
+
+  const unnetted = (key, reason) => contributions.unnetted.push({ item: item.name, key, reason });
+
+  for (const rule of rules) {
+    if (!rule || rule.disabled || (rule.when?.length ?? 0) > 0 || (rule.scope ?? 'self') != 'self') {
+      continue;
+    }
+
+    const targets = [];
+    let additive = false;
+    let value = NaN;
+    if (rule.type == 'Defense') {
+      targets.push(...(rule.defense == 'any' ? DEFENSE_NAMES : [rule.defense]).filter(name => DEFENSE_NAMES.includes(name)).map(name => ['defenses', name]));
+      additive = (rule.mode ?? 'add') == 'add' && !rule.outgoing && !rule.limit && !rule.early;
+      value = Number(rule.amount);
+    } else if (rule.type == 'Movement') {
+      targets.push(...(rule.movement == 'all' ? MOVEMENT_NAMES : [rule.movement]).filter(name => MOVEMENT_NAMES.includes(name)).map(name => ['movement', name]));
+      additive = (rule.op ?? 'add') == 'add';
+      value = Number(rule.value);
+    } else if (rule.type == 'DerivedStat') {
+      const path = String(rule.path ?? '');
+      const defense = path.match(DEFENSE_CONTRIBUTION);
+      const movement = path.match(MOVEMENT_CONTRIBUTION);
+      if (defense) {
+        targets.push(['defenses', defense[1]]);
+      } else if (movement) {
+        targets.push(['movement', movement[1]]);
+      } else if (HEALTH_PATH.test(path)) {
+        targets.push(['health']);
+      }
+
+      additive = (rule.op ?? 'add') == 'add' && rule.stage != 'early';
+      value = Number(rule.value);
+    }
+
+    if (!targets.length) {
+      continue;
+    }
+
+    const key = `rule:${rule.type}:${rule.defense ?? rule.movement ?? rule.path}`;
+    if (!additive) {
+      unnetted(key, 'notAdditive');
+    } else if (!Number.isFinite(value) || typeof (rule.amount ?? rule.value) == 'boolean') {
+      unnetted(key, 'formula');
+    } else {
+      for (const [bucket, name] of targets) {
+        add(bucket, name, value);
+      }
+    }
+  }
 }
 
 /**

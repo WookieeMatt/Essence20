@@ -179,6 +179,9 @@ the same as the original.
   (`@essence.<x>.current` gives the remainder).
 - **Fixed a "Maximum call stack size exceeded" error** when loading a scene with unlinked tokens.
 - **Changing an actor's Size resizes its tokens again**, unlinked ones included (unless that token has its own Size).
+- **Stat Block Importer balances Rules too.** A matched Perk or Hang-Up whose always-on Rule changes a Defense,
+  Movement or Health (Dazed, Eltarian Training) no longer adds on top of the printed number; ones it can't work out
+  (formulas, best-of, set) are named in the check-by-hand warning.
 - **No more "-=" deprecation warnings** in the console from Foundry v14.
 - **New setting: Morphed / Alt Mode token icons.** Options are Show, Hide when the token art
   changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.

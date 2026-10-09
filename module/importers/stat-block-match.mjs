@@ -130,7 +130,7 @@ export function countMatches(matches) {
 }
 
 /**
- * How many matched entries carry Active Effects.
+ * How many matched entries carry Active Effects or Rules.
  *
  * **This is a real caveat, not a statistic.** A printed stat block's Defenses, Health and skill
  * shifts already have that Threat's own Perks baked into them - the book did the arithmetic. A
@@ -178,7 +178,7 @@ export async function loadCompendiumEntries() {
   for (const pack of getVisibleItemPacks()) {
     let index;
     try {
-      index = await pack.getIndex({ fields: ["type", "effects"] });
+      index = await pack.getIndex({ fields: ["type", "effects", "system.rules"] });
     } catch (err) {
       // One unreadable pack must not take the whole importer down - the rest still match.
       console.warn(`essence20 | Could not index pack "${pack.metadata.id}" for stat block matching.`, err);
@@ -197,8 +197,8 @@ export async function loadCompendiumEntries() {
         packId: pack.metadata.id,
         packLabel: pack.metadata.label,
         folder: pack.folder?.name ?? null,
-        // Drives the double-counting caution - see countEffectBearingMatches below.
-        hasEffects: Boolean(record.effects?.length),
+        // Drives the double-counting caution - see countEffectBearingMatches below. Rules can double-count too.
+        hasEffects: Boolean(record.effects?.length || record.system?.rules?.length),
       });
     }
   }

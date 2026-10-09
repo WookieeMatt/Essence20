@@ -404,6 +404,46 @@ describe("collectEffectContributions", () => {
   });
 });
 
+describe("collectEffectContributions - Rules", () => {
+  const withRules = (name, ...rules) => ({ name, type: 'perk', system: { rules }, effects: [] });
+
+  test("an always-on Defense or Movement rule is netted, 'any' / 'all' to each of them", () => {
+    const contributions = collectEffectContributions([
+      withRules('Dazed', { type: 'Defense', defense: 'evasion', amount: -1 }),
+      withRules('Warded', { type: 'Defense', defense: 'any', amount: 1 }),
+      withRules('Eltarian Training', { type: 'Movement', movement: 'ground', stage: 'adjust', op: 'add', value: 10 }),
+      withRules('Sturdy', { type: 'DerivedStat', path: 'system.health.bonus', op: 'add', value: 2 }),
+    ]);
+    expect(contributions.defenses).toEqual({ toughness: 1, evasion: 0, willpower: 1, cleverness: 1 });
+    expect(contributions.movement).toEqual({ ground: 10 });
+    expect(contributions.health).toBe(2);
+    expect(contributions.unnetted).toEqual([]);
+  });
+
+  test("a conditional, scoped or disabled rule isn't in the printed number: left alone", () => {
+    const contributions = collectEffectContributions([
+      withRules('Dogfighter', { type: 'Defense', defense: 'evasion', amount: 2, scope: 'driven' }),
+      withRules('Lightspeed Boost', { type: 'Defense', defense: 'evasion', amount: 2, when: ['self:type:zord'] }),
+      withRules('Off', { type: 'Defense', defense: 'evasion', amount: 2, disabled: true }),
+    ]);
+    expect(contributions.defenses).toEqual({});
+    expect(contributions.unnetted).toEqual([]);
+  });
+
+  test("formulas, best-of and set rules can't be netted: named for the GM", () => {
+    const contributions = collectEffectContributions([
+      withRules('Mind Palace', { type: 'Defense', defense: 'willpower', amount: 'min(3, floor((@level + 1) / 6))' }),
+      withRules('Evasive', { type: 'Defense', defense: 'any', mode: 'best', early: true, from: ['evasion'] }),
+      withRules('Static Electricity', { type: 'Movement', movement: 'ground', stage: 'base', op: 'set', value: 35 }),
+      withRules('Grid Connection', { type: 'DerivedStat', path: 'system.powers.personal.max', op: 'add', value: 1 }),
+    ]);
+    expect(contributions.defenses).toEqual({});
+    expect(contributions.unnetted.map(entry => [entry.item, entry.reason])).toEqual([
+      ['Mind Palace', 'formula'], ['Evasive', 'notAdditive'], ['Static Electricity', 'notAdditive'],
+    ]);
+  });
+});
+
 describe("collectUncancellableEffects", () => {
   test("flags a skill shift, which cannot be cancelled arithmetically", () => {
     const found = collectUncancellableEffects([{
