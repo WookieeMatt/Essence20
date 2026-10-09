@@ -26,6 +26,9 @@ export const MATCHABLE_SECTIONS = {
   perks: 'perk',
   powers: 'power',
   hangUps: 'hangUp',
+  // Power Rangers Zords: their Zord Features, and the Megaform Trait a Combiner names.
+  zordFeatures: 'feature',
+  megaformTraits: 'megaformTrait',
 };
 
 /**
@@ -104,10 +107,12 @@ export function findMatches(ir, index, preferFolder = null) {
   const results = {};
 
   for (const [section, type] of Object.entries(MATCHABLE_SECTIONS)) {
-    results[section] = (ir[section] ?? []).map(entry => ({
-      name: entry.name,
-      match: selectMatch(index.get(indexKey(type, entry.name)), preferFolder),
-    }));
+    // An entry can be known by more than one name in the compendium (a Zord Feature's "Increase (Strength)" is its
+    // "Increase (Essence)"): the first that's there.
+    results[section] = (ir[section] ?? []).map(entry => {
+      const name = [entry.name, ...(entry.matchNames ?? [])].find(candidate => index.get(indexKey(type, candidate))) ?? entry.name;
+      return { name: entry.name, match: selectMatch(index.get(indexKey(type, name)), preferFolder) };
+    });
   }
 
   return results;

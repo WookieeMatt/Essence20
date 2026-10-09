@@ -1,0 +1,18 @@
+{{!-- Transform / Morph, in the sidebar's Special panel under Initiative - the same place on every sheet that has them
+     (character, NPC, companion). --}}
+{{#if system.canTransform}}
+  <a class="essence20-sidebar-action-button" data-action="transform">
+    <i class="fas fa-steering-wheel"></i>
+    {{localize 'E20.Transform'}}
+  </a>
+{{/if}}
+{{#if system.canMorph}}
+  <a class="essence20-sidebar-action-button" data-action="morph">
+    <i class="fas fa-sword"></i>
+    {{#if system.isMorphed}}
+      {{localize 'E20.ButtonUnmorph'}}
+    {{else}}
+      {{localize 'E20.ButtonMorph'}}
+    {{/if}}
+  </a>
+{{/if}}

@@ -52,6 +52,13 @@ export class Essence20MegaformActorSheet extends Essence20BaseActorSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.actionsTab = getActionsTabContext(this.actor);
+    // Each participant's Health, highest first, as the books print a Megazord's ("HEALTH (9/9/7/7/7)") - by max, so a
+    // participant keeps its place as it takes damage. Stun follows the same order, so the two lines read down together.
+    const system = this.actor.system;
+    const order = (system.participantHealth ?? []).map((row, index) => ({ row, index }))
+      .sort((a, b) => (b.row.max - a.row.max) || (b.row.value - a.row.value));
+    context.participantHealthSorted = order.map(({ row }) => row);
+    context.participantStunSorted = order.map(({ index }) => system.participantStun?.[index]).filter(Boolean);
     return context;
   }
 }

@@ -59,17 +59,29 @@
   overflow-x: auto;
 }
 
+// Two to a row: four side by side squeezed each select to a few letters ("A new actor" cut short) and wrapped the
+// labels onto two lines.
 .essence20 .stat-block-importer-options {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: v.$gap-md;
   margin-top: v.$gap-md;
 
   label {
     display: flex;
-    flex: 1 1 50%;
     flex-direction: column;
     gap: v.$gap-sm;
     min-width: 0;
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    select {
+      width: 100%;
+    }
   }
 }
 

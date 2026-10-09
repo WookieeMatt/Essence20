@@ -1961,6 +1961,16 @@ export class Essence20Actor extends Actor {
       }
     }
 
+    // A Combiner is one being with its own Smarts and Social (EoC p.42: its highest Essences "set the base Defenses"):
+    // Willpower and Cleverness are 10 + the Essence like anyone's, not a Megazord's pilot stand-in (the zordBase schema's
+    // null base, which left them at the bare Essence - 9 and 8 for Bruticus instead of 19 and 18).
+    for (const defenseType of ['willpower', 'cleverness']) {
+      if (system.defenses[defenseType]) {
+        system.defenses[defenseType].base = 10;
+        system.defenses[defenseType].usesDrivers = false;
+      }
+    }
+
     // Defenses get the LOWEST armor bonus among components, not the highest - NPCs and other
     // actor types without a granular defense.armor field contribute +0. Written into .armor
     // (not .value/.total directly) so the shared Essence20Actor#_prepareDefenses(), which now
@@ -2018,6 +2028,7 @@ export class Essence20Actor extends Actor {
     let hasCommander = false;
     let commanderSkills = null;
     let commanderHolder = null;
+    let commanderEssences = null;
     let layeredSystemsBonus = 0;
     let hasEnhancedInitiative = false;
     let hasTitanHardpoint = false;
@@ -2103,6 +2114,9 @@ export class Essence20Actor extends Actor {
           hasCommander = true;
           commanderHolder ??= component;
           commanderSkills ??= item.flags?.essence20?.[COMMANDER_SKILLS_FLAG] ?? null;
+          // The two Essences a stat block names ("Commander [Strength, Speed]" - stat block import) - RAW's "choose in
+          // the case of equal values", made ahead of time.
+          commanderEssences ??= item.flags?.essence20?.commanderEssences ?? null;
           break;
         }
       }
@@ -2129,7 +2143,8 @@ export class Essence20Actor extends Actor {
         return Number(own?.max ?? own?.value) || 0;
       };
 
-      const topTwoEssences = [...essenceOrder]
+      const named = (commanderEssences ?? []).filter(essence => essenceOrder.includes(essence));
+      const topTwoEssences = named.length == 2 ? named : [...essenceOrder]
         .sort((a, b) => holderScore(b) - holderScore(a))
         .slice(0, 2);
       for (const essence of topTwoEssences) {

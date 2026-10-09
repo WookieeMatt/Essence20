@@ -49,11 +49,16 @@ function headerLines(ir) {
     lines.push(`THREAT LEVEL: ${ir.threatLevel}`);
   }
 
-  lines.push(`SIZE: ${sizeLabel(ir.size)} | HEALTH: ${score(ir.health)}`);
+  // A Cybertronian prints both Modes, the way the books do: "SIZE: Large/Huge", "30ft Ground (Bot Mode); 90ft Aerial (Alt Mode)".
+  const altSize = ir.altMode?.size ? `/${sizeLabel(ir.altMode.size)}` : '';
+  lines.push(`SIZE: ${sizeLabel(ir.size)}${altSize} | HEALTH: ${score(ir.health)}`);
 
-  const movement = MOVEMENT_ORDER
-    .filter(type => ir.movement?.[type])
-    .map(type => `${ir.movement[type]}ft ${printedName(type)}`);
+  const movesIn = (moves, tag) => MOVEMENT_ORDER
+    .filter(type => moves?.[type])
+    .map(type => `${moves[type]}ft ${printedName(type)}${tag}`);
+  const movement = ir.altMode
+    ? [...movesIn(ir.movement, ' (Bot Mode)'), ...movesIn(ir.altMode.movement, ' (Alt Mode)')]
+    : movesIn(ir.movement, '');
   if (movement.length) {
     lines.push(`MOVEMENT: ${movement.join('; ')}`);
   }
@@ -127,15 +132,26 @@ function attackLines(ir) {
   for (const attack of ir.attacks ?? []) {
     lines.push(attackLine(attack));
 
-    for (const alternate of attack.alternateEffects ?? []) {
-      const damage = alternate.damageValue !== null && alternate.damageValue !== undefined
-        ? `${alternate.damageValue} ${printedName(alternate.damageType)} damage`.replace(/\s+/g, ' ').trim()
-        : alternate.name;
-      lines.push(`Alternate Effects: ${damage}`);
+    // One line, comma-separated, each with its own ↓ - as the books print them.
+    const alternates = (attack.alternateEffects ?? []).map(alternate => {
+      if (alternate.damageValue === null || alternate.damageValue === undefined) {
+        return alternate.name;
+      }
+
+      const damage = `${alternate.damageValue} ${printedName(alternate.damageType)} damage`.replace(/\s+/g, ' ').trim();
+      return alternate.shiftDown ? `${damage} (↓${alternate.shiftDown})` : damage;
+    }).filter(Boolean);
+    if (alternates.length) {
+      lines.push(`Alternate Effects: ${alternates.join(', ')}`);
     }
 
     if (attack.numHands !== null && attack.numHands !== undefined) {
       lines.push(`Hands: ${attack.numHands}`);
+    }
+
+    const requirements = attack.requirements || (attack.mode ? `${attack.mode == 'alt' ? 'Alt' : 'Bot'} Mode only` : null);
+    if (requirements) {
+      lines.push(`Requirements: ${requirements}`);
     }
 
     if (attack.traits?.length) {

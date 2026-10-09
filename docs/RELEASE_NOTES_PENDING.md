@@ -182,6 +182,32 @@ the same as the original.
 - **Stat Block Importer balances Rules too.** A matched Perk or Hang-Up whose always-on Rule changes a Defense,
   Movement or Health (Dazed, Eltarian Training) no longer adds on top of the printed number; ones it can't work out
   (formulas, best-of, set) are named in the check-by-hand warning.
+- **Stat Block Importer reads Cybertronians.** "SIZE: Huge/Extended" and "... Aerial (Alt Mode)" movement make the
+  actor able to transform, with an Alt Mode item holding that Size and movement; "Requirements: Bot Mode only" /
+  "Alt Mode only" set each weapon's Mode. Alternate Effects followed by a Requirements line are no longer lost, "(Stun 1)"
+  is read, and exporting a stat block prints both Modes.
+- **Transform and Morph buttons on NPC and Companion sheets** are in the sidebar's Special panel under Initiative, where
+  a character's are (Companions had none before).
+- **Stat Block Importer reads Power Rangers Zords** (PR CRB Ch.9 layout: no colons, inline "Skills:" and "Zord Features:", no
+  ATTACKS heading). It picks Zord as the type, matches each Zord Feature ("Increase (Strength)" is Increase (Essence))
+  and the Megaform Trait a Combiner names, puts the Plating Armor in the armor, and reads "(1/scene, Might)",
+  "with ↓1" and "Reach ×2". A matched Feature's Essence bonus (Heavy Chassis) no longer adds on top of the printed Essence.
+- **Stat Block Importer: weapons.** Each comma-separated Alternate Effect is its own, with its printed ↓ (however the PDF copy gave the arrow, also inside "(Reach, ↓1)"), its "Multiple (N) Targets" and the weapon's range, named "<weapon>
+  Alternate Effect" (numbered when there are several); a "Blast:" inside one no longer drops it. "Requirements:" is kept on
+  the weapon, and "Bot Mode only" / "Alt Mode only" sets its new **Mode Requirement** - the attack is refused in the other Mode.
+- **Stat Block Importer: rules from text.** An unmatched Perk or Hang-Up reading "suffers ↓1 to all Social Skill Tests ..."
+  (or ↑N / Edge / Snag on named Skills) gets a Roll Modifier rule, its condition shown in the label.
+- **Fixed: a weapon's Alternate Effect sometimes listed above its main one** (about 1 in 5 attached items got an
+  all-digit key, which sorts first).
+- **Megaform sheet:** the "Combined Health" box is gone (a Megaform has no Health of its own), and the sidebar lists
+  each participant's Health highest first, as the books print it, with Stun in the same order.
+- **Fixed: a Transformers Combiner's Willpower and Cleverness** were just its Smarts and Social (Bruticus 9 and 8); they are
+  10 + the Essence now (19 and 18). **Commander** raises the two Essences its stat block names, when it names them.
+- **Stat Block Importer: Combiner members.** A "Gestalt Combiner (Commander [Strength, Speed])" or "Matched Combiner (Core
+  Essence [Speed])" Perk brings that Combiner feature as a Megaform Trait with its choices, so the Combiner form applies it.
+- **Stat Block Importer: "Import into" an existing Megaform** - a Combiner's own stat block (Bruticus) adds its Perks,
+  Hang-Ups and attacks, its printed Energon Pool, and Defense and Movement Bonuses so it matches the printed numbers. Picked
+  automatically when a Megaform has the block's name. Import the members first: the Bonuses are worked out from them.
 - **No more "-=" deprecation warnings** in the console from Foundry v14.
 - **New setting: Morphed / Alt Mode token icons.** Options are Show, Hide when the token art
   changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.

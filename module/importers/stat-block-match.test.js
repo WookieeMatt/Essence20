@@ -104,7 +104,7 @@ describe("findMatches", () => {
 
   test("handles an IR with no matchable sections at all", () => {
     const matches = findMatches({}, index);
-    expect(matches).toEqual({ perks: [], powers: [], hangUps: [] });
+    expect(matches).toEqual({ perks: [], powers: [], hangUps: [], zordFeatures: [], megaformTraits: [] });
   });
 
   test("covers exactly the sections MATCHABLE_SECTIONS declares", () => {

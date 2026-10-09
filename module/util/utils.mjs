@@ -33,9 +33,11 @@ export function getItemsOfTypeFromSystemItems(type, items) {
 */
 export function createId(items) {
   let id = "";
+  // Never all digits: JavaScript lists integer-like keys first, in number order, so an attached item keyed "8922" jumped
+  // ahead of ones attached before it (a weapon's Alternate Effect above its main one).
   do {
     id = _randomId(5);
-  } while (items[id]);
+  } while (items[id] || /^\d+$/.test(id));
 
   return id;
 }

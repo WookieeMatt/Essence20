@@ -13,7 +13,7 @@
     <div>
       <label>{{localize 'E20.ActorHealth'}}</label>
       <span class="essence20-sidebar-participant-health-values">
-        {{#each system.participantHealth}}{{#unless @first}}<span class="essence20-sidebar-participant-health-sep">/</span>{{/unless}}<span title="{{this.name}}">{{this.value}}</span>{{/each}}
+        {{#each @root.participantHealthSorted}}{{#unless @first}}<span class="essence20-sidebar-participant-health-sep">/</span>{{/unless}}<span title="{{this.name}}">{{this.value}}</span>{{/each}}
       </span>
     </div>
     {{!-- Same treatment as Health above - Stun isn't pooled either (Essence20Actor#
@@ -23,7 +23,7 @@
     <div>
       <label>{{localize 'E20.ActorStun'}}</label>
       <span class="essence20-sidebar-participant-health-values">
-        {{#each system.participantStun}}{{#unless @first}}<span class="essence20-sidebar-participant-health-sep">/</span>{{/unless}}<span title="{{this.name}}">{{this.value}}</span>{{/each}}
+        {{#each @root.participantStunSorted}}{{#unless @first}}<span class="essence20-sidebar-participant-health-sep">/</span>{{/unless}}<span title="{{this.name}}">{{this.value}}</span>{{/each}}
       </span>
     </div>
   </div>

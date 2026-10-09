@@ -77,6 +77,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/package-origin-chip.hbs",
     "systems/essence20/templates/actor/parts/misc/requisition-row.hbs",
     "systems/essence20/templates/actor/parts/misc/morph-transform.hbs",
+    "systems/essence20/templates/actor/parts/misc/sidebar-transform-morph.hbs",
     "systems/essence20/templates/actor/parts/misc/movement.hbs",
     "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs",
     "systems/essence20/templates/actor/parts/misc/system-actors.hbs",

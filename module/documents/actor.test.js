@@ -1446,6 +1446,33 @@ describe("_prepareMegaformCombinerData", () => {
     expect(huge.system.size).toBe('gigantic');
   });
 
+  test("Willpower and Cleverness are 10 + the form's own Smarts / Social, not a Megazord's pilot stand-in (EoC p.42)", () => {
+    const actor = makeCombinerActor([makeComponent({ name: 'A', health: 5 }), makeComponent({ name: 'B', health: 5 })]);
+    actor.system.defenses.willpower = { base: null, usesDrivers: true };
+    actor.system.defenses.cleverness = { base: null, usesDrivers: true };
+    actor._prepareMegaformCombinerData();
+    expect(actor.system.defenses.willpower).toMatchObject({ base: 10, usesDrivers: false });
+    expect(actor.system.defenses.cleverness).toMatchObject({ base: 10, usesDrivers: false });
+  });
+
+  test("Commander raises the two Essences its stat block names, else the holder's two highest (EoC p.42)", () => {
+    const commander = (flags = {}) => ({ type: 'megaformTrait', system: { type: 'commander' }, flags: { essence20: flags } });
+    const members = () => Array.from({ length: 4 }, (_, i) => makeComponent({ name: `M${i}`, health: 5 }));
+
+    const named = members();
+    named[0].items.push(commander({ commanderEssences: ['smarts', 'social'] }));
+    const namedForm = makeCombinerActor(named);
+    namedForm._prepareMegaformCombinerData();
+    expect(Object.fromEntries(Object.entries(namedForm.system.essences).map(([key, essence]) => [key, essence.value])))
+      .toEqual({ strength: 3, speed: 2, smarts: 3, social: 3 });
+
+    const unnamed = members();
+    unnamed[0].items.push(commander());
+    const unnamedForm = makeCombinerActor(unnamed);
+    unnamedForm._prepareMegaformCombinerData();
+    expect(unnamedForm.system.essences.strength.value).toBe(4);
+  });
+
   test("movement: a type only some members have isn't the form's (EoC p.42)", () => {
     const flier = makeComponent({ name: 'A', health: 5 });
     flier.system.movement.aerial = { total: 60 };

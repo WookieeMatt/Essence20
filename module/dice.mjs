@@ -766,6 +766,15 @@ export class Dice {
       return;
     }
 
+    // "Requirements: Bot Mode only" / "Alt Mode only" (Transformers weapons): not in that Mode, no attack.
+    const modeRequirement = battlizerWeapon?.system?.modeRequirement;
+    if (modeRequirement && actor?.system?.canTransform && (modeRequirement == 'altMode') != !!actor.system.isTransformed) {
+      ui.notifications.warn(this._localize('E20.WeaponWrongMode', {
+        name: battlizerWeapon.name, mode: this._localize(E20.weaponModeRequirements[modeRequirement]),
+      }));
+      return;
+    }
+
     // Limited Articulation - see LIMITED_ARTICULATION_SKILLS' own comment above.
     if (LIMITED_ARTICULATION_SKILLS.includes(rolledSkill) && actor.system.altModeId) {
       const activeAltMode = actor.items?.get(actor.system.altModeId);

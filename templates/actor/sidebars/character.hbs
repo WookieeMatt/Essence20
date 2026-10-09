@@ -83,22 +83,7 @@
         </span>
       </div>
 
-      {{#if system.canTransform}}
-        <a class="essence20-sidebar-action-button" data-action="transform">
-          <i class="fas fa-steering-wheel"></i>
-          {{localize 'E20.Transform'}}
-        </a>
-      {{/if}}
-      {{#if system.canMorph}}
-        <a class="essence20-sidebar-action-button" data-action="morph">
-          <i class="fas fa-sword"></i>
-          {{#if system.isMorphed}}
-            {{localize 'E20.ButtonUnmorph'}}
-          {{else}}
-            {{localize 'E20.ButtonMorph'}}
-          {{/if}}
-        </a>
-      {{/if}}
+      {{> "systems/essence20/templates/actor/parts/misc/sidebar-transform-morph.hbs"}}
       <div class="essence20-sidebar-skill-list">
         {{#each @root.config.skillsByEssence.any as |skill|}}
           {{#if (eq skill 'spellcasting')}}

@@ -1,5 +1,6 @@
 import { MATCHABLE_SECTIONS, indexKey } from "./stat-block-match.mjs";
 import { slugifySpecializationName } from "../util/utils.mjs";
+import { addRulesFromText } from "./stat-block-rules.mjs";
 
 /**
  * Turns the IR produced by importers/stat-block-parser.mjs into real Foundry documents. Phase 2 of
@@ -83,9 +84,10 @@ export function buildHealth(printed, conditioning = 0) {
 
 /** Total armour deflection the parsed Equipment section attributes to one Defense. */
 export function armorBonusFor(ir, defense) {
+  // A Zord prints its Plating Armor beside the Defense ("TOUGHNESS 21 (2 Plating Armor)").
   return (ir.equipment ?? [])
     .filter(entry => entry.kind === 'armor' && entry.bonus?.defense === defense)
-    .reduce((total, entry) => total + entry.bonus.value, 0);
+    .reduce((total, entry) => total + entry.bonus.value, 0) + (ir.armor?.[defense] ?? 0);
 }
 
 /* ------------------------------------------------------------------ *
@@ -112,6 +114,8 @@ function isAdditive(change) {
 }
 
 const DEFENSE_CONTRIBUTION = /^system\.defenses\.(toughness|evasion|willpower|cleverness)\.(bonus|armor|shield|morphed)$/;
+// A Zord Feature's Essence bonus (Heavy Chassis: +1 Strength) is in the printed Essence too.
+const ESSENCE_CONTRIBUTION = /^system\.essences\.(strength|speed|smarts|social)\.(value|max|base|bonus)$/;
 const MOVEMENT_CONTRIBUTION = /^system\.movement\.(ground|aerial|swim|climb)\.(base|bonus|morphed)$/;
 
 /**
@@ -142,7 +146,7 @@ const MOVEMENT_CONTRIBUTION = /^system\.movement\.(ground|aerial|swim|climb)\.(b
  * @returns {{defenses: Object, health: Number, movement: Object, unnetted: Object[]}}
  */
 export function collectEffectContributions(items) {
-  const contributions = { defenses: {}, health: 0, movement: {}, unnetted: [] };
+  const contributions = { defenses: {}, essences: {}, health: 0, movement: {}, unnetted: [] };
 
   for (const item of items ?? []) {
     for (const effect of item?.effects ?? []) {
@@ -157,11 +161,12 @@ export function collectEffectContributions(items) {
 
         const defense = key.match(DEFENSE_CONTRIBUTION);
         const movement = key.match(MOVEMENT_CONTRIBUTION);
+        const essence = key.match(ESSENCE_CONTRIBUTION);
         const isHealth = key === 'system.health.bonus' || key === 'system.health.origin'
           // Conditioning feeds health.max too (see _prepareHealth), so it double-counts the same way.
           || key === 'system.conditioning';
 
-        if (!defense && !movement && !isHealth) {
+        if (!defense && !movement && !essence && !isHealth) {
           continue;
         }
 
@@ -174,6 +179,8 @@ export function collectEffectContributions(items) {
           contributions.defenses[defense[1]] = (contributions.defenses[defense[1]] ?? 0) + value;
         } else if (movement) {
           contributions.movement[movement[1]] = (contributions.movement[movement[1]] ?? 0) + value;
+        } else if (essence) {
+          contributions.essences[essence[1]] = (contributions.essences[essence[1]] ?? 0) + value;
         } else {
           contributions.health += value;
         }
@@ -229,8 +236,11 @@ function collectRuleContributions(item, contributions) {
       const path = String(rule.path ?? '');
       const defense = path.match(DEFENSE_CONTRIBUTION);
       const movement = path.match(MOVEMENT_CONTRIBUTION);
+      const essence = path.match(ESSENCE_CONTRIBUTION);
       if (defense) {
         targets.push(['defenses', defense[1]]);
+      } else if (essence) {
+        targets.push(['essences', essence[1]]);
       } else if (movement) {
         targets.push(['movement', movement[1]]);
       } else if (HEALTH_PATH.test(path)) {
@@ -335,7 +345,10 @@ export const MACHINE_TYPES = ['vehicle', 'zord'];
 /** Zords have no Threat Level at all (see data/actor/zord.mjs) - vehicles and NPCs do. */
 export const TYPES_WITHOUT_THREAT_LEVEL = ['zord'];
 
-function buildEssences(ir, isMachine) {
+/** The actor types that can transform (canTransform, Alt Mode items - data/actor/templates/character.mjs). */
+export const TRANSFORMING_TYPES = ['npc', 'companion'];
+
+function buildEssences(ir, isMachine, contributions) {
   const essences = {};
   for (const [name, printed] of Object.entries(ir.essences ?? {})) {
     if (printed === null) {
@@ -356,7 +369,9 @@ function buildEssences(ir, isMachine) {
     }
 
     // An NPC's printed score is its base (mechanics/characters/creature-essences.mjs); max and value follow from it.
-    essences[name] = isMachine ? { value: printed } : { base: printed, max: printed, value: printed };
+    // A matched item's own bonus to it comes back out, as with the Defenses.
+    const stored = printed - (contributions?.essences?.[name] ?? 0);
+    essences[name] = isMachine ? { value: stored } : { base: stored, max: stored, value: stored };
   }
 
   return essences;
@@ -457,7 +472,7 @@ export function buildActorData(ir, {
   const system = {
     conditioning: ir.conditioning ?? 0,
     defenses: buildDefenses(ir, contributions),
-    essences: buildEssences(ir, isMachine),
+    essences: buildEssences(ir, isMachine, contributions),
     health,
     languages: ir.languages ?? [],
     movement: buildMovement(ir, contributions),
@@ -466,6 +481,11 @@ export function buildActorData(ir, {
 
   if (ir.size) {
     system.size = ir.size;
+  }
+
+  // A Cybertronian: the sheet's Transform button, into the Alt Mode item buildSimpleItems adds.
+  if (ir.altMode && TRANSFORMING_TYPES.includes(type)) {
+    system.canTransform = true;
   }
 
   if (ir.threatLevel !== null && ir.threatLevel !== undefined
@@ -546,6 +566,7 @@ export function buildWeaponEffectData(effect, { name, skill }) {
       damageValue: effect.damageValue ?? 0,
       defenseType: effect.defenseType ?? 'toughness',
       numHands: effect.numHands ?? 1,
+      numTargets: effect.numTargets ?? 1,
       radius: effect.radius ?? 0,
       shape: effect.shape ?? null,
       range: {
@@ -588,18 +609,50 @@ export function buildWeaponData(attack) {
     weapon.system.classification = { size: attack.size };
   }
 
-  const effects = [
-    buildWeaponEffectData({ ...attack, numHands: attack.numHands }, {
-      name: attack.name,
-      skill: attack.skill,
-    }),
-  ];
+  // "Requirements: ...": kept as printed, and "Bot Mode only" / "Alt Mode only" is the weapon's Mode requirement (the
+  // attack is refused in the other Mode). Where it sits (TF CRB p.114): built in when the book says Integrated, or when
+  // it's only usable in Alt Mode (nothing to hold it with); held (External) when it's Bot Mode only.
+  if (attack.requirements) {
+    weapon.system.requirements.custom = attack.requirements;
+  }
 
-  for (const alternate of attack.alternateEffects ?? []) {
-    effects.push(buildWeaponEffectData({ ...alternate, numHands: attack.numHands }, {
-      name: alternate.name || `${attack.name} (Alternate)`,
+  if (attack.mode) {
+    weapon.system.modeRequirement = attack.mode == 'alt' ? 'altMode' : 'botMode';
+    weapon.system.hardpoint = { type: attack.size == 'integrated' || attack.mode == 'alt' ? 'integrated' : 'external' };
+  }
+
+  // "Golden Claw (1/scene, Might)".
+  if (attack.usesPerScene) {
+    weapon.system.usesPerScene = attack.usesPerScene;
+  }
+
+  const primary = buildWeaponEffectData({ ...attack, numHands: attack.numHands }, {
+    name: attack.name,
+    skill: attack.skill,
+  });
+  // "+d6 with ↓1".
+  if (attack.shiftDown) {
+    primary.system.shiftDown = attack.shiftDown;
+  }
+
+  const effects = [primary];
+
+  // "Cyberstunner Alternate Effect", or "... Alternate Effect 1", "2" when there are several; the printed text (a
+  // non-damage one's whole meaning, "Trip") goes in its description.
+  const alternates = attack.alternateEffects ?? [];
+  for (const [i, alternate] of alternates.entries()) {
+    const number = alternates.length > 1 ? ` ${i + 1}` : '';
+    const formatted = globalThis.game?.i18n?.format?.('E20.StatBlockImportAlternateName', { name: attack.name, number });
+    const data = buildWeaponEffectData({ ...alternate, numHands: attack.numHands }, {
+      name: formatted && formatted != 'E20.StatBlockImportAlternateName' ? formatted : `${attack.name} Alternate Effect${number}`,
       skill: attack.skill,
-    }));
+    });
+    data.system.shiftDown = alternate.shiftDown ?? 0;
+    if (alternate.name) {
+      data.system.description = alternate.name;
+    }
+
+    effects.push(data);
   }
 
   return { weapon, effects };
@@ -657,6 +710,37 @@ export function buildSimpleItems(ir, { type = 'npc' } = {}) {
       name: hangUp.name,
       type: 'hangUp',
       system: { description: hangUp.text },
+    });
+  }
+
+  // A Zord's Features and the Megaform Trait its Combiner names - matched to the compendium's, kept by their printed
+  // names ("Increase (Strength)") either way.
+  for (const feature of ir.zordFeatures ?? []) {
+    items.push({ name: feature.name, type: 'feature', system: { description: feature.text ?? '' } });
+  }
+
+  // What its brackets chose ("Core Essence [Speed]", "Commander [Strength, Speed]") rides on the item, and is laid over
+  // the compendium copy too (applyCompendiumMatches).
+  for (const trait of ir.megaformTraits ?? []) {
+    items.push({
+      name: trait.name,
+      type: 'megaformTrait',
+      system: { description: trait.text ?? '', ...(trait.overrides?.system ?? {}) },
+      flags: { essence20: { ...(trait.overrides?.flags ?? {}) } },
+    });
+  }
+
+  // The Alt Mode the sheet transforms into: its Size and movement, and the Bot Mode's Size to go back to.
+  if (ir.altMode && TRANSFORMING_TYPES.includes(type)) {
+    const movement = ir.altMode.movement ?? {};
+    items.push({
+      name: game.i18n?.format?.('E20.StatBlockImportAltModeName', { name: ir.name || '' }) || `${ir.name} Alt Mode`.trim(),
+      type: 'altMode',
+      system: {
+        altModesize: ir.altMode.size ?? ir.size ?? 'common',
+        botModeSize: ir.size ?? 'common',
+        altModeMovement: { ground: movement.ground ?? 0, aerial: movement.aerial ?? 0, aquatic: movement.swim ?? 0 },
+      },
     });
   }
 
@@ -771,9 +855,30 @@ export function actorToIr(actor, { preferFlag = true } = {}) {
     } else if (item.type === 'hangUp') {
       ir.hangUps.push(entry);
     } else if (item.type === 'weapon') {
-      ir.attacks.push(weaponToAttack(item, actor));
+      const attack = weaponToAttack(item, actor);
+      const modeRequirement = item.system?.modeRequirement;
+      if (modeRequirement) {
+        attack.mode = modeRequirement == 'altMode' ? 'alt' : 'bot';
+      }
+
+      if (item.system?.requirements?.custom) {
+        attack.requirements = item.system.requirements.custom;
+      }
+
+      ir.attacks.push(attack);
     }
   }
+
+  const altMode = system.canTransform ? (actor.items ?? []).find(item => item.type === 'altMode') : null;
+  ir.altMode = altMode ? {
+    size: altMode.system?.altModesize ?? null,
+    movement: {
+      ground: altMode.system?.altModeMovement?.ground || null,
+      aerial: altMode.system?.altModeMovement?.aerial || null,
+      swim: altMode.system?.altModeMovement?.aquatic || null,
+      climb: null,
+    },
+  } : null;
 
   return ir;
 }
@@ -786,7 +891,9 @@ function weaponToAttack(weapon, actor) {
   const [primary, ...alternates] = children;
 
   const toEffect = (effect) => ({
-    name: effect?.name ?? weapon.name,
+    // An imported Alternate Effect keeps its printed text in the description (its name is "<weapon> Alternate Effect").
+    name: (effect !== primary && effect?.system?.description) || effect?.name || weapon.name,
+    shiftDown: effect?.system?.shiftDown ?? 0,
     damageValue: effect?.system?.damageValue ?? null,
     damageType: effect?.system?.damageType ?? null,
     isReach: Boolean(effect?.system?.range?.reachMultiplier) || !effect?.system?.range?.value,
@@ -805,6 +912,7 @@ function weaponToAttack(weapon, actor) {
   // `name` is dropped in favour of the weapon's.
   const primaryClauses = toEffect(primary);
   delete primaryClauses.name;
+  delete primaryClauses.shiftDown;
 
   return {
     name: weapon.name,
@@ -880,6 +988,20 @@ export async function applyCompendiumMatches(items, matches) {
       data.system = { ...data.system, description: item.system.description };
     }
 
+    // A copy found by another of its names keeps the printed one: "Increase (Strength)" says which Essence, "Increase
+    // (Essence)" doesn't; "Commander [Strength, Speed]" which two.
+    if (item.type == 'feature' || indexKey(item.type, item.name) != indexKey(item.type, data.name)) {
+      data.name = item.name;
+    }
+
+    // A Megaform Trait's choices, over the compendium's defaults.
+    if (item.type == 'megaformTrait') {
+      const chosen = { ...(item.system ?? {}) };
+      delete chosen.description;
+      data.system = { ...data.system, ...chosen };
+      data.flags = foundry.utils.mergeObject(data.flags ?? {}, item.flags ?? {}, { inplace: false });
+    }
+
     resolved.push(data);
     substituted += 1;
   }
@@ -912,16 +1034,12 @@ export async function createActorFromStatBlock(ir, options = {}) {
     throw new Error('essence20 | Stat block import writes world documents only, never compendium packs.');
   }
 
-  // Imported lazily rather than at the top of this file on purpose: attachment-handler.mjs pulls
-  // in apps/choices-selector.mjs, which reads the `foundry` global at module scope. A static
-  // import would mean nothing could load the pure half of this module - buildActorData and
-  // friends - outside a live client, which is exactly what the parser/builder split exists to
-  // avoid (unit tests, a future "export as stat block" path, a headless script).
-  const { setEntryAndAddItem } = await import("../sheet-handlers/attachment-handler.mjs");
-
   // Items are resolved BEFORE the actor data is built, because the Active Effects they bring
   // decide how much has to come back out of the residuals - see collectEffectContributions.
   const { items } = await applyCompendiumMatches(buildSimpleItems(ir, { type: options.type }), options.matches);
+  // A pasted Perk / Hang-Up the compendium doesn't have still gets the plain rule its text reads as ("suffers ↓1 to all
+  // Social Skill Tests") - importers/stat-block-rules.mjs.
+  addRulesFromText(items);
   const actorData = buildActorData(ir, {
     ...options,
     effectContributions: options.effectContributions ?? collectEffectContributions(items),
@@ -933,7 +1051,19 @@ export async function createActorFromStatBlock(ir, options = {}) {
     return null;
   }
 
-  for (const attack of ir.attacks ?? []) {
+  await createAttacks(actor, ir.attacks ?? []);
+  return actor;
+}
+
+/** Each attack as a weapon with its weaponEffects attached, on the actor. */
+async function createAttacks(actor, attacks) {
+  // Imported lazily rather than at the top of this file on purpose: attachment-handler.mjs pulls
+  // in apps/choices-selector.mjs, which reads the `foundry` global at module scope. A static
+  // import would mean nothing could load the pure half of this module - buildActorData and
+  // friends - outside a live client, which is exactly what the parser/builder split exists to
+  // avoid (unit tests, a future "export as stat block" path, a headless script).
+  const { setEntryAndAddItem } = await import("../sheet-handlers/attachment-handler.mjs");
+  for (const attack of attacks) {
     const { weapon, effects } = buildWeaponData(attack);
     const [weaponItem] = await actor.createEmbeddedDocuments('Item', [weapon]);
     if (!weaponItem) {
@@ -953,6 +1083,95 @@ export async function createActorFromStatBlock(ir, options = {}) {
       }
     }
   }
+}
 
-  return actor;
+/* ------------------------------------------------------------------ *
+ * Onto an existing actor (a Megaform's own stat block)                *
+ * ------------------------------------------------------------------ */
+
+/** "Energon Pool: Bruticus has an Energon Pool of 8." - the printed pool, or null. */
+export function printedEnergonPool(ir) {
+  for (const entry of [...(ir.perks ?? []), ...(ir.powers ?? [])]) {
+    const match = `${entry.name}: ${entry.text}`.match(/\bEnergon Pool\b[^.]*?\b(?:of|is)\s+(\d+)/i);
+    if (match) {
+      return Number.parseInt(match[1], 10);
+    }
+  }
+
+  return null;
+}
+
+/**
+ * What each printed Defense and Movement needs from the actor's own Bonus to land on the printed number, given what
+ * the actor works out today. A Megaform's Defenses and Movement come from its members (EoC p.42); a published
+ * Combiner's printed numbers don't always follow that (Bruticus' own armor, Smarts 6), and the book is truth.
+ * @param {Object} ir
+ * @param {Object} system   The actor's prepared system data.
+ * @returns {Object}   Update paths to values, only for the ones that change.
+ */
+export function printedBonusUpdate(ir, system) {
+  const update = {};
+  for (const [name, printed] of Object.entries(ir.defenses ?? {})) {
+    const defense = system?.defenses?.[name];
+    if (printed === null || printed === undefined || !defense || !Number.isFinite(Number(defense.total))) {
+      continue;
+    }
+
+    const bonus = (Number(defense.bonus) || 0) + printed - Number(defense.total);
+    if (bonus != (Number(defense.bonus) || 0)) {
+      update[`system.defenses.${name}.bonus`] = bonus;
+    }
+  }
+
+  for (const [type, printed] of Object.entries(ir.movement ?? {})) {
+    const movement = system?.movement?.[type];
+    if (!printed || !movement || !Number.isFinite(Number(movement.total))) {
+      continue;
+    }
+
+    const bonus = (Number(movement.bonus) || 0) + printed - Number(movement.total);
+    if (bonus != (Number(movement.bonus) || 0)) {
+      update[`system.movement.${type}.bonus`] = bonus;
+    }
+  }
+
+  return update;
+}
+
+/**
+ * A stat block onto an actor that's already there - a Combiner's own block onto the Megaform its members make up
+ * (Bruticus onto the Combaticons' Megaform). Its stats come from its members, so this adds what the block has of its
+ * own: its Perks, Powers, Hang-Ups and attacks (anything already on it by that name is left alone), its printed Energon
+ * Pool, and the Defense and Movement Bonuses that bring it to the printed numbers.
+ * @param {Actor} actor
+ * @param {Object} ir
+ * @param {Object} [options]   {matches, raw}
+ * @returns {Promise<{added: Number, adjusted: Object}>}
+ */
+export async function addStatBlockToActor(actor, ir, options = {}) {
+  const has = (type, name) => actor.items.some(item => item.type == type && indexKey(type, item.name) == indexKey(type, name));
+  const { items } = await applyCompendiumMatches(buildSimpleItems(ir, { type: actor.type }), options.matches);
+  addRulesFromText(items);
+  const fresh = items.filter(item => !has(item.type, item.name));
+  if (fresh.length) {
+    await actor.createEmbeddedDocuments('Item', fresh);
+  }
+
+  const attacks = (ir.attacks ?? []).filter(attack => !has('weapon', attack.name));
+  await createAttacks(actor, attacks);
+
+  const update = { 'flags.essence20.statBlockSource': { raw: options.raw ?? null, ir, importedAt: Date.now(), version: 1 } };
+  const pool = printedEnergonPool(ir);
+  // A Combiner's pool is half the Energon spent to merge (EoC p.42), so the printed pool is that spend halved.
+  if (pool !== null && 'energonSpentToMerge' in (actor.system ?? {})) {
+    update['system.energonSpentToMerge'] = pool * 2;
+  }
+
+  await actor.update(update);
+  const adjusted = printedBonusUpdate(ir, actor.system);
+  if (Object.keys(adjusted).length) {
+    await actor.update({ ...adjusted });
+  }
+
+  return { added: fresh.length + attacks.length, adjusted };
 }

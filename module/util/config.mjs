@@ -1537,6 +1537,13 @@ E20.transformerModes = {
 };
 preLocalize("transformerModes");
 
+// A weapon only usable in one Mode ("Requirements: Bot Mode only" / "Alt Mode only") - system.modeRequirement.
+E20.weaponModeRequirements = {
+  botMode: "E20.ModeBotModeOnly",
+  altMode: "E20.ModeAltModeOnly",
+};
+preLocalize("weaponModeRequirements");
+
 // Transformer Hardpoints (TF CRB p.114). Every Cybertronian starts with 2 External + 2
 // Integrated. External Hardpoints hold weapons in-hand (no mods, can be disarmed, unusable in
 // Alt Mode) and cost Load Out hands; Integrated Hardpoints build a weapon into the chassis

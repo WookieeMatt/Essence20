@@ -508,7 +508,11 @@ export class Essence20Item extends Item {
       this.system.effectiveBrawnReq = req;
     }
 
-    if (hardpoint.type == 'external') {
+    // A printed Mode requirement says it outright; otherwise the Hardpoint implies one.
+    const modeRequirement = this.system.modeRequirement;
+    if (modeRequirement) {
+      this.system.derivedMode = modeRequirement == 'altMode' ? 'modeAltMode' : 'modeBotMode';
+    } else if (hardpoint.type == 'external') {
       this.system.derivedMode = 'modeBotMode';
     } else if (isIntegrated) {
       this.system.derivedMode = hardpoint.altModeVisibility == 'hidden' ? 'modeAltMode' : 'modeAny';

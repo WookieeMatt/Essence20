@@ -12,12 +12,9 @@
   </div>
   {{/if}}
   {{/inArray}}
-  {{#if system.participantHealth.length}}
+  {{!-- No combined Health: a Megaform has none of its own (each participant's is its own - the sidebar lists them). --}}
+  {{#if (or system.isDefeated system.hasEnhancedAttack system.hasAssaultWeapon system.hasEnhancedInitiative system.hasTitanHardpoint)}}
   <div class="stats-container flexrow e20-flex-group-center e20-border-accent megaform-summary">
-    <div class="flexcol e20-flex-group-center">
-      <label>{{localize 'E20.MegaformCombinedHealth'}}</label>
-      <span>{{system.combinedHealthValue}} / {{system.combinedHealthMax}}</span>
-    </div>
     {{#if system.isDefeated}}
     <div class="flexcol e20-flex-group-center">
       <label>{{localize 'E20.MegaformDefeated'}}</label>
