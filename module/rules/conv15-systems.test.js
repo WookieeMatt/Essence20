@@ -65,8 +65,8 @@ function setPath(object, key, value) {
   const last = keys.pop();
   const parent = keys.reduce((o, k) => (o[k] ??= {}), object);
   // Foundry's "-=key" deletes it.
-  if (last.startsWith('-=')) {
-    delete parent[last.slice(2)];
+  if (last.startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
+    delete parent[last.replace(/^-=/, '')];
   } else {
     parent[last] = value;
   }

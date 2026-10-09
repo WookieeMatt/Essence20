@@ -7,7 +7,7 @@ import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon } from '.
 // setGame use.
 let idCounter = 0;
 global.foundry = {
-  utils: { randomID: jest.fn(() => `id${++idCounter}`) },
+  data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { randomID: jest.fn(() => `id${++idCounter}`) },
 };
 
 function makeCombatant() {

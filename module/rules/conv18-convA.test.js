@@ -72,8 +72,8 @@ function setPath(object, key, value) {
   const keys = key.split('.');
   const last = keys.pop();
   const parent = keys.reduce((o, k) => (o[k] ??= {}), object);
-  if (last.startsWith('-=')) {
-    delete parent[last.slice(2)];
+  if (last.startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
+    delete parent[last.replace(/^-=/, '')];
   } else {
     parent[last] = value;
   }
@@ -81,7 +81,7 @@ function setPath(object, key, value) {
 
 const getPath = (object, key) => String(key).split('.').reduce((o, k) => (o === null || o === undefined ? o : o[k]), object);
 global.foundry = {
-  utils: { setProperty: setPath, getProperty: getPath, deepClone: v => JSON.parse(JSON.stringify(v)), randomID: () => `r${nextId++}` },
+  data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { setProperty: setPath, getProperty: getPath, deepClone: v => JSON.parse(JSON.stringify(v)), randomID: () => `r${nextId++}` },
   applications: { api: { DialogV2: { wait: jest.fn(async () => null), confirm: jest.fn(async () => true) } } },
 };
 global.CONFIG = {

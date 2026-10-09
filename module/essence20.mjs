@@ -190,6 +190,7 @@ import { getWeaponEffectDamages } from "./mechanics/combat/damage-display.mjs";
 import { getSummonReadyRound, isSummonReady } from "./mechanics/vehicles/zord-summon.mjs";
 import { missingGrowthLevels } from "./mechanics/vehicles/zord-growth.mjs";
 import { autoFeaturesDone } from "./mechanics/vehicles/zord-auto-features.mjs";
+import { hasArrived } from "./mechanics/vehicles/zord-arrival.mjs";
 import { getVehicleDriver, healStunAtTurnStart } from "./mechanics/combat/combat.mjs";
 import { healRegeneratingShellAtTurnEnd, isPowerAdaptationActive } from "./items/forms/power-adaptation.mjs";
 import { isRushTheLineActive } from "./items/movement/rush-the-line.mjs";
@@ -563,6 +564,11 @@ Handlebars.registerHelper("canUsePower", canUsePower);
 // for every attached actor in prepareSystemActors.
 Handlebars.registerHelper("isZordSummonReady", isSummonReady);
 Handlebars.registerHelper("zordSummonReadyRound", getSummonReadyRound);
+// Called and arrived this combat (PR CRB p.135) - mechanics/vehicles/zord-arrival.mjs.
+Handlebars.registerHelper("zordHasArrived", attached => {
+  const zord = attached?.uuid ? fromUuidSync(attached.uuid) : null;
+  return !!zord && hasArrived(zord);
+});
 // Zord growth choices the Ranger still owes this Zord (PR CRB p.134) - mechanics/vehicles/zord-growth.mjs.
 Handlebars.registerHelper("zordAutoFeaturesDone", attached => {
   const zord = attached?.uuid ? fromUuidSync(attached.uuid) : null;

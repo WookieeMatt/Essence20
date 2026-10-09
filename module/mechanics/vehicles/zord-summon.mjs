@@ -57,6 +57,8 @@ export async function rollSummonTimer(pilotActor, zordActor) {
 
   const readyRound = game.combat.round + rounds;
   await zordActor.setFlag('essence20', SUMMON_READY_ROUND_FLAG, readyRound);
+  // Who called it (its arrival card's Board seats them - zord-arrival.mjs); a fresh call hasn't arrived yet.
+  await zordActor.update?.({ 'flags.essence20.zordSummoner': pilotActor?.uuid ?? null, 'flags.essence20.zordArrived': new foundry.data.operators.ForcedDeletion() });
 
   ChatMessage.create({
     content: game.i18n.format('E20.ZordSummonTimerRolled', {

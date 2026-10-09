@@ -86,8 +86,8 @@ const setPath = (object, key, value) => {
 
 async function applyUpdate(doc, data) {
   for (const [key, value] of Object.entries(data)) {
-    if (/\.-=/.test(key)) {
-      const [path, gone] = key.split('.-=');
+    if (/\.-=/.test(key) || __isForcedDeletion(value)) {
+      const [path, gone] = __isForcedDeletion(value) ? [key.slice(0, key.lastIndexOf('.')), key.slice(key.lastIndexOf('.') + 1)] : key.split('.-=');
       delete getPath(doc, path)?.[gone];
       continue;
     }
@@ -225,7 +225,7 @@ beforeEach(() => {
     ?? game.actors.contents.flatMap(actor => actor.items.contents).find(item => item.uuid == uuid) ?? null;
   global.fromUuid = async uuid => global.fromUuidSync(uuid);
   global.foundry = {
-    utils: { getProperty: getPath, setProperty: setPath, hasProperty: (o, k) => getPath(o, k) !== undefined, deepClone: v => JSON.parse(JSON.stringify(v)), randomID: () => `r${nextId++}` },
+    data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { getProperty: getPath, setProperty: setPath, hasProperty: (o, k) => getPath(o, k) !== undefined, deepClone: v => JSON.parse(JSON.stringify(v)), randomID: () => `r${nextId++}` },
     applications: { api: { DialogV2: { wait: jest.fn(async () => null), prompt: jest.fn(async () => null), confirm: jest.fn(async () => true) } } },
   };
 });

@@ -136,7 +136,7 @@ async function removeTemporaryItems(actor, items) {
     const weapon = actor.items.get(item.flags?.essence20?.parentId);
     const key = item.flags?.essence20?.collectionId;
     if (weapon && key && weapon.system.items?.[key]) {
-      await weapon.update({ [`system.items.-=${key}`]: null });
+      await weapon.update({ [`system.items.${key}`]: new foundry.data.operators.ForcedDeletion() });
     }
   }
 

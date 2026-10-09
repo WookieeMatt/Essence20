@@ -43,7 +43,7 @@ beforeEach(() => {
   };
   global.ui = { notifications: { warn: jest.fn() } };
   global.foundry = {
-    utils: {
+    data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: {
       randomID: () => `rid${n++}`,
       mergeObject: function merge(a, b) {
         const out = { ...a };

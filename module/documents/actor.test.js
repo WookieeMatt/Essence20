@@ -2486,7 +2486,7 @@ describe("Party member roster", () => {
     test("removes the roster entry matching the given UUID", async () => {
       const party = makeParty({ a: { uuid: 'Actor.pc1' }, b: { uuid: 'Actor.pc2' } });
       await party.removeMember('Actor.pc2');
-      expect(party.update).toHaveBeenCalledWith({ 'system.actors.-=b': null });
+      expect(party.update).toHaveBeenCalledWith({ 'system.actors.b': expect.any(foundry.data.operators.ForcedDeletion) });
     });
 
     test("no-ops when the UUID isn't on the roster", async () => {

@@ -21,7 +21,7 @@ beforeAll(async () => {
     E20: { actorSizes: { small: 's', common: 'c', large: 'l', huge: 'h', gigantic: 'g', towering: 't' }, skillShiftList: ['d12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd20'] },
     statusEffects: [{ id: 'prone', name: 'Prone' }],
   };
-  global.foundry = { utils: { deepClone: v => JSON.parse(JSON.stringify(v ?? null)) }, applications: { api: {} } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { deepClone: v => JSON.parse(JSON.stringify(v ?? null)) }, applications: { api: {} } };
   global.Roll = class {
     constructor(formula) {
       this.formula = formula;

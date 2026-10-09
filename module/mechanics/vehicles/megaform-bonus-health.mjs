@@ -102,5 +102,5 @@ export function pruneBonusHealth(megaform, roster) {
   const taken = megaform?.flags?.essence20?.[BONUS_TAKEN_FLAG] ?? {};
   const present = new Set(roster.map(keyOf));
   const gone = Object.keys(taken).filter(key => !present.has(key));
-  return gone.length ? Object.fromEntries(gone.map(key => [`flags.essence20.${BONUS_TAKEN_FLAG}.-=${key}`, null])) : null;
+  return gone.length ? Object.fromEntries(gone.map(key => [`flags.essence20.${BONUS_TAKEN_FLAG}.${key}`, new foundry.data.operators.ForcedDeletion()])) : null;
 }

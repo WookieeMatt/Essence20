@@ -4,7 +4,7 @@ beforeAll(() => {
   global.Hooks = { on: jest.fn(), once: jest.fn(), callAll: jest.fn() };
   global.game = { i18n: { localize: k => k, format: (k, d) => `${k}:${JSON.stringify(d)}` }, user: { id: 'u1' }, actors: [] };
   global.CONFIG = { E20: {}, statusEffects: [{ id: 'stunned', name: 'Stunned' }] };
-  global.foundry = { utils: {}, applications: { api: {} } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: {}, applications: { api: {} } };
   global.ui = { notifications: { warn: jest.fn(), info: jest.fn() } };
 });
 

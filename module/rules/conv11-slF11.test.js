@@ -30,7 +30,7 @@ let nextId = 1;
 const clock = { sceneClockScene: 1, sceneClockEncounter: 1, sceneClockMission: 1 };
 const getPath = (object, key) => String(key).split('.').reduce((o, k) => (o === null || o === undefined ? o : o[k]), object);
 function setPath(object, key, value) {
-  const deletion = key.match(/^(.*)\.-=(.+)$/);
+  const deletion = (__isForcedDeletion(value) ? key.match(/^(.*)\.([^.]+)$/) : key.match(/^(.*)\.-=(.+)$/));
   if (deletion) {
     delete getPath(object, deletion[1])?.[deletion[2]];
     return;

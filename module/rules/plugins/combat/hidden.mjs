@@ -32,7 +32,7 @@ export async function setHidden(actor, hidden) {
   if (hidden) {
     await write(actor, 'update', [{ [`flags.essence20.${HIDDEN_FLAG}`]: { epoch: getSceneEpoch(), at: Date.now() } }]);
   } else if (actor.flags?.essence20?.[HIDDEN_FLAG]) {
-    await write(actor, 'update', [{ [`flags.essence20.-=${HIDDEN_FLAG}`]: null }]);
+    await write(actor, 'update', [{ [`flags.essence20.${HIDDEN_FLAG}`]: new foundry.data.operators.ForcedDeletion() }]);
   }
 }
 

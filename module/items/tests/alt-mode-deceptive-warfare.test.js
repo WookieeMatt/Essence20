@@ -17,7 +17,7 @@ beforeEach(() => {
   };
   global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
   global.fromUuid = jest.fn(async uuid => game.actors.find(a => a.uuid == uuid) ?? null);
-  global.foundry = { utils: { escapeHTML: s => s } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { escapeHTML: s => s } };
 });
 
 // Ladder's extend / stow Use and its allies' ↑2 switch are rules on the gear (rules/conv12-slI12.test.js).

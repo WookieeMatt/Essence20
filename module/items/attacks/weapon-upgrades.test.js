@@ -7,7 +7,7 @@ const {
 } = await import('./weapon-upgrades.mjs');
 
 global.foundry = {
-  utils: {
+  data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: {
     setProperty: (obj, path, value) => {
       const parts = path.split('.');
       let o = obj;

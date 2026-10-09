@@ -65,8 +65,8 @@ const setPath = (object, key, value) => {
 async function applyUpdate(doc, data) {
   for (const [key, value] of Object.entries(data)) {
     const parts = key.split('.');
-    if (parts[parts.length - 1].startsWith('-=')) {
-      const last = parts.pop().slice(2);
+    if (parts[parts.length - 1].startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
+      const last = parts.pop().replace(/^-=/, '');
       delete getPath(doc, parts.join('.'))?.[last];
     } else {
       setPath(doc, key, value);
@@ -131,7 +131,7 @@ beforeEach(() => {
   global.ChatMessage = { create: jest.fn(async data => data), getSpeaker: () => ({}) };
   global.fromUuidSync = uuid => game.actors.contents.find(actor => actor.uuid == uuid)
     ?? game.actors.contents.flatMap(actor => actor.items.contents).find(item => item.uuid == uuid) ?? null;
-  global.foundry = { utils: { getProperty: getPath, setProperty: setPath, deepClone: v => JSON.parse(JSON.stringify(v)) } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { getProperty: getPath, setProperty: setPath, deepClone: v => JSON.parse(JSON.stringify(v)) } };
 });
 
 describe('HitRider', () => {

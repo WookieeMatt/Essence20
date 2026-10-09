@@ -11,13 +11,43 @@ import { buildDetectionModes } from "../../items/senses/blindsight.mjs";
  * @param {Number} height The actor's new width
  */
 export function resizeTokens(actor, width, height) {
-  const tokens = actor?.getActiveTokens();
-  for (const token of tokens) {
-    token.document.update({
-      "height": height,
-      "width": width,
-    });
+  for (const token of sizedTokensOf(actor)) {
+    if (token.width != width || token.height != height) {
+      token.update({ height, width });
+    }
   }
+}
+
+/**
+ * The placed tokens an actor's Size governs: an unlinked token's own token when the actor is that token's copy; else
+ * its linked tokens, and its unlinked tokens on every scene that don't keep a Size of their own (a token whose copy
+ * changed its Size isn't this actor's to resize). Only tokens this user may change. Exported for tests.
+ * @param {Actor} actor
+ * @param {Iterable<Scene>} [scenes]
+ * @returns {TokenDocument[]}
+ */
+export function sizedTokensOf(actor, scenes = globalThis.game?.scenes ?? []) {
+  if (!actor) {
+    return [];
+  }
+
+  if (actor.isToken) {
+    return actor.token?.isOwner ? [actor.token] : [];
+  }
+
+  const found = new Set();
+  for (const scene of scenes) {
+    for (const token of scene.tokens ?? []) {
+      // Only what the token itself overrides (its delta's stored data) - the delta's prepared system carries every field.
+      const own = token.delta?._source?.system?.size;
+      const ownSize = own !== undefined && own !== null;
+      if (token.actorId == actor.id && token.isOwner && (token.actorLink || !ownSize)) {
+        found.add(token);
+      }
+    }
+  }
+
+  return [...found];
 }
 
 /**

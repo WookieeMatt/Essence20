@@ -73,7 +73,7 @@ beforeEach(() => {
   global.ui = { notifications: { warn: jest.fn(), info: jest.fn() } };
   global.ChatMessage = { create: jest.fn(async data => data), getSpeaker: () => ({}) };
   global.CONFIG = { E20: { skills: { science: 'E20.SkillScience', alertness: 'E20.SkillAlertness', streetwise: 'E20.SkillStreetwise' }, skillToEssence: { streetwise: 'social' }, weaponTypes: { blunt: 'Blunt', rifle: 'Rifle' } } };
-  global.foundry = { utils: { setProperty: setPath, getProperty: (o, p) => p.split('.').reduce((at, k) => at?.[k], o) }, applications: { api: { DialogV2: { confirm: jest.fn(async () => false) } } } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { setProperty: setPath, getProperty: (o, p) => p.split('.').reduce((at, k) => at?.[k], o) }, applications: { api: { DialogV2: { confirm: jest.fn(async () => false) } } } };
 });
 
 describe('rule types read by hand-written code', () => {

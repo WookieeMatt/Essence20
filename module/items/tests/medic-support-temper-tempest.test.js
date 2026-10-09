@@ -22,7 +22,7 @@ beforeAll(() => {
     statusEffects: [],
   };
   global.foundry = {
-    utils: {
+    data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: {
       getProperty: (o, p) => p.split('.').reduce((a, k) => a?.[k], o),
       setProperty: (o, p, v) => {
         const keys = p.split('.');

@@ -168,7 +168,7 @@ describe('strict mode: GMs are asked, granted items are never checked', () => {
   test('a GM dropping an unmet item is asked; yes adds it, no stops it; met items, warn mode and players are not asked', async () => {
     const { confirmGmDrop } = await import('./prerequisites.mjs');
     const confirm = jest.fn(async () => true);
-    global.foundry = { applications: { api: { DialogV2: { confirm } } } };
+    global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, applications: { api: { DialogV2: { confirm } } } };
     settings.prerequisiteMode = 'strict';
     game.user.isGM = true;
     expect(await confirmGmDrop(actorOf(), perk(['self:level>=9']))).toBe(true);

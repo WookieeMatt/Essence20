@@ -85,7 +85,7 @@ export function ruleResistsAttack(target, damageType, attacker = null) {
     resists = true;
     // Written without waiting (this is read while the roll's automatic modifiers are worked out, which isn't async).
     if (rule.consumeMark && rule.fromMark) {
-      Promise.resolve(target.update?.({ [`flags.essence20.ruleMarks.-=${rule.fromMark}`]: null })).catch(() => {});
+      Promise.resolve(target.update?.({ [`flags.essence20.ruleMarks.${rule.fromMark}`]: new foundry.data.operators.ForcedDeletion() })).catch(() => {});
     }
   }
 

@@ -1929,7 +1929,7 @@ const HANDLERS = {
       const now = new Set(recipients(step, ctx));
       for (const other of markedBy(ctx.actor, markKey)) {
         if (!now.has(other)) {
-          await write(other, 'update', [{ [`flags.essence20.ruleMarks.-=${markKey}`]: null }]);
+          await write(other, 'update', [{ [`flags.essence20.ruleMarks.${markKey}`]: new foundry.data.operators.ForcedDeletion() }]);
         }
       }
     }
@@ -1971,7 +1971,7 @@ const HANDLERS = {
       const carriers = markedBy(ctx.actor, markKey).map(other => ({ other, at: Number(other.flags?.essence20?.ruleMarks?.[markKey]?.at) || 0 }))
         .sort((a, b) => b.at - a.at);
       for (const { other } of carriers.slice(keep)) {
-        await write(other, 'update', [{ [`flags.essence20.ruleMarks.-=${markKey}`]: null }]);
+        await write(other, 'update', [{ [`flags.essence20.ruleMarks.${markKey}`]: new foundry.data.operators.ForcedDeletion() }]);
       }
     }
   },
@@ -1980,7 +1980,7 @@ const HANDLERS = {
   async unmark(step, ctx) {
     const markKey = step.perSetter && ctx.actor?.id ? `${step.key}--${ctx.actor.id}` : step.key;
     for (const actor of recipients(step, ctx)) {
-      await write(actor, 'update', [{ [`flags.essence20.ruleMarks.-=${markKey}`]: null }]);
+      await write(actor, 'update', [{ [`flags.essence20.ruleMarks.${markKey}`]: new foundry.data.operators.ForcedDeletion() }]);
     }
   },
 

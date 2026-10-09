@@ -84,6 +84,8 @@ import "./zords/megaform-attacks.mjs";
 import "./zords/essence-skill-ranks.mjs";
 // Titan-Class's Energon Point a round (EoC p.49).
 import "./attacks/titan-class.mjs";
+// Call to Action's arrival: the notice, Place and Board (PR CRB p.135).
+import "../mechanics/vehicles/zord-arrival.mjs";
 // Recall for Repairs' Use button (PR CRB p.136).
 import "../mechanics/vehicles/zord-recall.mjs";
 import "./zords/zord-feature-picks.mjs";

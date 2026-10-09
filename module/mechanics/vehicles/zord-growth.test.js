@@ -44,7 +44,7 @@ describe('Recall for Repairs', () => {
     const recalled = epoch => ({
       name: 'Tyranno', statuses: new Set(['prone', 'defeated']), flags: { essence20: { zordRecalled: { epoch } } },
       system: { health: { value: 0, max: 6 } },
-      toggleStatusEffect: jest.fn(), update: jest.fn(),
+      toggleStatusEffect: jest.fn(), update: jest.fn(), unsetFlag: jest.fn(),
     });
     expect(recalledThisScene(recalled(3), 3)).toBe(true);
     expect(recalledThisScene(recalled(2), 3)).toBe(false);
@@ -53,7 +53,8 @@ describe('Recall for Repairs', () => {
     const back = recalled(-99);
     expect(await returnFromRepairs(back)).toBe(true);
     expect(back.toggleStatusEffect).toHaveBeenCalledWith('prone', { active: false });
-    expect(back.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.health.value': 6, 'system.stun.value': 0 }));
+    expect(back.update).toHaveBeenCalledWith({ 'system.health.value': 6, 'system.stun.value': 0 });
+    expect(back.unsetFlag).toHaveBeenCalledWith('essence20', 'zordRecalled');
     expect(await returnFromRepairs({ flags: {} })).toBe(false);
   });
 });
@@ -63,4 +64,49 @@ test('Detachable and Core Body never share a Zord', () => {
   expect(clashingMegaformTrait(holder('coreBody'), { system: { type: 'detachable' } })).toBe(true);
   expect(clashingMegaformTrait(holder('detachable'), { system: { type: 'coreBody' } })).toBe(true);
   expect(clashingMegaformTrait(holder('move'), { system: { type: 'detachable' } })).toBe(false);
+});
+
+test("recalling an unlinked token's Zord notes it on the world Zord, then removes the token - in that order", async () => {
+  const { recallZord } = await import('./zord-recall.mjs');
+  const calls = [];
+  const world = { uuid: 'Actor.z', name: 'Tyranno', type: 'zord', getActiveTokens: () => [], setFlag: jest.fn(async () => calls.push('flag')) };
+  const token = { id: 't1', isOwner: true, parent: { tokens: { has: () => true } }, delete: jest.fn(async () => calls.push('delete')) };
+  const copy = { uuid: 'Scene.s.Token.t1.Actor.z', name: 'Tyranno', type: 'zord', isToken: true, token, baseActor: world, setFlag: jest.fn() };
+  global.game.actors = [];
+  global.ChatMessage = { create: jest.fn(async () => calls.push('chat')), getSpeaker: () => ({}) };
+  expect(await recallZord(copy)).toBe(true);
+  expect(world.setFlag).toHaveBeenCalledWith('essence20', 'zordRecalled', expect.any(Object));
+  expect(copy.setFlag).not.toHaveBeenCalled();
+  expect(calls).toEqual(['flag', 'chat', 'delete']);
+});
+
+test('crew climbing out of a recalled Zord stand in the squares beside it', async () => {
+  const { disembarkPositions } = await import('./zord-recall.mjs');
+  const zordToken = { x: 200, y: 100, width: 3, height: 2 };
+  expect(disembarkPositions(zordToken, 3, 100)).toEqual([{ x: 500, y: 100 }, { x: 500, y: 200 }, { x: 600, y: 100 }]);
+  expect(disembarkPositions(zordToken, 1, 100, { x: 0, y: 0, width: 500, height: 500 })).toEqual([{ x: 100, y: 100 }]);
+});
+
+test('recalling a Zord with its Ranger aboard: the seat is cleared and the Ranger is back on the map', async () => {
+  const { recallZord } = await import('./zord-recall.mjs');
+  const ranger = { id: 'r', uuid: 'Actor.r', name: 'Red', isToken: false };
+  const scene = { id: 's', grid: { size: 100 }, tokens: [], createEmbeddedDocuments: jest.fn(async () => [{ uuid: 'Scene.s.Token.n' }]) };
+  const token = { id: 't1', x: 200, y: 100, width: 3, height: 3, isOwner: true, parent: scene, delete: jest.fn() };
+  scene.tokens.has = () => true;
+  const zord = {
+    uuid: 'Actor.z', name: 'Tyranno', type: 'zord', isOwner: true, getActiveTokens: () => [token], setFlag: jest.fn(), update: jest.fn(),
+    system: { actors: { k1: { uuid: 'Actor.r', vehicleRole: 'driver' }, k2: { uuid: 'Actor.x' } } },
+  };
+  ranger.getTokenDocument = jest.fn(async data => ({ toObject: () => ({ actorId: 'r', ...data }) }));
+  global.canvas = { scene, grid: { size: 100 }, dimensions: { sceneRect: { x: 0, y: 0, width: 2000, height: 2000 } } };
+  global.game.actors = [];
+  global.game.user = { isGM: true, can: () => true };
+  global.game.scenes = new Map([['s', scene]]);
+  global.fromUuidSync = jest.fn(uuid => (uuid == 'Actor.r' ? ranger : null));
+  global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
+  expect(await recallZord(zord)).toBe(true);
+  expect(zord.update).toHaveBeenCalledWith({ 'system.actors.k1': expect.any(foundry.data.operators.ForcedDeletion) });
+  expect(ranger.getTokenDocument).toHaveBeenCalledWith(expect.objectContaining({ x: 500, y: 100 }));
+  expect(scene.createEmbeddedDocuments).toHaveBeenCalledWith('Token', [expect.objectContaining({ actorId: 'r', x: 500, y: 100 })]);
+  expect(token.delete).toHaveBeenCalled();
 });

@@ -1000,7 +1000,7 @@ export function ruleDieSubstitution(actor, target, roll = {}, startShift) {
 
       // consumeMark: the roll it applied to uses up the roller's own mark (a banked one-roll floor).
       if (rule.consumeMark && actor?.flags?.essence20?.ruleMarks?.[rule.consumeMark]) {
-        await actor.update?.({ [`flags.essence20.ruleMarks.-=${rule.consumeMark}`]: null });
+        await actor.update?.({ [`flags.essence20.ruleMarks.${rule.consumeMark}`]: new foundry.data.operators.ForcedDeletion() });
       }
     }
   };
@@ -1593,7 +1593,7 @@ registerConsumer('rulesMark', async consume => {
   const keys = Object.keys(actor?.flags?.essence20?.ruleMarks ?? {}).filter(name => name == consume.key || name.startsWith(`${consume.key}--`));
   if (keys.length) {
     const { needsGmRelay, relayToGm } = await import("../mechanics/world/gm-relay.mjs");
-    const update = [Object.fromEntries(keys.map(name => [`flags.essence20.ruleMarks.-=${name}`, null]))];
+    const update = [Object.fromEntries(keys.map(name => [`flags.essence20.ruleMarks.${name}`, new foundry.data.operators.ForcedDeletion()]))];
     await (needsGmRelay(actor) ? relayToGm(actor, 'update', update) : actor.update(...update));
   }
 });

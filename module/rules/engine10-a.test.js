@@ -31,7 +31,7 @@ let nextId = 1;
 let sceneEpoch = 1;
 const getPath = (object, key) => String(key).split('.').reduce((o, k) => (o === null || o === undefined ? o : o[k]), object);
 function setPath(object, key, value) {
-  const deletion = key.match(/^(.*)\.-=(.+)$/);
+  const deletion = (__isForcedDeletion(value) ? key.match(/^(.*)\.([^.]+)$/) : key.match(/^(.*)\.-=(.+)$/));
   if (deletion) {
     delete getPath(object, deletion[1])?.[deletion[2]];
     return;
@@ -58,7 +58,7 @@ global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
 global.ui = { notifications: { warn: jest.fn(), info: jest.fn() } };
 global.CONFIG = { E20: { skillShiftList: ['3d6', '2d8', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd20'], skillToEssence: { driving: 'speed', athletics: 'strength' } } };
 global.foundry = {
-  utils: { getProperty: getPath, setProperty: setPath, deepClone: value => JSON.parse(JSON.stringify(value)), escapeHTML: text => String(text) },
+  data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { getProperty: getPath, setProperty: setPath, deepClone: value => JSON.parse(JSON.stringify(value)), escapeHTML: text => String(text) },
   applications: { api: { DialogV2: { wait: jest.fn(async () => null), prompt: jest.fn(async () => null) } } },
 };
 

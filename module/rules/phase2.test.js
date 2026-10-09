@@ -25,7 +25,7 @@ function makeActor(items = [], extra = {}) {
     },
     async update(data) {
       for (const [key, value] of Object.entries(data)) {
-        const deletion = key.match(/^(.*)\.-=(.+)$/);
+        const deletion = (__isForcedDeletion(value) ? key.match(/^(.*)\.([^.]+)$/) : key.match(/^(.*)\.-=(.+)$/));
         if (deletion) {
           delete foundry.utils.getProperty(this, deletion[1])?.[deletion[2]];
         } else {
@@ -110,7 +110,7 @@ describe('limits', () => {
     const rule = { limit: { per: 'rest', max: '1', key: 'shared' } };
     await recordUse(actor, rule, item, 0);
     expect(usesLeft(actor, rule, makeItem([]), 3)).toBe(0);
-    expect(restClears(actor)).toEqual(['flags.essence20.ruleUses.-=shared']);
+    expect(restClears(actor)).toEqual(['flags.essence20.ruleUses.shared']);
     expect(usesLeft(actor, {}, item, 0)).toBe(Infinity);
     await recordUse(actor, {}, item, 0);
     expect(limitFlag('a b')).toBe('ruleUses.a_b');

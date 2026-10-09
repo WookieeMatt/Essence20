@@ -28,8 +28,8 @@ function setPath(object, path, value) {
   const keys = path.split('.');
   const last = keys.pop();
   const node = keys.reduce((at, key) => (at[key] ??= {}), object);
-  if (last.startsWith('-=')) {
-    delete node[last.slice(2)];
+  if (last.startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
+    delete node[last.replace(/^-=/, '')];
   } else {
     node[last] = value;
   }
@@ -55,7 +55,7 @@ const ctxOf = (self, extra = {}) => contextFor({ self, ...extra });
 
 beforeEach(() => {
   global.game = { combat: null, user: { targets: new Set() }, i18n: { localize: key => `L:${key}`, format: key => `L:${key}`, has: () => true } };
-  global.foundry = { utils: { getProperty: (o, p) => p.split('.').reduce((at, k) => at?.[k], o), setProperty: setPath } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { getProperty: (o, p) => p.split('.').reduce((at, k) => at?.[k], o), setProperty: setPath } };
   global.fromUuid = async () => null;
 });
 

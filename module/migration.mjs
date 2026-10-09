@@ -52,11 +52,11 @@ export const migrateWorld = async function() {
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Actor document ${actor.name}`);
         await actor.update(updateData, {enforceTypes: false, diff: valid});
-        await actor.update({"system.skills.-=strength": null});
-        await actor.update({"system.skills.-=smarts": null});
-        await actor.update({"system.skills.-=social": null});
-        await actor.update({"system.skills.-=speed": null});
-        await actor.update({"system.skills.-=any": null});
+        await actor.update({"system.skills.strength": new foundry.data.operators.ForcedDeletion()});
+        await actor.update({"system.skills.smarts": new foundry.data.operators.ForcedDeletion()});
+        await actor.update({"system.skills.social": new foundry.data.operators.ForcedDeletion()});
+        await actor.update({"system.skills.speed": new foundry.data.operators.ForcedDeletion()});
+        await actor.update({"system.skills.any": new foundry.data.operators.ForcedDeletion()});
       }
 
       // Perk choice P2: the multi-Skill Perks' copies folded into one item (and anything migrateActorData left).
@@ -91,15 +91,15 @@ export const migrateWorld = async function() {
         console.log(`Migrating Item document ${item.name}`);
         await item.update(updateData, {enforceTypes: false, diff: valid});
         if (item.type == "origin") {
-          await item.update({"system.-=originPerkIds": null});
+          await item.update({"system.originPerkIds": new foundry.data.operators.ForcedDeletion()});
         } else if (item.type == "influence") {
-          await item.update({"system.-=perkIds": null});
-          await item.update({"system.-=hangUpIds": null});
+          await item.update({"system.perkIds": new foundry.data.operators.ForcedDeletion()});
+          await item.update({"system.hangUpIds": new foundry.data.operators.ForcedDeletion()});
         } else if (item.type == "weapon") {
-          await item.update({"system.-=upgradeIds": null});
-          await item.update({"system.-=weaponEffectIds": null});
+          await item.update({"system.upgradeIds": new foundry.data.operators.ForcedDeletion()});
+          await item.update({"system.weaponEffectIds": new foundry.data.operators.ForcedDeletion()});
         } else if (item.type =="armor") {
-          await item.update({"system.-=upgradeIds": null});
+          await item.update({"system.upgradeIds": new foundry.data.operators.ForcedDeletion()});
         }
       }
     } catch(err) {
@@ -511,15 +511,15 @@ export const migrateActorData = async function(actor, compendiumActor) {
     Object.assign(updateData, perkValue.actorUpdate);
 
     if (itemToDelete.type == "origin") {
-      await itemToDelete.update({"system.-=originPerkIds": null});
+      await itemToDelete.update({"system.originPerkIds": new foundry.data.operators.ForcedDeletion()});
     } else if (itemToDelete.type == "influence") {
-      await itemToDelete.update({"system.-=perkIds": null});
-      await itemToDelete.update({"system.-=hangUpIds": null});
+      await itemToDelete.update({"system.perkIds": new foundry.data.operators.ForcedDeletion()});
+      await itemToDelete.update({"system.hangUpIds": new foundry.data.operators.ForcedDeletion()});
     } else if (itemToDelete.type == "weapon") {
-      await itemToDelete.update({"system.-=upgradeIds": null});
-      await itemToDelete.update({"system.-=weaponEffectIds": null});
+      await itemToDelete.update({"system.upgradeIds": new foundry.data.operators.ForcedDeletion()});
+      await itemToDelete.update({"system.weaponEffectIds": new foundry.data.operators.ForcedDeletion()});
     } else if (itemToDelete.type =="armor") {
-      await itemToDelete.update({"system.-=upgradeIds": null});
+      await itemToDelete.update({"system.upgradeIds": new foundry.data.operators.ForcedDeletion()});
     }
 
     // Update the Owned Item
@@ -997,15 +997,15 @@ export const migrateCompendium = async function(pack) {
       case "Item":
         updateData = await migrateItemData(doc.toObject(), undefined, { inPack: true });
         if (doc.type == "origin") {
-          await doc.update({"system.-=originPerkIds": null});
+          await doc.update({"system.originPerkIds": new foundry.data.operators.ForcedDeletion()});
         } else if (doc.type == "influence") {
-          await doc.update({"system.-=perkIds": null});
-          await doc.update({"system.-=hangUpIds": null});
+          await doc.update({"system.perkIds": new foundry.data.operators.ForcedDeletion()});
+          await doc.update({"system.hangUpIds": new foundry.data.operators.ForcedDeletion()});
         } else if (doc.type == "weapon") {
-          await doc.update({"system.-=upgradeIds": null});
-          await doc.update({"system.-=weaponEffectIds": null});
+          await doc.update({"system.upgradeIds": new foundry.data.operators.ForcedDeletion()});
+          await doc.update({"system.weaponEffectIds": new foundry.data.operators.ForcedDeletion()});
         } else if (doc.type =="armor") {
-          await doc.update({"system.-=upgradeIds": null});
+          await doc.update({"system.upgradeIds": new foundry.data.operators.ForcedDeletion()});
         }
 
         break;

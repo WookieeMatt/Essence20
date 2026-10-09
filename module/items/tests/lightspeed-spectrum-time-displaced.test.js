@@ -24,7 +24,7 @@ beforeAll(async () => {
       damageTypes: {},
     },
   };
-  global.foundry = { utils: { randomID: () => 'r', deepClone: x => JSON.parse(JSON.stringify(x)) }, applications: { api: {} } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { randomID: () => 'r', deepClone: x => JSON.parse(JSON.stringify(x)) }, applications: { api: {} } };
   global.fromUuidSync = uuid => global.game.actors.find(a => a.uuid == uuid) ?? null;
   spectrum = await import('../../mechanics/characters/spectrum-shifted.mjs');
   registry = (await import('../../mechanics/item-hooks.mjs')).registrySnapshot();

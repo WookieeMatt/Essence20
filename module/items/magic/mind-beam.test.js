@@ -6,7 +6,7 @@ describe("pickMindBeamEffect", () => {
 
   beforeEach(() => {
     waitMock = jest.fn();
-    global.foundry = { applications: { api: { DialogV2: { wait: waitMock } } } };
+    global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, applications: { api: { DialogV2: { wait: waitMock } } } };
     global.game = { i18n: { localize: jest.fn((key) => key) } };
   });
 

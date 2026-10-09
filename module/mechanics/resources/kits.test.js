@@ -73,7 +73,7 @@ beforeEach(() => {
       skillShiftList: ['criticalSuccess', 'autoSuccess', '3d6', '2d8', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd20', 'autoFail', 'fumble'],
     },
   };
-  global.foundry = { utils: { randomID: () => `r${nextId++}` }, applications: { api: { DialogV2: { wait: jest.fn(async () => 'consume') } } } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { randomID: () => `r${nextId++}` }, applications: { api: { DialogV2: { wait: jest.fn(async () => 'consume') } } } };
 });
 
 describe('kitInfo', () => {

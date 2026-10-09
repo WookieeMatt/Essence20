@@ -238,3 +238,8 @@ global.foundry = {
     deepClone: (obj) => JSON.parse(JSON.stringify(obj)),
   },
 };
+// Test update helpers: a plain key paired with v14's ForcedDeletion deletes it, like the old "-=key" form.
+globalThis.__isForcedDeletion = value => {
+  const ForcedDeletion = globalThis.foundry?.data?.operators?.ForcedDeletion;
+  return !!value && typeof ForcedDeletion == 'function' && value instanceof ForcedDeletion;
+};

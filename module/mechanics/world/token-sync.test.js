@@ -2,15 +2,41 @@ import { jest } from '@jest/globals';
 import { resizeTokens, changeTokenImage } from "./token-sync.mjs";
 
 describe("resizeTokens", () => {
-  test("updates every active token's document with the new dimensions", () => {
-    const tokenA = { document: { update: jest.fn() } };
-    const tokenB = { document: { update: jest.fn() } };
-    const actor = { getActiveTokens: jest.fn(() => [tokenA, tokenB]) };
+  const token = (extra = {}) => ({ actorId: 'a1', actorLink: false, isOwner: true, width: 1, height: 1, update: jest.fn(), ...extra });
 
-    resizeTokens(actor, 2, 3);
+  test("resizes the actor's linked tokens and its unlinked ones on every scene (they share its Size)", () => {
+    const linked = token({ actorLink: true });
+    const unlinked = token();
+    const elsewhere = token();
+    const other = token({ actorId: 'b2' });
+    global.game.scenes = [{ tokens: [linked, unlinked, other] }, { tokens: [elsewhere] }];
 
-    expect(tokenA.document.update).toHaveBeenCalledWith({ height: 3, width: 2 });
-    expect(tokenB.document.update).toHaveBeenCalledWith({ height: 3, width: 2 });
+    resizeTokens({ id: 'a1' }, 2, 3);
+
+    for (const t of [linked, unlinked, elsewhere]) {
+      expect(t.update).toHaveBeenCalledWith({ height: 3, width: 2 });
+    }
+
+    expect(other.update).not.toHaveBeenCalled();
+  });
+
+  test("leaves an unlinked token whose copy keeps its own Size, one already that size, and one this user can't change", () => {
+    const ownSize = token({ delta: { _source: { system: { size: 'small' } }, system: { size: 'small' } } });
+    const already = token({ width: 2, height: 3 });
+    const notMine = token({ isOwner: false });
+    global.game.scenes = [{ tokens: [ownSize, already, notMine] }];
+
+    resizeTokens({ id: 'a1' }, 2, 3);
+
+    for (const t of [ownSize, already, notMine]) {
+      expect(t.update).not.toHaveBeenCalled();
+    }
+  });
+
+  test("an unlinked token's own copy resizes just its token", () => {
+    const own = token();
+    resizeTokens({ isToken: true, token: own }, 4, 4);
+    expect(own.update).toHaveBeenCalledWith({ height: 4, width: 4 });
   });
 });
 

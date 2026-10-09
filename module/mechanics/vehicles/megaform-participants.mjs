@@ -74,3 +74,23 @@ export function subtypeChangeBlockers(megaformActor, subtype) {
     .map(entry => fromUuidSync(entry.uuid))
     .filter(actor => actor && !canBeParticipant(megaformActor, actor, kind));
 }
+
+// A Megaform's Size is worked out from who is in it (Essence20Actor#_prepareMegaformZordData / CombinerData), so its token
+// follows the roster: whoever changed the roster (or the type) resizes the prototype and the placed tokens.
+if (typeof Hooks != 'undefined') {
+  Hooks.on('updateActor', async (actor, changes, options, userId) => {
+    if (actor?.type != 'megaform' || userId != game.user?.id
+      || (changes?.system?.actors === undefined && changes?.system?.subtype === undefined)) {
+      return;
+    }
+
+    const size = CONFIG.E20?.tokenSizes?.[actor.system?.size];
+    if (!size || (actor.prototypeToken?.width == size.width && actor.prototypeToken?.height == size.height)) {
+      return;
+    }
+
+    const { resizeTokens } = await import("../world/token-sync.mjs");
+    resizeTokens(actor, size.width, size.height);
+    await actor.update({ 'prototypeToken.width': size.width, 'prototypeToken.height': size.height });
+  });
+}

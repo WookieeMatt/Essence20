@@ -27,7 +27,7 @@ function makeActor(name, items = [], extra = {}) {
     ...extra,
     async update(data) {
       for (const [key, value] of Object.entries(data)) {
-        const deletion = key.match(/^(.*)\.-=(.+)$/);
+        const deletion = (__isForcedDeletion(value) ? key.match(/^(.*)\.([^.]+)$/) : key.match(/^(.*)\.-=(.+)$/));
         if (deletion) {
           delete deletion[1].split('.').reduce((at, k) => at?.[k], this)?.[deletion[2]];
         } else {

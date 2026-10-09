@@ -48,7 +48,7 @@ beforeAll(async () => {
     messages: { contents: [] },
   };
   global.CONFIG = { E20: { skillToEssence: {} }, statusEffects: [] };
-  global.foundry = { utils: { randomID: () => 'r' }, applications: { api: {} } };
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { randomID: () => 'r' }, applications: { api: {} } };
   global.ChatMessage = { create: jest.fn(async () => ({})), getSpeaker: () => ({}) };
   global.ui = { notifications: { warn: jest.fn() } };
   global.fromUuid = jest.fn(async () => null);

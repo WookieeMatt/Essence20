@@ -190,6 +190,18 @@ export class Essence20Actor extends Actor {
       this.updateSource({ 'system.subtype': [defaultMegaformSubtype(getGameLine())] });
     }
 
+    // A new Zord's, Vehicle's or Megaform's token is its Size (a baseline Zord is Huge - 3x3), not Foundry's 1x1. A
+    // Megazord is at least Towering (its Size is worked out from its Zords - mechanics/vehicles/megaform-participants.mjs
+    // resizes it as they join). A token size the creator gave is kept; later Size changes resize it in _preUpdate.
+    if (['zord', 'vehicle', 'megaform'].includes(this.type)
+      && data?.prototypeToken?.width === undefined && data?.prototypeToken?.height === undefined) {
+      const megazord = this.type == 'megaform' && !this._source.system?.subtype?.includes?.('megaformCombiner');
+      const size = CONFIG.E20.tokenSizes?.[megazord && sizeClassIndex(this._source.system?.size) < sizeClassIndex('towering') ? 'towering' : this._source.system?.size];
+      if (size) {
+        this.updateSource({ 'prototypeToken.width': size.width, 'prototypeToken.height': size.height });
+      }
+    }
+
     // A Zord / Vehicle created with only Essence values (an importer, a script) takes them as its base.
     if (usesEssenceBase(this)) {
       for (const [key, essence] of Object.entries(data?.system?.essences ?? {})) {
@@ -299,7 +311,7 @@ export class Essence20Actor extends Actor {
         } else {
           for (const flag of toCombiner ? ['combineReadyRound', 'combineRolled'] : ['zord2HoldTogether', 'zord2Merge', 'zord2Invigorated']) {
             if (this.flags?.essence20?.[flag] !== undefined) {
-              foundry.utils.setProperty(changed, `flags.essence20.-=${flag}`, null);
+              foundry.utils.setProperty(changed, `flags.essence20.${flag}`, new foundry.data.operators.ForcedDeletion());
             }
           }
         }
@@ -750,7 +762,7 @@ export class Essence20Actor extends Actor {
   async removeMember(uuid) {
     const key = Object.entries(this.system.actors).find(([, entry]) => entry.uuid == uuid)?.[0];
     if (key) {
-      await this.update({ [`system.actors.-=${key}`]: null });
+      await this.update({ [`system.actors.${key}`]: new foundry.data.operators.ForcedDeletion() });
     }
   }
 

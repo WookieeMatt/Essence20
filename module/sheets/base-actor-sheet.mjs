@@ -125,6 +125,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
       summonZord: this.#onSummonZord,
       zordGrowth: this.#onZordGrowth,
+      zordBoard: this.#onZordBoard,
       zordAutoFeatures: this.#onZordAutoFeatures,
       summonContact: this.#onSummonContact,
       systemActorOpen: this.#onSystemActorOpen,
@@ -1123,6 +1124,13 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onSummonZord(event, target) {
     onSummonZord(target, this.document);
+  }
+
+  /** The Zords tab's Board button: this character takes the arrived Zord's driver seat (mechanics/vehicles/zord-arrival.mjs). */
+  static async #onZordBoard(event, target) {
+    const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
+    const { boardZord } = await import("../mechanics/vehicles/zord-arrival.mjs");
+    await boardZord(zord, this.document);
   }
 
   /** The Zords tab's starting-Features button (mechanics/vehicles/zord-auto-features.mjs). */

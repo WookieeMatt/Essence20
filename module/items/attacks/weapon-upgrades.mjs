@@ -517,7 +517,7 @@ async function removeFromWeapons(actor, effects) {
   }
 
   for (const [weapon, keys] of byWeapon) {
-    await weapon.update(Object.fromEntries(keys.map(key => [`system.items.-=${key}`, null])));
+    await weapon.update(Object.fromEntries(keys.map(key => [`system.items.${key}`, new foundry.data.operators.ForcedDeletion()])));
   }
 }
 

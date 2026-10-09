@@ -68,7 +68,12 @@ beforeEach(() => {
       setProperty: (object, key, value) => {
         const keys = key.split('.');
         const last = keys.pop();
-        keys.reduce((o, k) => (o[k] ??= {}), object)[last] = value;
+        const node = keys.reduce((o, k) => (o[k] ??= {}), object);
+        if (__isForcedDeletion(value)) {
+          delete node[last];
+        } else {
+          node[last] = value;
+        }
       },
       randomID: () => `r${nextId++}`,
     },
@@ -140,7 +145,7 @@ describe('marks', () => {
     expect(evaluateTag('target:marked:prey', contextFor({ self: actor, other: foe }))).toBe(true);
     expect(evaluateTag('self:marked:prey', contextFor({ self: foe }))).toBe(true);
     await runSteps([{ do: 'unmark', key: 'prey', to: 'target' }], ctx);
-    expect(foe.flags.essence20.ruleMarks['-=prey']).toBeNull();
+    expect(foe.flags.essence20.ruleMarks.prey).toBeUndefined();
 
     foe.flags.essence20.ruleMarks = { quarry: { until: 'endOfTurn', stamp: { combatId: 'old', round: 1, turn: 0 } } };
     global.game.combat = { started: true, id: 'c', round: 1, turn: 0 };

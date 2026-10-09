@@ -10,7 +10,7 @@ const { bombKind, checkTimeBombs, detonateBomb, getPlantedBombs, plantBomb, toke
 
 const wait = jest.fn();
 global.foundry = {
-  utils: {
+  data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: {
     setProperty: (obj, path, value) => {
       const parts = path.split('.');
       let o = obj;
@@ -132,7 +132,7 @@ describe("temporary upgrades", () => {
     actor.items.push({ id: 'old', flags: { essence20: { parentId: 'g', collectionId: 'k', temporary: { kind: 'turn', combatId: 'c1', round: 1, turn: 0 } } } });
     gun.system.items = { k: {} };
     expect(await sweepTemporary(actor)).toBe(1);
-    expect(gun.update).toHaveBeenCalledWith({ 'system.items.-=k': null });
+    expect(gun.update).toHaveBeenCalledWith({ 'system.items.k': expect.any(foundry.data.operators.ForcedDeletion) });
 
     actor.items.push({ id: 'trap', flags: { essence20: { parentId: 'g', temporary: { kind: 'untilUsed' } } } });
     await spendUntilUsed(actor, gun);

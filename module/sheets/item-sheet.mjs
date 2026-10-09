@@ -502,7 +502,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
   }
 
   static async #actsAsClear() {
-    await this.document.update({ 'flags.essence20.-=rulesSource': null });
+    await this.document.update({ 'flags.essence20.rulesSource': new foundry.data.operators.ForcedDeletion() });
   }
 
   static async #prerequisitesEdit() {

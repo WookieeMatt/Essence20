@@ -31,14 +31,14 @@ function setPath(object, key, value) {
   const keys = key.split('.');
   const last = keys.pop();
   const parent = keys.reduce((o, k) => (o[k] ??= {}), object);
-  if (last.startsWith('-=')) {
-    delete parent[last.slice(2)];
+  if (last.startsWith('-=') || (globalThis.foundry?.data?.operators?.ForcedDeletion && value instanceof globalThis.foundry.data.operators.ForcedDeletion)) {
+    delete parent[last.replace(/^-=/, '')];
   } else {
     parent[last] = value;
   }
 }
 
-global.foundry = { utils: { setProperty: setPath, deepClone: v => JSON.parse(JSON.stringify(v)), randomID: () => `r${nextId++}` } };
+global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { setProperty: setPath, deepClone: v => JSON.parse(JSON.stringify(v)), randomID: () => `r${nextId++}` } };
 global.CONFIG = {
   E20: {
     skillToEssence: { might: 'strength', brawn: 'strength', finesse: 'speed' }, damageTypes: {},

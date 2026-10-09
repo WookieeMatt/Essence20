@@ -95,9 +95,7 @@ registerStep('refundUse', async (step, ctx) => {
   if (Number.isFinite(count) && count > 1) {
     await write(actor, 'update', [{ [`flags.essence20.${row.path}`]: { ...row.record, count: count - 1 } }]);
   } else {
-    const parts = row.path.split('.');
-    const last = parts.pop();
-    await write(actor, 'update', [{ [`flags.essence20.${[...parts, `-=${last}`].join('.')}`]: null }]);
+    await write(actor, 'update', [{ [`flags.essence20.${row.path}`]: new foundry.data.operators.ForcedDeletion() }]);
   }
 
   ctx.vars.refunded = row.label;

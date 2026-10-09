@@ -46,7 +46,7 @@ export async function damageReduction(actor, amount, damageType) {
     const n = Math.max(0, Math.round(resolveValue(rule.amount, { actor, item }, 0)));
     await recordUse(actor, rule, item, index);
     if (rule.consumeMark) {
-      await actor.update({ [`flags.essence20.ruleMarks.-=${rule.consumeMark}`]: null });
+      await actor.update({ [`flags.essence20.ruleMarks.${rule.consumeMark}`]: new foundry.data.operators.ForcedDeletion() });
     }
 
     if (rule.counter?.path) {

@@ -52,7 +52,7 @@ describe('Megaform-only extra Health (Core Body, Layered Systems, Tenacious Bond
 
   test('a participant that left keeps no used bonus', () => {
     const megaform = form('megaformZord', { bonusHealthTaken: { Actor_Gone: 3, Actor_Here: 1 } });
-    expect(pruneBonusHealth(megaform, [part('Here', 1, 1)])).toEqual({ 'flags.essence20.bonusHealthTaken.-=Actor_Gone': null });
+    expect(pruneBonusHealth(megaform, [part('Here', 1, 1)])).toEqual({ 'flags.essence20.bonusHealthTaken.Actor_Gone': expect.any(foundry.data.operators.ForcedDeletion) });
     expect(pruneBonusHealth(megaform, [part('Gone', 1, 1), part('Here', 1, 1)])).toBeNull();
   });
 });

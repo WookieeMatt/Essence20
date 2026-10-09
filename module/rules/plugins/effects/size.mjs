@@ -160,7 +160,7 @@ registerStep('restoreSize', async (step, ctx) => {
   // Forgotten - unless the item is on its way out (a removed Trigger), when there's nothing left to write to.
   if (choiceOf(ctx.item, step.record) && ctx.item?.parent?.items?.get?.(ctx.item.id)) {
     try {
-      await write(ctx.item, 'update', [{ [`flags.essence20.rules.choices.-=${step.record}`]: null }]);
+      await write(ctx.item, 'update', [{ [`flags.essence20.rules.choices.${step.record}`]: new foundry.data.operators.ForcedDeletion() }]);
     } catch (error) {
       // The item went while the size was being put back.
     }

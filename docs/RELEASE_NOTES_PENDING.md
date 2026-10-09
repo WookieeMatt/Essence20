@@ -122,8 +122,18 @@ the same as the original.
   p.134), or Accurate (1) on one attack, or exchanging a Zord Feature (A Jump Through Time p.83). It's offered on
   level-up, and from a **Growth** button on the Ranger's Zords tab while any is owed. Each choice is a feature on the
   Zord.
+- **Summoned Zords arrive:**
+  - At the start of the round the timer names, a chat card announces the Zord at the edge of the battlefield, and
+    the Ranger's Zords tab shows **Arrived** instead of offering to summon it again.
+  - **Place it on the map** (GM) puts its token at the scene edge nearest its Ranger.
+  - **Board** seats the Ranger as driver once their tokens touch, and takes the Ranger's token off the map.
+  - When the combat ends, a Zord on its way or arrived is reset, so it can be summoned again next fight.
+  - The Ranger's sheet redraws straight away when the Zord is summoned, arrives or is boarded.
+- **New Zords, Vehicles and Megaforms get a token their size** (a baseline Zord is Huge, 3x3; a Megazord Towering, 5x5)
+  instead of 1x1, and a Megaform's token resizes as its Size changes with who joins it.
 - **Recall for Repairs:** the feature's Use button sends the Zord to its lair. It leaves the map and any Megazord, can't
-  be called again this scene, and comes back at full Health with no Conditions the next time it's summoned.
+  be called again this scene, and comes back at full Health with no Conditions the next time it's summoned. Anyone
+  aboard climbs out first: they leave its seats and their tokens come back onto the map beside it.
 - **Summoning a Zord** spends the Ranger's Standard action.
 - **Zord and Vehicle Defeat** now triggers from every damage path, so a Zord inside a Megazord goes dormant too.
 - **Gaining Combiner** asks which Megaform Trait the Zord contributes and adds it. Detachable and Core Body can't be on
@@ -168,6 +178,8 @@ the same as the original.
 - **Rules reading `@essence`** now use the Essence score, not what is left after Essence damage
   (`@essence.<x>.current` gives the remainder).
 - **Fixed a "Maximum call stack size exceeded" error** when loading a scene with unlinked tokens.
+- **Changing an actor's Size resizes its tokens again**, unlinked ones included (unless that token has its own Size).
+- **No more "-=" deprecation warnings** in the console from Foundry v14.
 - **New setting: Morphed / Alt Mode token icons.** Options are Show, Hide when the token art
   changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.
 - **Guided tours** cover the new Rules tabs, Perk picks and level-up picks.

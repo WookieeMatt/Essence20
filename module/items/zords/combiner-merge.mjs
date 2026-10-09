@@ -130,7 +130,7 @@ export async function completeMerge(form, members) {
     };
   }
 
-  update[`flags.essence20.-=${MERGE_FLAG}`] = null;
+  update[`flags.essence20.${MERGE_FLAG}`] = new foundry.data.operators.ForcedDeletion();
   await writeDoc(form, 'update', update);
 
   const components = componentsOf(form, [...roster, ...members.map(m => fromUuidSync(m.uuid)).filter(Boolean)]);
@@ -174,7 +174,7 @@ registerSceneAdvanced(async () => {
   for (const form of worldActors().filter(a => a?.type == 'megaform' && isCombinerForm(a) && isResponsible(a))) {
     const gone = Object.entries(form.system.actors ?? {}).filter(([, entry]) => isGuestEntry(entry));
     if (gone.length) {
-      await form.update(Object.fromEntries(gone.map(([key]) => [`system.actors.-=${key}`, null])));
+      await form.update(Object.fromEntries(gone.map(([key]) => [`system.actors.${key}`, new foundry.data.operators.ForcedDeletion()])));
       await chat(form, T('Zord2GuestLeaves', { form: form.name, names: gone.map(([, entry]) => entry.name).join(', ') }));
     }
   }
@@ -341,7 +341,7 @@ export async function resolvePendingMerges(combat) {
     if (inReach) {
       await completeMerge(form, members);
     } else {
-      await form.update({ [`flags.essence20.-=${MERGE_FLAG}`]: null });
+      await form.update({ [`flags.essence20.${MERGE_FLAG}`]: new foundry.data.operators.ForcedDeletion() });
       await chat(form, T('Zord2MergeFailed', { form: form.name }));
     }
   }
@@ -375,11 +375,11 @@ export async function breakApart(form) {
 
     const update = {
       'system.energonSpentToMerge': 0, 'system.energon.normal.value': 0,
-      [`flags.essence20.-=${INVIGORATED_FLAG}`]: null, [`flags.essence20.-=${BONUS_TAKEN_FLAG}`]: null, [`flags.essence20.-=${HOLD_FLAG}`]: null,
+      [`flags.essence20.${INVIGORATED_FLAG}`]: new foundry.data.operators.ForcedDeletion(), [`flags.essence20.${BONUS_TAKEN_FLAG}`]: new foundry.data.operators.ForcedDeletion(), [`flags.essence20.${HOLD_FLAG}`]: new foundry.data.operators.ForcedDeletion(),
     };
     for (const [key, entry] of Object.entries(form.system.actors ?? {})) {
       if (components.some(c => c.uuid == entry.uuid)) {
-        update[`system.actors.-=${key}`] = null;
+        update[`system.actors.${key}`] = new foundry.data.operators.ForcedDeletion();
       }
     }
 
@@ -464,7 +464,7 @@ registerRoundStart(async combat => {
   for (const form of worldActors().filter(a => a?.type == 'megaform' && isCombinerForm(a) && isResponsible(a))) {
     const held = heldUntil(form, combat);
     if (held !== null && combat.round >= held) {
-      await form.update({ [`flags.essence20.-=${HOLD_FLAG}`]: null });
+      await form.update({ [`flags.essence20.${HOLD_FLAG}`]: new foundry.data.operators.ForcedDeletion() });
       await settleDefeat(form);
     }
   }

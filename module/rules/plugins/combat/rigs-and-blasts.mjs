@@ -173,7 +173,7 @@ registerStep('requireRig', async (step, ctx) => {
 registerStep('endRig', async (step, ctx) => {
   const id = ctx.vars?.[step.var || 'rig'];
   if (id) {
-    await write(ctx.actor, 'update', [{ [`flags.essence20.${RIGS}.-=${id}`]: null }]);
+    await write(ctx.actor, 'update', [{ [`flags.essence20.${RIGS}.${id}`]: new foundry.data.operators.ForcedDeletion() }]);
   }
 });
 

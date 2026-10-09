@@ -88,7 +88,7 @@ registerStep('markItem', async (step, ctx) => {
 registerStep('unmarkItem', async (step, ctx) => {
   for (const actor of recipients({ ...step, to: step.to ?? 'target' }, ctx)) {
     for (const item of await itemsMeant(step, actor, ctx)) {
-      await write(item, 'update', [{ [`flags.essence20.${MARKS}.-=${step.key}`]: null }]);
+      await write(item, 'update', [{ [`flags.essence20.${MARKS}.${step.key}`]: new foundry.data.operators.ForcedDeletion() }]);
       const legacy = actor.flags?.essence20?.[LEGACY_JAMMED];
       if (step.key == 'jammed' && Array.isArray(legacy) && legacy.includes(item.id)) {
         await write(actor, 'update', [{ [`flags.essence20.${LEGACY_JAMMED}`]: legacy.filter(id => id != item.id) }]);

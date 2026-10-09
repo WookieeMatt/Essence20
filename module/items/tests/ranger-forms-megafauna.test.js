@@ -68,7 +68,7 @@ beforeAll(async () => {
   };
   global.ui = { notifications: { warn: jest.fn(), info: jest.fn(), error: jest.fn() } };
   global.CONFIG = { E20: { damageTypes: {}, skills: {}, skillToEssence: { animalHandling: 'social' } }, statusEffects: [{ id: 'frightened' }, { id: 'prone' }] };
-  global.foundry = { utils: { randomID: () => 'r', setProperty: (obj, path, value) => {
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { randomID: () => 'r', setProperty: (obj, path, value) => {
     const keys = path.split('.');
     let cur = obj;
     keys.slice(0, -1).forEach(k => {

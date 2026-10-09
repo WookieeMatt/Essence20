@@ -42,7 +42,7 @@ beforeEach(() => {
     skillToEssence: { might: 'strength', alertness: 'smarts', science: 'smarts', targeting: 'speed' },
     skills: { might: 'Might', alertness: 'Alertness' }, defenses: { toughness: 'T', evasion: 'E', willpower: 'W', cleverness: 'C' },
   } };
-  global.foundry = { utils: { randomID: () => `r${nextId++}`, hasProperty: () => false, escapeHTML: s => String(s), setProperty: (o, k, v) => {
+  global.foundry = { data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, utils: { randomID: () => `r${nextId++}`, hasProperty: () => false, escapeHTML: s => String(s), setProperty: (o, k, v) => {
     o[k] = v; 
   } } };
 });

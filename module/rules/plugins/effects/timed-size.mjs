@@ -70,7 +70,7 @@ export async function restoreSizeChange(actor, key) {
     return;
   }
 
-  await write(actor, 'update', [{ 'system.size': record.original, [`flags.essence20.${FLAG}.-=${key}`]: null }]);
+  await write(actor, 'update', [{ 'system.size': record.original, [`flags.essence20.${FLAG}.${key}`]: new foundry.data.operators.ForcedDeletion() }]);
 }
 
 function roundsWindow(rounds, combat = globalThis.game?.combat) {

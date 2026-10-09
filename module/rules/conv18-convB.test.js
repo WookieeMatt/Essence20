@@ -138,7 +138,7 @@ beforeEach(() => {
   global.ui = { notifications: { warn: jest.fn(), info: jest.fn(), error: jest.fn() } };
   global.CONFIG = { E20: { skills: {}, skillToEssence: {} } };
   global.foundry = {
-    applications: { api: { DialogV2: { wait: jest.fn(async () => null), confirm: jest.fn(async () => true) } } },
+    data: { operators: { ForcedDeletion: globalThis.foundry?.data?.operators?.ForcedDeletion ?? class ForcedDeletion {} } }, applications: { api: { DialogV2: { wait: jest.fn(async () => null), confirm: jest.fn(async () => true) } } },
     utils: { setProperty: setPath, getProperty: getPath, hasProperty: (o, k) => getPath(o, k) !== undefined, randomID: () => `r${nextId++}`, deepClone: clone },
   };
 });
