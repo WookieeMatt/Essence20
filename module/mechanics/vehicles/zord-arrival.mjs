@@ -39,7 +39,7 @@ export function rangerOf(zord) {
     && Object.values(other.system?.actors ?? {}).some(entry => entry?.uuid == zord?.uuid)) ?? null;
 }
 
-async function postArrival(zord) {
+export async function postArrival(zord) {
   const ranger = rangerOf(zord);
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor: zord }),
@@ -186,9 +186,10 @@ registerChatButton('zordBoard', async (message, button) => {
   await boardZord(await fromUuid(button.dataset.zord));
 });
 
-// The Ranger's sheet shows the Zord's summon state (Arrives at round N / Arrived / its driver seat): when a Zord's summon,
-// arrival or seats change, every open sheet of a character listing it is drawn again, on every client.
-const SUMMON_KEYS = [READY_FLAG, ARRIVED_FLAG, SUMMONER_FLAG, 'zordRecalled'];
+// The Ranger's sheet shows the Zord's summon state (Arrives at round N / Arrived / its driver seat) and whether its
+// starting Features are still to add: when a Zord's summon, arrival, seats or starting Features change, every open sheet
+// of a character listing it is drawn again, on every client.
+const SUMMON_KEYS = [READY_FLAG, ARRIVED_FLAG, SUMMONER_FLAG, 'zordRecalled', 'zordAutoFeatures'];
 if (typeof Hooks != 'undefined') {
   Hooks.on('updateActor', (actor, changes) => {
     const flags = changes?.flags?.essence20 ?? {};

@@ -4427,6 +4427,7 @@
     "ZordAutoPrompt": "{name} is linked to {ranger}. A new Zord starts with its Spectrum-Based Zord Feature and its team's Automatic Zord Features (Power Rangers Core Rulebook p.134; Across the Stars p.103; Beneath the Helmet p.71; A Jump Through Time p.82; Through the Shattered Grid p.33).",
     "ZordAutoTeam": "Team",
     "ZordAutoSpectrum": "Spectrum",
+    "ZordAutoAlreadyDone": "{name} already has its starting Zord Features.",
     "ZordAutoAdd": "Add Features",
     "ZordAutoAdded": "{name} gains its starting Zord Features: {features}.",
     "ZordAutoNothing": "none (it already had them)",
@@ -5294,6 +5295,46 @@
           "Content": "Vehicles carry crews, Zords are bound to Rangers, and a Megaform is computed from the Zords inside it.\nThe demo machines are being cleaned up now. That is every tour the system ships."
         }
       },
+        "Zords": {
+          "Title": "Your Zord",
+          "Description": "A Ranger's Zord: its starting Features, growing with you, calling it in, boarding and sending it for repairs.",
+          "Intro": {
+            "Title": "Your Zord",
+            "Content": "A Power Ranger's Zord is linked to them and answers their call.\nThis tour uses a temporary demo Ranger and Zord, and removes them when it finishes."
+          },
+          "ZordsTab": {
+            "Title": "The Zords Tab",
+            "Content": "Drop a Zord on a Ranger's sheet to link it. It shows up here, with everything you do with it.\nThe tab appears once the Ranger can have a Zord - the sheet options gear in the header turns it on."
+          },
+          "Features": {
+            "Title": "Starting Features",
+            "Content": "A new Zord comes with a Feature for the Ranger's colour and its team's own Features.\nYou're asked when you first drop it; this button asks again until you've added them, then goes away."
+          },
+          "Growth": {
+            "Title": "Growing with You",
+            "Content": "At 5th, 10th, 15th and 20th level the Zord gains Health and a new Feature.\nWhen a level's choices are still owed, this button shows how many and walks you through them."
+          },
+          "Summon": {
+            "Title": "Calling Your Zord",
+            "Content": "Summon spends your Standard action. In a fight, the Zord arrives a few rounds later and the tab counts down to it.\nOutside a fight there are no rounds to wait - it answers the call straight away."
+          },
+          "Arrival": {
+            "Title": "It Arrives",
+            "Content": "A chat card announces it. <strong>Place</strong> puts its token at the edge of the scene nearest you, and <strong>Board</strong> seats you as its driver once your tokens touch - your own token leaves the map.\nWhen the combat ends, a Zord on its way or arrived is reset, ready to be called next time."
+          },
+          "ZordSheet": {
+            "Title": "The Zord's Sheet",
+            "Content": "Its Features, attacks and Size live here. A Zord's token is drawn at its Size, and resizes when the Size changes.\nOpen it from the Zords tab with the Zord's name."
+          },
+          "Recall": {
+            "Title": "Recall for Repairs",
+            "Content": "At 0 Health the Zord goes down and its crew bail out. Use <strong>Recall for Repairs</strong> on its Feature to send it home: it leaves the map and any Megazord, and anyone aboard comes back onto the map beside it.\nIt can't be called again this scene, and comes back at full Health next time."
+          },
+          "Outro": {
+            "Title": "That's Your Zord",
+            "Content": "Combiner Zords join into a Megazord - the <em>Vehicles, Zords and Megaforms</em> tour shows that sheet.\nThe demo Ranger and Zord are removed now."
+          }
+        },
       "Importers": {
         "Title": "Importing From Your Books",
         "Description": "Turning stat blocks, rulebook text and adventure PDFs into world content.",

@@ -129,6 +129,16 @@ export async function onSummonZord(target, pilotActor) {
 
     // Back from an earlier scene's repairs: full Health, no lingering Conditions.
     await returnFromRepairs(zordActor);
+
+    // Outside a combat there are no rounds to wait out (PR CRB p.135's 3d2 counts game rounds): it answers the call
+    // straight away - its arrival card, to Place it on the map and Board it (zord-arrival.mjs).
+    if (!game.combat?.started) {
+      await zordActor.unsetFlag('essence20', SUMMON_READY_ROUND_FLAG);
+      await zordActor.setFlag('essence20', 'zordSummoner', pilotActor?.uuid ?? null);
+      const { postArrival } = await import("./zord-arrival.mjs");
+      await postArrival(zordActor);
+      return;
+    }
   }
 
   await rollSummonTimer(pilotActor, zordActor);

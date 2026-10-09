@@ -20,6 +20,7 @@ const TOURS = [
   { file: "transformers", id: "transformers", cls: Essence20Tour },
   { file: "active-effects", id: "activeEffects", cls: Essence20Tour },
   { file: "npcs-and-combat", id: "npcsAndCombat", cls: Essence20Tour },
+  { file: "zords", id: "zords", cls: Essence20Tour },
   { file: "vehicles-zords-megaforms", id: "vehiclesZordsMegaforms", cls: Essence20Tour },
   { file: "party", id: "party", cls: Essence20Tour },
   { file: "story-points", id: "storyPoints", cls: Essence20Tour },

@@ -137,4 +137,21 @@ describe("onSummonZord (sheet-action entry point)", () => {
     await onSummonZord({ dataset: {} }, makePilot());
     expect(global.fromUuid).not.toHaveBeenCalled();
   });
+
+  test("outside a combat it answers the call straight away: its arrival card, no timer", async () => {
+    game.combat = null;
+    const actors = game.actors;
+    game.actors = [];
+    const zord = makeZord();
+    const pilot = makePilot();
+    pilot.uuid = 'Actor.pilot';
+    global.fromUuid.mockResolvedValueOnce(zord);
+
+    await onSummonZord({ dataset: { systemActorsUuid: 'Actor.zord1' } }, pilot);
+
+    expect(zord.setFlag).not.toHaveBeenCalledWith('essence20', 'zordSummonReadyRound', expect.anything());
+    expect(zord.setFlag).toHaveBeenCalledWith('essence20', 'zordSummoner', 'Actor.pilot');
+    expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: expect.stringContaining('data-e20-ext="zordPlace"') }));
+    game.actors = actors;
+  });
 });

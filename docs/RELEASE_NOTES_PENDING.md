@@ -208,6 +208,12 @@ the same as the original.
 - **Stat Block Importer: "Import into" an existing Megaform** - a Combiner's own stat block (Bruticus) adds its Perks,
   Hang-Ups and attacks, its printed Energon Pool, and Defense and Movement Bonuses so it matches the printed numbers. Picked
   automatically when a Megaform has the block's name. Import the members first: the Bonuses are worked out from them.
+- **New tour: Your Zord** - a Ranger's Zords tab: starting Features, growth, Summon, the arrival card (Place, Board),
+  the Zord's sheet and Recall for Repairs.
+- **Summoning a Zord outside a combat** brings it straight away (its arrival card, to Place and Board) instead of
+  doing nothing.
+- **Fixed: the Zords tab's Features button** stayed after its Features were added, and did nothing; it goes away now, on
+  every open sheet.
 - **No more "-=" deprecation warnings** in the console from Foundry v14.
 - **New setting: Morphed / Alt Mode token icons.** Options are Show, Hide when the token art
   changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.

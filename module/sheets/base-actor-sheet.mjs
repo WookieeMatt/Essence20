@@ -1137,8 +1137,15 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   static async #onZordAutoFeatures(event, target) {
     const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
     if (zord) {
-      const { offerAutoFeatures } = await import("../mechanics/vehicles/zord-auto-features.mjs");
-      await offerAutoFeatures(this.document, zord);
+      const { autoFeaturesDone, offerAutoFeatures } = await import("../mechanics/vehicles/zord-auto-features.mjs");
+      // A button drawn before the Features were added (another sheet, another client) - say so, and draw it again.
+      if (autoFeaturesDone(zord)) {
+        ui.notifications.info(game.i18n.format('E20.ZordAutoAlreadyDone', { name: zord.name }));
+      } else {
+        await offerAutoFeatures(this.document, zord);
+      }
+
+      this.render();
     }
   }
 

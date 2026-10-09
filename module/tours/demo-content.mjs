@@ -69,6 +69,8 @@ export const DEMO_ACTORS = {
       level: 5,
       color: "#c62828",
       canMorph: true,
+      // The Zords tour's Zords tab - its Zord is linked below.
+      canHaveZord: true,
       // Matches Field Trained's startingHealth below - a Power Rangers Origin gives 1-2.
       health: { value: 2 },
       stun: { value: 0 },
@@ -249,6 +251,8 @@ export const DEMO_ACTORS = {
         },
       },
     ],
+    // The demo Ranger's own Zord, on their Zords tab (the Zords tour).
+    participants: ["zord"],
   },
 
   transformer: {
