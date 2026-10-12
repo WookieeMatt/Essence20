@@ -16,7 +16,7 @@ const rollVsMany = jest.fn(async (actor, skill, others) => others.map(other => (
 jest.unstable_mockModule('./mechanics/combat/reaction-engine.mjs', () => ({ rollVsMany }));
 const nearby = { tokens: [] };
 jest.unstable_mockModule('./mechanics/combat/nearby-enemies.mjs', () => ({ getNearbyEnemyTokens: jest.fn(() => nearby.tokens) }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 
 await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');

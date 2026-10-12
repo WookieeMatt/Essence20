@@ -10,7 +10,7 @@ const spend = jest.fn(async () => ({ blocked: false }));
 jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({ spend, setNextTurn: jest.fn(), getLedger: () => null, isTracking: () => true }));
 const chooseSelect = jest.fn(async (title, prompt, options) => options[0]?.value ?? null);
 jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({ chooseSelect, rollTest: jest.fn(async () => ({ success: true })), chooseButtons: jest.fn() }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 
 const { rebuildIndex } = await import('./index.mjs');
 const { contextFor, evaluate } = await import('./predicate.mjs');

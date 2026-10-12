@@ -9,7 +9,7 @@ global.Hooks = { on: () => {}, once: () => {}, callAll: () => {} };
 
 const rollVsMany = jest.fn(async (actor, skill, others) => others.map(other => ({ targetUuid: other.uuid, success: true, multiplier: 1 })));
 jest.unstable_mockModule('./mechanics/combat/reaction-engine.mjs', () => ({ rollVsMany }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const allies = { tokens: [] };
 jest.unstable_mockModule('./mechanics/combat/nearby-allies.mjs', () => ({ getNearbyAllyTokens: jest.fn(() => allies.tokens) }));
 const activateLendAssistance = jest.fn(async () => ({ cancelled: false, message: 'Lent a hand.' }));

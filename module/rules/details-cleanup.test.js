@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
  */
 
 global.Hooks = global.Hooks ?? { on: () => 0, once: () => 0, callAll: () => {} };
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn(), createViaGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn(), createViaGm: jest.fn() }));
 jest.unstable_mockModule('./sheet-handlers/power-ranger-handler.mjs', () => ({ onMorph: jest.fn(async () => {}) }));
 
 await import('./plugins/index.mjs');

@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 global.Hooks = { on: () => {}, once: () => {}, callAll: () => {} };
 
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const grants = {
   chooseSelect: jest.fn(async () => null), chooseButtons: jest.fn(async () => null), rollTest: jest.fn(async () => ({ success: true })),
   findItems: jest.fn(async () => []), pickOne: jest.fn(async () => null), grantCopy: jest.fn(async () => null), essenceRedirect: jest.fn(),

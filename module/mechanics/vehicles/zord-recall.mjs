@@ -11,6 +11,7 @@
 import { registerUse } from "../item-hooks.mjs";
 import { getSceneEpoch } from "../resources/scene-clock.mjs";
 import { sourceOf } from "../../items/shared/item-lookups.mjs";
+import { rosterRemovalUpdate } from "../../util/roster.mjs";
 
 export const RECALL_FOR_REPAIRS_ID = "Compendium.essence20.pr_crb.Item.r1S0Sc4oq8axDL6C";
 export const RECALL_FLAG = 'zordRecalled';
@@ -52,7 +53,7 @@ export async function recallZord(zord) {
   for (const form of new Set([...megaformsContaining(zord), ...megaformsContaining(record)])) {
     const keys = Object.entries(form.system.actors ?? {}).filter(([, entry]) => uuids.has(entry?.uuid)).map(([key]) => key);
     if (keys.length) {
-      await form.update(Object.fromEntries(keys.map(key => [`system.actors.${key}`, new foundry.data.operators.ForcedDeletion()])));
+      await form.update(rosterRemovalUpdate(form, keys));
     }
   }
 
@@ -104,20 +105,31 @@ async function disembarkCrew(zord, zordToken) {
   const crew = [...new Set(seats.flatMap(([, entries]) => entries.map(([, entry]) => entry.uuid)))]
     .map(uuid => globalThis.fromUuidSync?.(uuid, { strict: false })).filter(Boolean);
 
-  const { needsGmRelay, relayToGm, createViaGm } = await import("../world/gm-relay.mjs");
+  const { needsGmRelay, relayToGm } = await import("../world/gm-relay.mjs");
   for (const [actor, entries] of seats) {
     if (entries.length) {
-      const update = Object.fromEntries(entries.map(([key]) => [`system.actors.${key}`, new foundry.data.operators.ForcedDeletion()]));
+      const update = rosterRemovalUpdate(actor, entries.map(([key]) => key));
       await (needsGmRelay(actor) ? relayToGm(actor, 'update', [update]) : actor.update(update));
     }
   }
 
+  await placeBeside(zordToken, crew);
+}
+
+/**
+ * Put each of these actors' tokens on the map beside the Zord's token - those without one on its scene already (an
+ * unlinked token's copy is left alone: its token is where it lives). Shared with Disembark (zord-arrival.mjs).
+ * @param {TokenDocument|null} zordToken
+ * @param {Actor[]} members
+ */
+export async function placeBeside(zordToken, members) {
   const scene = zordToken?.parent;
   if (!scene) {
     return;
   }
 
-  const ashore = crew.filter(member => !member.isToken && !scene.tokens.some(token => token.actorId == member.id));
+  const { createViaGm } = await import("../world/gm-relay.mjs");
+  const ashore = members.filter(member => member && !member.isToken && !scene.tokens.some(token => token.actorId == member.id));
   const size = scene.grid?.size ?? globalThis.canvas?.grid?.size ?? 100;
   const positions = disembarkPositions(zordToken, ashore.length, size, globalThis.canvas?.dimensions?.sceneRect ?? null);
   for (const [i, member] of ashore.entries()) {

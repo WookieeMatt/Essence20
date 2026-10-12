@@ -214,6 +214,28 @@ the same as the original.
   doing nothing.
 - **Fixed: the Zords tab's Features button** stayed after its Features were added, and did nothing; it goes away now, on
   every open sheet.
+- **Book Descriptions survive items moving.** On load, imported descriptions whose item moved pack or changed id in an
+  update are re-linked (6.0.4 moved A Jump Through Time's Spectrum Modifications out of the Power Rangers core pack);
+  new imports also record each item's name, so a replaced item is found again by name. The list shows how many of each
+  book's entries still match an item, with a button to remove the ones that don't, and **Remove all imported books**.
+- **Book Descriptions: Choose a folder…** imports every PDF in a folder, one after another, each recognised as its book;
+  the files are still read in the browser and never uploaded.
+- **Fixed: empty crew / member cards.** Deleting an actor (or an unlinked token) left its card on every crew, Zords list,
+  Megaform and Party that listed it - blank, and still in its seat. It comes off them now, and leftovers from before are
+  cleaned up when the world loads.
+- **Fixed: removing a crew member, Zord or Megaform member from a token's sheet** did nothing on an unlinked token
+  (it worked from the actor's own sheet). It sticks now, for that token only.
+- **Fixed: "User ... lacks permission to update ActorDelta" for players.** A player's action that changes an NPC token's
+  items or effects (a hit wearing its armor, an effect put on it) is now carried out by the GM, as changes to the actor
+  itself already were - for the token the player is targeting. With no GM connected the change is skipped, with one
+  warning per target, instead of the error.
+- **Fixed: rule editor conditions.** Changing a condition to another kind (a new one starts as "the Skill is: athletics")
+  kept the old text in its box, so "in combat" became "in combat: athletics" and never applied. The box now clears.
+- **A Combiner's Energon on its sheet.** The Megaform sidebar shows a Combiner form's own Energon pool - what's left,
+  editable (spent by hand, or given from outside), out of half the Energon spent to merge.
+- **Disembark a Zord.** A Ranger aboard their Zord has a Disembark button on the Zords tab: they leave the seat and
+  their token comes back beside the Zord. In a fight the Zord must not have moved that turn, and it takes their Move
+  action (15 ft of Ground Movement - PR CRB p.176-177).
 - **No more "-=" deprecation warnings** in the console from Foundry v14.
 - **New setting: Morphed / Alt Mode token icons.** Options are Show, Hide when the token art
   changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.

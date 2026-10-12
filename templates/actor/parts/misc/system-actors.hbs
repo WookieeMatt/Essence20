@@ -62,7 +62,13 @@
                  own doc comment. Only meaningful from the piloting Ranger's own sheet, not a
                  Megaform's read-only participant list. --}}
             {{!-- Arrived this combat (PR CRB p.135): no second summon - board it (mechanics/vehicles/zord-arrival.mjs). --}}
-            {{#if (zordHasArrived attachedActor)}}
+            {{!-- Aboard it: get out without a recall (PR CRB p.177) - zord-arrival.mjs#disembarkZord. --}}
+            {{#if (zordAboard @root.document attachedActor)}}
+              <span class="e20-nowrap"><i class="fas fa-steering-wheel"></i> {{localize 'E20.ZordAboardLabel'}}</span>
+              <a class="e20-nowrap" data-action="zordDisembark" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.ZordDisembarkTooltip'}}">
+                <i class="fas fa-person-walking-arrow-loop-left"></i> {{localize 'E20.ZordDisembark'}}
+              </a>
+            {{else if (zordHasArrived attachedActor)}}
               <span class="e20-nowrap"><i class="fas fa-flag-checkered"></i> {{localize 'E20.ZordArrivedLabel'}}</span>
               <a class="e20-nowrap" data-action="zordBoard" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.ZordBoardTooltip'}}">
                 <i class="fas fa-person-walking-arrow-right"></i> {{localize 'E20.ZordBoard'}}

@@ -16,7 +16,7 @@ const rollVsMany = jest.fn(async (actor, skill, others) => (rolls.rows ? rolls.r
 jest.unstable_mockModule('./mechanics/combat/reaction-engine.mjs', () => ({ rollVsMany }));
 const nearby = { tokens: [] };
 jest.unstable_mockModule('./mechanics/combat/nearby-enemies.mjs', () => ({ getNearbyEnemyTokens: jest.fn(() => nearby.tokens) }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const applyTimedCondition = jest.fn(async (actor, status) => actor.statuses.add(status));
 jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({ applyTimedCondition }));
 const activateLendAssistance = jest.fn(async () => ({ cancelled: false, message: 'Lent a hand.' }));

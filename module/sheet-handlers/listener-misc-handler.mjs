@@ -20,7 +20,7 @@ const PARENT_ROLLER_KEY = "parentActor";
  * @param {Actor} actor The Actor making the roll
  * @param {Actor} childRoller Optional attached Actor making the roll
  */
-export async function performRoll(event, actor, childRoller=null) {
+export async function  performRoll(event, actor, childRoller=null) {
   event.preventDefault();
   // event.target is whatever was actually clicked - usually the <i> icon inside the rollable
   // <a>, not the <a> itself. Most roll buttons work around this by duplicating data-roll-type

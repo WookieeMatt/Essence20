@@ -26,6 +26,17 @@
         {{#each @root.participantStunSorted}}{{#unless @first}}<span class="essence20-sidebar-participant-health-sep">/</span>{{/unless}}<span title="{{this.name}}">{{this.value}}</span>{{/each}}
       </span>
     </div>
+    {{!-- A Combiner form's own Energon pool (EoC p.42, p.47) - what's left of it, editable (spent by hand, or given
+         from an outside source); its max is half the Energon spent to merge (the header's box), worked out in
+         Essence20Actor#_prepareMegaformCombinerData. --}}
+    {{#inArray system.subtype 'megaformCombiner'}}
+    <div>
+      <label>{{localize 'E20.Energon'}}</label>
+      <input class="two-digit-input no-lock" type="number" name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
+      <span>/</span>
+      <span class="sidebar-readout" data-tooltip="{{localize 'E20.MegaformEnergonMaxTooltip'}}">{{system.energon.normal.max}}</span>
+    </div>
+    {{/inArray}}
   </div>
   <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-special">
     <label class="sliced-border__label"><i class="fas fa-bolt"></i> Special</label>

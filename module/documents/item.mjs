@@ -26,6 +26,7 @@ import { ruleAreaExclusions, ruleBeforeArea } from "../rules/plugins/combat/befo
 import { ruleAttackChoice } from "../rules/plugins/combat/attack-choice.mjs";
 import { ruleAttackSkill } from "../rules/plugins/rolls/attack-skill-substitution.mjs";
 import { importedDescription } from "../importers/book-descriptions-store.mjs";
+import { blockedWithoutGm, needsGmRelay, relayToGm } from "../mechanics/world/gm-relay.mjs";
 import { pickMindBeamEffect } from "../items/magic/mind-beam.mjs";
 import { isBlockMagicActive } from "../items/magic/block-magic.mjs";
 import { firePosted } from "../rules/plugins/effects/rough-terrain-space.mjs";
@@ -63,8 +64,59 @@ export class Essence20Item extends Item {
   }
 
 
+  /**
+   * An item on an actor this user can't modify (an NPC token's armor a player's hit wears away) - the GM writes it, as
+   * for the actor itself (documents/actor.mjs#update, mechanics/world/gm-relay.mjs).
+   * @override
+   */
+  async update(data = {}, operation = {}) {
+    if (this.parent && blockedWithoutGm(this)) {
+      return this;
+    }
+
+    if (this.parent && needsGmRelay(this)) {
+      return relayToGm(this, 'update', [data, operation]);
+    }
+
+    return super.update(data, operation);
+  }
+
+  /** @override - see update() above. */
+  async setFlag(scope, key, value) {
+    if (this.parent && blockedWithoutGm(this)) {
+      return this;
+    }
+
+    if (this.parent && needsGmRelay(this)) {
+      return relayToGm(this, 'setFlag', [scope, key, value]);
+    }
+
+    return super.setFlag(scope, key, value);
+  }
+
+  /** @override - see update() above. */
+  async unsetFlag(scope, key) {
+    if (this.parent && blockedWithoutGm(this)) {
+      return this;
+    }
+
+    if (this.parent && needsGmRelay(this)) {
+      return relayToGm(this, 'unsetFlag', [scope, key]);
+    }
+
+    return super.unsetFlag(scope, key);
+  }
+
   /** @override */
   async delete(operation) {
+    if (this.parent && blockedWithoutGm(this)) {
+      return this;
+    }
+
+    if (this.parent && needsGmRelay(this)) {
+      return relayToGm(this, 'delete', [operation]);
+    }
+
     super.delete(operation);
 
     if (this.type == 'role' && this.pack) {

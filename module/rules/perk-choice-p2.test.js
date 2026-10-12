@@ -18,7 +18,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 global.Hooks = global.Hooks ?? { on: () => {}, once: () => {}, callAll: () => {} };
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn(), createViaGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn(), createViaGm: jest.fn() }));
 
 await import('./plugins/index.mjs');
 const { rebuildIndex, ruleLabel } = await import('./index.mjs');

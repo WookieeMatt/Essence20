@@ -7,7 +7,7 @@ import { jest } from '@jest/globals';
  */
 
 global.Hooks = { on: () => {}, once: () => {}, callAll: () => {} };
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const applyTimedCondition = jest.fn(async (actor, status) => actor.statuses.add(status));
 jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({ applyTimedCondition }));
 

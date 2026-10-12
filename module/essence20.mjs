@@ -169,6 +169,8 @@ import { handleSetActionLedger, isAiming } from "./mechanics/actions/action-econ
 // imported for this side effect alone (see defense-choice.mjs's own registerRemotePrompt call at
 // its bottom), same reason-for-import-with-no-named-use as any other registration-pattern file.
 import "./mechanics/combat/defense-choice.mjs";
+// Deleted actors come off the rosters (crew, Zords, Megaform members, Party) that listed them.
+import "./mechanics/world/roster-refs.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 import StartingEssences from "./apps/starting-essences.mjs";
@@ -190,7 +192,7 @@ import { getWeaponEffectDamages } from "./mechanics/combat/damage-display.mjs";
 import { getSummonReadyRound, isSummonReady } from "./mechanics/vehicles/zord-summon.mjs";
 import { missingGrowthLevels } from "./mechanics/vehicles/zord-growth.mjs";
 import { autoFeaturesDone } from "./mechanics/vehicles/zord-auto-features.mjs";
-import { hasArrived } from "./mechanics/vehicles/zord-arrival.mjs";
+import { hasArrived, seatOf } from "./mechanics/vehicles/zord-arrival.mjs";
 import { getVehicleDriver, healStunAtTurnStart } from "./mechanics/combat/combat.mjs";
 import { healRegeneratingShellAtTurnEnd, isPowerAdaptationActive } from "./items/forms/power-adaptation.mjs";
 import { isRushTheLineActive } from "./items/movement/rush-the-line.mjs";
@@ -570,6 +572,11 @@ Handlebars.registerHelper("zordHasArrived", attached => {
   return !!zord && hasArrived(zord);
 });
 // Zord growth choices the Ranger still owes this Zord (PR CRB p.134) - mechanics/vehicles/zord-growth.mjs.
+// The Ranger is aboard this Zord (driver or passenger) - the Zords tab offers Disembark (mechanics/vehicles/zord-arrival.mjs).
+Handlebars.registerHelper("zordAboard", (ranger, attached) => {
+  const zord = attached?.uuid ? fromUuidSync(attached.uuid) : null;
+  return !!zord && !!seatOf(zord, ranger);
+});
 Handlebars.registerHelper("zordAutoFeaturesDone", attached => {
   const zord = attached?.uuid ? fromUuidSync(attached.uuid) : null;
   return !zord || autoFeaturesDone(zord);
@@ -696,6 +703,10 @@ Hooks.once("ready", async function () {
   }
 
   runMigrations();
+
+  // Imported book descriptions whose item moved pack in an update follow it (importers/book-descriptions-store.mjs).
+  import("./importers/book-descriptions-store.mjs").then(({ healBookDescriptions }) => healBookDescriptions())
+    .catch(error => console.error("Essence20 | Re-linking book descriptions failed", error));
 
   /* Client-scoped, so it cannot ride along with runMigrations() (which is the world-data pass a
      GM runs once for everyone) - every browser has its own copy to carry across. */

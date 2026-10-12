@@ -219,6 +219,12 @@ global.foundry = {
     // update payload, never on Foundry's own deletion behavior.
     operators: {
       ForcedDeletion: class ForcedDeletion {},
+      // How an operator crosses a socket, and is made again (Foundry v14's own shape).
+      OPERATOR_IDENTIFIER: '__$OPERATOR$__',
+      reconstructOperator(obj) {
+        if (obj?.['__$OPERATOR$__'] === 'ForcedDeletion') return new globalThis.foundry.data.operators.ForcedDeletion();
+        throw new Error(`Unrecognized DataFieldOperator identifier "${obj?.['__$OPERATOR$__']}" provided`);
+      },
     },
   },
   utils: {

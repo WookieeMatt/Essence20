@@ -9,7 +9,7 @@ import { jest } from '@jest/globals';
 const hooks = {};
 const onHook = (name, fn) => (hooks[name] ??= []).push(fn);
 global.Hooks = { on: onHook, once: () => 0, callAll: () => {} };
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 
 await import('./plugins/index.mjs');
 await import('./adapter.mjs');

@@ -50,7 +50,7 @@ import { getDistressMovementBonus } from "../items/resources/emotional-mastery.m
 import { applyModularIntegration } from "../items/defenses/modular-armor.mjs";
 import { DEFAULT_ENVIRONMENT, getEnvironment } from "../mechanics/world/environment.mjs";
 import { changeVesselConditionStacks, getVesselConditionStacks, isStackingVesselCondition } from "../mechanics/vehicles/vessel-conditions.mjs";
-import { needsGmRelay, relayToGm } from "../mechanics/world/gm-relay.mjs";
+import { blockedWithoutGm, needsGmRelay, relayToGm } from "../mechanics/world/gm-relay.mjs";
 
 // GI Joe CRB Vanguard Perks that grant a flat, condition-gated Toughness/Evasion bonus - computed
 // fresh in _prepareDefenses() below (like rolePointsDefense already is) rather than written into
@@ -87,6 +87,7 @@ import { needsGmRelay, relayToGm } from "../mechanics/world/gm-relay.mjs";
 import { createId } from "../util/utils.mjs";
 import { ruleMovementStages, ruleSurpriseModes } from "../rules/adapter.mjs";
 import { earlyDerivedStats } from "../rules/plugins/effects/derived-stages.mjs";
+import { dropRemovedRosterEntries, rosterRemoval } from "../util/roster.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -128,6 +129,11 @@ export class Essence20Actor extends Actor {
    * @override
    */
   async update(data = {}, operation = {}) {
+    // Not ours to change, and no GM online to change it for us - skipped (mechanics/world/gm-relay.mjs).
+    if (blockedWithoutGm(this)) {
+      return this;
+    }
+
     if (needsGmRelay(this)) {
       return relayToGm(this, 'update', [data, operation]);
     }
@@ -135,8 +141,62 @@ export class Essence20Actor extends Actor {
     return super.update(data, operation);
   }
 
+  /**
+   * Its items and effects added, changed or removed by a user who can't modify it (a hit wearing away an NPC's armor) -
+   * the GM does it. The relay answers with whether it was done, not the documents, so callers get none back here.
+   * @override
+   */
+  async createEmbeddedDocuments(embeddedName, data = [], operation = {}) {
+    // Not ours to change, and no GM online to change it for us - skipped (mechanics/world/gm-relay.mjs).
+    if (blockedWithoutGm(this)) {
+      return [];
+    }
+
+    if (needsGmRelay(this)) {
+      await relayToGm(this, 'createEmbeddedDocuments', [embeddedName, data, operation]);
+      return [];
+    }
+
+    return super.createEmbeddedDocuments(embeddedName, data, operation);
+  }
+
+  /** @override - see createEmbeddedDocuments() above. */
+  async updateEmbeddedDocuments(embeddedName, updates = [], operation = {}) {
+    // Not ours to change, and no GM online to change it for us - skipped (mechanics/world/gm-relay.mjs).
+    if (blockedWithoutGm(this)) {
+      return [];
+    }
+
+    if (needsGmRelay(this)) {
+      await relayToGm(this, 'updateEmbeddedDocuments', [embeddedName, updates, operation]);
+      return [];
+    }
+
+    return super.updateEmbeddedDocuments(embeddedName, updates, operation);
+  }
+
+  /** @override - see createEmbeddedDocuments() above. */
+  async deleteEmbeddedDocuments(embeddedName, ids = [], operation = {}) {
+    // Not ours to change, and no GM online to change it for us - skipped (mechanics/world/gm-relay.mjs).
+    if (blockedWithoutGm(this)) {
+      return [];
+    }
+
+    if (needsGmRelay(this)) {
+      await relayToGm(this, 'deleteEmbeddedDocuments', [embeddedName, ids, operation]);
+      return [];
+    }
+
+    return super.deleteEmbeddedDocuments(embeddedName, ids, operation);
+  }
+
   /** @override - see update() above. */
   async setFlag(scope, key, value) {
+    // Not ours to change, and no GM online to change it for us - skipped (mechanics/world/gm-relay.mjs).
+    if (blockedWithoutGm(this)) {
+      return this;
+    }
+
     if (needsGmRelay(this)) {
       return relayToGm(this, 'setFlag', [scope, key, value]);
     }
@@ -146,6 +206,11 @@ export class Essence20Actor extends Actor {
 
   /** @override - see update() above. */
   async unsetFlag(scope, key) {
+    // Not ours to change, and no GM online to change it for us - skipped (mechanics/world/gm-relay.mjs).
+    if (blockedWithoutGm(this)) {
+      return this;
+    }
+
     if (needsGmRelay(this)) {
       return relayToGm(this, 'unsetFlag', [scope, key]);
     }
@@ -160,7 +225,12 @@ export class Essence20Actor extends Actor {
    * @override
    */
   async toggleStatusEffect(statusId, options = {}) {
-    // A target this user can't modify (a player hitting an NPC) - the GM applies it. See mechanics/world/gm-relay.mjs.
+    // A target this user can't modify (a player hitting an NPC) - the GM applies it, or with no GM online it's skipped.
+    // See mechanics/world/gm-relay.mjs.
+    if (blockedWithoutGm(this)) {
+      return false;
+    }
+
     if (needsGmRelay(this)) {
       return relayToGm(this, 'toggleStatusEffect', [statusId, options]);
     }
@@ -386,6 +456,9 @@ export class Essence20Actor extends Actor {
   /** @override */
   prepareBaseData() {
     super.prepareBaseData();
+
+    // An unlinked token's actor keeps a removed roster entry as null (it can't delete its base actor's) - util/roster.mjs.
+    dropRemovedRosterEntries(this.system);
 
     // Zord / Vehicle Essences start from the typed base; Active Effects and rules add on top.
     if (usesEssenceBase(this)) {
@@ -762,7 +835,7 @@ export class Essence20Actor extends Actor {
   async removeMember(uuid) {
     const key = Object.entries(this.system.actors).find(([, entry]) => entry.uuid == uuid)?.[0];
     if (key) {
-      await this.update({ [`system.actors.${key}`]: new foundry.data.operators.ForcedDeletion() });
+      await this.update({ [`system.actors.${key}`]: rosterRemoval(this) });
     }
   }
 

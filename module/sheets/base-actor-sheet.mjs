@@ -126,6 +126,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       summonZord: this.#onSummonZord,
       zordGrowth: this.#onZordGrowth,
       zordBoard: this.#onZordBoard,
+      zordDisembark: this.#onZordDisembark,
       zordAutoFeatures: this.#onZordAutoFeatures,
       summonContact: this.#onSummonContact,
       systemActorOpen: this.#onSystemActorOpen,
@@ -1131,6 +1132,15 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
     const { boardZord } = await import("../mechanics/vehicles/zord-arrival.mjs");
     await boardZord(zord, this.document);
+  }
+
+  /** The Zords tab's Disembark: the Ranger gets out of a Zord they're aboard (mechanics/vehicles/zord-arrival.mjs). */
+  static async #onZordDisembark(event, target) {
+    const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
+    const { disembarkZord } = await import("../mechanics/vehicles/zord-arrival.mjs");
+    if (await disembarkZord(zord, this.document)) {
+      this.render();
+    }
   }
 
   /** The Zords tab's starting-Features button (mechanics/vehicles/zord-auto-features.mjs). */

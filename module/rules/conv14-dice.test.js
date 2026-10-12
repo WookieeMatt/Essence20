@@ -14,7 +14,7 @@ global.Hooks = { on: () => 0, once: () => 0, callAll: () => {} };
 const conditions = [];
 const dealt = [];
 let allies = [];
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({
   applyTimedCondition: jest.fn(async (actor, status, rounds) => {
     conditions.push({ name: actor.name, status, rounds });

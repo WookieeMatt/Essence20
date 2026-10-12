@@ -11,6 +11,7 @@
  */
 
 import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
+import { rosterRemoval } from "../../util/roster.mjs";
 
 export const COMPANION_FLAG = 'companionOf';
 
@@ -127,6 +128,6 @@ export async function unlinkCompanion(owner, companion) {
 
   const key = Object.entries(owner?.system?.actors ?? {}).find(([, entry]) => entry?.uuid == companion?.uuid)?.[0];
   if (key) {
-    await owner.update({ [`system.actors.${key}`]: new foundry.data.operators.ForcedDeletion() });
+    await owner.update({ [`system.actors.${key}`]: rosterRemoval(owner) });
   }
 }

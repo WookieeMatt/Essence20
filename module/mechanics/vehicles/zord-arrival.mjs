@@ -176,6 +176,55 @@ export async function boardZord(zord, ranger = rangerOf(zord)) {
   return true;
 }
 
+/** The Ranger's seat in the Zord - [key, entry] - or null when they aren't aboard. */
+export function seatOf(zord, ranger) {
+  return Object.entries(zord?.system?.actors ?? {}).find(([, entry]) => entry?.vehicleRole && entry.uuid == ranger?.uuid) ?? null;
+}
+
+/**
+ * Getting out of the Zord without it being recalled (PR CRB p.177: "Embarking and disembarking a vehicle functions the
+ * exact same way as mounting and dismounting a creature ... it must not have moved in the same turn"; p.176: once during
+ * a Move action, it expends 15 feet of Ground Movement). In a fight: refused when the Zord has moved this turn, and it
+ * takes the Ranger's Move action if that isn't spent yet - the 15 ft is said in chat, since the system measures
+ * movement rather than keeping a running total of feet to take it from. Then the Ranger leaves the seat and their token
+ * comes back beside the Zord (as from Recall for Repairs - zord-recall.mjs#placeBeside).
+ * @param {Actor} zord
+ * @param {Actor} ranger
+ * @returns {Promise<Boolean>}   Whether they got out.
+ */
+export async function disembarkZord(zord, ranger) {
+  const seat = seatOf(zord, ranger);
+  if (!zord || !ranger || !seat) {
+    ui.notifications.warn(T('ZordDisembarkNotAboard', { ranger: ranger?.name ?? '', name: zord?.name ?? '' }));
+    return false;
+  }
+
+  if (game.combat?.started) {
+    const { feetMovedThisTurn } = await import("../../items/vehicles/armored-cabin.mjs");
+    if ((feetMovedThisTurn(zord) ?? 0) > 0) {
+      ui.notifications.warn(T('ZordDisembarkMoved', { name: zord.name }));
+      return false;
+    }
+
+    const { getRemaining, spend } = await import("../actions/action-economy.mjs");
+    if ((getRemaining(ranger)?.move ?? 0) > 0) {
+      const paid = await spend(ranger, 'move', { source: T('ZordDisembark'), context: { kind: 'disembark' } });
+      if (paid?.blocked) {
+        return false;
+      }
+    }
+  }
+
+  const zordToken = zord.isToken ? zord.token : (zord.getActiveTokens?.(false, true) ?? [])
+    .find(token => token.parent == globalThis.canvas?.scene) ?? null;
+  const { rosterRemoval } = await import("../../util/roster.mjs");
+  await zord.update({ [`system.actors.${seat[0]}`]: rosterRemoval(zord) });
+  const { placeBeside } = await import("./zord-recall.mjs");
+  await placeBeside(zordToken, [ranger]);
+  await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: ranger }), content: `<p>${T('ZordDisembarked', { ranger: ranger.name, name: zord.name })}</p>` });
+  return true;
+}
+
 registerRoundStart(announceArrivals);
 
 registerChatButton('zordPlace', async (message, button) => {
