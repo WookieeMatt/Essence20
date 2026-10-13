@@ -8,6 +8,7 @@ import { LINK_SCOPES, linkedEntries } from "./links.mjs";
 import { contextFor, evaluate, isStatic, sideActorsWithin } from "./predicate.mjs";
 import { canAfford, changeResource, runSteps, stepContext } from "./steps.mjs";
 import { resolveValue } from "./formula.mjs";
+import { announce } from "../mechanics/world/public-hooks.mjs";
 
 /**
  * Phase 2 of the rules engine (docs/RULES_ENGINE_PLAN.md §4.12-4.13): Use buttons and Triggers.
@@ -182,6 +183,8 @@ async function post(actor, lines) {
  * @returns {Promise<Object|null>}   The damage object, for wouldBeDefeated.
  */
 export async function fireTriggers(actor, event, { roll = {}, outcome = null, facts = null, damage = null, targets = [], ask = null, prompt = confirm, vars = null, skipItem = null, only = null, once = null } = {}) {
+  // Every game event, for other modules (sounds, animations...) - mechanics/world/public-hooks.mjs.
+  announce('event', { actor, event, roll, outcome, facts, damage, targets, vars: vars ?? {} });
   // An aura / party / vehicle Trigger fires for the actor it reaches, never for its holder; its
   // limit is the holder's ("once per encounter" for whoever holds the Perk).
   const own = rulesOfType(actor, 'Trigger').filter(entry => !LINK_SCOPES.includes(entry.rule.scope) && !entry.rule.watch).map(entry => ({ ...entry, holder: actor }));
@@ -589,6 +592,16 @@ registerPostRoll(async (actor, results, checkContext, extra = {}) => {
       crit: extra.isCrit ? 1 : 0 },
   });
 
+  // The whole roll at once, for other modules: who rolled what against whom, and how each target came out.
+  announce('rollResolved', {
+    actor, item, skill: rider.skill ?? '', isAttack: roll.isAttack, isMelee: roll.isMelee, damageType: roll.rollDamageType,
+    // The weapon's style (E20.weaponStyles: melee / energy / projectile / explosive), when it was a weapon.
+    style: rider.style ?? null,
+    isCrit: !!extra.isCrit, isFumble: !!extra.isFumble, outcome: extra.open ? null : rollOutcome(results, extra),
+    total: Number.isFinite(total) ? total : null,
+    targets: (extra.hits ?? []).map(({ target, hit, result }) => ({ actor: target, hit: !!hit, damage: Number(result?.damageValue) || 0 })),
+  });
+
   // Each target rolled against, hit or missed - its steps land on that target with `to: "target"`.
   // Any roll against a target's Defense counts: an attack, a spell, an Intimidation test...
   // (`attack` tags stay weapon-only; `item:own` / `skill:` narrow it down).
@@ -650,7 +663,7 @@ globalThis.Hooks?.on?.('createActiveEffect', (effect, options, userId) => {
     return;
   }
 
-  fireTriggers(actor, 'conditionGained');
+  fireTriggers(actor, 'conditionGained', { vars: { statuses: [...effect.statuses] } });
 });
 
 // equipped / unequipped: the item's own rules (and anything else on its actor watching for it), with the item in hand.
@@ -765,6 +778,12 @@ export async function fireOpenRoll(actor, total, skill = null, itemUuid = null) 
   const item = itemUuid ? globalThis.fromUuidSync?.(itemUuid) ?? null : null;
   const rolled = item ? { item, isAttack: item.type == 'weaponEffect', isMelee: item.system?.classification?.style == 'melee' } : {};
   await fireTriggers(actor, 'afterRoll', { roll: { rolledSkill: skill, ...rolled }, outcome: null, facts: { results: [], open: true }, vars: Number.isFinite(Number(total)) ? { total: Number(total) } : null });
+  // For other modules too, as a roll against targets is (registerPostRoll above): no targets, no outcome.
+  announce('rollResolved', {
+    actor, item, skill: skill ?? '', isAttack: !!rolled.isAttack, isMelee: !!rolled.isMelee, damageType: item?.system?.damageType ?? null,
+    style: item?.system?.classification?.style ?? null, isCrit: false, isFumble: false, outcome: null,
+    total: Number.isFinite(Number(total)) ? Number(total) : null, targets: [],
+  });
 }
 
 export { rollOutcome };

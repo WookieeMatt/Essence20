@@ -325,6 +325,34 @@ Hooks.once("init", async function () {
     // data silently overwrites, which no static check can see. Creates and deletes an Actor.
     probeClobberedKeys,
     toggleEffectMacro,
+
+    /* For other modules and macros (Token Action HUD Essence20): what the sheet's own buttons do, under stable names
+       rather than the system's internal file paths. */
+    // A Skill roll, as the sheet's Skill name rolls it (its die, ↑/↓ and Specialization).
+    rollSkill: (actor, skill) => {
+      const fields = actor?.system?.skills?.[skill];
+      if (!fields) {
+        return null;
+      }
+
+      return actor.rollSkill({
+        rollType: 'skill', skill, essence: CONFIG.E20.skillToEssence?.[skill] ?? '',
+        shift: fields.shift, shiftUp: fields.shiftUp ?? 0, shiftDown: fields.shiftDown ?? 0,
+        isSpecialized: !!fields.isSpecialized, canCritD2: !!fields.canCritD2,
+      });
+    },
+    // An item's Use button (the sheet's bolt): whether it has one that can be pressed now, and pressing it.
+    canUseItem: item => !!item && canUsePerk(item),
+    useItem: async item => (await import("./mechanics/resources/banked-buffs.mjs")).onPerkUse(item),
+    // A Ranger's Zord: Summon, Board, Disembark (the Zords tab), and whether they're aboard.
+    zord: {
+      isAboard: (ranger, zord) => !!seatOf(zord, ranger),
+      hasArrived: zord => hasArrived(zord),
+      summon: async (ranger, zord) => (await import("./mechanics/vehicles/zord-summon.mjs"))
+        .onSummonZord({ dataset: { systemActorsUuid: zord?.uuid } }, ranger),
+      board: async (ranger, zord) => (await import("./mechanics/vehicles/zord-arrival.mjs")).boardZord(zord, ranger),
+      disembark: async (ranger, zord) => (await import("./mechanics/vehicles/zord-arrival.mjs")).disembarkZord(zord, ranger),
+    },
   };
 
   // Add custom constants for configuration.

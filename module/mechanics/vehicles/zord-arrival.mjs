@@ -11,6 +11,7 @@
  *     when either isn't on the map (the GM's call then).
  */
 import { registerChatButton, registerRoundStart } from "../item-hooks.mjs";
+import { announce } from "../world/public-hooks.mjs";
 
 export const SUMMONER_FLAG = 'zordSummoner';
 export const ARRIVED_FLAG = 'zordArrived';
@@ -41,6 +42,7 @@ export function rangerOf(zord) {
 
 export async function postArrival(zord) {
   const ranger = rangerOf(zord);
+  announce('zordArrived', { zord, ranger });
   await ChatMessage.create({
     speaker: ChatMessage.getSpeaker({ actor: zord }),
     content: `<p>${T('ZordArrived', { name: zord.name, ranger: ranger?.name ?? T('ZordArrivedNoRanger') })}</p>`
@@ -114,7 +116,8 @@ export async function placeZord(zord) {
   const h = (Number(data.height) || 1) * size;
   const rangerToken = rangerOf(zord)?.getActiveTokens?.(false, true)?.find(token => token.parent == scene)?.object ?? null;
   const position = edgePosition(canvas.dimensions.sceneRect, rangerToken?.center ?? null, w, h, size);
-  await scene.createEmbeddedDocuments('Token', [{ ...data, ...position }]);
+  const [token] = await scene.createEmbeddedDocuments('Token', [{ ...data, ...position }]) ?? [];
+  announce('zordPlaced', { zord, token: token ?? null });
   return true;
 }
 
@@ -166,6 +169,8 @@ export async function boardZord(zord, ranger = rangerOf(zord)) {
   }
 
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: ranger }), content: `<p>${T('ZordBoarded', { ranger: ranger.name, name: zord.name })}</p>` });
+  // Before the Ranger's token goes, so an animation can start from it.
+  announce('zordBoarded', { zord, ranger, rangerToken: rangerToken?.document ?? null, zordToken: zordToken?.document ?? null });
 
   // Inside the Zord now: the Ranger's token leaves the map. Not an unlinked token's copy - that copy lives in the token,
   // and the Zord's seat points at it.
@@ -222,6 +227,7 @@ export async function disembarkZord(zord, ranger) {
   const { placeBeside } = await import("./zord-recall.mjs");
   await placeBeside(zordToken, [ranger]);
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: ranger }), content: `<p>${T('ZordDisembarked', { ranger: ranger.name, name: zord.name })}</p>` });
+  announce('zordDisembarked', { zord, ranger, zordToken });
   return true;
 }
 

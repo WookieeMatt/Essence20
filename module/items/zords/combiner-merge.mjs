@@ -43,6 +43,7 @@ import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 import { addParticipantBonus, BONUS_TAKEN_FLAG } from "../../mechanics/vehicles/megaform-bonus-health.mjs";
 import { getMegaformParticipants } from "../../mechanics/vehicles/megaform-participants.mjs";
 import { rosterRemoval, rosterRemovalUpdate } from "../../util/roster.mjs";
+import { announce } from "../../mechanics/world/public-hooks.mjs";
 import {
   chat, holds, isCombinerForm, isGiganticOrLarger, isResponsible, itemsOf, megaformsContaining, rosterOf, sourceOf, T, traitsOf, writeDoc, ZORD2,
 } from "./combiner-roster-helpers.mjs";
@@ -150,6 +151,7 @@ export async function completeMerge(form, members) {
     healed = true;
   }
 
+  announce('combinerMerged', { form, members: members.map(m => fromUuidSync(m.uuid)).filter(Boolean) });
   await chat(form, T('Zord2MergeComplete', { form: form.name, names: members.map(m => m.name).join(', ') })
     + (healed ? ` ${T('Zord2InvigoratingConnection')}` : ''));
 }
@@ -385,6 +387,7 @@ export async function breakApart(form) {
     }
 
     await writeDoc(form, 'update', update);
+    announce('megaformSplit', { form, components, isCombiner: combiner });
     await chat(form, T(combiner ? 'Zord2BreakApart' : 'Zord2MegazordBreakApart', { form: form.name })
       + (saved.length ? ` ${T('Zord2SafeRelease', { names: saved.join(', ') })}` : ''));
   } finally {

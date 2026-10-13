@@ -12,6 +12,7 @@ import { registerUse } from "../item-hooks.mjs";
 import { getSceneEpoch } from "../resources/scene-clock.mjs";
 import { sourceOf } from "../../items/shared/item-lookups.mjs";
 import { rosterRemovalUpdate } from "../../util/roster.mjs";
+import { announce } from "../world/public-hooks.mjs";
 
 export const RECALL_FOR_REPAIRS_ID = "Compendium.essence20.pr_crb.Item.r1S0Sc4oq8axDL6C";
 export const RECALL_FLAG = 'zordRecalled';
@@ -62,6 +63,8 @@ export async function recallZord(zord) {
   await disembarkCrew(zord, zordToken);
   await record.setFlag('essence20', RECALL_FLAG, { epoch: getSceneEpoch() });
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: zord }), content: T('ZordRecalled', { name: zord.name }) });
+  // Before its token leaves the map, so an animation can play on it.
+  announce('zordRecalled', { zord, zordToken });
 
   // Off the map: the token this copy lives in, and the world Zord's linked tokens - each once, if still there.
   const tokens = new Set([zord.isToken ? zord.token : null, ...(record.getActiveTokens?.(false, true) ?? [])].filter(Boolean));
@@ -155,6 +158,7 @@ export async function returnFromRepairs(zord) {
   await zord.update({ 'system.health.value': zord.system.health.max, 'system.stun.value': 0 });
   await recallRecordOf(zord).unsetFlag('essence20', RECALL_FLAG);
   await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: zord }), content: T('ZordRepaired', { name: zord.name }) });
+  announce('zordRepaired', { zord });
   return true;
 }
 

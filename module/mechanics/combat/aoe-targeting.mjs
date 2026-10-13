@@ -36,6 +36,17 @@
 
 import { isLingering } from "../../data/duration-schema.mjs";
 import { ruleAreaRadiusBonus } from "../../rules/plugins/combat/area-radius.mjs";
+import { announce } from "../world/public-hooks.mjs";
+
+/**
+ * Tell other modules where an area landed (essence20.areaPlaced): its shape in canvas pixels - a circle's centre and
+ * radius, a cone's or line's apex and rotation (from the placed Region when there is one), an emanation's token.
+ */
+function announceArea(actor, item, shape, shapeData, { region = null, originToken = null, tokens = [], lingering = false } = {}) {
+  const placed = region?.shapes?.[0];
+  const data = placed?.toObject?.() ?? placed ?? shapeData;
+  announce('areaPlaced', { actor, item, shape, shapeData: { ...shapeData, ...data }, origin: originToken?.center ?? null, region, tokens, lingering });
+}
 
 
 // GI Joe's own "Blast (Xft cone)" quality never states a cone's angular width - this system has
@@ -362,8 +373,11 @@ export async function placeAoeTemplate(actor, item, { radiusMultiplier = 1, radi
   // the caster so it travels with them, which is the whole point of an emanation lasting.
   if (shape == 'emanation') {
     if (!lingering) {
-      const tokens = getTokensInShape(shapeData);
+      // Radiating from the caster (Power Quake "radiating from you", Aura of Decay "from the sorcerer in all
+      // directions"): they're its source, not caught in it - as the lingering branch below already has it.
+      const tokens = getTokensInShape(shapeData).filter(token => token !== originToken);
       canvas.tokens.setTargets(tokens.map(token => token.id));
+      announceArea(actor, item, shape, shapeData, { originToken, tokens });
       return tokens;
     }
 
@@ -376,6 +390,7 @@ export async function placeAoeTemplate(actor, item, { radiusMultiplier = 1, radi
 
     const tokens = getTokensInRegion(created, originToken);
     canvas.tokens.setTargets(tokens.map(token => token.id));
+    announceArea(actor, item, shape, shapeData, { region: created, originToken, tokens, lingering });
     return tokens;
   }
 
@@ -411,5 +426,6 @@ export async function placeAoeTemplate(actor, item, { radiusMultiplier = 1, radi
   const anchoredAtAttacker = shape == 'cone' || shape == 'line';
   const tokens = getTokensInRegion(region, anchoredAtAttacker ? originToken : null);
   canvas.tokens.setTargets(tokens.map(token => token.id));
+  announceArea(actor, item, shape, shapeData, { region, originToken, tokens, lingering });
   return tokens;
 }

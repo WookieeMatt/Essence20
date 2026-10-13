@@ -1,4 +1,5 @@
 import { ruleSummonTimeBonus } from "../../rules/plugins/zords/summon-time-bonus.mjs";
+import { announce } from "../world/public-hooks.mjs";
 
 /**
  * Call to Action (PR CRB, Zord Feature, p.136-137, auto-added to every Zord actor - see
@@ -129,6 +130,7 @@ export async function onSummonZord(target, pilotActor) {
 
     // Back from an earlier scene's repairs: full Health, no lingering Conditions.
     await returnFromRepairs(zordActor);
+    announce('zordSummoned', { zord: zordActor, ranger: pilotActor ?? null });
 
     // Outside a combat there are no rounds to wait out (PR CRB p.135's 3d2 counts game rounds): it answers the call
     // straight away - its arrival card, to Place it on the map and Board it (zord-arrival.mjs).

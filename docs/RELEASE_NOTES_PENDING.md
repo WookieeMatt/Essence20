@@ -156,6 +156,12 @@ the same as the original.
 
 ## Other changes
 
+- **For module makers: new `essence20.*` hooks.** The system now announces game events to other modules: every
+  rules event (`essence20.event` — hits, damage, Defeat, Conditions, Morph, Transform, Story Points, turn starts…),
+  each finished roll with its targets (`essence20.rollResolved`), where an area attack was placed
+  (`essence20.areaPlaced`), a Requisition granted (`essence20.requisitionGranted`), and Zord and Megaform moments (summoned, arrived,
+  placed, boarded, disembarked, recalled, repaired, Combiner merged, broke apart). The list and payloads are in
+  `docs/ARCHITECTURE.md`, "Hooks for modules".
 - **Power Shield** follows the book now:
   - Using it puts the shield on the summoner as +2 armor to Toughness, which counts whether they're Morphed or not.
   - The chat card's **Hand the Power Shield** button passes it to the character you target, or one you pick from the
@@ -236,6 +242,9 @@ the same as the original.
 - **Disembark a Zord.** A Ranger aboard their Zord has a Disembark button on the Zords tab: they leave the seat and
   their token comes back beside the Zord. In a fight the Zord must not have moved that turn, and it takes their Move
   action (15 ft of Ground Movement - PR CRB p.176-177).
+- **For modules and macros:** `game.essence20.rollSkill(actor, skill)`, `canUseItem(item)` / `useItem(item)` (an item's Use
+  button) and `game.essence20.zord.summon / board / disembark / isAboard / hasArrived` - what the sheet's buttons do, under
+  stable names. Token Action HUD Essence20 uses them.
 - **No more "-=" deprecation warnings** in the console from Foundry v14.
 - **New setting: Morphed / Alt Mode token icons.** Options are Show, Hide when the token art
   changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.
@@ -278,6 +287,8 @@ the same as the original.
 - **Imperial Machine Mantle** (Adventures in Angel Grove, p.90): while intact, adds extra Toughness
   equal to half the wearer's current armor bonus (rounded up), Morphed or not. It breaks when the
   wearer is hit by a Critical Success; a GM can clear the broken flag on the Item to repair it.
+- **Power Quake, Sorcerous Tremors, Aura of Decay and Pollution Solution** no longer catch their own user.
+  These areas radiate out from whoever uses them, so the user is the source, not a target.
 
 ## Rules changes
 
