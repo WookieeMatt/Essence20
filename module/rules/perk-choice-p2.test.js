@@ -551,6 +551,18 @@ describe('the old picker never also asks for a converted item', () => {
     expect(global.fromUuid).not.toHaveBeenCalled();
   });
 
+  // Bug report 2026-10-12: Extra Grid Power gave the actor all 22 Grid Powers - its list was granted as equipment.
+  test.each(['Extra Grid Power', 'Marked By Chaos', 'Signature Weapon'])('grantPerkEquipmentMap: %s\'s list is options too, not a grant', async name => {
+    const { grantPerkEquipmentMap } = await import('../sheet-handlers/perk-handler.mjs');
+    global.Item = { create: jest.fn() };
+    global.fromUuid = jest.fn();
+    const perk = [...PACK.values()].find(doc => doc.type == 'perk' && doc.name == name);
+    expect(Object.values(perk.system.items).some(entry => entry.type != 'perk')).toBe(true);
+    await grantPerkEquipmentMap(makeActor(), copyOf(perk));
+    expect(global.Item.create).not.toHaveBeenCalled();
+    expect(global.fromUuid).not.toHaveBeenCalled();
+  });
+
   test('onPerkDelete: a copy the migration unbaked has nothing left to take off', async () => {
     const { onPerkDelete } = await import('../sheet-handlers/perk-handler.mjs');
     const actor = makeActor([], { senses: { ...makeActor().system.senses, smell: { acute: true } } });

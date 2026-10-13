@@ -28,6 +28,7 @@ import { applySystemActorsColorCssVariables, applySystemColorCssVariables } from
 import { getNumActions } from "../mechanics/actions/action-counts.mjs";
 import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../items/defenses/personal-shield.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
+import { keepEffectBoostsOutOfSource } from "../sheet-handlers/effect-boosted-fields.mjs";
 import { announceLevelChange, levelSnapshot } from "../mechanics/characters/level-announce.mjs";
 import { prepareSystemActors,
   onAttachedActorHealthUpdate,
@@ -387,7 +388,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
    * @override
    */
   _processFormData(event, form, formData) {
-    const submitData = super._processFormData(event, form, formData);
+    const submitData = keepEffectBoostsOutOfSource(super._processFormData(event, form, formData), this.actor);
     foundry.utils.deleteProperty(submitData, "system.level");
     // A Zord's / Vehicle's current Essence is its score less the damage taken (mechanics/combat/essence-current.mjs):
     // the typed current amount is stored as that damage, against the score shown when it was typed.

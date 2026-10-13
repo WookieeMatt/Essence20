@@ -77,7 +77,10 @@ export async function subPerkOptions(step, ctx, { ignore = [] } = {}) {
       }
     }
   } else {
-    const listOf = item => Object.values(item?.system?.items ?? {}).filter(entry => entry?.uuid && (!entry.type || entry.type == 'perk'));
+    // Every entry is an option, whatever its type: Extra Grid Power and Marked By Chaos list Grid Powers, Signature
+    // Weapon its weapons, Hypergenetic Manipulation Alterations. Offering only the Perk entries left them nothing to
+    // pick - and a required pick then took the item off again (bug report 2026-10-12).
+    const listOf = item => Object.values(item?.system?.items ?? {}).filter(entry => entry?.uuid);
     let entries = listOf(ctx.item);
     // A copy made before its compendium Perk got its sub-Perk list (Grid Relic Weapon's Relic Weapon Traits, 2026-10-07)
     // has an empty list of its own; its rules inherit from the compendium, so the list does too.

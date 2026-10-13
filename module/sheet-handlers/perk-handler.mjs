@@ -303,8 +303,14 @@ export async function grantIntegratedWeapon(actor, weaponId) {
  * @param {Item} perk   The Perk being granted.
  */
 export async function grantPerkEquipmentMap(actor, perk) {
-  // A pickSubPerk rule (Perk choice P2) reads the map as its option list too, like the old hasChoice picker.
-  const skipPerkEntries = perk?.system?.hasChoice || perk?.system?.isRoleVariant || hasSubPerkPick(perk);
+  // A pickSubPerk rule (Perk choice P2) reads the map as its option list too, like the old hasChoice picker - and then
+  // every entry is an option, whatever its type: Extra Grid Power and Marked By Chaos list Grid Powers to pick ONE of,
+  // Signature Weapon its weapons. Granting those outright gave the actor the whole list.
+  if (hasSubPerkPick(perk)) {
+    return;
+  }
+
+  const skipPerkEntries = perk?.system?.hasChoice || perk?.system?.isRoleVariant;
   for (const entry of Object.values(perk?.system?.items ?? {})) {
     if (!entry?.uuid) {
       continue;
