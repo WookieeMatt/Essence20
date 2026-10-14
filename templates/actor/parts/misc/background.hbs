@@ -4,9 +4,6 @@
 {{!-- Influences --}}
 {{> "systems/essence20/templates/actor/parts/items/influence/container.hbs"}}
 
-{{!-- Bonds --}}
-{{> "systems/essence20/templates/actor/parts/items/bond/container.hbs"}}
-
 {{!-- Hang Ups --}}
 {{> "systems/essence20/templates/actor/parts/items/hangUp/container.hbs"}}
 
@@ -76,6 +73,11 @@
 <div class="biography-editor-field">
   <label>{{localize 'E20.BiographyBio'}}</label>
   <prose-mirror name="system.biography.bio" value="{{system.biography.bio}}" document-uuid="{{document.uuid}}" toggled>{{{system.biography.bio}}}</prose-mirror>
+</div>
+
+<div class="biography-editor-field">
+  <label>{{localize 'E20.BiographyBonds'}}</label>
+  <prose-mirror name="system.biography.bonds" value="{{system.biography.bonds}}" document-uuid="{{document.uuid}}" toggled>{{{system.biography.bonds}}}</prose-mirror>
 </div>
 
 <div class="biography-editor-field">

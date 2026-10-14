@@ -366,6 +366,14 @@ export async function breakApart(form) {
     const combiner = isCombinerForm(form);
     const components = combiner ? componentsOf(form) : getMegaformParticipants(form);
     const safe = combiner && isGiganticOrLarger(form.system?.size);
+    // A joined Megaform's token gives way to its members' tokens again, wherever it stands (mechanics/vehicles/megaform-join.mjs).
+    const { joinedTokenOf, separateMegaform } = await import("../../mechanics/vehicles/megaform-join.mjs");
+    for (const scene of game.scenes ?? []) {
+      if (joinedTokenOf(form, scene)) {
+        await separateMegaform(form, { scene, voluntary: false });
+      }
+    }
+
     const saved = [];
     for (const component of components) {
       if (safe && (component.system?.health?.value ?? 1) <= 0 && traitsOf(component, 'safeRelease').length) {

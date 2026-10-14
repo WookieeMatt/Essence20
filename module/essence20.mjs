@@ -176,6 +176,7 @@ import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 import StartingEssences from "./apps/starting-essences.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import ThreatBuilder from "./apps/threat-builder.mjs";
+import { threatApi } from "./mechanics/characters/threat-api.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./mechanics/characters/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
 import { addConsummatePerformerButton, addDefenseBoostButton, addHighDensityButton, addRerollButtons, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure, runChatDecorators } from "./chat.mjs";
@@ -352,6 +353,15 @@ Hooks.once("init", async function () {
         .onSummonZord({ dataset: { systemActorsUuid: zord?.uuid } }, ranger),
       board: async (ranger, zord) => (await import("./mechanics/vehicles/zord-arrival.mjs")).boardZord(zord, ranger),
       disembark: async (ranger, zord) => (await import("./mechanics/vehicles/zord-arrival.mjs")).disembarkZord(zord, ranger),
+    },
+    // Building Threats: what the Threat Builder and the Monster Grow dialog do - mechanics/characters/threat-api.mjs.
+    threats: threatApi(actor => ThreatBuilder.open(actor)),
+    // A Megaform (Megazord or Combiner) taking the field and leaving it: its members' tokens on the viewed scene swap for
+    // its own, and back - through the GM for a player (mechanics/vehicles/megaform-join.mjs).
+    megaform: {
+      join: async form => (await import("./mechanics/vehicles/megaform-join.mjs")).megaformTokens('join', form),
+      separate: async form => (await import("./mechanics/vehicles/megaform-join.mjs")).megaformTokens('separate', form),
+      isJoined: (form, scene = canvas?.scene) => !!(form && scene && scene.tokens.some(token => token.actorId == form.id && token.getFlag('essence20', 'joinedTokens'))),
     },
   };
 

@@ -539,7 +539,8 @@ export function threatFromActor(actor, { ruleset = null, gameLine = '' } = {}) {
     skills,
     conditioning: intOf(system.conditioning),
     defenses: Object.fromEntries(Object.keys(DEFENSE_ESSENCES).map(defense => [defense, system.defenses?.[defense]?.total ?? 10])),
-    perks: items.filter(item => item.type == 'perk' && item.system?.type != 'contact').length,
+    // A Cybertronian Threat's Mode Conversion Perk comes free (Field Guide p.170).
+    perks: items.filter(item => item.type == 'perk' && item.system?.type != 'contact' && !(system.canTransform && isModeConversion(item))).length,
     powers: items.filter(item => item.type == 'power').length,
     hangUps: items.filter(item => item.type == 'hangUp').length,
     attacks,
@@ -649,6 +650,9 @@ export function buildThreatIr(state, labels = {}) {
     radius: 0,
     shape: null,
     alternateEffects: [],
+    // A Cybertronian's attack usable in one Mode only (Field Guide p.170): 'bot' | 'alt' - the importer sets the weapon's
+    // Mode requirement from it.
+    mode: ['bot', 'alt'].includes(attack.mode) ? attack.mode : null,
   }));
 
   const stats = applyQuickPerks({
@@ -697,8 +701,25 @@ export function buildThreatIr(state, labels = {}) {
     })),
     hangUps: (state.customHangUps ?? []).filter(hangUp => hangUp.name).map(hangUp => ({ name: hangUp.name, text: hangUp.text ?? '' })),
     attacks: stats.attacks,
+    // A Cybertronian Threat's Alt Mode (Field Guide p.169-172): its Size and movement. The importer gives the actor its
+    // Alt Mode item and the Transform button.
+    altMode: state.altMode ? altModeIr(state.altMode, stats) : null,
     equipment: [],
     contact: null,
     diagnostics: [],
   };
+}
+
+/** The free Perk every Cybertronian Threat has: changing Mode (Field Guide p.170). */
+export function isModeConversion(item) {
+  return /^\s*mode conversion\s*$/i.test(item?.name ?? '');
+}
+
+/** The importer's Alt Mode: {size, movement: {ground, aerial, swim, climb, burrow}} - unset movement is null. */
+function altModeIr(altMode, stats) {
+  const movement = Object.fromEntries(['ground', ...MOVEMENT_TYPES].map(type => {
+    const value = altMode.movement?.[type];
+    return [type, value == null || value === '' ? null : intOf(value)];
+  }));
+  return { size: altMode.size || stats.size || 'common', movement };
 }

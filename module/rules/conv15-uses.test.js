@@ -598,6 +598,7 @@ describe('moving to a picked point (moveTo)', () => {
       await use(comm);
     }
 
+    // A teleport: Foundry's Displace action, so v14 doesn't record it as a walk (a stand-in token has no id: just no animation).
     expect(token.document.update).toHaveBeenCalledWith({ x: 50, y: 50 }, { animate: false });
     expect(comm.flags.essence20.chargesUsed).toBe(3);
     expect(available(comm)).toBe(false);

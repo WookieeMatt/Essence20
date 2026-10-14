@@ -52,6 +52,16 @@
         {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
       </span>
     </div>
+    {{!-- Join / Separate: the members' tokens on this scene swap for the Megaform's own (mechanics/vehicles/megaform-join.mjs). --}}
+    {{#if megaformJoined}}
+    <a class="essence20-sidebar-action-button" data-action="megaformSeparate" data-tooltip="{{localize 'E20.MegaformSeparateTooltip'}}">
+      <i class="fas fa-object-ungroup"></i> {{localize 'E20.MegaformSeparate'}}
+    </a>
+    {{else if megaformMembersHere}}
+    <a class="essence20-sidebar-action-button" data-action="megaformJoin" data-tooltip="{{localize 'E20.MegaformJoinTooltip'}}">
+      <i class="fas fa-object-group"></i> {{localize 'E20.MegaformJoin'}} ({{megaformMembersHere}})
+    </a>
+    {{/if}}
   </div>
   {{> "systems/essence20/templates/actor/parts/misc/sidebar-speeds.hbs"}}
   {{> "systems/essence20/templates/actor/parts/misc/sidebar-defenses.hbs"}}

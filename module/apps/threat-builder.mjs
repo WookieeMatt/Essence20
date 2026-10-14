@@ -2,11 +2,12 @@ import { applyThemeClass, getGameLine } from "../settings.js";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 import Essence20CompendiumBrowser from "./compendium-browser.mjs";
 import {
-  allowedSizes, appropriateThreatLevel, auditThreat, buildThreatIr, defaultRulesetFor, essenceBudget, essencesFromSkills,
+  allowedSizes, auditThreat, essenceBudget, essencesFromSkills,
   ESSENCES, extraMovementRate, maxDamagePerks, MOVEMENT_TYPES, perkBudget, QUICK_PERKS, RANKED_SHIFTS, ROLE_PRESETS, RULESETS,
   SIZE_LADDER, SKILLS_BY_ESSENCE, skillGuideFor, skillSpend, THREAT_TYPES, threatDefenses, threatFromActor, threatGroundMovement,
   threatHealth, threatLevelForRole,
 } from "../mechanics/characters/threat-rules.mjs";
+import { createThreat, newThreatState, partyLevels } from "../mechanics/characters/threat-api.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -62,48 +63,14 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
     return app;
   }
 
-  /** A fresh Threat for the world's Game Line, pitched at the party (a Rival). */
+  /** A fresh Threat for the world's Game Line, pitched at the party (a Rival) - threat-api.mjs#newThreatState. */
   static newState() {
-    const ruleset = defaultRulesetFor(getGameLine());
-    const partyLevel = ThreatBuilder.partyLevels().average;
-    const tl = threatLevelForRole('leader', partyLevel);
-    return {
-      ruleset,
-      name: '',
-      concept: '',
-      type: 'typical',
-      animal: false,
-      vehicleAi: false,
-      role: 'leader',
-      tl,
-      healthOverride: null,
-      size: 'common',
-      groundOverride: null,
-      movementTypes: Object.fromEntries(MOVEMENT_TYPES.map(type => [type, false])),
-      social: false,
-      advanced: 0,
-      essences: { strength: 2, speed: 2, smarts: 1, social: 1 },
-      skills: {},
-      conditioning: 0,
-      quickPerks: [],
-      customPerks: [],
-      customPowers: [],
-      customHangUps: [],
-      attacks: [],
-      dropped: [],
-      grow: false,
-    };
+    return newThreatState();
   }
 
-  /**
-   * The primary Party's levels. A world always has a Party (documents/actors.mjs), so an empty one
-   * just means nobody has been added to it yet - the presets then assume level 1.
-   */
+  /** The primary Party's levels - threat-api.mjs#partyLevels. */
   static partyLevels() {
-    const party = game.actors?.party;
-    const levels = (party?.members ?? []).map(actor => Number(actor.system?.level) || 1);
-    const average = levels.length ? Math.round(levels.reduce((a, b) => a + b, 0) / levels.length) : 1;
-    return { name: party?.name ?? '', levels, average, count: levels.length, appropriate: levels.length ? appropriateThreatLevel(levels) : null };
+    return partyLevels();
   }
 
   static DEFAULT_OPTIONS = {
@@ -473,39 +440,11 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
       return;
     }
 
-    const labels = { quickPerk: Object.fromEntries(QUICK_PERKS.map(key => [key, T(`E20.ThreatQuickPerk.${key}`)])) };
-    const ir = buildThreatIr({ ...s, health: this._derived().health - (s.quickPerks ?? []).filter(p => p.key == 'health').length, ground: s.groundOverride ?? undefined }, labels);
-    const { createActorFromStatBlock } = await import("../importers/stat-block-import.mjs");
-    const actor = await createActorFromStatBlock(ir, { type: s.ruleset == 'vehicle' ? 'vehicle' : 'npc' });
+    // The same create game.essence20.threats.create runs (threat-api.mjs): the stat block importer, the remembered
+    // build, the concept, and the dropped compendium items through the sheet's own drop handling.
+    const actor = await createThreat(s);
     if (!actor) {
       return;
-    }
-
-    // healthPerks lets a later audit expect the Health those quick Perks added.
-    const update = {
-      'flags.essence20.threatBuild': {
-        ruleset: s.ruleset, type: s.type, social: s.social, advanced: s.advanced, animal: s.animal, vehicleAi: s.vehicleAi,
-        healthPerks: (s.quickPerks ?? []).filter(perk => perk.key == 'health').length,
-      },
-    };
-    if (s.concept?.trim()) {
-      update['system.biography.bio'] = `<p>${foundry.utils.escapeHTML(s.concept.trim())}</p>`;
-    }
-
-    await actor.update(update);
-
-    // Dropped compendium items go through the sheet's own drop handling, so a weapon arrives with
-    // its effects and a Perk with its choices exactly as if it had been dragged onto the sheet.
-    // v14's sheet drop handler takes the resolved Item document, not the drag data.
-    for (const item of s.dropped ?? []) {
-      try {
-        const document = await fromUuid(item.uuid);
-        if (document) {
-          await actor.sheet._onDropItem(new DragEvent('drop'), document);
-        }
-      } catch (error) {
-        console.warn(`essence20 | Threat Builder could not add ${item.name}`, error);
-      }
     }
 
     ui.notifications.info(T('E20.ThreatBuilderCreated', { name: actor.name }));

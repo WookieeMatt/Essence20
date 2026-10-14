@@ -268,7 +268,9 @@ export function handleGmRelayDone(data) {
  * token - neither of which a player may do by default. These go to the GM the same way, guarded so
  * the GM only makes or removes things that belong to an actor the player owns.
  */
-const CREATE_KINDS = new Set(['actor', 'token', 'deleteActor', 'deleteToken']);
+// megaformJoin / megaformSeparate: a Megaform's members' tokens swapped for its own, and back (mechanics/vehicles/megaform-join.mjs).
+const CREATE_KINDS = new Set(['actor', 'token', 'deleteActor', 'deleteToken', 'megaformJoin', 'megaformSeparate']);
+const MEGAFORM_KINDS = ['megaformJoin', 'megaformSeparate'];
 
 function ownedBy(uuid, user) {
   const owner = uuid ? fromUuidSync(uuid) : null;
@@ -297,6 +299,11 @@ export function isCreateAllowed(kind, payload, user) {
     return false;
   }
 
+  // Joining or separating a Megaform: its owners.
+  if (MEGAFORM_KINDS.includes(kind)) {
+    return actor.type == 'megaform' && ownedBy(actor.uuid, user);
+  }
+
   const owner = actor.flags?.essence20?.companionOf ?? actor.flags?.essence20?.contactOf;
   return ownedBy(actor.uuid, user) || ownedBy(owner, user);
 }
@@ -320,6 +327,12 @@ async function carryOut(kind, payload, user) {
     return null;
   }
 
+  if (MEGAFORM_KINDS.includes(kind)) {
+    const { joinMegaform, separateMegaform } = await import("../vehicles/megaform-join.mjs");
+    const result = kind == 'megaformJoin' ? await joinMegaform(actor, { scene }) : await separateMegaform(actor, { scene });
+    return Array.isArray(result) ? result.length > 0 : !!result;
+  }
+
   if (kind == 'deleteToken') {
     const ids = scene.tokens.filter(t => t.actorId == actor.id).map(t => t.id);
     if (ids.length) {
@@ -336,7 +349,7 @@ async function carryOut(kind, payload, user) {
 
 /**
  * Make or remove a companion actor or token - directly when this user may, through the GM otherwise.
- * @param {String} kind   actor, token, deleteActor or deleteToken.
+ * @param {String} kind   actor, token, deleteActor, deleteToken, megaformJoin or megaformSeparate.
  * @param {Object} payload   {data} for an actor; {actorUuid, sceneId, x, y} for the rest.
  * @returns {Promise<*>}   The new document's uuid, true for a removal, or null.
  */
@@ -347,6 +360,8 @@ export async function createViaGm(kind, payload) {
     token: () => user.isGM || user.can?.('TOKEN_CREATE'),
     deleteActor: () => user.isGM || fromUuidSync(payload.actorUuid)?.isOwner,
     deleteToken: () => user.isGM || user.can?.('TOKEN_DELETE'),
+    megaformJoin: () => user.isGM,
+    megaformSeparate: () => user.isGM,
   }[kind];
   if (may?.()) {
     return carryOut(kind, payload, user);

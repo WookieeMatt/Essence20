@@ -762,7 +762,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     const alterations = [];
     const altModes = [];
     const armors = [];
-    const bonds = [];
     const features = []; // Used by Zords
     const focuses = [];
     const gears = [];
@@ -813,9 +812,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         // Equipped Armor's contribution to Defenses is computed in derived data, not here -
         // see Essence20Actor#_prepareDefenses's own itemArmor block.
         armors.push(i);
-        break;
-      case 'bond':
-        bonds.push(i);
         break;
       case 'faction':
         faction = i;
@@ -943,7 +939,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       perks[type] = withSubPerksUnderParents(perkList.sort(byGrantedLevel));
     }
 
-    for (const itemList of [origins, influences, bonds, hangUps, spells, powers, weapons, armors, shields, gears, alterations, magicBaubles]) {
+    for (const itemList of [origins, influences, hangUps, spells, powers, weapons, armors, shields, gears, alterations, magicBaubles]) {
       itemList.sort(byGrantedLevel);
     }
 
@@ -951,7 +947,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     context.alterations = alterations;
     context.altModes = altModes;
     context.armors = armors;
-    context.bonds = bonds;
     context.faction = faction;
     context.features = features;
     context.gears = gears;

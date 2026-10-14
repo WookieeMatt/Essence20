@@ -477,7 +477,8 @@ payload. A stable API, like `game.essence20`.
 | `essence20.zordRecalled` | Recall for Repairs (before its token leaves) | `{ zord, zordToken }` |
 | `essence20.zordRepaired` | Back from repairs on a later summon | `{ zord }` |
 | `essence20.combinerMerged` | Combiner members finish merging | `{ form, members }` |
-| `essence20.megaformSplit` | A Combiner or Megazord breaks apart | `{ form, components, isCombiner }` |
+| `essence20.megaformFormed` | A Megazord or Combiner joins on the map: its members' tokens become its token (announced before theirs go) | `{ form, token, members, from }` (`from`: each member token's centre) |
+| `essence20.megaformSplit` | A Combiner or Megazord breaks apart (Defeated), or separates on the map | `{ form, components, isCombiner, voluntary?, tokens?, at?, to? }` (separating: `voluntary`, the members' `tokens`, where the Megaform stood `at` {x, y, w}, each member's centre `to`) |
 | `essence20.storyPointNarrative` | A Story Point spent for a narrative effect | (see the Story Point tracker) |
 
 ---

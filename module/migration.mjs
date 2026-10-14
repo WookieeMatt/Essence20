@@ -2,6 +2,7 @@ import { createId, slugifySpecializationName } from "./util/utils.mjs";
 import { parseDurationString } from "./data/duration-schema.mjs";
 import { legacyChoiceOf } from "./rules/choice-read.mjs";
 import { MOVED_ITEM_UUIDS } from "./items/shared/item-lookups.mjs";
+import { retireWorldBonds } from "./mechanics/world/retire-bonds.mjs";
 
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
@@ -36,6 +37,14 @@ export const migrateWorld = async function() {
   if (reloadNeeded) {
     foundry.utils.debouncedReload();
     return;
+  }
+
+  // Bonds are no longer items (6.0.5): each one's text moves into its character's Biography and the Bond is deleted -
+  // world actors, unlinked tokens, the Items directory, world and module compendiums - before anything below reads them.
+  try {
+    await retireWorldBonds();
+  } catch (err) {
+    console.error('Failed essence20 system migration retiring Bonds', err);
   }
 
   // One Perk choice report for the whole run (perkChoiceReport), summarised to the GM by migratePerkChoices at the end.
