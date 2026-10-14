@@ -437,6 +437,17 @@ export const registerSettings = function () {
     onChange: () => refreshStateIcons(),
   });
 
+  // The Zords' 3d2-round wait to arrive in combat (PR CRB p.135, mechanics/vehicles/zord-summon.mjs). Off: a summoned
+  // Zord answers the call at once, in combat as it already does outside one.
+  game.settings.register(systemName, "zordArrivalWait", {
+    name: game.i18n.localize("E20.ZordArrivalWait"),
+    hint: game.i18n.localize("E20.ZordArrivalWaitHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+  });
+
   /* -------------------------------------------- */
   /*  Threats                                     */
   /* -------------------------------------------- */

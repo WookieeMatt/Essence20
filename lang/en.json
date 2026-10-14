@@ -2357,6 +2357,8 @@
     "StateTokenIconsAlways": "Show the icon",
     "StateTokenIconsArt": "Hide it when the token art changes (Morphed art or the Alt Mode's token image)",
     "StateTokenIconsNever": "Never show the icon",
+    "ZordArrivalWait": "Zords take time to arrive",
+    "ZordArrivalWaitHint": "On: a Zord summoned in combat arrives after 3d2 rounds (Power Rangers Core Rulebook p.135). Off: it arrives at once, ready to place on the map and board.",
     "EffectAddBehaviorAsk": "Ask each time",
     "EffectAddBehaviorWizard": "Always open the Wizard",
     "EffectAddBehaviorBlank": "Always create a blank effect",

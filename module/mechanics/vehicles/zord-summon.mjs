@@ -15,6 +15,15 @@ import { announce } from "../world/public-hooks.mjs";
  */
 const SUMMON_READY_ROUND_FLAG = 'zordSummonReadyRound';
 
+/** Whether Zords wait out their arrival in combat (world setting zordArrivalWait; on unless turned off). */
+function arrivalWait() {
+  try {
+    return game.settings.get('essence20', 'zordArrivalWait') !== false;
+  } catch (error) {
+    return true;
+  }
+}
+
 // Enhanced Summoner (PR CRB, Grid Tech I, p.38) - "you and your team": a SummonTimeBonus {amount: 1, sceneAllies: true}
 // rule (rules/plugins/zords/summon-time-bonus.mjs): the summoner's own, or any same-Disposition token's on the scene;
 // it doesn't stack.
@@ -132,9 +141,10 @@ export async function onSummonZord(target, pilotActor) {
     await returnFromRepairs(zordActor);
     announce('zordSummoned', { zord: zordActor, ranger: pilotActor ?? null });
 
-    // Outside a combat there are no rounds to wait out (PR CRB p.135's 3d2 counts game rounds): it answers the call
-    // straight away - its arrival card, to Place it on the map and Board it (zord-arrival.mjs).
-    if (!game.combat?.started) {
+    // Outside a combat there are no rounds to wait out (PR CRB p.135's 3d2 counts game rounds), and a table can turn the
+    // wait off (the zordArrivalWait setting): it answers the call straight away - its arrival card, to Place it on the
+    // map and Board it (zord-arrival.mjs).
+    if (!game.combat?.started || !arrivalWait()) {
       await zordActor.unsetFlag('essence20', SUMMON_READY_ROUND_FLAG);
       await zordActor.setFlag('essence20', 'zordSummoner', pilotActor?.uuid ?? null);
       const { postArrival } = await import("./zord-arrival.mjs");
