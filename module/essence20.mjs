@@ -354,6 +354,17 @@ Hooks.once("init", async function () {
       board: async (ranger, zord) => (await import("./mechanics/vehicles/zord-arrival.mjs")).boardZord(zord, ranger),
       disembark: async (ranger, zord) => (await import("./mechanics/vehicles/zord-arrival.mjs")).disembarkZord(zord, ranger),
     },
+    // Riding in a Transformer's Alt Mode (TF CRB p.47) - mechanics/vehicles/alt-mode-crew.mjs.
+    altModeCrew: {
+      board: async (transformer, rider, options) => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).board(transformer, rider, options),
+      disembark: async (transformer, rider, options) => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).disembark(transformer, rider, options),
+      escape: async (prisoner, skill) => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).escape(prisoner, skill),
+      crash: async (transformer, options) => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).crash(transformer, options),
+      assistDriving: async driver => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).assistDriving(driver),
+      crewOf: async transformer => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).crewOf(transformer),
+      carrierOf: async rider => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).carrierOf(rider)?.carrier ?? null,
+      capacity: async transformer => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).crewCapacity(transformer),
+    },
     // Building Threats: what the Threat Builder and the Monster Grow dialog do - mechanics/characters/threat-api.mjs.
     threats: threatApi(actor => ThreatBuilder.open(actor)),
     // A Megaform (Megazord or Combiner) taking the field and leaving it: its members' tokens on the viewed scene swap for
@@ -1302,6 +1313,34 @@ for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiv
     }
   });
 }
+
+// "Board the targeted Transformer" on a creature's own token HUD - the player's way in to a friend's Alt Mode
+// (mechanics/vehicles/alt-mode-crew.mjs); once aboard, their token is hidden and the sheet's header lets them out.
+Hooks.on("renderTokenHUD", async (hud, html) => {
+  const rider = hud.document?.actor;
+  const targets = [...(game.user.targets ?? [])].map(token => token.actor).filter(Boolean);
+  if (!rider?.isOwner || targets.length != 1 || targets[0] === rider || !targets[0].system?.canTransform) {
+    return;
+  }
+
+  const crew = await import("./mechanics/vehicles/alt-mode-crew.mjs");
+  const column = html.querySelector(".col.left") ?? html.querySelector(".col.right");
+  if (!column || column.querySelector(".essence20-alt-crew-board") || crew.carrierOf(rider)) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.classList.add("control-icon", "essence20-alt-crew-board");
+  button.dataset.tooltip = game.i18n.localize("E20.AltCrewBoardTokenHud");
+  button.innerHTML = '<i class="fas fa-person-walking-arrow-right"></i>';
+  button.addEventListener("click", async () => {
+    if (await crew.board(targets[0], rider)) {
+      hud.close();
+    }
+  });
+  column.appendChild(button);
+});
 
 // Stack counts and the Zord override on the token HUD's vessel Conditions.
 Hooks.on("renderTokenHUD", (hud, html) => {

@@ -5,9 +5,13 @@
   "_id": "PCwgQWKmTOl8va3I",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"CrewCapacity","label":"Extra Crew Capacity (+4 Crew in Alt Mode)","add":4,"modes":"alt"},
+      {"type":"CrewCapacity","label":"Extra Crew Capacity (Crew 1 in Bot Mode)","set":1,"modes":"bot"}
+    ],
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: counts toward how many prisoners your Cage can hold.</p><p>Left to the table: the +4 Crew rating in Alt Mode and Crew 1 in Bot Mode everywhere else.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: your Alt Mode's Crew rating is 4 higher, and your Bot Mode has room for one (the Crew panel on the Alt Mode tab, and how many prisoners your Cage holds).</p>"
     },
     "originalId": "",
     "description": "",

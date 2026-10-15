@@ -77,6 +77,8 @@ import { treatOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
 import { nestSubPerks, withSubPerksUnderParents } from "../mechanics/characters/sub-perks.mjs";
 import { missingFocusPickLevels, syncFocusSkillPicks } from "../mechanics/characters/focus-skills.mjs";
 import { currentEssence, currentEssenceUpdate, tracksEssenceDamage } from "../mechanics/combat/essence-current.mjs";
+import * as altModeCrew from "../mechanics/vehicles/alt-mode-crew.mjs";
+import { botSizeFor, fullMovement, movementChoiceIndex, movementLabel } from "../items/shared/alt-mode-chassis.mjs";
 
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
@@ -128,6 +130,14 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       zordGrowth: this.#onZordGrowth,
       zordBoard: this.#onZordBoard,
       zordDisembark: this.#onZordDisembark,
+      altCrewBoardTargets: this.#onAltCrewBoardTargets,
+      altCrewDisembark: this.#onAltCrewDisembark,
+      altCrewFirepoint: this.#onAltCrewFirepoint,
+      altCrewCrash: this.#onAltCrewCrash,
+      aboardDisembark: this.#onAboardDisembark,
+      aboardEscape: this.#onAboardEscape,
+      aboardAssist: this.#onAboardAssist,
+      aboardOpen: this.#onAboardOpen,
       zordAutoFeatures: this.#onZordAutoFeatures,
       summonContact: this.#onSummonContact,
       systemActorOpen: this.#onSystemActorOpen,
@@ -218,6 +228,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     this._applyLockedState();
     this._activateMacroDragDrop();
     this._activateCrewListeners();
+    this._activateAltModeCrewListeners();
     this._activateInlineEditListeners();
     this._activateRolePointsListeners();
     this._activateImageContextMenu();
@@ -315,6 +326,48 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       input.addEventListener('change', (event) => onAttachedActorStunUpdate(event, this));
     }
 
+  }
+
+  /** The Alt Mode Crew panel's role selects (alt-mode-crew.hbs) - change events, bound by hand like the vehicle ones. */
+  _activateAltModeCrewListeners() {
+    // An Alt Mode with a choice of size or movement (altMode/details.hbs): the pick, and the token's size and movement
+    // if it's the Mode in use. A size that fixes the Bot Mode's (Saurian's Long: Large) sets that too.
+    for (const select of this.element.querySelectorAll('.e20-altmode-size__select, .e20-altmode-movement__select')) {
+      select.addEventListener('change', async (event) => {
+        event.stopPropagation();
+        const altMode = this.document.items.get(select.dataset.itemId);
+        if (!altMode) {
+          return;
+        }
+
+        if (select.classList.contains('e20-altmode-movement__select')) {
+          const option = altMode.system.movementOptions?.[Number(select.value)];
+          if (!option) {
+            return;
+          }
+
+          await altMode.update({ 'system.altModeMovement': fullMovement(option) });
+        } else {
+          await altMode.update({ 'system.altModesize': select.value });
+          const botSize = botSizeFor(altMode.system, select.value);
+          if (botSize && this.document._source.system.size != botSize) {
+            await this.document.update({ 'system.size': botSize });
+          }
+        }
+
+        const { refreshAltModeSize } = await import("../sheet-handlers/transformer-handler.mjs");
+        await refreshAltModeSize(this.document, altMode);
+      });
+    }
+
+    for (const select of this.element.querySelectorAll('.e20-alt-crew__role')) {
+      select.addEventListener('change', async (event) => {
+        event.stopPropagation();
+        if (!(await altModeCrew.setSeat(this.document, select.dataset.key, { role: select.value }))) {
+          this.render();
+        }
+      });
+    }
   }
 
   /**
@@ -627,6 +680,11 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
     // Prepare actors that are attached to other actors
     prepareSystemActors(this.document, context);
+
+    // Riding in a Transformer's Alt Mode (mechanics/vehicles/alt-mode-crew.mjs): a Transformer's Crew panel, and the
+    // header's line for whoever is aboard one.
+    context.altCrew = altModeCrew.crewSheetContext(this.document);
+    context.aboard = altModeCrew.aboardSheetContext(this.document);
 
     context.canMorphOrTransform = context.document.system.canMorph || context.document.system.canTransform;
 
@@ -946,6 +1004,14 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     // Assign and return
     context.alterations = alterations;
     context.altModes = altModes;
+    // An Alt Mode printed with a choice of movement: the choices for its row's picker (altMode/details.hbs).
+    context.altModeMovementChoices = Object.fromEntries(altModes.filter(altMode => (altMode.system?.movementOptions?.length ?? 0) > 1)
+      .map(altMode => {
+        const chosen = movementChoiceIndex(altMode.system);
+        return [altMode._id ?? altMode.id, altMode.system.movementOptions.map((option, index) => ({
+          index, label: movementLabel(option, key => game.i18n.localize(key)), selected: index == chosen,
+        }))];
+      }));
     context.armors = armors;
     context.faction = faction;
     context.features = features;
@@ -1025,6 +1091,12 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
    * @override
    */
   async _onDropActor(event, data) {
+    // Onto a Transformer's Crew panel: they climb in (mechanics/vehicles/alt-mode-crew.mjs).
+    if (event?.target?.closest?.('.e20-alt-crew') && altModeCrew.isTransformer(this.document)) {
+      const passenger = await fromUuid(data.uuid);
+      return passenger ? altModeCrew.board(this.document, passenger) : false;
+    }
+
     return onDropActor(data, this);
   }
 
@@ -1128,6 +1200,68 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
     const { boardZord } = await import("../mechanics/vehicles/zord-arrival.mjs");
     await boardZord(zord, this.document);
+  }
+
+  /** The Crew panel's Board button: every targeted creature climbs into this Transformer (as passengers). */
+  static async #onAltCrewBoardTargets(event, target) {
+    await altModeCrew.boardTargets(this.document, target.dataset.role || 'passenger');
+  }
+
+  /** The Crew panel's Disembark (or Release, for a prisoner). */
+  static async #onAltCrewDisembark(event, target) {
+    const entry = altModeCrew.crewEntries(this.document).find(row => row.key == target.dataset.key);
+    const passenger = entry ? await fromUuid(entry.uuid) : null;
+    if (passenger) {
+      await altModeCrew.disembark(this.document, passenger, { force: entry.role == 'prisoner' });
+    } else if (entry) {
+      // Someone who no longer exists: just the seat goes.
+      await this.document.update({ [`flags.essence20.altModeCrew.${entry.key}`]: new foundry.data.operators.ForcedDeletion() });
+    }
+  }
+
+  /** The Crew panel's Firepoint toggle. */
+  static async #onAltCrewFirepoint(event, target) {
+    const entry = altModeCrew.crewEntries(this.document).find(row => row.key == target.dataset.key);
+    if (entry) {
+      await altModeCrew.setSeat(this.document, entry.key, { firepoint: !entry.firepoint });
+    }
+  }
+
+  /** The Crew panel's Crash (the GM): how far it moved this turn, then the crash (TF CRB p.163). */
+  static async #onAltCrewCrash() {
+    const { DialogV2 } = foundry.applications.api;
+    const feet = await DialogV2.prompt({
+      window: { title: game.i18n.localize('E20.AltCrewCrashTitle') },
+      content: `<label>${game.i18n.localize('E20.AltCrewCrashFeet')} <input type="number" name="feet" value="0" min="0" step="5"></label>`,
+      ok: { label: game.i18n.localize('E20.AltCrewCrash'), callback: (event, button) => Number(button.form.elements.feet.value) || 0 },
+      rejectClose: false,
+    });
+    if (feet !== null && feet !== undefined) {
+      await altModeCrew.crash(this.document, { feet });
+    }
+  }
+
+  /** The header's Get out (a crew member's own sheet). */
+  static async #onAboardDisembark() {
+    const aboard = altModeCrew.carrierOf(this.document);
+    if (aboard) {
+      await altModeCrew.disembark(aboard.carrier, this.document);
+    }
+  }
+
+  /** The header's Escape (a prisoner's own sheet). */
+  static async #onAboardEscape() {
+    await altModeCrew.escape(this.document);
+  }
+
+  /** The header's Assist Driving (the Driver's own sheet). */
+  static async #onAboardAssist() {
+    await altModeCrew.assistDriving(this.document);
+  }
+
+  /** The header's Transformer name: its sheet. */
+  static async #onAboardOpen() {
+    altModeCrew.carrierOf(this.document)?.carrier?.sheet?.render(true);
   }
 
   /** The Zords tab's Disembark: the Ranger gets out of a Zord they're aboard (mechanics/vehicles/zord-arrival.mjs). */

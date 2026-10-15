@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: 4 starting Health, Ground Movement 30, the Plant Plasticity Perk, and your pick of the Common or Large Flora Alt Mode. You pick +1 Smarts or Social and Science or Persuasion as your Origin Skill.</p>"
+      "notes": "<p>Granted: 4 starting Health, Ground Movement 30, the Plant Plasticity Perk, and the Flora Alt Mode (you pick Common or Large for each Mode). You pick +1 Smarts or Social and Science or Persuasion as your Origin Skill.</p>"
     },
     "originalId": "",
     "description": "",
@@ -25,13 +25,7 @@
       "e267": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.gah8pRWSMDvXsUax",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Flora (Common)",
-        "type": "altMode"
-      },
-      "c9f0": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.TfIrQViYdkBkqR7q",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Flora (Large)",
+        "name": "Flora",
         "type": "altMode"
       }
     },

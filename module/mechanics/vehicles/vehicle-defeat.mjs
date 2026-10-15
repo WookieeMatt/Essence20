@@ -71,7 +71,7 @@ async function rollSkillTest(actor, skillKey, dif, specialized = false) {
  * @param {Number} dif
  * @returns {Promise<{total: Number, success: Boolean}>}
  */
-async function rollBetterOfAthleticsOrAcrobatics(actor, dif) {
+export async function rollBetterOfAthleticsOrAcrobatics(actor, dif) {
   const athletics = await rollSkillTest(actor, 'athletics', dif);
   const acrobatics = await rollSkillTest(actor, 'acrobatics', dif);
   return athletics.total >= acrobatics.total ? athletics : acrobatics;

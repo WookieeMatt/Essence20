@@ -479,6 +479,9 @@ payload. A stable API, like `game.essence20`.
 | `essence20.combinerMerged` | Combiner members finish merging | `{ form, members }` |
 | `essence20.megaformFormed` | A Megazord or Combiner joins on the map: its members' tokens become its token (announced before theirs go) | `{ form, token, members, from }` (`from`: each member token's centre) |
 | `essence20.megaformSplit` | A Combiner or Megazord breaks apart (Defeated), or separates on the map | `{ form, components, isCombiner, voluntary?, tokens?, at?, to? }` (separating: `voluntary`, the members' `tokens`, where the Megaform stood `at` {x, y, w}, each member's centre `to`) |
+| `essence20.altModeBoarded` | Someone climbs into a Transformer's Alt Mode (or is put in its Cage) - mechanics/vehicles/alt-mode-crew.mjs | `{ carrier, passenger, role }` (`role`: driver, passenger or prisoner) |
+| `essence20.altModeDisembarked` | Someone gets out of a Transformer (or escapes its Cage, or is put out by a Mode change or a crash) | `{ carrier, passenger, role, escaped }` |
+| `essence20.altModeCrashed` | A Transformer crashes in Alt Mode | `{ carrier, feet }` |
 | `essence20.storyPointNarrative` | A Story Point spent for a narrative effect | (see the Story Point tracker) |
 
 ---

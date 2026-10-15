@@ -2,6 +2,7 @@ import { createId, slugifySpecializationName } from "./util/utils.mjs";
 import { parseDurationString } from "./data/duration-schema.mjs";
 import { legacyChoiceOf } from "./rules/choice-read.mjs";
 import { MOVED_ITEM_UUIDS } from "./items/shared/item-lookups.mjs";
+import { ALT_MODE_CHASSIS, fullMovement, movementChoiceIndex } from "./items/shared/alt-mode-chassis.mjs";
 import { retireWorldBonds } from "./mechanics/world/retire-bonds.mjs";
 
 /**
@@ -964,6 +965,9 @@ export async function migrateItemData(item, actor, options = {}) {
   // Compendium items moved to another pack (2026-10-07) - see migrateMovedItemSources below.
   migrateMovedItemSources(item, { update: updateData });
 
+  // Alt Modes printed with choices, merged into one item each (2026-10-14) - see migrateAltModeChoices below.
+  migrateAltModeChoices(item, { update: updateData });
+
   // Perk choice P2: a world / compendium item's old pick into its rules choice (migratePerkChoiceItem below). An
   // embedded one is migrated with its actor (migrateActorData), which also takes the baked value off.
   if (!actor) {
@@ -1509,6 +1513,64 @@ export function migrateMovedItemSources(item, { update = {} } = {}) {
     if (Array.isArray(value) ? value.some(moved) : moved(value)) {
       update[`flags.essence20.rules.choices.${key}`] = Array.isArray(value) ? value.map(entry => moved(entry) ?? entry) : moved(value);
     }
+  }
+
+  return update;
+}
+
+/**
+ * A copy of a chassis printed with choices (items/shared/alt-mode-chassis.mjs - Behemoth, Monstrosity, Saurian...), made
+ * before its variants were merged into one item (2026-10-14), gets the choices (data/item/alt-mode.mjs), so its row on
+ * the sheet offers them, and the merged item's name. The size it was made with is kept; a movement that isn't one of
+ * the choices (Charger's old Ground and Aerial both at once) becomes one - the Underground one for a Carapaced whose
+ * old Use button picked it. A second run finds it done and does nothing.
+ * @param {Object} item   A document or its plain data.
+ * @param {Object} [options]   {update: update data to add to}
+ * @returns {Object}   Update data.
+ */
+export function migrateAltModeChoices(item, { update = {} } = {}) {
+  const data = item?._source ?? item ?? {};
+  if (data.type != 'altMode') {
+    return update;
+  }
+
+  const source = [data.flags?.core?.sourceId, data._stats?.compendiumSource, data.flags?.essence20?.rulesSource]
+    .map(uuid => (typeof uuid == 'string' && MOVED_ITEM_UUIDS[uuid]) || uuid).find(uuid => ALT_MODE_CHASSIS[uuid]);
+  const chassis = source ? ALT_MODE_CHASSIS[source] : null;
+  if (!chassis) {
+    return update;
+  }
+
+  const system = data.system ?? {};
+  // Fewer than two is no choice yet (a single-size copy loads with its one size listed - data/item/alt-mode.mjs).
+  const unset = key => (system[key] ?? []).length < 2;
+  if (chassis.alt.length > 1 && unset('altModeSizeOptions')) {
+    update['system.altModeSizeOptions'] = chassis.alt;
+  }
+
+  if (chassis.bot.length > 1 && unset('botModeSizeOptions')) {
+    update['system.botModeSizeOptions'] = chassis.bot;
+  }
+
+  if (chassis.botFor && !Object.keys(system.botModeSizeFor ?? {}).length) {
+    update['system.botModeSizeFor'] = chassis.botFor;
+  }
+
+  if (chassis.movement?.length) {
+    if (chassis.movement.length > 1 && unset('movementOptions')) {
+      update['system.movementOptions'] = chassis.movement.map(fullMovement);
+    }
+
+    if (movementChoiceIndex({ altModeMovement: system.altModeMovement, movementOptions: chassis.movement }) < 0) {
+      const burrow = data.flags?.essence20?.zord2CarapacedChoice == 'burrow' ? chassis.movement.findIndex(option => option.burrow) : -1;
+      update['system.altModeMovement'] = fullMovement(chassis.movement[Math.max(0, burrow)]);
+    }
+  }
+
+  // "Behemoth (Huge)", "Mini-Con (Mini-Vehicle, Aerial)": the merged item's name. A renamed copy keeps its own.
+  const stem = chassis.name.replace(/\)$/, '');
+  if (chassis.retired.length && data.name != chassis.name && (data.name ?? '').startsWith(stem) && /\)$/.test(data.name ?? '')) {
+    update.name = chassis.name;
   }
 
   return update;

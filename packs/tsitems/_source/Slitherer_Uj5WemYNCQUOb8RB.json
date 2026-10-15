@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: 3 starting Health, Ground Movement 30, the Get Low Perk, and your pick of the Common or Long Slitherer Alt Mode. You pick +1 Speed or Social and one Origin Skill.</p>"
+      "notes": "<p>Granted: 3 starting Health, Ground Movement 30, the Get Low Perk, and the Slitherer Alt Mode (you pick a Common or Large Bot Mode and a Common or Long Alt Mode - a Long Alt Mode goes with a Large Bot Mode). You pick +1 Speed or Social and one Origin Skill.</p>"
     },
     "originalId": "",
     "description": "",
@@ -25,13 +25,7 @@
       "9bd2": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.wrG4V7yi5wHnQMbL",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Slitherer (Common)",
-        "type": "altMode"
-      },
-      "f19c": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.Y2WR7POqwxnoXzwh",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Slitherer (Large)",
+        "name": "Slitherer",
         "type": "altMode"
       }
     },

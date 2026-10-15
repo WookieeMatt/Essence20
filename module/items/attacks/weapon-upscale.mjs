@@ -16,6 +16,7 @@
  * Also: hands / Hardpoints by size (EoC p.48), read by Essence20Item#_prepareWeaponHands - weaponSizeGap.
  */
 import { sizeClassIndex, sizeClassOf } from "../../mechanics/combat/size-classes.mjs";
+import { altModeSize } from "../../rules/plugins/effects/size.mjs";
 
 export const UPSCALE_FLAG = 'upscaled';
 const AVAILABILITY_ORDER = ['automatic', 'standard', 'limited', 'restricted', 'prototype', 'unique'];
@@ -38,12 +39,13 @@ export function upscaleSizeFor(size) {
 export const weaponSizeClass = weapon => weapon?.flags?.essence20?.[UPSCALE_FLAG]?.size ?? 'common';
 
 /**
- * The size classes of the wielder's Modes: its Bot Mode (system.size) and every Alt Mode it has (altModesize).
+ * The size classes of the wielder's Modes: its Bot Mode (system.size) and every Alt Mode it has (altModesize, through
+ * its Size rules for Alt Modes - altModeSize).
  * @returns {Number[]}   Indexes into SIZE_CLASSES
  */
 export function modeSizeIndexes(wielder) {
   const items = wielder?.items?.contents ?? (Array.isArray(wielder?.items) ? wielder.items : [...(wielder?.items ?? [])]);
-  return [wielder?.system?.size, ...items.filter(item => item?.type == 'altMode').map(item => item.system?.altModesize)]
+  return [wielder?.system?.size, ...items.filter(item => item?.type == 'altMode').map(item => altModeSize(wielder, item))]
     .map(sizeClassIndex).filter(index => index >= 0);
 }
 

@@ -22,6 +22,10 @@ export function onManageSelectTrait(event, owner, target=null) {
     options.choices = CONFIG.E20.actorLevels;
     options.valueKey = null;
     break;
+  case "actorSizes":
+    options.choices = CONFIG.E20.actorSizes;
+    options.valueKey = null;
+    break;
   case "armor":
     options.choices = CONFIG.E20.armorTraits;
     options.valueKey = null;

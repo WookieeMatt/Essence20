@@ -9,6 +9,7 @@ import { getNearbyAllyTokens } from "../combat/nearby-allies.mjs";
 import { getSkillRanks } from "../combat/combat.mjs";
 import { ruleAssist } from "../../rules/adapter.mjs";
 import { clearVoiceOfPrimusAssistReady, hasVoiceOfPrimusAssistReady } from "../../items/social/voice-of-primus.mjs";
+import { driverAssistBypass } from "../vehicles/alt-mode-crew.mjs";
 
 /**
  * The Lend Assistance action (GI Joe CRB p.197).
@@ -238,7 +239,8 @@ export function canAssistWithSkill(actor, ally, skill) {
   return false;
 }
 
-export const ASSIST_RANK_BYPASSES = [];
+// An Alt Mode's Driver helps its Driving with any rank in it (TF CRB p.47) - mechanics/vehicles/alt-mode-crew.mjs.
+export const ASSIST_RANK_BYPASSES = [driverAssistBypass];
 
 /**
  * How big an upshift the skill half grants - normally 1, raised by Putting Others Before Yourself
@@ -293,6 +295,9 @@ async function bankSkillAssist(actor, ally, skill) {
 
   return banked;
 }
+
+/** The skill half, for one ally and skill already chosen (an Alt Mode's Driver - mechanics/vehicles/alt-mode-crew.mjs). */
+export const assistSkill = (actor, ally, skill) => bankSkillAssistBonus(actor, ally, skill);
 
 async function bankSkillAssistBonus(actor, ally, skill) {
   /* The one hard prerequisite in the action (plus the Perks that move it). Refused rather than

@@ -3486,7 +3486,7 @@ test('Obscuring Matrix: a loose (chassis) copy is negated while Grappled, Immobi
 
 test('Bestial Articulation: a ↓1 switch only while converted into this Monstrosity Alt Mode', async () => {
   const { evaluateTag, contextFor } = await import('./predicate.mjs');
-  const rule = fromPack('tsitems/_source/Monstrosity__Huge__Aquatic__Rk3mT9vQx2LpW7nZ.json').system.rules.find(r => r.type == 'DialogSwitch');
+  const rule = fromPack('tsitems/_source/Monstrosity_hRTGCxvA7dI4dSAS.json').system.rules.find(r => r.type == 'DialogSwitch');
   expect(rule).toMatchObject({ type: 'DialogSwitch', downshift: 1, when: ['rule:altMode'] });
   const mode = { id: 'mon' };
   const beast = { system: { isTransformed: true, altModeId: 'mon' } };
@@ -4372,26 +4372,18 @@ test.each([
   ['Beatdown', 'ccitems/_source/Beatdown_38zFS75lhzBWiurT.json', 'Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN'],
   ['Jackhammer', 'ccitems/_source/Jackhammer_sBoZ2KrzmKlWIlYu.json', 'Compendium.essence20.gi_joe_crb.Item.Jnjio1DtAx0QgE85'],
   ['Shadow Morph [Form]', 'atsitems/_source/Shadow_Morph__Form__UNgNYpUADVTaNrWt.json', 'Compendium.essence20.across_the_stars.Item.PQ2msfDzjTGz8aXN'],
-  ["Pillar (Extended)", 'eocitems/_source/Pillar__Extended__j0CJWQ858tbQvVUs.json', TONIGHT_WEAPONS.ram],
-  ["Pillar (Long)", 'eocitems/_source/Pillar__Long__SroTzxuu57HoaN9V.json', TONIGHT_WEAPONS.ram],
-  ["Speaker (Common, Aerial)", 'eocitems/_source/Speaker__Common__Aerial__ilL3CyLQDydjxBHf.json', TONIGHT_WEAPONS.ram],
-  ["Speaker (Common, Ground)", 'eocitems/_source/Speaker__Common__Ground__GPW2T5OEC0KtlJpX.json', TONIGHT_WEAPONS.ram],
-  ["Speaker (Long, Aerial)", 'eocitems/_source/Speaker__Long__Aerial__wwFXrMqJd0YJHqkX.json', TONIGHT_WEAPONS.ram],
-  ["Speaker (Long, Ground)", 'eocitems/_source/Speaker__Long__Ground__48zFIrJCoULshGtm.json', TONIGHT_WEAPONS.ram],
+  ["Pillar", 'eocitems/_source/Pillar_SroTzxuu57HoaN9V.json', TONIGHT_WEAPONS.ram],
+  ["Speaker", 'eocitems/_source/Speaker_GPW2T5OEC0KtlJpX.json', TONIGHT_WEAPONS.ram],
   ["Champion", 'tfcrbitems/_source/Champion_IFssZkdjKb6vcYfk.json', TONIGHT_WEAPONS.ram],
-  ["Cutter (Common)", 'tfcrbitems/_source/Cutter__Common__5sxhsXAHh97KTpwa.json', TONIGHT_WEAPONS.ram],
-  ["Cutter (Long)", 'tfcrbitems/_source/Cutter__Long__FlN4FCnbTP7RRz8K.json', TONIGHT_WEAPONS.ram],
+  ["Cutter", 'tfcrbitems/_source/Cutter_5sxhsXAHh97KTpwa.json', TONIGHT_WEAPONS.ram],
   ["Lookout", 'tfcrbitems/_source/Lookout_ZS3kX8oKogmsH6OK.json', TONIGHT_WEAPONS.ram],
-  ["Outrider (Common)", 'tfcrbitems/_source/Outrider__Common__NaF9feAfujLYwDfO.json', TONIGHT_WEAPONS.ram],
-  ["Outrider (Long)", 'tfcrbitems/_source/Outrider__Long__WYlv5KoOv8WTUtKN.json', TONIGHT_WEAPONS.ram],
+  ["Outrider", 'tfcrbitems/_source/Outrider_NaF9feAfujLYwDfO.json', TONIGHT_WEAPONS.ram],
   ["Rainmaker", 'tfcrbitems/_source/Rainmaker_OlLBvRl06PVw9OQx.json', TONIGHT_WEAPONS.ram],
   ["Support", 'tfcrbitems/_source/Support_hr00Kzgshnz67400.json', TONIGHT_WEAPONS.ram],
   ["Seeker", 'tfcrbitems/_source/Seeker_RXTZuPJnnAlkgHX2.json', TONIGHT_WEAPONS.flyby],
   ["Salvaged", 'dditems/_source/Salvaged_cGGEXSdCI170AaM4.json', TONIGHT_WEAPONS.spikedRam],
-  ["Mini-Con (Mini-Vehicle, Aerial)", 'dditems/_source/Mini_Con__Mini_Vehicle__Aerial__oSn5EyMwso8Z1Ohh.json', TONIGHT_WEAPONS.miniVehicleRam],
-  ["Mini-Con (Mini-Vehicle, Ground)", 'dditems/_source/Mini_Con__Mini_Vehicle__Ground__JVIOxmSpPwPQDY1z.json', TONIGHT_WEAPONS.miniVehicleRam],
-  ["Behemoth (Huge)", 'tsitems/_source/Behemoth__Huge__hF2rJtS3SzcjqnLr.json', TONIGHT_WEAPONS.smash],
-  ["Behemoth (Large)", 'tsitems/_source/Behemoth__Large__qZQyZDntWJdNeDQy.json', TONIGHT_WEAPONS.smash],
+  ["Mini-Con (Mini-Vehicle)", 'dditems/_source/Mini_Con__Mini_Vehicle__JVIOxmSpPwPQDY1z.json', TONIGHT_WEAPONS.miniVehicleRam],
+  ["Behemoth", 'tsitems/_source/Behemoth_hF2rJtS3SzcjqnLr.json', TONIGHT_WEAPONS.smash],
 ])('%s: grants its weapon, unless the actor already has one', async (name, file, uuid) => {
   const { grantData } = await import('./lifecycle.mjs');
   const saved = global.foundry.utils;
@@ -7583,37 +7575,8 @@ describe('slA zord: Forms, Zord Features and Alt Modes from the zord1/zord2 slic
     expect(offers({ kind: 'item', item: { type: 'perk', flags: {} } })).toEqual([]);
   });
 
-  test.each([
-    ['tsitems/_source/Primate__Common__Kj8DtQoNrUf2dmI5.json'],
-    ['tsitems/_source/Primate__Large__yeeGDdU2LDKyNhBd.json'],
-  ])('%s: Climb at least 30 ft in that Alt Mode', file => {
-    const actor = holder([file], { system: { isTransformed: true, movement: { climb: { total: 25 }, ground: { total: 50 } } } });
-    actor.system.altModeId = actor.items.contents[0].id;
-    ruleDerived(actor);
-    expect(actor.system.movement.climb.total).toBe(30);
-    actor.system.movement.climb.total = 40;
-    ruleDerived(actor);
-    expect(actor.system.movement.climb.total).toBe(40);
-    actor.system.isTransformed = false;
-    actor.system.movement.climb.total = 25;
-    ruleDerived(actor);
-    expect(actor.system.movement.climb.total).toBe(25);
-  });
-
-  test.each([
-    ['tsitems/_source/Carapaced__Common__aTevGfLML1dlbErs.json'],
-    ['tsitems/_source/Carapaced__Large__2mSP6mVx0axvOlXf.json'],
-  ])('%s: Underground 25 ft in that Alt Mode when picked', file => {
-    const actor = holder([file], { system: { isTransformed: true, movement: { burrow: { total: 0 }, ground: { total: 40 } } } });
-    const altMode = actor.items.contents[0];
-    actor.system.altModeId = altMode.id;
-    ruleDerived(actor);
-    expect(actor.system.movement.burrow.total).toBe(0);
-    altMode.flags = { essence20: { zord2CarapacedChoice: 'burrow' } };
-    rebuildIndex(actor);
-    ruleDerived(actor);
-    expect(actor.system.movement).toMatchObject({ burrow: { total: 25 }, ground: { total: 40 } });
-  });
+  // Primate's Climb and Carapaced's Ground-or-Underground are the Alt Mode's own movement now (2026-10-14) - checked
+  // against the packs in items/shared/alt-mode-chassis.test.js.
 });
 
 // slA pr1

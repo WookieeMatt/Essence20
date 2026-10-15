@@ -269,8 +269,15 @@ export function handleGmRelayDone(data) {
  * the GM only makes or removes things that belong to an actor the player owns.
  */
 // megaformJoin / megaformSeparate: a Megaform's members' tokens swapped for its own, and back (mechanics/vehicles/megaform-join.mjs).
-const CREATE_KINDS = new Set(['actor', 'token', 'deleteActor', 'deleteToken', 'megaformJoin', 'megaformSeparate']);
+// altModeCrew: a seat in a Transformer's Alt Mode taken or given up (mechanics/vehicles/alt-mode-crew.mjs).
+const CREATE_KINDS = new Set(['actor', 'token', 'deleteActor', 'deleteToken', 'megaformJoin', 'megaformSeparate', 'altModeCrew']);
 const MEGAFORM_KINDS = ['megaformJoin', 'megaformSeparate'];
+// Loaded on first use (it reaches into the rules engine, which this file mustn't pull in at load).
+let altModeCrew = null;
+export async function loadAltModeCrew() {
+  altModeCrew ??= await import("../vehicles/alt-mode-crew.mjs");
+  return altModeCrew;
+}
 
 function ownedBy(uuid, user) {
   const owner = uuid ? fromUuidSync(uuid) : null;
@@ -294,6 +301,10 @@ export function isCreateAllowed(kind, payload, user) {
     return ['companion', 'vehicle', 'npc'].includes(payload?.data?.type) && ownedBy(flags.companionOf ?? flags.contactOf, user);
   }
 
+  if (kind == 'altModeCrew') {
+    return !!altModeCrew?.relayedSeatAllowed(payload, user);
+  }
+
   const actor = payload?.actorUuid ? fromUuidSync(payload.actorUuid) : null;
   if (!actor) {
     return false;
@@ -309,6 +320,10 @@ export function isCreateAllowed(kind, payload, user) {
 }
 
 async function carryOut(kind, payload, user) {
+  if (kind == 'altModeCrew') {
+    return (await loadAltModeCrew()).applyRelayedSeat(payload);
+  }
+
   if (kind == 'actor') {
     const data = foundry.utils.deepClone(payload.data);
     data.ownership = { ...(data.ownership ?? {}), [user.id]: 3 };
@@ -362,6 +377,7 @@ export async function createViaGm(kind, payload) {
     deleteToken: () => user.isGM || user.can?.('TOKEN_DELETE'),
     megaformJoin: () => user.isGM,
     megaformSeparate: () => user.isGM,
+    altModeCrew: () => user.isGM,
   }[kind];
   if (may?.()) {
     return carryOut(kind, payload, user);
@@ -396,6 +412,10 @@ export async function handleGmCreateRequest(data) {
 
   const user = game.users.get(data.userId);
   let result = null;
+  if (data.kind == 'altModeCrew') {
+    await loadAltModeCrew();
+  }
+
   if (isCreateAllowed(data.kind, data.payload, user)) {
     try {
       result = await carryOut(data.kind, data.payload, user);

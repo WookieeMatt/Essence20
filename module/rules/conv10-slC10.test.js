@@ -74,6 +74,7 @@ const FILES = {
   laserDesignator: 'gijcrbitems/_source/Laser_Designator_AcNaNxZnyOfXv0f6.json',
   demolecularizationGun: 'eocitems/_source/Demolecularization_Gun_HjkeUVUUTQiXi0MO.json',
   cage: 'tfcrbitems/_source/Cage_w1E74WXrvwQJlS1Q.json',
+  extraCrew: 'tfcrbitems/_source/Extra_Crew_Capacity_PCwgQWKmTOl8va3I.json',
   diversion: 'tfcrbitems/_source/Diversion_LDi9BUkXFtaCSoTe.json',
   stoic: 'tfcrbitems/_source/Stoic_p9Obyw2krF0pks8D.json',
   thornWarlord: 'fmmcitems/_source/Thorn_Warlord_GKNjCEwhgEbBiKQn.json',
@@ -654,16 +655,18 @@ describe('Demolecularization Gun: a hit target is demolecularized for the scene'
 describe('Cage: prisoners up to capacity, ↓2 to escape, and a focus Snag for one roll', () => {
   test('imprison (one in Bot Mode), escape tests at ↓2, focus Snag used up by one roll, release', async () => {
     const cage = packItem(FILES.cage);
-    const captor = makeActor([cage], { name: 'Megatron', system: { isTransformed: false } });
+    const captor = makeActor([cage], { name: 'Megatron', system: { canTransform: true, isTransformed: false } });
     const one = makeActor([], { name: 'Spike' });
     const two = makeActor([], { name: 'Carly' });
     target(one);
     await runUse(cage, async () => true, { ask: async () => 0 });
     expect(one.flags.essence20.ruleMarks.caged).toMatchObject({ by: captor.uuid });
+    // Inside it now, as its prisoner (mechanics/vehicles/alt-mode-crew.mjs).
+    expect(Object.values(captor.flags.essence20.altModeCrew)).toEqual([expect.objectContaining({ uuid: one.uuid, role: 'prisoner' })]);
     target(two);
-    const full = await runUse(cage, async () => true, { ask: async () => 0 });
+    await runUse(cage, async () => true, { ask: async () => 0 });
     expect(two.flags.essence20.ruleMarks?.caged).toBeUndefined();
-    expect(full).toContain('The Cage is full.');
+    expect(Object.keys(captor.flags.essence20.altModeCrew)).toHaveLength(1);
 
     expect(ruleRollSources(one, null, { rolledSkill: 'brawn' }).sources).toEqual([expect.objectContaining({ label: 'Escaping the Cage (↓2)', shiftDown: 2 })]);
     expect(ruleRollSources(one, null, { rolledSkill: 'persuasion' }).sources).toEqual([]);
@@ -679,13 +682,14 @@ describe('Cage: prisoners up to capacity, ↓2 to escape, and a focus Snag for o
     await runUse(cage, async () => true, { ask: async (step, options) => options.findIndex(o => /Release/.test(o.label)) });
     expect(one.flags.essence20.ruleMarks.caged).toBeUndefined();
     expect(ruleRollSources(one, null, { rolledSkill: 'brawn' }).sources).toEqual([]);
+    expect(captor.flags.essence20.altModeCrew).toEqual({});
   });
 
   test('in Alt Mode: the Alt Mode\'s Crew rating, +4 with Extra Crew Capacity', async () => {
     const cage = packItem(FILES.cage);
     const mode = makeItem({ type: 'altMode', system: { altModeCrew: 1 } });
-    const extra = makeItem({ type: 'gear', flags: { core: { sourceId: 'Compendium.essence20.tf_crb.Item.PCwgQWKmTOl8va3I' } } });
-    const captor = makeActor([cage, mode, extra], { system: { isTransformed: true } });
+    const extra = packItem(FILES.extraCrew);
+    const captor = makeActor([cage, mode, extra], { system: { canTransform: true, isTransformed: true } });
     captor.system.altModeId = mode.id;
     const prisoners = [1, 2, 3, 4, 5, 6].map(i => makeActor([], { name: `P${i}` }));
     for (const prisoner of prisoners) {

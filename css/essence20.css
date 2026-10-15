@@ -1945,6 +1945,129 @@
   cursor: pointer;
 }
 
+/* Riding in a Transformer's Alt Mode - the "aboard" line under the name (mechanics/vehicles/alt-mode-crew.mjs). */
+.essence20 .e20-aboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.essence20 .e20-state-badge.--aboard {
+  background: var(--e20-theme-card-bg);
+}
+
+.essence20 .e20-aboard__carrier,
+.essence20 .e20-aboard__button {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.essence20 .e20-aboard__button {
+  padding: 0 0.5em;
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 15px;
+}
+
+/* The Alt Mode tab's Crew panel. It carries .e20-border-accent, whose clip-path cuts the top-left and bottom-right
+   corners 22px deep (actors/_tabs.scss) - side padding past that keeps the title and the last row's buttons clear of
+   the cut, as .collapsible-item-subcontainer does. */
+.essence20 .e20-alt-crew {
+  margin: 0.25rem 0;
+  padding: 0.25rem 24px;
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 15px;
+  background: var(--e20-theme-card-bg);
+}
+
+.essence20 .e20-alt-crew__header {
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.essence20 .e20-alt-crew__title {
+  flex: 1 1 auto;
+  margin: 0;
+  font-size: 1rem;
+  border: none;
+  color: var(--e20-theme-accent);
+}
+
+.essence20 .e20-alt-crew__stat {
+  flex: 0 0 auto;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.essence20 .e20-alt-crew__button,
+.essence20 .e20-alt-crew__toggle {
+  flex: 0 0 auto;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.essence20 .e20-alt-crew__toggle {
+  opacity: 0.4;
+}
+
+.essence20 .e20-alt-crew__toggle.--on {
+  opacity: 1;
+  color: var(--e20-theme-accent);
+}
+
+.essence20 .e20-alt-crew__list {
+  margin: 0.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.essence20 .e20-alt-crew__member {
+  gap: 0.25rem;
+  align-items: center;
+  padding: 2px 0;
+  border-top: 1px solid var(--e20-theme-border-color);
+}
+
+.essence20 .e20-alt-crew__img {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  object-fit: cover;
+}
+
+.essence20 .e20-alt-crew__name {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.essence20 .e20-alt-crew__role {
+  flex: 0 0 8em;
+}
+
+.essence20 .e20-alt-crew__empty {
+  margin: 0.25rem 0 0;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* An Alt Mode's size pick on its row (altMode/details.hbs): inline with its label, like the row's other lines. */
+.essence20 .e20-altmode-size {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.essence20 .e20-altmode-size__select {
+  flex: 0 0 9em;
+  width: 9em;
+}
+
 /* ITEMS */
 .essence20 .items-header {
   height: 28px;

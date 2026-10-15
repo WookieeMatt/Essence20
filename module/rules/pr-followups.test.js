@@ -15,7 +15,8 @@ import { inheritedRules, rulesSourceOf } from './inherit.mjs';
 import { setSubPerkHelpers } from './plugins/picks/pick-sub-perk.mjs';
 import { currentUuid, MOVED_ITEM_UUIDS, sourceOf, sourceOfOrUndefined } from '../items/shared/item-lookups.mjs';
 import { IRON_BRAVADO } from '../items/defenses/iron-bravado-shared-immunity.mjs';
-import { migrateItemData, migrateMovedItemSources, resetMigrationCaches } from '../migration.mjs';
+import { migrateAltModeChoices, migrateItemData, migrateMovedItemSources, resetMigrationCaches } from '../migration.mjs';
+import { MERGED_ALT_MODE_UUIDS } from '../items/shared/alt-mode-chassis.mjs';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -220,8 +221,11 @@ describe('2. the stray items moved out of the PR core pack', () => {
   });
 
   test('the alias map: every moved item, old uuid -> new; anything else unchanged', () => {
-    expect(Object.keys(MOVED_ITEM_UUIDS)).toHaveLength(18);
-    for (const [from, to] of Object.entries(MOVED_ITEM_UUIDS)) {
+    // 18 moved, plus the per-choice Alt Modes merged into one per chassis (2026-10-14, items/shared/alt-mode-chassis.mjs).
+    const BEHEMOTH_LARGE = 'Compendium.essence20.technorganic_secrets.Item.qZQyZDntWJdNeDQy';
+    expect(Object.keys(MOVED_ITEM_UUIDS)).toHaveLength(18 + Object.keys(MERGED_ALT_MODE_UUIDS).length);
+    expect(currentUuid(BEHEMOTH_LARGE)).toBe('Compendium.essence20.technorganic_secrets.Item.hF2rJtS3SzcjqnLr');
+    for (const [from, to] of Object.entries(MOVED_ITEM_UUIDS).filter(([from]) => !MERGED_ALT_MODE_UUIDS[from])) {
       const id = to.split('.').pop();
       expect(from).toBe(OLD(id));
       expect(to.includes('.jump_through_time.') ? JTT.has(id) : PREGEN.has(id)).toBe(true);
@@ -245,6 +249,43 @@ describe('2. the stray items moved out of the PR core pack', () => {
     const lookup = jest.fn(uuid => (uuid == IRON_BRAVADO ? { system: { rules: JTT.get('8bmqJ7hyOAcVNB1Y').system.rules } } : null));
     expect(inheritedRules(old, lookup)).toHaveLength(2);
     expect(lookup).toHaveBeenCalledWith(IRON_BRAVADO);
+  });
+
+  test("migrateAltModeChoices: an old per-choice copy gets its chassis' choices and merged name, keeping its own pick", () => {
+    const TS = id => `Compendium.essence20.technorganic_secrets.Item.${id}`;
+    const EOC = id => `Compendium.essence20.enigma_of_combination.Item.${id}`;
+    const large = { type: 'altMode', name: 'Behemoth (Large)', system: { altModesize: 'large' }, flags: { core: { sourceId: TS('qZQyZDntWJdNeDQy') } } };
+    expect(migrateAltModeChoices(large)).toEqual({
+      'system.altModeSizeOptions': ['large', 'huge'], 'system.botModeSizeOptions': ['large', 'huge'], name: 'Behemoth',
+    });
+    const huge = { type: 'altMode', name: 'My Rhino', system: {}, _stats: { compendiumSource: TS('hF2rJtS3SzcjqnLr') } };
+    expect(migrateAltModeChoices(huge)).toEqual({ 'system.altModeSizeOptions': ['large', 'huge'], 'system.botModeSizeOptions': ['large', 'huge'] });
+
+    // Movement: a choice it already has stays; Saurian's tie; Carapaced's old Underground pick; Charger's old "both".
+    const aerial = { type: 'altMode', name: 'Monstrosity (Extended, Aerial)', system: { altModesize: 'extended', altModeMovement: { aerial: 40 } },
+      flags: { core: { sourceId: TS('7WsWk1gEk9q9Z29k') } } };
+    const monster = migrateAltModeChoices(aerial);
+    expect(monster).toMatchObject({ name: 'Monstrosity', 'system.altModeSizeOptions': ['huge', 'extended'], 'system.movementOptions': expect.any(Array) });
+    expect(monster['system.botModeSizeOptions']).toBeUndefined();
+    expect(monster['system.altModeMovement']).toBeUndefined();
+    expect(migrateAltModeChoices({ type: 'altMode', name: 'Saurian (Long)', system: {}, flags: { core: { sourceId: TS('hsY5k4vCyBw1Xs8W') } } }))
+      .toMatchObject({ name: 'Saurian', 'system.botModeSizeFor': { long: 'large' } });
+    const shell = { type: 'altMode', name: 'Carapaced (Large)', system: { altModeMovement: { ground: 40 } },
+      flags: { core: { sourceId: TS('2mSP6mVx0axvOlXf') }, essence20: { zord2CarapacedChoice: 'burrow' } } };
+    expect(migrateAltModeChoices(shell)['system.altModeMovement']).toEqual({ ground: 40, aerial: 0, aquatic: 0, climb: 0, burrow: 25 });
+    const charger = { type: 'altMode', name: 'Charger', system: { altModeMovement: { ground: 45, aerial: 45 } }, flags: { core: { sourceId: EOC('QNhq3rRVOu1EfeyD') } } };
+    expect(migrateAltModeChoices(charger)).toEqual({
+      'system.movementOptions': [{ ground: 45, aerial: 0, aquatic: 0, climb: 0, burrow: 0 }, { ground: 0, aerial: 45, aquatic: 0, climb: 0, burrow: 0 }],
+      'system.altModeMovement': { ground: 45, aerial: 0, aquatic: 0, climb: 0, burrow: 0 },
+    });
+    // Primate: one movement, its Climb filled in.
+    expect(migrateAltModeChoices({ type: 'altMode', name: 'Primate (Common)', system: { altModeMovement: { ground: 50 } }, flags: { core: { sourceId: TS('Kj8DtQoNrUf2dmI5') } } }))
+      .toMatchObject({ name: 'Primate', 'system.altModeMovement': { ground: 50, climb: 30, aerial: 0, aquatic: 0, burrow: 0 } });
+
+    // Done already, another Alt Mode, or not an Alt Mode at all: nothing.
+    expect(migrateAltModeChoices({ ...huge, system: { altModeSizeOptions: ['large', 'huge'], botModeSizeOptions: ['large', 'huge'] } })).toEqual({});
+    expect(migrateAltModeChoices({ type: 'altMode', name: 'Van', system: {}, flags: { core: { sourceId: TS('other') } } })).toEqual({});
+    expect(migrateAltModeChoices({ ...large, type: 'perk' })).toEqual({});
   });
 
   test('migrateMovedItemSources: source fields, system.items entries and picks; value-matched and idempotent', () => {

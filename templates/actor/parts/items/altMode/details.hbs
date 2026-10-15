@@ -1,6 +1,31 @@
+{{!-- A chassis printed with a choice of movement (Monstrosity: Ground, Aerial or Aquatic) picks it here. --}}
+{{#with (lookup @root.altModeMovementChoices item._id) as |choices|}}
+<div class="e20-altmode-size">
+  <label>{{localize 'E20.AltModeMovementChoice'}}:</label>
+  <select class="e20-altmode-movement__select" data-item-id="{{../item._id}}" {{#unless @root.editable}}disabled{{/unless}}>
+    {{#each choices}}
+      <option value="{{this.index}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+    {{/each}}
+  </select>
+</div>
+{{/with}}
 <div>{{localize 'E20.AltModeMovementAerial'}}: {{item.system.altModeMovement.aerial}}</div>
 <div>{{localize 'E20.AltModeMovementAquatic'}}: {{item.system.altModeMovement.aquatic}}</div>
 <div>{{localize 'E20.AltModeMovementGround'}}: {{item.system.altModeMovement.ground}}</div>
+{{#if item.system.altModeMovement.climb}}<div>{{localize 'E20.AltModeMovementClimb'}}: {{item.system.altModeMovement.climb}}</div>{{/if}}
+{{#if item.system.altModeMovement.burrow}}<div>{{localize 'E20.AltModeMovementBurrow'}}: {{item.system.altModeMovement.burrow}}</div>{{/if}}
+{{!-- A chassis printed with a choice of size (Behemoth: Large or Huge) picks it here - data/item/alt-mode.mjs. --}}
+{{#if (gt item.system.altModeSizeOptions.length 1)}}
+<div class="e20-altmode-size">
+  <label>{{localize 'E20.AltModeSize'}}:</label>
+  <select class="e20-altmode-size__select" data-item-id="{{item._id}}" {{#unless @root.editable}}disabled{{/unless}}>
+    {{#each item.system.altModeSizeOptions as |size|}}
+      <option value="{{size}}" {{#if (eq size ../item.system.altModesize)}}selected{{/if}}>{{lookup @root.config.actorSizes size}}</option>
+    {{/each}}
+  </select>
+</div>
+{{else}}
 <div>{{localize 'E20.AltModeSize'}}: {{item.system.altModesize}}</div>
+{{/if}}
 <div>{{localize 'E20.AltModeCrew'}}: {{item.system.altModeCrew}}</div>
 <div>{{localize 'E20.AltModeFirepoints'}}: {{item.system.altModeFirepoints}}</div>

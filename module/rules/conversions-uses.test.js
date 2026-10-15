@@ -2704,26 +2704,18 @@ test.each([
 });
 
 test.each([
-  ['eocitems/_source/Pillar__Extended__j0CJWQ858tbQvVUs.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
-  ['eocitems/_source/Pillar__Long__SroTzxuu57HoaN9V.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
-  ['eocitems/_source/Speaker__Common__Aerial__ilL3CyLQDydjxBHf.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
-  ['eocitems/_source/Speaker__Common__Ground__GPW2T5OEC0KtlJpX.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
-  ['eocitems/_source/Speaker__Long__Aerial__wwFXrMqJd0YJHqkX.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
-  ['eocitems/_source/Speaker__Long__Ground__48zFIrJCoULshGtm.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
+  ['eocitems/_source/Pillar_SroTzxuu57HoaN9V.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
+  ['eocitems/_source/Speaker_GPW2T5OEC0KtlJpX.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
   ['tfcrbitems/_source/Champion_IFssZkdjKb6vcYfk.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
-  ['tfcrbitems/_source/Cutter__Common__5sxhsXAHh97KTpwa.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
-  ['tfcrbitems/_source/Cutter__Long__FlN4FCnbTP7RRz8K.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
+  ['tfcrbitems/_source/Cutter_5sxhsXAHh97KTpwa.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
   ['tfcrbitems/_source/Lookout_ZS3kX8oKogmsH6OK.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
-  ['tfcrbitems/_source/Outrider__Common__NaF9feAfujLYwDfO.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
-  ['tfcrbitems/_source/Outrider__Long__WYlv5KoOv8WTUtKN.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
+  ['tfcrbitems/_source/Outrider_NaF9feAfujLYwDfO.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
   ['tfcrbitems/_source/Rainmaker_OlLBvRl06PVw9OQx.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
   ['tfcrbitems/_source/Support_hr00Kzgshnz67400.json', 'Compendium.essence20.tf_crb.Item.AVVUjFaqNYhl5q4m'],
   ['tfcrbitems/_source/Seeker_RXTZuPJnnAlkgHX2.json', 'Compendium.essence20.tf_crb.Item.3L0eAnm4GVoQi7Df'],
   ['dditems/_source/Salvaged_cGGEXSdCI170AaM4.json', 'Compendium.essence20.decepticon_directive.Item.leQVbl8vdpkwiCdw'],
-  ['dditems/_source/Mini_Con__Mini_Vehicle__Aerial__oSn5EyMwso8Z1Ohh.json', 'Compendium.essence20.decepticon_directive.Item.WrSVycvwI2mlmp2y'],
-  ['dditems/_source/Mini_Con__Mini_Vehicle__Ground__JVIOxmSpPwPQDY1z.json', 'Compendium.essence20.decepticon_directive.Item.WrSVycvwI2mlmp2y'],
-  ['tsitems/_source/Behemoth__Huge__hF2rJtS3SzcjqnLr.json', 'Compendium.essence20.technorganic_secrets.Item.e2LbSl8llOCJ2I6o'],
-  ['tsitems/_source/Behemoth__Large__qZQyZDntWJdNeDQy.json', 'Compendium.essence20.technorganic_secrets.Item.e2LbSl8llOCJ2I6o'],
+  ['dditems/_source/Mini_Con__Mini_Vehicle__JVIOxmSpPwPQDY1z.json', 'Compendium.essence20.decepticon_directive.Item.WrSVycvwI2mlmp2y'],
+  ['tsitems/_source/Behemoth_hF2rJtS3SzcjqnLr.json', 'Compendium.essence20.technorganic_secrets.Item.e2LbSl8llOCJ2I6o'],
 ])('%s: a Use gives the special attack back while the actor lacks it', async (file, uuid) => {
   const { actor, item } = holder(file);
   const index = useIndex(item);

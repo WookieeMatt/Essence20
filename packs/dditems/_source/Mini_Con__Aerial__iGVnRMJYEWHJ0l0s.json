@@ -39,16 +39,10 @@
         "name": "Mini-Con (Firearm Enhancment Module)",
         "type": "altMode"
       },
-      "0ae0": {
-        "uuid": "Compendium.essence20.decepticon_directive.Item.oSn5EyMwso8Z1Ohh",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Mini-Con (Mini-Vehicle, Aerial)",
-        "type": "altMode"
-      },
       "c407": {
         "uuid": "Compendium.essence20.decepticon_directive.Item.JVIOxmSpPwPQDY1z",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Mini-Con (Mini-Vehicle, Ground)",
+        "name": "Mini-Con (Mini-Vehicle)",
         "type": "altMode"
       }
     },

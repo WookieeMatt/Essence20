@@ -16,6 +16,7 @@ import "./picks/known-options.mjs";
 import "./effects/team-rules-ready-reset.mjs";
 import "./tags/team-holds-and-token-within.mjs";
 import "./zords/form-perks.mjs";
+import "./zords/alt-mode-crew-rules.mjs";
 import "./tags/target-not-beyond.mjs";
 import "./rolls/roll-as-step.mjs";
 import "./zords/transform-into-step.mjs";

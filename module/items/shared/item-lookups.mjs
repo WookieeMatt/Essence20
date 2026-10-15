@@ -3,12 +3,15 @@
  * copied from, the actor's items as a plain array, and "does this actor hold that item". Light on
  * purpose - imports nothing, so any item or mechanics file can use it without an import loop.
  *
+ * (Its one import is alt-mode-chassis.mjs, plain data that imports nothing either.)
+ *
  * Two readings differ on purpose and are kept apart:
  * - sourceOf answers null for an unsourced item; sourceOfOrUndefined answers undefined (one caller
  *   compares it against uuids that may themselves be undefined).
  * - itemsOf reads a Collection or any iterable; itemsOfAny also unwraps a plain Map's [key, value]
  *   entries and hands an array back as-is. The *Any lookups below use itemsOfAny.
  */
+import { MERGED_ALT_MODE_UUIDS } from "./alt-mode-chassis.mjs";
 
 /**
  * Compendium items that moved to another pack, keeping their _id (2026-10-07, docs/rules-batches/pr-followups.md):
@@ -24,11 +27,16 @@ const MOVED_IDS = {
     'fi9SgjBN2FhW47D3', 'XmZCw5vdjrMmQmbA', 'yY5u7ocQAx7mTgzk', 'Y6qVhMeJE5FHixNh', 'HBkOFDpX3EjGAm9x', '6PHGfFowZAZBQ6Q3'],
 };
 
-/** Old compendium uuid => new, for every moved item. */
-export const MOVED_ITEM_UUIDS = Object.freeze(Object.fromEntries(Object.entries(MOVED_IDS).flatMap(([move, ids]) => {
-  const [from, to] = move.split('>');
-  return ids.map(id => [`Compendium.essence20.${from}.Item.${id}`, `Compendium.essence20.${to}.Item.${id}`]);
-})));
+
+/** Old compendium uuid => new, for every moved or merged item. */
+export const MOVED_ITEM_UUIDS = Object.freeze({
+  ...Object.fromEntries(Object.entries(MOVED_IDS).flatMap(([move, ids]) => {
+    const [from, to] = move.split('>');
+    return ids.map(id => [`Compendium.essence20.${from}.Item.${id}`, `Compendium.essence20.${to}.Item.${id}`]);
+  })),
+  // Alt Modes once one item per size / movement, merged into one with the choices (2026-10-14) - alt-mode-chassis.mjs.
+  ...MERGED_ALT_MODE_UUIDS,
+});
 
 /** A compendium uuid with a moved item's old uuid read as its new one; anything else (null too) unchanged. */
 export function currentUuid(uuid) {

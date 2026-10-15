@@ -28,8 +28,6 @@ const FILES = {
   bendPhysics: 'bthitems/_source/Bend_Physics_EITAjh6GBuc2SVSY.json',
   swat: 'atsitems/_source/S_W_A_T__Upgrade_Ce5f5pQTNTSY6xgF.json',
   navigator: 'ttsgitems/_source/Morphin_Navigator_nDx2XD6gD9lM37Bl.json',
-  carapacedCommon: 'tsitems/_source/Carapaced__Common__aTevGfLML1dlbErs.json',
-  carapacedLarge: 'tsitems/_source/Carapaced__Large__2mSP6mVx0axvOlXf.json',
   limbs: 'dditems/_source/Additional_Pair_of_Limbs_pedTP4vV1qwoBJvn.json',
 };
 const SOURCE = { bendPhysics: 'Compendium.essence20.beneath_the_helmet.Item.EITAjh6GBuc2SVSY', primalRage: 'Compendium.essence20.beneath_the_helmet.Item.4gkRa5plNeMNXSmL' };
@@ -371,37 +369,8 @@ describe('Morphin Navigator: once per mission, 1d2 Personal Power to each Party 
   });
 });
 
-/* -------------------------------------------- */
-/*  Carapaced (zord2/gear-modes.mjs)             */
-/* -------------------------------------------- */
-
-describe('Carapaced: +20 Ground in that Alt Mode unless Underground was picked', () => {
-  for (const file of [FILES.carapacedCommon, FILES.carapacedLarge]) {
-    test(`${file.split('/').pop()}: the Movement, and the pick`, async () => {
-      const crab = makeActor('playerCharacter', { isTransformed: true });
-      const shell = addPackItem(crab, file, { flags: { essence20: { zord2CarapacedChoice: 'ground' } } });
-      crab.system.altModeId = shell.id;
-      expect(ruleMovementStages(crab)('afterDerived', 'ground', 40)).toBe(60);
-      expect(ruleMovementStages(crab)('afterGravity', 'ground', 40)).toBeNull();
-      expect(ruleMovementStages(crab)('afterDerived', 'burrow', 0)).toBeNull();
-
-      // Never picked: the Ground +20 (the old "!= burrow").
-      delete shell.flags.essence20.zord2CarapacedChoice;
-      expect(ruleMovementStages(crab)('afterDerived', 'ground', 40)).toBe(60);
-
-      const ask = jest.fn(async (step, options) => options.findIndex(option => option.label == '25 feet Underground Movement'));
-      const line = await runUse(shell, async () => true, { pick: async (item, available) => available.find(({ rule }) => rule.label == 'Ground or Underground (Carapaced)'), ask });
-      expect(line).toContain('25 feet Underground Movement');
-      expect(shell.flags.essence20.zord2CarapacedChoice).toBe('burrow');
-      expect(ruleMovementStages(crab)('afterDerived', 'ground', 40)).toBeNull();
-
-      // Not in that Alt Mode.
-      shell.flags.essence20.zord2CarapacedChoice = 'ground';
-      crab.system.isTransformed = false;
-      expect(ruleMovementStages(crab)('afterDerived', 'ground', 40)).toBeNull();
-    });
-  }
-});
+/* Carapaced: its Ground-or-Underground pick is the Alt Mode's own movement choice now (2026-10-14) -
+   items/shared/alt-mode-chassis.test.js. */
 
 /* -------------------------------------------- */
 /*  Additional Pair of Limbs (zord1/bodies.mjs)  */

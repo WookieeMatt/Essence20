@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: 3 starting Health, Ground Movement 30, the Vicious or Venom Perk, and your pick of the Common, Large or Long Saurian Alt Mode. You pick +1 Strength or Speed and Athletics or Acrobatics as your Origin Skill.</p>"
+      "notes": "<p>Granted: 3 starting Health, Ground Movement 30, the Vicious or Venom Perk, and the Saurian Alt Mode (you pick a Common or Large Bot Mode and a Common, Large or Long Alt Mode - a Long Alt Mode goes with a Large Bot Mode). You pick +1 Strength or Speed and Athletics or Acrobatics as your Origin Skill.</p>"
     },
     "originalId": "",
     "description": "",
@@ -19,19 +19,7 @@
       "30dd": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.HdGY7qG1aJE69N2P",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Saurian (Common)",
-        "type": "altMode"
-      },
-      "8dba": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.fO2tbcFJOmvlxOXh",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Saurian (Large)",
-        "type": "altMode"
-      },
-      "eccf": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.hsY5k4vCyBw1Xs8W",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Saurian (Long)",
+        "name": "Saurian",
         "type": "altMode"
       },
       "829e": {

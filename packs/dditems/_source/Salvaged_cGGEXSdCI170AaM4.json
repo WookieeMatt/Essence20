@@ -25,6 +25,7 @@
       "ground": 45
     },
     "altModesize": "long",
+    "botModeSize": "large",
     "altModeCrew": 1,
     "altModeFirepoints": 1,
     "limitedArticulation": true
