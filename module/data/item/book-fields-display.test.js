@@ -9,10 +9,10 @@ describe('actor-sheet chips for book fields', () => {
   const read = path => fs.readFileSync(path, 'utf8');
   const lang = JSON.parse(read('lang/en.json')).E20;
 
-  test('a Focus shows the skills its Essence increase goes into', () => {
+  test('a Focus shows the skills its Essence increase goes into (a tooltip on its name - a chip widened the header box)', () => {
     const template = read('templates/actor/parts/items/focus.hbs');
     expect(template).toMatch(/\{\{#if item\.system\.skills\.length\}\}/);
-    expect(template).toMatch(/name="chip\.focus\.skills"/);
+    expect(template).toMatch(/data-tooltip="\{\{localize 'E20\.FocusIncreaseSkills'\}\}/);
     expect(template).toMatch(/\{\{#each item\.system\.skills as \|skill\|\}\}\{\{lookup @root\.config\.originSkills skill\}\}/);
     expect(template).toContain('E20.FocusIncreaseSkills');
     expect(lang.FocusIncreaseSkills).toEqual(expect.any(String));

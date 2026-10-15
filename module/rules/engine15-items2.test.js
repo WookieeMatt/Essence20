@@ -176,7 +176,7 @@ describe('rule types validate', () => {
     expect(validateRule({ type: 'DriverlessEssence' }).length).toBeGreaterThan(0);
     expect(validateRule({ type: 'Use', steps: [{ do: 'spendPooled', path: 'flags.x' }] }).join(' ')).toMatch(/system/);
     expect(validateRule({ type: 'Use', steps: [{ do: 'recordSeen', flag: 'a b', entry: 'x' }] }).join(' ')).toMatch(/flag name/);
-    expect(validateRule({ type: 'Use', steps: [{ do: 'pickChassis', mode: 'drone' }] }).join(' ')).toMatch(/origin or mimicry/);
+    expect(validateRule({ type: 'Use', steps: [{ do: 'pickChassis', mode: 'drone' }] }).join(' ')).toMatch(/origin, mimicry or additional/);
     expect(validateRule({ type: 'Use', steps: [{ do: 'groupTest', skill: 'x', cost: 'fullAction' }] }).join(' ')).toMatch(/cost/);
   });
 });

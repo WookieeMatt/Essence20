@@ -1,6 +1,7 @@
 {{!-- Riding in this Transformer's Alt Mode (TF CRB p.47) - mechanics/vehicles/alt-mode-crew.mjs. Drop a character here
-     to put them aboard; the role select and the buttons go through the same checks. --}}
-{{#if altCrew}}
+     to put them aboard; the role select and the buttons go through the same checks. Shown in an Alt Mode, and in Bot Mode
+     only while someone is still aboard (Extra Crew Capacity's one seat, the Cage's one prisoner). --}}
+{{#if (and altCrew (or altCrew.transformed altCrew.members.length))}}
 <div class="e20-alt-crew e20-border-accent">
   <div class="e20-alt-crew__header flexrow">
     <h3 class="e20-alt-crew__title">{{localize "E20.AltCrewTitle"}}</h3>

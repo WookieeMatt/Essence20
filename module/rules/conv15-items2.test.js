@@ -159,6 +159,8 @@ const P = {
   glitch: 'dditems/_source/They_Called_It_A_Glitch__IKPWMfs5ZSp6ijiv.json',
   mimicry: 'dditems/_source/Alt_Mode_Mimicry_ARtFFscnVBo183hV.json',
   drone: 'dditems/_source/Drone_ZdvE8MB35jg1A8wK.json',
+  additional: 'tfcrbitems/_source/Additional_Alt_Mode_M5QL4PBD0XoinRKA.json',
+  threes: 'tfcrbitems/_source/Everything_in_Threes_zca4bw1Ls8Q0VFo9.json',
   artillery: 'gijcrbitems/_source/Artillery_Support_MrDZK2ifJWpiH24D.json',
   selfImprovement: 'mlpcrbitems/_source/Self_Improvement_COOAlcYNeoScFiAE.json',
   guardianBlast: 'ttsgitems/_source/Guardian_Blast_GuardianBlast000.json',
@@ -1822,6 +1824,52 @@ describe('Alt Mode Mimicry / Drone', () => {
     expect(useAvailable(perk, perk.system.rules[0], 0)).toBe(false);
     bot.addItem(bookItem('Compendium.essence20.decepticon_directive.Item.pVpAdlWmS3psTgIp', { name: 'Alt Mode Mastery' }));
     expect(useAvailable(perk, perk.system.rules[0], 0)).toBe(true);
+  });
+
+  test("Additional Alt Mode: any Origin's chassis not owned, under two Size Classes larger - Size Change lets two in", async () => {
+    const bot = makeActor('Springer', { items: [packItem('additional')] });
+    bot.addItem({ name: 'Jet', type: 'altMode', system: { altModesize: 'common' }, flags: { core: { sourceId: JET.uuid }, essence20: { parentId: 'origin1' } } });
+    const perk = itemNamed(bot, 'Additional Alt Mode');
+    picks = [TANK.uuid];
+    await use(perk, { which: 'Pick your additional Alt Mode' });
+    // Ship (Huge) is two classes above the Common Jet; the Jet is already owned.
+    expect(offered[0]).toEqual(['Car (Scout)', 'Tank (Warrior)']);
+    expect(itemNamed(bot, 'Tank').flags.essence20.additionalAltMode).toBe(true);
+    expect(bot.system.canTransform).toBe(true);
+    // Done: the Use button goes.
+    expect(useAvailable(perk, perk.system.rules[1], 1)).toBe(false);
+
+    const grown = makeActor('Big', { items: [packItem('additional'), bookItem('Compendium.essence20.tf_crb.Item.yqDvVK13r4ZzX7ic', { name: 'Size Change' })] });
+    grown.addItem({ name: 'Jet', type: 'altMode', system: { altModesize: 'common' }, flags: { core: { sourceId: JET.uuid }, essence20: { parentId: 'origin1' } } });
+    picks = [SHIP.uuid];
+    await use(itemNamed(grown, 'Additional Alt Mode'), { which: 'Pick your additional Alt Mode' });
+    expect(offered[1]).toContain('Ship (Warrior)');
+    expect(itemNamed(grown, 'Ship')).toBeTruthy();
+  });
+
+  test("choose: the chassis' own choices - its sizes inside the window, its movement - onto the granted copy", async () => {
+    const BEAST = mode('beast', 'Beast', 'common', {
+      altModeSizeOptions: ['common', 'large', 'huge'], movementOptions: [{ ground: 40 }, { aerial: 40 }],
+    });
+    const WILD = origin('wild', 'Wild', [BEAST]);
+    chassisHelpers.index = async () => ({ origins: [SEEKER, WILD], altModes: new Map([JET, BEAST].map(m => [m.uuid, m])) });
+    compendium([JET, BEAST]);
+    const asked = [];
+    const saved = chassisHelpers.chooseOptions;
+    chassisHelpers.chooseOptions = async system => {
+      asked.push(system);
+      return { alt: 'large', bot: null, movement: { ground: 0, aerial: 40, aquatic: 0, climb: 0, burrow: 0 } };
+    };
+
+    const bot = makeActor('Triple', { items: [packItem('threes')] });
+    bot.addItem({ name: 'Jet', type: 'altMode', system: { altModesize: 'common' }, flags: { core: { sourceId: JET.uuid }, essence20: { parentId: 'origin1' } } });
+    picks = [BEAST.uuid];
+    await use(itemNamed(bot, 'Everything in Threes'), { which: 'Pick your third Mode' });
+    chassisHelpers.chooseOptions = saved;
+    // Huge is two classes above Common: not offered. No Bot Mode question - only the Alt Mode is gained.
+    expect(asked[0]).toMatchObject({ altModeSizeOptions: ['common', 'large'], botModeSizeOptions: [] });
+    expect(itemNamed(bot, 'Beast').system).toMatchObject({ altModesize: 'large', altModeMovement: { aerial: 40, ground: 0 } });
+    expect(itemNamed(bot, 'Beast').flags.essence20.everythingInThrees).toBe(true);
   });
 
   test('Mimicry with no Alt Mode of your own: refused with a warning', async () => {

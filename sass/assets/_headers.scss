@@ -189,6 +189,16 @@
 
 .essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.--col {
   justify-content: flex-end;
+  /* Role / Focus / Faction (/ Origin) share the row evenly. With an auto basis each took its content's full width,
+     and a long Focus name or chip squeezed Role and Faction down to a few letters. */
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* Role carries its Level chip beside the name, so it takes a larger share than Focus / Faction - enough for a long
+   Role name ("Field Commander") even when the Actions box widens in combat. */
+.essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border.--col.--role {
+  flex-grow: 1.7;
 }
 
 .essence20 .sheet-header .flexrow.e20-gap-2 .sliced-border .header-item-name {

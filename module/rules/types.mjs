@@ -782,8 +782,8 @@ export function summarizeRule(rule) {
     : `Critical Effect: ${rule.essence ? `1 ${humanize(rule.essence)} Essence damage` : rule.status ? humanize(rule.status) : rule.effect ? humanize(rule.effect) : `${rule.damageValue ?? 1}${rule.damageType ? ` ${rule.damageType}` : ''} damage`}${tail}`;
   case 'WeaponTrait': return `Weapons${rule.items?.length ? ` where ${itemClauses(rule.items)}` : ''} gain ${(rule.traits ?? []).map(humanize).join(', ')}${tail}`;
   case 'Hardpoints': return `Hardpoints: ${[
-    rule.external && `+${rule.external} External`, rule.integrated && `+${rule.integrated} Integrated`,
-    rule.nonWeapon && `+${rule.nonWeapon} Non-Weapon`, rule.perWeapon && `+${rule.perWeapon} per Integrated weapon`,
+    rule.external && `${signed(rule.external)} External`, rule.integrated && `${signed(rule.integrated)} Integrated`,
+    rule.nonWeapon && `${signed(rule.nonWeapon)} Non-Weapon`, rule.perWeapon && `${signed(rule.perWeapon)} per Integrated weapon`,
     rule.reinforced && 'Integrated weapons fire as Reinforced',
   ].filter(Boolean).join('; ')}${tail}`;
   case 'AttackCount': return `${who}${rule.additional !== undefined ? (isPlainNumber(rule.additional) ? `+${rule.additional} attack(s)` : `extra attacks equal to ${amountWords(rule.additional)}`) : isPlainNumber(rule.count) ? `${rule.count} attacks` : `attacks equal to ${amountWords(rule.count)}`} per Attack action${tail}`;

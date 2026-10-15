@@ -6,6 +6,7 @@
 import "./zords/zord-link-scopes.mjs";
 import "./zords/megaform.mjs";
 import "./effects/size.mjs";
+import "./effects/weapon-bays.mjs";
 import "./dialog/ask-choice-text-step.mjs";
 import "./tags/clock-active-tag.mjs";
 import "./zords/zords.mjs";

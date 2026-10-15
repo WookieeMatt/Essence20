@@ -1588,6 +1588,11 @@ const HANDLERS = {
         globalThis.foundry.utils.setProperty(data, `system.${path}`, value);
       }
 
+      // systemFrom: system values kept in a var - a chassis' picked size and movement (pickChassis's <var>System).
+      for (const [path, value] of Object.entries(step.systemFrom ? ctx.vars?.[step.systemFrom] ?? {} : {})) {
+        globalThis.foundry.utils.setProperty(data, `system.${path}`, value);
+      }
+
       // systemFormulas: system values worked out now (a number formula, or "true"/"false" from a tag list).
       for (const [path, value] of Object.entries(step.systemFormulas ?? {})) {
         const worked = Array.isArray(value)
