@@ -384,7 +384,9 @@
 }
 
 .essence20 .e20-state-badge {
-  padding: 0.1em 0.7em;
+  /* All capitals in a font that keeps room below the line for descenders: even padding left the letters about 1px
+     high (measured at the sidebar's 11px). The bottom padding moves to the top so they sit centred in the chip. */
+  padding: 0.2em 0.7em 0;
   border-radius: 999px;
   border: 1px solid var(--e20-system-color, #b5b1b1);
   font-size: 0.7rem;
@@ -444,25 +446,42 @@
    corners 22px deep (actors/_tabs.scss) - side padding past that keeps the title and the last row's buttons clear of
    the cut, as .collapsible-item-subcontainer does. */
 .essence20 .e20-alt-crew {
-  margin: v.$gap-sm 0;
-  padding: v.$gap-sm 24px;
+  /* The same spacing as the tab's other sections (.collapsible-item-container): 8px below, 8px top and bottom inside. */
+  margin: 0 0 8px;
+  padding: 8px 24px;
   border: 1px solid var(--e20-theme-border-color);
   border-radius: v.$border-radius;
   background: var(--e20-theme-card-bg);
 }
 
 .essence20 .e20-alt-crew__header {
-  flex-wrap: wrap;
+  display: flex;
   gap: v.$gap-sm;
   align-items: center;
 }
 
+/* Equal sides keep the title centred, as the other sections' headers do: the counts on the left, the buttons right. */
+.essence20 .e20-alt-crew__side {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: v.$gap-sm;
+}
+
+.essence20 .e20-alt-crew__counts {
+  justify-content: flex-start;
+}
+
+.essence20 .e20-alt-crew__tools {
+  justify-content: flex-end;
+}
+
+/* Styled like the tab's other section titles ("Alt Mode", "Weapons"): the panel's own font and text colour, bold. */
 .essence20 .e20-alt-crew__title {
-  flex: 1 1 auto;
-  margin: 0;
-  font-size: 1rem;
-  border: none;
-  color: var(--e20-theme-accent);
+  flex: 0 0 auto;
+  font-weight: 700;
 }
 
 .essence20 .e20-alt-crew__stat {

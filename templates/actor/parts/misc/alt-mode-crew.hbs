@@ -3,27 +3,32 @@
      only while someone is still aboard (Extra Crew Capacity's one seat, the Cage's one prisoner). --}}
 {{#if (and altCrew (or altCrew.transformed altCrew.members.length))}}
 <div class="e20-alt-crew e20-border-accent">
-  <div class="e20-alt-crew__header flexrow">
-    <h3 class="e20-alt-crew__title">{{localize "E20.AltCrewTitle"}}</h3>
-    <span class="e20-alt-crew__stat" data-tooltip="{{localize 'E20.AltCrewCapacityTooltip'}}">
-      {{localize "E20.AltCrewCapacity"}} {{altCrew.members.length}} / {{altCrew.capacity}}
-    </span>
-    {{#if altCrew.transformed}}
-      <span class="e20-alt-crew__stat">{{localize "E20.AltCrewFirepoints"}} {{altCrew.firepointsUsed}} / {{altCrew.firepoints}}</span>
-    {{/if}}
-    {{#if altCrew.canImprison}}
-      <span class="e20-alt-crew__stat">{{localize "E20.AltCrewPrisoners"}} {{altCrew.prisoners}} / {{altCrew.prisonerLimit}}</span>
-    {{/if}}
-    {{#if @root.editable}}
-      <a class="e20-alt-crew__button" data-action="altCrewBoardTargets" data-role="passenger" data-tooltip="{{localize 'E20.AltCrewBoardTargetsTooltip'}}">
-        <i class="fas fa-person-walking-arrow-right"></i> {{localize "E20.AltCrewBoardTargets"}}
-      </a>
-      {{#if (and altCrew.isGM altCrew.transformed)}}
-        <a class="e20-alt-crew__button" data-action="altCrewCrash" data-tooltip="{{localize 'E20.AltCrewCrashTooltip'}}">
-          <i class="fas fa-car-burst"></i> {{localize "E20.AltCrewCrash"}}
-        </a>
+  {{!-- The title centred, as the other sections' headers have it; the counts on its left, the buttons on its right. --}}
+  <div class="e20-alt-crew__header">
+    <div class="e20-alt-crew__side e20-alt-crew__counts">
+      <span class="e20-alt-crew__stat" data-tooltip="{{localize 'E20.AltCrewCapacityTooltip'}}">
+        {{localize "E20.AltCrewCapacity"}} {{altCrew.members.length}} / {{altCrew.capacity}}
+      </span>
+      {{#if altCrew.transformed}}
+        <span class="e20-alt-crew__stat">{{localize "E20.AltCrewFirepoints"}} {{altCrew.firepointsUsed}} / {{altCrew.firepoints}}</span>
       {{/if}}
-    {{/if}}
+      {{#if altCrew.canImprison}}
+        <span class="e20-alt-crew__stat">{{localize "E20.AltCrewPrisoners"}} {{altCrew.prisoners}} / {{altCrew.prisonerLimit}}</span>
+      {{/if}}
+    </div>
+    <span class="e20-alt-crew__title">{{localize "E20.AltCrewTitle"}}</span>
+    <div class="e20-alt-crew__side e20-alt-crew__tools">
+      {{#if @root.editable}}
+        <a class="e20-alt-crew__button" data-action="altCrewBoardTargets" data-role="passenger" data-tooltip="{{localize 'E20.AltCrewBoardTargetsTooltip'}}">
+          <i class="fas fa-person-walking-arrow-right"></i> {{localize "E20.AltCrewBoardTargets"}}
+        </a>
+        {{#if (and altCrew.isGM altCrew.transformed)}}
+          <a class="e20-alt-crew__button" data-action="altCrewCrash" data-tooltip="{{localize 'E20.AltCrewCrashTooltip'}}">
+            <i class="fas fa-car-burst"></i> {{localize "E20.AltCrewCrash"}}
+          </a>
+        {{/if}}
+      {{/if}}
+    </div>
   </div>
 
   {{#if altCrew.members.length}}
