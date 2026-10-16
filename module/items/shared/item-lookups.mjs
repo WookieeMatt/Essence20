@@ -56,6 +56,23 @@ export function sourceOfOrUndefined(item) {
 /** The last segment of a compendium uuid (the item _id), matching reprints across packs; '' for none. */
 export const idOf = value => String(value ?? '').split('.').pop();
 
+/**
+ * An item a row on this actor's sheet names by uuid: the actor's own item with that id, else whatever the uuid resolves
+ * to. A weapon's effect entries (system.items) keep the uuid they were stored with, which still names the original
+ * actor's copy on an unlinked token's actor, a duplicated actor or one imported from a compendium - rolling that copy
+ * rolls as an actor with no token on the scene (no animations, the wrong speaker, writes to the wrong actor).
+ * @param {Actor} actor
+ * @param {String} uuid
+ * @returns {Promise<Item|null>}
+ */
+export async function ownedItemFromUuid(actor, uuid) {
+  if (!uuid) {
+    return null;
+  }
+
+  return actor?.items?.get?.(idOf(uuid)) ?? (await globalThis.fromUuid?.(uuid)) ?? null;
+}
+
 /** Every embedded item as a plain array: a Collection's contents, else any iterable spread, else []. */
 export function itemsOf(actor) {
   const items = actor?.items;

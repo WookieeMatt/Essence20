@@ -1132,7 +1132,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   static #onItemEdit(event) {
-    onItemEdit(event);
+    onItemEdit(event, this.document);
   }
 
   /** The Rules tab's source links: open the item an effect or rule comes from. */

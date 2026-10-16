@@ -1,6 +1,7 @@
 import { spend } from "../mechanics/actions/action-economy.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { checkIsLocked } from "../util/sheet-lock.mjs";
+import { ownedItemFromUuid } from "../items/shared/item-lookups.mjs";
 import { onPerkUse } from "../mechanics/resources/banked-buffs.mjs";
 import { onAlterationDelete } from "./alteration-handler.mjs";
 import { deleteAttachmentsForItem, setEntryAndAddItem } from "./attachment-handler.mjs";
@@ -76,13 +77,13 @@ export async function onItemCreate(event, actor) {
  * @param {Event} event The originating click event
  * @param {Actor} actor The Actor editing the Item
  */
-export async function onItemEdit(event) {
+export async function onItemEdit(event, actor = null) {
   event.preventDefault();
   let item = {};
   const itemUuid = event.target.dataset.uuid;
 
   if (itemUuid) {
-    item = await fromUuid(itemUuid);
+    item = await ownedItemFromUuid(actor, itemUuid);
     if (!item) {
       ui.notifications.error(
         game.i18n.format("E20.ItemEditErrorBadUuid", {itemUuid}),
@@ -265,7 +266,7 @@ export async function onInlineEdit(event, actor) {
 
   // If a child item is being updated, update the parent's copy too
   if (!itemId && itemUuid && parentId) {
-    item = await fromUuid(itemUuid);
+    item = await ownedItemFromUuid(actor, itemUuid);
 
     const parentItem = actor.items.get(parentId);
     const parentField = element.dataset.parentField;

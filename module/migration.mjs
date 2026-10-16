@@ -79,6 +79,15 @@ export const migrateWorld = async function() {
     }
   }
 
+  // Child entry uuids naming another actor's copy (planOwnedChildUuids): world actors and unlinked token actors.
+  for (const actor of [...game.actors, ...unlinkedTokenActors()]) {
+    try {
+      await migrateOwnedChildUuids(actor);
+    } catch (err) {
+      console.error(`Failed essence20 system migration fixing child uuids for Actor ${actor?.name}`, err);
+    }
+  }
+
   // Migrate World Items
   const items = game.items.map(i => [i, true])
     .concat(Array.from(game.items.invalidDocumentIds).map(id => [game.items.getInvalid(id), false]));
@@ -1027,6 +1036,8 @@ export const migrateCompendium = async function(pack) {
         break;
       }
 
+      if (documentName == "Actor") await migrateOwnedChildUuids(doc);
+
       // Save the entry, if data was changed
       if ( foundry.utils.isEmpty(updateData) ) {
         if (documentName == "Actor") await migrateActorPerkChoices(doc, { inPack: true });
@@ -1047,6 +1058,58 @@ export const migrateCompendium = async function(pack) {
   await pack.configure({locked: wasLocked});
   console.log(`Migrated all ${documentName} documents from Compendium ${pack.collection}`);
 };
+
+/* -------------------------------------------- */
+/*  Child entry uuids naming another actor       */
+/* -------------------------------------------- */
+
+/** An embedded actor item's uuid (a world actor's, a token actor's or a compendium actor's): its item id, else null. */
+const EMBEDDED_ITEM_UUID = /(?:^|.)Actor.[^.]+.Item.([^.]+)$/;
+
+/**
+ * 2026-10-16: an item's child entries (system.items - a weapon's effects and upgrades, an armor's upgrades) keep the uuid
+ * they were stored with. Duplicating an actor, importing one from a compendium or dropping it as an unlinked token
+ * keeps the item ids but not the actor, so the uuid still names the ORIGINAL actor's copy - rolling it rolled as that
+ * actor (no token on the scene: no animations, the wrong chat speaker). The sheet now resolves rows by id
+ * (ownedItemFromUuid); this rewrites the stored uuids to the actor's own items. Only uuids naming an embedded actor item
+ * whose id this actor holds are touched (a compendium item's uuid is left alone), so a re-run does nothing.
+ * @param {Actor} actor   A live actor document (world, unlinked token or compendium).
+ * @returns {Array<Object>}   Item updates: {_id, 'system.items.<key>.uuid': uuid}.
+ */
+export function planOwnedChildUuids(actor) {
+  const owned = actor?.items;
+  const updates = [];
+  for (const item of owned ?? []) {
+    const update = {};
+    for (const [key, entry] of Object.entries(item.system?.items ?? {})) {
+      const id = typeof entry?.uuid == 'string' ? entry.uuid.match(EMBEDDED_ITEM_UUID)?.[1] : null;
+      const child = id ? owned.get(id) : null;
+      if (child?.uuid && child.uuid != entry.uuid) {
+        update[`system.items.${key}.uuid`] = child.uuid;
+      }
+    }
+
+    if (Object.keys(update).length) {
+      updates.push({ _id: item.id, ...update });
+    }
+  }
+
+  return updates;
+}
+
+/**
+ * Rewrites one actor's stale child uuids (planOwnedChildUuids).
+ * @param {Actor} actor
+ * @returns {Promise<Number>}   How many items were updated.
+ */
+export async function migrateOwnedChildUuids(actor) {
+  const updates = planOwnedChildUuids(actor);
+  if (updates.length) {
+    await actor.updateEmbeddedDocuments('Item', updates);
+  }
+
+  return updates.length;
+}
 
 /* -------------------------------------------- */
 /*  Details-tab fields moved into rules          */

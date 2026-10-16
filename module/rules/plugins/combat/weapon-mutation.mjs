@@ -95,7 +95,8 @@ registerStep('grantAttacks', async (step, ctx) => {
   const { temporaryStamp } = await import("../../../items/attacks/weapon-perk-uses.mjs");
   const made = [];
   for (const entry of Object.values(weapon.system?.items ?? {}).filter(one => one?.type == 'weaponEffect')) {
-    const effect = entry.uuid ? await globalThis.fromUuid?.(entry.uuid) : null;
+    // The weapon's own actor's copy - the stored uuid may name another actor's (an unlinked token's base actor).
+    const effect = entry.uuid ? weapon.parent?.items?.get?.(String(entry.uuid).split('.').pop()) ?? await globalThis.fromUuid?.(entry.uuid) : null;
     if (!effect) {
       continue;
     }

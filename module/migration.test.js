@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 import {
   MORPHED_TOUGHNESS_RULES, legacyRerollRule, migrateDetailsFields, migrateItemData, migrateMorphedToughness, migratePerkCanActivate,
   migratePerkValue, roleOfActorData, migrateRerollFields, migrateUpgradeAimBonus, perkValueRules, resetMigrationCaches,
-  migratePrerequisiteText, PREREQUISITE_ASK_MAX, migrateWeaponEntryAimBonus,
+  migratePrerequisiteText, PREREQUISITE_ASK_MAX, migrateWeaponEntryAimBonus, planOwnedChildUuids, migrateOwnedChildUuids,
 } from './migration.mjs';
 
 /**
@@ -498,5 +498,45 @@ describe('roleOfActorData', () => {
     expect(roleOfActorData({ items: { documentsByType: { role: [role] } } })).toBe(role);
     expect(roleOfActorData({ items: [] })).toBeNull();
     expect(roleOfActorData({})).toBeNull();
+  });
+});
+
+describe('child entry uuids naming another actor (2026-10-16)', () => {
+  function actorWith(prefix, entries) {
+    // A Collection iterates its values.
+    const items = new (class extends Map {
+      [Symbol.iterator]() {
+        return this.values();
+      }
+    })();
+    const add = (id, extra = {}) => items.set(id, { id, uuid: `${prefix}.Item.${id}`, system: {}, ...extra });
+    add('eff1');
+    add('eff2');
+    add('wpn', { system: { items: entries } });
+    return { items, updateEmbeddedDocuments: jest.fn(async () => []) };
+  }
+
+  test("a duplicate's / token's weapon entries are pointed at its own items; its own, compendium and missing ones are left", () => {
+    const actor = actorWith('Scene.s.Token.t.Actor.a', {
+      k1: { uuid: 'Actor.base.Item.eff1', type: 'weaponEffect' },
+      k2: { uuid: 'Scene.s.Token.t.Actor.a.Item.eff2', type: 'weaponEffect' },
+      k3: { uuid: 'Compendium.essence20.gij_crb.Item.eff1', type: 'weaponEffect' },
+      k4: { uuid: 'Actor.base.Item.gone', type: 'upgrade' },
+      k5: { uuid: 'Compendium.world.npcs.Actor.x.Item.eff2', type: 'upgrade' },
+    });
+    expect(planOwnedChildUuids(actor)).toEqual([{
+      _id: 'wpn',
+      'system.items.k1.uuid': 'Scene.s.Token.t.Actor.a.Item.eff1',
+      'system.items.k5.uuid': 'Scene.s.Token.t.Actor.a.Item.eff2',
+    }]);
+  });
+
+  test('writes one embedded update, and nothing once fixed', async () => {
+    const actor = actorWith('Actor.a', { k1: { uuid: 'Actor.base.Item.eff1' } });
+    expect(await migrateOwnedChildUuids(actor)).toBe(1);
+    expect(actor.updateEmbeddedDocuments).toHaveBeenCalledWith('Item', [{ _id: 'wpn', 'system.items.k1.uuid': 'Actor.a.Item.eff1' }]);
+    actor.items.get('wpn').system.items.k1.uuid = 'Actor.a.Item.eff1';
+    expect(await migrateOwnedChildUuids(actor)).toBe(0);
+    expect(planOwnedChildUuids(null)).toEqual([]);
   });
 });

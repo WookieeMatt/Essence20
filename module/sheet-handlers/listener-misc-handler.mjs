@@ -11,6 +11,7 @@ import { powerCost } from "./power-handler.mjs";
 import { resetDailyPowerUses } from "../mechanics/resources/nanomite-uses.mjs";
 import RollerSelector from "../apps/roller-selector.mjs";
 import DefenseModificationSelector from "../apps/defense-modification.mjs";
+import { ownedItemFromUuid } from "../items/shared/item-lookups.mjs";
 
 const PARENT_ROLLER_KEY = "parentActor";
 const ALT_CREW_PREFIX = "altCrew:";
@@ -30,7 +31,7 @@ async function altModeCrewRollers(event, actor) {
   const element = event.target.closest('[data-roll-type]') || event.target;
   // A weapon's effect rows carry the effect's uuid (collapsible-item-subcontainer.hbs); other rows its id.
   const row = element.closest?.('.item')?.dataset ?? {};
-  const item = row.itemUuid ? fromUuidSync(row.itemUuid, { strict: false }) : (row.itemId ? actor.items.get(row.itemId) : null);
+  const item = row.itemUuid ? await ownedItemFromUuid(actor, row.itemUuid) : (row.itemId ? actor.items.get(row.itemId) : null);
   const { crewRollerChoices, isIntegratedAttack } = await import("../mechanics/vehicles/alt-mode-crew.mjs");
   const crew = isIntegratedAttack(actor, item) ? crewRollerChoices(actor) : [];
   if (!crew.length) {
@@ -86,8 +87,9 @@ export async function  performRoll(event, actor, childRoller=null) {
 
     const childKey = element.closest('.item').dataset.itemKey || null;
     if (childKey) {
+      // The actor's own copy - the stored uuid may name another actor's (an unlinked token's base, a duplicate's source).
       const childUuid = element.closest('.item').dataset.itemUuid;
-      item = await fromUuid(childUuid);
+      item = await ownedItemFromUuid(actor, childUuid);
     } else {
       const itemId = element.closest('.item').dataset.itemId;
       item = actor.items.get(itemId);
