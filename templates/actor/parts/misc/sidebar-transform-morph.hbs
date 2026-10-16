@@ -1,9 +1,13 @@
 {{!-- Transform / Morph, in the sidebar's Special panel under Initiative - the same place on every sheet that has them
-     (character, NPC, companion). --}}
+     (character, NPC, companion). Which Alt Mode it's in shows on the Transform button (it used to be a badge under the
+     Name, crowding the header); Morph's own label already says Unmorph while Morphed. --}}
 {{#if system.canTransform}}
   <a class="essence20-sidebar-action-button" data-action="transform">
     <i class="fas fa-steering-wheel"></i>
     {{localize 'E20.Transform'}}
+    {{#if system.isTransformed}}
+      <span class="e20-state-badge --altmode">{{#if @root.altModeName}}{{@root.altModeName}}{{else}}{{localize "E20.StatusAltMode"}}{{/if}}</span>
+    {{/if}}
   </a>
 {{/if}}
 {{#if system.canMorph}}
