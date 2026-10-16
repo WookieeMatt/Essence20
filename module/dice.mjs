@@ -1106,7 +1106,9 @@ export class Dice {
         || !!specialization?.edge || hasLinkedEdge
         || !!dataset.edge,
       snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag || combatModifiers.snag
-        || !!specialization?.snag,
+        || !!specialization?.snag
+        // dataset.snag: the caller-supplied counterpart of dataset.edge above.
+        || !!dataset.snag,
     };
 
     // A DieSubstitution rule that clears the Snag (a floor like "A" for Effort!'s), and its limits.

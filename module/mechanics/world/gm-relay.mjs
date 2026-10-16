@@ -15,7 +15,12 @@ import { worldActors } from "../companions/companion-link.mjs";
  * RELAY_TIMEOUT_MS), so code that reads the new state afterwards still works.
  */
 
-export const RELAY_METHODS = new Set(['update', 'setFlag', 'unsetFlag', 'toggleStatusEffect']);
+// The actor's own update, flags and statuses; its items and effects added, changed or removed (a hit that wears away
+// the target's armor, an effect put on it); and an item's or effect's own update, flags and deletion.
+export const RELAY_METHODS = new Set([
+  'update', 'setFlag', 'unsetFlag', 'toggleStatusEffect', 'delete',
+  'createEmbeddedDocuments', 'updateEmbeddedDocuments', 'deleteEmbeddedDocuments',
+]);
 const RELAY_TIMEOUT_MS = 5000;
 const SOCKET = "system.essence20";
 
@@ -35,6 +40,38 @@ export function needsGmRelay(doc) {
   }
 
   return doc?.canUserModify ? !doc.canUserModify(user, 'update') : !doc?.isOwner;
+}
+
+/** Targets already warned about this session, so a fight with no GM connected doesn't warn on every attack. */
+const warnedNoGm = new Set();
+
+/**
+ * A write this user may not make, with no GM connected to make it for them: it is skipped, not sent - Foundry would only
+ * refuse it ("User ... lacks permission to update ActorDelta"). A player attacking an NPC with no GM online lands here:
+ * the attack still rolls, but what it would record on the target (Team Focus's marker, a status) is lost - said once
+ * per target.
+ * @param {Document} doc
+ * @returns {Boolean}   True when the caller should skip the write.
+ */
+export function blockedWithoutGm(doc) {
+  const user = game.user;
+  if (!user || user.isGM || game.users?.activeGM) {
+    return false;
+  }
+
+  const canModify = doc?.canUserModify ? doc.canUserModify(user, 'update') : doc?.isOwner;
+  if (canModify) {
+    return false;
+  }
+
+  const actor = doc?.documentName == 'Actor' ? doc : (doc?.actor ?? doc?.parent);
+  const key = actor?.uuid ?? doc?.uuid;
+  if (!warnedNoGm.has(key)) {
+    warnedNoGm.add(key);
+    globalThis.ui?.notifications?.warn?.(game.i18n.format('E20.GmRelayNoGm', { name: actor?.name ?? doc?.name ?? '' }));
+  }
+
+  return true;
 }
 
 /**
@@ -74,8 +111,10 @@ export function isRelayAllowed(doc, user) {
   }
 
   // The targeted token itself (a push moves it), or an Item carried by the targeted actor (a
-  // disarm drops it) - see mechanics/combat/forced-movement.mjs and mechanics/combat/target-riders.mjs.
-  const uuids = [doc?.uuid, doc?.parent?.documentName == 'Actor' ? doc.parent.uuid : null].filter(Boolean);
+  // disarm drops it) - see mechanics/combat/forced-movement.mjs and mechanics/combat/target-riders.mjs - or an effect on
+  // one of that actor's Items.
+  const actorOf = document => (document?.documentName == 'Actor' ? document : null);
+  const uuids = [doc?.uuid, actorOf(doc?.parent)?.uuid, actorOf(doc?.parent?.parent)?.uuid].filter(Boolean);
   return [...(user?.targets ?? [])].some(token => uuids.some(uuid =>
     token?.actor?.uuid == uuid || token?.document?.actor?.uuid == uuid || token?.document?.uuid == uuid));
 }
@@ -161,14 +200,17 @@ export async function handleGmRelayRequest(data) {
   const user = game.users.get(data.userId);
   const doc = await fromUuid(data.uuid);
   const shieldHandoff = isPowerShieldHandoff(doc, data.method, data.args, user);
-  if (!shieldHandoff && (!RELAY_METHODS.has(data.method) || !doc || typeof doc[data.method] != 'function' || !isRelayAllowed(doc, user))) {
+  // `delete` is for an Item or effect on the target (a disarm) - never the target actor or token itself.
+  const deletesWhole = data.method == 'delete' && ['Actor', 'Token'].includes(doc?.documentName);
+  if (!shieldHandoff && (!RELAY_METHODS.has(data.method) || deletesWhole || !doc || typeof doc[data.method] != 'function' || !isRelayAllowed(doc, user))) {
     console.warn(`Essence20 | refused a relayed ${data.method} on ${data.uuid} from ${user?.name ?? data.userId}`);
     reply(false);
     return false;
   }
 
   try {
-    await doc[data.method](...(data.args ?? []));
+    // The socket carries Foundry's update operators (a key's deletion) as tagged objects: made real again here.
+    await doc[data.method](...reviveOperators(data.args ?? []));
     reply(true);
     return true;
   } catch (error) {
@@ -176,6 +218,28 @@ export async function handleGmRelayRequest(data) {
     reply(false);
     return false;
   }
+}
+
+/**
+ * Foundry v14's update operators (ForcedDeletion, ForcedReplacement) cross a socket as {"__$OPERATOR$__": name}: each
+ * made the operator again, anywhere in the value. Exported for tests.
+ */
+export function reviveOperators(value) {
+  const operators = globalThis.foundry?.data?.operators;
+  const tag = operators?.OPERATOR_IDENTIFIER;
+  if (Array.isArray(value)) {
+    return value.map(reviveOperators);
+  }
+
+  if (!value || typeof value != 'object' || value.constructor !== Object) {
+    return value;
+  }
+
+  if (tag && tag in value) {
+    return operators.reconstructOperator(value);
+  }
+
+  return Object.fromEntries(Object.entries(value).map(([key, entry]) => [key, reviveOperators(entry)]));
 }
 
 /**
@@ -204,7 +268,16 @@ export function handleGmRelayDone(data) {
  * token - neither of which a player may do by default. These go to the GM the same way, guarded so
  * the GM only makes or removes things that belong to an actor the player owns.
  */
-const CREATE_KINDS = new Set(['actor', 'token', 'deleteActor', 'deleteToken']);
+// megaformJoin / megaformSeparate: a Megaform's members' tokens swapped for its own, and back (mechanics/vehicles/megaform-join.mjs).
+// altModeCrew: a seat in a Transformer's Alt Mode taken or given up (mechanics/vehicles/alt-mode-crew.mjs).
+const CREATE_KINDS = new Set(['actor', 'token', 'deleteActor', 'deleteToken', 'megaformJoin', 'megaformSeparate', 'altModeCrew']);
+const MEGAFORM_KINDS = ['megaformJoin', 'megaformSeparate'];
+// Loaded on first use (it reaches into the rules engine, which this file mustn't pull in at load).
+let altModeCrew = null;
+export async function loadAltModeCrew() {
+  altModeCrew ??= await import("../vehicles/alt-mode-crew.mjs");
+  return altModeCrew;
+}
 
 function ownedBy(uuid, user) {
   const owner = uuid ? fromUuidSync(uuid) : null;
@@ -228,9 +301,18 @@ export function isCreateAllowed(kind, payload, user) {
     return ['companion', 'vehicle', 'npc'].includes(payload?.data?.type) && ownedBy(flags.companionOf ?? flags.contactOf, user);
   }
 
+  if (kind == 'altModeCrew') {
+    return !!altModeCrew?.relayedSeatAllowed(payload, user);
+  }
+
   const actor = payload?.actorUuid ? fromUuidSync(payload.actorUuid) : null;
   if (!actor) {
     return false;
+  }
+
+  // Joining or separating a Megaform: its owners.
+  if (MEGAFORM_KINDS.includes(kind)) {
+    return actor.type == 'megaform' && ownedBy(actor.uuid, user);
   }
 
   const owner = actor.flags?.essence20?.companionOf ?? actor.flags?.essence20?.contactOf;
@@ -238,6 +320,10 @@ export function isCreateAllowed(kind, payload, user) {
 }
 
 async function carryOut(kind, payload, user) {
+  if (kind == 'altModeCrew') {
+    return (await loadAltModeCrew()).applyRelayedSeat(payload);
+  }
+
   if (kind == 'actor') {
     const data = foundry.utils.deepClone(payload.data);
     data.ownership = { ...(data.ownership ?? {}), [user.id]: 3 };
@@ -256,6 +342,12 @@ async function carryOut(kind, payload, user) {
     return null;
   }
 
+  if (MEGAFORM_KINDS.includes(kind)) {
+    const { joinMegaform, separateMegaform } = await import("../vehicles/megaform-join.mjs");
+    const result = kind == 'megaformJoin' ? await joinMegaform(actor, { scene }) : await separateMegaform(actor, { scene });
+    return Array.isArray(result) ? result.length > 0 : !!result;
+  }
+
   if (kind == 'deleteToken') {
     const ids = scene.tokens.filter(t => t.actorId == actor.id).map(t => t.id);
     if (ids.length) {
@@ -272,7 +364,7 @@ async function carryOut(kind, payload, user) {
 
 /**
  * Make or remove a companion actor or token - directly when this user may, through the GM otherwise.
- * @param {String} kind   actor, token, deleteActor or deleteToken.
+ * @param {String} kind   actor, token, deleteActor, deleteToken, megaformJoin or megaformSeparate.
  * @param {Object} payload   {data} for an actor; {actorUuid, sceneId, x, y} for the rest.
  * @returns {Promise<*>}   The new document's uuid, true for a removal, or null.
  */
@@ -283,6 +375,9 @@ export async function createViaGm(kind, payload) {
     token: () => user.isGM || user.can?.('TOKEN_CREATE'),
     deleteActor: () => user.isGM || fromUuidSync(payload.actorUuid)?.isOwner,
     deleteToken: () => user.isGM || user.can?.('TOKEN_DELETE'),
+    megaformJoin: () => user.isGM,
+    megaformSeparate: () => user.isGM,
+    altModeCrew: () => user.isGM,
   }[kind];
   if (may?.()) {
     return carryOut(kind, payload, user);
@@ -317,6 +412,10 @@ export async function handleGmCreateRequest(data) {
 
   const user = game.users.get(data.userId);
   let result = null;
+  if (data.kind == 'altModeCrew') {
+    await loadAltModeCrew();
+  }
+
   if (isCreateAllowed(data.kind, data.payload, user)) {
     try {
       result = await carryOut(data.kind, data.payload, user);

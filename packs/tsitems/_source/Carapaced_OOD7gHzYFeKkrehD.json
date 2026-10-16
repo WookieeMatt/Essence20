@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: 3 starting Health, +1 Strength, Ground Movement 30, the Knock, Knock! Perk, and your pick of the Common or Large Carapaced Alt Mode. You pick Conditioning or Brawn as your Origin Skill.</p>"
+      "notes": "<p>Granted: 3 starting Health, +1 Strength, Ground Movement 30, the Knock, Knock! Perk, and the Carapaced Alt Mode (you pick Common or Large for each Mode, and its movement - 60 ft Ground or 40 ft Ground and 25 ft Underground). You pick Conditioning or Brawn as your Origin Skill.</p>"
     },
     "originalId": "",
     "description": "",
@@ -25,13 +25,7 @@
       "6d1b": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.aTevGfLML1dlbErs",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Carapaced (Common)",
-        "type": "altMode"
-      },
-      "f2e1": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.2mSP6mVx0axvOlXf",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Carapaced (Large)",
+        "name": "Carapaced",
         "type": "altMode"
       }
     },

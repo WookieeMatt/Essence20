@@ -22,7 +22,7 @@ const grantCopy = jest.fn(async () => ({ name: 'Copy', system: {} }));
 jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({
   chooseSelect, chooseButtons: jest.fn(), findItems, pickOne, grantCopy, rollTest: jest.fn(), pickPerkFrom: jest.fn(), markIntegrated: jest.fn(),
 }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const applyDamage = jest.fn();
 jest.unstable_mockModule('./mechanics/combat/combat.mjs', () => ({ applyDamage, getVehicleDriver: jest.fn() }));
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({ createItemCopies: jest.fn(), setEntryAndAddItem: jest.fn() }));

@@ -1,0 +1,57 @@
+{
+  "name": "Pretender",
+  "type": "altMode",
+  "img": "systems/essence20/assets/icons/items/altmode.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you take the Origin you pick Small or Common for each Mode, and its movement - 45 ft Ground, 30 ft Ground and 20 ft Aerial or 30 ft Ground and 20 ft Aquatic. The Alt Mode's choices can be changed later on its row on the Alt Mode tab; converting into it gives you that size and movement.</p><p>It has no Crew and no Firepoints.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 62
+    },
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "burrow": 0,
+      "climb": 0,
+      "ground": 45
+    },
+    "altModesize": "common",
+    "altModeSizeOptions": ["small", "common"],
+    "botModeSize": "common",
+    "botModeSizeOptions": ["small", "common"],
+    "movementOptions": [
+      {"ground": 45, "aerial": 0, "aquatic": 0, "climb": 0, "burrow": 0},
+      {"ground": 30, "aerial": 20, "aquatic": 0, "climb": 0, "burrow": 0},
+      {"ground": 30, "aerial": 0, "aquatic": 20, "climb": 0, "burrow": 0}
+    ],
+    "altModeCrew": 0,
+    "altModeFirepoints": 0
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1685406381322,
+    "modifiedTime": 1704127408342,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "folder": "toehsZPghf0zBpSN",
+  "_id": "ca4svWchRNjMhEMf",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ca4svWchRNjMhEMf"
+}

@@ -26,6 +26,17 @@
         {{#each @root.participantStunSorted}}{{#unless @first}}<span class="essence20-sidebar-participant-health-sep">/</span>{{/unless}}<span title="{{this.name}}">{{this.value}}</span>{{/each}}
       </span>
     </div>
+    {{!-- A Combiner form's own Energon pool (EoC p.42, p.47) - what's left of it, editable (spent by hand, or given
+         from an outside source); its max is half the Energon spent to merge (the header's box), worked out in
+         Essence20Actor#_prepareMegaformCombinerData. --}}
+    {{#inArray system.subtype 'megaformCombiner'}}
+    <div>
+      <label>{{localize 'E20.Energon'}}</label>
+      <input class="two-digit-input no-lock" type="number" name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
+      <span>/</span>
+      <span class="sidebar-readout" data-tooltip="{{localize 'E20.MegaformEnergonMaxTooltip'}}">{{system.energon.normal.max}}</span>
+    </div>
+    {{/inArray}}
   </div>
   <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-special">
     <label class="sliced-border__label"><i class="fas fa-bolt"></i> Special</label>
@@ -41,6 +52,16 @@
         {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
       </span>
     </div>
+    {{!-- Join / Separate: the members' tokens on this scene swap for the Megaform's own (mechanics/vehicles/megaform-join.mjs). --}}
+    {{#if megaformJoined}}
+    <a class="essence20-sidebar-action-button" data-action="megaformSeparate" data-tooltip="{{localize 'E20.MegaformSeparateTooltip'}}">
+      <i class="fas fa-object-ungroup"></i> {{localize 'E20.MegaformSeparate'}}
+    </a>
+    {{else if megaformMembersHere}}
+    <a class="essence20-sidebar-action-button" data-action="megaformJoin" data-tooltip="{{localize 'E20.MegaformJoinTooltip'}}">
+      <i class="fas fa-object-group"></i> {{localize 'E20.MegaformJoin'}} ({{megaformMembersHere}})
+    </a>
+    {{/if}}
   </div>
   {{> "systems/essence20/templates/actor/parts/misc/sidebar-speeds.hbs"}}
   {{> "systems/essence20/templates/actor/parts/misc/sidebar-defenses.hbs"}}

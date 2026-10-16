@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
  */
 
 global.Hooks = { on: () => 0, once: () => 0, callAll: () => {} };
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 
 await import('./plugins/index.mjs');
 const { rebuildIndex } = await import('./index.mjs');
@@ -20,7 +20,7 @@ const { runUse, useAvailable, fireItemAdded } = await import('./triggers.mjs');
 const { setStoryPointHelpers } = await import('./steps.mjs');
 const { grantData } = await import('./lifecycle.mjs');
 const { validateRule } = await import('./types.mjs');
-const { sizeDerived } = await import('./plugins/effects/size.mjs');
+const { altModeSize, sizeDerived, stepSize } = await import('./plugins/effects/size.mjs');
 const { ruleHazardProtection } = await import('./plugins/combat/hazard-terrain-targets.mjs');
 const { ENVIRONMENT_HAZARDS, ENVIRONMENT_PROTECTORS, getEnvironmentProtection } = await import('../mechanics/world/environment-hazards.mjs');
 const { getDailyUsesMax } = await import('../mechanics/resources/nanomite-uses.mjs');
@@ -156,6 +156,22 @@ describe('Titanspark: one Size Class up from whatever the Origin set', () => {
     expect(actor.system.size).toBe('large');
   });
 
+  // EoC p.24 + Field Guide p.148: one Size Class along the size's own track - tall stays tall, long stays long.
+  test.each([['large', 'huge'], ['huge', 'gigantic'], ['towering', 'titanic'], ['long', 'extended'], ['extended', 'extended2'], ['extended2', 'extended3']])(
+    'Bot Mode %s becomes %s', (from, to) => {
+      const actor = makeActor([FILES.titanspark], { system: { size: from } });
+      sizeDerived(actor);
+      expect(actor.system.size).toBe(to);
+    });
+
+  test('Alt Modes are one Size Class larger too, on their own track', () => {
+    const actor = makeActor([FILES.titanspark], { system: { size: 'large' } });
+    expect(altModeSize(actor, { system: { altModesize: 'long' } })).toBe('extended');
+    expect(altModeSize(actor, { system: { altModesize: 'large' } })).toBe('huge');
+    expect(altModeSize(actor, { system: { altModesize: 'extended3' } })).toBe('extended3');
+    expect(altModeSize(makeActor([], { system: { size: 'large' } }), { system: { altModesize: 'long' } })).toBe('long');
+  });
+
   test('caps at the top of the size list', () => {
     const actor = makeActor([FILES.titanspark], { system: { size: 'titanic' } });
     sizeDerived(actor);
@@ -167,6 +183,14 @@ describe('Titanspark: one Size Class up from whatever the Origin set', () => {
     sizeDerived(actor);
     expect(actor.system.size).toBe('common');
   });
+});
+
+test('the track ladder: each track clamps at its own ends and honours min / max on it', () => {
+  expect(stepSize('common', 1, { ladder: 'track' })).toBe('large');
+  expect(stepSize('extended3', 1, { ladder: 'track' })).toBe('extended3');
+  expect(stepSize('long', -2, { ladder: 'track' })).toBe('small');
+  expect(stepSize('huge', 3, { ladder: 'track', max: 'towering' })).toBe('towering');
+  expect(stepSize('extended', -1, { ladder: 'track', min: 'extended' })).toBe('extended');
 });
 
 /* ---- Dodgy (was action-economy.mjs DODGY_IDS / getNamedActionType) ---- */

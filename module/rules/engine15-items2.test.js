@@ -7,7 +7,7 @@ import { jest } from '@jest/globals';
 
 global.Hooks = { on: () => {}, once: () => {}, callAll: () => {} };
 
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn(), createViaGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn(), createViaGm: jest.fn() }));
 let picks = [];
 jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({
   chooseSelect: jest.fn(async (title, prompt, options) => {
@@ -176,7 +176,7 @@ describe('rule types validate', () => {
     expect(validateRule({ type: 'DriverlessEssence' }).length).toBeGreaterThan(0);
     expect(validateRule({ type: 'Use', steps: [{ do: 'spendPooled', path: 'flags.x' }] }).join(' ')).toMatch(/system/);
     expect(validateRule({ type: 'Use', steps: [{ do: 'recordSeen', flag: 'a b', entry: 'x' }] }).join(' ')).toMatch(/flag name/);
-    expect(validateRule({ type: 'Use', steps: [{ do: 'pickChassis', mode: 'drone' }] }).join(' ')).toMatch(/origin or mimicry/);
+    expect(validateRule({ type: 'Use', steps: [{ do: 'pickChassis', mode: 'drone' }] }).join(' ')).toMatch(/origin, mimicry or additional/);
     expect(validateRule({ type: 'Use', steps: [{ do: 'groupTest', skill: 'x', cost: 'fullAction' }] }).join(' ')).toMatch(/cost/);
   });
 });

@@ -154,4 +154,24 @@ describe("onSummonZord (sheet-action entry point)", () => {
     expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: expect.stringContaining('data-e20-ext="zordPlace"') }));
     game.actors = actors;
   });
+
+  test("with the arrival wait turned off (zordArrivalWait), it answers at once in combat too: no timer rolled", async () => {
+    const settings = game.settings;
+    game.settings = { ...settings, get: jest.fn((scope, key) => (key == 'zordArrivalWait' ? false : settings?.get?.(scope, key))) };
+    const actors = game.actors;
+    game.actors = [];
+    const zord = makeZord();
+    const pilot = makePilot();
+    pilot.uuid = 'Actor.pilot';
+    global.fromUuid.mockResolvedValueOnce(zord);
+    rollTotals = [5];
+
+    await onSummonZord({ dataset: { systemActorsUuid: 'Actor.zord1' } }, pilot);
+
+    expect(zord.setFlag).not.toHaveBeenCalledWith('essence20', 'zordSummonReadyRound', expect.anything());
+    expect(zord.setFlag).toHaveBeenCalledWith('essence20', 'zordSummoner', 'Actor.pilot');
+    expect(ChatMessage.create).toHaveBeenCalledWith(expect.objectContaining({ content: expect.stringContaining('data-e20-ext="zordPlace"') }));
+    game.settings = settings;
+    game.actors = actors;
+  });
 });

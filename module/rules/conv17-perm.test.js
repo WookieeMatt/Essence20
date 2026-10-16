@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 
 global.Hooks = { on: () => {}, once: () => {}, callAll: () => {} };
 
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const allies = { list: [] };
 const pickAllyTargets = jest.fn(async (actor, candidates) => {
   if (!candidates.length) {

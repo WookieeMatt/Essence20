@@ -77,6 +77,8 @@ export const character = () => ({
   biography: new fields.SchemaField({
     age: makeInt(0),
     bio: new fields.HTMLField(),
+    // Background Bonds (PR CRB p.65, TF CRB p.29): the player's own roleplaying hooks - text, since 6.0.5 (they were items).
+    bonds: new fields.HTMLField(),
     description: new fields.HTMLField(),
     eyeColor: makeStr(''),
     gender: makeStr(''),

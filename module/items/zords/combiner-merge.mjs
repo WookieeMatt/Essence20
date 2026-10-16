@@ -42,6 +42,8 @@ import {
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
 import { addParticipantBonus, BONUS_TAKEN_FLAG } from "../../mechanics/vehicles/megaform-bonus-health.mjs";
 import { getMegaformParticipants } from "../../mechanics/vehicles/megaform-participants.mjs";
+import { rosterRemoval, rosterRemovalUpdate } from "../../util/roster.mjs";
+import { announce } from "../../mechanics/world/public-hooks.mjs";
 import {
   chat, holds, isCombinerForm, isGiganticOrLarger, isResponsible, itemsOf, megaformsContaining, rosterOf, sourceOf, T, traitsOf, writeDoc, ZORD2,
 } from "./combiner-roster-helpers.mjs";
@@ -149,6 +151,7 @@ export async function completeMerge(form, members) {
     healed = true;
   }
 
+  announce('combinerMerged', { form, members: members.map(m => fromUuidSync(m.uuid)).filter(Boolean) });
   await chat(form, T('Zord2MergeComplete', { form: form.name, names: members.map(m => m.name).join(', ') })
     + (healed ? ` ${T('Zord2InvigoratingConnection')}` : ''));
 }
@@ -174,7 +177,7 @@ registerSceneAdvanced(async () => {
   for (const form of worldActors().filter(a => a?.type == 'megaform' && isCombinerForm(a) && isResponsible(a))) {
     const gone = Object.entries(form.system.actors ?? {}).filter(([, entry]) => isGuestEntry(entry));
     if (gone.length) {
-      await form.update(Object.fromEntries(gone.map(([key]) => [`system.actors.${key}`, new foundry.data.operators.ForcedDeletion()])));
+      await form.update(rosterRemovalUpdate(form, gone.map(([key]) => key)));
       await chat(form, T('Zord2GuestLeaves', { form: form.name, names: gone.map(([, entry]) => entry.name).join(', ') }));
     }
   }
@@ -363,6 +366,14 @@ export async function breakApart(form) {
     const combiner = isCombinerForm(form);
     const components = combiner ? componentsOf(form) : getMegaformParticipants(form);
     const safe = combiner && isGiganticOrLarger(form.system?.size);
+    // A joined Megaform's token gives way to its members' tokens again, wherever it stands (mechanics/vehicles/megaform-join.mjs).
+    const { joinedTokenOf, separateMegaform } = await import("../../mechanics/vehicles/megaform-join.mjs");
+    for (const scene of game.scenes ?? []) {
+      if (joinedTokenOf(form, scene)) {
+        await separateMegaform(form, { scene, voluntary: false });
+      }
+    }
+
     const saved = [];
     for (const component of components) {
       if (safe && (component.system?.health?.value ?? 1) <= 0 && traitsOf(component, 'safeRelease').length) {
@@ -379,11 +390,12 @@ export async function breakApart(form) {
     };
     for (const [key, entry] of Object.entries(form.system.actors ?? {})) {
       if (components.some(c => c.uuid == entry.uuid)) {
-        update[`system.actors.${key}`] = new foundry.data.operators.ForcedDeletion();
+        update[`system.actors.${key}`] = rosterRemoval(form);
       }
     }
 
     await writeDoc(form, 'update', update);
+    announce('megaformSplit', { form, components, isCombiner: combiner });
     await chat(form, T(combiner ? 'Zord2BreakApart' : 'Zord2MegazordBreakApart', { form: form.name })
       + (saved.length ? ` ${T('Zord2SafeRelease', { names: saved.join(', ') })}` : ''));
   } finally {

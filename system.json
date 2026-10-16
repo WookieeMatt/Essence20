@@ -58,9 +58,6 @@
       "armor": {
         "htmlFields": ["description"]
       },
-      "bond": {
-        "htmlFields": ["description"]
-      },
       "equipmentPackage": {
         "htmlFields": ["description"]
       },

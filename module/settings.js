@@ -421,13 +421,13 @@ export const registerSettings = function () {
   });
 
   // Whether the Morphed / Alt Mode status shows its icon on the token (the status itself stays - macros, rules and the
-  // Combat Tracker read it). "art": hidden when the state swaps the token's art, which already shows it.
+  // Combat Tracker read it). Off by default (user, 2026-10-12): the header badge and the token art already show it.
   game.settings.register(systemName, "stateTokenIcons", {
     name: game.i18n.localize("E20.StateTokenIcons"),
     hint: game.i18n.localize("E20.StateTokenIconsHint"),
     scope: "world",
     config: true,
-    default: "art",
+    default: "never",
     type: String,
     choices: {
       always: game.i18n.localize("E20.StateTokenIconsAlways"),
@@ -435,6 +435,17 @@ export const registerSettings = function () {
       never: game.i18n.localize("E20.StateTokenIconsNever"),
     },
     onChange: () => refreshStateIcons(),
+  });
+
+  // The Zords' 3d2-round wait to arrive in combat (PR CRB p.135, mechanics/vehicles/zord-summon.mjs). Off: a summoned
+  // Zord answers the call at once, in combat as it already does outside one.
+  game.settings.register(systemName, "zordArrivalWait", {
+    name: game.i18n.localize("E20.ZordArrivalWait"),
+    hint: game.i18n.localize("E20.ZordArrivalWaitHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
   });
 
   /* -------------------------------------------- */

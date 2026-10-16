@@ -55,7 +55,7 @@ const grants = {
 const kitTier = name => (['limited', 'restricted'].includes(String(name).split(' ')[0].toLowerCase()) ? String(name).split(' ')[0].toLowerCase() : 'standard');
 const conditions = [];
 jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => grants);
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn(), createViaGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn(), createViaGm: jest.fn() }));
 jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({ applyTimedCondition: jest.fn(async (actor, status, rounds) => conditions.push({ name: actor.name, status, rounds })) }));
 const toughness = [];
 jest.unstable_mockModule('./sheet-handlers/perk-handler.mjs', () => ({
@@ -598,6 +598,7 @@ describe('moving to a picked point (moveTo)', () => {
       await use(comm);
     }
 
+    // A teleport: Foundry's Displace action, so v14 doesn't record it as a walk (a stand-in token has no id: just no animation).
     expect(token.document.update).toHaveBeenCalledWith({ x: 50, y: 50 }, { animate: false });
     expect(comm.flags.essence20.chargesUsed).toBe(3);
     expect(available(comm)).toBe(false);

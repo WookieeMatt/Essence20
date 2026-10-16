@@ -50,7 +50,7 @@ const conditions = [];
 const saveCards = [];
 jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => grants);
 jest.unstable_mockModule('./mechanics/resources/requisition.mjs', () => ({ requisitionSkill: () => 'targeting' }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({ applyTimedCondition: jest.fn(async (actor, status, rounds) => conditions.push({ name: actor.name, status, rounds })) }));
 jest.unstable_mockModule('./mechanics/combat/save-riders.mjs', () => ({ postSaveCard: jest.fn(async (actor, targets, spec) => saveCards.push({ targets: targets.map(t => t.name), spec })), resolveSaveRoll: jest.fn() }));
 jest.unstable_mockModule('./sheet-handlers/attachment-handler.mjs', () => ({ createItemCopies: jest.fn(async () => {}), setEntryAndAddItem: jest.fn(async () => 'k1') }));

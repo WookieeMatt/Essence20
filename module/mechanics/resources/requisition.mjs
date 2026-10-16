@@ -1,4 +1,5 @@
 import { E20 } from "../../util/config.mjs";
+import { announce } from "../world/public-hooks.mjs";
 // RequisitionDif rules (Early Adopter's DIF -5 on Prototypical / Theoretical equipment) - rules/plugins/resources/requisition-dif.mjs.
 import { ruleRequisitionDif } from "../../rules/plugins/resources/requisition-dif.mjs";
 import { ruleRequisitionShift } from "../../rules/plugins/resources/requisition-shift.mjs";
@@ -205,7 +206,8 @@ export async function requisitionDrop(member, item, pool) {
     return { granted: false };
   }
 
-  await member.createEmbeddedDocuments("Item", [item.toObject()]);
+  const [granted] = await member.createEmbeddedDocuments("Item", [item.toObject()]) ?? [];
+  announce('requisitionGranted', { member, item: granted ?? item });
   const message = access == 'qualified' ? 'E20.RequisitionDropQualified' : 'E20.RequisitionDropGranted';
   ui.notifications?.info(game.i18n.format(message, { member: member.name, name: item.name }));
   return { granted: true };

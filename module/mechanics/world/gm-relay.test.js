@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
 import {
-  handleGmRelayDone, handleGmRelayRequest, isRelayAllowed, needsGmRelay, relayToGm,
+  blockedWithoutGm, handleGmRelayDone, handleGmRelayRequest, isRelayAllowed, needsGmRelay, relayToGm, reviveOperators,
 } from "./gm-relay.mjs";
 
 const saved = {};
@@ -18,7 +18,7 @@ afterEach(() => {
   fromUuid.mockReset();
 });
 
-const npc = (canModify = false) => ({ uuid: 'Scene.s.Token.t.Actor.a', canUserModify: () => canModify, setFlag: jest.fn(async () => {}) });
+const npc = (canModify = false) => ({ documentName: 'Actor', uuid: 'Scene.s.Token.t.Actor.a', canUserModify: () => canModify, setFlag: jest.fn(async () => {}) });
 
 describe("needsGmRelay", () => {
   test("a player who can't modify the actor, with a GM online, relays", () => {
@@ -101,4 +101,42 @@ describe("handleGmRelayRequest (GM side)", () => {
     expect(isRelayAllowed(target, { targets: new Set() })).toBe(false);
     expect(isRelayAllowed(target, null)).toBe(false);
   });
+});
+
+describe('the wider relay (2026-10-10): items and effects on a target', () => {
+  test('an item on the targeted actor can be updated or deleted for the player; the actor itself never deleted', async () => {
+    const actor = npc();
+    const item = { documentName: 'Item', uuid: actor.uuid + '.Item.i', parent: actor, update: jest.fn(async () => {}), delete: jest.fn(async () => {}) };
+    fromUuid.mockResolvedValue(item);
+    const player = { id: 'p1', targets: new Set([{ actor }]) };
+    game.users = { activeGM: { isSelf: true }, get: () => player };
+    game.socket = { emit: jest.fn() };
+    expect(await handleGmRelayRequest({ requestId: 'a', userId: 'p1', uuid: item.uuid, method: 'update', args: [{ 'system.x': { '__$OPERATOR$__': 'ForcedDeletion' } }] })).toBe(true);
+    expect(item.update.mock.calls[0][0]['system.x']).toBeInstanceOf(foundry.data.operators.ForcedDeletion);
+    expect(await handleGmRelayRequest({ requestId: 'b', userId: 'p1', uuid: item.uuid, method: 'delete', args: [] })).toBe(true);
+  });
+});
+
+test('reviveOperators rebuilds tagged operators anywhere in a value', () => {
+  const revived = reviveOperators([{ a: { b: { '__$OPERATOR$__': 'ForcedDeletion' } }, c: [1, 'x'] }]);
+  expect(revived[0].a.b).toBeInstanceOf(foundry.data.operators.ForcedDeletion);
+  expect(revived[0].c).toEqual([1, 'x']);
+});
+
+test('with no GM online, a write the player may not make is skipped - warned once per target', () => {
+  const warn = jest.fn();
+  global.ui = { notifications: { warn } };
+  game.user = { id: 'p1', isGM: false };
+  game.users = { activeGM: null };
+  const target = npc(false);
+  target.name = 'Goon';
+  expect(blockedWithoutGm(target)).toBe(true);
+  expect(blockedWithoutGm(target)).toBe(true);
+  expect(warn).toHaveBeenCalledTimes(1);
+  // Something the player owns, or a GM online (the relay then), is never blocked.
+  expect(blockedWithoutGm(npc(true))).toBe(false);
+  game.users = { activeGM: { id: 'gm' } };
+  expect(blockedWithoutGm(target)).toBe(false);
+  game.user = { id: 'gm', isGM: true };
+  expect(blockedWithoutGm(target)).toBe(false);
 });

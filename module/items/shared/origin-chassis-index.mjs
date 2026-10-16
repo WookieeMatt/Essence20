@@ -8,7 +8,7 @@ export async function originIndex() {
   const origins = [];
   const altModes = new Map();
   for (const pack of getVisibleItemPacks()) {
-    const index = await pack.getIndex({ fields: ['type', 'system.items', 'system.altModesize', 'system.botModeSize', 'system.baseGroundMovement', 'system.baseAerialMovement', 'system.baseAquaticMovement'] });
+    const index = await pack.getIndex({ fields: ['type', 'system.items', 'system.altModesize', 'system.altModeSizeOptions', 'system.botModeSize', 'system.botModeSizeOptions', 'system.botModeSizeFor', 'system.movementOptions', 'system.altModeMovement', 'system.baseGroundMovement', 'system.baseAerialMovement', 'system.baseAquaticMovement'] });
     for (const entry of index.values()) {
       if (entry.type == 'origin') {
         origins.push(entry);

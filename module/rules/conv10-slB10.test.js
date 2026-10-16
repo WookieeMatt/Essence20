@@ -29,7 +29,7 @@ const grants = {
   pickOne: jest.fn(async () => null),
 };
 jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => grants);
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 let lastApply = null;
 const react = {
   lastApplyContext: () => lastApply,

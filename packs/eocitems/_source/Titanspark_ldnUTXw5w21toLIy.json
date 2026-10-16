@@ -6,11 +6,11 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Size","label":"Titanspark (one Size Class larger)","steps":1}
+      {"type":"Size","label":"Titanspark (one Size Class larger, Bot and Alt Modes)","steps":1,"ladder":"track","modes":"both"}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: your Size is one Size Class larger. Active Effect: +1 Health.</p>"
+      "notes": "<p>Automatic: your Bot Mode and every Alt Mode are one Size Class larger, each along its own track (Large to Huge, Long to Extended); your token takes the larger size when you transform, and weapon sizes count it. Active Effect: +1 Health.</p>"
     },
     "originalId": "",
     "description": "",

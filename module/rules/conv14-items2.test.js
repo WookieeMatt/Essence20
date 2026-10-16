@@ -36,7 +36,7 @@ const grants = {
   pickOne: jest.fn(async () => null),
 };
 jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => grants);
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const react = {
   rollVsMany: jest.fn(async (actor, skill, others, defense) => others.map(other => ({ targetUuid: other.uuid, success: !other.flags.essence20.resists, skill, defense }))),
 };
@@ -1283,9 +1283,10 @@ describe('Zord Alterations', () => {
   });
 
   test('size up with +1 Health; size down (Huge at least) with +10 ft to every Movement type', async () => {
+    // One Size Class along the Zord's own track (Field Guide p.148): Gigantic to Towering, Extended to Extended II.
     const { pilot, zord } = pilotWith({ size: 'gigantic' });
     await alter(pilot, 3);
-    expect(zord.system.size).toBe('extended2');
+    expect(zord.system.size).toBe('towering');
     expect([zord.system.health.max, zord.system.health.value]).toEqual([21, 21]);
     await alter(pilot, 4);
     expect(zord.system.size).toBe('gigantic');
@@ -1293,6 +1294,13 @@ describe('Zord Alterations', () => {
     const small = pilotWith({ size: 'huge' });
     await alter(small.pilot, 4);
     expect(small.zord.system.size).toBe('huge');
+    // The long track: Extended up is Extended II; down stops at Extended (the long track's Huge).
+    const long = pilotWith({ size: 'extended' });
+    await alter(long.pilot, 3);
+    expect(long.zord.system.size).toBe('extended2');
+    const longSmall = pilotWith({ size: 'extended' });
+    await alter(longSmall.pilot, 4);
+    expect(longSmall.zord.system.size).toBe('extended');
   });
 
   test('Resistance to a chosen Element; a cancelled pick or no Zord changes nothing', async () => {

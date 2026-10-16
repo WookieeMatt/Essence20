@@ -185,6 +185,7 @@ describe("token icons (stateTokenIcons)", () => {
 
   test("morphing without Morphed art keeps the icon; with the setting at never it is hidden", async () => {
     global.game.user = { id: 'u1' };
+    global.game.settings = { get: () => 'art' };
     global.game.i18n = { format: jest.fn(() => ''), localize: jest.fn(k => k) };
     const created = { update: jest.fn() };
     const actor = makeActor({ isMorphed: true });

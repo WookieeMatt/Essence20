@@ -290,6 +290,16 @@ export function ruleFormHtml(rule, context = {}) {
 /*  Reading it back                              */
 /* -------------------------------------------- */
 
+/** The editor row kind a stored tag is ("skill" for skill:athletics, "level" for self:level>=3, "any" for {any}). */
+function tagFamilyOf(tag) {
+  if (tag && typeof tag == 'object') {
+    return 'any';
+  }
+
+  const body = String(tag ?? '').replace(/^not:/, '');
+  return /^self:level/.test(body) ? 'level' : body.split(':')[0];
+}
+
 /** Rebuild one tag from its row's three inputs. */
 export function composeTag(not, family, arg) {
   if (family == 'any') {
@@ -360,10 +370,17 @@ export function readInput(rule, path, kind, raw, row = null) {
   }
 
   case 'tagNot':
-  case 'tagFamily':
   case 'tagArg':
     setPath(rule, path, composeTag(row?.not, row?.family, row?.arg));
     break;
+  // Another kind of condition starts with its box empty: what was in it belonged to the old kind - a new condition's
+  // "athletics" (the Skill is) kept after switching to "in combat" read "in combat: athletics", never true.
+  case 'tagFamily': {
+    const changed = tagFamilyOf(getPath(rule, path)) != row?.family;
+    setPath(rule, path, composeTag(row?.not, row?.family, changed && getPath(rule, path) !== undefined ? '' : row?.arg));
+    break;
+  }
+
   case 'resourceKind':
     setPath(rule, path, raw == 'storyPoints' ? { storyPoints: true } : raw == 'pool' ? { pool: '' } : raw == 'path' ? { path: '' } : undefined);
     break;

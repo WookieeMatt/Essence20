@@ -13,7 +13,7 @@ global.Hooks = { on: () => {}, once: () => {}, callAll: () => {} };
 const rolls = { rows: null };
 const rollVsMany = jest.fn(async (actor, skill, others) => (rolls.rows ? rolls.rows(others) : others.map(other => ({ targetUuid: other.uuid, success: true, multiplier: 1 }))));
 jest.unstable_mockModule('./mechanics/combat/reaction-engine.mjs', () => ({ rollVsMany }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const applyTimedCondition = jest.fn(async (actor, status) => actor.statuses.add(status));
 jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({ applyTimedCondition }));
 const applyDamage = jest.fn(async () => true);

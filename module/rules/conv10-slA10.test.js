@@ -457,12 +457,17 @@ describe('Size classes as data', () => {
     const { sizeDerived } = sizeExt;
     const zord = makeActor('zord', 'Zord', { size: 'huge' });
     addPackItem(zord, SIZE_FILES.tss, { flags: { essence20: { pr1SizeShift: { direction: 'larger' } } } });
+    // One Size Class along its own track (Field Guide p.148): Huge to Gigantic, twice to Towering (the cap).
     sizeDerived(zord);
-    expect(zord.system.size).toBe('extended');
+    expect(zord.system.size).toBe('gigantic');
     addPackItem(zord, SIZE_FILES.tss, { flags: { essence20: { pr1SizeShift: { direction: 'larger' } } } });
     zord.system.size = 'huge';
     sizeDerived(zord);
-    expect(zord.system.size).toBe('gigantic');
+    expect(zord.system.size).toBe('towering');
+    // A long Zord stays long: Extended II, twice to Extended III (the long track's Towering).
+    zord.system.size = 'extended';
+    sizeDerived(zord);
+    expect(zord.system.size).toBe('extended3');
     zord.system.size = 'towering';
     sizeDerived(zord);
     expect(zord.system.size).toBe('towering');
@@ -473,6 +478,10 @@ describe('Size classes as data', () => {
     const shrinking = makeActor('zord', 'Small Zord', { size: 'huge' });
     addPackItem(shrinking, SIZE_FILES.tss, { flags: { essence20: { pr1SizeShift: { direction: 'smaller' } } } });
     addPackItem(shrinking, SIZE_FILES.tss, { flags: { essence20: { pr1SizeShift: { direction: 'smaller' } } } });
+    // Minimum of Long - on the tall track, its Size Class there (Large).
+    sizeDerived(shrinking);
+    expect(shrinking.system.size).toBe('large');
+    shrinking.system.size = 'extended';
     sizeDerived(shrinking);
     expect(shrinking.system.size).toBe('long');
 

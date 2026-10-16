@@ -38,7 +38,7 @@ jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({
   refund: jest.fn(async (actor, spendId) => refunded.push(spendId)),
   grantBonusAttack: jest.fn(),
 }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const conditions = [];
 jest.unstable_mockModule('./mechanics/combat/timed-status.mjs', () => ({
   applyTimedCondition: jest.fn(async (actor, status) => {

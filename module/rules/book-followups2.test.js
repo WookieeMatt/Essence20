@@ -25,7 +25,7 @@ jest.unstable_mockModule('./mechanics/resources/grants.mjs', () => ({
   findItems: jest.fn(async () => []),
   pickOne: jest.fn(async () => null),
 }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const undone = [];
 jest.unstable_mockModule('./sheet-handlers/alteration-handler.mjs', () => ({
   onAlterationDelete: jest.fn(async (actor, alteration) => undone.push(alteration.name)),

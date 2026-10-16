@@ -548,6 +548,17 @@ describe('pickSubPerk', () => {
     }
   });
 
+  // Bug report 2026-10-12: Extra Grid Power offered nothing (its list is Grid Powers) and was taken off again.
+  test('a list of Powers or weapons offers them too (Extra Grid Power, Signature Weapon)', async () => {
+    const item = makeItem(gridScience(1).system.rules, {
+      name: 'Extra Grid Power',
+      system: { items: { k1: { uuid: A, name: 'Power Blast', type: 'power' }, k2: { uuid: B, name: 'Blade', type: 'weapon' } } },
+    });
+    helpers();
+    const options = await subPerkOptions({ do: 'pickSubPerk', key: 'perks' }, { actor: makeActor([item]), item });
+    expect(options.map(option => option.label)).toEqual(['Blade', 'Power Blast']);
+  });
+
   test('change: asks again (the current picks offered too), then swaps the children; a cancel keeps them', async () => {
     const item = gridScience(1);
     const actor = makeActor([item]);

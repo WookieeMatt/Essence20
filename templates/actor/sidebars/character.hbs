@@ -11,7 +11,8 @@
         <span>/</span>
         <span class="sidebar-readout">{{system.health.value}}</span>
       </div>
-      {{#if system.canTransform}}
+      {{!-- An Energon pool without transforming too: Organic Energon (FG p.71) sets one for a character that can't. --}}
+      {{#if (or system.canTransform system.energon.normal.max)}}
       <div>
         <label>{{localize "E20.Energon"}}</label>
         <input class="two-digit-input no-lock" data-field="system.energon.normal.value" type="number"

@@ -6,16 +6,42 @@
 <div class="book-import">
 
   {{!-- Hidden: the visible control is the button below, so it can be styled like the rest. --}}
-  <input type="file" accept="application/pdf,.pdf" class="e20-hidden" />
+  <input type="file" accept="application/pdf,.pdf" class="e20-hidden" data-single />
+  {{!-- A folder of PDFs (or several picked at once) - every one read in this tab, none uploaded. --}}
+  <input type="file" accept="application/pdf,.pdf" class="e20-hidden" data-folder webkitdirectory multiple />
 
   <section class="sliced-border --col book-import-intro">
     <label class="sliced-border__label">{{localize "E20.BookImportSourceLabel"}}</label>
     <p class="book-import-note">{{localize "E20.BookImportIntro"}}</p>
-    <button type="button" data-action="chooseFile">
-      <i class="fa-solid fa-file-pdf"></i> {{localize "E20.BookImportChoose"}}
-    </button>
+    <div class="book-import-choose">
+      <button type="button" data-action="chooseFile">
+        <i class="fa-solid fa-file-pdf"></i> {{localize "E20.BookImportChoose"}}
+      </button>
+      <button type="button" data-action="chooseFolder" data-tooltip="{{localize 'E20.BookImportChooseFolderHint'}}">
+        <i class="fa-solid fa-folder-open"></i> {{localize "E20.BookImportChooseFolder"}}
+      </button>
+    </div>
     {{#if status}}<p class="book-import-status">{{status}}</p>{{/if}}
   </section>
+
+  {{#if batch}}
+    <section class="sliced-border --col book-import-batch">
+      <label class="sliced-border__label">{{localize "E20.BookImportFolderLabel"}}</label>
+      <ul class="book-import-book-list">
+        {{#each batch as |entry|}}
+          <li>
+            <span class="book-import-book-name">
+              {{#if entry.ok}}<i class="fa-solid fa-circle-check book-import-attested"></i>{{else}}<i class="fa-solid fa-circle-minus"></i>{{/if}}
+              {{entry.file}}
+            </span>
+            <span class="book-import-book-meta">
+              {{#if entry.ok}}{{entry.book}} · {{entry.count}}{{localize "E20.BookImportEntriesSuffix"}}{{else}}{{entry.reason}}{{/if}}
+            </span>
+          </li>
+        {{/each}}
+      </ul>
+    </section>
+  {{/if}}
 
   {{#if hasScan}}
     <section class="sliced-border --col book-import-scan">
@@ -91,16 +117,24 @@
           <li data-book="{{entry.book}}">
             <span class="book-import-book-name">{{entry.book}}</span>
             <span class="book-import-book-meta">
-              {{entry.count}}{{localize "E20.BookImportEntriesSuffix"}}
+              {{#if entry.dead}}<span class="book-import-loose" data-tooltip="{{localize 'E20.BookImportDeadHint'}}">{{entry.live}} / {{entry.count}}{{localize "E20.BookImportStillMatch"}}</span>{{else}}{{entry.count}}{{localize "E20.BookImportEntriesSuffix"}}{{/if}}
               {{#if entry.purchaser}} · {{entry.purchaser}} ({{entry.purchaseDate}}){{else}} · {{localize "E20.BookImportNoWatermark"}}{{/if}}
               {{#if entry.importedAt}} · {{entry.importedAt}}{{/if}}
             </span>
+            {{#if entry.dead}}
+            <a class="item-control" data-action="pruneBook" data-tooltip="{{localize 'E20.BookImportPruneTooltip'}}">
+              <i class="fas fa-broom"></i>
+            </a>
+            {{/if}}
             <a class="item-control" data-action="clearBook" data-tooltip="{{localize 'E20.BookImportClearTooltip'}}">
               <i class="fas fa-trash"></i>
             </a>
           </li>
         {{/each}}
       </ul>
+      <button type="button" data-action="clearAll">
+        <i class="fas fa-trash"></i> {{localize "E20.BookImportClearAll"}}
+      </button>
     </section>
   {{/if}}
 </div>

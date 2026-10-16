@@ -1,7 +1,7 @@
 import {
   allowedSizes, applyQuickPerks, appropriateThreatLevel, auditThreat, buildThreatIr, defaultRulesetFor,
   defenseSpread, essenceBudget, essencesFromSkills, skillGuideFor, extraMovementRate, inferThreatType, maxDamagePerks, perkBudget, skillSpend,
-  threatDefenses, threatFromActor, threatGroundMovement, threatHealth, threatLevelForEssence, threatLevelForRole,
+  isModeConversion, threatDefenses, threatFromActor, threatGroundMovement, threatHealth, threatLevelForEssence, threatLevelForRole,
 } from './threat-rules.mjs';
 
 describe('threatHealth (Field Guide p.146-147)', () => {
@@ -206,6 +206,15 @@ describe('threatFromActor', () => {
     expect(threat.attacks).toEqual([{ name: 'Claw', melee: true }]);
     expect(threatFromActor({ ...actor, flags: { essence20: { threatBuild: { ruleset: 'finster', type: 'canny', healthPerks: 2 } } } })).toMatchObject({ ruleset: 'finster', type: 'canny', typeInferred: false, healthBonus: 3 });
   });
+
+  test("a Cybertronian's Mode Conversion Perk is free (Field Guide p.170); anyone else's counts", () => {
+    const items = [{ type: 'perk', name: 'Mode Conversion', system: { type: 'general' } }, { type: 'perk', name: 'Tough', system: { type: 'general' } }];
+    const actor = { type: 'npc', system: { threatLevel: 3, canTransform: true, essences: {}, skills: {}, defenses: {} }, flags: {}, items };
+    expect(threatFromActor(actor).perks).toBe(1);
+    expect(threatFromActor({ ...actor, system: { ...actor.system, canTransform: false } }).perks).toBe(2);
+    expect(isModeConversion({ name: ' mode conversion ' })).toBe(true);
+    expect(isModeConversion({ name: 'Mode Conversion Plus' })).toBe(false);
+  });
 });
 
 describe('buildThreatIr', () => {
@@ -260,5 +269,26 @@ describe("the developers' threat spreadsheet", () => {
   test('the audit notes skills above the max for the level', () => {
     const finding = auditThreat({ ...guard(), skills: { ...guard().skills, might: { shift: 'd10' } } }).find(f => f.key == 'SkillsAboveGuide');
     expect(finding.data).toEqual({ skills: ['might'], max: 'd6' });
+  });
+});
+
+describe('buildThreatIr: a Cybertronian Threat (Field Guide p.169-172)', () => {
+  const base = { name: 'Skyfire', tl: 6, type: 'typical', ruleset: 'fieldGuide', essences: { strength: 5, speed: 5, smarts: 4, social: 4 } };
+
+  test('an Alt Mode goes to the importer as its Size and movement', () => {
+    const ir = buildThreatIr({ ...base, altMode: { size: 'large', movement: { ground: 55, aerial: 45 } } });
+    expect(ir.altMode).toEqual({ size: 'large', movement: { ground: 55, aerial: 45, swim: null, climb: null, burrow: null } });
+  });
+
+  test('no Alt Mode: none; an Alt Mode with no Size takes the Bot Mode\'s', () => {
+    expect(buildThreatIr(base).altMode).toBeNull();
+    expect(buildThreatIr({ ...base, size: 'huge', altMode: { movement: {} } }).altMode.size).toBe('huge');
+  });
+
+  test('an attack for one Mode only keeps its Mode; anything else is for both', () => {
+    const ir = buildThreatIr({ ...base, attacks: [
+      { name: 'Wing Guns', melee: false, mode: 'alt' }, { name: 'Fist', melee: true, mode: 'bot' }, { name: 'Cannon', melee: false, mode: 'either' }, { name: 'Kick', melee: true },
+    ] });
+    expect(ir.attacks.map(attack => attack.mode)).toEqual(['alt', 'bot', null, null]);
   });
 });

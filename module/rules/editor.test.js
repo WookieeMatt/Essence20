@@ -193,3 +193,11 @@ describe('the level requirement row', () => {
     expect(rule.when).toEqual(['self:level>=7']);
   });
 });
+
+test("a condition switched to another kind starts with its box empty (\"in combat\" kept a new row's \"athletics\")", () => {
+  const rule = { type: 'Use', when: ['skill:athletics'] };
+  readInput(rule, 'when.0', 'tagFamily', 'combat', { not: false, family: 'combat', arg: 'athletics' });
+  expect(rule.when).toEqual(['combat']);
+  readInput(rule, 'when.0', 'tagArg', 'round:1', { not: false, family: 'combat', arg: 'round:1' });
+  expect(rule.when).toEqual(['combat:round:1']);
+});

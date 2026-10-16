@@ -134,9 +134,9 @@ const SHOW_ICON = () => globalThis.CONST?.ACTIVE_EFFECT_SHOW_ICON ?? { NEVER: 0,
 
 function iconMode() {
   try {
-    return game.settings.get("essence20", "stateTokenIcons") ?? "art";
+    return game.settings.get("essence20", "stateTokenIcons") ?? "never";
   } catch (error) {
-    return "art";
+    return "never";
   }
 }
 

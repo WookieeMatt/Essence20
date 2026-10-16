@@ -2,6 +2,7 @@ import { checkIsLocked } from "../util/sheet-lock.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
 import { markUsedThisEncounter } from "../mechanics/characters/perks.mjs";
+import { rosterRemoval } from "../util/roster.mjs";
 
 // Detachable (Across the Stars, p.104): a participant may leave, roll Initiative for the next round
 // as its own combatant, and not rejoin that scene. The leaving half needs no new code at
@@ -105,7 +106,7 @@ export async function onSystemActorsDelete(event, actorSheet) {
     await markUsedThisEncounter(removedActor, DETACHED_THIS_SCENE_FLAG);
   }
 
-  await actor.update({[updateString]: new foundry.data.operators.ForcedDeletion()});
+  await actor.update({ [updateString]: rosterRemoval(actor) });
   // A companion taken off the list stops being this character's (mechanics/companions/companion-link.mjs).
   if (removedActor?.flags?.essence20?.companionOf == actor.uuid) {
     await removedActor.unsetFlag('essence20', 'companionOf');

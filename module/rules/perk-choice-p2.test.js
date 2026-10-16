@@ -18,7 +18,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 global.Hooks = global.Hooks ?? { on: () => {}, once: () => {}, callAll: () => {} };
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn(), createViaGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn(), createViaGm: jest.fn() }));
 
 await import('./plugins/index.mjs');
 const { rebuildIndex, ruleLabel } = await import('./index.mjs');
@@ -547,6 +547,18 @@ describe('the old picker never also asks for a converted item', () => {
     global.fromUuid = jest.fn();
     const grid = PACK.get('R7HF3aSR3ZPURh1W');
     await grantPerkEquipmentMap(makeActor(), copyOf(grid));
+    expect(global.Item.create).not.toHaveBeenCalled();
+    expect(global.fromUuid).not.toHaveBeenCalled();
+  });
+
+  // Bug report 2026-10-12: Extra Grid Power gave the actor all 22 Grid Powers - its list was granted as equipment.
+  test.each(['Extra Grid Power', 'Marked By Chaos', 'Signature Weapon'])('grantPerkEquipmentMap: %s\'s list is options too, not a grant', async name => {
+    const { grantPerkEquipmentMap } = await import('../sheet-handlers/perk-handler.mjs');
+    global.Item = { create: jest.fn() };
+    global.fromUuid = jest.fn();
+    const perk = [...PACK.values()].find(doc => doc.type == 'perk' && doc.name == name);
+    expect(Object.values(perk.system.items).some(entry => entry.type != 'perk')).toBe(true);
+    await grantPerkEquipmentMap(makeActor(), copyOf(perk));
     expect(global.Item.create).not.toHaveBeenCalled();
     expect(global.fromUuid).not.toHaveBeenCalled();
   });

@@ -16,7 +16,7 @@ jest.unstable_mockModule('./mechanics/resources/story-points.mjs', () => ({
   spendForActor: jest.fn(async () => true),
   hasStoryPointsAvailable: () => true,
 }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 
 await import('./plugins/index.mjs');
 const { rebuildIndex, ruleId } = await import('./index.mjs');

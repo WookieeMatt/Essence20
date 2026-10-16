@@ -20,21 +20,49 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Alt Mode Size --}}
-  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeSize'}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeMovementClimb'}}
   {{#*inline "item-field-inputs"}}
-    <select name="system.altModesize">
-      {{selectOptions config.actorSizes selected=system.altModesize}}
-    </select>
+  {{numberInput system.altModeMovement.climb name="system.altModeMovement.climb" min=0 step=5}}
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Bot Mode Size --}}
-  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BotModeSize'}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeMovementBurrow'}}
   {{#*inline "item-field-inputs"}}
-    <select name="system.botModeSize">
-      {{selectOptions config.actorSizes selected=system.botModeSize}}
-    </select>
+  {{numberInput system.altModeMovement.burrow name="system.altModeMovement.burrow" min=0 step=5}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Alt Mode Size: the sizes it can be, set with the selector - one is its size, two or more a choice (asked when
+       the Origin is added, changeable on the actor's Alt Mode row). data/item/alt-mode.mjs keeps its size among them. --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeSize'}}
+  {{#*inline "item-field-edit"}}
+    <a class="trait-selector" data-action="traitSelector" data-options="actorSizes" data-target="system.altModeSizeOptions" data-tooltip="{{localize 'E20.SizeChoicesTooltip'}}">
+      <i class="fas fa-edit"></i>
+    </a>
+  {{/inline}}
+  {{#*inline "item-field-inputs"}}
+    <div class="chip-section">
+      {{#each system.altModeSizeOptions as |size|}}
+      <span class="chip">{{lookup @root.config.actorSizes size}}</span>
+      {{/each}}
+    </div>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Bot Mode Size: the sizes it can be, set with the selector - one is its size, two or more a choice (asked when
+       the Origin is added, changeable on the actor's Alt Mode row). data/item/alt-mode.mjs keeps its size among them. --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BotModeSize'}}
+  {{#*inline "item-field-edit"}}
+    <a class="trait-selector" data-action="traitSelector" data-options="actorSizes" data-target="system.botModeSizeOptions" data-tooltip="{{localize 'E20.SizeChoicesTooltip'}}">
+      <i class="fas fa-edit"></i>
+    </a>
+  {{/inline}}
+  {{#*inline "item-field-inputs"}}
+    <div class="chip-section">
+      {{#each system.botModeSizeOptions as |size|}}
+      <span class="chip">{{lookup @root.config.actorSizes size}}</span>
+      {{/each}}
+    </div>
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 

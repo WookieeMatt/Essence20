@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { _showOriginSkillPrompt, onOriginDelete, setOriginValues } from './background-handler.mjs';
+import { _showOriginSkillPrompt, chooseAltModeOptions, onOriginDelete, setOriginValues } from './background-handler.mjs';
 
 // setOriginValues' own item-copying/altMode dependencies (createItemCopies, Item.create,
 // fromUuid) are exercised elsewhere - these fixtures use an empty origin.system.items and no
@@ -187,5 +187,38 @@ describe("onOriginDelete", () => {
     const actor = originActor([{ type: 'perk', name: 'Something' }]);
     await onOriginDelete(actor, origin);
     expect(actor.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.canTransform': false }));
+  });
+});
+
+describe("chooseAltModeOptions (a chassis printed with choices - items/shared/alt-mode-chassis.mjs)", () => {
+  const SIZES = ['large', 'huge'];
+
+  test("asks only for what has two or more choices, and keeps only an offered answer", async () => {
+    const ask = jest.fn(async () => ({ bot: 'huge', alt: 'large' }));
+    expect(await chooseAltModeOptions({ botModeSizeOptions: SIZES, altModeSizeOptions: SIZES }, ask)).toEqual({ bot: 'huge', alt: 'large', movement: null });
+    expect(ask).toHaveBeenCalledWith({ bot: SIZES, alt: SIZES, movement: null, botFor: {} });
+
+    const altOnly = jest.fn(async () => ({ alt: 'titanic' }));
+    expect(await chooseAltModeOptions({ botModeSizeOptions: ['large'], altModeSizeOptions: SIZES }, altOnly)).toEqual({ bot: null, alt: null, movement: null });
+  });
+
+  test("a movement pick comes back whole; an Alt Mode size that fixes the Bot Mode's wins over the Bot Mode pick", async () => {
+    const system = {
+      altModeSizeOptions: ['common', 'large', 'long'], botModeSizeOptions: ['common', 'large'], botModeSizeFor: { long: 'large' },
+      movementOptions: [{ ground: 45 }, { ground: 30, aerial: 20 }],
+    };
+    expect(await chooseAltModeOptions(system, async () => ({ bot: 'common', alt: 'long', movement: '1' })))
+      .toEqual({ bot: 'large', alt: 'long', movement: { ground: 30, aerial: 20, aquatic: 0, climb: 0, burrow: 0 } });
+    expect(await chooseAltModeOptions(system, async () => ({ bot: 'common', alt: 'common', movement: '7' })))
+      .toEqual({ bot: 'common', alt: 'common', movement: null });
+  });
+
+  test("no choice, no question; a closed dialog picks nothing", async () => {
+    const ask = jest.fn();
+    expect(await chooseAltModeOptions({ altModeSizeOptions: [], botModeSizeOptions: ['common'], movementOptions: [{ ground: 40 }] }, ask))
+      .toEqual({ bot: null, alt: null, movement: null });
+    expect(await chooseAltModeOptions(undefined, ask)).toEqual({ bot: null, alt: null, movement: null });
+    expect(ask).not.toHaveBeenCalled();
+    expect(await chooseAltModeOptions({ altModeSizeOptions: SIZES }, async () => null)).toEqual({ bot: null, alt: null, movement: null });
   });
 });

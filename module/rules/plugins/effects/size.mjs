@@ -10,12 +10,15 @@ import { T, driverOf, itemsOf, rememberChoice as remember, sourceOf, write } fro
  * Group A: size classes as data. (Group A's askChoiceText step is dialog/ask-choice-text-step.mjs and its
  * self:clockActive tag tags/clock-active-tag.mjs, registered right after this file.)
  *
- * - Rule type `Size` {steps?, set?, atLeast?, atMost?, ladder?, min?, max?}: the actor's derived size (system.size),
+ * - Rule type `Size` {steps?, set?, atLeast?, atMost?, ladder?, min?, max?, modes?}: the actor's derived size (system.size),
  *   worked out after the other derived data. In order: every `steps` rule moves it along its ladder (by priority,
  *   each clamped to its own min / max - never past a limit, and never back across one for a size already beyond it),
  *   then `set` (the last one wins), then `atLeast` / `atMost`. `ladder`: full (default - every rung of E20.actorSizes,
  *   long / extended included) or class (the Size Class ladder small, common, large, huge, gigantic, towering,
- *   titanic; an extended / long size counts as the class below it).
+ *   titanic; an extended / long size counts as the class below it) or track (one Size Class along the size's own track,
+ *   Field Guide p.148: tall small, common, large, huge, gigantic, towering, titanic; long small, common, long, extended,
+ *   extended II, extended III - Large +1 is Huge, Long +1 is Extended). `modes`: bot (default - system.size), alt
+ *   (the actor's Alt Modes' sizes, altModeSize - used when transforming and for weapon sizes) or both.
  * - Steps `shiftSize` {steps, ladder?, min?, max?, record?} (the stored size, on every recipient; `record`: the size
  *   before is kept on the rule's item under rules.choices.<record>, once) and `restoreSize` {record, legacy?} (puts the
  *   recorded size back and forgets it; `legacy`: an older flag on the item that held it).
@@ -30,6 +33,12 @@ import { T, driverOf, itemsOf, rememberChoice as remember, sourceOf, write } fro
 export const FULL_SIZES = ['small', 'common', 'large', 'long', 'huge', 'extended', 'gigantic', 'extended2', 'towering', 'extended3', 'titanic'];
 export const CLASS_SIZES = ['small', 'common', 'large', 'huge', 'gigantic', 'towering', 'titanic'];
 const CLASS_BASE = { long: 'large', extended: 'huge', extended2: 'gigantic', extended3: 'towering' };
+/** The two Size Class tracks (Field Guide p.148). Small and Common start both; anything not long is tall. */
+export const LONG_TRACK = ['small', 'common', 'long', 'extended', 'extended2', 'extended3'];
+const trackOf = size => (LONG_TRACK.indexOf(size) > 1 ? LONG_TRACK : CLASS_SIZES);
+const LONG_OF = { large: 'long', huge: 'extended', gigantic: 'extended2', towering: 'extended3' };
+/** A size as its own Size Class on a track (Long on the tall track is Large; Huge on the long track is Extended). */
+const onTrack = (size, track) => (track.includes(size) ? size : (track == LONG_TRACK ? LONG_OF[size] : CLASS_BASE[size]) ?? null);
 
 const fullSizes = () => {
   const configured = Object.keys(globalThis.CONFIG?.E20?.actorSizes ?? {});
@@ -38,11 +47,27 @@ const fullSizes = () => {
 
 /**
  * A size moved `steps` along a ladder. Full ladder: clamped to min / max, never back across one for a size already
- * beyond it. Class ladder: an extended / long size starts from the class below it; clamped to the ends.
+ * beyond it. Class ladder: an extended / long size starts from the class below it; clamped to the ends. Track ladder: a
+ * long size stays on the long track, anything else on the tall one; clamped to its ends and to min / max (read as the
+ * same Size Class on its track - min long on a tall size is Large).
  */
 export function stepSize(size, steps, { ladder = 'full', min = null, max = null } = {}) {
   if (!steps) {
     return size;
+  }
+
+  if (ladder == 'track') {
+    const track = trackOf(size);
+    const index = track.indexOf(size);
+    if (index < 0) {
+      return size;
+    }
+
+    const top = max && onTrack(max, track) ? track.indexOf(onTrack(max, track)) : track.length - 1;
+    const bottom = min && onTrack(min, track) ? track.indexOf(onTrack(min, track)) : 0;
+    const target = index + steps;
+    const clamped = steps > 0 ? Math.min(target, Math.max(top, index)) : Math.max(target, Math.min(bottom, index));
+    return track[Math.max(0, Math.min(track.length - 1, clamped))];
   }
 
   if (ladder == 'class') {
@@ -74,7 +99,8 @@ const SIZE_KEYS = ['set', 'atLeast', 'atMost', 'min', 'max'];
 registerRuleType('Size', {
   params: {
     steps: { kind: 'formula' }, set: { kind: 'string' }, atLeast: { kind: 'string' }, atMost: { kind: 'string' },
-    ladder: { kind: 'enum', options: ['full', 'class'] }, min: { kind: 'string' }, max: { kind: 'string' },
+    ladder: { kind: 'enum', options: ['full', 'class', 'track'] }, min: { kind: 'string' }, max: { kind: 'string' },
+    modes: { kind: 'enum', options: ['bot', 'alt', 'both'] },
   },
   scopes: ['self'],
   validate: rule => [
@@ -83,19 +109,14 @@ registerRuleType('Size', {
   ],
 });
 
-/** The actor's Size rules, worked into system.size (registered derived data - after the hand-written size code). */
-export function sizeDerived(actor) {
-  const system = actor?.system;
-  if (!system?.size) {
-    return;
-  }
+/** The actor's live Size rules for a Mode: 'bot' (system.size) or 'alt' (its Alt Modes). */
+function liveSizeRules(actor, mode) {
+  return rulesOfType(actor, 'Size').filter(({ rule, item }) => [mode, 'both'].includes(rule.modes ?? 'bot')
+    && isStatic(rule.when) && evaluate(rule.when, contextFor({ self: actor, ruleItem: item })) === true);
+}
 
-  const live = rulesOfType(actor, 'Size').filter(({ rule, item }) => isStatic(rule.when) && evaluate(rule.when, contextFor({ self: actor, ruleItem: item })) === true);
-  if (!live.length) {
-    return;
-  }
-
-  let size = system.size;
+/** A size worked through Size rules: steps (in order), then set (the last wins), then atLeast / atMost. */
+function applySizeRules(size, live, actor) {
   for (const { rule, item } of live) {
     if (rule.steps !== undefined) {
       size = stepSize(size, Math.round(resolveValue(rule.steps, { actor, item }, 0)), rule);
@@ -119,7 +140,31 @@ export function sizeDerived(actor) {
     }
   }
 
-  system.size = size;
+  return size;
+}
+
+/** The actor's Size rules, worked into system.size (registered derived data - after the hand-written size code). */
+export function sizeDerived(actor) {
+  const system = actor?.system;
+  if (!system?.size) {
+    return;
+  }
+
+  const live = liveSizeRules(actor, 'bot');
+  if (live.length) {
+    system.size = applySizeRules(system.size, live, actor);
+  }
+}
+
+/** An Alt Mode's size on this actor: its own altModesize, through the actor's Size rules for Alt Modes (Titanspark). */
+export function altModeSize(actor, altMode) {
+  const size = altMode?.system?.altModesize;
+  if (!size || !actor) {
+    return size;
+  }
+
+  const live = liveSizeRules(actor, 'alt');
+  return live.length ? applySizeRules(size, live, actor) : size;
 }
 
 registerDerived(sizeDerived);
@@ -148,7 +193,7 @@ registerStep('shiftSize', async (step, ctx) => {
       await write(actor, 'update', [{ 'system.size': next }]);
     }
   }
-}, { errors: (step, where) => (step.ladder && !['full', 'class'].includes(step.ladder) ? [`${where}: ladder must be full or class`] : []) });
+}, { errors: (step, where) => (step.ladder && !['full', 'class', 'track'].includes(step.ladder) ? [`${where}: ladder must be full, class or track`] : []) });
 
 registerStep('restoreSize', async (step, ctx) => {
   const recorded = choiceOf(ctx.item, step.record) || (step.legacy ? globalThis.foundry?.utils?.getProperty?.(ctx.item, step.legacy) : null);

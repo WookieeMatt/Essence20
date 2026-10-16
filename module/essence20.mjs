@@ -169,11 +169,14 @@ import { handleSetActionLedger, isAiming } from "./mechanics/actions/action-econ
 // imported for this side effect alone (see defense-choice.mjs's own registerRemotePrompt call at
 // its bottom), same reason-for-import-with-no-named-use as any other registration-pattern file.
 import "./mechanics/combat/defense-choice.mjs";
+// Deleted actors come off the rosters (crew, Zords, Megaform members, Party) that listed them.
+import "./mechanics/world/roster-refs.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 import StartingEssences from "./apps/starting-essences.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import ThreatBuilder from "./apps/threat-builder.mjs";
+import { threatApi } from "./mechanics/characters/threat-api.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./mechanics/characters/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
 import { addConsummatePerformerButton, addDefenseBoostButton, addHighDensityButton, addRerollButtons, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure, runChatDecorators } from "./chat.mjs";
@@ -190,7 +193,7 @@ import { getWeaponEffectDamages } from "./mechanics/combat/damage-display.mjs";
 import { getSummonReadyRound, isSummonReady } from "./mechanics/vehicles/zord-summon.mjs";
 import { missingGrowthLevels } from "./mechanics/vehicles/zord-growth.mjs";
 import { autoFeaturesDone } from "./mechanics/vehicles/zord-auto-features.mjs";
-import { hasArrived } from "./mechanics/vehicles/zord-arrival.mjs";
+import { hasArrived, seatOf } from "./mechanics/vehicles/zord-arrival.mjs";
 import { getVehicleDriver, healStunAtTurnStart } from "./mechanics/combat/combat.mjs";
 import { healRegeneratingShellAtTurnEnd, isPowerAdaptationActive } from "./items/forms/power-adaptation.mjs";
 import { isRushTheLineActive } from "./items/movement/rush-the-line.mjs";
@@ -323,6 +326,54 @@ Hooks.once("init", async function () {
     // data silently overwrites, which no static check can see. Creates and deletes an Actor.
     probeClobberedKeys,
     toggleEffectMacro,
+
+    /* For other modules and macros (Token Action HUD Essence20): what the sheet's own buttons do, under stable names
+       rather than the system's internal file paths. */
+    // A Skill roll, as the sheet's Skill name rolls it (its die, ↑/↓ and Specialization).
+    rollSkill: (actor, skill) => {
+      const fields = actor?.system?.skills?.[skill];
+      if (!fields) {
+        return null;
+      }
+
+      return actor.rollSkill({
+        rollType: 'skill', skill, essence: CONFIG.E20.skillToEssence?.[skill] ?? '',
+        shift: fields.shift, shiftUp: fields.shiftUp ?? 0, shiftDown: fields.shiftDown ?? 0,
+        isSpecialized: !!fields.isSpecialized, canCritD2: !!fields.canCritD2,
+      });
+    },
+    // An item's Use button (the sheet's bolt): whether it has one that can be pressed now, and pressing it.
+    canUseItem: item => !!item && canUsePerk(item),
+    useItem: async item => (await import("./mechanics/resources/banked-buffs.mjs")).onPerkUse(item),
+    // A Ranger's Zord: Summon, Board, Disembark (the Zords tab), and whether they're aboard.
+    zord: {
+      isAboard: (ranger, zord) => !!seatOf(zord, ranger),
+      hasArrived: zord => hasArrived(zord),
+      summon: async (ranger, zord) => (await import("./mechanics/vehicles/zord-summon.mjs"))
+        .onSummonZord({ dataset: { systemActorsUuid: zord?.uuid } }, ranger),
+      board: async (ranger, zord) => (await import("./mechanics/vehicles/zord-arrival.mjs")).boardZord(zord, ranger),
+      disembark: async (ranger, zord) => (await import("./mechanics/vehicles/zord-arrival.mjs")).disembarkZord(zord, ranger),
+    },
+    // Riding in a Transformer's Alt Mode (TF CRB p.47) - mechanics/vehicles/alt-mode-crew.mjs.
+    altModeCrew: {
+      board: async (transformer, rider, options) => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).board(transformer, rider, options),
+      disembark: async (transformer, rider, options) => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).disembark(transformer, rider, options),
+      escape: async (prisoner, skill) => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).escape(prisoner, skill),
+      crash: async (transformer, options) => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).crash(transformer, options),
+      assistDriving: async driver => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).assistDriving(driver),
+      crewOf: async transformer => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).crewOf(transformer),
+      carrierOf: async rider => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).carrierOf(rider)?.carrier ?? null,
+      capacity: async transformer => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).crewCapacity(transformer),
+    },
+    // Building Threats: what the Threat Builder and the Monster Grow dialog do - mechanics/characters/threat-api.mjs.
+    threats: threatApi(actor => ThreatBuilder.open(actor)),
+    // A Megaform (Megazord or Combiner) taking the field and leaving it: its members' tokens on the viewed scene swap for
+    // its own, and back - through the GM for a player (mechanics/vehicles/megaform-join.mjs).
+    megaform: {
+      join: async form => (await import("./mechanics/vehicles/megaform-join.mjs")).megaformTokens('join', form),
+      separate: async form => (await import("./mechanics/vehicles/megaform-join.mjs")).megaformTokens('separate', form),
+      isJoined: (form, scene = canvas?.scene) => !!(form && scene && scene.tokens.some(token => token.actorId == form.id && token.getFlag('essence20', 'joinedTokens'))),
+    },
   };
 
   // Add custom constants for configuration.
@@ -570,6 +621,11 @@ Handlebars.registerHelper("zordHasArrived", attached => {
   return !!zord && hasArrived(zord);
 });
 // Zord growth choices the Ranger still owes this Zord (PR CRB p.134) - mechanics/vehicles/zord-growth.mjs.
+// The Ranger is aboard this Zord (driver or passenger) - the Zords tab offers Disembark (mechanics/vehicles/zord-arrival.mjs).
+Handlebars.registerHelper("zordAboard", (ranger, attached) => {
+  const zord = attached?.uuid ? fromUuidSync(attached.uuid) : null;
+  return !!zord && !!seatOf(zord, ranger);
+});
 Handlebars.registerHelper("zordAutoFeaturesDone", attached => {
   const zord = attached?.uuid ? fromUuidSync(attached.uuid) : null;
   return !zord || autoFeaturesDone(zord);
@@ -696,6 +752,10 @@ Hooks.once("ready", async function () {
   }
 
   runMigrations();
+
+  // Imported book descriptions whose item moved pack in an update follow it (importers/book-descriptions-store.mjs).
+  import("./importers/book-descriptions-store.mjs").then(({ healBookDescriptions }) => healBookDescriptions())
+    .catch(error => console.error("Essence20 | Re-linking book descriptions failed", error));
 
   /* Client-scoped, so it cannot ride along with runMigrations() (which is the world-data pass a
      GM runs once for everyone) - every browser has its own copy to carry across. */
@@ -1253,6 +1313,34 @@ for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiv
     }
   });
 }
+
+// "Board the targeted Transformer" on a creature's own token HUD - the player's way in to a friend's Alt Mode
+// (mechanics/vehicles/alt-mode-crew.mjs); once aboard, their token is hidden and the sheet's header lets them out.
+Hooks.on("renderTokenHUD", async (hud, html) => {
+  const rider = hud.document?.actor;
+  const targets = [...(game.user.targets ?? [])].map(token => token.actor).filter(Boolean);
+  if (!rider?.isOwner || targets.length != 1 || targets[0] === rider || !targets[0].system?.canTransform) {
+    return;
+  }
+
+  const crew = await import("./mechanics/vehicles/alt-mode-crew.mjs");
+  const column = html.querySelector(".col.left") ?? html.querySelector(".col.right");
+  if (!column || column.querySelector(".essence20-alt-crew-board") || crew.carrierOf(rider)) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.classList.add("control-icon", "essence20-alt-crew-board");
+  button.dataset.tooltip = game.i18n.localize("E20.AltCrewBoardTokenHud");
+  button.innerHTML = '<i class="fas fa-person-walking-arrow-right"></i>';
+  button.addEventListener("click", async () => {
+    if (await crew.board(targets[0], rider)) {
+      hud.close();
+    }
+  });
+  column.appendChild(button);
+});
 
 // Stack counts and the Zord override on the token HUD's vessel Conditions.
 Hooks.on("renderTokenHUD", (hud, html) => {

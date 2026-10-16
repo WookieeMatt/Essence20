@@ -26,7 +26,7 @@ jest.unstable_mockModule('./mechanics/actions/action-economy.mjs', () => ({
   }),
   refund: jest.fn(async (actor, spendId) => refunded.push(spendId)),
 }));
-jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ needsGmRelay: () => false, relayToGm: jest.fn() }));
+jest.unstable_mockModule('./mechanics/world/gm-relay.mjs', () => ({ blockedWithoutGm: () => false, needsGmRelay: () => false, relayToGm: jest.fn() }));
 const rerollUses = {};
 jest.unstable_mockModule('./mechanics/rolls/reroll.mjs', () => ({
   canUseReroll: jest.fn(async (actor, config, key) => (rerollUses[key] ?? 0) < config.maxUses),

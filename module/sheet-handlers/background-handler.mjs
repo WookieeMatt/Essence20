@@ -2,6 +2,7 @@ import ChoicesSelector from "../apps/choices-selector.mjs";
 import { applyHangUpChoice } from "../mechanics/characters/hang-up-choice.mjs";
 import { getItemsOfTypeFromSystemItems, getShiftedSkill } from "../util/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
+import { botSizeFor, fullMovement, movementLabel } from "../items/shared/alt-mode-chassis.mjs";
 
 /**
  * Handle the dropping of an influence on to a character
@@ -241,8 +242,16 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
 
   if (altModeToCreate) {
     const itemToCreate = await fromUuid(altModeToCreate.uuid);
-    botModeSize = itemToCreate.system.botModeSize;
-    const newItem = await Item.create(itemToCreate, { parent: actor });
+    // A chassis printed with choices - a size for either Mode, a movement (Monstrosity: Huge or Extended; Ground,
+    // Aerial or Aquatic) - asked now (items/shared/alt-mode-chassis.mjs).
+    const picked = await chooseAltModeOptions(itemToCreate.system);
+    botModeSize = picked.bot ?? itemToCreate.system.botModeSize;
+    const changes = {
+      ...(picked.alt ? { 'system.altModesize': picked.alt } : {}),
+      ...(picked.movement ? { 'system.altModeMovement': picked.movement } : {}),
+    };
+    const createData = Object.keys(changes).length ? foundry.utils.mergeObject(itemToCreate.toObject(), changes) : itemToCreate;
+    const newItem = await Item.create(createData, { parent: actor });
     if (newItem.type == "altMode") {
       await actor.update({
         "system.canTransform": true,
@@ -266,6 +275,73 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
     // Offer/etc. (system.originSkillsIncrease consumers) to resolve dynamically - leave it unset.
     "system.originSkillsIncrease": grantsAllSkills ? "" : skill,
     ...(botModeSize ? { "system.size": botModeSize } : {}),
+  });
+}
+
+/**
+ * The choices an Alt Mode item offers - Bot and Alt Mode sizes (botModeSizeOptions / altModeSizeOptions) and a movement
+ * (movementOptions), each only with two or more - asked in one dialog. An Alt Mode size that fixes the Bot Mode's
+ * (botModeSizeFor - Saurian's Long is a Large Bot Mode) wins over the Bot Mode pick. Exported for tests.
+ * @param {Object} system   The Alt Mode item's system data
+ * @param {Function} [ask]   (fields) => {bot?, alt?, movement?: index} - the dialog; tests pass their own
+ * @returns {Promise<{bot: String|null, alt: String|null, movement: Object|null}>}   null for no choice (or a closed dialog)
+ */
+export async function chooseAltModeOptions(system, ask = askAltModeOptions) {
+  const options = list => (Array.isArray(list) && list.length > 1 ? list : null);
+  const fields = {
+    bot: options(system?.botModeSizeOptions),
+    alt: options(system?.altModeSizeOptions),
+    movement: options(system?.movementOptions),
+    botFor: system?.botModeSizeFor ?? {},
+  };
+  if (!fields.bot && !fields.alt && !fields.movement) {
+    return { bot: null, alt: null, movement: null };
+  }
+
+  const picked = await ask(fields) ?? {};
+  const valid = (key, value) => (fields[key]?.includes(value) ? value : null);
+  const alt = valid('alt', picked.alt);
+  const option = fields.movement?.[Number(picked.movement)] ?? null;
+  return { bot: botSizeFor(system, alt) ?? valid('bot', picked.bot), alt, movement: option ? fullMovement(option) : null };
+}
+
+async function askAltModeOptions(fields) {
+  const sizes = CONFIG.E20.actorSizes;
+  const localize = key => game.i18n.localize(key);
+  const field = (key, label, choices) => (choices ? `<div class="form-group"><label>${localize(label)}</label>
+    <select name="${key}">${choices.map(([value, text]) => `<option value="${value}">${text}</option>`).join('')}</select></div>` : '');
+  const sizeChoices = list => list?.map(size => [size, localize(sizes[size] ?? size)]);
+  const content = `<p>${localize('E20.ChooseModeSizesPrompt')}</p>`
+    + field('bot', 'E20.BotModeSize', sizeChoices(fields.bot))
+    + field('alt', 'E20.AltModeSize', sizeChoices(fields.alt))
+    + field('movement', 'E20.AltModeMovementChoice', fields.movement?.map((option, i) => [i, movementLabel(option, localize)]));
+  return foundry.applications.api.DialogV2.prompt({
+    window: { title: localize('E20.ChooseModeSizes') },
+    content,
+    ok: {
+      label: localize('E20.AcceptButton'),
+      callback: (event, button) => ({ bot: button.form.elements.bot?.value, alt: button.form.elements.alt?.value, movement: button.form.elements.movement?.value }),
+    },
+    // An Alt Mode size that fixes the Bot Mode's: the Bot Mode pick follows it, locked.
+    render: (event, dialog) => {
+      const form = dialog.element.querySelector('form') ?? dialog.element;
+      const bot = form.querySelector('select[name="bot"]');
+      const alt = form.querySelector('select[name="alt"]');
+      const follow = () => {
+        const fixed = fields.botFor?.[alt?.value];
+        if (bot && fixed) {
+          bot.value = fixed;
+        }
+
+        if (bot) {
+          bot.disabled = !!fixed;
+        }
+      };
+
+      alt?.addEventListener('change', follow);
+      follow();
+    },
+    rejectClose: false,
   });
 }
 

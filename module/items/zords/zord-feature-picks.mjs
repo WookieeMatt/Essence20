@@ -23,6 +23,7 @@
  */
 import { registerUse } from "../../mechanics/item-hooks.mjs";
 import { worldActors } from "../../mechanics/companions/companion-link.mjs";
+import { rosterRemovalUpdate } from "../../util/roster.mjs";
 import {
   holds, isCombinerForm, itemsOf, rosterOf, sourceOf, T, ZORD2,
 } from "./combiner-roster-helpers.mjs";
@@ -69,7 +70,7 @@ async function useDefenderTorozord(item) {
   if (existing && Object.keys(existing.system?.actors ?? {}).length) {
     // Separate: the borrowed Combiner traits only ever work for this one Megaform.
     const update = {};
-    for (const key of Object.keys(existing.system.actors)) update[`system.actors.${key}`] = new foundry.data.operators.ForcedDeletion();
+    Object.assign(update, rosterRemovalUpdate(existing, Object.keys(existing.system.actors)));
     await existing.update(update);
     for (const zord of zords) {
       const granted = itemsOf(zord).filter(i => flagOf(i, DT_FLAG)).map(i => i.id);

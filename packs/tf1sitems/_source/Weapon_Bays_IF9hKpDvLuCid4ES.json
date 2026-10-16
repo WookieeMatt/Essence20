@@ -6,9 +6,15 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "prerequisites": {"when":["self:canTransform","ask:Alt Mode with Crew 1+"]},
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Fill your Weapon Bays","steps":[{"do":"weaponBays"}]},
+      {"type":"Use","label":"Fill your Weapon Bays","when":["calc:@choice.weaponBayCount<1"],"steps":[{"do":"weaponBays"}]},
+      {"type":"Hardpoints","label":"Weapon Bays","integrated":"@choice.weaponBayCount"},
+      {"type":"Trigger","event":"removed","label":"Weapon Bays emptied","steps":[{"do":"weaponBaysUndo"}]}
+    ],
     "automation": {
-      "status": "manual",
-      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: trading Alt Mode Crew capacity and Firepoints for extra weapon Integrated Hardpoints.</p>"
+      "status": "full",
+      "notes": "<p>Automatic: when you take it you pick an Alt Mode with Crew room and the weapons to build in - each takes the room of Crew by size (Sidearm 1, Medium 2, Long or Heavy 3, +1 to make it Reinforced), and only weapons you're Trained or Qualified in can go in. That Alt Mode loses that much Crew and as many Firepoints, the weapons become Integrated, and you gain an Integrated Hardpoint for each. Removing the Perk puts it all back. If you had no Alt Mode with Crew yet, its Use button asks later.</p>"
     },
     "originalId": "",
     "description": "",

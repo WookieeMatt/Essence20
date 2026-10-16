@@ -13,6 +13,37 @@ import RollerSelector from "../apps/roller-selector.mjs";
 import DefenseModificationSelector from "../apps/defense-modification.mjs";
 
 const PARENT_ROLLER_KEY = "parentActor";
+const ALT_CREW_PREFIX = "altCrew:";
+
+/**
+ * The roller picker's choices for a Transformer's Integrated Hardpoint weapon when crew ride in its Alt Mode (itself
+ * first, then each crew member who isn't a prisoner) - null for any other roll.
+ * @param {Event} event
+ * @param {Actor} actor
+ * @returns {Promise<Object|null>}
+ */
+async function altModeCrewRollers(event, actor) {
+  if (!actor?.system?.isTransformed || !actor.flags?.essence20?.altModeCrew) {
+    return null;
+  }
+
+  const element = event.target.closest('[data-roll-type]') || event.target;
+  // A weapon's effect rows carry the effect's uuid (collapsible-item-subcontainer.hbs); other rows its id.
+  const row = element.closest?.('.item')?.dataset ?? {};
+  const item = row.itemUuid ? fromUuidSync(row.itemUuid, { strict: false }) : (row.itemId ? actor.items.get(row.itemId) : null);
+  const { crewRollerChoices, isIntegratedAttack } = await import("../mechanics/vehicles/alt-mode-crew.mjs");
+  const crew = isIntegratedAttack(actor, item) ? crewRollerChoices(actor) : [];
+  if (!crew.length) {
+    return null;
+  }
+
+  const choices = { [PARENT_ROLLER_KEY]: { chosen: true, key: PARENT_ROLLER_KEY, label: actor.name } };
+  for (const choice of crew) {
+    choices[choice.key] = { chosen: false, key: choice.key, label: choice.label };
+  }
+
+  return choices;
+}
 
 /**
  * Handle clickable rolls.
@@ -20,7 +51,7 @@ const PARENT_ROLLER_KEY = "parentActor";
  * @param {Actor} actor The Actor making the roll
  * @param {Actor} childRoller Optional attached Actor making the roll
  */
-export async function performRoll(event, actor, childRoller=null) {
+export async function  performRoll(event, actor, childRoller=null) {
   event.preventDefault();
   // event.target is whatever was actually clicked - usually the <i> icon inside the rollable
   // <a>, not the <a> itself. Most roll buttons work around this by duplicating data-roll-type
@@ -343,7 +374,11 @@ export async function onToggleHeaderAccordion(event) {
  * @param {Actor} actor The Actor making the roll
  */
 export async function onRoll(event, actor) {
-  if (actor.type == 'vehicle' || actor.type == 'zord') {
+  // A Transformer's Integrated Hardpoint weapon, with crew aboard its Alt Mode: they may fire it too (TF CRB p.47).
+  const crewChoices = await altModeCrewRollers(event, actor);
+  if (crewChoices) {
+    new RollerSelector(actor, crewChoices, event, "E20.ActorSelect").render(true);
+  } else if (actor.type == 'vehicle' || actor.type == 'zord') {
     const choices = {};
     choices[PARENT_ROLLER_KEY] = {
       chosen: true,
@@ -374,6 +409,13 @@ export async function handleActorSelector(actor, key, event) {
   let childRoller;
   if (key == PARENT_ROLLER_KEY) {
     childRoller = actor;
+  } else if (key.startsWith(ALT_CREW_PREFIX)) {
+    const { crewEntries } = await import("../mechanics/vehicles/alt-mode-crew.mjs");
+    const entry = crewEntries(actor).find(row => `${ALT_CREW_PREFIX}${row.key}` == key);
+    childRoller = entry ? await fromUuid(entry.uuid) : null;
+    if (!childRoller) {
+      return;
+    }
   } else {
     const fullActor = actor.system.actors[key];
     childRoller = await fromUuid(fullActor.uuid);

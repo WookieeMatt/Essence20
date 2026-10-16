@@ -4,12 +4,12 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"DerivedStat","label":"Organic Energon: half the lowest Essence","path":"system.energon.normal.max","op":"set","value":"floor(min(@essence.strength, @essence.speed, @essence.smarts, @essence.social) / 2)","when":["not:self:canTransform"]}
+      {"type":"DerivedStat","label":"Organic Energon: half the lowest Essence","path":"system.energon.normal.max","op":"set","value":"ceil(min(@essence.strength, @essence.speed, @essence.smarts, @essence.social) / 2)","when":["not:self:canTransform"]}
     ],
     "prerequisites": {"when":["not:self:tag:robot"]},
     "automation": {
       "status": "full",
-      "notes": "<p>Automatic: you gain an Energon pool equal to half your lowest Essence, even though you can't transform.</p>"
+      "notes": "<p>Automatic: you gain an Energon pool equal to half your lowest Essence (rounded up, FG p.147), even though you can't transform.</p>"
     },
     "originalId": "",
     "description": "",

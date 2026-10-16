@@ -456,6 +456,34 @@ All registered in `module/essence20.mjs`.
 | `clientSettingChanged` | React to a setting changing without a reload |
 | `dragRuler.ready` | Drag Ruler module integration |
 
+### Hooks for modules
+
+Hooks the system *calls* for other modules (sounds and animations, HUDs...), through `announce()` in
+`module/mechanics/world/public-hooks.mjs`. Each is `Hooks.callAll`, on the client that made the thing happen (so a
+listener that broadcasts — Sequencer — plays it once for the table), never awaited, and read-only: don't write to the
+payload. A stable API, like `game.essence20`.
+
+| Hook | When | Payload |
+| --- | --- | --- |
+| `essence20.event` | Every Trigger event (`TRIGGER_EVENTS` plus every `registerEvent` one): morph, transform, takesDamage, defeated, conditionGained, storyPointSpent, turnStart, megaformCombined… — whether or not any rule listens. `conditionGained` carries `vars.statuses` (the Condition ids) | `{ actor, event, roll, outcome, facts, damage, targets, vars }` |
+| `essence20.rollResolved` | A roll's results are in (after its `afterRoll` event) | `{ actor, item, skill, isAttack, isMelee, damageType, style, isCrit, isFumble, outcome, total, targets: [{ actor, hit, damage }] }` — `style` is the weapon's (`E20.weaponStyles`) |
+| `essence20.areaPlaced` | An area attack's shape is placed (before its roll); `shapeData` is in canvas pixels — a circle's `x`/`y`/`radius`, a cone's or line's apex `x`/`y` and `rotation` | `{ actor, item, shape, shapeData, origin, region, tokens, lingering }` |
+| `essence20.requisitionGranted` | A Requisition (GI Joe) puts the item on the member's sheet | `{ member, item }` |
+| `essence20.zordSummoned` | A Ranger calls their Zord | `{ zord, ranger }` |
+| `essence20.zordArrived` | Its arrival card is posted | `{ zord, ranger }` |
+| `essence20.zordPlaced` | Its token is put on the map at the edge | `{ zord, token }` |
+| `essence20.zordBoarded` | A Ranger takes the driver's seat (before their token leaves) | `{ zord, ranger, rangerToken, zordToken }` |
+| `essence20.zordDisembarked` | A Ranger gets out (their token is back) | `{ zord, ranger, zordToken }` |
+| `essence20.zordRecalled` | Recall for Repairs (before its token leaves) | `{ zord, zordToken }` |
+| `essence20.zordRepaired` | Back from repairs on a later summon | `{ zord }` |
+| `essence20.combinerMerged` | Combiner members finish merging | `{ form, members }` |
+| `essence20.megaformFormed` | A Megazord or Combiner joins on the map: its members' tokens become its token (announced before theirs go) | `{ form, token, members, from }` (`from`: each member token's centre) |
+| `essence20.megaformSplit` | A Combiner or Megazord breaks apart (Defeated), or separates on the map | `{ form, components, isCombiner, voluntary?, tokens?, at?, to? }` (separating: `voluntary`, the members' `tokens`, where the Megaform stood `at` {x, y, w}, each member's centre `to`) |
+| `essence20.altModeBoarded` | Someone climbs into a Transformer's Alt Mode (or is put in its Cage) - mechanics/vehicles/alt-mode-crew.mjs | `{ carrier, passenger, role }` (`role`: driver, passenger or prisoner) |
+| `essence20.altModeDisembarked` | Someone gets out of a Transformer (or escapes its Cage, or is put out by a Mode change or a crash) | `{ carrier, passenger, role, escaped }` |
+| `essence20.altModeCrashed` | A Transformer crashes in Alt Mode | `{ carrier, feet }` |
+| `essence20.storyPointNarrative` | A Story Point spent for a narrative effect | (see the Story Point tracker) |
+
 ---
 
 ## 12. Settings reference

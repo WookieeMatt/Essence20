@@ -1,0 +1,62 @@
+{{!-- Riding in this Transformer's Alt Mode (TF CRB p.47) - mechanics/vehicles/alt-mode-crew.mjs. Drop a character here
+     to put them aboard; the role select and the buttons go through the same checks. Shown in an Alt Mode, and in Bot Mode
+     only while someone is still aboard (Extra Crew Capacity's one seat, the Cage's one prisoner). --}}
+{{#if (and altCrew (or altCrew.transformed altCrew.members.length))}}
+<div class="e20-alt-crew e20-border-accent">
+  {{!-- The title centred, as the other sections' headers have it; the counts on its left, the buttons on its right. --}}
+  <div class="e20-alt-crew__header">
+    <div class="e20-alt-crew__side e20-alt-crew__counts">
+      <span class="e20-alt-crew__stat" data-tooltip="{{localize 'E20.AltCrewCapacityTooltip'}}">
+        {{localize "E20.AltCrewCapacity"}} {{altCrew.members.length}} / {{altCrew.capacity}}
+      </span>
+      {{#if altCrew.transformed}}
+        <span class="e20-alt-crew__stat">{{localize "E20.AltCrewFirepoints"}} {{altCrew.firepointsUsed}} / {{altCrew.firepoints}}</span>
+      {{/if}}
+      {{#if altCrew.canImprison}}
+        <span class="e20-alt-crew__stat">{{localize "E20.AltCrewPrisoners"}} {{altCrew.prisoners}} / {{altCrew.prisonerLimit}}</span>
+      {{/if}}
+    </div>
+    <span class="e20-alt-crew__title">{{localize "E20.AltCrewTitle"}}</span>
+    <div class="e20-alt-crew__side e20-alt-crew__tools">
+      {{#if @root.editable}}
+        <a class="e20-alt-crew__button" data-action="altCrewBoardTargets" data-role="passenger" data-tooltip="{{localize 'E20.AltCrewBoardTargetsTooltip'}}">
+          <i class="fas fa-person-walking-arrow-right"></i> {{localize "E20.AltCrewBoardTargets"}}
+        </a>
+        {{#if (and altCrew.isGM altCrew.transformed)}}
+          <a class="e20-alt-crew__button" data-action="altCrewCrash" data-tooltip="{{localize 'E20.AltCrewCrashTooltip'}}">
+            <i class="fas fa-car-burst"></i> {{localize "E20.AltCrewCrash"}}
+          </a>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+
+  {{#if altCrew.members.length}}
+    <ol class="e20-alt-crew__list">
+      {{#each altCrew.members}}
+        <li class="e20-alt-crew__member flexrow" data-key="{{this.key}}">
+          {{#if this.img}}<img class="e20-alt-crew__img" src="{{this.img}}" alt="" />{{/if}}
+          <span class="e20-alt-crew__name">{{this.name}}</span>
+          <select class="e20-alt-crew__role" data-key="{{this.key}}" {{#unless @root.editable}}disabled{{/unless}}>
+            {{#each this.roles}}
+              <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+            {{/each}}
+          </select>
+          {{#unless this.isPrisoner}}
+            <a class="e20-alt-crew__toggle {{#if this.firepoint}}--on{{/if}}" data-action="altCrewFirepoint" data-key="{{this.key}}"
+              data-tooltip="{{localize 'E20.AltCrewFirepointTooltip'}}"><i class="fas fa-crosshairs"></i></a>
+          {{/unless}}
+          {{#if @root.editable}}
+            <a class="e20-alt-crew__button" data-action="altCrewDisembark" data-key="{{this.key}}">
+              <i class="fas fa-person-walking-arrow-loop-left"></i>
+              {{#if this.isPrisoner}}{{localize "E20.AltCrewRelease"}}{{else}}{{localize "E20.AltCrewDisembark"}}{{/if}}
+            </a>
+          {{/if}}
+        </li>
+      {{/each}}
+    </ol>
+  {{else}}
+    <p class="e20-alt-crew__empty">{{#if (or altCrew.capacity altCrew.prisonerLimit)}}{{localize "E20.AltCrewEmpty"}}{{else}}{{localize "E20.AltCrewNoRoom"}}{{/if}}</p>
+  {{/if}}
+</div>
+{{/if}}

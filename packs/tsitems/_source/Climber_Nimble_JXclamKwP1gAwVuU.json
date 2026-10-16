@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: 2 starting Health, Ground Movement 35, the Over the Candlestick Perk, and your pick of the Small or Common Alt Mode. You pick +1 Speed or Smarts and one Origin Skill.</p>"
+      "notes": "<p>Granted: 2 starting Health, Ground Movement 35, the Over the Candlestick Perk, and the Climber/Nimble Alt Mode (you pick Small or Common for each Mode). You pick +1 Speed or Smarts and one Origin Skill.</p>"
     },
     "originalId": "",
     "description": "",
@@ -25,13 +25,7 @@
       "d2a6": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.A1zJJJOvCKzxzdI0",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Climber/Nimble (Common)",
-        "type": "altMode"
-      },
-      "e929": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.y91e1C5LXS2vviUQ",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Climber/Nimble (Small)",
+        "name": "Climber/Nimble",
         "type": "altMode"
       }
     },

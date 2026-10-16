@@ -1,6 +1,7 @@
 import { getMissionEpoch, getSceneEpoch, getUses, markUsed } from "../resources/scene-clock.mjs";
 import { ruleContactAllegiance } from "../../rules/plugins/resources/contact-allegiance.mjs";
 import { itemsOf, sourceOfOrUndefined as sourceOf } from "../../items/shared/item-lookups.mjs";
+import { rosterRemoval } from "../../util/roster.mjs";
 
 /**
  * Contacts (Field Guide to Action & Adventure p.153-155, Hawk's Personnel Files p.6-7, Enigma of
@@ -162,7 +163,7 @@ export async function confirmStopBeingContact(npc) {
   }
 
   for (const { actor, key } of holders) {
-    await actor.update({ [`system.actors.${key}`]: new foundry.data.operators.ForcedDeletion() });
+    await actor.update({ [`system.actors.${key}`]: rosterRemoval(actor) });
   }
 
   return true;

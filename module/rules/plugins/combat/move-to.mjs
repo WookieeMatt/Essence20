@@ -10,7 +10,8 @@ import { escape, write } from "../shared/chat-speaker-helpers.mjs";
  *     actor moving itself (Ghillie Suit Sniping, Wrist Communicator) - the token is updated straight onto the point.
  *   - `maxRange` (feet, a formula): refused, with a warning, when the point is farther than that from the actor's token
  *     (no token - no check).
- *   - `animate: false` - the token jumps (a teleport).
+ *   - `animate: false` - the token jumps (a teleport): Foundry's Displace movement action, so v14 records it as a
+ *     teleport - not charged as movement (mechanics/combat/token-movement.mjs), and other modules see a teleport.
  *   - `snap: true` (with forced: false) - snapped to the grid first (token.document.getSnappedPosition).
  * No point kept, or a recipient with no token: nothing happens. `@var.moved` counts who moved.
  */
@@ -22,6 +23,28 @@ const localize = (key, data) => {
 };
 
 const tokenOf = actor => actor?.token?.object ?? actor?.getActiveTokens?.()?.[0] ?? null;
+
+/**
+ * The update options for a teleport onto `update` ({x, y}): no animation, and the move's one waypoint marked with
+ * Foundry's Displace action - the waypoint Foundry would infer itself, but a teleport. Without it v14 records a plain
+ * update as a walk.
+ * @param {TokenDocument} document
+ * @param {{x: Number, y: Number}} update
+ * @returns {Object}
+ */
+export function teleportOptions(document, update) {
+  const source = document?._source ?? {};
+  if (!document?.id) {
+    return { animate: false };
+  }
+
+  const waypoint = {
+    x: update.x, y: update.y, elevation: source.elevation ?? 0, width: source.width ?? 1, height: source.height ?? 1,
+    depth: source.depth, shape: source.shape, level: source.level, action: 'displace', snapped: false, explicit: false,
+    checkpoint: true,
+  };
+  return { animate: false, movement: { [document.id]: { waypoints: [waypoint] } } };
+}
 
 registerStep('moveTo', async (step, ctx) => {
   const x = Number(ctx.vars?.pointX);
@@ -65,7 +88,7 @@ registerStep('moveTo', async (step, ctx) => {
       }
 
       const update = { x: Math.round(position.x), y: Math.round(position.y) };
-      await write(token.document, 'update', step.animate === false ? [update, { animate: false }] : [update]);
+      await write(token.document, 'update', step.animate === false ? [update, teleportOptions(token.document, update)] : [update]);
       moved = true;
     }
 

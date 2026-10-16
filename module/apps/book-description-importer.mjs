@@ -4,6 +4,7 @@ import {
   calibrateFolioOffset, buildReadingOrder, findEntry, findFurnitureBands, findBodyFonts, findBestOffset,
 } from "../importers/book-descriptions.mjs";
 import { readPdf } from "../importers/pdf-reader.mjs";
+import { compendiumItemExists, liveCount } from "../importers/book-descriptions-store.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -45,6 +46,9 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
       apply: BookDescriptionImporter.#onApply,
       toggleEntry: BookDescriptionImporter.#onToggleEntry,
       clearBook: BookDescriptionImporter.#onClearBook,
+      clearAll: BookDescriptionImporter.#onClearAll,
+      pruneBook: BookDescriptionImporter.#onPruneBook,
+      chooseFolder: BookDescriptionImporter.#onChooseFolder,
     },
   };
 
@@ -66,15 +70,22 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
   /** @type {Set<string>} Item uuids the GM has unticked in the preview. */
   #excluded = new Set();
 
+  /** @type {?Array<Object>} What the last folder import did, file by file. */
+  #batch = null;
+
   async _prepareContext() {
     const stored = game.settings.get("essence20", "bookDescriptions") ?? {};
     const books = Object.entries(stored).map(([book, data]) => ({
       book,
       count: Object.keys(data.descriptions ?? {}).length,
+      // How many still find their compendium item - an update can move or replace items (re-linked on load where it
+      // can be: book-descriptions-store.mjs#healBookDescriptions).
+      live: liveCount(data, compendiumItemExists),
       purchaser: data.purchaser ?? null,
       purchaseDate: data.purchaseDate ?? null,
       importedAt: data.importedAt ? new Date(data.importedAt).toLocaleDateString() : null,
-    })).sort((a, b) => a.book.localeCompare(b.book));
+    })).map(entry => ({ ...entry, dead: entry.count - entry.live }))
+      .sort((a, b) => a.book.localeCompare(b.book));
 
     // The excluded set is flagged onto each entry here rather than tested in the template:
     // Handlebars has no membership helper registered in this system, and a Set is not something
@@ -89,6 +100,7 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
 
     return {
       books,
+      batch: this.#batch,
       status: this.#status,
       scan,
       hasScan: !!scan,
@@ -102,8 +114,11 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
     // The file input is intentionally a real <input type="file"> rather than Foundry's FilePicker:
     // FilePicker browses the SERVER's data directory, which would mean uploading the book first.
     // This way the bytes go straight from the GM's disk into this tab and no further.
-    const input = this.element.querySelector('input[type="file"]');
+    const input = this.element.querySelector('input[type="file"][data-single]');
     input?.addEventListener("change", event => this.#scanFile(event.target.files?.[0]));
+    // A whole folder (or several files) of PDFs, read the same way - in this tab, one after another.
+    const folder = this.element.querySelector('input[type="file"][data-folder]');
+    folder?.addEventListener("change", event => this.#importMany([...(event.target.files ?? [])]));
   }
 
   /* -------------------------------------------- */
@@ -270,7 +285,12 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
 
   /** Opens the OS file dialog by way of the hidden input. */
   static #onChooseFile() {
-    this.element.querySelector('input[type="file"]')?.click();
+    this.element.querySelector('input[type="file"][data-single]')?.click();
+  }
+
+  /** Opens the OS folder dialog (every PDF in it) by way of the hidden folder input. */
+  static #onChooseFolder() {
+    this.element.querySelector('input[type="file"][data-folder]')?.click();
   }
 
   /**
@@ -286,41 +306,147 @@ export default class BookDescriptionImporter extends HandlebarsApplicationMixin(
     this.render();
   }
 
+  /**
+   * Store a scan's entries (all but the excluded ones) as its book's import, replacing any earlier one.
+   * @returns {Promise<Number>}   How many were stored.
+   */
+  static async #store(scan, excluded = new Set()) {
+    const descriptions = {};
+    // Each item's name and type too: an update that moves or replaces the item can then find it again by name
+    // (book-descriptions-store.mjs#healStoredDescriptions).
+    const items = {};
+    for (const entry of scan.entries) {
+      if (excluded.has(entry.uuid)) continue;
+      descriptions[entry.uuid] = entry.text;
+      items[entry.uuid] = { name: entry.name, type: entry.type };
+    }
+
+    const stored = foundry.utils.deepClone(game.settings.get("essence20", "bookDescriptions") ?? {});
+    stored[scan.book] = {
+      descriptions,
+      items,
+      purchaser: scan.watermark?.purchaser ?? null,
+      purchaseDate: scan.watermark?.date ?? null,
+      importedAt: Date.now(),
+      importedBy: game.user.name,
+      fileName: scan.fileName,
+    };
+
+    await game.settings.set("essence20", "bookDescriptions", stored);
+    return Object.keys(descriptions).length;
+  }
+
+  /** Items already prepared are holding the old description, so re-prepare everything that could be showing one. */
+  static #refreshAll() {
+    for (const actor of game.actors) actor.prepareData();
+    for (const app of foundry.applications.instances.values()) app.render?.();
+  }
+
   /** Writes the confirmed entries into the world. */
   static async #onApply() {
     if (!this.#scan) return;
 
-    const descriptions = {};
-    for (const entry of this.#scan.entries) {
-      if (this.#excluded.has(entry.uuid)) continue;
-      descriptions[entry.uuid] = entry.text;
-    }
-
-    const stored = foundry.utils.deepClone(game.settings.get("essence20", "bookDescriptions") ?? {});
-    stored[this.#scan.book] = {
-      descriptions,
-      purchaser: this.#scan.watermark?.purchaser ?? null,
-      purchaseDate: this.#scan.watermark?.date ?? null,
-      importedAt: Date.now(),
-      importedBy: game.user.name,
-      fileName: this.#scan.fileName,
-    };
-
-    await game.settings.set("essence20", "bookDescriptions", stored);
-
-    // Items already prepared are holding the old (empty) description, so re-prepare everything
-    // that could be showing one.
-    for (const actor of game.actors) actor.prepareData();
-    for (const app of foundry.applications.instances.values()) app.render?.();
+    const count = await BookDescriptionImporter.#store(this.#scan, this.#excluded);
+    BookDescriptionImporter.#refreshAll();
 
     ui.notifications.info(game.i18n.format("E20.BookImportApplied", {
-      count: Object.keys(descriptions).length,
+      count,
       book: this.#scan.book,
     }));
 
     this.#scan = null;
     this.#excluded = new Set();
     this.render();
+  }
+
+  /** Forgets every imported book. */
+  static async #onClearAll() {
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("E20.BookImportClearTitle") },
+      content: `<p>${game.i18n.localize("E20.BookImportClearAllConfirm")}</p>`,
+    });
+    if (!confirmed) return;
+
+    await game.settings.set("essence20", "bookDescriptions", {});
+    BookDescriptionImporter.#refreshAll();
+    this.render();
+  }
+
+  /**
+   * Drops one book's entries that no longer find their compendium item (removed in an update).
+   * @param {PointerEvent} event
+   */
+  static async #onPruneBook(event) {
+    const book = event.target.closest("[data-book]")?.dataset.book;
+    if (!book) return;
+
+    const stored = foundry.utils.deepClone(game.settings.get("essence20", "bookDescriptions") ?? {});
+    const data = stored[book];
+    if (!data) return;
+
+    for (const uuid of Object.keys(data.descriptions ?? {})) {
+      if (!compendiumItemExists(uuid)) {
+        delete data.descriptions[uuid];
+        delete data.items?.[uuid];
+      }
+    }
+
+    // A book with nothing left that matches is gone from the list altogether.
+    if (!Object.keys(data.descriptions).length) {
+      delete stored[book];
+    }
+
+    await game.settings.set("essence20", "bookDescriptions", stored);
+    this.render();
+  }
+
+  /**
+   * Import every PDF given (a folder's worth), one after another: each is recognised as its book and all it matched is
+   * stored, with no preview - the per-file result is listed afterwards. A PDF that isn't a book the compendium knows
+   * is skipped, not imported.
+   * @param {File[]} files
+   */
+  async #importMany(files) {
+    const pdfs = files.filter(file => /\.pdf$/i.test(file.name)).sort((a, b) => a.name.localeCompare(b.name));
+    if (!pdfs.length) {
+      ui.notifications.warn(game.i18n.localize("E20.BookImportFolderEmpty"));
+      return;
+    }
+
+    this.#scan = null;
+    this.#batch = [];
+    for (const [i, file] of pdfs.entries()) {
+      const prefix = game.i18n.format("E20.BookImportStatusFile", { n: i + 1, total: pdfs.length, name: file.name });
+      try {
+        this.#status = prefix;
+        await this.render();
+        const { pages, widths } = await readPdf(file, async (page, total) => {
+          this.#status = `${prefix} ${game.i18n.format("E20.BookImportStatusReading", { page, total })}`;
+          await this.render();
+        });
+
+        this.#status = `${prefix} ${game.i18n.localize("E20.BookImportStatusMatching")}`;
+        await this.render();
+        const scan = await this.#matchItems(file.name, pages, widths);
+        if (scan.recognised && scan.book && scan.entries.length) {
+          const count = await BookDescriptionImporter.#store(scan);
+          this.#batch.push({ file: file.name, book: scan.book, count, ok: true });
+        } else {
+          this.#batch.push({ file: file.name, ok: false, reason: game.i18n.localize("E20.BookImportFolderSkipped") });
+        }
+      } catch (error) {
+        console.error(`Essence20 | Book description import failed for ${file.name}`, error);
+        this.#batch.push({ file: file.name, ok: false, reason: game.i18n.localize("E20.BookImportError") });
+      }
+    }
+
+    BookDescriptionImporter.#refreshAll();
+    const imported = this.#batch.filter(entry => entry.ok);
+    ui.notifications.info(game.i18n.format("E20.BookImportFolderDone", {
+      books: imported.length, files: pdfs.length, count: imported.reduce((sum, entry) => sum + entry.count, 0),
+    }));
+    this.#status = "";
+    await this.render();
   }
 
   /**

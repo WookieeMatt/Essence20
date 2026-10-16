@@ -974,7 +974,6 @@ preLocalize("equipmentPackageTypes");
 
 // Options for Background Item Types
 E20.backgroundTypes = {
-  bond: "E20.Bond",
   hangUp: "E20.HangUp",
   influence: "E20.Influence",
   origin: "E20.Origin",
