@@ -1,4 +1,5 @@
 import { registerRollSources } from "../../../mechanics/item-hooks.mjs";
+import { resolveValue } from "../../formula.mjs";
 import { isExpired, stampFor } from "../../expiry.mjs";
 import { contextFor, evaluate } from "../../predicate.mjs";
 import { registerRecipient, registerStep } from "../../steps.mjs";
@@ -7,8 +8,11 @@ import { escape, T, worldActors, write } from "../shared/chat-speaker-helpers.mj
 /**
  * Points on the canvas (round 10, group D):
  *
- *  - Step `pickPoint {prompt?, at?}` - the player clicks a point (at: targetOrSelf - the first target's token, else
- *    the actor's own); kept as @var.pointX / @var.pointY and {var.pointScene}. A cancel stops the run.
+ *  - Step `pickPoint {prompt?, at?, ghost?, snap?, range?}` - the player clicks a point (at: targetOrSelf - the first
+ *    target's token, else the actor's own); kept as @var.pointX / @var.pointY and {var.pointScene}. A cancel stops the run.
+ *    While picking: a crosshair and a marker; `ghost` (self | target) - that token follows the cursor, snapped to the grid
+ *    as it will land (the point is its centre); `snap: true` - a plain point snaps to a grid centre; `range` (feet, a
+ *    formula) - a ring around the actor's token, the marker red past it (the moveTo step still checks its own maxRange).
  *  - Recipient `around:<ft>` - every token's actor within that many feet of the point (either side, the actor too).
  *  - Step `placeZone {key, label?, half?, until?, modifier: {when, upshift?, downshift?, edge?, snag?}}` - a zone on the
  *    point (a square reaching `half` grid squares each way, default 1), kept on the actor; anyone rolling from inside
@@ -52,7 +56,11 @@ registerStep('pickPoint', async (step, ctx) => {
     point = await ctx.pickPoint(step, ctx);
   } else {
     const { pickCanvasPoint } = await import("../../../mechanics/combat/forced-movement.mjs");
-    point = await pickCanvasPoint(step.prompt ?? T('PickPoint'));
+    const own = ctx.actor?.token?.object ?? ctx.actor?.getActiveTokens?.()?.[0] ?? null;
+    const token = step.ghost == 'self' ? own : step.ghost == 'target' ? ctx.targets[0]?.getActiveTokens?.()?.[0] ?? null : null;
+    const range = step.range === undefined ? null
+      : resolveValue(step.range, { actor: ctx.actor, item: ctx.item, vars: ctx.vars, other: ctx.targets?.[0] ?? null }, 0);
+    point = await pickCanvasPoint(step.prompt ?? T('PickPoint'), { token, snap: !!step.snap, rangeFrom: own, range });
   }
 
   if (!point) {
@@ -68,7 +76,12 @@ registerStep('pickPoint', async (step, ctx) => {
   ctx.vars.pointX = point.x;
   ctx.vars.pointY = point.y;
   ctx.vars.pointScene = globalThis.canvas?.scene?.id ?? '';
-}, { errors: (step, where) => (step.at && !['targetOrSelf', 'actorOrKept'].includes(step.at) ? [`${where}: at must be targetOrSelf or actorOrKept`] : []) });
+}, {
+  errors: (step, where) => [
+    ...(step.at && !['targetOrSelf', 'actorOrKept'].includes(step.at) ? [`${where}: at must be targetOrSelf or actorOrKept`] : []),
+    ...(step.ghost && !['self', 'target'].includes(step.ghost) ? [`${where}: ghost must be self or target`] : []),
+  ],
+});
 
 registerRecipient(/^around:(\d+)$/, (match, ctx) => [...new Set(tokensAround(pointOf(ctx), Number(match[1])).map(token => token.actor))]);
 

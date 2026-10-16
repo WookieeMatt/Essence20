@@ -2564,6 +2564,28 @@
 
 .essence20 .roll-dialog .roll-dialog-snag-edge-row {
   justify-content: space-between;
+  align-items: center;
+}
+
+.essence20 .roll-dialog .roll-dialog-snag-edge-row > label {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.essence20 .roll-dialog .roll-dialog-snag-edge-sources {
+  margin-top: -4px;
+  font-size: var(--font-size-12, 12px);
+  opacity: 0.85;
+}
+.essence20 .roll-dialog .roll-dialog-snag-edge-sources p {
+  margin: 0 0 2px;
+}
+
+.essence20 .roll-dialog .roll-dialog-snag-edge-cancel {
+  font-style: italic;
 }
 
 .essence20.roll-dialog-app .form-footer {

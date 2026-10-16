@@ -199,7 +199,9 @@ function fillText(text, ctx) {
     .replace(/\{var\.([\w-]+)\}/g, (match, key) => String(ctx.vars?.[key] ?? ''))
     // {rolled.<path>}: the rolled item, where the run has one (BeforeRoll - rules/plugins/rolls/before-roll-rolled-item.mjs).
     .replace(/\{rolled\.([\w.-]+)\}/g, (match, path) => String(globalThis.foundry?.utils?.getProperty?.(ctx.rolled ?? {}, path) ?? ''))
-    .replace(/\{(@[^}]+)\}/g, (match, formula) => String(Math.round(resolveValue(formula, { actor: ctx.actor, item: ctx.item, vars: ctx.vars, other: ctx.targets?.[0] ?? null, rolled: ctx.rolled ?? null }, 0))));
+    // The @ is a reference's (@level) - or only the marker, before a number or bracket ({@3 - @item.flags.x}: Wrist
+    // Communicator's charges left read 0, "@3" being no reference).
+    .replace(/\{(@[^}]+)\}/g, (match, formula) => String(Math.round(resolveValue(/^@[\d.(-]/.test(formula) ? formula.slice(1) : formula, { actor: ctx.actor, item: ctx.item, vars: ctx.vars, other: ctx.targets?.[0] ?? null, rolled: ctx.rolled ?? null }, 0))));
 }
 
 /**

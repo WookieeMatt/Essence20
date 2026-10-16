@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Move the target (Checkmate)","cost":{"action":"standard"},"steps":[{"do":"target","beforeCost":true},{"do":"pickPoint","beforeCost":true,"prompt":"Click the space the target should move to."},{"do":"rollVsEach","skill":"persuasion","defense":"willpower","onHit":[{"do":"moveTo","to":"target"}]}]}
+      {"type":"Use","label":"Move the target (Checkmate)","cost":{"action":"standard"},"steps":[{"do":"target","beforeCost":true},{"do":"pickPoint","beforeCost":true,"prompt":"Click the space the target should move to.","ghost":"target"},{"do":"rollVsEach","skill":"persuasion","defense":"willpower","onHit":[{"do":"moveTo","to":"target"}]}]}
     ],
     "automation": {
       "status": "partial",

@@ -33,6 +33,31 @@
 // width as their own text, leaving the row's other half empty at a wider dialog size.
 .essence20 .roll-dialog .roll-dialog-snag-edge-row {
   justify-content: space-between;
+  align-items: center;
+}
+
+// Each option a radio and a one-line word, centred on each other.
+.essence20 .roll-dialog .roll-dialog-snag-edge-row > label {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+// Where the Snag / Edge come from, as small print under the radios.
+.essence20 .roll-dialog .roll-dialog-snag-edge-sources {
+  margin-top: -4px;
+  font-size: var(--font-size-12, 12px);
+  opacity: 0.85;
+
+  p {
+    margin: 0 0 2px;
+  }
+}
+
+.essence20 .roll-dialog .roll-dialog-snag-edge-cancel {
+  font-style: italic;
 }
 
 .essence20.roll-dialog-app .form-footer {

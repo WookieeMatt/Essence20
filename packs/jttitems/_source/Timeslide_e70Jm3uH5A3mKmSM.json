@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Timeslide","when":["self:onCanvas"],"cost":{"action":"move"},"steps":[{"do":"pickPoint","prompt":"Click where to Timeslide (within 200 feet).","beforeCost":true},{"do":"warn","text":"E20.RulesExtItems2.TimeslideTooFar","stop":true,"when":["not:self:pointWithin:200"],"beforeCost":true},{"do":"moveTo","to":"self","forced":false,"snap":true},{"do":"chat","text":"{name} slides through time to a new spot."}]}
+      {"type":"Use","label":"Timeslide","when":["self:onCanvas"],"cost":{"action":"move"},"steps":[{"do":"pickPoint","prompt":"Click where to Timeslide (within 200 feet).","beforeCost":true,"ghost":"self","range":200},{"do":"warn","text":"E20.RulesExtItems2.TimeslideTooFar","stop":true,"when":["not:self:pointWithin:200"],"beforeCost":true},{"do":"moveTo","to":"self","forced":false,"snap":true},{"do":"chat","text":"{name} slides through time to a new spot."}]}
     ],
     "automation": {
       "status": "full",

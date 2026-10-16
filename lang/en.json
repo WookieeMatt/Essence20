@@ -3883,6 +3883,8 @@
     "RollDialogHardpointMoveUpTo": "Moved up to my Movement",
     "RollDialogHardpointMoveBeyond": "Moved beyond my Movement",
     "RollDialogEdge": "Edge",
+    "RollDialogEdgeSnagCancel": "An Edge and a Snag cancel out - this rolls as Normal.",
+    "RollDialogUntrained": "Untrained",
     "RollDialogEnviroSealedAdverseSituation": "Resisting an adverse situation (Enviro-Sealed)",
     "RollDialogEnviroSealedHostileEnvironment": "- hostile environment",
     "RollDialogFanningShots": "Fanning: shots to fire (0 = a normal attack, up to {max}; shot 1 at ↓1, shot 2 at ↓2...)",
