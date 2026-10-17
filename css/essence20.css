@@ -302,7 +302,9 @@
   font-size: var(--font-size-11, 11px);
   font-variant-numeric: tabular-nums;
   line-height: 1;
-  padding: 2px 4px;
+  /* Rajdhani keeps room below the baseline for descenders, which digits never use: even padding left "3/3" 2px from
+     the top and 5px from the bottom (measured at 11px). The extra top padding centres the numbers in the box. */
+  padding: 0.32em 4px 0.05em;
   border: 1px solid var(--e20-theme-border-color);
   border-radius: 3px;
   white-space: nowrap;
