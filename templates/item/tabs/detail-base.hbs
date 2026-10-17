@@ -2,4 +2,14 @@
   <div>
     {{> (lookup . 'detailPath')}}
    </div>
+
+  {{!-- A Use rule's charges, set by hand (one spent by mistake) - rules/triggers.mjs#itemCharges. --}}
+  {{#if charges}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Rules.ChargesLeft'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="number" class="e20-charges-left" data-max="{{charges.max}}" value="{{charges.left}}" min="0" max="{{charges.max}}" step="1" aria-label="{{localize 'E20.Rules.ChargesLeft'}}">
+  <span>/ {{charges.max}}</span>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
 </section>

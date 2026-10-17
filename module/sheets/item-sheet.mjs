@@ -19,6 +19,7 @@ import {
 } from "../mechanics/characters/active-effect-controls.mjs";
 import { SKELETONS, changeChoice, chooseAddKind, deleteRule, effectEntries, rulesContext, saveRulesJson, setToggle, stepPool } from "../rules/sheet.mjs";
 import { rulesOf } from "../rules/index.mjs";
+import { CHARGES_FLAG, itemCharges } from "../rules/triggers.mjs";
 import { perkChoiceDetails } from "../rules/perk-choice-details.mjs";
 
 /**
@@ -298,6 +299,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
   async _prepareDetailsContext(context) {
     const path = "systems/essence20/templates/item/details";
     context.detailPath = `${path}/${this.document.type}.hbs`;
+    context.charges = itemCharges(this.document);
     return context;
   }
 
@@ -395,6 +397,13 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     }
 
     this._activateImageContextMenu();
+
+    // Charges left (Details tab): kept as charges used on the item, so a rest still refills them.
+    this.element.querySelector('.e20-charges-left')?.addEventListener('change', (event) => {
+      const max = Number(event.target.dataset.max) || 0;
+      const left = Math.min(max, Math.max(0, Math.round(Number(event.target.value) || 0)));
+      this.document.setFlag('essence20', CHARGES_FLAG, max - left);
+    });
   }
 
   /**

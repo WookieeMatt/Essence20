@@ -295,6 +295,23 @@
   flex: none;
 }
 
+/* A Use's charges left beside its button (rules/triggers.mjs#itemCharges) - red when none are left. */
+.essence20 .e20-use-charges {
+  flex: none;
+  align-self: center;
+  font-size: var(--font-size-11, 11px);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  padding: 2px 4px;
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.essence20 .e20-use-charges.spent {
+  color: var(--color-level-error, #d33c3c);
+  border-color: currentColor;
+}
+
 .essence20 .editor {
   position: relative;
   min-height: 250px;

@@ -1100,6 +1100,11 @@
       "Inherited": "These rules come from the compendium item this was made from. Saving rules here gives this copy its own.",
       "AddButton": "Add",
       "TriggerPrompt": "Use {name} now?",
+      "UseNoCharges": "{name} has no charges left - they come back on a rest (or set them on its sheet).",
+      "UseSpent": "{name} has been used as many times as it can for now.",
+      "UseChargesLeft": "Charges left: {left}/{max}.",
+      "ChargesLeft": "Charges Left",
+      "ChargesTooltip": "{left} of {max} charges left (back on a rest)",
       "Step": {
         "NotEnough": "{name} doesn't have enough to pay for that.",
         "Healed": "{name} heals {amount}.",
