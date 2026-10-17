@@ -11,10 +11,19 @@
   </div>
 
   <div class="flexrow roll-dialog-snag-edge-row">
-    <label><input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize 'E20.RollDialogSnag'}}{{#if snagSourcesText}} ({{snagSourcesText}}){{/if}}</label>
+    <label><input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize 'E20.RollDialogSnag'}}</label>
     <label><input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}} /> {{localize 'E20.RollDialogNormal'}}</label>
-    <label><input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize 'E20.RollDialogEdge'}}{{#if edgeSourcesText}} ({{edgeSourcesText}}){{/if}}</label>
+    <label><input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize 'E20.RollDialogEdge'}}</label>
   </div>
+
+  {{!-- Where the Snag / Edge come from, under the radios (in their labels they squeezed the row out of line). --}}
+  {{#if (or snagSourcesText edgeSourcesText)}}
+  <div class="roll-dialog-snag-edge-sources">
+    {{#if snagSourcesText}}<p><strong>{{localize 'E20.RollDialogSnag'}}:</strong> {{snagSourcesText}}</p>{{/if}}
+    {{#if edgeSourcesText}}<p><strong>{{localize 'E20.RollDialogEdge'}}:</strong> {{edgeSourcesText}}</p>{{/if}}
+    {{#if edgeSnagCancel}}<p class="roll-dialog-snag-edge-cancel">{{localize 'E20.RollDialogEdgeSnagCancel'}}</p>{{/if}}
+  </div>
+  {{/if}}
 
   {{#if shiftModifierSources.length}}
   <div class="roll-dialog-modifier-sources">
@@ -250,8 +259,11 @@
          this used to be an editable dropdown). This is display-only, so the defending side's own
          prompt always starts from the weapon's actual suggestion regardless of what this shows;
          the hidden input still submits it through as that suggestion. --}}
+    {{!-- Not against any Defense (Initiative, a plain Skill Test): nothing to show. --}}
+    {{#if (ne defenseType 'none')}}
     {{localize 'E20.RollDialogDefenseType'}}
     <span>{{localize (lookup defenseTypes defenseType)}}</span>
+    {{/if}}
     <input type="hidden" name="defenseType" value="{{defenseType}}" />
   </div>
 </div>

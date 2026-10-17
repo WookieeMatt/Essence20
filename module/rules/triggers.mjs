@@ -42,8 +42,51 @@ export function useRulesOf(item) {
   return rulesOf(item).map((rule, index) => ({ rule, index })).filter(({ rule }) => rule?.type == 'Use' && !rule.disabled);
 }
 
+/** The flag an item's spent charges are kept in (a rest clears it - mechanics/resources/kits.mjs#restKits). */
+export const CHARGES_FLAG = 'chargesUsed';
+
 /**
- * Whether one Use can be pressed now: its condition isn't known false, its limit has a use left
+ * A Use's charges (`charges`: a number or formula - Wrist Communicator's 3): {max, used, left}, counted on the item, or
+ * null for a Use without charges.
+ */
+export function chargesOf(item, rule) {
+  if (rule?.charges === undefined || rule.charges === null || rule.charges === '') {
+    return null;
+  }
+
+  const max = Math.max(0, Math.round(resolveValue(rule.charges, { actor: item?.parent ?? null, item }, 0)));
+  const used = Math.max(0, Number(item?.flags?.essence20?.[CHARGES_FLAG]) || 0);
+  return { max, used: Math.min(used, max), left: Math.max(0, max - used) };
+}
+
+/** An item's charges, from its first Use with charges - for the sheet's count and the item sheet's field. */
+export function itemCharges(item) {
+  for (const { rule } of useRulesOf(item)) {
+    const charges = chargesOf(item, rule);
+    if (charges) {
+      return charges;
+    }
+  }
+
+  return null;
+}
+
+/** Why a Use whose condition holds can't be pressed now: 'charges' (none left), 'limit' (used up this window), else null. */
+export function useSpent(item, rule, index) {
+  const actor = item?.parent;
+  if (!actor || (isStatic(rule.when) && evaluate(rule.when, contextFor({ self: actor, ruleItem: item })) === false)) {
+    return null;
+  }
+
+  if (chargesOf(item, rule)?.left === 0) {
+    return 'charges';
+  }
+
+  return usesLeft(actor, rule, item, index) <= 0 ? 'limit' : null;
+}
+
+/**
+ * Whether one Use can be pressed now: its condition isn't known false, its limit has a use left, it has a charge left
  * and its resource can be paid.
  */
 export function useAvailable(item, rule, index) {
@@ -56,7 +99,7 @@ export function useAvailable(item, rule, index) {
     return false;
   }
 
-  if (usesLeft(actor, rule, item, index) <= 0) {
+  if (usesLeft(actor, rule, item, index) <= 0 || chargesOf(item, rule)?.left === 0) {
     return false;
   }
 
@@ -99,8 +142,16 @@ const PICK_FIRST = ['pickAlly'];
 
 export async function runUse(item, pay, { pick = pickUse, ask = null } = {}) {
   const actor = item?.parent;
-  const available = useRulesOf(item).filter(({ rule, index }) => useAvailable(item, rule, index));
+  const uses = useRulesOf(item);
+  const available = uses.filter(({ rule, index }) => useAvailable(item, rule, index));
   if (!actor || !available.length) {
+    // Out of charges or used up: the button stays, and says so (it used to vanish).
+    const spent = actor ? uses.map(({ rule, index }) => useSpent(item, rule, index)).find(Boolean) : null;
+    if (spent) {
+      globalThis.ui?.notifications?.warn?.(globalThis.game?.i18n?.format?.(spent == 'charges' ? 'E20.Rules.UseNoCharges' : 'E20.Rules.UseSpent', { name: item.name })
+        ?? `${item.name}: nothing left to use.`);
+    }
+
     return null;
   }
 
@@ -137,6 +188,13 @@ export async function runUse(item, pay, { pick = pickUse, ask = null } = {}) {
   const finished = await runSteps(steps.slice(leading.length), ctx);
   if (finished && countsTowardLimit(rule, ctx)) {
     await recordUse(actor, rule, item, index);
+    // A charge spent, and how many are left on the card.
+    const charges = chargesOf(item, rule);
+    if (charges) {
+      await item.setFlag('essence20', CHARGES_FLAG, charges.used + 1);
+      const left = Math.max(0, charges.left - 1);
+      ctx.chat.push(globalThis.game?.i18n?.format?.('E20.Rules.UseChargesLeft', { left, max: charges.max }) ?? `Charges left: ${left}/${charges.max}.`);
+    }
   }
 
   // A run that stopped with nothing to say (a refused cost, a cancelled pick) posts no card.
@@ -152,7 +210,8 @@ export async function runUse(item, pay, { pick = pickUse, ask = null } = {}) {
 registerUse({
   id: 'rules',
   matches: item => useRulesOf(item).length > 0,
-  canUse: item => useRulesOf(item).some(({ rule, index }) => useAvailable(item, rule, index)),
+  // A Use out of charges or used up keeps its button - pressing it says so (runUse).
+  canUse: item => useRulesOf(item).some(({ rule, index }) => useAvailable(item, rule, index) || useSpent(item, rule, index)),
   run: (item, economy, pay) => runUse(item, pay),
 });
 

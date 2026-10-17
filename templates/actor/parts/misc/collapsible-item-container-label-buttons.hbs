@@ -16,6 +16,10 @@
           data-tooltip="{{localize 'E20.PerkUse'}}">
           <i class="fas fa-bolt fa-lg"></i>
         </a>
+        {{!-- Charges left (a Use rule's charges - Wrist Communicator): the item sheet's Details tab can set them. --}}
+        {{#with (itemCharges item) as |charges|}}
+        <span class="e20-use-charges{{#unless charges.left}} spent{{/unless}}" data-tooltip="{{localize 'E20.Rules.ChargesTooltip' left=charges.left max=charges.max}}">{{charges.left}}/{{charges.max}}</span>
+        {{/with}}
       </div>
     </div>
   {{/if}}

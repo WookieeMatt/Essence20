@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","label":"Teleport the target (Teleporting Beam)","event":"hit","when":["item:own"],"steps":[{"do":"pickPoint","prompt":"Click the space to teleport the target to (within 60 ft)."},{"do":"moveTo","to":"target","maxRange":60}]}
+      {"type":"Trigger","label":"Teleport the target (Teleporting Beam)","event":"hit","when":["item:own"],"steps":[{"do":"pickPoint","prompt":"Click the space to teleport the target to (within 60 ft).","ghost":"target","range":60},{"do":"moveTo","to":"target","maxRange":60}]}
     ],
     "automation": {
       "status": "full",

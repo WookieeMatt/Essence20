@@ -144,6 +144,9 @@ describe('steps', () => {
     ctx.vars.n = 3;
     await runSteps([{ do: 'chat', text: '{var.n} / {@level * 2}' }], ctx);
     expect(ctx.chat.at(-1)).toBe('3 / 4');
+    // A formula starting with a number: the @ is only the marker (Wrist Communicator's charges left).
+    await runSteps([{ do: 'chat', text: '{@3 - @level} left, {@(1 + 1) * @level}' }], ctx);
+    expect(ctx.chat.at(-1)).toBe('1 left, 4');
   });
 
   test('require stops the run; with beforeCost it runs before a Use pays', async () => {

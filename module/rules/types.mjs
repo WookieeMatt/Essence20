@@ -542,7 +542,8 @@ export const RULE_TYPES = {
   },
   // A Use button (rules/triggers.mjs): pay the cost, count the limit, run the steps.
   Use: {
-    params: { cost: { kind: 'object' }, limit: { kind: 'object' }, steps: { kind: 'object', required: true } },
+    // charges: how many times it can be used before a rest - counted on the item (rules/triggers.mjs#chargesOf).
+    params: { cost: { kind: 'object' }, limit: { kind: 'object' }, charges: { kind: 'formula' }, steps: { kind: 'object', required: true } },
     scopes: ['self'],
     validate: rule => [...costErrors(rule.cost), ...limitErrors(rule.limit), ...stepErrors(rule.steps), ...cardStepErrors(rule.steps)],
   },
@@ -828,7 +829,7 @@ export function summarizeRule(rule) {
   case 'SurpriseExemption': return `${who}${{ move: 'When Surprised, can still Move and make Skill Tests', speedAsLevel: 'When Surprised, acts with Speed equal to level' }[rule.mode] ?? 'Acts normally when Surprised'}${tail}`;
   case 'ActionCost': return `${word(`E20.Rules.Field.Action.${rule.action}`, humanize(rule.action))} costs ${rule.to == 'none' ? 'no action' : `a ${capital(rule.to)} action`}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}`;
   case 'Reaction': return `Card button for ${{ attacker: 'the attacker', allyOfTarget: "the target's allies", allyOfAttacker: "the attacker's allies", enemyOfAttacker: "the attacker's enemies" }[rule.who] ?? 'the target'}${Number(rule.within) > 0 ? ` within ${rule.within} ft` : ''}${rule.outcome && rule.outcome != 'any' ? ` (on a ${rule.outcome})` : ''}${rule.attackOnly ? ', attacks only' : ''}${costPhrase(rule.cost)}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}: ${stepWords(rule.steps)}`;
-  case 'Use': return `Use: ${rule.label ?? ''}${costPhrase(rule.cost)}${limitPhrase(rule.limit)}${tail ? `,${tail}` : ''}`;
+  case 'Use': return `Use: ${rule.label ?? ''}${costPhrase(rule.cost)}${limitPhrase(rule.limit)}${chargesPhrase(rule.charges)}${tail ? `,${tail}` : ''}`;
   case 'Trigger': return `When ${rule.watch ? `${{ ally: 'an ally', enemy: 'an enemy', any: 'someone else' }[rule.watch] ?? humanize(rule.watch).toLowerCase()}${Number(rule.within) > 0 ? ` within ${rule.within} ft` : ''} - ` : ''}${EVENT_WORDS[rule.event] ?? humanize(rule.event).toLowerCase()}${['afterRoll', 'hit'].includes(rule.event) && rule.outcome && rule.outcome != 'any' ? ` (${humanize(rule.outcome).toLowerCase()})` : ''}${tail ? `,${tail}` : ''}: ${stepWords(rule.steps)}${limitPhrase(rule.limit)}`;
   }
 
@@ -940,6 +941,14 @@ function costPhrase(cost) {
   }
 
   return parts.length ? ` (${parts.join(', ')})` : '';
+}
+
+function chargesPhrase(charges) {
+  if (charges === undefined || charges === null || charges === '') {
+    return '';
+  }
+
+  return isPlainNumber(charges) ? `, ${charges} charge${Number(charges) == 1 ? '' : 's'} (back on a rest)` : `, ${amountWords(charges)} charges (back on a rest)`;
 }
 
 function limitPhrase(limit) {

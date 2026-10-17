@@ -512,7 +512,8 @@ export async function activateDinoPower(actor, perk, power, { pay = async () => 
   let point = null;
   if (power == 'tRexSpeed' || power == 'visualTeleportation') {
     const { pickCanvasPoint } = await import("../../mechanics/combat/forced-movement.mjs");
-    point = await pickCanvasPoint(T('Zord1DinoPickPoint'));
+    const own = actor?.token?.object ?? actor?.getActiveTokens?.()?.[0] ?? null;
+    point = await pickCanvasPoint(T('Zord1DinoPickPoint'), { token: own, rangeFrom: own, range: power == 'tRexSpeed' ? 30 : null });
     if (!point) {
       return false;
     }

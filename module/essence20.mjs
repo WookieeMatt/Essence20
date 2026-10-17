@@ -4,7 +4,7 @@ import "./items/index.mjs";
 // Item rules (system.rules) - one more extension, plus their add/remove lifecycle (docs/RULES_ENGINE_PLAN.md).
 import "./rules/adapter.mjs";
 import "./rules/lifecycle.mjs";
-import "./rules/triggers.mjs";
+import { itemCharges } from "./rules/triggers.mjs";
 import "./rules/buttons.mjs";
 import "./rules/reactions.mjs";
 import "./rules/actions.mjs";
@@ -606,6 +606,8 @@ Handlebars.registerHelper("inArray", function (array, value, options) {
 // actually banks for each. A template-level check, the same idiom {{eq item.type "shield"}}
 // already uses for the shield-activate icon right next to where this one renders.
 Handlebars.registerHelper("canUsePerk", canUsePerk);
+// A Use's charges ({max, used, left}) for the count beside its button - rules/triggers.mjs#itemCharges.
+Handlebars.registerHelper("itemCharges", itemCharges);
 Handlebars.registerHelper("hasItemUse", hasItemUse);
 Handlebars.registerHelper("canUsePower", canUsePower);
 

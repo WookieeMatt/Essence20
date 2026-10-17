@@ -105,10 +105,14 @@ export class RollDialog {
    * @returns {Promise<Object>}   The processed roll options, or { cancelled: true }.
    */
   async getSkillRollOptions(dataset, skillDataset, actor) {
-    const snag = skillDataset.snag || await this._isUntrainedSnag(skillDataset, actor, dataset.skill);
+    // The untrained Snag (a d20 Skill) is named among the Snag's sources - with an Edge it cancels it to Normal, which
+    // otherwise looked like the Edge had been ignored.
+    const untrained = !skillDataset.snag && await this._isUntrainedSnag(skillDataset, actor, dataset.skill);
+    const snag = skillDataset.snag || untrained;
     const edge = skillDataset.edge;
-    const { shiftModifierSources, edgeSourcesText, snagSourcesText } =
+    const { shiftModifierSources, edgeSourcesText, snagSourcesText: ruleSnagText } =
       buildCombatModifierSourceFields(dataset.combatModifierSources);
+    const snagSourcesText = [untrained ? this._localize('E20.RollDialogUntrained') : '', ruleSnagText].filter(Boolean).join(', ');
     const context = {
       canCritD2: dataset.canCritD2,
       shiftUp: dataset.shiftUp || 0,
@@ -117,6 +121,8 @@ export class RollDialog {
       snag: snag && !edge,
       edge: edge && !snag,
       normal: edge == snag,
+      // Both an Edge and a Snag: they cancel (the radio starts on Normal) - said under the radios.
+      edgeSnagCancel: !!(edge && snag),
       shiftModifierSources,
       edgeSourcesText,
       snagSourcesText,

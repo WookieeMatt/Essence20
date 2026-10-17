@@ -295,6 +295,25 @@
   flex: none;
 }
 
+/* A Use's charges left beside its button (rules/triggers.mjs#itemCharges) - red when none are left. */
+.essence20 .e20-use-charges {
+  flex: none;
+  align-self: center;
+  font-size: var(--font-size-11, 11px);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  /* Rajdhani keeps room below the baseline for descenders, which digits never use: even padding left "3/3" 2px from
+     the top and 5px from the bottom (measured at 11px). The extra top padding centres the numbers in the box. */
+  padding: 0.32em 4px 0.05em;
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.essence20 .e20-use-charges.spent {
+  color: var(--color-level-error, #d33c3c);
+  border-color: currentColor;
+}
+
 .essence20 .editor {
   position: relative;
   min-height: 250px;
@@ -2564,6 +2583,28 @@
 
 .essence20 .roll-dialog .roll-dialog-snag-edge-row {
   justify-content: space-between;
+  align-items: center;
+}
+
+.essence20 .roll-dialog .roll-dialog-snag-edge-row > label {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.essence20 .roll-dialog .roll-dialog-snag-edge-sources {
+  margin-top: -4px;
+  font-size: var(--font-size-12, 12px);
+  opacity: 0.85;
+}
+.essence20 .roll-dialog .roll-dialog-snag-edge-sources p {
+  margin: 0 0 2px;
+}
+
+.essence20 .roll-dialog .roll-dialog-snag-edge-cancel {
+  font-style: italic;
 }
 
 .essence20.roll-dialog-app .form-footer {

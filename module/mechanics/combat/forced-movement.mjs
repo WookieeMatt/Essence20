@@ -154,40 +154,15 @@ export async function placeActorAt(target, point) {
 }
 
 /**
- * Wait for a click on the canvas. Escape cancels.
+ * Wait for a click on the canvas, previewing where it lands (mechanics/combat/point-picker.mjs): a crosshair cursor, a
+ * marker, and with a token a ghost of it snapped to the grid. Escape or a right click cancels.
  * @param {String} prompt   Shown as a notification while waiting.
+ * @param {Object} [options]   {token, snap, rangeFrom, range} - point-picker.mjs#pickPointWithPreview.
  * @returns {Promise<{x: Number, y: Number}|null>}
  */
-export function pickCanvasPoint(prompt) {
-  return new Promise((resolve) => {
-    if (!canvas?.stage) {
-      resolve(null);
-      return;
-    }
-
-    ui.notifications.info(prompt);
-    let done = false;
-    const finish = (point) => {
-      if (done) {
-        return;
-      }
-
-      done = true;
-      canvas.stage.off('pointerdown', onClick);
-      document.removeEventListener('keydown', onKey);
-      resolve(point);
-    };
-
-    const onClick = (event) => finish(event?.getLocalPosition?.(canvas.stage) ?? canvas.mousePosition ?? null);
-    const onKey = (event) => {
-      if (event.key == 'Escape') {
-        finish(null);
-      }
-    };
-
-    canvas.stage.on('pointerdown', onClick);
-    document.addEventListener('keydown', onKey);
-  });
+export async function pickCanvasPoint(prompt, options = {}) {
+  const { pickPointWithPreview } = await import("./point-picker.mjs");
+  return pickPointWithPreview(prompt, options);
 }
 
 /**

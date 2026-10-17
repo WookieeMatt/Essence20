@@ -6,7 +6,7 @@
   "img": "systems/essence20/assets/icons/gear/watch.svg",
   "system": {
     "rules": [
-      {"type":"Use","label":"Teleport (Wrist Communicator)","when":["not:rule:data:flags.essence20.chargesUsed>=3"],"steps":[{"do":"pickPoint","prompt":"Click where you teleport to."},{"do":"moveTo","forced":false,"animate":false},{"do":"updateItem","add":{"flags.essence20.chargesUsed":1}},{"do":"chat","text":"Charges left: {@3 - @item.flags.essence20.chargesUsed}."}]}
+      {"type":"Use","label":"Teleport (Wrist Communicator)","charges":3,"steps":[{"do":"pickPoint","prompt":"Click where you teleport to.","ghost":"self"},{"do":"moveTo","forced":false,"animate":false}]}
     ],
     "automation": {
       "status": "partial",
