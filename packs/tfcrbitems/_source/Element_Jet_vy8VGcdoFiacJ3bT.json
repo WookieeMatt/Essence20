@@ -5,6 +5,10 @@
   "_id": "vy8VGcdoFiacJ3bT",
   "img": "systems/essence20/assets/icons/weapons/flamethrower.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Element damage in a 15ft cone. Alternate effects: the same cone that also shoves each target hit 5 ft away, or Intimidating. Its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,7 @@
     },
     "items": {
       "3715": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.ZqAWG11mWqPzei5E",
+        "uuid": "Compendium.essence20.tf_crb.Item.ZqAWG11mWqPzei5E",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Element Jet Effect",
         "type": "weaponEffect",
@@ -35,7 +39,7 @@
         "shiftDown": 0
       },
       "d231": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.Wf7FBuKNkke4uxOF",
+        "uuid": "Compendium.essence20.tf_crb.Item.Wf7FBuKNkke4uxOF",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Element Jet Alternate Effect",
         "type": "weaponEffect",
@@ -55,10 +59,30 @@
           "value": 15
         },
         "shiftDown": 0
+      },
+      "e7s2": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Ej7ShoveAltFx2Tf",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Element Jet Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 6,
+        "radius": 15,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 15
+        },
+        "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

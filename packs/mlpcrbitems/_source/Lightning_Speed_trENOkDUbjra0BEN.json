@@ -5,15 +5,27 @@
   "_id": "trENOkDUbjra0BEN",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","label":"Lightning Speed (target, else you: Movement doubled this scene)","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"markWindow","flag":"lightningSpeedActive","window":"scene","to":"targetOrSelf"}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: on a successful cast, your target (or you, with no target) doubles all their Movement for the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 139
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 3,
-    "duration": "1 scene",
+    "duration": {
+      "units": "scenes",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "30 feet",
     "tier": "virtuoso"

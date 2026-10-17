@@ -5,22 +5,28 @@
   "_id": "aemIg2WSa3gsYMMO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":[{"any":["self:hasType:influence:Mutant Beast","self:hasType:influence:Transmetal II","self:hasType:influence:Technorganic"]}]},
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: twice per day, opening a mental link with a creature you can see within 60ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Technorganic Secrets",
       "page": 47
     },
+    "actionType": "free",
     "items": {},
     "canActivate": false,
     "choice": null,
     "choiceType": "none",
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,
-    "prerequisite": "Mutant Beast, Transmetal II, or Technorganic Influence",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "influence",
-    "version": "powerRangers"
+    "version": "transformers"
   },
   "effects": [],
   "sort": 0,

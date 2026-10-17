@@ -5,7 +5,12 @@
   "_id": "AfYJOHUKlYZlUcaE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Perk.</p><p>Left to the table: once per combat, turning an Adept Armament miss into a hit, or a hit into a Critical Success.</p>"
+    },
     "originalId": "",
+    "actionType": "free",
     "description": "",
     "source": {
       "book": "Cobra Codex",
@@ -13,7 +18,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "role"
   },
   "effects": [],
   "sort": 106250,

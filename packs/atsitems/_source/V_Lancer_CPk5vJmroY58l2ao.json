@@ -5,6 +5,10 @@
   "_id": "CPk5vJmroY58l2ao",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick Blast Mode (Targeting) or Lance Mode (Might) when you attack, each with its own damage and range; Inertial and Silent apply. Lightspeed Response swaps it in when you Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -62,7 +66,7 @@
         "name": "V-Lancer (Lance Mode) Effects",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 1,
@@ -79,15 +83,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:perk:Lightspeed Response (Form)"]},
     "requirements": {
-      "custom": "Lightspeed Response",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

@@ -5,6 +5,10 @@
   "_id": "mbWszdFiM4zc8oEH",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Scientist Role, plus the Counselor Perks at their listed levels. Pick its Essence and Skill increases when you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

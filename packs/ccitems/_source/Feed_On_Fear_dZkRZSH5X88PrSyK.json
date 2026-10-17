@@ -5,6 +5,10 @@
   "_id": "dZkRZSH5X88PrSyK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you use Primal Fear, you may heal 1 Health instead of taking its normal benefit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

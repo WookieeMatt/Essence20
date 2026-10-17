@@ -3,23 +3,37 @@
   <div></div>
   {{/unless}}
 
-  <div style="flex-grow: 0; white-space: nowrap;">
+  <div class="e20-flex-grow-0 e20-nowrap">
     {{localize title}}
     {{#if (ne hidePlusButton 'true')}}
       {{#> plus-button dataType=dataType parentId=parentId}}
         {{!-- Custom plus button here, or use default below --}}
-        <a class="item-create" data-type="{{dataType}}" data-parent-id="{{parentId}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
-          <i class="fas fa-plus"></i>
+        <a data-action="itemCreate" data-type="{{dataType}}" data-parent-id="{{parentId}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
+          <i class="fas fa-plus" data-type="{{dataType}}" data-parent-id="{{parentId}}"></i>
         </a>
       {{/plus-button}}
+    {{/if}}
+    {{!-- Opens the Compendium Browser on this list's own tab (and, for a Perk list, its Perk
+         type). Top-level lists only - a weapon's own Upgrades list is not somewhere to browse
+         from - and only for types some book actually ships; Contact Perks are written per NPC,
+         so no book has any to find. A one-item list (singleItem, the Origin) drops it once filled -
+         the trash on the entry is the only thing left to do there. --}}
+    {{#if (and (not parentId) (lookup @root.config.compendiumBrowsableTypes dataType) (ne perkType 'contact') (or (ne singleItem 'true') (not items.length)))}}
+      <a data-action="openCompendiumBrowser" data-type="{{dataType}}" data-perk-type="{{perkType}}" data-tooltip="{{localize 'E20.CompendiumBrowserOpenFor'}}">
+        <i class="fas fa-magnifying-glass" inert></i>
+      </a>
     {{/if}}
   </div>
 
   <span class="header-accordion-wrapper">
     {{#if items.length}}
-    <a class="header-accordion-label" data-tooltip="{{ localize 'E20.ItemControlExpandAll' }}">
+    <a class="header-accordion-label" data-action="toggleAccordionHeader" data-tooltip="{{ localize 'E20.ItemControlExpandAll' }}">
       <i class="accordion-icon fas fa-chevron-down"></i>
     </a>
     {{/if}}
   </span>
 </div>
+
+{{!-- Optional extra header content, supplied by the calling container via an inline partial
+     (e.g. the Weapons container drops the Load Out / Hardpoint summary strip in here). --}}
+{{#> container-header-extra}}{{/container-header-extra}}

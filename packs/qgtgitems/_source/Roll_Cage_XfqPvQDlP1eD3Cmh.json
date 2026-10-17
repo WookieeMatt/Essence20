@@ -1,0 +1,49 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Roll Cage",
+  "type": "upgrade",
+  "_id": "XfqPvQDlP1eD3Cmh",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "rules": [
+      {"type":"DerivedStat","path":"system.traits.rollCage","op":"set","value":1,"when":["self:type:vehicle"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the vehicle gains the Roll Cage trait, and when it's Defeated its crew roll their Emergency Disembark tests with a second chance.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 56
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "Crew members roll their Emergency Disembark Skill Tests with Edge.",
+    "traits": [],
+    "type": "vehicle",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!XfqPvQDlP1eD3Cmh"
+}

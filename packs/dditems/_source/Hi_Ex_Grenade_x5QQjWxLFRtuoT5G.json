@@ -5,6 +5,10 @@
   "_id": "x5QQjWxLFRtuoT5G",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range; its traits apply, and throwing it uses it up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -19,7 +23,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "athletics",
-          "style": "melee"
+          "style": "explosive"
         },
         "damageValue": 2,
         "damageType": "sharp",
@@ -35,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"

@@ -1,0 +1,61 @@
+{
+  "folder": "PrK1LoGlph7L9zZH",
+  "name": "Public Television",
+  "type": "perk",
+  "_id": "ymtH7qBwRKqohlyF",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["self:essence:smarts>=3"]},
+    "rules": [
+      {"type":"Use","label":"Specialized in Smarts for the scene","limit":{"per":"mission","max":1},"steps":[{"do":"setToggle","key":"onAir","value":true,"until":"encounter"}]},
+      {"type":"RollModifier","label":"Public Television","when":["essence:smarts","self:toggle:onAir"],"specialize":true}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once per day; a new mission on the Scene Clock resets it): for the rest of the scene, every Smarts test opens the Roll Options Dialog with Specialized already ticked.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 47
+    },
+    "type": "general",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!ymtH7qBwRKqohlyF"
+}

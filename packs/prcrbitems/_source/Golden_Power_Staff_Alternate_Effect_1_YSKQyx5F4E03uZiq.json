@@ -6,19 +6,20 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
-      "skill": "athletics",
+      "skill": "finesse",
       "style": "melee"
     },
     "damageType": "blunt",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {
       "min": null,
-      "reachMultiplier": 0,
+      "reachMultiplier": 2,
       "long": null,
       "value": null
     }

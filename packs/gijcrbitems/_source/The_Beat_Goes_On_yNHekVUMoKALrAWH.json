@@ -5,6 +5,10 @@
   "_id": "yNHekVUMoKALrAWH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Reckless Abandon no longer ends when no enemies remain or when you're Defeated. It runs its full minute unless you switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

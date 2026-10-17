@@ -5,6 +5,13 @@
   "_id": "c7e7enVe96wOikd9",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Use","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"bank","upshift":2,"appliesWhen":["skill:driving"],"until":"encounter"}]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: while piloting a Zord, your next Driving test gets ↑2.</p><p>Left to the table: the reroll on the Megazord's Driving Group Test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,14 +20,18 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perTurn",
-    "usesPer": 1
+    "usesPer": 1,
+    "duration": {
+      "units": "scenes",
+      "value": 1,
+      "text": ""
+    }
   },
   "effects": [],
   "flags": {},

@@ -5,6 +5,10 @@
   "_id": "Eg5LUM4lWf7X7yGs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: when added, pick one of your known emotions. Automatic: activating it is free and it works while unmorphed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

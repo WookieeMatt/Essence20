@@ -3,11 +3,15 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Cube Player Influence Perk, plus a choice of its Hang-Ups (Earthspoiled, Impulsive or Vainglorious).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "",
-      "page": null
+      "book": "Transformers Core Rulebook",
+      "page": 31
     },
     "items": {
       "af69": {
@@ -35,7 +39,6 @@
         "type": "hangUp"
       }
     },
-    "bond": "",
     "mandatoryHangUp": false,
     "skills": []
   },

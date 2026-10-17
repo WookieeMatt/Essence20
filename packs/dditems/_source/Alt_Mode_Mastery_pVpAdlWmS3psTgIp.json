@@ -5,6 +5,10 @@
   "_id": "pVpAdlWmS3psTgIp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Alt Mode Mimicry's Use button lets you pick two more Alt Modes (four extra in total), with the same size limit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

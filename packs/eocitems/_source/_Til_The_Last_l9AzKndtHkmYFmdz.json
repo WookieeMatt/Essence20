@@ -1,10 +1,14 @@
 {
   "folder": "V6NVXZq8t26cStnZ",
-  "name": "\"Til The Last",
+  "name": "'Til the Last",
   "type": "perk",
   "_id": "l9AzKndtHkmYFmdz",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: add the +2 Defenses and Frightened immunity yourself while members of your team are in the scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

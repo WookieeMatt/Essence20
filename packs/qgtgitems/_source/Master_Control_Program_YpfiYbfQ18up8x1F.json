@@ -5,6 +5,10 @@
   "_id": "YpfiYbfQ18up8x1F",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: raises your drone companion to a Restricted drone and lets you pick two Standard or Limited drone upgrades to add to it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -1,0 +1,103 @@
+{
+  "folder": "IFMLoLZC4rhRHlN8",
+  "name": "Reactive",
+  "type": "power",
+  "_id": "toDyl8zb0XVvqPuj",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","label":"Reactive: scene boost on / off","event":"powerUsed","when":["item:own"],"steps":[{"do":"setToggle","key":"boost","value":"toggle","until":"scene"}]},
+      {"type":"Defense","label":"Reactive (+1 evasion boost)","defense":"evasion","mode":"addAfter","amount":1,"when":["self:toggle:boost"]},
+      {"type":"FreeUse","label":"Reactive (switching the boost off is free)","when":["self:toggle:boost"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Evasion, always on. Use button: spend one of its daily uses for another +1 Evasion for the scene.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 94
+    },
+    "actionType": "free",
+    "canActivate": true,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": null,
+    "selectionLimit": 1,
+    "type": "nanomite",
+    "usesInterval": "perDay",
+    "usesPer": 2,
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
+    "availability": "limited",
+    "usesSpent": 0
+  },
+  "effects": [
+    {
+      "name": "Reactive",
+      "origin": "Compendium.essence20.quartermasters_guide_to_gear.Item.toDyl8zb0XVvqPuj",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Reactive0001xxx0",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!toDyl8zb0XVvqPuj.Reactive0001xxx0"
+    }
+  ],
+  "sort": 1200000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787781936139,
+    "modifiedTime": 1787781936139,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!toDyl8zb0XVvqPuj"
+}

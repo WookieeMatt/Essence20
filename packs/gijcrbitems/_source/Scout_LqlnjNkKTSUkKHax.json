@@ -5,6 +5,10 @@
   "_id": "LqlnjNkKTSUkKHax",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Recon, Adaptable, Taking Point, Guidance, Survivalist and Long Range Recon at their listed levels, plus +1 Smarts at 1st and 10th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

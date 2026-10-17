@@ -1,0 +1,69 @@
+{
+  "folder": "NoD4HpzPTyMCk18R",
+  "name": "Moxie",
+  "type": "rolePoints",
+  "_id": "LGdwtqgyy1EXkKva",
+  "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+  "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: a pool of 3 Moxie Points, rising at Old Hand levels 5, 8, 11, 14 and 16. Old Hand Perks spend it through their own buttons and switches.</p><p>Left to the table: spending Moxie for an extra use of your own Perks, and refilling it after a long rest.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 0
+    },
+    "bonus": {
+      "defenseBonus": {
+        "cleverness": false,
+        "evasion": false,
+        "toughness": false,
+        "willpower": false
+      },
+      "increase": 0,
+      "level20Value": null,
+      "increaseLevels": [],
+      "startingValue": null,
+      "type": "none",
+      "value": 0
+    },
+    "isActivatable": false,
+    "isActive": false,
+    "powerCost": null,
+    "resource": {
+      "increase": 1,
+      "level20Value": null,
+      "level20ValueIsUnlimited": false,
+      "increaseLevels": [
+        "level5",
+        "level8",
+        "level11",
+        "level14",
+        "level16"
+      ],
+      "max": null,
+      "startingMax": 3,
+      "value": 0
+    }
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "14.364",
+    "createdTime": 1787050000000,
+    "modifiedTime": 1788529499676,
+    "lastModifiedBy": "eDolxwiWtO0teEJE",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!LGdwtqgyy1EXkKva"
+}

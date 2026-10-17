@@ -5,7 +5,12 @@
   "_id": "nhwqRZ9ogbZapmKv",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at 45ft/70ft range and ↓1 that deals 2 Stun.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "Through the Shattered Grid",
@@ -27,7 +32,7 @@
       "long": 70,
       "value": 45
     },
-    "shiftDown": 0
+    "shiftDown": 1
   },
   "effects": [],
   "sort": 0,

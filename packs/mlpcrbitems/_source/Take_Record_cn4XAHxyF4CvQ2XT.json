@@ -5,17 +5,26 @@
   "_id": "cn4XAHxyF4CvQ2XT",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting rolls Spellcasting and applies its cost as a lingering Spellcasting downshift. The record you make is part of the story.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 138
     },
-    "circle": "beam",
+    "actionType": "standard",
+    "circle": "utility",
     "cost": 2,
-    "duration": "Instant",
+    "duration": {
+      "units": "scenes",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
-    "range": "60 feet",
+    "range": "Range of your senses",
     "tier": "superior"
   },
   "effects": [],

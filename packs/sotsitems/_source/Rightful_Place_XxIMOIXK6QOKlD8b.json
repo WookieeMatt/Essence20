@@ -1,0 +1,59 @@
+{
+  "folder": "qyVZceaZHxOT5Ir4",
+  "name": "Rightful Place",
+  "type": "perk",
+  "_id": "XxIMOIXK6QOKlD8b",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"Heal 1 Health","limit":{"per":"encounter","max":1},"steps":[{"do":"heal","amount":1}]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: once per scene, heal 1 Health when the group puts you in charge and follows your plan.</p><p>Left to the table: the once-per-session limit, and healing Stress instead.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Story of the Seasons",
+      "page": 131
+    },
+    "type": "general",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 800000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787715892962,
+    "modifiedTime": 1787715892962,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!XxIMOIXK6QOKlD8b"
+}

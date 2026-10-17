@@ -1,0 +1,39 @@
+{
+  "folder": "xPQZVuqXJFCJwWG8",
+  "name": "Limited Kit",
+  "type": "gear",
+  "_id": "e453e02qTnKBi4zQ",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: choose its Skill and Specialization. Automatic: when a roll calls for that kit, the Roll Options Dialog says so, and Standard and Limited kit rolls take no Snag while Restricted ones take ↓2. Use button: use it up for 1 hour of that Specialization or an Edge, shown as a labelled source when you roll.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 133
+    },
+    "quantity": 1,
+    "gearType": "kits"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266490772,
+    "modifiedTime": 1790266490772,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!e453e02qTnKBi4zQ"
+}

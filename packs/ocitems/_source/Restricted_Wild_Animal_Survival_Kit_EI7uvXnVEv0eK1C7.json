@@ -1,0 +1,39 @@
+{
+  "folder": null,
+  "name": "Restricted Wild Animal Survival Kit",
+  "type": "gear",
+  "_id": "EI7uvXnVEv0eK1C7",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: counts as a Restricted kit for Animal Handling and Survival tests that call for one, once you have d8 in either Skill. On Persuasion against an animal (or with no target), a choice to roll Animal Handling or Survival instead.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Operation Cold Iron",
+      "page": 39
+    },
+    "gearType": "kits",
+    "quantity": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790266392831,
+    "modifiedTime": 1790266392831,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!EI7uvXnVEv0eK1C7"
+}

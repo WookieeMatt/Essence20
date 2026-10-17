@@ -1,43 +1,269 @@
-<form class="roll-dialog">
-  <div>
-    {{localize 'E20.ShiftUp'}}
-    <input type="number" name="shiftUp" value={{shiftUp}} min="0" step="1" />
+<div class="roll-dialog">
+  <div class="flexrow roll-dialog-shift-row">
+    <div class="flexcol">
+      {{localize 'E20.ShiftUp'}}
+      <input class="roll-dialog-shift-input" type="number" name="shiftUp" value={{shiftUp}} min="0" max="99" step="1" />
+    </div>
+    <div class="flexcol">
+      {{localize 'E20.ShiftDown'}}
+      <input class="roll-dialog-shift-input" type="number" name="shiftDown" value={{shiftDown}} min="0" max="99" step="1" />
+    </div>
   </div>
 
-  <div>
-    {{localize 'E20.ShiftDown'}}
-    <input type="number" name="shiftDown" value={{shiftDown}} min="0" step="1" />
+  <div class="flexrow roll-dialog-snag-edge-row">
+    <label><input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize 'E20.RollDialogSnag'}}</label>
+    <label><input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}} /> {{localize 'E20.RollDialogNormal'}}</label>
+    <label><input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize 'E20.RollDialogEdge'}}</label>
   </div>
 
-  <div>
-    <input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize 'E20.RollDialogSnag'}}
-    <input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}} /> {{localize 'E20.RollDialogNormal'}}
-    <input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize 'E20.RollDialogEdge'}}
-  </div>
-
-  <div>
-    <label>
-      <input type="checkbox" name="isSpecialized" {{checked isSpecialized}} />
-      <span>{{localize 'E20.RollIsSpecialized'}}</span>
-    </label>
-  </div>
-
-  <div>
-    <label>
-      <input type="checkbox" name="canCritD2" {{checked canCritD2}} />
-      <span>{{localize 'E20.RollCanCritD2'}}</span>
-    </label>
-  </div>
-
-  <div>
-    {{localize 'E20.RollDialogTimesToRoll'}}
-    <input type="number" name="timesToRoll" value=1 min="1" step="1" />
-  </div>
-
-  {{#if rolePoints}}
-  <div class="flexrow" style="align-items: center;">
-    <input type="checkbox" name="applyRolePointsUpshift" {{checked applyRolePointsUpshift}} />
-    Apply {{rolePoints.name}} to gain {{rolePoints.system.bonus.value}}<i class="fas fa-arrow-up" style="flex-grow: 0;"></i>?
+  {{!-- Where the Snag / Edge come from, under the radios (in their labels they squeezed the row out of line). --}}
+  {{#if (or snagSourcesText edgeSourcesText)}}
+  <div class="roll-dialog-snag-edge-sources">
+    {{#if snagSourcesText}}<p><strong>{{localize 'E20.RollDialogSnag'}}:</strong> {{snagSourcesText}}</p>{{/if}}
+    {{#if edgeSourcesText}}<p><strong>{{localize 'E20.RollDialogEdge'}}:</strong> {{edgeSourcesText}}</p>{{/if}}
+    {{#if edgeSnagCancel}}<p class="roll-dialog-snag-edge-cancel">{{localize 'E20.RollDialogEdgeSnagCancel'}}</p>{{/if}}
   </div>
   {{/if}}
-</form>
+
+  {{#if shiftModifierSources.length}}
+  <div class="roll-dialog-modifier-sources">
+    <span>{{localize 'E20.RollDialogAutomaticModifiers'}}</span>
+    {{#each shiftModifierSources}}
+    <div class="flexrow e20-align-center roll-dialog-toggle">
+      <span>
+        {{label}}
+        {{#if shiftUp}}(<i class="fas fa-arrow-up"></i> {{shiftUp}}){{/if}}
+        {{#if shiftDown}}(<i class="fas fa-arrow-down"></i> {{shiftDown}}){{/if}}
+      </span>
+      <label class="switch">
+        <input type="checkbox" name="combatModifierSource-{{id}}" checked="checked" />
+        <span class="switch-slider"></span>
+      </label>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollIsSpecialized'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="isSpecialized" {{checked isSpecialized}} />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollCanCritD2'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="canCritD2" {{checked canCritD2}} />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+
+  {{#if aimBonus}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogAiming'}} (<i class="fas fa-arrow-up"></i> {{aimBonus}}){{#if aimedByAction}} - {{localize 'E20.RollDialogAimedByAction'}}{{/if}}</span>
+    <label class="switch">
+      <input type="checkbox" name="isAiming" {{checked aimedByAction}} />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if storyPointSpecializedAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogStoryPointSpecialized'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="spendStoryPointSpecialized" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if energonAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogEnergon'}} (<i class="fas fa-arrow-up"></i> 1)</span>
+    <label class="switch">
+      <input type="checkbox" name="spendEnergon" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if hardpointMovement}}
+  <div class="roll-dialog-hardpoint-move">
+    <span>{{localize 'E20.RollDialogHardpointMove'}}</span>
+    <select name="hardpointMovePenalty">
+      {{#if hardpointMovement.reinforced}}
+        <option value="0">{{localize 'E20.RollDialogHardpointMoveUpTo'}}</option>
+        <option value="1">{{localize 'E20.RollDialogHardpointMoveBeyond'}} (&darr;1)</option>
+      {{else}}
+        <option value="0">{{localize 'E20.RollDialogHardpointMoveNone'}}</option>
+        <option value="1">{{localize 'E20.RollDialogHardpointMoveUpTo'}} (&darr;1)</option>
+        <option value="2">{{localize 'E20.RollDialogHardpointMoveBeyond'}} (&darr;2)</option>
+      {{/if}}
+    </select>
+  </div>
+  {{/if}}
+
+  {{!-- Fanning (X) / Retrogen weapon traits - see items/attacks/fanning.mjs and items/attacks/retrogen.mjs. --}}
+  {{!-- (Pinpoint / Make an Opening are DialogSwitch rules - the extToggles below.) --}}
+
+  {{#if kitRequiredAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogKitRequired'}}</span>
+    <select name="kitRequired">
+      <option value="none">{{localize 'E20.None'}}</option>
+      <option value="standard">{{localize 'E20.KitStandard'}}</option>
+      <option value="limited">{{localize 'E20.KitLimited'}}</option>
+      <option value="restricted">{{localize 'E20.KitRestricted'}}</option>
+      <option value="prototype">{{localize 'E20.KitPrototype'}}</option>
+      <option value="theoretical">{{localize 'E20.KitTheoretical'}}</option>
+      <option value="essence">{{localize 'E20.KitEssence'}}</option>
+    </select>
+  </div>
+  {{/if}}
+
+  {{!-- Extension controls (mechanics/item-hooks.mjs#registerDialogToggles), read back as options.ext. --}}
+  {{#each extToggles as |toggle|}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{toggle.label}}</span>
+    {{#if (eq toggle.type "number")}}
+      <input type="number" name="ext_{{toggle.name}}" value="{{toggle.value}}" min="0" max="{{toggle.max}}" step="1" />
+    {{else if (eq toggle.type "select")}}
+      <select name="ext_{{toggle.name}}">
+        {{#each toggle.options as |option|}}<option value="{{option.value}}">{{option.label}}</option>{{/each}}
+      </select>
+    {{else}}
+      <label class="switch">
+        <input type="checkbox" name="ext_{{toggle.name}}" {{#if toggle.value}}checked{{/if}} />
+        <span class="switch-slider"></span>
+      </label>
+    {{/if}}
+  </div>
+  {{/each}}
+
+  {{#if fanningMaxShots}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogFanningShots' max=fanningMaxShots}}</span>
+    <input type="number" name="fanningShots" value="0" min="0" max="{{fanningMaxShots}}" step="1" />
+  </div>
+  {{/if}}
+
+  {{#if retrogenAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogRetrogen'}} (<i class="fas fa-arrow-up"></i> 1)</span>
+    <label class="switch">
+      <input type="checkbox" name="applyRetrogen" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if enviroSealedAdverseSituationAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogEnviroSealedAdverseSituation'}}{{#if enviroSealedAdverseSituationChecked}} {{localize 'E20.RollDialogEnviroSealedHostileEnvironment'}}{{/if}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyEnviroSealedAdverseSituation" {{#if enviroSealedAdverseSituationChecked}}checked{{/if}} />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if observerSnagSubstitutionAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogObserverSnagSubstitution'}} (<i class="fas fa-arrow-down"></i> 2)</span>
+    <label class="switch">
+      <input type="checkbox" name="applyObserverSnagSubstitution" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if targetVesselSystemAvailable}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogTargetVesselSystem'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyTargetVesselSystem" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if wildAnimalKit}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{wildAnimalKit.name}}</span>
+    <select name="wildAnimalKitSkill">
+      <option value="">{{localize 'E20.SkillPersuasion'}}</option>
+      {{#each wildAnimalKit.skills}}
+      <option value="{{value}}">{{label}}</option>
+      {{/each}}
+    </select>
+  </div>
+  {{/if}}
+
+  {{#if intimidatingWeaponSkillLabel}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogIntimidatingWeapon' skill=intimidatingWeaponSkillLabel}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyIntimidatingWeapon" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if availableSkillEffects.length}}
+  <div class="roll-dialog-skill-effects">
+    <span>{{localize 'E20.RollDialogAvailableEffects'}}</span>
+    {{#each availableSkillEffects}}
+    <div class="flexrow e20-align-center roll-dialog-toggle">
+      <span>
+        {{name}}
+        {{#if summaries.length}}
+          <span class="roll-dialog-effect-summary">{{#each summaries}}{{this}}{{#unless @last}}; {{/unless}}{{/each}}</span>
+        {{/if}}
+      </span>
+      <label class="switch">
+        <input type="checkbox" name="skillEffect-{{id}}" />
+        <span class="switch-slider"></span>
+      </label>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{#if rolePoints}}
+  <div class="flexrow e20-align-center">
+    <input type="checkbox" name="applyRolePointsUpshift" {{checked applyRolePointsUpshift}} />
+    Apply {{rolePoints.name}} to gain {{rolePoints.system.bonus.value}}<i class="fas fa-arrow-up e20-flex-grow-0"></i>?
+  </div>
+  {{/if}}
+
+  {{#if damageRolePoints}}
+  <div class="flexrow e20-align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogApplyDamageBonus' name=damageRolePoints.name value=damageRolePoints.value}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyRolePointsDamage" {{checked damageRolePoints.autoEligible}} />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{#if damageRolePoints.autoReason}}
+  <div class="roll-dialog-role-points-reason">{{damageRolePoints.autoReason}}</div>
+  {{/if}}
+  {{/if}}
+
+  <div>
+    {{!-- Which Defense this attack is tested against is the DEFENDER's own choice (or the item's
+         fixed suggestion, when they don't override it) - not something to let the attacker pick
+         here (see mechanics/combat/defense-choice.mjs's own doc comment for the full RAW citation and why
+         this used to be an editable dropdown). This is display-only, so the defending side's own
+         prompt always starts from the weapon's actual suggestion regardless of what this shows;
+         the hidden input still submits it through as that suggestion. --}}
+    {{!-- Not against any Defense (Initiative, a plain Skill Test): nothing to show. --}}
+    {{#if (ne defenseType 'none')}}
+    {{localize 'E20.RollDialogDefenseType'}}
+    <span>{{localize (lookup defenseTypes defenseType)}}</span>
+    {{/if}}
+    <input type="hidden" name="defenseType" value="{{defenseType}}" />
+  </div>
+</div>

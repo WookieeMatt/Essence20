@@ -1,0 +1,90 @@
+{
+  "name": "Robot",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"ConditionImmunity","label":"Robot drone: no Social Conditions (Robot)","conditions":["frightened","mesmerized"],"when":["not:self:hasItem:Compendium.essence20.gi_joe_crb.Item.SQgxzDgyhIjuOMaa"]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: immune to poison. Automatic: the drone refuses Frightened and Mesmerized unless it has the Empathetic upgrade, and Electromagnetic attacks against it get ↑3 instead of ↓3.</p><p>Left to the table: other effects that only affect the living, and Technology repairs.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 167
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "name": "Poison Immunity",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.xV4nnjMxlb4dmyxo",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "tI9pQJROK9K4R3jS",
+      "changes": [
+        {
+          "key": "system.immunities.poison",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!xV4nnjMxlb4dmyxo.tI9pQJROK9K4R3jS"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787145794377,
+    "modifiedTime": 1787145794377,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "xV4nnjMxlb4dmyxo",
+  "folder": "M27HYmdBcwp4ApTr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!xV4nnjMxlb4dmyxo"
+}

@@ -5,6 +5,10 @@
   "_id": "BEAdHEkz1oAVMhKp",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: your Mystical Point pool, which grows at the levels in the Spirit of Magic table and refills on a Rest. Mystical Understanding and the other Spirit of Magic Perks spend from it automatically.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

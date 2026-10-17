@@ -1,0 +1,43 @@
+{
+  "folder": "CAUR4uttIJZ0azqp",
+  "name": "Sky Morpher",
+  "type": "gear",
+  "_id": "2FlXYjY1AFSFq8Jz",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Sky Morpher (driving your own Zord: ↑1)","upshift":1,"when":["skill:driving","vehicle:driving","vehicle:ownZord"]},
+      {"type":"RollModifier","scope":"driven","label":"Sky Morpher (driving your own Zord: ↑1)","upshift":1,"when":["skill:driving","self:type:zord","self:ownedByHolder"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you drive your own Zord, Driving tests get ↑1, listed as Sky Morpher in the Roll Options Dialog.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 68
+    },
+    "gearType": "other",
+    "quantity": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265594017,
+    "modifiedTime": 1790265594017,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!2FlXYjY1AFSFq8Jz"
+}

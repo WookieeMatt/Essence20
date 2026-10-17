@@ -5,6 +5,10 @@
   "_id": "dXtJGif7KEbsrgUa",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Strength and +1 Health for the Zord.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

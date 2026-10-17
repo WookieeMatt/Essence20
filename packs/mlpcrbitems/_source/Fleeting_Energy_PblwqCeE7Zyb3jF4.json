@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when Force adds its +1 damage, your next Strength Skill test (Athletics, Brawn, Intimidation or Might) takes ↓1, already counted in the downshift your Roll Options Dialog opens with. Left to the table: the ↓1 on any further Strength tests until the end of your next turn.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

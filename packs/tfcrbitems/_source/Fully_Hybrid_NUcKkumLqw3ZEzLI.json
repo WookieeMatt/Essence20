@@ -5,7 +5,12 @@
   "_id": "NUcKkumLqw3ZEzLI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: spend an Energon Point on the sheet to partially convert, then apply the Bot Mode and Alt Mode benefits, Movement and Size you choose.</p>"
+    },
     "originalId": "",
+    "actionType": "free",
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
@@ -18,7 +23,6 @@
       "currentValue": 0,
       "increaseValue": 1
     },
-    "canActivate": true,
     "choice": null,
     "choiceType": "none",
     "isRoleVariant": false,
@@ -29,7 +33,7 @@
     "selectionLimit": 1,
     "type": "role",
     "value": 0,
-    "version": "powerRangers"
+    "version": "transformers"
   },
   "effects": [],
   "sort": 0,

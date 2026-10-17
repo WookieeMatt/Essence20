@@ -5,6 +5,13 @@
   "_id": "c3yk9hNPVKwogzQn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"CritOnD2","label":"Forward Observation: crit on the d2 observing an unaware target","when":["skill:alertness","target:status:surprised"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Alertness counts as both a Smarts and a Social Skill. Automatic: Alertness tests against a Surprised target can Critically Succeed on the d2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +22,96 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.c3yk9hNPVKwogzQn",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "wahCJih48xbhmBZC",
+      "changes": [
+        {
+          "key": "system.skills.alertness.essences.smarts",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Alertness as Smarts",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!c3yk9hNPVKwogzQn.wahCJih48xbhmBZC"
+    },
+    {
+      "origin": "Item.c3yk9hNPVKwogzQn",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "3UAhZOeatxIB6nRb",
+      "changes": [
+        {
+          "key": "system.skills.alertness.essences.social",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Alertness as Social",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!c3yk9hNPVKwogzQn.3UAhZOeatxIB6nRb"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

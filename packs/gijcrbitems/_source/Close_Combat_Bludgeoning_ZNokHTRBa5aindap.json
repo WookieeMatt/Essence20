@@ -1,10 +1,14 @@
 {
   "folder": "EPfL3S8nx5LSxuhK",
-  "name": "Close Combat Bludgeoning",
+  "name": "Close Combat Bludgeon",
   "type": "weapon",
   "_id": "ZNokHTRBa5aindap",
   "img": "systems/essence20/assets/icons/weapons/baseball-bat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Blunt damage at Reach, and its traits apply. Alternate Effect: Stun 1 at ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +19,7 @@
       "fb3e": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.Ty7ZBubtYM7BIwbT",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Bludgeoning Effect",
+        "name": "Close Combat Bludgeon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -37,7 +41,7 @@
       "e8e5": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.2X1w4UM04U6LliE0",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Close Combat Bludgeoning Alternate Effect",
+        "name": "Close Combat Bludgeon Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -57,8 +61,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"

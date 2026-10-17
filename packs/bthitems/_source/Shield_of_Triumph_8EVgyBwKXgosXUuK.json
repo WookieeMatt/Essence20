@@ -4,6 +4,10 @@
   "type": "shield",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: adds its passive or active Defense bonus while equipped, and grants its shield attack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -48,7 +52,7 @@
       "type": "defenseBonus",
       "other": null
     },
-    "availability": "standard",
+    "availability": "restricted",
     "classification": "medium",
     "equipped": false,
     "passiveEffect": {

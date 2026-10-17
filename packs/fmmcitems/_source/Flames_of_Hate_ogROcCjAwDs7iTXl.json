@@ -1,0 +1,101 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Flames of Hate",
+  "type": "weapon",
+  "_id": "ogROcCjAwDs7iTXl",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting against Cleverness in a 60ft line for its listed damage, ignoring armor bonuses; its Alternate Effect blinds instead.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "e001": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.NM8MYrneenCTTaPZ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Flames of Hate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "psychic",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 60,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0,
+        "hasArmorPiercing": true
+      },
+      "e002": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.C2A6ZgisRQBnlXMZ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Flames of Hate Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 0,
+        "damageType": "blindingBlast",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 60,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Path of Cruelty"]},
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "psychic"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1789114659637,
+    "modifiedTime": 1789114659637,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ogROcCjAwDs7iTXl"
+}

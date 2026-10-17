@@ -5,15 +5,24 @@
   "_id": "A7wd6VFj5PG80A1S",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: the spell's effect, which is narrative (the plant growth).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Knights of Canterlot",
       "page": 41
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 2,
-    "duration": "1 hour",
+    "duration": {
+      "units": "hours",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "1 plant",
     "tier": "elementary"

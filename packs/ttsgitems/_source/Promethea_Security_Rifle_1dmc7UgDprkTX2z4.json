@@ -5,6 +5,10 @@
   "_id": "1dmc7UgDprkTX2z4",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Sharp damage at 60ft/100ft range; its Accurate and Ballistic traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

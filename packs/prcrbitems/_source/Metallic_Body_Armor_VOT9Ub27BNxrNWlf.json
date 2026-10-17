@@ -5,11 +5,15 @@
   "_id": "VOT9Ub27BNxrNWlf",
   "img": "icons/svg/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +3 Toughness; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 118
+      "page": 119
     },
     "items": {},
     "availability": "limited",
@@ -17,6 +21,7 @@
     "bonusToughness": 3,
     "classification": "heavy",
     "equipped": false,
+    "isPowerArmor": true,
     "traits": [
       "deflective"
     ],

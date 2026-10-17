@@ -5,6 +5,10 @@
   "_id": "QbfY2NGNmUmKa6uO",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the weapon gains a Stun alternate effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

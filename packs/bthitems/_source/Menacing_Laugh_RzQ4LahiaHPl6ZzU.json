@@ -5,12 +5,20 @@
   "_id": "RzQ4LahiaHPl6ZzU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"1 Terror: regain 1 Personal Power","when":["self:hasItem:Compendium.essence20.beneath_the_helmet.Item.yBBB0Mi6fr84YcSd"],"cost":{"resource":{"rolePoints":true},"amount":1},"limit":{"per":"turn"},"steps":[{"do":"gainResource","resource":{"path":"system.powers.personal.value"},"amount":1}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Terror to regain 1 Personal Power as a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Beneath the Helmet",
       "page": 40
     },
+    "actionType": "free",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

@@ -3,10 +3,14 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added you pick the Essence and Origin Skill; you also get its Health, Movement and the Armchair General Origin Benefit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Field Guide to Action & Adventure",
+      "book": "Field Guide to Action and Adventure",
       "page": 63
     },
     "items": {

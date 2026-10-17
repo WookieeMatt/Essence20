@@ -5,6 +5,10 @@
   "_id": "hr78g0celAOw4Vzk",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: one -1 penalty per Defense, all switched off to start.</p><p>Left to the table: switching on the one for the Defense your Hang-Up affects.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

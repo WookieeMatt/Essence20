@@ -5,6 +5,10 @@
   "_id": "5RMg9X6qb26vqknE",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to gains the Laser trait, including the Laser trait's extra attack options.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

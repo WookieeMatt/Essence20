@@ -5,6 +5,10 @@
   "_id": "xZO0n2XP9piJAvR4",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for Void damage with the listed alternate effect; the Void trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -22,7 +26,7 @@
           "style": "melee"
         },
         "damageValue": 2,
-        "damageType": "element",
+        "damageType": "void",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -44,7 +48,7 @@
           "style": "melee"
         },
         "damageValue": 1,
-        "damageType": "element",
+        "damageType": "void",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -57,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "medium"
@@ -69,7 +71,10 @@
       "skill": "athletics",
       "shift": "none"
     },
-    "traits": [],
+    "traits": [
+      "powerWeapon",
+      "void"
+    ],
     "upgradeTraits": [],
     "usesPerScene": null
   },

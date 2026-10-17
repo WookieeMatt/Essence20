@@ -5,6 +5,10 @@
   "_id": "2Pqtey4nJ5vnC4Ea",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Story item. Roll the Science test from the sheet; commanding an Empyreal, the Stun it inflicts and breaking the Shard are up to the GM.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

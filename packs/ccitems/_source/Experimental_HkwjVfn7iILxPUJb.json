@@ -5,6 +5,10 @@
   "_id": "HkwjVfn7iILxPUJb",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: gives the weapon the Temperamental trait; on a Fumble the weapon's effect hits you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

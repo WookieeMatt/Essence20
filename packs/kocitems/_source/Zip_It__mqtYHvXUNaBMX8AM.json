@@ -5,15 +5,24 @@
   "_id": "mqtYHvXUNaBMX8AM",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: the spell's effect, which is narrative (silencing the target), including the extra cost for an unwilling target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Knights of Canterlot",
       "page": 49
     },
+    "actionType": "standard",
     "circle": "enchantment",
     "cost": 1,
-    "duration": "1 scene",
+    "duration": {
+      "units": "scenes",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "Line of Sight",
     "tier": "superior"

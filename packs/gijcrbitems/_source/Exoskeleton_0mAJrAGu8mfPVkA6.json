@@ -5,6 +5,10 @@
   "_id": "0mAJrAGu8mfPVkA6",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +5 Evasion as Super Heavy armor, and the Computerized trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

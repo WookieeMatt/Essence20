@@ -1,10 +1,19 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
+{{#if (or (eq item.flags.core.sourceId "Compendium.essence20.mlp_crb.Item.xs94i5KPfQYZWh4B") (eq item._stats.compendiumSource "Compendium.essence20.mlp_crb.Item.xs94i5KPfQYZWh4B"))}}
+<button type="button" data-action="activateConsummatePerformer" data-uuid="{{item.uuid}}">
+  {{localize 'E20.ConsummatePerformerActivate'}}
+</button>
+{{/if}}
+
 <div class="chip-section">
-  {{#if item.system.prerequisite}}
-  <span class="chip" name="chip.perk.prerequisite">{{localize 'E20.PerkPrerequisite'}}: {{item.system.prerequisite}}</span>
-  {{/if}}
+  {{#with (prerequisiteText item) as |prerequisite|}}
+  <span class="chip" name="chip.perk.prerequisite">{{localize 'E20.PerkPrerequisite'}}: {{prerequisite}}</span>
+  {{/with}}
   {{#if item.system.type}}
   <span class="chip" name="chip.perk.type">{{localize 'E20.PerkType'}}: {{lookup @root.config.perkTypes item.system.type}}</span>
+  {{/if}}
+  {{#if (and (eq item.system.type "contact") item.system.allegianceCost)}}
+  <span class="chip" name="chip.perk.allegianceCost">{{localize 'E20.PerkAllegianceCost'}}: {{item.system.allegianceCost}}</span>
   {{/if}}
 </div>

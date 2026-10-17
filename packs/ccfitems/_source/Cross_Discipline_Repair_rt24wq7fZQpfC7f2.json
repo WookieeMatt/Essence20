@@ -1,0 +1,40 @@
+{
+  "folder": null,
+  "name": "Cross-Discipline Repair",
+  "type": "perk",
+  "_id": "rt24wq7fZQpfC7f2",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Manual: the system never adds a penalty for repairing another faction's technology, so there is nothing to lift. Left to the table: letting you repair that technology as if it were your own.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra/Con Fusion",
+      "page": 8
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!rt24wq7fZQpfC7f2"
+}

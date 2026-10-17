@@ -5,6 +5,10 @@
   "_id": "0hywypfu3zEdOYLB",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Perk.</p><p>Left to the table: attaching the free upgrades to your Signature Weapon by hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

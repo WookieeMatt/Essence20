@@ -1,0 +1,59 @@
+{
+  "folder": "PrK1LoGlph7L9zZH",
+  "name": "In the Rain",
+  "type": "perk",
+  "_id": "grV4J3aS09yzGqW7",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"In the Rain","when":[{"any":["roll:shove","item:damageType:knocProne","item:damageType:maneuver"]},"roll:downshifted"],"upshift":1}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when a Shove, Trip or Maneuver has a ↓ on it, ↑1 cancels the first ↓1, labelled In the Rain in the Roll Options Dialog.</p><p>Left to the table: ignoring weather penalties to visibility.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 47
+    },
+    "type": "general",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!grV4J3aS09yzGqW7"
+}

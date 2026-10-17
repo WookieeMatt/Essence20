@@ -1,0 +1,38 @@
+{{!--
+  The `parties` PART for Essence20ActorDirectory - each Party ("Squad") actor as an expandable
+  folder with its Player Character members nested inside. Relocated into the top of the
+  directory list by the directory's _onRender.
+--}}
+<ol class="plain e20-parties">
+  {{#each parties as |party|}}
+  <li class="directory-item folder e20-party-folder flexcol{{#if party.pinned}} pinned{{/if}}{{#if (lookup @root.expanded party.id)}} expanded{{/if}}"
+      data-party data-entry-id="{{party.id}}" draggable="true">
+    <header class="folder-header" data-action="togglePartyFolder">
+      <i class="folder-toggle fa-solid fa-caret-right fa-fw" inert></i>
+      <img class="e20-party-icon" src="{{party.img}}" alt="{{party.name}}" loading="lazy" />
+      <span class="folder-name ellipsis">{{party.name}}</span>
+      <span class="e20-party-count" data-tooltip="{{localize 'E20.PartyMembers'}}">{{party.memberCount}}</span>
+      <button type="button" class="inline-control icon fa-solid fa-file" data-action="openPartySheet"
+        data-tooltip="{{localize 'E20.PartyOpenSheet'}}" aria-label="{{localize 'E20.PartyOpenSheet'}}"></button>
+      {{#if (and @root.user.isGM (not party.pinned))}}
+      <button type="button" class="inline-control icon fa-solid fa-thumbtack" data-action="pinParty"
+        data-tooltip="{{localize 'E20.PartyPin'}}" aria-label="{{localize 'E20.PartyPin'}}"></button>
+      {{/if}}
+    </header>
+    <ol class="subdirectory">
+      {{#each party.members as |member|}}
+      <li class="directory-item entry actor flexrow" data-entry-id="{{member.id}}" draggable="true">
+        <img class="thumbnail" src="{{member.img}}" alt="{{member.name}}" loading="lazy" />
+        <a class="entry-name ellipsis" data-action="activateEntry">{{member.name}}</a>
+        {{#if @root.user.isGM}}
+        <a class="inline-control icon fa-solid fa-eject" data-action="removePartyMember"
+          data-tooltip="{{localize 'E20.PartyRemoveMember'}}" aria-label="{{localize 'E20.PartyRemoveMember'}}"></a>
+        {{/if}}
+      </li>
+      {{else}}
+      <li class="blank">{{localize 'E20.PartyRosterEmpty'}}</li>
+      {{/each}}
+    </ol>
+  </li>
+  {{/each}}
+</ol>

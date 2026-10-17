@@ -1,0 +1,39 @@
+{
+  "folder": "CGY5yIMLAGHuNYZA",
+  "name": "Standard Artisan (Chef) Kit",
+  "type": "gear",
+  "_id": "de6EAtAoFs4mgfuj",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when a roll calls for a kit, your best carried kit sets the Snag or ↓. Use button: use it up for temporary Chef Specialization (↑1 if you have it) for a minute, or refill it by scrounging.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 158
+    },
+    "quantity": 1,
+    "gearType": "kits"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266289018,
+    "modifiedTime": 1790266289018,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!de6EAtAoFs4mgfuj"
+}

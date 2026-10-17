@@ -5,6 +5,13 @@
   "_id": "np3oMccakpivWuSQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Streetwise instead (Street Smarts)","when":["skill:persuasion"],"useSkill":"streetwise"}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Streetwise can also use Smarts. Roll Options Dialog: a switch to roll Streetwise in place of Persuasion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -32,7 +39,7 @@
       "_id": "LjPHZSNPI3fIlwzf",
       "changes": [
         {
-          "key": "system.skills.streetwise.smarts",
+          "key": "system.skills.streetwise.essences.smarts",
           "mode": 5,
           "value": "true",
           "priority": null

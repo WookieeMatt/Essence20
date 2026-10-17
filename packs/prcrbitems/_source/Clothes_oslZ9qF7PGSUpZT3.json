@@ -5,11 +5,15 @@
   "_id": "oslZ9qF7PGSUpZT3",
   "img": "icons/svg/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: ordinary clothing with no armor bonus; it has the Silent trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 118
+      "page": 119
     },
     "items": {},
     "availability": "automatic",

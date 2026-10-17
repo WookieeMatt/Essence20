@@ -5,6 +5,10 @@
   "_id": "Rb8q2AL0mOQX2Tmr",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when added, you gain Aerial movement and lose some Ground movement, with an optional dialog to trade the cost.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

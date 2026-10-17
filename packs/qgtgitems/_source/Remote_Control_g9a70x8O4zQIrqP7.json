@@ -5,6 +5,10 @@
   "_id": "g9a70x8O4zQIrqP7",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing applies automatically.</p><p>Left to the table: adding your Standard drone as a companion, and making Alertness and Technology tests as if you were where the drone is.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

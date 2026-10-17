@@ -5,6 +5,10 @@
   "_id": "RQCuZ5GTakBNQVMT",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while equipped, adds its armor bonus to your Defenses.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

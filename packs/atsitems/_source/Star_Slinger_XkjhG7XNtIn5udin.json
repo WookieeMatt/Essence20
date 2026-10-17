@@ -5,6 +5,10 @@
   "_id": "XkjhG7XNtIn5udin",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and multiple attacks, plus its alternate effect and Booster Mode. Inertial ignores gravity penalties.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -23,7 +27,7 @@
         },
         "damageValue": 1,
         "damageType": "element",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 4,
         "radius": 0,
         "range": {
@@ -45,7 +49,7 @@
         },
         "damageValue": 2,
         "damageType": "element",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 4,
         "radius": 0,
         "range": {
@@ -67,7 +71,7 @@
         },
         "damageValue": 2,
         "damageType": "element",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 4,
         "radius": 0,
         "range": {
@@ -79,8 +83,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

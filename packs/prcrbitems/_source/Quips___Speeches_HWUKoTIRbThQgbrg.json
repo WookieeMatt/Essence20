@@ -5,6 +5,10 @@
   "_id": "HWUKoTIRbThQgbrg",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: tracks your Quips &amp; Speeches, which grow at the listed levels; Heart of the Team and You Got This! spend them.</p><p>Left to the table: refilling them after a long rest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

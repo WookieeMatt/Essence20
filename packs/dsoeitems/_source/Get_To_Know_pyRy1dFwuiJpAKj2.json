@@ -5,15 +5,28 @@
   "_id": "pyRy1dFwuiJpAKj2",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"PreCast","label":"Get To Know: pick a Skill","steps":[{"do":"pick","key":"skill","from":"skill"}]},
+      {"type":"Trigger","label":"Get To Know","event":"afterRoll","outcome":"success","when":["item:own"],"steps":[{"do":"target","min":0},{"do":"rememberTarget","var":"foe"},{"do":"setVar","key":"skill","value":"{choice.skill}"},{"do":"bank","to":"self","edge":true,"appliesWhen":["skill:{var.skill}","target:uuid:{var.foe}"],"until":"scene","replace":true}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you cast it you pick a Skill. On a success, your next roll of that Skill with the target targeted gets Edge, labelled Get To Know in the Roll Options Dialog. An unused Edge is dropped when the GM starts a new scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Dark Skies Over Equestria",
       "page": 21
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 2,
-    "duration": "1 Scene",
+    "duration": {
+      "units": "scenes",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "Line of Sight",
     "tier": "elementary"

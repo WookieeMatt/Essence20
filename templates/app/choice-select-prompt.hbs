@@ -1,10 +1,26 @@
 <div>
   <h3>{{localize prompt}}</h3>
-  <div class="choice-buttons">
+  {{#if searchable}}
+    <div class="choice-filter">
+      <input type="search" name="choiceSearch" placeholder="{{localize 'E20.ChoiceSearchPlaceholder'}}" autocomplete="off" />
+      {{#if groups.length}}
+        <select name="choiceGroup" aria-label="{{localize 'E20.ChoiceGroupFilter'}}">
+          <option value="">{{localize 'E20.ChoiceGroupAll'}}</option>
+          {{#each groups as |group|}}
+            <option value="{{group}}" {{#if (eq group ../defaultGroup)}}selected{{/if}}>{{group}}</option>
+          {{/each}}
+        </select>
+      {{/if}}
+      <span class="choice-count"></span>
+    </div>
+  {{/if}}
+  <div class="choice-buttons {{#if searchable}}choice-list{{/if}}">
     {{#each choices as |choice|}}
-      <div class="choice">
-        <button type="button" {{#if choice.name}} name="{{choice.name}}" {{/if}} value="{{choice.value}}" data-action="{{../type}}">
-          <span>{{choice.label}}</span>
+      <div class="choice{{#if choice.unmet}} is-unmet{{/if}}" data-search="{{choice.search}}" data-group="{{choice.group}}">
+        <button type="button" {{#if choice.name}} name="{{choice.name}}" {{/if}} value="{{choice.value}}" data-action="{{../type}}"
+          {{#if choice.unmet}}data-tooltip="{{choice.unmet}}"{{/if}} {{#if choice.blocked}}disabled{{/if}}>
+          <span>{{#if choice.unmet}}<i class="fas fa-times"></i> {{/if}}{{choice.label}}</span>
+          {{#if choice.detail}}<span class="choice-detail">{{choice.detail}}</span>{{/if}}
         </button>
         {{#if choice.uuid}}
           <a

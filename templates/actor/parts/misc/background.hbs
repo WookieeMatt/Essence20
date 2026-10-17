@@ -4,8 +4,89 @@
 {{!-- Influences --}}
 {{> "systems/essence20/templates/actor/parts/items/influence/container.hbs"}}
 
-{{!-- Bonds --}}
-{{> "systems/essence20/templates/actor/parts/items/bond/container.hbs"}}
-
 {{!-- Hang Ups --}}
 {{> "systems/essence20/templates/actor/parts/items/hangUp/container.hbs"}}
+
+{{!-- Biography - below the item containers above (not the very top of the tab), so the
+     sliced-border__label captions (which float above the box's own top edge) have room to
+     clear the tab content area's top edge instead of getting clipped. --}}
+<div class="flexrow biography-row">
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyPronoun'}}</label>
+    <input type="text" name="system.biography.pronoun" value="{{system.biography.pronoun}}" />
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyGender'}}</label>
+    <input type="text" name="system.biography.gender" value="{{system.biography.gender}}" />
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyAge'}}</label>
+    {{numberInput system.biography.age name="system.biography.age" min=0 step=1}}
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyHeight'}}</label>
+    <input type="text" name="system.biography.height" value="{{system.biography.height}}" />
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyWeight'}}</label>
+    <input type="text" name="system.biography.weight" value="{{system.biography.weight}}" />
+  </div>
+</div>
+
+<div class="flexrow biography-row">
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyEyeColor'}}</label>
+    <input type="text" name="system.biography.eyeColor" value="{{system.biography.eyeColor}}" />
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyHairColor'}}</label>
+    <input type="text" name="system.biography.hairColor" value="{{system.biography.hairColor}}" />
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographySkinColor'}}</label>
+    <input type="text" name="system.biography.skinColor" value="{{system.biography.skinColor}}" />
+  </div>
+</div>
+
+{{!-- The {{editor}} Handlebars helper emits the legacy .editor-edit/.editor-content markup,
+     whose click-to-edit activation is wired up by FormApplication (appv1) only - it's dead
+     weight on an ApplicationV2 sheet like this one, so the pencil button did nothing.
+     <prose-mirror> (used the same way on the Item sheet's own Description tab,
+     item/tabs/description.hbs) is the ApplicationV2-native replacement: a self-contained
+     custom element that activates its own toggle button, editor, and form-value binding with
+     no extra JS required here.
+     The toggled-off (read-only) display doesn't come from the value attribute - it reads this
+     element's own innerHTML as its "enriched" content (HTMLProseMirrorElement's constructor:
+     `this.#enriched = enriched || this.innerHTML`). Leaving it empty made `this.#enriched` an
+     empty STRING, and `_refresh()` uses `this.#enriched ?? this._value` - `??` only falls
+     through on null/undefined, not on an empty string, so the display stayed blank until the
+     editor was actually activated (activation reads `value` directly, bypassing this). Putting
+     the current value here too is what HTMLProseMirrorElement's own `.create()` factory does for
+     a toggled editor - the same fix, just written as raw HTML instead of JS. --}}
+<div class="biography-editor-field">
+  <label>{{localize 'E20.BiographyDescription'}}</label>
+  {{!-- Raw (not TextEditor-enriched) field value - @UUID/content-link enrichment isn't wired up
+       for this field yet, but the editor still binds/saves correctly without it. --}}
+  <prose-mirror name="system.biography.description" value="{{system.biography.description}}" document-uuid="{{document.uuid}}" toggled>{{{system.biography.description}}}</prose-mirror>
+</div>
+
+<div class="biography-editor-field">
+  <label>{{localize 'E20.BiographyBio'}}</label>
+  <prose-mirror name="system.biography.bio" value="{{system.biography.bio}}" document-uuid="{{document.uuid}}" toggled>{{{system.biography.bio}}}</prose-mirror>
+</div>
+
+<div class="biography-editor-field">
+  <label>{{localize 'E20.BiographyBonds'}}</label>
+  <prose-mirror name="system.biography.bonds" value="{{system.biography.bonds}}" document-uuid="{{document.uuid}}" toggled>{{{system.biography.bonds}}}</prose-mirror>
+</div>
+
+<div class="biography-editor-field">
+  <label>{{localize 'E20.BiographyLanguages'}}</label>
+  <prose-mirror name="system.biography.languages" value="{{system.biography.languages}}" document-uuid="{{document.uuid}}" toggled>{{{system.biography.languages}}}</prose-mirror>
+</div>
+
+{{!-- Notes --}}
+<div class="biography-editor-field">
+  <label>{{localize 'E20.ActorNotes'}}</label>
+  <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled>{{{system.notes}}}</prose-mirror>
+</div>

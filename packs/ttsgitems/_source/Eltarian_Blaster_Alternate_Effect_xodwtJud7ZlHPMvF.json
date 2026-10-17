@@ -5,7 +5,12 @@
   "_id": "xodwtJud7ZlHPMvF",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at 30ft/60ft range that deals 2 Stun.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "Through the Shattered Grid",
@@ -13,7 +18,7 @@
     },
     "classification": {
       "skill": "targeting",
-      "style": "melee"
+      "style": "energy"
     },
     "damageType": "stun",
     "damageValue": 2,

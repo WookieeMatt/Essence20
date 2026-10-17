@@ -1,0 +1,94 @@
+{
+  "folder": "Bx6J3cwUi2nQpV7g",
+  "name": "Faceless",
+  "type": "hangUp",
+  "_id": "Y2cKjlgydMz2fjRs",
+  "img": "systems/essence20/assets/icons/items/hangup.svg",
+  "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↓1 on Intimidation, Performance and Persuasion.</p><p>Left to the table: the penalty is meant only when you try to be the centre of attention, so switch the effect off otherwise.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 29
+    }
+  },
+  "effects": [
+    {
+      "origin": "Item.Y2cKjlgydMz2fjRs",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "jdz89OCmJP9ixeYp",
+      "changes": [
+        {
+          "key": "system.skills.intimidation.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.performance.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.persuasion.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Social Downshift",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!Y2cKjlgydMz2fjRs.jdz89OCmJP9ixeYp"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!Y2cKjlgydMz2fjRs"
+}

@@ -4,6 +4,10 @@
   "type": "shield",
   "img": "systems/essence20/assets/icons/items/shield.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: while raised, choose +1 Evasion or +1 Toughness. No bonus while carried passively.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

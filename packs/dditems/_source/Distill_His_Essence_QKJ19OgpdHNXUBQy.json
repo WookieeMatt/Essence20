@@ -1,0 +1,44 @@
+{
+  "folder": "7HOrvd6hwScvddul",
+  "name": "Distill His Essence",
+  "type": "perk",
+  "_id": "QKJ19OgpdHNXUBQy",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["self:has:Word of Unicron","self:skill:culture>=d4"]},
+    "rules": [
+      {"type":"Use","label":"Distill 2 Energon into 1 Dark Energon","limit":{"per":"rest"},"cost":{"resource":{"path":"system.energon.normal.value"},"amount":2},"steps":[{"do":"gainResource","resource":{"path":"system.energon.dark.value"},"amount":1},{"do":"chat","text":"{name} distills 2 Energon into 1 Dark Energon."}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (once a day): turn 2 Energon Points into 1 Dark Energon Point. It resets when you Rest.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 111
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266885698,
+    "modifiedTime": 1790266885698,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!QKJ19OgpdHNXUBQy"
+}

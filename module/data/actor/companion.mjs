@@ -1,18 +1,12 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
-import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
+import { makeStrWithChoices } from "../generic-makers.mjs";
 
-import { character } from './templates/character.mjs';
+import { basedEssences, character, migrateCharacterData } from './templates/character.mjs';
+import { migrateCreatureEssences } from '../../mechanics/characters/creature-essences.mjs';
 import { common } from './templates/common.mjs';
 import { creature } from './templates/creature.mjs';
-
-const fields = foundry.data.fields;
-
-function makeDefensesFields(init) {
-  return new fields.SchemaField({
-    value: makeInt(init),
-  });
-}
+import { migrateNonPcStats } from './templates/stat-migration.mjs';
 
 export class CompanionActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -21,13 +15,17 @@ export class CompanionActorData extends foundry.abstract.TypeDataModel {
       ...common(),
       ...creature(),
       availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
-      defenses: new fields.SchemaField({
-        toughness: makeDefensesFields(10),
-        evasion: makeDefensesFields(10),
-        willpower: makeDefensesFields(null),
-        cleverness: makeDefensesFields(null),
-      }),
       type: makeStrWithChoices(Object.keys(E20.companionTypes), 'pet'),
+      // A typed base under the worked-out score (mechanics/characters/creature-essences.mjs).
+      essences: basedEssences(),
     };
+  }
+
+  static migrateData(source, options) {
+    // Old flat-number Essences become {max, value} first (as for NPCs), then take their base.
+    migrateCharacterData(source);
+    migrateNonPcStats(source);
+    migrateCreatureEssences(source, options);
+    return super.migrateData(source, options);
   }
 }

@@ -1,6 +1,8 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
-import { getItemsOfTypeFromSystemItems, getShiftedSkill } from "../helpers/utils.mjs";
+import { applyHangUpChoice } from "../mechanics/characters/hang-up-choice.mjs";
+import { getItemsOfTypeFromSystemItems, getShiftedSkill } from "../util/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
+import { botSizeFor, fullMovement, movementLabel } from "../items/shared/alt-mode-chassis.mjs";
 
 /**
  * Handle the dropping of an influence on to a character
@@ -110,6 +112,14 @@ export async function _showOriginSkillPrompt(actor, origin, selectedEssence, dro
     return;
   }
 
+  // Some Origins (e.g. the Power Rangers CRB's) grant every listed skill at d2/a Specialization
+  // rather than letting the player pick just one - the Essence choice above only affects the
+  // Ability Score increase. Skip the picker and carry the whole list through as-is.
+  if (origin.system.allSkillsGranted) {
+    await _checkForAltModes(actor, origin, selectedEssence, [...origin.system.skills], dropFunc);
+    return;
+  }
+
   const choices = {};
   for (const skill of origin.system.skills) {
     const essence = CONFIG.E20.skillToEssence[skill];
@@ -185,7 +195,8 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Origin} origin The Origin being dropped
  * @param {String} essence The essence selected in the _showOriginEssencePrompt()
- * @param {String} skill the skill selected in the _showOriginSkillEssencePrompt()
+ * @param {String|String[]} skill The skill selected in the _showOriginSkillEssencePrompt(), or -
+ *   for an origin.system.allSkillsGranted Origin - the full list of skills it grants
  * @param {Function} dropFunc The function to call to complete the Origin drop
  * @param {String} selectedAltMode The selected altMode resulting from _checkForAltModes()
  */
@@ -213,14 +224,34 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
   const essenceValue = actor.system.essences[essence].max + 1;
   const essenceString = `system.essences.${essence}.max`;
 
-  const [newShift, skillString] = getShiftedSkill(skill, 1, actor);
+  const grantsAllSkills = Array.isArray(skill);
+  const skillUpdates = {};
+  for (const skillToGrant of (grantsAllSkills ? skill : [skill])) {
+    const [newShift, skillString] = getShiftedSkill(skillToGrant, 1, actor);
+    skillUpdates[skillString] = newShift;
+  }
 
   const newOriginList = await dropFunc();
   await createItemCopies(origin.system.items, actor, "perk", newOriginList[0]);
 
+  // Bot Mode Size (TF CRB Ch.4 Origins, e.g. p.51 Champion: "Size: Large"): carried on whichever
+  // Alt Mode item was picked above (see alt-mode.mjs#botModeSize's own comment) rather than on
+  // the Origin itself, since an Origin with a Bot-Mode-size choice (Cutter/Outrider: "Common or
+  // Large") is modeled as one Alt Mode item per choice.
+  let botModeSize = null;
+
   if (altModeToCreate) {
     const itemToCreate = await fromUuid(altModeToCreate.uuid);
-    const newItem = await Item.create(itemToCreate, { parent: actor });
+    // A chassis printed with choices - a size for either Mode, a movement (Monstrosity: Huge or Extended; Ground,
+    // Aerial or Aquatic) - asked now (items/shared/alt-mode-chassis.mjs).
+    const picked = await chooseAltModeOptions(itemToCreate.system);
+    botModeSize = picked.bot ?? itemToCreate.system.botModeSize;
+    const changes = {
+      ...(picked.alt ? { 'system.altModesize': picked.alt } : {}),
+      ...(picked.movement ? { 'system.altModeMovement': picked.movement } : {}),
+    };
+    const createData = Object.keys(changes).length ? foundry.utils.mergeObject(itemToCreate.toObject(), changes) : itemToCreate;
+    const newItem = await Item.create(createData, { parent: actor });
     if (newItem.type == "altMode") {
       await actor.update({
         "system.canTransform": true,
@@ -232,15 +263,85 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
   }
 
   await actor.update({
+    ...skillUpdates,
     [essenceString]: essenceValue,
-    [skillString]: newShift,
     "system.health.max": origin.system.startingHealth,
     "system.health.value": origin.system.startingHealth,
     "system.movement.aerial.base": origin.system.baseAerialMovement,
     "system.movement.swim.base": origin.system.baseAquaticMovement,
     "system.movement.ground.base": origin.system.baseGroundMovement,
     "system.originEssencesIncrease": essence,
-    "system.originSkillsIncrease": skill,
+    // With allSkillsGranted there's no single "the" Origin skill for Menace/Distracting
+    // Offer/etc. (system.originSkillsIncrease consumers) to resolve dynamically - leave it unset.
+    "system.originSkillsIncrease": grantsAllSkills ? "" : skill,
+    ...(botModeSize ? { "system.size": botModeSize } : {}),
+  });
+}
+
+/**
+ * The choices an Alt Mode item offers - Bot and Alt Mode sizes (botModeSizeOptions / altModeSizeOptions) and a movement
+ * (movementOptions), each only with two or more - asked in one dialog. An Alt Mode size that fixes the Bot Mode's
+ * (botModeSizeFor - Saurian's Long is a Large Bot Mode) wins over the Bot Mode pick. Exported for tests.
+ * @param {Object} system   The Alt Mode item's system data
+ * @param {Function} [ask]   (fields) => {bot?, alt?, movement?: index} - the dialog; tests pass their own
+ * @returns {Promise<{bot: String|null, alt: String|null, movement: Object|null}>}   null for no choice (or a closed dialog)
+ */
+export async function chooseAltModeOptions(system, ask = askAltModeOptions) {
+  const options = list => (Array.isArray(list) && list.length > 1 ? list : null);
+  const fields = {
+    bot: options(system?.botModeSizeOptions),
+    alt: options(system?.altModeSizeOptions),
+    movement: options(system?.movementOptions),
+    botFor: system?.botModeSizeFor ?? {},
+  };
+  if (!fields.bot && !fields.alt && !fields.movement) {
+    return { bot: null, alt: null, movement: null };
+  }
+
+  const picked = await ask(fields) ?? {};
+  const valid = (key, value) => (fields[key]?.includes(value) ? value : null);
+  const alt = valid('alt', picked.alt);
+  const option = fields.movement?.[Number(picked.movement)] ?? null;
+  return { bot: botSizeFor(system, alt) ?? valid('bot', picked.bot), alt, movement: option ? fullMovement(option) : null };
+}
+
+async function askAltModeOptions(fields) {
+  const sizes = CONFIG.E20.actorSizes;
+  const localize = key => game.i18n.localize(key);
+  const field = (key, label, choices) => (choices ? `<div class="form-group"><label>${localize(label)}</label>
+    <select name="${key}">${choices.map(([value, text]) => `<option value="${value}">${text}</option>`).join('')}</select></div>` : '');
+  const sizeChoices = list => list?.map(size => [size, localize(sizes[size] ?? size)]);
+  const content = `<p>${localize('E20.ChooseModeSizesPrompt')}</p>`
+    + field('bot', 'E20.BotModeSize', sizeChoices(fields.bot))
+    + field('alt', 'E20.AltModeSize', sizeChoices(fields.alt))
+    + field('movement', 'E20.AltModeMovementChoice', fields.movement?.map((option, i) => [i, movementLabel(option, localize)]));
+  return foundry.applications.api.DialogV2.prompt({
+    window: { title: localize('E20.ChooseModeSizes') },
+    content,
+    ok: {
+      label: localize('E20.AcceptButton'),
+      callback: (event, button) => ({ bot: button.form.elements.bot?.value, alt: button.form.elements.alt?.value, movement: button.form.elements.movement?.value }),
+    },
+    // An Alt Mode size that fixes the Bot Mode's: the Bot Mode pick follows it, locked.
+    render: (event, dialog) => {
+      const form = dialog.element.querySelector('form') ?? dialog.element;
+      const bot = form.querySelector('select[name="bot"]');
+      const alt = form.querySelector('select[name="alt"]');
+      const follow = () => {
+        const fixed = fields.botFor?.[alt?.value];
+        if (bot && fixed) {
+          bot.value = fixed;
+        }
+
+        if (bot) {
+          bot.disabled = !!fixed;
+        }
+      };
+
+      alt?.addEventListener('change', follow);
+      follow();
+    },
+    rejectClose: false,
   });
 }
 
@@ -284,6 +385,10 @@ export async function _hangUpSelect(actor, uuid, parentItem) {
   const newItem = await Item.create(itemToCreate, { parent: actor });
   newItem.setFlag('core', 'sourceId', uuid);
   newItem.setFlag('essence20', 'parentId', parentItem._id);
+
+  // Some Hang-Ups record a player choice of their own (Augmented's damage type) - see
+  // mechanics/characters/hang-up-choice.mjs. A no-op for every Hang-Up that declares none.
+  await applyHangUpChoice(newItem);
 }
 
 /**
@@ -299,7 +404,9 @@ export async function onOriginDelete(actor, origin) {
   const [newShift, skillString] = getShiftedSkill(selectedSkill, -1, actor);
   await deleteAttachmentsForItem(origin, actor);
 
-  const hasAltMode = !!actor.items.documentsByType.length;
+  // Any Alt Mode left after the Origin's own went (a separately dropped one keeps the character transforming).
+  // documentsByType is an object, so its .length was always undefined and this was always false.
+  const hasAltMode = actor.items.some(item => item.type == 'altMode');
 
   const essenceString = `system.essences.${essence}.max`;
 

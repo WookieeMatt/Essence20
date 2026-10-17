@@ -5,10 +5,20 @@
   "_id": "uQQbRbwADVtVwsym",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Earth Defense Command Benefits (zero-G attack)","when":["attack","environment:zeroGravity"],"upshift":2},
+      {"type":"RollModifier","label":"Earth Defense Command Benefits (Driving an aerial vehicle)","when":["skill:driving","not:self:type:vehicle","vehicle:driving","vehicle:type:vehicle","vehicle:data:system.movement.aerial.total>0"],"upshift":2},
+      {"type":"RollModifier","label":"Earth Defense Command Benefits (Driving an aerial vehicle)","when":["skill:driving","self:type:vehicle","self:data:system.movement.aerial.total>0"],"upshift":2},
+      {"type":"Use","label":"Space Kit (a free Limited Kit this mission)","limit":{"per":"mission"},"steps":[{"do":"makeKit","tier":"limited","skills":["driving","culture","science","technology"],"prompt":"E20.S1SpaceKitPrompt","none":"E20.S1SpaceKitNoSpec"},{"do":"chat","text":"{name} receives a free Limited {var.kit} kit for this mission."}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: its weapon Qualifications. Automatic: ↑2 on attacks in scenes set to zero gravity and on Driving tests while piloting a vehicle with Aerial Movement, labelled Earth Defense Command Benefits in the Roll Options Dialog. Use button: a Space Kit once per mission. The extra language is noted on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Field Guide to Action & Adventure",
+      "book": "Field Guide to Action and Adventure",
       "page": 69
     },
     "items": {},
@@ -31,7 +41,70 @@
     "value": 0,
     "version": "powerRangers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Earth Defense Command Benefits",
+      "origin": "Compendium.essence20.field_guide_action_adventure.Item.uQQbRbwADVtVwsym",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "EdcWeaponQualEf1",
+      "changes": [
+        {
+          "key": "system.qualified.weapons.assaultRifle",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.qualified.weapons.grenades",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.qualified.weapons.oneHanded",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.qualified.weapons.mightMelee",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!uQQbRbwADVtVwsym.EdcWeaponQualEf1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

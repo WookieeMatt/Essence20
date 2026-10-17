@@ -1,0 +1,52 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Data-Link",
+  "type": "upgrade",
+  "_id": "nRL1FJLtAEIbXozX",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","event":"turnEnd","label":"Data-Link (a drone you didn't Command)","when":["companion:uncommanded:drone"],"steps":[{"do":"mark","key":"dataLink","to":"self","until":"nextTurn"}]},
+      {"type":"Trigger","event":"turnEnd","scope":"owner","label":"Data-Link (your drone wasn't Commanded)","when":["holder:data:system.type=drone","not:holder:commanded"],"steps":[{"do":"mark","key":"dataLink","to":"self","until":"nextTurn"}]},
+      {"type":"Defense","label":"Data-Link","defense":"evasion","amount":1,"stack":"dataLink","when":["self:marked:dataLink","defense:evasion"]},
+      {"type":"Defense","scope":"owner","label":"Data-Link","defense":"evasion","amount":1,"stack":"dataLink","when":["self:marked:dataLink","defense:evasion"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: if you do not command your drone during a combat turn, you get +1 Evasion until your next turn.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 21
+    },
+    "armorBonus": {
+      "defense": "evasion",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "If the drone takes no Commanded action during a turn in combat, it warns you of incoming attacks.",
+    "traits": [],
+    "type": "drone",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266103192,
+    "modifiedTime": 1790266103192,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!nRL1FJLtAEIbXozX"
+}

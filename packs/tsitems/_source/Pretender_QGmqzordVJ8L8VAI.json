@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: 2 starting Health, +1 Social, Ground Movement 30, the Lifelike Perk, and the Pretender Alt Mode (you pick Small or Common for each Mode, and its movement - 45 ft Ground, 30 ft Ground and 20 ft Aerial or 30 ft Ground and 20 ft Aquatic). You pick Deception, Persuasion or Streetwise as your Origin Skill. Left to the table: Hands of Steel (no ↓1 on Blunt Unarmed Combat).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -16,40 +20,10 @@
         "name": "Lifelike",
         "type": "perk"
       },
-      "09f7": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.MdcWdpv4LpyyVrhW",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Pretender (Common, Ground 30, Aerial 20)",
-        "type": "altMode"
-      },
-      "87d2": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.Bd7iE2XK7mKZaB5y",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Pretender (Common, Ground 30, Aquatic 20)",
-        "type": "altMode"
-      },
       "6c71": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.fNQgesw5yxrOdEGN",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Pretender (Common, Ground 45)",
-        "type": "altMode"
-      },
-      "22e5": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.7bbbOV0Z2GxPzQTe",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Pretender (Small, Ground 30, Aerial 20)",
-        "type": "altMode"
-      },
-      "a1bd": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.px3ggYpFhJqOU9l7",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Pretender (Small, Ground 30, Aquatic 20)",
-        "type": "altMode"
-      },
-      "b6d9": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.6s8rw4NKrZ0N935Q",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Pretender (Small, Ground 45)",
+        "name": "Pretender",
         "type": "altMode"
       }
     },
@@ -62,7 +36,7 @@
     "languages": "",
     "skills": [
       "deception",
-      "performance",
+      "persuasion",
       "streetwise"
     ],
     "startingHealth": 2

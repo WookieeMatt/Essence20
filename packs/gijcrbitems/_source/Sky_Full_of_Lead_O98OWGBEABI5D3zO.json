@@ -5,6 +5,10 @@
   "_id": "O98OWGBEABI5D3zO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: pick one extra target for your shotgun or submachine gun Multiple Targets attacks. The system doesn't cap how many targets you select, so just target one more.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

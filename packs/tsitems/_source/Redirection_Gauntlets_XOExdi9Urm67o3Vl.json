@@ -5,6 +5,10 @@
   "_id": "XOExdi9Urm67o3Vl",
   "img": "systems/essence20/assets/icons/weapons/redirection-gauntlets.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Targeting attacks for 2 Energy damage, with a blast alternate effect; its Computerized trait applies. Left to the table: the Energon to activate it each scene, the two Hardpoints it fills, and charging it while Defending to raise a 15ft cover barrier.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -41,7 +45,7 @@
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
-          "style": "melee"
+          "style": "energy"
         },
         "damageValue": 2,
         "damageType": "element",
@@ -68,10 +72,11 @@
       "ingested": false,
       "inhaled": false
     },
+    "prerequisites": {"when":["self:skill:targeting>=d4","self:skill:technology>=d4"]},
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "might",
+      "shift": "d4"
     },
     "traits": [
       "computerized"

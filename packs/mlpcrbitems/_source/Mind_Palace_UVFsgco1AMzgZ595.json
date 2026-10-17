@@ -5,6 +5,13 @@
   "_id": "UVFsgco1AMzgZ595",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","label":"Mind Palace","defense":"willpower","amount":"min(3, floor((@level + 1) / 6))"}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +1 Willpower from 5th level, +2 from 11th and +3 from 17th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -28,7 +35,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": false,
+      "disabled": true,
       "_id": "KDACxWebc7pUlHEM",
       "changes": [
         {

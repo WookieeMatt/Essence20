@@ -5,7 +5,18 @@
   "_id": "eIDYxShici5rRpg3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Honest Assessment (chosen Skill)","when":["skill:{choice.skill}","self:data:flags.essence20.honestAssessmentActive","not:roll:dataset:isInitiative"],"upshift":2},
+      {"type":"Use","label":"Honest Assessment on","when":["not:self:data:flags.essence20.honestAssessmentActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.honestAssessmentActive":true}},{"do":"chat","text":"{name}: Honest Assessment on."}]},
+      {"type":"Use","label":"Honest Assessment off","when":["self:data:flags.essence20.honestAssessmentActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.honestAssessmentActive":false}},{"do":"chat","text":"{name}: Honest Assessment off."}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick a Skill when you gain it. Use button: switches it on for ↑2 on that Skill and ↓2 on Deception and Persuasion; switch it off when the scene ends.</p>"
+    },
     "originalId": "",
+    "actionType": "free",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
@@ -13,7 +24,9 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "sort": -4687,

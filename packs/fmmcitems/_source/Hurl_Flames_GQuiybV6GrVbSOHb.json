@@ -5,6 +5,10 @@
   "_id": "GQuiybV6GrVbSOHb",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage, range and number of targets; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -22,9 +26,9 @@
           "style": "projectile"
         },
         "damageValue": 2,
-        "damageType": "element",
+        "damageType": "fire",
         "numHands": "2",
-        "numTargets": 1,
+        "numTargets": 3,
         "radius": 0,
         "range": {
           "min": null,
@@ -35,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "integrated"
@@ -48,7 +50,8 @@
       "shift": "none"
     },
     "traits": [
-      "fire"
+      "fire",
+      "multipleTargets"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

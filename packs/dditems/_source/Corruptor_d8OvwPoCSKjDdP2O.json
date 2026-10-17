@@ -5,6 +5,10 @@
   "_id": "d8OvwPoCSKjDdP2O",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, plus its Smarts increases and a Skill from Culture, Science or Technology.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

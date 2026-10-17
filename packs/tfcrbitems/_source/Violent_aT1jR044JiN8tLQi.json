@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: ↓1 on Skill Tests during combat that aren't about the fight itself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

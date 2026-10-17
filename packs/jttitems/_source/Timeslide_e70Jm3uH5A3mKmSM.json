@@ -1,0 +1,44 @@
+{
+  "folder": "rxku6PTVz0evKZwC",
+  "name": "Timeslide",
+  "type": "perk",
+  "_id": "e70Jm3uH5A3mKmSM",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"Timeslide","when":["self:onCanvas"],"cost":{"action":"move"},"steps":[{"do":"pickPoint","prompt":"Click where to Timeslide (within 200 feet).","beforeCost":true,"ghost":"self","range":200},{"do":"warn","text":"E20.RulesExtItems2.TimeslideTooFar","stop":true,"when":["not:self:pointWithin:200"],"beforeCost":true},{"do":"moveTo","to":"self","forced":false,"snap":true},{"do":"chat","text":"{name} slides through time to a new spot."}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spends your Move action, then click a spot within 200 ft and your token is placed there. Whether you could really reach it is your call.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 0
+    },
+    "actionType": "move",
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 1100000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787028795941,
+    "modifiedTime": 1787028795941,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!e70Jm3uH5A3mKmSM"
+}

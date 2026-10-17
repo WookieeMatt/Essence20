@@ -5,6 +5,10 @@
   "_id": "vWlljMxp2twMjyZf",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Social Essence, starting Health, 30 ft movement and the Impersonate, Natural Shape and Shape-Shift Perks. Natural Shape asks you to pick Colony or Metamorphosed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

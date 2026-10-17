@@ -5,6 +5,10 @@
   "_id": "xUc6BptWvbEwPfLX",
   "img": "systems/essence20/assets/icons/weapons/winged-scepter.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, plus its two alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -18,7 +22,7 @@
         "name": "Golden Power Staff Alternate Effect 1",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "finesse",
           "style": "melee"
         },
         "damageValue": 1,
@@ -28,7 +32,7 @@
         "radius": 0,
         "range": {
           "min": null,
-          "reachMultiplier": 0,
+          "reachMultiplier": 2,
           "long": null,
           "value": null
         },
@@ -79,8 +83,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
@@ -94,7 +96,9 @@
     "traits": [
       "blunt",
       "energy",
-      "stun"
+      "powerWeapon",
+      "stun",
+      "versatile"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

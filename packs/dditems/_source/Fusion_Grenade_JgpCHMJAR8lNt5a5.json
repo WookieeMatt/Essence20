@@ -5,6 +5,10 @@
   "_id": "JgpCHMJAR8lNt5a5",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, blast and range; its traits apply, and throwing it uses it up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -35,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "medium"
@@ -44,8 +46,8 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "technology",
+      "shift": "d4"
     },
     "traits": [
       "antiTank",

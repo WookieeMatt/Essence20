@@ -3,11 +3,15 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: on drop, a choice of Strength or Speed and a matching Skill (Athletics, Conditioning, Initiative or Targeting), plus 2 starting Health, 35 ft Ground movement and the If It Shoots Perk. Armor never slows you here.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "",
-      "page": null
+      "book": "GI Joe Core Rulebook",
+      "page": 58
     },
     "items": {
       "8aff": {
@@ -17,9 +21,9 @@
         "type": "perk"
       }
     },
-    "baseAerialMovement": "0",
-    "baseAquaticMovement": "0",
-    "baseGroundMovement": "30",
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 35,
     "essences": [
       "strength",
       "speed"
@@ -31,13 +35,7 @@
       "athletics",
       "targeting"
     ],
-    "startingHealth": 2,
-    "bonusSkillLevels": "",
-    "groundMovement": "",
-    "benefit": {
-      "name": "",
-      "description": ""
-    }
+    "startingHealth": 2
   },
   "effects": [],
   "flags": {

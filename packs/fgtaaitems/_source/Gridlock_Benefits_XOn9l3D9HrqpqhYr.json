@@ -5,13 +5,30 @@
   "_id": "XOn9l3D9HrqpqhYr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Personal Power. Granted: a Wrist Communicator and a Blade Blaster.</p><p>Left to the table: its weapon training and Qualifications, Power Weapons, and the ↑2 on Smarts tests about the Grid.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Field Guide to Action & Adventure",
+      "book": "Field Guide to Action and Adventure",
       "page": 69
     },
-    "items": {},
+    "items": {
+      "gb01": {
+        "uuid": "Compendium.essence20.pr_crb.Item.W7nXP8pOQaDJmZbT",
+        "img": "systems/essence20/assets/icons/gear/watch.svg",
+        "name": "Wrist Communicator",
+        "type": "gear"
+      },
+      "gb02": {
+        "uuid": "Compendium.essence20.pr_crb.Item.bOGhc0MIpi12BcK8",
+        "img": "systems/essence20/assets/icons/weapons/pistol.svg",
+        "name": "Blade Blaster",
+        "type": "weapon"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,
@@ -31,7 +48,52 @@
     "value": 0,
     "version": "powerRangers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Access Grid Tech - Bonus Personal Power",
+      "origin": "Item.XOn9l3D9HrqpqhYr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "GLBPersonalPwr1",
+      "changes": [
+        {
+          "key": "system.powers.personal.max",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!XOn9l3D9HrqpqhYr.GLBPersonalPwr1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

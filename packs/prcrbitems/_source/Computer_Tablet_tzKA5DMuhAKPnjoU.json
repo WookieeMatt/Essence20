@@ -5,17 +5,65 @@
   "_id": "tzKA5DMuhAKPnjoU",
   "img": "systems/essence20/assets/icons/gear/tablet.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on while hacking with the tablet for Edge on Technology, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 119
+      "page": 120
     },
     "quantity": 1,
-    "type": "",
     "gearType": "computers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Computer Tablet",
+      "origin": "Item.tzKA5DMuhAKPnjoU",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "DpQyZWzJQGja3NQB",
+      "changes": [
+        {
+          "key": "system.skills.technology.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!tzKA5DMuhAKPnjoU.DpQyZWzJQGja3NQB"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

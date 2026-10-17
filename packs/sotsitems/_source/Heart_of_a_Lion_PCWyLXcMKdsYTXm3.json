@@ -5,6 +5,10 @@
   "_id": "PCWyLXcMKdsYTXm3",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑1 on Culture and Persuasion tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -57,7 +61,7 @@
           "priority": null
         },
         {
-          "key": "sytem.skills.persuasion.shiftUp",
+          "key": "system.skills.persuasion.shiftUp",
           "mode": 2,
           "value": "1",
           "priority": null

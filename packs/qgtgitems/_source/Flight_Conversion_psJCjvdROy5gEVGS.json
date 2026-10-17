@@ -1,0 +1,52 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Flight Conversion",
+  "type": "upgrade",
+  "_id": "psJCjvdROy5gEVGS",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","when":["self:type:vehicle"],"limit":{"per":"scene"},"steps":[{"do":"setToggle","key":"fly","value":true,"until":"rounds:3"},{"do":"chat","text":"{name} converts for flight: Aerial Movement equal to its Ground or Aquatic Movement for 3 rounds."}]},
+      {"type":"Movement","label":"Flight Conversion","movement":"aerial","op":"max","value":"max(@actor.system.movement.ground.total, @actor.system.movement.swim.total)","stage":"derived","when":["self:type:vehicle","self:toggle:fly"]},
+      {"type":"DerivedStat","label":"Flight Conversion (VTOL)","path":"system.traits.vtol","op":"set","value":true,"when":["self:type:vehicle","self:toggle:fly"]}
+    ],
+    "prerequisites": {"when":[{"any":["self:data:system.traits.land","self:data:system.traits.sea"]}]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: once per scene, the vehicle gains Aerial Movement equal to its Ground or Aquatic Movement for 3 rounds.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 60
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "restricted",
+    "benefit": "Once per scene, the vehicle gains Aerial Movement equal to its Ground or Aquatic Movement plus the VTOL trait for 3 turns, falling if it hasn't landed by the end.",
+    "traits": [],
+    "type": "vehicle",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!psJCjvdROy5gEVGS"
+}

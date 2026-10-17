@@ -1,0 +1,49 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Spiked",
+  "type": "upgrade",
+  "_id": "KVwQulJAxVwEcpBw",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "rules": [
+      {"type":"DialogSelect","label":"Spiked","scope":"incoming","default":0,"when":["item:type:weaponEffect",{"any":["self:type:vehicle","self:type:zord"]},"attack:melee",{"any":["item:data:system.classification.skill=might","item:data:system.classification.skill=finesse"]}],"options":[{"label":"Take ↓1 on the attack","downshift":1},{"label":"Take 1 Sharp damage instead","steps":[{"do":"damage","to":"target","amount":1,"damageType":"sharp"}]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a Might or Finesse melee attack against the vehicle gets a Spiked choice: take ↓1, or take 1 Sharp damage instead.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 59
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "A melee attacker using Might or Finesse against the vehicle must suffer -1 on the attack or take 1 Sharp damage.",
+    "traits": [],
+    "type": "vehicle",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!KVwQulJAxVwEcpBw"
+}

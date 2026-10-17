@@ -1,0 +1,94 @@
+<div>
+  {{!-- Type --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeType'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.type">
+    {{selectOptions config.upgradeTypes selected=system.type}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Availability --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeAvailability'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="system.availability">
+    {{selectOptions config.availabilities selected=system.availability}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Benefit --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeBenefit'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="text" name="system.benefit" value="{{system.benefit}}" />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Armor Bonus --}}
+  {{#if (eq system.type 'armor')}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonus'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.armorBonus.value name="system.armorBonus.value" min=0 step=1}}
+    <select name="system.armorBonus.defense">
+      {{selectOptions config.defenses selected=system.armorBonus.defense}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+  {{!-- Traits --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeTraits'}}
+  {{#*inline "item-field-edit"}}
+  <a class="trait-selector" data-action="traitSelector" data-options="{{system.type}}" data-target="system.traits" data-tooltip="{{localize 'E20.TraitSelector'}}">
+    <i class="fas fa-edit"></i>
+  </a>
+  {{/inline}}
+
+  {{#*inline "item-field-inputs"}}
+    <div class="chip-section">
+    {{#if (eq system.type 'armor')}}
+      {{#each system.traits as |trait|}}
+      <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
+      {{/each}}
+    {{else if (eq system.type 'weapon')}}
+      {{#each system.traits as |trait|}}
+      <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
+      {{/each}}
+    {{else if (eq system.type 'vehicle')}}
+      {{#each system.traits as |trait|}}
+      <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.vehicleTraits trait)}}</span>
+      {{/each}}
+    {{/if}}
+    </div>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Removed Traits. Rare but real: Ammo Feeder (GI Joe CRB p.151) is "Weapon with the Reload
+        trait / The weapon loses the Reload trait". Same picker and same choices as Traits above -
+        anything an upgrade can grant, another can take away. --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeRemovedTraits'}}
+  {{#*inline "item-field-edit"}}
+  <a class="trait-selector" data-action="traitSelector" data-options="{{system.type}}" data-target="system.removedTraits" data-tooltip="{{localize 'E20.TraitSelector'}}">
+    <i class="fas fa-edit"></i>
+  </a>
+  {{/inline}}
+
+  {{#*inline "item-field-inputs"}}
+    <div class="chip-section">
+    {{#if (eq system.type 'armor')}}
+      {{#each system.removedTraits as |trait|}}
+      <span class="chip chip--removed" name="chip.upgrade.removedTraits.{{trait}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
+      {{/each}}
+    {{else if (eq system.type 'weapon')}}
+      {{#each system.removedTraits as |trait|}}
+      <span class="chip chip--removed" name="chip.upgrade.removedTraits.{{trait}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
+      {{/each}}
+    {{else if (eq system.type 'vehicle')}}
+      {{#each system.removedTraits as |trait|}}
+      <span class="chip chip--removed" name="chip.upgrade.removedTraits.{{trait}}">{{localize (lookup @root.config.vehicleTraits trait)}}</span>
+      {{/each}}
+    {{/if}}
+    </div>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+<div>

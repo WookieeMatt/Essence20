@@ -5,10 +5,14 @@
   "_id": "2UOQH4bXs6ZJGhkT",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Faction Perks, Earth Defense Command Benefits and Earth Defenders.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Field Guide to Action & Adventure",
+      "book": "Field Guide to Action and Adventure",
       "page": 69
     },
     "items": {

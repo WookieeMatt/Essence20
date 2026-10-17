@@ -1,0 +1,310 @@
+@use "../variables" as v;
+
+// :not(.minimized, .minimizing, .maximizing) matters here, not just cosmetically - this
+// selector (.essence20.actor .window-content:has(...), specificity 0-4-0) otherwise beats
+// Foundry core's own .application.minimized .window-content { display: none; } (0-3-0), so the
+// grid layout kept winning and the sheet's full content stayed visible (clipped mid-row by the
+// collapsed window frame) instead of actually hiding when minimized/minimizing/maximizing.
+.essence20.actor:not(.minimized, .minimizing, .maximizing) .window-content:has(> .essence20-sidebar) {
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) 1fr;
+  grid-template-rows: auto auto 1fr;
+  column-gap: v.$gap-lg;
+  align-items: stretch;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > header.sheet-header {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.essence20-sidebar {
+  grid-column: 1;
+  grid-row: 1 / -1;
+  min-height: 0;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > nav.tabs {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > section.tab {
+  grid-column: 2;
+  grid-row: 3;
+  min-height: 0;
+}
+
+.essence20-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: v.$gap-sm;
+  padding: v.$gap-sm v.$gap-md;
+}
+
+/* Sidebar panels (Resources/Special/Defenses/etc.) are .sliced-border boxes - tint their
+.essence20 border graphic with the actor's own system color (falling back to the theme accent),
+   reusing the same mask-border + solid background-color technique .e20-border-accent already
+   uses elsewhere (_tabs.scss) to recolor this same --e20-theme-border-image asset. Replaces the
+   base .sliced-border::before's plain, un-tinted border-image rendering for sidebar panels only
+   - the label used to carry this accent color instead (see .sliced-border__label above), which
+   now stays neutral. */
+.essence20-sidebar .sliced-border::before {
+  filter: none;
+  border-style: none;
+  border-image: none;
+  border-width: 0;
+  background-color: var(--e20-system-color, var(--e20-theme-accent));
+  -webkit-mask-box-image-source: var(--e20-theme-border-image);
+  -webkit-mask-box-image-slice: 15;
+  -webkit-mask-box-image-width: 16px;
+  -webkit-mask-box-image-repeat: stretch;
+  mask-border-source: var(--e20-theme-border-image);
+  mask-border-slice: 15;
+  mask-border-width: 16px;
+  mask-border-repeat: stretch;
+  /* Firefox supports neither mask-border nor -webkit-mask-box-image, so the mask above is dropped and
+     this overlay would paint as a solid block over the content. There, draw a plain accent border instead. */
+  @supports not ((-webkit-mask-box-image-source: none) or (mask-border-source: none)) {
+    background-color: transparent;
+    border: 2px solid var(--e20-system-color, var(--e20-theme-accent));
+  }
+}
+
+.essence20-sidebar.sheet-header {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+  border: none;
+}
+
+.essence20-sidebar.sheet-header .profile-img {
+  align-self: center;
+  display: block;
+  width: 100%;
+  max-width: 110px;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid var(--e20-system-color, var(--e20-theme-accent));
+  margin: 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-panel {
+  align-self: stretch;
+  width: 100%;
+  min-width: 100%;
+  box-sizing: border-box;
+  gap: v.$gap-sm;
+  padding-left: v.$gap-md;
+  padding-right: v.$gap-md;
+  padding-bottom: v.$gap-md;
+}
+
+.essence20-sidebar .essence20-sidebar-panel:has(> .sliced-border__label) {
+  padding-top: calc(#{v.$gap-sm} + 6px);
+}
+
+.essence20-sidebar .essence20-sidebar-panel > .sliced-border__label {
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row):not(.party-sidebar-value) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: v.$gap-sm;
+  min-width: 0;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row) > label {
+  color: var(--e20-theme-text-color);
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row) > span {
+  color: var(--e20-theme-muted-text);
+  flex: 0 0 auto;
+}
+
+/* A computed, never-editable value shown next to an editable one (Health's .max, Stun's Health
+   cap) - plain text rather than a disabled input, so it doesn't read as a field you can click
+   into. Keeps .two-digit-input's own 40px footprint so the numbers still line up in a column with
+   the editable boxes stacked above/below them. Colour and flex sizing come from the panel's
+   generic `> span` rule above. */
+.essence20-sidebar .essence20-sidebar-panel .sidebar-readout {
+  min-width: 40px;
+  text-align: center;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  margin-bottom: v.$gap-sm;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row:last-child {
+  margin-bottom: 0;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row > label {
+  color: var(--e20-theme-text-color);
+  font-weight: 600;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row > span {
+  color: var(--e20-theme-muted-text);
+  white-space: normal;
+  word-break: break-word;
+}
+
+// Megaform's own per-participant Health (Resources panel) - each linked Zord/component's current
+// Health inline, slash-separated, matching the compact "16/12/9/8" a printed stat block uses
+// instead of the single label+value row every other sidebar stat uses.
+.essence20-sidebar .essence20-sidebar-participant-health-values {
+  color: var(--e20-theme-muted-text);
+  flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-participant-health-sep {
+  color: var(--e20-theme-muted-text);
+  opacity: 0.6;
+  margin: 0 2px;
+}
+
+.essence20-sidebar .stats-container {
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.essence20-sidebar-skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-md;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$gap-sm;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.8em;
+  color: var(--e20-theme-text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--e20-system-color, var(--e20-theme-accent));
+}
+
+.essence20-sidebar .essence20-sidebar-action-button i {
+  flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-initiative i {
+  font-size: 0.85em;
+}
+
+/* Checkboxes in a sidebar panel row (the Vehicle's "Crashed" toggle) rendered oblong, and changed
+   shape when ticked. Foundry draws these with appearance:none and paints the visible box from a
+   ::before pseudo - but only the CHECKED state gives that pseudo `display: block; position:
+   absolute; inset: 0`, so it fills the control at its full square size. Unchecked it stays
+   `display: inline`, where width/height don't apply at all, so the box renders at the Font Awesome
+   glyph's own natural 17.5x21 - oblong, and a different size from the checked state.
+
+   Sizing the input alone can't fix this, because what's painted is the inline pseudo rather than
+   the input itself - which is also why getComputedStyle reported a tidy 20px (the specified value)
+   while devtools showed the real 17.5x21 layout box. Giving the pseudo the checked state's own
+   block/absolute treatment in BOTH states makes the painted box match the control. --checkbox-size
+   is Foundry's own variable, which also lines this up with the 20px numeric inputs above it. */
+.essence20-sidebar .essence20-sidebar-panel input[type="checkbox"] {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--checkbox-size, 20px);
+  height: var(--checkbox-size, 20px);
+  font-size: var(--checkbox-size, 20px);
+  line-height: 1;
+}
+
+.essence20-sidebar .essence20-sidebar-panel input[type="checkbox"]::before {
+  display: block;
+  position: absolute;
+  inset: 0;
+}
+
+/* The Initiative row borrows .essence20-sidebar-action-button purely for its flex layout - unlike
+   its siblings (Warrior Mode, Mega-Weapon, Transform, Morph) the row itself isn't a button: the
+   only clickable thing in it is the d20 icon, with a skill picker and a read-only shift die beside
+   it. Drop the button chrome so it reads as a row like the Speeds/Defenses panels below, rather
+   than a control the whole width of which looks pressable. Hover is reset too, since the row-wide
+   highlight implied the same thing. */
+.essence20-sidebar .essence20-sidebar-action-button.essence20-sidebar-initiative,
+.essence20-sidebar .essence20-sidebar-action-button.essence20-sidebar-initiative:hover {
+  background: none;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  cursor: default;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button select {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  background: transparent;
+}
+
+.essence20-sidebar .essence20-sidebar-initiative select {
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 4px;
+  padding: 0 2px;
+  /* Shrinks the box itself (width/height), not the text inside it - flex:1 1 auto (above) was
+     letting it balloon out to fill the whole row, dwarfing the shift-die result next to it. */
+  flex: 0 1 auto;
+  max-width: 110px;
+  height: 24px;
+  margin: 0 v.$gap-sm;
+}
+
+/* The shift die result (e.g. "d8") - the actual payoff of this row, next to the skill picker
+   that just feeds it - reads as an afterthought at the shared 0.8em action-button size. */
+.essence20-sidebar .essence20-sidebar-initiative span {
+  font-size: 1.15em;
+}
+
+.essence20-sidebar.sheet-header .skill-header {
+  min-height: 20px;
+  font-size: 0.85em;
+}
+
+.essence20-sidebar.sheet-header .two-digit-input,
+.essence20-sidebar.sheet-header .one-digit-input {
+  height: 20px;
+  min-height: 20px;
+  padding: 1px 3px;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button) {
+  font-size: 0.9em;
+}

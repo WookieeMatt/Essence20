@@ -1,9 +1,11 @@
-import { _altModeSelect } from "../sheet-handlers/transformer-handler.mjs";
-import { getFormData } from "../helpers/application.mjs";
+﻿import { _altModeSelect } from "../sheet-handlers/transformer-handler.mjs";
+import { getFormData } from "../util/application.mjs";
+import { applyThemeClass } from "../settings.js";
 
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class TransformOptionSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class TransformOptionSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(choices, actor, altModes, title){
     super();
     this._choices = choices;
@@ -16,6 +18,8 @@ export default class TransformOptionSelector extends HandlebarsApplicationMixin(
     id: "transform-options",
     classes: [
       "essence20",
+      "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -49,6 +53,12 @@ export default class TransformOptionSelector extends HandlebarsApplicationMixin(
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static async myFormHandler(event, form, formData) {

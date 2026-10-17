@@ -1,0 +1,45 @@
+{
+  "folder": "J2nYaT9wiAB9cSE3",
+  "name": "Horse Around",
+  "type": "perk",
+  "_id": "6uhfHYeuUkFuGEEN",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"Horse Around","cost":{"resource":{"rolePoints":"Cheer Points"},"amount":1},"steps":[{"do":"chat","text":"{name} horses around."}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Cheer Point, then move your token up to your Movement as a Free action.</p>"
+    },
+    "originalId": "",
+    "actionType": "free",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 86
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1788311924100,
+    "modifiedTime": 1788311924100,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!6uhfHYeuUkFuGEEN"
+}

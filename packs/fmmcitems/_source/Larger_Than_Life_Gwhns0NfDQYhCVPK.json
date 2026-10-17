@@ -1,0 +1,45 @@
+{
+  "folder": "pJQaDoDjUnTGyksC",
+  "name": "Larger Than Life",
+  "type": "perk",
+  "_id": "Gwhns0NfDQYhCVPK",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"ItemModifier","label":"Larger Than Life (Large Reach)","items":["item:type:weaponEffect","item:data:system.classification.style=melee","item:data:system.totalReach>=0"],"path":"system.totalReach","op":"max","value":"@reach.large * max(1, @other.system.range.reachMultiplier)"}
+    ],
+    "prerequisites": {"when":["self:type:npc"]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: melee attacks reach at least as far as a Large creature's, whatever Size the token shows.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 7
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790659196166,
+    "modifiedTime": 1790659196166,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "iCCZI3EVfOIO2b8O": 3
+  },
+  "_key": "!items!Gwhns0NfDQYhCVPK"
+}

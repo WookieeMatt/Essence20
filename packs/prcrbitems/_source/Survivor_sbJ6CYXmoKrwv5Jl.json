@@ -3,13 +3,16 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on Alertness Snag while a reminder of your ordeal is present, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 75
-    },
-    "img": "icons/svg/hazard.svg"
+    }
   },
   "effects": [
     {
@@ -27,7 +30,7 @@
       "_id": "m8xPc4jow7JQzW3Q",
       "changes": [
         {
-          "key": "system.skills.Alertness.snag",
+          "key": "system.skills.alertness.snag",
           "mode": 5,
           "value": "true",
           "priority": null

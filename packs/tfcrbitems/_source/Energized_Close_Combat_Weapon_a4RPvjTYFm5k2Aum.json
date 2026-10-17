@@ -5,6 +5,10 @@
   "_id": "a4RPvjTYFm5k2Aum",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 damage of the element chosen on the weapon, with Intimidating and Maneuver alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,7 @@
     },
     "items": {
       "d93d": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.RwpDWPgoIEejm7Fz",
+        "uuid": "Compendium.essence20.tf_crb.Item.RwpDWPgoIEejm7Fz",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Energized Close Combat Weapon Effect",
         "type": "weaponEffect",
@@ -35,7 +39,7 @@
         "shiftDown": 0
       },
       "997b": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.mCD4bCkChXbq6NzO",
+        "uuid": "Compendium.essence20.tf_crb.Item.mCD4bCkChXbq6NzO",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Energized Close Combat Weapon Alternate Effect",
         "type": "weaponEffect",
@@ -79,8 +83,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "sidearm"

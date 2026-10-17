@@ -5,6 +5,10 @@
   "_id": "rwOWhWCTFv0Cj7Zb",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the ID the Outdoors Perk, and Science joins your Origin skill choices. The Stumble Through the City Hang-Up is added too if you have another Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -1,0 +1,19 @@
+{{!-- Area of Effect shape + radius, shared by the weaponEffect, spell and power detail sheets -
+      the same two fields back all three item types (see module/data/aoe-schema.mjs), so they're
+      authored once here rather than copy-pasted three times. --}}
+
+{{!-- Shape --}}
+{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AoeShape'}}
+{{#*inline "item-field-inputs"}}
+<select class="item-field-inputs" name="system.shape">
+  {{selectOptions config.aoeShapes selected=system.shape localize=true blank=(localize 'E20.None')}}
+</select>
+{{/inline}}
+{{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+{{!-- Radius --}}
+{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AoeRadius'}}
+{{#*inline "item-field-inputs"}}
+{{numberInput system.radius name="system.radius" min=0 step=0.5}}
+{{/inline}}
+{{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

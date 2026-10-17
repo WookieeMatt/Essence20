@@ -1,0 +1,31 @@
+<section class="tab main npc {{tabs.npc.cssClass}}" data-tab="npc" data-group="primary">
+  <div class="npc-row">
+    {{!-- Transform / Morph live in the sidebar's Special panel, as on a character (sidebar-transform-morph.hbs). --}}
+    <div class="npc-essence-scores">
+      {{!-- NPC Essence Scores --}}
+      {{> "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs"}}
+    </div>
+  </div>
+
+  <div class="npc-row">
+    {{!-- Skills --}}
+    <div class="npc-skills">
+      {{> "systems/essence20/templates/actor/parts/misc/npc-skill-list.hbs"}}
+    </div>
+
+    {{!-- Items --}}
+    <div class="npc-items">
+      {{#if system.canMorph}}
+        {{> "systems/essence20/templates/actor/parts/misc/power-points.hbs"}}
+      {{else if system.powers.sorcerous.levelTaken}}
+        {{> "systems/essence20/templates/actor/parts/misc/power-points.hbs"}}
+      {{/if}}
+      {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/items/hangUp/container.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/items/power/container.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="general" perks=@root.perks.all title="E20.ItemTypePerkPlural" alwaysShow="true"}}
+      {{> "systems/essence20/templates/actor/parts/items/gear/container.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/items/spell/container.hbs"}}
+    </div>
+  </div>
+</section>

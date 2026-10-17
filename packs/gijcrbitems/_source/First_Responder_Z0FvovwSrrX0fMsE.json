@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added, you pick Strength or Smarts to raise and a matching skill from its list. It sets your starting Health and 35 ft Ground Movement and gives you the Skilled Under Pressure Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -11,15 +15,15 @@
     },
     "items": {
       "0efb": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.2Yj1om5TJUJgVP8A",
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.9myolBzep4A8HpwY",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Under Pressure",
+        "name": "Skilled Under Pressure",
         "type": "perk"
       }
     },
-    "baseAerialMovement": "0",
-    "baseAquaticMovement": "0",
-    "baseGroundMovement": "35",
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 35,
     "essences": [
       "strength",
       "smarts"
@@ -31,13 +35,7 @@
       "science",
       "survival"
     ],
-    "startingHealth": 2,
-    "bonusSkillLevels": "",
-    "groundMovement": "",
-    "benefit": {
-      "name": "",
-      "description": ""
-    }
+    "startingHealth": 2
   },
   "effects": [],
   "flags": {

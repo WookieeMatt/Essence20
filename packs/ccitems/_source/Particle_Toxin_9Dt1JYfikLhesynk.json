@@ -5,6 +5,10 @@
   "_id": "9Dt1JYfikLhesynk",
   "img": "systems/essence20/assets/icons/weapons/poison.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attack with it directly or coat a weapon with it; a hit deals its damage and the Ongoing damage repeats on its own each round.</p><p>Left to the table: the Poisoned condition.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -46,8 +50,9 @@
       "ingested": false,
       "inhaled": true
     },
+    "prerequisites": {"when":[{"any":["self:skill:infiltration>=d4","self:skill:science>=d4"]}]},
     "requirements": {
-      "custom": "Science d4",
+      "custom": "",
       "skill": "infiltration",
       "shift": "d4"
     },
@@ -59,7 +64,8 @@
     "transformerMode": "modeBotMode",
     "upgradeTraits": [],
     "usesPerScene": null,
-    "poisonType": "poison"
+    "poisonType": "poison",
+    "ongoingDuration": 3
   },
   "effects": [],
   "sort": 0,

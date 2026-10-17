@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added, you pick which Essence to raise and a matching skill from its list. It sets your starting Health and 30 ft Ground Movement and gives you the Well Rounded Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -17,9 +21,9 @@
         "type": "perk"
       }
     },
-    "baseAerialMovement": "0",
-    "baseAquaticMovement": "0",
-    "baseGroundMovement": "30",
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
     "essences": [
       "strength",
       "speed",
@@ -51,13 +55,7 @@
       "spellcasting",
       "streetwise"
     ],
-    "startingHealth": 1,
-    "bonusSkillLevels": "",
-    "groundMovement": "",
-    "benefit": {
-      "name": "",
-      "description": ""
-    }
+    "startingHealth": 1
   },
   "effects": [],
   "flags": {

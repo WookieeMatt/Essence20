@@ -1,17 +1,17 @@
-<div class="stats-container defense-container" style="border-color: {{system.color}};">
+<div class="stats-container defense-container e20-border-accent">
 
-  <table class="tg" style="border-color: {{system.color}};">
-    <thead style="border-color: {{system.color}};">
+  <table class="tg e20-border-accent">
+    <thead class="e20-border-accent">
       <tr>
-        <th class="tg-td" style="border-color: {{system.color}};">{{localize 'E20.DefenseTitle'}}</th>
+        <th class="tg-td e20-border-accent">{{localize 'E20.DefenseTitle'}}</th>
 
         {{!-- Defense headers --}}
         {{#each system.defenses as |defense|}}
-        <th class="tg-td" style="border-color: {{system.color}};">
+        <th class="tg-td e20-border-accent">
           <span>{{lookup @root.config.defenses defense.name}}
             {{#if (eq defense.name "toughness")}}
               {{#if @root.system.canSetToughnessBonus}}
-                <a class="morph-toughness-edit" data-action="bonusEdit" data-tooltip="E20.DefenseToughnessModifications">
+                <a data-action="bonusEdit" data-tooltip="E20.DefenseToughnessModifications">
                   <i class="fas fa-gear"></i>
                 </a>
               {{/if}}
@@ -20,7 +20,7 @@
           <span>
             {{#if (eq ../bonusDisplayType 'input')}}
             {{#with (lookup @root.system.defenses defense.name) as |defenseBonus|}}
-            +<input class="one-digit-input" type="number" name={{concat 'system.defenses.' defense.name '.bonus'}}
+            <input class="one-digit-input" type="number" name={{concat 'system.defenses.' defense.name '.bonus'}}
               value="{{defenseBonus.bonus}}" min="0" step="1" />
             {{/with}}
             {{/if}}
@@ -33,9 +33,9 @@
     {{!-- Body --}}
     <tbody>
       <tr>
-        <td class="tg-td" style="border-color: {{system.color}};">{{localize 'E20.DefenseValues'}}</td>
+        <td class="tg-td e20-border-accent">{{localize 'E20.DefenseValues'}}</td>
         {{#each system.defenses as |defense|}}
-        <td class="tg-td" style="border-color: {{system.color}};">
+        <td class="tg-td e20-border-accent">
           <span
             data-tooltip="{{defense.string}}">
             {{defense.total}}

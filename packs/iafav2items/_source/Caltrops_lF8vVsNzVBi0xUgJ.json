@@ -5,6 +5,10 @@
   "_id": "lF8vVsNzVBi0xUgJ",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Sharp damage against up to three targets in a 10 ft radius at 10 ft (long range 20 ft), or 2 Sharp damage to one target at ↓1 with the alternate effect. Its Consumable, Martial Arts, Sharp and Silent traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

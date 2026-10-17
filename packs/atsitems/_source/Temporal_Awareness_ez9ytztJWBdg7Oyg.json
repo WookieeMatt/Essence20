@@ -5,6 +5,13 @@
   "_id": "ez9ytztJWBdg7Oyg",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"allDice","reset":"scene","maxUses":1,"recursive":false,"cost":{"resourcePath":"system.powers.personal.value","amount":1}}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: once per scene, a Reroll button spends 1 Personal Power to re-roll every die on a Skill Test; the new result stands. Knowing the time is storytelling.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,11 +19,10 @@
       "page": 73
     },
     "actionType": "free",
-    "canActivate": true,
-    "classFeatureId": null,
+    "canActivate": false,
     "hasVariableCost": false,
     "maxPowerCost": null,
-    "powerCost": 1,
+    "powerCost": null,
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",

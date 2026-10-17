@@ -5,6 +5,10 @@
   "_id": "6tTxWf1k5y3e0RWc",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: through the Static Modifier Role Points, Power Weapon and Zord attacks against you take ↓1, rising to ↓2 at 8th level and ↓3 at 16th, labelled Static Modifier in the attacker's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

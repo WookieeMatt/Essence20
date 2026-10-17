@@ -1,0 +1,45 @@
+{
+  "folder": "fXT0zeXMwzib0mqZ",
+  "name": "Tactical Meditation",
+  "type": "perk",
+  "_id": "TacticalMedit8ns",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Tactical Meditation (↑2 Alertness / Initiative)","upshift":2,"stack":"tacticalMeditation","when":[{"any":["skill:alertness","roll:initiative"]}]},
+      {"type":"RollModifier","label":"Tactical Meditation (↑2 Alertness / Initiative)","scope":"aura","radius":10,"affects":"allies","stacks":false,"upshift":2,"stack":"tacticalMeditation","when":[{"any":["skill:alertness","roll:initiative"]}]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: you, and allies whose tokens are within 10 ft of you, get ↑2 on Alertness and Initiative tests, listed by name in the Roll Options Dialog.</p><p>Left to the table: you can't be surprised.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 73
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1757443300000,
+    "modifiedTime": 1757443300000,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "exportSource": null
+  },
+  "_key": "!items!TacticalMedit8ns"
+}

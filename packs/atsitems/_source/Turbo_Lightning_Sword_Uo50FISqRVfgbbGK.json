@@ -5,6 +5,10 @@
   "_id": "Uo50FISqRVfgbbGK",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for the listed damage, with its Energy Attack as a second option. The Energy Attack can be used once per encounter; after that it won't roll until the next encounter.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -40,7 +44,7 @@
         "name": "Turbo Lightning Sword Energy Attack",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 3,
@@ -57,15 +61,14 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:perk:Turbocharged (Form)"]},
     "requirements": {
-      "custom": "Turbocharged",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

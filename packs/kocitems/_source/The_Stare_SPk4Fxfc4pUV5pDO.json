@@ -5,15 +5,27 @@
   "_id": "SPk4Fxfc4pUV5pDO",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"The Stare","event":"hit","when":["item:own"],"steps":[{"do":"applyCondition","to":"target","condition":"frightened","rounds":3}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: a Spellcasting attack against one target. A hit makes them Frightened for 3 rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Knights of Canterlot",
       "page": 48
     },
+    "actionType": "standard",
     "circle": "beam",
     "cost": 3,
-    "duration": "3 Rounds",
+    "duration": {
+      "units": "rounds",
+      "value": 3,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "60 feet",
     "tier": "superior"

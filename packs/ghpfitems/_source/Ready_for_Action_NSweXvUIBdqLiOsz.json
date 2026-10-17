@@ -1,0 +1,45 @@
+{
+  "folder": "9yEyQWJnmCubFoI8",
+  "name": "Ready for Action",
+  "type": "perk",
+  "_id": "NSweXvUIBdqLiOsz",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"Free attack, first in round one","when":["combat:first","combat:round:1"],"limit":{"per":"encounter"},"steps":[{"do":"bonusAttack","cost":"free"},{"do":"chat","text":"{name} can make one attack as a Free action."}]}
+    ],
+    "prerequisites": {"when":["self:skill:initiative>=d6"]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: if you are first in the Initiative order, make one attack as a Free action in the first round.</p>"
+    },
+    "originalId": "",
+    "actionType": "free",
+    "description": "",
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 174
+    },
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1787763529613,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!NSweXvUIBdqLiOsz"
+}

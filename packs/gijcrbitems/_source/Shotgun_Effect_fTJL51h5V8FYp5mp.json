@@ -6,14 +6,15 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "projectile"
     },
-    "damageType": "blunt",
+    "damageType": "sharp",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 2,
     "radius": 15,
     "range": {
@@ -21,7 +22,8 @@
       "reachMultiplier": 0,
       "long": 60,
       "value": 20
-    }
+    },
+    "shape": "cone"
   },
   "effects": [],
   "flags": {

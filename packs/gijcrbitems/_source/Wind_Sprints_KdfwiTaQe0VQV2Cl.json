@@ -5,6 +5,10 @@
   "_id": "KdfwiTaQe0VQV2Cl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +15 ft Ground movement. The Strength increases come with the Focus as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

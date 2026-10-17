@@ -5,6 +5,10 @@
   "_id": "PwLMbGcZkMVmhMj3",
   "img": "systems/essence20/assets/icons/weapons/stiletto.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for Sharp damage, with a heavier Energy damage alternate effect at ↓1; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -54,14 +58,12 @@
           "long": null,
           "value": null
         },
-        "shiftDown": 0
+        "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
-      "size": "light"
+      "size": "medium"
     },
     "equipped": true,
     "requirements": {
@@ -71,6 +73,7 @@
     },
     "traits": [
       "energy",
+      "powerWeapon",
       "sharp"
     ],
     "upgradeTraits": [],

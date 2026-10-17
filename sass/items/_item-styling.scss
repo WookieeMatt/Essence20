@@ -1,7 +1,7 @@
 @use "../variables" as v;
 
 .essence20 .item {
-  color: v.$textcolor1;
+  color: var(--e20-theme-text-color);
   gap: 5px;
 }
 
@@ -11,8 +11,7 @@
   margin: 0;
   padding: 0;
   overflow-y: auto;
-  scrollbar-width: thin;
-  color: v.$textcolor1;
+  color: var(--e20-theme-text-color);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -77,13 +76,27 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 0 2px;
-  color: v.$textcolor1;
+  padding: 4px 6px;
+  border-radius: 6px;
+  color: var(--e20-theme-text-color);
+}
+
+.essence20 .items-list .item:nth-child(odd) {
+  background: var(--e20-theme-card-bg);
 }
 
 .essence20 .items-list hr {
-  margin: 4;
+  margin: v.$gap-sm 0;
   width: 100%;
+  border-color: var(--e20-theme-border-color);
+}
+
+.essence20 .collapsible-item-subcontainer .items-list {
+  gap: v.$gap-md;
+}
+
+.essence20 .collapsible-item-subcontainer .items-list hr {
+  margin: v.$gap-sm 0;
 }
 
 .essence20 .items-list hr:last-child {
@@ -91,11 +104,11 @@
 }
 
 .essence20 .collapsible-item-container .items-list hr {
-  border: 1px solid #4a4848;
+  border: 1px solid var(--e20-theme-border-color);
 }
 
 .essence20 .items-list .item .item-name {
-  color: white;
+  color: var(--e20-theme-text-color);
 }
 
 .essence20 .items-list .item .item-name .item-image {
@@ -106,26 +119,29 @@
   background-size: 30px;
   border: none;
   margin-right: 5px;
+  border-radius: 4px;
 }
 
 .essence20 .items-list .item-prop {
   text-align: center;
-  border-left: v.$border;
-  border-right: v.$border;
+  border-left: 1px solid var(--e20-theme-border-color);
+  border-right: 1px solid var(--e20-theme-border-color);
   font-size: 12px;
 }
 
 .essence20 .items-list .items-header {
   height: 28px;
   margin: 2px 0;
-  padding: 0;
+  padding: 0 4px;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: v.$background-n;
-  border: v.$border;
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 6px;
   font-weight: bold;
   flex-wrap: nowrap;
+  color: var(--e20-theme-accent);
 }
 
 .essence20 .items-list .items-header>* {
@@ -161,8 +177,8 @@
 
 .essence20 .effects .item .effect-controls {
   text-align: center;
-  border-left: v.$border;
-  border-right: v.$border;
+  border-left: 1px solid var(--e20-theme-border-color);
+  border-right: 1px solid var(--e20-theme-border-color);
   font-size: 12px;
 }
 
@@ -170,20 +186,128 @@
   border: none;
 }
 
+.essence20 .tab.effects.active {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.essence20 .tab.effects .effect-list-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.essence20 .tab.effects .items-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-top: v.$gap-md;
+}
+
+.essence20 .tab.effects .items-header {
+  height: auto;
+  min-height: 28px;
+  color: var(--e20-theme-text-color);
+}
+
+.essence20 .tab.effects .effect-controls {
+  flex: 0 0 130px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.essence20 .tab.effects .items-list .items-header > * {
+  font-size: 0.85em;
+}
+
+.essence20 .tab.effects .item.effect > * {
+  font-size: 0.85em;
+}
+
+.essence20 .tab.effects .effect-name h4 {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0;
+}
+
 .essence20 .item-sheet {
-  background: v.$background-n;
-  border: v.$border;
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: v.$border-radius;
-  color: v.$textcolor1;
+  color: var(--e20-theme-text-color);
   padding: v.$padding;
   min-height: none;
   }
 
-.essence20 .item-field label {
+.essence20 .item-field {
+  padding: 5px 2px;
+  border-bottom: 1px solid var(--e20-theme-border-color);
+}
+
+.essence20 .item-field:last-child {
+  border-bottom: none;
+}
+
+// item-field-label wraps the <label> itself (plus an optional edit button, see
+// item/parts/sheet-field.hbs) - it's the actual flex ITEM of .item-field's own 2-column split,
+// not the bare <label> inside it. flex: 2 belongs here: a rule on the label alone (as this used
+// to read) has no effect on that outer split at all, since a nested element's own flex value
+// only ever governs its OWN children, never its ancestor's layout - every row's label column
+// was silently sized to its own text's content width instead of a shared column width, which is
+// why labels of different lengths visibly threw inputs out of alignment row to row.
+.essence20 .item-field .item-field-label {
   flex: 2;
+  // Overrides .e20-align-center's own justify-content/text-align: center (item/parts/sheet-field.hbs
+  // carries both classes on this element) - .e20-align-center's centering read fine back when this
+  // wrapper had no flex-basis of its own and just hugged its text, but now that it fills a real
+  // column width, centering left every label floating at a different spot depending on its own
+  // text length. Left-aligned reads as a real column of labels instead.
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.essence20 .item-field label {
+  color: var(--e20-theme-text-color);
 }
 
 .essence20 .item-field .item-field-inputs {
   flex: 1.5;
   justify-content: flex-end;
+}
+
+// A list field (Role / Role Perks drop zones - see item/parts/sheet-field.hbs) is all content and
+// one short label: give the label a fixed narrow column and the list the rest of the row, so a
+// Role Perk row has room for its name, level, choice group and controls side by side.
+.essence20 .item-field.item-field--list .item-field-label {
+  flex: 0 0 7em;
+}
+
+.essence20 .item-field.item-field--list .item-field-inputs {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 .item-field.item-field--list .data-drop {
+  width: 100%;
+}
+
+.essence20 .item-field.item-field--list .data-drop .items-list {
+  width: 100%;
+}
+
+// Foundry core's own placeholder styling reads too close to real input text at a glance (see the
+// Perk sheet's Reroll Cost fields, e.g. "system.powers.personal.value") - italic plus a color
+// mixed lighter than --e20-theme-text-color itself (not the separate muted-text token, which isn't
+// necessarily lighter, just a different tone) makes hint text read as a hint without a color
+// swap between themes - blending toward black darkens dark-mode's #aaa text same as it darkens
+// light-mode's #222, so one rule covers both instead of a per-theme override. font-weight: 300
+// overrides .essence20.application's own sheet-wide bold (_global-windows.scss) - inherited bold
+// placeholder text read as too close to a real, entered value alongside the lighter weight alone.
+.essence20 .item-field input::placeholder,
+.essence20 .item-field textarea::placeholder {
+  color: color-mix(in srgb, var(--e20-theme-text-color) 65%, black 35%);
+  opacity: 1;
+  font-style: italic;
+  font-weight: 300;
 }

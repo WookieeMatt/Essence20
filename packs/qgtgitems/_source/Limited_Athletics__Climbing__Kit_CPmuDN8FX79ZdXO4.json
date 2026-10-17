@@ -1,0 +1,39 @@
+{
+  "folder": "1kDg73nv65g0xk34",
+  "name": "Limited Athletics (Climbing) Kit",
+  "type": "gear",
+  "_id": "CPmuDN8FX79ZdXO4",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when a test calls for this kit, the best kit you carry decides whether you take a Snag or a smaller ↓. Use button: use it up for temporary Specialization (or Edge if already Specialized), scrounge a refill, or change its Specialization.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 47
+    },
+    "gearType": "kits",
+    "quantity": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266059201,
+    "modifiedTime": 1790266059201,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!CPmuDN8FX79ZdXO4"
+}

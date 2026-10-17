@@ -5,6 +5,10 @@
   "_id": "8SvWaWzK32zpUivS",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Let's Go Psycho! Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

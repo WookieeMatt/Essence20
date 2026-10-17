@@ -5,6 +5,10 @@
   "_id": "tfCikqap4mPZvI12",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Prowler Focus Perks at levels 1, 3, 6, 10, 17 and 20, plus its Essence and Skill options, which you pick when you add it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -25,7 +29,7 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Pop Out",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "focus",
         "level": 3
       },
       "9f25": {
@@ -55,7 +59,7 @@
       "f4a5": {
         "uuid": "Compendium.essence20.tf_crb.Item.7VyNmcnl9DuuIKlp",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Knock Knock, Drag Out",
+        "name": "Knock Down, Drag Out",
         "type": "perk",
         "subtype": "role",
         "level": 20

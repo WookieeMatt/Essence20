@@ -5,6 +5,10 @@
   "_id": "Q9mBaq3B9pvogpIp",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: adding it to your sheet raises Strength and asks which other Essence pays the cost, then lowers that one. Removing it undoes both.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

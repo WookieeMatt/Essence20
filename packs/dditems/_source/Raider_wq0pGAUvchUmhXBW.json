@@ -5,6 +5,10 @@
   "_id": "wq0pGAUvchUmhXBW",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Raider Perks at their listed levels, the Essence increases and General Perks by level, and training in Ballistic and Explosives weapons.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

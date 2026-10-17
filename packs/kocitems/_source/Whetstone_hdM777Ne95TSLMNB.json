@@ -5,6 +5,10 @@
   "_id": "hdM777Ne95TSLMNB",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. It sharpens blades.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

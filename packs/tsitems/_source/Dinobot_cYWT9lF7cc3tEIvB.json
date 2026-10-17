@@ -5,6 +5,10 @@
   "_id": "cYWT9lF7cc3tEIvB",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Dinobot Perk, plus a choice of its Hang-Ups (I Don't Get It, Grudging Ally, Impulsive or Violent).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -22,6 +26,12 @@
         "uuid": "Compendium.essence20.decepticon_directive.Item.jivhlSMGRJBGhXM2",
         "img": "icons/svg/hazard.svg",
         "name": "I Don't Get It",
+        "type": "hangUp"
+      },
+      "gr4a": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.PnVygbT6zVhEWnnG",
+        "img": "icons/svg/hazard.svg",
+        "name": "Grudging Ally",
         "type": "hangUp"
       },
       "d370": {

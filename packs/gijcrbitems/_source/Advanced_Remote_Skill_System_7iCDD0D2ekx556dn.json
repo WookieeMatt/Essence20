@@ -1,0 +1,47 @@
+{
+  "folder": "qXw41bfLXOkeA9eO",
+  "name": "Advanced Remote Skill System",
+  "type": "upgrade",
+  "_id": "7iCDD0D2ekx556dn",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "prerequisites": {"when":["self:has:Basic Remote Skill System"]},
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: letting the drone use its designated Smarts or Social Skill at up to 100ft.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 169
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "",
+    "traits": [],
+    "type": "drone",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787145794377,
+    "modifiedTime": 1787145794377,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!7iCDD0D2ekx556dn"
+}

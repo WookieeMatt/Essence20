@@ -5,6 +5,10 @@
   "_id": "nyfshv9epZbusYNp",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, with a Stun alternate effect; its Laser and Stun traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -57,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "prototype",
     "classification": {
       "size": "integrated"

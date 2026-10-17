@@ -5,6 +5,10 @@
   "_id": "7CFO4VIOM5VE4PyI",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Sharp damage at Reach, with alternate effects hitting 2 targets (↓1) or 3 targets; its traits apply.</p><p>Left to the table: keeping to the listed number of targets.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,7 @@
     },
     "items": {
       "2beb": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.pbfLfPqG58y5bu7z",
+        "uuid": "Compendium.essence20.tf_crb.Item.pbfLfPqG58y5bu7z",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Medium Blade Effect",
         "type": "weaponEffect",
@@ -35,7 +39,7 @@
         "shiftDown": 0
       },
       "a021": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.qJ2FDEwfZF9R8fQX",
+        "uuid": "Compendium.essence20.tf_crb.Item.qJ2FDEwfZF9R8fQX",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Medium Blade Alternate Effect",
         "type": "weaponEffect",
@@ -55,10 +59,30 @@
           "value": null
         },
         "shiftDown": 1
+      },
+      "751d": {
+        "uuid": "Compendium.essence20.tf_crb.Item.4LCgqoy5wE2yHWdx",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Medium Blade Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 3,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 3
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"

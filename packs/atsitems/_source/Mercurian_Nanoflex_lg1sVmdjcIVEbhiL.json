@@ -5,6 +5,10 @@
   "_id": "lg1sVmdjcIVEbhiL",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +1 Toughness and +1 Evasion on the sheet. Its Xenotech trait adds ↓1 to your Athletics and Acrobatics rolls, already counted in the Roll Options Dialog's Shift Down box. Silent means it adds no stealth penalty.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

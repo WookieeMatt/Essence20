@@ -5,6 +5,10 @@
   "_id": "B7WFquMtFc0QUkE0",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to gains Aquatic, so it works underwater without penalty.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "OKmsUwWfesXcPWba",
   "img": "systems/essence20/assets/icons/weapons/battle-axe.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, plus its alternate effect; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -57,8 +61,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
@@ -71,7 +73,8 @@
     },
     "traits": [
       "blunt",
-      "energy"
+      "energy",
+      "powerWeapon"
     ],
     "upgradeTraits": [],
     "usesPerScene": null

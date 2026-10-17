@@ -5,6 +5,10 @@
   "_id": "ut7561HXFJd1jPdn",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Faction Perks, Change Its Stripes, Creature of Habit and Roar!.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

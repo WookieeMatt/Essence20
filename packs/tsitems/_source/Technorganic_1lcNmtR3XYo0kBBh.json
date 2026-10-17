@@ -5,6 +5,10 @@
   "_id": "1lcNmtR3XYo0kBBh",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Technorganic Perk and its mandatory Reformatted Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

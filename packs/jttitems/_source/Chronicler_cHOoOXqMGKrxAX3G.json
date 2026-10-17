@@ -5,6 +5,13 @@
   "_id": "cHOoOXqMGKrxAX3G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"skillDice","reset":"none","maxUses":0,"skills":["culture"]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Culture tests. Chat card: a button to reroll the Skill dice on Culture tests.</p><p>Left to the table: both apply to every Culture test; untick the Edge when the test isn't about recalling history.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +22,52 @@
     "selectionLimit": 1,
     "type": "influence"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Compendium.essence20.jump_through_time.Item.cHOoOXqMGKrxAX3G",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "yWp2ZwkDpUE5te4a",
+      "changes": [
+        {
+          "key": "system.skills.culture.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Historical Recall",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!cHOoOXqMGKrxAX3G.yWp2ZwkDpUE5te4a"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

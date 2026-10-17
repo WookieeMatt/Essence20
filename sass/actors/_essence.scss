@@ -2,21 +2,114 @@
   text-align: center;
   margin-top: 5px;
   margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 2px 0;
 }
 
 .essence20 .essence-header.strength {
   margin-bottom: 0;
 }
 
-.essence20 .essence-header .essence-label {
-  font-size: 1.5em;
-  vertical-align: middle;
+.essence20 .essence-header .skill-rank-allocation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.75em;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
 }
 
-.essence20 .essences {
-  display: grid;
-  align-content: center;
-  justify-content: space-around;
-  justify-items: center;
-  margin-bottom: auto;
+.essence20 .essence-header .skill-rank-defense {
+  font-weight: 600;
+}
+
+/* The gear icon that opens the Skill Picker app (module/apps/skill-picker.mjs) for setting
+   every skill's shift - sits next to the tally it feeds rather than claiming its own row, since
+   .skill-rank-allocation above now shares the row instead of taking the full width alone. */
+.essence20 .essence-header > a[data-action="skillPicker"] {
+  flex: 0 0 auto;
+  color: var(--e20-theme-text-color);
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.essence20 .essence-header .essence-label {
+  font-size: 1.2em;
+  vertical-align: middle;
+  font-weight: 700;
+  color: var(--e20-theme-text-color);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 6px;
+  padding: 2px 8px;
+  min-width: 64px;
+  text-align: center;
+}
+
+.essence20 .essence-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  isolation: isolate;
+}
+
+.essence20 .essence-column .skills-container {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.essence20 .essence-header:has(.essence-label) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto -18px;
+  position: relative;
+  z-index: 5;
+  padding: 5px 12px 5px 16px;
+  background-color: var(--e20-system-color, var(--e20-theme-accent));
+  box-sizing: border-box;
+  /* Theme-driven, like the panel and accent clips - this chip is the one piece of frame
+     geometry that is drawn by clip-path alone rather than from a border image, so without
+     a theme hook it kept the Sci-fi chamfer on every theme. The fallback is that chamfer. */
+  clip-path: var(--e20-theme-chip-clip,
+    polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px));
+}
+
+/* Coloured the same way as the sheet tabs (actors/_tabs.scss), which sit on the same fill:
+   helpers/actor.mjs#applySystemColorCssVariables picks the text tone from the fill's luminance -
+   dark text and no halo on a light colour, near-white over a dark halo on anything darker. The
+   fixed theme grey this used before vanished on a light grey or yellow chip. The grey stays as
+   the fallback for a colour that cannot be read. */
+.essence20 .essence-header:has(.essence-label) .essence-label {
+  background: none;
+  border: none;
+  padding: 0;
+  min-width: 0;
+  color: var(--e20-system-color-contrast, var(--e20-theme-muted-text, var(--e20-theme-text-color)));
+  -webkit-text-stroke: 1px var(--e20-system-color-halo, rgba(0, 0, 0, 0.8));
+  paint-order: stroke fill;
+  font-weight: 600;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+/* The boxes take the same text tone, on a wash that suits the fill (--e20-system-color-inset:
+   light on a light colour, this dark one otherwise). */
+.essence20 .essence-header:has(.essence-label) .two-digit-input {
+  background: var(--e20-system-color-inset, rgba(0,0,0,0.35));
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--e20-system-color-contrast, var(--e20-theme-text-color));
+  font-weight: 700;
+  font-size: 0.85em;
+  max-width: 28px;
+  padding: 2px;
 }

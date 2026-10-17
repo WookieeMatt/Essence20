@@ -5,6 +5,10 @@
   "_id": "6vp5PAYFTiRiMc2m",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Field Commander Perks at the levels in its table, plus its Essence increases.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -97,7 +101,7 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Stand Together",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "role",
         "level": 18
       },
       "b47f": {
@@ -182,6 +186,13 @@
       "performance",
       "persuasion"
     ],
+    "upgrades": {
+      "armors": {
+        "trained": [
+          "limited"
+        ]
+      }
+    },
     "version": "transformers",
     "weapons": {
       "qualified": [],

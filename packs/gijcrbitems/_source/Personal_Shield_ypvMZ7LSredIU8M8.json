@@ -5,6 +5,10 @@
   "_id": "ypvMZ7LSredIU8M8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted with the Personal Shield Role Points item, which does all the work: uses, activation and the Defense bonus. This Perk is only the label.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

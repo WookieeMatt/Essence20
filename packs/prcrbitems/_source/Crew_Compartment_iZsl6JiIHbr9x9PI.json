@@ -5,6 +5,10 @@
   "_id": "iZsl6JiIHbr9x9PI",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: the Zord can carry three more crew.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

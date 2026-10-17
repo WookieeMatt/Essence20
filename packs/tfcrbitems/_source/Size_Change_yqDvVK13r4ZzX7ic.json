@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>On the sheet: set your Alt Mode's size one Size Class larger or smaller than your Bot Mode; converting uses that size. Nothing else is applied by this Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

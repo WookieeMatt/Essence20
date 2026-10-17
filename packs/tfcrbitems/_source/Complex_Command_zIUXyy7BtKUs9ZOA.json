@@ -5,6 +5,10 @@
   "_id": "zIUXyy7BtKUs9ZOA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Issue a Command you can give two different commands; allies who meet both terms get both benefits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

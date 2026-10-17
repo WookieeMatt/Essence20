@@ -5,10 +5,17 @@
   "_id": "S9AyX2OtvvrE9oM0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DieSubstitution","label":"Intimidation die on Rouse (Brutal Verbalities)","mode":"best","skills":["intimidation"],"when":["skill:persuasion","roll:dataset:isRouseAttempt"]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Intimidation also counts as a Social Skill. Automatic: Rouse can roll your Intimidation in place of Persuasion.</p><p>Left to the table: using Intimidation for other Officer Perks, and spending a Story Point to Intimidate something normally immune.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Sgt Slaugter Sourcebook",
+      "book": "Sgt Slaughter Sourcebook",
       "page": 9
     },
     "prerequisite": "",
@@ -32,7 +39,7 @@
       "_id": "MgsqofJhzu8IDEqF",
       "changes": [
         {
-          "key": "system.skills.intimidation.essences.intimidation",
+          "key": "system.skills.intimidation.essences.social",
           "mode": 5,
           "value": "true",
           "priority": null

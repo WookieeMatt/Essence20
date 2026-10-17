@@ -5,6 +5,10 @@
   "_id": "D0TEkm1fTIaQTK6j",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: rolls Targeting against the Toughness of up to 3 targets for 1 Energy damage. Its cost counts toward your Sorcerous Power budget on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,14 +17,23 @@
     },
     "actionType": "standard",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 4,
     "selectionLimit": 1,
     "type": "sorcerous",
     "usesInterval": "perTurn",
-    "usesPer": 1
+    "usesPer": 1,
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
+    "attackSkill": "targeting",
+    "damageValue": 1,
+    "damageType": "element",
+    "defenseType": "toughness",
+    "numTargets": 3
   },
   "effects": [],
   "flags": {},

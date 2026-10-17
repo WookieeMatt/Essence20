@@ -1,8 +1,11 @@
-import { _setEssenceProgression } from "../sheet-handlers/role-handler.mjs";
+﻿import { _setEssenceProgression } from "../sheet-handlers/role-handler.mjs";
+import { applyThemeClass } from "../settings.js";
 
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { FormValidationError } from "../util/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class EssenceProgressionSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class EssenceProgressionSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(choices, actor, role, dropFunc, level1Essences, title){
     super();
     this._choices = choices;
@@ -17,6 +20,8 @@ export default class EssenceProgressionSelector extends HandlebarsApplicationMix
     id: "essence-progression",
     classes: [
       "essence20",
+      "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -52,6 +57,12 @@ export default class EssenceProgressionSelector extends HandlebarsApplicationMix
     return context;
   }
 
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
+  }
+
   static async myFormHandler(event, form, formData) {
     const rankArray = [];
     for (const [, rank] of Object.entries(formData.object)) {
@@ -60,7 +71,7 @@ export default class EssenceProgressionSelector extends HandlebarsApplicationMix
 
     const isUnique = rankArray.length === new Set(rankArray).size;
     if (!isUnique) {
-      throw new Error('Selections must be unique');
+      throw new FormValidationError(game.i18n.localize('E20.EssenceProgressionUniqueError'));
     }
 
     _setEssenceProgression(this._actor, formData.object, this._role, this._dropFunc, this._level1Essences);

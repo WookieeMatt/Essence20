@@ -1,0 +1,30 @@
+// Greased Lightning (Knights of Canterlot, Elementary Enchantment spell, p.43): the target turns too
+// slippery to hold or restrain, with ↑1 on Speed tests to go fast for the duration. A flat on/off flag on
+// whichever actor was targeted by the cast (read directly in dice.mjs, the same generic per-actor
+// flag shape Hot To Trot/Fluttery Wings/Lightning Speed already established), covering 2 of the
+// spell's own 4 clauses:
+// - "Unable to be held or restrained" -> immunity to the Restrained/Grappled Conditions, wired
+//   into mechanics/combat/condition-immunity.mjs's own CONDITION_IMMUNITY_PERKS table via its `checkFn`
+//   escape hatch (a spell-granted temporary flag rather than a permanently-held Perk, so it can't
+//   use that table's default actorHasPerk(id) shape).
+// - "Speed-related Skill Tests... upshift-1" -> read directly in dice.mjs#rollSkill's own
+//   essence-scoped shift computation, the same shape as Crushing Strength/Pack Mule.
+// NOT built: "if already restrained or grappled, gains Edge to escape" (this system has no
+// distinct "escape a grapple" Skill Test classification to hook - the immunity half already
+// prevents becoming newly held while active, covering the common case) and "attempts to stop
+// suffer a Snag" (no "stopping" Skill Test classification either) - both flagged as gaps, not
+// forced into an inaccurate shape. "For the duration" (an Elementary Enchantment spell, same
+// tier/duration family as Hot To Trot/Foolscarrot above) is now tracked with the Scene Clock
+// (mechanics/resources/scene-clock.mjs) so it clears once the GM calls the scene rather than lingering.
+
+import { isActiveForWindow } from "../../mechanics/resources/scene-clock.mjs";
+
+const GREASED_LIGHTNING_FLAG = 'greasedLightningActive';
+
+export function isGreasedLightningActive(actor) {
+  return isActiveForWindow(actor, GREASED_LIGHTNING_FLAG, 'scene');
+}
+
+export async function removeGreasedLightning(actor) {
+  await actor.unsetFlag('essence20', GREASED_LIGHTNING_FLAG);
+}

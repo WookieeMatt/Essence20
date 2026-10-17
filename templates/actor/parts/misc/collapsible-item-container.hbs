@@ -1,13 +1,17 @@
-<div class="collapsible-item-container" style="border-color: {{system.color}};">
+<div class="collapsible-item-container e20-border-accent">
   {{!-- Header with + and v buttons --}}
-  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType hidePlusButton=hidePlusButton}}
+  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType hidePlusButton=hidePlusButton singleItem=singleItem}}
 
-  <ol class="items-list" style="border-color: {{system.color}};">
+  <ol class="items-list">
     {{#if items.length}}
       {{#each items as |item|}}
       <li class="item accordion-wrapper flexcol" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
         {{!-- Item label and buttons --}}
-        {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
+        {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item itemKey=itemKey}}
+
+        {{!-- Optional full-width row under the label, supplied by the calling container via an
+             inline partial (e.g. the Weapons container puts the Hardpoint controls here). --}}
+        {{#> item-subrow item=item}}{{/item-subrow}}
 
         {{!-- Item content --}}
         {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}
@@ -22,7 +26,7 @@
       {{/each}}
     {{else}}
       {{#if defaultText}}
-      <li style="text-align: center">{{localize defaultText}}</li>
+      <li class="e20-align-center">{{localize defaultText}}</li>
       {{/if}}
     {{/if}}
   </ol>

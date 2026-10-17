@@ -5,6 +5,10 @@
   "_id": "RMIphLpxSUTWMxtZ",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Raider Role, plus the Siegemaster Perks at their listed levels. Pick its Essence and Skill increases when you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

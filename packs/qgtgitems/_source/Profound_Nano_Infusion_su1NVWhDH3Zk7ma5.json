@@ -5,15 +5,27 @@
   "_id": "su1NVWhDH3Zk7ma5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Profound Nano Infusion: a Restricted nanomite power","event":"added","steps":[{"do":"pickGrant","from":{"type":"power","availabilities":["restricted"],"tags":["item:data:system.type=nanomite"],"notOwned":true,"selectionLimit":true}}]}
+    ],
+    "prerequisites": {"when":["self:level>=12"]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick one Restricted nanomite power when you take it. You can take it again for another.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Quartermaster's Guide to Gear",
       "page": 30
     },
-    "prerequisite": "Level 12",
-    "selectionLimit": 1,
-    "type": "general"
+    "prerequisite": "",
+    "selectionLimit": 10,
+    "type": "general",
+    "hasChoice": false,
+    "choiceType": "none",
+    "numChoices": 1,
+    "items": {}
   },
   "effects": [],
   "sort": 0,

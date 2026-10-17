@@ -5,6 +5,10 @@
   "_id": "Vm3kSLHi3h39fycs",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on tests that call for an Engineering kit, carrying it removes the Snag (or turns it into a ↓ for harder kits).</p><p>Use button: use it up for a short Specialization (or ↑1 if already Specialized), or scrounge a refill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

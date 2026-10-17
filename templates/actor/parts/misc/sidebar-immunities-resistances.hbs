@@ -1,0 +1,21 @@
+<div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-immunities-resistances">
+  <label class="sliced-border__label"><i class="fas fa-shield-virus"></i> {{localize 'E20.ImmunitiesResistancesTitle'}}</label>
+  <div class="essence20-sidebar-trait-row">
+    <label>
+      {{localize 'E20.ActorImmunities'}}
+      <a class="trait-selector" data-action="traitSelector" data-options="damageType" data-target="system.immunities" data-tooltip="{{localize 'E20.TraitSelector'}}">
+        <i class="fas fa-edit" data-options="damageType" data-target="system.immunities"></i>
+      </a>
+    </label>
+    <span>{{formatBooleanList system.immunities @root.config.damageTypes 'unit'}}</span>
+  </div>
+  <div class="essence20-sidebar-trait-row">
+    <label>
+      {{localize 'E20.ActorResistances'}}
+      <a class="trait-selector" data-action="traitSelector" data-options="damageType" data-target="system.resistances" data-tooltip="{{localize 'E20.TraitSelector'}}">
+        <i class="fas fa-edit" data-options="damageType" data-target="system.resistances"></i>
+      </a>
+    </label>
+    <span>{{formatBooleanList system.resistances @root.config.damageTypes 'unit'}}</span>
+  </div>
+</div>

@@ -5,15 +5,24 @@
   "_id": "byDKETJSGDlOSIBB",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting rolls Spellcasting and applies its cost as a lingering Spellcasting downshift. The GM sets the DIF by distance and familiarity, and the projection is played out in the story.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 139
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 4,
-    "duration": "10 rounds",
+    "duration": {
+      "units": "rounds",
+      "value": 10,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "Unlimited",
     "tier": "virtuoso"

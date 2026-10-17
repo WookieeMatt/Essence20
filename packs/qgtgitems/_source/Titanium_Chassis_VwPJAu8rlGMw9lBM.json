@@ -1,0 +1,49 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Titanium Chassis",
+  "type": "upgrade",
+  "_id": "VwPJAu8rlGMw9lBM",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","upshift":2,"when":["self:type:vehicle","skill:might"]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: the vehicle's own Might tests get ↑2, listed as a Titanium Chassis switch under Automatic Modifiers. Switch it off when the test isn't a shove.</p><p>Left to the table: its Brawn counting 2 higher for Carrying Capacity.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 57
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "+2 to the vehicle's Brawn for Carrying Capacity, and +2 on Might Skill Tests to shove objects or creatures.",
+    "traits": [],
+    "type": "vehicle",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!VwPJAu8rlGMw9lBM"
+}

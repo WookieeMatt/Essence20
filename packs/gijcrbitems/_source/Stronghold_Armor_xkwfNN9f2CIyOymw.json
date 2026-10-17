@@ -5,6 +5,10 @@
   "_id": "xkwfNN9f2CIyOymw",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while worn, +5 Toughness. The Deflective trait applies, so Armor Piercing attacks ignore that bonus.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "qnatfgjkj4B4Lku6",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while attached: the Element weapon gains the Electromagnetic trait on top of its own.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

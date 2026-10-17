@@ -5,6 +5,10 @@
   "_id": "1oCjSeeK98SCVjO7",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Origin's Essences, Skills, 2 starting Health, 35 ft ground movement and the We Are The Coinless Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

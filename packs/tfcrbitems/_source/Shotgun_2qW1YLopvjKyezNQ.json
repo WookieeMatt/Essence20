@@ -5,6 +5,10 @@
   "_id": "2qW1YLopvjKyezNQ",
   "img": "systems/essence20/assets/icons/weapons/shotgun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Sharp damage against up to 2 targets in a 15ft cone, with the listed range; its Ballistic and Reload traits apply.</p>"
+    },
     "originalId": "",
     "description": "<p>15 ft cone</p>",
     "source": {
@@ -13,7 +17,7 @@
     },
     "items": {
       "f637": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.fTJL51h5V8FYp5mp",
+        "uuid": "Compendium.essence20.tf_crb.Item.7F5cUMCXQssi1Gs7",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Shotgun Effect",
         "type": "weaponEffect",
@@ -22,7 +26,7 @@
           "style": "projectile"
         },
         "damageValue": 1,
-        "damageType": "blunt",
+        "damageType": "sharp",
         "numHands": "2",
         "numTargets": 2,
         "radius": 15,
@@ -35,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"

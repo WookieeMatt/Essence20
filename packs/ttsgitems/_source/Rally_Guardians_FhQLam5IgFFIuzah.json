@@ -5,6 +5,10 @@
   "_id": "FhQLam5IgFFIuzah",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: creates your Guardian company as a Zord actor linked to you (needs a GM online).</p><p>Left to the table: filling in the company's Zord stats, and ignoring Snags on Persuasion tests to direct it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

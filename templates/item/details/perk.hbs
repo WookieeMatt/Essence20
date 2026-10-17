@@ -1,0 +1,101 @@
+<div>
+
+  {{!-- Action cost - see templates/item/parts/activation-fields.hbs --}}
+  {{> "systems/essence20/templates/item/parts/activation-fields.hbs"}}
+  {{!-- Perk Type --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkType'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.type">
+    {{selectOptions config.perkTypes selected=system.type}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{#if (eq system.type "contact")}}
+    {{!-- Allegiance Point cost --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAllegianceCost'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.allegianceCost" value="{{system.allegianceCost}}" min="0" step="1" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+  {{#if (eq system.type "faction")}}
+    {{!-- System --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RoleVersion'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.version">
+      {{selectOptions config.gameVersions selected=system.version}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Can Be Activated --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkRoleVariant'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="checkbox" name="system.isRoleVariant" {{checked system.isRoleVariant}} />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{#if system.isRoleVariant}}
+      {{> "systems/essence20/templates/item/parts/sub-perk-drop.hbs" className="perk" label='E20.SubPerks' items=system.items roles=roles type='perk'}}
+    {{/if}}
+
+  {{else}}
+    {{!-- Selection Limit --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SelectionLimit'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.selectionLimit name="system.selectionLimit" min=0 step=1}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Can Advance --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkCanAdvance'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="checkbox" name="system.advances.canAdvance" {{checked system.advances.canAdvance}} />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Perk choice P3: the old picker's inputs (hasChoice, choiceType, numChoices, choiceEssence, value) are gone - the
+         pick is a rule now and shows on the Rules tab with "change". An item still on the old picker gets a read-only notice. --}}
+    {{#if perkChoice.legacyChoice}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkLegacyChoice'}}
+      {{#*inline "item-field-inputs"}}
+      <span class="e20-legacy-choice">{{@root.perkChoice.legacyChoice.typeLabel}} = {{#if @root.perkChoice.legacyChoice.value}}{{@root.perkChoice.legacyChoice.value}}{{else}}-{{/if}}
+        ({{#if @root.perkChoice.legacyChoice.converted}}{{localize 'E20.PerkLegacyChoiceRepick'}}{{else}}{{localize 'E20.PerkLegacyChoiceConvert'}}{{/if}})</span>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/if}}
+
+    {{#if system.advances.canAdvance}}
+      {{!-- Advance Base Value --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAdvanceBaseValue'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="number" name="system.advances.baseValue" value="{{system.advances.baseValue}}"  min="0" step="1"/>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Advance Increase Level --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAdvanceIncreaseValue'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="number" name="system.advances.increaseValue" value="{{system.advances.increaseValue}}"  min="0" step="1"/>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Advance Type --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAdvanceType'}}
+      {{#*inline "item-field-inputs"}}
+        <select name="system.advances.type">
+          {{selectOptions config.perkAdvanceTypes selected=system.advances.type}}
+        </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/if}}
+
+    {{!-- The sub-Perks a Pick Sub-Perk rule offers (its option list; also an old 'perks' picker's until 6.1) --}}
+    {{#if perkChoice.showSubPerkList}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="perk" label='E20.PerkSubPerkChoiceList' items=@root.system.items type='perk'}}
+    {{/if}}
+
+  {{/if}}
+</div>

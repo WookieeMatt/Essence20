@@ -5,6 +5,10 @@
   "_id": "ePcilMg8FO6Acjbq",
   "img": "systems/essence20/assets/icons/weapons/bo.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for Sharp damage, with Maneuver and Stun alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -45,7 +49,7 @@
         },
         "damageValue": 1,
         "damageType": "maneuver",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -55,13 +59,33 @@
           "value": null
         },
         "shiftDown": 0
+      },
+      "a7c1": {
+        "uuid": "Compendium.essence20.pr_crb.Item.iIlwjA4RunXfQCkZ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Power Tonfas Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
-      "size": "sidearm"
+      "size": "light"
     },
     "equipped": true,
     "requirements": {
@@ -71,6 +95,7 @@
     },
     "traits": [
       "martialArts",
+      "powerWeapon",
       "sharp",
       "silent"
     ],

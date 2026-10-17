@@ -5,13 +5,42 @@
   "_id": "qaTQqbLShvXZdKCp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick one from the list","removeOnStop":true,"steps":[{"do":"pickSubPerk","key":"perks","required":true}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added you pick one of the listed Standard Genetic Alterations. You also count as having Genetic Alterations for weapons that care about them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Factions in Action Vol 1: Ferocious Fighters",
       "page": 73
     },
-    "items": {},
+    "items": {
+      "hgm1": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.0DQYk8jWOPkur9GQ",
+        "img": "systems/essence20/assets/icons/items/alteration.svg",
+        "name": "Standard Skin Tempering",
+        "type": "alteration",
+        "role": null
+      },
+      "hgm2": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.lIZ82fVg0ariPYcb",
+        "img": "systems/essence20/assets/icons/items/alteration.svg",
+        "name": "Enhanced Photoreceptors",
+        "type": "alteration",
+        "role": null
+      },
+      "hgm3": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.zNN9bu7QMXzpUgHB",
+        "img": "systems/essence20/assets/icons/items/alteration.svg",
+        "name": "Standard Weaponization",
+        "type": "alteration",
+        "role": null
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,

@@ -5,6 +5,10 @@
   "_id": "58ADVth9COQ2kjdX",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +2 Toughness while equipped.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

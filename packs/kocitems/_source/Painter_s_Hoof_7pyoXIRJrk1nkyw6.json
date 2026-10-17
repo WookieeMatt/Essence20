@@ -5,15 +5,24 @@
   "_id": "7pyoXIRJrk1nkyw6",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: the spell's effect, which is narrative (magical paint), including the extra cost for an unwilling target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Knights of Canterlot",
       "page": 47
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 1,
-    "duration": "1 day",
+    "duration": {
+      "units": "days",
+      "value": 1,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "60 feet",
     "tier": "superior"

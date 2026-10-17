@@ -1,6 +1,14 @@
-<header class="sheet-header">
-  <img class="profile-img" src="{{item.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}"/>
-  <div class="header-fields">
-    <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+<header class="sheet-header item-sheet-header">
+  <div class="flexcol e20-flex-grow-0175 e20-gap-5">
+    <img class="profile-img item-profile-img" src="{{document.img}}" data-action="editImage" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}"/>
+  </div>
+  <div class="flexcol e20-flex-grow-1">
+    <div class="flexrow e20-item-badges">
+      <span class="item-type-badge">{{localize (concat "TYPES.Item." document.type)}}</span>
+      {{#if automation.status}}
+      <span class="e20-automation-badge e20-automation-{{automation.status}}" data-tooltip="{{automation.tooltip}}"><i class="{{automation.icon}}" inert></i> {{automation.label}}</span>
+      {{/if}}
+    </div>
+    <h1 class="charname flexrow"><input name="name" type="text" value="{{document.name}}" placeholder="Name"/></h1>
   </div>
 </header>

@@ -5,6 +5,10 @@
   "_id": "02eABr4sNdGQmQx9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: you always know where you are on the Morphin Grid.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "hJaTZrQ7tao4hDPJ",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>A roleplaying Hang-Up; the system applies nothing for it.</p><p>Left to the table: playing out your constant urge to refuel.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

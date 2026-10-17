@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: starting Health, Essences, Skills, movement and the Nobody Like Me Perk. You pick your Essence increase and Skills when you add it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -17,15 +21,16 @@
         "type": "perk"
       }
     },
-    "baseAerialMovement": "0",
-    "baseAquaticMovement": "0",
-    "baseGroundMovement": "30",
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
     "essences": [
       "strength",
       "speed",
       "smarts",
       "social"
     ],
+    "allSkillsGranted": true,
     "languages": "",
     "skills": [
       "intimidation",
@@ -39,13 +44,7 @@
       "performance",
       "streetwise"
     ],
-    "startingHealth": 2,
-    "bonusSkillLevels": "",
-    "groundMovement": "",
-    "benefit": {
-      "name": "",
-      "description": ""
-    }
+    "startingHealth": 2
   },
   "effects": [],
   "flags": {

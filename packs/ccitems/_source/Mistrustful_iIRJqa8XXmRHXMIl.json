@@ -5,6 +5,10 @@
   "_id": "iIRJqa8XXmRHXMIl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Perk.</p><p>Left to the table: the extra Move action it gives you when combat starts, including while Surprised.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

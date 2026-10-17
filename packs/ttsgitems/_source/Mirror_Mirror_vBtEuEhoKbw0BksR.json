@@ -5,6 +5,10 @@
   "_id": "vBtEuEhoKbw0BksR",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: once per session, pick a Skill to count as Specialized until the scene ends, and tick Specialized in the Roll Options Dialog for those tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

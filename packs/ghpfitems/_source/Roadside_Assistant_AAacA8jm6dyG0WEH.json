@@ -1,0 +1,44 @@
+{
+  "folder": "9yEyQWJnmCubFoI8",
+  "name": "Roadside Assistant",
+  "type": "perk",
+  "_id": "AAacA8jm6dyG0WEH",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","event":"initiativeRolling","label":"Roadside Assistant (+1 Bonus Health to your vehicle)","limit":{"per":"encounter"},"when":["vehicle:crew"],"steps":[{"do":"updateActor","to":"crewedVehicle","add":{"system.health.bonus":1}}]}
+    ],
+    "prerequisites": {"when":["self:skill:driving>=d4","self:skill:technology>=d4"]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you roll Initiative, the vehicle you are piloting gains 1 Bonus Health (once per encounter).</p><p>Left to the table: the free Technology (Repair) kit, and giving the bonus when you are a passenger.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 174
+    },
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1787763529613,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!AAacA8jm6dyG0WEH"
+}

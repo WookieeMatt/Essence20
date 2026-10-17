@@ -5,6 +5,10 @@
   "_id": "cItUyVJ1ky3fdjKe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: at Requisition, spend the Story Point and keep last mission's gear on your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

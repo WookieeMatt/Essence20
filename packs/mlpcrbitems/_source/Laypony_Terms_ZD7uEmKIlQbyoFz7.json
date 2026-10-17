@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you use Reverse Engineer you're asked whether it replaces a Social Skill; if so, that Technology test takes a Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

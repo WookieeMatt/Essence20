@@ -5,6 +5,13 @@
   "_id": "RDdg5LWyjHOyqsCp",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"scope":"driven","amount":1,"when":["attack","self:type:zord","holder:morphed"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect (while Morphed): +2 to all four Defenses and Edge on Strength tests. Automatic: when your Zord attacks outside a Megaform, it deals +1 damage, shown on the attack's chat card as \"Includes +1 from White Ranger Prime\".</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -54,6 +61,12 @@
           "mode": 2,
           "value": "2",
           "priority": null
+        },
+        {
+          "key": "system.essenceShifts.strength.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
         }
       ],
       "description": "",
@@ -74,7 +87,9 @@
       },
       "img": "icons/svg/aura.svg",
       "type": "base",
-      "system": {},
+      "system": {
+        "whileMorphed": true
+      },
       "sort": 0,
       "_key": "!items.effects!RDdg5LWyjHOyqsCp.meDdTxEEFydjRJRG"
     }

@@ -1,0 +1,84 @@
+{
+  "folder": "rqUrFq3VV6GKscOw",
+  "name": "Binoculars",
+  "type": "gear",
+  "_id": "1XKyDGHSuIADJWQe",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch it on when spotting something more than 30 ft away to get ↑2 on Alertness, then switch it off.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 72
+    },
+    "quantity": 1,
+    "gearType": "tools"
+  },
+  "effects": [
+    {
+      "name": "Spotting at Distance",
+      "origin": "Item.1XKyDGHSuIADJWQe",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "YcXByeNyaIJ8yG0B",
+      "changes": [
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!1XKyDGHSuIADJWQe.YcXByeNyaIJ8yG0B"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!1XKyDGHSuIADJWQe"
+}

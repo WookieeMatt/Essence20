@@ -5,6 +5,13 @@
   "_id": "zdXJzzqekwPAnCtT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Leadfoot (driving: no untrained Snag on Alertness)","when":["skill:alertness","vehicle:driving"],"immune":["untrainedSnag"]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Driving tests. Automatic: no Snag on Alertness for lacking ranks while you're driving.</p><p>Left to the table: only taking the Driving Edge when you use the vehicle's full Movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +22,47 @@
     "selectionLimit": 1,
     "type": "influence"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Full Throttle",
+      "origin": "Compendium.essence20.quartermasters_guide_to_gear.Item.zdXJzzqekwPAnCtT",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "LeadfootDriving1",
+      "changes": [
+        { "key": "system.skills.driving.edge", "mode": 5, "value": "true", "priority": null }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!zdXJzzqekwPAnCtT.LeadfootDriving1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

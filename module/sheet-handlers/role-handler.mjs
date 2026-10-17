@@ -1,26 +1,158 @@
+import { afterSpectrumShifted, spectrumShiftedRetains } from "../mechanics/characters/spectrum-shifted.mjs";
+import { essenceRedirect } from "../mechanics/resources/grants.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
-import { onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
+import { onPerkDelete, onPerkDrop } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
+import { removeFocusSkillPicks, syncFocusSkillPicks } from "../mechanics/characters/focus-skills.mjs";
 
-const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
+/**
+ * Performs a Spectrum Shift: retroactively swaps the Actor's current Role for a new one, per
+ * the Spectrum Shift Perk rules (core rulebook p.58). Health, Essence scores, weapon/armor
+ * training, and general Skill ranks are left untouched - only Power Regeneration/Capacity,
+ * the Role's own skill die (e.g. a Grid Relic Weapon), and Role Perks (including Zord access)
+ * retroactively become the new Role's values, computed fresh as if the Actor had always been
+ * this Role up to their current level. Zord Features already chosen on a linked Zord actor
+ * aren't touched here - reflavoring or replacing the Zord itself is left to the GM/player.
+ *
+ * A Role with system.hasSpectrumShifted set (currently only the Quantum Ranger) is a partial
+ * exception to this: per its own "Spectrum Shifted" Role Perk, it builds off an existing
+ * Ranger's early talents rather than fully replacing them, so the old Role's Perks from levels
+ * 1-3 are kept (reparented onto the new Role) instead of being deleted like everything else.
+ * @param {Actor} actor The Actor performing the Spectrum Shift
+ * @param {Role} newRole The new Role to shift into
+ */
+export async function performSpectrumShift(actor, newRole) {
+  const oldRole = actor.items.documentsByType.role.find(r => !r.system.isAdditive);
+  if (!oldRole) {
+    return;
+  }
+
+  const newRoleItem = await Item.create(newRole, { parent: actor });
+  const roleSkillDieBefore = foundry.utils.deepClone(actor.system.skills?.roleSkillDie ?? {});
+
+  for (const item of [...actor.items]) {
+    if (item.getFlag('essence20', 'parentId') == oldRole.id) {
+      // Spectrum Shifted (A Jump Through Time p.42, Table 2-16) - see
+      // mechanics/characters/spectrum-shifted.mjs for which Perks and pools each old Role keeps.
+      if (newRole.system.hasSpectrumShifted && ['perk', 'rolePoints'].includes(item.type)) {
+        const sourceId = item.flags.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource;
+        const oldAttachment = Object.values(oldRole.system.items).find(entry => entry.uuid == sourceId);
+        if (await spectrumShiftedRetains(actor, oldRole, item, oldAttachment)) {
+          await item.setFlag('essence20', 'parentId', newRoleItem._id);
+          continue;
+        }
+      }
+
+      if (item.type == 'perk') {
+        await onPerkDelete(actor, item);
+      }
+
+      await item.delete();
+    }
+  }
+
+  // Power Regeneration Rate & Personal Power Capacity: recomputed fresh for the new Role, as
+  // if the Actor had always been this Role up to their current level.
+  const powerLevelsReached = roleValueChange(actor.system.level, newRole.system.powers.personal.levels, null);
+  const newPersonalPowerMax = newRole.system.powers.personal.starting
+    ? newRole.system.powers.personal.starting + newRole.system.powers.personal.increase * powerLevelsReached
+    : 0;
+
+  await actor.update({
+    "system.powers.personal.max": newPersonalPowerMax,
+    "system.powers.personal.regeneration": newRole.system.powers.personal.regeneration,
+  });
+
+  // The Role's own skill die (e.g. White Ranger's Grid Relic Weapon): reset to a neutral
+  // baseline, then, if the new Role uses one, recompute fresh for the Actor's current level.
+  await actor.update({
+    "system.skills.roleSkillDie.shift": "d20",
+    "system.skills.roleSkillDie.essences.smarts": false,
+    "system.skills.roleSkillDie.essences.social": false,
+    "system.skills.roleSkillDie.essences.speed": false,
+    "system.skills.roleSkillDie.essences.strength": false,
+    "system.skills.roleSkillDie.edge": false,
+    "system.skills.roleSkillDie.snag": false,
+    "system.skills.roleSkillDie.shiftUp": 0,
+    "system.skills.roleSkillDie.shiftDown": 0,
+    "system.skills.roleSkillDie.isSpecialized": false,
+    "system.skills.roleSkillDie.modifier": 0,
+  });
+
+  if (newRole.system.skillDie.isUsed) {
+    const shiftList = CONFIG.E20.skillShiftList;
+    const dieLevelsReached = roleValueChange(actor.system.level, newRole.system.skillDie.levels, null);
+    const initialShiftIndex = shiftList.findIndex(s => s == "d2");
+    const finalShiftIndex = Math.max(0, Math.min(shiftList.length - 1, initialShiftIndex - dieLevelsReached));
+
+    const isSpecialized = newRole.system.skillDie.specializedLevels.some(arrayLevel => {
+      const level = arrayLevel.replace(/[^0-9]/g, '');
+      return level <= actor.system.level;
+    });
+
+    await actor.update({
+      "system.skills.roleSkillDie.shift": shiftList[finalShiftIndex],
+      "system.skills.roleSkillDie.isSpecialized": isSpecialized,
+    });
+  }
+
+  if (newRole.system.hasSpectrumShifted) {
+    await afterSpectrumShifted(actor, oldRole, roleSkillDieBefore);
+  }
+
+  // The old Role item itself is no longer needed - newRoleItem (created above, before the Perk
+  // cleanup loop) already stands in for it as the parent of every retained/newly granted Perk.
+  await oldRole.delete();
+
+  // Role Perks (including Zord access): grant every Perk the new Role provides at or below
+  // the Actor's current level.
+  await createItemCopies(newRole.system.items, actor, "perk", newRoleItem);
+
+  // Role version updates (canMorph/canSpellcast/canQualify) - in practice a Spectrum Shift
+  // always stays within the same game line, so this is usually a no-op.
+  await actor.update({
+    "system.canMorph": newRole.system.version == 'powerRangers',
+    "system.canSpellcast": newRole.system.version == 'myLittlePony',
+    "system.canQualify": newRole.system.version == 'giJoe',
+  });
+}
+
 /**
  * Handles setting the values and Items for an Actor's Role
  * @param {Role} role The Actor's Role
  * @param {Actor} actor The Actor that has the Role
  * @param {Number} newLevel (Optional) The new level that you are changing to
  * @param {Number} previousLevel (Optional) The last level processed for the Actor
+ * @param {Number} essenceLevel (Optional) The level to use for Essence/Power/Health/skill-die
+ *                               progression, in place of actor.system.level. Used by a base
+ *                               Role once an "additive" Role (system.isAdditive, e.g. Old Hand)
+ *                               is present: Essence Score Increases keep running off the
+ *                               Actor's real level (so this stays null/unset for that case).
+ * @param {Number} perkLevel (Optional) The level to use for this Role's OWN Role Perk grants,
+ *                            in place of actor.system.level - the "Effective Base Role Level"
+ *                            for a base Role once an additive Role is present, or the additive
+ *                            Role's own independent level for its own Role Perks.
+ * @param {Number} previousPerkLevel (Optional) The previously-processed value of perkLevel,
+ *                                    in place of previousLevel, for the same reason.
  */
-export async function setRoleValues(role, actor, newLevel=null, previousLevel=null) {
-  for (const essence in role.system.essenceLevels) {
-    const totalChange = roleValueChange(actor.system.level, role.system.essenceLevels[essence], previousLevel);
+export async function setRoleValues(role, actor, newLevel=null, previousLevel=null, essenceLevel=null, perkLevel=null, previousPerkLevel=null) {
+  // The level being reached - the one passed in on a level change, and otherwise (a Role being
+  // dropped, where no level is passed) the character's own. Falling through to null instead
+  // made a Role drop grant none of its 1st-level Essences, Health or Personal Power, while
+  // deleting the Role still took its 1st-level Essences away: every drop-and-delete of a GI Joe
+  // Commando cost the character a point of Speed and of Social for good.
+  const currentEssenceLevel = essenceLevel ?? newLevel ?? actor.system.level;
+  for (const roleEssence in role.system.essenceLevels) {
+    const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[roleEssence], previousLevel);
+    // Cordial / Rough and Takes No Guff move an increase to another Essence (mechanics/resources/grants.mjs).
+    const essence = totalChange > 0 ? essenceRedirect(actor, role, roleEssence) : roleEssence;
     const essenceMax = actor.system.essences[essence].max + totalChange;
     const essenceMaxString = `system.essences.${essence}.max`;
     const essenceValue = actor.system.essences[essence].value+ totalChange;
     const essenceString = `system.essences.${essence}.value`;
-
     await actor.update({
       [essenceString]: essenceValue,
       [essenceMaxString]: essenceMax,
@@ -28,7 +160,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   }
 
   if (role.system.powers.personal.starting) {
-    const totalChange = roleValueChange(actor.system.level, role.system.powers.personal.levels, previousLevel);
+    const totalChange = roleValueChange(currentEssenceLevel, role.system.powers.personal.levels, previousLevel);
     let newPersonalPowerMax = 0;
     if (actor.system.powers.personal.max > 0) {
       newPersonalPowerMax = actor.system.powers.personal.max + role.system.powers.personal.increase * totalChange;
@@ -43,7 +175,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   }
 
   if (role.system.adjustments.health.length) {
-    const totalChange = roleValueChange(actor.system.level, role.system.adjustments.health, previousLevel);
+    const totalChange = roleValueChange(currentEssenceLevel, role.system.adjustments.health, previousLevel);
     const newHealthBonus = actor.system.health.bonus + totalChange;
 
     await actor.update({
@@ -54,7 +186,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   if (role.system.skillDie.isUsed) {
     const skillName = "roleSkillDie";
     const shiftList = CONFIG.E20.skillShiftList;
-    const totalChange = roleValueChange(actor.system.level, role.system.skillDie.levels, previousLevel);
+    const totalChange = roleValueChange(currentEssenceLevel, role.system.skillDie.levels, previousLevel);
     let initialShiftIndex = shiftList.findIndex(s => s == "d2");
     if (actor.system.skills[skillName].shift) {
       initialShiftIndex = shiftList.findIndex(s => s == actor.system.skills[skillName].shift);
@@ -71,7 +203,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     let isSpecialized = false;
     for (const arrayLevel of role.system.skillDie.specializedLevels) {
       const level = arrayLevel.replace(/[^0-9]/g, '');
-      if (actor.system.level == level) {
+      if (currentEssenceLevel == level) {
         isSpecialized = true;
         break;
       }
@@ -90,15 +222,24 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     }
   }
 
+  const currentPerkLevel = perkLevel ?? actor.system.level;
+  const lastPerkLevel = previousPerkLevel ?? previousLevel;
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
     // Drop or level up
-    await createItemCopies(role.system.items, actor, "perk", role, previousLevel);
+    await createItemCopies(role.system.items, actor, "perk", role, lastPerkLevel, currentPerkLevel);
   } else {
     // Level down
-    await deleteAttachmentsForItem(role, actor, previousLevel);
+    await deleteAttachmentsForItem(role, actor, lastPerkLevel, currentPerkLevel);
   }
 
   actor.setFlag('essence20', 'roleDrop', false);
+
+  // A base Role dropped onto a character above 1st level: the General Perks / Grid Powers its levels so far give
+  // are picks waiting to be made (mechanics/characters/level-picks.mjs). An additive Role starts at its own level 1.
+  if (!newLevel && !previousLevel && !role.system.isAdditive) {
+    const { updateLevelPicks } = await import("../mechanics/characters/level-picks.mjs");
+    await updateLevelPicks(actor, 0, actor.system.level);
+  }
 }
 
 /**
@@ -144,11 +285,6 @@ export function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=nu
  * @returns
  */
 export async function onFocusDrop(actor, focus, dropFunc) {
-  if (!focus.system.essences.length) {
-    ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoEssenceError')));
-    return false;
-  }
-
   const hasFocus = actor.items.documentsByType.focus.length > 0;
   const role = actor.items.documentsByType.role;
   const attachedRole = [];
@@ -170,7 +306,8 @@ export async function onFocusDrop(actor, focus, dropFunc) {
     return false;
   }
 
-  const sourceId = role[0]._stats.compendiumSource;
+  // A homebrew Role that acts as a book Role (Rules tab) takes that Role's Focuses.
+  const sourceId = role[0]._stats?.compendiumSource ?? role[0].flags?.core?.sourceId ?? role[0].flags?.essence20?.rulesSource;
 
   if (sourceId != attachedRole[0].uuid) {
     ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
@@ -179,12 +316,23 @@ export async function onFocusDrop(actor, focus, dropFunc) {
 
   if (focus.system.essences.length > 1) {
     return await _showEssenceDialog(actor, focus, dropFunc);
-  } else {
+  } else if (focus.system.essences.length == 1) {
     const newFocusList = await dropFunc();
     const newFocus = newFocusList[0];
     await actor.update({
       "system.focusEssence": newFocus.system.essences[0],
     });
+    return await _setFocusValues(newFocus, actor);
+  } else {
+    // A Focus granting no Essence Increase at all - e.g. every WTNV Citizen's Guide Focus
+    // (Farmer, Journalist, Politician, Scientist, Soldier), whose own printed benefit is a pick-
+    // one Role Skill array with no Essence bump attached. This used to be unconditionally
+    // rejected with a FocusNoEssenceError, which was right for a genuinely malformed Focus item
+    // (system.essences left empty by mistake) but wrong for one that legitimately grants none -
+    // the two are indistinguishable by that field alone, so this now just completes the drop
+    // with no focusEssence set at all, rather than guessing which case it is.
+    const newFocusList = await dropFunc();
+    const newFocus = newFocusList[0];
     return await _setFocusValues(newFocus, actor);
   }
 }
@@ -235,20 +383,48 @@ export async function _focusStatUpdate(actor, selectedEssence, dropFunc) {
  * @param {Number} previousLevel (Optional) The last level processed for the Actor
  */
 export async function _setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
-  const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
-  const essenceMax = actor.system.essences[actor.system.focusEssence].max + totalChange;
-  const essenceValue = actor.system.essences[actor.system.focusEssence].value + totalChange;
-  const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
-  const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
+  // A Focus granting no Essence Increase at all (e.g. every WTNV Citizen's Guide Focus - see
+  // onFocusDrop's own comment above) never sets system.focusEssence, so there's no Essence entry
+  // here to raise/lower at all.
+  if (actor.system.focusEssence) {
+    const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
+    const essenceMax = actor.system.essences[actor.system.focusEssence].max + totalChange;
+    const essenceValue = actor.system.essences[actor.system.focusEssence].value + totalChange;
+    const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
+    const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
 
-  await actor.update({
-    [essenceMaxString]: essenceMax,
-    [essenceValueString]: essenceValue,
-  });
+    await actor.update({
+      [essenceMaxString]: essenceMax,
+      [essenceValueString]: essenceValue,
+    });
+
+    // The Skill rank each increase brings (mechanics/characters/focus-skills.mjs): asked for an increase gained,
+    // taken back for one lost.
+    await syncFocusSkillPicks(actor, focus, newLevel ?? actor.system.level, previousLevel ?? 0);
+  }
 
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
-    // Drop or level up
-    return await createItemCopies(focus.system.items, actor, "perk", focus, previousLevel);
+    // Drop or level up - grant every type of Item this Focus's own grant map lists (mirrors how
+    // a Role's own mixed grant map is handled in setRoleValues, which calls createItemCopies once
+    // per type it expects). "role" entries are excluded: a Focus always carries exactly one,
+    // recording which Role it attaches to (see onFocusDrop's own Role-mismatch check above) - it
+    // was never itself a grant, just a validation reference. Everything else (e.g. TF CRB
+    // Sharpshooter's Long Range Rifle, listed as a "weapon" entry) is a real grant that
+    // createItemCopies's own hardcoded "perk" type was silently skipping before this.
+    const grantTypes = new Set(
+      Object.values(focus.system.items)
+        .map(item => item.type)
+        .filter(type => type && type != "role"),
+    );
+
+    let copyWasCreated = false;
+    for (const type of grantTypes) {
+      if (await createItemCopies(focus.system.items, actor, type, focus, previousLevel)) {
+        copyWasCreated = true;
+      }
+    }
+
+    return copyWasCreated;
   } else {
     // Level down
     return await deleteAttachmentsForItem(focus, actor, previousLevel);
@@ -261,18 +437,24 @@ export async function _setFocusValues(focus, actor, newLevel=null, previousLevel
  * @param {Focus} focus The Focus that is being deleted from the Actor
  */
 export async function onFocusDelete(actor, focus) {
-  const previousLevel = actor.getFlag('essence20', 'previousLevel');
-  const totalDecrease = roleValueChange(0, focus.system.essenceLevels, previousLevel);
-  const essenceMax = Math.max(0, actor.system.essences[actor.system.focusEssence].max + totalDecrease);
-  const essenceValue = Math.max(0, actor.system.essences[actor.system.focusEssence].value + totalDecrease);
-  const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
-  const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
+  // See _setFocusValues's own comment above - a Focus granting no Essence Increase at all never
+  // set system.focusEssence to begin with, so there's nothing to lower back down here either.
+  if (actor.system.focusEssence) {
+    // The Skill ranks / Specializations its increases placed come back off too.
+    await removeFocusSkillPicks(actor, focus);
+    const previousLevel = actor.getFlag('essence20', 'previousLevel');
+    const totalDecrease = roleValueChange(0, focus.system.essenceLevels, previousLevel);
+    const essenceMax = Math.max(0, actor.system.essences[actor.system.focusEssence].max + totalDecrease);
+    const essenceValue = Math.max(0, actor.system.essences[actor.system.focusEssence].value + totalDecrease);
+    const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
+    const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
 
-  await actor.update({
-    [essenceMaxString]: essenceMax,
-    [essenceValueString]: essenceValue,
-    "system.focusEssence": null,
-  });
+    await actor.update({
+      [essenceMaxString]: essenceMax,
+      [essenceValueString]: essenceValue,
+      "system.focusEssence": null,
+    });
+  }
 
   deleteAttachmentsForItem(focus, actor);
 }
@@ -284,9 +466,24 @@ export async function onFocusDelete(actor, focus) {
  * @param {Function} dropFunc The drop Function that will be used to complete the drop of the Role
  */
 export async function onRoleDrop(actor, role, dropFunc) {
-  // Actors can only have one Role
-  const hasRole = actor.items.documentsByType.role.length > 0;
-  if (hasRole) {
+  // Actors can only have one base Role, and (separately) at most one "additive" Role that
+  // stacks on top of it (e.g. G.I. Joe's Old Hand) - an additive Role requires a base Role to
+  // already be present.
+  const existingRoles = actor.items.documentsByType.role;
+  const hasBaseRole = existingRoles.some(r => !r.system.isAdditive);
+  const hasAdditiveRole = existingRoles.some(r => r.system.isAdditive);
+
+  if (role.system.isAdditive) {
+    if (!hasBaseRole) {
+      ui.notifications.error(game.i18n.localize('E20.OldHandNoBaseRoleError'));
+      return false;
+    }
+
+    if (hasAdditiveRole) {
+      ui.notifications.error(game.i18n.localize('E20.RoleMultipleError'));
+      return false;
+    }
+  } else if (hasBaseRole) {
     ui.notifications.error(game.i18n.localize('E20.RoleMultipleError'));
     return false;
   }
@@ -316,8 +513,8 @@ export async function onRoleDrop(actor, role, dropFunc) {
     return false;
   }
 
-  actor.setFlag('essence20', 'previousLevel', actor.system.level);
-  actor.setFlag('essence20', 'roleDrop', true);
+  await actor.setFlag('essence20', 'previousLevel', actor.system.level);
+  await actor.setFlag('essence20', 'roleDrop', true);
 
   // Skill updates
   if (role.system.skillDie.isUsed) {
@@ -364,7 +561,20 @@ export async function onRoleDrop(actor, role, dropFunc) {
     });
   }
 
-  if (role.system.version == 'myLittlePony') {
+  if (role.system.isAdditive) {
+    // An additive Role (e.g. Old Hand) starts its own independent level track at 1 the moment
+    // it's dropped, regardless of the Actor's real character level - record that transition
+    // point, then grant Level 1 of the additive Role's own table (both the essence and perk
+    // level overrides are 1, since an additive Role's Essence progression - if it has any - and
+    // its Role Perks both run on this same independent track, unlike a base Role under one).
+    await actor.update({
+      "system.oldHandTransitionLevel": actor.system.level,
+    });
+
+    const newRoleList = await dropFunc();
+    const newRole = newRoleList[0];
+    await setRoleValues(newRole, actor, null, null, 1, 1);
+  } else if (role.system.version == 'myLittlePony') {
     await _selectEssenceProgression(actor, role, dropFunc);
   } else if (role.system.hasSpecialAdvancement) {
     await _selectFirstEssences(actor, role, dropFunc);
@@ -381,12 +591,10 @@ export async function onRoleDrop(actor, role, dropFunc) {
   await _trainingUpdate(actor, 'weapons', 'trained', true, role);
   await _trainingUpdate(actor, 'armors', 'trained', true, role, true);
 
-  // Morphed toughness bonus updates
-  for (const item of actor.items) {
-    if (item._stats.compendiumSource == MORPHIN_TIME_PERK_ID) {
-      setMorphedToughnessBonus(actor);
-    }
-  }
+  // roleDropped Triggers - It's Morphin Time!'s Morphed Toughness follows the new Armor Training
+  // (rules/plugins/effects/role-dropped-event.mjs).
+  const { fireRoleDropped } = await import("../rules/plugins/effects/role-dropped-event.mjs");
+  await fireRoleDropped(actor);
 }
 
 /**
@@ -400,11 +608,30 @@ export async function onLevelChange(actor, newLevel) {
     return;
   }
 
-  const roles = actor.items.documentsByType.role;
-  if (roles.length == 1) {
-    await setRoleValues(roles[0], actor, newLevel, previousLevel);
-  } else {
+  const roles = await actor.items.documentsByType.role;
+  const baseRole = roles.find(r => !r.system.isAdditive);
+  const additiveRole = roles.find(r => r.system.isAdditive);
+  if (!baseRole) {
     return;
+  }
+
+  if (!additiveRole) {
+    // The common case: a single Role, unchanged from before this Actor could have a second one.
+    await setRoleValues(baseRole, actor, newLevel, previousLevel);
+  } else {
+    // An additive Role (e.g. Old Hand) is present: its own level runs independently of the
+    // Actor's real level, starting at 1 the level it was dropped
+    // (system.oldHandTransitionLevel). The base Role's Essence progression keeps using the
+    // Actor's real level unchanged; only its own Role Perk grants slow to the "Effective Base
+    // Role Level" - see setRoleValues()'s essenceLevel/perkLevel params.
+    const transitionLevel = actor.system.oldHandTransitionLevel;
+    const additiveLevel = newLevel - transitionLevel + 1;
+    const previousAdditiveLevel = previousLevel - transitionLevel + 1;
+    const effectiveBaseRoleLevel = (transitionLevel - 1) + Math.floor(additiveLevel / baseRole.system.effectiveLevelDivisor);
+    const previousEffectiveBaseRoleLevel = (transitionLevel - 1) + Math.floor(previousAdditiveLevel / baseRole.system.effectiveLevelDivisor);
+
+    await setRoleValues(baseRole, actor, newLevel, previousLevel, null, effectiveBaseRoleLevel, previousEffectiveBaseRoleLevel);
+    await setRoleValues(additiveRole, actor, additiveLevel, previousAdditiveLevel, additiveLevel, additiveLevel);
   }
 
   const focus = actor.items.documentsByType.focus;
@@ -412,7 +639,18 @@ export async function onLevelChange(actor, newLevel) {
     await _setFocusValues(focus[0], actor, newLevel, previousLevel);
   }
 
-  actor.setFlag('essence20', 'previousLevel', newLevel);
+  await actor.setFlag('essence20', 'previousLevel', newLevel);
+
+  // The General Perk / Grid Power picks the Role's levels give (mechanics/characters/level-picks.mjs): offered on the
+  // way up, taken back on the way down. Only this client - the one that changed the level - runs it.
+  const { updateLevelPicks } = await import("../mechanics/characters/level-picks.mjs");
+  await updateLevelPicks(actor, previousLevel, newLevel);
+
+  // A Zord linked to this Ranger grows at 5th, 10th, 15th and 20th level (PR CRB p.134) - mechanics/vehicles/zord-growth.mjs.
+  if (newLevel > previousLevel) {
+    const { offerZordGrowth } = await import("../mechanics/vehicles/zord-growth.mjs");
+    await offerZordGrowth(actor);
+  }
 }
 
 /**
@@ -424,6 +662,19 @@ export async function onRoleDelete(actor, role) {
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
   const focus = actor.items.documentsByType.focus;
   const factionList = actor.items.documentsByType.faction;
+  const isAdditive = role.system.isAdditive;
+
+  // Deleting the base Role also removes any additive Role stacked on top of it (e.g. Old
+  // Hand) - an additive Role can't exist without the base Role it runs on top of. Do this
+  // first, while oldHandTransitionLevel/previousLevel are still intact, so the additive
+  // Role's own perk/RolePoints unwind computes against valid state.
+  if (!isAdditive) {
+    const additiveRole = actor.items.documentsByType.role.find(r => r.system.isAdditive);
+    if (additiveRole) {
+      await onRoleDelete(actor, additiveRole);
+      await additiveRole.delete();
+    }
+  }
 
   // Faction updates
   if (factionList.length) {
@@ -448,28 +699,32 @@ export async function onRoleDelete(actor, role) {
     });
   }
 
-  // Role version updates
-  if (role.system.version =='powerRangers') {
-    await actor.update({
-      "system.canMorph": false,
-    });
-  } else if (role.system.version =='myLittlePony') {
-    await actor.update({
-      "system.canSpellcast": false,
-    });
-  } else if (role.system.version == 'giJoe') {
-    await actor.update({
-      "system.canQualify": false,
-    });
-  }
+  // Role version updates - only when deleting the base Role. Deleting an additive Role (e.g.
+  // Old Hand) shouldn't turn off canMorph/canSpellcast/canQualify out from under a base Role
+  // that's still there granting the exact same flag.
+  if (!isAdditive) {
+    if (role.system.version =='powerRangers') {
+      await actor.update({
+        "system.canMorph": false,
+      });
+    } else if (role.system.version =='myLittlePony') {
+      await actor.update({
+        "system.canSpellcast": false,
+      });
+    } else if (role.system.version == 'giJoe') {
+      await actor.update({
+        "system.canQualify": false,
+      });
+    }
 
-  if (role.system.version == 'myLittlePony' || role.system.hasSpecialAdvancement) {
-    await actor.update({
-      "system.essenceRanks.smarts": null,
-      "system.essenceRanks.social": null,
-      "system.essenceRanks.speed": null,
-      "system.essenceRanks.strength": null,
-    });
+    if (role.system.version == 'myLittlePony' || role.system.hasSpecialAdvancement) {
+      await actor.update({
+        "system.essenceRanks.smarts": null,
+        "system.essenceRanks.social": null,
+        "system.essenceRanks.speed": null,
+        "system.essenceRanks.strength": null,
+      });
+    }
   }
 
   // Personal Power updates
@@ -523,10 +778,10 @@ export async function onRoleDelete(actor, role) {
     });
   }
 
-  // Focus updates
-  if (focus[0]) {
+  // Focus updates - a Focus is tied to the base Role, not any additive one.
+  if (!isAdditive && focus[0]) {
     await onFocusDelete(actor, focus[0]);
-    await focus[0].delete();
+    await focus[0].delete({ essence20FocusHandled: true });
   }
 
   // Training updates
@@ -536,14 +791,27 @@ export async function onRoleDelete(actor, role) {
   await _trainingUpdate(actor, 'weapons', 'trained', false, role);
   await _trainingUpdate(actor, 'armors', 'trained', false, role, true);
 
-  // Misc updates
-  await actor.update ({
-    "system.defenses.toughness.morphed": 0,
-    "system.level": 1,
-  });
+  // Misc updates - deleting an additive Role (e.g. Old Hand) only clears its own transition
+  // bookkeeping; the character's real level and the base Role stay exactly as they were. Only
+  // deleting the base Role itself resets the character back to level 1.
+  if (isAdditive) {
+    await actor.update({
+      "system.oldHandTransitionLevel": null,
+    });
+  } else {
+    await actor.update ({
+      "system.defenses.toughness.morphed": 0,
+      "system.level": 1,
+    });
 
-  deleteAttachmentsForItem(role, actor);
-  actor.setFlag('essence20', 'previousLevel', 0);
+    await actor.setFlag('essence20', 'previousLevel', 0);
+  }
+
+  await deleteAttachmentsForItem(role, actor);
+
+  // The General Perks / Grid Powers picked for this Role's levels go with it, as its Role Perks do.
+  const { clearLevelPicks } = await import("../mechanics/characters/level-picks.mjs");
+  await clearLevelPicks(actor, isAdditive ? 'additive' : 'base');
 }
 
 /**
@@ -636,7 +904,7 @@ export async function _setEssenceProgression(actor, options, role, dropFunc, lev
  * @param {Object} role The role that actor has
  * @param {Boolean} useUpgradesAccessor Whether this is targeting Upgrades or not
  */
-async function _trainingUpdate(actor, itemType, trainingType, updateType, role, useUpgradesAccessor) {
+export async function _trainingUpdate(actor, itemType, trainingType, updateType, role, useUpgradesAccessor) {
   const profs = useUpgradesAccessor ? role.system.upgrades[itemType][trainingType] : role.system[itemType][trainingType];
   for (const prof of profs) {
     const profString = `system.${trainingType}.${useUpgradesAccessor ? 'upgrades.' : ''}${itemType}.${prof}`;

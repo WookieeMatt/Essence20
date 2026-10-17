@@ -5,6 +5,10 @@
   "_id": "mKnlJ1qv2DPP1Gno",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the area weapon it's attached to gains Wrecker, so its blast leaves Rough Terrain behind even on a miss.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

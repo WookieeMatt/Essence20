@@ -5,6 +5,10 @@
   "_id": "IJoOtmxIao7B2aoe",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the weapon it's attached to gains the Electric trait alongside its other Energy trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

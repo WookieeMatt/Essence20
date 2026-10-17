@@ -5,10 +5,14 @@
   "_id": "ogWh8jEJVPgLjD0L",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Focus Perks at the listed levels (Grid Connection through Grid Psychic Prime), plus its Essence increases and Focus Skill choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Field Guide to Action & Adventure",
+      "book": "Field Guide to Action and Adventure",
       "page": 67
     },
     "items": {
@@ -55,8 +59,16 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Grid Psychic Prime",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "role",
         "level": 20
+      },
+      "gp17": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.atYoqZDXQz1PoDLP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Power",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
       }
     },
     "essences": [

@@ -5,6 +5,10 @@
   "_id": "vfjLDJYHLjQmWsNZ",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, plus its Smarts increases and the Science Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

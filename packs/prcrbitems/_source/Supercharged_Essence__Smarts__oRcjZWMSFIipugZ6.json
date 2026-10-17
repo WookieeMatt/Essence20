@@ -3,13 +3,18 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:essence:smarts>=5"]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑1 on all Smarts Skills while Morphed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 98
     },
-    "prerequisite": "Essence Score at 5 or higher",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },
@@ -29,7 +34,7 @@
       "_id": "IJIvmRVU84zCrs6O",
       "changes": [
         {
-          "key": "system.essenceShifts.smarts.shiftUp",
+          "key": "system.essenceShifts.smarts.morphed",
           "mode": 2,
           "value": "1",
           "priority": null

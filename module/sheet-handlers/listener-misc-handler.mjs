@@ -1,8 +1,50 @@
+import { runRest } from "../mechanics/item-hooks.mjs";
+import { restBond } from "../mechanics/companions/bonded-partners.mjs";
+import { restContact } from "../mechanics/companions/contacts.mjs";
+import { restKits } from "../mechanics/resources/kits.mjs";
+import { imperfectionOf } from "../mechanics/resources/grants.mjs";
+import { clearDefenseDamage } from "../mechanics/combat/essence-damage.mjs";
+import { currentEssence, currentEssenceUpdate, essenceScore } from "../mechanics/combat/essence-current.mjs";
+import { getCrewedVehicle, resetDailyVehicleUses } from "../mechanics/vehicles/vehicle-upgrades.mjs";
+import { resetDailyActionPerkUses } from "../mechanics/actions/action-perks.mjs";
 import { powerCost } from "./power-handler.mjs";
+import { resetDailyPowerUses } from "../mechanics/resources/nanomite-uses.mjs";
 import RollerSelector from "../apps/roller-selector.mjs";
 import DefenseModificationSelector from "../apps/defense-modification.mjs";
+import { ownedItemFromUuid } from "../items/shared/item-lookups.mjs";
 
 const PARENT_ROLLER_KEY = "parentActor";
+const ALT_CREW_PREFIX = "altCrew:";
+
+/**
+ * The roller picker's choices for a Transformer's Integrated Hardpoint weapon when crew ride in its Alt Mode (itself
+ * first, then each crew member who isn't a prisoner) - null for any other roll.
+ * @param {Event} event
+ * @param {Actor} actor
+ * @returns {Promise<Object|null>}
+ */
+async function altModeCrewRollers(event, actor) {
+  if (!actor?.system?.isTransformed || !actor.flags?.essence20?.altModeCrew) {
+    return null;
+  }
+
+  const element = event.target.closest('[data-roll-type]') || event.target;
+  // A weapon's effect rows carry the effect's uuid (collapsible-item-subcontainer.hbs); other rows its id.
+  const row = element.closest?.('.item')?.dataset ?? {};
+  const item = row.itemUuid ? await ownedItemFromUuid(actor, row.itemUuid) : (row.itemId ? actor.items.get(row.itemId) : null);
+  const { crewRollerChoices, isIntegratedAttack } = await import("../mechanics/vehicles/alt-mode-crew.mjs");
+  const crew = isIntegratedAttack(actor, item) ? crewRollerChoices(actor) : [];
+  if (!crew.length) {
+    return null;
+  }
+
+  const choices = { [PARENT_ROLLER_KEY]: { chosen: true, key: PARENT_ROLLER_KEY, label: actor.name } };
+  for (const choice of crew) {
+    choices[choice.key] = { chosen: false, key: choice.key, label: choice.label };
+  }
+
+  return choices;
+}
 
 /**
  * Handle clickable rolls.
@@ -10,9 +52,16 @@ const PARENT_ROLLER_KEY = "parentActor";
  * @param {Actor} actor The Actor making the roll
  * @param {Actor} childRoller Optional attached Actor making the roll
  */
-export async function performRoll(event, actor, childRoller=None) {
+export async function  performRoll(event, actor, childRoller=null) {
   event.preventDefault();
-  const element = event.currentTarget;
+  // event.target is whatever was actually clicked - usually the <i> icon inside the rollable
+  // <a>, not the <a> itself. Most roll buttons work around this by duplicating data-roll-type
+  // (and friends) onto the icon too, but that's easy to miss (see rolePoints/container.hbs,
+  // which didn't - its icons silently did nothing since dataset.rollType was undefined on the
+  // <i>). Resolving the nearest [data-roll-type] ancestor makes this work regardless of which
+  // element inside the button was actually clicked, without relying on every template
+  // remembering to duplicate the attributes.
+  const element = event.target.closest('[data-roll-type]') || event.target;
   const dataset = element.dataset;
   const rollType = dataset.rollType;
 
@@ -38,48 +87,19 @@ export async function performRoll(event, actor, childRoller=None) {
 
     const childKey = element.closest('.item').dataset.itemKey || null;
     if (childKey) {
+      // The actor's own copy - the stored uuid may name another actor's (an unlinked token's base, a duplicate's source).
       const childUuid = element.closest('.item').dataset.itemUuid;
-      item = await fromUuid(childUuid);
+      item = await ownedItemFromUuid(actor, childUuid);
     } else {
       const itemId = element.closest('.item').dataset.itemId;
       item = actor.items.get(itemId);
     }
 
     if (rollType == 'power') {
-      return await powerCost(actor, item);
+      // A Zord or vehicle has no Power pool - the crew member chosen to roll pays instead.
+      return await powerCost(actor, item, childRoller?.system?.powers ? childRoller : actor);
     } else if (rollType == 'rolePoints') {
-      if (item.system.resource.max != null && item.system.resource.value < 1 && !actor.system.useUnlimitedResource) {
-        ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
-        return;
-      } else {
-        const spentStrings = [];
-
-        // Ensure we have enough Personal Power, if needed
-        if (item.system.powerCost) {
-          if (actor.system.powers.personal.value < item.system.powerCost) {
-            ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
-            return;
-          } else {
-            await actor.update({
-              ['system.powers.personal.value']:
-                actor.system.powers.personal.value - item.system.powerCost,
-            });
-
-            spentStrings.push(`${item.system.powerCost} Power`);
-          }
-        }
-
-        // If Role Points are being used and not unlimited, decrement uses
-        if (!actor.system.useUnlimitedResource) {
-          await item.update({ 'system.resource.value': item.system.resource.value - 1 });
-          spentStrings.push('1 point');
-        }
-
-        if (spentStrings.length) {
-          const spentString = spentStrings.join(', ');
-          ui.notifications.info(game.i18n.format('E20.RolePointsSpent', { spentString, name: item.name }));
-        }
-      }
+      await spendRolePoint(actor, item);
     }
 
     if (item) {
@@ -89,13 +109,67 @@ export async function performRoll(event, actor, childRoller=None) {
 }
 
 /**
- * Handle clicking the rest button.
- * @param {ActorSheet} actorSheet The ActorSheet whose rest button was clicked
+ * Spends one use of a Role Points item's resource pool (and its Personal Power cost, if it has
+ * one). Shared by performRoll()'s "rolePoints" roll type above and the Role Points row's own
+ * right-click "Spend a Point" context menu entry (rolePoints/container.hbs, wired up in
+ * base-actor-sheet.mjs) - both are "actually use this Role Points ability," just triggered from
+ * different UI (the row's fist icon used to trigger this via performRoll; the row is now driven
+ * entirely by clicking/right-clicking its name instead, so this needed to be callable directly
+ * rather than only reachable through a [data-roll-type] element's dataset).
+ * @param {Actor} actor The Actor spending the Role Points use
+ * @param {Item} item The RolePoints Item being spent
  */
-export async function onRest(actorSheet) {
-  const actor = actorSheet.actor;
+export async function spendRolePoint(actor, item) {
+  if (item.system.resource.max != null && item.system.resource.value < 1 && !actor.system.useUnlimitedResource) {
+    ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
+    return;
+  }
+
+  const spentStrings = [];
+
+  // Ensure we have enough Personal Power, if needed
+  if (item.system.powerCost) {
+    if (actor.system.powers.personal.value < item.system.powerCost) {
+      ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
+      return;
+    } else {
+      await actor.update({
+        ['system.powers.personal.value']:
+          actor.system.powers.personal.value - item.system.powerCost,
+      });
+
+      spentStrings.push(`${item.system.powerCost} Power`);
+    }
+  }
+
+  // If Role Points are being used and not unlimited, decrement uses
+  if (!actor.system.useUnlimitedResource) {
+    await item.update({ 'system.resource.value': item.system.resource.value - 1 });
+    spentStrings.push('1 point');
+  }
+
+  if (spentStrings.length) {
+    const spentString = spentStrings.join(', ');
+    ui.notifications.info(game.i18n.format('E20.RolePointsSpent', { spentString, name: item.name }));
+  }
+}
+
+/**
+ * Applies the shared Rest/Recharge restorative benefits (Health, Stun, Essence, Role Points,
+ * Personal Power, Energon) to the actor, finishing with the given completion notification.
+ * Shared by onRest() (all actors) and onRecharge() (Transformers CRB p.172 - the
+ * Cybertronian-flavored version of this same action, restoring half of Energon Points).
+ * @param {Actor} actor The Actor being rested/recharged
+ * @param {String} completeMessageKey The i18n key for the final "done" notification
+ */
+async function _applyRestBenefits(actor, completeMessageKey) {
   const normalEnergon = actor.system.energon.normal;
-  const maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
+  let maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
+  // A Hint of Independence's Energon Hunger: on each Energon regain, a 4 on 1d4 means 1 less.
+  if (imperfectionOf(actor)?.n == 5 && maxEnergonRestore > 0 && (await new Roll('1d4').evaluate()).total == 4) {
+    maxEnergonRestore -= 1;
+  }
+
   const energonRestore = Math.min(normalEnergon.max, normalEnergon.value + maxEnergonRestore);
 
   // Notifications for resetting Energon types
@@ -135,13 +209,13 @@ export async function onRest(actorSheet) {
   }
 
   // Recovering Essence damage
+  // A Zord's / Vehicle's is kept apart from its score (mechanics/combat/essence-current.mjs).
   for (const essence of Object.keys(actor.system.essences)) {
-    if (actor.system.essences[essence].value < actor.system.essences[essence].max) {
-      const essenceString = `system.essences.${essence}.value`;
-      const essenceRestore = actor.system.essences[essence].value + 1;
-      await actor.update({
-        [essenceString]: essenceRestore,
-      });
+    const current = currentEssence(actor, essence);
+    const score = essenceScore(actor, essence);
+    if (current !== null && score !== null && current < score) {
+      const essenceRestore = current + 1;
+      await actor.update(currentEssenceUpdate(actor, essence, essenceRestore));
 
       ui.notifications.info(game.i18n.format('E20.RestEssenceRestored', { essenceRestore: essenceRestore, essence: CONFIG.E20.essences[essence] }));
     }
@@ -149,14 +223,38 @@ export async function onRest(actorSheet) {
 
   // Resetting Role Points
   const rolePointsList = actor.items.documentsByType.rolePoints;
-  if (rolePointsList.length) {
-    const rolePoints = rolePointsList[0];
-    rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
+  for (const rolePoints of rolePointsList) {
+    await rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
     ui.notifications.info(game.i18n.format('E20.RestRolePointsRestored', { name: rolePoints.name }));
   }
 
   ui.notifications.info(game.i18n.localize("E20.RestHealthStunReset"));
-  ui.notifications.info(game.i18n.localize("E20.RestComplete"));
+  // A Rest is the new day that gives nanomite powers back their daily uses.
+  if (await resetDailyPowerUses(actor)) {
+    ui.notifications.info(game.i18n.localize("E20.RestPowerUsesReset"));
+  }
+
+  // ...and Perks usable a number of times a day (Detail Oriented) - mechanics/actions/action-perks.mjs.
+  await resetDailyActionPerkUses(actor);
+
+  // ...and any Defense damage (mechanics/combat/essence-damage.mjs).
+  await clearDefenseDamage(actor);
+
+  // ...and what kits and gear recharge overnight (mechanics/resources/kits.mjs).
+  await restKits(actor);
+
+  // ...and a Powermaster's module, and daily Contacts. (About Twenty-Percent Cooler's three a day are a rule limit per rest.)
+  await restBond(actor);
+  await restContact(actor);
+  await runRest(actor);
+
+  // ...and the vehicle they crew (Nameplate) - mechanics/vehicles/vehicle-upgrades.mjs.
+  const crewed = getCrewedVehicle(actor);
+  if (crewed) {
+    await resetDailyVehicleUses(crewed.vehicle);
+  }
+
+  ui.notifications.info(game.i18n.localize(completeMessageKey));
 
   await actor.update({
     "system.health.value": actor.system.health.max,
@@ -167,43 +265,93 @@ export async function onRest(actorSheet) {
     "system.energon.primal.value": 0,
     "system.energon.red.value": 0,
     "system.energon.synthEn.value": 0,
-  }).then(actorSheet.render(false));
+  // A Rest, not a spend (item rules' resourceSpent Triggers skip it - rules/triggers.mjs).
+  }, { essence20Rest: true });
+}
+
+/**
+ * Handle clicking the rest button.
+ * @param {ActorSheet} actorSheet The ActorSheet whose rest button was clicked
+ */
+export async function onRest(actorSheet) {
+  await _applyRestBenefits(actorSheet.actor, "E20.RestComplete");
+  actorSheet.render(false);
+}
+
+/**
+ * Handle clicking the recharge button (Transformers CRB p.172) - shown instead of the rest
+ * button for actors that can transform.
+ * @param {ActorSheet} actorSheet The ActorSheet whose recharge button was clicked
+ */
+export async function onRecharge(actorSheet) {
+  await _applyRestBenefits(actorSheet.actor, "E20.RechargeComplete");
+  actorSheet.render(false);
+}
+
+/**
+ * Recover 1 point of a caster's lingering Spellcasting downshift (Casting Cost, MLP CRB p.132).
+ * The rulebook regains this automatically each round at the start of the caster's turn, but
+ * this codebase has no per-round/combat-turn automation for any mechanic yet (Rest/Recharge
+ * above are likewise both manually-triggered "restore" actions), so this is exposed as a
+ * manual action instead.
+ * @param {ActorSheet} actorSheet The ActorSheet whose recover button was clicked
+ */
+export async function onRecoverSpellcastingDownshift(actorSheet) {
+  const actor = actorSheet.actor;
+  const currentDownshift = actor.system.skills.spellcasting.shiftDown;
+  if (currentDownshift <= 0) {
+    return;
+  }
+
+  await actor.update({ 'system.skills.spellcasting.shiftDown': currentDownshift - 1 });
+  actorSheet.render(false);
+}
+
+/**
+ * Suffer 1 Health Damage to recover 1 additional point of Spellcasting downshift beyond the
+ * normal per-round recovery (Casting Cost, MLP CRB p.132).
+ * @param {ActorSheet} actorSheet The ActorSheet whose button was clicked
+ */
+export async function onSufferForSpellcastingDownshift(actorSheet) {
+  const actor = actorSheet.actor;
+  const currentDownshift = actor.system.skills.spellcasting.shiftDown;
+  if (currentDownshift <= 0) {
+    return;
+  }
+
+  await actor.update({
+    'system.skills.spellcasting.shiftDown': currentDownshift - 1,
+    'system.health.value': Math.max(0, actor.system.health.value - 1),
+  });
+  actorSheet.render(false);
 }
 
 /**
  * Handle toggling accordion containers.
  * @param {Event} event The originating click event
- * @param {ActorSheet} actorSheet The ActorSheet whose accordion button was clicked
  */
-export async function onToggleAccordion(event, actorSheet) {
-  const el = event.currentTarget;
+export async function onToggleAccordion(event) {
+  const el = event.target;
   const parent = $(el).closest('.accordion-wrapper');
 
-  // Avoid collapsing NPC skills container on rerender
-  if (parent.hasClass('skills-container')) {
-    const isOpen = actorSheet.accordionStates.skills;
-    actorSheet.accordionStates.skills = isOpen ? '' : 'open';
-    actorSheet.render();
+  parent.toggleClass('open');
+
+  // Check if the container header toggle should be flipped
+  let oneClosed = false;
+
+  // Look for a closed Item
+  const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+  for (const accordionLabel of accordionLabels) {
+    oneClosed = !$(accordionLabel).hasClass('open');
+    if (oneClosed) break;
+  }
+
+  // Set header state to open if all Items are open; closed otherwise
+  const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
+  if (oneClosed) {
+    $(container).removeClass('open');
   } else {
-    parent.toggleClass('open');
-
-    // Check if the container header toggle should be flipped
-    let oneClosed = false;
-
-    // Look for a closed Item
-    const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
-    for (const accordionLabel of accordionLabels) {
-      oneClosed = !$(accordionLabel).hasClass('open');
-      if (oneClosed) break;
-    }
-
-    // Set header state to open if all Items are open; closed otherwise
-    const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
-    if (oneClosed) {
-      $(container).removeClass('open');
-    } else {
-      $(container).addClass('open');
-    }
+    $(container).addClass('open');
   }
 }
 
@@ -213,7 +361,7 @@ export async function onToggleAccordion(event, actorSheet) {
  * @param {ActorSheet} actorSheet The ActorSheet whose accordion button was clicked
  */
 export async function onToggleHeaderAccordion(event) {
-  const el = event.currentTarget;
+  const el = event.target;
   const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
   $(el.closest('.header-accordion-wrapper')).toggleClass('open');
 
@@ -228,7 +376,11 @@ export async function onToggleHeaderAccordion(event) {
  * @param {Actor} actor The Actor making the roll
  */
 export async function onRoll(event, actor) {
-  if (actor.type == 'vehicle' || actor.type == 'zord') {
+  // A Transformer's Integrated Hardpoint weapon, with crew aboard its Alt Mode: they may fire it too (TF CRB p.47).
+  const crewChoices = await altModeCrewRollers(event, actor);
+  if (crewChoices) {
+    new RollerSelector(actor, crewChoices, event, "E20.ActorSelect").render(true);
+  } else if (actor.type == 'vehicle' || actor.type == 'zord') {
     const choices = {};
     choices[PARENT_ROLLER_KEY] = {
       chosen: true,
@@ -259,6 +411,13 @@ export async function handleActorSelector(actor, key, event) {
   let childRoller;
   if (key == PARENT_ROLLER_KEY) {
     childRoller = actor;
+  } else if (key.startsWith(ALT_CREW_PREFIX)) {
+    const { crewEntries } = await import("../mechanics/vehicles/alt-mode-crew.mjs");
+    const entry = crewEntries(actor).find(row => `${ALT_CREW_PREFIX}${row.key}` == key);
+    childRoller = entry ? await fromUuid(entry.uuid) : null;
+    if (!childRoller) {
+      return;
+    }
   } else {
     const fullActor = actor.system.actors[key];
     childRoller = await fromUuid(fullActor.uuid);

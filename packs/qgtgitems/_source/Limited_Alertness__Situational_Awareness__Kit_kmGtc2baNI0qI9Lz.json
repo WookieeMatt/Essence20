@@ -5,6 +5,10 @@
   "_id": "kmGtc2baNI0qI9Lz",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when a test calls for this kit, the best kit you carry decides whether you take a Snag or a smaller ↓. Use button: use it up for temporary Specialization (or Edge if already Specialized), scrounge a refill, or change its Specialization.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

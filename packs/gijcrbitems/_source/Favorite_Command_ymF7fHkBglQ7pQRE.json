@@ -1,0 +1,46 @@
+{
+  "name": "Favorite Command",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"Choose the Favorite Command Skill","steps":[{"do":"pick","key":"skill","from":"config","path":"skills","prompt":"Skill"},{"do":"updateItem","set":{"flags.essence20.favoriteSkill":"{var.picked}"}}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (on the pet), or the Skill picker on the sheet: choose its favourite Skill. Commanding the pet can then cost a Move action instead of a Standard action.</p>"
+    },
+    "originalId": "",
+    "actionType": "none",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 166
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787145794377,
+    "modifiedTime": 1787145794377,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "ymF7fHkBglQ7pQRE",
+  "folder": "M27HYmdBcwp4ApTr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ymF7fHkBglQ7pQRE"
+}

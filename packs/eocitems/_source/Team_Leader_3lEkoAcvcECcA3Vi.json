@@ -5,6 +5,10 @@
   "_id": "3lEkoAcvcECcA3Vi",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Focus Perks at the listed levels (On My Mark through 'Til the Last), plus its Social increases and Focus Skill choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -61,7 +65,7 @@
       "0a0f": {
         "uuid": "Compendium.essence20.enigma_of_combination.Item.l9AzKndtHkmYFmdz",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "\"Til The Last",
+        "name": "'Til the Last",
         "type": "perk",
         "subtype": "role",
         "level": 20

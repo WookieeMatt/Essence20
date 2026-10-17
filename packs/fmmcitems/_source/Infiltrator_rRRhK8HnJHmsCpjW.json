@@ -5,6 +5,10 @@
   "_id": "rRRhK8HnJHmsCpjW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the ↑1 on Smarts and Social tests with the group you infiltrated, and their -1 to Defenses against you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

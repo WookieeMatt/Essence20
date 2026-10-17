@@ -5,6 +5,10 @@
   "_id": "6pv6tw4OFqYYX9Dy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: you can use your Empathy Skill on any creature, even without a shared language.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

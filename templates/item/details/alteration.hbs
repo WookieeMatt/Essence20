@@ -1,0 +1,79 @@
+<div>
+  {{!-- Availability --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationAvailability'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.availability">
+    {{selectOptions config.availabilities selected=system.availability}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!--Alteration Type --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationOptions'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="system.type">
+    {{selectOptions config.alterationTypes selected=system.type}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{#if (eq system.type 'essence')}}
+    {{!-- Alteration Essence Bonus --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationEssenceBonus'}}
+    {{#*inline "item-field-edit"}}
+      <a class="trait-selector" data-action="traitSelector" data-options="originEssences" data-target="system.essenceBonus" data-tooltip="{{localize 'E20.TraitSelector'}}">
+        <i class="fas fa-edit"></i>
+      </a>
+    {{/inline}}
+
+    {{#*inline "item-field-inputs"}}
+      <div class="chip-section">
+        {{#each system.essenceBonus as |essence|}}
+          <span class="chip" name="chip.alteration.essenceBonus.{{type}}">{{lookup @root.config.originEssences essence}}</span>
+        {{/each}}
+      </div>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Alteration Essence Cost --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationEssenceCost'}}
+    {{#*inline "item-field-edit"}}
+      <a class="trait-selector" data-action="traitSelector" data-options="originEssences" data-target="system.essenceCost" data-tooltip="{{localize 'E20.TraitSelector'}}">
+        <i class="fas fa-edit"></i>
+      </a>
+    {{/inline}}
+
+    {{#*inline "item-field-inputs"}}
+      <div class="chip-section">
+        {{#each system.essenceCost as |essence|}}
+        <span class="chip" name="chip.alteration.essenceCost.{{type}}">{{lookup @root.config.originEssences essence}}</span>
+        {{/each}}
+      </div>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+  {{#if (eq system.type 'movement')}}
+    {{!-- Alteration Movement Bonus --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationBonusMovement'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.bonusMovement name="system.bonusMovement" min=0 step=5}}
+    <select name="system.bonusMovementType">
+      {{selectOptions config.movementTypes selected=system.bonusMovementType}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Alteration Movement Cost --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationCostMovement'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.costMovement name="system.costMovement" min=0 step=5}}
+    <select name="system.costMovementType">
+      {{selectOptions config.movementTypes selected=system.costMovementType}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+</div>
+

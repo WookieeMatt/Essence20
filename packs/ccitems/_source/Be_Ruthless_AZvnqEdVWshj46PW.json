@@ -5,6 +5,10 @@
   "_id": "AZvnqEdVWshj46PW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the replacement Perk that matches your Role.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

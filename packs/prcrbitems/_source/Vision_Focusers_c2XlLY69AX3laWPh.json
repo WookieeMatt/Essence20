@@ -1,10 +1,14 @@
 {
   "folder": "vn5xqhlV6UbSf4SP",
-  "name": "Vision Focusers",
+  "name": "Vision Focuser",
   "type": "perk",
   "_id": "c2XlLY69AX3laWPh",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you're Morphed, your token and the tokens of every ally in the scene can see in darkness out to 30 ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -29,7 +33,14 @@
     "selectionLimit": 1,
     "type": "role",
     "value": 0,
-    "version": "powerRangers"
+    "version": "powerRangers",
+    "visionGrant": {
+      "enabled": true,
+      "mode": "darkvision",
+      "range": 30,
+      "whileMorphed": true,
+      "teamWide": true
+    }
   },
   "effects": [],
   "sort": 0,

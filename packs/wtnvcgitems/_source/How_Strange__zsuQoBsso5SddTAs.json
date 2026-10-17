@@ -1,0 +1,105 @@
+{
+  "folder": "UfnY1MBifSL3fp0a",
+  "name": "How Strange!",
+  "type": "perk",
+  "_id": "zsuQoBsso5SddTAs",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"DialogSwitch","forget":true,"label":"Roll Science instead (How Strange!)","when":["skill:weird"],"useSkill":"science"}
+    ],
+    "prerequisites": {"when":["self:hasType:role:Scientist"]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑2 on Weird. Roll Options Dialog: on Weird tests, an option to roll your Science Skill instead.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 37
+    },
+    "type": "role",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [
+    {
+      "name": "How Strange!",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.zsuQoBsso5SddTAs",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "xkqJKa9oL1KMKNcz",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.weird.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787759972181,
+        "modifiedTime": 1787759972181,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!zsuQoBsso5SddTAs.xkqJKa9oL1KMKNcz"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!zsuQoBsso5SddTAs"
+}

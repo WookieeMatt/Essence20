@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "energy"
@@ -13,15 +14,16 @@
     "damageType": "element",
     "damageValue": 1,
     "shiftDown": 1,
-    "numHands": "1",
-    "numTargets": 2,
-    "radius": 30,
+    "numHands": 1,
+    "numTargets": 1,
+    "radius": 15,
     "range": {
       "min": null,
       "reachMultiplier": 0,
       "long": 100,
       "value": 50
-    }
+    },
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

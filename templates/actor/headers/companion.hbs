@@ -1,0 +1,20 @@
+{{#>"systems/essence20/templates/actor/headers/common.hbs"}}
+{{#*inline "secondary-fields"}}
+<div class="sliced-border">
+  <label class="sliced-border__label">{{localize 'E20.CompanionType'}}</label>
+  <select name="system.type">
+    {{selectOptions config.companionTypes selected=system.type}}
+  </select>
+</div>
+<div class="sliced-border">
+  <label class="sliced-border__label">{{localize 'E20.CompanionAvailability'}}</label>
+  <select name="system.availability">
+    {{selectOptions config.availabilities selected=system.availability}}
+  </select>
+</div>
+<div class="sliced-border pr-header-color e20-flex-group-center">
+  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
+  <input type="color" class="picker" name="system.color" value="{{system.color}}" />
+</div>
+{{/inline}}
+{{/"systems/essence20/templates/actor/headers/common.hbs"}}

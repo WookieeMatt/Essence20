@@ -3,13 +3,16 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this Hang-Up is roleplay; your charge's safety comes first.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 67
-    },
-    "img": "icons/svg/hazard.svg"
+    }
   },
   "effects": [],
   "flags": {

@@ -1,0 +1,426 @@
+@use "../variables" as v;
+@use "../components/sliced_border" as sliced;
+
+.essence20.skill-picker {
+  .window-content {
+    padding: v.$gap-lg;
+  }
+}
+
+/* Foundry's own .window-content is `overflow: hidden` by design (see foundry2.css) - a PART's
+   rendered root is expected to opt itself into scrolling, normally via Foundry's own .scrollable
+   class (overflow: hidden auto). This app has only the one "form" PART and no footer, so its
+   root can just take the full available height and scroll directly - matching the precedent in
+   trait-selector.scss's `.trait-selector { overflow: auto; }` for the same single-part shape.
+   min-height: 0 is required for a flex child (.window-content is `flex-flow: column`) to actually
+   shrink to its container instead of growing to fit content and pushing scrolling out to the
+   window frame, where there's nothing to scroll it. */
+.essence20 .skill-picker-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* skill-rank-allocation.hbs's own root - a plain label+status row now (used to also be laid out
+   as a small bordered card, back when 4 of these sat together in a shared summary grid above the
+   whole picker; that grid is gone, see .skill-picker-essence-tally below for why). The actor
+   sheet sidebar's own use of this same partial (no essenceLabel/skillRankMax passed there) is
+   plain flow content and never reaches this file at all - this app is the only thing importing
+   _skill-picker.scss. */
+.essence20 .skill-rank-allocation {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: v.$gap-md;
+  font-size: 0.85em;
+  color: var(--e20-theme-text-color);
+}
+
+.essence20 .skill-rank-essence-label {
+  font-weight: 700;
+  font-size: 1.1em;
+  white-space: nowrap;
+}
+
+// Shown when the Skill Picker (module/apps/skill-picker.mjs) passes a PC's own Essence max
+// alongside its spend (skill-rank-allocation.hbs) - a real, if rare, case: the Skill Picker
+// itself refuses to save a change that would newly CAUSE this (see getNewEssenceOverspend), but
+// can't retroactively fix a PC who was already over budget for an unrelated reason (data
+// predating this feature, or essences.max lowered by hand under an existing spend) - still worth
+// flagging rather than silently trusting the save-time guard is the only path to this ever
+// showing wrong.
+.essence20 .skill-rank-over-budget {
+  color: red;
+  font-weight: 700;
+}
+
+// "Spent all your points for this Essence" - a lighter-weight positive counterpart to
+// .skill-rank-over-budget above (same idea, opposite direction), so hitting the cap exactly
+// reads as a deliberate milestone rather than looking identical to still having room left.
+.essence20 .skill-rank-fully-spent {
+  color: green;
+  font-weight: 700;
+}
+
+/* Strength/Speed on top, Social/Smarts below (see ESSENCE_GRID_ORDER,
+.essence20 module/apps/skill-picker.mjs) - a 2-column grid rather than 4 fieldsets stacked full-width,
+   so the picker reads as two rows instead of a long scroll. The any-Essence fieldset
+   (Spellcasting/Weird) stays outside this grid, full-width, below both rows. */
+.essence20 .skill-picker-essence-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$gap-md;
+  margin-bottom: v.$gap-md;
+}
+
+/* The sliced-corner panel the actor sheets use everywhere, rather than a plain 1px rounded box -
+   see the mixin in components/_sliced_border.scss. Padding has to clear the 16px border-image on
+   the left and right, or content sits on top of the corner slices. */
+.essence20 .skill-picker-essence-group {
+  @include sliced.sliced-panel;
+  border: none;
+  // No top padding of its own - the 4 real-Essence groups' sticky tally header below supplies its
+  // own (so it still looks right once stuck against the fieldset's top border), and the one
+  // fieldset that still uses a plain <legend> (.skill-picker-any-group) gets a normal top gap from
+  // that legend's own layout instead, same as it always did.
+  padding: 0 v.$gap-lg v.$gap-lg;
+
+  legend {
+    padding: 0 v.$gap-sm;
+    color: var(--e20-theme-text-color);
+    font-weight: 700;
+  }
+}
+
+/* Each real-Essence fieldset's own name + live spend/max, replacing a plain <legend> there (the
+   Any-Essence fieldset below keeps its own) and sticky-pinned to the top of the scrollable picker
+   body (.skill-picker-body) for as long as its fieldset is still in view - so scrolling down to
+   Smarts/Social's own skills keeps THEIR numbers on screen instead of only whichever Essence's
+   summary happened to be visible before you started scrolling (a single shared grid stacked above
+   the whole 2x2 layout, which is what this replaced, scrolled away with everything else once you
+   moved past it). A <legend> element has enough special-cased rendering of its own (it's drawn
+   punched through the fieldset's top border, not as a normal flow child) that making IT sticky
+   isn't reliable across engines - this is a plain div instead, achieving the same "name for this
+   box" look through padding/border-bottom rather than the legend's own border-punch effect.
+   The negative side margins bleed it out to the fieldset's own outer edge (undoing this element's
+   share of the fieldset's own left/right padding) so the sticky bar's background spans the full
+   width behind it edge-to-edge instead of leaving slivers of whatever's scrolling underneath
+   visible on both sides. */
+.essence20 .skill-picker-essence-tally {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--e20-theme-panel-bg);
+  margin: 0 -#{v.$gap-md} v.$gap-sm;
+  padding: v.$gap-sm v.$gap-md;
+  border-bottom: 1px solid var(--e20-theme-border-color);
+  border-radius: 6px 6px 0 0;
+  /* Room on the right for the reset button, which sits in the corner rather than taking a row. */
+  padding-right: calc(#{v.$gap-md} + 1.5em);
+}
+
+.essence20 .skill-picker-essence-tally .skill-picker-reset {
+  position: absolute;
+  top: 50%;
+  right: v.$gap-md;
+  transform: translateY(-50%);
+  color: var(--e20-theme-text-color);
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/* The any-Essence group is the one fieldset still outside .skill-picker-essence-grid, so it lost
+   the grid's own gap - restore its top margin directly. */
+.essence20 .skill-picker-any-group {
+  margin-top: v.$gap-md;
+}
+
+/* Spellcasting/Weird side by side (see skill-picker.hbs) rather than one stacked under the other -
+   same 2-column shape .skill-picker-essence-grid already uses above, just scoped to this one
+   fieldset's own two rows instead of the whole grid of essence groups. Each column stays its own
+.essence20 flex column internally (.skill-picker-row's own flex-wrap already stacks a skill's select,
+   attribution, and Specializations sub-rows within it) - this only changes how the two columns
+   relate to each other, not their own internal layout. */
+.essence20 .skill-picker-any-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  // Wider than the plain gap other 2-column grids in this file use (.skill-picker-essence-grid) -
+  // there, each column is its own bordered fieldset already, a clear enough boundary on its own;
+  // here, Spellcasting and Weird are two bare columns with nothing of their own to tell them
+  // apart, so the gap has to do that job by itself, plus room for the divider line below to sit
+  // in without crowding either column's own content.
+  column-gap: v.$gap-lg;
+  row-gap: v.$gap-md;
+}
+
+// A plain gap alone still read as "some space between two vaguely related things" rather than
+// "two distinct skills" - a vertical rule down the middle (border-left on the second column, so
+// it's one shared line rather than two independent ones fighting for the same space) makes that
+// boundary an actual visible line instead of just whitespace.
+.essence20 .skill-picker-any-row:not(:first-child) {
+  border-left: 1px solid var(--e20-theme-border-color);
+  padding-left: v.$gap-lg;
+}
+
+/* Four columns - Show, Name, Shift, Specialized - so every row lines up under the header each
+   section carries (.skill-picker-row--head). It used to be a flex row, which was fine when a row
+.essence20 was just a label and a select; once a second checkbox joined on the right, nothing lined up,
+   because the label grew to fill whatever space the two checkboxes left.
+
+   The Show and Specialized columns are sized from their own content rather than fixed, so the
+   header words set the width and the checkboxes centre under them. */
+.essence20 .skill-picker-row {
+  display: grid;
+  grid-template-columns: auto 1fr 90px auto;
+  align-items: center;
+  gap: v.$gap-md;
+  padding: 2px 0;
+
+  /* display:contents so the <label> lays no box of its own out: its checkbox becomes the Show
+     cell and its <span> the Name cell, while the label still wraps both - which is what keeps the
+     name clickable without an id/for pair. The PC branch emits an empty first <span> so its name
+     lands in the same Name column as everyone else.
+
+     DIRECT children only. Spellcasting and Weird carry their Essence-attribution boxes inside the
+     row element, and each of those is a <label> wrapping its own text and number input - applying
+     display:contents to those tore every label away from its own box, so "Social" wrapped onto one
+     line and its input onto the next. */
+  > label {
+    display: contents;
+    color: var(--e20-theme-text-color);
+  }
+
+  > select {
+    width: 90px;
+    text-align-last: right;
+  }
+
+  /* Direct children again: the attribution's own number inputs size themselves. */
+  > input[type="number"] {
+    width: 60px;
+    text-align: center;
+  }
+
+  /* The Specialized checkbox has no text of its own - the header says it once - so centre it
+     under that heading rather than leaving it hard against the row's right edge. */
+  .skill-picker-specialized {
+    justify-self: center;
+  }
+
+  /* The Any section has no header to name that checkbox, so its two rows label their own - which
+     means this one label must NOT be display:contents like the name label above it. Two classes
+     out-specify the `.skill-picker-row label` rule. */
+  .skill-picker-specialized-labelled {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+  }
+}
+
+.essence20 .skill-picker-row--head {
+  padding-bottom: v.$gap-sm;
+  border-bottom: 1px solid var(--e20-theme-border-color);
+  margin-bottom: v.$gap-sm;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+
+  /* Show and Specialized head columns whose content is a centred checkbox. */
+  span:first-child,
+  span:last-child {
+    text-align: center;
+  }
+}
+
+/* A skill's Specializations and its Essence attribution are extra rows beneath their skill, not
+   more cells beside it - without this the grid would drop them into the next free column. The
+   "any" skills (Spellcasting/Weird) keep both inside .skill-picker-row, so this matters there;
+   the four Essence groups render them as siblings, where it is harmless. */
+.essence20 .skill-picker-row > .skill-picker-attribution,
+.essence20 .skill-picker-row > .skill-picker-specializations {
+  grid-column: 1 / -1;
+}
+
+.essence20 .skill-picker-conditioning label {
+  flex: 1 1 auto;
+  color: var(--e20-theme-text-color);
+}
+
+.essence20 .skill-picker-any-row {
+  flex-wrap: wrap;
+}
+
+.essence20 .skill-picker-attribution {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: v.$gap-sm;
+  width: 100%;
+  padding-left: 22px;
+  box-sizing: border-box;
+}
+
+.essence20 .skill-picker-attribution-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8em;
+  color: var(--e20-theme-text-color);
+
+  input {
+    width: 40px;
+    text-align: center;
+  }
+}
+
+.essence20 .skill-picker-attribution-status {
+  // flex-basis: 100% forces this onto its own line within the parent's flex-wrap row regardless
+  // of how much horizontal space is left next to the essence-input boxes - without it, this only
+  // wrapped down when the row ran out of room, which left it sitting inline beside the inputs in
+  // the wider Any-section columns (Spellcasting/Weird) while correctly wrapping in the narrower
+  // per-skill rows elsewhere. Forcing it keeps the layout consistent in both places.
+  flex-basis: 100%;
+  text-align: center;
+  margin-top: 2px;
+  font-size: 0.85em;
+  color: var(--e20-theme-text-color);
+
+  &.unbalanced {
+    color: red;
+    font-weight: 700;
+  }
+}
+
+/* Spellcasting/Weird have no checkbox to their left the way a normal skill-picker-row's other
+   sub-sections (attribution, add-Specialization) are indented 22px to sit under - so that same
+   indent here just reads as an unexplained gap between the "Spellcasting"/"Weird" label above and
+   its own Strength/Speed/Smarts/Social boxes below. Flush left instead, matching the row's own
+   label. */
+.essence20 .skill-picker-any-row {
+  .skill-picker-attribution {
+    padding-left: 0;
+  }
+
+  .skill-picker-specializations {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* Existing Specializations (as chip pills) plus the add-one control, under each skill row - see
+   templates/actor/parts/misc/skill-picker-specializations.hbs. No fill/border of its own (an
+   earlier pass gave it a card-bg background, but that read as a second nested box sitting inside
+   the already-bordered .skill-picker-essence-group, one frame too many) - just indented to read
+   as a sub-section of the skill row above it. */
+.essence20 .skill-picker-specializations {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: v.$gap-sm;
+  width: calc(100% - 22px);
+  margin: 2px 0 4px 22px;
+  padding: v.$gap-sm;
+  box-sizing: border-box;
+}
+
+.essence20 .skill-picker-specialization-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8em;
+  color: var(--e20-theme-text-color);
+  white-space: nowrap;
+
+  .fa-lock {
+    font-size: 0.85em;
+    opacity: 0.6;
+  }
+
+  a {
+    display: inline-flex;
+    color: var(--e20-theme-text-color);
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+      color: var(--e20-theme-accent);
+    }
+  }
+}
+
+.essence20 .skill-picker-add-specialization {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 140px;
+
+  select,
+  input[type="text"] {
+    flex: 1 1 0;
+    min-width: 0;
+    font-size: 0.8em;
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+
+  input[type="text"][hidden] {
+    display: none;
+  }
+
+  /* Same "read as a hint, not a real value" treatment items/_item-styling.scss already gives
+     every item sheet's own placeholder text (e.g. the Perk sheet's Reroll Cost fields) - this
+     app isn't an item sheet, so that rule's .item-field scoping never reached it, but the two
+     placeholders here (the "Choose a specialization" leading option and the custom-name input)
+     are exactly the same kind of hint text and read as a visibly different, plainer style
+     without it. The leading <option> needs its own rule since ::placeholder only ever applies to
+     input/textarea, never a <select>'s own displayed option. */
+  select option:disabled,
+  input[type="text"]::placeholder {
+    color: color-mix(in srgb, var(--e20-theme-text-color) 65%, black 35%);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  input[type="text"]::placeholder {
+    opacity: 1;
+  }
+
+  /* A round icon-button to match the "+" affordance used elsewhere on this sheet
+     (.npc-skill-list-header a, item-control links), rather than a bare unstyled anchor. */
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    color: var(--e20-theme-text-color);
+    background: var(--e20-theme-panel-bg);
+    border: 1px solid var(--e20-theme-border-color);
+
+    &:hover {
+      color: var(--e20-theme-accent);
+      border-color: var(--e20-theme-accent);
+    }
+  }
+}
+
+// Spellcasting/Weird's still-untrained placeholder (skill-picker-specializations.hbs's alwaysShow
+// case) - the exact same markup as a real add-Specialization row, just invisible. visibility:
+// hidden (not display: none/opacity) is what keeps the two Any-Essence columns lined up: the
+// element still occupies its normal layout space (so the row's height matches its trained
+// neighbor's) but paints nothing and can't be focused, tabbed to, or clicked - unlike opacity, it
+// doesn't need a disabled attribute or its own explanatory tooltip to back that up, since there's
+// nothing left to explain about a control the player can't perceive or reach at all.
+.essence20 .skill-picker-specializations-placeholder {
+  visibility: hidden;
+}

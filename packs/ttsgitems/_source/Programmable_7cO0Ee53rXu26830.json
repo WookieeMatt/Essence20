@@ -5,6 +5,10 @@
   "_id": "7cO0Ee53rXu26830",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: roll the DIF 15 Technology test from your sheet; on a success the Zord acts on its own for 2d2 turns using your Ranks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

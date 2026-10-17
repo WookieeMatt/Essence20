@@ -3,6 +3,11 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["ask:Not originally from Earth"]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Culture, Deception, Alertness and Persuasion tests.</p><p>Left to the table: only using the Edge on tests about or aimed at humans, and learning an Earth language.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -25,7 +30,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": true,
+      "disabled": false,
       "_id": "U0mSE3u0QwgaJ1XB",
       "changes": [
         {
@@ -69,7 +74,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": true,
+      "disabled": false,
       "_id": "QnZtuNySYkNoDdPQ",
       "changes": [
         {
@@ -80,6 +85,12 @@
         },
         {
           "key": "system.skills.alertness.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.deception.edge",
           "mode": 5,
           "value": "true",
           "priority": null

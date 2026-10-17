@@ -5,6 +5,10 @@
   "_id": "2ZOf7dqzjCDDmhvV",
   "img": "systems/essence20/assets/icons/weapons/hammer.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and traits. Each alternate effect is its own attack option. Left to the table: using the Forge as a tool for creation.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -62,7 +66,7 @@
         "name": "Forge of Solus Prime Alternate Effect 2",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 0,
@@ -79,15 +83,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "unique",
     "classification": {
       "size": "long"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=huge","self:skill:brawn>=d8",{"any":["self:skill:brawn>=d10","self:size>=towering"]},{"any":["self:skill:brawn>=d12","self:size>=gigantic"]}]},
     "requirements": {
-      "custom": "Huge-Towering",
+      "custom": "",
       "skill": "brawn",
       "shift": "d8"
     },

@@ -6,55 +6,123 @@
 @use 'components';
 @use 'views';
 
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
+/* 700 added alongside 500 - _global-windows.scss's .window-app rule (see below) sets
+   font-weight: bold (700), but only weight 500 was ever loaded, so the browser had to
+   synthetically embolden it. Loading the real 700 weight avoids that fake-bold blur. */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap');
 
-select {
-  color: white;
+.essence20 select {
+  color: var(--e20-theme-text-color);
 }
 
-option {
-  background-color: #4a4848;
+/* Foundry core's checkbox/radio duotone checkmark glyph (a Font Awesome icon on ::before/::after,
+   appearance:none having removed the native control entirely) is colored by reading the CSS
+   custom properties --checkbox-checked-color (the filled swatch behind the mark) and
+   --checkbox-checkmark-color (the tick cut out of it) - not by any border-color/outline-color,
+   which are 0-width/style:none here and were never actually rendering (an earlier attempt to
+   override those directly had no visible effect on the real amber). Foundry defines those custom
+   properties, per color scheme, in its own "variables" @layer (foundry2.css); our own stylesheet
+   is imported into a "system" @layer declared after it (see the system.json styles entry), and
+   for normal (non-!important) declarations a later-declared layer always wins regardless of
+   selector specificity - so redefining the same custom properties here reliably overrides
+   Foundry's amber without needing !important or a fight over the actual color-consuming rule. */
+.essence20 input[type="checkbox"],
+.essence20 input[type="radio"] {
+  --checkbox-checked-color: var(--e20-theme-text-color);
+  --checkbox-checkmark-color: var(--e20-theme-panel-bg);
+  /* The unchecked box is core's own solid square glyph in this colour - its default dark cool-grey
+     disappeared against this theme's panels. Drawn by the same glyph as the checked box, so the two
+     are always the same size and place. */
+  --checkbox-background-color: var(--e20-theme-border-color);
 }
 
-form .form-group span.units {
-  color: v.$textcolor3;
+/* Foundry core sizes only the checkbox's icon (::before/::after, --checkbox-size square), not the
+   input itself - which then takes an uneven box from the surrounding form layout (17.5 x 22.5 in a
+   dialog form-group), so the control read as a tall rectangle. Size the input
+   to the same square as its icon, and keep it from being stretched or squeezed by a flex row. */
+.essence20 input[type="checkbox"] {
+  width: var(--checkbox-size);
+  height: var(--checkbox-size);
+  flex: 0 0 var(--checkbox-size);
+  margin: 0;
 }
 
-form .form-group.slim .form-fields > label {
-  color: v.$textcolor3;
+.essence20 option {
+  color: var(--e20-theme-text-color);
+  background-color: var(--e20-theme-input-color);
 }
 
-form .notes, form .hint {
-  color: v.$textcolor3;
+.essence20 .form-group span.units {
+  color: var(--e20-theme-muted-text);
 }
 
-.standard-form .form-group > label {
-  color: v.$textcolor3;
+.essence20 .form-group.slim .form-fields > label {
+  color: var(--e20-theme-muted-text);
 }
 
-.filepicker .display-modes a {
-  background: initial;
+.essence20 .notes,
+.essence20 .hint {
+  color: var(--e20-theme-muted-text);
 }
 
-.filepicker .display-modes a.active {
-  background: initial;
+.essence20 .standard-form .form-group > label {
+  color: var(--e20-theme-muted-text);
 }
 
-.filepicker .favorites .path {
-  background: initial;
-}
+/* The three .filepicker rules that used to sit here were `background: initial` resets on
+   core's own FilePicker - they existed to undo the styling this stylesheet was leaking onto
+   it through bare `select`, `input` and `.window-app` selectors. Those are all scoped to
+   .essence20 now, so nothing of ours reaches the FilePicker and there is nothing left to
+   undo. Removed rather than scoped, because scoping them would just have left three rules
+   that can never match. */
 
-input[type="number"], input[type="text"] {
-  color: white;
+/* type="search" belongs in this list with the rest. Left out, the only two search fields in the
+   system (the Effect Wizard, the Compendium Browser) were the single controls Foundry core got to
+   style instead of us - visibly a different colour from every field beside them, in every theme.
+   Caught by measuring the Effect Wizard: its search box read rgb(48,40,49) while the selects and
+   number field next to it read the theme's own input colour. */
+.essence20 input[type="number"],
+.essence20 input[type="text"],
+.essence20 input[type="search"],
+.essence20 select,
+.essence20 textarea {
+  color: var(--e20-theme-text-color);
+  background: var(--e20-theme-input-color);
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 6px;
+  padding: 4px 6px;
   vertical-align: middle;
+  min-height: 22px;
+}
+
+/* small numeric inputs */
+.essence20 .one-digit-input, .essence20 .two-digit-input {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--e20-theme-border-color);
+  color: var(--e20-theme-text-color);
+  border-radius: 6px;
+  min-height: 22px;
+  text-align: center;
+  padding: 2px 4px;
 }
 
 .essence20 .centered-input {
   text-align: center;
 }
 
+/* .centered-input is also used for a plain text field (vehicle-crew.hbs's crew description),
+   where a wide box is correct - only the number variant (Energon, Personal/Sorcerous Power,
+   Vehicle Firepoints/crew counts) needs the same small-numeric-field cap .two-digit-input
+   already has below. Without this, Foundry core's own `input[type=number] { width: 100%; }`
+   (foundry2.css) has nothing to override it, so these boxes stretch to fill whatever space their
+   container allows - which crowded the label next to them down to just a couple of characters
+   ("Per...", "E...") in the sidebar's narrow Resources panel. */
+.essence20 .centered-input[type="number"] {
+  max-width: 40px;
+}
+
 .essence20 textarea {
-  color: white;
+  color: var(--e20-theme-text-color);
   border: 1px solid var(--color-border-light-tertiary);
 }
 
@@ -78,7 +146,7 @@ input[type="number"], input[type="text"] {
 }
 
 .essence20 .span {
-  color: v.$textcolor1;
+  color: var(--e20-theme-text-color);
 }
 
 .essence20 .sheet-body {
@@ -90,24 +158,15 @@ input[type="number"], input[type="text"] {
   background-color:rgba(0, 0, 0, 0);
 }
 
-.dice-total.critical {
-  color: green;
-}
+// Chat card styling (check-card.hbs and its dice-roll/results/buttons) lives in
+// sass/assets/_chat.scss, alongside the .chat-message envelope rules it depends on.
 
-.dice-total.fumble {
-  color: red;
-}
-
-.dice-total.crumble {
-  color: yellow;
-}
-
-.sheet-options {
+.essence20.sheet-options {
   min-width: 400px;
   min-height: auto;
 }
 
-.sheet-options-morph {
+.essence20.sheet-options-morph {
   min-width: 500px;
   min-height: auto;
 }

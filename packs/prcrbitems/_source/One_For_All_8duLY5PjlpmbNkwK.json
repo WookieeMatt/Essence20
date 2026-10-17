@@ -5,7 +5,15 @@
   "_id": "8duLY5PjlpmbNkwK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Teammates regain 1d2 Power","limit":{"per":"rest"},"cost":{"action":"standard","resource":{"path":"system.powers.personal.value"},"amount":3},"steps":[{"do":"require","check":["self:morphed"],"message":"One For All requires being Morphed.","beforeCost":true},{"do":"updateActor","to":"allies:100000","add":{"system.powers.personal.value":"1d2"}}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (Standard action, only while Morphed): spend 3 Personal Power; each teammate regains d2 Personal Power. Once per day: it comes back after a Rest.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
@@ -13,8 +21,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role",
-    "canActivate": true
+    "type": "role"
   },
   "effects": [],
   "sort": 50000,
