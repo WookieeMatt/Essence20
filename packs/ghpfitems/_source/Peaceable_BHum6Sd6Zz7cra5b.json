@@ -1,0 +1,45 @@
+{
+  "folder": "7yGEmKOeHNfkLL6y",
+  "name": "Peaceable",
+  "type": "perk",
+  "_id": "BHum6Sd6Zz7cra5b",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Peaceable (Stun attack)","when":["attack","item:damageType:stun"],"upshift":1},
+      {"type":"RollModifier","label":"Peaceable (damaging attack)","when":["attack","item:data:system.damageType","not:item:damageType:stun"],"downshift":1},
+      {"type":"RollModifier","label":"Peaceable (healing)","when":[{"any":["roll:dataset:isIveGotYou","roll:dataset:isMindOverMatter","roll:dataset:isRegeneration","roll:dataset:isPatchUp","roll:dataset:isPreventativeMeasures","roll:dataset:isToughItOut","roll:dataset:o2Heal"]}],"upshift":1}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks that deal only Stun get ↑1 and attacks that deal any other damage get ↓1, already counted in the Upshift and Downshift numbers of your Roll Options Dialog. Healing tests get ↑1, labelled Peaceable there.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 166
+    },
+    "type": "influence"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1787763529613,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!BHum6Sd6Zz7cra5b"
+}

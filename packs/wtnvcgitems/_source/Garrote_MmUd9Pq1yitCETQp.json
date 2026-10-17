@@ -1,0 +1,68 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Garrote",
+  "type": "weapon",
+  "_id": "MmUd9Pq1yitCETQp",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: two-handed Finesse attacks at Reach for 2 Sharp damage, with a Grapple alternate; its Intimidating and Silent traits apply.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 62
+    },
+    "items": {
+      "TuLh": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.ky2fUECwKlJtWPUr",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Garrote Effect",
+        "type": "weaponEffect"
+      },
+      "Ha1h": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.HsIgf9IHMDePOFVL",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Garrote Alternate Effect",
+        "type": "weaponEffect"
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d6"
+    },
+    "traits": [
+      "intimidating",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!MmUd9Pq1yitCETQp"
+}

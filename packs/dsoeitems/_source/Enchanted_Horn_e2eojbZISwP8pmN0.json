@@ -5,6 +5,10 @@
   "_id": "e2eojbZISwP8pmN0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑1 on Spellcasting.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

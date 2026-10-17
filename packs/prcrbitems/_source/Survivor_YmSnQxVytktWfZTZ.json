@@ -1,0 +1,90 @@
+{
+  "name": "Survivor",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","event":"essenceChanged","label":"Survivor (Smarts at 0: d20, 10+ stays at 1)","when":["var:essence=smarts","self:data:system.essences.smarts.value<=0"],"steps":[{"do":"table","formula":"1d20","rows":[{"min":10,"max":20,"text":"Smarts stays at 1.","steps":[{"do":"updateActor","set":{"system.essences.smarts.value":1}}]},{"min":1,"max":9,"text":"Smarts drops to 0."}]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Edge on Survival tests. Automatic: when your Smarts would drop to 0, a d20 is rolled and on 10 or more it stays at 1.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 75
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [
+    {
+      "name": "Survival Instincts",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.YmSnQxVytktWfZTZ",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "6OD43zmlVLlPQoRY",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.survival.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": 1789226360833,
+        "modifiedTime": 1789226360833,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!YmSnQxVytktWfZTZ.6OD43zmlVLlPQoRY"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1686011967261,
+    "modifiedTime": 1704127415963,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "YmSnQxVytktWfZTZ",
+  "folder": "929s94UYQgmotPSz",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!YmSnQxVytktWfZTZ"
+}

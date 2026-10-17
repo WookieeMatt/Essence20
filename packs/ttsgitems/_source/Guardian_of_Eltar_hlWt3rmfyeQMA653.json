@@ -5,6 +5,10 @@
   "_id": "hlWt3rmfyeQMA653",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Role Perks at the listed levels, Eltarian Tech Points, Essence increases, Personal Power, armor training, starting Skills, and General Perk and Grid Power picks at their levels.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -127,7 +131,7 @@
         "name": "Chief Guardian",
         "type": "perk",
         "subtype": "role",
-        "level": 12
+        "level": 13
       },
       "b15d": {
         "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
@@ -159,7 +163,11 @@
     },
     "armors": {
       "qualified": [],
-      "trained": []
+      "trained": [
+        "light",
+        "medium",
+        "heavy"
+      ]
     },
     "essenceLevels": {
       "smarts": [

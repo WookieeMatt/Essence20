@@ -1,0 +1,43 @@
+{
+  "folder": "zRS3PJz9qBfLiXRf",
+  "name": "Bullbar",
+  "type": "gear",
+  "_id": "4Wfhy9VD0mMGgJbx",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Bullbar","when":["attack:ram","self:transformed"],"edge":true},
+      {"type":"DerivedStat","label":"Bullbar","path":"system.tf2ShoveImmune","op":"set","value":1,"when":["self:canTransform","not:self:transformed"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Alt Mode, your Ram attacks get Edge, shown as Bullbar next to Edge in the Roll Options Dialog. In Bot Mode you can't be shoved.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transfomers Core Rulebook",
+      "page": 134
+    },
+    "quantity": 1,
+    "gearType": "support"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1696365978813,
+    "modifiedTime": 1704127422486,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!4Wfhy9VD0mMGgJbx"
+}

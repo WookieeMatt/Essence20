@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply. Comes with the Amphibious upgrade attached.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

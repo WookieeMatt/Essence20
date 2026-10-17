@@ -5,6 +5,13 @@
   "_id": "ldnUTXw5w21toLIy",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Size","label":"Titanspark (one Size Class larger, Bot and Alt Modes)","steps":1,"ladder":"track","modes":"both"}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Bot Mode and every Alt Mode are one Size Class larger, each along its own track (Large to Huge, Long to Extended); your token takes the larger size when you transform, and weapon sizes count it. Active Effect: +1 Health.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +22,52 @@
     "selectionLimit": 1,
     "type": "influence"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Health Bonus",
+      "origin": "Compendium.essence20.enigma_of_combination.Item.ldnUTXw5w21toLIy",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "TspkHealthBonus1",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!ldnUTXw5w21toLIy.TspkHealthBonus1"
+    }
+  ],
   "sort": 125000,
   "ownership": {
     "default": 0,

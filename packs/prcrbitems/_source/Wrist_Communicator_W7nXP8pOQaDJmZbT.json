@@ -5,14 +5,20 @@
   "_id": "W7nXP8pOQaDJmZbT",
   "img": "systems/essence20/assets/icons/gear/watch.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Teleport (Wrist Communicator)","charges":3,"steps":[{"do":"pickPoint","prompt":"Click where you teleport to.","ghost":"self"},{"do":"moveTo","forced":false,"animate":false}]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: teleport to a point you click, three times, with the charges coming back on a rest.</p><p>Left to the table: calling and talking to the team.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 120
+      "page": 121
     },
     "quantity": 1,
-    "type": "",
     "gearType": "tools"
   },
   "effects": [],

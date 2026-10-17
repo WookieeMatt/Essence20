@@ -5,6 +5,10 @@
   "_id": "IH82p4TztIjbt7eZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Perk.</p><p>Left to the table: the GM using the lower difficulty for your Intimidation Tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

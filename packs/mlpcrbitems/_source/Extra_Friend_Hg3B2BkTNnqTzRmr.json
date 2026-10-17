@@ -1,0 +1,43 @@
+{
+  "folder": "neivSnQKsDmMsngy",
+  "name": "Extra Friend",
+  "type": "perk",
+  "_id": "Hg3B2BkTNnqTzRmr",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"Designate who else can Command the pet (Extra Friend)","steps":[{"do":"pick","key":"designee","from":"team","notSelf":true,"prompt":"Who else can Command the pet?"},{"do":"updateItem","set":{"flags.essence20.designee":"{var.picked}"}}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (on the pet): pick another character. They can then Command your pet with the Command a Pet action too.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 156
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790264003951,
+    "modifiedTime": 1790264003951,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
+  },
+  "_key": "!items!Hg3B2BkTNnqTzRmr"
+}

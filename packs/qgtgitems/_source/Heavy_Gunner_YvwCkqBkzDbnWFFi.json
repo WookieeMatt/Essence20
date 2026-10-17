@@ -5,6 +5,10 @@
   "_id": "YvwCkqBkzDbnWFFi",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Hard Body Armor, a Heavy Machine Gun (Integrated Bipod), a Limited Technology (Repair) Kit and a Limited Brawn (Heavyweight Carry) Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -81,13 +85,13 @@
             "damageValue": 1,
             "damageType": "sharp",
             "numHands": "2",
-            "numTargets": 15,
+            "numTargets": 5,
             "radius": 30,
             "range": {
-              "min": null,
+              "min": 10,
               "reachMultiplier": 0,
-              "long": null,
-              "value": 0
+              "long": 400,
+              "value": 100
             },
             "shiftDown": 3
           },

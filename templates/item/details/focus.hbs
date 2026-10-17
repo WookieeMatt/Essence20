@@ -1,0 +1,59 @@
+<div>
+  {{!-- Associated Role --}}
+  {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="role" label='E20.Role' items=system.items type="role"}}
+
+  {{!-- Focus Essences --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.FocusEssenceScoreIncrease'}}
+  {{#*inline "item-field-edit"}}
+  <a class="trait-selector" data-action="traitSelector" data-options="focusEssences" data-target="system.essences"
+    data-tooltip="{{localize 'E20.EssenceSelector'}}">
+    <i class="fas fa-edit"></i>
+  </a>
+  {{/inline}}
+
+  {{#*inline "item-field-inputs"}}
+    <div class="e20-flex-group-right chip-section">
+    {{#each system.essences as |name|}}
+      <span class="chip" name="chip.essences{{type}}">{{lookup @root.config.essences name}}</span>
+    {{/each}}
+    </div>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Essence Boost Levels --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoosts'}}
+  {{#*inline "item-field-edit"}}
+  <a class="trait-selector" data-action="traitSelector" data-options="actorLevels" data-target="system.essenceLevels" data-tooltip="{{localize 'E20.EssenceSelector'}}">
+    <i class="fas fa-edit"></i>
+  </a>
+  {{/inline}}
+
+  {{#*inline "item-field-inputs"}}
+    <div class="e20-flex-group-right chip-section">
+    {{#each system.essenceLevels as |name|}}
+      <span class="chip" name="chip.essenceLevels{{type}}">{{lookup @root.config.actorLevels name}}</span>
+    {{/each}}
+    </div>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Starting Role Skills --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.FocusStartingSkills'}}
+  {{#*inline "item-field-edit"}}
+  <a class="trait-selector" data-action="traitSelector" data-options="focusSkills" data-target="system.skills" data-tooltip="{{localize 'E20.SkillSelector'}}">
+    <i class="fas fa-edit"></i>
+  </a>
+  {{/inline}}
+
+  {{#*inline "item-field-inputs"}}
+    <div class="e20-flex-group-right chip-section">
+    {{#each system.skills as |name|}}
+      <span class="chip" name="chip.skills.{{type}}">{{lookup @root.config.originSkills name}}</span>
+    {{/each}}
+    </div>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Focus Role Perks --}}
+  {{> "systems/essence20/templates/item/parts/role-perk-drop.hbs" className="rolePerk" label='E20.RolePerks' items=system.items type='perk'}}
+<div>

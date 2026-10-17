@@ -5,6 +5,10 @@
   "_id": "w4ITxrfY69JxmLGt",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels. When added you pick which Essence it raises at 1st and 10th level; its Focus Skill is one tied to that Essence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

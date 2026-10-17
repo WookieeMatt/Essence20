@@ -5,6 +5,13 @@
   "_id": "8m5s0JxTNSMU9zcj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Pushing, dragging or lifting (Beast of Burden: ↑2)","when":["skill:might"],"upshift":2}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Might tests, a switch gives ↑2 when you push, drag or lift.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +22,52 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Push/Drag/Lift: Might Up Shift 2",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.8m5s0JxTNSMU9zcj",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "uoIOujJt1MWm7sLV",
+      "changes": [
+        {
+          "key": "system.skills.might.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!8m5s0JxTNSMU9zcj.uoIOujJt1MWm7sLV"
+    }
+  ],
   "sort": 150000,
   "ownership": {
     "default": 0,

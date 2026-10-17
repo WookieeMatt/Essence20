@@ -1,0 +1,50 @@
+{
+  "folder": "2bNf2yIeSKu5hHP1",
+  "name": "Chronomantic Pulse",
+  "type": "power",
+  "_id": "YjPFCWa3KxDIJXGW",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","label":"Chronomantic Pulse: move an Initiative","event":"powerUsed","when":["item:own"],"steps":[{"do":"askValue","var":"initiative"},{"do":"focus","to":"targetOrSelf"},{"do":"choose","auto":true,"options":[{"label":"Willing","when":[{"any":["target:self","target:sameDisposition"]}],"steps":[{"do":"writeInitiative","to":"target","value":"@var.initiative","exact":true}]},{"label":"Unwilling","when":["not:target:self","not:target:sameDisposition"],"steps":[{"do":"rollCheck","skill":"culture","essence":"smarts","shiftUp":0,"shiftDown":0,"dif":12,"onSuccess":[{"do":"writeInitiative","to":"target","value":"@var.initiative","exact":true}]}]}]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: enter the Initiative value you want for the targeted token, then roll the DIF 12 Culture test; allies succeed automatically. On a success their place in the Initiative order changes.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Magic Cookbook",
+      "page": 273
+    },
+    "actionType": "standard",
+    "canActivate": true,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": 2,
+    "selectionLimit": 1,
+    "type": "sorcerous",
+    "usesInterval": "perTurn",
+    "usesPer": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1699318473867,
+    "modifiedTime": 1704127408990,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "iCCZI3EVfOIO2b8O": 3
+  },
+  "_key": "!items!YjPFCWa3KxDIJXGW"
+}

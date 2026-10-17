@@ -5,6 +5,10 @@
   "_id": "Um9vbTdiE37OakdA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you Issue a Command, the dialog lets you pick a penalty for your allies to triple the bonus they get.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

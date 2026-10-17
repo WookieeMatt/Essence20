@@ -5,6 +5,13 @@
   "_id": "TomU7e31oHoRsIrT",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Resilience","when":["not:rule:banked"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"require","check":["self:morphed"],"message":"Resilience requires being Morphed.","beforeCost":true},{"do":"bank","defense":["toughness","evasion","willpower","cleverness"],"defenseBonus":"@skillDie.athletics","persist":true,"until":"nextTurnOrScene"}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button (while Morphed): spend 1 Personal Power and roll your Athletics die; the result is added to your Defenses against every incoming attack until the start of your next turn (out of combat, the scene).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +20,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "role"
   },
   "effects": [],
   "sort": 4487500,

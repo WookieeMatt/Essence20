@@ -1,8 +1,11 @@
-import { _selectEssenceProgression } from "../sheet-handlers/role-handler.mjs";
+﻿import { _selectEssenceProgression } from "../sheet-handlers/role-handler.mjs";
+import { applyThemeClass } from "../settings.js";
 
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { FormValidationError } from "../util/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class MultiEssenceSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class MultiEssenceSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(choices, actor, role, dropFunc, title){
     super();
     this._choices = choices;
@@ -16,6 +19,8 @@ export default class MultiEssenceSelector extends HandlebarsApplicationMixin(App
     id: "mutli-essence",
     classes: [
       "essence20",
+      "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -51,6 +56,12 @@ export default class MultiEssenceSelector extends HandlebarsApplicationMixin(App
     return context;
   }
 
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
+  }
+
   static async myFormHandler(event, form, formData) {
     let selectionAmount = 0;
     for (const [, selection] of Object.entries(formData.object)) {
@@ -60,7 +71,7 @@ export default class MultiEssenceSelector extends HandlebarsApplicationMixin(App
     }
 
     if (selectionAmount != 2) {
-      throw new Error(game.i18n.localize("E20.EssencesRequiredError"));
+      throw new FormValidationError(game.i18n.localize("E20.EssencesRequiredError"));
     }
 
     _selectEssenceProgression(this._actor, this._role, this._dropFunc, formData.object);

@@ -1,0 +1,40 @@
+{
+  "folder": "PPvn3ynXpdmosg1U",
+  "name": "Peaceable",
+  "type": "hangUp",
+  "_id": "zm9x8A7AW8o7grQX",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Peaceable (damaging attack)","when":["attack","item:data:system.damageType","not:item:damageType:stun","self:hasItem:Compendium.essence20.general_hawk_s_personel_files.Item.BHum6Sd6Zz7cra5b"],"downshift":1}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Peaceable Perk's penalty on attacks that deal damage becomes ↓2, already counted in the Downshift number of your Roll Options Dialog.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 166
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1787763529613,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!zm9x8A7AW8o7grQX"
+}

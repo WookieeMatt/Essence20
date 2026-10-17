@@ -5,6 +5,10 @@
   "_id": "SvByuJ6hUITwR5Q7",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, the Essence boosts from its level table, its armor and weapon training, and General Perk picks at the listed levels. You choose its Role skill ranks yourself in the Skill Picker.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,14 +16,6 @@
       "page": 77
     },
     "items": {
-      "9151": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.gZSug7lfUPTCWmbb",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "In My Sights",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
       "a482": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -173,8 +169,10 @@
     "perkLevels": {
       "general": [
         "level4",
+        "level6",
         "level8",
         "level12",
+        "level14",
         "level16",
         "level19"
       ]

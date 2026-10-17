@@ -5,6 +5,10 @@
   "_id": "6N3p0bzq8dOK3p6L",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for the listed damage and range, with a three-target alternate effect at ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -57,15 +61,14 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Silver Ranger"]},
     "requirements": {
-      "custom": "Silver Ranger",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

@@ -1,0 +1,8 @@
+<nav class="compendium-browser-tabs">
+  {{#each tabs as |tab|}}
+    <a class="compendium-browser-tab {{#if tab.active}}active{{/if}}" data-action="selectType" data-type="{{tab.key}}">
+      <span class="compendium-browser-tab-label">{{tab.label}}</span>
+      <span class="compendium-browser-tab-count">{{tab.count}}</span>
+    </a>
+  {{/each}}
+</nav>

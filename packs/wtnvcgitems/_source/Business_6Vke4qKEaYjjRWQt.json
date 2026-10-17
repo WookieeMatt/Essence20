@@ -1,0 +1,42 @@
+{
+  "folder": "rqUrFq3VV6GKscOw",
+  "name": "Business",
+  "type": "gear",
+  "_id": "6Vke4qKEaYjjRWQt",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "rules": [
+      {"type":"Defense","label":"Business (+2 Cleverness against StrexCorp)","defense":"cleverness","mode":"addAfter","amount":2,"when":[{"any":["target:tagStarts:strex","target:name~strex"]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while worn, an attacker whose name or creature tags include \"Strex\" rolls against your Cleverness +2.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 71
+    },
+    "quantity": 1,
+    "gearType": "clothes"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!6Vke4qKEaYjjRWQt"
+}

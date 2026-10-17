@@ -5,6 +5,10 @@
   "_id": "YoqLo1afBsAlZ8uX",
   "img": "systems/essence20/assets/icons/gear/clothes.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↓2 on Speed Skill Tests and -10 ft Ground Movement while you have it. Roll Options Dialog: a switch for an Edge on Infiltration in the environment it was made for.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,7 +16,6 @@
       "page": 160
     },
     "quantity": 1,
-    "type": "",
     "gearType": "clothes"
   },
   "effects": [
@@ -36,7 +39,45 @@
           "mode": 5,
           "value": "true",
           "priority": null
-        },
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!YoqLo1afBsAlZ8uX.gOiddSmOOgvb8NcG"
+    },
+    {
+      "name": "Ghillie Suit Penalties",
+      "origin": "Item.YoqLo1afBsAlZ8uX",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "zK1u1Nmhz2yEfWQb",
+      "changes": [
         {
           "key": "system.essenceShifts.speed.shiftDown",
           "mode": 2,
@@ -69,8 +110,8 @@
       "img": "icons/svg/aura.svg",
       "type": "base",
       "system": {},
-      "sort": 0,
-      "_key": "!items.effects!YoqLo1afBsAlZ8uX.gOiddSmOOgvb8NcG"
+      "sort": 1,
+      "_key": "!items.effects!YoqLo1afBsAlZ8uX.zK1u1Nmhz2yEfWQb"
     }
   ],
   "flags": {},

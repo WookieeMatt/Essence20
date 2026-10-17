@@ -1,0 +1,43 @@
+{
+  "folder": "rxku6PTVz0evKZwC",
+  "name": "Focused Strike",
+  "type": "perk",
+  "_id": "GAWOYpBZm6dLsaSq",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"skillDice","reset":"none","maxUses":0,"condition":"unarmedAttack","recursive":false,"cost":{"resourcePath":"system.powers.personal.value","amount":1}}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: after an unarmed attack, a button to spend 1 Personal Power and reroll the Skill dice.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 46
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 700000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787028795941,
+    "modifiedTime": 1787028795941,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!GAWOYpBZm6dLsaSq"
+}

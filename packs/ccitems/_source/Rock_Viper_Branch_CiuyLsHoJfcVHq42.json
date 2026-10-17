@@ -5,6 +5,10 @@
   "_id": "CiuyLsHoJfcVHq42",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: a Rifle (Scope), a Restricted Athletics (Climbing) Kit and Tactical Armor.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

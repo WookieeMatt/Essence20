@@ -5,8 +5,12 @@
   "_id": "BMYxWrAq1e7BtBSS",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added you pick the Essence, the Origin Skill and the Pillar Alt Mode (you pick a Large or Huge Bot Mode and a Long or Extended Alt Mode); you also get its Health, Movement and the Face Me! Origin Benefit.</p>"
+    },
     "originalId": "",
-    "description": "<p>@UUID[Compendium.essence20.enigma_of_combination.Item.j0CJWQ858tbQvVUs]{Pillar (Extended)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.SroTzxuu57HoaN9V]{Pillar (Long)}</p>",
+    "description": "<p>@UUID[Compendium.essence20.enigma_of_combination.Item.SroTzxuu57HoaN9V]{Pillar}</p>",
     "source": {
       "book": "Enigma of Combination",
       "page": 27
@@ -18,16 +22,10 @@
         "name": "Face Me!",
         "type": "perk"
       },
-      "79d9": {
-        "uuid": "Compendium.essence20.enigma_of_combination.Item.j0CJWQ858tbQvVUs",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Pillar (Extended)",
-        "type": "altMode"
-      },
       "fe06": {
         "uuid": "Compendium.essence20.enigma_of_combination.Item.SroTzxuu57HoaN9V",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Pillar (Long)",
+        "name": "Pillar",
         "type": "altMode"
       }
     },

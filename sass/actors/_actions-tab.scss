@@ -1,0 +1,127 @@
+@use "../variables" as v;
+
+/* The Actions tab - templates/actor/parts/main/character-actions.hbs.
+ *
+ * Three groups, one per tracked category, each headed by what is left of that budget. The rows
+ * are deliberately the same shape whether they are one of the rules' own actions or one of the
+ * character's items: on your turn the question is "what can I do and what does it cost", and
+ * splitting the answer by where the data happens to live would be the wrong seam.
+ *
+ * The tab is hidden entirely when the economy isn't running (see character-sheet.mjs), so none of
+ * this renders out of combat. */
+.essence20 section.tab.actions {
+  .actions-tab__notice {
+    margin: 0 0 v.$gap-md;
+    font-style: italic;
+    opacity: 0.75;
+  }
+
+  .actions-tab__group {
+    margin-bottom: v.$gap-lg;
+  }
+
+  /* An <h3> for the outline, but sized to the sheet: Foundry's own heading scale renders this at
+     28px, against the 14px the Perks/Gear section headers use. Three of them at 28px is all the
+     eye sees on the tab. */
+  .actions-tab__heading {
+    display: flex;
+    font-size: 1em;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: v.$gap-md;
+    margin: 0 0 v.$gap-sm;
+    padding-bottom: v.$gap-sm;
+    border-bottom: 1px solid var(--e20-theme-border-color);
+    font-weight: bold;
+  }
+
+  /* "2/3" rather than pips: the header already draws pips, and the useful thing here is the
+     headroom you have left before a row stops being affordable. */
+  .actions-tab__budget {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .actions-tab__budget--empty {
+    opacity: 0.55;
+  }
+
+  .actions-tab__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .actions-tab__row {
+    display: flex;
+    align-items: center;
+    gap: v.$gap-md;
+    padding: v.$gap-sm 0;
+  }
+
+  /* A weapon effect under its Attack row. Indented rather than boxed: the rows stay one flat
+     list for a screen reader, and the indent is the only thing saying "these belong to the row
+     above". The rule is on the row itself rather than a wrapper so the hover and dim states
+     above keep applying unchanged. */
+  .actions-tab__row--nested {
+    padding-left: v.$gap-lg;
+  }
+  /* Dimmed, not hidden and not disabled. In 'track' mode a spend goes through even with nothing
+     left - that is the default mode and the correct behaviour for a table whose items mostly
+     carry no authored cost - so this warns without ever blocking the click. */
+  .actions-tab__row--unaffordable {
+    opacity: 0.5;
+  }
+
+  .actions-tab__use,
+  .actions-tab__edit {
+    flex: 0 0 auto;
+  }
+
+  .actions-tab__edit {
+    opacity: 0.55;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  .actions-tab__icon {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    border: none;
+    object-fit: contain;
+  }
+
+  .actions-tab__name {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* What a Contingency is waiting for (GI Joe CRB p.196) - the one authored field worth reading
+     without opening the item, since a readied action nobody can see the trigger of is useless. */
+  .actions-tab__trigger {
+    display: block;
+    font-size: 0.85em;
+    font-style: italic;
+    opacity: 0.75;
+  }
+
+  .actions-tab__cost {
+    flex: 0 0 auto;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    opacity: 0.7;
+    white-space: nowrap;
+  }
+}
+
+/* A named action out of combat: shown for reference, with nothing to click. Dimmed like an
+   unaffordable row rather than hidden, so the list reads the same in and out of an encounter -
+   see getActionsTabContext's own note on why these must not be takeable without a ledger. */
+.essence20 section.tab.actions .actions-tab__use--inert {
+  opacity: 0.35;
+  cursor: default;
+}

@@ -5,6 +5,10 @@
   "_id": "CnVAWnmBbQt76WWK",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -35,15 +39,13 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
-      "size": "integrated"
+      "size": "sidearm"
     },
     "equipped": true,
     "requirements": {
-      "custom": "Nil",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

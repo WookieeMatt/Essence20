@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: when you Fumble a Targeting test to kick an object, that object takes 1 Blunt damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

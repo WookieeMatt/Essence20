@@ -1,0 +1,96 @@
+{
+  "folder": "j1nUzIlIZazcj1s5",
+  "name": "Constrictor",
+  "type": "perk",
+  "_id": "S63cNsFogI1Ahh2C",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","label":"Holds what it grapples (Constrictor)","event":"hit","when":["self:type:companion",{"any":["item:damageType:grapple","item:damageType:maneuver","weapon:trait:grapple"]}],"steps":[{"do":"mark","key":"constrictorHold","to":"target","perSetter":true,"until":"combat"}]},
+      {"type":"Trigger","label":"Squeeze the grappled target (Constrictor)","event":"turnStart","when":["self:type:companion"],"steps":[{"do":"damage","to":"markedByMe:constrictorHold","amount":1,"damageType":"blunt","filter":["target:status:grappled"]}]}
+    ],
+    "prerequisites": {"when":["self:size=large"]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: the Grappling Specialization. Automatic: when the pet hits with a Grapple or Maneuver attack it holds that target, and at the start of its turn it deals 1 Blunt damage to a held target that is still Grappled.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 103
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "origin": "Item.S63cNsFogI1Ahh2C",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "6EpTXMTy51xjSQ3a",
+      "changes": [
+        {
+          "key": "system.skills.might.specializations.grappling.name",
+          "mode": 5,
+          "value": "Grappling",
+          "priority": null
+        },
+        {
+          "key": "system.skills.might.specializations.grappling.granted",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Constrictor",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!S63cNsFogI1Ahh2C.6EpTXMTy51xjSQ3a"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266219714,
+    "modifiedTime": 1790266219714,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!S63cNsFogI1Ahh2C"
+}

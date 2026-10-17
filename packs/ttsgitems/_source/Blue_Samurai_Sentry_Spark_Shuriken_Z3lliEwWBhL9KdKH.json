@@ -5,6 +5,10 @@
   "_id": "Z3lliEwWBhL9KdKH",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown attacks roll Athletics for 1 Energy damage at 20ft/50ft range; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

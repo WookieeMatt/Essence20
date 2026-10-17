@@ -1,0 +1,85 @@
+import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
+import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
+import {
+  getActiveVesselConditions, getVesselConditionStacks, openVesselRepairDialog, stackedName,
+} from "../mechanics/vehicles/vessel-conditions.mjs";
+
+export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
+  static DEFAULT_OPTIONS = {
+    actions: {
+      repairVesselCondition: this.#onRepairVesselCondition,
+    },
+  };
+
+  static TABS = {
+    primary: {
+      tabs: [
+        { id: "main", group: 'primary', label: "E20.TabMain" },
+        { id: "actions", group: 'primary', label: "E20.TabActions" },
+        { id: "passengers", group: 'primary', label: "E20.TabCrew" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
+        { id: "notes", group: 'primary', label: "E20.TabNotes" },
+
+      ],
+      initial: "main",
+    },
+  };
+
+  static PARTS = {
+    header: {
+      template: "systems/essence20/templates/actor/headers/vehicle.hbs",
+    },
+    sidebar: {
+      template: "systems/essence20/templates/actor/sidebars/vehicle.hbs",
+    },
+    tabs: {
+      template: "templates/generic/tab-navigation.hbs",
+    },
+    main: {
+      template: "systems/essence20/templates/actor/parts/main/vehicle.hbs",
+      scrollable: [''],
+    },
+    // The shared tab - every actor type builds its action economy from the same
+    // data/actor/templates/common.mjs, so none of them needs a variant of its own.
+    actions: {
+      template: "systems/essence20/templates/actor/tabs/actions.hbs",
+      scrollable: [''],
+    },
+    passengers: {
+      template: "systems/essence20/templates/actor/parts/main/vehicle-passengers.hbs",
+      scrollable: [''],
+    },
+    effects: {
+      template: "systems/essence20/templates/actor/tabs/effects.hbs",
+      scrollable: [''],
+    },
+    notes: {
+      template: "systems/essence20/templates/actor/tabs/notes.hbs",
+      scrollable: [""],
+    },
+  };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.actionsTab = getActionsTabContext(this.actor);
+    // Space Vessel Conditions and their stack counts, for the header's Repair control.
+    context.vesselConditions = getActiveVesselConditions(this.actor).map(statusId => ({
+      id: statusId,
+      label: stackedName(
+        game.i18n.localize(CONFIG.statusEffects.find(status => status.id == statusId)?.name ?? statusId),
+        getVesselConditionStacks(this.actor, statusId),
+      ),
+    }));
+    return context;
+  }
+
+  /**
+   * Repairing a Space Vessel Condition (Across the Stars p.26) - see
+   * mechanics/vehicles/vessel-conditions.mjs#openVesselRepairDialog.
+   * @this {Essence20VehicleActorSheet}
+   * @private
+   */
+  static async #onRepairVesselCondition() {
+    await openVesselRepairDialog(this.actor);
+  }
+}

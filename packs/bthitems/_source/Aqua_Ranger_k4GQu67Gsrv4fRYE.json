@@ -5,6 +5,10 @@
   "_id": "k4GQu67Gsrv4fRYE",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Aqua Ranger's Role Perks at their listed levels and the Idea Points track. You choose your Grid Science options, General Perks and Zord Features as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -23,7 +27,7 @@
       "941a": {
         "uuid": "Compendium.essence20.pr_crb.Item.U5xY4e0Wro9XyooS",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Helping Hands",
+        "name": "Helping Hand",
         "type": "perk",
         "subtype": "role",
         "level": 2
@@ -147,6 +151,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "a9fc": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
       }
     },
     "adjustments": {
@@ -228,7 +238,12 @@
       "levels": [],
       "specializedLevels": []
     },
-    "skills": [],
+    "skills": [
+      "finesse",
+      "targeting",
+      "science",
+      "technology"
+    ],
     "version": "powerRangers",
     "weapons": {
       "qualified": [],

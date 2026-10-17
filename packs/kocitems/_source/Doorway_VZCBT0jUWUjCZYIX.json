@@ -5,15 +5,24 @@
   "_id": "VZCBT0jUWUjCZYIX",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: the spell's effect, which is narrative (the linked doors).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Knights of Canterlot",
       "page": 49
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 5,
-    "duration": "10 minutes",
+    "duration": {
+      "units": "minutes",
+      "value": 10,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "5 feet",
     "tier": "virtuoso"

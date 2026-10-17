@@ -5,6 +5,10 @@
   "_id": "nhqEDdJJN9ALZEtE",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Yellow Ranger's Role Perks at their listed levels, plus its Essence increases, Personal Power and Zord. You choose General Perks, Grid Powers and Zord Features as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -137,6 +141,38 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "zf06": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "zf10": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "zf14": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "zf17": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
       }
     },
     "adjustments": {
@@ -219,12 +255,17 @@
       "levels": [
         "level5",
         "level9",
-        "level14",
+        "level13",
         "level17"
       ],
       "specializedLevels": []
     },
-    "skills": [],
+    "skills": [
+      "acrobatics",
+      "initiative",
+      "finesse",
+      "alertness"
+    ],
     "version": "powerRangers",
     "weapons": {
       "qualified": [],

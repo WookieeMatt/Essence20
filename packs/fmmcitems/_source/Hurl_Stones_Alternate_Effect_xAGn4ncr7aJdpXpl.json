@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "projectile"
@@ -13,13 +14,13 @@
     "damageType": "stun",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 0,
     "range": {
       "min": null,
       "reachMultiplier": 0,
-      "long": 100,
+      "long": 80,
       "value": 50
     },
     "source": {

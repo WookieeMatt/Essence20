@@ -5,15 +5,24 @@
   "_id": "deIolACU0X6qDyj0",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting rolls Spellcasting and applies its cost as a lingering Spellcasting downshift. Then move your token to the empty space you picked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 136
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 3,
-    "duration": "Instant",
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "Line of Sight",
     "tier": "elementary"

@@ -1,0 +1,59 @@
+{{!-- Shows exactly and only the skills chosen via the Skill Picker app
+     (module/apps/skill-picker.mjs, base-actor-sheet.mjs#_prepareChosenNpcSkills) as a flat run of
+     compact rollable buttons ("Athletics +d20") - editing (which skills are chosen, their shift,
+     any-Essence attribution) happens in the Skill Picker itself; this is a pure roll surface, so
+     it intentionally skips the "Roll is Specialized" checkbox/specializations sub-list that
+     essence-skills.hbs shows elsewhere. --}}
+<div class="skills-container npc-skill-list e20-border-accent">
+  <div class="e20-flex-group-center npc-skill-list-header">
+    <span>{{localize 'E20.AccordionSkillsTitle'}}</span>
+    <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
+  </div>
+
+  {{#if (or @root.showConditioning @root.chosenSkills.length)}}
+  <div class="npc-skill-buttons">
+    {{!-- Conditioning sits in the same run of pills as the skills (it's listed alongside them in
+         the stat blocks this panel mirrors), ticked on/off in the Skill Picker the same way each
+         skill's own isChosen box works. A span rather than an <a>, because unlike every skill here
+         Conditioning has no shift die and nothing to roll - it's a flat value feeding Health. --}}
+    {{#if @root.showConditioning}}
+    <span class="npc-skill-button">{{localize 'E20.ActorConditioning'}} {{@root.system.conditioning}}</span>
+    {{/if}}
+    {{#each @root.chosenSkills as |entry|}}
+    {{!-- One pill per skill, shaped like the printed stat block line: "Alertness (Perception)
+         +d4*". The skill name and each specialization name are separate roll links, because they
+         roll different things - the skill at its own shift, a specialization at its own, which on
+         an NPC can differ (see essence-skills.hbs: "NPCs can have unspecialized
+         specializations"). Specializations are added and removed in the Skill Picker, which is
+         also where the asterisk is switched on. --}}
+    <span class="npc-skill-button npc-skill-entry">
+      <a
+        class="rollable npc-skill-entry__name" data-action="rollable" data-roll-type="skill"
+        data-skill="{{entry.skill}}" data-essence="{{entry.essence}}"
+        data-shift-up="{{entry.fields.shiftUp}}" data-shift-down="{{entry.fields.shiftDown}}"
+        data-shift="{{entry.fields.shift}}" data-is-specialized="{{entry.fields.isSpecialized}}"
+        data-can-crit-d2="{{entry.fields.canCritD2}}"
+      >{{lookup @root.config.skills entry.skill}}{{#if entry.fields.isSpecialized}}*{{/if}}</a>
+      +{{entry.fields.shift}}
+
+      {{#if entry.specializations.length}}
+      <span class="npc-skill-entry__specializations">(
+        {{~#each entry.specializations as |specialization|~}}
+        {{~#unless @first}}, {{/unless~}}
+        <a
+          class="rollable npc-skill-entry__specialization" data-action="rollable" data-roll-type="skill"
+          data-skill="{{entry.skill}}" data-essence="{{entry.essence}}"
+          data-shift-up="{{entry.fields.shiftUp}}" data-shift-down="{{entry.fields.shiftDown}}"
+          data-shift="{{specialization.shift}}" data-specialization-name="{{specialization.name}}"
+          data-specialization-key="{{specialization.key}}" data-is-specialized="{{specialization.isSpecialized}}"
+        >{{specialization.name}}{{#if specialization.isSpecialized}}*{{/if}} +{{specialization.shift}}</a>
+        {{~/each~}}
+      )</span>
+      {{/if}}
+    </span>
+    {{/each}}
+  </div>
+  {{else}}
+  <p class="npc-skill-list-empty">{{localize 'E20.NpcSkillListEmpty'}}</p>
+  {{/if}}
+</div>

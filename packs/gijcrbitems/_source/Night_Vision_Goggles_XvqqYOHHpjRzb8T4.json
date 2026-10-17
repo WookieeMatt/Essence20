@@ -1,0 +1,95 @@
+{
+  "folder": "8pILPlRg2uDTxFNq",
+  "name": "Night Vision Goggles",
+  "type": "gear",
+  "_id": "XvqqYOHHpjRzb8T4",
+  "img": "systems/essence20/assets/icons/gear/night_vision_googles.svg",
+  "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↓2 on Alertness and Initiative while you have them.</p><p>Left to the table: seeing 60 ft in the dark (set your token's vision), and turning the effect off when they're not worn.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 162
+    },
+    "quantity": 1,
+    "gearType": "exploration",
+    "visionGrant": {
+      "enabled": true,
+      "mode": "darkvision",
+      "range": 60
+    }
+  },
+  "effects": [
+    {
+      "name": "Night Vision Goggles",
+      "origin": "Item.XvqqYOHHpjRzb8T4",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "n7Bg2eKZbNqYQtRw",
+      "changes": [
+        {
+          "key": "system.skills.alertness.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.skills.initiative.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!XvqqYOHHpjRzb8T4.n7Bg2eKZbNqYQtRw"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1695581417184,
+    "modifiedTime": 1704127409118,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!XvqqYOHHpjRzb8T4"
+}

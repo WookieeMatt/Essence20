@@ -1,12 +1,21 @@
-<label for="system.focus" class="resource-label">{{localize 'E20.ActorFocus'}}</label>
+<label for="system.focus" class="sliced-border__label">{{localize 'E20.ActorFocus'}}</label>
 
 {{#if @root.focuses}}
   {{#each @root.focuses as |item|}}
-    <li class="item" style="list-style-type: none;" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
-      <div class="flexrow" style="align-items: center; gap: 2px;">
-        <input type="text" name="system.role" value="{{item.name}}" />
-        <div class="item-controls" style="flex-grow: 0;">
-          <a class="item-control item-delete" data-tooltip="{{localize 'E20.DeleteItem'}}">
+    <li class="item e20-no-list-style" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
+      <div class="flexrow e20-align-center e20-gap-2">
+        {{!-- The Skills its Essence increase goes into (e.g. GI Joe CRB p.81), as a tooltip - a chip under the name only
+             widened the box (the header row's height hides it). --}}
+        <span class="header-item-name"{{#if item.system.skills.length}} data-tooltip="{{localize 'E20.FocusIncreaseSkills'}}: {{#each item.system.skills as |skill|}}{{lookup @root.config.originSkills skill}}{{#unless @last}}, {{/unless}}{{/each}}"{{/if}}>{{item.name}}</span>
+        <div class="item-controls e20-flex-grow-0">
+          {{!-- An Essence increase reached with no Skill point recorded (a character made before the prompt existed, or
+               "Later") - mechanics/characters/focus-skills.mjs. --}}
+          {{#if (lookup @root.focusMissingPicks item._id)}}
+          <a class="item-control" data-action="placeFocusSkills" data-tooltip="{{localize 'E20.FocusSkillPlaceMissing'}}" aria-label="{{localize 'E20.FocusSkillPlaceMissing'}}">
+            <i class="fa-solid fa-circle-plus"></i>
+          </a>
+          {{/if}}
+          <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
             <i class="fas fa-trash"></i>
           </a>
         </div>
@@ -15,6 +24,9 @@
   {{/each}}
 {{else}}
   <div class="flexrow">
-    <input class="no-unlock" type="text" value="{{localize 'E20.FocusDrop'}}" readonly />
+    <span class="header-item-name header-item-placeholder">{{localize 'E20.FocusDrop'}}</span>
+    <div class="item-controls e20-flex-grow-0">
+      {{> "systems/essence20/templates/actor/parts/misc/browse-compendium.hbs" type='focus'}}
+    </div>
   </div>
 {{/if}}

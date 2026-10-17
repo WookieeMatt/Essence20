@@ -1,0 +1,31 @@
+<div>
+
+  {{!-- Action cost - see templates/item/parts/activation-fields.hbs --}}
+  {{> "systems/essence20/templates/item/parts/activation-fields.hbs"}}
+  {{!-- Magic Bauble Spellcasting --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MagicBaubleSpellcastingShift'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="system.spellcastingShift">
+    {{selectOptions config.skillShifts selected=system.spellcastingShift}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Quantity Section --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MagicBaubleQuantity'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.quantity name="system.quantity" min=0 step=1}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Duration Section --}}
+  {{> "systems/essence20/templates/item/parts/duration-fields.hbs"}}
+
+  {{!-- Range Section --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MagicBaubleRange'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="text" name="system.range" value="{{system.range}}" />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+<div>
+

@@ -5,7 +5,16 @@
   "_id": "ilK322J05ooRWLht",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"finesse","to":"might","mode":"bestOf"},
+      {"type":"SkillSubstitution","scope":"item","label":"Finesse or Might: rolls the better of the two","from":"might","to":"finesse","mode":"bestOf"}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a melee attack rolling the better of Finesse and Might for 2 Sharp damage.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "Quartermaster's Guide to Gear",

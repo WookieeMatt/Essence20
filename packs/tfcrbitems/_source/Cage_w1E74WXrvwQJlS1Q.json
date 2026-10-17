@@ -5,6 +5,16 @@
   "_id": "w1E74WXrvwQJlS1Q",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Cage","steps":[{"do":"choose","prompt":"Cage: imprison the target, or focus on or release a prisoner","options":[{"label":"Imprison the target","steps":[{"do":"target","max":1},{"do":"altModeBoard","role":"prisoner","to":"target"},{"do":"mark","key":"caged","to":"target"}]},{"label":"Focus on a prisoner (Free action)","when":["self:marking:caged"],"steps":[{"do":"pickMarked","key":"caged","prompt":"Which prisoner?"},{"do":"spendAction","action":"free"},{"do":"mark","key":"cageFocus","to":"target"},{"do":"chat","text":"{name} focuses on {target}, a prisoner in their Cage."}]},{"label":"Release a prisoner","when":["self:marking:caged"],"steps":[{"do":"pickMarked","key":"caged","prompt":"Which prisoner?"},{"do":"unmark","key":"caged","to":"target"},{"do":"unmark","key":"cageFocus","to":"target"},{"do":"altModeDisembark","to":"target"}]}]}]},
+      {"type":"Cage","label":"Cage (holds prisoners)"},
+      {"type":"RollModifier","label":"Escaping the Cage (↓2)","scope":"marked","mark":"caged","downshift":2,"when":[{"any":["skill:infiltration","skill:brawn"]}]},
+      {"type":"RollModifier","label":"The captor focuses on you (Cage: Snag)","scope":"marked","mark":"cageFocus","snag":true,"consumeMark":"cageFocus","consumeFrom":"roller","when":[{"any":["skill:infiltration","skill:brawn"]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: imprison, focus on or release a prisoner. A prisoner rides inside you (their token hidden, carried along) and shows on the Alt Mode tab's Crew panel. Holds up to your Crew rating in Alt Mode or one in Bot Mode; the prisoner's sheet has an Escape button (Infiltration against your Cleverness or Brawn against your Toughness), with ↓2, and a Snag after you focus on them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,7 +22,6 @@
       "page": 134
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

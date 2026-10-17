@@ -5,6 +5,10 @@
   "_id": "0n3uCotD6WCvfh4F",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown with Athletics for the listed Stun and Fire damage in its blast area, or to leave targets Stunned; used up when thrown.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -21,8 +25,30 @@
           "skill": "athletics",
           "style": "explosive"
         },
-        "damageValue": 3,
+        "damageValue": 2,
         "damageType": "stun",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 20,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 40,
+          "value": 25
+        },
+        "shiftDown": 0
+      },
+      "d21a": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.aCFBEUiKyV415Lk6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Dynamite Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "explosive"
+        },
+        "damageValue": 0,
+        "damageType": "special",
         "numHands": 1,
         "numTargets": 1,
         "radius": 20,
@@ -37,7 +63,7 @@
     },
     "availability": "restricted",
     "classification": {
-      "size": "integrated"
+      "size": "sidearm"
     },
     "equipped": true,
     "requirements": {

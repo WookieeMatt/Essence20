@@ -5,6 +5,10 @@
   "_id": "VMd10Qb4ByeCla5q",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Cache I can be used three times, and gear from it can be Restricted.</p><p>Left to the table: the uses reset each encounter, so hold them to three per session.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

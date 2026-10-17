@@ -1,0 +1,17 @@
+<div class="compendium-browser-results flexcol">
+  <ol class="compendium-browser-results-list">
+    {{#each results as |result|}}
+      <li class="compendium-browser-result" data-uuid="{{result.uuid}}" data-action="openItem" draggable="true">
+        <img src="{{result.img}}" alt="{{result.name}}" />
+        <span class="compendium-browser-result-name">{{result.name}}</span>
+        <span class="compendium-browser-result-type">{{result.typeLabel}}</span>
+        <span class="compendium-browser-result-book">
+          {{result.book}}{{#if result.page}} ({{localize "E20.ItemSourcePage"}} {{result.page}}){{/if}}
+        </span>
+      </li>
+    {{else}}
+      <li class="compendium-browser-no-results">{{localize "E20.CompendiumBrowserNoResults"}}</li>
+    {{/each}}
+  </ol>
+  <div class="compendium-browser-result-count">{{localize "E20.CompendiumBrowserResultCount" count=resultCount}}</div>
+</div>

@@ -1,0 +1,36 @@
+{{#>"systems/essence20/templates/actor/headers/common.hbs"}}
+{{#*inline "secondary-fields"}}
+<div class="sliced-border">
+  <label class="sliced-border__label">{{localize 'E20.MegaformSubtype'}}</label>
+  <select name="system.subtype">
+    {{selectOptions config.megaformSubtypes selected=system.subtype}}
+  </select>
+</div>
+<div class="sliced-border">
+  <label class="sliced-border__label">{{localize 'E20.ZordPrerequisite'}}</label>
+  <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
+</div>
+<div class="sliced-border">
+  <label class="sliced-border__label">{{ localize 'E20.ActorArmor' }}</label>
+  {{numberInput system.armor name="system.armor" min=0 step=1 class="no-unlock"}}
+</div>
+{{#inArray system.subtype 'megaformCombiner'}}
+<div class="sliced-border">
+  <label class="sliced-border__label">{{ localize 'E20.MegaformEnergonSpentToMerge' }}</label>
+  {{numberInput system.energonSpentToMerge name="system.energonSpentToMerge" min=0 step=1}}
+</div>
+{{/inArray}}
+{{!-- Colour. A Megaform has always HAD system.color - it comes from the shared actor template, and
+      sidebars/megaform.hbs already tints the portrait border with it - but nothing on the sheet
+      could set it, so every Megaform was stuck on the default grey. It also feeds the chat-card
+      outline (chat.mjs) and the accent on a Megaform listed inside another actor
+      (parts/misc/system-actors.hbs), so this one input lights up three things at once.
+
+      No data-action here: the input saves through the ordinary name="system.color" form binding,
+      the same way every other colour box in these headers does. --}}
+<div class="sliced-border pr-header-color e20-flex-group-center">
+  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
+  <input type="color" class="picker" name="system.color" value="{{system.color}}" />
+</div>
+{{/inline}}
+{{/"systems/essence20/templates/actor/headers/common.hbs"}}

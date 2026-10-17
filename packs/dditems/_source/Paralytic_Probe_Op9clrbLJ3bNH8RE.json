@@ -5,6 +5,10 @@
   "_id": "Op9clrbLJ3bNH8RE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: spending Energon before an unarmed Finesse or Might attack to add Stun 2 per point.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

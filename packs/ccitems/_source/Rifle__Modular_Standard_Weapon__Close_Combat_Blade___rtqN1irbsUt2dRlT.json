@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/rifle.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply. Its Modular upgrade adds the Close Combat Blade's attack as an extra option.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "0bw6c3XfIYcQeGgN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: you can keep three Emotional Mastery options active at once, each extra one costing 1 Personal Power.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

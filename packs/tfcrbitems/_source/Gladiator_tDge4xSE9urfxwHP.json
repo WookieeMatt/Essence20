@@ -3,6 +3,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"spec","label":"Gladiator Specialization","from":"text"},
+      {"type":"DialogSwitch","label":"Using {choice.spec} (Gladiator: Edge)","when":["skill:intimidation"],"edge":true}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: when you add the Perk, choose an Intimidation Specialization. Automatic: rolls using that Specialization get Edge, already selected when the Roll Options Dialog opens.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -11,7 +19,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "influence"
   },
   "effects": [],
   "flags": {

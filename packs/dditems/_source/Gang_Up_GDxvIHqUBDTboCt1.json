@@ -5,6 +5,10 @@
   "_id": "GDxvIHqUBDTboCt1",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The system applies nothing specific for this Mini-Con Perk.</p><p>Left to the table: -1 to all Defenses for enemies within 5 ft of the Mini-Con.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

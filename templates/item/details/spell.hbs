@@ -1,0 +1,62 @@
+<div>
+
+  {{!-- Action cost - see templates/item/parts/activation-fields.hbs --}}
+  {{> "systems/essence20/templates/item/parts/activation-fields.hbs"}}
+  {{!-- Spell Tier --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpellTier'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="system.tier">
+    {{selectOptions config.spellTiers selected=system.tier}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Spell Circle --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpellCircle'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="system.circle">
+    {{selectOptions config.spellCircles selected=system.circle}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Cost --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Cost'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.cost name="system.cost" min=0 step=1}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Duration --}}
+  {{> "systems/essence20/templates/item/parts/duration-fields.hbs"}}
+
+  {{!-- Range --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpellRange'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="text" name="system.range" value="{{system.range}}" />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Area of Effect shape + radius --}}
+  {{> "systems/essence20/templates/item/parts/aoe-fields.hbs"}}
+
+  {{!-- Attack spells only: leave the Defense blank and a spell isn't rolled against a target at
+        all, which is the right default for the non-attack majority. --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpellDefenseType'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.defenseType">
+    {{selectOptions config.defenses selected=system.defenseType localize=true blank=(localize 'E20.None')}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Damage --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Damage'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.damageValue name="system.damageValue" min=0 step=1}}
+  <select name="system.damageType">
+    {{selectOptions config.damageTypes selected=system.damageType localize=true blank=(localize 'E20.None')}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+</div>

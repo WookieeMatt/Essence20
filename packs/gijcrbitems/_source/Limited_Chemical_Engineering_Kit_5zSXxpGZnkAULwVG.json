@@ -1,0 +1,39 @@
+{
+  "folder": "CGY5yIMLAGHuNYZA",
+  "name": "Limited Chemical Engineering Kit",
+  "type": "gear",
+  "_id": "5zSXxpGZnkAULwVG",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: counts as a Limited Science kit. When a roll calls for a kit, the Roll Options Dialog shows it and your best kit decides the Snag or ↓. Use button: use it up for a temporary Specialization (or an Edge), or scrounge a refill.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 158
+    },
+    "quantity": 1,
+    "gearType": "kits"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266289022,
+    "modifiedTime": 1790266289022,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!5zSXxpGZnkAULwVG"
+}

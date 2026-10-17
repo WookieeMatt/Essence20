@@ -5,10 +5,14 @@
   "_id": "xDZJbH6svFEgEHHJ",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Faction Perks, Gridlock Benefits and Gridlock Authority.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Field Guide to Action & Adventure",
+      "book": "Field Guide to Action and Adventure",
       "page": 69
     },
     "items": {

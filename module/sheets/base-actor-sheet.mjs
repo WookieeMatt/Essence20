@@ -1,0 +1,1572 @@
+﻿const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { ContextMenu } = foundry.applications.ux;
+const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
+
+// Essence20 characters run from level 1 to 20.
+const MIN_LEVEL = 1;
+const MAX_LEVEL = 20;
+
+import Essence20CompendiumBrowser from "../apps/compendium-browser.mjs";
+import { useGearNanomitePower } from "../items/gear/nanomite-gear.mjs";
+import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
+import ThreatBuilder from "../apps/threat-builder.mjs";
+import SheetOptions from "../apps/sheet-options.mjs";
+import SkillPicker from "../apps/skill-picker.mjs";
+import StartingEssences from "../apps/starting-essences.mjs";
+import StatEditor from "../apps/stat-editor.mjs";
+import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
+import { applyThemeClass } from "../settings.js";
+import {
+  onCreateActiveEffect,
+  onDeleteActiveEffect,
+  onEditActiveEffect,
+  onToggleActiveEffect,
+} from "../mechanics/characters/active-effect-controls.mjs";
+import { summarizeEffect } from "../mechanics/characters/effect-catalog.mjs";
+import { actorRulesContext, ruleChatContent } from "../rules/actor-view.mjs";
+import { applySystemActorsColorCssVariables, applySystemColorCssVariables } from "../util/system-color.mjs";
+import { getNumActions } from "../mechanics/actions/action-counts.mjs";
+import { applyProtectorsShieldHealthBonus, isPersonalShieldItem } from "../items/defenses/personal-shield.mjs";
+import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
+import { keepEffectBoostsOutOfSource } from "../sheet-handlers/effect-boosted-fields.mjs";
+import { announceLevelChange, levelSnapshot } from "../mechanics/characters/level-announce.mjs";
+import { prepareSystemActors,
+  onAttachedActorHealthUpdate,
+  onAttachedActorStunUpdate,
+  onCrewNumberUpdate,
+  onSystemActorOpen,
+  onSystemActorsDelete,
+  onVehicleRoleUpdate,
+} from "../sheet-handlers/vehicle-handler.mjs";
+import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { actorHasZordFeature } from "../mechanics/vehicles/zord-features.mjs";
+import { isWarriorModeActive, toggleWarriorMode, WARRIOR_MODE_ID } from "../items/zords/warrior-mode.mjs";
+import { onSummonZord } from "../mechanics/vehicles/zord-summon.mjs";
+import { onActivateConsummatePerformer } from "../items/resources/consummate-performer.mjs";
+import {
+  adjust, getNamedActionType, getSheetContext, isAiming, refund, spend, tradeStandardForFree,
+} from "../mechanics/actions/action-economy.mjs";
+import { runNamedAction } from "../mechanics/actions/named-actions.mjs";
+import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
+import {
+  onEditMorphToughnessBonus,
+  onRecharge,
+  onRecoverSpellcastingDownshift,
+  onRest,
+  onRoll,
+  onSufferForSpellcastingDownshift,
+  onToggleAccordion,
+  onToggleHeaderAccordion,
+  spendRolePoint,
+} from "../sheet-handlers/listener-misc-handler.mjs";
+import { onDropActor, onDropItem } from "../sheet-handlers/drop-handler.mjs";
+import {
+  onItemCreate,
+  onItemEdit,
+  onItemDelete,
+  onInlineEdit,
+  onPerkUseClick,
+  onShieldActivationToggle,
+  onShieldEquipToggle,
+} from "../sheet-handlers/listener-item-handler.mjs";
+import { onManageSelectTrait } from "../mechanics/characters/manage-traits.mjs";
+import { deleteSpecialization } from "../sheet-handlers/specialization-handler.mjs";
+import { isMountedWeaponSetUp, pickUpMountedWeapon, setUpMountedWeapon } from "../items/attacks/mounted-weapons.mjs";
+import { switchMythicForm } from "../items/attacks/mythically-modular.mjs";
+import { treatOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
+import { nestSubPerks, withSubPerksUnderParents } from "../mechanics/characters/sub-perks.mjs";
+import { missingFocusPickLevels, syncFocusSkillPicks } from "../mechanics/characters/focus-skills.mjs";
+import { currentEssence, currentEssenceUpdate, tracksEssenceDamage } from "../mechanics/combat/essence-current.mjs";
+import * as altModeCrew from "../mechanics/vehicles/alt-mode-crew.mjs";
+import { botSizeFor, fullMovement, movementChoiceIndex, movementLabel } from "../items/shared/alt-mode-chassis.mjs";
+
+export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
+  static DEFAULT_OPTIONS = {
+    actions: {
+      activateConsummatePerformer: this.#onActivateConsummatePerformer,
+      actionRestore: this.#onActionRestore,
+      actionTradeForFree: this.#onActionTradeForFree,
+      actionSpend: this.#onActionSpend,
+      actionSpendNamed: this.#onActionSpendNamed,
+      bonusEdit: this.#onEditMorphToughnessBonus,
+      createEffect: this.#createActiveEffect,
+      deleteEffect: this.#deleteActiveEffect,
+      editDefenses: this.#onEditDefenses,
+      editEffect: this.#editActiveEffect,
+      editHealth: this.#onEditHealth,
+      editSpeeds: this.#onEditSpeeds,
+      inlineEdit: this.#onInlineEdit,
+      itemCreate: this.#onItemCreate,
+      openCompendiumBrowser: this.#onOpenCompendiumBrowser,
+      openRuleSource: this.#onOpenRuleSource,
+      sendRuleToChat: this.#onSendRuleToChat,
+      startingEssences: this.#onStartingEssences,
+      placeFocusSkills: this.#onPlaceFocusSkills,
+      itemDelete: this.#onItemDelete,
+      itemEdit: this.#onItemEdit,
+      levelDown: this.#onLevelDown,
+      levelUp: this.#onLevelUp,
+      morph: this.#onMorph,
+      perkUse: this.#onPerkUse,
+      recharge: this.#onRecharge,
+      recoverSpellcastingDownshift: this.#onRecoverSpellcastingDownshift,
+      rest: this.#onRest,
+      repairEssences: this.#onRepairEssences,
+      rollable: this.#onRoll,
+      growMonster: this.#onGrowMonster,
+      threatAudit: this.#onThreatAudit,
+      sheetOptions: this.#onSheetOptions,
+      skillPicker: this.#onOpenSkillPicker,
+      shieldActivationToggle: this.#onShieldActivationToggle,
+      shieldEquipToggle: this.#onShieldEquipToggle,
+      mountedSetupToggle: this.#onMountedSetupToggle,
+      mythicSwitchForm: this.#onMythicSwitchForm,
+      useGearNanomite: this.#onUseGearNanomite,
+      treatOngoingEffect: this.#onTreatOngoingEffect,
+      specializationDelete: this.#onSpecializationDelete,
+      startSheetTour: this.#onStartSheetTour,
+      sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
+      summonZord: this.#onSummonZord,
+      zordGrowth: this.#onZordGrowth,
+      zordBoard: this.#onZordBoard,
+      zordDisembark: this.#onZordDisembark,
+      altCrewBoardTargets: this.#onAltCrewBoardTargets,
+      altCrewDisembark: this.#onAltCrewDisembark,
+      altCrewFirepoint: this.#onAltCrewFirepoint,
+      altCrewCrash: this.#onAltCrewCrash,
+      aboardDisembark: this.#onAboardDisembark,
+      aboardEscape: this.#onAboardEscape,
+      aboardAssist: this.#onAboardAssist,
+      aboardOpen: this.#onAboardOpen,
+      zordAutoFeatures: this.#onZordAutoFeatures,
+      summonContact: this.#onSummonContact,
+      systemActorOpen: this.#onSystemActorOpen,
+      systemActorsDelete: this.#onSystemActorsDelete,
+      toggleAccordion: this.#toggleAccordion,
+      toggleAccordionHeader: this.#toggleAccordionHeader,
+      toggleEffect: this.#toggleActiveEffect,
+      toggleLock: this.#onToggleLock,
+      traitSelector: this.#onManageSelectTrait,
+      transform: this.#onTransform,
+      warriorMode: this.#onWarriorMode,
+    },
+    classes: ["essence20", "sheet", "actor", "theme-wrapper", "e20-window"],
+    tag: 'form',
+    position: {
+      width: 1050,
+      height: 720,
+    },
+    form: {
+      submitOnChange: true,
+      closeOnSubmit: false,
+    },
+    window: {
+      resizable: true,
+      controls: [
+        {
+          icon: "fas fa-cog",
+          label: "E20.SheetOptions",
+          action: "sheetOptions",
+          visible: function () {
+            return this.actor.isOwner && ["npc", "playerCharacter"].includes(this.actor.type);
+          },
+        },
+        {
+          icon: "fas fa-circle-question",
+          label: "E20.TourSheetHelp",
+          action: "startSheetTour",
+          visible: function () {
+            // Only offer it where a tour actually exists for this actor type, so the control
+            // never promises a walkthrough that isn't there. New entries in TOUR_BY_ACTOR_TYPE
+            // light this up for their sheet automatically.
+            const tour = game.tours.get(Essence20BaseActorSheet.TOUR_BY_ACTOR_TYPE[this.actor.type]);
+            return !!tour?.canStart;
+          },
+        },
+        {
+          // "Make My Monster Grow" - builds the Threat's Grown form as its own Actor. GM-only
+          // because it creates world documents, and NPC-only because that is the only actor type
+          // a printed Grown stat block exists for.
+          icon: "fas fa-up-right-and-down-left-from-center",
+          label: "E20.MonsterGrowTitle",
+          action: "growMonster",
+          visible: function () {
+            return game.user.isGM && this.actor.type === "npc";
+          },
+        },
+        {
+          // The Threat Builder's audit mode: how this Threat compares to its book's creation rules.
+          icon: "fa-solid fa-dragon",
+          label: "E20.ThreatAuditOpen",
+          action: "threatAudit",
+          visible: function () {
+            return game.user.isGM && ["npc", "vehicle"].includes(this.actor.type);
+          },
+        },
+      ],
+    },
+  };
+
+  /**
+   * Which guided tour the titlebar help control starts, per actor type.
+   *
+   * Sheet tours run against their own demo character rather than the sheet they were launched
+   * from — a tour that reorganised the user's real character to make a point would be a bad
+   * trade. The control is really a "show me how this sheet works" shortcut into Tour Management.
+   * @type {Record<string, string>}
+   */
+  static TOUR_BY_ACTOR_TYPE = {
+    playerCharacter: "essence20.characterSheet",
+  };
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
+    applySystemColorCssVariables(this.element, this.actor);
+    applySystemActorsColorCssVariables(this.element);
+    this._applyLockedState();
+    this._activateMacroDragDrop();
+    this._activateCrewListeners();
+    this._activateAltModeCrewListeners();
+    this._activateInlineEditListeners();
+    this._activateRolePointsListeners();
+    this._activateImageContextMenu();
+    this._activateInputListeners();
+  }
+
+  /**
+   * Reflect the actor's locked state in the DOM: readonly inputs, disabled selects, and the
+   * lock/unlock icon. Re-run on every render since the actor's system.isLocked can change
+   * (via the toggleLock action) and Foundry auto-re-renders the sheet after that update.
+   */
+  _applyLockedState() {
+    const isLocked = this.actor.system.isLocked;
+
+    for (const input of this.element.querySelectorAll('input')) {
+      input.readOnly = isLocked;
+    }
+
+    // Health/stun current values stay editable even while locked; stun max stays locked always.
+    for (const input of this.element.querySelectorAll('.no-lock')) {
+      input.readOnly = false;
+    }
+
+    for (const input of this.element.querySelectorAll('.no-unlock')) {
+      input.readOnly = true;
+    }
+
+    for (const select of this.element.querySelectorAll('select')) {
+      select.disabled = isLocked;
+    }
+
+    this._applyTitlebarLockToggle(isLocked);
+  }
+
+  /**
+   * Add a lock/unlock icon button to the far left of the window titlebar (matching the
+   * position of similar toggles in other systems, e.g. dnd5e's prepared-spells toggle),
+   * so the sheet can be locked/unlocked without needing to open the sheet body first. The
+   * window frame is only built once (unlike the PARTS content, which re-renders), so this
+   * inserts the button on first render and just updates its icon/tooltip afterward.
+   */
+  _applyTitlebarLockToggle(isLocked) {
+    const header = this.element.querySelector('.window-header');
+    if (!header) return;
+
+    let button = header.querySelector('.header-lock-toggle');
+    if (!button) {
+      button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'header-lock-toggle header-control icon';
+      button.dataset.action = 'toggleLock';
+      header.insertBefore(button, header.firstChild);
+    }
+
+    button.classList.toggle('fa-solid', true);
+    button.classList.toggle('fa-lock', isLocked);
+    button.classList.toggle('fa-lock-open', !isLocked);
+    button.dataset.tooltip = game.i18n.localize(isLocked ? 'E20.ActorLockOn' : 'E20.ActorLockOff');
+    button.setAttribute('aria-label', button.dataset.tooltip);
+  }
+
+  /**
+   * Make item rows draggable onto the hotbar to create macros, matching the AppV1 sheets.
+   */
+  _activateMacroDragDrop() {
+    if (!this.actor.isOwner) return;
+
+    for (const li of this.element.querySelectorAll('li.item')) {
+      if (li.classList.contains('inventory-header')) continue;
+      li.setAttribute('draggable', true);
+      li.addEventListener('dragstart', (event) => this._onDragStart(event), false);
+    }
+  }
+
+  /**
+   * Vehicle/zord crew role assignment (system-actors.hbs's .vehicle-role select and the
+   * .num-crew driver/passenger count inputs), plus system-actors.hbs's own per-attached-actor
+   * .attached-actor-health/.attached-actor-stun inputs, are change events, which AppV2's
+   * click-only [data-action] delegation doesn't cover, so they need manual binding.
+   */
+  _activateCrewListeners() {
+    for (const select of this.element.querySelectorAll('.vehicle-role')) {
+      select.addEventListener('change', (event) => onVehicleRoleUpdate(event, this));
+    }
+
+    for (const input of this.element.querySelectorAll('.num-crew')) {
+      input.addEventListener('change', (event) => onCrewNumberUpdate(event, this));
+    }
+
+    for (const input of this.element.querySelectorAll('.attached-actor-health')) {
+      input.addEventListener('change', (event) => onAttachedActorHealthUpdate(event, this));
+    }
+
+    for (const input of this.element.querySelectorAll('.attached-actor-stun')) {
+      input.addEventListener('change', (event) => onAttachedActorStunUpdate(event, this));
+    }
+
+  }
+
+  /** The Alt Mode Crew panel's role selects (alt-mode-crew.hbs) - change events, bound by hand like the vehicle ones. */
+  _activateAltModeCrewListeners() {
+    // An Alt Mode with a choice of size or movement (altMode/details.hbs): the pick, and the token's size and movement
+    // if it's the Mode in use. A size that fixes the Bot Mode's (Saurian's Long: Large) sets that too.
+    for (const select of this.element.querySelectorAll('.e20-altmode-size__select, .e20-altmode-movement__select')) {
+      select.addEventListener('change', async (event) => {
+        event.stopPropagation();
+        const altMode = this.document.items.get(select.dataset.itemId);
+        if (!altMode) {
+          return;
+        }
+
+        if (select.classList.contains('e20-altmode-movement__select')) {
+          const option = altMode.system.movementOptions?.[Number(select.value)];
+          if (!option) {
+            return;
+          }
+
+          await altMode.update({ 'system.altModeMovement': fullMovement(option) });
+        } else {
+          await altMode.update({ 'system.altModesize': select.value });
+          const botSize = botSizeFor(altMode.system, select.value);
+          if (botSize && this.document._source.system.size != botSize) {
+            await this.document.update({ 'system.size': botSize });
+          }
+        }
+
+        const { refreshAltModeSize } = await import("../sheet-handlers/transformer-handler.mjs");
+        await refreshAltModeSize(this.document, altMode);
+      });
+    }
+
+    for (const select of this.element.querySelectorAll('.e20-alt-crew__role')) {
+      select.addEventListener('change', async (event) => {
+        event.stopPropagation();
+        if (!(await altModeCrew.setSeat(this.document, select.dataset.key, { role: select.value }))) {
+          this.render();
+        }
+      });
+    }
+  }
+
+  /**
+   * Elements marked class="inline-edit" (e.g. weapon-effects.hbs's per-effect Skill select) are
+   * meant to write directly to a specific document field via data-field/data-parent-field
+   * (handled by onInlineEdit), rather than through the sheet's normal actor-wide submitOnChange.
+   * Like _activateCrewListeners above, this needs manual binding since these are change events
+   * and AppV2's click-only [data-action] delegation doesn't cover those. Without this, the
+   * select's change event was instead falling through to the sheet's ambient
+   * submitOnChange form submission, which silently drops it since its name ("item.
+   * classification.skill") isn't a real Actor schema path - the dropdown appeared to work but
+   * never actually persisted, so rolls kept using the item's original skill.
+   */
+  _activateInlineEditListeners() {
+    for (const element of this.element.querySelectorAll('.inline-edit')) {
+      element.addEventListener('change', (event) => onInlineEdit(event, this.actor));
+    }
+  }
+
+  /**
+   * The manual level-input field (system.level) needs its own listener rather than the sheet's
+   * ambient submitOnChange, so a typed level can trigger onLevelChange's advancement/
+   * deadvancement math instead of just silently writing the new number. Bound once and cached
+   * (guarded via this._levelInputListenerActive), same reasoning as _activateImageContextMenu
+   * above - this.element is the same persistent container across re-renders, so binding here
+   * unconditionally on every _onRender would stack a duplicate listener per render, and since
+   * onLevelChange's own actor.update() calls each trigger a re-render, the stack (and the
+   * number of times a single edit re-fired onLevelChange) grew without bound.
+   */
+  _activateInputListeners() {
+    if (this._levelInputListenerActive) {
+      return;
+    }
+
+    this._levelInputListenerActive = true;
+    this.element.addEventListener("change", (event) => this._onLevelInputChange(event));
+  }
+
+  /**
+   * Handles a committed edit (blur/Enter, not every keystroke - see _activateInputListeners
+   * above for why this is a "change" listener, not "input") to the manual level field.
+   * event.target.value is the field's own resulting string value, parsed as the actor's new
+   * level - unlike an "input" event's own event.data, which is only the single character just
+   * typed, never the field's actual resulting number.
+   * @param {Event} event The change event
+   */
+  async _onLevelInputChange(event) {
+    if (event.target?.name != "system.level") {
+      return;
+    }
+
+    // Anything but a whole number in range is refused outright and the field goes back to the
+    // current level - a typo like 55 or 0 should not quietly become level 20 or 1 and run a
+    // whole advancement the player never asked for. The arrows cannot go out of range, so this
+    // check is for typing only.
+    const typed = String(event.target.value ?? '').trim();
+    const typedLevel = Number(typed);
+    if (!/^\d+$/.test(typed) || typedLevel < MIN_LEVEL || typedLevel > MAX_LEVEL) {
+      ui.notifications.error(game.i18n.format("E20.LevelInvalid", { min: MIN_LEVEL, max: MAX_LEVEL }));
+      event.target.value = this.actor.system.level;
+      return;
+    }
+
+    await this._setLevel(typedLevel);
+  }
+
+  /**
+   * The level field is left out of the sheet's ordinary submitOnChange save: _setLevel owns it,
+   * so a typed 25 (or any level with no Role) can never reach the actor unclamped - racing the
+   * clamped write - or skip onLevelChange's advancement.
+   * @override
+   */
+  _processFormData(event, form, formData) {
+    const submitData = keepEffectBoostsOutOfSource(super._processFormData(event, form, formData), this.actor);
+    foundry.utils.deleteProperty(submitData, "system.level");
+    // A Zord's / Vehicle's current Essence is its score less the damage taken (mechanics/combat/essence-current.mjs):
+    // the typed current amount is stored as that damage, against the score shown when it was typed.
+    const typedCurrent = submitData.essenceCurrent;
+    delete submitData.essenceCurrent;
+    if (typedCurrent && typeof typedCurrent == 'object' && tracksEssenceDamage(this.actor)) {
+      for (const [key, typed] of Object.entries(typedCurrent)) {
+        if (typed === null || typed === '' || !Number.isFinite(Number(typed))) {
+          continue;
+        }
+
+        if (Number(typed) != currentEssence(this.actor, key)) {
+          foundry.utils.mergeObject(submitData, foundry.utils.expandObject(currentEssenceUpdate(this.actor, key, Number(typed))));
+        }
+      }
+    }
+
+    return submitData;
+  }
+
+  /**
+   * The one path every manual level change goes through (the typed field and the up/down
+   * arrows): there is nothing to advance without a Role, and a level outside 1-20 is clamped to
+   * the nearest end. The level is written before onLevelChange runs, since the sheet's own
+   * submitOnChange has already written the typed value unclamped by then.
+   * @param {Number} level The requested level
+   */
+  async _setLevel(level) {
+    if (!this.actor.items.some(item => item.type == 'role')) {
+      return;
+    }
+
+    const newLevel = Math.clamp(level, MIN_LEVEL, MAX_LEVEL);
+    if (newLevel == this.actor.system.level) {
+      // e.g. 25 typed at level 20 - nothing to save, but the field still shows the typed value.
+      this.render();
+      return;
+    }
+
+    const before = levelSnapshot(this.actor);
+    await this.actor.update({ "system.level": newLevel });
+    await onLevelChange(this.actor, newLevel);
+    await announceLevelChange(this.actor, before, levelSnapshot(this.actor));
+  }
+
+  /**
+   * The sidebar's Role Points row used to have a separate icon per action (an info/"post to
+   * chat" icon, a fist icon to spend a use, and - only for activatable ones - a checkbox to
+   * toggle Activation). All three are now driven from the row's own name instead: a left-click
+   * toggles Activation directly (for Role Points items that support it), and a right-click opens
+   * a menu with the other two actions (rolePoints/container.hbs).
+   *
+   * The left-click listener follows _activateInlineEditListeners' pattern above - bound directly
+   * to each matched element via querySelectorAll, so it's naturally replaced along with the DOM
+   * on every re-render, no manual cleanup needed. The right-click menu can't use that pattern:
+   * ContextMenu binds one delegated listener to a persistent container (this.element, which
+   * Foundry doesn't discard across re-renders, unlike the per-row elements below) rather than to
+   * the individual rows, so constructing a new one on every render would stack duplicate
+   * listeners - it's built once and cached instead.
+   */
+  _activateRolePointsListeners() {
+    for (const nameEl of this.element.querySelectorAll('.role-points-name[data-is-activatable]')) {
+      nameEl.addEventListener('click', async (event) => {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest('.item').dataset.itemId;
+        const item = this.actor.items.get(itemId);
+        const activating = !item.system.isActive;
+        if (activating) {
+          const { canActivatePersonalShield } = await import("../items/defenses/personal-shield-uses.mjs");
+          if (!canActivatePersonalShield(this.actor, item)) {
+            return;
+          }
+        }
+
+        // Item rules' rolePointsActivating Triggers (Shield Modulation's "when you activate your shield, choose one
+        // damage type" - rules/plugins/effects/state-changes.mjs): a stopped one (a cancelled pick) cancels the activation.
+        if (activating) {
+          const { rolePointsActivating } = await import("../rules/plugins/effects/state-changes.mjs");
+          if (!(await rolePointsActivating(this.actor, item))) {
+            return;
+          }
+        }
+
+        // Protector's Shield (Bodyguard Focus, 10th level, p.110) - "While your shield is up, you
+        // gain 1 Temporary Health." See applyProtectorsShieldHealthBonus's own doc comment for why
+        // this intercepts the plain Activate/Deactivate toggle here, same as Shield Modulation
+        // just above. Only fires for the actor's own Personal Shield item specifically, not every
+        // activatable rolePoints item.
+        if (isPersonalShieldItem(item)) {
+          // "activating the shield requires a Standard action" (GI Joe CRB, Vanguard, p.108) - Quick
+          // Shield makes it a Free action (mechanics/actions/action-perks.mjs).
+          if (activating) {
+            const paid = await spend(this.actor, 'standard', { source: item.name, context: { kind: 'personalShield' } });
+            if (paid.blocked) {
+              return;
+            }
+          }
+
+          await applyProtectorsShieldHealthBonus(this.actor, activating);
+        }
+
+        // (Aegis's deferred Defeat as Reckless Abandon switches off is a rolePointsDeactivated Trigger on the Perk.)
+
+        await item.update({ 'system.isActive': activating });
+      });
+    }
+
+    if (this._rolePointsContextMenu) {
+      return;
+    }
+
+    this._rolePointsContextMenu = new ContextMenu(this.element, '.role-points-name', [
+      {
+        label: 'E20.CheckSendToChat',
+        icon: '<i class="fas fa-message-lines"></i>',
+        callback: (target) => {
+          const itemId = target.closest('.item').dataset.itemId;
+          const item = this.actor.items.get(itemId);
+          item.roll({ rollType: 'info' });
+        },
+      },
+      {
+        label: 'E20.RolePointsRoll',
+        icon: '<i class="fas fa-hand-fist"></i>',
+        visible: (target) => target.dataset.canSpend === 'true',
+        callback: (target) => {
+          const itemId = target.closest('.item').dataset.itemId;
+          const item = this.actor.items.get(itemId);
+          spendRolePoint(this.actor, item);
+        },
+      },
+    ], {
+      jQuery: false,
+      /* Without this, ContextMenu injects the menu as a plain positioned child of the target
+         (_injectMenu) - which stays inside the normal document stacking order. A <select>
+         elsewhere on the sheet (system.initiative.skill, right below Role Points in the sidebar)
+         was consistently winning the paint order over that injected menu even with an explicit
+         higher z-index, confirmed live via elementFromPoint - so the menu was rendering, fully
+         populated, at a valid on-screen position, but invisible/unclickable underneath the
+         select. fixed:true instead uses the Popover API (_setFixedPosition/showPopover), which
+         renders in the browser's top layer - above every other element in the document
+         regardless of z-index or stacking context, including native form controls. */
+      fixed: true,
+    });
+  }
+
+  /**
+   * Right-click either of the actor's own profile images (the header's, common.hbs, or the
+   * sidebar's, sidebars/*.hbs - both share the .profile-img class, so one rule covers both) to
+   * broadcast it to every connected player, the same "Show Players" action added to item sheets
+   * (item-sheet.mjs) - left-click still opens the file picker to change the image, which is
+   * DocumentSheetV2's own `editImage` ACTION: the image needs data-action="editImage" to dispatch
+   * it, with data-edit="img" only telling that handler which field to write. Every actor template
+   * carried the latter without the former, so left-click silently did nothing - fixed, and
+   * untouched by the context menu here. GM-only, matching core Foundry's own
+   * convention of only showing that control to a GM. Built once (guarded via
+   * this._imageContextMenu, same reasoning as _rolePointsContextMenu above) since ContextMenu
+   * binds one delegated listener to a persistent container (this.element) rather than either
+   * image itself, so rebuilding it on every render would stack duplicate listeners.
+   */
+  _activateImageContextMenu() {
+    if (!game.user.isGM || this._imageContextMenu) {
+      return;
+    }
+
+    this._imageContextMenu = new ContextMenu(this.element, '.profile-img', [
+      {
+        name: 'E20.ShowImageToPlayers',
+        icon: '<i class="fas fa-eye"></i>',
+        callback: () => {
+          game.socket.emit('shareImage', {
+            image: this.actor.img,
+            title: this.actor.name,
+            uuid: this.actor.uuid,
+          });
+          ui.notifications.info(game.i18n.format('JOURNAL.ActionShowSuccess', { mode: 'image', title: this.actor.name, which: 'all' }));
+        },
+      },
+    ], { jQuery: false, fixed: true });
+  }
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    // Make all the Essence20 consts accessible
+    context.config = CONFIG.E20;
+
+    // Use a safe clone of the actor data for further operations.
+    const actorData = this.actor.toObject(false);
+
+    // Add the actor's system data to context for easier access, as well as flags.
+    context.system = actorData.system;
+    context.flags = actorData.flags;
+
+    // A Zord's / Vehicle's / Megaform's current Essence, the score less the damage taken (mechanics/combat/essence-current.mjs):
+    // derived, so toObject leaves it out.
+    if (tracksEssenceDamage(this.actor)) {
+      for (const [key, essence] of Object.entries(context.system.essences ?? {})) {
+        essence.current = currentEssence(this.actor, key);
+        context.essenceDamaged ||= Number(essence.damage) > 0;
+      }
+    }
+
+    // The header's Alt Mode badge shows which mode, not just that there is one.
+    context.altModeName = actorData.system.isTransformed
+      ? (this.actor.items.get(actorData.system.altModeId)?.name ?? null)
+      : null;
+
+    // Roll data for TinyMCE/ProseMirror editors so inline rolls in text can resolve.
+    context.rollData = this.actor.getRollData();
+
+    this._prepareItems(context);
+
+    if (['npc', 'zord', 'megaform', 'vehicle', 'companion'].includes(actorData.type)) {
+      this._prepareChosenNpcSkills(context);
+    }
+
+    // Conditioning row on the npc-skill-list sheets - ticked per actor in the Skill Picker, the
+    // same way each skill's own isChosen box controls whether that skill is listed.
+    context.showConditioning = context.system.showConditioning === true;
+
+    // Per-turn action budget for the header pip row. Null - and so the whole block is skipped -
+    // whenever the actor isn't in the active encounter or the world has tracking switched off;
+    // see mechanics/actions/action-economy.mjs#getSheetContext. Read from this.actor rather than the
+    // toObject(false) clone above, because the budget's own `max` is derived data.
+    context.actionEconomy = getSheetContext(this.actor);
+
+    // Prepare WeaponEffect Skill List
+    this._prepareWeaponEffectSkills(actorData, context);
+
+    //Prepare Initiative Skills
+    context.initiativeSkills = this._prepareInitiativeSkills(actorData);
+
+    // Prepare number of actions - shown on every actor type's sidebar Speeds panel now,
+    // not just Character's.
+    context.numActions = getNumActions(this.actor);
+
+    // Prepare actors that are attached to other actors
+    prepareSystemActors(this.document, context);
+
+    // Riding in a Transformer's Alt Mode (mechanics/vehicles/alt-mode-crew.mjs): a Transformer's Crew panel, and the
+    // header's line for whoever is aboard one.
+    context.altCrew = altModeCrew.crewSheetContext(this.document);
+    context.aboard = altModeCrew.aboardSheetContext(this.document);
+
+    context.canMorphOrTransform = context.document.system.canMorph || context.document.system.canTransform;
+
+    // Warrior Mode (PR CRB, Zord Feature, p.140) - see items/zords/warrior-mode.mjs's own doc
+    // comment. Only ever true for a Zord actually holding the Feature, so the sidebar's toggle
+    // button only shows up for one.
+    context.hasWarriorMode = this.document.type == 'zord' && actorHasZordFeature(this.document, WARRIOR_MODE_ID);
+    context.isWarriorModeActive = isWarriorModeActive(this.document);
+
+    // (High Gear is a Use button on the Feature itself now.)
+
+    // (Zord Mega-Weapon System's summon is a Use button on the Feature itself now.)
+
+    return context;
+  }
+
+  /**
+   * Shared per-PART context prep for the "effects" and "notes" tabs, which are identical
+   * across every actor type that has them. Subclasses with additional PARTS should call
+   * `super._preparePartContext(partId, context, options)` first and extend the switch for
+   * their own type-specific parts.
+   */
+  async _preparePartContext(partId, context, options) {
+    context = await super._preparePartContext(partId, context, options);
+
+    switch (partId) {
+    case "effects": context = await this._prepareEffectsContext(context); break;
+    case "notes": context = await this._prepareNotesContext(context); break;
+    }
+
+    return context;
+  }
+
+  /**
+   * The Rules tab (PART id "effects"): the actor's Active Effects - its own and its items' - grouped
+   * so conditions, area effects and timed ones stand apart from the always-on ones, then a read-only
+   * summary of its items' rules (rules/actor-view.mjs).
+   */
+  async _prepareEffectsContext(context) {
+    Object.assign(context, actorRulesContext(this.document, { summarize: summarizeEffect }));
+    return context;
+  }
+
+  async _prepareNotesContext(context) {
+    return context;
+  }
+
+  /**
+  * Build the flat list of skills chosen via the Skill Picker app (module/apps/skill-picker.mjs)
+  * for NPC-like actors - replaces the old automatic "does this deviate from default" display
+  * heuristic entirely, so what shows here is exactly and only what a GM picked.
+  * @param {Object} context The actor data to prepare.
+  * @return {undefined}
+  */
+  _prepareChosenNpcSkills(context) {
+    const chosenSkills = [];
+
+    for (const [essence, skills] of Object.entries(CONFIG.E20.skillsByEssence)) {
+      for (const skill of skills) {
+        // Not every actor type has every skill in CONFIG.E20.skillsByEssence - Zord/Megaform's
+        // schema (zord-base.mjs), for one, has no `weird` entry at all.
+        const fields = context.system.skills[skill];
+        if (fields?.isChosen) {
+          /* Flattened here rather than walked in the template: Handlebars treats an empty object
+             as truthy, so `{{#if fields.specializations}}` would have drawn a bare pair of
+             parentheses for every skill that has none. An array also gives the template a
+             `.length` to test and a stable order to render. */
+          const specializations = Object.entries(fields.specializations ?? {})
+            .map(([key, specialization]) => ({ key, ...specialization }))
+            .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? ''));
+
+          chosenSkills.push({ skill, essence, fields, specializations });
+        }
+      }
+    }
+
+    // Grouped by Essence above (any, strength, speed, smarts, social - CONFIG.E20.skillsByEssence's
+    // own key order) rather than by name, so an NPC with e.g. Weird and Athletics both chosen
+    // would otherwise show Weird before Athletics. Sort by the actual displayed label so the
+    // button row (npc-skill-list.hbs) reads alphabetically regardless of Essence.
+    chosenSkills.sort((a, b) => game.i18n.localize(CONFIG.E20.skills[a.skill])
+      .localeCompare(game.i18n.localize(CONFIG.E20.skills[b.skill])));
+
+    context.chosenSkills = chosenSkills;
+  }
+
+  _prepareWeaponEffectSkills(actorData, context) {
+    let hasSkillDie = false;
+    let skillDieName = null;
+    const items = actorData.items.documentsByType?.role;
+    if (items?.length && items[0].system.skillDie.isUsed) {
+      hasSkillDie = true;
+      skillDieName = items[0].system.skillDie.name;
+    }
+
+    let weaponEffectSkills = {};
+    for (const skill of Object.keys(actorData.system.skills)) {
+      if (skill != 'wealth' && (skill != 'roleSkillDie' || hasSkillDie)) {
+        weaponEffectSkills[skill] = {
+          key: skill,
+          label: skill == 'roleSkillDie' && hasSkillDie
+            ? skillDieName
+            : game.i18n.localize(CONFIG.E20.skills[skill]),
+        };
+      }
+    }
+
+    context.weaponEffectSkills = weaponEffectSkills;
+  }
+
+  _prepareInitiativeSkills(actorData) {
+    const initiativeSkills = {};
+    for (const skill of Object.keys(actorData.system.skills)) {
+      if (actorData.system.skills[skill].canBeInitiative) {
+        initiativeSkills[skill] = {
+          key: skill,
+          label: game.i18n.localize(CONFIG.E20.skills[skill]),
+        };
+      }
+    }
+
+    return initiativeSkills;
+  }
+
+  /**
+   * Organize and classify Items for Character sheets.
+   * @param {Object} context The actor data to prepare.
+   * @return {undefined}
+   * @private
+   */
+  _prepareItems(context) {
+    // Initialize containers.
+    const alterations = [];
+    const altModes = [];
+    const armors = [];
+    const features = []; // Used by Zords
+    const focuses = [];
+    const gears = [];
+    const hangUps = [];
+    const influences = [];
+    const magicBaubles = [];
+    const megaformTraits = [];
+    const origins = []; // Used by PCs
+    const perks = { all: [] }; // Used by PCs
+    const powers = []; // Used by PCs
+    let shieldEquipped = false;
+    const shields = [];
+    const spells = [];
+    const upgrades = [];
+    const traits = []; // Used by Vehicles
+    const weapons = [];
+    let faction = null;
+    const roles = [];
+    const rolePointsList = [];
+
+    // Iterate through items, allocating to containers
+    for (let i of context.document.items) {
+      i.img = i.img || DEFAULT_TOKEN;
+      const itemType = i.type;
+
+      // Items granted by a Role/Focus/Origin/Influence/etc. record the level they were
+      // granted at on the granting item's own system.items map, not on the granted item
+      // itself - look it up via the parentId/collectionId flags createItemCopies() sets, so
+      // leveled item lists (Perks, Spells, Background, Powers, Gear) can show a level number
+      // without duplicating that data onto every item. Items that were never granted this way
+      // (dropped directly, or types createItemCopies never grants) simply have no parentId and
+      // resolve to null here, which the templates treat as "no badge".
+      {
+        const parentId = i.getFlag('essence20', 'parentId');
+        const collectionId = i.getFlag('essence20', 'collectionId');
+        const parent = parentId ? this.actor.items.get(parentId) : null;
+        i.system.grantedLevel = parent?.system.items?.[collectionId]?.level ?? null;
+      }
+
+      switch (itemType) {
+      case 'alteration':
+        alterations.push(i);
+        break;
+      case 'altMode':
+        altModes.push(i);
+        break;
+      case 'armor':
+        // Equipped Armor's contribution to Defenses is computed in derived data, not here -
+        // see Essence20Actor#_prepareDefenses's own itemArmor block.
+        armors.push(i);
+        break;
+      case 'faction':
+        faction = i;
+        break;
+      case 'feature':
+        features.push(i);
+        break;
+      case 'focus':
+        focuses.push(i);
+        break;
+      case 'gear':
+        gears.push(i);
+        break;
+      case 'hangUp':
+        hangUps.push(i);
+        break;
+      case 'influence':
+        influences.push(i);
+        break;
+      case 'magicBauble':
+        magicBaubles.push(i);
+        break;
+      case 'megaformTrait':
+        megaformTraits.push(i);
+        break;
+      case 'origin':
+        i.skillsString = i.system.skills.map(skill => {
+          return CONFIG.E20.originSkills[skill];
+        }).join(", ");
+        i.essenceString = i.system.essences.map(essence => {
+          return CONFIG.E20.originEssences[essence];
+        }).join(", ");
+        origins.push(i);
+        break;
+      case 'perk':
+        if (perks[i.system.type]) {
+          perks[i.system.type].push(i);
+        } else {
+          perks[i.system.type] = [i];
+        }
+
+        // Makes a single list of all perks for NPCs and companions, instead of grouping by type
+        // Don't add contact perks from the NPC as those are to be transferred to the actor that the contact is dropped on
+        if (['npc', 'companion'].includes(this.actor.type) && i.system.type != 'contact') {
+          perks.all.push(i);
+        }
+
+        break;
+      case 'power':
+        powers.push(i);
+        break;
+      case 'shield':
+        if (i.system.equipped) {
+          shieldEquipped = true;
+        }
+
+        shields.push(i);
+        break;
+      case 'spell':
+        spells.push(i);
+        break;
+      case 'rolePoints':
+        rolePointsList.push(i);
+
+        {
+          const defenseLetters = [];
+
+          if (i.system.bonus.defenseBonus.cleverness) {
+            defenseLetters.push('C');
+          }
+
+          if (i.system.bonus.defenseBonus.evasion) {
+            defenseLetters.push('E');
+          }
+
+          if (i.system.bonus.defenseBonus.toughness) {
+            defenseLetters.push('T');
+          }
+
+          if (i.system.bonus.defenseBonus.willpower) {
+            defenseLetters.push('W');
+          }
+
+          i.system.bonus.defenseBonus.string = defenseLetters.join(', ');
+          i.system.isSpendable = !!(i.system.resource.max || i.system.powerCost);
+        }
+
+        break;
+      case 'role':
+        roles.push(i);
+        break;
+      // 'specialization' Items no longer power the sheet - see essence20-specialization-redesign
+      // and migration.mjs's "Migrate Specializations" block, which moves each one into
+      // system.skills.<skill>.specializations and deletes the Item. This case is left registered
+      // (falls through to being ignored) only because the Release N migration hasn't necessarily
+      // run yet for every actor the instant this ships - do not remove until Release N+1, per the
+      // memory's two-release sequencing constraint.
+      case 'specialization':
+        break;
+      case 'trait':
+        traits.push(i);
+        break;
+      case 'upgrade':
+        // Unparented upgrades on an actor can only be alt-mode armor upgrades - their
+        // contribution to Defenses is computed in derived data, not here - see
+        // Essence20Actor#_prepareDefenses's own itemArmor block.
+        upgrades.push(i);
+        break;
+      case 'weapon':
+        weapons.push(i);
+        break;
+      }
+    }
+
+    // Items granted at a specific level (grantedLevel, set above) list in ascending level
+    // order, so the Perks/Spells/Background/Powers/Gear tabs read top-to-bottom like a level
+    // progression instead of actor.items' arbitrary insertion order. Items without a level
+    // (player-picked perks, directly-dropped gear, etc.) sort as equal and keep their existing
+    // order (Array#sort is stable).
+    const byGrantedLevel = (a, b) => (a.system.grantedLevel ?? Infinity) - (b.system.grantedLevel ?? Infinity);
+    // A Perk picked from another Perk's list (Grid Tech I's Gridspeak Receivers) carries its parent's level and lists
+    // right under it, indented (user request 2026-10-07).
+    nestSubPerks(this.actor.items);
+    for (const [type, perkList] of Object.entries(perks)) {
+      perks[type] = withSubPerksUnderParents(perkList.sort(byGrantedLevel));
+    }
+
+    for (const itemList of [origins, influences, hangUps, spells, powers, weapons, armors, shields, gears, alterations, magicBaubles]) {
+      itemList.sort(byGrantedLevel);
+    }
+
+    // Assign and return
+    context.alterations = alterations;
+    context.altModes = altModes;
+    // An Alt Mode printed with a choice of movement: the choices for its row's picker (altMode/details.hbs).
+    context.altModeMovementChoices = Object.fromEntries(altModes.filter(altMode => (altMode.system?.movementOptions?.length ?? 0) > 1)
+      .map(altMode => {
+        const chosen = movementChoiceIndex(altMode.system);
+        return [altMode._id ?? altMode.id, altMode.system.movementOptions.map((option, index) => ({
+          index, label: movementLabel(option, key => game.i18n.localize(key)), selected: index == chosen,
+        }))];
+      }));
+    context.armors = armors;
+    context.faction = faction;
+    context.features = features;
+    context.gears = gears;
+    context.focuses = focuses;
+    // Essence increases with no Skill point recorded yet (mechanics/characters/focus-skills.mjs), by Focus id.
+    context.focusMissingPicks = Object.fromEntries(focuses.map(focus => [focus.id, missingFocusPickLevels(this.actor, focus).length]));
+    context.hangUps = hangUps;
+    context.influences = influences;
+    context.magicBaubles = magicBaubles;
+    context.megaformTraits = megaformTraits;
+    context.origins = origins;
+    context.perks = perks;
+    context.powers = powers;
+    context.rolePointsList = rolePointsList;
+    context.roles = roles;
+    // Backward-compatible alias for the templates that only ever expect one Role (the base
+    // Role - an additive Role like Old Hand never replaces it)
+    context.role = roles.find(r => !r.system.isAdditive);
+    context.shields = shields;
+    context.shieldEquipped = shieldEquipped;
+    context.spells = spells;
+    context.traits = traits;
+    context.upgrades = upgrades;
+    context.weapons = weapons;
+
+    // Compute display levels for Role items - the base Role shows the Actor's real level,
+    // unless an additive Role like Old Hand is present, in which case it shows the Effective
+    // Base Role Level instead (Old Hand's own row shows its own Old Hand Level)
+    const baseRole = context.role;
+    const additiveRole = roles.find(r => r.system.isAdditive);
+    if (baseRole) {
+      baseRole.system.displayLevel = context.system.level;
+      baseRole.system.isEffectiveLevel = false;
+    }
+
+    if (additiveRole && context.system.oldHandTransitionLevel) {
+      const additiveLevel = context.system.level - context.system.oldHandTransitionLevel + 1;
+      additiveRole.system.displayLevel = additiveLevel;
+
+      if (baseRole) {
+        baseRole.system.displayLevel = (context.system.oldHandTransitionLevel - 1) + Math.floor(additiveLevel / baseRole.system.effectiveLevelDivisor);
+        baseRole.system.isEffectiveLevel = true;
+      }
+    }
+
+  }
+
+  /**
+   * Handle dropping an Item onto an Actor.
+   * @param {DragEvent} event The concluding DragEvent which contains drop data
+   * @param {Object} data The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
+   * @override
+   */
+  async _onDropItem(event, data) {
+    // Foundry's own ActorSheetV2#_onDropItem() resolves to a single created Item document (or
+    // null), but every sheet-handler that calls dropFunc() treats the result as a list (e.g.
+    // `(await dropFunc())[0]`) - matching the plural createEmbeddedDocuments() shape used
+    // elsewhere for the same purpose. Normalize here, at the one place the real dropFunc is
+    // built, rather than at each of that function's many call sites.
+    const dropFunc = async () => {
+      const result = await super._onDropItem(event, data);
+      return result ? [result] : [];
+    };
+
+    return onDropItem(data, this.actor, dropFunc);
+  }
+
+  /**
+   * Handle dropping of an Actor data onto another Actor sheet
+   * @param {DragEvent} event The concluding DragEvent which contains drop data
+   * @param {Object} data The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
+   * @override
+   */
+  async _onDropActor(event, data) {
+    // Onto a Transformer's Crew panel: they climb in (mechanics/vehicles/alt-mode-crew.mjs).
+    if (event?.target?.closest?.('.e20-alt-crew') && altModeCrew.isTransformer(this.document)) {
+      const passenger = await fromUuid(data.uuid);
+      return passenger ? altModeCrew.board(this.document, passenger) : false;
+    }
+
+    return onDropActor(data, this);
+  }
+
+  // Add Inventory Item
+  /**
+   * The search icon beside a list's "+" (or a Role/Focus/Faction slot): opens the Compendium
+   * Browser on that item type's tab, narrowed to the list's Perk type where it has one, so what
+   * is found there can be dragged straight back onto the sheet.
+   */
+  static #onOpenCompendiumBrowser(event, target) {
+    return Essence20CompendiumBrowser.openTo(target.dataset.type, { subtype: target.dataset.perkType || null });
+  }
+
+  /** The Focus row's "place Skill point" button: asks for each Essence increase reached with no pick recorded. */
+  static async #onPlaceFocusSkills(event, target) {
+    const focus = this.actor.items.get(target.closest('[data-item-id]')?.dataset.itemId);
+    if (focus) {
+      await syncFocusSkillPicks(this.actor, focus, Number(this.actor.system.level) || 1, 0);
+    }
+  }
+
+  /** The Skills tab's Starting Essences bar - see apps/starting-essences.mjs. */
+  static #onStartingEssences() {
+    return StartingEssences.open(this.actor);
+  }
+
+  static #onItemCreate(event) {
+    onItemCreate(event, this.document);
+  }
+
+  static #onItemDelete(event) {
+    onItemDelete(event, this);
+  }
+
+  static #onItemEdit(event) {
+    onItemEdit(event, this.document);
+  }
+
+  /** The Rules tab's source links: open the item an effect or rule comes from. */
+  static async #onOpenRuleSource(event, target) {
+    event.preventDefault();
+    const item = target.dataset.uuid ? await fromUuid(target.dataset.uuid) : null;
+    item?.sheet?.render(true);
+  }
+
+  /** The Rules tab: post one rule (as the sheet shows it) to chat, with a link to its item. */
+  static async #onSendRuleToChat(event, target) {
+    event.preventDefault();
+    const item = target.dataset.uuid ? await fromUuid(target.dataset.uuid) : null;
+    const { type, summary, state } = target.dataset;
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor: this.document }),
+      content: ruleChatContent(item ?? { name: this.document.name }, { type, summary, state }),
+    });
+  }
+
+  static #onPerkUse(event, target) {
+    onPerkUseClick(target, this);
+  }
+
+  static #onRoll(event) {
+    if (this.document.isOwner) {
+      onRoll(event, this.document);
+    }
+  }
+
+  static #toggleAccordion(event) {
+    onToggleAccordion(event);
+  }
+
+  static #toggleAccordionHeader(event) {
+    onToggleHeaderAccordion(event, this.document);
+  }
+
+  static #createActiveEffect(event, target) {
+    onCreateActiveEffect(event, this.document, target);
+  }
+
+  static #deleteActiveEffect(event, target){
+    onDeleteActiveEffect(event, this.document, target);
+  }
+
+  static #editActiveEffect(event, target) {
+    onEditActiveEffect(event, this.document, target);
+  }
+
+  static #toggleActiveEffect(event, target){
+    onToggleActiveEffect(event, target);
+  }
+
+  static #onSystemActorsDelete(event) {
+    onSystemActorsDelete(event, this);
+  }
+
+  static #onSummonZord(event, target) {
+    onSummonZord(target, this.document);
+  }
+
+  /** The Zords tab's Board button: this character takes the arrived Zord's driver seat (mechanics/vehicles/zord-arrival.mjs). */
+  static async #onZordBoard(event, target) {
+    const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
+    const { boardZord } = await import("../mechanics/vehicles/zord-arrival.mjs");
+    await boardZord(zord, this.document);
+  }
+
+  /** The Crew panel's Board button: every targeted creature climbs into this Transformer (as passengers). */
+  static async #onAltCrewBoardTargets(event, target) {
+    await altModeCrew.boardTargets(this.document, target.dataset.role || 'passenger');
+  }
+
+  /** The Crew panel's Disembark (or Release, for a prisoner). */
+  static async #onAltCrewDisembark(event, target) {
+    const entry = altModeCrew.crewEntries(this.document).find(row => row.key == target.dataset.key);
+    const passenger = entry ? await fromUuid(entry.uuid) : null;
+    if (passenger) {
+      await altModeCrew.disembark(this.document, passenger, { force: entry.role == 'prisoner' });
+    } else if (entry) {
+      // Someone who no longer exists: just the seat goes.
+      await this.document.update({ [`flags.essence20.altModeCrew.${entry.key}`]: new foundry.data.operators.ForcedDeletion() });
+    }
+  }
+
+  /** The Crew panel's Firepoint toggle. */
+  static async #onAltCrewFirepoint(event, target) {
+    const entry = altModeCrew.crewEntries(this.document).find(row => row.key == target.dataset.key);
+    if (entry) {
+      await altModeCrew.setSeat(this.document, entry.key, { firepoint: !entry.firepoint });
+    }
+  }
+
+  /** The Crew panel's Crash (the GM): how far it moved this turn, then the crash (TF CRB p.163). */
+  static async #onAltCrewCrash() {
+    const { DialogV2 } = foundry.applications.api;
+    const feet = await DialogV2.prompt({
+      window: { title: game.i18n.localize('E20.AltCrewCrashTitle') },
+      content: `<label>${game.i18n.localize('E20.AltCrewCrashFeet')} <input type="number" name="feet" value="0" min="0" step="5"></label>`,
+      ok: { label: game.i18n.localize('E20.AltCrewCrash'), callback: (event, button) => Number(button.form.elements.feet.value) || 0 },
+      rejectClose: false,
+    });
+    if (feet !== null && feet !== undefined) {
+      await altModeCrew.crash(this.document, { feet });
+    }
+  }
+
+  /** The header's Get out (a crew member's own sheet). */
+  static async #onAboardDisembark() {
+    const aboard = altModeCrew.carrierOf(this.document);
+    if (aboard) {
+      await altModeCrew.disembark(aboard.carrier, this.document);
+    }
+  }
+
+  /** The header's Escape (a prisoner's own sheet). */
+  static async #onAboardEscape() {
+    await altModeCrew.escape(this.document);
+  }
+
+  /** The header's Assist Driving (the Driver's own sheet). */
+  static async #onAboardAssist() {
+    await altModeCrew.assistDriving(this.document);
+  }
+
+  /** The header's Transformer name: its sheet. */
+  static async #onAboardOpen() {
+    altModeCrew.carrierOf(this.document)?.carrier?.sheet?.render(true);
+  }
+
+  /** The Zords tab's Disembark: the Ranger gets out of a Zord they're aboard (mechanics/vehicles/zord-arrival.mjs). */
+  static async #onZordDisembark(event, target) {
+    const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
+    const { disembarkZord } = await import("../mechanics/vehicles/zord-arrival.mjs");
+    if (await disembarkZord(zord, this.document)) {
+      this.render();
+    }
+  }
+
+  /** The Zords tab's starting-Features button (mechanics/vehicles/zord-auto-features.mjs). */
+  static async #onZordAutoFeatures(event, target) {
+    const zord = target.dataset.systemActorsUuid ? await fromUuid(target.dataset.systemActorsUuid) : null;
+    if (zord) {
+      const { autoFeaturesDone, offerAutoFeatures } = await import("../mechanics/vehicles/zord-auto-features.mjs");
+      // A button drawn before the Features were added (another sheet, another client) - say so, and draw it again.
+      if (autoFeaturesDone(zord)) {
+        ui.notifications.info(game.i18n.format('E20.ZordAutoAlreadyDone', { name: zord.name }));
+      } else {
+        await offerAutoFeatures(this.document, zord);
+      }
+
+      this.render();
+    }
+  }
+
+  /** The Zords tab's growth button: the choices this Ranger's Zords are still owed (mechanics/vehicles/zord-growth.mjs). */
+  static async #onZordGrowth() {
+    const { offerZordGrowth } = await import("../mechanics/vehicles/zord-growth.mjs");
+    await offerZordGrowth(this.document);
+  }
+
+  /** Summon a Contact from the Contacts tab - mechanics/companions/contacts.mjs. */
+  static async #onSummonContact(event, target) {
+    const { onSummonContact } = await import("../mechanics/companions/contacts.mjs");
+    await onSummonContact(target, this.document);
+  }
+
+  static #onSystemActorOpen(event, target) {
+    onSystemActorOpen(target);
+  }
+
+  static #onMorph() {
+    onMorph(this.document);
+  }
+
+  static #onActivateConsummatePerformer(event) {
+    onActivateConsummatePerformer(event);
+  }
+
+  static #onTransform() {
+    onTransform(this.document);
+  }
+
+  static #onWarriorMode() {
+    toggleWarriorMode(this.document);
+  }
+
+  static #onInlineEdit(event) {
+    onInlineEdit(event, this.document);
+  }
+
+  static #onEditMorphToughnessBonus(event) {
+    onEditMorphToughnessBonus(event, this);
+  }
+
+  static #onEditDefenses() {
+    new StatEditor(this.actor, "defense").render(true);
+  }
+
+  static #onEditHealth() {
+    new StatEditor(this.actor, "health").render(true);
+  }
+
+  static #onOpenSkillPicker() {
+    new SkillPicker(this.actor).render(true);
+  }
+
+  static #onSpecializationDelete(event, target) {
+    deleteSpecialization(this.actor, target.dataset.skill, target.dataset.specializationKey);
+  }
+
+  static #onEditSpeeds() {
+    new StatEditor(this.actor, "speed").render(true);
+  }
+
+  static #onRest() {
+    onRest(this);
+  }
+
+  /**
+   * A Zord's / Vehicle's Essence damage is temporary (mechanics/combat/essence-current.mjs): the Essence block's
+   * repair button takes it all off.
+   */
+  static async #onRepairEssences() {
+    const update = {};
+    for (const [key, essence] of Object.entries(this.actor.system.essences ?? {})) {
+      if (Number(essence?.damage) > 0) {
+        update[`system.essences.${key}.damage`] = 0;
+      }
+    }
+
+    if (Object.keys(update).length) {
+      await this.actor.update(update);
+    }
+  }
+
+  /**
+   * Spend one action of a category by hand, from the header pip row. Manual adjustment is a
+   * first-class control rather than a debug affordance: the overwhelming majority of items don't
+   * declare an action cost yet, so this is how most actions actually get marked as taken.
+   */
+  static async #onActionSpend(event, target) {
+    await adjust(this.actor, target.dataset.category, 1);
+    this.render();
+  }
+
+  /**
+   * Spend one of the rules' own actions - Defend, Aim, Sprint - from the Actions tab.
+   *
+   * Goes through spend() rather than adjust() so the cost comes from E20.actionTypeCosts (a
+   * Contingency is a Standard action, and stays one here) and so the action's own name is
+   * recorded as the spend's source. That name is what the "spent this turn" tooltip reads back.
+   *
+   * @param {Event} event     The click event.
+   * @param {HTMLElement} target   The button, carrying the action key in data-named-action.
+   */
+  static async #onActionSpendNamed(event, target) {
+    const key = target.dataset.namedAction;
+    const action = CONFIG.E20.namedActions[key];
+    if (!action) {
+      return;
+    }
+
+    // A Perk that makes it cheaper (Dodgy's Free Defend) is an ActionCost rule spend() applies below.
+    const actionType = getNamedActionType(this.actor, key);
+
+    /* One aim per shot. Aim is a Free action and a character may well have Free actions left,
+       so this is not a budget refusal and must be checked separately - see
+       mechanics/actions/action-economy.mjs#isAiming. The aim clears when the shot is taken. */
+    if (key == 'aim' && isAiming(this.actor)) {
+      ui.notifications.warn(game.i18n.format('E20.ActionEconomyAlreadyAiming', {
+        name: this.actor.name,
+      }));
+      return;
+    }
+
+    // The key lets a Perk make this action cheaper - see mechanics/actions/action-perks.mjs.
+    const result = await spend(this.actor, actionType, { source: game.i18n.localize(action.label), context: { key } });
+    if (result.blocked && !result.cancelled) {
+      ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
+        name: this.actor.name,
+        action: game.i18n.localize(action.label),
+      }));
+    }
+
+    /* What the action actually DOES, once its cost is paid - see mechanics/actions/named-actions.mjs.
+       Only on a spend that went through: a refused Defend must not leave the actor defending
+       for free. Returns null for the actions that are still cost-only. */
+    if (!result.blocked) {
+      const outcome = await runNamedAction(this.actor, key);
+
+      /* An action that asked who it was helping and got no answer was never taken, so the cost
+         goes back. Only Lend Assistance can reach this today, but refunding on the returned
+         flag rather than on the action key keeps that true for the next one that asks a
+         question. */
+      if (outcome?.cancelled) {
+        await refund(this.actor, result.spendId);
+      } else if (outcome?.message) {
+        await ChatMessage.create({
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+          content: outcome.message,
+        });
+      }
+    }
+
+    this.render();
+  }
+
+  /**
+   * Hand one action of a category back - the undo for the control above.
+   */
+  static async #onActionRestore(event, target) {
+    await adjust(this.actor, target.dataset.category, -1);
+    this.render();
+  }
+
+  /**
+   * A Standard action swapped for two Free actions (GI Joe CRB p.193) - see mechanics/actions/action-economy.mjs#tradeStandardForFree.
+   */
+  static async #onActionTradeForFree() {
+    await tradeStandardForFree(this.actor);
+    this.render();
+  }
+
+  static #onRecharge() {
+    onRecharge(this);
+  }
+
+  static #onRecoverSpellcastingDownshift() {
+    onRecoverSpellcastingDownshift(this);
+  }
+
+  static #onSufferForSpellcastingDownshift() {
+    onSufferForSpellcastingDownshift(this);
+  }
+
+  static #onManageSelectTrait(event) {
+    onManageSelectTrait(event, this.document);
+  }
+
+  static #onShieldActivationToggle(event, target) {
+    onShieldActivationToggle(target, this);
+  }
+
+  static #onShieldEquipToggle(event, target) {
+    onShieldEquipToggle(target, this);
+  }
+
+  /**
+   * Mythically Modular (Through the Shattered Grid p.116) - see items/attacks/mythically-modular.mjs.
+   */
+  /**
+   * Nanomite equipment - uses the gear's linked nanomite Power. See items/gear/nanomite-gear.mjs.
+   */
+  static async #onUseGearNanomite(event, target) {
+    const gear = this.actor.items.get(target.dataset.itemId);
+    if (gear) {
+      await useGearNanomitePower(this.actor, gear);
+    }
+  }
+
+  static async #onMythicSwitchForm(event, target) {
+    const weapon = this.actor.items.get(target.dataset.itemId);
+    if (weapon) {
+      await switchMythicForm(this.actor, weapon);
+    }
+  }
+
+  /**
+   * Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see items/attacks/mounted-weapons.mjs's own doc
+   * comment. One control toggling between the Standard-action Set Up and the Free-action Pick Up,
+   * depending on the weapon's own current state.
+   */
+  static async #onMountedSetupToggle(event, target) {
+    const weapon = this.actor.items.get(target.dataset.itemId);
+    if (!weapon) {
+      return;
+    }
+
+    if (isMountedWeaponSetUp(weapon)) {
+      await pickUpMountedWeapon(this.actor, weapon);
+    } else {
+      await setUpMountedWeapon(this.actor, weapon);
+    }
+
+    this.render();
+  }
+
+  /**
+   * Ongoing / Poison / Toxin (Cobra Codex p.93-94) - see mechanics/combat/ongoing-effects.mjs's own doc
+   * comment. "Until treated" - the header badge itself is the only control, clicking it clears
+   * that one pending effect early.
+   */
+  static async #onTreatOngoingEffect(event, target) {
+    await treatOngoingEffect(this.actor, Number(target.dataset.index));
+    this.render();
+  }
+
+  static #onLevelUp() {
+    return this._setLevel(this.actor.system.level + 1);
+  }
+
+  static #onLevelDown() {
+    return this._setLevel(this.actor.system.level - 1);
+  }
+
+  static #onToggleLock() {
+    this.actor.update({
+      "system.isLocked": !this.actor.system.isLocked,
+    });
+  }
+
+  static #onSheetOptions(event) {
+    new SheetOptions(this.actor, event).render(true);
+  }
+
+  /**
+   * Start the guided tour for this sheet type from the titlebar help control.
+   */
+  static async #onStartSheetTour() {
+    const tour = game.tours.get(Essence20BaseActorSheet.TOUR_BY_ACTOR_TYPE[this.actor.type]);
+    if (!tour) return;
+
+    // A tour takes over the screen, so get out of the way of the sheet it was launched from.
+    await this.minimize();
+    return tour.start();
+  }
+
+  static #onGrowMonster() {
+    new MonsterGrowDialog(this.actor).render(true);
+  }
+
+  static #onThreatAudit() {
+    ThreatBuilder.open(this.actor);
+  }
+}

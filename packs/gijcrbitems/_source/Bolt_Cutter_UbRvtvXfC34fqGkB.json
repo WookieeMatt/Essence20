@@ -5,6 +5,10 @@
   "_id": "UbRvtvXfC34fqGkB",
   "img": "systems/essence20/assets/icons/gear/bolt-cutter.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear with no dice effect; it lets you get through fences and padlocks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,8 +16,7 @@
       "page": 161
     },
     "quantity": 1,
-    "type": "",
-    "gearType": "clothes"
+    "gearType": "security"
   },
   "effects": [],
   "flags": {},

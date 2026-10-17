@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Intimidation also counts as a Social Skill for you, and you get ↑1 on Intimidation.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -29,13 +33,13 @@
       "_id": "3WvhvLdxmr4advqR",
       "changes": [
         {
-          "key": "system.skills.intimidation.essence.social",
+          "key": "system.skills.intimidation.essences.social",
           "mode": 5,
           "value": "true",
           "priority": null
         },
         {
-          "key": "system.skills.intimdation.shiftUp",
+          "key": "system.skills.intimidation.shiftUp",
           "mode": 2,
           "value": "1",
           "priority": null

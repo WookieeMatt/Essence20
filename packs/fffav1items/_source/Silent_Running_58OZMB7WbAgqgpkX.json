@@ -5,6 +5,13 @@
   "_id": "58OZMB7WbAgqgpkX",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Free upgrades","steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","equipped":true,"auto":true,"prompt":"Which weapon gets the free upgrades?"},{"do":"fitUpgrade","uuid":"Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ","onto":"choice:weapon","when":["not:rule:pickedItem:weapon:item:hasUpgrade:Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ"]},{"do":"fitUpgrade","uuid":"Compendium.essence20.ferocious_fighters.Item.sHBEBigG2y63MSWL","onto":"choice:weapon","when":["not:rule:pickedItem:weapon:item:hasUpgrade:Compendium.essence20.ferocious_fighters.Item.sHBEBigG2y63MSWL"]}]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: you lose Heavy armor training. Automatic: a Silencer and a Suppressor are added to your equipped weapon when you gain it.</p><p>Left to the table: the Silent trait on requisitioned battledress, and choosing two of the same upgrade.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +22,52 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Silent Running",
+      "origin": "Compendium.essence20.ferocious_fighters.Item.58OZMB7WbAgqgpkX",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "FkhJEETFgd6vudJT",
+      "changes": [
+        {
+          "key": "system.trained.armors.heavy",
+          "mode": 5,
+          "value": "false",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!58OZMB7WbAgqgpkX.FkhJEETFgd6vudJT"
+    }
+  ],
   "sort": 200000,
   "ownership": {
     "default": 0,

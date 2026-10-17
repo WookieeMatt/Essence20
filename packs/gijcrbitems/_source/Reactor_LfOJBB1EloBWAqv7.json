@@ -5,6 +5,10 @@
   "_id": "LfOJBB1EloBWAqv7",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the firearm it's attached to gains Laser, which adds Stun 1 and Spot alternate effects to that weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

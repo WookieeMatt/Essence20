@@ -1,0 +1,65 @@
+{
+  "folder": "D6p99UQk9yhNGe78",
+  "name": "Brainy",
+  "type": "influence",
+  "_id": "r4ZliGm8kWHuzT9S",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Influence Perk, Mind Like a Steel Trap. If it's your second or later Influence, you also pick one of its Hang-Ups (Bookworm, Gluten-Tolerant or Obsessive).</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 27
+    },
+    "items": {
+      "382A": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.L7P4oDSzBYyQFZCF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brainy Influence Perk",
+        "type": "perk"
+      },
+      "hu1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.p2Qk0B5PWp10ZaqN",
+        "img": "icons/svg/hazard.svg",
+        "name": "Bookworm",
+        "type": "hangUp"
+      },
+      "hu2": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.dzYRdi2cSlZSHozs",
+        "img": "icons/svg/hazard.svg",
+        "name": "Gluten-Tolerant",
+        "type": "hangUp"
+      },
+      "hu3": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.eOgtG24LKGR6OE0v",
+        "img": "icons/svg/hazard.svg",
+        "name": "Obsessive",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!r4ZliGm8kWHuzT9S"
+}

@@ -1,10 +1,168 @@
 @use "../variables" as v;
 
-.roll-dialog div {
+.essence20 .roll-dialog div {
   margin-bottom: 10px;
   height: fit-content;
 }
 
-.roll-dialog div label>* {
+.essence20 .roll-dialog div label>* {
   vertical-align: middle;
+}
+
+// Shift Up/Down share one row (see roll-dialog.hbs) - each column splits the row's own already-
+// existing width evenly (flex: 1 on the column, width: 100% on the input inside it) rather than
+// hugging its own small content width. The row itself is never wider than it already was - it's
+// sized by the dialog's widest other row (e.g. the Roll vs. Target Defense dropdown), not by
+// these two fields - so this fills the row without growing the window.
+.essence20 .roll-dialog .roll-dialog-shift-row {
+  gap: 8px;
+}
+
+.essence20 .roll-dialog .roll-dialog-shift-row > .flexcol {
+  flex: 1;
+  text-align: center;
+}
+
+.essence20 .roll-dialog .roll-dialog-shift-input {
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+}
+
+// Same reasoning as the shift row above - three radio options otherwise only claim as much
+// width as their own text, leaving the row's other half empty at a wider dialog size.
+.essence20 .roll-dialog .roll-dialog-snag-edge-row {
+  justify-content: space-between;
+  align-items: center;
+}
+
+// Each option a radio and a one-line word, centred on each other.
+.essence20 .roll-dialog .roll-dialog-snag-edge-row > label {
+  display: inline-flex;
+  flex: 0 1 auto;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+// Where the Snag / Edge come from, as small print under the radios.
+.essence20 .roll-dialog .roll-dialog-snag-edge-sources {
+  margin-top: -4px;
+  font-size: var(--font-size-12, 12px);
+  opacity: 0.85;
+
+  p {
+    margin: 0 0 2px;
+  }
+}
+
+.essence20 .roll-dialog .roll-dialog-snag-edge-cancel {
+  font-style: italic;
+}
+
+.essence20.roll-dialog-app .form-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.essence20.roll-dialog-app .form-footer button {
+  flex: 1 1 0;
+  border-radius: 0;
+}
+
+// All toggle rows read as one left-aligned group (switch, then its label) instead of the
+// switch pushed out to the dialog's far right edge - order: -1 on .switch below flips it
+// visually ahead of the label without having to touch every template's own span-then-label
+// markup order.
+.essence20 .roll-dialog .roll-dialog-toggle {
+  display: flex !important;
+  justify-content: flex-start !important;
+  // Overrides .e20-align-center's own text-align: center (this row also carries that class) - the
+  // label span is flex: 1 (Foundry core's own default for a bare flexrow child), so without this
+  // its own text centered itself within that whole leftover width instead of staying left-
+  // justified right after the switch.
+  text-align: left !important;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+}
+
+// The label's default line-height (~1.25x font-size) box-centers correctly against the switch
+// by the numbers, but a font's ascent/descent isn't symmetric around that box's true middle, so
+// text with few/no descenders (e.g. "Specialized") visually reads as sitting above center next
+// to a geometrically-centered pill. Matching the line-height to the switch's own 16px height
+// tightens that box down to the font's natural single-line height, removing the extra leading
+// that caused the mismatch.
+.essence20 .roll-dialog .roll-dialog-toggle > span {
+  line-height: 16px;
+}
+
+.essence20 .roll-dialog .switch {
+  position: relative;
+  display: inline-block !important;
+  flex: 0 0 28px !important;
+  width: 28px;
+  height: 16px;
+  vertical-align: middle;
+  order: -1;
+}
+
+.essence20 .roll-dialog .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.essence20 .roll-dialog .switch-slider {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  background-color: v.$border-color-light;
+  border-radius: 16px;
+  transition: background-color .2s;
+}
+
+.essence20 .roll-dialog .switch-slider::before {
+  content: "";
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: v.$bg-color-light;
+  border-radius: 50%;
+  transition: transform .2s;
+}
+
+.essence20 .roll-dialog .switch input:checked + .switch-slider {
+  background-color: v.$background-lb;
+}
+
+.essence20 .roll-dialog .switch input:checked + .switch-slider::before {
+  transform: translateX(12px);
+}
+
+// Group label for the dynamic "currently-disabled effects relevant to this roll" list
+// (helpers/skill-effects.mjs) - reads as a section heading over its own .roll-dialog-toggle rows,
+// the same "secondary text" treatment .roll-dialog-role-points-reason below already uses.
+.essence20 .roll-dialog .roll-dialog-skill-effects > span {
+  display: block;
+  font-size: 0.85em;
+  font-style: italic;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+/* The auto-detected eligibility explanation shown under a damageBonus Role Points checkbox
+.essence20 (e.g. Sneak Attack Damage) - a plain sibling div of the checkbox's own .roll-dialog-toggle row,
+   so it still gets that shared 10px margin-bottom from ".roll-dialog div" above; just needs to
+   read as secondary/explanatory text rather than another full-weight option row. */
+.essence20 .roll-dialog .roll-dialog-role-points-reason {
+  font-size: 0.85em;
+  font-style: italic;
+  opacity: 0.7;
+  margin-top: -6px;
 }

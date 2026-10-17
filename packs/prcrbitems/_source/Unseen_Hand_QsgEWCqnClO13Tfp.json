@@ -5,6 +5,10 @@
   "_id": "QsgEWCqnClO13Tfp",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: summoning and moving the invisible hand.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,14 +17,18 @@
     },
     "actionType": "free",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
     "selectionLimit": 1,
     "type": "grid",
     "usesInterval": "perScene",
-    "usesPer": null
+    "usesPer": null,
+    "duration": {
+      "units": "minutes",
+      "value": 1,
+      "text": ""
+    }
   },
   "effects": [],
   "flags": {},

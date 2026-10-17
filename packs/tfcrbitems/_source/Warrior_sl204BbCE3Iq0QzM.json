@@ -5,6 +5,10 @@
   "_id": "sl204BbCE3Iq0QzM",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, the Essence increases from its level table, its weapon training and Qualification, Limited and Restricted Armor Upgrade training, and General Perk picks at the listed levels.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -95,7 +99,7 @@
       "e0e5": {
         "uuid": "Compendium.essence20.tf_crb.Item.ybrluGy9norsyiMm",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Instrument Of Destruction",
+        "name": "Instruments of Destruction",
         "type": "perk",
         "subtype": "role",
         "level": 16
@@ -181,10 +185,27 @@
       "levels": [],
       "specializedLevels": []
     },
-    "skills": [],
+    "skills": [
+      "alertness",
+      "brawn",
+      "conditioning",
+      "culture",
+      "might",
+      "survival"
+    ],
+    "upgrades": {
+      "armors": {
+        "trained": [
+          "limited",
+          "restricted"
+        ]
+      }
+    },
     "version": "transformers",
     "weapons": {
-      "qualified": [],
+      "qualified": [
+        "mightMelee"
+      ],
       "trained": [
         "assaultRifle",
         "ballistic",

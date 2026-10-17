@@ -1,0 +1,40 @@
+{
+  "folder": "PPvn3ynXpdmosg1U",
+  "name": "Dependable",
+  "type": "hangUp",
+  "_id": "mwELSYc9AGgImy7N",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "rules": [
+      {"type":"FlatD20","label":"Dependable (Edge only)","of":"dependable","lateWhen":["roll:edge"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Dependable Perk only takes effect on tests where you have an Edge.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 166
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1787763529613,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!mwELSYc9AGgImy7N"
+}

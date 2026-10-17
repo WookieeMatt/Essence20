@@ -5,6 +5,10 @@
   "_id": "I5BXHrLRKQSRnvuF",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics for 1 Sharp damage in a 10ft blast at 20ft/50ft; Wrecker applies and the grenade is used up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,7 @@
     },
     "items": {
       "84dd": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.0BM1VVo7BJgyF5yv",
+        "uuid": "Compendium.essence20.tf_crb.Item.0BM1VVo7BJgyF5yv",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Frag Grenade Effect",
         "type": "weaponEffect",
@@ -35,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"
@@ -49,6 +51,7 @@
     },
     "traits": [
       "consumable",
+      "sharp",
       "wrecker"
     ],
     "upgradeTraits": [],

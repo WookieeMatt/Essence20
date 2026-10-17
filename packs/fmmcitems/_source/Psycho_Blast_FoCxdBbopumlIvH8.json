@@ -5,6 +5,10 @@
   "_id": "FoCxdBbopumlIvH8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>On the sheet: add the Psycho Blast attack to use this; the attack rolls its own damage and blast.</p><p>Left to the table: adding the attack to your sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

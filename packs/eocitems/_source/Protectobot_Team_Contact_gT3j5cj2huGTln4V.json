@@ -1,0 +1,41 @@
+{
+  "folder": null,
+  "name": "Protectobot Team Contact",
+  "type": "perk",
+  "_id": "gT3j5cj2huGTln4V",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["ask:Max Allegiance Points 5+"]},
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this describes the Protectobots as a Contact. Set the team up as a Contact NPC with its Allegiance Points and Contact Perks; the GM resolves what those perks and the team's Hang-Up do.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 109
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "contact"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266977127,
+    "modifiedTime": 1790266977127,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!gT3j5cj2huGTln4V"
+}

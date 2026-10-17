@@ -1,0 +1,27 @@
+{{!-- What this item costs to use, in action economy terms - see
+      module/data/item/templates/activation.mjs, which backs the same three fields on every item
+      type that can be used (weapon, weaponEffect, perk, spell, magicBauble, feature,
+      classFeature, power), so they're authored once here rather than copy-pasted eight times.
+
+      Everything defaults to "None", which is the honest state for the thousands of compendium
+      items nobody has assigned a cost to yet - an item left at None never touches the economy. --}}
+
+{{!-- Action Type --}}
+{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActionTypes'}}
+{{#*inline "item-field-inputs"}}
+<select class="item-field-inputs" name="system.actionType">
+  {{selectOptions config.actionTypes selected=system.actionType}}
+</select>
+{{/inline}}
+{{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+{{!-- Contingency Trigger. Only meaningful for a Contingency action, so it only appears for one -
+      the field would otherwise be a permanently-blank box on every other item in the game. --}}
+{{#if (eq system.actionType 'contingency')}}
+{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActionEconomyContingencyTrigger'}}
+{{#*inline "item-field-inputs"}}
+<input class="item-field-inputs" type="text" name="system.contingencyTrigger" value="{{system.contingencyTrigger}}"
+       placeholder="{{localize 'E20.ActionEconomyContingencyTriggerPlaceholder'}}" />
+{{/inline}}
+{{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+{{/if}}

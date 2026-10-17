@@ -5,6 +5,10 @@
   "_id": "1mTCwsgnscEreieW",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you use Resourceful, you get two benefits instead of one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

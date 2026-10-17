@@ -1,0 +1,110 @@
+<div>
+
+  {{!-- Availability --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorAvailability'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="system.availability">
+    {{selectOptions config.availabilities selected=system.availability}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{#if (ne system.totalAvailability system.availability)}}
+    {{!-- Availability including Upgrades --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTotalAvailability'}}
+    {{#*inline "item-field-inputs"}}
+    <span class="item-field-inputs">{{lookup config.availabilities system.totalAvailability}}</span>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+  {{!-- Classification --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorClassification'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="system.classification">
+    {{selectOptions config.armorClassifications selected=system.classification}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Traits --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTraits'}}
+  {{#*inline "item-field-edit"}}
+    <a class="trait-selector" data-action="traitSelector" data-options="armor" data-target="system.traits" data-tooltip="{{localize 'E20.TraitSelector'}}">
+      <i class="fas fa-edit"></i>
+    </a>
+  {{/inline}}
+
+  {{#*inline "item-field-inputs"}}
+    <div class="chip-section">
+      {{#each system.itemAndUpgradeTraits as |trait|}}
+      <span class="chip" name="chip.armor.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
+      {{/each}}
+    </div>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Toughness --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonusToughness'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.bonusToughness name="system.bonusToughness" min=0 step=1}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Evasion --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonusEvasion'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.bonusEvasion name="system.bonusEvasion" min=0 step=1}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{#inArray system.itemAndUpgradeTraits 'bulwark'}}
+    {{!-- Bulwark (X) Health - read by documents/actor.mjs#_prepareHealth --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBulwarkHealthBonus'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.bulwarkHealthBonus name="system.bulwarkHealthBonus" min=0 step=1}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/inArray}}
+
+  {{#inArray system.itemAndUpgradeTraits 'exoFrame'}}
+    {{#if @root.document.isEmbedded}}
+    {{!-- Exo-Frame - manual Driving test, see items/defenses/exo-frame.mjs --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTraitExoFrame'}}
+    {{#*inline "item-field-inputs"}}
+    <button type="button" class="item-field-inputs" data-action="rollExoFrameTest" data-tooltip="{{localize 'E20.ExoFrameTestHint'}}">
+      <i class="fas fa-dice-d20"></i> {{localize 'E20.ExoFrameTestButton'}}
+    </button>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/if}}
+  {{/inArray}}
+
+  {{#inArray system.itemAndUpgradeTraits 'modular'}}
+    {{!-- Modular (X) - see items/defenses/modular-armor.mjs --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorModularAllowance'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.modularAllowance name="system.modularAllowance" min=0 step=1}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorModularWeapons'}}
+    {{#*inline "item-field-inputs"}}
+    <div class="item-field-inputs" data-tooltip="{{localize 'E20.ArmorModularWeaponsHint'}}">
+      {{#each @root.modularCandidates as |candidate|}}
+      <label>
+        <input type="checkbox" name="system.modularWeaponIds" value="{{candidate.id}}" {{checked candidate.attached}} {{disabled candidate.disabled}} />
+        {{candidate.name}}
+      </label>
+      {{else}}
+      <span class="hint">{{localize 'E20.ArmorModularWeaponsNone'}}</span>
+      {{/each}}
+    </div>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/inArray}}
+
+  {{!-- Armor Upgrades --}}
+  {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.system.items type='upgrade'}}
+
+<div>

@@ -5,6 +5,10 @@
   "_id": "LcSAx6Od5nyizK0L",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Quick Fix, Wrench Jockey, Engine Override, Improvise Armor, Armament Upgrade, Throwing Lead, Jury Rig and Undo Engine at their listed levels, plus +1 Smarts at 1st and 10th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -1,0 +1,40 @@
+{
+  "folder": "JNfco2IbN66QAPhu",
+  "name": "Double Attack",
+  "type": "perk",
+  "_id": "tNFtJOTfh6TI3G97",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: attacking with a light weapon in each hand without penalty, one off-hand strike per Attack action.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 48
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265586946,
+    "modifiedTime": 1790265586946,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!tNFtJOTfh6TI3G97"
+}

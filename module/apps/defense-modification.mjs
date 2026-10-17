@@ -1,6 +1,8 @@
+﻿import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class DefenseModificationSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class DefenseModificationSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(choices, actor, prompt, title, selected) {
     super();
     this._choices = choices;
@@ -14,6 +16,8 @@ export default class DefenseModificationSelector extends HandlebarsApplicationMi
     id: "defense-modification",
     classes: [
       "essence20",
+      "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -48,6 +52,12 @@ export default class DefenseModificationSelector extends HandlebarsApplicationMi
       { type: "submit", label: "E20.AcceptButton" },
     ];
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static async myFormHandler(event, form, formData) {

@@ -1,0 +1,48 @@
+{
+  "folder": "rqUrFq3VV6GKscOw",
+  "name": "Science (Theoretical) Toolkit",
+  "type": "gear",
+  "_id": "LfD69L4kQKXEyD1K",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: works as a Science kit for the Theoretical Specialization, skipping the Snag on rolls that call for it and spending for temporary Specialization or an Edge. Use button: pick a different Skill or Specialization if your table reads it differently.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale PreGen Characters",
+      "page": null
+    },
+    "quantity": 1,
+    "gearType": "kits"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {
+      "kit": {
+        "tier": "limited",
+        "skill": "science",
+        "spec": "Theoretical",
+        "essence": null
+      }
+    }
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790263096922,
+    "modifiedTime": 1790263096922,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!LfD69L4kQKXEyD1K"
+}

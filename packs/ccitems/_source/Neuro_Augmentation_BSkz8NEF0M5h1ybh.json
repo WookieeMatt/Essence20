@@ -5,6 +5,10 @@
   "_id": "BSkz8NEF0M5h1ybh",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: adding it to your sheet raises Smarts and lowers Social as listed; removing it undoes both.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

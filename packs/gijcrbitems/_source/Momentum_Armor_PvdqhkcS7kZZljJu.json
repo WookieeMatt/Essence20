@@ -5,6 +5,10 @@
   "_id": "PvdqhkcS7kZZljJu",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +2 Evasion as Medium armor, and the Computerized trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "6dWoPuip4z3gu6A7",
   "img": "systems/essence20/assets/icons/gear/data_tap.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Narrative gear: it lets you roll Technology against closed systems within range. The GM decides when it applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,8 +16,7 @@
       "page": 161
     },
     "quantity": 1,
-    "type": "",
-    "gearType": "clothes"
+    "gearType": "security"
   },
   "effects": [],
   "flags": {},

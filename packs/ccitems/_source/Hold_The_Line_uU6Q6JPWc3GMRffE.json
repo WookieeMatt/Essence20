@@ -5,12 +5,20 @@
   "_id": "uU6Q6JPWc3GMRffE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Hold The Line","action":"shieldToggle","to":"free"}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: raising or lowering your shield costs a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Cobra Codex",
       "page": 68
     },
+    "actionType": "free",
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"

@@ -1,0 +1,43 @@
+{
+  "name": "Sonic Rainboom",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["self:data:system.movement.aerial.total>=50"]},
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: when you Sprint you fly up to double your aerial Movement, and after two rounds of Sprinting while flying, your friends get the listed bonus on Skill Tests until your next turn.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 125
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1686007770757,
+    "modifiedTime": 1704127413361,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "2CIUHerZRRQ5RKKo",
+  "folder": "hTtvIMEXXET4Kkqf",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!2CIUHerZRRQ5RKKo"
+}

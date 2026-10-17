@@ -5,6 +5,10 @@
   "_id": "yOltN3CfcfQ1qrxk",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick Blaster Mode or Rifle Mode when you attack, each with its own damage, range and alternate effect. Lightspeed Response can swap it in when you Morph.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -22,7 +26,7 @@
           "style": "energy"
         },
         "damageValue": 1,
-        "damageType": "element",
+        "damageType": "fire",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -44,7 +48,7 @@
           "style": "energy"
         },
         "damageValue": 1,
-        "damageType": "element",
+        "damageType": "fire",
         "numHands": "1",
         "numTargets": 3,
         "radius": 15,
@@ -66,7 +70,7 @@
           "style": "energy"
         },
         "damageValue": 2,
-        "damageType": "element",
+        "damageType": "fire",
         "numHands": "2",
         "numTargets": 1,
         "radius": 0,
@@ -101,15 +105,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
-      "size": "integrated"
+      "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:perk:Lightspeed Response (Form)"]},
     "requirements": {
-      "custom": "Lightspeed REsponse",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

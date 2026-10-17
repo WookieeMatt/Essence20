@@ -5,6 +5,10 @@
   "_id": "bu1g1akniEFaquMX",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Toughness while Morphed. A second Active Effect (off by default) gives ↑1 on Social; switch it on when dealing with low-tech locals.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,6 @@
     },
     "actionType": "free",
     "canActivate": false,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,
@@ -66,6 +69,50 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!bu1g1akniEFaquMX.07xrSlrf8f73sD5u"
+    },
+    {
+      "name": "Fortified Shell (Low-Tech Locals)",
+      "origin": "Item.bu1g1akniEFaquMX",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "ScuJZzcIDWyOkQYf",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!bu1g1akniEFaquMX.ScuJZzcIDWyOkQYf"
     }
   ],
   "flags": {},

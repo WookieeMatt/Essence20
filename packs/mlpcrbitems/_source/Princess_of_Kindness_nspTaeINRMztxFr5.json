@@ -4,6 +4,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Already Magical (Spellcasting ↑1)","event":"added","when":["self:hasItem:Compendium.essence20.mlp_crb.Item.WhTlZdUORCDpZwO2"],"steps":[{"do":"setToggle","key":"alreadyMagical","value":true}]},
+      {"type":"DerivedStat","label":"Already Magical (Spellcasting ↑1)","path":"system.skills.spellcasting.shiftUp","op":"add","value":1,"when":["self:toggle:alreadyMagical"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +3 Health and Large size. Granted: the six pony Origin Perks you don't already have; if you were already Magical, you also get ↑1 on Spellcasting.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -14,7 +22,58 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Princess of Kindness",
+      "origin": "Compendium.essence20.mlp_crb.Item.nspTaeINRMztxFr5",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "PrinceKindness10",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "3",
+          "priority": null
+        },
+        {
+          "key": "system.size",
+          "mode": 5,
+          "value": "large",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!nspTaeINRMztxFr5.PrinceKindness10"
+    }
+  ],
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3

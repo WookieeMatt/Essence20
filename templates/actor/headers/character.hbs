@@ -1,0 +1,48 @@
+{{#>"systems/essence20/templates/actor/headers/common.hbs"}}
+{{#*inline "topRowFields"}}
+<div class="sliced-border pr-header-color e20-flex-group-center">
+  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
+  <input type="color" class="picker" name="system.color" value="{{system.color}}" />
+</div>
+<div class="sliced-border pr-header-level">
+  <label class="sliced-border__label">{{localize 'E20.ActorLevel'}}</label>
+  <div class="flexrow e20-align-center e20-gap-2">
+    {{!-- Level only moves once there is a Role to advance, and never past 1-20. --}}
+    {{numberInput system.level name="system.level" min=1 max=20 step=1 disabled=(not @root.role) class="two-digit-input"}}
+    {{#unless system.isLocked}}
+      {{#if @root.role}}
+        <div class="flexcol pr-header-level-buttons">
+          <a data-action="levelUp" data-tooltip="E20.LevelButtonUp" {{#if (gte system.level 20)}}disabled{{/if}}>
+            <i class="fa{{#if (gte system.level 20)}}-regular{{/if}} fa-up"></i>
+          </a>
+          <a data-action="levelDown" data-tooltip="E20.LevelButtonDown" {{#if (lte system.level 1)}}disabled{{/if}}>
+            <i class="fa{{#if (lte system.level 1)}}-regular{{/if}} fa-down"></i>
+          </a>
+        </div>
+      {{/if}}
+      {{!-- General Perk / Grid Power picks the Role's levels gave and that are still to be made
+           (mechanics/characters/level-picks.mjs). --}}
+      {{#if @root.levelPicks}}
+        <a class="e20-level-picks" data-action="levelPicks"
+          data-tooltip="{{localize 'E20.LevelPickButton' picks=@root.levelPicks.tooltip}}">
+          <i class="fa-solid fa-star"></i> {{@root.levelPicks.count}}
+        </a>
+      {{/if}}
+    {{/unless}}
+  </div>
+</div>
+{{/inline}}
+{{#*inline "secondary-fields"}}
+<div class="sliced-border --col --role">
+  {{> "systems/essence20/templates/actor/parts/items/role.hbs"}}
+</div>
+{{#inArray '["giJoe", "transformers"]' @root.role.system.version}}
+  <div class="sliced-border --col">
+    {{> "systems/essence20/templates/actor/parts/items/focus.hbs"}}
+  </div>
+{{/inArray}}
+<div class="sliced-border --col">
+  {{> "systems/essence20/templates/actor/parts/items/faction.hbs"}}
+</div>
+{{/inline}}
+{{/"systems/essence20/templates/actor/headers/common.hbs"}}

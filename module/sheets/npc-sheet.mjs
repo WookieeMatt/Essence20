@@ -1,0 +1,122 @@
+import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
+import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
+import { confirmStopBeingContact, npcUseToggle } from "../mechanics/companions/contacts.mjs";
+
+export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
+  static DEFAULT_OPTIONS = {
+    actions: {
+      toggleNpcUse: this.#onToggleNpcUse,
+    },
+  };
+
+  /**
+   * The header's NPC / Contact checkboxes (headers/npc.hbs). Both ticked is both; unticking the
+   * last one is refused - preventDefault on the click puts the tick back.
+   */
+  static async #onToggleNpcUse(event, target) {
+    const update = npcUseToggle(this.actor.system, target.dataset.field);
+    if (!update) {
+      event.preventDefault();
+      ui.notifications.error(game.i18n.localize('E20.NpcUseKeepOne'));
+      return;
+    }
+
+    // No longer a Contact: characters listing it lose it first, once confirmed. The tick stays until
+    // then - the re-render after the update clears it.
+    if (update['system.isContact'] === false) {
+      event.preventDefault();
+      if (!(await confirmStopBeingContact(this.actor))) {
+        return;
+      }
+    }
+
+    await this.actor.update(update);
+  }
+
+  static TABS = {
+    primary: {
+      tabs: [
+        { id: "npc", group: 'primary', label: "E20.TabNPC" },
+        { id: "actions", group: 'primary', label: "E20.TabActions" },
+        { id: "contact", group: 'primary', label: "E20.TabContact" },
+        { id: "altmode", group: 'primary', label: "E20.TabAltMode" },
+        { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
+        { id: "notes", group: 'primary', label: "E20.TabNotes" },
+      ],
+      initial: "npc",
+    },
+  };
+
+  static PARTS = {
+    header: {
+      template: "systems/essence20/templates/actor/headers/npc.hbs",
+    },
+    sidebar: {
+      template: "systems/essence20/templates/actor/sidebars/npc.hbs",
+    },
+    tabs: {
+      template: "templates/generic/tab-navigation.hbs",
+    },
+    npc: {
+      template: "systems/essence20/templates/actor/parts/main/npc.hbs",
+      scrollable: [''],
+    },
+    // The same tab the character sheet uses - an NPC has the same action economy (both actor types
+    // build from data/actor/templates/common.mjs), so it needs no variant of its own.
+    actions: {
+      template: "systems/essence20/templates/actor/tabs/actions.hbs",
+      scrollable: [''],
+    },
+    contact: {
+      template: "systems/essence20/templates/actor/parts/main/npc-contact.hbs",
+      scrollable: [''],
+    },
+    altmode: {
+      template: "systems/essence20/templates/actor/parts/main/npc-altmode.hbs",
+      scrollable: [''],
+    },
+    effects: {
+      template: "systems/essence20/templates/actor/tabs/effects.hbs",
+      scrollable: [''],
+    },
+    notes: {
+      template: "systems/essence20/templates/actor/tabs/notes.hbs",
+      scrollable: [""],
+    },
+  };
+
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+    context.actionsTab = getActionsTabContext(this.actor);
+    return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+    this._applyConditionalTabs();
+  }
+
+  _applyConditionalTabs() {
+    const visibility = {
+      npc: this.actor.system.isNPC,
+      // Always shown, including out of combat, where it is a reference - see
+      // mechanics/actions/action-economy.mjs#getActionsTabContext.
+      actions: true,
+      contact: this.actor.system.isContact,
+      altmode: this.actor.system.canTransform,
+      notes: true,
+    };
+
+    for (const [tabId, visible] of Object.entries(visibility)) {
+      const navLink = this.element.querySelector(`nav.tabs a[data-tab="${tabId}"]`);
+      if (navLink) navLink.style.display = visible ? '' : 'none';
+    }
+
+    const activeTab = this.tabGroups?.primary;
+    if (activeTab && !visibility[activeTab]) {
+      // Switching NPC off lands on Contact (and back), not whatever tab happens to come next.
+      const firstVisible = ['npc', 'contact', ...Object.keys(visibility)].find((tabId) => visibility[tabId]);
+      if (firstVisible) this.changeTab(firstVisible, 'primary');
+    }
+  }
+}

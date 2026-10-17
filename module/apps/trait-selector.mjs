@@ -1,6 +1,8 @@
+﻿import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export class TraitSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(owner, data) {
     super();
     this._owner = owner;
@@ -12,6 +14,8 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     id: "trait-selector",
     classes: [
       "essence20",
+      "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -57,7 +61,17 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
         }
       }
     } else {
-      attr = foundry.utils.getProperty(this._owner, data.name);
+      /* _source, not the derived document. Every field this selector edits is authored, but one
+         of them - a weapon or armor's `system.traits` - is also COMPUTED over: documents/item.mjs
+         #_prepareTraits replaces it with the item's own traits plus those its upgrades grant and
+         minus those they remove. Reading that back would pre-check traits the item does not own,
+         and saving would bake an upgrade's traits into the weapon permanently (and, now that
+         upgrades can remove traits, silently delete one the weapon really does have).
+
+         Falls back to the derived value when the source has nothing, so a field that only exists
+         after preparation still populates. */
+      attr = foundry.utils.getProperty(this._owner._source ?? this._owner, data.name)
+        ?? foundry.utils.getProperty(this._owner, data.name);
     }
 
     const value = (data.valueKey) ? foundry.utils.getProperty(attr, data.valueKey) ?? [] : attr;
@@ -79,6 +93,12 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     ];
 
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static async myFormHandler(event, form, formData) {

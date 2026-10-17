@@ -5,6 +5,10 @@
   "_id": "s2iOJcR6rQDahEKV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: once per scene, roll Science or Technology against the GM's DIF and the GM answers questions from the Defeated Cybertronian.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

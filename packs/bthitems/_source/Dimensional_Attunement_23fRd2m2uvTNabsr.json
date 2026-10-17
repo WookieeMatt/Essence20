@@ -5,6 +5,10 @@
   "_id": "23fRd2m2uvTNabsr",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: sensing dimensional openings and opening a portal; deduct the 1 Personal Power yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

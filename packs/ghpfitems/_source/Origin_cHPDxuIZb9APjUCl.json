@@ -1,0 +1,23 @@
+{
+  "name": "Origin",
+  "sorting": "a",
+  "folder": "Y6TdR9T11q6adfUp",
+  "type": "Item",
+  "_id": "cHPDxuIZb9APjUCl",
+  "description": "",
+  "sort": 300000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "14.364",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1788529423988,
+    "lastModifiedBy": "eDolxwiWtO0teEJE"
+  },
+  "_key": "!folders!cHPDxuIZb9APjUCl"
+}

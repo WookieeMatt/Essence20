@@ -1,0 +1,60 @@
+{
+  "folder": "zmCDoMm7iKtfYn6s",
+  "name": "Serrated Tail",
+  "type": "perk",
+  "_id": "MZCPG1uZPRUMzz4N",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","label":"The pet gains its Serrated Tail attack","event":"added","when":["self:type:companion","not:rule:granted:type:weapon"],"steps":[{"do":"createItem","data":{"name":"Serrated Tail","type":"weapon","system":{"classification":{"size":"sidearm"},"availability":"standard","equipped":true,"hardpoint":{"type":"none"},"traits":["trip"]},"flags":{"essence20":{"natural":true}}},"children":[{"name":"Serrated Tail","type":"weaponEffect","system":{"classification":{"skill":"might","style":"melee"},"damageType":"sharp","damageValue":1,"numTargets":1,"numHands":"0","range":{"reachMultiplier":1}}}]}]},
+      {"type":"Use","label":"Add the pet's Serrated Tail attack","when":["self:type:companion","not:rule:granted:type:weapon"],"steps":[{"do":"createItem","data":{"name":"Serrated Tail","type":"weapon","system":{"classification":{"size":"sidearm"},"availability":"standard","equipped":true,"hardpoint":{"type":"none"},"traits":["trip"]},"flags":{"essence20":{"natural":true}}},"children":[{"name":"Serrated Tail","type":"weaponEffect","system":{"classification":{"skill":"might","style":"melee"},"damageType":"sharp","damageValue":1,"numTargets":1,"numHands":"0","range":{"reachMultiplier":1}}}]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Put it on your pet. Automatic: the pet gains a Serrated Tail attack for 1 Sharp damage with the Trip trait; the Use button adds it if it is missing.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 74
+    },
+    "type": "general",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!MZCPG1uZPRUMzz4N"
+}

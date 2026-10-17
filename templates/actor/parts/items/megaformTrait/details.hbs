@@ -1,1 +1,17 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+
+<div class="chip-section">
+  <span class="chip" name="chip.megaformTrait.type">{{lookup @root.config.megaformTraitTypes item.system.type}}</span>
+
+  {{#if (eq item.system.type 'coreAbility')}}
+    <span class="chip" name="chip.megaformTrait.essence">+{{item.system.value}} {{lookup @root.config.essences item.system.essence}}</span>
+  {{/if}}
+
+  {{#if (eq item.system.type 'coreDefenses')}}
+    <span class="chip" name="chip.megaformTrait.coreDefenses">+{{item.system.value}} {{localize 'E20.DefenseToughness'}}/{{localize 'E20.DefenseEvasion'}}</span>
+  {{/if}}
+
+  {{#if (eq item.system.type 'move')}}
+    <span class="chip" name="chip.megaformTrait.move">+{{item.system.value}}ft {{lookup @root.config.movementTypes item.system.movementType}}</span>
+  {{/if}}
+</div>

@@ -5,6 +5,10 @@
   "_id": "yc4moNROISNzNLWt",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: 3 starting Health, 40ft Ground Movement, the Essence and Skill options, and the Learned To Adapt Perk. You pick your Essence increase and Skills when you add it.</p><p>Left to the table: the Mode-Locked limits on Roles and Alt Mode options.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

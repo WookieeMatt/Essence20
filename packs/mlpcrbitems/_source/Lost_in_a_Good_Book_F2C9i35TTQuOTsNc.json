@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: researching a subject or finding a book takes you twice as long.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

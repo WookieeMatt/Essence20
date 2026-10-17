@@ -5,6 +5,10 @@
   "_id": "JTQJVb3K42Hm9ocC",
   "img": "systems/essence20/assets/icons/weapons/dual_cannon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets, and its traits apply. As a Mounted weapon it must be set up before it fires.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -21,8 +25,8 @@
           "skill": "targeting",
           "style": "energy"
         },
-        "damageValue": 4,
-        "damageType": "element",
+        "damageValue": 2,
+        "damageType": "energy",
         "numHands": "2",
         "numTargets": 1,
         "radius": 10,
@@ -35,15 +39,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "long"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=towering"]},
     "requirements": {
-      "custom": "Towering",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

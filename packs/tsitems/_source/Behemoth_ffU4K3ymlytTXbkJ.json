@@ -5,6 +5,10 @@
   "_id": "ffU4K3ymlytTXbkJ",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 4 starting Health, +1 Strength, Ground Movement 40, the Smash! Perk, and the Behemoth Alt Mode - you pick Large or Huge for your Bot Mode and for your Alt Mode. You pick Brawn or Might as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,13 +19,7 @@
       "90e2": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.hF2rJtS3SzcjqnLr",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Behemoth (Huge)",
-        "type": "altMode"
-      },
-      "f83d": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.qZQyZDntWJdNeDQy",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Behemoth (Large)",
+        "name": "Behemoth",
         "type": "altMode"
       },
       "b034": {

@@ -5,15 +5,24 @@
   "_id": "zlERIywyKQNBQzs6",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: a Spellcasting attack against one target in range. A hit deals 2 Fire damage.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Knights of Canterlot",
       "page": 46
     },
+    "actionType": "standard",
     "circle": "beam",
     "cost": 3,
-    "duration": "Instant",
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "30 feet",
     "tier": "superior"

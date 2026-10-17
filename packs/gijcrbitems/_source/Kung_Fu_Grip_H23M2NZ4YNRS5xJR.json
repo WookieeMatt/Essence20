@@ -3,17 +3,70 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Kung Fu Grip","when":["attack","item:data:system.damageType=grapple"],"edge":true}
+    ],
+    "prerequisites": {"when":["self:essence:strength>=3"]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your grapple attacks open the Roll Options Dialog with Edge already selected. Roll Options Dialog: a switch for an Edge on Athletics when you're climbing or hanging on.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
       "page": 132
     },
-    "prerequisite": "Strength Essence 3",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Grip Strength Edge",
+      "origin": "Item.H23M2NZ4YNRS5xJR",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "gripStrEdgeAEH23m",
+      "changes": [
+        {
+          "key": "system.skills.athletics.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!H23M2NZ4YNRS5xJR.gripStrEdgeAEH23m"
+    }
+  ],
   "flags": {
     "core": {}
   },

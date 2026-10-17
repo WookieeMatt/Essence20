@@ -5,6 +5,10 @@
   "_id": "qIqnKZHZGvjdblNv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: extending your move to duck behind cover you end within reach of (move the token yourself).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

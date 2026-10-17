@@ -5,6 +5,10 @@
   "_id": "0XjyYHChhc0VStRn",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Adds tiers to other Use buttons: Minor Tweak offers a DIF 18 Technology test for two temporary Skill Ranks in any Skills, and Weapon Implant can roll for a Limited weapon. Left to the table: removing the ranks after a day.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

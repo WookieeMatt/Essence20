@@ -5,6 +5,10 @@
   "_id": "ZBBv3MEKmnOd7IdK",
   "img": "systems/essence20/assets/icons/weapons/punch.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Finesse with its Reach for Stun 1; the Alternate Effect deals 1 Blunt at ↓1. Its traits apply.</p><p>Left to the table: the Snag the Alternate Effect imposes on the target's next test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -55,17 +59,38 @@
           "value": null
         },
         "shiftDown": 1
+      },
+      "9fc5": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Sq4EwIr6RIYmZ5K6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Strike Snag Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "integrated"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:hasType:role:Path of Cruelty","self:hasType:role:Path of Flame","self:hasType:role:Path of Frost","self:hasType:role:Path of Stone","self:hasType:role:Path of Thorns","self:hasType:role:Path of Venom"]}]},
     "requirements": {
-      "custom": "Psycho Ranger Only",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

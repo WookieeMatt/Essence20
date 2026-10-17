@@ -5,6 +5,10 @@
   "_id": "TbKySaCwtWHTf4qC",
   "img": "systems/essence20/assets/icons/gear/chemical_analyzer.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: a switch for ↑2 on Alertness when you're checking for toxins or harmful gases within range.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,10 +16,54 @@
       "page": 160
     },
     "quantity": 1,
-    "type": "",
     "gearType": "hazard"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Chemical Analyzer",
+      "origin": "Item.TbKySaCwtWHTf4qC",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "cA2nSf0mgAlB2c4e",
+      "changes": [
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!TbKySaCwtWHTf4qC.cA2nSf0mgAlB2c4e"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",

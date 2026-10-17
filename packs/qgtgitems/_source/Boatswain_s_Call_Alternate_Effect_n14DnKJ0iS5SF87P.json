@@ -5,7 +5,12 @@
   "_id": "n14DnKJ0iS5SF87P",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: an Athletics cone blast for 1 Stun at ↓1.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "<p>15 ft cone</p>",
     "source": {
       "book": "Quartermaster's Guide to Gear",
@@ -27,7 +32,8 @@
       "long": null,
       "value": null
     },
-    "shiftDown": 1
+    "shiftDown": 1,
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

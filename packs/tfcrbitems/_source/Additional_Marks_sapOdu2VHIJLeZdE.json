@@ -5,6 +5,10 @@
   "_id": "sapOdu2VHIJLeZdE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Mark Target can keep up to five marked targets at once, each giving its usual bonus.</p><p>Left to the table: the \"two specific individuals\" option for people who aren't on the scene yet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

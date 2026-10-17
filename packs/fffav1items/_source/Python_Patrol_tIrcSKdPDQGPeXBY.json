@@ -5,6 +5,10 @@
   "_id": "tIrcSKdPDQGPeXBY",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Faction Perks, Invincibility Through Invisibility and Ultra-Secret Strike Force.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

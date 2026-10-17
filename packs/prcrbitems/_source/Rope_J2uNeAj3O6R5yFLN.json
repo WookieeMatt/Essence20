@@ -5,14 +5,17 @@
   "_id": "J2uNeAj3O6R5yFLN",
   "img": "systems/essence20/assets/icons/gear/rope-coil.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the 50-foot length and its Toughness 16 (only Sharp or Fire can cut it).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 120
+      "page": 121
     },
     "quantity": 1,
-    "type": "",
     "gearType": "tools"
   },
   "effects": [],

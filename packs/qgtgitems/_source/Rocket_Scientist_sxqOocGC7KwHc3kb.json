@@ -5,6 +5,14 @@
   "_id": "sxqOocGC7KwHc3kb",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Rocket Scientist","when":["not:combat",{"any":["skill:science","skill:technology"]},"skill:{choice.skill}"],"edge":true}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: outside combat, tests of the Skill chosen on the Perk (Science or Technology) open the Roll Options Dialog with Edge already selected.</p><p>Left to the table: the once-per-scene limit, and that it only covers rocket-related work.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +21,10 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "influence",
+    "hasChoice": false,
+    "choiceType": "none",
+    "numChoices": 1
   },
   "effects": [],
   "sort": 0,

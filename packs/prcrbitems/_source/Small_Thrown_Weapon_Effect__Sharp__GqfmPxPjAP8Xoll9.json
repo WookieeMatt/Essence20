@@ -5,6 +5,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "athletics",
       "style": "projectile"
@@ -12,14 +13,14 @@
     "damageType": "sharp",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {
       "min": null,
       "reachMultiplier": 0,
-      "long": 20,
-      "value": 10
+      "long": 40,
+      "value": 20
     }
   },
   "effects": [],

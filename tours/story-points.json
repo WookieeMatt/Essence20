@@ -1,0 +1,115 @@
+{
+  "namespace": "essence20",
+  "id": "storyPoints",
+  "title": "E20.Tours.StoryPoints.Title",
+  "description": "E20.Tours.StoryPoints.Description",
+  "display": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.StoryPoints.Intro.Title",
+      "content": "E20.Tours.StoryPoints.Intro.Content"
+    },
+    {
+      "id": "tracker",
+      "app": "storyPoints",
+      "selector": ".story-points__top",
+      "title": "E20.Tours.StoryPoints.Tracker.Title",
+      "content": "E20.Tours.StoryPoints.Tracker.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "pools",
+      "app": "storyPoints",
+      "selector": ".story-points__input",
+      "title": "E20.Tours.StoryPoints.Pools.Title",
+      "content": "E20.Tours.StoryPoints.Pools.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "spend",
+      "app": "storyPoints",
+      "selector": "[data-action=\"decrementStoryPoints\"]",
+      "title": "E20.Tours.StoryPoints.Spend.Title",
+      "content": "E20.Tours.StoryPoints.Spend.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "narrative",
+      "app": "storyPoints",
+      "selector": ".story-points__spends",
+      "title": "E20.Tours.StoryPoints.Narrative.Title",
+      "content": "E20.Tours.StoryPoints.Narrative.Content",
+      "tooltipDirection": "DOWN",
+      "timeout": 500,
+      "optional": true
+    },
+    {
+      "id": "inPlay",
+      "title": "E20.Tours.StoryPoints.InPlay.Title",
+      "content": "E20.Tours.StoryPoints.InPlay.Content"
+    },
+    {
+      "id": "newSession",
+      "app": "storyPoints",
+      "selector": "[data-action=\"newSession\"]",
+      "title": "E20.Tours.StoryPoints.NewSession.Title",
+      "content": "E20.Tours.StoryPoints.NewSession.Content",
+      "tooltipDirection": "DOWN",
+      "restricted": true
+    },
+    {
+      "id": "majorScene",
+      "app": "storyPoints",
+      "selector": "[data-action=\"rollMajorSceneGmPoints\"]",
+      "title": "E20.Tours.StoryPoints.MajorScene.Title",
+      "content": "E20.Tours.StoryPoints.MajorScene.Content",
+      "tooltipDirection": "DOWN",
+      "timeout": 500,
+      "restricted": true,
+      "optional": true
+    },
+    {
+      "id": "gridPower",
+      "app": "storyPoints",
+      "selector": "[data-action=\"gridPowerBloom\"]",
+      "title": "E20.Tours.StoryPoints.GridPower.Title",
+      "content": "E20.Tours.StoryPoints.GridPower.Content",
+      "tooltipDirection": "DOWN",
+      "timeout": 500,
+      "restricted": true,
+      "optional": true
+    },
+    {
+      "id": "friendshipCircle",
+      "app": "storyPoints",
+      "selector": ".story-points__circle",
+      "title": "E20.Tours.StoryPoints.FriendshipCircle.Title",
+      "content": "E20.Tours.StoryPoints.FriendshipCircle.Content",
+      "tooltipDirection": "DOWN",
+      "timeout": 500,
+      "optional": true
+    },
+    {
+      "id": "party",
+      "sidebarTab": "actors",
+      "selector": "#actors .e20-party-folder",
+      "title": "E20.Tours.StoryPoints.Party.Title",
+      "content": "E20.Tours.StoryPoints.Party.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true
+    },
+    {
+      "id": "permissions",
+      "title": "E20.Tours.StoryPoints.Permissions.Title",
+      "content": "E20.Tours.StoryPoints.Permissions.Content",
+      "restricted": true
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.StoryPoints.Outro.Title",
+      "content": "E20.Tours.StoryPoints.Outro.Content"
+    }
+  ]
+}

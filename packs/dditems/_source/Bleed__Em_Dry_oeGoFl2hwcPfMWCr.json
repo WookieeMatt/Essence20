@@ -5,6 +5,10 @@
   "_id": "oeGoFl2hwcPfMWCr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Crippling Blow drains 1d2 Energon from the target instead of giving a Condition.</p><p>Left to the table: Strength Essence damage when the target has too little Energon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

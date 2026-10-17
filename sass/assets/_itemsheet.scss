@@ -1,14 +1,138 @@
 @use "../variables" as v;
 
+/* --e20-system-color is set from an Actor's own system.color (helpers/actor.mjs) - Items have
+   no such concept, so every var(--e20-system-color, var(--e20-theme-accent)) rule shared with actor
+   sheets (active tab fill in _tabs.scss, etc.) was falling through to the raw --e20-theme-accent on
+   Item sheets: orange in light theme, cyan in dark theme, showing up as an unintended accent
+   color with no way for the item itself to control it. Redefining the variable here with a
+   neutral fallback fixes every such rule at once, without needing to touch each one
+   individually or add .essence20.item-scoped overrides throughout _tabs.scss. */
+.essence20.item {
+  --e20-system-color: var(--e20-theme-border-color);
+}
+
 /* Generic Item Sheet Styling */
 .essence20 .items-list {
   list-style: none;
   margin: 0;
   padding: 0;
   overflow-y: auto;
-  scrollbar-width: thin;
-  color: v.$textcolor1;
+  color: var(--e20-theme-text-color);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+/* Item sheet header */
+.essence20.item .item-sheet-header {
+  align-items: center;
+  gap: v.$gap-lg;
+}
+
+.essence20.item .item-profile-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* Was var(--e20-theme-accent) - orange in light theme / cyan in dark theme, an unwanted stray
+     accent color on every item sheet regardless of the item's own content. */
+  border: 3px solid var(--e20-theme-border-color);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+.essence20.item .item-type-badge {
+  align-self: flex-start;
+  width: fit-content;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--e20-theme-text-color) !important; // Override the blanket `header *` text-color rule in _theme_wrapper.scss
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 20px;
+  padding: 2px 10px;
+  margin-bottom: 4px;
+}
+
+/* Automation badge (system.automation.status) - beside the type badge, and in the Automation block.
+   The colour is only the rim and icon; the text keeps the theme's own colour for contrast. */
+.essence20.item .e20-item-badges {
+  flex: 0 0 auto;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.essence20.item .e20-item-badges .item-type-badge {
+  flex: 0 0 auto; // .flexrow grows every child; the pill hugs its label
+  margin-bottom: 0;
+}
+
+.essence20.item .e20-automation-badge {
+  --e20-automation-color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  flex: 0 0 auto;
+  align-self: flex-start;
+  width: fit-content;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--e20-theme-text-color) !important;
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-automation-color);
+  border-radius: 20px;
+  padding: 2px 10px;
+
+  i {
+    color: var(--e20-automation-color) !important;
+  }
+}
+
+.essence20.item .e20-automation-full { --e20-automation-color: var(--e20-theme-success, #2e7d4f); }
+.essence20.item .e20-automation-partial { --e20-automation-color: var(--e20-theme-critical, #a6710a); }
+.essence20.item .e20-automation-manual { --e20-automation-color: var(--e20-theme-muted-text, #6b6b6b); }
+
+.essence20.item .e20-automation {
+  gap: 6px;
+}
+
+.essence20.item .e20-automation .e20-muted {
+  opacity: 0.75;
+  font-style: italic;
+  margin: 0;
+}
+
+.essence20.item .e20-automation-inherited {
+  font-size: 11px;
+}
+
+/* Tab content panels */
+.essence20.item .tab.description > div,
+.essence20.item .tab.details > div,
+.essence20.item .tab.effects .effect-list-container {
+  background: var(--e20-theme-card-bg);
+  border: 1px solid var(--e20-theme-border-color);
+  border-radius: 10px;
+  padding: v.$gap-lg;
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-md;
+}
+
+/* The sheet's own width is now fixed for every type except Role (item-sheet.mjs), but that alone
+   doesn't force long text to actually wrap - a single very long word (or the browser measuring
+   this content before the fixed width is in effect) can still overflow. overflow-wrap/word-break
+   let text break mid-word as a last resort once it's the widest thing in the box, rather than
+   pushing past the sheet's own edge. */
+.essence20.item .tab.description .description {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.essence20.item .tab.description h3 {
+  color: var(--e20-theme-text-color);
+  border-bottom: 1px solid var(--e20-theme-border-color);
+  padding-bottom: 4px;
+  margin: v.$gap-sm 0;
 }

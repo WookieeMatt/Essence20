@@ -3,6 +3,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added, raises Smarts and you pick a skill from its list. It sets your starting Health and 30 ft Ground Movement and gives you the Clued In Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -17,9 +21,9 @@
         "type": "perk"
       }
     },
-    "baseAerialMovement": "0",
-    "baseAquaticMovement": "0",
-    "baseGroundMovement": "30",
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
     "essences": [
       "smarts"
     ],
@@ -29,13 +33,7 @@
       "culture",
       "technology"
     ],
-    "startingHealth": 1,
-    "bonusSkillLevels": "",
-    "groundMovement": "",
-    "benefit": {
-      "name": "",
-      "description": ""
-    }
+    "startingHealth": 1
   },
   "effects": [],
   "flags": {

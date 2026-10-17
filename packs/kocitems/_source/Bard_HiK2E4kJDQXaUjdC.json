@@ -5,6 +5,10 @@
   "_id": "HiK2E4kJDQXaUjdC",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Superb Soloist Perk, and Performance joins your Origin skill choices. The Musical Interlude Hang-Up is added too if you have another Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

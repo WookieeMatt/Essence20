@@ -5,17 +5,28 @@
   "_id": "VLdz7YvUq2AaUFNz",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting places a 15 ft circle, makes a Spellcasting attack against everyone inside and deals 1 Energy damage to each creature hit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 137
     },
+    "actionType": "standard",
     "circle": "beam",
     "cost": 3,
-    "duration": "Instant",
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "60 feet",
+    "shape": "circle",
+    "radius": 7.5,
     "tier": "superior"
   },
   "effects": [],

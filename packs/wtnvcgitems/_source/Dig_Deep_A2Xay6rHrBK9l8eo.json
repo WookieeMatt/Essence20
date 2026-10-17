@@ -1,0 +1,62 @@
+{
+  "folder": "PrK1LoGlph7L9zZH",
+  "name": "Dig Deep",
+  "type": "perk",
+  "_id": "A2Xay6rHrBK9l8eo",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"Dig Deep","limit":{"per":"scene"},"steps":[{"do":"mark","key":"digDeep","to":"self","until":"combat"},{"do":"mark","key":"digDeepSnag","to":"self","until":"endOfNextTurnOrScene","when":["combat:exists"]},{"do":"mark","key":"digDeepSnagOnce","to":"self","until":"scene","when":["not:combat:exists"]}]},
+      {"type":"DamageReduction","label":"Dig Deep (ignore 1 damage)","amount":1,"consumeMark":"digDeep","quiet":true},
+      {"type":"RollModifier","label":"Dig Deep","snag":true,"when":["self:marked:digDeepSnag"]},
+      {"type":"RollModifier","label":"Dig Deep","snag":true,"consumeMark":"digDeepSnagOnce","when":["self:marked:digDeepSnagOnce"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button, once per scene: the next damage applied to you is reduced by 1, and your Skill Tests take a Snag until the end of your next turn, labelled Dig Deep in the Roll Options Dialog. Out of combat the Snag goes on your next Skill Test only.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 47
+    },
+    "type": "general",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!A2Xay6rHrBK9l8eo"
+}

@@ -1,0 +1,22 @@
+{{#>"systems/essence20/templates/actor/headers/common.hbs"}}
+{{#*inline "secondary-fields"}}
+<div class="sliced-border">
+  <label class="sliced-border__label">{{localize 'E20.NpcThreatLevel'}}</label>
+  {{numberInput system.threatLevel name="system.threatLevel" min=0 step=1}}
+</div>
+<div class="sliced-border pr-header-color e20-flex-group-center">
+  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
+  <input type="color" class="picker" name="system.color" value="{{system.color}}" />
+</div>
+{{> "systems/essence20/templates/actor/parts/misc/vehicle-crew.hbs"}}
+{{#if vesselConditions.length}}
+<div class="sliced-border">
+  <label class="sliced-border__label">{{localize 'E20.VesselConditions'}}</label>
+  <div class="e20-flex-group-center">
+    <span>{{#each vesselConditions}}{{label}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+    <a data-action="repairVesselCondition" data-tooltip="{{localize 'E20.VesselRepairTooltip'}}"><i class="fas fa-screwdriver-wrench"></i></a>
+  </div>
+</div>
+{{/if}}
+{{/inline}}
+{{/"systems/essence20/templates/actor/headers/common.hbs"}}

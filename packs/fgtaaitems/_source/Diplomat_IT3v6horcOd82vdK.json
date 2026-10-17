@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: two switchable effects. First Impression gives ↑2 on Social tests and Culture tests; Interact with Leaders gives ↑1 on Social tests. Turn them on when they apply; they stack.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -35,9 +39,9 @@
           "priority": null
         },
         {
-          "key": "",
+          "key": "system.skills.culture.shiftUp",
           "mode": 2,
-          "value": "",
+          "value": "2",
           "priority": null
         }
       ],

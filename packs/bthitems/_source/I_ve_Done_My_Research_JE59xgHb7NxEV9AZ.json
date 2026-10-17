@@ -5,6 +5,14 @@
   "_id": "JE59xgHb7NxEV9AZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skills","from":"skill","essence":"smarts","count":3,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"I've Done My Research","when":["skill:{choice.skill}"],"upshift":1,"stack":"iveDoneMyResearch"}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick the Smarts Skills it covers when you gain it; rolls with those Skills get ↑1, already counted in the Roll Options Dialog's Shift Up box.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,8 +20,12 @@
       "page": 31
     },
     "prerequisite": "",
-    "selectionLimit": 1,
-    "type": "origin"
+    "selectionLimit": 3,
+    "type": "origin",
+    "hasChoice": false,
+    "choiceType": "none",
+    "numChoices": 3,
+    "choiceEssence": "smarts"
   },
   "effects": [],
   "sort": 0,

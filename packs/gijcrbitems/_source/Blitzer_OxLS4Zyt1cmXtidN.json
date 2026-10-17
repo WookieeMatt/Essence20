@@ -5,6 +5,10 @@
   "_id": "OxLS4Zyt1cmXtidN",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: attach it to a Renegade to get its Perks at the listed levels, plus +1 Strength at levels 1 and 10 (you place those skill points on Athletics or Might).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

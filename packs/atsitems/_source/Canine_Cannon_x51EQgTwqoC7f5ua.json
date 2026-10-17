@@ -5,6 +5,10 @@
   "_id": "x51EQgTwqoC7f5ua",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and Stun alternate effect. An R.I.C. companion created by the system comes with this weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -40,8 +44,8 @@
         "name": "Canine Cannon Alternate Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
-          "style": "melee"
+          "skill": "targeting",
+          "style": "energy"
         },
         "damageValue": 3,
         "damageType": "stun",
@@ -57,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "prototype",
     "classification": {
       "size": "heavy"

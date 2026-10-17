@@ -5,15 +5,23 @@
   "_id": "5IfrvMnLOMqfNWko",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Manipulate","steps":[{"do":"rollVsEach","skill":"persuasion","defense":"willpower","onHit":[{"do":"applyCondition","condition":"grappled","to":"target","until":"nextTurn"}]}]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: rolls Persuasion against the target; on a success it is Grappled until the start of your next turn.</p><p>Left to the table: using Deception or Intimidation, or choosing shoved or tripped instead.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
-      "book": "Field Guide to Action & Adventure",
+      "book": "Field Guide to Action and Adventure",
       "page": 65
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "role"
   },
   "effects": [],
   "sort": 150000,

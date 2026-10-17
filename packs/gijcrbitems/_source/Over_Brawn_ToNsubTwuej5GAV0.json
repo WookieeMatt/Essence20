@@ -5,6 +5,13 @@
   "_id": "ToNsubTwuej5GAV0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"BrawnRequirement","label":"Over Brawn (equipment Brawn requirements ignored)","ignore":true}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: armor's and weapons' Brawn requirements never add their ↓ to your rolls.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

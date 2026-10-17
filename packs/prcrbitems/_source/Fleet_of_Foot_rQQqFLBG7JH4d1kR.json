@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +10 feet Ground movement while Morphed; a second copy adds 10 more.</p>"
+    },
     "originalId": "",
     "description": "<p>Add at both 2nd and 12th level.&nbsp;</p>",
     "source": {

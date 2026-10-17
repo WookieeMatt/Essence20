@@ -3,149 +3,31 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"movement","label":"Movement","from":"movement","held":true,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"Movement","label":"Fast: +10 ft aerial","movement":"aerial","stage":"bonus","op":"add","value":10,"when":["rule:choiceHas:movement:aerial","not:rule:data:system.value>0"]},
+      {"type":"Movement","label":"Fast: +10 ft burrow","movement":"burrow","stage":"bonus","op":"add","value":10,"when":["rule:choiceHas:movement:burrow","not:rule:data:system.value>0"]},
+      {"type":"Movement","label":"Fast: +10 ft climb","movement":"climb","stage":"bonus","op":"add","value":10,"when":["rule:choiceHas:movement:climb","not:rule:data:system.value>0"]},
+      {"type":"Movement","label":"Fast: +10 ft ground","movement":"ground","stage":"bonus","op":"add","value":10,"when":["rule:choiceHas:movement:ground","not:rule:data:system.value>0"]},
+      {"type":"Movement","label":"Fast: +10 ft swim","movement":"swim","stage":"bonus","op":"add","value":10,"when":["rule:choiceHas:movement:swim","not:rule:data:system.value>0"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑2 on Initiative. Automatic: pick one of your Movement types when you gain it, and it goes up by 10 ft.</p>"
+    },
     "originalId": "",
-    "description": "<p>Ground bonus is activated by default but you can deactivate and activate a different movement type if that is your choice.&nbsp;</p>",
+    "description": "<p>Movement can now be chosen and increases automatically. </p>",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 124
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "general",
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [
-    {
-      "origin": "Item.Y55n77UqARhPugmy",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": false,
-      "_id": "QKwFodfIXRRqrA6r",
-      "changes": [
-        {
-          "key": "system.movement.ground.bonus",
-          "mode": 2,
-          "value": "10",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "Bonus Ground Movement",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!NU7KqcXvQbOFbU0C.QKwFodfIXRRqrA6r"
-    },
-    {
-      "origin": "Item.Y55n77UqARhPugmy",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "NpRY7BHmPB3gfQeG",
-      "changes": [
-        {
-          "key": "system.movement.aerial.bonus",
-          "mode": 2,
-          "value": "10",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "Bonus Aerial Movement",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!NU7KqcXvQbOFbU0C.NpRY7BHmPB3gfQeG"
-    },
-    {
-      "origin": "Item.Y55n77UqARhPugmy",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "KjnkWH6BzXFKnNXV",
-      "changes": [
-        {
-          "key": "system.movement.swim.bonus",
-          "mode": 2,
-          "value": "10",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "Bonus Swim Movement",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!NU7KqcXvQbOFbU0C.KjnkWH6BzXFKnNXV"
-    },
     {
       "origin": "Item.Y55n77UqARhPugmy",
       "duration": {

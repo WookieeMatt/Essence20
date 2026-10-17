@@ -5,6 +5,10 @@
   "_id": "UquFEmbtdvb08ipH",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while driving you keep the normal benefits of your Renegade Perks and also get the Racer Abandon versions for your vehicle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

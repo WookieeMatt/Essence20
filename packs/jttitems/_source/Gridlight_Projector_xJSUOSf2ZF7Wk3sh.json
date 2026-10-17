@@ -5,6 +5,10 @@
   "_id": "xJSUOSf2ZF7Wk3sh",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Technology with the listed damage and range; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -29,8 +33,8 @@
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": null,
-          "value": null
+          "long": 60,
+          "value": 25
         },
         "shiftDown": 0
       }

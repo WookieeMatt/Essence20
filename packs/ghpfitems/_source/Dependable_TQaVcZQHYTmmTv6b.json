@@ -1,0 +1,43 @@
+{
+  "folder": "7yGEmKOeHNfkLL6y",
+  "name": "Dependable",
+  "type": "perk",
+  "_id": "TQaVcZQHYTmmTv6b",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"FlatD20","key":"dependable","priority":1,"label":"E20.RollDialogDependable","value":10,"limit":{"per":"scene","max":1},"both":{"label":"E20.RollDialogDependableBoth","uses":2}}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: once per scene, a switch treats a d20 as a 10 without rolling it; with Edge or Snag, only one d20 is set and the other is rolled.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 166
+    },
+    "type": "influence"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1787763529613,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!TQaVcZQHYTmmTv6b"
+}

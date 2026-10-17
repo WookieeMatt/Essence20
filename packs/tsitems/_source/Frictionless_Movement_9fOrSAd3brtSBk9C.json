@@ -5,22 +5,33 @@
   "_id": "9fOrSAd3brtSBk9C",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Movement","movement":"all","stage":"adjust","op":"multiply","value":2,"label":"Active: every Movement doubled","when":["check:frictionlessMovement"]},
+      {"type":"Use","label":"Activate (once per scene)","limit":{"per":"encounter"},"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.frictionlessMovementActive":true}},{"do":"chat","text":"{name}: Frictionless Movement - Movement doubled this turn."}]},
+      {"type":"Trigger","event":"turnEnd","label":"Frictionless Movement ends","when":["self:data:flags.essence20.frictionlessMovementActive"],"steps":[{"do":"updateActor","to":"self","set":{"flags.essence20.frictionlessMovementActive":false}}]}
+    ],
+    "prerequisites": {"when":["self:hasType:influence:Mutant Beast"]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button (once per scene): doubles all your Movement, clearing at the end of your turn. Left to the table: keeping it through your next turn, and using it only in the Alt Mode you chose.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Technorganic Secrets",
       "page": 47
     },
+    "actionType": "free",
     "items": {},
     "canActivate": false,
     "choice": null,
     "choiceType": "none",
     "isRoleVariant": false,
     "hasMorphedToughnessBonus": false,
-    "prerequisite": "Mutant Beast Influence",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "influence",
-    "version": "powerRangers"
+    "version": "transformers"
   },
   "effects": [],
   "sort": 0,

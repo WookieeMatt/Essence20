@@ -1,0 +1,45 @@
+{
+  "name": "Animal",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Animal","when":[{"any":["skill:persuasion","skill:deception"]}],"snag":true}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Persuasion and Deception tests made against this pet (with it targeted) take a Snag, labelled Animal in the roller's Roll Options Dialog.</p><p>Left to the table: the pet's equipment limits.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 165
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787145794377,
+    "modifiedTime": 1787145794377,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "YeGzq0XETdv7LeBn",
+  "folder": "M27HYmdBcwp4ApTr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!YeGzq0XETdv7LeBn"
+}

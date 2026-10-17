@@ -1,9 +1,11 @@
-import { setEntryAndAddActor, verifyDropSelection } from "../sheet-handlers/drop-handler.mjs";
-import { getFormData } from "../helpers/application.mjs";
+﻿import { setEntryAndAddActor, verifyDropSelection } from "../sheet-handlers/drop-handler.mjs";
+import { getFormData, FormValidationError } from "../util/application.mjs";
+import { applyThemeClass } from "../settings.js";
 
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class VehicleRoleSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class VehicleRoleSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(droppedActor, targetActor, choices, title){
     super();
     this._targetActor = targetActor;
@@ -16,6 +18,8 @@ export default class VehicleRoleSelector extends HandlebarsApplicationMixin(Appl
     id: "vehicle-role",
     classes: [
       "essence20",
+      "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -51,13 +55,19 @@ export default class VehicleRoleSelector extends HandlebarsApplicationMixin(Appl
     return context;
   }
 
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
+  }
+
   static async myFormHandler(event, form, formData){
     const newRole = getFormData(formData.object);
 
     const allowDrop = verifyDropSelection(this._targetActor, newRole);
 
     if (!allowDrop) {
-      throw new Error(game.i18n.localize('E20.VehicleRoleError'));
+      throw new FormValidationError(game.i18n.localize('E20.VehicleRoleError'));
     }
 
     setEntryAndAddActor(this._droppedActor, this._targetActor, newRole);

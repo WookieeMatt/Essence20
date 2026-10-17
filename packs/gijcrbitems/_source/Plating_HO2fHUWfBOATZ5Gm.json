@@ -5,6 +5,10 @@
   "_id": "HO2fHUWfBOATZ5Gm",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attached to worn armor, it adds +1 Toughness and the Plating trait.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

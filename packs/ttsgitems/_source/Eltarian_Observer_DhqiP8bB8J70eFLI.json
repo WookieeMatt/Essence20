@@ -5,6 +5,10 @@
   "_id": "DhqiP8bB8J70eFLI",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the GM decides when a threat to a bond you formed gets an Edge against you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

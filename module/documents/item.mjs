@@ -1,7 +1,57 @@
+import { runSpellCost } from "../mechanics/item-hooks.mjs";
+import { endOnFumble } from "../mechanics/resources/grants.mjs";
+import { ablativeLossOf, weaponUnusable } from "../mechanics/combat/target-riders.mjs";
+import { wipeCoating } from "../items/gear/poison-coating.mjs";
+import { usesVehicleTargeting } from "../mechanics/vehicles/vehicle-upgrades.mjs";
+import { perkGrantedTraits } from "../mechanics/combat/weapon-traits.mjs";
+import { bombKind, plantBomb } from "../items/attacks/planted-bombs.mjs";
+import { resolveWeaponChangesAfterAttack } from "../items/attacks/weapon-perk-uses.mjs";
+import { affectsGeneratedEffects, applyToWeapon as applyUpgradesToWeapon, chosenElement, ELEMENTS, syncGeneratedEffects } from "../items/attacks/weapon-upgrades.mjs";
+import { applyDamage } from "../mechanics/combat/combat.mjs";
 import { Dice } from "../dice.mjs";
-import { RollDialog } from "../helpers/roll-dialog.mjs";
+import { ensureSourceIndex, inheritedRules, rulesSnapshotToStrip } from "../rules/inherit.mjs";
+import { flatRulePaths } from "../rules/rule-paths.mjs";
+import { gearPowerRules } from "../rules/plugins/book/effects.mjs";
+import { RollDialog } from "../mechanics/rolls/roll-dialog.mjs";
+import { consumeForItem, describeCost, refund, setAiming, spend } from "../mechanics/actions/action-economy.mjs";
+import { clearWeaponReload, reloadsNeeded, getReloadCost, hasBurstFiredThisRound, markBurstFiredThisRound, requireReload, weaponNeedsReload } from "../mechanics/combat/reload-trait.mjs";
+import { isMountedWeaponSetUp } from "../items/attacks/mounted-weapons.mjs";
+import { isInactiveMythicForm } from "../items/attacks/mythically-modular.mjs";
+import { checkVehicularEligibility } from "../mechanics/combat/vehicular-trait.mjs";
+import { addOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
-import { updateRoleCache } from "../helpers/utils.mjs";
+import { betterShift, updateRoleCache } from "../util/utils.mjs";
+import { placeAoeTemplate } from "../mechanics/combat/aoe-targeting.mjs";
+import { ruleAreaExclusions, ruleBeforeArea } from "../rules/plugins/combat/before-area.mjs";
+import { ruleAttackChoice } from "../rules/plugins/combat/attack-choice.mjs";
+import { ruleAttackSkill } from "../rules/plugins/rolls/attack-skill-substitution.mjs";
+import { importedDescription } from "../importers/book-descriptions-store.mjs";
+import { blockedWithoutGm, needsGmRelay, relayToGm } from "../mechanics/world/gm-relay.mjs";
+import { pickMindBeamEffect } from "../items/magic/mind-beam.mjs";
+import { isBlockMagicActive } from "../items/magic/block-magic.mjs";
+import { firePosted } from "../rules/plugins/effects/rough-terrain-space.mjs";
+import { ruleDefersSpellCost } from "../rules/plugins/resources/spell-cost-defer.mjs";
+import { runPreCast } from "../rules/plugins/picks/pre-cast.mjs";
+import { ruleAvailabilitySteps } from "../rules/plugins/resources/availability-shift.mjs";
+import { prerequisiteText } from "../rules/prerequisites.mjs";
+import { handsForSize } from "../items/attacks/weapon-upscale.mjs";
+
+const MLP_CRB = "Compendium.essence20.mlp_crb.Item.";
+
+// Obscuring Matrix (Enigma of Combination, Armor Upgrade, p.57) - see _prepareArmorBonuses's own
+// comment for the Grappled/Immobilized/Prone/Restrained negation these two ids gate.
+const OBSCURING_MATRIX_BASIC_ID = "Compendium.essence20.enigma_of_combination.Item.L8ZXz1h0DlCy85UC";
+const OBSCURING_MATRIX_ADVANCED_ID = "Compendium.essence20.enigma_of_combination.Item.HH4q8lx09mV2hhcv";
+
+// Beam Volley auto-targets the 3 nearest enemies through its own PreCast rule (setTargets to: nearestEnemies:3). Explosive
+// Beam's "15ft diameter circle" is a real AoE shape: it carries system.shape/radius and goes through
+// mechanics/combat/aoe-targeting.mjs like any other area spell.
+
+// Mind Beam (MLP CRB, Virtuoso Beam spell, p.139) - see items/magic/mind-beam.mjs's own doc comment.
+// A per-spell-id pre-roll hook (Enchant, Bestow Expertise and Get To Know are PreCast rules now) - picks which
+// Condition this cast applies before the roll fires.
+const MIND_BEAM_ID = `${MLP_CRB}gF8otV8Ag9axRp2Z`;
+
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -14,8 +64,59 @@ export class Essence20Item extends Item {
   }
 
 
+  /**
+   * An item on an actor this user can't modify (an NPC token's armor a player's hit wears away) - the GM writes it, as
+   * for the actor itself (documents/actor.mjs#update, mechanics/world/gm-relay.mjs).
+   * @override
+   */
+  async update(data = {}, operation = {}) {
+    if (this.parent && blockedWithoutGm(this)) {
+      return this;
+    }
+
+    if (this.parent && needsGmRelay(this)) {
+      return relayToGm(this, 'update', [data, operation]);
+    }
+
+    return super.update(data, operation);
+  }
+
+  /** @override - see update() above. */
+  async setFlag(scope, key, value) {
+    if (this.parent && blockedWithoutGm(this)) {
+      return this;
+    }
+
+    if (this.parent && needsGmRelay(this)) {
+      return relayToGm(this, 'setFlag', [scope, key, value]);
+    }
+
+    return super.setFlag(scope, key, value);
+  }
+
+  /** @override - see update() above. */
+  async unsetFlag(scope, key) {
+    if (this.parent && blockedWithoutGm(this)) {
+      return this;
+    }
+
+    if (this.parent && needsGmRelay(this)) {
+      return relayToGm(this, 'unsetFlag', [scope, key]);
+    }
+
+    return super.unsetFlag(scope, key);
+  }
+
   /** @override */
   async delete(operation) {
+    if (this.parent && blockedWithoutGm(this)) {
+      return this;
+    }
+
+    if (this.parent && needsGmRelay(this)) {
+      return relayToGm(this, 'delete', [operation]);
+    }
+
     super.delete(operation);
 
     if (this.type == 'role' && this.pack) {
@@ -26,6 +127,12 @@ export class Essence20Item extends Item {
   /** @override */
   async _onCreate(data, options, userId) {
     super._onCreate(data, options, userId);
+
+    // An upgrade, element or Perk that grants alternate effects arrived - see
+    // items/attacks/weapon-upgrades.mjs#syncGeneratedEffects. The client that made the change does it.
+    if (userId == game.user?.id && this.actor && affectsGeneratedEffects(this)) {
+      syncGeneratedEffects(this.actor);
+    }
 
     if (this.type == 'role'&& this.pack) {
       await updateRoleCache();
@@ -44,21 +151,105 @@ export class Essence20Item extends Item {
       const image = CONFIG.E20.defaultIcon[this.type];
       if (image) this.updateSource({ img: image });
     }
+
+    // A copy of a compendium item reads its automation notes from the original
+    // (_prepareAutomation), so it doesn't keep the snapshot the drop brought along.
+    const automation = this._source?.system?.automation;
+    if (this._stats?.compendiumSource && (automation?.status || automation?.notes)) {
+      this.updateSource({ 'system.automation': { status: '', notes: '' } });
+    }
+
+    // Its rules too (rules/inherit.mjs) - and the source pack's index is loaded first, so the copy
+    // already has them when its add-time rules (choices, grants) run.
+    if (rulesSnapshotToStrip(this)) {
+      this.updateSource({ 'system.rules': [] });
+    }
+
+    await ensureSourceIndex(this._stats?.compendiumSource);
+
+    // A Megaform Trait (Core Body, Move, Core Ability, ...) is identified purely by its
+    // system.type enum, which is what Essence20Actor#_prepareMegaformZordData/
+    // _prepareMegaformCombinerData actually switches on - Name is separate flavor text a GM
+    // remains free to retype afterward. Every one of this system's own compendium entries
+    // already names the item exactly after its Type (e.g. "Core Body" for coreBody), so this
+    // just fills that in automatically instead of making a GM type the same thing twice - a
+    // no-op for a compendium drop (name/type already match), a sensible default in place of
+    // "New Megaformtrait" for a blank one created via the sheet's own "+" control.
+    if (this.type == 'megaformTrait') {
+      this.updateSource({ name: CONFIG.E20.megaformTraitTypes[this.system.type] });
+    }
+  }
+
+  /**
+   * Keeps a Megaform Trait's Name in sync with its Type whenever the Details tab's Type dropdown
+   * changes it - see _preCreate's identical reasoning above. Skipped if this same update is ALSO
+   * explicitly setting a new name (e.g. a deliberate GM reflavor happening in the same submit),
+   * so that doesn't get silently overwritten.
+   * @param {Object} change The differential data being updated
+   * @param {Object} options The options from the update operation
+   * @param {String} userId The user performing the update
+   */
+  async _preUpdate(change, options, userId) {
+    await super._preUpdate(change, options, userId);
+
+    if (
+      this.type == 'megaformTrait' && change.system?.type && change.system.type != this.system.type
+      && change.name === undefined
+    ) {
+      change.name = CONFIG.E20.megaformTraitTypes[change.system.type];
+    }
+
+    // Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see mechanics/combat/vehicular-trait.mjs's own
+    // doc comment. The "equip" half of "can only be mounted on a vehicle": strips the equip
+    // toggle back out of this update (rather than throwing, which would abort the whole submit)
+    // when checkVehicularEligibility refuses it - a no-op in 'off'/'track'/'warn' mode, where that
+    // check always returns true.
+    if (
+      this.type == 'weapon' && change.system?.equipped === true
+      && this.system.traits?.includes('vehicular') && this.actor
+      && !checkVehicularEligibility(this.actor, this.name)
+    ) {
+      delete change.system.equipped;
+    }
   }
 
   /** @override */
+  /**
+   * An upgrade leaving a weapon takes the alternate effects it granted with it - see
+   * items/attacks/weapon-upgrades.mjs#syncGeneratedEffects.
+   */
+  _onDelete(options, userId) {
+    super._onDelete(options, userId);
+    if (userId == game.user?.id && this.actor && affectsGeneratedEffects(this)) {
+      syncGeneratedEffects(this.actor);
+    }
+
+    // A Focus deleted any other way than the sheet or its Role (a macro, the API, another module) still takes its
+    // Essence increase and Skill picks back off. Those two paths undo it themselves first and pass essence20FocusHandled.
+    if (this.type == 'focus' && userId == game.user?.id && this.actor && !options?.essence20FocusHandled) {
+      import('../sheet-handlers/role-handler.mjs').then(({ onFocusDelete }) => onFocusDelete(this.actor, this));
+    }
+  }
+
   async _onUpdate(change, options, userId) {
     super._onUpdate(change, options, userId);
+
+    if (userId == game.user?.id && this.actor && affectsGeneratedEffects(this, change)) {
+      syncGeneratedEffects(this.actor);
+    }
 
     if (this.type == 'role') {
       await updateRoleCache();
     }
 
-    // Update the entry on the parent if this is a child Item
-    if (['weaponEffect', 'upgrade'].includes(this.type)) {
+    // Update the entry on the parent if this is a child Item. Only on the client that made the
+    // change: _onUpdate runs on every connected client, and a player whose client isn't allowed to
+    // edit the actor (an NPC's unlinked token) threw "lacks permission to update ActorDelta" once
+    // per child item - and even where allowed, every client wrote the same entry again.
+    if (userId == game.user?.id && ['weaponEffect', 'upgrade'].includes(this.type)) {
       const parentId = this.flags.essence20?.parentId;
-      const parentItem = this.actor.items.get(parentId);
-      const key = this.flags.essence20.collectionId;
+      const parentItem = this.actor?.items?.get(parentId);
+      const key = this.flags.essence20?.collectionId;
 
       if (parentItem && key) {
         const entry = createEntry(this, parentItem);
@@ -85,43 +276,204 @@ export class Essence20Item extends Item {
   */
   prepareDerivedData() {
     super.prepareDerivedData();
+    this._prepareDescription();
+    this._prepareAutomation();
+    // A compendium copy with no rules of its own runs its original's (rules/inherit.mjs).
+    if (Array.isArray(this.system.rules)) {
+      // Dotted-path fields come back expanded from storage; readers need the paths (rules/rule-paths.mjs).
+      this.system.rules = inheritedRules(this).map(flatRulePaths);
+      // Nanomite gear runs its linked Power's lasting rules as its own (rules/plugins/book/effects.mjs).
+      const powerRules = gearPowerRules(this);
+      if (powerRules.length) {
+        this.system.rules = [...this.system.rules, ...powerRules];
+      }
+    }
+
     this._prepareTraits();
+
+    if (this.type == 'weapon' || this.type == 'armor') {
+      this._prepareTotalAvailability();
+    }
 
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
+    } else if (this.type == 'weapon') {
+      // (A Laser Sight's extra Aim shift is the upgrade's own AimBonus rule now, not a total kept here.)
+      this._prepareWeaponHands();
+      this._prepareHardpointDerived();
+      // Size steps and one-handed wielding from upgrades and Perks (items/attacks/weapon-upgrades.mjs).
+      applyUpgradesToWeapon(this);
     } else if (this.type == 'rolePoints') {
       this._prepareRolePoints();
     }
   }
 
   /**
-  * Prepares the item and any upgrade traits currently on the item
-  */
+   * The traits this weapon or armor effectively has: its own, plus every trait its attached
+   * upgrades grant, minus every trait they take away.
+   *
+   * Upgrades that REMOVE a trait are rare but real - Ammo Feeder (GI Joe CRB p.151) takes Reload
+   * off a weapon that has it, and Factions in Action Vol. 2
+   * p.96 has one that drops Mounted. Removal is applied last, so an upgrade that takes a trait
+   * away beats one that grants it; that is the order the fiction implies (the modification is
+   * physical) and it makes the result independent of the order upgrades happen to be attached.
+   *
+   * The result is written back over `system.traits` as well as to `system.itemAndUpgradeTraits`,
+   * and that is deliberate. Roughly twenty-five checks in dice.mjs and the helpers ask a weapon
+   * `system.traits.includes(...)` directly, and they have always been answered with the combined
+   * list - the previous implementation assigned `this.system.traits` to a local and pushed onto
+   * it, mutating the derived array in place. Keeping both names pointing at the same computed
+   * list preserves every one of those answers and gives them trait REMOVAL for free, rather than
+   * rewriting twenty-five call sites and re-verifying each.
+   *
+   * What that shared array must never do is reach an editor. The trait selector used to read it
+   * back off the derived document, which meant opening it on an upgraded weapon pre-checked the
+   * upgrade's traits and saved them onto the weapon itself; with removal in play it would also
+   * have silently deleted a removed trait from the base item for good. apps/trait-selector.mjs
+   * reads _source instead now, which is the authored list this function starts from.
+   */
+  /**
+   * Fill in a description a GM has imported from their own copy of a rulebook.
+   *
+   * The compendium ships these empty - this system does not redistribute Renegade's text -
+   * so a GM who owns the book can import it into their world instead (see
+   * apps/book-description-importer.mjs). Applying it here rather than writing it into the
+   * items themselves is what keeps it out of packs/ and out of any release.
+   *
+   * Only ever fills a blank. An item whose description was written by hand, or edited after
+   * an import, keeps what it has.
+   */
+  /**
+   * The automation notes (system.automation) a copy of a compendium item shows are its original's,
+   * read live from the compendium index (CONFIG.Item.compendiumIndexFields, essence20.mjs) - so a
+   * copy made before the notes were written, or before they were corrected, still shows the current
+   * ones. A copy only keeps notes of its own when a GM wrote them on it: _preCreate drops the ones a
+   * compendium drop brings along, so anything stored on a sourced copy is deliberate.
+   */
+  _prepareAutomation() {
+    const stored = this._source?.system?.automation;
+    if (!this.system.automation || this.pack || stored?.status || stored?.notes?.trim()) {
+      return;
+    }
+
+    const sourceUuid = this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource;
+    const original = sourceUuid ? globalThis.fromUuidSync?.(sourceUuid, { strict: false }) : null;
+    const automation = foundry.utils.getProperty(original ?? {}, 'system.automation');
+    if (automation) {
+      this.system.automation.status = automation.status ?? '';
+      this.system.automation.notes = automation.notes ?? '';
+    }
+  }
+
+  /**
+   * v14 only sends each pack's core index fields at world load - CONFIG.Item.compendiumIndexFields
+   * (system.automation) arrive only once something calls pack.getIndex(). So before showing a copy's
+   * inherited notes, load its source pack's full index, then read them again.
+   */
+  async loadAutomationNotes() {
+    const stored = this._source?.system?.automation;
+    const sourceUuid = this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource;
+    if (!this.system.automation || this.pack || !sourceUuid || stored?.status || stored?.notes?.trim()) {
+      return;
+    }
+
+    const collection = foundry.utils.parseUuid?.(sourceUuid)?.collection;
+    const pack = collection?.metadata ? collection : null;
+    if (pack && !pack.indexed) {
+      await pack.getIndex();
+    }
+
+    this._prepareAutomation();
+  }
+
+  _prepareDescription() {
+    // Tested against the SOURCE, not the prepared value. description is a stored field rather
+    // than a derived one, and Foundry does not roll a data model back to source between
+    // preparations - so reading this.system here would see the text a previous preparation
+    // already wrote and take it for something the GM had typed. The import would then be stuck:
+    // removing a book, or importing a corrected one, would leave the old text in place until a
+    // reload.
+    const stored = this._source?.system?.description ?? '';
+    if (stored.trim()) {
+      return;
+    }
+
+    // A compendium item is keyed by its own uuid; a copy on an actor or in the world carries
+    // the uuid it came from instead, which is the same key its compendium original uses.
+    const sourceUuid = this.pack
+      ? this.uuid
+      : (this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource);
+    if (!sourceUuid) {
+      return;
+    }
+
+    // Falling back to `stored` rather than leaving it alone is what lets a cleared or re-imported
+    // book actually take effect on an item that is already prepared.
+    this.system.description = importedDescription(sourceUuid) ?? stored;
+  }
+
   _prepareTraits() {
-    let itemAndUpgradeTraits = this.system.traits;
-    let upgradeTraits = [];
+    if (this.type != 'weapon' && this.type != 'armor') {
+      return;
+    }
 
-    if (this.type == 'weapon' || this.type == 'armor') {
-      for (const [, item] of Object.entries(this.system.items)) {
-        if (item.type == 'upgrade') {
-          upgradeTraits.push(item.traits);
+    const own = this.system.traits ?? [];
+    const combined = [...own];
+    const removed = new Set();
 
-          for (const traits of upgradeTraits) {
-            if (traits) {
-              for (const trait of traits) {
-                if (!itemAndUpgradeTraits.includes(trait)) {
-                  itemAndUpgradeTraits.push(trait);
-                }
-              }
-            }
-          }
+    for (const attached of Object.values(this.system.items ?? {})) {
+      /* A null slot is possible - system.items is a free-form object and a write that fails
+         validation leaves the key behind with nothing in it. Reading .type off that threw, and
+         because this runs inside prepareDerivedData it took the item's WHOLE preparation with it:
+         the weapon then had no derived traits, no availability, no aim shift. Skipping is the only
+         sane response - one bad slot should not cost the item everything else. */
+      if (attached?.type != 'upgrade') {
+        continue;
+      }
+
+      for (const trait of attached.traits ?? []) {
+        if (!combined.includes(trait)) {
+          combined.push(trait);
         }
       }
 
-      if (itemAndUpgradeTraits) {
-        this.system.itemAndUpgradeTraits = itemAndUpgradeTraits;
+      for (const trait of attached.removedTraits ?? []) {
+        removed.add(trait);
       }
     }
+
+    // The element an Element weapon was set to deals that element - so it has that element's trait,
+    // which is what the Acid/Fire/Electromagnetic rules read (items/attacks/weapon-upgrades.mjs).
+    if (this.type == 'weapon') {
+      const element = chosenElement(this);
+      if (element && !combined.includes(ELEMENTS[element])) {
+        combined.push(ELEMENTS[element]);
+      }
+
+      // Traits a Perk gives the wielder's weapons - Demolisher, Big Lobber, Fireball, Weapon
+      // Customizer (mechanics/combat/weapon-traits.mjs); Double-Barrel's / Targeting System's on the
+      // vehicle weapon they were set to (WeaponTrait rules too).
+      for (const trait of perkGrantedTraits(this, combined)) {
+        if (!combined.includes(trait)) {
+          combined.push(trait);
+        }
+      }
+
+      // Utility Loaders' added trait, while it lasts (items/attacks/weapon-perk-uses.mjs).
+      for (const trait of this.flags?.essence20?.mutation?.addTraits ?? []) {
+        if (!combined.includes(trait)) {
+          combined.push(trait);
+        }
+      }
+    }
+
+    const effective = removed.size ? combined.filter(trait => !removed.has(trait)) : combined;
+
+    // In place, so anything already holding this array sees the same list - see the note above.
+    own.length = 0;
+    own.push(...effective);
+    this.system.traits = own;
+    this.system.itemAndUpgradeTraits = own;
   }
 
   /**
@@ -131,12 +483,27 @@ export class Essence20Item extends Item {
     let armorBonusToughness = this.system.bonusToughness;
     let armorBonusEvasion  = this.system.bonusEvasion;
 
-    for (const [, item] of Object.entries(this.system.items)) {
+    // Obscuring Matrix (Enigma of Combination, Armor Upgrade, p.57, Basic +2/Advanced +4 Evasion):
+    // the bonus is lost while the wearer is Grappled, Immobilized, Prone or Restrained. Checked here, per-upgrade, rather than as a blanket zero on the whole item's
+    // Evasion bonus - only THIS upgrade's own contribution is negated, not any other armorBonus
+    // Upgrade sharing the same armor.
+    const wearerStatuses = this.actor?.statuses;
+    const obscuringMatrixNegated = wearerStatuses?.has
+      && ['grappled', 'immobilized', 'prone', 'restrained'].some(status => wearerStatuses.has(status));
+
+    for (const [key, item] of Object.entries(this.system.items)) {
       if (item.type == 'upgrade' && item.subtype == 'armor'){
+        if (obscuringMatrixNegated
+          && (item.uuid == OBSCURING_MATRIX_BASIC_ID || item.uuid == OBSCURING_MATRIX_ADVANCED_ID)) {
+          continue;
+        }
+
+        // Ablative Matrix loses a point to every Critical Success that hits (mechanics/combat/target-riders.mjs).
+        const value = Math.max(0, (item.armorBonus.value ?? 0) - ablativeLossOf(this.actor?.items?.get?.(key)));
         if (item.armorBonus.defense == 'toughness') {
-          armorBonusToughness += item.armorBonus.value;
+          armorBonusToughness += value;
         } else if (item.armorBonus.defense == 'evasion') {
-          armorBonusEvasion += item.armorBonus.value;
+          armorBonusEvasion += value;
         }
       }
     }
@@ -145,6 +512,143 @@ export class Essence20Item extends Item {
     this.system.totalBonusToughness = armorBonusToughness;
   }
 
+  /**
+  * Resolves how many loadout "hands" this weapon takes to wield (GI Joe CRB p.138 / TF CRB
+  * p.116 / PR CRB p.103) into system.derivedHands, for the Actor's six-hand Load Out tally.
+  * Uses the weapon's own system.hands when set, otherwise a Size-based default from
+  * CONFIG.E20.weaponSizeHands. A two-handed weapon in an Integrated Hardpoint still reports
+  * its full hand count here - the Actor tally is what converts that into two Integrated slots.
+  */
+  _prepareWeaponHands() {
+    const explicit = this.system.hands;
+    const sizeDefault = CONFIG.E20.weaponSizeHands[this.system.classification?.size];
+    this.system.derivedHands = explicit ?? sizeDefault ?? 1;
+
+    // A weapon made for a very different Size Class than its wielder (EoC p.48): three or more smaller takes 1 hand /
+    // Hardpoint, three larger takes 2, four or more larger can't be wielded normally - items/attacks/weapon-upscale.mjs.
+    const bySize = this.parent?.documentName == 'Actor' ? handsForSize(this, this.parent) : null;
+    this.system.tooLargeToWield = !!bySize?.tooLarge;
+    if (bySize?.hands) {
+      this.system.derivedHands = bySize.hands;
+    }
+  }
+
+  /**
+  * Prepares the display-only consequences of which Hardpoint a weapon is installed in
+  * (TF CRB p.114), for the Gear tab. None of these are enforced anywhere - they surface what
+  * the Hardpoint choice implies so the player doesn't have to cross-reference the book.
+  * - system.effectiveSize: 'integrated' while in an Integrated Hardpoint ("reduce their size
+  *   to Integrated"), otherwise the weapon's own classification.size.
+  * - system.effectiveBrawnReq: the requirements.shift lowered one die while Integrated
+  *   ("lower their Brawn requirements (if any) by one die"), otherwise unchanged.
+  * - system.derivedMode: the legacy Bot/Alt/Any concept re-derived from the Hardpoint, so the
+  *   Gear tab can still show a plain-language mode label (External -> Bot Mode; Integrated ->
+  *   Alt Mode if hidden, Any Mode if obvious).
+  */
+  _prepareHardpointDerived() {
+    const hardpoint = this.system.hardpoint ?? {};
+    const isIntegrated = hardpoint.type == 'integrated';
+
+    this.system.effectiveSize = isIntegrated ? 'integrated' : this.system.classification?.size;
+
+    const shiftLadder = CONFIG.E20.weaponRequirementShiftLadder;
+    const req = this.system.requirements?.shift || 'none';
+    if (isIntegrated && shiftLadder.includes(req)) {
+      const index = shiftLadder.indexOf(req);
+      this.system.effectiveBrawnReq = index > 0 ? shiftLadder[index - 1] : 'none';
+    } else {
+      this.system.effectiveBrawnReq = req;
+    }
+
+    // A printed Mode requirement says it outright; otherwise the Hardpoint implies one.
+    const modeRequirement = this.system.modeRequirement;
+    if (modeRequirement) {
+      this.system.derivedMode = modeRequirement == 'altMode' ? 'modeAltMode' : 'modeBotMode';
+    } else if (hardpoint.type == 'external') {
+      this.system.derivedMode = 'modeBotMode';
+    } else if (isIntegrated) {
+      this.system.derivedMode = hardpoint.altModeVisibility == 'hidden' ? 'modeAltMode' : 'modeAny';
+    } else {
+      this.system.derivedMode = null;
+    }
+  }
+
+  /**
+  * Prepares the combined Availability tier that must be Requisitioned to acquire this
+  * weapon or armor as currently upgraded, per Table 8-2: Upgrading Equipment. Starts from
+  * the item's own Availability and folds in each attached Upgrade's Availability in turn.
+  */
+  _prepareTotalAvailability() {
+    let totalAvailability = this.system.availability;
+
+    // A null slot skips rather than throws, for the same reason _prepareTraits guards against
+    // one: this runs inside prepareDerivedData, so one bad entry used to cost the item every
+    // other derived field too.
+    for (const attached of Object.values(this.system.items ?? {})) {
+      if (attached?.type == 'upgrade') {
+        totalAvailability = this._getCombinedAvailability(totalAvailability, attached.availability);
+      }
+    }
+
+    // AvailabilityShift rules on the owner's items (Fieldtest: one step more available -
+    // rules/plugins/resources/availability-shift.mjs).
+    const availabilitySteps = this.actor ? ruleAvailabilitySteps(this) : 0;
+    if (availabilitySteps) {
+      totalAvailability = this._stepAvailability(totalAvailability, availabilitySteps);
+    }
+
+    this.system.totalAvailability = totalAvailability;
+  }
+
+  /**
+   * Steps an Availability tier toward more (negative steps) or less (positive steps) available,
+   * per CONFIG.E20.availabilities' own declared tier order, clamped at both ends.
+   * @param {String} tier   A tier key from CONFIG.E20.availabilities.
+   * @param {Number} steps   How many tiers to move (negative = more available).
+   * @returns {String}
+   */
+  _stepAvailability(tier, steps) {
+    const tierOrder = Object.keys(CONFIG.E20.availabilities);
+    const rank = tierOrder.indexOf(tier);
+    if (rank == -1) {
+      return tier;
+    }
+
+    const clamped = Math.max(0, Math.min(tierOrder.length - 1, rank + steps));
+    return tierOrder[clamped];
+  }
+
+  /**
+  * Combines two equipment Availability tiers per Table 8-2: Upgrading Equipment.
+  * @param {String} tierA   An Availability tier key from CONFIG.E20.availabilities.
+  * @param {String} tierB   Another Availability tier key from CONFIG.E20.availabilities.
+  * @returns {String}   The resultant combined Availability tier.
+  */
+  _getCombinedAvailability(tierA, tierB) {
+    const CEILING = 'theoretical';
+    if (tierA == CEILING || tierB == CEILING) {
+      return CEILING;
+    }
+
+    // Table 8-2 doesn't have a row/column for Automatic; treat it as equivalent to
+    // Standard, the table's lowest defined tier.
+    const normalize = tier => tier == 'automatic' ? 'standard' : tier;
+    const normA = normalize(tierA);
+    const normB = normalize(tierB);
+    const combined = CONFIG.E20.upgradeAvailabilityMatrix[normA]?.[normB];
+
+    if (combined) {
+      return combined;
+    }
+
+    // "Other" or any tier Table 8-2 doesn't define a combination for: fall back to
+    // keeping the higher of the two tiers, with no further escalation.
+    const tierOrder = Object.keys(CONFIG.E20.availabilities);
+    const rankA = tierOrder.indexOf(tierA);
+    const rankB = tierOrder.indexOf(tierB);
+
+    return rankA >= rankB ? tierA : tierB;
+  }
 
   /**
    * Finds the number of Role Points the actor currently has.
@@ -152,7 +656,18 @@ export class Essence20Item extends Item {
   _prepareRolePoints() {
     if (!this.actor) return null;
 
-    const actorLevel = this.actor.system.level;
+    // A RolePoints Item granted by an "additive" Role (system.isAdditive, e.g. G.I. Joe's Old
+    // Hand - see role-handler.mjs) runs on that Role's own independent level track instead of
+    // the Actor's real character level. This method is called implicitly by Foundry's
+    // prepareDerivedData() pipeline, not by any level-change handler, so there's no parameter
+    // to receive that override through - it has to look it up itself via the same parentId
+    // flag deleteAttachmentsForItem() already uses to identify which Role granted an Item.
+    let actorLevel = this.actor.system.level;
+    const owningRole = this.actor.items.get(this.getFlag('essence20', 'parentId'));
+    if (owningRole?.type == 'role' && owningRole.system.isAdditive && this.actor.system.oldHandTransitionLevel) {
+      actorLevel = this.actor.system.level - this.actor.system.oldHandTransitionLevel + 1;
+    }
+
     const resourceLevelIncreases = this._getLevelIncreases(this.system.resource.increaseLevels, actorLevel);
 
     if (this.system.resource.startingMax != null) {
@@ -164,7 +679,7 @@ export class Essence20Item extends Item {
     }
 
     if (this.system.bonus.startingValue != null) {
-      if (this.system.bonus.type != CONFIG.E20.bonusTypes.none) {
+      if (this.system.bonus.type != 'none') {
         const bonusLevelIncreases = this._getLevelIncreases(this.system.bonus.increaseLevels, actorLevel);
 
         if (actorLevel == 20 && this.system.bonus.level20Value) {
@@ -213,7 +728,149 @@ export class Essence20Item extends Item {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Actor} childRoller Optional attached Actor making the roll
    */
+  /**
+   * Fire a dialog-backed skill roll, and hand back the action it already cost if the player backs
+   * out of the roll options dialog.
+   *
+   * The action economy spends at the TOP of roll(), before any of the pre-roll work (AoE template
+   * placement, target pickers, Perk prompts) - which is the only place a single insertion can
+   * cover every item type. The roll dialog opens well after that, and cancelling it is an ordinary
+   * thing to do, not an edge case; without this the cancelled roll would quietly eat the turn.
+   *
+   * @param {Object} dataset   The roll dataset to dispatch.
+   * @param {Actor} actor      The actor actually rolling.
+   * @param {Object} spent     The result of consumeForItem, or null if nothing was spent.
+   * @returns {Promise<*>}   Whatever the roll returned.
+   */
+  async _rollWithRefund(dataset, actor, spent) {
+    const result = await this._dice.handleSkillItemRoll(dataset, actor, this);
+    if (result?.cancelled && spent?.spendId) {
+      await refund(actor, spent.spendId);
+    }
+
+    return result;
+  }
+
   async roll(dataset, childRoller=null) {
+    /* Action economy. This one insertion covers every weapon, weapon effect, Power and spell in
+       the game, because every sheet click funnels through here - see
+       mechanics/actions/action-economy.mjs#consumeForItem.
+
+       Placed above the rollType == 'info' branch and skipped for it, so posting an item's details
+       to chat stays free; only an actual use spends. In every mode except 'strict' this records
+       the spend and reports it without standing in the way, which is what lets it ship while the
+       overwhelming majority of compendium items still declare no action cost at all. */
+    let spent = null;
+    // The weaponEffect's own parent weapon, resolved once here so both the Reload gate just below
+    // and the Reload/Consumable consumption further down (this.type == 'weaponEffect' branch) see
+    // the same lookup - see mechanics/combat/reload-trait.mjs's own doc comment.
+    let parentWeapon = null;
+    if (dataset.rollType != 'info') {
+      const roller = childRoller || this.actor;
+      if (this.type == 'weaponEffect' && roller) {
+        parentWeapon = this._dice._getParentWeapon(roller, this);
+
+        // Reload (GI Joe CRB, Weapon Effects and Traits, p.147) / Burst-Fire (Quartermaster's
+        // Guide to Gear p.33, "counts as if it had the Reload trait for the turn" after a second
+        // shot in the same round - see mechanics/combat/reload-trait.mjs's own doc comment) - gated ahead of the
+        // ordinary action-economy spend below: an unreloaded weapon shouldn't cost its own Attack
+        // action at all.
+        // Fanning weapons join in only once a Fanning Attack has flagged them (see the fanned check
+        // below); a High-Density follow-up is the same shot as the Attack it follows, so it never
+        // stops to reload (items/attacks/high-density.mjs).
+        // Any weapon a "must reload" rule flagged - Empty the Mag can flag one without the trait.
+        // Rapid Reload / the Ammo Belt make the reload a Free action (mechanics/combat/reload-trait.mjs).
+        if (!dataset.highDensityFollowUp && weaponNeedsReload(parentWeapon)) {
+          const reloadCost = await getReloadCost(roller, parentWeapon);
+          const reloadSpend = await spend(roller, reloadCost.action, {
+            source: reloadCost.source ? `${parentWeapon.name} (${reloadCost.source})` : parentWeapon.name,
+            bypass: dataset.bypassEconomy,
+            // ActionCost {action: reload} (Rapid Reload, Ammo Belt) - rules/plugins/resources/action-kinds.mjs.
+            context: { kind: 'reload', item: parentWeapon },
+          });
+          if (reloadSpend.blocked) {
+            if (!reloadSpend.cancelled) {
+              ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
+                name: roller?.name ?? '',
+                action: describeCost(reloadSpend.cost),
+              }));
+            }
+
+            return;
+          }
+
+          const reloadsLeft = reloadsNeeded(parentWeapon) - 1;
+          await clearWeaponReload(parentWeapon);
+
+          // Reload ×2 (A Jump Through Time p.78) - one reload done, one still to go.
+          if (reloadsLeft > 0) {
+            ui.notifications.info(game.i18n.format('E20.ReloadOneMore', { weapon: parentWeapon.name }));
+            return;
+          }
+        }
+
+        // Salvaged (Ferocious Fighters p.36): a Fumbled attack destroys the weapon for good. Marked destroyed rather than deleted, so nothing is lost by accident;
+        // it can no longer attack.
+        if (parentWeapon?.flags?.essence20?.destroyed) {
+          ui.notifications.warn(game.i18n.format('E20.WeaponDestroyed', { name: parentWeapon.name }));
+          return;
+        }
+
+        // Knocked away (Snatch, Disarming Shot) or pulled apart (Dismantle Firearm) - see
+        // mechanics/combat/target-riders.mjs#weaponUnusable.
+        const unusable = weaponUnusable(parentWeapon);
+        if (unusable) {
+          ui.notifications.warn(unusable);
+          return;
+        }
+
+        // Mounted (GI Joe CRB, Weapon Effects and Traits, p.148) - see items/attacks/mounted-weapons.mjs's own
+        // doc comment. A hard block, not an action-economy spend of its own: setting the weapon up
+        // is its own separate Standard-action spend (the sheet's Set Up/Pick Up control), not
+        // something the Attack itself pays for.
+        if (parentWeapon?.system.traits?.includes('mounted') && !isMountedWeaponSetUp(parentWeapon)) {
+          ui.notifications.warn(game.i18n.format('E20.MountedNotSetUp', { name: parentWeapon.name }));
+          return;
+        }
+
+        // Mythically Modular (Through the Shattered Grid p.116) - see items/attacks/mythically-modular.mjs.
+        // Another form of this combined weapon is the one in use; switch first (a Free action).
+        if (isInactiveMythicForm(roller, parentWeapon)) {
+          ui.notifications.warn(game.i18n.format('E20.MythicallyModularInactive', { name: parentWeapon.name }));
+          return;
+        }
+
+        // Vehicular (GI Joe CRB, Weapon Effects and Traits, p.148) - see mechanics/combat/vehicular-trait.mjs's
+        // own doc comment for the RAW quote and the strictness-mode shape.
+        if (parentWeapon?.system.traits?.includes('vehicular') && !checkVehicularEligibility(roller, parentWeapon.name)) {
+          return;
+        }
+      }
+
+      spent = await consumeForItem(this, { actor: childRoller, bypass: dataset.bypassEconomy });
+      if (spent.blocked) {
+        // Nothing to say when the player themselves backed out of the 'warn' confirmation - they
+        // already know. The notification is for 'strict', where the refusal is the world's.
+        if (!spent.cancelled) {
+          ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
+            name: (childRoller || this.actor)?.name ?? '',
+            action: describeCost(spent.cost),
+          }));
+        }
+
+        return;
+      }
+
+      /* The shot the aim was for. An aim improves the next roll and then it is gone, which is
+         what makes Aim once per roll rather than once per turn - see
+         mechanics/actions/action-economy.mjs#isAiming. The weapon effect is the attack: a weapon itself
+         has no roll button anywhere in the sheet, only its effects do. Cleared after the spend
+         rather than after the roll resolves so a blocked or cancelled attack keeps the aim. */
+      if (this.type == 'weaponEffect') {
+        await setAiming(childRoller || this.actor, false);
+      }
+    }
+
     if (dataset.rollType == 'info') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -249,6 +906,10 @@ export class Essence20Item extends Item {
         flavor: label,
         content: await foundry.applications.handlebars.renderTemplate(template, templateData),
       });
+
+      // The item's own `posted` Triggers (Piledriver - posting it is the gear's only sheet action: in Alt Mode, a space of
+      // Rough Terrain - rules/plugins/effects/rough-terrain-space.mjs).
+      await firePosted(this.actor, this);
     } else if (this.type == 'perk') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -256,7 +917,7 @@ export class Essence20Item extends Item {
       const label = `[${this.type}] ${this.name}`;
 
       let content = `Source: ${this.system.source || 'None'} <br>`;
-      content += `Prerequisite: ${this.system.prerequisite || 'None'} <br>`;
+      content += `Prerequisite: ${prerequisiteText(this) || 'None'} <br>`;
       content += `Description: ${this.system.description || 'None'}`;
 
       ChatMessage.create({
@@ -281,26 +942,200 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'weaponEffect') {
-      let weaponDataset = {};
+      // The actual attacker for this roll - almost always this.actor (the weaponEffect's own
+      // parent), but childRoller overrides it for a "roll on behalf of" case (e.g. a Vehicle's
+      // driver rolling its inherent Ram/Flyby attack). Resolved once, up front, so every helper
+      // below consistently sees the real roller instead of this.actor directly - a weaponEffect
+      // freshly resolved via fromUuid() off a compendium/unembedded source (as opposed to one
+      // already embedded on an actor) has a null this.actor until it's actually rolled, which
+      // used to crash several of these (e.g. isMultipleTargetsWeapon's own actor.system read)
+      // whenever only childRoller, not this.actor, was actually valid.
       const roller = childRoller || this.actor;
-      const skill = this.system.classification.skill;
-      const shift = roller.system.skills[skill].shift;
-      const shiftUp = roller.system.skills[skill].shiftUp;
+
+      // Time / Proximity / Detonator Bomb - rolling it plants it rather than attacking; it attacks
+      // when it goes off (items/attacks/planted-bombs.mjs). The Standard action was the one paid above.
+      const bombWeapon = this._dice._getParentWeapon(roller, this);
+      if (!dataset.bombDetonation && bombKind(bombWeapon)) {
+        const planted = await plantBomb(roller, this, bombWeapon);
+        if (!planted && spent?.spendId) {
+          await refund(roller, spent.spendId);
+        }
+
+        return;
+      }
+
+      // An item rule's early BeforeRoll refusal (the once-per-encounter weapon effects: Turbo Thunder Cannon's
+      // Energy Attack, Wing Missile Salvo - rules/plugins/rolls/early-before-roll.mjs). Checked before any of
+      // the pre-roll work below, refunding the action economy spend just like a cancelled roll,
+      // so a blocked attack never costs the actor their turn.
+      const { earlyRollRefusal } = await import("../rules/plugins/rolls/early-before-roll.mjs");
+      if (earlyRollRefusal(roller, this, dataset) !== null) {
+        if (spent?.spendId) {
+          await refund(roller, spent.spendId);
+        }
+
+        return;
+      }
+
+      // An AttackChoice rule's pick (Bring It All Down - rules/plugins/combat/attack-choice.mjs): asked before AoE
+      // placement (rather than as a Roll Options Dialog checkbox) because a radius option has to be known before the
+      // shape is even placed. No prompt when no rule applies to this attack.
+      const attackChoice = await ruleAttackChoice(roller, this);
+
+      // Area of Effect (GitHub #824) - see mechanics/combat/aoe-targeting.mjs's own doc comment. Only
+      // Blast/AoE-shaped attacks (system.shape set) trigger this; an ordinary single-target or
+      // Multiple-Targets attack rolls exactly as it always has, targets chosen by hand as usual.
+      // Concentrated Explosion / Concentrated Fire - BeforeArea rules (rules/plugins/combat/before-area.mjs).
+      const concentrated = await ruleBeforeArea(roller, this);
+      if (concentrated?.single) {
+        dataset = { ...dataset, ...concentrated.dataset };
+        const first = game.user.targets.first();
+        canvas.tokens?.setTargets?.(first ? [first.id] : []);
+      }
+
+      if (this.system.shape && !concentrated?.single) {
+        const aoeTokens = await placeAoeTemplate(roller, this, {
+          radiusMultiplier: attackChoice.radiusMultiplier,
+          radiusDeltaFeet: concentrated?.radiusDeltaFeet ?? 0,
+          shapeOverride: concentrated?.shape ?? null,
+        });
+
+        // Shaped Charges - a BeforeArea exclude rule. It re-targets what remains, so the roll (and BeforeRoll rules such as
+        // Horseshoes and Handgrenades' flat damage) sees it.
+        await ruleAreaExclusions(roller, this, aoeTokens);
+      }
+
+      // Mighty Strikes and No Need to Aim are BeforeRoll rules on their own items (they set / damage the
+      // targets just before the Roll Options Dialog).
+
+      let weaponDataset = {};
+      // A detonated bomb rolls its planter's Technology (items/attacks/planted-bombs.mjs).
+      const baseSkill = dataset.skillOverride ?? parentWeapon?.flags?.essence20?.attackSkill ?? this.system.classification.skill;
+      // A SkillSubstitution stage: attack rule (Brutal Might's Brawn for Might - rules/plugins/rolls/attack-skill-substitution.mjs),
+      // before the Skill's shifts are read.
+      const skill = ruleAttackSkill(roller, this, baseSkill);
+      // Targeting System (GI Joe CRB p.172): the driver fires it "using the vehicle's Targeting for
+      // the Skill Test".
+      const skillSource = childRoller && usesVehicleTargeting(this.actor, this._dice._getParentWeapon(this.actor, this))
+        && this.actor.system.skills?.[skill] ? this.actor : roller;
+      const shift = skillSource.system.skills[skill].shift;
+      const shiftUp = skillSource.system.skills[skill].shiftUp;
+      // The weaponEffect's own printed ↓ - Beastly, Wrestler and One With Your Weapon change it with
+      // their ItemModifier rules (rules/adapter.mjs#ruleDerived).
       const shiftDown = roller.system.skills[skill].shiftDown + this.system.shiftDown;
       const isSpecialized = roller.system.skills[skill].isSpecialized;
+      // Accurate (Weapon Effects and Traits, p.106) - see WeaponEffectItemData#accurateShiftUp's
+      // own comment (data/item/weapon-effect.mjs) for why this weaponEffect-level field is the
+      // first real mechanical hook for that trait.
+      const totalShiftUp = shiftUp + (this.system.accurateShiftUp ?? 0);
       weaponDataset = {
         ...dataset,
         shift,
         skill,
-        shiftUp,
+        shiftUp: totalShiftUp,
         shiftDown,
         isSpecialized,
+        // The AttackChoice pick - read back in dice.mjs (the shift computation, damageBonusValue, and the Armor
+        // Piercing/ignoreArmor recompute).
+        attackChoiceShiftUp: attackChoice.shiftUp,
+        attackChoiceDamage: attackChoice.damage,
+        attackChoiceArmorPiercing: attackChoice.armorPiercing,
       };
 
-      this._dice.handleSkillItemRoll(weaponDataset, this.actor, this);
+      const weaponRollResult = await this._rollWithRefund(weaponDataset, roller, spent);
+
+      // (Zord Mega-Weapon System's "1d2+1 attacks (hit or miss)" is counted by an afterRoll Trigger on the Feature.)
+
+      // (Salvaged's Fumble is an afterRoll Trigger rule on the upgrade.)
+
+      // Weapons changed for a while (items/attacks/weapon-perk-uses.mjs): Backblast's 1 Fire to everyone
+      // within 5 feet (or the attacker, on a Fumble), Airburst's Prone/Impaired, one-use traps, and
+      // a Fumble ending Explosive Ammo / Utility Loaders.
+      if (parentWeapon && weaponRollResult && !weaponRollResult.cancelled) {
+        await resolveWeaponChangesAfterAttack(roller, parentWeapon, weaponRollResult);
+        // A poison on the weapon is used up by the attack, hit or miss (items/gear/poison-coating.mjs).
+        await wipeCoating(parentWeapon);
+        // Never Unarmed / Brainstorm items fall apart on a Fumble (mechanics/resources/grants.mjs).
+        await endOnFumble(roller, parentWeapon, weaponRollResult);
+      }
+
+      // Shoot, You Fools! (Cobra Codex p.57) - "Any ally who attacks and fails suffers 1 Psychic
+      // Damage." Carried on the bonus attack it granted (mechanics/actions/action-perks.mjs).
+      if (spent?.psychicOnMiss && weaponRollResult && !weaponRollResult.cancelled && !weaponRollResult.success) {
+        await applyDamage(roller, spent.psychicOnMiss, 'psychic');
+      }
+
+      // Reload - see mechanics/combat/reload-trait.mjs's own doc comment. Flags the weapon for next time
+      // regardless of whether this shot hit; "fired" is what matters, "landed" isn't.
+      if (!weaponRollResult?.cancelled && parentWeapon?.system.traits?.includes('reload')) {
+        await requireReload(roller, parentWeapon);
+      }
+
+      // Fanning (A Jump Through Time, p.74): "After a Fanning Attack, the weapon gains the Reload
+      // trait" - see items/attacks/fanning.mjs. The gate above already honours the flag on a Fanning weapon.
+      if (!weaponRollResult?.cancelled && weaponRollResult?.fanned) {
+        await requireReload(roller, parentWeapon);
+      }
+
+      // Empty the Mag (GI Joe CRB, Vanguard, p.109): the weapon must be reloaded before its next use - whether or not the weapon has the Reload trait.
+      if (!weaponRollResult?.cancelled && weaponRollResult?.emptiedMag) {
+        await requireReload(roller, parentWeapon);
+      }
+
+      // Burst-Fire - see mechanics/combat/reload-trait.mjs's own doc comment. A second shot in the same round
+      // (the flag from a first shot already stamped this round) counts as if it had the Reload
+      // trait for the turn; either way, this shot itself stamps "fired this round" for next time.
+      if (!weaponRollResult?.cancelled && parentWeapon?.system.itemAndUpgradeTraits?.includes('burstFire')) {
+        if (hasBurstFiredThisRound(parentWeapon)) {
+          await requireReload(roller, parentWeapon);
+        }
+
+        await markBurstFiredThisRound(parentWeapon);
+      }
+
+      // Ongoing / Poison / Toxin (Cobra Codex, New Weapon Effects and Traits, p.93-94) - see
+      // mechanics/combat/ongoing-effects.mjs's own doc comment. Only the repeating-DAMAGE half; per
+      // explicit direction this project has no Poisoned status, so Poison/Toxin's own "causes the
+      // Poisoned Condition" clause stays narrative. Only a target the attack actually hit (and
+      // whose own damageValue for THIS entry is real) gets a pending effect - a pure-Condition
+      // Alternate Effect (e.g. Compound Z's own damageValue 0) has nothing to repeat.
+      const ongoingTraits = ['ongoing', 'poison', 'toxin'];
+      if (!weaponRollResult?.cancelled && parentWeapon?.system.traits?.some(trait => ongoingTraits.includes(trait))) {
+        // rollSkill returns one outcome per roll (several for Fanning / Multiple Targets), each
+        // holding its own per-target results.
+        const hitResults = (weaponRollResult.outcomes ?? []).flatMap(outcome => outcome.results ?? []);
+        for (const result of hitResults) {
+          if (result.success && result.targetUuid && result.damageValue > 0) {
+            const targetActor = await fromUuid(result.targetUuid);
+            await addOngoingEffect(targetActor, {
+              damageValue: result.damageValue,
+              damageType: result.damageType,
+              // Potent Poison's extra round is an ItemModifier rule on the upgrade (derived ongoingDuration).
+              roundsRemaining: parentWeapon.system.ongoingDuration,
+              sourceName: parentWeapon.name,
+            });
+          }
+        }
+      }
+
+      // Consumable (GI Joe CRB, Weapon Effects and Traits, p.147): "Using this weapon destroys it,
+      // even if it misses its target." Same one-potion-can-hold-several shape as the magic bauble
+      // consumption path below (spell branch) - a holder can carry more than one of the same
+      // Consumable weapon, and only the last one firing actually deletes the Item. isEmbedded
+      // guards the source the same way the bauble path does, so rolling straight out of a
+      // compendium or the world Items directory can't delete the master copy.
+      if (!weaponRollResult?.cancelled && parentWeapon?.system.traits?.includes('consumable')
+        && parentWeapon.isEmbedded) {
+        const remaining = (parentWeapon.system.quantity ?? 1) - 1;
+        if (remaining > 0) {
+          await parentWeapon.update({ 'system.quantity': remaining });
+        } else {
+          await parentWeapon.delete();
+        }
+      }
 
       // Decrement class feature, if applicable
-      const classFeature = this.actor.items.get(this.system.classFeatureId);
+      const classFeature = roller.items.get(this.system.classFeatureId);
       if (classFeature) {
         classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
       }
@@ -308,7 +1143,89 @@ export class Essence20Item extends Item {
       const essence = 'any';
       const skill = 'spellcasting';
       const shift = this.actor.system.skills.spellcasting.shift;
-      const shiftDown = this.system.cost;
+      // Casting Cost (MLP CRB p.132): a spell downshifts the caster's Spellcasting Skill by its
+      // cost, on top of any downshift already lingering from an earlier cast this scene.
+      const priorDownshift = this.actor.system.skills.spellcasting.shiftDown;
+
+      // Efficient / Master Spellcaster lower system.cost itself (their ItemModifier rules).
+      let castingCost = this.system.cost;
+
+      // Block Magic (Knights of Canterlot, Virtuoso Enchantment spell, p.49) - see
+      // items/magic/block-magic.mjs's own doc comment. "+1 to the cost of any spell you cast" while a
+      // target is under its effect. Applied after the Efficient/Master Spellcaster reduction (a
+      // real cost increase, not something those Perks should shrink away).
+      if (isBlockMagicActive(this.actor)) {
+        castingCost += 1;
+      }
+
+      // Extensions - Illusion Casting, Reach Out, Sharpcaster's free second roll (mechanics/item-hooks.mjs).
+      castingCost = await runSpellCost(this, castingCost, dataset);
+      if (castingCost === null) {
+        return;
+      }
+
+      // SpellCostDefer rules (Power Conservationist / Power Mastery - rules/plugins/resources/spell-cost-defer.mjs). The
+      // roll itself uses only the downshift already lingering from an earlier cast - THIS spell's own cost is applied to
+      // system.skills.spellcasting.shiftDown afterward instead (still below), so it doesn't affect the Skill Test being
+      // made to cast it.
+      const deferCost = ruleDefersSpellCost(this.actor, this);
+      const shiftDown = deferCost ? priorDownshift : priorDownshift + castingCost;
+
+      // The spell's own PreCast rules (Enchant's / Get To Know's Skill, Bestow Expertise's Skill and name -
+      // rules/plugins/picks/pre-cast.mjs). Picked before the roll so a cancelled cast spends nothing.
+      if (!(await runPreCast(this.actor, this))) {
+        return;
+      }
+
+      const sourceId = this.flags?.core?.sourceId ?? this._stats?.compendiumSource ?? this.flags?.essence20?.rulesSource;
+
+      const mindBeamEffect = sourceId == MIND_BEAM_ID ? await pickMindBeamEffect() : null;
+      if (sourceId == MIND_BEAM_ID && !mindBeamEffect) {
+        return;
+      }
+
+      // Area of Effect - see mechanics/combat/aoe-targeting.mjs. Only an area spell (system.shape set)
+      // places a shape; an ordinary single-target spell is targeted by hand as usual. Placed
+      // after every cancellable picker above, so backing out of one of those never costs the
+      // player a placement gesture, and before the roll, so dice.mjs's own checkEntries sees the
+      // targets it caught. Deliberately the same "a cancelled placement still rolls" behavior the
+      // weaponEffect branch above already has - placeAoeTemplate can't distinguish "cancelled"
+      // from "placed, caught nobody", and a blast that legitimately catches nobody must still
+      // resolve.
+      if (this.system.shape) {
+        await placeAoeTemplate(this.actor, this);
+      }
+
+      const spellDataset = {
+        ...dataset,
+        essence,
+        shift,
+        skill,
+        shiftDown,
+        mindBeamEffect,
+      };
+
+      await this._rollWithRefund(spellDataset, this.actor, spent);
+
+      // Unlike a single-roll shift, this cost lingers on the actor's Spellcasting Skill after
+      // the roll - only cleared via onRecoverSpellcastingDownshift/onSufferForSpellcastingDownshift
+      // (listener-misc-handler.mjs). The cost always ends up applied here eventually, whether or
+      // not it affected the roll that just happened.
+      await this.actor.update({ 'system.skills.spellcasting.shiftDown': priorDownshift + castingCost });
+    } else if (this.type == 'magicBauble') {
+      const essence = 'any';
+      const skill = 'spellcasting';
+      /* "If the spell calls for a Spellcasting Skill Test, you use your own Spellcasting Skill, or
+         the Spellcasting Skill noted on the Magic Bauble (whichever is higher)" (MLP CRB p.143).
+
+         This used to take the bauble's own shift unconditionally, which had it backwards for the
+         case the rule exists to cover: a trained spellcaster drinking a d2 potion was DOWNGRADED to
+         the potion's rank instead of keeping their own. The bauble only ever helps - it is a floor
+         under an untrained pony, not a ceiling on a skilled one. */
+      const shift = betterShift(this.actor.system.skills.spellcasting.shift, this.system.spellcastingShift);
+      // Whichever shift wins, any lingering Casting Cost downshift (MLP CRB p.132) still applies
+      // on top - the bauble supplies a rank, not immunity to what earlier casting has cost you.
+      const shiftDown = this.actor.system.skills.spellcasting.shiftDown;
       const spellDataset = {
         ...dataset,
         essence,
@@ -317,19 +1234,42 @@ export class Essence20Item extends Item {
         shiftDown,
       };
 
-      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
-    } else if (this.type == 'magicBauble') {
-      const essence = 'any';
-      const skill = 'spellcasting';
-      const shift = this.system.spellcastingShift;
-      const spellDataset = {
-        ...dataset,
-        essence,
-        shift,
-        skill,
-      };
+      const baubleResult = await this._rollWithRefund(spellDataset, this.actor, spent);
 
-      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
+      /* "As a consumable item, once any magic bauble is used, it is done. A potion is drunk, a
+         scroll is consumed by magic, a statue crumbles to dust... it can only ever be used once"
+         (MLP CRB p.143).
+
+         Deleted only once the roll has actually resolved. A cancelled roll refunds the action
+         economy just above, and a potion the player decided not to drink after all is still in
+         their saddlebag - consuming it there would destroy an item for a dialog they backed out
+         of, which is not recoverable from the sheet.
+
+         isEmbedded guards the source: rolling a bauble straight out of a compendium or the world
+         Items directory must consume nothing, or a single click would delete the master copy every
+         other actor's is made from. */
+      if (!baubleResult?.cancelled && this.isEmbedded) {
+        const name = this.name;
+        const actorName = this.actor?.name ?? '';
+        // A holder can carry several of the same potion, so one use spends one of them; the item
+        // itself only goes when the last is gone. Treat a missing quantity as 1 rather than 0, so
+        // a bauble authored before this field existed still behaves like a single potion.
+        const remaining = (this.system.quantity ?? 1) - 1;
+        if (remaining > 0) {
+          await this.update({ 'system.quantity': remaining });
+          ui.notifications.info(game.i18n.format('E20.MagicBaubleUsed', {
+            actor: actorName,
+            item: name,
+            remaining,
+          }));
+        } else {
+          await this.delete();
+          ui.notifications.info(game.i18n.format('E20.MagicBaubleConsumed', {
+            actor: actorName,
+            item: name,
+          }));
+        }
+      }
     } else {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });

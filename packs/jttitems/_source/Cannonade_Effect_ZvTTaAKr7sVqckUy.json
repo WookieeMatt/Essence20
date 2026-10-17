@@ -5,7 +5,12 @@
   "_id": "ZvTTaAKr7sVqckUy",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Cannonade's Targeting attack, dealing the listed Sharp and Fire damage in its blast area.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "<p>2 sharp and 2 fire</p>",
     "source": {
       "book": "A Jump Through Time",
@@ -16,7 +21,11 @@
       "style": "explosive"
     },
     "damageType": "sharp",
-    "damageValue": 4,
+    "damageValue": 2,
+    "secondaryDamage": {
+      "type": "fire",
+      "value": 2
+    },
     "isSpecialized": false,
     "numHands": 4,
     "numTargets": 1,
@@ -27,7 +36,8 @@
       "long": 900,
       "value": 300
     },
-    "shiftDown": 0
+    "shiftDown": 0,
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

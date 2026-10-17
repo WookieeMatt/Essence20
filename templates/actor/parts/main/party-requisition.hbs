@@ -1,0 +1,69 @@
+{{!--
+  Party Requisition tab (GI Joe CRB p.137-138 / TF CRB p.115-116 / PR CRB p.103). One shared
+  attempt pool for the whole squad, plus a Roll button per member's Requisitionable weapon/
+  armor. The button rolls as that member (their training/shifts, their chat card) but spends
+  one attempt from this pool. Nothing is enforced - pass/fail is on the chat card.
+--}}
+<section class="tab requisition party-requisition {{tabs.requisition.cssClass}}" data-tab="requisition" data-group="primary">
+  <div class="collapsible-item-container e20-border-accent requisition-tracker">
+
+    <div class="flexrow e20-align-center e20-gap-5 requisition-attempts">
+      <label>{{localize "E20.RequisitionAttempts"}}</label>
+      {{numberInput system.requisition.attempts name="system.requisition.attempts" min=0 step=1}}
+      <a class="requisition-reset" data-action="requisitionReset" data-tooltip="{{localize 'E20.RequisitionResetTooltip'}}">
+        {{localize 'E20.RequisitionReset'}} ({{system.requisitionMax}})
+      </a>
+      <label class="requisition-auto e20-nowrap" data-tooltip="{{localize 'E20.RequisitionAutoFromRosterHint'}}">
+        <input type="checkbox" name="system.requisition.autoFromRoster" {{checked system.requisition.autoFromRoster}} />
+        {{localize 'E20.RequisitionAutoFromRoster'}}
+      </label>
+    </div>
+
+    {{#if requisitionMembers.length}}
+      {{#each requisitionMembers as |member|}}
+      {{!-- data-requisition-member makes this block a drop target: party-sheet.mjs routes an
+           Item dropped anywhere inside it into a Requisition for THIS member. --}}
+      <div class="requisition-member" data-requisition-member="{{member.actor.id}}">
+        <div class="requisition-member-name">{{member.actor.name}}</div>
+        <div class="requisition-drop-hint">{{localize "E20.RequisitionDropHint"}}</div>
+
+        {{#if (or member.weapons.length member.armors.length)}}
+        <table class="tg requisition-table">
+          <thead>
+            <tr>
+              <th class="tg-td">{{localize "E20.RequisitionItem"}}</th>
+              <th class="tg-td">{{localize "E20.WeaponAvailability"}}</th>
+              <th class="tg-td">{{localize "E20.RequisitionAccess"}}</th>
+              <th class="tg-td">{{localize "E20.RequisitionDif"}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each member.weapons as |row|}}
+              {{> "systems/essence20/templates/actor/parts/misc/requisition-row.hbs" item=row.item access=row.access memberId=member.actor.id}}
+            {{/each}}
+            {{#each member.armors as |row|}}
+              {{> "systems/essence20/templates/actor/parts/misc/requisition-row.hbs" item=row.item access=row.access memberId=member.actor.id}}
+            {{/each}}
+          </tbody>
+        </table>
+        {{else}}
+        <div class="requisition-member-empty">{{localize 'E20.RequisitionMemberNoItems'}}</div>
+        {{/if}}
+      </div>
+      {{/each}}
+    {{else}}
+      <div class="e20-align-center">{{localize 'E20.RequisitionNoMembers'}}</div>
+    {{/if}}
+
+    {{#if system.requisition.log.length}}
+    <div class="requisition-log">
+      <div class="requisition-log-title">{{localize "E20.RequisitionLog"}}</div>
+      <ul>
+        {{#each system.requisition.log as |entry|}}
+          <li>{{entry.memberName}} &mdash; {{entry.itemName}} &mdash; {{lookup @root.config.availabilities entry.availability}} (DIF {{entry.dif}})</li>
+        {{/each}}
+      </ul>
+    </div>
+    {{/if}}
+  </div>
+</section>

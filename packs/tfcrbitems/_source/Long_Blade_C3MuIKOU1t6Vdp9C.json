@@ -5,6 +5,10 @@
   "_id": "C3MuIKOU1t6Vdp9C",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Sharp damage at Reach x2, with alternate effects hitting 2 targets (↓1) or 3 targets (↓2) at Reach.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,7 @@
     },
     "items": {
       "8070": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.2IRZcCJbUGFuEYMk",
+        "uuid": "Compendium.essence20.tf_crb.Item.2IRZcCJbUGFuEYMk",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Long Blade Alternate Effect",
         "type": "weaponEffect",
@@ -35,7 +39,7 @@
         "shiftDown": 1
       },
       "7ad1": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.uYAnV5vfucrRlJlr",
+        "uuid": "Compendium.essence20.tf_crb.Item.uYAnV5vfucrRlJlr",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Long Blade Effect",
         "type": "weaponEffect",
@@ -55,10 +59,30 @@
           "value": null
         },
         "shiftDown": 0
+      },
+      "3a69": {
+        "uuid": "Compendium.essence20.tf_crb.Item.4rgKqfYX9WXvJEX2",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Blade Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 3,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 2
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "long"

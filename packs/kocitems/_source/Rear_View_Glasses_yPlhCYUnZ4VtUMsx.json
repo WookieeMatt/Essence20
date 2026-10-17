@@ -1,0 +1,39 @@
+{
+  "folder": "byVUSmcidykORLHn",
+  "name": "Rear View Glasses",
+  "type": "gear",
+  "_id": "yPlhCYUnZ4VtUMsx",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing automatic. Left to the table: replaying what the glasses recorded.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 57
+    },
+    "quantity": 1,
+    "gearType": "clothes"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1790264082168,
+    "modifiedTime": 1790264082168,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
+  },
+  "_key": "!items!yPlhCYUnZ4VtUMsx"
+}

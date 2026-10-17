@@ -5,7 +5,12 @@
   "_id": "POCbEpC4PanqdQ5X",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Might melee attack dealing 1 Energy plus 1 Sharp damage to one target.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "A Jump Through Time",
@@ -16,7 +21,7 @@
       "style": "melee"
     },
     "damageType": "element",
-    "damageValue": 2,
+    "damageValue": 1,
     "isSpecialized": false,
     "numHands": 1,
     "numTargets": 1,
@@ -27,7 +32,11 @@
       "long": null,
       "value": null
     },
-    "shiftDown": 0
+    "shiftDown": 0,
+    "secondaryDamage": {
+      "type": "sharp",
+      "value": 1
+    }
   },
   "effects": [],
   "sort": 0,

@@ -3,6 +3,10 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: once per session, the GM may turn a roll you'd make with a Snag into an automatic failure.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "zvqM2q5iJSXoRMps",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 4 starting Health, +1 Strength, Ground Movement 35, the Tooth and Claw Perk, and the Monstrosity Alt Mode (you pick a Huge or Extended Alt Mode, and its movement - 40 ft Ground, 40 ft Aerial or 40 ft Aquatic). You pick Brawn or Might as your Origin Skill.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -21,13 +25,7 @@
       "9bd4": {
         "uuid": "Compendium.essence20.technorganic_secrets.Item.hRTGCxvA7dI4dSAS",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Monstrosity (Huge)",
-        "type": "altMode"
-      },
-      "da7e": {
-        "uuid": "Compendium.essence20.technorganic_secrets.Item.8eySZa8oyATSLALr",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Monstrosity (Extended)",
+        "name": "Monstrosity",
         "type": "altMode"
       }
     },

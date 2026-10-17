@@ -8,14 +8,33 @@ jobs:
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 17.9.x
           cache: npm
       - run: npm ci
-      - run: npm test
+      - name: Lint
+        run: npm run lint
+      - name: Unit tests
+        run: npm test -- --coverage
+      - name: Build
+        run: npm run build
+      - name: Compile compendium packs
+        run: npm run build:db
+      - name: Check system.json manifest sync
+        run: node scripts/check-manifest-sync.mjs
+      - name: Check pack content structure
+        run: node scripts/check-pack-content.mjs
+      - name: Check Active Effect keys
+        run: node scripts/check-effect-keys.mjs
+      - name: Check item rules
+        run: node scripts/check-rules.mjs
+      - name: Check release zip covers runtime folders
+        run: node scripts/check-release-zip.mjs
+      - name: Check pack cross-references
+        run: node scripts/check-pack-cross-references.mjs
       - run: echo "🍏 This job's status is ${{ job.status }}."

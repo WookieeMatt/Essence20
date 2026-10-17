@@ -1,0 +1,41 @@
+{
+  "folder": null,
+  "name": "Aerialbot Team Contact",
+  "type": "perk",
+  "_id": "fBWkmr53JPO0hI7K",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["ask:Max Allegiance Points 5+"]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Add it to a Contact made with Contact: Combiner Team so it shows on that Contact's Summon card. Left to the table: choosing and resolving the team's individual Contact Perks and their Allegiance costs.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 98
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "contact"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266977127,
+    "modifiedTime": 1790266977127,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!fBWkmr53JPO0hI7K"
+}

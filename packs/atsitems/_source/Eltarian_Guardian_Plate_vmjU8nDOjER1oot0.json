@@ -5,6 +5,10 @@
   "_id": "vmjU8nDOjER1oot0",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +4 Toughness and +1 Health (Bulwark) on the sheet. Regal: with a token targeted, Persuasion toward an ally or Intimidation toward an enemy gets ↑1, already counted in the Roll Options Dialog's Shift Up box.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -22,7 +26,8 @@
       "deflective",
       "regal"
     ],
-    "upgradeTraits": []
+    "upgradeTraits": [],
+    "bulwarkHealthBonus": 1
   },
   "effects": [
     {
@@ -41,7 +46,7 @@
       "_id": "VGwArTuHuXjeIDnH",
       "changes": [
         {
-          "key": "system.helath.bonus",
+          "key": "system.health.bonus",
           "mode": 2,
           "value": "1",
           "priority": null

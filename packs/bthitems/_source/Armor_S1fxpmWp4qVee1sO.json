@@ -1,0 +1,23 @@
+{
+  "name": "Armor",
+  "sorting": "a",
+  "folder": "1gGXPFnXXyQEdHbx",
+  "type": "Item",
+  "_id": "S1fxpmWp4qVee1sO",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774551377,
+    "modifiedTime": 1787774551377,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!folders!S1fxpmWp4qVee1sO"
+}

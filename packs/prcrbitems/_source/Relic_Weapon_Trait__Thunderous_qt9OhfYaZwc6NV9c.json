@@ -1,0 +1,41 @@
+{
+  "folder": "hrtEahWgQMWPiEmf",
+  "name": "Relic Weapon Trait: Thunderous",
+  "type": "perk",
+  "_id": "qt9OhfYaZwc6NV9c",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["self:has:Grid Relic Weapon"]},
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the once-per-day roar at ↑1 against enemies in a 15-foot cube, deafening them on a hit.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 61
+    },
+    "prerequisite": "",
+    "selectionLimit": 3,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1790265429871,
+    "modifiedTime": 1790265429871,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!qt9OhfYaZwc6NV9c"
+}

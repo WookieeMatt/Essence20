@@ -4,6 +4,10 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Speed Essence, starting Health, 30 ft aerial movement, the Frame Efficacy Perk and the Mini-Con Alt Mode choices.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -35,20 +39,14 @@
         "name": "Mini-Con (Firearm Enhancment Module)",
         "type": "altMode"
       },
-      "0ae0": {
-        "uuid": "Compendium.essence20.decepticon_directive.Item.oSn5EyMwso8Z1Ohh",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Mini-Con (Mini-Vehicle, Aerial)",
-        "type": "altMode"
-      },
       "c407": {
         "uuid": "Compendium.essence20.decepticon_directive.Item.JVIOxmSpPwPQDY1z",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Mini-Con (Mini-Vehicle, Ground)",
+        "name": "Mini-Con (Mini-Vehicle)",
         "type": "altMode"
       }
     },
-    "baseAerialMovement": 40,
+    "baseAerialMovement": 30,
     "baseAquaticMovement": 0,
     "baseGroundMovement": 0,
     "essences": [

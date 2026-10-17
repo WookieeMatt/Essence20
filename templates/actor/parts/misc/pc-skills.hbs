@@ -1,70 +1,116 @@
 <div class="skillscontainer">
+  {{!-- The 12 Essence points spent at creation (apps/starting-essences.mjs). The whole bar is the
+       button that opens them - highlighted with a warning while they still need spending (or
+       are not a legal 12), a quiet one-line summary once they are. --}}
+  {{#if startingEssences}}
+  <button type="button" class="starting-essences-bar {{#if startingEssences.needsAttention}}is-unassigned{{/if}}"
+    data-action="startingEssences" data-tooltip="{{localize 'E20.StartingEssencesOpen'}}">
+    {{#if startingEssences.needsAttention}}
+      <i class="fa-solid fa-circle-exclamation starting-essences-alert" inert></i>
+    {{/if}}
+    <span class="starting-essences-bar-text">
+      <i class="fa-solid fa-sliders" inert></i>
+      {{#unless startingEssences.needsAttention}}
+        {{localize 'E20.StartingEssencesBarAssigned'}}
+        {{startingEssences.base.strength}} / {{startingEssences.base.speed}} / {{startingEssences.base.smarts}} / {{startingEssences.base.social}}
+      {{else if startingEssences.isAssigned}}
+        {{localize 'E20.StartingEssencesBarInvalid'}}
+        {{startingEssences.base.strength}} / {{startingEssences.base.speed}} / {{startingEssences.base.smarts}} / {{startingEssences.base.social}}
+      {{else}}
+        {{localize 'E20.StartingEssencesBarUnassigned'}}
+      {{/unless}}
+    </span>
+  </button>
+  {{/if}}
   {{!-- Strength --}}
-  <div class="skills-container" style="border-color: {{system.color}};">
+  <div class="essence-column">
     <div class="essence-header strength">
       <span class="essence-label {{system.essenceRanks.strength}}">{{localize config.essences.strength}}</span>
       <input class="two-digit-input" type="number" name="system.essences.strength.value" value="{{system.essences.strength.value}}" min="0" step="1" />
       /
       <input class="two-digit-input" type="number" name="system.essences.strength.max" value="{{system.essences.strength.max}}" min="0" step="1" />
     </div>
-    <div class="essence-header">
-      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.strength.value skillRankString=system.skillRankAllocation.strength.string}}
-      <span>{{localize 'E20.ActorConditioning'}}</span>
-      <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" min="0" step="1" />
+    <div class="skills-container e20-border-accent">
+      <div class="essence-header">
+        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
+          skillRankAllocation=system.skillRankAllocation.strength.value skillRankString=system.skillRankAllocation.strength.string
+          defenseLabel=(lookup @root.config.defenses 'toughness') defenseValue=system.defenses.toughness.total defenseString=system.defenses.toughness.string}}
+        <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
+      </div>
+      <div class="flexrow skill-header e20-skill-header conditioning-row" data-e20-color="{{system.color}}">
+        <span class="skill-name">{{localize 'E20.ActorConditioning'}}</span>
+        {{!-- Editing moved into the Skill Picker app (skill-picker.hbs), same as the skill
+             shifts below - a plain read-only display here avoids a second editable copy of
+             the same field. It deliberately carries no input styling: wearing the old
+             .conditioning-input class left it looking like a box you could type in. --}}
+        <span class="conditioning-display">{{system.conditioning}}</span>
+      </div>
+      {{#each @root.config.skillsByEssence.strength as |skill|}}
+        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='strength' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
+      {{/each}}
     </div>
-    {{#each @root.config.skillsByEssence.strength as |skill|}}
-      {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='strength' skill=skill fields=(lookup @root.system.skills skill)}}
-    {{/each}}
   </div>
 
   {{!-- Speed --}}
-  <div class="skills-container" style="border-color: {{system.color}};">
+  <div class="essence-column">
     <div class="essence-header">
       <span class="essence-label {{system.essenceRanks.speed}}">{{localize config.essences.speed}}</span>
       <input class="two-digit-input" type="number" name="system.essences.speed.value" value="{{system.essences.speed.value}}" min="0" step="1" />
       /
       <input class="two-digit-input" type="number" name="system.essences.speed.max" value="{{system.essences.speed.max}}" min="0" step="1" />
     </div>
-    <div class="essence-header">
-      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.speed.value skillRankString=system.skillRankAllocation.speed.string}}
-      <span data-tooltip="{{localize 'E20.SpeedActionsTitle'}}">
-        {{localize "E20.SpeedActionsLabel"}}: {{numActions.movement}}{{localize "E20.SpeedActionsLabelMovement"}}, {{numActions.standard}}{{localize "E20.SpeedActionsLabelStandard"}}, {{numActions.free}}{{localize "E20.SpeedActionsLabelFree"}}
-      </span>
+    <div class="skills-container e20-border-accent">
+      <div class="essence-header">
+        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
+          skillRankAllocation=system.skillRankAllocation.speed.value skillRankString=system.skillRankAllocation.speed.string
+          defenseLabel=(lookup @root.config.defenses 'evasion') defenseValue=system.defenses.evasion.total defenseString=system.defenses.evasion.string}}
+        <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
+      </div>
+      {{#each @root.config.skillsByEssence.speed as |skill|}}
+        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='speed' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
+      {{/each}}
     </div>
-    {{#each @root.config.skillsByEssence.speed as |skill|}}
-      {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='speed' skill=skill fields=(lookup @root.system.skills skill)}}
-    {{/each}}
   </div>
 
   {{!-- Smarts --}}
-  <div class="skills-container" style="border-color: {{system.color}};">
+  <div class="essence-column">
     <div class="essence-header">
       <span class="essence-label {{system.essenceRanks.smarts}}">{{localize config.essences.smarts}}</span>
       <input class="two-digit-input" type="number" name="system.essences.smarts.value" value="{{system.essences.smarts.value}}" min="0" step="1" />
       /
       <input class="two-digit-input" type="number" name="system.essences.smarts.max" value="{{system.essences.smarts.max}}" min="0" step="1" />
     </div>
-    <div class="essence-header">
-      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.smarts.value skillRankString=system.skillRankAllocation.smarts.string}}
+    <div class="skills-container e20-border-accent">
+      <div class="essence-header">
+        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
+          skillRankAllocation=system.skillRankAllocation.smarts.value skillRankString=system.skillRankAllocation.smarts.string
+          defenseLabel=(lookup @root.config.defenses 'willpower') defenseValue=system.defenses.willpower.total defenseString=system.defenses.willpower.string}}
+        <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
+      </div>
+     {{#each @root.config.skillsByEssence.smarts as |skill|}}
+        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='smarts' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
+      {{/each}}
     </div>
-   {{#each @root.config.skillsByEssence.smarts as |skill|}}
-      {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='smarts' skill=skill fields=(lookup @root.system.skills skill)}}
-    {{/each}}
   </div>
 
   {{!-- Social --}}
-  <div class="skills-container" style="border-color: {{system.color}};">
+  <div class="essence-column">
     <div class="essence-header">
       <span class="essence-label {{system.essenceRanks.social}}">{{localize config.essences.social}}</span>
       <input class="two-digit-input" type="number" name="system.essences.social.value" value="{{system.essences.social.value}}" min="0" step="1" />
       /
       <input class="two-digit-input" type="number" name="system.essences.social.max" value="{{system.essences.social.max}}" min="0" step="1" />
     </div>
-    <div class="essence-header">
-      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.social.value skillRankString=system.skillRankAllocation.social.string}}
+    <div class="skills-container e20-border-accent">
+      <div class="essence-header">
+        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
+          skillRankAllocation=system.skillRankAllocation.social.value skillRankString=system.skillRankAllocation.social.string
+          defenseLabel=(lookup @root.config.defenses 'cleverness') defenseValue=system.defenses.cleverness.total defenseString=system.defenses.cleverness.string}}
+        <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
+      </div>
+      {{#each @root.config.skillsByEssence.social as |skill|}}
+        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
+      {{/each}}
     </div>
-    {{#each @root.config.skillsByEssence.social as |skill|}}
-      {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}
-    {{/each}}
   </div>
 </div>

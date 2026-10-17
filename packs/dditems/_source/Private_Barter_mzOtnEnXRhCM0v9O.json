@@ -5,6 +5,10 @@
   "_id": "mzOtnEnXRhCM0v9O",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Chat card: when you use Cache I, the card marks one use as the unrestricted pick of any item for the scene. Left to the table: the once-per-session limit (the system resets it each combat) and the item itself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -1,0 +1,150 @@
+{
+  "folder": "3Xd7wb3siXcOKp2u",
+  "name": "Farmer",
+  "type": "role",
+  "_id": "bufk1DTzM0G7WiW5",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: You Know, the Farmer? and Mercantile Store at level 1, plus the Essence increases and General Perk picks at the listed levels. Your Focus (Rancher or Tiller) adds the Focus Perks.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 34
+    },
+    "items": {
+      "Ulhx": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.JlAdKUr6l7detWKs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "You Know, the Farmer?",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "onqg": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.aP7MMWqiINdM5vlg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mercantile Store",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ],
+      "social": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level20"
+      ],
+      "speed": [
+        "level5",
+        "level9",
+        "level13",
+        "level17"
+      ],
+      "strength": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level18"
+      ]
+    },
+    "effectiveLevelDivisor": 2,
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "hasSpectrumShifted": false,
+    "isAdditive": false,
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level2",
+        "level3",
+        "level5",
+        "level6",
+        "level7",
+        "level8",
+        "level9",
+        "level10",
+        "level11",
+        "level12",
+        "level13",
+        "level14",
+        "level15",
+        "level16",
+        "level17",
+        "level18",
+        "level19",
+        "level20"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
+    "upgrades": {
+      "armors": {
+        "trained": []
+      }
+    },
+    "version": "welcomeToNightVale",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787762210188,
+    "modifiedTime": 1787762210188,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!bufk1DTzM0G7WiW5"
+}

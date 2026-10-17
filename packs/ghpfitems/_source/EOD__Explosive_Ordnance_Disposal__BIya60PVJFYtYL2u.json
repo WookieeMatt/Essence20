@@ -1,0 +1,41 @@
+{
+  "folder": "9yEyQWJnmCubFoI8",
+  "name": "EOD (Explosive Ordnance Disposal)",
+  "type": "perk",
+  "_id": "BIya60PVJFYtYL2u",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["ask:Technology (Explosives) Specialization"]},
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the free Technology (Explosives) kit and the Technology test against an explosive's Availability DIF to disarm it.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 174
+    },
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1787763529613,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!BIya60PVJFYtYL2u"
+}

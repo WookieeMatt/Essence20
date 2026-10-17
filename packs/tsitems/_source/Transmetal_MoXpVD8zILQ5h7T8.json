@@ -1,0 +1,106 @@
+{
+  "folder": "gE6lEc3pTjUOLlPQ",
+  "name": "Transmetal",
+  "type": "perk",
+  "_id": "MoXpVD8zILQ5h7T8",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"movement","label":"Movement","from":"movement","only":["aerial","ground","swim"],"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"Movement","label":"Transmetal (Alt Mode Ground: 40ft)","movement":"ground","stage":"afterGravity","op":"add","value":40,"when":["rule:choiceHas:movement:ground","self:transformed","not:self:data:system.movement.ground.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Ground: up to 40ft)","movement":"ground","stage":"afterGravity","op":"add","value":"max(0, 40 - @actor.system.movement.ground.altMode)","when":["rule:choiceHas:movement:ground","self:transformed","self:data:system.movement.ground.altMode>0","not:self:data:system.movement.aerial.altMode>0","not:self:data:system.movement.burrow.altMode>0","not:self:data:system.movement.climb.altMode>0","not:self:data:system.movement.swim.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Ground: +20ft)","movement":"ground","stage":"afterGravity","op":"add","value":20,"when":["rule:choiceHas:movement:ground","self:transformed","self:data:system.movement.ground.altMode>0",{"any":["self:data:system.movement.aerial.altMode>0","self:data:system.movement.burrow.altMode>0","self:data:system.movement.climb.altMode>0","self:data:system.movement.swim.altMode>0"]}]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aerial: 40ft)","movement":"aerial","stage":"afterGravity","op":"add","value":40,"when":["rule:choiceHas:movement:aerial","self:transformed","not:self:data:system.movement.aerial.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aerial: up to 40ft)","movement":"aerial","stage":"afterGravity","op":"add","value":"max(0, 40 - @actor.system.movement.aerial.altMode)","when":["rule:choiceHas:movement:aerial","self:transformed","self:data:system.movement.aerial.altMode>0","not:self:data:system.movement.burrow.altMode>0","not:self:data:system.movement.climb.altMode>0","not:self:data:system.movement.ground.altMode>0","not:self:data:system.movement.swim.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aerial: +20ft)","movement":"aerial","stage":"afterGravity","op":"add","value":20,"when":["rule:choiceHas:movement:aerial","self:transformed","self:data:system.movement.aerial.altMode>0",{"any":["self:data:system.movement.burrow.altMode>0","self:data:system.movement.climb.altMode>0","self:data:system.movement.ground.altMode>0","self:data:system.movement.swim.altMode>0"]}]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aquatic: 40ft)","movement":"swim","stage":"afterGravity","op":"add","value":40,"when":["rule:choiceHas:movement:swim","self:transformed","not:self:data:system.movement.swim.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aquatic: up to 40ft)","movement":"swim","stage":"afterGravity","op":"add","value":"max(0, 40 - @actor.system.movement.swim.altMode)","when":["rule:choiceHas:movement:swim","self:transformed","self:data:system.movement.swim.altMode>0","not:self:data:system.movement.aerial.altMode>0","not:self:data:system.movement.burrow.altMode>0","not:self:data:system.movement.climb.altMode>0","not:self:data:system.movement.ground.altMode>0"]},
+      {"type":"Movement","label":"Transmetal (Alt Mode Aquatic: +20ft)","movement":"swim","stage":"afterGravity","op":"add","value":20,"when":["rule:choiceHas:movement:swim","self:transformed","self:data:system.movement.swim.altMode>0",{"any":["self:data:system.movement.aerial.altMode>0","self:data:system.movement.burrow.altMode>0","self:data:system.movement.climb.altMode>0","self:data:system.movement.ground.altMode>0"]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness. When added, you pick Ground, Aerial or Aquatic; in Alt Mode that Movement becomes 40ft, or gets +20ft if your Alt Mode already moves more than one way.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 31
+    },
+    "items": {},
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "hasChoice": false,
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": false,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence",
+    "version": "transformers",
+    "value": 40
+  },
+  "effects": [
+    {
+      "origin": "Item.MoXpVD8zILQ5h7T8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "TrnsmtlTghD22aa1",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Transmetal Toughness",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "14.364",
+        "systemId": "essence20",
+        "systemVersion": "6.0.0",
+        "createdTime": 1790658703429,
+        "modifiedTime": 1790658703429,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!MoXpVD8zILQ5h7T8.TrnsmtlTghD22aa1"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1790266682596,
+    "modifiedTime": 1790266682596,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!MoXpVD8zILQ5h7T8"
+}

@@ -5,6 +5,10 @@
   "_id": "Sa7lOgLdElBgL4v4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: you can Mass Shift any number of times per scene; ignore the daily count.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

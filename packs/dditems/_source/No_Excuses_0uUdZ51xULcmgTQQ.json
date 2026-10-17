@@ -5,6 +5,10 @@
   "_id": "0uUdZ51xULcmgTQQ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: your Issue a Command card gets a button that lets each ally spend 1 Energon to double the bonus they receive.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

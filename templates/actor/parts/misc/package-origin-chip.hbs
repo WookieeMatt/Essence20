@@ -1,0 +1,12 @@
+{{!--
+  Shows which Equipment Package granted this Item (GI Joe CRB p.136-138 / TF CRB p.114-115 /
+  PR CRB p.103), stamped onto flags.essence20.equipmentPackage by onEquipmentPackageDrop.
+  Displays the Package's bucket (Standard Issue / Qualified / Mission Critical / Personal),
+  falling back to the Package's name, with the name always in the tooltip.
+--}}
+{{#if item.flags.essence20.equipmentPackage}}
+  <span class="chip package-origin-chip" name="chip.equipmentPackage" data-tooltip="{{item.flags.essence20.equipmentPackage.name}}">
+    <i class="fas fa-box-open"></i>
+    {{#if item.flags.essence20.equipmentPackage.packageType}}{{localize (lookup @root.config.equipmentPackageTypes item.flags.essence20.equipmentPackage.packageType)}}{{else}}{{item.flags.essence20.equipmentPackage.name}}{{/if}}
+  </span>
+{{/if}}

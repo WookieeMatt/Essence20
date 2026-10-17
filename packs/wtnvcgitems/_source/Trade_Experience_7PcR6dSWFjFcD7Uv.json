@@ -1,0 +1,62 @@
+{
+  "folder": "vrm5ZOaEWJRM5rhs",
+  "name": "Trade Experience",
+  "type": "perk",
+  "_id": "7PcR6dSWFjFcD7Uv",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["self:hasType:origin:Engineer"]},
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Trade Experience ({choice.skill}: ignores the first ↓1)","when":["skill:{choice.skill}"],"ignoreDownshift":1},
+      {"type":"Reroll","mode":"ones","target":"skillDice","reset":"none","maxUses":0,"skills":["{choice.skill}"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: you pick one Smarts or Speed Skill when you add it. Automatic: tests with that Skill open the Roll Options Dialog with the Downshift box 1 lower (the first ↓1 is cancelled). Chat card: those tests get a reroll button for Skill Dice that came up 1.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 30
+    },
+    "type": "origin",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!7PcR6dSWFjFcD7Uv"
+}

@@ -5,6 +5,10 @@
   "_id": "08eEsTl0DoeddtCy",
   "img": "systems/essence20/assets/icons/weapons/telescopic-baton.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for 2 Stun, with a Blunt damage alternate effect; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -57,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
@@ -71,6 +73,7 @@
     },
     "traits": [
       "blunt",
+      "powerWeapon",
       "silent"
     ],
     "upgradeTraits": [],

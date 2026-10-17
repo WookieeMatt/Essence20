@@ -5,6 +5,10 @@
   "_id": "6Q8DtrH5I6sgJyR9",
   "img": "systems/essence20/assets/icons/weapons/poison.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its effect; its ongoing damage and consumable use are tracked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -46,8 +50,9 @@
       "ingested": true,
       "inhaled": false
     },
+    "prerequisites": {"when":[{"any":["self:skill:infiltration>=d4","self:skill:science>=d4"]}]},
     "requirements": {
-      "custom": "Science d4",
+      "custom": "",
       "skill": "infiltration",
       "shift": "d4"
     },
@@ -59,7 +64,8 @@
     "transformerMode": "modeBotMode",
     "upgradeTraits": [],
     "usesPerScene": null,
-    "poisonType": "poison"
+    "poisonType": "poison",
+    "ongoingDuration": 5
   },
   "effects": [],
   "sort": 0,

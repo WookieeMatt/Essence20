@@ -1,5 +1,6 @@
+import { promptUpgradeChoice } from "../items/attacks/weapon-upgrades.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
-import { createId } from "../helpers/utils.mjs";
+import { createId } from "../util/utils.mjs";
 import { onPerkDelete, setPerkValues, setPerkAdvancesName } from "./perk-handler.mjs";
 
 /**
@@ -30,9 +31,18 @@ export async function onAttachableParentDrop(actor, droppedItem, dropFunc) {
  * @param {EquipmentPackage} droppedItem The equipmentPackage that is being dropped on the actor
  */
 export async function onEquipmentPackageDrop(actor, droppedItem) {
+  // Recorded on every Item this Package grants, so the Gear tab can show where the gear came
+  // from (its Equipment Assignment bucket - see EquipmentPackageItemData / package-origin-chip).
+  const equipmentPackageTag = {
+    name: droppedItem.name,
+    packageType: droppedItem.system.packageType ?? null,
+  };
+
   for (const [, item] of Object.entries(droppedItem.system.items)) {
     const itemToCreate = await fromUuid(item.uuid);
     const parentItem = await Item.create(itemToCreate, { parent: actor });
+    await parentItem.setFlag('essence20', 'equipmentPackage', equipmentPackageTag);
+
     if (["armor", "weapon"].includes(parentItem.type)) {
       await createItemCopies(parentItem.system.items, actor, "upgrade", parentItem);
     }
@@ -46,68 +56,162 @@ export async function onEquipmentPackageDrop(actor, droppedItem) {
 }
 
 /**
+ * Grants a single copy of an Item collection entry to its owner - the actual Item.create plus
+ * all of the type-specific bookkeeping (advances-stacking dedup, altMode's canTransform flag,
+ * upgrade/weaponEffect attachment folding, and the sourceId/parentId flags that
+ * deleteAttachmentsForItem() later needs to find and remove this same copy again). Shared by
+ * createItemCopies()'s own per-entry loop and by a role-level Perk choice's resolution (see
+ * ChoicesSelector's "rolePerk" action, choices-selector.mjs) - both are "grant exactly one
+ * collection entry," just triggered from different places (an unconditional loop vs. a player's
+ * dialog pick).
+ * @param {String} key The entry's own key within the collection (items[key] === item)
+ * @param {Object} item The collection entry itself (uuid/type/level/etc.)
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item
+ * @return {Promise<Boolean>} Whether a copy was actually created (false if this was an
+ *                              advances-type Perk the owner already has, stacked instead)
+ */
+export async function grantItemEntry(key, item, owner, parentItem) {
+  const itemToCreate = await fromUuid(item.uuid);
+
+  if (itemToCreate.type == 'perk' && itemToCreate.system.advances.canAdvance) {
+    for (const ownerItem of owner.items) {
+      const ownerItemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats?.compendiumSource ?? ownerItem?.flags?.essence20?.rulesSource;
+      if (ownerItemSourceId == itemToCreate.uuid) {
+        const newValue = ownerItem.system.advances.currentValue + ownerItem.system.advances.increaseValue;
+        await ownerItem.update({
+          "system.advances.currentValue": newValue,
+        });
+        setPerkAdvancesName(ownerItem, itemToCreate.name);
+        return false;
+      }
+    }
+  }
+
+  const newItem = await Item.create(itemToCreate, { parent: owner });
+
+  if (item.type == 'perk') {
+    await setPerkValues(owner, newItem, null, null, item.uuid);
+  }
+
+  if (newItem.type == "altMode") {
+    await owner.update({
+      "system.canTransform": true,
+    });
+  }
+
+  if (["upgrade", "weaponEffect"].includes(newItem.type) && ["weapon", "armor"].includes(parentItem.type)) {
+    const newKey = await setEntryAndAddItem(newItem, parentItem);
+    newItem.setFlag('essence20', 'collectionId', newKey);
+
+    // A plain key (no "-=" prefix - that's the old, now-deprecated deletion syntax, which Foundry
+    // v14 logs a compatibility warning for and won't actually apply) paired with ForcedDeletion
+    // as the value is what actually deletes it - see item-sheet.mjs's own _onObjectDelete.
+    const deleteString = `system.items.${key}`;
+    await parentItem.update({[deleteString]: new foundry.data.operators.ForcedDeletion()});
+  } else {
+    newItem.setFlag('essence20', 'collectionId', key);
+  }
+
+  newItem.setFlag('core', 'sourceId', item.uuid);
+  newItem.setFlag('essence20', 'parentId', parentItem._id);
+  return true;
+}
+
+/**
+ * Opens a dialog letting the player choose exactly one Item from a group of mutually-exclusive
+ * alternatives that just came into range during a level-up/Role-grant pass (see
+ * createItemCopies()'s choiceGroup handling below) - e.g. Power Rangers' Spectrum Modification
+ * Perks (A Jump Through Time p.44-47), where Black Ranger's level 2 can grant either "Whatever
+ * We Need" or "Iron Bravado", never both. Non-blocking, like every other choice dialog in this
+ * codebase (ChoicesSelector, EssenceProgressionSelector, etc.) - render(true) only waits for the
+ * dialog to paint, not for the player's pick; the actual grant happens later, inside
+ * ChoicesSelector's own "rolePerk" action handler.
+ * @param {Array<[String, Object]>} group The [key, entry] pairs sharing this choiceGroup
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item (e.g. the Role)
+ */
+async function promptRolePerkChoice(group, owner, parentItem) {
+  const choices = {};
+  for (const [key, entry] of group) {
+    choices[key] = {
+      chosen: false,
+      value: key,
+      label: entry.name,
+      uuid: entry.uuid,
+      entry,
+    };
+  }
+
+  new ChoicesSelector(
+    choices, owner, 'E20.SelectRolePerk', 'E20.SelectRolePerkTitle', parentItem,
+    null, null, null, null, null, 'rolePerk',
+  ).render(true);
+}
+
+/**
  * Creates copies of Items for given IDs
  * @param {Object[]} items The Item entries to copy
  * @param {Actor} owner The Items' owner
  * @param {String} type The type of Items to drop
  * @param {Item} parentItem The Items' parent Item
  * @param {Number} lastProcessedLevel The flag for the last time the Actor changed level
+ * @param {Number} currentLevel (Optional) The level to compare item.level against, in place of
+ *                               owner.system.level - used by an "additive" Role (e.g. Old Hand)
+ *                               whose own table runs on a level independent of the Actor's
+ *                               real character level. Defaults to owner.system.level.
  */
-export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
+export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null, currentLevel=null) {
   let copyWasCreated = false;
-  let skipToNext = false;
+  const effectiveLevel = currentLevel ?? owner.system.level;
+
+  // Entries can share both a "level" and a "choiceGroup" key to mark themselves as mutually-
+  // exclusive alternatives. Entries without a choiceGroup - the overwhelming majority, including
+  // entries that legitimately share a level WITHOUT being alternatives (e.g. Black Ranger's own
+  // level 2 also always grants "You Got This!" unconditionally, alongside whichever of the
+  // Spectrum Modification pair is chosen) - are entirely unaffected by this and keep being
+  // granted unconditionally below, exactly as before choiceGroup existed.
+  const choiceGroups = new Map();
+  const ungroupedEntries = [];
+
   for (const [key, item] of Object.entries(items)) {
+    if (item.type != type) {
+      continue;
+    }
 
-    if (item.type == type) {
-      const createNewItem =
-        !["role", "focus"].includes(parentItem.type)
-        || !item.level || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
+    const inWindow =
+      !["role", "focus"].includes(parentItem.type)
+      || !item.level || (item.level <= effectiveLevel && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
+    if (!inWindow) {
+      continue;
+    }
 
-      if (createNewItem) {
-        const itemToCreate = await fromUuid(item.uuid);
+    if (item.choiceGroup) {
+      if (!choiceGroups.has(item.choiceGroup)) {
+        choiceGroups.set(item.choiceGroup, []);
+      }
 
-        if (itemToCreate.type == 'perk' && itemToCreate.system.advances.canAdvance) {
-          for (const ownerItem of owner.items) {
-            if (ownerItem._stats.compendiumSource == itemToCreate.uuid) {
-              const newValue = ownerItem.system.advances.currentValue + ownerItem.system.advances.increaseValue;
-              await ownerItem.update({
-                "system.advances.currentValue": newValue,
-              });
-              setPerkAdvancesName(ownerItem, itemToCreate.name);
-              skipToNext = true;
-              break;
-            }
-          }
+      choiceGroups.get(item.choiceGroup).push([key, item]);
+    } else {
+      ungroupedEntries.push([key, item]);
+    }
+  }
 
-          if (skipToNext) {
-            continue;
-          }
-        }
+  for (const [key, item] of ungroupedEntries) {
+    if (await grantItemEntry(key, item, owner, parentItem)) {
+      copyWasCreated = true;
+    }
+  }
 
-        const newItem = await Item.create(itemToCreate, { parent: owner });
-
-        if (item.type == 'perk') {
-          await setPerkValues(owner, newItem, null);
-        }
-
-        if (newItem.type == "altMode") {
-          await owner.update({
-            "system.canTransform": true,
-          });
-        }
-
-        if (["upgrade", "weaponEffect"].includes(newItem.type) && ["weapon", "armor"].includes(parentItem.type)) {
-          const newKey = await setEntryAndAddItem(newItem, parentItem);
-          newItem.setFlag('essence20', 'collectionId', newKey);
-
-          const deleteString = `system.items.-=${key}`;
-          await parentItem.update({[deleteString]: null});
-        } else {
-          newItem.setFlag('essence20', 'collectionId', key);
-        }
-
-        newItem.setFlag('core', 'sourceId', item.uuid);
-        newItem.setFlag('essence20', 'parentId', parentItem._id);
+  for (const group of choiceGroups.values()) {
+    if (group.length > 1) {
+      // A real choice - divert to a dialog instead of granting every alternative.
+      await promptRolePerkChoice(group, owner, parentItem);
+    } else {
+      // Only one alternative is actually available right now (the others were never defined,
+      // or were already granted some other way) - nothing to choose, so just grant it.
+      const [key, item] = group[0];
+      if (await grantItemEntry(key, item, owner, parentItem)) {
         copyWasCreated = true;
       }
     }
@@ -138,7 +242,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
   }
 
   if (upgradableItems.length == 1) {
-    _attachItem(upgradableItems[0], dropFunc);
+    _attachItem(actor, upgradableItems[0], dropFunc);
   } else if (upgradableItems.length > 1) {
     const choices = {};
     for (const upgradableItem of upgradableItems) {
@@ -169,24 +273,65 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 export async function _attachSelectedItemOptionHandler(actor, itemId, dropFunc) {
   if (itemId) {
     const item = await fromUuid(itemId);
-    _attachItem(item, dropFunc);
+    _attachItem(actor, item, dropFunc);
   }
 }
 
 /**
  * Creates the attachment for the Actor and attaches it to the given Item
+ * @param {Actor} actor The Actor receiving the attachment
  * @param {Item} targetItem The item to attach to
  * @param {Function} dropFunc The function to call to complete the drop
- * @private
  */
-async function _attachItem(targetItem, dropFunc) {
+export async function _attachItem(actor, targetItem, dropFunc) {
   const newattachedItemList = await dropFunc();
   const newattachedItem = newattachedItemList[0];
   newattachedItem.setFlag('essence20', 'parentId', targetItem._id);
   if (targetItem) {
     const key = await setEntryAndAddItem(newattachedItem, targetItem);
     newattachedItem.setFlag('essence20', 'collectionId', key);
+
+    // Explosive Rounds / Manipulative (TF CRB, also GI Joe CRB) - an Upgrade whose own printed
+    // benefit is an ALTERNATE weaponEffect on the same weapon (a different attack profile you can
+    // choose to use instead of the base one), not a stat tweak to the existing effect. This is the
+    // only mechanical shape for "granted by an Upgrade" a weaponEffect otherwise has (every other
+    // weaponEffect on a weapon is granted directly by dropping the weapon itself, per
+    // onAttachableParentDrop above) - system.linkedWeaponEffect names the compendium weaponEffect
+    // this Upgrade grants, attached here exactly like a directly-dropped weaponEffect would be.
+    // Elemental Projector, Biomechanical Weapon and the Modular upgrades need a choice when they go on
+    // (items/attacks/weapon-upgrades.mjs#promptUpgradeChoice).
+    if (newattachedItem.type == 'upgrade') {
+      await promptUpgradeChoice(newattachedItem);
+    }
+
+    if (newattachedItem.type == 'upgrade' && newattachedItem.system.linkedWeaponEffect) {
+      await grantLinkedWeaponEffect(actor, newattachedItem, targetItem);
+    }
+
+    // Its prerequisites, now that the item it went on is known (rules/prerequisites.mjs).
+    const { checkAttached } = await import("../rules/prerequisites.mjs");
+    await checkAttached(actor, newattachedItem, targetItem);
   }
+}
+
+/**
+ * Grants the weaponEffect an Upgrade's own system.linkedWeaponEffect names, attached to the same
+ * weapon the Upgrade itself was just attached to - see _attachItem's own doc comment above.
+ * @param {Actor} actor The Actor receiving the linked weaponEffect
+ * @param {Item} upgradeItem The just-attached Upgrade naming the linked weaponEffect
+ * @param {Item} targetItem The weapon both the Upgrade and its linked weaponEffect attach to
+ */
+export async function grantLinkedWeaponEffect(actor, upgradeItem, targetItem) {
+  const effectSource = await fromUuid(upgradeItem.system.linkedWeaponEffect);
+  if (!effectSource) {
+    return;
+  }
+
+  const newEffect = await Item.create(effectSource, { parent: actor });
+  newEffect.setFlag('essence20', 'parentId', targetItem._id);
+  newEffect.setFlag('core', 'sourceId', upgradeItem.system.linkedWeaponEffect);
+  const key = await setEntryAndAddItem(newEffect, targetItem);
+  newEffect.setFlag('essence20', 'collectionId', key);
 }
 
 /**
@@ -224,10 +369,15 @@ export function createEntry(droppedItem, targetItem) {
       entry['availability'] = droppedItem.system.availability;
       entry['benefit'] = droppedItem.system.benefit;
       entry['description'] = droppedItem.system.description;
+      // Deprecated 2026-10-07 (with system.prerequisite): the sheet shows the attached item's tags through its uuid
+      // (rules/prerequisites.mjs#prerequisiteText) and reads this copy only as a fallback when there are none. Drop it in 6.1.
       entry['prerequisite'] = droppedItem.system.prerequisite;
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
+      // The traits this upgrade takes AWAY - see documents/item.mjs#_prepareTraits, which reads
+      // this snapshot rather than the upgrade Item itself.
+      entry['removedTraits'] = droppedItem.system.removedTraits;
       return entry;
     }
 
@@ -270,7 +420,8 @@ export function createEntry(droppedItem, targetItem) {
 
     break;
   case "perk":
-    if (droppedItem.type == "perk") {
+    // A Perk can grant a Power as well as a Perk - the Nano Infusion Perks' chosen nanomite Power.
+    if (["perk", "power"].includes(droppedItem.type)) {
       entry['role'] = null;
       return entry;
     }
@@ -298,6 +449,7 @@ export function createEntry(droppedItem, targetItem) {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
       entry['damageType'] = droppedItem.system.damageType;
+      entry['secondaryDamage'] = droppedItem.system.secondaryDamage;
       entry['numHands'] = droppedItem.system.numHands;
       entry['numTargets'] = droppedItem.system.numTargets;
       entry['radius'] = droppedItem.system.radius;
@@ -311,18 +463,26 @@ export function createEntry(droppedItem, targetItem) {
     break;
   case "weapon":
     if (droppedItem.type == "upgrade" && droppedItem.system.type == "weapon") {
+      // (No aimShiftBonus snapshot: a Laser Sight's Aim bonus is the upgrade's own AimBonus rule since 2026-10-07.)
       entry['availability'] = droppedItem.system.availability;
       entry['benefit'] = droppedItem.system.benefit;
       entry['description'] = droppedItem.system.description;
+      // Deprecated 2026-10-07 - see the armor branch above.
       entry['prerequisite'] = droppedItem.system.prerequisite;
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
+      // See the armor branch above.
+      entry['removedTraits'] = droppedItem.system.removedTraits;
+      // See _attachItem's own doc comment - the actual granting happens there, this is just the
+      // same read-only snapshot every other Upgrade field above gets.
+      entry['linkedWeaponEffect'] = droppedItem.system.linkedWeaponEffect;
       return entry;
     } else if (droppedItem.type == "weaponEffect") {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
       entry['damageType'] = droppedItem.system.damageType;
+      entry['secondaryDamage'] = droppedItem.system.secondaryDamage;
       entry['numHands'] = droppedItem.system.numHands;
       entry['numTargets'] = droppedItem.system.numTargets;
       entry['radius'] = droppedItem.system.radius;
@@ -401,17 +561,44 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
 * @param {Item} item The Item that was deleted
 * @param {Actor} actor The Actor that owns the parent Item
 * @param {Number} previousLevel (optional) The value of the last time the Actor leveled up
+* @param {Number} currentLevel (Optional) The level to compare attachment.level against, in
+*                               place of actor.system.level - see createItemCopies() above for
+*                               why (an "additive" Role's own independent level track).
 */
-export async function deleteAttachmentsForItem(item, actor, previousLevel=null) {
+export async function deleteAttachmentsForItem(item, actor, previousLevel=null, currentLevel=null) {
+  const effectiveLevel = currentLevel ?? actor.system.level;
   for (const actorItem of actor.items) {
-    const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
+    // _stats.compendiumSource is only populated by specific "import from compendium" flows,
+    // not by the plain Item.create(doc, {parent}) that createItemCopies() uses to grant Role/
+    // level-up Perks - so it's normally unset on those and this check would silently match
+    // nothing. flags.core.sourceId is set explicitly by createItemCopies() (and by Foundry's
+    // own drag-drop-from-compendium handling), so prefer that and fall back to
+    // compendiumSource for items that only have it set some other way.
+    const itemSourceId = actorItem.flags.core?.sourceId ?? actorItem._stats?.compendiumSource ?? actorItem?.flags?.essence20?.rulesSource;
     const parentId = await actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
     const collectionId = await actor.items.get(actorItem._id).getFlag('essence20', 'collectionId');
 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
-        if (itemSourceId == attachment.uuid && item._id == parentId) {
-          if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
+        // A granting item can list the SAME uuid at several levels - 53 of them do across the
+        // packs, from Commando's Expertise (1st and 7th, GI Joe CRB p.72) to Officer's Plan of
+        // Action (five levels). Matching on uuid alone cannot tell those entries apart, so a
+        // reduction to 6th would test the 7th-level entry against EVERY copy on the actor and
+        // delete the 1st-level one too. collectionId records the entry a copy actually came
+        // from, so prefer it whenever the copy carries one.
+        //
+        // Advances-stacking Perks are the deliberate exception: grantItemEntry folds each later
+        // entry into the FIRST copy instead of creating another (Extra Attack, Power Heal, Plan
+        // of Action, ...), so that one copy legitimately answers for entries whose key it does
+        // not carry, and the branch below decrements it rather than deleting it. Matching those
+        // by uuid is what makes that work.
+        const stacks = actorItem.system.advances?.canAdvance;
+        const entryMatches = (!stacks && collectionId)
+          ? key == collectionId
+          : itemSourceId == attachment.uuid;
+
+        if (entryMatches && item._id == parentId) {
+          if (!previousLevel || (attachment.level > effectiveLevel && attachment.level <= previousLevel)) {
             if (attachment.type == "perk") {
               if (actorItem.system.advances.canAdvance) {
                 if (actorItem.system.advances.currentValue > actorItem.system.advances.baseValue) {

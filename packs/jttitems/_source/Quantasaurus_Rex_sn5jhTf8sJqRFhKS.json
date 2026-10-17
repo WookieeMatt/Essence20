@@ -1,0 +1,44 @@
+{
+  "folder": "rxku6PTVz0evKZwC",
+  "name": "Quantasaurus Rex",
+  "type": "perk",
+  "_id": "sn5jhTf8sJqRFhKS",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"DerivedStat","label":"Quantasaurus Rex","path":"system.canHaveZord","op":"set","value":1},
+      {"type":"RollModifier","label":"Piloting Quantasaurus Rex: no untrained Snag","immune":["untrainedSnag"],"when":[{"any":["skill:driving","skill:animalHandling"]},"vehicle:driving","vehicle:type:zord"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: gives you a Zord, and while you pilot it you take no Snag on Animal Handling or Driving.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 0
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 300000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787028795941,
+    "modifiedTime": 1787028795941,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!sn5jhTf8sJqRFhKS"
+}

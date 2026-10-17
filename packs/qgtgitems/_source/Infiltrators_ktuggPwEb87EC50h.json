@@ -5,6 +5,10 @@
   "_id": "ktuggPwEb87EC50h",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Tactical Armor (Stealth), a Rifle (Scope and Silencer) and a Standard Infiltration Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -27,7 +31,7 @@
               "defense": "toughness",
               "value": 0
             },
-            "availability": "standard",
+            "availability": "restricted",
             "benefit": "",
             "description": "",
             "prerequisite": "Silent",
@@ -87,7 +91,7 @@
           "cfb8": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ",
             "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
-            "name": "Sliencer",
+            "name": "Silencer",
             "type": "upgrade",
             "availability": "standard",
             "benefit": "",

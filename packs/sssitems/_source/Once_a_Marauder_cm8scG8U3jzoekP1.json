@@ -3,6 +3,10 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Once a Marauder Perk and its Hang-Up.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,7 @@
       "a234": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.vh7bPPAgLv9KG0N7",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Once a Maurauder",
+        "name": "Once a Marauder",
         "type": "perk"
       },
       "6d85": {
@@ -23,7 +27,6 @@
         "type": "hangUp"
       }
     },
-    "bond": "",
     "mandatoryHangUp": false,
     "skills": []
   },

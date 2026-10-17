@@ -5,6 +5,10 @@
   "_id": "apAHf4EtBT0mmkwB",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Trick Shot Perk, and Targeting joins your Origin skill choices. The Far-Sighted Hang-Up is added too if you have another Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

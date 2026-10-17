@@ -5,6 +5,10 @@
   "_id": "Evg7HVLPles0X9DM",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: while a Friendship Circle is formed, every member gains a copy of each spell another member has Mastered; the copies are removed when the Circle ends. Left to the table: making the members Magical for the Circle.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

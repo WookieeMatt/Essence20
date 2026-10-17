@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range; its traits apply. Its Microtech and Experimental upgrades work as those upgrades describe.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -21,7 +25,7 @@
           "style": "energy"
         },
         "damageValue": 1,
-        "damageType": "element",
+        "damageType": "laser",
         "numHands": "2",
         "numTargets": 1,
         "radius": 0,

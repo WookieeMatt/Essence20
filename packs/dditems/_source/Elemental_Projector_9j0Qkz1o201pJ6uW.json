@@ -5,6 +5,10 @@
   "_id": "9j0Qkz1o201pJ6uW",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when attached you pick an Element; the weapon's damage becomes that type.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

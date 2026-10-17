@@ -1,0 +1,36 @@
+@use "../variables" as v;
+
+.essence20.stat-editor {
+  .window-content {
+    padding: v.$gap-lg;
+  }
+}
+
+.essence20 .stat-editor-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: v.$gap-sm;
+    text-align: center;
+  }
+
+  thead th {
+    color: var(--e20-theme-text-color);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  tbody th {
+    color: var(--e20-theme-text-color);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  input {
+    width: 100%;
+    min-width: 45px;
+    text-align: center;
+  }
+}

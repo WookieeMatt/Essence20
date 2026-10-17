@@ -1,0 +1,41 @@
+{
+  "folder": "Bx6J3cwUi2nQpV7g",
+  "name": "Bookworm",
+  "type": "hangUp",
+  "_id": "p2Qk0B5PWp10ZaqN",
+  "img": "systems/essence20/assets/icons/items/hangup.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"In a library or facing a Librarian (Bookworm: ↓1)","when":["not:roll:initiative",{"any":["target:tag:librarian","target:name~librarian","scene:name~librar","ask:in a library or facing a Librarian"]}],"downshift":1},
+      {"type":"RollModifier","label":"Initiative in a library or against a Librarian (Bookworm: ↓1)","when":["roll:initiative",{"any":["scene:name~librar","combat:enemy:target:tag:librarian","combat:enemy:target:name~librarian"]}],"downshift":1}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when the scene's name includes \"library\" or your target is a Librarian, every Skill Test (Initiative too) takes ↓1, labelled Bookworm in the Roll Options Dialog. Roll Options Dialog: otherwise, a Bookworm switch adds the ↓1 for other library situations.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 29
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!p2Qk0B5PWp10ZaqN"
+}

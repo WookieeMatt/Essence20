@@ -5,6 +5,13 @@
   "_id": "8xV4xaz8Hnqk4TgQ",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Ranged attack (Zero-G: ↑1)","upshift":1,"when":["self:type:zord","attack:ranged"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: the Zord gains 60 ft Aerial Movement. Automatic: the Zord's ranged attacks get ↑1, already counted in the Shift Up box of the Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,7 +19,52 @@
       "page": 138
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Zero-G",
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "origin": "Compendium.essence20.pr_crb.Item.8xV4xaz8Hnqk4TgQ",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "aFjcT8h1AeMy00zg",
+      "changes": [
+        {
+          "key": "system.movement.aerial.bonus",
+          "mode": 2,
+          "value": "60",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!8xV4xaz8Hnqk4TgQ.aFjcT8h1AeMy00zg"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

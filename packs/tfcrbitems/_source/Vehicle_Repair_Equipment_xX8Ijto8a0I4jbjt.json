@@ -5,6 +5,14 @@
   "_id": "xX8Ijto8a0I4jbjt",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Vehicle Repair Equipment (no ↓ on Technology (Repair) in Bot Mode)","immune":["downshift"],"when":["skill:technology","roll:dataset:specializationKey=repair","not:self:data:system.altModeId"]},
+      {"type":"RollModifier","label":"Vehicle Repair Equipment (Edge repairing a wounded Cybertronian passenger)","scope":"passengers","edge":true,"when":["skill:technology","roll:dataset:specializationKey=repair","holder:data:system.isTransformed","target:aboardHolderOrNone",{"any":["not:target:exists","target:data:system.canTransform"]},{"any":["not:target:exists","target:healthDamaged"]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Bot Mode, when you roll Technology with the Repair Specialization, any ↓ picked in the Roll Options Dialog is dropped before the dice are rolled.</p><p>Automatic: in Alt Mode, your passengers have an Edge on Technology (Repair) to fix a wounded Cybertronian passenger (with nobody targeted it's taken to be one).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,7 +20,6 @@
       "page": 135
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

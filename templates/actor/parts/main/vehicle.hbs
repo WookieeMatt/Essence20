@@ -1,0 +1,26 @@
+<section class="tab main vehicle {{tabs.main.cssClass}}" data-tab="main" data-group="primary">
+  {{!-- Common Details (health/stun live in the sidebar instead) --}}
+  {{> "systems/essence20/templates/actor/parts/misc/common-no-vitals.hbs"}}
+
+  <div class="npc-row">
+    <div class="npc-essence-scores">
+      {{!-- Vehicle Essence scores: the typed base, with Features and rules on top (mechanics/vehicles/machine-essences.mjs). --}}
+      {{> "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs"}}
+    </div>
+  </div>
+
+  <div class="npc-row">
+    <div class="npc-skills">
+      {{!-- Skills --}}
+      {{> "systems/essence20/templates/actor/parts/misc/npc-skill-list.hbs"}}
+    </div>
+
+    <div class="npc-items">
+      {{!-- Items --}}
+      {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/items/trait/container.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/items/power/container.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/items/upgrade/container.hbs" items=@root.upgrades}}
+    </div>
+  </div>
+</section>

@@ -5,6 +5,10 @@
   "_id": "i2sXf7gdupkXqJgh",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: Social rolls show an Archaeologist (Uninterested Audience) switch that adds ↓1. Turn it on while dealing with someone who doesn't care about the past.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,7 +16,52 @@
       "page": 32
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Archaeologist (Uninterested Audience)",
+      "origin": "Item.i2sXf7gdupkXqJgh",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "qbZJELbd6VmWTOlq",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!i2sXf7gdupkXqJgh.qbZJELbd6VmWTOlq"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

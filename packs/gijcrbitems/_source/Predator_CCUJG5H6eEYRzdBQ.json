@@ -5,6 +5,10 @@
   "_id": "CCUJG5H6eEYRzdBQ",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Stalk, Sneak Attack, Natural Movement, Environmental Armor, Prowl and Fight or Flight at their listed levels, plus +1 Speed at 1st and 10th. Your sneak attack damage matches a Commando of your Ranger level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

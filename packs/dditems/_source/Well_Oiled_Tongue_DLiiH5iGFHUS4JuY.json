@@ -5,6 +5,13 @@
   "_id": "DLiiH5iGFHUS4JuY",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"allDice","reset":"none","maxUses":0,"condition":"rollFailed","skills":["deception"],"recursive":false,"cost":{"resourcePath":"system.energon.normal.value","amount":1}}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Chat card: a failed Deception test gets a reroll button that costs 1 Energon. Left to the table: turning a Fumble into a plain failure, and ruling out a Critical Success on the reroll.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

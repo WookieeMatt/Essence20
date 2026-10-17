@@ -5,6 +5,10 @@
   "_id": "KfeDIDIvLb59MVzD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Willpower.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "4aAdVztvcJLhZR8N",
   "img": "icons/svg/sword.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Sharp damage at Reach, and its Martial Arts, Sharp and Silent traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -35,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"

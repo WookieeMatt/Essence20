@@ -4,6 +4,10 @@
   "type": "armor",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: +1 Toughness while worn. Comes with the Stealth upgrade attached, which applies its own rule.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -20,7 +24,7 @@
           "defense": "toughness",
           "value": 0
         },
-        "availability": "standard",
+        "availability": "restricted",
         "benefit": "",
         "description": "",
         "prerequisite": "Silent",

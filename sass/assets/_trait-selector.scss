@@ -1,21 +1,37 @@
 @use "../variables" as v;
 
-.dialog-options {
+.essence20 .dialog-options {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.dialog-options li ol.dialog-options {
+.essence20 .dialog-options li ol.dialog-options {
   margin-left: 1.5em;
 }
 
-.dialog-options input[type="text"] {
+.essence20 .dialog-options input[type="text"] {
   height: 24px;
   margin: 2px;
 }
 
-.trait-selector {
-  flex-grow: auto;
-  overflow: auto;
+/* The window sizes to its content, so a long trait list (weapons have dozens) grew it past the
+   bottom of the screen with nothing left to scroll. Cap the window at the viewport, and let only
+   the list scroll so the Save footer stays in view - the same flex-column/min-height 0 chain
+   choice-selector-long uses. */
+.essence20.trait-selector {
+  max-height: 90vh;
+}
+
+.essence20.trait-selector > .window-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.essence20.trait-selector > .window-content > .trait-selector {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
 }

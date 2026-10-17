@@ -5,6 +5,10 @@
   "_id": "RHsOkkFWGXgODM1c",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Health.</p><p>Left to the table: choosing the free Limited or Restricted weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

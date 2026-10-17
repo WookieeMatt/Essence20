@@ -5,6 +5,10 @@
   "_id": "FNULojdwaYwvXkkr",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: gives the weapon the Energy trait, whose rules then apply to its attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

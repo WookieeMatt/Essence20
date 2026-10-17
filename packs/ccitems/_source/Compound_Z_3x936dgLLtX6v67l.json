@@ -5,6 +5,10 @@
   "_id": "3x936dgLLtX6v67l",
   "img": "systems/essence20/assets/icons/weapons/toxin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its effect; its ongoing damage and consumable use are tracked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -46,8 +50,9 @@
       "ingested": false,
       "inhaled": false
     },
+    "prerequisites": {"when":[{"any":["self:skill:infiltration>=d8","self:skill:science>=d8"]}]},
     "requirements": {
-      "custom": "Science d8",
+      "custom": "",
       "skill": "infiltration",
       "shift": "d8"
     },

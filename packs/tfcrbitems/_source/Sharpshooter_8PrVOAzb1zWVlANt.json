@@ -5,6 +5,10 @@
   "_id": "8PrVOAzb1zWVlANt",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, a Long Range Rifle, +1 Speed at 1st and 10th level, and its Focus Skills (Initiative and Infiltration).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -65,6 +69,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "9c22": {
+        "uuid": "Compendium.essence20.tf_crb.Item.8Hi76APCo9QRnbLE",
+        "img": "systems/essence20/assets/icons/weapons/sniper_rifle.svg",
+        "name": "Long Range Rifle",
+        "type": "weapon"
       }
     },
     "essences": [

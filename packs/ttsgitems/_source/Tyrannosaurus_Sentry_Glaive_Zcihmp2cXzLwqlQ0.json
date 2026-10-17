@@ -5,6 +5,10 @@
   "_id": "Zcihmp2cXzLwqlQ0",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might at double Reach for 2 Sharp damage, with a 1 Electric alternate effect; its Silent trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -22,8 +26,8 @@
           "style": "melee"
         },
         "damageValue": 1,
-        "damageType": "element",
-        "numHands": 21,
+        "damageType": "electric",
+        "numHands": 2,
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -64,8 +68,8 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "brawn",
+      "shift": "d2"
     },
     "traits": [
       "electric",

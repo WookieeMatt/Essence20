@@ -3,6 +3,15 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Wow the Audience: 10+ watching","when":["skill:performance"],"upshift":1},
+      {"type":"DialogSwitch","label":"Wow the Audience: 100+ watching","when":["skill:performance"],"upshift":1},
+      {"type":"DialogSwitch","label":"Wow the Audience: 1,000+ watching","when":["skill:performance"],"upshift":1}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: on Performance tests, switches for 10+, 100+ and 1,000+ onlookers, each adding ↑1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,140 +22,7 @@
     "selectionLimit": 1,
     "type": "influence"
   },
-  "effects": [
-    {
-      "origin": "Item.M7fLb600qXWY0dPm",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "TXods3J1J5A4va26",
-      "changes": [
-        {
-          "key": "system.skills.perofrmance.shiftUp",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "10 or more",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!M7fLb600qXWY0dPm.TXods3J1J5A4va26"
-    },
-    {
-      "origin": "Item.M7fLb600qXWY0dPm",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "RIyMD6CktG1SeuvC",
-      "changes": [
-        {
-          "key": "system.skills.perofrmance.shiftUp",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "100 or more",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!M7fLb600qXWY0dPm.RIyMD6CktG1SeuvC"
-    },
-    {
-      "origin": "Item.M7fLb600qXWY0dPm",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "QJYO4UdLdb2GTTi4",
-      "changes": [
-        {
-          "key": "system.skills.perofrmance.shiftUp",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "1000 or more",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!M7fLb600qXWY0dPm.QJYO4UdLdb2GTTi4"
-    }
-  ],
+  "effects": [],
   "flags": {
     "core": {}
   },

@@ -5,6 +5,10 @@
   "_id": "8NfDRYoPVQJPGiVj",
   "img": "systems/essence20/assets/icons/weapons/whip.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed effect, plus its alternate effect; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,7 @@
     },
     "items": {
       "a386": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.ln4X4eCYWHWONcX7",
+        "uuid": "Compendium.essence20.pr_crb.Item.ln4X4eCYWHWONcX7",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Grappler Effect",
         "type": "weaponEffect",
@@ -23,7 +27,7 @@
         },
         "damageValue": null,
         "damageType": "maneuver",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -35,7 +39,7 @@
         "shiftDown": 0
       },
       "90e9": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.KuQG7ngt1dMuwfnY",
+        "uuid": "Compendium.essence20.pr_crb.Item.KuQG7ngt1dMuwfnY",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Grappler Alternate Effect",
         "type": "weaponEffect",
@@ -45,7 +49,7 @@
         },
         "damageValue": null,
         "damageType": "intimidate",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -57,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "long"

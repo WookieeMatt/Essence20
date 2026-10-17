@@ -1,0 +1,71 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Fire Breath",
+  "type": "weapon",
+  "_id": "VjHs9KQnyB4PzSlm",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: breath attacks roll Targeting for 1 Fire damage at Short range, with a two-target alternate at ↓1; its Intimidating and Reload traits apply.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 68
+    },
+    "items": {
+      "7vYw": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.GQdoTSta4kjfU1BR",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fire Breath Effect",
+        "type": "weaponEffect"
+      },
+      "GG4n": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.xORPR6OfizaNb8cL",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fire Breath Alternate Effect",
+        "type": "weaponEffect"
+      }
+    },
+    "availability": "automatic",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "prerequisites": {"when":["self:hasType:origin:Dragon","self:hasType:perk:Fire Breathing"]},
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "fire",
+      "intimidating",
+      "multipleTargets",
+      "reload"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!VjHs9KQnyB4PzSlm"
+}

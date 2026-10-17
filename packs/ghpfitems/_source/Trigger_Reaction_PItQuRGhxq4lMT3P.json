@@ -1,0 +1,45 @@
+{
+  "folder": "9yEyQWJnmCubFoI8",
+  "name": "Trigger Reaction",
+  "type": "perk",
+  "_id": "PItQuRGhxq4lMT3P",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"Science or Survival (DIF 5)","steps":[{"do":"choose","prompt":"Which Skill?","options":[{"label":"Science","steps":[{"do":"roll","skill":"science","dif":5}]},{"label":"Survival","steps":[{"do":"roll","skill":"survival","dif":5}]}]}]}
+    ],
+    "prerequisites": {"when":[{"any":["self:skill:science>=d8","self:skill:survival>=d8"]}]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: choose Science or Survival and roll the DIF 5 test; the chat card shows how far you beat it.</p><p>Left to the table: what the environmental tricks do.</p>"
+    },
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 174
+    },
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1787763529613,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!PItQuRGhxq4lMT3P"
+}

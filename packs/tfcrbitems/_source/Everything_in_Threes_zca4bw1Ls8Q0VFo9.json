@@ -5,6 +5,14 @@
   "_id": "zca4bw1Ls8Q0VFo9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick your third Mode","steps":[{"do":"pickChassis","mode":"additional","flag":"everythingInThrees","choose":true},{"do":"grant","uuid":"{var.chassis}","flags":{"everythingInThrees":true},"systemFrom":"chassisSystem"},{"do":"updateActor","set":{"system.canTransform":true}},{"do":"chat","text":"{name} gains another Alt Mode: {var.chassisName}."}]},
+      {"type":"Use","label":"Pick your third Mode","when":["calc:@flagged.everythingInThrees<1"],"steps":[{"do":"pickChassis","mode":"additional","flag":"everythingInThrees","choose":true},{"do":"grant","uuid":"{var.chassis}","flags":{"everythingInThrees":true},"systemFrom":"chassisSystem"},{"do":"updateActor","set":{"system.canTransform":true}},{"do":"chat","text":"{name} gains another Alt Mode: {var.chassisName}."}]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you take it you pick a chassis from any Origin (its Alt Mode only), then its size and movement where it has a choice; you pick it when you Convert. Chassis two or more Size Classes larger than your original Alt Mode aren't offered. If you had no Alt Mode yet, its Use button asks later.</p><p>Left to the table: which of your Alt Modes a Perk that names your Alt Mode applies to.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
