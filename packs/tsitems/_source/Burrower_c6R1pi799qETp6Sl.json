@@ -5,6 +5,10 @@
   "_id": "c6R1pi799qETp6Sl",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you gain a 25ft Underground Movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -20,7 +24,7 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "version": "powerRangers"
+    "version": "transformers"
   },
   "effects": [
     {
@@ -42,7 +46,7 @@
       "system": {},
       "changes": [
         {
-          "key": "system.movement.underground.base",
+          "key": "system.movement.burrow.base",
           "mode": 5,
           "value": "25",
           "priority": null

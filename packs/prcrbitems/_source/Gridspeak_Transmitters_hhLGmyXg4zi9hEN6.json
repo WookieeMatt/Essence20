@@ -5,6 +5,10 @@
   "_id": "hhLGmyXg4zi9hEN6",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: while Morphed, your team can speak a language any Morphin Grid creature understands.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

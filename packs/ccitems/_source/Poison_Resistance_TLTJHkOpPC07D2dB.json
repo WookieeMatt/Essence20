@@ -5,6 +5,13 @@
   "_id": "TLTJHkOpPC07D2dB",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Poison Resistance","scope":"incoming","snag":true,"when":["attack",{"any":["weapon:data:system.isPoison","item:damageType:poison"]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: while you wear it, attacks against you with a poison weapon or poison damage take a Snag, labelled Poison Resistance in the attacker's Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -21,7 +28,52 @@
     "type": "armor",
     "prerequisite": ""
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Poison Resistance",
+      "origin": "Item.TLTJHkOpPC07D2dB",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "pR1sTuVwXyZaBcD2",
+      "changes": [
+        {
+          "key": "system.resistances.poison",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!TLTJHkOpPC07D2dB.pR1sTuVwXyZaBcD2"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

@@ -1,0 +1,74 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Throwing Star",
+  "type": "weapon",
+  "_id": "JqxNIRYvDcOVmkhw",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse at Short range. Pick a throw (1 Sharp), a Maneuver at ↓2, or a spread at ↓2 (1 Sharp to up to 3 targets) when you attack; its traits apply.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 65
+    },
+    "items": {
+      "29I9": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.tNdghR5WZj4Rzy5w",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Throwing Star Effect",
+        "type": "weaponEffect"
+      },
+      "z76o": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.QXmBBtzFDk0ZE61I",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Throwing Star Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "36px": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.kXFeO52IOIbsZIuv",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Throwing Star Alternate Effect 2",
+        "type": "weaponEffect"
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "light"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d4"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!JqxNIRYvDcOVmkhw"
+}

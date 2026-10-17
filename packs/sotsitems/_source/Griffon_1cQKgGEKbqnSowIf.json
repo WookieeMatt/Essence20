@@ -5,6 +5,10 @@
   "_id": "1cQKgGEKbqnSowIf",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: 3 starting Health, 30ft Ground and 30ft Aerial Movement, the Speed Essence and Skill options, and the Heart of a Lion and Noble Heritage Perks. You pick your Skills when you add it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

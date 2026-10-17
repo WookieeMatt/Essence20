@@ -1,0 +1,59 @@
+{
+  "folder": "PrK1LoGlph7L9zZH",
+  "name": "Barista Experience",
+  "type": "perk",
+  "_id": "jKWyWKHb8iDwQvB4",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Barista Experience","when":[{"any":["essence:smarts","essence:social"]}],"upshift":2}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: every Smarts and Social test starts with ↑2 already added to the Roll Options Dialog's Upshift box.</p><p>Left to the table: the bonus is meant only when dealing with Night Vale's baristas, so lower the Upshift box by 2 for other rolls.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 47
+    },
+    "type": "general",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!jKWyWKHb8iDwQvB4"
+}

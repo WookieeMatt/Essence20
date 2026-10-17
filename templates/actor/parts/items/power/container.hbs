@@ -1,7 +1,13 @@
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.powers title='E20.ItemTypePowerPlural' dataType='power'}}
   {{#*inline "roll-button" item}}
-    {{#if item.system.canActivate}}
-      <a class="rollable" data-roll-type={{item.type}} data-tooltip="{{localize 'E20.PowerRollTitle'}}"><i class="fas fa-battery-bolt"></i></a>
+    {{!-- One Use button: the Power's own Use when it has one (it pays its own cost), otherwise the
+         activation, which spends the Power's cost and runs its effect (power-handler.mjs#powerCost). --}}
+    {{#if (hasItemUse item)}}
+      {{#if (canUsePerk item)}}
+        <a class="perk-use" data-action="perkUse" data-id="{{item._id}}" data-tooltip="{{localize 'E20.PerkUse'}}"><i class="fas fa-bolt"></i></a>
+      {{/if}}
+    {{else if (canUsePower item)}}
+      <a class="rollable" data-action="rollable" data-roll-type={{item.type}} data-tooltip="{{localize 'E20.PerkUse'}}"><i class="fas fa-bolt" data-roll-type={{item.type}}></i></a>
     {{/if}}
   {{/inline}}
 
@@ -10,15 +16,22 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    <strong>
-      {{item.name}}
-      {{#if (eq @root.actor.type "npc")}}
-        :
-        {{#if system.usesPer}}
-          {{system.usesPer}}/{{lookup @root.config.usesInterval system.usesInterval}},
-        {{/if}}
-        {{lookup @root.config.actionTypes system.actionType}}
+    <div class="flexrow e20-align-center e20-gap-5 leveled-item-label">
+      {{#if item.system.grantedLevel}}
+        <span class="leveled-item-badge">{{item.system.grantedLevel}}</span>
       {{/if}}
-    </strong>
+      <img class="leveled-item-icon" src="{{item.img}}" alt="{{item.name}}" />
+      <strong class="leveled-item-name">
+        {{item.name}}
+        {{#if (powerDailyUses item)}}<span class="chip e20-power-daily-uses" data-tooltip="{{localize 'E20.UsesIntervalDay'}}">{{powerDailyUses item}}</span>{{/if}}
+        {{#if (eq @root.document.type "npc")}}
+          :
+          {{#if system.usesPer}}
+            {{system.usesPer}}/{{lookup @root.config.usesInterval system.usesInterval}},
+          {{/if}}
+          {{lookup @root.config.actionTypes system.actionType}}
+        {{/if}}
+      </strong>
+    </div>
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

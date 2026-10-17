@@ -5,6 +5,14 @@
   "_id": "Rv3Bhyeo4XBxHLpX",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Lucky Charm: DIF 12 Performance","event":"powerUsed","when":["item:own"],"steps":[{"do":"rollCheck","skill":"performance","essence":"social","shiftUp":0,"shiftDown":0,"dif":12,"onSuccess":[{"do":"setToggle","key":"luckyCharm","value":true}]}]},
+      {"type":"Reroll","when":["self:toggle:luckyCharm"],"mode":"ones","target":"skillDice","reset":"none","maxUses":0,"recursive":false,"minDieFaces":4}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: rolls the DIF 12 Performance test; on a success you get the Luck Perk's reroll of 1s on Skill dice.</p><p>Left to the table: switching the reroll off again at the end of the day.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,14 +21,18 @@
     },
     "actionType": "oneHour",
     "canActivate": true,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": 1,
     "selectionLimit": 1,
     "type": "sorcerous",
     "usesInterval": "special",
-    "usesPer": null
+    "usesPer": null,
+    "duration": {
+      "units": "special",
+      "value": null,
+      "text": "For the rest of the day"
+    }
   },
   "effects": [],
   "flags": {},

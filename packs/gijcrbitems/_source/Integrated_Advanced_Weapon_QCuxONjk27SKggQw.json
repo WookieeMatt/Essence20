@@ -1,0 +1,50 @@
+{
+  "folder": "qXw41bfLXOkeA9eO",
+  "name": "Integrated Advanced Weapon",
+  "type": "upgrade",
+  "_id": "QCuxONjk27SKggQw",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"Pick a Limited weapon to build into the drone","when":["not:self:toggle:granted","not:rule:data:flags.essence20.granted"],"steps":[{"do":"pickGrant","from":{"type":"weapon","availabilities":["limited"]},"integrated":true,"flags":{"droneWeapon":true}},{"do":"setToggle","key":"granted","value":true}]}
+    ],
+    "prerequisites": {"when":["self:has:Integrated Basic Weapon"]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: pick a Limited weapon and it's built into the drone.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 169
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "",
+    "traits": [],
+    "type": "drone",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787145794377,
+    "modifiedTime": 1787145794377,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!QCuxONjk27SKggQw"
+}

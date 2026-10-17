@@ -5,6 +5,10 @@
   "_id": "5clUVTBFl8JMpw8t",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: creates your Riding Rig vehicle, tied to you.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

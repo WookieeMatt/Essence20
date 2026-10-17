@@ -5,6 +5,10 @@
   "_id": "CTpf0zJ5Y5rEft45",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Speed Essence, starting Health, 30 ft ground movement, the Frame Efficacy Perk and the Mini-Con Alt Mode choices.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -30,16 +34,10 @@
         "name": "Mini-Con (Mini-Cassette)",
         "type": "altMode"
       },
-      "2e89": {
-        "uuid": "Compendium.essence20.decepticon_directive.Item.oSn5EyMwso8Z1Ohh",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Mini-Con (Mini-Vehicle, Aerial)",
-        "type": "altMode"
-      },
       "0c78": {
         "uuid": "Compendium.essence20.decepticon_directive.Item.JVIOxmSpPwPQDY1z",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Mini-Con (Mini-Vehicle, Ground)",
+        "name": "Mini-Con (Mini-Vehicle)",
         "type": "altMode"
       },
       "b088": {

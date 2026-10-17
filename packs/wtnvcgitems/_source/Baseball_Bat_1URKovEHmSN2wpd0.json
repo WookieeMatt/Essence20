@@ -1,0 +1,73 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Baseball Bat",
+  "type": "weapon",
+  "_id": "1URKovEHmSN2wpd0",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: two-handed attacks roll Finesse or Might, whichever is better, at Reach for 1 Blunt damage, with a 2 Blunt alternate and a Maneuver alternate; its traits apply.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 62
+    },
+    "items": {
+      "KTAW": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.UiASUn7CGDbl0WU3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Baseball Bat Effect",
+        "type": "weaponEffect"
+      },
+      "rzfi": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.howOD7H4ZmRorW3Z",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Baseball Bat Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "pl4c": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.HblDM0jUqE2hBWew",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Baseball Bat Alternate Effect 2",
+        "type": "weaponEffect"
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "blunt",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!1URKovEHmSN2wpd0"
+}

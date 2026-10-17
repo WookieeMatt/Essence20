@@ -5,9 +5,22 @@
     {{/inline}}
 
     {{#*inline "plus-button" item}}
-      <a class="item-create" data-type={{dataType}} data-perk-type={{perkType}} data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
-        <i class="fas fa-plus"></i>
+      <a data-action="itemCreate" data-type={{dataType}} data-perk-type={{perkType}} data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
+        <i class="fas fa-plus" data-type={{dataType}} data-perk-type={{perkType}} ></i>
       </a>
+    {{/inline}}
+
+    {{#*inline "item-label" item}}
+      <div class="flexrow e20-align-center e20-gap-5 leveled-item-label{{#if item.system.subPerkOf}} e20-sub-perk{{/if}}">
+        {{#if item.system.grantedLevel}}
+          <span class="leveled-item-badge">{{item.system.grantedLevel}}</span>
+        {{/if}}
+        {{#if item.system.subPerkOf}}
+          <i class="fa-solid fa-turn-up fa-rotate-90 e20-sub-perk-mark" aria-hidden="true"></i>
+        {{/if}}
+        <img class="leveled-item-icon" src="{{item.img}}" alt="{{item.name}}" />
+        <span class="leveled-item-name">{{item.name}}</span>
+      </div>
     {{/inline}}
   {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
 {{/if}}

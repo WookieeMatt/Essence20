@@ -5,15 +5,20 @@
   "_id": "TtzFPntWQhI8IcQZ",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls Targeting against Toughness along a 40ft line for 2 Acid damage.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "projectile"
     },
-    "damageType": "element",
+    "damageType": "acid",
     "damageValue": 2,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 0,
     "numTargets": 1,
     "radius": 40,
     "range": {
@@ -26,7 +31,8 @@
       "book": "Finster's Monster-Matic Cookbook",
       "page": 302
     },
-    "description": "<p>40 ft Line</p>"
+    "description": "<p>40 ft Line</p>",
+    "shape": "line"
   },
   "effects": [],
   "sort": 0,

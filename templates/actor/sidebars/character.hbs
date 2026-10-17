@@ -1,0 +1,122 @@
+<section class="essence20-sidebar sheet-header">
+  {{!-- Profile image --}}
+  <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-action="editImage" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+
+  <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-resources">
+      <a class="sliced-border__label sliced-border__label--clickable" data-action="editHealth" data-tooltip="{{localize 'E20.StatEditorHealthTooltip'}}"><i class="fas fa-heart"></i> Resources <i class="fas fa-gear sliced-border__label-edit-icon"></i></a>
+      {{> "systems/essence20/templates/actor/parts/misc/sidebar-health.hbs"}}
+      <div>
+        <label>{{localize 'E20.ActorStun'}}</label>
+        <input class="two-digit-input no-lock" type="number" name="system.stun.value" value="{{system.stun.value}}" min="0" step="1" />
+        <span>/</span>
+        <span class="sidebar-readout">{{system.health.value}}</span>
+      </div>
+      {{!-- An Energon pool without transforming too: Organic Energon (FG p.71) sets one for a character that can't. --}}
+      {{#if (or system.canTransform system.energon.normal.max)}}
+      <div>
+        <label>{{localize "E20.Energon"}}</label>
+        <input class="two-digit-input no-lock" data-field="system.energon.normal.value" type="number"
+          name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
+        /
+        <input class="two-digit-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
+          value="{{system.energon.normal.max}}" />
+      </div>
+      {{/if}}
+      {{#if system.canMorph}}
+      <div>
+        <label>Personal Power</label>
+        <input class="two-digit-input no-lock" data-field="system.powers.personal.value" type="number"
+          name="system.powers.personal.value" value="{{system.powers.personal.value}}" min="0" step="1" />
+        /
+        <input class="two-digit-input no-lock" data-field="system.powers.personal.max" type="number" name="system.powers.personal.max"
+          value="{{system.powers.personal.max}}" min="0" step="1" />
+      </div>
+      {{/if}}
+
+      {{!--
+        Sorcerous Power is a one-time BUILD budget (Finster's Monster-Matic Cookbook p.274), not a
+        spendable-per-use pool - see documents/actor.mjs#_prepareSorcerousPower. committed is
+        derived (sum of every owned Sorcerous Power's own build cost), shown as plain text rather
+        than an editable input, and only warns (is-over highlight) when it exceeds the budget.
+      --}}
+      {{#if system.powers.sorcerous.levelTaken}}
+      <div>
+        <label>Sorcerous Power</label>
+        <span class="two-digit-input{{#if (gt system.powers.sorcerous.committed system.powers.sorcerous.max)}} is-over{{/if}}"
+          data-tooltip="{{localize 'E20.SorcerousPowerCommittedHint'}}">{{system.powers.sorcerous.committed}}</span>
+        /
+        <input class="two-digit-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
+          value="{{system.powers.sorcerous.max}}" min="0" step="1" />
+      </div>
+      {{/if}}
+
+      {{#if (or rolePointsList.length role.system.skillDie.isUsed)}}
+        {{> "systems/essence20/templates/actor/parts/items/rolePoints/container.hbs"}}
+      {{/if}}
+
+      {{!-- Rest/Recharge restores the resources this whole panel tracks (Health, Stun, Energon,
+           Role Points, ...) - it belongs at the bottom of this panel rather than up in Special,
+           which is otherwise about rolls/transformations (Initiative, Transform, Morph). --}}
+      {{#if system.canTransform}}
+        <a class="essence20-sidebar-action-button" data-action="recharge" data-tooltip="{{localize "E20.RechargeButtonTitle"}}">
+          <i class="fas fa-charging-station"></i>
+          {{localize "E20.RechargeButtonTitle"}}
+        </a>
+      {{else}}
+        <a class="essence20-sidebar-action-button" data-action="rest" data-tooltip="{{localize "E20.RestButtonTitle"}}">
+          <i class="fas fa-face-sleeping"></i>
+          {{localize "E20.RestButtonTitle"}}
+        </a>
+      {{/if}}
+    </div>
+    <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-special">
+      <label class="sliced-border__label"><i class="fas fa-bolt"></i> Special</label>
+      <div class="essence20-sidebar-action-button essence20-sidebar-initiative">
+        <div class="item-image">
+          <a class="rollable" data-action="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20" data-roll-type="initiative"></i></a>
+        </div>
+        <select name="system.initiative.skill">
+          {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
+        </select>
+        {{!-- Display only: the shift die is set on the skill itself, not editable from here --}}
+        <span data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}">
+          {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
+        </span>
+      </div>
+
+      {{> "systems/essence20/templates/actor/parts/misc/sidebar-transform-morph.hbs"}}
+      <div class="essence20-sidebar-skill-list">
+        {{#each @root.config.skillsByEssence.any as |skill|}}
+          {{#if (eq skill 'spellcasting')}}
+            {{!-- Moved to the top of the Spells tab (spells.hbs) instead - keeps the sidebar
+                 skill list from competing for space with an MLP-specific skill that most
+                 non-spellcasting characters never see anyway. --}}
+          {{else if (eq skill 'weird')}}
+            {{#if @root.system.canUseWeird}}
+              {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
+            {{/if}}
+          {{else}}
+            {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
+          {{/if}}
+        {{/each}}
+        {{!-- Wealth Die, styled as a plain skill row rather than the boxed widget used elsewhere.
+             Off by default (system.canShowWealthDie) - enable it from the sheet options gear
+             icon in the header. --}}
+        {{#if system.canShowWealthDie}}
+        <div class="flexrow skill-header e20-skill-header" data-e20-color="{{system.color}}">
+          <a class="rollable skill-name" data-action="rollable" data-roll-type="skill" data-skill="wealth"
+            data-shift-up="{{system.skills.wealth.shiftUp}}" data-shift-down="{{system.skills.wealth.shiftDown}}"
+            data-shift="{{system.skills.wealth.shift}}" data-is-specialized="{{system.skills.wealth.isSpecialized}}">
+            {{localize 'E20.ActorWealth'}}
+          </a>
+          <select class="skill-shift-select" name="system.skills.wealth.shift">
+            {{selectOptions @root.config.wealthShifts selected=system.skills.wealth.shift}}
+          </select>
+        </div>
+        {{/if}}
+      </div>
+    </div>
+    {{> "systems/essence20/templates/actor/parts/misc/sidebar-speeds.hbs"}}
+    {{> "systems/essence20/templates/actor/parts/misc/sidebar-defenses.hbs"}}
+    {{> "systems/essence20/templates/actor/parts/misc/sidebar-immunities-resistances.hbs"}}
+</section>

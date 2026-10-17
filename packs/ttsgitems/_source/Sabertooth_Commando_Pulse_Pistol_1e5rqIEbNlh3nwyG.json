@@ -5,6 +5,10 @@
   "_id": "1e5rqIEbNlh3nwyG",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Energy damage at 15ft/60ft range; its Silent trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

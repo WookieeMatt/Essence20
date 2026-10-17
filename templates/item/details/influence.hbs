@@ -1,0 +1,32 @@
+<div>
+  {{!-- Influence Skills --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.InfluenceSkill'}}
+  {{#*inline "item-field-edit"}}
+  <a class="trait-selector" data-action="traitSelector" data-options="influenceSkill" data-target="system.skills" data-tooltip="{{localize 'E20.SkillSelector'}}">
+    <i class="fas fa-edit"></i>
+  </a>
+  {{/inline}}
+
+  {{#*inline "item-field-inputs"}}
+  <div class="e20-flex-group-right chip-section">
+    {{#each system.skills as |name|}}
+    <span class="chip" name="chip.skills.{{type}}">{{lookup @root.config.originSkills name}}</span>
+    {{/each}}
+  </div>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Influence Perk --}}
+  {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="perk" label='E20.InfluencePerk' items=@root.system.items type='perk'}}
+
+  {{!-- Hang-Ups --}}
+  {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="hangUp" label='E20.ItemTypeHangupPlural' items=@root.system.items type='hangUp'}}
+
+  {{!-- Mandatory Hang Up --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.InfluenceMandatoryHangUp'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="checkbox" name="system.mandatoryHangUp" {{checked system.mandatoryHangUp}} />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+<div>
+

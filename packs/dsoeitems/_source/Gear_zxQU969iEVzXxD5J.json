@@ -1,0 +1,23 @@
+{
+  "name": "Gear",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "zxQU969iEVzXxD5J",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787715892962,
+    "modifiedTime": 1787715892962,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!zxQU969iEVzXxD5J"
+}

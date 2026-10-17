@@ -5,15 +5,27 @@
   "_id": "g4NcUIDX7GfC355u",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Big Honking Boom","event":"afterRoll","outcome":"success","when":["item:own"],"steps":[{"do":"save","to":"all:5","skills":["brawn"],"dif":12,"status":"prone","rounds":1}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Chat card: on a success, everyone within 5 ft gets a DIF 12 Brawn save, and failing knocks them Prone for 1 round.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Knights of Canterlot",
       "page": 46
     },
+    "actionType": "standard",
     "circle": "enchantment",
     "cost": 2,
-    "duration": "Instant",
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "Line of Sight",
     "tier": "superior"

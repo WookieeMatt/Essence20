@@ -5,7 +5,12 @@
   "_id": "boRr329RHMQ633fi",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the projector's Technology attack with the listed Element damage and range.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "A Jump Through Time",
@@ -24,8 +29,8 @@
     "range": {
       "min": null,
       "reachMultiplier": 0,
-      "long": null,
-      "value": null
+      "long": 60,
+      "value": 25
     },
     "shiftDown": 0
   },

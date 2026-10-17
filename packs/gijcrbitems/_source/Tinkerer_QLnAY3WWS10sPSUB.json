@@ -5,6 +5,10 @@
   "_id": "QLnAY3WWS10sPSUB",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Fast Learner, Kitbash Upgrade, Seeing the Matrix, Kitbash Equipment, Quickbash and Machinesmith at their listed levels, plus +1 Smarts at 1st and 10th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

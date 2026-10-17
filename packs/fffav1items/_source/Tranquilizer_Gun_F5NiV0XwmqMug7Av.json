@@ -5,6 +5,10 @@
   "_id": "F5NiV0XwmqMug7Av",
   "img": "systems/essence20/assets/icons/gear/syringe.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets, and its Injection trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +19,7 @@
       "feb1": {
         "uuid": "Compendium.essence20.ferocious_fighters.Item.0e4qQtSTpqIp9k1U",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Tranquilzer Gun Effect",
+        "name": "Tranquilizer Gun Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -35,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"

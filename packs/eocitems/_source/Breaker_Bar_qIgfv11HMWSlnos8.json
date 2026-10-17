@@ -5,7 +5,11 @@
   "_id": "qIgfv11HMWSlnos8",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "rules": [
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"label":"Breaker-Bar","when":["item:own","target:combinerForm"]}
+    ],
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "might",
       "style": "melee"
@@ -13,7 +17,7 @@
     "damageType": "sharp",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

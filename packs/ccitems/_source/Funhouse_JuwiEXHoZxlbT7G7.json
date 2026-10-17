@@ -5,6 +5,10 @@
   "_id": "JuwiEXHoZxlbT7G7",
   "img": "systems/essence20/assets/icons/weapons/toxin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its effect; its traits apply, and its ongoing damage and consumable use are tracked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -46,8 +50,9 @@
       "ingested": false,
       "inhaled": true
     },
+    "prerequisites": {"when":[{"any":["self:skill:infiltration>=d8","self:skill:science>=d8"]}]},
     "requirements": {
-      "custom": "Science d8",
+      "custom": "",
       "skill": "infiltration",
       "shift": "d8"
     },
@@ -61,7 +66,8 @@
     "transformerMode": "modeBotMode",
     "upgradeTraits": [],
     "usesPerScene": null,
-    "poisonType": "toxin"
+    "poisonType": "toxin",
+    "ongoingDuration": 6
   },
   "effects": [],
   "sort": 0,

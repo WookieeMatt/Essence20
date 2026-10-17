@@ -1,7 +1,6 @@
 import { AltModeItemData } from './alt-mode.mjs';
 import { AlterationItemData } from './alteration.mjs';
 import { ArmorItemData } from './armor.mjs';
-import { BondItemData } from './bond.mjs';
 import { ClassFeatureItemData } from './class-feature.mjs';
 import { EquipmentPackageItemData } from './equipment-package.mjs';
 import { FactionItemData } from './faction.mjs';
@@ -29,7 +28,6 @@ export const config = {
   altMode: AltModeItemData,
   alteration: AlterationItemData,
   armor: ArmorItemData,
-  bond: BondItemData,
   classFeature: ClassFeatureItemData,
   equipmentPackage: EquipmentPackageItemData,
   faction: FactionItemData,

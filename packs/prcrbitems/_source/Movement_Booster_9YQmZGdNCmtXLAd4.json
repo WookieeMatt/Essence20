@@ -5,6 +5,13 @@
   "_id": "9YQmZGdNCmtXLAd4",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Movement Booster","event":"added","removeOnStop":true,"steps":[{"do":"choose","prompt":"Which movement type? (+30 ft, or a new one at 45 ft)","options":[{"label":"Aerial","steps":[{"do":"setEffects","effects":[{"changeKey":"system.movement.aerial.bonus","on":true}],"when":["self:data:system.movement.aerial.base>0"]},{"do":"addEffect","name":"Movement Booster (Aerial)","img":"icons/svg/aura.svg","changes":[{"key":"system.movement.aerial.bonus","value":45}],"when":["not:self:data:system.movement.aerial.base>0"]},{"do":"notify","text":"E20.ZordFeatureMovementApplied","data":{"type":"E20.MovementTypeAerial"}}]},{"label":"Burrow","steps":[{"do":"addEffect","name":"Movement Booster (Burrow)","img":"icons/svg/aura.svg","changes":[{"key":"system.movement.burrow.bonus","value":30}],"when":["self:data:system.movement.burrow.base>0"]},{"do":"addEffect","name":"Movement Booster (Burrow)","img":"icons/svg/aura.svg","changes":[{"key":"system.movement.burrow.bonus","value":45}],"when":["not:self:data:system.movement.burrow.base>0"]},{"do":"notify","text":"E20.ZordFeatureMovementApplied","data":{"type":"E20.MovementTypeBurrow"}}]},{"label":"Climb","steps":[{"do":"setEffects","effects":[{"changeKey":"system.movement.climb.bonus","on":true}],"when":["self:data:system.movement.climb.base>0"]},{"do":"addEffect","name":"Movement Booster (Climb)","img":"icons/svg/aura.svg","changes":[{"key":"system.movement.climb.bonus","value":45}],"when":["not:self:data:system.movement.climb.base>0"]},{"do":"notify","text":"E20.ZordFeatureMovementApplied","data":{"type":"E20.MovementTypeClimb"}}]},{"label":"Ground","steps":[{"do":"setEffects","effects":[{"changeKey":"system.movement.ground.bonus","on":true}],"when":["self:data:system.movement.ground.base>0"]},{"do":"addEffect","name":"Movement Booster (Ground)","img":"icons/svg/aura.svg","changes":[{"key":"system.movement.ground.bonus","value":45}],"when":["not:self:data:system.movement.ground.base>0"]},{"do":"notify","text":"E20.ZordFeatureMovementApplied","data":{"type":"E20.MovementTypeGround"}}]},{"label":"Swim","steps":[{"do":"setEffects","effects":[{"changeKey":"system.movement.swim.bonus","on":true}],"when":["self:data:system.movement.swim.base>0"]},{"do":"addEffect","name":"Movement Booster (Swim)","img":"icons/svg/aura.svg","changes":[{"key":"system.movement.swim.bonus","value":45}],"when":["not:self:data:system.movement.swim.base>0"]},{"do":"notify","text":"E20.ZordFeatureMovementApplied","data":{"type":"E20.MovementTypeSwim"}}]}]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>When added to a Zord you pick a movement type: +30 feet to one it has, or a new one at 45 feet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,7 +19,184 @@
       "page": 137
     }
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Aerial Movement Booster",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.9YQmZGdNCmtXLAd4",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "tGlqvhjW355lbDHp",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.aerial.bonus",
+          "mode": 2,
+          "value": "30",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9YQmZGdNCmtXLAd4.tGlqvhjW355lbDHp"
+    },
+    {
+      "name": "Climb Movement Booster",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.9YQmZGdNCmtXLAd4",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "llL1KEb75Wx1slAl",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.climb.bonus",
+          "mode": 2,
+          "value": "30",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9YQmZGdNCmtXLAd4.llL1KEb75Wx1slAl"
+    },
+    {
+      "name": "Ground Movement Booster",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.9YQmZGdNCmtXLAd4",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "hTDmRopWEQ9xHJGc",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "30",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9YQmZGdNCmtXLAd4.hTDmRopWEQ9xHJGc"
+    },
+    {
+      "name": "Swim Movement Booster",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.9YQmZGdNCmtXLAd4",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "X74wg0eGk369hZwv",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.swim.bonus",
+          "mode": 2,
+          "value": "30",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9YQmZGdNCmtXLAd4.X74wg0eGk369hZwv"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

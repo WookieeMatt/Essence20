@@ -5,6 +5,10 @@
   "_id": "fKOzOEGBabfVJZ7k",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: set the Zord's Smarts and Social yourself, and handle its fear immunity and its Free actions to Lend Assistance.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

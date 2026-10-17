@@ -1,0 +1,44 @@
+{
+  "folder": "rxku6PTVz0evKZwC",
+  "name": "Q-Rex Portal",
+  "type": "perk",
+  "_id": "QRexPortalJTTxxx",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"SummonOption","label":"Q-Rex Portal (1 Personal Power, arrives in 1 round)","power":1,"rounds":1}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: summoning your Zord offers a faster option that costs 1 Personal Power and arrives in one round.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 46
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 850000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1757443100000,
+    "modifiedTime": 1757443100000,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!QRexPortalJTTxxx"
+}

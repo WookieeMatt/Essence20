@@ -1,0 +1,61 @@
+{
+  "folder": "nuaguA7I0CfpqW6x",
+  "name": "Rallying Cry",
+  "type": "perk",
+  "_id": "Qdb9Jj4UAAE0YbhE",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","event":"afterRoll","outcome":"success","label":"Rallying Cry (Surprise 1 enemy, 3 on a Critical Success)","when":["skill:performance","roll:dataset:dif=10","combat:roundIs:1"],"steps":[{"do":"target","min":0},{"do":"applyCondition","condition":"surprised","to":"targets","filter":["not:target:sameDisposition"],"first":"1 + 2 * @var.crit"}]}
+    ],
+    "prerequisites": {"when":["self:hasType:role:Journalist"]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: during combat's surprise round, when you roll a DIF 10 Performance test with enemies targeted, a success gives the first targeted enemy the Surprised condition (up to three on a Critical Success).</p><p>Left to the table: checking the enemies are within your reach.</p>"
+    },
+    "originalId": "",
+    "actionType": "free",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 37
+    },
+    "type": "role",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!Qdb9Jj4UAAE0YbhE"
+}

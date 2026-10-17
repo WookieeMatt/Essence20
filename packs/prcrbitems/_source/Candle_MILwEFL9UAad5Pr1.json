@@ -5,14 +5,17 @@
   "_id": "MILwEFL9UAad5Pr1",
   "img": "systems/essence20/assets/icons/gear/candle-light.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: the light it gives and how long it burns.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 119
+      "page": 120
     },
     "quantity": 1,
-    "type": "",
     "gearType": "tools"
   },
   "effects": [],

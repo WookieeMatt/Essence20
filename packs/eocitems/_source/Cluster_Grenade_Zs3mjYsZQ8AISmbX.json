@@ -5,6 +5,10 @@
   "_id": "Zs3mjYsZQ8AISmbX",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply, including Consumable.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -22,7 +26,7 @@
           "style": "explosive"
         },
         "damageValue": 1,
-        "damageType": "blunt",
+        "damageType": "sharp",
         "numHands": "1",
         "numTargets": 1,
         "radius": 20,
@@ -35,15 +39,13 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
     "requirements": {
-      "custom": "Nil",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

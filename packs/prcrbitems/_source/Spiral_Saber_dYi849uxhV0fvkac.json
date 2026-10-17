@@ -5,6 +5,10 @@
   "_id": "dYi849uxhV0fvkac",
   "img": "systems/essence20/assets/icons/weapons/coiled-nail.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might for Sharp damage, with two Cold-damage alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -44,7 +48,7 @@
           "style": "melee"
         },
         "damageValue": 1,
-        "damageType": "element",
+        "damageType": "cold",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -66,7 +70,7 @@
           "style": "melee"
         },
         "damageValue": 2,
-        "damageType": "element",
+        "damageType": "cold",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -79,8 +83,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
@@ -93,6 +95,7 @@
     },
     "traits": [
       "cold",
+      "powerWeapon",
       "sharp"
     ],
     "upgradeTraits": [],

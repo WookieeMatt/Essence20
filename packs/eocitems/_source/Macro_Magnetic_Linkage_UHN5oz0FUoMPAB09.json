@@ -5,6 +5,10 @@
   "_id": "UHN5oz0FUoMPAB09",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your reach counts double when the merge checks whether components are close enough.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

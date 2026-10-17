@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "icons/svg/sword.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for 1 Sharp damage, and the Nonlethal upgrade adds a Stun alternate effect.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -36,7 +40,7 @@
       "518e": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.QbfY2NGNmUmKa6uO",
         "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
-        "name": "Nonlathal",
+        "name": "Nonlethal",
         "type": "upgrade",
         "availability": "standard",
         "benefit": "",
@@ -68,7 +72,6 @@
     "upgradeTraits": [],
     "usesPerScene": null,
     "isPoison": false,
-    "isToxin": false,
     "transformerMode": "modeBotMode"
   },
   "effects": [],

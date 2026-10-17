@@ -5,6 +5,10 @@
   "_id": "AhwdrPcoBhuxexwj",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Edge on Alertness and +5ft Ground Movement.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

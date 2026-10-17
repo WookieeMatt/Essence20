@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/poison.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its effect with the Chemical Sprayer's range and cone; its ongoing damage and consumable use are tracked.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -61,16 +65,22 @@
       "ingested": false,
       "inhaled": false
     },
+    "prerequisites": {"when":[{"any":["self:skill:infiltration>=d4","self:skill:science>=d4"]}]},
     "requirements": {
-      "custom": "Science d4",
+      "custom": "",
       "skill": "infiltration",
       "shift": "d4"
     },
-    "traits": [],
+    "traits": [
+      "consumable",
+      "ongoing",
+      "poison"
+    ],
     "transformerMode": "modeBotMode",
     "upgradeTraits": [],
     "usesPerScene": null,
-    "poisonType": "poison"
+    "poisonType": "poison",
+    "ongoingDuration": 2
   },
   "effects": [],
   "ownership": {

@@ -4,6 +4,10 @@
   "type": "weapon",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its normal or alternate effect with the listed Skill and damage; its traits apply. The Ceremonial upgrade gives ↑1 on Persuasion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

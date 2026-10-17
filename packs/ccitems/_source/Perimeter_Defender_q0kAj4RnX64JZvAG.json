@@ -5,6 +5,14 @@
   "_id": "q0kAj4RnX64JZvAG",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Perimeter Defender: Specialized on Alertness","specialize":true,"when":["skill:alertness"]},
+      {"type":"CritOnD2","label":"Perimeter Defender: crit on the d2 on Alertness","when":["skill:alertness"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you're Specialized on Alertness Tests. Automatic: your Alertness Tests can critically succeed on a d2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -32,7 +40,7 @@
       "_id": "3xOeRCnqy0IwmA7z",
       "changes": [
         {
-          "key": "system.skills.alertness.isSpeciailzed",
+          "key": "system.skills.alertness.isSpecialized",
           "mode": 5,
           "value": "true",
           "priority": null

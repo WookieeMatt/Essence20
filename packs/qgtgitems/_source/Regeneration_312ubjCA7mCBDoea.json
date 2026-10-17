@@ -1,0 +1,51 @@
+{
+  "folder": "IFMLoLZC4rhRHlN8",
+  "name": "Regeneration",
+  "type": "power",
+  "_id": "312ubjCA7mCBDoea",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","label":"Regeneration: heal now, or a Science test","event":"powerUsed","when":["item:own"],"steps":[{"do":"choose","options":[{"label":"Heal 1 Health now","steps":[{"do":"updateActor","to":"self","add":{"system.health.value":1},"max":"@recipient.system.health.max"}]},{"label":"Science healing test (Edge)","steps":[{"do":"askNumber","var":"amount","min":1,"max":6},{"do":"rollCheck","skill":"science","essence":"smarts","dif":"5 + 5 * @var.amount","edge":true,"onSuccess":[{"do":"heal","to":"targetOrSelf","amount":"@var.amount"}]}]}]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: either heal 1 Health at once, or make a Science healing test with Edge on yourself or a targeted ally. It uses one of its two daily uses.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 94
+    },
+    "actionType": "standard",
+    "canActivate": true,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": null,
+    "selectionLimit": 1,
+    "type": "nanomite",
+    "usesInterval": "perDay",
+    "usesPer": 2,
+    "availability": "restricted",
+    "usesSpent": 0
+  },
+  "effects": [],
+  "sort": 1300000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787781936139,
+    "modifiedTime": 1787781936139,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!312ubjCA7mCBDoea"
+}

@@ -6,6 +6,7 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "projectile"
@@ -13,19 +14,20 @@
     "damageType": "element",
     "damageValue": 2,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 15,
     "range": {
-      "min": null,
+      "min": 45,
       "reachMultiplier": 0,
-      "long": null,
-      "value": null
+      "long": 500,
+      "value": 200
     },
     "source": {
       "book": "Enigma of Combination",
       "page": 51
-    }
+    },
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

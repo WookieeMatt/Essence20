@@ -5,6 +5,10 @@
   "_id": "Mn56I5EtAsxwgOSC",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, plus its Smarts increases and a Skill from Alertness, Science or Survival.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

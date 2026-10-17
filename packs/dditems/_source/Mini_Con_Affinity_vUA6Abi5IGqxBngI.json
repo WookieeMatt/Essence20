@@ -5,6 +5,10 @@
   "_id": "vUA6Abi5IGqxBngI",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: create your two Mini-Con allies, sharing one Alt Mode. Automatic: each linked Mini-Con gives you 1 Health instead of 2.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

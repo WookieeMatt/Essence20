@@ -5,6 +5,10 @@
   "_id": "lcuxdIbryh4NloGJ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: healing or repairing allies up to 30ft away, and counting as carrying a Limited Medicine Kit and Limited Repair Kit.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

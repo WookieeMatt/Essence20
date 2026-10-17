@@ -5,6 +5,10 @@
   "_id": "l6r7eMaH6q6ovbTK",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: you are trained in Medium armor.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

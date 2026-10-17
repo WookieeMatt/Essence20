@@ -1,52 +1,119 @@
 @use "../variables" as v;
 
 .essence20 .skill-header {
-  font-size: 1.125em;
+  font-size: 0.85em;
   align-items: center;
   flex-wrap: nowrap;
+  gap: 6px;
+  min-height: 24px;
 }
 
-.essence20 .skill-header .skill-roll {
-  flex-grow: 0;
-  margin-right: 5px;
-  margin-left: 5px;
-  padding-top: 4px;
+.essence20 .skill-header.conditioning-row {
+  margin-bottom: v.$gap-md;
 }
 
 .essence20 .skill-header .skill-name {
+  display: flex;
+  align-items: center;
   white-space: nowrap;
   overflow: hidden;
-  color: white;
-  margin-top: 2px;
+  text-overflow: ellipsis;
+  color: var(--e20-theme-text-color);
+  text-decoration: none;
+  font-size: 1em;
+  margin-left: 5px;
+  flex: 1 1 auto;
+
+  // Same rollable hover affordance .specialization-name below already has, so a skill's own name
+  // reads as just as clickable as the Specializations nested under it.
+  &:hover {
+    color: var(--e20-theme-accent);
+    // .essence20 a:hover's own global rule (_tabs.scss) glows via a blurred text-shadow, which
+    // this element's own overflow: hidden (needed above for ellipsis truncation) hard-clips into
+    // a visible rectangular edge instead of a soft fade - the same bug already diagnosed for the
+    // sheet tabs' halo and role-points-name (_collapsible.scss). Those fixed it by swapping to a
+    // tight, non-blurring text-stroke instead; the accent color swap above is already a clear
+    // enough hover cue on its own here, so this just drops the glow rather than replacing it.
+    text-shadow: none;
+  }
 }
 
-.essence20 .skill-header .add-specialization {
+.essence20 .skill-header .skill-shift-select {
+  flex: 0 0 auto;
+  width: 58px;
+  font-size: 0.95em;
+  padding: 1px 3px;
+  text-overflow: ellipsis;
+}
+
+/* Read-only stand-in for .skill-shift-select once shift-editing moves into the Skill Picker app
+   (essence-skills.hbs's readOnly param) - same box/width as the select it replaces, just
+   centered plain text instead of a dropdown. */
+.essence20 .skill-header .skill-shift-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--e20-theme-text-color);
+  opacity: 0.85;
+}
+
+/* Conditioning is displayed here and edited in the Skill Picker app (skill-picker.hbs), the same
+   split as the skill shifts above. It used to be an <input> on this sheet; the read-only span that
+   replaced it kept the input's own class, which still supplied a background, a border and a radius
+   - so a value nobody can edit went on rendering as a box that invites a click. Sizing matches the
+   skill shift beside it, with .skill-shift-display's plain-text treatment and none of the
+   decoration. */
+.essence20 .skill-header .conditioning-display {
+  flex: 0 0 auto;
+  width: 58px;
+  font-size: 0.95em;
+  padding: 1px 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--e20-theme-text-color);
+  opacity: 0.85;
+}
+
+.essence20 .skill-header .spellcasting-downshift-chip {
+  flex: 0 0 auto;
+  font-size: 0.85em;
+  margin-right: 3px;
+}
+
+.essence20 .skill-header .spellcasting-downshift-action {
   flex-grow: 0;
-  margin-right: 8px;
-  margin-top: 3px;
+  margin-right: 6px;
+  font-size: 0.75em;
+  color: var(--e20-theme-text-color);
 }
 
 .essence20 .skill-body {
   display: flex;
   flex-direction: column;
+  margin-bottom: v.$gap-md;
 }
 
-.essence20 .skill-body .shift-select {
-  display: flex;
-  flex-direction: row;
+/* essence-skills.hbs always renders a .skill-body sibling after every skill-header, even when
+   the skill has no specializations (a bare, empty <ol class="items-list"> with nothing else) -
+   that empty div still took its own slot in .essence20-sidebar-skill-list's flex column, so its
+   own margin-bottom above PLUS the list's gap on both sides of it stacked into a much bigger gap
+   than any other pair of adjacent skill rows (most visible right before the sidebar's Wealth Die
+   row, which isn't part of this loop and has no such empty body of its own). Dropping it out of
+   the flex layout entirely when it has neither a specialized-row (companion/npc/vehicle/zord)
+   nor any actual specializations restores a normal gap.
+   Scoped to .essence20-sidebar-skill-list specifically - essence-skills.hbs is also used by the
+   main Skills tab (pc-skills.hbs/accordion-skills.hbs), where the empty body's spacing is wanted
+   as-is; a bare .essence20 .skill-body rule would collapse it there too. */
+.essence20-sidebar-skill-list .skill-body:not(:has(.skill-specialized-row, .specializations-list)) {
+  display: none;
+}
+
+.essence20 .skill-body .skill-specialized-row {
   gap: 5px;
-  justify-content: center;
+  justify-content: flex-end;
   margin-top: 5px;
   margin-bottom: 5px;
-  align-items: center;
-}
-
-.essence20 .skill-body .shift-select > * {
-  vertical-align: middle;
-}
-
-.essence20 .skill-body .shift-select .modifier-plus {
-  display: flex;
   align-items: center;
 }
 
@@ -58,15 +125,47 @@
   margin-bottom: 5px;
 }
 
+/* Overrides items/_item-styling.scss's generic ".items-list .item:nth-child(odd)" zebra-stripe
+   (var(--e20-theme-card-bg)) - a Specialization being the sole/first item in its own <ol> means it's
+   always "odd" and always struck, giving it a visibly different background than the plain skill
+   rows around it. This list isn't a generic item collection being zebra-striped for scannability
+   (there's rarely more than one row in it), so flatten it back out to match. */
+.essence20 .skill-body .specializations-list.item:nth-child(odd) {
+  background: transparent;
+}
+
+/* A Specialization reads as its own tab nested under the parent skill - indented past the
+   skill-name link above it. */
 .essence20 .skill-body .specializations-list .specializations-item {
   align-items: center;
   gap: 5px;
   margin-left: 5px;
   margin-right: 5px;
+  padding-left: 8px;
 }
 
-.essence20 .skill-body .specializations-list .specializations-item .item-button-container {
-  padding-top: 3px;
+/* Same rollable affordance as .skill-header .skill-name, just a size down (this is a child of
+   that skill, not a peer of it) and muted until hovered/focused, so the parent skill still reads
+   as the more prominent of the two. */
+.essence20 .skill-body .specializations-list .specialization-name {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--e20-theme-text-color);
+  text-decoration: none;
+  font-size: 0.8em;
+  opacity: 0.85;
+  flex: 1 1 auto;
+
+  &:hover {
+    opacity: 1;
+    color: var(--e20-theme-accent);
+    // See .skill-header .skill-name:hover above - same overflow: hidden truncation, same clipped-
+    // glow bug from the global .essence20 a:hover text-shadow.
+    text-shadow: none;
+  }
 }
 
 .essence20 .skill-body .specializations-header {
@@ -81,35 +180,131 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  background: v.$background-n;
-  border: v.$border;
+  background: var(--e20-theme-panel-bg);
+  border: 1px solid var(--e20-theme-border-color);
   border-radius: 50px;
-  box-shadow: v.$boxshadow;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
   width: 100%;
 }
 
 .essence20 .skills-container {
   list-style: none;
   overflow-y: auto;
-  color: v.$textcolor1;
+  color: var(--e20-theme-text-color);
   transform: rotate(0deg);
-  scrollbar-width: thin;
-  background-color: v.$background-n;
-  border: v.$border;
-  border-radius: v.$border-radius;
-  box-shadow: v.$boxshadow;
+  border-radius: 8px;
   width: 100%;
   justify-content: left;
   flex-grow: 0;
   flex-basis: auto;
+  padding: 20px 8px 8px;
+  box-sizing: border-box;
+}
+
+/* Match this "Skills" panel's framing to the collapsible-item-container boxes it sits beside
+.essence20 (Weapons, etc., in the same npc-row) - same card background instead of staying transparent,
+   and the label flush at the top instead of floating under the 20px top padding
+   .skills-container gives the PC Skills tab's Essence columns (_essence.scss, the other user of
+   that shared class - scoped to .npc-skill-list specifically so that other use is untouched). */
+.essence20 .skills-container.npc-skill-list {
+  background: var(--e20-theme-card-bg);
+  padding: 8px;
+}
+
+/* npc-skill-list.hbs's heading row - "Skills" label plus the gear icon that opens the Skill
+.essence20 Picker app (module/apps/skill-picker.mjs). Unlike the old accordion-skills.hbs it replaced,
+   this list has no collapse/expand toggle, so the row only needs the label and the one action.
+   border-bottom/padding-bottom underline it the same way a collapsible-item-container's own
+   "Weapons +"-style header is underlined (_leveled-item-lists.scss's > .flexrow rule). */
+.essence20 .npc-skill-list-header {
+  justify-content: space-between;
+  border-bottom: 1px solid var(--e20-theme-border-color);
+  padding-bottom: v.$gap-sm;
+  margin-bottom: v.$gap-sm;
+
+  span {
+    font-weight: 700;
+  }
+
+  a {
+    color: var(--e20-theme-text-color);
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.essence20 .npc-skill-list-empty {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.essence20 .npc-skill-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Each chosen skill as a compact "Athletics +d20" rollable pill - reuses the same box shape as
+   the generic .chip class (border-radius, padding, card background) but is a clickable rollable
+   link rather than a static tag, so it gets its own class for the pointer/hover affordance
+   instead of `.chip` (which several non-interactive usages elsewhere rely on staying static). */
+.essence20 .npc-skill-buttons .npc-skill-button {
+  display: inline-block;
+  border-radius: 10px;
+  border: 1px solid var(--e20-theme-border-color);
+  padding: 3px 10px;
+  color: var(--e20-theme-text-color);
+  background-color: var(--e20-theme-card-bg);
+  text-decoration: none;
+  white-space: nowrap;
+  /* Also carries .rollable (for the click-to-roll affordance), which bumps font-size to 1.25em
+     globally (_global-windows.scss) - too large for a compact pill next to the "Skills" header.
+     Reset back to the ambient size; the extra .npc-skill-buttons ancestor in this selector
+     out-specifies ".essence20 .rollable" so this wins regardless of source order. */
+  font-size: 1em;
+}
+
+/* Hover affordance scoped to the anchors specifically - Conditioning renders as a static <span>
+   sharing the same pill box (it has no shift die and nothing to roll), and shouldn't light up as
+   though it were clickable. */
+.essence20 .npc-skill-buttons a.npc-skill-button:hover {
+  color: var(--e20-theme-accent);
+  border-color: var(--e20-theme-accent);
+}
+
+/* A skill pill that carries Specializations is a <span> holding several roll links rather than
+   being one link itself - the skill and each Specialization roll different things, at shifts that
+   can differ on an NPC. The box styling above still applies (it keys off .npc-skill-button), but
+   the two things that were scoped to the anchor have to move inward. */
+.essence20 .npc-skill-buttons .npc-skill-entry a {
+  color: inherit;
+  text-decoration: none;
+  /* .rollable bumps font-size to 1.25em globally (_global-windows.scss); the pill reset above is
+     on the span now, so the links need their own. */
+  font-size: 1em;
+}
+
+.essence20 .npc-skill-buttons .npc-skill-entry a:hover {
+  color: var(--e20-theme-accent);
+}
+
+/* The Specializations, in parentheses after the skill, as the stat blocks print them. */
+.essence20 .npc-skill-buttons .npc-skill-entry__specializations {
+  opacity: 0.85;
 }
 
 .essence20 .skillscontainer {
   list-style: none;
   overflow-y: auto;
-  color: v.$textcolor1;
+  color: var(--e20-theme-text-color);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
   padding: 0;
+  align-items: stretch;
+  height: calc(100% - 10px);
 }
+

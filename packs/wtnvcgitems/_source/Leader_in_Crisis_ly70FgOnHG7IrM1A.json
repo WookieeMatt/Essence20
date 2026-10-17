@@ -1,0 +1,60 @@
+{
+  "folder": "OxEn18c23xyuFEPj",
+  "name": "Leader in Crisis",
+  "type": "perk",
+  "_id": "ly70FgOnHG7IrM1A",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"ActionCost","label":"Leader in Crisis","action":"contingency","to":"free","limit":{"per":"turn","max":"@essence.social"}}
+    ],
+    "prerequisites": {"when":["self:hasType:role:Politician"]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: setting up a Contingency costs a Free action instead of its usual cost, up to your Social score each turn.</p><p>Left to the table: each Contingency needing a different trigger, and only one of them being an attack.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 37
+    },
+    "type": "role",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!ly70FgOnHG7IrM1A"
+}

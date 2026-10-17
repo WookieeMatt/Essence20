@@ -5,6 +5,10 @@
   "_id": "W7iyFJTIGw7BuR3x",
   "img": "systems/essence20/assets/icons/weapons/dagger.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics for 1 Blunt or 1 Sharp damage (pick the effect) at the listed range; its Silent trait applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,7 @@
     },
     "items": {
       "82e9": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.bxT99cXuxn9UPeNT",
+        "uuid": "Compendium.essence20.tf_crb.Item.13ERhGfqXsvQJL59",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Small Thrown Weapon Effect (Blunt)",
         "type": "weaponEffect",
@@ -29,13 +33,13 @@
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": 20,
-          "value": 10
+          "long": 40,
+          "value": 20
         },
         "shiftDown": 0
       },
       "eb0d": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.GqfmPxPjAP8Xoll9",
+        "uuid": "Compendium.essence20.tf_crb.Item.tdqu5H0TAri1BWdR",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Small Thrown Weapon Effect (Sharp)",
         "type": "weaponEffect",
@@ -51,23 +55,21 @@
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": 20,
-          "value": 10
+          "long": 40,
+          "value": 20
         },
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
     "requirements": {
-      "custom": "Huge",
-      "skill": "brawn",
-      "shift": "d4"
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
     },
     "traits": [
       "blunt",

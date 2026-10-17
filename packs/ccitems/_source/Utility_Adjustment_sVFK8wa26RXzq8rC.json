@@ -5,6 +5,10 @@
   "_id": "sVFK8wa26RXzq8rC",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: -5 ft to every Movement.</p><p>Use button: choose the kit it counts as; its benefits apply, and using it up takes a Standard action and lasts until you rest.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

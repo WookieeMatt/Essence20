@@ -5,7 +5,15 @@
   "_id": "yi2Z2ebEmTuow5LL",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Change shape (press again to change back)","steps":[{"do":"changeShape"}]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: change shape for the scene (press again to change back); Face-Shift, Master Morph and Size-Shift add their options here. Left to the table: the new form's movement, wings or senses.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "Dark Skies Over Equestria",
@@ -13,7 +21,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "origin"
   },
   "effects": [],
   "sort": 0,

@@ -1,5 +1,15 @@
 import PowerCostSelector from "../apps/power-cost-selector.mjs";
-import { parseId } from "../helpers/utils.mjs";
+import { parseId } from "../util/utils.mjs";
+import { onPowerUse } from "../mechanics/characters/power-use.mjs";
+import { spendDailyUse } from "../mechanics/resources/nanomite-uses.mjs";
+
+/**
+ * A fixed-cost Power's Personal Power cost for this actor. Discounts are ItemModifier rules on the derived
+ * powerCost (Zeo Crystal Wielder's -1 on Zeo Crystal Boost).
+ */
+export function fixedPowerCost(_actor, power) {
+  return parseInt(power.system.powerCost) || 0;
+}
 
 /**
  * Handles dropping a Power on to an Actor
@@ -33,11 +43,16 @@ export async function onPowerDrop(actor, power, dropFunc) {
 }
 
 /**
- * Handles determining the cost of a Power activation
+ * Handles determining the cost of a Power activation, then - once the cost is actually spent (or
+ * confirmed there's nothing to spend) - dispatches to the Power's own bespoke mechanic via
+ * mechanics/characters/power-use.mjs#onPowerUse. That dispatch is the Power-side equivalent of Perks' own
+ * onPerkUse - see that file's own doc comment for why nothing analogous existed here before.
  * @param {Actor} actor The Actor activating the Power
  * @param {Power} power The Power being activated
+ * @param {Actor} [payer] Who spends the Power points. Defaults to `actor`; differs for a Power on a
+ *   Zord or vehicle - which has no Power pool of its own - rolled by a chosen crew member, who pays.
  */
-export async function powerCost(actor, power) {
+export async function powerCost(actor, power, payer = actor) {
   let maxPower = 0;
   let powerType = "";
 
@@ -49,39 +64,81 @@ export async function powerCost(actor, power) {
     powerType = "threat";
   }
 
+  // Sorcerous Powers (Finster's Monster-Matic Cookbook, "Building Sorcerous Powers," p.274):
+  // powerCost is a ONE-TIME budget spent to BUILD the Power when the Sorcery Perk is taken (or a
+  // new level's points are gained) - a built Power is used as often as it says. It is never spent again on activation, unlike a Grid Power's Personal
+  // Power cost - see documents/actor.mjs#_prepareSorcerousPower's own committed-vs-available
+  // tracking of that same budget. Dispatches straight to the Power's own effect with nothing spent.
+  if (powerType == "sorcerous") {
+    await onPowerUse(actor, power, 0);
+    return;
+  }
+
+  // G.I. Joe nanomite powers cost no Power points - they're limited to uses per day instead. See
+  // mechanics/resources/nanomite-uses.mjs.
+  if (power.system.type == "nanomite") {
+    if (await spendDailyUse(actor, power)) {
+      await onPowerUse(actor, power, 0);
+    }
+
+    return;
+  }
+
+  // Only characters carry a Power pool. A costed Power used with no one able to pay would otherwise
+  // throw reading the pool - say so instead.
+  const pool = payer?.system?.powers?.[powerType];
+  const needsPool = powerType != "threat" && (power.system.hasVariableCost || power.system.powerCost);
+  if (needsPool && !pool) {
+    ui.notifications.warn(game.i18n.format('E20.PowerNoPool', { name: payer?.name ?? actor.name }));
+    return;
+  }
+
   if (power.system.hasVariableCost && powerType != "threat") {
     if (power.system.maxPowerCost) {
       maxPower = power.system.maxPowerCost;
     } else {
-      maxPower = actor.system.powers[powerType].value;
+      maxPower = pool.value;
     }
 
     const title = "E20.PowerCost";
-    new PowerCostSelector(actor, power, maxPower, powerType, title).render(true);
-  } else if (powerType != "threat" && actor.system.powers[powerType].value >= power.system.powerCost) {
+    new PowerCostSelector(actor, power, maxPower, powerType, title, payer).render(true);
+    // The variable-cost spend (and the onPowerUse dispatch that follows it) both happen later,
+    // once the player actually confirms an amount - see _powerCountUpdate below.
+  } else if (powerType != "threat" && pool && pool.value >= fixedPowerCost(actor, power)) {
+    const cost = fixedPowerCost(actor, power);
     const updateString = `system.powers.${powerType}.value`;
-    actor.update({ [updateString]: Math.max(0, actor.system.powers[powerType].value - power.system.powerCost) });
+    await payer.update({ [updateString]: Math.max(0, pool.value - cost) });
+    await onPowerUse(actor, power, cost);
   } else if (!power.system.powerCost) {
-    console.log("still working on something for here");
+    // Free-to-activate Powers (powerCost null/0) have nothing to spend, but still need their own
+    // effect to actually run - this used to be a bare placeholder with no dispatch at all.
+    await onPowerUse(actor, power, 0);
   } else {
     ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
   }
 }
 
 /**
- * Handles the spending of a Power activation
+ * Handles the spending of a Power activation, then dispatches to the Power's own bespoke mechanic
+ * via onPowerUse - the variable-cost sibling of powerCost's own fixed-cost dispatch above, reached
+ * once the player confirms an amount in apps/power-cost-selector.mjs's own form.
  * @param {Actor} actor The Actor activating the Power
  * @param {Integer} powerMax The maximum power points that can be spent on the power
  * @param {String} powerType  The type of Power
  * @param {Integer} powerCost The modified power cost
+ * @param {Power} [power] The Power being activated - optional only so this function's own existing
+ *   unit tests (which exercise the cost-math in isolation) don't need to supply a real Item; a real
+ *   call site always has one.
+ * @param {Actor} [payer] Who spends the points - see powerCost's own `payer`.
  */
-export function _powerCountUpdate(actor, powerMax, powerType, powerCost) {
+export async function _powerCountUpdate(actor, powerMax, powerType, powerCost, power, payer = actor) {
   const updateString = `system.powers.${powerType}.value`;
 
   if ((powerCost > powerMax)
-    || (powerType !="threat" && powerCost > actor.system.powers[powerType].value)) {
+    || (powerType !="threat" && powerCost > payer.system.powers[powerType].value)) {
     ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
   } else if (powerType != "threat") {
-    actor.update({ [updateString]: Math.max(0, actor.system.powers[powerType].value - powerCost) });
+    await payer.update({ [updateString]: Math.max(0, payer.system.powers[powerType].value - powerCost) });
+    await onPowerUse(actor, power, powerCost);
   }
 }

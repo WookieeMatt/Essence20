@@ -3,6 +3,15 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"skill","label":"Skill","from":"skill","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"RollModifier","label":"Agency","when":["skill:{choice.skill}"],"edge":true},
+      {"type":"DieSubstitution","label":"Wealth: at least the chosen Skill's die (Agency)","mode":"best","skills":["{choice.skill}"],"when":["skill:wealth"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: rolls of the Skill you chose on this Perk open the Roll Options Dialog with Edge already selected. Wealth tests roll that Skill's die instead of your Wealth die whenever it is the bigger one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -11,7 +20,9 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "influence"
+    "type": "influence",
+    "hasChoice": false,
+    "choiceType": "none"
   },
   "effects": [],
   "flags": {

@@ -1,0 +1,44 @@
+{
+  "folder": "S0TVSZfMxXIqPYj4",
+  "name": "Heavy Force",
+  "type": "perk",
+  "_id": "E4hk9pHESLuYQuO7",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Spend 1 Power (Heavy Force: ↑2)","when":["self:morphed",{"any":["attack:melee","roll:shove"]}],"upshift":2,"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"limit":{"per":"turn"}}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Roll Options Dialog: while Morphed, spend 1 Personal Power for ↑2 on your first melee attack each turn.</p><p>Left to the table: using it on pushes and shoves, and not moving until your next turn afterwards.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 45
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role",
+    "canActivate": false
+  },
+  "effects": [],
+  "sort": 200006,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1757700000000,
+    "modifiedTime": 1757700000000,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!E4hk9pHESLuYQuO7"
+}

@@ -5,6 +5,10 @@
   "_id": "pTwyIvr5RbNaHmRf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: first use adds another Mini-Con; after that it docks or deploys up to two Mini-Cons for one Free action. Additional Mini-Con also gives you two instead of one.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

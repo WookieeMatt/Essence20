@@ -3,6 +3,15 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"First Deception against this creature (Fresh Mark: Edge)","edge":true,"when":["skill:deception","not:roll:initiative","target:data:uuid","not:markedByMe:freshMarkDeceived"]},
+      {"type":"Trigger","event":"hit","label":"Remember who was deceived (Fresh Mark)","when":["skill:deception"],"steps":[{"do":"mark","to":"target","key":"freshMarkDeceived","perSetter":true,"legacy":"flags.essence20.d22Deceived"}]},
+      {"type":"Trigger","event":"miss","label":"Remember who was deceived (Fresh Mark)","when":["skill:deception"],"steps":[{"do":"mark","to":"target","key":"freshMarkDeceived","perSetter":true,"legacy":"flags.essence20.d22Deceived"}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your first Deception test targeting each creature gets Edge, labelled Fresh Mark in your Roll Options Dialog.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,52 +22,7 @@
     "selectionLimit": 1,
     "type": "influence"
   },
-  "effects": [
-    {
-      "origin": "Item.LWCNfr3eEU2y9MyP",
-      "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "SprX9BXFeGMmGS4z",
-      "changes": [
-        {
-          "key": "system.skills.deception.edge",
-          "mode": 5,
-          "value": "true",
-          "priority": null
-        }
-      ],
-      "tint": "#ffffff",
-      "transfer": true,
-      "flags": {},
-      "name": "First Deception",
-      "description": "",
-      "statuses": [],
-      "_stats": {
-        "coreVersion": "13.344",
-        "systemId": null,
-        "systemVersion": null,
-        "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "img": "icons/svg/aura.svg",
-      "type": "base",
-      "system": {},
-      "sort": 0,
-      "_key": "!items.effects!LWCNfr3eEU2y9MyP.SprX9BXFeGMmGS4z"
-    }
-  ],
+  "effects": [],
   "flags": {
     "core": {}
   },

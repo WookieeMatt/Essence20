@@ -22,6 +22,9 @@
     "units": "ft"
   },
   "documentTypes": {
+    "RegionBehavior": {
+      "environment": {}
+    },
     "Actor": {
       "playerCharacter": {
         "htmlFields": ["notes"]
@@ -40,6 +43,9 @@
       },
       "companion": {
         "htmlFields": ["notes"]
+      },
+      "party": {
+        "htmlFields": ["notes", "biography"]
       }
     },
     "Item": {
@@ -50,12 +56,6 @@
         "htmlFields": ["description"]
       },
       "armor": {
-        "htmlFields": ["description"]
-      },
-      "bond": {
-        "htmlFields": ["description"]
-      },
-      "classFeature": {
         "htmlFields": ["description"]
       },
       "equipmentPackage": {
@@ -125,6 +125,15 @@
   },
   "packs": [
     {
+      "name": "conditions",
+      "label": "Conditions",
+      "system": "essence20",
+      "path": "packs/conditionseffects",
+      "type": "ActiveEffect",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "across_the_stars",
       "label": "Across the Stars",
       "system": "essence20",
@@ -147,6 +156,15 @@
       "label": "Cobra Codex",
       "system": "essence20",
       "path": "packs/ccitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "cobra_con_fusion",
+      "label": "Cobra/Con Fusion",
+      "system": "essence20",
+      "path": "packs/ccfitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -206,10 +224,28 @@
       "flags": {}
     },
     {
+      "name": "general_hawk_s_personel_files",
+      "label": "General Hawk's Personnel Files",
+      "system": "essence20",
+      "path": "packs/ghpfitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "gi_joe_crb",
       "label": "GI Joe Core Rulebook",
       "system": "essence20",
       "path": "packs/gijcrbitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "in_a_jam",
+      "label": "In a Jam",
+      "system": "essence20",
+      "path": "packs/iajitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -246,6 +282,42 @@
       "label": "My Little Pony Core Rulebook",
       "system": "essence20",
       "path": "packs/mlpcrbitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "operation_cold_iron",
+      "label": "Operation Cold Iron",
+      "system": "essence20",
+      "path": "packs/ocitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "operation_snakebit",
+      "label": "Operation Snakebit",
+      "system": "essence20",
+      "path": "packs/osbitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "power_rangers_adventures",
+      "label": "Power Rangers Adventures",
+      "system": "essence20",
+      "path": "packs/pradvitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "power_rangers_pre_gens",
+      "label": "Power Rangers Pre Gen Characters",
+      "system": "essence20",
+      "path": "packs/prpgitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -314,10 +386,46 @@
       "flags": {}
     },
     {
+      "name": "transformers_adventures",
+      "label": "Transformers Adventures",
+      "system": "essence20",
+      "path": "packs/tfadvitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "transformers_extras",
+      "label": "Transformers Extras",
+      "system": "essence20",
+      "path": "packs/tfextitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "transformers_one_sourcebook",
       "label": "Transformers One Sourcebook",
       "system": "essence20",
       "path": "packs/tf1sitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "wtnv_citizens_guide",
+      "label": "Citizens' Guide",
+      "system": "essence20",
+      "path": "packs/wtnvcgitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "wtnv_host_guide",
+      "label": "Host Guide",
+      "system": "essence20",
+      "path": "packs/wtnvhgitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -330,8 +438,12 @@
       "packs": [
         "gi_joe_crb",
         "cobra_codex",
+        "cobra_con_fusion",
         "ferocious_fighters",
+        "general_hawk_s_personel_files",
         "intercontinental_adventures",
+        "operation_cold_iron",
+        "operation_snakebit",
         "quartermasters_guide_to_gear",
         "sgt_slaughter_sourcebook"
       ]
@@ -342,8 +454,17 @@
       "packs": [
         "mlp_crb",
         "dark_skies_over_equestria",
+        "in_a_jam",
         "knights_of_canterlot",
         "story_of_the_seasons"
+      ]
+    },
+    {
+      "name": "Welcome to Night Vale",
+      "sorting": "m",
+      "packs": [
+        "wtnv_citizens_guide",
+        "wtnv_host_guide"
       ]
     },
     {
@@ -355,7 +476,9 @@
         "beneath_the_helmet",
         "jump_through_time",
         "finster_s_monster_matic_cookbook",
-        "through_the_shattered_grid"
+        "through_the_shattered_grid",
+        "power_rangers_adventures",
+        "power_rangers_pre_gens"
       ]
     },
     {
@@ -366,7 +489,9 @@
         "decepticon_directive",
         "enigma_of_combination",
         "technorganic_secrets",
-        "transformers_one_sourcebook"
+        "transformers_one_sourcebook",
+        "transformers_adventures",
+        "transformers_extras"
       ]
     }
   ],
@@ -385,10 +510,10 @@
     }
   ],
   "compatibility": {
-    "minimum": "13",
+    "minimum": "14",
     "verified": "14"
   },
   "flags": {
-    "needsMigrationVersion": "5.1.0"
+    "needsMigrationVersion": "6.0.6"
   }
 }

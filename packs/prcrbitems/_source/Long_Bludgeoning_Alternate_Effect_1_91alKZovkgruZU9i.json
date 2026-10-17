@@ -1,19 +1,20 @@
 {
   "folder": "xEobfe1YNl85DACZ",
-  "name": "Long Bludgeoning Alternate Effect 1",
+  "name": "Martial Arts Long Bludgeon Alternate Effect 1",
   "type": "weaponEffect",
   "_id": "91alKZovkgruZU9i",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
-      "skill": "finesse",
+      "skill": "might",
       "style": "melee"
     },
     "damageType": "blunt",
     "damageValue": 1,
-    "shiftDown": 1,
-    "numHands": "2",
+    "shiftDown": 0,
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

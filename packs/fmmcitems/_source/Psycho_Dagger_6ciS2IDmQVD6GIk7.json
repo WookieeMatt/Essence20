@@ -1,0 +1,101 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Psycho Dagger",
+  "type": "weapon",
+  "_id": "6ciS2IDmQVD6GIk7",
+  "img": "icons/weapons/daggers/dagger-black.webp",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse with the listed damage and Void damage ignores armor bonuses to Toughness, and the Power Weapon trait counts for Power Weapon effects. Its Alternate Effect hits two targets at ↓1. Granted from the Psycho Morpher's Use button.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "d210": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.N2uZKnqiadHAVdnt",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Dagger Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "void",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "d211": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.PzpZYLBTHV2ud2v6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Dagger Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "void",
+        "numHands": 1,
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "prerequisites": {"when":[{"any":["self:hasType:role:Path of Cruelty","self:hasType:role:Path of Flame","self:hasType:role:Path of Frost","self:hasType:role:Path of Stone","self:hasType:role:Path of Thorns","self:hasType:role:Path of Venom"]}]},
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "void"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1790658899327,
+    "modifiedTime": 1790658899327,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!6ciS2IDmQVD6GIk7"
+}

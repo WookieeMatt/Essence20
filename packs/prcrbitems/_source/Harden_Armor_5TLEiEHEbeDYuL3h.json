@@ -4,6 +4,10 @@
   "_id": "5TLEiEHEbeDYuL3h",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Toughness while Morphed. You can take it up to three times.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,20 +16,13 @@
     },
     "actionType": "free",
     "canActivate": false,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,
     "selectionLimit": 3,
     "type": "grid",
     "usesInterval": "perScene",
-    "usesPer": null,
-    "isVariable": false,
-    "usesPerScene": null,
-    "timesSelected": 3,
-    "castable": false,
-    "powerIncrease": false,
-    "isActive": true
+    "usesPer": null
   },
   "effects": [
     {
@@ -44,7 +41,7 @@
       "_id": "EygAmCiyxeKLWcPi",
       "changes": [
         {
-          "key": "system.defenses.toughness.bonus",
+          "key": "system.defenses.toughness.morphed",
           "mode": 2,
           "value": "1",
           "priority": null

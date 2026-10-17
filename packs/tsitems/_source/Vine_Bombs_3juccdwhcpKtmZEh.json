@@ -5,6 +5,10 @@
   "_id": "3juccdwhcpKtmZEh",
   "img": "systems/essence20/assets/icons/weapons/vine-bomb.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown attacks for 1 Stun that also grapple the target (escape is against Toughness 16), with an alternate effect for 2 Stun at ↓2; it's used up when thrown.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

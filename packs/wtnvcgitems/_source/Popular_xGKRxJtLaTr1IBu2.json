@@ -1,0 +1,65 @@
+{
+  "folder": "D6p99UQk9yhNGe78",
+  "name": "Popular",
+  "type": "influence",
+  "_id": "xGKRxJtLaTr1IBu2",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Influence Perk when you add it. If it's your second or later Influence, you also pick one of its Hang-Ups (Naive, Loudmouth or Show Off) at that point.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 27
+    },
+    "items": {
+      "wIhi": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.GXJ4yNpN2uEawnNA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Popular Influence Perk",
+        "type": "perk"
+      },
+      "hu1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.gT3jMGYcF8Gbi0O5",
+        "img": "icons/svg/hazard.svg",
+        "name": "Naive",
+        "type": "hangUp"
+      },
+      "hu2": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.xUPWiX24XTCx9GRd",
+        "img": "icons/svg/hazard.svg",
+        "name": "Loudmouth",
+        "type": "hangUp"
+      },
+      "hu3": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.R7DMglLJxy9d9und",
+        "img": "icons/svg/hazard.svg",
+        "name": "Show Off",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!xGKRxJtLaTr1IBu2"
+}

@@ -1,0 +1,37 @@
+{
+  "folder": "TloTmcyDSbmlZYl4",
+  "name": "Addicted (Dark Energon)",
+  "type": "hangUp",
+  "_id": "e3c7wuCA7JQS7rTA",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: New Day rolls the craving check against Willpower at the die the addiction hit you with, Consumed records a feeding, Treatment rolls the Science cure. Automatic: consuming or using Dark Energon counts as feeding; while craving, Energon spends cost double; going unfed deals Smarts and Social Essence damage.</p><p>Left to the table: how you act once berserk.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 80
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774532548,
+    "modifiedTime": 1787774532548,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!e3c7wuCA7JQS7rTA"
+}

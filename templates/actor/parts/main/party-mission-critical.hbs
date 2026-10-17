@@ -1,0 +1,11 @@
+{{!--
+  Party Mission Critical Items tab. Gear the squad shares for a mission ("assigned to your
+  squad, not each Joe" - GI Joe CRB p.137). Items dropped here are the Party actor's own; an
+  Equipment Package with packageType "missionCritical" unpacks into these lists on drop.
+--}}
+<section class="tab missionCritical party-mission-critical {{tabs.missionCritical.cssClass}}" data-tab="missionCritical" data-group="primary">
+  {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
+  {{> "systems/essence20/templates/actor/parts/items/armor/container.hbs"}}
+  {{> "systems/essence20/templates/actor/parts/items/shield/container.hbs"}}
+  {{> "systems/essence20/templates/actor/parts/items/gear/container.hbs"}}
+</section>

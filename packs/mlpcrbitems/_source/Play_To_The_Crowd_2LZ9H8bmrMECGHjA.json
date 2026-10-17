@@ -5,6 +5,10 @@
   "_id": "2LZ9H8bmrMECGHjA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Snortle at the Spooky lets you spend extra Cheer Points to help one more friend per point. Left to the table: extra targets for your other single-target abilities.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

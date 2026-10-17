@@ -5,6 +5,10 @@
   "_id": "ZAuN4MI4tHUBqFFg",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Role Perks at the listed levels (including the Magna Sword, Torozord and Torozord Feature picks), Essence increases, Personal Power, armor training, starting Skills, and General Perk and Grid Power picks at their levels.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -115,9 +119,9 @@
         "level": 15
       },
       "cbe7": {
-        "uuid": "Compendium.essence20.pr_crb.Item.UFwnD2CsWCWXlUyf",
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.TGnqQAWWi1hBGqeh",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "At All Costs",
+        "name": "At All Cost",
         "type": "perk",
         "subtype": "role",
         "level": 18
@@ -129,6 +133,38 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "26dc": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Torozord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "2d01": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Torozord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "e660": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Torozord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "7afe": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Torozord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
       }
     },
     "adjustments": {

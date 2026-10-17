@@ -1,5 +1,10 @@
+import { spend } from "../mechanics/actions/action-economy.mjs";
 import TransformOptionSelector from "../apps/transform-option-selector.mjs";
-import { changeTokenImage, resizeTokens } from "../helpers/actor.mjs";
+import { changeTokenImage, resizeTokens } from "../mechanics/world/token-sync.mjs";
+import { warnMissingStateImage } from "../mechanics/characters/morph-state.mjs";
+import { fireTransforming } from "../rules/plugins/effects/state-changes.mjs";
+import { altModeSize } from "../rules/plugins/effects/size.mjs";
+import { unloadForMode } from "../mechanics/vehicles/alt-mode-crew.mjs";
 
 
 /**
@@ -8,13 +13,16 @@ import { changeTokenImage, resizeTokens } from "../helpers/actor.mjs";
  * @param {AltMode} altMode The deleted Alt Mode.
  */
 export async function onAltModeDelete(actorSheet, altMode) {
-  const altModes = actorSheet.actor.items.documentsByType.altMode;
+  // _transformBotMode takes the Actor. It was handed the sheet, threw on sheet.system, and the character stayed
+  // transformed into the deleted Alt Mode (release checklist live run, 2026-10-07).
+  const actor = actorSheet.actor;
+  const altModes = actor.items.documentsByType.altMode;
   if (altModes.length > 1) {
-    if (altMode._id == actorSheet.actor.system.altModeId) {
-      _transformBotMode(actorSheet.actor);
+    if (altMode._id == actor.system.altModeId) {
+      await _transformBotMode(actor);
     }
   } else {
-    _transformBotMode(actorSheet.actor);
+    await _transformBotMode(actor);
   }
 }
 
@@ -23,8 +31,33 @@ export async function onAltModeDelete(actorSheet, altMode) {
  * @param {Actor} actor The Actor being transformed
  */
 export async function onTransform(actor) {
+  // Mode Lock (Enigma of Combination, Weapon Traits/Conditions, p.49) - see dice.mjs#_applyModeLock's
+  // own doc comment. "Can't convert from their current Mode" blocks the transform button outright,
+  // the one point every Bot Mode <-> Alt Mode conversion in this codebase funnels through.
+  if (actor.statuses?.has('modeLock')) {
+    ui.notifications.warn(game.i18n.format('E20.ModeLockPreventsConversion', { name: actor.name }));
+    return;
+  }
+
   const altModes = actor.items.documentsByType.altMode;
   const isTransformed = actor.system.isTransformed;
+
+  // Converting is a Standard action (TF CRB p.111: Quick Change makes it a Free action). Charged only in combat; a player who backs out
+  // of the "how do you pay?" question hasn't converted.
+  if (altModes.length || isTransformed) {
+    const paid = await spend(actor, 'standard', {
+      source: game.i18n.localize('E20.ActionConvert'), context: { kind: 'conversion' },
+    });
+    if (paid.blocked) {
+      if (!paid.cancelled) {
+        ui.notifications.warn(game.i18n.format('E20.ActionEconomyUnaffordable', {
+          name: actor.name, action: game.i18n.localize('E20.ActionConvert'),
+        }));
+      }
+
+      return;
+    }
+  }
 
   if (!actor.system.isTransformed ) {
     await actor.update ({
@@ -71,6 +104,9 @@ export async function onTransformUuid(actor, altModeUuid=null) {
  * @private
  */
 async function _transformBotMode(actor) {
+  // Item rules' transforming Triggers (Mode Attachment), before the change.
+  await fireTransforming(actor, 'botMode');
+
   const width = CONFIG.E20.tokenSizes[actor.system.size].width;
   const height = CONFIG.E20.tokenSizes[actor.system.size].height;
   resizeTokens(actor, width, height);
@@ -82,10 +118,43 @@ async function _transformBotMode(actor) {
     "system.movement.aerial.altMode": 0,
     "system.movement.swim.altMode": 0,
     "system.movement.ground.altMode": 0,
+    "system.movement.climb.altMode": 0,
+    "system.movement.burrow.altMode": 0,
     "system.isTransformed": false,
     "system.altModeId": "",
     "system.altModesize": "",
   });
+
+  // Converting into Bot Mode puts the Alt Mode's crew out (TF CRB p.47).
+  await unloadForMode(actor);
+}
+
+/**
+ * An Alt Mode's size or movement changed (its pick on the row, or a Size rule): when the character is in it now, its
+ * tokens, system.altModesize and Alt Mode movement follow, and riders who no longer fit get out.
+ * @param {Actor} actor
+ * @param {Item} altMode
+ */
+export async function refreshAltModeSize(actor, altMode) {
+  if (!actor?.system?.isTransformed || actor.system.altModeId != altMode?.id) {
+    return;
+  }
+
+  const size = altModeSize(actor, altMode);
+  const { width, height } = CONFIG.E20.tokenSizes[size];
+  const movement = altMode.system.altModeMovement ?? {};
+  resizeTokens(actor, width, height);
+  await actor.update({
+    "prototypeToken.height": height,
+    "prototypeToken.width": width,
+    "system.altModesize": size,
+    "system.movement.aerial.altMode": movement.aerial ?? 0,
+    "system.movement.swim.altMode": movement.aquatic ?? 0,
+    "system.movement.ground.altMode": movement.ground ?? 0,
+    "system.movement.climb.altMode": movement.climb ?? 0,
+    "system.movement.burrow.altMode": movement.burrow ?? 0,
+  });
+  await unloadForMode(actor);
 }
 
 /**
@@ -95,8 +164,12 @@ async function _transformBotMode(actor) {
  * @private
  */
 async function _transformAltMode(actor, altMode) {
-  const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
-  const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;
+  await fireTransforming(actor, altMode.id);
+  warnMissingStateImage(actor, "altMode", altMode);
+  // Its size on this actor: Size rules for Alt Modes (Titanspark) apply.
+  const size = altModeSize(actor, altMode);
+  const width = CONFIG.E20.tokenSizes[size].width;
+  const height = CONFIG.E20.tokenSizes[size].height;
   resizeTokens(actor, width, height);
   changeTokenImage(actor, altMode.system.tokenImage);
 
@@ -106,10 +179,15 @@ async function _transformAltMode(actor, altMode) {
     "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
     "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
     "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
-    "system.altModesize": altMode.system.altModesize,
+    "system.movement.climb.altMode": altMode.system.altModeMovement.climb ?? 0,
+    "system.movement.burrow.altMode": altMode.system.altModeMovement.burrow ?? 0,
+    "system.altModesize": size,
     "system.altModeId": altMode._id,
     "system.isTransformed": true,
   });
+
+  // From a roomier Alt Mode: those who no longer fit get out.
+  await unloadForMode(actor);
 }
 
 /**

@@ -5,6 +5,10 @@
   "_id": "doPXx4JM7nS998Ue",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: when you Manifest a Melee Weapon, you can create a Limited Melee Weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

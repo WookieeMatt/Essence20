@@ -5,6 +5,10 @@
   "_id": "QpbBjwRgRTB9A6Vx",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Hardened, Enemy Number One, Interpose, Tough Enough, Rallying Cry, Bulwark and Aegis at their listed levels, plus +1 Strength at 1st and 10th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

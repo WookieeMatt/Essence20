@@ -5,15 +5,19 @@
   "_id": "W7iyFJTIGw7BuR3x",
   "img": "systems/essence20/assets/icons/weapons/small_thrown_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: thrown attacks roll Athletics at 10/20 ft, with a Blunt or Sharp version; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Transformers Core Rulebook",
-      "page": 123
+      "book": "Power Rangers Core Rulebook",
+      "page": 112
     },
     "items": {
       "b209": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.bxT99cXuxn9UPeNT",
+        "uuid": "Compendium.essence20.pr_crb.Item.bxT99cXuxn9UPeNT",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Small Thrown Weapon Effect (Blunt)",
         "type": "weaponEffect",
@@ -29,13 +33,13 @@
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": 20,
-          "value": 10
+          "long": 40,
+          "value": 20
         },
         "shiftDown": 0
       },
       "ff40": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.GqfmPxPjAP8Xoll9",
+        "uuid": "Compendium.essence20.pr_crb.Item.GqfmPxPjAP8Xoll9",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Small Thrown Weapon Effect (Sharp)",
         "type": "weaponEffect",
@@ -51,23 +55,21 @@
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": 20,
-          "value": 10
+          "long": 40,
+          "value": 20
         },
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
     "requirements": {
-      "custom": "Huge",
-      "skill": "brawn",
-      "shift": "d4"
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
     },
     "traits": [
       "blunt",

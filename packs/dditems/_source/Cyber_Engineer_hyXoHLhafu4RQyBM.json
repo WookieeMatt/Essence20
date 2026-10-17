@@ -5,6 +5,10 @@
   "_id": "hyXoHLhafu4RQyBM",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, plus its Essence and Skill increases (your choice).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

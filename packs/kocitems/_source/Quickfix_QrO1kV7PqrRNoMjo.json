@@ -5,15 +5,24 @@
   "_id": "QrO1kV7PqrRNoMjo",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Left to the table: the spell's effect, which is narrative (a temporary repair).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Knights of Canterlot",
       "page": 44
     },
+    "actionType": "standard",
     "circle": "utility",
     "cost": 1,
-    "duration": "3 hours",
+    "duration": {
+      "units": "hours",
+      "value": 3,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "Reach",
     "tier": "elementary"

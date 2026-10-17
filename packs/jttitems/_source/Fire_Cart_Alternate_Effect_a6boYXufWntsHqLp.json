@@ -5,7 +5,12 @@
   "_id": "a6boYXufWntsHqLp",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: the Fire Cart's Targeting attack with the listed Fire damage and range.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "A Jump Through Time",
@@ -15,7 +20,7 @@
       "skill": "targeting",
       "style": "projectile"
     },
-    "damageType": "element",
+    "damageType": "fire",
     "damageValue": 3,
     "isSpecialized": false,
     "numHands": 6,
@@ -27,7 +32,8 @@
       "long": 1500,
       "value": 300
     },
-    "shiftDown": 0
+    "shiftDown": 0,
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

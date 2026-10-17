@@ -5,6 +5,10 @@
   "_id": "hmQu37OfCMtGJ4M3",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Blue Ranger's Perks at the listed levels, Essence increases, Personal Power, Idea Points and the Power Ranger faction. You make the listed choices as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -69,7 +73,7 @@
       "79ff": {
         "uuid": "Compendium.essence20.pr_crb.Item.U5xY4e0Wro9XyooS",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Helping Hands",
+        "name": "Helping Hand",
         "type": "perk",
         "subtype": "role",
         "level": 2
@@ -161,6 +165,38 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "zf06": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "zf10": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "zf14": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "zf17": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
       }
     },
     "adjustments": {

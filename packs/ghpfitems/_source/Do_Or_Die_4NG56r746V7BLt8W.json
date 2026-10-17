@@ -1,0 +1,43 @@
+{
+  "folder": "aYgV1VMj4QDpmJI5",
+  "name": "Do Or Die",
+  "type": "perk",
+  "_id": "4NG56r746V7BLt8W",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"CardOffer","label":"Do Or Die: add a {die} ({cost} Moxie)","whose":"self","pressedBy":"holderOwner","when":["card:checks"],"counter":{"per":"scene"},"cost":{"resource":{"rolePoints":"Moxie"},"amount":"1 + min(1, @var.used)"},"addDie":{"faces":"2 + 2 * min(3, floor(max(0, @level - @actor.system.oldHandTransitionLevel + min(1, @actor.system.oldHandTransitionLevel) - 1) / 5))"}}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: a Do Or Die button on your own tests spends Moxie (a second use in the same scene costs more), rolls your Do Or Die die, re-scores each target and offers any extra damage.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 0
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 300000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "14.364",
+    "createdTime": 1787050000000,
+    "modifiedTime": 1788529450715,
+    "lastModifiedBy": "eDolxwiWtO0teEJE",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!4NG56r746V7BLt8W"
+}

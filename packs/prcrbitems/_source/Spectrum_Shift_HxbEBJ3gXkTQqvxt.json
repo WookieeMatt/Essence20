@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when added, a dialog lets you trade your Ranger levels for another Spectrum colour, keeping what the book says carries over.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

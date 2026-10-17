@@ -5,6 +5,10 @@
   "_id": "ELRCpQpT3q1Our7p",
   "img": "systems/essence20/assets/icons/items/rolePoints.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while Morphed: adds your Hardened Armor bonus to Toughness, rising from +1 to +5 with your Gold Ranger level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -19,7 +23,7 @@
         "willpower": false
       },
       "increase": 1,
-      "level20Value": null,
+      "level20Value": 5,
       "increaseLevels": [
         "level4",
         "level8",
@@ -28,7 +32,8 @@
       ],
       "startingValue": 1,
       "type": "defenseBonus",
-      "value": 0
+      "value": 0,
+      "whileMorphed": true
     },
     "isActivatable": false,
     "isActive": false,
@@ -41,8 +46,7 @@
       "max": null,
       "startingMax": null,
       "value": null
-    },
-    "level20Value": null
+    }
   },
   "effects": [],
   "sort": 0,

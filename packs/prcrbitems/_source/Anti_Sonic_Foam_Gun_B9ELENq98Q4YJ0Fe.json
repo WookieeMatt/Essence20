@@ -5,6 +5,10 @@
   "_id": "B9ELENq98Q4YJ0Fe",
   "img": "systems/essence20/assets/icons/weapons/pistol.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed range and Stun effect; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -35,11 +39,9 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
-      "size": "light"
+      "size": "medium"
     },
     "equipped": true,
     "requirements": {
@@ -47,9 +49,7 @@
       "skill": "targeting",
       "shift": "d4"
     },
-    "traits": [
-      "stun"
-    ],
+    "traits": [],
     "upgradeTraits": [],
     "usesPerScene": null
   },

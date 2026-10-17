@@ -1,0 +1,44 @@
+{
+  "folder": "7HOrvd6hwScvddul",
+  "name": "Champion His Way",
+  "type": "perk",
+  "_id": "j9FW3wF6mKnVFj0s",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["self:has:Word of Unicron","self:skill:culture>=d10"]},
+    "rules": [
+      {"type":"Defense","defense":"any","amount":2,"when":["self:data:system.energon.dark.value>0"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: +2 to all Defenses while you hold at least one Dark Energon Point.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 111
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "coreVersion": "13.344",
+    "createdTime": 1790266885700,
+    "modifiedTime": 1790266885700,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!j9FW3wF6mKnVFj0s"
+}

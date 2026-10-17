@@ -5,6 +5,10 @@
   "_id": "16tNtnlJwVYjIwXW",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Tech Officer Perks at their listed levels (Precision Timing through Technical Mastery), plus the Focus's Essence and Skill increases.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

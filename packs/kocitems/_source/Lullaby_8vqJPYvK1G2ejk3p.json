@@ -5,15 +5,27 @@
   "_id": "8vqJPYvK1G2ejk3p",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Lullaby","event":"afterRoll","outcome":"success","when":["item:own"],"steps":[{"do":"save","to":"all:60","skills":["alertness"],"dif":15,"status":"asleep","rounds":4}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Cast: rolls Spellcasting and applies the casting cost as usual. Chat card: on a success, everyone within 60 ft gets a DIF 15 Alertness save, and failing leaves them Asleep for 4 rounds.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Knights of Canterlot",
       "page": 50
     },
+    "actionType": "standard",
     "circle": "aid",
     "cost": 3,
-    "duration": "4 rounds or until disrupted",
+    "duration": {
+      "units": "rounds",
+      "value": 4,
+      "text": "4 rounds or until disrupted"
+    },
     "isSpecialized": false,
     "range": "60 feet",
     "tier": "virtuoso"

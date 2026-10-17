@@ -1,0 +1,75 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Pitchfork",
+  "type": "weapon",
+  "_id": "6ogwTc7K7MaljOOb",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Might at double Reach. Pick one-handed (1 Sharp), two-handed (2 Sharp) or a sweep at ↓1 (1 Sharp to up to 2 targets) when you attack; its traits apply.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 62
+    },
+    "items": {
+      "s72g": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.OQpg0NmGRFKeKaSb",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pitchfork Effect",
+        "type": "weaponEffect"
+      },
+      "12pf": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.QpNWXGOq4kzGjgIW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pitchfork Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "ra5i": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.yidsWJlgYFMJP8PE",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pitchfork Alternate Effect 2",
+        "type": "weaponEffect"
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "multipleTargets",
+      "sharp",
+      "silent",
+      "versatile"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!6ogwTc7K7MaljOOb"
+}

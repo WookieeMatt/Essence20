@@ -1,0 +1,50 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Onboard GPS",
+  "type": "upgrade",
+  "_id": "2JsjyEOtWTNHpxDl",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"crew","edge":true,"when":["skill:survival"]},
+      {"type":"RollModifier","edge":true,"when":["self:type:vehicle","skill:survival"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: crew making a Survival test aboard get Edge from it; untick it when the test isn't navigating while the vehicle moves.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 56
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "Edge on Survival Skill Tests to navigate while the vehicle is moving.",
+    "traits": [],
+    "type": "vehicle",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!2JsjyEOtWTNHpxDl"
+}

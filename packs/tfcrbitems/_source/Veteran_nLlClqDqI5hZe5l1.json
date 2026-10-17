@@ -3,13 +3,21 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Reroll","mode":"all","target":"d20","reset":"mission","maxUses":3,"condition":"notSnagged"}
+    ],
+    "prerequisites": {"when":["self:level>=8"]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Chat card: three times per mission, a reroll button for a Skill Test's d20, offered only when the roll had no Snag.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 112
     },
-    "prerequisite": "Level 8",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -5,6 +5,10 @@
   "_id": "b9he5mvd9QTTnUXm",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: you can make Persuasion tests on creatures even without a shared language.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

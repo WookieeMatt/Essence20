@@ -1,0 +1,81 @@
+<header class="sheet-header e20-border-accent">
+
+  <div class="flexrow e20-gap-2 header-row-top">
+    {{!-- Name --}}
+    <div class="header-name-field">
+      <div class="sliced-border">
+        <label class="sliced-border__label">{{localize 'E20.ActorName'}}</label>
+        <h1 class="charname"><input name="name" type="text" value="{{document.name}}" placeholder="Name" /></h1>
+      </div>
+      {{!-- Morphed / Alt Mode show on the sidebar's Morph and Transform buttons (sidebar-transform-morph.hbs), not here. --}}
+      {{#if flags.essence20.pendingOngoingEffects.length}}
+        <div class="e20-state-badges">
+          {{!-- Ongoing/Poison/Toxin (Cobra Codex p.93-94) - see mechanics/combat/ongoing-effects.mjs's own
+               doc comment. One badge per pending effect, each clickable to treat it early
+               ("until treated") - the only sheet-side way to end one before it counts down. --}}
+          {{#each flags.essence20.pendingOngoingEffects}}
+            <span class="e20-state-badge --ongoing" data-action="treatOngoingEffect" data-index="{{@index}}"
+              data-tooltip="{{localize 'E20.OngoingEffectTreat'}}">
+              {{this.sourceName}} ({{this.roundsRemaining}})
+            </span>
+          {{/each}}
+        </div>
+      {{/if}}
+      {{!-- Riding in a Transformer's Alt Mode - mechanics/vehicles/alt-mode-crew.mjs. --}}
+      {{#if aboard}}
+        <div class="e20-aboard">
+          <span class="e20-state-badge --aboard">{{aboard.roleLabel}}</span>
+          <a class="e20-aboard__carrier" data-action="aboardOpen">{{localize "E20.AltCrewAboard" carrier=aboard.carrierName}}</a>
+          {{#if editable}}
+            {{#if aboard.isPrisoner}}
+              <a class="e20-aboard__button" data-action="aboardEscape"><i class="fas fa-unlock"></i> {{localize "E20.AltCrewEscape"}}</a>
+            {{else}}
+              {{#if aboard.isDriver}}
+                <a class="e20-aboard__button" data-action="aboardAssist" data-tooltip="{{localize 'E20.AltCrewAssistDrivingTooltip'}}"><i class="fas fa-car"></i> {{localize "E20.AltCrewAssistDriving"}}</a>
+              {{/if}}
+              <a class="e20-aboard__button" data-action="aboardDisembark"><i class="fas fa-person-walking-arrow-loop-left"></i> {{localize "E20.AltCrewDisembark"}}</a>
+            {{/if}}
+          {{/if}}
+        </div>
+      {{/if}}
+    </div>
+
+    {{!-- Size --}}
+    <div class="sliced-border">
+      <label class="sliced-border__label">{{localize 'E20.ActorSize'}}</label>
+      {{#if system.isTransformed}}
+        <select name="system.altModesize">
+          {{selectOptions config.actorSizes selected=system.altModesize}}
+        </select>
+      {{else}}
+        {{#if (eq @root.document.type 'megaform')}}
+          {{#inArray system.subtype 'megaformCombiner'}}
+            <select name="system.size" disabled>
+              {{selectOptions config.actorSizes selected=system.size}}
+            </select>
+          {{else}}
+            <select name="system.size">
+              {{selectOptions config.actorSizes selected=system.size}}
+            </select>
+          {{/inArray}}
+        {{else}}
+          <select name="system.size">
+            {{selectOptions config.actorSizes selected=system.size}}
+          </select>
+        {{/if}}
+      {{/if}}
+    </div>
+
+    {{#> topRowFields}}
+    {{!-- Custom top-row fields here --}}
+    {{/topRowFields}}
+  </div>
+
+  <div class="flexrow e20-gap-2 header-row-bottom">
+    {{#> secondary-fields}}
+    {{!-- Custom secondary fields here --}}
+    {{/secondary-fields}}
+
+    {{> "systems/essence20/templates/actor/parts/misc/action-economy.hbs"}}
+  </div>
+</header>

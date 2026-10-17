@@ -5,6 +5,10 @@
   "_id": "gWgDokhQPxkFn3Xl",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Granted: to Time Force Rangers along with their Morph gear. Otherwise nothing is applied automatically.</p><p>Left to the table: communicating with it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

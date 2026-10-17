@@ -1,21 +1,35 @@
 <div class="flexrow item-label">
-  <div class="item-image" style="flex-grow: 0;">
-    <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
-      <a class="rollable" data-roll-type="info" data-tooltip="{{localize 'E20.ItemRollTitle'}}">
-        <i class="fas fa-message-lines"></i>
+  <div class="item-image e20-flex-grow-0">
+    <div class="flexrow e20-nowrap e20-gap-5">
+      <a class="rollable" data-action="rollable" data-roll-type="info" data-tooltip="{{localize 'E20.ItemRollTitle'}}">
+        <i class="fas fa-message-lines" data-roll-type="info" ></i>
       </a>
       {{#> roll-button}}
       {{!-- Custom roll button here --}}
       {{/roll-button}}
     </div>
   </div>
+  {{#if (and (canUsePerk item) (ne item.type "power"))}}
+    <div class="item-image e20-flex-grow-0">
+      <div class="flexrow e20-nowrap e20-gap-5">
+        <a class="perk-use e20-flex-grow-0" data-action="perkUse" data-id="{{item._id}}"
+          data-tooltip="{{localize 'E20.PerkUse'}}">
+          <i class="fas fa-bolt fa-lg"></i>
+        </a>
+        {{!-- Charges left (a Use rule's charges - Wrist Communicator): the item sheet's Details tab can set them. --}}
+        {{#with (itemCharges item) as |charges|}}
+        <span class="e20-use-charges{{#unless charges.left}} spent{{/unless}}" data-tooltip="{{localize 'E20.Rules.ChargesTooltip' left=charges.left max=charges.max}}">{{charges.left}}/{{charges.max}}</span>
+        {{/with}}
+      </div>
+    </div>
+  {{/if}}
   {{#if (eq item.type "shield")}}
-    <div class="item-image" style="flex-grow: 0;">
-      <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
-        <a class="shield-activate" data-id="{{item._id}}" style="flex-grow: 0;"
-          {{#if system.active}} data-tooltip="{{localize 'E20.ShieldCurrentStateActive'}}" {{else}} data-tooltip="{{localize 'E20.ShieldCurrentStatePassive'}}" {{/if}}
+    <div class="item-image e20-flex-grow-0">
+      <div class="flexrow e20-nowrap e20-gap-5">
+        <a class="shield-activate e20-flex-grow-0" data-action="shieldActivationToggle" data-id="{{item._id}}"
+          {{#if item.system.active}} data-tooltip="{{localize 'E20.ShieldCurrentStateActive'}}" {{else}} data-tooltip="{{localize 'E20.ShieldCurrentStatePassive'}}" {{/if}}
         >
-          {{#if system.active}}
+          {{#if item.system.active}}
             <i class="fas fa-shield-check fa-lg"></i>
           {{else}}
             <i class="fas fa-shield fa-lg"></i>
@@ -25,9 +39,10 @@
     </div>
   {{/if}}
   {{#if (isdefined item.system.equipped)}}
-  <div style="flex-grow: 0;">
+  <div class="e20-flex-grow-0">
     <input class="inline-edit item-label-checkbox {{#if (eq item.type "shield")}} shield-equip{{/if}}"
       data-field="system.equipped" data-id="{{item._id}}" type="checkbox" name="shield.{{@index}}.equipped"
+      {{#if (eq item.type "shield")}} data-action="shieldEquipToggle" {{/if}}
       {{checked item.system.equipped}} data-tooltip="{{localize 'E20.ItemToggleEquipped'}}"
       {{#if @root.shieldEquipped}} {{#unless item.system.equipped}} disabled {{/unless}} {{/if}}
     />
@@ -43,9 +58,9 @@
     {{#> extra-controls item=item}}
     {{!-- Extra control buttons --}}
     {{/extra-controls}}
-    <a class="item-control item-edit" data-tooltip="{{localize 'E20.ItemControlEdit'}}"><i class="fas fa-edit"></i></a>
-    <a class="item-control item-delete" data-tooltip="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
-    <a class="item-control accordion-label" data-tooltip="{{ localize 'E20.ItemControlExpand' }}">
+    <a class="item-control" data-action="itemEdit" data-tooltip="{{localize 'E20.ItemControlEdit'}}"><i class="fas fa-edit" data-uuid="{{item.uuid}}"></i></a>
+    <a class="item-control" data-action="itemDelete" data-tooltip="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash" data-uuid="{{item.uuid}}" data-item-key="{{itemKey}}"></i></a>
+    <a class="item-control accordion-label" data-action="toggleAccordion" data-tooltip="{{ localize 'E20.ItemControlExpand' }}">
       <i class="accordion-icon fas fa-chevron-down"></i>
     </a>
   </div>

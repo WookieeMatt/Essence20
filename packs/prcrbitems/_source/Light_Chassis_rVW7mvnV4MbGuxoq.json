@@ -5,6 +5,14 @@
   "_id": "rVW7mvnV4MbGuxoq",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Light Chassis","scope":"megaform","upshift":1,"stacks":false,"when":["roll:initiative","megaform:is:zord"]},
+      {"type":"Trigger","label":"Light Chassis","event":"added","removeOnStop":true,"steps":[{"do":"notify","text":"E20.ZordFeatureNoMovement","level":"warn","stop":true,"when":["not:self:data:system.movement.aerial.base>0","not:self:data:system.movement.burrow.base>0","not:self:data:system.movement.climb.base>0","not:self:data:system.movement.ground.base>0","not:self:data:system.movement.swim.base>0"]},{"do":"choose","prompt":"Which movement type goes up 10 feet?","options":[{"label":"Aerial","when":["self:data:system.movement.aerial.base>0"],"steps":[{"do":"setEffects","effects":[{"changeKey":"system.movement.aerial.bonus","on":true}]},{"do":"notify","text":"E20.ZordFeatureMovementApplied","data":{"type":"E20.MovementTypeAerial"}}]},{"label":"Burrow","when":["self:data:system.movement.burrow.base>0"],"steps":[{"do":"addEffect","name":"Light Chassis (Burrow)","img":"icons/svg/aura.svg","changes":[{"key":"system.movement.burrow.bonus","value":10}]},{"do":"notify","text":"E20.ZordFeatureMovementApplied","data":{"type":"E20.MovementTypeBurrow"}}]},{"label":"Climb","when":["self:data:system.movement.climb.base>0"],"steps":[{"do":"setEffects","effects":[{"changeKey":"system.movement.climb.bonus","on":true}]},{"do":"notify","text":"E20.ZordFeatureMovementApplied","data":{"type":"E20.MovementTypeClimb"}}]},{"label":"Ground","when":["self:data:system.movement.ground.base>0"],"steps":[{"do":"setEffects","effects":[{"changeKey":"system.movement.ground.bonus","on":true}]},{"do":"notify","text":"E20.ZordFeatureMovementApplied","data":{"type":"E20.MovementTypeGround"}}]},{"label":"Swim","when":["self:data:system.movement.swim.base>0"],"steps":[{"do":"setEffects","effects":[{"changeKey":"system.movement.swim.bonus","on":true}]},{"do":"notify","text":"E20.ZordFeatureMovementApplied","data":{"type":"E20.MovementTypeSwim"}}]}]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +1 Speed for the Zord. When added you pick a movement type, which goes up 10 feet. Automatic: ↑1 on Initiative for any Megaform it joins.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -14,7 +22,7 @@
   },
   "effects": [
     {
-      "name": "New Effect",
+      "name": "Light Chassis",
       "img": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
       "duration": {
@@ -56,6 +64,182 @@
         "exportSource": null
       },
       "_key": "!items.effects!rVW7mvnV4MbGuxoq.V0LBMG9yDPFA6Cyq"
+    },
+    {
+      "name": "Light Chassis (Aerial Movement)",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "5HVTDZa9aT5ZmZ6T",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.aerial.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!rVW7mvnV4MbGuxoq.5HVTDZa9aT5ZmZ6T"
+    },
+    {
+      "name": "Light Chassis (Climb Movement)",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "2CkKD77Sj4VCZ0vC",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.climb.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!rVW7mvnV4MbGuxoq.2CkKD77Sj4VCZ0vC"
+    },
+    {
+      "name": "Light Chassis (Ground Movement)",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "WaY8UttXm0sMVCg9",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!rVW7mvnV4MbGuxoq.WaY8UttXm0sMVCg9"
+    },
+    {
+      "name": "Light Chassis (Swim Movement)",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Gd8xfktobBfanGMl",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.movement.swim.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1757779200000,
+        "modifiedTime": 1757779200000,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!rVW7mvnV4MbGuxoq.Gd8xfktobBfanGMl"
     }
   ],
   "sort": 0,

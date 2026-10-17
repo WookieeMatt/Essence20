@@ -1,0 +1,45 @@
+{
+  "folder": "rxku6PTVz0evKZwC",
+  "name": "Momentary Blur",
+  "type": "perk",
+  "_id": "MB1UsageEvasion1",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"1 Power: +3 Evasion against the next attack","when":["not:rule:banked"],"cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"steps":[{"do":"bank","label":"Momentary Blur","defense":"evasion","defenseBonus":3}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend 1 Personal Power for +3 Evasion until your next turn.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 45
+    },
+    "actionType": "free",
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 800000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1757442600000,
+    "modifiedTime": 1757442600000,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!MB1UsageEvasion1"
+}

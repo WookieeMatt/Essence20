@@ -1,0 +1,183 @@
+{{!-- One root element: ApplicationV2 requires exactly one per PART. --}}
+<div class="monster-grow-root">
+  <div class="monster-grow-body">
+
+    <section class="monster-grow-mode">
+      {{#if linkedPartner}}
+        <p class="monster-grow-linked">
+          <i class="fa-solid fa-link" inert></i>
+          {{#if (eq linkedDirection "grow")}}
+            {{localize "E20.MonsterGrowLinkedTo" name=linkedPartner}}
+          {{else}}
+            {{localize "E20.MonsterGrowLinkedFrom" name=linkedPartner}}
+          {{/if}}
+          <button type="button" data-action="unlinkForm" class="monster-grow-unlink">
+            <i class="fa-solid fa-link-slash" inert></i>
+            <span>{{localize "E20.MonsterGrowUnlink"}}</span>
+          </button>
+        </p>
+      {{/if}}
+
+      <label class="monster-grow-mode-picker">
+        <span>{{localize "E20.MonsterGrowMode"}}</span>
+        <select name="mode">{{selectOptions modeChoices selected=mode}}</select>
+      </label>
+
+      {{#unless isGenerateMode}}
+        <div class="monster-grow-link-picker">
+          {{#if hasLinkCandidates}}
+            <label>
+              <span>{{localize "E20.MonsterGrowLinkTarget"}}</span>
+              <select name="linkTargetId">{{selectOptions linkChoices selected=linkTargetId blank=""}}</select>
+            </label>
+            <button type="button" data-action="linkExistingForm">
+              <i class="fa-solid fa-link" inert></i>
+              <span>{{localize "E20.MonsterGrowLink"}}</span>
+            </button>
+          {{else}}
+            <p class="monster-grow-no-candidates">{{localize "E20.MonsterGrowNoCandidates"}}</p>
+          {{/if}}
+        </div>
+      {{/unless}}
+    </section>
+
+    {{#if isGenerateMode}}
+    <section class="monster-grow-options">
+      <h3>{{localize "E20.MonsterGrowRules"}}</h3>
+      <div class="monster-grow-option-grid">
+        <label>
+          <span>{{localize "E20.MonsterGrowTlIncrease"}}</span>
+          <input type="number" name="tlIncrease" value="{{options.tlIncrease}}" min="1" max="6" step="1" />
+        </label>
+
+        <label>
+          <span>{{localize "E20.MonsterGrowNewSize"}}</span>
+          <select name="newSize">{{selectOptions sizeChoices selected=options.newSize}}</select>
+        </label>
+
+        <label>
+          <span>{{localize "E20.MonsterGrowRangeMultiplier"}} <em>({{localize "E20.MonsterGrowRaw"}} {{rawRange}})</em></span>
+          <input type="number" name="rangeMultiplier" value="{{rangeMultiplier}}" min="1" step="0.5" />
+        </label>
+
+        <label>
+          <span>{{localize "E20.MonsterGrowDamageMultiplier"}} <em>({{localize "E20.MonsterGrowRaw"}} {{rawDamage}})</em></span>
+          <input type="number" name="damageMultiplier" value="{{damageMultiplier}}" min="1" step="1" />
+        </label>
+
+        <label>
+          <span>{{localize "E20.MonsterGrowConditioning"}}</span>
+          <input type="number" name="conditioningIncrease" value="{{options.conditioningIncrease}}" min="0" step="1" />
+        </label>
+
+        <label class="monster-grow-checkbox">
+          <input type="checkbox" name="growMovement" {{checked options.growMovement}} />
+          <span>{{localize "E20.MonsterGrowGrowMovement"}}</span>
+        </label>
+
+        <label class="monster-grow-checkbox">
+          <input type="checkbox" name="scalePowerText" {{checked options.scalePowerText}} />
+          <span>{{localize "E20.MonsterGrowScalePowerText"}}</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="monster-grow-columns">
+      <div>
+        <h3>{{localize "E20.MonsterGrowChanges"}}</h3>
+        <ul class="monster-grow-list">
+          {{#each summaryRows as |row|}}
+            <li class="{{#if row.changed}}changed{{/if}}">
+              <span>{{row.label}}</span><span>{{row.from}} &rarr; {{row.to}}</span>
+            </li>
+          {{/each}}
+        </ul>
+
+        <h3>{{localize "E20.StatBlockImportDefenses"}}</h3>
+        <ul class="monster-grow-list">
+          {{#each defenseRows as |row|}}
+            <li class="{{#if row.changed}}changed{{/if}}">
+              <span>{{row.label}}</span><span>{{row.from}} &rarr; {{row.to}}</span>
+            </li>
+          {{/each}}
+        </ul>
+
+        {{#if attackRows.length}}
+          <h3>{{localize "E20.StatBlockImportAttacks"}}</h3>
+          <ul class="monster-grow-list">
+            {{#each attackRows as |row|}}
+              <li><span>{{row.name}}</span><span>{{row.from}} &rarr; {{row.to}}</span></li>
+            {{/each}}
+          </ul>
+        {{/if}}
+      </div>
+
+      <div>
+        <h3>
+          {{localize "E20.StatBlockImportEssences"}}
+          <span class="monster-grow-points {{#if essenceMismatch}}mismatch{{/if}}">
+            {{localize "E20.MonsterGrowPointsSpent" spent=essenceSpent total=essencePoints}}
+          </span>
+        </h3>
+        <ul class="monster-grow-list monster-grow-inputs">
+          {{#each essenceRows as |row|}}
+            <li>
+              <span>{{row.label}}</span>
+              <span class="from-to">{{row.from}} &rarr; {{row.to}}</span>
+              <input type="number" name="essenceAllocation.{{row.key}}" value="{{row.allocated}}" min="0" step="1" />
+            </li>
+          {{/each}}
+        </ul>
+
+        {{#if skillRows.length}}
+          <h3>{{localize "E20.MonsterGrowSkillShifts"}}</h3>
+          <ul class="monster-grow-list monster-grow-inputs">
+            {{#each skillRows as |row|}}
+              <li>
+                <span>{{row.label}}</span>
+                <span class="from-to">{{row.from}} &rarr; {{row.to}}</span>
+                <input type="number" name="skillAllocation.{{row.key}}" value="{{row.shifts}}" min="0" max="5" step="1" />
+              </li>
+            {{/each}}
+          </ul>
+        {{/if}}
+      </div>
+    </section>
+
+    {{/if}}
+
+    {{#if isGenerateMode}}
+    {{#if review.length}}
+      <section>
+        <h3>{{localize "E20.MonsterGrowReview"}} ({{review.length}})</h3>
+        <ul class="monster-grow-review">
+          {{#each review as |entry|}}
+            <li>
+              <i class="fa-solid fa-triangle-exclamation" inert></i>
+              <div>
+                {{#if entry.name}}<strong>{{entry.name}}</strong>{{/if}}
+                <span>{{entry.reason}}</span>
+              </div>
+            </li>
+          {{/each}}
+        </ul>
+      </section>
+    {{/if}}
+    {{/if}}
+  </div>
+
+  <footer class="monster-grow-footer">
+    {{#if hasAllocationOverride}}
+      <button type="button" data-action="resetAllocations" class="monster-grow-reset">
+        <i class="fa-solid fa-rotate-left" inert></i>
+        <span>{{localize "E20.MonsterGrowReset"}}</span>
+      </button>
+    {{/if}}
+    {{#if isGenerateMode}}
+    <button type="button" data-action="createGrownForm">
+      <i class="fa-solid fa-up-right-and-down-left-from-center" inert></i>
+      <span>{{localize "E20.MonsterGrowCreate"}}</span>
+    </button>
+    {{/if}}
+  </footer>
+</div>

@@ -5,6 +5,10 @@
   "_id": "1tLA4fg232GcFeIE",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Reckless Abandon and the Renegade Perks at their listed levels, plus the GI Joe faction Perk. Essence increases, General Perk levels and armor and weapon training apply as you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -85,7 +89,7 @@
       "f2b2": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Reckless Adandon",
+        "name": "Reckless Abandon",
         "type": "rolePoints",
         "bonus": {
           "defenseBonus": {
@@ -168,7 +172,7 @@
       "b5b5": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.Jbx3ei70ZsoabVuL",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Fearsome Precense",
+        "name": "Fearsome Presence",
         "type": "perk",
         "subtype": "role",
         "level": 14

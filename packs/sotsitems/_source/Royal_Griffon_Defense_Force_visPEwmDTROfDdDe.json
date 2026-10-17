@@ -5,13 +5,24 @@
   "_id": "visPEwmDTROfDdDe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: the Griffon Defense Force Armor (+3 Toughness).</p><p>Left to the table: ↑1 on social tests with other griffons while you wear it, and the shame of losing it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Story of the Seasons",
       "page": 131
     },
-    "items": {},
+    "items": {
+      "gdfa": {
+        "uuid": "Compendium.essence20.story_of_the_seasons.Item.oz1HkbZ9vL6oFdUY",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Griffon Defense Force Armor",
+        "type": "armor"
+      }
+    },
     "advances": {
       "baseValue": 1,
       "canAdvance": false,

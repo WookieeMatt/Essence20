@@ -5,6 +5,10 @@
   "_id": "jUWANIOv9MCwKnN9",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and alternate effect; the Defend trait applies. The S.P.D. asset choice can grant it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -40,11 +44,11 @@
         "name": "Delta Max Striker Alternate Effect",
         "type": "weaponEffect",
         "classification": {
-          "skill": "athletics",
+          "skill": "might",
           "style": "melee"
         },
         "damageValue": 1,
-        "damageType": "element",
+        "damageType": "electric",
         "numHands": "1",
         "numTargets": 1,
         "radius": 0,
@@ -57,8 +61,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "sidearm"

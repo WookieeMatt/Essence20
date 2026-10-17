@@ -5,6 +5,10 @@
   "_id": "KiTRithe5DzIDCmQ",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: Tactical Armor (Ceremonial), a Rifle with a modular blade, and the Close Combat Blade that fits it. Left to the table: who may take this package.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

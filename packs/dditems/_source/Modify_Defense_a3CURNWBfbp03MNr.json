@@ -5,7 +5,12 @@
   "_id": "a3CURNWBfbp03MNr",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: two switchable effects, one moving 5 points from Evasion to Toughness and one the other way; turn one on as your Free action. Left to the table: shifting fewer than 5 points, and switching it off when you convert.</p>"
+    },
     "originalId": "",
+    "actionType": "free",
     "description": "",
     "source": {
       "book": "Decepticon Directive",
@@ -15,7 +20,108 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Modify Defense (+Toughness/-Evasion)",
+      "origin": "Item.a3CURNWBfbp03MNr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "4HQRMU4tZSN7Q7QC",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "-5",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!a3CURNWBfbp03MNr.4HQRMU4tZSN7Q7QC"
+    },
+    {
+      "name": "Modify Defense (+Evasion/-Toughness)",
+      "origin": "Item.a3CURNWBfbp03MNr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Gp2dVmJsXeTSwPLS",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "-5",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!a3CURNWBfbp03MNr.Gp2dVmJsXeTSwPLS"
+    }
+  ],
   "sort": 400000,
   "ownership": {
     "default": 0,

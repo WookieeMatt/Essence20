@@ -1,0 +1,86 @@
+{
+  "folder": "aYgV1VMj4QDpmJI5",
+  "name": "Your Reputation Precedes You",
+  "type": "perk",
+  "_id": "gfSR6lyeAjggG4HU",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Edge on Initiative.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 0
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role",
+    "canActivate": false
+  },
+  "effects": [
+    {
+      "name": "Initiative Edge",
+      "origin": "Compendium.essence20.general_hawk_s_personel_files.Item.gfSR6lyeAjggG4HU",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Gij3YrpyInitEdg1",
+      "changes": [
+        {
+          "key": "system.skills.initiative.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!gfSR6lyeAjggG4HU.Gij3YrpyInitEdg1"
+    }
+  ],
+  "sort": 750000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "14.364",
+    "createdTime": 1787050000000,
+    "modifiedTime": 1788529472590,
+    "lastModifiedBy": "eDolxwiWtO0teEJE",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!gfSR6lyeAjggG4HU"
+}

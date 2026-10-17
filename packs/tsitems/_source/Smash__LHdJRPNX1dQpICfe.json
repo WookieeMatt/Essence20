@@ -5,7 +5,12 @@
   "_id": "LHdJRPNX1dQpICfe",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Toughness. Left to the table: the once-per-day Edge on a Might Skill Test, and spending 1 Energon to give an attack the Wrecker trait.</p>"
+    },
     "originalId": "",
+    "actionType": "standardAndMove",
     "description": "",
     "source": {
       "book": "Technorganic Secrets",
@@ -20,7 +25,7 @@
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "version": "powerRangers"
+    "version": "transformers"
   },
   "effects": [
     {

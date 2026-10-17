@@ -5,6 +5,10 @@
   "_id": "es41BZUVnotim5MI",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: Brain Power, Over Brawn, Integrated Offense, Iron Heart, Instant Kill Mode and Warmachine at their listed levels, plus +1 Smarts at 1st and 10th.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -1,201 +1,26 @@
-import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { updateRoleCache } from "../helpers/utils.mjs";
+﻿const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api;
+const { ContextMenu } = foundry.applications.ux;
+
+import { applyThemeClass } from "../settings.js";
+import { setGearNanomitePower } from "../items/gear/nanomite-gear.mjs";
+import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
+import { onManageSelectTrait } from "../mechanics/characters/manage-traits.mjs";
+import { getModularCandidates, normalizeModularWeaponIds } from "../items/defenses/modular-armor.mjs";
+import { rollExoFrameTest } from "../items/defenses/exo-frame.mjs";
+import { updateRoleCache } from "../util/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
-
-/**
- * Extend the basic ItemSheet with some very simple modifications
- * @extends {ItemSheet}
- */
-export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
-
-  /** @override */
-  async activateEditor(name, options={}, initialContent="") {
-    options.relativeLinks = true;
-    options.plugins = {
-      menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
-        compact: true,
-        destroyOnSave: true,
-        onSave: () => {
-          this.saveEditor(name, { remove: true });
-          this.editingDescriptionTarget = null;
-        },
-      }),
-    };
-    return super.activateEditor(name, options, initialContent);
-  }
-
-  static _warnedAppV1 = true;
-
-  /** @override */
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["essence20", "sheet", "item"],
-      width: 520,
-      height: 480,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],
-    });
-  }
-
-  /** @override */
-  get template() {
-    const path = "systems/essence20/templates/item/sheets";
-    // Return a unique item sheet by type, like `weapon-sheet.hbs`.
-    return `${path}/${this.item.type}.hbs`;
-  }
-
-  /* -------------------------------------------- */
-
-  /** @override */
-  async getData() {
-    // Retrieve base data structure.
-    const context = await super.getData();
-
-    // Make all the Essence20 consts accessible
-    context.config = CONFIG.E20;
-
-    // Use a safe clone of the item data for further operations.
-    const itemData = context.item;
-
-    // Retrieve the roll data for TinyMCE editors.
-    context.rollData = {};
-    let actor = this.object?.parent ?? null;
-    if (actor) {
-      context.rollData = actor.getRollData();
-    }
-
-    // Prepare active effects
-    context.effects = prepareActiveEffectCategories(this.object.effects);
-
-    // Add the actor's data to context.data for easier access, as well as flags.
-    context.system = itemData.system;
-    context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
-    context.flags = itemData.flags;
-
-    if (this.item.type == 'perk') {
-      context.roles = await _getVersionRoles(itemData);
-    }
-
-    return context;
-  }
-
-  /* -------------------------------------------- */
-
-  /** @override */
-  activateListeners(html) {
-    super.activateListeners(html);
-
-    // Everything below here is only needed if the sheet is editable
-    if (!this.isEditable) return;
-    html.find(".effect-control").click(ev => {
-      onManageActiveEffect(ev, this.item);
-    });
-
-    html.find(".trait-selector").click(ev => {
-      onManageSelectTrait(ev, this.item);
-    });
-
-    this.form.ondrop = (event) => this._onDrop(event);
-    // Delete Effects from Weapons
-    html.find('.weaponEffect-delete').click(this._onObjectDelete.bind(this, ".weaponEffect"));
-
-    // Delete Faction from Role
-    html.find('.faction-delete').click(this._onObjectDelete.bind(this, ".faction"));
-
-    // Delete Origin Upgrade from item
-    html.find('.upgrade-delete').click(this._onObjectDelete.bind(this, ".upgrade"));
-
-    // Delete Hang Up from Influence
-    html.find('.hangUp-delete').click(this._onObjectDelete.bind(this, ".hangUp"));
-
-    //Delete a Perk off an item
-    html.find('.perk-delete').click(this._onObjectDelete.bind(this, ".perk"));
-
-    // Delete Role from Focus
-    html.find('.role-delete').click(this._onObjectDelete.bind(this, ".role"));
-
-    // Delete Role Points from Role
-    html.find('.rolePoints-delete').click(this._onObjectDelete.bind(this, ".rolePoints"));
-
-    //Delete AltMode From Origin
-    html.find('.altMode-delete').click(this._onObjectDelete.bind(this, ".altMode"));
-
-    //Delete Armor from Equipment Packages
-    html.find('.armor-delete').click(this._onObjectDelete.bind(this, ".armor"));
-
-    //Delete Shield from Equipment Packages
-    html.find('.shield-delete').click(this._onObjectDelete.bind(this, ".shield"));
-
-    //Delete Weapons from Equipment Packages
-    html.find('.weapon-delete').click(this._onObjectDelete.bind(this, ".weapon"));
-
-    //Delete Gear from Equipment Packages
-    html.find('.gear-delete').click(this._onObjectDelete.bind(this, ".gear"));
-
-    //Open Attached Item Sheet
-    html.find('.view-info').click(this._onObjectInfo.bind(this));
-
-    //Copy to clipboard
-    html.find('.clipboard-copy').click(this._onCopyClipboard.bind(this));
-  }
-
-  /**
-  * Handles the dropping of items on to other items
-  * @param {DragEvent} event The concluding DragEvent which contains drop data
-  * @private
-  */
-  async _onDrop(event) {
-    const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
-    const droppedItem = await fromUuid(data.uuid);
-    const targetItem = this.item;
-    await setEntryAndAddItem(droppedItem, targetItem);
-    const newData = await fromUuid(targetItem.uuid);
-
-    this.object.system = newData.system;
-    this.render(true);
-  }
-
-  /**
-  * Handle deleting of a Ids from an item Sheet
-  * @param {String} cssClass           Where the deleted item is on the sheet
-  * @param {DeleteEvent} event         The concluding DragEvent which contains drop data
-  * @private
-  */
-  async _onObjectDelete(cssClass, event) {
-    const li = $(event.currentTarget).parents(cssClass);
-    const id = li.data("itemKey");
-    const updateString = `system.items.-=${id}`;
-
-    await this.item.update({[updateString]: null});
-    const newData = await fromUuid(this.item.uuid);
-
-    this.object.system = newData.system;
-    li.slideUp(200, () => this.render(false));
-  }
-
-  /**
-   * Handles opening the item sheet of an attached item from the info button
-   * @param {Event} data The data from the click event
-   */
-  async _onObjectInfo(data) {
-    const item = await fromUuid(data.currentTarget.dataset.uuid);
-    if (item) {
-      item.sheet.render(true);
-    }
-  }
-
-  /**
-   * Handles copying data to the clipboard
-   * @param {Event} data The data from the click event
-   */
-  _onCopyClipboard(data) {
-    const clipText = data.currentTarget.dataset.clipboard;
-    if (clipText) {
-      game.clipboard.copyPlainText(clipText);
-      ui.notifications.info(game.i18n.format("E20.ClipboardCopy", { clipText }));
-    }
-  }
-}
+import {
+  prepareActiveEffectCategories,
+  onCreateActiveEffect,
+  onDeleteActiveEffect,
+  onDropActiveEffect,
+  onEditActiveEffect,
+  onToggleActiveEffect,
+} from "../mechanics/characters/active-effect-controls.mjs";
+import { SKELETONS, changeChoice, chooseAddKind, deleteRule, effectEntries, rulesContext, saveRulesJson, setToggle, stepPool } from "../rules/sheet.mjs";
+import { rulesOf } from "../rules/index.mjs";
+import { CHARGES_FLAG, itemCharges } from "../rules/triggers.mjs";
+import { perkChoiceDetails } from "../rules/perk-choice-details.mjs";
 
 /**
  * Handles retrieving all existing roles of the system version selected.
@@ -230,4 +55,530 @@ async function _getVersionRoles(itemData) {
   }
 
   return versionRoles;
+}
+
+/**
+* Handles opening the item sheet of an attached item from the info button
+* @param {Event} data The data from the click event
+*/
+async function _onObjectInfo(target) {
+  const item = await fromUuid(target.dataset.uuid);
+  if (item) {
+    item.sheet.render(true);
+  }
+}
+
+/**
+* Handle deleting of a Ids from an item Sheet
+* @param {String} cssClass           Where the deleted item is on the sheet
+* @param {DeleteEvent} event         The concluding DragEvent which contains drop data
+* @private
+*/
+async function _onObjectDelete(data, item) {
+  const id = data.itemKey;
+  const updateString = `system.items.${id}`;
+  await item.document.update({
+    [updateString]: new foundry.data.operators.ForcedDeletion(),
+  });
+}
+
+/**
+ * Extend the basic ItemSheet with some very simple modifications
+ * @extends {ItemSheet}
+ */
+export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicationMixin(DocumentSheetV2)) {
+  /** @override */
+  static DEFAULT_OPTIONS = {
+    actions: {
+      deleteItem: this.#deleteItem,
+      traitSelector: this.#traitSelector,
+      rollExoFrameTest: this.#rollExoFrameTest,
+      clearGearNanomite: this.#clearGearNanomite,
+      viewItem: this.#viewItem,
+      editDescription: this.#editDescription,
+      startSheetTour: this.#onStartSheetTour,
+      createEffect: this.#createActiveEffect,
+      deleteEffect: this.#deleteActiveEffect,
+      editEffect: this.#editActiveEffect,
+      toggleEffect: this.#toggleActiveEffect,
+      rulesSaveJson: this.#rulesSaveJson,
+      rulesAdd: this.#rulesAdd,
+      rulesEdit: this.#rulesEdit,
+      prerequisitesEdit: this.#prerequisitesEdit,
+      actsAsClear: this.#actsAsClear,
+      rulesDelete: this.#rulesDelete,
+      rulesToggle: this.#rulesToggle,
+      rulesPool: this.#rulesPool,
+      rulesChoose: this.#rulesChoose,
+    },
+    classes: ["essence20", "sheet", "item", "window-app", "theme-wrapper", "e20-window"],
+    form: {
+      submitOnChange: true,
+      closeOnSubmit: false,
+    },
+    /* width: "auto" (the previous value for every item type) sizes the window to fit its
+       widest natural content, unconstrained - which for the Description tab meant a long,
+       unwrapped run of text (no width to wrap against yet, since auto-sizing measures content
+       BEFORE settling on a width) could stretch the whole sheet arbitrarily wide. A fixed width
+       keeps sheets a stable, predictable size regardless of description length; height stays
+       auto since only width was the complaint. Role's own Details tab is the one exception -
+       it's meant to expand for its own, much larger content (Role Perks, Spectrum Modification
+       choices, ...) - see _onFirstRender below, which restores "auto" for that type specifically
+       before the sheet's first paint. */
+    position: {
+      width: 500,
+      height: "auto",
+    },
+    tag: 'form',
+    window: {
+      resizable: true,
+      controls: [
+        {
+          icon: "fas fa-circle-question",
+          label: "E20.TourSheetHelp",
+          action: "startSheetTour",
+          visible: function () {
+            return !!game.tours.get("essence20.itemAuthoring")?.canStart;
+          },
+        },
+      ],
+    },
+  };
+
+  static TABS = {
+    primary: {
+      tabs: [
+        { id: "description", group: 'primary', label: "Description"},
+        { id: "details", group: 'primary', label: "Details"},
+        { id: "rules", group: 'primary', label: "E20.Rules.Tab"},
+      ],
+      initial: "description",
+    },
+  };
+
+  tabGroups = {
+    primary: "description",
+  };
+
+  /** @override */
+  static PARTS = {
+    header: {
+      template: "systems/essence20/templates/item/parts/header.hbs",
+    },
+    tabs: {
+      template: "templates/generic/tab-navigation.hbs",
+    },
+    description: {
+      template: "systems/essence20/templates/item/tabs/description.hbs",
+      scrollable: [''],
+    },
+    details: {
+      template: "systems/essence20/templates/item/tabs/detail-base.hbs",
+      scrollable: [''],
+    },
+    rules: {
+      template: "systems/essence20/templates/item/tabs/rules.hbs",
+      scrollable: [""],
+    },
+  };
+
+
+  editingDescriptionTarget = null;
+  /* -------------------------------------------- */
+  /** @override */
+  async _prepareContext(options) {
+    // Retrieve base data structure.
+    const context = await super._prepareContext(options);
+
+    // Make all the Essence20 consts accessible
+    context.config = CONFIG.E20;
+
+    // Use a safe clone of the item data for further operations.
+    const itemData = context.document;
+
+    // Retrieve the roll data for TinyMCE editors.
+    context.rollData = {};
+    let actor = this.object?.parent ?? null;
+    if (actor) {
+      context.rollData = actor.getRollData();
+    }
+
+    if (options.isFirstRender) {
+      context.activeTab = "description";
+      context.tabs.description.active = true;
+    }
+
+    // The Rules tab is for item types that carry system.rules (data/item/templates/item-description.mjs).
+    if (!Array.isArray(itemData.system?.rules)) {
+      delete context.tabs.rules;
+    }
+
+    // Prepare active effects
+    // context.effects = prepareActiveEffectCategories(this.object.effects);
+
+    // Add the actor's data to context.data for easier access, as well as flags.
+    context.system = itemData.system;
+    // A weapon effect's range, skill, damage or targets may be changed by upgrades on its weapon
+    // (items/attacks/weapon-upgrades.mjs) - in derived data only. The form edits the STORED values, or
+    // saving any other field would write the upgraded number back as the base one.
+    const touched = itemData.system.upgradeTouched ?? [];
+    if (touched.length) {
+      context.system = itemData.system.toObject(false);
+      for (const path of touched) {
+        foundry.utils.setProperty(context.system, path, foundry.utils.getProperty(itemData._source.system, path));
+      }
+
+      context.upgradedSystem = itemData.system;
+    }
+
+    context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
+    context.automation = await prepareAutomationContext(itemData);
+    context.flags = itemData.flags;
+
+    if (this.document.type == 'perk') {
+      context.roles = await _getVersionRoles(itemData);
+      // Perk choice P3: the old picker's inputs are gone; a legacy notice and the sub-Perk list (rules/perk-choice-details.mjs).
+      context.perkChoice = perkChoiceDetails(itemData, CONFIG.E20.perkChoiceTypes);
+    }
+
+    // An Element weapon's element is chosen on its sheet (GI Joe CRB p.207) - any weapon whose own
+    // effects are printed as "Element" damage (items/attacks/weapon-upgrades.mjs).
+    if (this.document.type == 'weapon') {
+      const own = this.document.parent?.items?.filter(i => i.type == 'weaponEffect' && i.flags?.essence20?.parentId == this.document.id) ?? [];
+      context.dealsElementDamage = own.some(e => e._source?.system?.damageType == 'element')
+        || Object.values(this.document.system.items ?? {}).some(e => e?.type == 'weaponEffect' && e.damageType == 'element')
+        || !!this.document.system.elementChoice;
+    }
+
+    // Modular armor (Across the Stars p.85) - the wearer's weapons that can be socketed into it.
+    if (this.document.type == 'armor') {
+      context.modularCandidates = getModularCandidates(this.document.parent, this.document);
+    }
+
+    return context;
+  }
+
+  async _preparePartContext(partId, context, options) {
+    context = await super._preparePartContext(partId, context, options);
+
+    switch ( partId ) {
+    case "description": context = await this._prepareDescriptionContext(context); break;
+    case "details": context = await this._prepareDetailsContext(context); break;
+    case "rules": context = await this._prepareRulesContext(context); break;
+    }
+
+    return context;
+  }
+
+  async _prepareDescriptionContext(context) {
+    if (this.editingDescriptionTarget) {
+      context.editingDescription = {
+        target: this.editingDescriptionTarget,
+        value: foundry.utils.getProperty(this.document._source, this.editingDescriptionTarget),
+      };
+      context.editingAutomationNotes = this.editingDescriptionTarget == 'system.automation.notes';
+      context.editingMainDescription = !context.editingAutomationNotes;
+    }
+
+    return context;
+  }
+
+  /**
+   * The Rules tab lists the item's Active Effects and its rules together (rules/sheet.mjs) - the
+   * effects first, since an always-on change is what most items carry.
+   */
+  async _prepareRulesContext(context) {
+    const categories = await prepareActiveEffectCategories(this.document.effects);
+    Object.assign(context, rulesContext(this.document), {
+      ruleEffects: effectEntries([...categories.passive.effects, ...categories.temporary.effects, ...categories.inactive.effects]),
+      rulesJsonOpen: this._rulesJsonOpen,
+    });
+    return context;
+  }
+
+  async _prepareDetailsContext(context) {
+    const path = "systems/essence20/templates/item/details";
+    context.detailPath = `${path}/${this.document.type}.hbs`;
+    context.charges = itemCharges(this.document);
+    return context;
+  }
+
+  /**
+   * Unlinks a gear item's nanomite Power - see items/gear/nanomite-gear.mjs.
+   */
+  static async #clearGearNanomite() {
+    await this.document.update({ 'system.nanomite.powerUuid': null, 'system.nanomite.spent': 0 });
+  }
+
+  async _onDrop(event) {
+    const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
+    // "Acts as" on the Rules tab - see rules/sheet.mjs#actsAsContext.
+    if (event.target?.closest?.('[data-acts-as]')) {
+      if (data?.type == 'Item' && data.uuid?.startsWith('Compendium.') && this.isEditable) {
+        await this.document.update({ 'flags.essence20.rulesSource': data.uuid });
+      }
+
+      return;
+    }
+
+    const droppedItem = await fromUuid(data.uuid);
+    const targetItem = this.document;
+    if (droppedItem.type == "base") {
+      onDropActiveEffect(droppedItem, targetItem);
+    } else if (targetItem.type == "gear" && droppedItem.type == "power") {
+      // Nanomite equipment - see items/gear/nanomite-gear.mjs.
+      await setGearNanomitePower(targetItem, droppedItem);
+    } else {
+      await setEntryAndAddItem(droppedItem, targetItem);
+    }
+  }
+
+  /**
+   * Form values the sheet's inputs can't give in the shape their fields want, fixed up before
+   * Foundry's own DocumentSheetV2#_prepareSubmitData validates and submits the form. (A Perk's
+   * system.reroll.skills text box used to be split here; the reroll block left the Details tab on
+   * 2026-10-07 - it's a Reroll rule now.)
+   */
+  _prepareSubmitData(event, form, formData, updateData) {
+    // Modular armor's socketed-weapon checkboxes - see items/defenses/modular-armor.mjs.
+    const modularWeaponIds = normalizeModularWeaponIds(formData.object["system.modularWeaponIds"]);
+    if (modularWeaponIds) {
+      formData.object["system.modularWeaponIds"] = modularWeaponIds;
+    }
+
+    return super._prepareSubmitData(event, form, formData, updateData);
+  }
+
+  /**
+   * Role is the one item type that needs more than the shared width (DEFAULT_OPTIONS above) -
+   * its Details tab shows substantially more content (granted Role Perks, Spectrum Modification
+   * choiceGroup pairs, ...) than any other item type's.
+   *
+   * Wider, but still FIXED. This used to be `width: "auto"`, which is the very thing the comment
+   * on DEFAULT_OPTIONS warns about: auto measures content before settling on a width, so a long
+   * unwrapped run of prose has nothing to wrap against and stretches the window as far as the
+   * text is long. That stayed hidden only because Role descriptions were empty; the moment a GM
+   * imported them from their own rulebook (apps/book-description-importer.mjs) every Role sheet
+   * opened at the full width of the screen with its description on one line.
+   *
+   * 880 is measured rather than guessed: the Details tab settles at 775px for Commando and 844px
+   * for Red Ranger, the widest in the packs, so this clears both without room to spare mattering.
+   *
+   * _onFirstRender (not _onRender, which fires on every re-render, including ones a manual
+   * drag-resize should survive) runs once, before the sheet's first paint, so this only ever sets
+   * the *initial* size - it doesn't fight a resize the user made afterward.
+   */
+  async _onFirstRender(context, options) {
+    await super._onFirstRender(context, options);
+
+    if (this.document.type === 'role') {
+      this.setPosition({ width: 880 });
+    }
+  }
+
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+
+    applyThemeClass(this.element);
+
+    new CONFIG.ux.DragDrop({
+      dragSelector: ":is([data-activity-id], [data-effect-id], [data-item-id])",
+      dropSelector: null,
+      callbacks: {
+        drop: this._onDrop.bind(this),
+      },
+    }).bind(this.element);
+
+    if ( this.editingDescriptionTarget ) {
+      this.element.querySelectorAll("prose-mirror").forEach(editor => editor.addEventListener("save", () => {
+        this.editingDescriptionTarget = null;
+        this.render();
+      }));
+    }
+
+    this._activateImageContextMenu();
+
+    // Charges left (Details tab): kept as charges used on the item, so a rest still refills them.
+    this.element.querySelector('.e20-charges-left')?.addEventListener('change', (event) => {
+      const max = Number(event.target.dataset.max) || 0;
+      const left = Math.min(max, Math.max(0, Math.round(Number(event.target.value) || 0)));
+      this.document.setFlag('essence20', CHARGES_FLAG, max - left);
+    });
+  }
+
+  /**
+   * Right-click the item's own image to broadcast it to every connected player (the same
+   * "Share Image" action available from the header of the image's own popout, minus the extra
+   * step of opening that popout first) - GM-only, matching core Foundry's own convention of
+   * only ever showing that control to a GM. Built once (guarded via this._imageContextMenu,
+   * matching base-actor-sheet.mjs's #_activateRolePointsListeners) since ContextMenu binds one
+   * delegated listener to a persistent container (this.element) rather than the image itself,
+   * so rebuilding it on every render would stack duplicate listeners.
+   */
+  _activateImageContextMenu() {
+    if (!game.user.isGM || this._imageContextMenu) {
+      return;
+    }
+
+    this._imageContextMenu = new ContextMenu(this.element, '.item-profile-img', [
+      {
+        name: 'E20.ShowImageToPlayers',
+        icon: '<i class="fas fa-eye"></i>',
+        callback: () => {
+          game.socket.emit('shareImage', {
+            image: this.document.img,
+            title: this.document.name,
+            uuid: this.document.uuid,
+          });
+          ui.notifications.info(game.i18n.format('JOURNAL.ActionShowSuccess', { mode: 'image', title: this.document.name, which: 'all' }));
+        },
+      },
+    ], { jQuery: false, fixed: true });
+  }
+
+  /* -------------------------------------------- */
+  static async #deleteItem(event,target) {
+    _onObjectDelete(target.dataset,this);
+  }
+
+  static async #traitSelector(event, target) {
+    onManageSelectTrait(event, this.document, target);
+  }
+
+  /**
+   * Exo-Frame armor (Across the Stars p.85) - the manual Driving test, DIF from the wearer's
+   * recorded movement this turn. See items/defenses/exo-frame.mjs.
+   */
+  static async #rollExoFrameTest() {
+    const actor = this.document.parent;
+    if (actor) {
+      await rollExoFrameTest(actor);
+    }
+  }
+
+  static async #viewItem(event,target){
+    _onObjectInfo(target);
+  }
+
+  static #editDescription(event, target) {
+    this.editingDescriptionTarget = target.dataset.target;
+    this.render();
+  }
+
+  static #createActiveEffect(event, target) {
+    onCreateActiveEffect(event, this.document, target);
+  }
+
+  static #deleteActiveEffect(event, target){
+    onDeleteActiveEffect(event, this.document, target);
+  }
+
+  static #editActiveEffect(event, target) {
+    onEditActiveEffect(event, this.document, target);
+  }
+
+  static #toggleActiveEffect(event, target){
+    onToggleActiveEffect(event, target);
+  }
+
+  /* Rules tab (module/rules/sheet.mjs) */
+
+  static async #rulesSaveJson() {
+    await saveRulesJson(this.document, this.element);
+  }
+
+  /**
+   * One Add for everything the item does: ask in game words, then make an Active Effect for a flat
+   * stat change (through the usual wizard-or-blank choice) or a rule for anything else - opening the
+   * JSON editor on the new rule until the guided editor exists.
+   */
+  static async #rulesAdd(event) {
+    const kind = await chooseAddKind();
+    if (!kind) {
+      return;
+    }
+
+    if (kind == 'effect') {
+      // Picked in plain words already, so straight to the Wizard - unless this user always wants a blank effect.
+      const behavior = game.settings.get('essence20', 'effectAddBehavior') == 'blank' ? 'blank' : 'wizard';
+      await onCreateActiveEffect(event, this.document, { dataset: { effectType: 'passive' } }, { behavior });
+      return;
+    }
+
+    // A rule opens in the guided editor; it lands on the item only when saved there.
+    const { default: RuleEditor } = await import("../apps/rule-editor.mjs");
+    RuleEditor.open(this.document, rulesOf(this.document).length, SKELETONS[kind]);
+  }
+
+  static async #actsAsClear() {
+    await this.document.update({ 'flags.essence20.rulesSource': new foundry.data.operators.ForcedDeletion() });
+  }
+
+  static async #prerequisitesEdit() {
+    const { default: RuleEditor } = await import("../apps/rule-editor.mjs");
+    RuleEditor.openPrerequisites(this.document);
+  }
+
+  static async #rulesEdit(event, target) {
+    const { default: RuleEditor } = await import("../apps/rule-editor.mjs");
+    RuleEditor.open(this.document, Number(target.dataset.index));
+  }
+
+  static async #rulesDelete(event, target) {
+    await deleteRule(this.document, Number(target.dataset.index));
+  }
+
+  static async #rulesToggle(event, target) {
+    await setToggle(this.document, target.dataset.key, target.checked);
+  }
+
+  static async #rulesPool(event, target) {
+    await stepPool(this.document, target.dataset.key, Number(target.dataset.delta) || 0);
+  }
+
+  static async #rulesChoose(event, target) {
+    await changeChoice(this.document, Number(target.dataset.index));
+  }
+
+  /**
+   * Start the item-authoring tour from the titlebar help control. The tour runs against its own
+   * demo item rather than this one, so opening it never rearranges something the user is editing.
+   */
+  static async #onStartSheetTour() {
+    const tour = game.tours.get("essence20.itemAuthoring");
+    if (!tour) return;
+
+    await this.minimize();
+    return tour.start();
+  }
+}
+
+/**
+ * The Automation block and header badge: what the system does for this item (system.automation).
+ * A copy of a compendium item shows its original's notes (Essence20Item#_prepareAutomation) and
+ * isn't edited here - the notes are system documentation, kept in the compendium.
+ * @param {Item} item
+ * @returns {Promise<Object>}
+ */
+export async function prepareAutomationContext(item) {
+  await item.loadAutomationNotes?.();
+  const automation = item.system.automation;
+  if (!automation) {
+    return null;
+  }
+
+  const stored = item._source?.system?.automation ?? {};
+  const sourced = !item.pack && !!(item.flags?.core?.sourceId ?? item._stats?.compendiumSource ?? item?.flags?.essence20?.rulesSource);
+  const inherited = sourced && !stored.status && !stored.notes?.trim();
+  const status = automation.status || '';
+  return {
+    status,
+    label: status ? game.i18n.localize(CONFIG.E20.automationStatuses[status]) : '',
+    icon: CONFIG.E20.automationIcons[status] ?? '',
+    tooltip: status ? game.i18n.localize(`E20.AutomationHint.${status}`) : '',
+    notes: automation.notes ? await foundry.applications.ux.TextEditor.implementation.enrichHTML(automation.notes) : '',
+    storedStatus: stored.status ?? '',
+    inherited,
+    editable: !inherited,
+  };
 }

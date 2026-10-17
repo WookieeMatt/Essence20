@@ -5,6 +5,10 @@
   "_id": "PHZaxvGp9cF92mqB",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Nothing is applied automatically.</p><p>Left to the table: while piloting the Zord, roll your Finesse or Might in place of Driving for the Zord's melee attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

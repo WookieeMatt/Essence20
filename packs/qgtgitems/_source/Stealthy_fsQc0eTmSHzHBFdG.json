@@ -1,0 +1,52 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Stealthy",
+  "type": "upgrade",
+  "_id": "fsQc0eTmSHzHBFdG",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"crew","upshift":1,"stack":"vehicleStealth","when":["skill:infiltration"]},
+      {"type":"RollModifier","upshift":1,"stack":"vehicleStealth","when":["self:type:vehicle","skill:infiltration"]},
+      {"type":"RollModifier","scope":"crew","label":"Stealthy (stationary)","upshift":1,"stack":"vehicleStealthStationary","when":["skill:infiltration"]},
+      {"type":"RollModifier","label":"Stealthy (stationary)","upshift":1,"stack":"vehicleStealthStationary","when":["self:type:vehicle","skill:infiltration"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Infiltration tests by anyone crewing the vehicle get two ↑1 switches under Automatic Modifiers in the Roll Options Dialog: Stealthy, and Stealthy (stationary), which you switch off while the vehicle is moving.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 60
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "restricted",
+    "benefit": "-1 on Infiltration Skill Tests made while moving, or -2 while stationary.",
+    "traits": [],
+    "type": "vehicle",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!fsQc0eTmSHzHBFdG"
+}

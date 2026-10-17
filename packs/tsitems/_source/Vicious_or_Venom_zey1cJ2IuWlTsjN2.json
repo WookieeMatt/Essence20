@@ -5,6 +5,14 @@
   "_id": "zey1cJ2IuWlTsjN2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"option","label":"Option","from":"config","table":"viciousOrVenomOptions","rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DamageModifier","direction":"dealt","scaled":true,"amount":1,"when":["attack","rule:choiceHas:option",{"any":["attack:unarmed","weapon:source:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8","weapon:source:Compendium.essence20.technorganic_secrets.Item.IJTQr6XGgmfxDPoY","weapon:source:Compendium.essence20.technorganic_secrets.Item.au05ekMECrDqVlkm"]}]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: +1 Toughness. On the sheet: pick Acidic Saliva, Razor-Sharp or Venomous. Automatic: once picked, attacks with a Natural Weapon item (or an attack not tied to any weapon) deal +1 damage, listed on the attack's chat card.</p><p>Left to the table: the extra 1 uses the attack's own damage type, so treat it as Acid, Sharp or Poison yourself when that matters.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -16,13 +24,60 @@
     "choice": null,
     "choiceType": "none",
     "isRoleVariant": false,
+    "hasChoice": false,
     "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "origin",
-    "version": "powerRangers"
+    "version": "transformers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Toughness Bonus",
+      "origin": "Compendium.essence20.technorganic_secrets.Item.zey1cJ2IuWlTsjN2",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "pISDSpVa6ikpOtLJ",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!zey1cJ2IuWlTsjN2.pISDSpVa6ikpOtLJ"
+    }
+  ],
   "sort": 1900000,
   "ownership": {
     "default": 0,

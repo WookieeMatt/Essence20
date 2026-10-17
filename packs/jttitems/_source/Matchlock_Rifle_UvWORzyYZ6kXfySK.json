@@ -5,6 +5,10 @@
   "_id": "UvWORzyYZ6kXfySK",
   "img": "icons/weapons/guns/gun-pistol-flintlock-metal.webp",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage and range; it takes two Reloads before it can fire again.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

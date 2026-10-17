@@ -3,10 +3,14 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added, raises Smarts and you pick a skill from its list. It sets your starting Health and 30 ft Ground Movement and gives you the MacGyver Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "GI joe Core Rulebook",
+      "book": "GI Joe Core Rulebook",
       "page": 65
     },
     "items": {
@@ -17,9 +21,9 @@
         "type": "perk"
       }
     },
-    "baseAerialMovement": "0",
-    "baseAquaticMovement": "0",
-    "baseGroundMovement": "30",
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
     "essences": [
       "smarts"
     ],
@@ -29,13 +33,7 @@
       "science",
       "technology"
     ],
-    "startingHealth": 2,
-    "bonusSkillLevels": "",
-    "groundMovement": "",
-    "benefit": {
-      "name": "",
-      "description": ""
-    }
+    "startingHealth": 2
   },
   "effects": [],
   "flags": {

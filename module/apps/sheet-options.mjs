@@ -1,6 +1,8 @@
+﻿import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class SheetOptions extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class SheetOptions extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(actor, ev) {
     super();
     this._ev = ev;
@@ -11,6 +13,12 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
     allowCustom: false,
     id: "sheet-options",
     classes: [
+      // "essence20" was missing here, alone among this system's apps, so this one silently skipped
+      // every rule the system scopes to that class - the Rajdhani font, the themed colours, all of
+      // it. Found while auditing what the apps actually carry on their window roots.
+      "essence20",
+      "theme-wrapper",
+      "e20-window",
       "window-app",
       "sheet-options",
     ],
@@ -38,7 +46,7 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.role = await this._actor.items.documentByType?.role;
+    context.role = this._actor.items.documentsByType.role.find(role => !role.system.isAdditive);
     const origin = await this._actor.items.documentByType?.origin;
     if (origin?.length > 1) {
       context.altMode = true;
@@ -50,6 +58,12 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static async myFormHandler(event, form, formData) {

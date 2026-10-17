@@ -4,7 +4,9 @@ import AlterationEssenceSelector from "../apps/alteration-essence-selector.mjs";
 import {
   getShiftedSkill,
   parseId,
-} from "../helpers/utils.mjs";
+} from "../util/utils.mjs";
+
+// Power Fist's Close Combat Bludgeon attack is a Grant rule on the Alteration now.
 
 /**
 * Handle the dropping of an Alteration onto an Actor

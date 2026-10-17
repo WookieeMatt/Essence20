@@ -1,0 +1,78 @@
+{
+  "namespace": "essence20",
+  "id": "zords",
+  "title": "E20.Tours.Zords.Title",
+  "description": "E20.Tours.Zords.Description",
+  "display": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "E20.Tours.Zords.Intro.Title",
+      "content": "E20.Tours.Zords.Intro.Content"
+    },
+    {
+      "id": "zordsTab",
+      "app": "character",
+      "tab": "zords",
+      "selector": "section[data-tab=\"zords\"]",
+      "title": "E20.Tours.Zords.ZordsTab.Title",
+      "content": "E20.Tours.Zords.ZordsTab.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "features",
+      "app": "character",
+      "tab": "zords",
+      "selector": "[data-action=\"zordAutoFeatures\"]",
+      "title": "E20.Tours.Zords.Features.Title",
+      "content": "E20.Tours.Zords.Features.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true,
+      "timeout": 500
+    },
+    {
+      "id": "growth",
+      "app": "character",
+      "tab": "zords",
+      "selector": "[data-action=\"zordGrowth\"]",
+      "title": "E20.Tours.Zords.Growth.Title",
+      "content": "E20.Tours.Zords.Growth.Content",
+      "tooltipDirection": "LEFT",
+      "optional": true,
+      "timeout": 500
+    },
+    {
+      "id": "summon",
+      "app": "character",
+      "tab": "zords",
+      "selector": "[data-action=\"summonZord\"]",
+      "title": "E20.Tours.Zords.Summon.Title",
+      "content": "E20.Tours.Zords.Summon.Content",
+      "tooltipDirection": "LEFT"
+    },
+    {
+      "id": "arrival",
+      "title": "E20.Tours.Zords.Arrival.Title",
+      "content": "E20.Tours.Zords.Arrival.Content"
+    },
+    {
+      "id": "zordSheet",
+      "app": "zord",
+      "selector": "header.sheet-header",
+      "title": "E20.Tours.Zords.ZordSheet.Title",
+      "content": "E20.Tours.Zords.ZordSheet.Content",
+      "tooltipDirection": "DOWN"
+    },
+    {
+      "id": "recall",
+      "title": "E20.Tours.Zords.Recall.Title",
+      "content": "E20.Tours.Zords.Recall.Content"
+    },
+    {
+      "id": "outro",
+      "title": "E20.Tours.Zords.Outro.Title",
+      "content": "E20.Tours.Zords.Outro.Content"
+    }
+  ]
+}

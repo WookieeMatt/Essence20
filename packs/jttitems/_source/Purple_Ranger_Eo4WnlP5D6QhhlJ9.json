@@ -5,6 +5,10 @@
   "_id": "Eo4WnlP5D6QhhlJ9",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, including Emotional Mastery and Emotional Range, plus the Role's Essence and Skill increases.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -34,7 +38,7 @@
         "name": "Unique Strike (Melee)",
         "type": "perk",
         "subtype": "role",
-        "level": 3
+        "level": 2
       },
       "f60d": {
         "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
@@ -179,6 +183,38 @@
         "img": "systems/essence20/assets/icons/items/faction.svg",
         "name": "Power Ranger",
         "type": "faction"
+      },
+      "zf06": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "zf10": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "zf14": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "zf17": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zd2ZordFeatSlot1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
       }
     },
     "adjustments": {

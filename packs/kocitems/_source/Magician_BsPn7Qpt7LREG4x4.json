@@ -5,6 +5,10 @@
   "_id": "BsPn7Qpt7LREG4x4",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Sorcerous Support Perk, and Spellcasting joins your Origin skill choices. The Mired in Academia Hang-Up is added too if you have another Influence.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

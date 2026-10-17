@@ -1,11 +1,15 @@
-import { _powerCountUpdate } from "../sheet-handlers/power-handler.mjs";
-import { getFormData } from "../helpers/application.mjs";
+﻿import { _powerCountUpdate } from "../sheet-handlers/power-handler.mjs";
+import { getFormData } from "../util/application.mjs";
+import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class PowerCostSelector extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(actor, power, maxPower, powerType, title){
+export default class PowerCostSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
+  constructor(actor, power, maxPower, powerType, title, payer = actor){
     super();
     this._actor = actor;
+    // Who spends the points - see power-handler.mjs#powerCost's own payer.
+    this._payer = payer;
     this._power = power;
     this._maxPower = maxPower;
     this._powerType = powerType;
@@ -16,6 +20,8 @@ export default class PowerCostSelector extends HandlebarsApplicationMixin(Applic
     id: "power-cost",
     classes: [
       "essence20",
+      "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -52,10 +58,16 @@ export default class PowerCostSelector extends HandlebarsApplicationMixin(Applic
     return context;
   }
 
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
+  }
+
   static async myFormHandler(event, form, formData) {
     const newCost = getFormData(formData.object);
 
-    _powerCountUpdate(this._actor, this._maxPower, this._powerType, newCost);
+    await _powerCountUpdate(this._actor, this._maxPower, this._powerType, newCost, this._power, this._payer);
     this.close();
   }
 }

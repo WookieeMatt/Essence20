@@ -5,6 +5,10 @@
   "_id": "wW9fmWBcDImFIoaG",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Miner Perk, plus one Hang-Up you choose from its list.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

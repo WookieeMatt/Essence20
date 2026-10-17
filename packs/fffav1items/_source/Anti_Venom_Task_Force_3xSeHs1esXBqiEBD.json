@@ -5,6 +5,10 @@
   "_id": "3xSeHs1esXBqiEBD",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Faction Perks, Combat Lifesaver and Surgical Operators.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

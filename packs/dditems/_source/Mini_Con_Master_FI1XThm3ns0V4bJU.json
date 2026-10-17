@@ -5,6 +5,10 @@
   "_id": "FI1XThm3ns0V4bJU",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: adds another Mini-Con. Automatic: every two docked Mini-Cons of one Alt Mode give the matching Defense +1, or +1 maximum Energon for Power Conduits.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

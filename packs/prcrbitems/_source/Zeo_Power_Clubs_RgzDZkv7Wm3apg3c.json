@@ -5,6 +5,10 @@
   "_id": "RgzDZkv7Wm3apg3c",
   "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse for Stun, with Blunt damage and Maneuver alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -79,11 +83,9 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
-      "size": "sidearm"
+      "size": "light"
     },
     "equipped": true,
     "requirements": {
@@ -94,6 +96,7 @@
     "traits": [
       "blunt",
       "martialArts",
+      "powerWeapon",
       "silent"
     ],
     "upgradeTraits": [],

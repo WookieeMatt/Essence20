@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: creates your Human Companion with the Essences the book gives them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

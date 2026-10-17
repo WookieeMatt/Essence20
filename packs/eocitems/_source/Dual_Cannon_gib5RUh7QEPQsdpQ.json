@@ -5,6 +5,10 @@
   "_id": "gib5RUh7QEPQsdpQ",
   "img": "systems/essence20/assets/icons/weapons/dual_cannon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets; its traits apply, including Reload.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -35,17 +39,16 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=towering"]},
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "brawn",
+      "shift": "d4"
     },
     "traits": [
       "energy",

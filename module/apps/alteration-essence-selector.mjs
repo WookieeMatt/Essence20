@@ -1,8 +1,10 @@
-import { _alterationStatUpdate, _processAlterationSkillIncrease, _showAlterationCostSkillDialog } from "../sheet-handlers/alteration-handler.mjs";
-import { getFormData} from "../helpers/application.mjs";
+﻿import { _alterationStatUpdate, _processAlterationSkillIncrease, _showAlterationCostSkillDialog } from "../sheet-handlers/alteration-handler.mjs";
+import { getFormData} from "../util/application.mjs";
+import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class AlterationEssenceSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class AlterationEssenceSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(choices, actor, alteration, alterationUuid, dropFunc, title, bonusSkill, costEssence){
     super();
     this._choices = choices;
@@ -16,9 +18,15 @@ export default class AlterationEssenceSelector extends HandlebarsApplicationMixi
   }
 
   static DEFAULT_OPTIONS = {
-    id: "alteration-essence",
+    // "{id}": a fresh id per instance. Each step (bonus Skill -> Essence cost -> cost Skill) opens the next as a NEW
+    // selector from its form handler, while this one is still open; with one fixed id, closeOnSubmit on the first
+    // took the second window with it, so an Essence Alteration (Absolute Yield) silently never finished (live
+    // release-checklist run, 2026-10-07). Same fix as choices-selector.mjs.
+    id: "alteration-essence-{id}",
     classes: [
       "essence20",
+      "theme-wrapper",
+      "e20-window",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -52,6 +60,12 @@ export default class AlterationEssenceSelector extends HandlebarsApplicationMixi
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static async myFormHandler(event, form, formData) {

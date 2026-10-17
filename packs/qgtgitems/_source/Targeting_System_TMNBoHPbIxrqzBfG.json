@@ -1,0 +1,50 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Targeting System",
+  "type": "upgrade",
+  "_id": "TMNBoHPbIxrqzBfG",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Choose the weapon","steps":[{"do":"pick","key":"weapon","from":"ownedItem","itemType":"weapon","prompt":"Which weapon gains the Targeting System trait?","legacy":"flags.essence20.weaponId","ifUnset":true}]},
+      {"type":"WeaponTrait","label":"Targeting System","traits":["targetingSystem"],"items":["item:picked:weapon"],"when":["self:type:vehicle"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: pick one of the vehicle's weapons when you attach it; that weapon gains the Targeting System trait, so the driver can fire it using the vehicle's Targeting.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 61
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "restricted",
+    "benefit": "One of the vehicle's hardpoint weapons gains the Targeting System trait.",
+    "traits": [],
+    "type": "vehicle",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!TMNBoHPbIxrqzBfG"
+}

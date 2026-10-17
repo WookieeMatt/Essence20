@@ -5,6 +5,10 @@
   "_id": "mK8rk0Hy5AaLvvv4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: add your extra Combiner feature as another Combiner feature item. Every Combiner feature a component brings applies to the combined form.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

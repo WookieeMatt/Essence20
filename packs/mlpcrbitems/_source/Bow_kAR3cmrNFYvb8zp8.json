@@ -5,6 +5,10 @@
   "_id": "kAR3cmrNFYvb8zp8",
   "img": "systems/essence20/assets/icons/weapons/bow.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks use its effect with the listed Skill, damage and range. Reload: it must be reloaded after firing, as a Free action.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -35,8 +39,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "light"
@@ -47,12 +49,18 @@
       "skill": "athletics",
       "shift": "none"
     },
-    "traits": [],
+    "traits": [
+      "reload"
+    ],
     "upgradeTraits": [],
     "usesPerScene": null
   },
   "effects": [],
-  "flags": {},
+  "flags": {
+    "essence20": {
+      "reloadAction": "free"
+    }
+  },
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",

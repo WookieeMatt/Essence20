@@ -5,6 +5,10 @@
   "_id": "EZciw6xSSwDKptXJ",
   "img": "systems/essence20/assets/icons/weapons/grenade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Athletics with the listed damage, range and alternate effect. Xenotech gives each attack a Snag, labelled Xenotech in the Roll Options Dialog, until your first Critical Success with it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -23,7 +27,7 @@
         },
         "damageValue": 2,
         "damageType": "sharp",
-        "numHands": "2",
+        "numHands": "1",
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -45,7 +49,7 @@
         },
         "damageValue": 1,
         "damageType": "element",
-        "numHands": "2",
+        "numHands": "1",
         "numTargets": 1,
         "radius": 10,
         "range": {
@@ -57,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "prototype",
     "classification": {
       "size": "sidearm"

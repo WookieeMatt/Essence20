@@ -1,0 +1,41 @@
+<div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-speeds">
+  <a class="sliced-border__label sliced-border__label--clickable" data-action="editSpeeds" data-tooltip="{{localize 'E20.StatEditorSpeedsTooltip'}}"><i class="fas fa-person-running"></i> Speeds <i class="fas fa-gear sliced-border__label-edit-icon"></i></a>
+  <div data-tooltip="{{localize 'E20.SpeedActionsTitle'}}">
+    <label>{{localize "E20.SpeedActionsLabel"}}</label>
+    <span>{{numActions.movement}}{{localize "E20.SpeedActionsLabelMovement"}}, {{numActions.standard}}{{localize "E20.SpeedActionsLabelStandard"}}, {{numActions.free}}{{localize "E20.SpeedActionsLabelFree"}}</span>
+  </div>
+  {{#if system.movementNotSet}}
+    {{#if (eq @root.document.type "playerCharacter")}}
+      <div>{{localize 'E20.SpeedNotSetPc'}}</div>
+    {{else if (eq @root.document.type "megaform")}}
+      {{!-- A Megaform's own Movement is never GM-typed - RAW (p.140) sets it to the slowest
+           linked participant's own Movement (Essence20Actor#_prepareMegaformData), so with none
+           linked yet, the fix is adding participants on the Combiner Participants tab, not the
+           Speeds editor's flat .bonus (which still exists and still works once participants are
+           linked, for the same reason Health/Defenses keep theirs). --}}
+      <div>{{localize 'E20.SpeedNotSetMegaform'}}</div>
+    {{else}}
+      <div>{{localize 'E20.SpeedNotSetNonPc'}}</div>
+    {{/if}}
+  {{else}}
+    {{!-- Always read-only here - editing happens exclusively through the Speeds gear-icon's
+         Stat Editor dialog (module/apps/stat-editor.mjs), which covers every actor type (a
+         playerCharacter's .bonus add-on, or every other type's .total/.altMode directly). --}}
+    {{#each @root.config.movementTypes as |name type|}}
+      {{#with (lookup @root.system.movement type) as |moveData|}}
+        <div>
+          <label>{{name}}</label>
+          {{#if @root.system.isTransformed}}
+            {{#if (eq @root.document.type "npc")}}
+              <span class="sidebar-readout">{{moveData.altMode}}</span>
+            {{else}}
+              <span class="sidebar-readout">{{moveData.total}}</span>
+            {{/if}}
+          {{else}}
+            <span class="sidebar-readout">{{moveData.total}}</span>
+          {{/if}}
+        </div>
+      {{/with}}
+    {{/each}}
+  {{/if}}
+</div>

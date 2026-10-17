@@ -1,0 +1,44 @@
+{
+  "folder": "aYgV1VMj4QDpmJI5",
+  "name": "Squad Guardian",
+  "type": "perk",
+  "_id": "Li2y6KqFu2OGRkrX",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","label":"Bring a Defeated ally back","cost":{"action":"standard","resource":{"rolePoints":"Moxie"},"amount":1},"steps":[{"do":"pickAlly","filter":["target:status:defeated"]},{"do":"heal","amount":1,"to":"target"},{"do":"removeCondition","condition":"defeated","to":"target"}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: spend a Moxie Point and your Standard action to bring a Defeated ally back to 1 Health.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 0
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role",
+    "canActivate": false
+  },
+  "effects": [],
+  "sort": 550000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "14.364",
+    "createdTime": 1787050000000,
+    "modifiedTime": 1788529467376,
+    "lastModifiedBy": "eDolxwiWtO0teEJE",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Li2y6KqFu2OGRkrX"
+}

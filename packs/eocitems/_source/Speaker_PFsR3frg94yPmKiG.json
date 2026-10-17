@@ -5,8 +5,12 @@
   "_id": "PFsR3frg94yPmKiG",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: when added you pick the Essence, the Origin Skill and the Speaker Alt Mode (you pick a Common or Large Bot Mode and a Common or Long Alt Mode, and its movement - 45 ft Ground or 30 ft Aerial); you also get its Health, Movement and the 'Til All Are One Origin Benefit.</p>"
+    },
     "originalId": "",
-    "description": "<p>@UUID[Compendium.essence20.enigma_of_combination.Item.ilL3CyLQDydjxBHf]{Speaker (Common, Aerial)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.GPW2T5OEC0KtlJpX]{Speaker (Common, Ground)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.wwFXrMqJd0YJHqkX]{Speaker (Large, Aerial)}</p>\n<p>@UUID[Compendium.essence20.enigma_of_combination.Item.48zFIrJCoULshGtm]{Speaker (Large, Ground)}</p>\n<p>&nbsp;</p>",
+    "description": "<p>@UUID[Compendium.essence20.enigma_of_combination.Item.GPW2T5OEC0KtlJpX]{Speaker}</p>\n<p>&nbsp;</p>",
     "source": {
       "book": "Enigma of Combination",
       "page": 28
@@ -18,28 +22,10 @@
         "name": "Til All Are One",
         "type": "perk"
       },
-      "963f": {
-        "uuid": "Compendium.essence20.enigma_of_combination.Item.ilL3CyLQDydjxBHf",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Speaker (Common, Aerial)",
-        "type": "altMode"
-      },
       "f294": {
         "uuid": "Compendium.essence20.enigma_of_combination.Item.GPW2T5OEC0KtlJpX",
         "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Speaker (Common, Ground)",
-        "type": "altMode"
-      },
-      "aa0c": {
-        "uuid": "Compendium.essence20.enigma_of_combination.Item.wwFXrMqJd0YJHqkX",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Speaker (Large, Aerial)",
-        "type": "altMode"
-      },
-      "9a61": {
-        "uuid": "Compendium.essence20.enigma_of_combination.Item.48zFIrJCoULshGtm",
-        "img": "systems/essence20/assets/icons/items/altmode.svg",
-        "name": "Speaker (Large, Ground)",
+        "name": "Speaker",
         "type": "altMode"
       }
     },

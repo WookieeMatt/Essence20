@@ -5,6 +5,10 @@
   "_id": "JKJltwircRYBCvmm",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: a Snag on Social Skill Tests with fully mechanical Cybertronians, and ↓1 with those who have an organic mode.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

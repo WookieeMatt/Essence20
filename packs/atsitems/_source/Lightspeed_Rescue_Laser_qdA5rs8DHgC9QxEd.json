@@ -5,6 +5,10 @@
   "_id": "qdA5rs8DHgC9QxEd",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: attacks roll Targeting for 1 Laser damage at 5ft/10ft.</p><p>Left to the table: using it to put out fires.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -35,15 +39,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:perk:Lightspeed Response (Form)"]},
     "requirements": {
-      "custom": "Lightspeed Response",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

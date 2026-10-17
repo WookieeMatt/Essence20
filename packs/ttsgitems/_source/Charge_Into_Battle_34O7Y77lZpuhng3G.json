@@ -5,6 +5,14 @@
   "_id": "34O7Y77lZpuhng3G",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Multiple Targets attack (Charge Into Battle: ↑1)","upshift":1,"when":["attack","check:multipleTargetsWeapon"]},
+      {"type":"MultipleTargets","label":"Melee Power Weapon (Charge Into Battle: Multiple Targets (2))","when":["attack:melee","weapon:trait:powerWeapon"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: +2 Evasion and ↑1 on Alertness. Automatic: your melee Power Weapons gain Multiple Targets (2) when they lack it, and attacks with a Multiple Targets weapon get ↑1, already applied when the Roll Options Dialog opens.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -16,7 +24,58 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Charge Into Battle",
+      "origin": "Compendium.essence20.through_the_shattered_grid.Item.34O7Y77lZpuhng3G",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ChargeIntoBattl1",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!34O7Y77lZpuhng3G.ChargeIntoBattl1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

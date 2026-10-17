@@ -5,6 +5,10 @@
   "_id": "jpXsrWMVM4enajRD",
   "img": "systems/essence20/assets/icons/items/faction.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Randori Masters, Ninja Own the Night and Ninpõ JOEs Faction Perks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +19,7 @@
       "b4b9": {
         "uuid": "Compendium.essence20.intercontinental_adventures.Item.6sgDFv3TZjDf07ti",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Randori Master",
+        "name": "Randori Masters",
         "type": "perk"
       },
       "f0cc": {

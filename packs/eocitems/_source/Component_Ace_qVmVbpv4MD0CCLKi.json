@@ -5,6 +5,10 @@
   "_id": "qVmVbpv4MD0CCLKi",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Modemaster Role, plus the Component Ace Perks at their listed levels. Pick its Essence and Skill increases when you level.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -40,7 +44,7 @@
         "name": "Invigorating Connection",
         "type": "perk",
         "subtype": "role",
-        "level": 7
+        "level": 6
       },
       "d95c": {
         "uuid": "Compendium.essence20.enigma_of_combination.Item.XnmVJF4XNcsaXAKL",

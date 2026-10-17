@@ -5,6 +5,10 @@
   "_id": "PORaq4fFVTjoeGkU",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>On the sheet: weapons with this upgrade get a Switch Form control. Switching equips that form, unequips your other Mythically Modular weapons and spends a Free action; an unequipped form can't attack until you switch to it.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

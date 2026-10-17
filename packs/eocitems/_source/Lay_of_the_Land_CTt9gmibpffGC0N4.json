@@ -5,6 +5,14 @@
   "_id": "CTt9gmibpffGC0N4",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Cover","mode":"reduce","amount":1,"label":"Cover ↓1 less on its ranged attacks"},
+      {"type":"MovementAction","label":"Rough Terrain ignored in the surveyed area (Lay of the Land)","ignoreRoughTerrain":true,"when":["self:onRecordedScene:flags.essence20.s2CartographySurvey"]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: Edge on Infiltration and Survival. Automatic: you ignore the cover penalty from terrain on ranged attacks, and Rough Terrain in the scene you surveyed. Left to the table: the Edge and cover benefits outside your surveyed terrain.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +23,96 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Infiltration Edge",
+      "origin": "Compendium.essence20.enigma_of_combination.Item.CTt9gmibpffGC0N4",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "LayOfTheLandInf1",
+      "changes": [
+        {
+          "key": "system.skills.infiltration.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!CTt9gmibpffGC0N4.LayOfTheLandInf1"
+    },
+    {
+      "name": "Survival Edge",
+      "origin": "Compendium.essence20.enigma_of_combination.Item.CTt9gmibpffGC0N4",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "LayOfTheLandSrv1",
+      "changes": [
+        {
+          "key": "system.skills.survival.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!CTt9gmibpffGC0N4.LayOfTheLandSrv1"
+    }
+  ],
   "sort": 200000,
   "ownership": {
     "default": 0,

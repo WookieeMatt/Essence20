@@ -5,10 +5,14 @@
   "_id": "OIWy80DIQPso3dsd",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Slammer Perks at their listed levels (Tough As Nails through Knock Down, Drag Out), plus its Strength increases at 1st and 10th level and its Focus Skill options.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Sgt Slaugter Sourcebook",
+      "book": "Sgt Slaughter Sourcebook",
       "page": 11
     },
     "items": {
@@ -40,7 +44,7 @@
         "name": "Roll with the Punches",
         "type": "perk",
         "subtype": "role",
-        "level": 2
+        "level": 3
       },
       "ffe4": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.rbgupnDh25Pij5Gp",
@@ -48,7 +52,7 @@
         "name": "This Is For Me",
         "type": "perk",
         "subtype": "role",
-        "level": 2
+        "level": 3
       },
       "a060": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.MViU1s9KdZ1A51Qe",
@@ -56,7 +60,7 @@
         "name": "Knuckle Up",
         "type": "perk",
         "subtype": "role",
-        "level": 3
+        "level": 6
       },
       "3b42": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ro5hMv4XMhOmANao",

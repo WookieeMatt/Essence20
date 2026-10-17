@@ -5,6 +5,15 @@
   "_id": "kEJP9jn7Q0LLufmG",
   "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
   "system": {
+    "rules": [
+      {"type":"Defense","defense":"toughness","amount":1,"when":["self:type:playerCharacter","not:self:morphed","not:rule:data:flags.essence20.gij1Faceplate=open"]},
+      {"type":"Defense","defense":"evasion","amount":1,"when":["self:type:playerCharacter","not:self:morphed","rule:data:flags.essence20.gij1Faceplate=open"]},
+      {"type":"Use","label":"Set the faceplate","steps":[{"do":"choose","prompt":"Set the faceplate:","options":[{"label":"Closed (+1 Toughness)","steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.gij1Faceplate":"closed"}},{"do":"chat","text":"{name} closes the faceplate."}]},{"label":"Open (+1 Evasion)","steps":[{"do":"updateItem","item":"self","set":{"flags.essence20.gij1Faceplate":"open"}},{"do":"chat","text":"{name} opens the faceplate."}]}]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch the faceplate open or closed. While closed and the armor is worn (not Morphed), you get +1 Toughness and Evasion.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -21,96 +30,7 @@
     "type": "armor",
     "prerequisite": ""
   },
-  "effects": [
-    {
-      "name": "Closed",
-      "img": "icons/svg/aura.svg",
-      "origin": "Compendium.essence20.cobra_codex.Item.kEJP9jn7Q0LLufmG",
-      "duration": {
-        "rounds": null,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "1fyFTY5x4dhHGj5V",
-      "type": "base",
-      "system": {},
-      "changes": [
-        {
-          "key": "system.defenses.toughness.bonus",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        }
-      ],
-      "description": "",
-      "tint": "#ffffff",
-      "transfer": true,
-      "statuses": [],
-      "sort": 0,
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.344",
-        "systemId": "essence20",
-        "systemVersion": "4.5.0",
-        "createdTime": 1733493511401,
-        "modifiedTime": 1733493549925,
-        "lastModifiedBy": "VEn5sPQRoWgUw9qd",
-        "exportSource": null
-      },
-      "_key": "!items.effects!kEJP9jn7Q0LLufmG.1fyFTY5x4dhHGj5V"
-    },
-    {
-      "name": "Open",
-      "img": "icons/svg/aura.svg",
-      "origin": "Compendium.essence20.cobra_codex.Item.kEJP9jn7Q0LLufmG",
-      "duration": {
-        "rounds": null,
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
-      },
-      "disabled": true,
-      "_id": "gdu8EEcyAG7rzd2C",
-      "type": "base",
-      "system": {},
-      "changes": [
-        {
-          "key": "system.defenses.evasion.bonus",
-          "mode": 2,
-          "value": "1",
-          "priority": null
-        }
-      ],
-      "description": "",
-      "tint": "#ffffff",
-      "transfer": true,
-      "statuses": [],
-      "sort": 0,
-      "flags": {},
-      "_stats": {
-        "compendiumSource": null,
-        "duplicateSource": null,
-        "coreVersion": "13.344",
-        "systemId": "essence20",
-        "systemVersion": "4.5.0",
-        "createdTime": 1733493551347,
-        "modifiedTime": 1733493572297,
-        "lastModifiedBy": "VEn5sPQRoWgUw9qd",
-        "exportSource": null
-      },
-      "_key": "!items.effects!kEJP9jn7Q0LLufmG.gdu8EEcyAG7rzd2C"
-    }
-  ],
+  "effects": [],
   "sort": 0,
   "ownership": {
     "default": 0,

@@ -5,6 +5,10 @@
   "_id": "TJbnp3pwIucso9fs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on Wealth Upshift for ↑1 while you work out what something is worth, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -31,7 +35,52 @@
     "value": 0,
     "version": "powerRangers"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Item.TJbnp3pwIucso9fs",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "cODbdQSKUPIz1JeX",
+      "changes": [
+        {
+          "key": "system.skills.wealth.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Wealth Upshift",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!TJbnp3pwIucso9fs.cODbdQSKUPIz1JeX"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,

@@ -5,15 +5,27 @@
   "_id": "bbA0ayzoaeW6G6R5",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Intricate Nano Infusion: a Limited nanomite power","event":"added","steps":[{"do":"pickGrant","from":{"type":"power","availabilities":["limited"],"tags":["item:data:system.type=nanomite"],"notOwned":true,"selectionLimit":true}}]}
+    ],
+    "prerequisites": {"when":["self:level>=8"]},
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick a Limited nanomite power each time you take this Perk.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Quartermaster's Guide to Gear",
       "page": 30
     },
-    "prerequisite": "8th Level",
-    "selectionLimit": 1,
-    "type": "general"
+    "prerequisite": "",
+    "selectionLimit": 10,
+    "type": "general",
+    "hasChoice": false,
+    "choiceType": "none",
+    "numChoices": 1,
+    "items": {}
   },
   "effects": [],
   "sort": 0,

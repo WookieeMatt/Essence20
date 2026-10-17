@@ -1,0 +1,84 @@
+{
+  "folder": "rqUrFq3VV6GKscOw",
+  "name": "Book",
+  "type": "gear",
+  "_id": "t5tbDZHpR76q1PPs",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: Edge on all Smarts tests while you carry it. Luring Librarians with it is roleplay.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 72
+    },
+    "quantity": 1,
+    "gearType": "other"
+  },
+  "effects": [
+    {
+      "name": "Contraband Book",
+      "origin": "Item.t5tbDZHpR76q1PPs",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "j0zjExPOpmRVI5io",
+      "changes": [
+        {
+          "key": "system.essenceShifts.smarts.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!t5tbDZHpR76q1PPs.j0zjExPOpmRVI5io"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!t5tbDZHpR76q1PPs"
+}

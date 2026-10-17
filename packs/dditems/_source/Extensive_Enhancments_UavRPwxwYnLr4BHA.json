@@ -5,6 +5,10 @@
   "_id": "UavRPwxwYnLr4BHA",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: Minor Tweak gains its DIF 20 tier (four temporary Skill Ranks in any skills), and Weapon Implant can install a Restricted weapon.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

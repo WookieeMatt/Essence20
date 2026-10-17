@@ -1,0 +1,74 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Fire Axe",
+  "type": "weapon",
+  "_id": "OXIKd4ly7nHO023A",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, at Reach for 1 Sharp damage, with a two-handed 2 Sharp alternate and a two-target alternate at ↓1; its traits apply.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 62
+    },
+    "items": {
+      "ux7L": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.Y8GWAUgEnbE0D8dW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fire Axe Effect",
+        "type": "weaponEffect"
+      },
+      "md3m": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.33fNOXpXecDKGP3F",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fire Axe Alternate Effect 1",
+        "type": "weaponEffect"
+      },
+      "slr1": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.QxfydUTy5uSqkSPi",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fire Axe Alternate Effect 2",
+        "type": "weaponEffect"
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "might",
+      "shift": "d4"
+    },
+    "traits": [
+      "multipleTargets",
+      "sharp",
+      "versatile"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!OXIKd4ly7nHO023A"
+}

@@ -5,6 +5,10 @@
   "_id": "7Bj0y0qmke8Hka1j",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Focus Perks at the listed levels (Cartography Suite through Perfect Placement), plus its Speed increases and Focus Skill choice.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

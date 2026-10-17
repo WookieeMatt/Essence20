@@ -5,6 +5,10 @@
   "_id": "ZYeaDSBLZGmFsPVl",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: pick its Essence and Skill, plus its starting Health, Movement and the Consistent benefit. Consistent asks after a Critical Success whether to take a plain success and bank ↑1 for your next Skill Test.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

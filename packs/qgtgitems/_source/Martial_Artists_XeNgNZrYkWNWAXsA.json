@@ -5,6 +5,10 @@
   "_id": "XeNgNZrYkWNWAXsA",
   "img": "systems/essence20/assets/icons/items/equipment_package.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: dropping it on a character adds the Medium Blade, Tactical Armor (Silent), Standard Infiltration Kit, Short Bludgeon and Thrown Blade (Aerodynamics), with their upgrades attached.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -103,13 +107,13 @@
       "1ddb": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.aRBWUHeBjdevKh4Q",
         "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
-        "name": "Short Bludgeoning",
+        "name": "Short Bludgeon",
         "type": "weapon",
         "items": {
           "ce5d": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.7ah23fiimnJq6HIL",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Short Bludgeoning Effect",
+            "name": "Short Bludgeon Effect",
             "type": "weaponEffect",
             "classification": {
               "skill": "finesse",
@@ -131,7 +135,7 @@
           "2f24": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.rMg6ZhYEEHTeZ8Db",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Short Bludgeoning Alternate Effect",
+            "name": "Short Bludgeon Alternate Effect",
             "type": "weaponEffect",
             "classification": {
               "skill": "finesse",
@@ -154,39 +158,17 @@
       },
       "926f": {
         "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.WYVuwQwX2QCuWSD1",
-        "img": "systems/essence20/assets/icons/weapons/dagger.svg",
-        "name": "Small Thrown Weapon (Aerodynamics)",
+        "img": "systems/essence20/assets/icons/weapons/shuriken.svg",
+        "name": "Thrown Blade (Aerodynamics)",
         "type": "weapon",
         "items": {
-          "870a": {
-            "uuid": "Compendium.essence20.gi_joe_crb.Item.bxT99cXuxn9UPeNT",
+          "7766": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.3TUcZi1RplIBPQU2",
             "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Small Thrown Weapon Effect (Blunt)",
+            "name": "Thrown Blade Effect",
             "type": "weaponEffect",
             "classification": {
-              "skill": "athletics",
-              "style": "projectile"
-            },
-            "damageValue": 1,
-            "damageType": "blunt",
-            "numHands": "1",
-            "numTargets": 1,
-            "radius": 0,
-            "range": {
-              "min": null,
-              "reachMultiplier": 0,
-              "long": 20,
-              "value": 10
-            },
-            "shiftDown": 0
-          },
-          "372b": {
-            "uuid": "Compendium.essence20.gi_joe_crb.Item.GqfmPxPjAP8Xoll9",
-            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-            "name": "Small Thrown Weapon Effect (Sharp)",
-            "type": "weaponEffect",
-            "classification": {
-              "skill": "athletics",
+              "skill": "targeting",
               "style": "projectile"
             },
             "damageValue": 1,
@@ -197,8 +179,8 @@
             "range": {
               "min": null,
               "reachMultiplier": 0,
-              "long": 20,
-              "value": 10
+              "long": 30,
+              "value": 20
             },
             "shiftDown": 0
           },

@@ -1,0 +1,53 @@
+{
+  "folder": "IFMLoLZC4rhRHlN8",
+  "name": "Portable Battery",
+  "type": "power",
+  "_id": "H5T3CVuBMhllTfQp",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>On the sheet: its Use button counts its two uses a day; a Rest restores them.</p><p>Left to the table: powering a device for about an hour.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 94
+    },
+    "actionType": "standard",
+    "canActivate": true,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": null,
+    "selectionLimit": 1,
+    "type": "nanomite",
+    "usesInterval": "perDay",
+    "usesPer": 2,
+    "duration": {
+      "units": "hours",
+      "value": 1,
+      "text": ""
+    },
+    "availability": "standard",
+    "usesSpent": 0
+  },
+  "effects": [],
+  "sort": 1000000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787781936139,
+    "modifiedTime": 1787781936139,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!H5T3CVuBMhllTfQp"
+}

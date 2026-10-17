@@ -3,6 +3,15 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"ChoiceSet","key":"sense","label":"Sense","from":"sense","notHeld":true,"rename":true,"required":true,"legacy":"system.choice"},
+      {"type":"DerivedStat","label":"Acute sense (the picked sense)","path":"system.senses.{choice.sense}.acute","value":true},
+      {"type":"RollModifier","label":"Acute (Sense)","when":["skill:alertness"],"edge":true,"stacks":false}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: your Alertness tests open the Roll Options Dialog with Edge already selected. Active Effect (off by default): switch on the chosen-sense effect for ↑1 on other tests where your sense clearly helps, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,10 +21,55 @@
     "prerequisite": "",
     "selectionLimit": 5,
     "type": "general",
-    "hasChoice": true,
-    "choiceType": "senses"
+    "hasChoice": false,
+    "choiceType": "none"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Compendium.essence20.pr_crb.Item.qKoTBo1FKzCq1qTt",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "h5g8K6QL7IltA3oY",
+      "changes": [
+        {
+          "key": "system.essenceShifts.any.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Chosen Sense (non-Alertness)",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!qKoTBo1FKzCq1qTt.h5g8K6QL7IltA3oY"
+    }
+  ],
   "flags": {
     "core": {}
   },

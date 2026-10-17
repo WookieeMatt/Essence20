@@ -5,7 +5,12 @@
   "_id": "vOI1arV9g5Pjdwc4",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at 20ft/40ft range for 1 Laser damage.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "Through the Shattered Grid",

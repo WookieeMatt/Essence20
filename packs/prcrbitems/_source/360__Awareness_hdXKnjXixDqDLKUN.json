@@ -5,6 +5,10 @@
   "_id": "hdXKnjXixDqDLKUN",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑1 on Alertness and Initiative.</p><p>Left to the table: you can't be surprised while awake.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

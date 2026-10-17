@@ -1,10 +1,14 @@
 {
   "folder": "EPfL3S8nx5LSxuhK",
-  "name": "Long Bludgeoning",
+  "name": "Long Bludgeon",
   "type": "weapon",
   "_id": "WlJKvvOXczVPzUaD",
   "img": "systems/essence20/assets/icons/weapons/bo.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for 1 Blunt damage at Reach, and its traits apply. Alternate Effect: Stun 1 at ↓1.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +19,7 @@
       "90a5": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.Jt5FmeFqopWQkHbb",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Bludgeoning Effect",
+        "name": "Long Bludgeon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -37,7 +41,7 @@
       "f59c": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.91alKZovkgruZU9i",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Long Bludgeoning Alternate Effect",
+        "name": "Long Bludgeon Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -57,8 +61,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
@@ -66,8 +68,8 @@
     "equipped": true,
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "finesse",
+      "shift": "d4"
     },
     "traits": [
       "blunt",

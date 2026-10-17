@@ -1,0 +1,46 @@
+{
+  "folder": "rxku6PTVz0evKZwC",
+  "name": "Quantum Cut",
+  "type": "perk",
+  "_id": "9DhE4UzSl40c8lW4",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"DialogSwitch","label":"Quantum Cut (1 Personal Power: Toughness without armor)","key":"quantumCut","cost":{"resource":{"path":"system.powers.personal.value"},"amount":1},"when":["attack","weapon:id:HNgu1rhXK46RG0bW"]},
+      {"type":"DefenseSwap","label":"Quantum Cut (the target uses Toughness)","from":"any","to":"toughness","when":["roll:switch:quantumCut"]},
+      {"type":"Defense","label":"Quantum Cut (no armor bonus)","defense":"any","mode":"noArmor","outgoing":true,"when":["roll:switch:quantumCut"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when you attack with the Quantum Defender (Sword) and have Personal Power, a switch spends 1 Personal Power to make the target use its Toughness against this attack.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 46
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 810000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1757442700000,
+    "modifiedTime": 1757442700000,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!9DhE4UzSl40c8lW4"
+}

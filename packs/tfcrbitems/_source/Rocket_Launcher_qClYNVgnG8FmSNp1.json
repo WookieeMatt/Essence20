@@ -5,6 +5,10 @@
   "_id": "qClYNVgnG8FmSNp1",
   "img": "systems/essence20/assets/icons/weapons/rocket_launcher.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with the listed damage, range, minimum range and blast; it must be set up before firing, and its Anti-Tank, Reload, Sharp and Wrecker traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,7 @@
     },
     "items": {
       "d695": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.5K1meYTN9tX4PlXi",
+        "uuid": "Compendium.essence20.tf_crb.Item.5K1meYTN9tX4PlXi",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Rocket Launcher Effect",
         "type": "weaponEffect",
@@ -35,15 +39,14 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "heavy"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:skill:brawn>=d4","self:size>=huge"]}]},
     "requirements": {
-      "custom": "Huge",
+      "custom": "",
       "skill": "brawn",
       "shift": "d4"
     },

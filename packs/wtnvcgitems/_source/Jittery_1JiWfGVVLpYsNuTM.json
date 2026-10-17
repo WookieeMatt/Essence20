@@ -1,0 +1,85 @@
+{
+  "folder": "Bx6J3cwUi2nQpV7g",
+  "name": "Jittery",
+  "type": "hangUp",
+  "_id": "1JiWfGVVLpYsNuTM",
+  "img": "systems/essence20/assets/icons/items/hangup.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","scope":"incoming","label":"Jittery","when":["skill:infiltration"],"edge":true}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↓1 on Intimidation. Automatic: Infiltration tests that target you (such as sneaking up on you) get an Edge, labelled Jittery in the roller's Roll Options Dialog.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 29
+    }
+  },
+  "effects": [
+    {
+      "origin": "Item.1JiWfGVVLpYsNuTM",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "DP1ETVDtFugaSIal",
+      "changes": [
+        {
+          "key": "system.skills.intimidation.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Intimidation Downshift",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!1JiWfGVVLpYsNuTM.DP1ETVDtFugaSIal"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!1JiWfGVVLpYsNuTM"
+}

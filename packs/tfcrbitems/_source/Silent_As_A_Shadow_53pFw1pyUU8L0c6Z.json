@@ -5,6 +5,10 @@
   "_id": "53pFw1pyUU8L0c6Z",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: treating all your attacks and movement as Silent.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

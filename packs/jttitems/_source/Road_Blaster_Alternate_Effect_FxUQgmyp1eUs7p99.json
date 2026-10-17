@@ -5,7 +5,12 @@
   "_id": "FxUQgmyp1eUs7p99",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack dealing 2 Energy damage to everything in a 15 ft radius, range 60/150 ft.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "A Jump Through Time",
@@ -27,7 +32,8 @@
       "long": 150,
       "value": 60
     },
-    "shiftDown": 0
+    "shiftDown": 0,
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

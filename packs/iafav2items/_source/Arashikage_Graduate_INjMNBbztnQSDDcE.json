@@ -5,6 +5,10 @@
   "_id": "INjMNBbztnQSDDcE",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: you may join the Arashikage Faction in place of another, even without meeting its usual requirements.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

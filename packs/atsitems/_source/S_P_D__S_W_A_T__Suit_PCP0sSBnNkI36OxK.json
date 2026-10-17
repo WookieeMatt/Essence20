@@ -5,6 +5,10 @@
   "_id": "PCP0sSBnNkI36OxK",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +4 Toughness and ↑1 on Intimidation; Deflective applies.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,7 +5,12 @@
   "_id": "8FvU7lzXmOnsBNij",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Technology attack at the listed range for 1 Energy damage in a 15ft blast, at ↓1.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "Technorganic Secrets",
@@ -27,7 +32,8 @@
       "long": 60,
       "value": 20
     },
-    "shiftDown": 1
+    "shiftDown": 1,
+    "shape": "circle"
   },
   "effects": [],
   "sort": 0,

@@ -5,7 +5,12 @@
   "_id": "0MUTnBpkkLNzUcwT",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack dealing 1 Sharp damage to one target, range 100/400 ft.</p>"
+    },
     "originalId": "",
+    "actionType": "standard",
     "description": "",
     "source": {
       "book": "A Jump Through Time",
@@ -15,7 +20,7 @@
       "skill": "targeting",
       "style": "projectile"
     },
-    "damageType": "blunt",
+    "damageType": "sharp",
     "damageValue": 1,
     "isSpecialized": false,
     "numHands": 2,

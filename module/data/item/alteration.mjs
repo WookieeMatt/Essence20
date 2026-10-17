@@ -1,6 +1,7 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import {
+  makeBool,
   makeInt,
   makeStr,
   makeStrArrayWithChoices,
@@ -19,12 +20,14 @@ export class AlterationItemData extends foundry.abstract.TypeDataModel {
       ...itemDescription(),
       availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
       benefit: makeStr(''),
+      // bonus / cost: the Skills picked when an essence Alteration is dropped (alteration-handler.mjs). Not on the
+      // Details tab since 2026-10-07 - its number boxes for type other edited nothing anything reads.
       bonus: makeStr(null),
-      bonusMovement: makeInt(null),
+      bonusMovement: makeInt(0),
       bonusMovementType: makeStrWithChoices(Object.keys(E20.movementTypes), null),
       bonusSkill: makeStrWithChoices(Object.keys(E20.skills), null),
       cost: makeStr(null),
-      costMovement: makeInt(null),
+      costMovement: makeInt(0),
       costMovementType: makeStrWithChoices(Object.keys(E20.movementTypes), null),
       costSkill: makeStrWithChoices(Object.keys(E20.skills), null),
       essenceBenefit: makeStr(''),
@@ -33,6 +36,16 @@ export class AlterationItemData extends foundry.abstract.TypeDataModel {
       movementCost: new fields.ObjectField({}),
       selectedEssence: makeStrWithChoices(Object.keys(E20.essences), null),
       type: makeStrWithChoices(Object.keys(E20.alterationTypes), 'other'),
+      // Enhanced Photoreceptors (Cobra Codex, p.84): darkness within 30 feet counts as dim light.
+      // The vision-granting shape already exists on gear/perk (see
+      // GearItemData's own visionGrant, and mechanics/characters/vision-grant.mjs#getBestVisionGrant, which
+      // reads item.system.visionGrant off ANY actor item regardless of type) - Alteration was
+      // simply never given the field, so no alteration could ever declare one.
+      visionGrant: new fields.SchemaField({
+        enabled: makeBool(false),
+        mode: makeStrWithChoices(Object.keys(E20.visionModes), 'darkvision'),
+        range: makeInt(0),
+      }),
     };
   }
 }

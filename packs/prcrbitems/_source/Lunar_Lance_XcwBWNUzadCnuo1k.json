@@ -5,6 +5,10 @@
   "_id": "XcwBWNUzadCnuo1k",
   "img": "systems/essence20/assets/icons/weapons/spear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, plus its three alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -101,8 +105,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
@@ -115,6 +117,7 @@
     },
     "traits": [
       "energy",
+      "powerWeapon",
       "sharp"
     ],
     "upgradeTraits": [],

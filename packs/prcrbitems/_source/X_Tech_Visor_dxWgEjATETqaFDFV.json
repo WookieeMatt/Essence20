@@ -5,6 +5,10 @@
   "_id": "dxWgEjATETqaFDFV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: while Morphed, seeing outlines through walls within 30 ft.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

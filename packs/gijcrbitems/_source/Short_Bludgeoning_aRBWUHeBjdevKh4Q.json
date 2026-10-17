@@ -1,10 +1,14 @@
 {
   "folder": "EPfL3S8nx5LSxuhK",
-  "name": "Short Bludgeoning",
+  "name": "Short Bludgeon",
   "type": "weapon",
   "_id": "aRBWUHeBjdevKh4Q",
   "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Finesse or Might, whichever is better, for Stun 1 at Reach, or 1 Blunt damage at ↓1 with the alternate effect. Its Blunt, Martial Arts and Silent traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +19,7 @@
       "ce5d": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.7ah23fiimnJq6HIL",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Short Bludgeoning Effect",
+        "name": "Short Bludgeon Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -37,7 +41,7 @@
       "2f24": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.rMg6ZhYEEHTeZ8Db",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Short Bludgeoning Alternate Effect",
+        "name": "Short Bludgeon Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "finesse",
@@ -57,8 +61,6 @@
         "shiftDown": 1
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"

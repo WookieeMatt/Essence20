@@ -1,0 +1,107 @@
+{
+  "folder": "PrK1LoGlph7L9zZH",
+  "name": "Makeup Tutorials",
+  "type": "perk",
+  "_id": "mM4VTq7VF4OMkMH7",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: an Edge on Deception and Infiltration tests.</p><p>Left to the table: the Edge is meant only while pretending to be someone else, so switch the effect off otherwise.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 47
+    },
+    "type": "general",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [
+    {
+      "origin": "Item.mM4VTq7VF4OMkMH7",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ZNWNAjbKJuEz9pPR",
+      "changes": [
+        {
+          "key": "system.skills.deception.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.infiltration.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Disguise Edge",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!mM4VTq7VF4OMkMH7.ZNWNAjbKJuEz9pPR"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!mM4VTq7VF4OMkMH7"
+}

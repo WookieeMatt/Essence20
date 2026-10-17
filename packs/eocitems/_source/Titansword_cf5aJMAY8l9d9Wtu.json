@@ -5,6 +5,10 @@
   "_id": "cf5aJMAY8l9d9Wtu",
   "img": "systems/essence20/assets/icons/weapons/blade.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage, range and targets, and its traits apply. Its three alternate effects are separate attack options on the sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -101,17 +105,16 @@
         "shiftDown": 2
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:size>=towering"]},
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "brawn",
+      "shift": "d4"
     },
     "traits": [
       "sharp",

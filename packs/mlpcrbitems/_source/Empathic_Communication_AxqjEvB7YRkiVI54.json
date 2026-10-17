@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: you can talk with non-speaking animals, and share more complex ideas with them on Animal Handling tests.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

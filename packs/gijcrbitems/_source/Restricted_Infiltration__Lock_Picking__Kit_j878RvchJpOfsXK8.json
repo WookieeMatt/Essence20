@@ -1,0 +1,39 @@
+{
+  "folder": "CGY5yIMLAGHuNYZA",
+  "name": "Restricted Infiltration (Lock Picking) Kit",
+  "type": "gear",
+  "_id": "j878RvchJpOfsXK8",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Roll Options Dialog: when a roll calls for a kit, your best carried kit sets the Snag or ↓. While carried, this kit gives temporary Lock Picking Specialization, or an Edge if you have that Specialization. Use button: change its Specialization.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 158
+    },
+    "quantity": 1,
+    "gearType": "kits"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1790266289019,
+    "modifiedTime": 1790266289019,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!j878RvchJpOfsXK8"
+}

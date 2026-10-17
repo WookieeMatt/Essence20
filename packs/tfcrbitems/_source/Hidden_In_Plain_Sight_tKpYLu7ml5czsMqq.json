@@ -5,6 +5,10 @@
   "_id": "tKpYLu7ml5czsMqq",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Nothing to track: the system never asks for cover when you Hide, so you can always Hide.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

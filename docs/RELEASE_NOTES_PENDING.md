@@ -1,0 +1,305 @@
+# Pending release notes
+
+Player- and GM-facing changes waiting for the next release. Copy these into the GitHub release
+description when tagging, then clear this file.
+
+## Action needed by GMs
+
+- **A world migration runs on first load.** It moves every Perk's old pick onto the new rules
+  pick, clears item fields the rules replaced (they stay in the data until 6.1), and repoints copies
+  of items that moved to another compendium. When it finishes, the GM gets a chat summary. Any
+  Perk listed there as "nothing picked yet" still needs its pick: open the character's **Rules**
+  tab and choose it there.
+- **Renamed items.** Generic weapons now carry their book names: Close Combat Bludgeon, Close
+  Combat Heavy Bludgeon, Short Bludgeon, Thrown Bludgeon and Long Bludgeon (was "...Bludgeoning"),
+  and in Power Rangers: Grenade, Martial Arts Long/Medium Blade, Martial Arts Long Bludgeon and Zeo
+  Laser Pistols. Power Rangers "Brawling" is now **Unarmed Combat**, and the 1st-printing "Strike"
+  is gone. Copies already on characters keep their old names until replaced.
+- **Moved items.** The 7 Spectrum Modification Perks now live in A Jump Through Time. The Pre Gen
+  weapons (Power Crossbow, Hammer, Spear, Tetsubo) have their own **Power Rangers Pre Gen
+  Characters** compendium. Existing copies still find their automation.
+- **Equipped armor now counts toward Defenses automatically.** A Player Character's equipped
+  Armor items (and armor Upgrades attached to them) now add their Toughness/Evasion bonus to the
+  character's Defenses. Previously this bonus was never applied, so some tables typed the armor
+  bonus into the Armor field on the character's Defenses by hand. **If you did that, clear the
+  hand-typed Armor value** — otherwise the bonus is now counted twice. The system can't tell a
+  hand-typed armor workaround from a deliberate manual bonus, so it doesn't clear it for you.
+  NPCs, companions, vehicles and Zords are unchanged: their Armor stays a hand-entered value.
+- **Power Rangers:** Morphed Toughness works exactly as before — it comes from the Morphed armor
+  type set on the character sheet, and worn armor doesn't add to it. The Power Armor items (Mighty
+  Morphin, Zeo, Turbo, In Space and Metallic Body Armor, Power Rangers Core Rulebook Table 8-5)
+  represent that Morphed suit, so marking one "equipped" never adds a separate armor bonus.
+
+## The rules engine
+
+Item automation is now data on the item, in a **Rules** tab, instead of hard-coded per
+compendium item. That means a copy of a book item, or a homebrew item built in the sheet, works
+the same as the original.
+
+- **Every item's Rules tab** lists what it does in plain English, with an editor for building
+  your own. Active Effects show there too, as "always on" entries.
+- **The character sheet's Rules tab** lists every rule affecting that character. Each line can
+  open the item it comes from or post the rule to chat.
+- **Picks are asked once, when the item is added.** This covers Expertise, Cutie Mark Perk and
+  any Perk with a choice: one dialog per character. Long lists get a search box. If you cancel a
+  pick on an item you dropped, the item isn't added. A pick that comes with a Role must be made.
+  You can change a pick later from the Rules tab.
+- **Level-ups ask for your General Perk and Grid Power picks** at the levels your
+  Role's own table gives them. General Perks come from every enabled book. Sub-Perks show under
+  their parent Perk.
+- **Prerequisites** are checked when an item is added. A world setting chooses Off, Warn
+  (default) or Strict. Strict asks the GM to confirm a drop that doesn't qualify. Warn and Strict
+  both tell the GM when a character takes something they don't qualify for. Items a Role grants
+  are never blocked.
+- **Weapons the book prints with two Skills** ("Finesse or Might", "Athletics or Targeting" and
+  so on) roll whichever Skill is better. This includes every line's Unarmed Combat / Unarmed
+  Strike, Pillage, Power Fist, Natural Weapons, Psycho Strike and the TF/G.I. JOE melee weapons.
+  Power Rangers Martial Arts Long Bludgeon is Might only, as printed.
+- **Focus Skill increases.** When a Focus raises an Essence (1st and 10th level), the sheet asks which of the Focus's
+  Skills gets the point: train one a step, or take a Specialization in it where the book allows. Levelling back down,
+  or deleting the Focus, takes that rank or Specialization back off. Characters made before this keep what they placed
+  by hand in the Skill Picker; a + on the Focus row lets them place it, or mark it "Already placed by hand". Deleting
+  a Focus any way (sheet, macro or API) takes its Essence and Skill point back off.
+- **Weapon Brawn requirements apply.** A weapon you lack the Brawn for gives ↓1 per die short on its attacks, as a
+  line in the Roll Options Dialog (G.I. JOE p.117, Transformers p.97, Power Rangers p.81). "Brawn d4/Huge" weapons
+  waive it for a big enough character; a Transformer's Integrated Hardpoint lowers it one die; The Heavy, Pack Mule,
+  Over Brawn and now Ordnance Expert (↑4 for weapons) all count.
+- **Weapon requirements are prerequisites.** The free-text requirements on about 100 weapons (Skill ranks, sizes,
+  Origins and Perks, Psycho Ranger or Path weapons) are checked like any other prerequisite when the weapon is added.
+- **Power Rangers:** the Grid Relic Weapon asks for its 2 Relic Weapon Traits; five of them are
+  automated. The Power Rangers Expertise offers only Skills at d4 or better.
+
+## Megazords and Combiners
+
+- **Who can join which Megaform.** A Megazord takes Zords and, per Field Guide to Action and Adventure p.134, a
+  Cybertronian joining them as a plain component (a chat line notes the Story Point and Energon/Personal Power cost,
+  and the form is one Size Class above its largest part). A Zord can't join a Transformers Combiner: a Zord and
+  Cybertronian mix uses the Megazord rules. Anything that can't count is now refused with the reason, instead of being
+  linked and silently ignored.
+- **A new Megaform's type follows the game line:** a Power Rangers world makes a Megazord, and any other world
+  (including "All") makes a Transformers Combiner. The type select now reads "Power Rangers Megazord" / "Transformers
+  Combiner". Existing Megaforms saved with no type become Megazords.
+- **A Zord without the Combiner Zord Feature** (and no Versatile Combiner or Adaptable Future Tech partner already in
+  the Megazord) is refused when dropped, instead of being linked with a warning.
+- **Megazords:**
+  - Use every participant's weapons and attacks, rolled with the Megazord's own skill.
+  - Are Towering by default; set Titanic on the sheet if that's the size you chose.
+  - Take the highest Strength and Speed from their Crew as well as their Zords.
+  - Fall apart when more than half the Zords are down, each falling Prone.
+  - A Zord at 0 Health stops adding its stats, traits and attacks.
+- **Core Body, Layered Systems, Tenacious Bonds and Roller Drum now really add Health.** Damage to the Megaform uses
+  that extra Health up first, and a damaged Core Body Zord no longer shows every point lost twice.
+- **Join timer:** counts from when each Zord entered the fight (its Call to Action arrival), only rolls for newly added
+  Zords, and no longer runs for Transformers Combiners.
+- **Megaform immunities** (Grounding's Electromagnetic immunity) protect the whole form. Damage from rules,
+  hazards and ongoing effects now reaches a Megaform's participants instead of disappearing.
+- **Combiners:**
+  - A duo or trio is now one real Size Class up (two Large members make a Huge form, not "Long").
+  - Damage to the whole form is split as evenly as the total allows, with leftover points going to random members.
+  - Commander raises the Essences that are the holder's own two highest.
+  - The Energon pool fills with what was spent to merge.
+  - Invigorating Connection heals once per combination.
+  - Additional Movement grants its Movement Type.
+  - A Movement Type only some members have no longer becomes the form's.
+  - A member at 0 Health adds no attacks.
+- **Zord armor:** Hardened Chassis, Rescue Upgrade, S.W.A.T. Armor Up, Elemental Stone, Assault Shell and External Tech
+  Upgrade now give Armor (plating) to Toughness, so Ignores Armor attacks strip them as the books say.
+- **Breaker-Bar's** +1 damage now applies only against Transformers Combiner forms.
+- **Changing a Megaform between Megazord and Combiner** is refused while someone in it wouldn't count under the new
+  type (a mixed Megazord's Zords, or a Combiner's characters who can't transform), naming who has to leave first. A
+  change that goes through clears the old type's timers.
+- **Starting Zord Features:** linking a new Zord to a Ranger asks for its team. It then adds the team's Automatic Zord
+  Features and the Spectrum-Based one (taken from the Role's colour), from all five books. Mixed teams pick two;
+  Advanced Spectrum picks any. A **Features** button on the Zords tab offers it again until it's done.
+- **Strength with its Skill Ranks:** Auxiliary Zord, Carrier and Warzord ask where their Skill Ranks go.
+- **Warzord** spends its Ranger's Story Points (one per Zord combining with it) when it combines, instead of posting a
+  reminder.
+- **Zero-G's** ranged ↑1 no longer needs a driver; the book doesn't ask for one.
+- **Weapon size is measured against every Mode** (Bot Mode and each Alt Mode), and Combiner movement reads members'
+  Bot Modes.
+- **Zord growth:** at the Ranger's 5th, 10th, 15th and 20th level each linked Zord gets a choice. The options are +1
+  Health, +1 plating, +10 ft movement, pilot ↑1 on Driving or Initiative, and +1 damage to one attack (Core Rulebook
+  p.134), or Accurate (1) on one attack, or exchanging a Zord Feature (A Jump Through Time p.83). It's offered on
+  level-up, and from a **Growth** button on the Ranger's Zords tab while any is owed. Each choice is a feature on the
+  Zord.
+- **Summoned Zords arrive:**
+  - At the start of the round the timer names, a chat card announces the Zord at the edge of the battlefield, and
+    the Ranger's Zords tab shows **Arrived** instead of offering to summon it again.
+  - **Place it on the map** (GM) puts its token at the scene edge nearest its Ranger.
+  - **Board** seats the Ranger as driver once their tokens touch, and takes the Ranger's token off the map.
+  - When the combat ends, a Zord on its way or arrived is reset, so it can be summoned again next fight.
+  - The Ranger's sheet redraws straight away when the Zord is summoned, arrives or is boarded.
+- **New Zords, Vehicles and Megaforms get a token their size** (a baseline Zord is Huge, 3x3; a Megazord Towering, 5x5)
+  instead of 1x1, and a Megaform's token resizes as its Size changes with who joins it.
+- **Recall for Repairs:** the feature's Use button sends the Zord to its lair. It leaves the map and any Megazord, can't
+  be called again this scene, and comes back at full Health with no Conditions the next time it's summoned. Anyone
+  aboard climbs out first: they leave its seats and their tokens come back onto the map beside it.
+- **Summoning a Zord** spends the Ranger's Standard action.
+- **Zord and Vehicle Defeat** now triggers from every damage path, so a Zord inside a Megazord goes dormant too.
+- **Gaining Combiner** asks which Megaform Trait the Zord contributes and adds it. Detachable and Core Body can't be on
+  the same Zord.
+- **Increase (Essence)** and every other Zord or Vehicle Essence now stop at 15.
+- **Megazord Willpower and Cleverness** use the best of its Crew, and its Smarts and Social show the Crew's best.
+- **Combiners (Enigma of Combination):**
+  - **Hardpoints:** two External, plus one Integrated per member, shown on the form. A weapon's prerequisites are met
+    when any active member meets them at the weapon's normal size.
+  - **Upscaled weapons (Table 3-1):** a weapon dropped on a Gigantic or larger actor offers its upscaled version
+    (availability, requirement, range, damage, area, Trip, and Titan-Class and Wrecker at Titanic).
+  - **Hands by size:** a weapon three or more Size Classes smaller takes 1 hand or Hardpoint, three larger takes 2,
+    and four or more larger can't be wielded.
+  - **Titan-Class** weapons cost 1 Energon a round to attack with.
+  - **Mode Lock** stops merging.
+  - **Other Cybertronians:** a PC without a Combiner Perk dropped on a Combiner form joins for the scene for a Story
+    Point plus the Energon. Only one at a time, and they leave when the scene ends.
+  - **Holding together:** a Defeated Combiner can spend 1 Energon per member to postpone breaking apart for 1d2 turns.
+  - **Better as One** lets the holder pay the form's Energon bonus at any time; you're asked who pays.
+
+## Other changes
+
+- **For module makers: new `essence20.*` hooks.** The system now announces game events to other modules: every
+  rules event (`essence20.event` — hits, damage, Defeat, Conditions, Morph, Transform, Story Points, turn starts…),
+  each finished roll with its targets (`essence20.rollResolved`), where an area attack was placed
+  (`essence20.areaPlaced`), a Requisition granted (`essence20.requisitionGranted`), and Zord and Megaform moments (summoned, arrived,
+  placed, boarded, disembarked, recalled, repaired, Combiner merged, broke apart). The list and payloads are in
+  `docs/ARCHITECTURE.md`, "Hooks for modules".
+- **Power Shield** follows the book now:
+  - Using it puts the shield on the summoner as +2 armor to Toughness, which counts whether they're Morphed or not.
+  - The chat card's **Hand the Power Shield** button passes it to the character you target, or one you pick from the
+    scene, and takes it from whoever had it.
+  - It lasts until the summoner un-Morphs, wherever it is (no more 10-round timer).
+- **Defensive Shields** is automated: taking it asks which teammate (or yourself) gets +1 Morphed Toughness. That
+  becomes an effect on their sheet, and removing the Perk takes it back.
+- **The "Power Ranger Core Rulebook - Applied Effects" compendium is gone.** Foundry can't show Active Effects in a
+  compendium, so it was always empty. Its five effects are all handled by their items now.
+
+- **NPC and Companion Essences have a base.** Each Essence shows current / score, with an always-editable Base
+  underneath. The Base is the printed score; effects and rules raise the score on top of it instead of overwriting
+  it, and the score itself is locked. The current amount Essence damage spends keeps its damage when the score
+  changes. Existing NPCs take their current score as their base automatically. The stat-block importer and Threat
+  Builder fill in the base.
+- **Vehicles show their Essences** on the Main tab, laid out like a Zord's (score with its Base underneath).
+- **Zords, Vehicles and Megaforms take Essence damage, temporarily.** The books don't cover it; the ruling is that
+  the damage comes off what is left (current / score) and never lowers the score or the Base. Type the current amount
+  to adjust it, and the **Repair** button that appears beside the Essences clears it all.
+- **Rules reading `@essence`** now use the Essence score, not what is left after Essence damage
+  (`@essence.<x>.current` gives the remainder).
+- **Fixed a "Maximum call stack size exceeded" error** when loading a scene with unlinked tokens.
+- **Changing an actor's Size resizes its tokens again**, unlinked ones included (unless that token has its own Size).
+- **Stat Block Importer balances Rules too.** A matched Perk or Hang-Up whose always-on Rule changes a Defense,
+  Movement or Health (Dazed, Eltarian Training) no longer adds on top of the printed number; ones it can't work out
+  (formulas, best-of, set) are named in the check-by-hand warning.
+- **Stat Block Importer reads Cybertronians.** "SIZE: Huge/Extended" and "... Aerial (Alt Mode)" movement make the
+  actor able to transform, with an Alt Mode item holding that Size and movement; "Requirements: Bot Mode only" /
+  "Alt Mode only" set each weapon's Mode. Alternate Effects followed by a Requirements line are no longer lost, "(Stun 1)"
+  is read, and exporting a stat block prints both Modes.
+- **Transform and Morph buttons on NPC and Companion sheets** are in the sidebar's Special panel under Initiative, where
+  a character's are (Companions had none before).
+- **Stat Block Importer reads Power Rangers Zords** (PR CRB Ch.9 layout: no colons, inline "Skills:" and "Zord Features:", no
+  ATTACKS heading). It picks Zord as the type, matches each Zord Feature ("Increase (Strength)" is Increase (Essence))
+  and the Megaform Trait a Combiner names, puts the Plating Armor in the armor, and reads "(1/scene, Might)",
+  "with ↓1" and "Reach ×2". A matched Feature's Essence bonus (Heavy Chassis) no longer adds on top of the printed Essence.
+- **Stat Block Importer: weapons.** Each comma-separated Alternate Effect is its own, with its printed ↓ (however the PDF copy gave the arrow, also inside "(Reach, ↓1)"), its "Multiple (N) Targets" and the weapon's range, named "<weapon>
+  Alternate Effect" (numbered when there are several); a "Blast:" inside one no longer drops it. "Requirements:" is kept on
+  the weapon, and "Bot Mode only" / "Alt Mode only" sets its new **Mode Requirement** - the attack is refused in the other Mode.
+- **Stat Block Importer: rules from text.** An unmatched Perk or Hang-Up reading "suffers ↓1 to all Social Skill Tests ..."
+  (or ↑N / Edge / Snag on named Skills) gets a Roll Modifier rule, its condition shown in the label.
+- **Fixed: a weapon's Alternate Effect sometimes listed above its main one** (about 1 in 5 attached items got an
+  all-digit key, which sorts first).
+- **Megaform sheet:** the "Combined Health" box is gone (a Megaform has no Health of its own), and the sidebar lists
+  each participant's Health highest first, as the books print it, with Stun in the same order.
+- **Fixed: a Transformers Combiner's Willpower and Cleverness** were just its Smarts and Social (Bruticus 9 and 8); they are
+  10 + the Essence now (19 and 18). **Commander** raises the two Essences its stat block names, when it names them.
+- **Stat Block Importer: Combiner members.** A "Gestalt Combiner (Commander [Strength, Speed])" or "Matched Combiner (Core
+  Essence [Speed])" Perk brings that Combiner feature as a Megaform Trait with its choices, so the Combiner form applies it.
+- **Stat Block Importer: "Import into" an existing Megaform** - a Combiner's own stat block (Bruticus) adds its Perks,
+  Hang-Ups and attacks, its printed Energon Pool, and Defense and Movement Bonuses so it matches the printed numbers. Picked
+  automatically when a Megaform has the block's name. Import the members first: the Bonuses are worked out from them.
+- **New tour: Your Zord** - a Ranger's Zords tab: starting Features, growth, Summon, the arrival card (Place, Board),
+  the Zord's sheet and Recall for Repairs.
+- **Summoning a Zord outside a combat** brings it straight away (its arrival card, to Place and Board) instead of
+  doing nothing.
+- **Fixed: the Zords tab's Features button** stayed after its Features were added, and did nothing; it goes away now, on
+  every open sheet.
+- **Book Descriptions survive items moving.** On load, imported descriptions whose item moved pack or changed id in an
+  update are re-linked (6.0.4 moved A Jump Through Time's Spectrum Modifications out of the Power Rangers core pack);
+  new imports also record each item's name, so a replaced item is found again by name. The list shows how many of each
+  book's entries still match an item, with a button to remove the ones that don't, and **Remove all imported books**.
+- **Book Descriptions: Choose a folder…** imports every PDF in a folder, one after another, each recognised as its book;
+  the files are still read in the browser and never uploaded.
+- **Fixed: empty crew / member cards.** Deleting an actor (or an unlinked token) left its card on every crew, Zords list,
+  Megaform and Party that listed it - blank, and still in its seat. It comes off them now, and leftovers from before are
+  cleaned up when the world loads.
+- **Fixed: removing a crew member, Zord or Megaform member from a token's sheet** did nothing on an unlinked token
+  (it worked from the actor's own sheet). It sticks now, for that token only.
+- **Fixed: "User ... lacks permission to update ActorDelta" for players.** A player's action that changes an NPC token's
+  items or effects (a hit wearing its armor, an effect put on it) is now carried out by the GM, as changes to the actor
+  itself already were - for the token the player is targeting. With no GM connected the change is skipped, with one
+  warning per target, instead of the error.
+- **Fixed: rule editor conditions.** Changing a condition to another kind (a new one starts as "the Skill is: athletics")
+  kept the old text in its box, so "in combat" became "in combat: athletics" and never applied. The box now clears.
+- **A Combiner's Energon on its sheet.** The Megaform sidebar shows a Combiner form's own Energon pool - what's left,
+  editable (spent by hand, or given from outside), out of half the Energon spent to merge.
+- **Disembark a Zord.** A Ranger aboard their Zord has a Disembark button on the Zords tab: they leave the seat and
+  their token comes back beside the Zord. In a fight the Zord must not have moved that turn, and it takes their Move
+  action (15 ft of Ground Movement - PR CRB p.176-177).
+- **For modules and macros:** `game.essence20.rollSkill(actor, skill)`, `canUseItem(item)` / `useItem(item)` (an item's Use
+  button) and `game.essence20.zord.summon / board / disembark / isAboard / hasArrived` - what the sheet's buttons do, under
+  stable names. Token Action HUD Essence20 uses them.
+- **No more "-=" deprecation warnings** in the console from Foundry v14.
+- **New setting: Morphed / Alt Mode token icons.** Options are Show, Hide when the token art
+  changes (default), or Never. The status itself always stays, for the Combat Tracker and macros.
+- **Guided tours** cover the new Rules tabs, Perk picks and level-up picks.
+- **Ram and Flyby** use no hands and no hardpoint.
+- **Vehicle crew:** closing the "Swap Driver and Passenger?" dialog now cancels instead of swapping, and a swap updates both seats together.
+- **Older copies of Perks that pick sub-Perks** (e.g. a Grid Relic Weapon taken before this release) can now make their
+  picks from the Rules tab: they use the compendium's list when their own is empty.
+- **Clearer form errors:** refusing a bad Essence Progression, Vehicle role or Essence pick no longer shows an
+  "Error:" prefix, and the Essence Progression message says what to fix.
+- **Essence Alterations** (Absolute Yield and the other Cobra Codex ones) finish again: after the bonus Skill pick the
+  window for the Essence that pays the cost used to vanish, and the Alteration was never added.
+- **Transformers:** deleting the Alt Mode a character is currently in returns them to Bot Mode (they used to stay transformed into the deleted mode).
+- **Shields with a Brawn requirement** give the same ↓ shortfall as armor.
+- **The Specialization item's Details tab** can be edited again (Skill, die, Specialized).
+- **Transformers core weapons** now use their own book's effects. They used to pull in the
+  G.I. JOE and Power Rangers copies, so Long Bludgeon came with a Power Rangers "Martial Arts"
+  attack.
+
+## Changes you'll notice at the table
+
+- **Reload:** a weapon with the Reload trait needs a Move action to reload after it fires before it
+  can shoot again.
+- **Consumable:** using a Consumable weapon or item reduces its quantity.
+- **Stunned, Unconscious, Asleep and Surprised characters have no actions** on their turn (a few
+  Perks, such as Security and Unsurprising, are exceptions). The action-economy setting decides
+  whether this is only tracked, warned about, or enforced.
+- **Situational bonuses and penalties** — including most Hang-Up penalties — appear as per-roll
+  checkboxes in the Roll Options Dialog instead of always applying. A Hang-Up penalty that always
+  applies is simply on; one that depends on the situation is a checkbox you tick when it does.
+- **Frightened** applies its ↓2 by default; untick it in the Roll Options Dialog when the source of
+  fear isn't in sight.
+- **Timed buffs and Conditions expire on their own** at the end of their scene, encounter or number
+  of rounds.
+- **Weapons can deal two damage types in one hit** (e.g. Blunt and Stun); Apply Damage applies both.
+- **Actions tab:** the display-in-chat button is a chat bubble; dice appear only on items that roll.
+
+## Now working
+
+- **Imperial Machine Mantle** (Adventures in Angel Grove, p.90): while intact, adds extra Toughness
+  equal to half the wearer's current armor bonus (rounded up), Morphed or not. It breaks when the
+  wearer is hit by a Critical Success; a GM can clear the broken flag on the Item to repair it.
+- **Power Quake, Sorcerous Tremors, Aura of Decay and Pollution Solution** no longer catch their own user.
+  These areas radiate out from whoever uses them, so the user is the source, not a target.
+
+## Rules changes
+
+- **Sorcerous Power points (Finster's Monster-Matic Cookbook, "Building Sorcerous Powers," p.274)
+  are now a one-time build budget, not a spendable pool.** Sorcerous Powers used to deduct their
+  own point cost from `Sorcerous Power` every time they were activated; the book spends that cost
+  only once, when the Power is built (taking the Sorcery Perk, or gaining a new level's points),
+  after which the Power can be used as often as its own text allows. A Sorcerous Power no longer
+  costs anything to activate. The character sheet's `Sorcerous Power`
+  field now shows points **committed** (the total build cost of every Sorcerous Power the
+  character owns) against the points **available**, and only turns amber as a warning if committed
+  exceeds available — it never blocks activation. Any previously "spent" value stored in that field
+  is no longer read by anything and can be ignored; no one is locked out of using their Powers by
+  it. Grid (Personal) Powers are unaffected and still spend Personal Power normally.

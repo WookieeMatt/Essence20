@@ -5,6 +5,10 @@
   "_id": "3BXqOi4mCW6oJwKs",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: when you Aim and announce your target, take ↓ equal to the Free actions spent aiming (max ↓3), and your allies get that much ↑ or Pinpoint against the target.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

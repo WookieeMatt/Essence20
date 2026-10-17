@@ -5,6 +5,14 @@
   "_id": "rUoirxlfrn2PBQwO",
   "img": "systems/essence20/assets/icons/items/gear.svg",
   "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Emergency Care Equipment (no ↓ on Science (Medicine) in Bot Mode)","immune":["downshift"],"when":["skill:science","roll:dataset:specializationKey=medicine","not:self:data:system.altModeId"]},
+      {"type":"RollModifier","label":"Emergency Care Equipment (Edge treating a fellow passenger)","scope":"passengers","edge":true,"when":["skill:science","roll:dataset:specializationKey=medicine","holder:data:system.isTransformed","target:aboardHolderOrNone"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: in Bot Mode, when you roll Science with the Medicine Specialization, any ↓ picked in the Roll Options Dialog is dropped before the dice are rolled.</p><p>Automatic: in Alt Mode, your passengers have an Edge on Science (Medicine) to treat each other (a target who isn't aboard gets none; with nobody targeted it's taken to be a fellow passenger).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,7 +20,6 @@
       "page": 134
     },
     "quantity": 1,
-    "type": "",
     "gearType": "support"
   },
   "effects": [],

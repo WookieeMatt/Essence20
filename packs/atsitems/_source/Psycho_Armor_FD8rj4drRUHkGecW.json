@@ -5,6 +5,10 @@
   "_id": "FD8rj4drRUHkGecW",
   "img": "systems/essence20/assets/icons/items/armor.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic while equipped: +2 Toughness and ↑1 on Intimidation; Silent means no stealth penalty. Roll Options Dialog: an Enviro-Sealed switch for hostile environments.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

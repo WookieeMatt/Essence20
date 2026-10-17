@@ -1,11 +1,11 @@
-<label for="system.faction" class="resource-label">{{localize 'E20.ActorFaction'}}</label>
+<label for="system.faction" class="sliced-border__label">{{localize 'E20.ActorFaction'}}</label>
 
 {{#if @root.faction}}
-  <li class="item" style="list-style-type: none;" data-item-id="{{faction._id}}" data-parent-id="{{../parentId}}">
-    <div class="flexrow" style="align-items: center; gap: 2px;">
-      <input type="text" name="system.role" value="{{faction.name}}" />
-      <div class="item-controls" style="flex-grow: 0;">
-        <a class="item-control item-delete" data-tooltip="{{localize 'E20.DeleteItem'}}">
+  <li class="item e20-no-list-style" data-item-id="{{faction._id}}" data-parent-id="{{../parentId}}">
+    <div class="flexrow e20-align-center e20-gap-2">
+      <span class="header-item-name">{{faction.name}}</span>
+      <div class="item-controls e20-flex-grow-0">
+        <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
           <i class="fas fa-trash"></i>
         </a>
       </div>
@@ -13,6 +13,9 @@
   </li>
 {{else}}
   <div class="flexrow">
-    <input class="no-unlock" type="text" value="{{localize 'E20.FactionDrop'}}" readonly />
+    <span class="header-item-name header-item-placeholder">{{localize 'E20.FactionDrop'}}</span>
+    <div class="item-controls e20-flex-grow-0">
+      {{> "systems/essence20/templates/actor/parts/misc/browse-compendium.hbs" type='faction'}}
+    </div>
   </div>
 {{/if}}

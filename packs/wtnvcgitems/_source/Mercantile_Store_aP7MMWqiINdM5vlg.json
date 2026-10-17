@@ -1,0 +1,105 @@
+{
+  "folder": "W4LPmWFhbXClXGYq",
+  "name": "Mercantile Store",
+  "type": "perk",
+  "_id": "aP7MMWqiINdM5vlg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Mercantile Store","when":["skill:wealth"],"ignoreDownshift":1}
+    ],
+    "prerequisites": {"when":["self:hasType:role:Farmer"]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: on Wealth tests the Roll Options Dialog's Downshift box starts 1 lower, cancelling the first ↓1. Active Effect: an Edge on Wealth tests.</p><p>Left to the table: both are meant only for shopping in Night Vale and buying food or animal goods.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 37
+    },
+    "type": "role",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [
+    {
+      "name": "Mercantile Store",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.aP7MMWqiINdM5vlg",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "loknqLoxQFAfizSL",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.wealth.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787759972181,
+        "modifiedTime": 1787759972181,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!aP7MMWqiINdM5vlg.loknqLoxQFAfizSL"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!aP7MMWqiINdM5vlg"
+}

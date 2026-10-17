@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑2 on Initiative and +10ft to all your Movement types.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,6 +5,10 @@
   "_id": "YZX4LsuQk9YNQghC",
   "img": "systems/essence20/assets/icons/weapons/shuriken.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll its Skill with the listed damage and range, plus its two alternate effects; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,7 @@
     },
     "items": {
       "a39c": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.3TUcZi1RplIBPQU2",
+        "uuid": "Compendium.essence20.pr_crb.Item.3TUcZi1RplIBPQU2",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Thrown Blade Effect",
         "type": "weaponEffect",
@@ -79,8 +83,6 @@
         "shiftDown": 2
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "sidearm"

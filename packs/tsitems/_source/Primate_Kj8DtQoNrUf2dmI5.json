@@ -1,0 +1,56 @@
+{
+  "folder": "zBSg0VF3XHJzKerC",
+  "name": "Primate",
+  "type": "altMode",
+  "_id": "Kj8DtQoNrUf2dmI5",
+  "img": "systems/essence20/assets/icons/items/altmode.svg",
+  "system": {
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Its special attack arrives with it","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"},{"do":"fitAttack","types":["blunt","sharp"]}]},
+      {"type":"Use","label":"Get its special attack back","when":["not:self:hasItem:Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"],"steps":[{"do":"grant","uuid":"Compendium.essence20.technorganic_secrets.Item.uAW0sOmaPXl8DaX8"},{"do":"fitAttack","types":["blunt","sharp"]}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you take the Origin you pick Common or Large for each Mode. The Alt Mode's choices can be changed later on its row on the Alt Mode tab; converting into it gives you that size and movement.</p><p>Automatic: Taking it adds the Natural Weapon (you pick Blunt or Sharp; Use button re-adds it).</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 42
+    },
+    "altModeCrew": 0,
+    "altModeFirepoints": 0,
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "burrow": 0,
+      "climb": 30,
+      "ground": 50
+    },
+    "altModesize": "common",
+    "altModeSizeOptions": ["common", "large"],
+    "botModeSize": "common",
+    "botModeSizeOptions": ["common", "large"],
+    "tokenImage": ""
+  },
+  "effects": [],
+  "sort": 700000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746241857270,
+    "modifiedTime": 1746243267011,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!Kj8DtQoNrUf2dmI5"
+}

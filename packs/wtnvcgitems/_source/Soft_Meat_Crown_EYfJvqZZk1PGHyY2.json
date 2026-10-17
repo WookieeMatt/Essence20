@@ -1,0 +1,114 @@
+{
+  "folder": "OxEn18c23xyuFEPj",
+  "name": "Soft Meat Crown",
+  "type": "perk",
+  "_id": "EYfJvqZZk1PGHyY2",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["self:hasType:focus:City Council"]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: an Edge on Deception, Persuasion and Performance tests.</p><p>Left to the table: the Edge is meant only while you wear the crown, so switch the effect off otherwise.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 37
+    },
+    "type": "role",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [
+    {
+      "name": "Soft Meat Crown",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.EYfJvqZZk1PGHyY2",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "huDV5NXNPnqry082",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.deception.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.persuasion.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.performance.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787759972181,
+        "modifiedTime": 1787759972181,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!EYfJvqZZk1PGHyY2.huDV5NXNPnqry082"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!EYfJvqZZk1PGHyY2"
+}

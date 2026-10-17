@@ -5,6 +5,10 @@
   "_id": "3T8TCxGprdN5KGjS",
   "img": "icons/svg/item-bag.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting with its Element or Laser options at the listed range; Accurate and its other traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -37,7 +41,7 @@
       "b395": {
         "uuid": "Compendium.essence20.jump_through_time.Item.ZprCM70VzEVjtCsW",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
-        "name": "Eltarina Blaster Alternate Effect",
+        "name": "Eltarian Blaster Alternate Effect",
         "type": "weaponEffect",
         "classification": {
           "skill": "targeting",
@@ -62,9 +66,10 @@
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["ask:Access to alien technology"]},
     "requirements": {
       "custom": "",
-      "skill": "technology",
+      "skill": "science",
       "shift": "d2"
     },
     "traits": [

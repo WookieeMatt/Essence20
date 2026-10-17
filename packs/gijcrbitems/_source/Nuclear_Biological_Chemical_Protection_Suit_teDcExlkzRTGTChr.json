@@ -5,6 +5,13 @@
   "_id": "teDcExlkzRTGTChr",
   "img": "systems/essence20/assets/icons/gear/hazmat-suit.svg",
   "system": {
+    "rules": [
+      {"type":"HazardProtection","label":"Gas mask (Toxic Atmosphere)","environments":["toxicAtmosphere"]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: while equipped, ↓2 on Strength and Speed tests and immunity to Poison. It also counts as a gas mask against gas hazards. The +10 Toughness against Acid is a separate Active Effect; turn it on in the Effects tab when an Acid effect hits.</p><p>Left to the table: Disease immunity.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -12,7 +19,6 @@
       "page": 160
     },
     "quantity": 1,
-    "type": "",
     "gearType": "hazard"
   },
   "effects": [
@@ -42,6 +48,12 @@
           "mode": 2,
           "value": "2",
           "priority": null
+        },
+        {
+          "key": "system.immunities.poison",
+          "mode": 5,
+          "value": "true",
+          "priority": null
         }
       ],
       "description": "",
@@ -65,6 +77,50 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!teDcExlkzRTGTChr.7vMJ4U52wPbNnFmF"
+    },
+    {
+      "name": "NBC Suit vs Acid",
+      "origin": "Item.teDcExlkzRTGTChr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "8wNK5V63xQcOoGnG",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 1,
+      "_key": "!items.effects!teDcExlkzRTGTChr.8wNK5V63xQcOoGnG"
     }
   ],
   "flags": {},

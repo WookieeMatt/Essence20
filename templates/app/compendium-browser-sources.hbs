@@ -1,0 +1,17 @@
+<div class="compendium-browser-sources flexcol">
+  <p class="hint">{{localize "E20.CompendiumBrowserSourceConfigHint"}}</p>
+
+  <div class="compendium-browser-sources-groups">
+    {{#each groups as |group|}}
+      <fieldset class="compendium-browser-sources-group">
+        <legend>{{group.name}}</legend>
+        {{#each group.packs as |pack|}}
+          <label class="compendium-browser-sources-pack">
+            <input type="checkbox" data-pack-id="{{pack.id}}" {{checked pack.enabled}} />
+            <span>{{pack.label}}</span>
+          </label>
+        {{/each}}
+      </fieldset>
+    {{/each}}
+  </div>
+</div>

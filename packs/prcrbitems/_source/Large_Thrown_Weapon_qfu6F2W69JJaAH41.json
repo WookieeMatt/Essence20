@@ -5,15 +5,19 @@
   "_id": "qfu6F2W69JJaAH41",
   "img": "systems/essence20/assets/icons/weapons/spear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Brawn with either its Blunt or Sharp effect and the listed damage; its traits apply.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Transformers Core Rulebook",
-      "page": 123
+      "book": "Power Rangers Core Rulebook",
+      "page": 112
     },
     "items": {
       "d0c8": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.Ewoa4XvWFFQHPLi9",
+        "uuid": "Compendium.essence20.pr_crb.Item.Ewoa4XvWFFQHPLi9",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Large Thrown Weapon Effect (Blunt)",
         "type": "weaponEffect",
@@ -29,13 +33,13 @@
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": 40,
-          "value": 20
+          "long": 20,
+          "value": 10
         },
         "shiftDown": 0
       },
       "dceb": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.KOCU7talbW0YHjXY",
+        "uuid": "Compendium.essence20.pr_crb.Item.KOCU7talbW0YHjXY",
         "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
         "name": "Large Thrown Weapon Effect (Sharp)",
         "type": "weaponEffect",
@@ -51,27 +55,25 @@
         "range": {
           "min": null,
           "reachMultiplier": 0,
-          "long": 40,
-          "value": 20
+          "long": 20,
+          "value": 10
         },
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "limited",
     "classification": {
       "size": "medium"
     },
     "equipped": true,
+    "prerequisites": {"when":[{"any":["self:skill:brawn>=d4","self:size>=huge"]}]},
     "requirements": {
       "custom": "",
-      "skill": "athletics",
-      "shift": "none"
+      "skill": "brawn",
+      "shift": "d4"
     },
     "traits": [
       "blunt",
-      "martialArts",
       "sharp",
       "silent"
     ],

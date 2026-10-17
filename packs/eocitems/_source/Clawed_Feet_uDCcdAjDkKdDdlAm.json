@@ -1,0 +1,43 @@
+{
+  "folder": "IYIE9tyT0EjKbKRe",
+  "name": "Clawed Feet",
+  "type": "gear",
+  "_id": "uDCcdAjDkKdDdlAm",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "rules": [
+      {"type":"MovementAction","label":"Alt Mode: ignores Rough Terrain","ignoreRoughTerrain":true,"when":["self:transformed"]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: in Alt Mode you ignore Rough Terrain. Left to the table: Edge on climbing in Bot Mode, and the combined form's ↑1 on kicking or stomping attacks.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 56
+    },
+    "quantity": 1,
+    "gearType": "support"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1714512206995,
+    "modifiedTime": 1714512219432,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!uDCcdAjDkKdDdlAm"
+}

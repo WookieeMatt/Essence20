@@ -5,6 +5,10 @@
   "_id": "HmI4853ML6Tz14iD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Issue a Command: mark that you'll act on it yourself, and allies following it get +2 to the Defense or Edge on the Skill instead of the usual bonus.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -3,13 +3,16 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: this Hang-Up is roleplay; you rush to help people in danger, even when it's unwise.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 68
-    },
-    "img": "icons/svg/hazard.svg"
+    }
   },
   "effects": [],
   "flags": {

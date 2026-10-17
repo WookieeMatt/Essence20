@@ -5,6 +5,10 @@
   "_id": "8mRJPvxLFVcf0egf",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: when you intercept an attack with Golden Guardian, the attacker becomes your target so your extra attack goes straight at them.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

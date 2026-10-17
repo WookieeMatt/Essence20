@@ -3,13 +3,22 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "prerequisites": {"when":["self:level>=2"]},
+    "rules": [
+      {"type":"Trigger","event":"added","label":"Pick your additional Alt Mode","steps":[{"do":"pickChassis","mode":"additional","flag":"additionalAltMode","choose":true},{"do":"grant","uuid":"{var.chassis}","flags":{"additionalAltMode":true},"systemFrom":"chassisSystem"},{"do":"updateActor","set":{"system.canTransform":true}},{"do":"chat","text":"{name} gains a second Alt Mode: {var.chassisName}."}]},
+      {"type":"Use","label":"Pick your additional Alt Mode","when":["calc:@flagged.additionalAltMode<1"],"steps":[{"do":"pickChassis","mode":"additional","flag":"additionalAltMode","choose":true},{"do":"grant","uuid":"{var.chassis}","flags":{"additionalAltMode":true},"systemFrom":"chassisSystem"},{"do":"updateActor","set":{"system.canTransform":true}},{"do":"chat","text":"{name} gains a second Alt Mode: {var.chassisName}."}]}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: when you take it you pick a chassis from any Origin (its Alt Mode only), then its size and movement where it has a choice; you pick it when you Convert. Chassis two or more Size Classes larger than your original Alt Mode aren't offered unless you have Size Change. If you had no Alt Mode yet, its Use button asks later.</p><p>Left to the table: which of your Alt Modes a Perk that names your Alt Mode applies to.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 107
     },
-    "prerequisite": "Level 2",
+    "prerequisite": "",
     "selectionLimit": 1,
     "type": "general"
   },

@@ -1,0 +1,69 @@
+<section class="essence20-sidebar sheet-header">
+  {{!-- Profile image --}}
+  <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-action="editImage" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+
+  <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-resources">
+    <a class="sliced-border__label sliced-border__label--clickable" data-action="editHealth" data-tooltip="{{localize 'E20.StatEditorHealthTooltip'}}"><i class="fas fa-heart"></i> Resources <i class="fas fa-gear sliced-border__label-edit-icon"></i></a>
+    {{!-- RAW (p.142) never pools a Megaform's Health into one number, and a printed stat block
+         never shows a max either - just each linked component's own current Health in a single
+         line (e.g. "16/12/9/8"). system.health.value/max is still a real, accurate live-computed
+         sum (Essence20Actor#_prepareMegaformData) - Foundry's own token HP bar reads it directly
+         (system.json's primaryTokenAttribute) - it's just not shown here, where a single blended
+         number would misread as a real pooled Health this actor doesn't have. --}}
+    <div>
+      <label>{{localize 'E20.ActorHealth'}}</label>
+      <span class="essence20-sidebar-participant-health-values">
+        {{#each @root.participantHealthSorted}}{{#unless @first}}<span class="essence20-sidebar-participant-health-sep">/</span>{{/unless}}<span title="{{this.name}}">{{this.value}}</span>{{/each}}
+      </span>
+    </div>
+    {{!-- Same treatment as Health above - Stun isn't pooled either (Essence20Actor#
+         _prepareMegaformData's identical comment on system.stun.value), so this shows each
+         linked component's own current Stun in the same slash-separated line instead of one
+         blended number. --}}
+    <div>
+      <label>{{localize 'E20.ActorStun'}}</label>
+      <span class="essence20-sidebar-participant-health-values">
+        {{#each @root.participantStunSorted}}{{#unless @first}}<span class="essence20-sidebar-participant-health-sep">/</span>{{/unless}}<span title="{{this.name}}">{{this.value}}</span>{{/each}}
+      </span>
+    </div>
+    {{!-- A Combiner form's own Energon pool (EoC p.42, p.47) - what's left of it, editable (spent by hand, or given
+         from an outside source); its max is half the Energon spent to merge (the header's box), worked out in
+         Essence20Actor#_prepareMegaformCombinerData. --}}
+    {{#inArray system.subtype 'megaformCombiner'}}
+    <div>
+      <label>{{localize 'E20.Energon'}}</label>
+      <input class="two-digit-input no-lock" type="number" name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
+      <span>/</span>
+      <span class="sidebar-readout" data-tooltip="{{localize 'E20.MegaformEnergonMaxTooltip'}}">{{system.energon.normal.max}}</span>
+    </div>
+    {{/inArray}}
+  </div>
+  <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-special">
+    <label class="sliced-border__label"><i class="fas fa-bolt"></i> Special</label>
+    <div class="essence20-sidebar-action-button essence20-sidebar-initiative">
+      <div class="item-image">
+        <a class="rollable" data-action="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20" data-roll-type="initiative"></i></a>
+      </div>
+      <select name="system.initiative.skill">
+        {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
+      </select>
+      {{!-- Display only: the shift die is set on the skill itself, not editable from here --}}
+      <span data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}">
+        {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
+      </span>
+    </div>
+    {{!-- Join / Separate: the members' tokens on this scene swap for the Megaform's own (mechanics/vehicles/megaform-join.mjs). --}}
+    {{#if megaformJoined}}
+    <a class="essence20-sidebar-action-button" data-action="megaformSeparate" data-tooltip="{{localize 'E20.MegaformSeparateTooltip'}}">
+      <i class="fas fa-object-ungroup"></i> {{localize 'E20.MegaformSeparate'}}
+    </a>
+    {{else if megaformMembersHere}}
+    <a class="essence20-sidebar-action-button" data-action="megaformJoin" data-tooltip="{{localize 'E20.MegaformJoinTooltip'}}">
+      <i class="fas fa-object-group"></i> {{localize 'E20.MegaformJoin'}} ({{megaformMembersHere}})
+    </a>
+    {{/if}}
+  </div>
+  {{> "systems/essence20/templates/actor/parts/misc/sidebar-speeds.hbs"}}
+  {{> "systems/essence20/templates/actor/parts/misc/sidebar-defenses.hbs"}}
+  {{> "systems/essence20/templates/actor/parts/misc/sidebar-immunities-resistances.hbs"}}
+</section>

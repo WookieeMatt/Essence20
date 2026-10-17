@@ -6,14 +6,15 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "athletics",
-      "style": "melee"
+      "style": "explosive"
     },
     "damageType": "sharp",
     "damageValue": 2,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 5,
     "range": {
@@ -21,7 +22,8 @@
       "reachMultiplier": 0,
       "long": 30,
       "value": 10
-    }
+    },
+    "shape": "circle"
   },
   "effects": [],
   "flags": {

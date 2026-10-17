@@ -5,6 +5,10 @@
   "_id": "wDXEvv0rJ33R0a3R",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Granted: the Dark Ranger's Role Perks at their listed levels and the Terror Capacity track, plus its Essence increases and Personal Power. You choose General Perks, Grid Powers and Zord Features as you level.</p><p>Left to the table: the Role's starting Intimidation increase.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

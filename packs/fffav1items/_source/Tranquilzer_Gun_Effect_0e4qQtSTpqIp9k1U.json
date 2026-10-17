@@ -1,11 +1,12 @@
 {
   "folder": "sEqtiXb8Fe5SjIYO",
-  "name": "Tranquilzer Gun Effect",
+  "name": "Tranquilizer Gun Effect",
   "type": "weaponEffect",
   "_id": "0e4qQtSTpqIp9k1U",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "projectile"
@@ -13,7 +14,7 @@
     "damageType": "stun",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "1",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

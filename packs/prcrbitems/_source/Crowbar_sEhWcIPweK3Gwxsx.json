@@ -5,17 +5,65 @@
   "_id": "sEhWcIPweK3Gwxsx",
   "img": "systems/essence20/assets/icons/gear/crowbar.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on Leverage for Edge on Brawn tests where the crowbar helps, then switch it off.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 119
+      "page": 120
     },
     "quantity": 1,
-    "type": "",
     "gearType": "tools"
   },
-  "effects": [],
+  "effects": [
+    {
+      "origin": "Compendium.essence20.pr_crb.Item.sEhWcIPweK3Gwxsx",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "s8A6kMLRxt5TCt5N",
+      "changes": [
+        {
+          "key": "system.skills.brawn.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Leverage",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!sEhWcIPweK3Gwxsx.s8A6kMLRxt5TCt5N"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0

@@ -1,0 +1,50 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Tinted Canopy",
+  "type": "upgrade",
+  "_id": "pmYFN0fUHFIg8u48",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Tinted Canopy","scope":"crewIncoming","snag":true,"when":["item:type:weaponEffect",{"any":["item:trait:laser","item:damageType:laser"]}]}
+    ],
+    "prerequisites": {"when":["ask:Enclosed crew compartment"]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic: Laser attacks against anyone aboard the vehicle take a Snag, shown as Tinted Canopy next to Snag in the attacker's Roll Options Dialog.</p><p>Left to the table: occupants ignoring light-based effects that would give ↓ on Driving.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 57
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "Compartment occupants ignore light-based Driving downshifts, and attacks with the Laser trait against them suffer Snag.",
+    "traits": [],
+    "type": "vehicle",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!pmYFN0fUHFIg8u48"
+}

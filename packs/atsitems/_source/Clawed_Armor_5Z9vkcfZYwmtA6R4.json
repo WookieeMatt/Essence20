@@ -1,0 +1,96 @@
+{
+  "folder": "wz3jDXHF9H1jTjUn",
+  "name": "Clawed Armor",
+  "type": "armor",
+  "_id": "5Z9vkcfZYwmtA6R4",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "rules": [
+      {"type":"RollModifier","label":"Clawed Armor","when":["skill:alertness"],"edge":true},
+      {"type":"RollModifier","scope":"incoming","label":"Clawed Armor","when":[{"any":["roll:shove","item:damageType:grapple","item:damageType:maneuver","item:damageType:knocProne","item:trait:grapple","item:trait:shove","item:trait:trip"]}],"snag":true}
+    ],
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Automatic while equipped: its Toughness bonus, -5ft ground movement, and Edge on your Alertness rolls, labelled Clawed Armor in the Roll Options Dialog. Anyone trying to shove or grapple you, or hit you with an attack that moves you, takes a Snag labelled Clawed Armor. Its attacks are separate weapons.</p><p>Left to the table: paying the 3 Personal Power summon cost.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 85
+    },
+    "items": {},
+    "availability": "prototype",
+    "bonusEvasion": 0,
+    "bonusToughness": 4,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [
+    {
+      "name": "Clawed Armor",
+      "origin": "Item.5Z9vkcfZYwmtA6R4",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "5Z9vkcAeffct0010",
+      "changes": [
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "-5",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!5Z9vkcfZYwmtA6R4.5Z9vkcAeffct0010"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774551377,
+    "modifiedTime": 1787774551377,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!5Z9vkcfZYwmtA6R4"
+}

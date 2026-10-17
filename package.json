@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "CSS compiler for the Essence20 system",
   "scripts": {
-    "build": "node ./scripts/esbuild.mjs && npm run sass",
-    "build:watch": "node ./scripts/esbuild.mjs --watch",
+    "build": "npm run sass",
+    "build:watch": "npm run sass:watch",
     "build:db": "gulp compile",
     "build:json": "gulp extract",
     "lint": "npx eslint module/ --ext .js,.mjs",

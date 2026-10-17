@@ -1,8 +1,11 @@
-import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
+﻿import { onMultiSkillPerkDrop, onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
+import { applyThemeClass } from "../settings.js";
 
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { FormValidationError } from "../util/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class MultiChoiceSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class MultiChoiceSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(choices, actor, prompt, title, perk, dropFunc, parentPerk){
     super();
     this._choices = choices;
@@ -18,9 +21,14 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
     actions: {
       view: MultiChoiceSelector.view,
     },
-    id: "mutli-choice",
+    // "{id}" - see choices-selector.mjs's own DEFAULT_OPTIONS.id comment for why a static id here
+    // (this used to be a bare "mutli-choice") breaks whenever two of this same dialog type get
+    // triggered back-to-back with no player interaction in between.
+    id: "mutli-choice-{id}",
     classes: [
       "essence20",
+      "theme-wrapper",
+      "e20-window",
       "window-app",
     ],
     tag: "form",
@@ -55,19 +63,19 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
     return context;
   }
 
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
+  }
+
   static async myFormHandler(event, form, formData) {
-    let numSelected = 0;
-    const selectedUuids = [];
+    const selectedKeys = Object.entries(formData.object)
+      .filter(([, isSelected]) => isSelected)
+      .map(([key]) => key);
 
-    for (const [key, isSelected] of Object.entries(formData.object)) {
-      if (isSelected) {
-        numSelected += 1;
-        selectedUuids.push(this._perk.system.items[key].uuid);
-      }
-    }
-
-    if (numSelected != this._perk.system.numChoices) {
-      throw new Error(
+    if (selectedKeys.length != this._perk.system.numChoices) {
+      throw new FormValidationError(
         game.i18n.format(
           'E20.SelectionsRequiredError',
           {
@@ -77,6 +85,15 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
       );
     }
 
+    // Expertise (GI Joe CRB, Commando base, p.72) - see onMultiSkillPerkDrop's own doc comment.
+    // Unlike the 'perks' case below, a 'skills' choice has no perk.system.items map of its own
+    // grantable sub-Perks to look selections up in - the selected keys ARE the chosen skills.
+    if (this._perk.system.choiceType == 'skills') {
+      await onMultiSkillPerkDrop(this._actor, this._perk, selectedKeys, this._dropFunc, this._parentPerk);
+      return;
+    }
+
+    const selectedUuids = selectedKeys.map(key => this._perk.system.items[key].uuid);
     const newPerk = await onPerkDrop(this._actor, this._perk, this._dropFunc, null, null, this._parentPerk);
 
     for (const uuid of selectedUuids) {

@@ -5,6 +5,13 @@
   "_id": "uTYoRiuxClI5V9aV",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Qualification","label":"Unassuming","access":"qualified","items":["item:type:weapon","item:data:system.availability=limited","item:hasAttack:item:type:weaponEffect","not:item:hasAttack:item:data:system.numHands>=0&item:data:system.numHands!=1"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: ↑1 on Deception and Infiltration. Automatic: you count as Qualified with one-handed Limited weapons when requisitioning.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +22,58 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Unassuming",
+      "origin": "Compendium.essence20.tf_crb.Item.uTYoRiuxClI5V9aV",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "kQpv6oGZ3TnBn7Yc",
+      "changes": [
+        {
+          "key": "system.skills.deception.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.infiltration.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!uTYoRiuxClI5V9aV.kQpv6oGZ3TnBn7Yc"
+    }
+  ],
   "sort": 100000,
   "ownership": {
     "default": 0,

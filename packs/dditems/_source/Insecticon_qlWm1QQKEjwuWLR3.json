@@ -5,6 +5,10 @@
   "_id": "qlWm1QQKEjwuWLR3",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Essence and Skill picks, starting Health and Movement, the Insecticon Alt Mode and the Insectoid Components Perk.</p>"
+    },
     "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.decepticon_directive.Item.LQuQIm8rqeGu84ga]{Insecticon}</p>",
     "source": {

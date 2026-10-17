@@ -1,0 +1,51 @@
+{
+  "folder": "iDuTz2RLUFOSEkHp",
+  "name": "Radar Jammer",
+  "type": "upgrade",
+  "_id": "yVw1WzUd0rGgLab7",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "rules": [
+      {"type":"Use","when":["self:type:vehicle"],"cost":{"action":"free"},"steps":[{"do":"setToggle","key":"jam"},{"do":"chat","text":"{name}'s jammer is on.","when":["self:toggle:jam"]},{"do":"chat","text":"{name}'s jammer is off.","when":["not:self:toggle:jam"]}]},
+      {"type":"RollModifier","label":"Radar Jammer","scope":"aura","radius":50,"affects":"all","snag":true,"when":["skill:technology","self:toggle:jam"]},
+      {"type":"RollModifier","label":"Radar Jammer","snag":true,"when":["skill:technology","self:toggle:jam","self:onCanvas"]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Use button: switch the jammer on or off (a Free action). While on, Technology tests made within 50ft of the vehicle get a Snag in the Roll Options Dialog.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 58
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "As a Free action, wireless and radio operations within 50ft of the vehicle suffer Snag.",
+    "traits": [],
+    "type": "vehicle",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1789440000000,
+    "modifiedTime": 1789440000000,
+    "lastModifiedBy": null,
+    "exportSource": null
+  },
+  "_key": "!items!yVw1WzUd0rGgLab7"
+}

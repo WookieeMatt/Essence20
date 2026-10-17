@@ -5,6 +5,10 @@
   "_id": "wVwKahPEmYAABGcv",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑2 on Alertness tests. The Smarts increases come from the Focus.</p><p>Left to the table: limiting the ↑2 to searching for enemies, traps or ambushes.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +19,52 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Alertness Up Shift 2",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.wVwKahPEmYAABGcv",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "zcyi9TSpO9rTBESR",
+      "changes": [
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!wVwKahPEmYAABGcv.zcyi9TSpO9rTBESR"
+    }
+  ],
   "sort": 100000,
   "ownership": {
     "default": 0,

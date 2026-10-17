@@ -5,6 +5,10 @@
   "_id": "pTx8Io4qekyeseKO",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Use button: merge into a Combiner form without the Story Point, paying 2 or 3 Energon by team size and a Standard action.</p><p>Left to the table: a character without a Combiner Perk paying a Story Point to join.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

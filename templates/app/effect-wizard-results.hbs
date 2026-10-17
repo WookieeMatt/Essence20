@@ -1,0 +1,15 @@
+{{!-- The search results list, rendered on its own so typing in the search box can refresh ONLY
+      this fragment. Re-rendering the whole wizard on each keystroke destroyed and recreated the
+      search <input>, which threw the caret back to the start of the field mid-word. --}}
+{{#if searchResults.length}}
+  <ol class="effect-wizard__results">
+    {{#each searchResults}}
+      <li>
+        <a data-action="pickSearchResult" data-group-id="{{this.groupId}}"
+          data-property-id="{{this.propertyId}}" data-target="{{this.target}}">
+          {{this.label}}
+        </a>
+      </li>
+    {{/each}}
+  </ol>
+{{/if}}

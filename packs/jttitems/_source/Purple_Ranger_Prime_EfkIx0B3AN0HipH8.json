@@ -5,6 +5,13 @@
   "_id": "EfkIx0B3AN0HipH8",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Use","label":"Shake off Frightened, Mesmerized and Stunned","when":[{"any":["self:status:frightened","self:status:mesmerized","self:status:stunned"]}],"steps":[{"do":"removeCondition","condition":"frightened"},{"do":"removeCondition","condition":"mesmerized"},{"do":"removeCondition","condition":"stunned"}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effects: +2 to all Defenses while Morphed, and immunity to Psychic damage. Use button: a Free action to remove Frightened, Mesmerized and Stunned from yourself.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -77,6 +84,52 @@
       "system": {},
       "sort": 0,
       "_key": "!items.effects!EfkIx0B3AN0HipH8.U1sKoQC8mKaTDqsD"
+    },
+    {
+      "name": "Psychic Immunity",
+      "origin": "Compendium.essence20.jump_through_time.Item.EfkIx0B3AN0HipH8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "PRPPsychicImmun1",
+      "changes": [
+        {
+          "key": "system.immunities.psychic",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {
+        "whileMorphed": true
+      },
+      "sort": 1,
+      "_key": "!items.effects!EfkIx0B3AN0HipH8.PRPPsychicImmun1"
     }
   ],
   "sort": 229688,

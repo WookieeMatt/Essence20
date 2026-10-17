@@ -1,0 +1,86 @@
+{
+  "folder": "9yEyQWJnmCubFoI8",
+  "name": "Heavy Armor Qualification",
+  "type": "perk",
+  "_id": "NMxazTPfAnH4E4H9",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "prerequisites": {"when":["self:trained:armors.heavy"]},
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: qualifies you for Heavy armor.</p><p>Left to the table: limiting the qualification to the one armor type you trained in.</p>"
+    },
+    "originalId": "",
+    "description": "",
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 174
+    },
+    "type": "general"
+  },
+  "effects": [
+    {
+      "name": "Heavy Armor Qualification",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.general_hawk_s_personel_files.Item.NMxazTPfAnH4E4H9",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "939sEOCS0JA7INJh",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.qualified.armors.heavy",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "14.364",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787763529613,
+        "modifiedTime": 1787763529613,
+        "lastModifiedBy": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!NMxazTPfAnH4E4H9.939sEOCS0JA7INJh"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1787763529613,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!NMxazTPfAnH4E4H9"
+}

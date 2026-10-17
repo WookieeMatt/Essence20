@@ -5,6 +5,10 @@
   "_id": "SlUaR8XOa4ifO0SF",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: the Focus Perks at the listed levels, plus its Essence increases and Skills.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

@@ -5,15 +5,24 @@
   "_id": "MaHixiXm7JuS1tCq",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: casting makes a Spellcasting attack against your target and deals 1 Energy damage on a hit, then applies the spell's cost as a lingering Spellcasting downshift.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 136
     },
+    "actionType": "standard",
     "circle": "beam",
     "cost": 2,
-    "duration": "Instant",
+    "duration": {
+      "units": "instant",
+      "value": null,
+      "text": ""
+    },
     "isSpecialized": false,
     "range": "60 feet",
     "tier": "elementary"

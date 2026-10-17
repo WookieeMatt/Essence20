@@ -5,6 +5,10 @@
   "_id": "o1XpR7jNMwA5zeER",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Granted: its Perks at the listed levels, +1 Speed at 1st and 10th level, and its Focus Skills (Initiative and Finesse).</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -37,7 +41,7 @@
       "2c62": {
         "uuid": "Compendium.essence20.tf_crb.Item.cw0SEELjyLOWaCy4",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Disarming Defense",
+        "name": "Disarming Defenses",
         "type": "perk",
         "subtype": "role",
         "level": 6

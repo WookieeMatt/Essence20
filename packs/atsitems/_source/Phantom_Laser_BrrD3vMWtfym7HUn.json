@@ -5,6 +5,10 @@
   "_id": "BrrD3vMWtfym7HUn",
   "img": "icons/svg/combat.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll Targeting for the listed Laser damage and range, with an Armor-Piercing alternate effect at ↓1.</p>"
+    },
     "originalId": "",
     "description": "<p>Armor-Piercing (&darr;1)</p>",
     "source": {
@@ -33,17 +37,39 @@
           "value": 80
         },
         "shiftDown": 0
+      },
+      "gUXq": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.Q0dT9PTSEos94DS1",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Phantom Laser Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "laser",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 200,
+          "value": 80
+        },
+        "shiftDown": 1,
+        "hasArmorPiercing": true
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "restricted",
     "classification": {
       "size": "sidearm"
     },
     "equipped": true,
+    "prerequisites": {"when":["self:hasType:role:Phantom Ranger"]},
     "requirements": {
-      "custom": "Phantom Ranger",
+      "custom": "",
       "skill": "athletics",
       "shift": "none"
     },

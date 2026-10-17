@@ -5,6 +5,10 @@
   "_id": "AXkjQgTne6ldtPiB",
   "img": "systems/essence20/assets/icons/weapons/spear.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: attacks roll either of its weapon effects (the blade or the blunt end) with the listed Skill, damage, reach and targets.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -23,7 +27,7 @@
         },
         "damageValue": 2,
         "damageType": "stun",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -45,7 +49,7 @@
         },
         "damageValue": 2,
         "damageType": "sharp",
-        "numHands": "1",
+        "numHands": "2",
         "numTargets": 1,
         "radius": 0,
         "range": {
@@ -57,8 +61,6 @@
         "shiftDown": 0
       }
     },
-    "classFeatureId": null,
-    "alternateEffects": "",
     "availability": "standard",
     "classification": {
       "size": "medium"

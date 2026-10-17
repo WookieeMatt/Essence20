@@ -1,0 +1,57 @@
+{
+  "folder": "Z2xK8nOrVV5BbzH4",
+  "name": "Laser-Guided Blasters Effect",
+  "type": "weaponEffect",
+  "_id": "90SyDlTrCxmblUQs",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a Targeting attack at 40ft/100ft range for 2 damage against up to 2 targets.</p>"
+    },
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 85
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 2,
+    "isSpecialized": false,
+    "shiftDown": 0,
+    "numHands": 1,
+    "numTargets": 2,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 100,
+      "value": 40
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774551377,
+    "modifiedTime": 1787774551377,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!90SyDlTrCxmblUQs"
+}

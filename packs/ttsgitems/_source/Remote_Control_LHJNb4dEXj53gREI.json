@@ -5,6 +5,10 @@
   "_id": "LHJNb4dEXj53gREI",
   "img": "systems/essence20/assets/icons/items/feature.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>Left to the table: driving the Zord from a distance and choosing where it arrives. You can still roll its tests from the Zord's sheet.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

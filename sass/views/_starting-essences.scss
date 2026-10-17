@@ -1,0 +1,168 @@
+@use "../variables" as v;
+
+/* Starting Essences window (apps/starting-essences.mjs). */
+.essence20.starting-essences .starting-essences-body {
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-md;
+}
+
+.essence20 .starting-essences-intro {
+  margin: 0;
+  font-size: 0.9em;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+}
+
+.essence20 .starting-essences-rows {
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-sm;
+}
+
+/* Name, -, value, +, and what it comes to - a fixed grid so the four rows line up. */
+.essence20 .starting-essences-row {
+  display: grid;
+  grid-template-columns: 1fr 2em 2.5em 2em 4em;
+  align-items: center;
+  gap: v.$gap-sm;
+
+  .starting-essences-label {
+    font-weight: 600;
+  }
+
+  .starting-essences-step {
+    padding: 0;
+    height: 2em;
+    line-height: 1;
+  }
+
+  .starting-essences-value {
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: 700;
+  }
+
+  .starting-essences-total {
+    text-align: right;
+    color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  }
+}
+
+.essence20 .starting-essences-remaining {
+  margin: 0;
+  text-align: center;
+  font-weight: 700;
+
+  &.is-done {
+    color: var(--e20-theme-success, #3fa34d);
+  }
+
+  &.is-over {
+    color: var(--e20-theme-danger, #c0392b);
+  }
+}
+
+.essence20 .starting-essences-presets {
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-sm;
+
+  .starting-essences-recommended {
+    display: flex;
+    align-items: center;
+    gap: v.$gap-sm;
+
+    select {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    button {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+  }
+}
+
+.essence20 .starting-essences-warning {
+  margin: 0;
+  font-size: 0.9em;
+  color: var(--e20-theme-danger, #c0392b);
+}
+
+.essence20 .starting-essences-override {
+  font-size: 0.85em;
+}
+
+.essence20 .starting-essences-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: v.$gap-sm;
+
+  button {
+    flex: 0 0 auto;
+    min-width: 6em;
+  }
+}
+
+/* The Skills tab's bar above the four Essence columns (pc-skills.hbs). It spans the grid's full
+   width as its own row; the columns keep the rest of the height. */
+.essence20 .skillscontainer:has(> .starting-essences-bar) {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+/* The whole bar is a button (pc-skills.hbs), so Foundry's own button look is reset first: it
+   should read as a line of the tab, not a raised control. */
+.essence20 button.starting-essences-bar {
+  grid-column: 1 / -1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 2px v.$gap-md;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  box-shadow: none;
+  font-size: 0.85em;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--e20-theme-muted-text, var(--e20-theme-text-color));
+  cursor: pointer;
+
+  .starting-essences-bar-text {
+    display: inline-flex;
+    align-items: center;
+    gap: v.$gap-md;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--e20-theme-text-color);
+    background: var(--e20-theme-panel-bg);
+  }
+
+  /* Until the points are spent (or while they are not a legal 12), the bar is a full-width
+     call to action in the character's own colour, with the warning pinned to its left edge. */
+  &.is-unassigned {
+    background: var(--e20-system-color, var(--e20-theme-accent));
+    color: var(--e20-system-color-contrast, var(--e20-theme-text-color));
+    padding: 4px calc(v.$gap-md * 2 + 1em);
+
+    &:hover,
+    &:focus-visible {
+      filter: brightness(1.08);
+    }
+  }
+
+  .starting-essences-alert {
+    position: absolute;
+    left: v.$gap-md;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}

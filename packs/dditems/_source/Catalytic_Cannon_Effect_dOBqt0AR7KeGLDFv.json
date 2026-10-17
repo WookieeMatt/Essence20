@@ -6,22 +6,24 @@
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
       "skill": "targeting",
       "style": "energy"
     },
-    "damageType": "element",
+    "damageType": "acid",
     "damageValue": 2,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 2,
     "numTargets": 1,
     "radius": 10,
     "range": {
       "min": null,
       "reachMultiplier": 0,
-      "long": 300,
+      "long": 350,
       "value": 150
-    }
+    },
+    "shape": "circle"
   },
   "effects": [],
   "flags": {

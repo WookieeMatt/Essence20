@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect: ↑1 on Social Skill tests. Left to the table: it only applies in scenes where nobody is acting aggressively, so switch it off otherwise.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -25,7 +29,7 @@
         "startRound": null,
         "startTurn": null
       },
-      "disabled": true,
+      "disabled": false,
       "_id": "AWKeKIE7dBkecjuw",
       "changes": [
         {

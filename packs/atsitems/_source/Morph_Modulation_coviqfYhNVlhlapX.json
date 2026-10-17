@@ -5,6 +5,10 @@
   "_id": "coviqfYhNVlhlapX",
   "img": "systems/essence20/assets/icons/items/powers.svg",
   "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: switch on the effect for the Defense you chose; it adds +2 to that Defense while Morphed.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -13,7 +17,6 @@
     },
     "actionType": "free",
     "canActivate": false,
-    "classFeatureId": null,
     "hasVariableCost": false,
     "maxPowerCost": null,
     "powerCost": null,
@@ -39,7 +42,7 @@
       "_id": "eOMma6hcfzzxbbtx",
       "changes": [
         {
-          "key": "system.defenses.toughness.bonus",
+          "key": "system.defenses.toughness.morphed",
           "mode": 2,
           "value": "2",
           "priority": null
@@ -83,9 +86,9 @@
       "_id": "lAYF7FUjs0mQ8aSb",
       "changes": [
         {
-          "key": "",
+          "key": "system.defenses.cleverness.morphed",
           "mode": 2,
-          "value": "",
+          "value": "2",
           "priority": null
         }
       ],
@@ -127,7 +130,7 @@
       "_id": "SKFJWyTaOzH13unp",
       "changes": [
         {
-          "key": "system.defenses.evasion.bonus",
+          "key": "system.defenses.evasion.morphed",
           "mode": 2,
           "value": "2",
           "priority": null
@@ -171,7 +174,7 @@
       "_id": "lsIfu1lj60iAbuNM",
       "changes": [
         {
-          "key": "system.defenses.willpower.bonus",
+          "key": "system.defenses.willpower.morphed",
           "mode": 2,
           "value": "2",
           "priority": null

@@ -1,6 +1,6 @@
 import { deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import { onPerkDrop } from "./perk-handler.mjs";
-import { getItemsOfTypeFromSystemItems } from "../helpers/utils.mjs";
+import { getItemsOfTypeFromSystemItems } from "../util/utils.mjs";
 
 /**
  * Function for dropping a faction on to an actor.

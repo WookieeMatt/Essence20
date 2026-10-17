@@ -3,6 +3,10 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "manual",
+      "notes": "<p>The table handles this: spend an Energon Point on the sheet to declare a past friendship with an NPC, and the GM decides how it plays out.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {

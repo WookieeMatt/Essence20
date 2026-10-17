@@ -5,6 +5,10 @@
   "_id": "Y5F6BOw77vhD3tW2",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "automation": {
+      "status": "partial",
+      "notes": "<p>Active Effect (only while Morphed): +2 to all four Defenses, and Social Skill tests open the Roll Options Dialog with Edge selected. Left to the table: +1 damage with your Unique Weapon attacks.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -54,6 +58,12 @@
           "mode": 2,
           "value": "2",
           "priority": null
+        },
+        {
+          "key": "system.essenceShifts.social.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
         }
       ],
       "description": "",
@@ -74,7 +84,9 @@
       },
       "img": "icons/svg/aura.svg",
       "type": "base",
-      "system": {},
+      "system": {
+        "whileMorphed": true
+      },
       "sort": 0,
       "_key": "!items.effects!Y5F6BOw77vhD3tW2.TqEhC4NVFpZ7nEWN"
     }

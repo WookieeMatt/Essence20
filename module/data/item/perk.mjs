@@ -1,7 +1,9 @@
-import { E20 } from "../../helpers/config.mjs";
+import { E20 } from "../../util/config.mjs";
 
 import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
+import { rerollSchema } from '../reroll-schema.mjs';
+import { activation } from './templates/activation.mjs';
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
 import { parentItem } from './templates/parent-item.mjs';
@@ -12,8 +14,12 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),
+      ...activation(),
       ...itemDescription(),
       ...parentItem(),
+      // What a Contact Perk costs to use, in the Contact's Allegiance Points (1-3 in the books).
+      // Only meaningful when `type` is 'contact'.
+      allegianceCost: makeInt(0),
       advances: new fields.SchemaField({
         baseValue: makeInt(1),
         canAdvance: makeBool(false),
@@ -21,18 +27,61 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
         increaseValue: makeInt(1),
         type: makeStrWithChoices(Object.keys(E20.perkAdvanceTypes)),
       }),
+      // Deprecated 2026-10-07: unused since rules (a Perk's button is its Use rule); remove from the data model in 6.1.
       canActivate: makeBool(false),
+      // Deprecated until 6.1 (Perk choice P2): the old Perk picker's fields - choice, choiceEssence, choiceType, hasChoice,
+      // numChoices. Every pack Perk asks its pick through rules now (a ChoiceSet / pickSubPerk; the pick lives in
+      // flags.essence20.rules.choices); the world migration (migration.mjs#migratePerkChoices) copied old picks over and
+      // keeps choice as a backup. 6.1 removes them (with an Essence20Item.migrateData shim keeping system.choice).
+      // Perk choice P3: none of them is on the Details tab any more (a read-only legacy notice instead).
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       choice: makeStr(null),
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
+      // (Narrowed a choiceType:'skills' picker to one Essence's skills - a ChoiceSet's `essence` now.)
+      choiceEssence: makeStr(null),
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       choiceType: makeStrWithChoices(Object.keys(E20.perkChoiceTypes), 'none'),
       isRoleVariant: makeBool(false),
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       hasChoice: makeBool(false),
+      // Deprecated 2026-10-07: unused since rules (added / removed Trigger rules, refreshMorphedToughness); remove
+      // from the data model in 6.1.
       hasMorphedToughnessBonus: makeBool(false),
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
       numChoices : makeInt(1),
+      // Deprecated 2026-10-07: shown from system.prerequisites now; remove from the data model in 6.1.
       prerequisite: makeStr(null),
+      // Deprecated 2026-10-07: unused since rules (a Reroll rule; mechanics/rolls/reroll.mjs reads it only on Active
+      // Effects now); remove from the data model in 6.1.
+      ...rerollSchema(),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices(Object.keys(E20.perkTypes), 'general'),
+      // Deprecated 2026-10-07: replaced by rules choices; remove from the data model in 6.1.
+      // (Unused since rules: Movement / DerivedStat rules on the Perk; not on the Details tab.) Until then the delete handler still reads it for a copy dropped before then (not flagged
+      // perkValueRule), whose value was written into its actor.
       value: makeInt(0),
       version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),
+      blindsight: new fields.SchemaField({
+        enabled: makeBool(false),
+        range: makeInt(0),
+      }),
+      visionGrant: new fields.SchemaField({
+        enabled: makeBool(false),
+        mode: makeStrWithChoices(Object.keys(E20.visionModes), 'darkvision'),
+        range: makeInt(0),
+        // Vision Focuser (PR CRB, Blue Ranger Grid Tech II pick, p.38): "While Morphed, you and
+        // your team can see in darkness..." - the first visionGrant in this codebase that isn't
+        // simply always-on (every other holder, e.g. Night Eyes/Used to the Dark, has no such
+        // condition). Read in mechanics/characters/vision-grant.mjs#getBestVisionGrant, the same
+        // isSuppressedWhileUnmorphed idiom morph-gated-effects.mjs already established for
+        // ActiveEffects, applied here to this plain data field instead.
+        whileMorphed: makeBool(false),
+        // The "and your team" half - also read in getBestVisionGrant, which additionally scans
+        // nearby allies (getNearbyAllyTokens, the same "any teammate has the Perk" idiom Blaster
+        // Focusers/Power Focusers already use for a team-wide grant) for a teamWide grant, not
+        // just the actor's own items.
+        teamWide: makeBool(false),
+      }),
     };
   }
 }

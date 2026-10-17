@@ -1,19 +1,20 @@
 {
   "folder": "xEobfe1YNl85DACZ",
-  "name": "Long Bludgeoning Effect",
+  "name": "Martial Arts Long Bludgeon Effect",
   "type": "weaponEffect",
   "_id": "Jt5FmeFqopWQkHbb",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
   "system": {
     "originalId": "",
+    "actionType": "standard",
     "classification": {
-      "skill": "finesse",
+      "skill": "might",
       "style": "melee"
     },
     "damageType": "stun",
     "damageValue": 1,
     "shiftDown": 0,
-    "numHands": "2",
+    "numHands": 1,
     "numTargets": 1,
     "radius": 0,
     "range": {

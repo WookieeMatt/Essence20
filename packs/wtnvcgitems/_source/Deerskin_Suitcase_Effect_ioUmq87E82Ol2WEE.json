@@ -1,0 +1,62 @@
+{
+  "folder": "OJqRtmPaVn7cPyhL",
+  "name": "Deerskin Suitcase Effect",
+  "type": "weaponEffect",
+  "_id": "ioUmq87E82Ol2WEE",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "automation": {
+      "status": "full",
+      "notes": "<p>Automatic: a two-handed Athletics attack at Short range for 1 Sharp damage plus 1 Stun in a 10 ft cone.</p>"
+    },
+    "originalId": "",
+    "actionType": "standard",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 68
+    },
+    "classification": {
+      "skill": "athletics",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "secondaryDamage": {
+      "type": "stun",
+      "value": 1
+    },
+    "isSpecialized": false,
+    "shiftDown": 0,
+    "numHands": 2,
+    "numTargets": 1,
+    "radius": 10,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 80,
+      "value": 25
+    },
+    "shape": "cone"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!ioUmq87E82Ol2WEE"
+}

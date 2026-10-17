@@ -5,6 +5,13 @@
   "_id": "zqPSjUwr1Y7OvGfD",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "rules": [
+      {"type":"Trigger","label":"Spark of the Ancients","event":"sceneStart","when":["self:data:system.energon.normal.value<$system.energon.normal.max"],"steps":[{"do":"gainResource","resource":{"path":"system.energon.normal.value"},"amount":1},{"do":"chat","text":"{name} regains 1 Energon Point."}]}
+    ],
+    "automation": {
+      "status": "full",
+      "notes": "<p>Active Effect: raises your Energon maximum. Automatic: you regain 1 Energon (up to your maximum) each time the GM starts a new scene.</p>"
+    },
     "originalId": "",
     "description": "",
     "source": {
@@ -15,7 +22,31 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Spark of the Ancients",
+      "img": "icons/svg/aura.svg",
+      "_id": "SparkAncientsAE1",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.energon.normal.max",
+            "type": "add",
+            "value": 2,
+            "phase": "final",
+            "priority": null
+          }
+        ]
+      },
+      "disabled": false,
+      "transfer": true,
+      "description": "",
+      "statuses": [],
+      "flags": {},
+      "_key": "!items.effects!zqPSjUwr1Y7OvGfD.SparkAncientsAE1"
+    }
+  ],
   "sort": 0,
   "ownership": {
     "default": 0,
