@@ -1,0 +1,34 @@
+<div class="house-rules flexcol">
+  <p class="hint">{{localize "E20.HouseRulesHint"}}</p>
+
+  <div class="house-rules-groups">
+    {{#each groups as |group|}}
+      <fieldset class="house-rules-group">
+        <legend>{{group.name}}</legend>
+        {{#each group.rules as |rule|}}
+          <div class="house-rules-row">
+            <label class="house-rules-rule">
+              <input type="checkbox" data-house-rule="{{rule.id}}" {{checked rule.enabled}} />
+              <span class="house-rules-text">
+                <strong>{{rule.label}}</strong>
+                {{#if rule.hint}}<span class="house-rules-hint">{{rule.hint}}</span>{{/if}}
+                {{#each rule.does as |line|}}<span class="house-rules-does">{{line}}</span>{{/each}}
+              </span>
+            </label>
+            {{#if rule.world}}
+              <span class="house-rules-controls">
+                <a data-action="editHouseRule" data-id="{{rule.id}}" data-tooltip="{{localize "E20.HouseRuleEdit"}}" aria-label="{{localize "E20.HouseRuleEdit"}}: {{rule.label}}"><i class="fas fa-edit"></i></a>
+                <a data-action="deleteHouseRule" data-id="{{rule.id}}" data-tooltip="{{localize "E20.HouseRuleDelete"}}" aria-label="{{localize "E20.HouseRuleDelete"}}: {{rule.label}}"><i class="fas fa-trash"></i></a>
+              </span>
+            {{/if}}
+          </div>
+        {{else}}
+          {{#if group.world}}<p class="house-rules-hint">{{localize "E20.HouseRulesWorldEmpty"}}</p>{{/if}}
+        {{/each}}
+        {{#if group.world}}
+          <button type="button" class="house-rules-new" data-action="newHouseRule"><i class="fas fa-plus"></i> {{localize "E20.HouseRuleNew"}}</button>
+        {{/if}}
+      </fieldset>
+    {{/each}}
+  </div>
+</div>

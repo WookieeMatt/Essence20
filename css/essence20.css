@@ -877,6 +877,20 @@
   color: var(--e20-theme-text-color);
 }
 
+/* Copy Stat Block's window (mechanics/characters/stat-block-share.mjs): the text, full width, in a fixed-width face. */
+.essence20.e20-stat-block-export .e20-stat-block-text {
+  width: 100%;
+  min-height: 18em;
+  resize: vertical;
+  font-family: var(--font-monospace, monospace);
+  font-size: var(--font-size-12, 12px);
+  white-space: pre-wrap;
+}
+.essence20.e20-stat-block-export .e20-stat-block-copy {
+  margin-top: 6px;
+  width: 100%;
+}
+
 /* Every selector here is namespaced: the chat log is shared ground, so a bare
    .chat-message or .dice-total rule restyles core's messages and every other package's
    cards too. The .essence20 class these ask for is put on each message by the
@@ -2343,6 +2357,19 @@
 
 .essence20.item .e20-automation-inherited {
   font-size: 11px;
+}
+
+/* Every tab scrolls inside the window. The window's content is a flex column that hides its overflow, so a tab
+   left at its natural height (Description, with the automation notes) ran off the bottom of a small window with no
+   way to reach the rest. The header and the tab bar keep their size; the active tab takes what's left and scrolls. */
+.essence20.item > .window-content > section.tab {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.essence20.item > .window-content > :not(section.tab) {
+  flex-shrink: 0;
 }
 
 /* Tab content panels */
@@ -7102,6 +7129,165 @@ select.e20-select-searchable optgroup[hidden] {
   font-size: 0.85em;
   font-style: italic;
   opacity: 0.75;
+}
+
+/* House Rules (apps/house-rules-config.mjs): the same sliced panels as the sources screen, one row per house rule. */
+.essence20.house-rules-config {
+  min-width: 420px;
+}
+.essence20.house-rules-config .hint,
+.essence20.house-rules-config .house-rules-empty {
+  color: var(--e20-theme-muted-text);
+}
+
+.essence20 .house-rules-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.essence20 .house-rules-group {
+  position: relative;
+  border: none;
+  padding: 14px;
+}
+.essence20 .house-rules-group::after {
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+  content: "";
+  inset: 0;
+  background: var(--e20-theme-panel-bg);
+  /* The fill has to be cut to whatever shape the ACTIVE theme's frame art is, not to a
+     fixed one. The Sci-fi border is a chamfered rectangle (top-left and bottom-right cut,
+     the other two square) and that polygon is the fallback below, but the Pony border is a
+     hand-drawn rounded rectangle with all four corners curved. Cutting a pony panel to the
+     sci-fi shape left the fill poking out past the curve at the square corners - most
+     visibly at the top right, where the frame curves away and the fill did not. */
+  clip-path: var(--e20-theme-panel-clip, polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px));
+}
+.essence20 .house-rules-group::before {
+  pointer-events: none;
+  filter: var(--e20-theme-border-filter);
+  position: absolute;
+  z-index: 0;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-style: solid;
+  border-image: var(--e20-theme-border-image);
+  border-image-slice: 16;
+  border-width: 16px;
+}
+.essence20 .house-rules-group legend {
+  color: var(--e20-theme-text-color);
+  font-weight: bold;
+  padding: 0 4px;
+}
+
+.essence20 .house-rules-rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+  color: var(--e20-theme-text-color);
+}
+.essence20 .house-rules-rule input {
+  flex: none;
+  margin-top: 2px;
+}
+
+.essence20 .house-rules-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.essence20 .house-rules-hint,
+.essence20 .house-rules-does {
+  font-size: 0.85em;
+  color: var(--e20-theme-muted-text);
+}
+
+.essence20 .house-rules-does {
+  font-style: italic;
+}
+
+/* House Rules: a world house rule's edit/delete beside its switch, and New House Rule under its group. */
+.essence20 .house-rules-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.essence20 .house-rules-row .house-rules-rule {
+  flex: 1;
+}
+
+.essence20 .house-rules-controls {
+  display: flex;
+  gap: 8px;
+  padding-top: 6px;
+}
+
+.essence20 .house-rules-new {
+  margin-top: 6px;
+}
+
+/* The house rule editor (apps/house-rule-editor.mjs). */
+.essence20.house-rule-editor {
+  min-width: 460px;
+  /* The description under its label, the full width of the window. */
+  /* Cancel and Save side by side. */
+}
+.essence20.house-rule-editor .house-rule-editor-body {
+  gap: 8px;
+}
+.essence20.house-rule-editor .form-group.stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+.essence20.house-rule-editor .form-group.stacked textarea {
+  width: 100%;
+  min-height: 3.5em;
+  resize: vertical;
+}
+.essence20.house-rule-editor .form-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+.essence20.house-rule-editor .form-footer button {
+  flex: 1 1 0;
+}
+.essence20.house-rule-editor .house-rule-editor-on {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.essence20.house-rule-editor .house-rule-editor-rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--e20-theme-border-color);
+}
+.essence20.house-rule-editor .house-rule-editor-summary {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.essence20.house-rule-editor .house-rule-editor-error {
+  font-size: 0.85em;
+  color: var(--color-level-error, #d33c3c);
+}
+.essence20.house-rule-editor .house-rule-editor-drop {
+  margin: 6px 0 0;
 }
 
 .essence20.effect-wizard .effect-wizard__body {

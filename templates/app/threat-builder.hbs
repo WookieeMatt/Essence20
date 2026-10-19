@@ -139,7 +139,7 @@
       {{#if rulesFlags.perkCadence}}
       <div class="threat-builder-row">
         <select data-quick-perk-select aria-label="{{localize 'E20.ThreatBuilderQuickPerk'}}">
-          {{#each quickPerkChoices as |q|}}<option value="{{q.key}}">{{q.label}}</option>{{/each}}
+          {{#each quickPerkChoices as |q|}}<option value="{{q.key}}"{{#if q.selected}} selected{{/if}}>{{q.label}}</option>{{/each}}
         </select>
         <button type="button" data-action="addQuickPerk"><i class="fa-solid fa-plus" inert></i> {{localize 'E20.ThreatBuilderQuickPerk'}}</button>
       </div>
@@ -238,6 +238,7 @@
   <footer class="threat-builder-footer">
     <button type="button" data-action="back" {{#if isFirst}}disabled{{/if}}><i class="fa-solid fa-arrow-left" inert></i> {{localize 'E20.ThreatBuilderBack'}}</button>
     {{#if isLast}}
+      <button type="button" data-action="copyStatBlock"><i class="fa-solid fa-file-lines" inert></i> {{localize 'E20.StatBlockCopy'}}</button>
       <button type="button" class="bright" data-action="create"><i class="fa-solid fa-check" inert></i> {{localize 'E20.ThreatBuilderCreate'}}</button>
     {{else}}
       <button type="button" data-action="next">{{localize 'E20.ThreatBuilderNext'}} <i class="fa-solid fa-arrow-right" inert></i></button>

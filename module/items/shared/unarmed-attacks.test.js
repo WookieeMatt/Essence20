@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { isPrintedUnarmedWeapon, isUnarmedAttack, parentWeaponOf, UNARMED_WEAPON_IDS } from './unarmed-attacks.mjs';
+import { isNaturalWeapon, isPrintedUnarmedWeapon, isUnarmedAttack, parentWeaponOf, UNARMED_WEAPON_IDS } from './unarmed-attacks.mjs';
 import { contextFor, evaluateTag } from '../../rules/predicate.mjs';
 import { isBarehandedAttack, UNARMED_WEAPON_IDS as REEXPORTED_IDS } from '../../rules/plugins/tags/barehanded-tags.mjs';
 import { describeAttack } from '../../mechanics/actions/action-perks.mjs';
@@ -213,5 +213,17 @@ describe('the printed unarmed weapons in the packs', () => {
     for (const entry of Object.values(doc.system.items)) {
       expect(sourceDoc(entry.uuid).name).toBe(entry.name);
     }
+  });
+});
+
+describe('isNaturalWeapon (takes no Hardpoint - TF CRB p.120)', () => {
+  test('the printed Unarmed Combat, and an unsourced stat-block copy by its printed name; nothing else', () => {
+    expect(isNaturalWeapon({ type: 'weapon', name: 'Fists', _stats: { compendiumSource: UNARMED_WEAPON_IDS[1] } })).toBe(true);
+    expect(isNaturalWeapon({ type: 'weapon', name: 'Unarmed Combat' })).toBe(true);
+    expect(isNaturalWeapon({ type: 'weapon', name: 'unarmed strike ' })).toBe(true);
+    expect(isNaturalWeapon({ type: 'weapon', name: 'Unarmed Combat', _stats: { compendiumSource: 'Compendium.essence20.tf_crb.Item.somethingElse' } })).toBe(false);
+    expect(isNaturalWeapon({ type: 'weapon', name: 'Energon Mace' })).toBe(false);
+    expect(isNaturalWeapon({ type: 'weaponEffect', name: 'Unarmed Combat' })).toBe(false);
+    expect(isNaturalWeapon(null)).toBe(false);
   });
 });

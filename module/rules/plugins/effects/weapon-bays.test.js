@@ -73,6 +73,8 @@ describe('Weapon Bays', () => {
     const flyby = weapon('f', 'Flyby', 'integrated');
     actor.items.contents.push(flyby);
     actor._isAltModeAttack = item => item.id == 'f';
+    // Nor Unarmed Combat: a natural weapon, in no Hardpoint.
+    actor.items.contents.push(weapon('u', 'Unarmed Combat', 'integrated', { system: { classification: { size: 'integrated' }, hardpoint: { type: 'external' }, noHardpoint: true } }));
     expect(await bayCandidates(actor)).toEqual([
       { id: 'a', name: 'Pistol', room: 1, reinforcedRoom: 2, blocked: false, asks: true },
       { id: 'b', name: 'Rifle', room: 2, reinforcedRoom: 3, blocked: true, asks: false },

@@ -1,4 +1,5 @@
 import { sizeClassIndex } from "./mechanics/combat/size-classes.mjs";
+import { callPreRollHook } from "./mechanics/rolls/pre-roll-hook.mjs";
 import { ruleNaturalTwentyMultiplier } from "./rules/plugins/rolls/natural-twenty.mjs";
 import { ruleShiftCap } from "./rules/plugins/rolls/shift-cap.mjs";
 import { ruleManeuverOption } from "./rules/plugins/combat/maneuver-option.mjs";
@@ -687,6 +688,9 @@ export class Dice {
     if (ruleToggles.length) {
       dataset.extToggles = ruleToggles;
     }
+
+    // Modules and house rules may still change the roll (mechanics/rolls/pre-roll-hook.mjs).
+    callPreRollHook({ actor, item: null, skill: initSkill, isInitiative: true, dataset, skillDataset });
 
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, skillDataset, actor);
 
@@ -1595,7 +1599,8 @@ export class Dice {
     updatedShiftDataset.hardpointMovement = null;
     if (item?.type == 'weaponEffect') {
       const parentWeapon = actor.items?.get?.(item.flags?.essence20?.parentId);
-      if (parentWeapon?.system.hardpoint?.type == 'integrated') {
+      // (Unarmed Combat is in no Hardpoint - system.noHardpoint - so a punch after moving takes no ↓.)
+      if (parentWeapon?.system.hardpoint?.type == 'integrated' && !parentWeapon.system.noHardpoint) {
         updatedShiftDataset.hardpointMovement = { reinforced: firesAsReinforced(actor, parentWeapon) };
       }
     }
@@ -1606,6 +1611,9 @@ export class Dice {
     if (kitBoosts.ignoreSnagOnEdge && skillDataset.edge) {
       skillDataset.snag = false;
     }
+
+    // Modules and house rules may still change the roll (mechanics/rolls/pre-roll-hook.mjs).
+    callPreRollHook({ actor, item, skill: rolledSkill, isInitiative: false, dataset: updatedShiftDataset, skillDataset });
 
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 

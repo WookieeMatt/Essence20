@@ -319,3 +319,146 @@
   font-style: italic;
   opacity: 0.75;
 }
+
+/* House Rules (apps/house-rules-config.mjs): the same sliced panels as the sources screen, one row per house rule. */
+.essence20.house-rules-config {
+  min-width: 420px;
+
+  .hint,
+  .house-rules-empty {
+    color: var(--e20-theme-muted-text);
+  }
+}
+
+.essence20 .house-rules-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.essence20 .house-rules-group {
+  @include sliced.sliced-panel;
+  border: none;
+  padding: 14px;
+
+  legend {
+    color: var(--e20-theme-text-color);
+    font-weight: bold;
+    padding: 0 4px;
+  }
+}
+
+.essence20 .house-rules-rule {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 4px 0;
+  color: var(--e20-theme-text-color);
+
+  input {
+    flex: none;
+    margin-top: 2px;
+  }
+}
+
+.essence20 .house-rules-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.essence20 .house-rules-hint,
+.essence20 .house-rules-does {
+  font-size: 0.85em;
+  color: var(--e20-theme-muted-text);
+}
+
+.essence20 .house-rules-does {
+  font-style: italic;
+}
+
+/* House Rules: a world house rule's edit/delete beside its switch, and New House Rule under its group. */
+.essence20 .house-rules-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  .house-rules-rule {
+    flex: 1;
+  }
+}
+
+.essence20 .house-rules-controls {
+  display: flex;
+  gap: 8px;
+  padding-top: 6px;
+}
+
+.essence20 .house-rules-new {
+  margin-top: 6px;
+}
+
+/* The house rule editor (apps/house-rule-editor.mjs). */
+.essence20.house-rule-editor {
+  min-width: 460px;
+
+  .house-rule-editor-body {
+    gap: 8px;
+  }
+
+  /* The description under its label, the full width of the window. */
+  .form-group.stacked {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+
+    textarea {
+      width: 100%;
+      min-height: 3.5em;
+      resize: vertical;
+    }
+  }
+
+  /* Cancel and Save side by side. */
+  .form-footer {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+
+    button {
+      flex: 1 1 0;
+    }
+  }
+
+  .house-rule-editor-on {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .house-rule-editor-rule {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--e20-theme-border-color);
+  }
+
+  .house-rule-editor-summary {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .house-rule-editor-error {
+    font-size: 0.85em;
+    color: var(--color-level-error, #d33c3c);
+  }
+
+  .house-rule-editor-drop {
+    margin: 6px 0 0;
+  }
+}

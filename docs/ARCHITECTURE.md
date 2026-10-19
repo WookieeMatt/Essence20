@@ -484,6 +484,37 @@ payload. A stable API, like `game.essence20`.
 | `essence20.altModeCrashed` | A Transformer crashes in Alt Mode | `{ carrier, feet }` |
 | `essence20.storyPointNarrative` | A Story Point spent for a narrative effect | (see the Story Point tracker) |
 
+One hook is the exception, called so a listener *can* change something:
+
+| Hook | When | Payload |
+| --- | --- | --- |
+| `essence20.preRollOptions` | Just before the Roll Options Dialog opens for a Skill roll, an attack or Initiative (`mechanics/rolls/pre-roll-hook.mjs`) | `{ actor, item, skill, isInitiative, dataset, skillDataset, sources, addSource }` — change `dataset.shiftUp` / `shiftDown` and `skillDataset.edge` / `snag`, or call `addSource({ label, shiftUp, shiftDown, edge, snag })`, which applies a modifier and lists it in the dialog (switchable there, like an item rule's). Synchronous listeners only |
+
+### Extending the rules engine
+
+`game.essence20.rules` is the stable way for a module to add to the rules engine, instead of importing the system's
+files:
+
+- `registerRuleType(name, definition)`, `registerStep(name, handler, options)`, `registerTag(name, fn, meta)`,
+  `registerRollSources(fn)`, `registerRuleHelper(...)` — new rule types, steps, `when` tags (give a tag a `phrase`
+  so `rules/describe-when.mjs` can say it in words) and roll sources.
+- `registerHouseRule({ id, label, hint?, module?, rules?, default? })` — a **house rule**
+  (`module/rules/house-rules.mjs`). The GM switches it on under Configure Settings → House Rules
+  (`apps/house-rules-config.mjs`, world setting `houseRules`). While it's on, every actor (world and unlinked tokens)
+  runs its `rules` as if it held an item carrying them: `rules/index.mjs#collectRules` adds them on a stand-in item named
+  after the house rule, so rolls list the house rule as the source. A house rule with no `rules` is a switch the
+  module's own code reads with `houseRuleEnabled(id)` (for instance from an `essence20.preRollOptions` listener).
+  Register from your module's `init` hook; a later registration refreshes every actor. Rules read through the rule
+  index (RollModifier, DamageModifier, DefenseModifier, DialogSwitch...) work; a Use rule has no item sheet to put its
+  button on, and the stand-in item's flags are kept in memory only.
+- `houseRules()` — every registered house rule.
+
+A GM can also make house rules in Foundry, with no module: House Rules → **New House Rule** (`apps/house-rule-editor.mjs`).
+Each rule in one is edited with the item sheet's guided Rules editor (`apps/rule-editor.mjs`, handed a stand-in "item"
+whose `update` writes back to the draft), or copied in by dropping an Item. They are kept in the world setting
+`worldHouseRules` (`[{id, label, hint, rules}]`) and loaded by `syncWorldHouseRules()` when settings register, before
+any actor prepares; they show under "This World" with edit and delete.
+
 ---
 
 ## 12. Settings reference
@@ -496,6 +527,7 @@ first key in that group** — reordering settings without updating it misplaces 
 | Compendium Browser | `enabledSourcebooks` (+ its config menu) |
 | Book Descriptions | `bookDescriptions` (+ menu) |
 | Adventures | adventure importer menu |
+| House Rules | `houseRules` · `worldHouseRules` (+ menu) — rules/house-rules.mjs |
 | Game Line | `gameLine` |
 | Story Point Tracker | `sptAccess` · `sptGmPointsArePublic` · `sptShow` · `sptMessage` · `sptPointsName` |
 | Combat | `actionEconomyMode` · `actionEconomyMovement` · `sceneClockAdvanceOnCombatEnd` |

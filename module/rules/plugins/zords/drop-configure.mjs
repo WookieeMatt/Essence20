@@ -3,6 +3,7 @@
 import { contextFor, evaluate, registerTag } from "../../predicate.mjs";
 import { registerStep } from "../../steps.mjs";
 import { RULE_TYPES } from "../../types.mjs";
+import { inheritedRules } from "../../inherit.mjs";
 
 /**
  * Items that configure something as they are taken ("choose one of the Zord's attacks ...") are an `added` Trigger on
@@ -16,7 +17,9 @@ import { RULE_TYPES } from "../../types.mjs";
  *   then `set` (numbers / formulas, or text such as a shape). A missing value counts as `defaults[path]` (0 by default;
  *   for `multiply` a 0 counts as the default too). `addTraits` adds those to system.traits when missing. `onParent`:
  *   change the found item's parent weapon instead (a weapon effect's flags.essence20.parentId). With `required`, finding
- *   nothing stops the run and `message` (an E20. key or text) is a warning toast. `{var.adjustedName}`: the last item
+ *   nothing stops the run and `message` (an E20. key or text) is a warning toast. `addRules`: rules appended to the
+ *   item's own (its effective list - a copy still reading its compendium original's keeps them), each skipped when one
+ *   with the same label is already there (Enhance's Ignores Armor). `{var.adjustedName}`: the last item
  *   changed; `{var.adjustedItemName}`: the item the selector found (the attack, when onParent changed its weapon). Text
  *   `set` values fill {var.x} / {choice.x}.
  * - Step `notify {text, data?, level?: info | warn, stop?}` - a toast: `text` an E20. key (formatted with `data`, whose
@@ -88,6 +91,16 @@ registerStep('adjustItem', async (step, ctx) => {
       for (const [path, value] of Object.entries(step.set ?? {})) {
         update[path] = typeof value == 'number' || /^[\d@(]/.test(String(value)) ? Number(resolveValue(value, { actor, item: ctx.item, vars: ctx.vars }, 0))
           : typeof value == 'string' ? fillDropText(value, ctx) : value;
+      }
+
+      // Rules added to the item, after the ones it already runs (its compendium original's, while it has none of its own).
+      const extraRules = [step.addRules ?? []].flat().filter(rule => rule?.type);
+      if (extraRules.length) {
+        const own = inheritedRules(target);
+        const fresh = extraRules.filter(rule => !own.some(existing => existing?.label && existing.label == rule.label));
+        if (fresh.length) {
+          update['system.rules'] = JSON.parse(JSON.stringify([...own, ...fresh]));
+        }
       }
 
       const traits = [step.addTraits ?? []].flat().filter(Boolean);

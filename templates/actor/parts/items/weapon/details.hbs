@@ -19,7 +19,9 @@
     <span class="chip" name="chip.weapon.requirementsCustom">{{localize 'E20.WeaponRequirements'}}: {{item.system.requirements.custom}}</span>
   {{/if}}
 
-  {{#if @root.system.canTransform}}
+  {{#if (and @root.system.canTransform item.system.noHardpoint)}}
+    <span class="chip" name="chip.weapon.hardpoint">{{localize 'E20.HardpointNatural'}}</span>
+  {{else if @root.system.canTransform}}
     <span class="chip" name="chip.weapon.hardpoint">{{lookup @root.config.hardpointTypes item.system.hardpoint.type}}</span>
     {{#if item.system.derivedMode}}
       <span class="chip" name="chip.weapon.derivedMode">{{lookup @root.config.transformerModes item.system.derivedMode}}</span>

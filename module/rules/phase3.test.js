@@ -168,6 +168,7 @@ describe('immunity and stacking', () => {
     expect(validateRule({ type: 'RollModifier', immune: ['snag'] })).toEqual([]);
     expect(validateRule({ type: 'RollModifier', immune: ['edge'] })[0]).toMatch(/immune can only list/);
     expect(summarizeRule({ type: 'RollModifier', immune: ['snag'] })).toBe('ignores Snags');
+    expect(summarizeRule({ type: 'RollModifier', immune: ['untrainedSnag', 'longRangeSnag', 'downshift'] })).toBe('ignores the untrained Snag and the long-range Snag and downshifts');
   });
 
   test('only the strongest of a stacking group counts', () => {

@@ -174,6 +174,11 @@ export const RULE_FORMS = {
     { path: 'reinforced', kind: 'checkbox', label: 'HardpointsReinforced' },
     { path: 'items', kind: 'tags', label: 'WhichItems', showIf: rule => !!rule.reinforced },
   ],
+  LevelPick: [
+    { path: 'kind', kind: 'select', label: 'LevelPickKind', options: [['generalPerk', 'LevelPickGeneralPerk'], ['gridPower', 'LevelPickGridPower']] },
+    { path: 'levels', kind: 'strings', label: 'LevelPickLevels', hint: 'LevelPickLevelsHint' },
+    { path: 'count', kind: 'formula', label: 'LevelPickCount' },
+  ],
   AttackCount: [
     { path: 'count', kind: 'formula', label: 'AttacksTotal' },
     { path: 'additional', kind: 'formula', label: 'AttacksAdditional' },
@@ -289,7 +294,7 @@ export const RULE_FORMS = {
   ],
 };
 
-const TO = { path: 'to', kind: 'select', label: 'Recipient', options: [['self', 'ToSelf'], ['target', 'ToTarget'], ['targets', 'ToTargets'], ['targetOrSelf', 'ToTargetOrSelf'],
+export const TO = { path: 'to', kind: 'select', label: 'Recipient', options: [['self', 'ToSelf'], ['target', 'ToTarget'], ['targets', 'ToTargets'], ['targetOrSelf', 'ToTargetOrSelf'],
   ['party', 'ToParty'], ['party+others', 'ToPartyOthers'], ['team', 'ToTeam'], ['team+others', 'ToTeamOthers'], ['partyActor', 'ToPartyActor']] };
 
 // Which Essence an Essence step works on (blank on healEssence: the most-damaged first).

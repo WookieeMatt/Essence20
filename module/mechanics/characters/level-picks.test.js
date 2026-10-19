@@ -9,8 +9,12 @@ import {
   nextPending,
   pendingLevelPicks,
   pickKey,
+  reconcileRulePicks,
+  rulePickChanges,
+  syncRuleLevelPicks,
   updateLevelPicks,
 } from "./level-picks.mjs";
+import { registerHouseRule, unregisterHouseRule } from "../../rules/house-rules.mjs";
 import { choicePrerequisites } from "../../rules/prerequisites.mjs";
 
 const PR_GENERAL = ['level4', 'level8', 'level12', 'level16', 'level19'];
@@ -298,5 +302,54 @@ describe("clearLevelPicks", () => {
     expect(additive.delete).toHaveBeenCalled();
     expect(base.delete).not.toHaveBeenCalled();
     expect(keys(pendingLevelPicks(actor))).toEqual(['generalPerk-base-8']);
+  });
+});
+
+/* ---- LevelPick rules: extra picks from a house rule or an item ---- */
+
+describe("LevelPick rules", () => {
+  const extra = (levels, extraRule = {}, item = { id: 'house-extra', name: 'Extra Perk' }) => ({ rule: { type: 'LevelPick', kind: 'generalPerk', levels, ...extraRule }, item, index: 0 });
+
+  test("each listed level crossed gives a pick on the rule's own track, count of them; Grid Powers only for Power Rangers", () => {
+    const { gained } = rulePickChanges([extra(['1', '10'])], 0, 4);
+    expect(gained).toEqual([{ key: 'generalPerk-rule-house-extra-0-1', kind: 'generalPerk', track: 'rule-house-extra-0', level: 1, source: 'Extra Perk' }]);
+    expect(keys(rulePickChanges([extra(['1'], { count: 2 })], 0, 1).gained)).toEqual(['generalPerk-rule-house-extra-0-1', 'generalPerk-rule-house-extra-0-2-1']);
+    expect(keys(rulePickChanges([extra(['10'])], 12, 8).lost)).toEqual(['generalPerk-rule-house-extra-0-10']);
+    const grid = extra(['2'], { kind: 'gridPower' });
+    expect(rulePickChanges([grid], 0, 5, { version: 'gijoe' }).gained).toEqual([]);
+    expect(keys(rulePickChanges([grid], 0, 5, { version: 'powerRangers' }).gained)).toEqual(['gridPower-rule-house-extra-0-2']);
+  });
+
+  test("reconciling: missing picks added, an unmade one whose rule went dropped, Role picks and made picks untouched", () => {
+    const role = { key: 'generalPerk-base-4', kind: 'generalPerk', track: 'base', level: 4 };
+    const stale = { key: 'generalPerk-rule-old-0-1', kind: 'generalPerk', track: 'rule-old-0', level: 1 };
+    const expected = rulePickChanges([extra(['1'])], 0, 5).gained;
+    expect(keys(reconcileRulePicks([role, stale], expected))).toEqual(['generalPerk-rule-house-extra-0-1', 'generalPerk-base-4']);
+    expect(keys(reconcileRulePicks([role], expected, new Set(['generalPerk-rule-house-extra-0-1'])))).toEqual(['generalPerk-base-4']);
+  });
+
+  test("a house rule switched on gives existing characters the pick; switched off takes the unmade one away", async () => {
+    const before = global.game.settings.get;
+    global.game.settings.get = jest.fn((scope, key) => (key == 'houseRules' ? { extraPerk: true } : before?.(scope, key)));
+    registerHouseRule({ id: 'extraPerk', label: 'Extra Perk', default: true, rules: [{ type: 'LevelPick', kind: 'generalPerk', levels: ['1'] }] });
+    const actor = makeActor({ level: 3 });
+    expect(await syncRuleLevelPicks(actor)).toBe(true);
+    expect(keys(pendingLevelPicks(actor))).toEqual(['generalPerk-rule-house-extraPerk-0-1']);
+    expect(await syncRuleLevelPicks(actor)).toBe(false);
+    unregisterHouseRule('extraPerk');
+    expect(await syncRuleLevelPicks(actor)).toBe(false);
+    expect(pendingLevelPicks(actor)).toEqual([]);
+    global.game.settings.get = before;
+  });
+
+  test("a level up counts the rule's levels alongside the Role's", async () => {
+    registerHouseRule({ id: 'extraPerk2', label: 'Extra', default: true, rules: [{ type: 'LevelPick', kind: 'generalPerk', levels: ['5'] }] });
+    const before = global.game.settings.get;
+    global.game.settings.get = jest.fn((scope, key) => (key == 'houseRules' ? { extraPerk2: true } : before?.(scope, key)));
+    const actor = makeActor({ level: 5 });
+    await updateLevelPicks(actor, 3, 5, { open: false });
+    expect(keys(pendingLevelPicks(actor))).toEqual(['generalPerk-base-4', 'generalPerk-rule-house-extraPerk2-0-5']);
+    unregisterHouseRule('extraPerk2');
+    global.game.settings.get = before;
   });
 });

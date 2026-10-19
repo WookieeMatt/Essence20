@@ -720,9 +720,11 @@ describe("movement and aiming", () => {
   /**
    * A token document with the prototype under test, skipping the real constructor.
    */
-  const makeTokenDocument = (actor) => Object.assign(
-    Object.create(Essence20TokenDocument.prototype), { id: 'token1', actor },
-  );
+  const makeTokenDocument = (actor) => Object.defineProperties(Object.create(Essence20TokenDocument.prototype), {
+    id: { value: 'token1' },
+    // An own value - the prototype's actor is a getter (util/token-actor.mjs).
+    actor: { value: actor },
+  });
 
   test("a movement that goes through clears the aim", async () => {
     const actor = makeActor({ ground: 30 });

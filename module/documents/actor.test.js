@@ -2262,6 +2262,20 @@ describe("_prepareLoadout", () => {
     expect(actor.system.hardpoints.integrated.used).toBe(0);
   });
 
+  test("Unarmed Combat (a natural weapon, TF CRB p.120) takes no Hardpoint of either kind and no hands", () => {
+    const actor = makeActor('playerCharacter', loadoutSystem(), {
+      weapon: [
+        weapon({ derivedHands: 0, noHardpoint: true }),
+        weapon({ derivedHands: 0, noHardpoint: true, hardpoint: { type: 'integrated' } }),
+        weapon({ derivedHands: 1 }),
+      ],
+    });
+    actor._prepareLoadout();
+    expect(actor.system.loadout.handsUsed).toBe(1);
+    expect(actor.system.hardpoints.external.used).toBe(1);
+    expect(actor.system.hardpoints.integrated.used).toBe(0);
+  });
+
   test("sums equipped external weapon hands into loadout.handsUsed", () => {
     const actor = makeActor('playerCharacter', loadoutSystem(), {
       weapon: [

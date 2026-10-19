@@ -5,6 +5,10 @@
   Hidden/Obvious-in-Alt-Mode options. Writes straight to the item via onInlineEdit.
 --}}
 <div class="flexrow e20-align-center e20-gap-5 hardpoint-selector">
+  {{#if item.system.noHardpoint}}
+  {{!-- Unarmed Combat: a natural weapon, in no Hardpoint (documents/item.mjs#_prepareHardpointDerived). --}}
+  <span class="hardpoint-mode-label e20-nowrap" data-tooltip="{{localize 'E20.HardpointNaturalHint'}}">{{localize 'E20.HardpointNatural'}}</span>
+  {{else}}
   <select class="inline-edit hardpoint-select" data-field="system.hardpoint.type" name="system.hardpoint.type">
     {{selectOptions @root.config.hardpointTypes selected=item.system.hardpoint.type}}
   </select>
@@ -22,5 +26,6 @@
 
   {{#if item.system.derivedMode}}
     <span class="hardpoint-mode-label e20-nowrap">{{lookup @root.config.transformerModes item.system.derivedMode}}</span>
+  {{/if}}
   {{/if}}
 </div>

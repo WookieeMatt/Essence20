@@ -328,6 +328,18 @@ export const RULE_TYPES = {
     scopes: ['self'],
     validate: rule => (['external', 'integrated', 'nonWeapon', 'perWeapon', 'reinforced'].some(key => rule[key]) ? [] : ['changes nothing']),
   },
+  // Extra level picks (mechanics/characters/level-picks.mjs): a General Perk - or, for a Power Rangers character, a Grid
+  // Power - to choose at each listed character level, on top of the Role's own; `count` of them at each (default 1).
+  // A house rule "everyone gets an extra General Perk at level 1" is {kind: generalPerk, levels: ["1"]}.
+  LevelPick: {
+    params: { kind: { kind: 'enum', required: true, options: ['generalPerk', 'gridPower'] }, levels: { kind: 'any', required: true }, count: { kind: 'formula' } },
+    scopes: ['self'],
+    validate: rule => [
+      ...(Array.isArray(rule.levels) && rule.levels.length && rule.levels.every(level => /^(level)?([1-9]|1[0-9]|20)$/.test(String(level).trim()))
+        ? [] : ['levels must list character levels, 1 to 20']),
+      ...(rule.count === undefined || (Number.isInteger(Number(rule.count)) && Number(rule.count) >= 1) ? [] : ['count must be a whole number, 1 or more']),
+    ],
+  },
   // Several attacks per Attack action (mechanics/actions/action-perks.mjs#getAttacksPerAction): `count` attacks
   // in all (the best one counts), or `additional` on top of whichever count applies. The condition
   // reads the attack: weapon:trait:ballistic, attack:melee...
@@ -727,7 +739,9 @@ function shiftPhrase(rule) {
   }
 
   if (rule.immune?.length) {
-    parts.push(`ignores ${rule.immune.map(kind => (kind == 'snag' ? 'Snags' : 'downshifts')).join(' and ')}`);
+    // Each kind by name: an untrained Skill's Snag and the long-range Snag aren't downshifts.
+    const IMMUNE = { snag: 'Snags', downshift: 'downshifts', untrainedSnag: 'the untrained Snag', longRangeSnag: 'the long-range Snag' };
+    parts.push(`ignores ${rule.immune.map(kind => IMMUNE[kind] ?? kind).join(' and ')}`);
   }
 
   return parts.join(', ');
@@ -782,6 +796,13 @@ export function summarizeRule(rule) {
     ? `Critical Effects +${rule.improve} step${tail}`
     : `Critical Effect: ${rule.essence ? `1 ${humanize(rule.essence)} Essence damage` : rule.status ? humanize(rule.status) : rule.effect ? humanize(rule.effect) : `${rule.damageValue ?? 1}${rule.damageType ? ` ${rule.damageType}` : ''} damage`}${tail}`;
   case 'WeaponTrait': return `Weapons${rule.items?.length ? ` where ${itemClauses(rule.items)}` : ''} gain ${(rule.traits ?? []).map(humanize).join(', ')}${tail}`;
+  case 'LevelPick': {
+    const count = Math.max(1, Number(rule.count) || 1);
+    const kind = rule.kind == 'gridPower' ? 'Grid Power' : 'General Perk';
+    const levels = (Array.isArray(rule.levels) ? rule.levels : []).map(level => String(level).replace(/[^0-9]/g, '')).join(', ');
+    return `${count > 1 ? `${count} extra ${kind}s` : `An extra ${kind}`} to choose at level ${levels || '?'}`;
+  }
+
   case 'Hardpoints': return `Hardpoints: ${[
     rule.external && `${signed(rule.external)} External`, rule.integrated && `${signed(rule.integrated)} Integrated`,
     rule.nonWeapon && `${signed(rule.nonWeapon)} Non-Weapon`, rule.perWeapon && `${signed(rule.perWeapon)} per Integrated weapon`,

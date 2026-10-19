@@ -7,6 +7,8 @@ const MIN_LEVEL = 1;
 const MAX_LEVEL = 20;
 
 import Essence20CompendiumBrowser from "../apps/compendium-browser.mjs";
+// Copy Stat Block in the header's ⋮ menu for NPCs, Zords and vehicles (registers its own hook).
+import "../mechanics/characters/stat-block-share.mjs";
 import { useGearNanomitePower } from "../items/gear/nanomite-gear.mjs";
 import MonsterGrowDialog from "../apps/monster-grow-dialog.mjs";
 import ThreatBuilder from "../apps/threat-builder.mjs";

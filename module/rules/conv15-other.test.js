@@ -856,13 +856,22 @@ describe('drop-time configuring Features', () => {
     expect(feature.delete).not.toHaveBeenCalled();
   });
 
-  test('Enhance (Attack): Accurate goes on the weapon; the manual options only say so; a cancel takes it off', async () => {
+  test('Enhance (Attack): Accurate goes on the weapon; Ignores Armor puts its rule on the attack; Speed reduction only says so; a cancel takes it off', async () => {
     const { actor, feature, attacks } = zordWith(FILES.enhanceAttack, { attacks: [['Claw', 'melee']] });
     answers = [attacks[0].id, 'accurate'];
     await fireItemAdded(actor, feature);
     expect(actor.items.get(attacks[0].flags.essence20.parentId).system.traits).toEqual(['accurate']);
+    // The Pterodactyl Dinozord's Lightning Cannons, "Ignores Armor" (PR CRB p.137 Enhance: the armor bonus to Toughness).
+    const cannons = zordWith(FILES.enhanceAttack, { attacks: [['Lightning Cannons', 'ranged']] });
+    answers = [cannons.attacks[0].id, 'ignoreArmor'];
+    await fireItemAdded(cannons.actor, cannons.feature);
+    expect(cannons.attacks[0].system.rules).toEqual([expect.objectContaining({ type: 'Defense', defense: 'toughness', mode: 'ignoreArmor', outgoing: true, when: ['item:own'] })]);
+    expect(ui.notifications.info).toHaveBeenCalledWith(expect.stringContaining('E20.ZordFeatureEnhanceApplied'));
+    // Taken twice on the same attack: the rule isn't doubled.
+    await fireItemAdded(cannons.actor, cannons.feature);
+    expect(cannons.attacks[0].system.rules).toHaveLength(1);
     const manual = zordWith(FILES.enhanceAttack, { attacks: [['Claw', 'melee']] });
-    answers = [manual.attacks[0].id, 'ignoreArmor'];
+    answers = [manual.attacks[0].id, 'reduceSpeed'];
     await fireItemAdded(manual.actor, manual.feature);
     expect(ui.notifications.info).toHaveBeenCalledWith('E20.ZordFeatureEnhanceManual');
     const cancelled = zordWith(FILES.enhanceAttack, { attacks: [['Claw', 'melee']] });

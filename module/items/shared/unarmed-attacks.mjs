@@ -50,6 +50,23 @@ export function isPrintedUnarmedWeapon(weapon) {
   return ALL_UNARMED_WEAPON_IDS.includes(sourceOf(weapon)) || ALL_UNARMED_WEAPON_IDS.includes(weapon.uuid);
 }
 
+/** The printed unarmed weapons' names (Unarmed Combat; a stat block's Unarmed Attack / Unarmed Strike). */
+const UNARMED_NAMES = /^unarmed (combat|attack|strike)$/i;
+
+/**
+ * Whether this weapon is a natural weapon - punches, kicks, headbutts (TF CRB p.120: Hands 0, Automatic) - which takes no
+ * Hardpoint: a printed unarmed weapon, or one with no compendium source under a printed unarmed name (what the stat
+ * block importer makes from a Threat's "Unarmed Combat" line). Only the Hardpoint count reads this; isUnarmedAttack
+ * keeps its source-only definition.
+ */
+export function isNaturalWeapon(weapon) {
+  if (!weapon || weapon.type != 'weapon') {
+    return false;
+  }
+
+  return isPrintedUnarmedWeapon(weapon) || (!sourceOf(weapon) && UNARMED_NAMES.test(String(weapon.name ?? '').trim()));
+}
+
 /** The weapon a weaponEffect belongs to - looked up on its own actor, else on the given one - or null. */
 export function parentWeaponOf(item, actor = null) {
   const parentId = item?.flags?.essence20?.parentId;

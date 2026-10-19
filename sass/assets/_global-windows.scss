@@ -241,3 +241,20 @@
 .essence20.window-app textarea {
   color: var(--e20-theme-text-color);
 }
+
+/* Copy Stat Block's window (mechanics/characters/stat-block-share.mjs): the text, full width, in a fixed-width face. */
+.essence20.e20-stat-block-export {
+  .e20-stat-block-text {
+    width: 100%;
+    min-height: 18em;
+    resize: vertical;
+    font-family: var(--font-monospace, monospace);
+    font-size: var(--font-size-12, 12px);
+    white-space: pre-wrap;
+  }
+
+  .e20-stat-block-copy {
+    margin-top: 6px;
+    width: 100%;
+  }
+}
