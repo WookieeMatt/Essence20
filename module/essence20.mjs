@@ -1024,7 +1024,8 @@ function refreshMegaformsLinkedToActor(actorUuid) {
   for (const megaform of game.actors.filter(actor => actor.type == 'megaform')) {
     const isLinked = Object.values(megaform.system.actors).some(entry => entry.uuid == actorUuid);
     if (isLinked) {
-      megaform.prepareData();
+      // reset(): prepareData() alone would apply the Megaform's own Active Effects again on top of the last pass.
+      megaform.reset();
       megaform.sheet.render(false);
     }
   }

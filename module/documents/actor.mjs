@@ -1646,8 +1646,11 @@ export class Essence20Actor extends Actor {
     // stale (often zeroed) values until something unrelated later happens to re-trigger this
     // Megaform's own prepareDerivedData(). Forcing each participant's own prepareData() first
     // guarantees this always aggregates current values, regardless of load order.
+    // reset(), not prepareData(): prepareData() alone doesn't clear the last pass's derived data, so every Megaform prep
+    // applied each Zord's Active Effects again on top (Heavy Chassis +1 Health bonus becoming +2, +3...) - and the Zord's
+    // sheet then saved the inflated bonus, making it permanent.
     for (const zord of participants) {
-      zord.prepareData();
+      zord.reset();
     }
 
     system.participantHealth = participants.map(zord => ({
@@ -1947,8 +1950,9 @@ export class Essence20Actor extends Actor {
     // See _prepareMegaformZordData's identical call for why this is needed - without it, a
     // Megaform that initializes before a linked component actor would aggregate that
     // component's still-unprepared (often zeroed) Health/Movement/Defenses/Essences.
+    // reset(), not prepareData() - see _prepareMegaformZordData: effects would stack on the component each pass.
     for (const component of participants) {
-      component.prepareData();
+      component.reset();
     }
 
     system.participantHealth = participants.map(component => ({

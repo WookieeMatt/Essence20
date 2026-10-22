@@ -1151,10 +1151,14 @@ describe("_prepareMegaformZordData", () => {
         health: { value: health, max: healthMax },
         stun: { value: stun },
       },
-      // Stands in for the real Actor#prepareData() call the Megaform forces on each participant
+      // Stands in for the real Actor#reset() call the Megaform forces on each participant
       // before reading it (see actor.mjs's own comment) - a no-op here since this fixture's
       // system data is already in its final, "already prepared" shape.
-      prepareData() {},
+      reset() {},
+      // prepareData() alone re-applies the participant's Active Effects on top of the last pass - never called.
+      prepareData() {
+        throw new Error('prepareData() stacks Active Effects - the Megaform must reset() its participants');
+      },
     };
   }
 
@@ -1182,6 +1186,17 @@ describe("_prepareMegaformZordData", () => {
 
   beforeEach(() => {
     global.fromUuidSync.mockReset();
+  });
+
+  // Regression (raikkonen2381, 2026-10-20): each Megaform prep called prepareData() on its Zords, which stacked their
+  // Active Effects again every pass (Heavy Chassis's +1 Health bonus growing to +5), and the Zord's sheet then saved it.
+  test("participants are rebuilt with reset(), so their Active Effects apply once", () => {
+    const a = makeZordParticipant({ name: 'A', health: 6, healthMax: 6 });
+    a.reset = jest.fn();
+    const actor = makeMegazordActor([a]);
+    actor._prepareMegaformZordData();
+    actor._prepareMegaformZordData();
+    expect(a.reset).toHaveBeenCalledTimes(2);
   });
 
   // Regression: _prepareHealth used to add the Megaform's own Conditioning on top of
@@ -1401,7 +1416,7 @@ describe("_prepareMegaformCombinerData", () => {
         stun: { value: stun },
       },
       // See makeZordParticipant's identical stub above for why this is needed.
-      prepareData() {},
+      reset() {},
     };
   }
 
