@@ -1,0 +1,82 @@
+diff --git a/.github/workflows/github-actions-lint.yml b/.github/workflows/github-actions-lint.yml
+index 02296b03b..bc6af4564 100644
+--- a/.github/workflows/github-actions-lint.yml
++++ b/.github/workflows/github-actions-lint.yml
+@@ -14,7 +14,7 @@ jobs:
+       - name: Setup node
+         uses: actions/setup-node@v4
+         with:
+-          node-version: 17.9.x
++          node-version: 22.x
+           cache: npm
+       - run: npm ci
+       - name: Run ESLint
+diff --git a/.github/workflows/github-actions-release.yml b/.github/workflows/github-actions-release.yml
+index 6fefb1363..7377dd385 100644
+--- a/.github/workflows/github-actions-release.yml
++++ b/.github/workflows/github-actions-release.yml
+@@ -35,7 +35,7 @@ jobs:
+       - name: Setup node
+         uses: actions/setup-node@v4
+         with:
+-          node-version: 17.9.x
++          node-version: 22.x
+           cache: npm
+       - run: npm ci
+ 
+diff --git a/.github/workflows/github-actions-unit-tests.yml b/.github/workflows/github-actions-unit-tests.yml
+index 5307b3bf2..fddcd7018 100644
+--- a/.github/workflows/github-actions-unit-tests.yml
++++ b/.github/workflows/github-actions-unit-tests.yml
+@@ -14,7 +14,7 @@ jobs:
+       - name: Setup node
+         uses: actions/setup-node@v4
+         with:
+-          node-version: 17.9.x
++          node-version: 22.x
+           cache: npm
+       - run: npm ci
+       - name: Lint
+diff --git a/package.json b/package.json
+index 9ecce40c7..18a7e0952 100644
+--- a/package.json
++++ b/package.json
+@@ -9,8 +9,8 @@
+     "build:json": "gulp extract",
+     "lint": "npx eslint module/ --ext .js,.mjs",
+     "lint-fix": "npx eslint module/ --ext .js,.mjs --fix",
+-    "sass": "npx sass -s compressed ./sass/essence20.scss ./css/essence20.css",
+-    "sass:watch": "npx sass -s compressed --watch ./sass/essence20.scss ./css/essence20.css",
++    "sass": "npx sass ./sass/essence20.scss ./css/essence20.css",
++    "sass:watch": "npx sass --watch ./sass/essence20.scss ./css/essence20.css",
+     "test": "node --experimental-vm-modules ./node_modules/.bin/jest"
+   },
+   "browserslist": [
+@@ -19,13 +19,6 @@
+   "author": "John Doe",
+   "license": "MIT",
+   "private": true,
+-  "dependencies": {
+-    "gulp-autoprefixer": "^7.0.1",
+-    "gulp-less": "^5.0.0",
+-    "gulp-sourcemaps": "^2.6.5",
+-    "jest": "^27.5.1",
+-    "@foundryvtt/foundryvtt-cli": "^1.0.2"
+-  },
+   "type": "module",
+   "main": "gulpfile.mjs",
+   "directories": {
+@@ -40,9 +33,11 @@
+   },
+   "homepage": "https://github.com/WookieeMatt/Essence20#readme",
+   "devDependencies": {
++    "@foundryvtt/foundryvtt-cli": "^1.0.2",
+     "eslint": "^8.42.0",
++    "fancy-log": "^1.3.3",
+     "gulp": "^4.0.2",
+-    "gulp-sass": "^5.1.0",
+-    "sass": "^1.54.3"
++    "jest": "^27.5.1",
++    "sass": "1.83.4"
+   }
+ }
