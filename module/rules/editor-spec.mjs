@@ -281,7 +281,8 @@ export const RULE_FORMS = {
   ],
   Trigger: [
     // A getter: plug-ins (rules/ext/) add events after this file loads.
-    { path: 'event', kind: 'select', label: 'EventLabel', get options() {
+    // sort: shown A-Z by label (editor-render.mjs).
+    { path: 'event', kind: 'select', label: 'EventLabel', sort: true, get options() {
       return TRIGGER_EVENTS.map(event => [event, `Event.${event}`]);
     } },
     { path: 'outcome', kind: 'select', label: 'OutcomeLabel', options: ['any', 'success', 'failure', 'double', 'crit', 'fumble', 'x2', 'anyFailed', 'allFailed', 'fumbled', 'plainSuccess', 'plainFailure', 'anySucceeded', 'notDouble'].map(o => [o, `Outcome.${o}`]), showIf: rule => ['afterRoll', 'hit', 'targeted'].includes(rule.event) },

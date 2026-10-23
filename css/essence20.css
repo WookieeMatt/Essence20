@@ -3138,6 +3138,10 @@ select.e20-select-searchable optgroup[hidden] {
 .essence20 .skill-header.conditioning-row {
   margin-bottom: 0.5rem;
 }
+.essence20 .skill-header.conditioning-row .skill-name:hover {
+  color: var(--e20-theme-text-color);
+  cursor: default;
+}
 
 .essence20 .skill-header .skill-name {
   display: flex;
@@ -7134,10 +7138,14 @@ select.e20-select-searchable optgroup[hidden] {
 /* House Rules (apps/house-rules-config.mjs): the same sliced panels as the sources screen, one row per house rule. */
 .essence20.house-rules-config {
   min-width: 420px;
+  /* Room between the list and Save Changes. */
 }
 .essence20.house-rules-config .hint,
 .essence20.house-rules-config .house-rules-empty {
   color: var(--e20-theme-muted-text);
+}
+.essence20.house-rules-config .form-footer {
+  margin-top: 12px;
 }
 
 .essence20 .house-rules-groups {
@@ -7241,7 +7249,7 @@ select.e20-select-searchable optgroup[hidden] {
 .essence20.house-rule-editor {
   min-width: 460px;
   /* The description under its label, the full width of the window. */
-  /* Cancel and Save side by side. */
+  /* Cancel and Save side by side, with room above them. */
 }
 .essence20.house-rule-editor .house-rule-editor-body {
   gap: 8px;
@@ -7260,6 +7268,7 @@ select.e20-select-searchable optgroup[hidden] {
   display: flex;
   flex-direction: row;
   gap: 8px;
+  margin-top: 12px;
 }
 .essence20.house-rule-editor .form-footer button {
   flex: 1 1 0;

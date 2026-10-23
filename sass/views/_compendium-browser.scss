@@ -328,6 +328,11 @@
   .house-rules-empty {
     color: var(--e20-theme-muted-text);
   }
+
+  /* Room between the list and Save Changes. */
+  .form-footer {
+    margin-top: 12px;
+  }
 }
 
 .essence20 .house-rules-groups {
@@ -421,11 +426,12 @@
     }
   }
 
-  /* Cancel and Save side by side. */
+  /* Cancel and Save side by side, with room above them. */
   .form-footer {
     display: flex;
     flex-direction: row;
     gap: 8px;
+    margin-top: 12px;
 
     button {
       flex: 1 1 0;
