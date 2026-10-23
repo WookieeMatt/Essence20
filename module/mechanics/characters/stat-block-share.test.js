@@ -41,16 +41,17 @@ describe('the text', () => {
     expect(await statBlockText(null)).toBe('');
   });
 
-  test('copying: true when the clipboard takes it, false when the browser refuses', async () => {
-    const saved = globalThis.navigator;
-    Object.defineProperty(globalThis, 'navigator', { value: { clipboard: { writeText: jest.fn(async () => {}) } }, configurable: true });
-    expect(await copyText('x')).toBe(true);
+  // The clipboard is handed in: Node's own `navigator` differs by version (none before 21), so the global isn't patched.
+  test('copying: true when the clipboard takes it, false when the browser refuses or there is no clipboard', async () => {
+    const writeText = jest.fn(async () => {});
+    expect(await copyText('x', { writeText })).toBe(true);
+    expect(writeText).toHaveBeenCalledWith('x');
     const refuse = async () => {
       throw new Error('no');
     };
 
-    Object.defineProperty(globalThis, 'navigator', { value: { clipboard: { writeText: jest.fn(refuse) } }, configurable: true });
-    expect(await copyText('x')).toBe(false);
-    Object.defineProperty(globalThis, 'navigator', { value: saved, configurable: true });
+    expect(await copyText('x', { writeText: jest.fn(refuse) })).toBe(false);
+    expect(await copyText('x', {})).toBe(false);
+    expect(await copyText('x', null)).toBe(false);
   });
 });

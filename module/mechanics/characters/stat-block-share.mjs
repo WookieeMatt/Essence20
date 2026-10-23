@@ -35,10 +35,20 @@ export async function statBlockText(source, { threatIr = null } = {}) {
   return irToStatBlockText({ ...ir, name: ir.name?.trim() || (unnamed && unnamed != 'E20.StatBlockUnnamed' ? unnamed : 'Threat') });
 }
 
-/** Copy text to the clipboard; false when the browser refuses (the window's text can still be selected). */
-export async function copyText(text) {
+/**
+ * Copy text to the clipboard; false when there is no clipboard or the browser refuses (the window's text can still be
+ * selected).
+ * @param {String} text
+ * @param {Object} [clipboard]   The Clipboard API (tests pass their own).
+ * @returns {Promise<Boolean>}
+ */
+export async function copyText(text, clipboard = globalThis.navigator?.clipboard) {
+  if (typeof clipboard?.writeText != 'function') {
+    return false;
+  }
+
   try {
-    await globalThis.navigator?.clipboard?.writeText?.(text);
+    await clipboard.writeText(text);
     return true;
   } catch {
     return false;
