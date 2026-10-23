@@ -125,6 +125,7 @@ describe('describeWhen: who it asks about', () => {
   test('self: items, statuses, marks, toggles, size and type', () => {
     expect(describeWhen(['self:status:prone', 'not:self:status:surprised'])).toBe("while you are Prone, while you aren't Surprised");
     expect(describeWhen(['self:type:zord', 'self:type:playerCharacter'])).toBe('if you are a Zord, if you are a player character');
+    expect(describeWhen(['self:line:pr', 'not:self:line:transformers'])).toBe("if you are from the Power Rangers line, if you aren't from the Transformers line");
     expect(describeWhen(['self:marked:overcharge', 'not:self:marked:zord1NinjaElementOn'])).toBe("while you have the Overcharge mark, while you don't have the Ninja Element On mark");
     expect(describeWhen(['self:toggle:on', 'not:self:toggle:granted'])).toBe('while it is switched on, while Granted is switched off');
     expect(describeWhen(['self:hasItem:name~blade', 'self:specializedIn:science'])).toBe('while you have an item named like "blade", while you have a Science Specialization');

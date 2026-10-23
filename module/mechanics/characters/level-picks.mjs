@@ -245,10 +245,15 @@ export function levelPickLabel(pick) {
   return pick.source ? T('E20.LevelPickLabelFrom', { kind, level, source: pick.source }) : T('E20.LevelPickLabel', { kind, level });
 }
 
-/** The actor's own LevelPick rules, house rules included. */
+/**
+ * The actor's own LevelPick rules, house rules included, whose "Only when…" holds for them now (self:line:pr,
+ * self:level>=5...). A condition that can't be told outside a roll doesn't stop it.
+ */
 async function levelPickRules(actor) {
   const { collectRules } = await import("../../rules/index.mjs");
-  return (collectRules(actor).LevelPick ?? []).filter(entry => (entry.rule.scope ?? 'self') == 'self');
+  const { contextFor, evaluate } = await import("../../rules/predicate.mjs");
+  return (collectRules(actor).LevelPick ?? []).filter(entry => (entry.rule.scope ?? 'self') == 'self'
+    && evaluate(entry.rule.when, contextFor({ self: actor, holder: actor, ruleItem: entry.item })) !== false);
 }
 
 /**
@@ -267,6 +272,9 @@ export async function updateLevelPicks(actor, previousLevel, newLevel, { open = 
   if (!baseRole) {
     return [];
   }
+
+  // A LevelPick rule whose condition a level change switches (self:level>=5) gives or drops its unmade picks here.
+  await syncRuleLevelPicks(actor);
 
   const additiveRole = roles.find(role => role.system?.isAdditive) ?? null;
   const changes = levelPickChanges({
@@ -362,8 +370,10 @@ async function onLevelPickItem(item, userId, changes = null) {
     return;
   }
 
-  const { rulesOf } = await import("../../rules/index.mjs");
-  if (changes || rulesOf(item).some(rule => rule?.type == 'LevelPick')) {
+  const { collectRules, rulesOf } = await import("../../rules/index.mjs");
+  // Any item counts when a LevelPick rule's condition may read the actor's items (self:hasItem...).
+  const conditional = (collectRules(actor).LevelPick ?? []).some(entry => Array.isArray(entry.rule.when) && entry.rule.when.length);
+  if (changes || conditional || rulesOf(item).some(rule => rule?.type == 'LevelPick')) {
     await syncRuleLevelPicks(actor);
   }
 }

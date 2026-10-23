@@ -353,3 +353,17 @@ describe("LevelPick rules", () => {
     global.game.settings.get = before;
   });
 });
+
+describe("LevelPick rules with a condition", () => {
+  test("only characters it holds for get the pick; a level up can switch it on", async () => {
+    registerHouseRule({ id: 'rangerPerk', label: 'Ranger Perk', default: true, rules: [{ type: 'LevelPick', kind: 'generalPerk', levels: ['1'], when: ['self:line:pr', 'self:level>=3'] }] });
+    const ranger = makeActor({ level: 1 });
+    const joe = makeActor({ roles: [makeRole({ version: 'giJoe' })], level: 5 });
+    expect(await syncRuleLevelPicks(joe)).toBe(false);
+    expect(await syncRuleLevelPicks(ranger)).toBe(false);
+    ranger.system.level = 3;
+    await updateLevelPicks(ranger, 1, 3, { open: false });
+    expect(keys(pendingLevelPicks(ranger))).toEqual(['generalPerk-rule-house-rangerPerk-0-1']);
+    unregisterHouseRule('rangerPerk');
+  });
+});
