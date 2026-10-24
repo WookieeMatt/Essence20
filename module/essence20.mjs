@@ -1,4 +1,4 @@
-import { runChatDecorators as runExtChatDecorators, runMissionAdvanced, runSceneAdvanced } from "./mechanics/item-hooks.mjs";
+import { registerRollSources, runChatDecorators as runExtChatDecorators, runMissionAdvanced, runSceneAdvanced } from "./mechanics/item-hooks.mjs";
 // Every extension module registers itself on import (items/index.mjs).
 import "./items/index.mjs";
 // Item rules (system.rules) - one more extension, plus their add/remove lifecycle (docs/RULES_ENGINE_PLAN.md).
@@ -10,7 +10,9 @@ import "./rules/reactions.mjs";
 import "./rules/actions.mjs";
 import { linkExistingCopies, loadSourceIndexes } from "./rules/inherit.mjs";
 import { registerRuleHelper } from "./rules/code.mjs";
-import { registerCheck, setWorldLookups } from "./rules/predicate.mjs";
+import { registerRuleType } from "./rules/types.mjs";
+import { houseRuleEnabled, houseRules, registerHouseRule } from "./rules/house-rules.mjs";
+import { registerCheck, registerTag, setWorldLookups } from "./rules/predicate.mjs";
 import { useAllyLookup } from "./rules/links.mjs";
 import { hasActiveEnvironmentalExpertise, isKnownOutsideEnvironmentOfExpertise } from "./mechanics/world/environmental-expertise.mjs";
 import { isCannoneerDugIn } from "./items/defenses/cannoneer-dig-in.mjs";
@@ -40,7 +42,7 @@ import { prerequisiteText } from "./rules/prerequisites.mjs";
 import { isRecklessAbandonActive } from "./items/rolls/reckless-abandon.mjs";
 import { noticeEssenceBases } from "./mechanics/vehicles/machine-essences.mjs";
 import "./rules/plugins/index.mjs";
-import { setStoryPointHelpers } from "./rules/steps.mjs";
+import { registerStep, setStoryPointHelpers } from "./rules/steps.mjs";
 import { canSpendForActor, canWriteStoryPoints, poolFor, requestStoryPointGrant, spendForActor } from "./mechanics/resources/story-points.mjs";
 import { getEnvironment, getTerrain } from "./mechanics/world/environment.mjs";
 import { getNearbyAllyTokens } from "./mechanics/combat/nearby-allies.mjs";
@@ -311,6 +313,12 @@ Hooks.once("init", async function () {
   game.essence20 = {
     // Item rules' Code helpers - any module or world script can add one (rules/code.mjs).
     registerRuleHelper,
+    // The rules engine, for modules (docs/ARCHITECTURE.md, "Extending the rules engine"): new rule types, steps, tags and
+    // roll sources, and house rules the GM switches on for every actor (rules/house-rules.mjs).
+    rules: {
+      registerRuleType, registerStep, registerTag, registerRollSources, registerRuleHelper,
+      registerHouseRule, houseRuleEnabled, houseRules,
+    },
     // A Group Skill Test for the selected tokens (or the given actors) - mechanics/rolls/group-tests.mjs.
     groupSkillTest: (actors = null) => startGroupTest(actors),
     Essence20Actor,
@@ -1016,7 +1024,8 @@ function refreshMegaformsLinkedToActor(actorUuid) {
   for (const megaform of game.actors.filter(actor => actor.type == 'megaform')) {
     const isLinked = Object.values(megaform.system.actors).some(entry => entry.uuid == actorUuid);
     if (isLinked) {
-      megaform.prepareData();
+      // reset(): prepareData() alone would apply the Megaform's own Active Effects again on top of the last pass.
+      megaform.reset();
       megaform.sheet.render(false);
     }
   }

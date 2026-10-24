@@ -24,10 +24,40 @@ export function fieldLabel(key) {
 
   // No label: the key in words. A condition family reads lower case like its labelled siblings (markedByMe -> marked by
   // me); other fields keep their capitals (onSuccess -> On Success).
+  // A rule type or Trigger event reads as a sentence like its labelled siblings (essenceWouldEmpty -> Essence would empty).
   const words = String(key).replace(/^.*\./, '');
-  return /^Tag(Hint)?\./.test(String(key))
-    ? words.replace(/([a-z])([A-Z])/g, (match, low, high) => `${low} ${high.toLowerCase()}`)
-    : words.replace(/([a-z])([A-Z])/g, '$1 $2');
+  const lowered = words.replace(/([a-z])([A-Z])/g, (match, low, high) => `${low} ${high.toLowerCase()}`);
+  if (/^Tag(Hint)?\./.test(String(key))) {
+    return lowered;
+  }
+
+  if (/^(Type|Event)\./.test(String(key))) {
+    return lowered.charAt(0).toUpperCase() + lowered.slice(1);
+  }
+
+  return words.replace(/([a-z])([A-Z])/g, '$1 $2');
+}
+
+/** Whether a rule type or Trigger event has its own label (the item-specific ones plug-ins add mostly don't). */
+const hasLabel = key => {
+  const full = `E20.Rules.Field.${key}`;
+  const text = globalThis.game?.i18n?.localize?.(full);
+  return !!text && text != full;
+};
+
+const byLabel = (a, b) => String(a[1]).localeCompare(String(b[1]));
+
+/**
+ * The "Kind of rule" choices: the general ones (each with its own label) A-Z, then the item-specific ones plug-ins add
+ * for single books' items, A-Z under their own heading. Exported for tests.
+ * @returns {Array<{label: ?String, options: Array<[String, String]>}>}
+ */
+export function ruleTypeGroups() {
+  const all = Object.keys(RULE_TYPES).map(type => ({ entry: [type, fieldLabel(`Type.${type}`)], labelled: hasLabel(`Type.${type}`) }));
+  return [
+    { label: null, options: all.filter(type => type.labelled).map(type => type.entry).sort(byLabel) },
+    { label: fieldLabel('TypeItemSpecific'), options: all.filter(type => !type.labelled).map(type => type.entry).sort(byLabel) },
+  ].filter(group => group.options.length);
 }
 
 const getPath = (object, path) => path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), object);
@@ -234,7 +264,7 @@ function fieldHtml(field, value, path, rule, context, depth) {
   case 'stacks':
     return selectHtml(path, 'stacks', value === undefined ? '' : String(value), [['true', fieldLabel('StacksYes')], ['false', fieldLabel('StacksNo')]], { blank: true });
   case 'select':
-    return selectHtml(path, 'select', value, resolveOptions(field, { ...context, rule }), { blank: !['type', 'do'].includes(field.path), custom: !!field.allowCustom })
+    return selectHtml(path, 'select', value, field.sort ? resolveOptions(field, { ...context, rule }).sort(byLabel) : resolveOptions(field, { ...context, rule }), { blank: !['type', 'do'].includes(field.path), custom: !!field.allowCustom })
       + (field.allowCustom ? `<input type="text" ${attrs(path, 'text')} value="${escape(value)}" class="e20-editor-custom" placeholder="${escape(fieldLabel('OrType'))}">` : '');
   case 'skills':
   case 'strings': {
@@ -277,10 +307,13 @@ export function fieldsHtml(fields, object, prefix, rule, context = {}, depth = 0
 
 /** The whole form for one rule. */
 export function ruleFormHtml(rule, context = {}) {
-  const typeOptions = Object.keys(RULE_TYPES).map(type => [type, fieldLabel(`Type.${type}`)]);
+  const option = ([value, label]) => `<option value="${escape(value)}"${value == rule.type ? ' selected' : ''}>${escape(label)}</option>`;
+  const groups = ruleTypeGroups().map(group => (group.label
+    ? `<optgroup label="${escape(group.label)}">${group.options.map(option).join('')}</optgroup>`
+    : group.options.map(option).join(''))).join('');
   return `<div class="e20-editor-field" data-field="type">
       <label>${escape(fieldLabel('RuleType'))}</label>
-      <div class="e20-editor-value">${selectHtml('type', 'ruleType', rule.type, typeOptions)}</div>
+      <div class="e20-editor-value"><select ${attrs('type', 'ruleType')}>${groups}</select></div>
     </div>
     ${fieldsHtml(formFor(rule.type), rule, '', rule, context)}
     ${tagDatalists(context)}`;

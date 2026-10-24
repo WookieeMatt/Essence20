@@ -83,7 +83,9 @@ async function resolveOutline(doc, items) {
 export async function readPdf(file, onProgress) {
   const pdfjs = await loadPdfjs();
   const data = new Uint8Array(await file.arrayBuffer());
-  const doc = await pdfjs.getDocument({ data, useSystemFonts: true }).promise;
+  // isEvalSupported: false - the vendored pdf.js (4.0.379) predates the fix for CVE-2024-4367, where a crafted PDF's
+  // font could run script through the eval path. Off, fonts are drawn the slower, safe way; text extraction is unchanged.
+  const doc = await pdfjs.getDocument({ data, useSystemFonts: true, isEvalSupported: false }).promise;
 
   const pages = [];
   const widths = [];

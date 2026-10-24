@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { COMMON_FIELDS, RULE_FORMS, STEP_FORMS, formFor, stepChoices } from './editor-spec.mjs';
-import { applyEdit, composeTag, fieldLabel, fieldsHtml, optionList, prerequisitesFormHtml, previewLine, readInput, ruleFormHtml, tagDatalists, tidy } from './editor-render.mjs';
+import { applyEdit, composeTag, fieldLabel, fieldsHtml, optionList, prerequisitesFormHtml, previewLine, readInput, ruleFormHtml, ruleTypeGroups, tagDatalists, tidy } from './editor-render.mjs';
 import { RULE_TYPES } from './types.mjs';
 import { STEP_TYPES } from './steps.mjs';
 import { SKELETONS } from './sheet.mjs';
@@ -200,4 +200,50 @@ test("a condition switched to another kind starts with its box empty (\"in comba
   expect(rule.when).toEqual(['combat']);
   readInput(rule, 'when.0', 'tagArg', 'round:1', { not: false, family: 'combat', arg: 'round:1' });
   expect(rule.when).toEqual(['combat:round:1']);
+});
+
+/* ---- The long lists read A-Z, in one style (Discord feedback 2026-10-23) ---- */
+
+describe('rule type and Trigger event lists', () => {
+  const lang = JSON.parse(readFileSync(join(ROOT, 'lang', 'en.json'), 'utf8'));
+  const lookup = key => key.split('.').reduce((at, part) => at?.[part], lang) ?? key;
+  let saved;
+  beforeEach(() => {
+    saved = global.game.i18n.localize;
+    global.game.i18n.localize = key => (typeof lookup(key) == 'string' ? lookup(key) : key);
+  });
+  afterEach(() => {
+    global.game.i18n.localize = saved;
+  });
+
+  const sorted = labels => [...labels].sort((a, b) => a.localeCompare(b));
+
+  test('Kind of rule: the labelled types A-Z, then the item-specific ones A-Z under their own heading', () => {
+    const [general, specific] = ruleTypeGroups();
+    expect(general.label).toBeNull();
+    expect(general.options.map(([, label]) => label)).toEqual(sorted(general.options.map(([, label]) => label)));
+    expect(general.options.map(([type]) => type)).toEqual(expect.arrayContaining(['RollModifier', 'Use', 'Trigger', 'LevelPick']));
+    const html = ruleFormHtml({ type: 'Trigger', event: 'turnStart', steps: [] });
+    expect(html.indexOf('value="Trigger" selected')).toBeGreaterThan(-1);
+    if (specific) {
+      expect(specific.label).toBe(lang.E20.Rules.Field.TypeItemSpecific);
+      expect(specific.options.map(([, label]) => label)).toEqual(sorted(specific.options.map(([, label]) => label)));
+      expect(html).toContain('<optgroup label=');
+    }
+  });
+
+  test('every Trigger event has a label, and the list is A-Z', () => {
+    const events = lang.E20.Rules.Field.Event;
+    const field = RULE_FORMS.Trigger.find(entry => entry.path == 'event');
+    expect(field.options.filter(([event]) => !events[event])).toEqual([]);
+    const html = fieldsHtml([field], { type: 'Trigger', event: 'turnStart' }, '', { type: 'Trigger' });
+    const labels = [...html.matchAll(/<option value="[^"]+"[^>]*>([^<]+)<\/option>/g)].map(match => match[1].replace(/&#39;/g, "'").replace(/&amp;/g, '&'));
+    expect(labels.length).toBeGreaterThan(30);
+    expect(labels).toEqual(sorted(labels));
+  });
+
+  test('an unlabelled type or event reads as a sentence', () => {
+    expect(fieldLabel('Type.MegaformHealth')).toBe('Megaform health');
+    expect(fieldLabel('Event.someoneSneezed')).toBe('Someone sneezed');
+  });
 });

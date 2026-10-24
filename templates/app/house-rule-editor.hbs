@@ -1,0 +1,34 @@
+<div class="house-rule-editor-body flexcol">
+  <div class="form-group">
+    <label>{{localize "E20.HouseRuleName"}}</label>
+    <input type="text" data-draft="label" value="{{draft.label}}" placeholder="{{localize "E20.HouseRuleNamePlaceholder"}}" />
+  </div>
+
+  <div class="form-group stacked">
+    <label>{{localize "E20.HouseRuleDescription"}}</label>
+    <textarea data-draft="hint" rows="2" placeholder="{{localize "E20.HouseRuleDescriptionPlaceholder"}}">{{draft.hint}}</textarea>
+  </div>
+
+  <label class="house-rule-editor-on">
+    <input type="checkbox" data-draft="on" {{checked draft.on}} />
+    <span>{{localize "E20.HouseRuleOn"}}</span>
+  </label>
+
+  <fieldset class="house-rules-group house-rule-editor-rules">
+    <legend>{{localize "E20.HouseRuleRules"}}</legend>
+    {{#each rules as |rule|}}
+      <div class="house-rule-editor-rule">
+        <span class="house-rule-editor-summary">
+          {{rule.summary}}
+          {{#each rule.errors as |error|}}<span class="house-rule-editor-error">{{error}}</span>{{/each}}
+        </span>
+        <a data-action="editRule" data-index="{{rule.index}}" data-tooltip="{{localize "E20.HouseRuleEditRule"}}" aria-label="{{localize "E20.HouseRuleEditRule"}}"><i class="fas fa-edit"></i></a>
+        <a data-action="removeRule" data-index="{{rule.index}}" data-tooltip="{{localize "E20.HouseRuleRemoveRule"}}" aria-label="{{localize "E20.HouseRuleRemoveRule"}}"><i class="fas fa-trash"></i></a>
+      </div>
+    {{else}}
+      <p class="house-rules-hint">{{localize "E20.HouseRuleNoRules"}}</p>
+    {{/each}}
+    <button type="button" data-action="addRule"><i class="fas fa-plus"></i> {{localize "E20.HouseRuleAddRule"}}</button>
+    <p class="house-rules-hint house-rule-editor-drop">{{localize "E20.HouseRuleDropHint"}}</p>
+  </fieldset>
+</div>

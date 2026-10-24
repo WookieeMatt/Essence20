@@ -1,6 +1,7 @@
 import { creatureTagsOf } from "../mechanics/characters/creature-tags.mjs";
 import { isExpired } from "./expiry.mjs";
 import { sourceOf } from "../items/shared/item-lookups.mjs";
+import { actorLineOf, lineCode } from "../mechanics/resources/game-lines.mjs";
 import { isUnarmedAttack } from "../items/shared/unarmed-attacks.mjs";
 import { choiceValue, chosenOf, hasChosen } from "./choice-read.mjs";
 
@@ -633,6 +634,19 @@ function actorTag(actor, ruleItem, rest) {
   case 'canTransform': return !!actor.system?.canTransform;
   case 'status': return statusOf(actor, arg);
   case 'type': return actor.type == arg;
+  // line:<gij|pr|tf|mlp|wtnv> (or giJoe, powerRangers...) - the actor's game line (mechanics/resources/game-lines.mjs#actorLineOf).
+  case 'line': {
+    let world = '';
+    try {
+      world = globalThis.game?.settings?.get?.('essence20', 'gameLine') ?? '';
+    } catch {
+      world = '';
+    }
+
+    const wanted = lineCode(arg);
+    return !!wanted && actorLineOf(actor, world) == wanted;
+  }
+
   case 'hasItem': return hasItem(actor, arg);
   // specializedIn:<skill> - the actor has a Specialization in that Skill (system.skills.<skill>.specializations,
   // where migration.mjs puts them; a not-yet-migrated Specialization item counts too).

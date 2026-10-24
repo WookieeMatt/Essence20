@@ -10,6 +10,12 @@
 
 .essence20 .skill-header.conditioning-row {
   margin-bottom: v.$gap-md;
+
+  // Conditioning shares .skill-name's look but isn't rollable: no hover highlight, so it doesn't read as a link.
+  .skill-name:hover {
+    color: var(--e20-theme-text-color);
+    cursor: default;
+  }
 }
 
 .essence20 .skill-header .skill-name {

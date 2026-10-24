@@ -84,16 +84,27 @@ export function newThreatState(overrides = {}, { gameLine = getGameLine(), party
  * @param {String} [options.folder]   An Actor folder id.
  * @returns {Promise<Actor|null>}
  */
+/**
+ * A Threat Builder state as a stat block IR (importers/stat-block-import.mjs's shape) - what createThreat makes the
+ * actor from, and what the Builder's Copy Stat Block exports before anything is created.
+ * @param {Object} state   A Threat Builder state (filled in with newThreatState's defaults).
+ * @returns {Object}
+ */
+export function threatIr(state) {
+  const s = newThreatState(state, { gameLine: getGameLine(), partyLevel: 1 });
+  const labels = { quickPerk: Object.fromEntries(QUICK_PERKS.map(key => [key, T(`E20.ThreatQuickPerk.${key}`)])) };
+  // buildThreatIr adds each quick "+Health" Perk itself; the base is the rule set's (or the override).
+  const health = s.healthOverride ?? threatHealth(Math.max(0, Number(s.tl) || 0), s.type);
+  return buildThreatIr({ ...s, health, ground: s.groundOverride ?? undefined }, labels);
+}
+
 export async function createThreat(state, { folder = null } = {}) {
   const s = newThreatState(state, { gameLine: getGameLine(), partyLevel: 1 });
   if (!s.name?.trim()) {
     throw new Error('essence20 | game.essence20.threats.create: the Threat needs a name.');
   }
 
-  const labels = { quickPerk: Object.fromEntries(QUICK_PERKS.map(key => [key, T(`E20.ThreatQuickPerk.${key}`)])) };
-  // buildThreatIr adds each quick "+Health" Perk itself; the base is the rule set's (or the override).
-  const health = s.healthOverride ?? threatHealth(Math.max(0, Number(s.tl) || 0), s.type);
-  const ir = buildThreatIr({ ...s, health, ground: s.groundOverride ?? undefined }, labels);
+  const ir = threatIr(s);
   const actor = await createActorFromStatBlock(ir, { type: s.ruleset == 'vehicle' ? 'vehicle' : 'npc', folder });
   if (!actor) {
     return null;
@@ -182,6 +193,9 @@ export function threatApi(open) {
     partyLevels,
     newState: newThreatState,
     create: createThreat,
+    // A Threat as printed-style stat block text another table's importer reads back - an actor, or a Builder state
+    // (mechanics/characters/stat-block-share.mjs).
+    exportStatBlock: async source => (await import("./stat-block-share.mjs")).statBlockText(source),
     grow: growThreat,
     audit: auditActor,
     linkedForm,

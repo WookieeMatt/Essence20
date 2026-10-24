@@ -45,7 +45,8 @@ export async function bayCandidates(actor) {
   const rows = [];
   // Not an Alt Mode's Ram / Flyby: its own Special Attack, which takes no Hardpoint (documents/actor.mjs#_isAltModeAttack).
   const altModeAttack = weapon => actor?._isAltModeAttack?.(weapon) ?? false;
-  for (const weapon of itemsOf(actor).filter(item => item.type == 'weapon' && !item.flags?.essence20?.weaponBay && !altModeAttack(item))) {
+  // Nor Unarmed Combat, a natural weapon in no Hardpoint (system.noHardpoint).
+  for (const weapon of itemsOf(actor).filter(item => item.type == 'weapon' && !item.flags?.essence20?.weaponBay && !altModeAttack(item) && !item.system?.noHardpoint)) {
     const check = await weaponBayHelpers.prerequisites(actor, weapon) ?? { met: true, unmet: [], asks: [] };
     rows.push({
       id: weapon.id, name: weapon.name, room: bayRoom(weapon), reinforcedRoom: bayRoom(weapon, true),

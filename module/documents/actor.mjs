@@ -88,6 +88,7 @@ import { createId } from "../util/utils.mjs";
 import { ruleMovementStages, ruleSurpriseModes } from "../rules/adapter.mjs";
 import { earlyDerivedStats } from "../rules/plugins/effects/derived-stages.mjs";
 import { dropRemovedRosterEntries, rosterRemoval } from "../util/roster.mjs";
+import { whilePreparing } from "../util/token-actor.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -450,7 +451,9 @@ export class Essence20Actor extends Actor {
     // the following, in order: data reset (to clear active effects),
     // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
     // prepareDerivedData().
-    super.prepareData();
+    // Marked while it prepares: an unlinked token's actor isn't stored on its token until this returns, so reading
+    // it back from in here would build it again (util/token-actor.mjs).
+    whilePreparing(this.token, () => super.prepareData());
   }
 
   /** @override */
@@ -892,6 +895,11 @@ export class Essence20Actor extends Actor {
       // The flag sits on the weapon's effect (weaponEffect isRam / isFlyby), listed in system.items and attached as
       // its own item (parentId) - live test 2026-10-07 found the weapon itself never carries it.
       if (this._isAltModeAttack(item)) {
+        continue;
+      }
+
+      // Unarmed Combat: a natural weapon, in no Hardpoint and no hands (documents/item.mjs#_prepareHardpointDerived).
+      if (item.system.noHardpoint) {
         continue;
       }
 
@@ -1638,8 +1646,11 @@ export class Essence20Actor extends Actor {
     // stale (often zeroed) values until something unrelated later happens to re-trigger this
     // Megaform's own prepareDerivedData(). Forcing each participant's own prepareData() first
     // guarantees this always aggregates current values, regardless of load order.
+    // reset(), not prepareData(): prepareData() alone doesn't clear the last pass's derived data, so every Megaform prep
+    // applied each Zord's Active Effects again on top (Heavy Chassis +1 Health bonus becoming +2, +3...) - and the Zord's
+    // sheet then saved the inflated bonus, making it permanent.
     for (const zord of participants) {
-      zord.prepareData();
+      zord.reset();
     }
 
     system.participantHealth = participants.map(zord => ({
@@ -1939,8 +1950,9 @@ export class Essence20Actor extends Actor {
     // See _prepareMegaformZordData's identical call for why this is needed - without it, a
     // Megaform that initializes before a linked component actor would aggregate that
     // component's still-unprepared (often zeroed) Health/Movement/Defenses/Essences.
+    // reset(), not prepareData() - see _prepareMegaformZordData: effects would stack on the component each pass.
     for (const component of participants) {
-      component.prepareData();
+      component.reset();
     }
 
     system.participantHealth = participants.map(component => ({

@@ -19,6 +19,12 @@
  *   Perks stop (Hawk's Personnel Files, Old Hand), so the base track only counts levels below the
  *   transition.
  *
+ * - LevelPick rules (rules/types.mjs) add picks of their own, at character levels, each on its own track (rulePickTrack)
+ *   - "everyone gets an extra General Perk at level 1" as a house rule. A level change counts them as it counts the Role's.
+ *   When the rules themselves change (a house rule switched, an item with one added or removed) syncRuleLevelPicks
+ *   brings the pending list in line: a pick for a level already reached is added, an unmade one whose rule went is
+ *   dropped, and anything already chosen through one stays.
+ *
  * The level arithmetic and the eligibility filter are pure and run under plain Node (level-picks.test.js).
  */
 
@@ -115,6 +121,57 @@ export function levelPickChanges({ baseRole, additiveRole = null, transitionLeve
   return { gained: [...base.gained, ...additive.gained], lost: [...base.lost, ...additive.lost] };
 }
 
+/** A LevelPick rule's track: its item and place in the item's rules, and which of its `count` picks. */
+export const rulePickTrack = (item, index, copy = 1) => `rule-${item?.id ?? 'x'}-${index}${copy > 1 ? `-${copy}` : ''}`;
+
+/** Whether a pick comes from a LevelPick rule rather than a Role. */
+export const isRulePick = pick => String(pick?.track ?? '').startsWith('rule-');
+
+/**
+ * The picks a character's LevelPick rules give and take away between two character levels. Grid Powers only for a Power
+ * Rangers character (`version`, the base Role's line) - a house rule for everyone doesn't hand them to other lines.
+ * @param {Array<{rule, item, index}>} entries   The LevelPick rules (rules/index.mjs#collectRules).
+ * @param {Number} previousLevel
+ * @param {Number} newLevel
+ * @param {Object} [options]
+ * @param {?String} [options.version]
+ * @returns {{gained: Array, lost: Array}}
+ */
+export function rulePickChanges(entries, previousLevel, newLevel, { version = null } = {}) {
+  const changes = { gained: [], lost: [] };
+  for (const { rule, item, index } of Array.isArray(entries) ? entries : []) {
+    const kind = rule?.kind;
+    if (!LEVEL_PICK_KINDS[kind] || (kind == 'gridPower' && version != 'powerRangers')) {
+      continue;
+    }
+
+    const count = Math.max(1, Math.floor(Number(rule.count) || 1));
+    const { gained, lost } = crossedLevels(rule.levels, previousLevel, newLevel);
+    for (let copy = 1; copy <= count; copy++) {
+      const track = rulePickTrack(item, index, copy);
+      const make = level => ({ key: pickKey(kind, track, level), kind, track, level, source: item?.name ?? '' });
+      changes.gained.push(...gained.map(make));
+      changes.lost.push(...lost.map(make));
+    }
+  }
+
+  return changes;
+}
+
+/**
+ * The pending list once the LevelPick rules have changed: rule picks no rule gives any more go (unless already made -
+ * those are items, and stay), and every pick the rules give up to the character's level is added unless pending or made.
+ * @param {Array<{key}>} pending
+ * @param {Array<{key}>} expected   rulePickChanges(rules, 0, level).gained
+ * @param {Set<String>} chosenKeys
+ * @returns {Array<{key}>}
+ */
+export function reconcileRulePicks(pending, expected, chosenKeys = new Set()) {
+  const wanted = new Set(expected.map(pick => pick.key));
+  const kept = (Array.isArray(pending) ? pending : []).filter(pick => pick?.key && (!isRulePick(pick) || wanted.has(pick.key)));
+  return nextPending(kept, { gained: expected, lost: [] }, chosenKeys);
+}
+
 /**
  * The pending list after a change: gained picks added (unless pending or already chosen), lost ones removed.
  * @param {Array<{key}>} pending
@@ -181,10 +238,22 @@ export function pendingLevelPicks(actor) {
 /** The pick a chosen item was taken for (flags.essence20.levelPick), or null. */
 const chosenKeyOf = item => item?.flags?.essence20?.levelPick?.key ?? null;
 
-/** A pick's label: "General Perk (4th level)". */
+/** A pick's label: "General Perk (4th level)", or with a rule's own source: "General Perk (1st level, Extra Perk)". */
 export function levelPickLabel(pick) {
   const level = T(CONFIG.E20?.actorLevels?.[`level${pick.level}`] ?? String(pick.level));
-  return T('E20.LevelPickLabel', { kind: T(LEVEL_PICK_KINDS[pick.kind]?.label ?? pick.kind), level });
+  const kind = T(LEVEL_PICK_KINDS[pick.kind]?.label ?? pick.kind);
+  return pick.source ? T('E20.LevelPickLabelFrom', { kind, level, source: pick.source }) : T('E20.LevelPickLabel', { kind, level });
+}
+
+/**
+ * The actor's own LevelPick rules, house rules included, whose "Only when…" holds for them now (self:line:pr,
+ * self:level>=5...). A condition that can't be told outside a roll doesn't stop it.
+ */
+async function levelPickRules(actor) {
+  const { collectRules } = await import("../../rules/index.mjs");
+  const { contextFor, evaluate } = await import("../../rules/predicate.mjs");
+  return (collectRules(actor).LevelPick ?? []).filter(entry => (entry.rule.scope ?? 'self') == 'self'
+    && evaluate(entry.rule.when, contextFor({ self: actor, holder: actor, ruleItem: entry.item })) !== false);
 }
 
 /**
@@ -204,10 +273,16 @@ export async function updateLevelPicks(actor, previousLevel, newLevel, { open = 
     return [];
   }
 
+  // A LevelPick rule whose condition a level change switches (self:level>=5) gives or drops its unmade picks here.
+  await syncRuleLevelPicks(actor);
+
   const additiveRole = roles.find(role => role.system?.isAdditive) ?? null;
   const changes = levelPickChanges({
     baseRole, additiveRole, transitionLevel: actor.system?.oldHandTransitionLevel, previousLevel, newLevel,
   });
+  const fromRules = rulePickChanges(await levelPickRules(actor), previousLevel, newLevel, { version: baseRole.system?.version });
+  changes.gained.push(...fromRules.gained);
+  changes.lost.push(...fromRules.lost);
   if (!changes.gained.length && !changes.lost.length) {
     return [];
   }
@@ -231,6 +306,82 @@ export async function updateLevelPicks(actor, previousLevel, newLevel, { open = 
 
   return gained;
 }
+
+/**
+ * Bring a character's rule picks in line with the LevelPick rules they have now (a house rule switched, an item with one
+ * added or removed): picks for levels already reached are added, unmade ones no rule gives go; chosen items stay.
+ * @param {Actor} actor
+ * @returns {Promise<Boolean>}   Whether any pick was added.
+ */
+export async function syncRuleLevelPicks(actor) {
+  const roles = actor?.items?.documentsByType?.role ?? itemList(actor).filter(item => item.type == 'role');
+  const baseRole = roles.find(role => !role.system?.isAdditive);
+  const level = Number(actor?.system?.level) || 0;
+  const expected = baseRole && level > 0
+    ? rulePickChanges(await levelPickRules(actor), 0, level, { version: baseRole.system?.version }).gained : [];
+  const chosenKeys = new Set(itemList(actor).map(chosenKeyOf).filter(Boolean));
+  const before = pendingLevelPicks(actor);
+  const pending = reconcileRulePicks(before, expected, chosenKeys);
+  if (JSON.stringify(pending) == JSON.stringify(before)) {
+    return false;
+  }
+
+  await actor.setFlag('essence20', LEVEL_PICK_FLAG, pending);
+  const beforeKeys = new Set(before.map(pick => pick.key));
+  return pending.some(pick => !beforeKeys.has(pick.key));
+}
+
+/** Every character, once the house rules settle (the active GM only; one sweep for a burst of changes). */
+let sweepTimer = null;
+function syncAllRuleLevelPicks() {
+  clearTimeout(sweepTimer);
+  sweepTimer = setTimeout(async () => {
+    if (!game.users?.activeGM?.isSelf) {
+      return;
+    }
+
+    let count = 0;
+    for (const actor of game.actors ?? []) {
+      if (actor.type != 'playerCharacter') {
+        continue;
+      }
+
+      try {
+        count += (await syncRuleLevelPicks(actor)) ? 1 : 0;
+      } catch (error) {
+        console.error(`Essence20 | level picks for ${actor.name}`, error);
+      }
+    }
+
+    if (count) {
+      ui.notifications.info(T('E20.LevelPickRulesChanged', { count }));
+    }
+  }, 300);
+}
+
+/** An item with a LevelPick rule added, removed or its rules edited: its character's picks follow (that user's client). */
+async function onLevelPickItem(item, userId, changes = null) {
+  const actor = item?.parent;
+  if (userId != game.user?.id || actor?.documentName != 'Actor' || actor.type != 'playerCharacter') {
+    return;
+  }
+
+  if (changes && !foundry.utils.hasProperty(changes, 'system.rules')) {
+    return;
+  }
+
+  const { collectRules, rulesOf } = await import("../../rules/index.mjs");
+  // Any item counts when a LevelPick rule's condition may read the actor's items (self:hasItem...).
+  const conditional = (collectRules(actor).LevelPick ?? []).some(entry => Array.isArray(entry.rule.when) && entry.rule.when.length);
+  if (changes || conditional || rulesOf(item).some(rule => rule?.type == 'LevelPick')) {
+    await syncRuleLevelPicks(actor);
+  }
+}
+
+globalThis.Hooks?.on?.('essence20.houseRulesRefreshed', syncAllRuleLevelPicks);
+globalThis.Hooks?.on?.('createItem', (item, options, userId) => onLevelPickItem(item, userId));
+globalThis.Hooks?.on?.('deleteItem', (item, options, userId) => onLevelPickItem(item, userId));
+globalThis.Hooks?.on?.('updateItem', (item, changes, options, userId) => onLevelPickItem(item, userId, changes));
 
 /**
  * A Role is going: its pending picks go, and the items chosen for them, as its Role Perks do.

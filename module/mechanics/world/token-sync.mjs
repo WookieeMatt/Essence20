@@ -1,4 +1,5 @@
 import { buildDetectionModes } from "../../items/senses/blindsight.mjs";
+import { orientedSize } from "../../canvas/token-facing.mjs";
 
 /**
  * Keeping an actor's placed tokens in step with it: size, image, and vision (sight and Blindsight).
@@ -12,8 +13,10 @@ import { buildDetectionModes } from "../../items/senses/blindsight.mjs";
  */
 export function resizeTokens(actor, width, height) {
   for (const token of sizedTokensOf(actor)) {
-    if (token.width != width || token.height != height) {
-      token.update({ height, width });
+    // A non-square token turned on its side keeps standing that way (canvas/token-facing.mjs).
+    const size = orientedSize(width, height, token.rotation, { lockRotation: token.lockRotation });
+    if (token.width != size.width || token.height != size.height) {
+      token.update({ height: size.height, width: size.width });
     }
   }
 }

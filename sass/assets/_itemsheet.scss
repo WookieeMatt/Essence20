@@ -107,6 +107,19 @@
   font-size: 11px;
 }
 
+/* Every tab scrolls inside the window. The window's content is a flex column that hides its overflow, so a tab
+   left at its natural height (Description, with the automation notes) ran off the bottom of a small window with no
+   way to reach the rest. The header and the tab bar keep their size; the active tab takes what's left and scrolls. */
+.essence20.item > .window-content > section.tab {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.essence20.item > .window-content > :not(section.tab) {
+  flex-shrink: 0;
+}
+
 /* Tab content panels */
 .essence20.item .tab.description > div,
 .essence20.item .tab.details > div,

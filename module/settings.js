@@ -1,6 +1,8 @@
 import CompendiumBrowserSourceConfig from "./apps/compendium-browser-sources.mjs";
 import BookDescriptionImporter from "./apps/book-description-importer.mjs";
 import AdventureImporter from "./apps/adventure-importer.mjs";
+import HouseRulesConfig from "./apps/house-rules-config.mjs";
+import { HOUSE_RULES_SETTING, WORLD_HOUSE_RULES_SETTING, refreshHouseRuleActors, syncWorldHouseRules } from "./rules/house-rules.mjs";
 import { invalidateImportedDescriptions } from "./importers/book-descriptions-store.mjs";
 import { applyGameLineToSourcebooks } from "./util/compendium-browser.mjs";
 import { E20 } from "./util/config.mjs";
@@ -152,6 +154,7 @@ export const SETTING_GROUPS = [
   { label: "E20.SettingsGroupCompendiumBrowser", firstKey: "enabledSourcebooksMenu" },
   { label: "E20.SettingsGroupBookDescriptions", firstKey: "bookDescriptionsMenu" },
   { label: "E20.SettingsGroupAdventure", firstKey: "adventureImporterMenu" },
+  { label: "E20.SettingsGroupHouseRules", firstKey: "houseRulesMenu" },
   { label: "E20.SettingsGroupGameLine", firstKey: "gameLine" },
   { label: "E20.SettingsGroupStoryPointTracker", firstKey: "sptAccess" },
   { label: "E20.SettingsGroupCombat", firstKey: "actionEconomyMode" },
@@ -378,6 +381,16 @@ export const registerSettings = function () {
   game.settings.register(systemName, "sceneClockAdvanceOnCombatEnd", {
     name: game.i18n.localize("E20.SceneClockOptionAdvanceOnCombatEnd"),
     hint: game.i18n.localize("E20.SceneClockOptionAdvanceOnCombatEndHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+  });
+
+  // Non-square tokens (canvas/token-facing.mjs): the wheel turns them a whole facing (90°) at a time; Alt rotates freely.
+  game.settings.register(systemName, "tokenFacingSnap", {
+    name: game.i18n.localize("E20.TokenFacingSnapLabel"),
+    hint: game.i18n.localize("E20.TokenFacingSnapHint"),
     scope: "world",
     config: true,
     default: true,
@@ -616,4 +629,44 @@ export const registerSettings = function () {
     type: AdventureImporter,
     restricted: true,
   });
+
+  /* -------------------------------------------- */
+  /*  House Rules                                 */
+  /* -------------------------------------------- */
+
+  // Which registered house rules are on (rules/house-rules.mjs): {id: Boolean}, a missing id taking the rule's default.
+  game.settings.register(systemName, HOUSE_RULES_SETTING, {
+    scope: "world",
+    config: false,
+    type: Object,
+    default: {},
+    onChange: () => {
+      refreshHouseRuleActors();
+      foundry.applications.instances.get("essence20-house-rules")?.render();
+    },
+  });
+
+  // The world's own house rules, made on the House Rules page (apps/house-rule-editor.mjs): [{id, label, hint, rules}].
+  game.settings.register(systemName, WORLD_HOUSE_RULES_SETTING, {
+    scope: "world",
+    config: false,
+    type: Array,
+    default: [],
+    onChange: list => {
+      syncWorldHouseRules(Array.isArray(list) ? list : []);
+      foundry.applications.instances.get("essence20-house-rules")?.render();
+    },
+  });
+
+  game.settings.registerMenu(systemName, "houseRulesMenu", {
+    name: "E20.HouseRulesMenuLabel",
+    label: "E20.HouseRulesMenuButton",
+    hint: "E20.HouseRulesMenuHint",
+    icon: "fa-solid fa-scroll",
+    type: HouseRulesConfig,
+    restricted: true,
+  });
+
+  // Load the world's own house rules now, before any actor prepares its rules.
+  syncWorldHouseRules();
 };

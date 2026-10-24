@@ -27,6 +27,7 @@ other two are meant to be searched.
 | --- | --- |
 | **[QA_PLAN.md](QA_PLAN.md)** | The testing strategy, layer by layer, and why each layer is tested the way it is — including why `sheet-handlers/` is deliberately not unit-tested. |
 | **[RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md)** | The manual regression pass to work through before tagging a release. Thirteen sections. |
+| **[toolchain-upgrade/](toolchain-upgrade/README.md)** | The Node 22 / pinned Sass / dependency clean-up planned for v6.1 or v7: how to land it, and the steps every developer follows afterwards to update their environment. |
 
 ---
 

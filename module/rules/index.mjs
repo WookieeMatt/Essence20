@@ -2,6 +2,7 @@ import { RULE_TYPES } from "./types.mjs";
 import { rulesSourceOf } from "./inherit.mjs";
 import { itemsOf } from "../items/shared/item-lookups.mjs";
 import { choiceValue, chosenOf } from "./choice-read.mjs";
+import { houseRuleEntries } from "./house-rules.mjs";
 
 /**
  * Reading an actor's rules (docs/RULES_ENGINE_PLAN.md §6, §8).
@@ -119,6 +120,13 @@ export function collectRules(actor) {
 
       (buckets[rule.type] ??= []).push({ rule, item, index });
     });
+  }
+
+  // The world's house rules (rules/house-rules.mjs): held by every actor, on a stand-in item named after the house rule.
+  for (const entry of houseRuleEntries(actor)) {
+    if (entry.rule && !entry.rule.disabled && RULE_TYPES[entry.rule.type]) {
+      (buckets[entry.rule.type] ??= []).push(entry);
+    }
   }
 
   for (const list of Object.values(buckets)) {

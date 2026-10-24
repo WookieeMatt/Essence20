@@ -84,6 +84,7 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
       removeRow: ThreatBuilder.#onRemoveRow,
       essencesFromSkills: ThreatBuilder.#onEssencesFromSkills,
       create: ThreatBuilder.#onCreate,
+      copyStatBlock: ThreatBuilder.#onCopyStatBlock,
       remember: ThreatBuilder.#onRemember,
       openSkillPicker: ThreatBuilder.#onOpenSkillPicker,
       openCompendium: ThreatBuilder.#onOpenCompendium,
@@ -264,7 +265,8 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
       shiftChoices: { d20: '—', ...Object.fromEntries(RANKED_SHIFTS.map(shift => [shift, `+${shift}`])) },
       essenceTotal: ESSENCES.reduce((sum, e) => sum + (Number(s.essences?.[e]) || 0), 0),
       defenseRows: Object.entries(d.defenses).map(([key, value]) => ({ label: game.i18n.localize(CONFIG.E20.defenses[key]), value })),
-      quickPerkChoices: QUICK_PERKS.map(key => ({ key, label: T(`E20.ThreatQuickPerk.${key}`) })),
+      // The pick is kept across redraws (the form redraws on every change - picking one used to snap it back to the first).
+      quickPerkChoices: QUICK_PERKS.map(key => ({ key, label: T(`E20.ThreatQuickPerk.${key}`), selected: key == this._quickPerk })),
       quickPerkRows: (s.quickPerks ?? []).map((perk, i) => ({ ...perk, index: i, label: T(`E20.ThreatQuickPerk.${perk.key}`), isDamage: perk.key == 'damage' })),
       attackChoices: Object.fromEntries((s.attacks ?? []).map((a, i) => [i, a.name || `#${i + 1}`])),
       maxDamagePerks: maxDamagePerks(d.size),
@@ -286,6 +288,12 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
   _onRender(context, options) {
     super._onRender(context, options);
     applyThemeClass(this.element);
+    // The quick-perk pick isn't form data: kept here, and kept from the form's save-and-redraw on change - which reset it
+    // to the first option (+1 Health) before Add could read it, and took the focus off it.
+    this.element.querySelector('[data-quick-perk-select]')?.addEventListener('change', event => {
+      event.stopPropagation();
+      this._quickPerk = event.target.value;
+    });
     new foundry.applications.ux.DragDrop.implementation({
       dropSelector: '.threat-builder-drop',
       callbacks: { drop: this._onDrop.bind(this) },
@@ -403,7 +411,7 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
   }
 
   static #onAddQuickPerk(event, target) {
-    const key = this.element.querySelector('[data-quick-perk-select]')?.value ?? target.dataset.key;
+    const key = this.element.querySelector('[data-quick-perk-select]')?.value ?? this._quickPerk ?? target.dataset.key;
     if (key) {
       this._state.quickPerks.push({ key, attack: 0 });
       this.render();
@@ -429,6 +437,12 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
     const s = this._state;
     s.essences = { ...s.essences, ...essencesFromSkills({ skills: s.skills, conditioning: s.conditioning }) };
     this.render();
+  }
+
+  /** The Threat as it stands, as stat block text to share - before (or without) creating it. */
+  static async #onCopyStatBlock() {
+    const { showStatBlock, statBlockText } = await import("../mechanics/characters/stat-block-share.mjs");
+    await showStatBlock(await statBlockText(this._state), this._state.name ?? '');
   }
 
   static async #onCreate() {

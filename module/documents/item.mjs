@@ -1,4 +1,5 @@
 import { runSpellCost } from "../mechanics/item-hooks.mjs";
+import { isNaturalWeapon } from "../items/shared/unarmed-attacks.mjs";
 import { endOnFumble } from "../mechanics/resources/grants.mjs";
 import { ablativeLossOf, weaponUnusable } from "../mechanics/combat/target-riders.mjs";
 import { wipeCoating } from "../items/gear/poison-coating.mjs";
@@ -546,6 +547,9 @@ export class Essence20Item extends Item {
   *   Alt Mode if hidden, Any Mode if obvious).
   */
   _prepareHardpointDerived() {
+    // Unarmed Combat is a natural weapon - punches, kicks, headbutts (TF CRB p.120, Hands 0, Automatic): nothing held or
+    // installed, so it takes no Hardpoint and no hands, can't be disarmed, and never takes the Integrated movement ↓.
+    this.system.noHardpoint = isNaturalWeapon(this);
     const hardpoint = this.system.hardpoint ?? {};
     const isIntegrated = hardpoint.type == 'integrated';
 
