@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","event":"added","label":"Wind Whispers (+2 Evasion for you or a teammate)","steps":[{"do":"pick","key":"who","from":"team"},{"do":"updateActor","to":"picked:who","add":{"system.defenses.evasion.bonus":2}}]}
+      {"type":"Trigger","event":"added","label":"Wind Whispers (+2 Evasion for you or a teammate)","steps":[{"do":"pick","key":"who","from":"team"},{"do":"updateActor","to":"picked:who","add":{"system.defenses.evasion.bonus":2}}]},
+      {"type":"Trigger","event":"removed","label":"Wind Whispers removed (its +2 Evasion goes)","steps":[{"do":"updateActor","to":"picked:who","add":{"system.defenses.evasion.bonus":-2}}]}
     ],
     "automation": {
       "status": "full",

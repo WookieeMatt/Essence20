@@ -253,7 +253,7 @@ templates/actor/
 └── parts/
     ├── main/    the body of each tab
     ├── misc/    shared fragments: defenses, health, movement, initiative, action-economy,
-    │            energon, power-points, training, collapsible containers, skill-picker parts
+    │            energon, training, collapsible containers, skill-picker parts
     └── items/<type>/{container,details}.hbs
 ```
 

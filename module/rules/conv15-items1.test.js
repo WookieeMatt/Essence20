@@ -854,7 +854,9 @@ describe('Defender Step, Swift Defender, Continuous Stance, Retribution', () => 
     const magna = makeActor([packItem('defenderStep'), ID(SWIFT_DEFENDER), ID(CONTINUOUS_STANCE)], { name: 'Magna' });
     allyTokens = [{ actor: magna }];
     expect(await allyDefenseReactions(ally, makeActor(), { confirm: async () => true })).toEqual({ bonus: 2, reactorUuid: magna.uuid });
-    expect([magna.system.powers.personal.value, magna.system.health.bonus]).toEqual([2, 1]);
+    expect(magna.system.powers.personal.value).toBe(2);
+    // The temporary Health goes through the ledger (mocked here), which takes it back at the scene's end.
+    expect(temp).toEqual([expect.objectContaining({ name: 'Magna', kind: 'health', amount: 1 })]);
   });
 
   test('allyDefended: hit despite the boost, turned by it, or missed anyway (the boosted row\'s raw total against its DIF)', () => {
@@ -1362,8 +1364,17 @@ describe('Scramble, Elemental Adaptation, Interspatial Pause, Shield Modulation,
     await use(perk);
     expect(actor.flags.essence20.heard).toBe(1);
     expect(available(perk)).toBe(false);
-    const bank = await import('./bank.mjs');
-    expect(bank.bankedEntries(actor).map(entry => [entry.defense, entry.defenseBonus])).toEqual([['evasion', 1]]);
+    // For the remainder of the scene (TF CRB p.75): a scene mark switches the item's own Defense rule on, not a one-roll bank.
+    expect(markOf(actor, 'massShiftEvasion')).toBeTruthy();
+    expect(markOf(actor, 'massShiftToughness')).toBeFalsy();
+
+    const skilled = makeActor([packItem('massShift')], { system: { skills: { athletics: { shift: 'd6' }, might: { shift: 'd4' } } } });
+    chooses = ['↑1 on a Skill'];
+    picks = ['athletics'];
+    await use(skilled.items.contents[0]);
+    const upshift = skill => ruleRollSources(skilled, null, { item: null, rolledSkill: skill }).sources.filter(source => /Mass Shift/.test(source.label));
+    expect(upshift('athletics').map(source => source.shiftUp)).toEqual([1]);
+    expect(upshift('might')).toEqual([]);
 
     const second = makeActor([packItem('massShift')], { system: { skills: { athletics: { shift: 'd6' }, might: { shift: 'd4' } } } });
     const sword = effect(second, { totalReach: 5 });
@@ -1375,7 +1386,9 @@ describe('Scramble, Elemental Adaptation, Interspatial Pause, Shield Modulation,
     const third = makeActor([packItem('massShift')]);
     chooses = [lang('MassShiftBenefitTempHealth')];
     await use(third.items.contents[0]);
-    expect(third.system.health.bonus).toBe(1);
+    // Temporary: through the temporary-Health ledger, taken back at the scene's end - not a permanent Health bonus.
+    expect(temp).toEqual([expect.objectContaining({ kind: 'health', amount: 1 })]);
+    expect(third.system.health.bonus ?? 0).toBe(0);
   });
 
   test('Mode Attachment: the Use records the mode; changing into it asks for Technology DIF 10 + half your level', async () => {
