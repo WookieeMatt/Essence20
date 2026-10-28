@@ -579,6 +579,7 @@ function actorFact(rest, who, family) {
   case 'morphed': return is('Morphed');
   case 'transformed': return is('in Alt Mode');
   case 'canTransform': return fact('while', `${W.who} can change to Alt Mode`, `${W.who} can't change to Alt Mode`);
+  case 'movement': return has(`${humanize(arg)} Movement (in either Mode)`);
   case 'status': return /^any(:|$)/.test(arg) ? is(arg.length > 4 ? statusList(arg.slice(4)) : 'under any Condition') : is(arg.endsWith(':timed') ? `${statusWords(arg.slice(0, -6))} for a set time` : statusList(arg));
   case 'type': return is(ACTOR_TYPES[arg] ?? article(lowerWords(arg)), 'if');
   case 'line': return is(`from the ${LINE_NAMES[arg] ?? humanize(arg)} line`, 'if');
