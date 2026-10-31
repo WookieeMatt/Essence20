@@ -5,6 +5,7 @@ import {
 } from "../mechanics/rolls/skill-picker-math.mjs";
 import { addSpecialization, deleteSpecialization } from "../sheet-handlers/specialization-handler.mjs";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { specializationsForRole } from "../mechanics/resources/custom-game-lines.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 // Display order for the 4 real Essences' tally boxes and fieldsets - a 2x2 grid, Strength/Speed
@@ -146,7 +147,7 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     // would just be rejected.
     const role = this._actor.items.documentsByType.role[0];
     const standardSpecializationsForVersion = role
-      ? CONFIG.E20.standardSpecializations[role.system.version] || {}
+      ? specializationsForRole(role, CONFIG.E20.standardSpecializations)
       : {};
 
     context.standardSpecializations = {};

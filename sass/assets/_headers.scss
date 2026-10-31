@@ -675,3 +675,23 @@
     margin: 0;
   }
 }
+
+/* A homebrew line's look (Game Lines > Look, mechanics/resources/line-look.mjs). Header art sits behind the header under
+   a wash of the panel colour, so the fields on it stay readable; the logo sits in the title bar, before the title. */
+.essence20.e20-line-art .sheet-header {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--e20-theme-bg-color) 70%, transparent), color-mix(in srgb, var(--e20-theme-bg-color) 70%, transparent)),
+    var(--e20-line-header-art);
+  background-size: cover;
+  background-position: center;
+}
+
+.essence20 > .window-header .e20-line-logo {
+  flex: 0 0 auto;
+  height: 22px;
+  width: auto;
+  max-width: 96px;
+  margin-right: 6px;
+  object-fit: contain;
+  border: none;
+}

@@ -48,5 +48,28 @@
   </div>
   {{/if}}
 
+  {{!-- Homebrew forms, GM only (mechanics/vehicles/megaform-participants.mjs): who may join - none ticked keeps the
+       book's rules for its type - and who must be on the scene before it can Join. --}}
+  {{#if megaformJoin}}
+  <fieldset class="megaform-join-rules">
+    <legend>{{localize 'E20.MegaformJoinRules'}}</legend>
+    <div class="form-group">
+      <label data-tooltip="{{localize 'E20.MegaformJoinTypesHint'}}">{{localize 'E20.MegaformJoinTypes'}}</label>
+      <multi-checkbox name="system.joinTypes">
+        {{selectOptions megaformJoin.types selected=system.joinTypes localize=true}}
+      </multi-checkbox>
+    </div>
+    <p class="hint">{{#if megaformJoin.custom}}{{localize 'E20.MegaformJoinTypesCustom'}}{{else}}{{localize 'E20.MegaformJoinTypesBook'}}{{/if}}</p>
+    {{#if megaformJoin.roster}}
+    <div class="form-group">
+      <label data-tooltip="{{localize 'E20.MegaformRequiredMembersHint'}}">{{localize 'E20.MegaformRequiredMembers'}}</label>
+      <multi-checkbox name="system.requiredMembers">
+        {{selectOptions megaformJoin.roster selected=system.requiredMembers}}
+      </multi-checkbox>
+    </div>
+    {{/if}}
+  </fieldset>
+  {{/if}}
+
   {{> "systems/essence20/templates/actor/parts/misc/system-actors.hbs" actors=@root.actors}}
 </section>

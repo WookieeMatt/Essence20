@@ -2,11 +2,19 @@ import CompendiumBrowserSourceConfig from "./apps/compendium-browser-sources.mjs
 import BookDescriptionImporter from "./apps/book-description-importer.mjs";
 import AdventureImporter from "./apps/adventure-importer.mjs";
 import HouseRulesConfig from "./apps/house-rules-config.mjs";
-import { HOUSE_RULES_SETTING, WORLD_HOUSE_RULES_SETTING, refreshHouseRuleActors, syncWorldHouseRules } from "./rules/house-rules.mjs";
+import { HOUSE_RULES_SETTING, WORLD_HOUSE_RULES_SETTING, refreshHouseRuleActors, syncModuleHouseRules, syncWorldHouseRules } from "./rules/house-rules.mjs";
 import { invalidateImportedDescriptions } from "./importers/book-descriptions-store.mjs";
 import { applyGameLineToSourcebooks } from "./util/compendium-browser.mjs";
 import { E20 } from "./util/config.mjs";
 import { refreshStateIcons } from "./mechanics/characters/morph-state.mjs";
+import { CUSTOM_GAME_LINES_SETTING, customLine, lineFamily, setCustomLines } from "./mechanics/resources/custom-game-lines.mjs";
+import { applyLook, hasLook } from "./mechanics/resources/line-look.mjs";
+import GameLinesConfig from "./apps/game-lines-config.mjs";
+import HomebrewExport, { HOMEBREW_EXPORT_SETTING } from "./apps/homebrew-export.mjs";
+import { MODULE_SETTINGS_OFFERED } from "./mechanics/export/module-settings.mjs";
+import { VEHICLE_ALT_MODES_SETTING } from "./mechanics/vehicles/vehicle-alt-modes.mjs";
+import { CROSSOVER_TERMS_SETTING, applyWorldTerms } from "./mechanics/resources/line-terms-hooks.mjs";
+import { EPISODE_TOOLS_SETTING, MISSION_TEMPLATES_SETTING } from "./mechanics/campaign/episode-tools.mjs";
 
 export const setting = (key) => {
   return game.settings?.get("essence20", key) ?? "default";
@@ -17,9 +25,43 @@ export const setting = (key) => {
  *
  * Not routed through setting(): its not-ready fallback is the string "default", which is a
  * real theme name but not a real game line, and would read as a line nobody selected.
+ *
+ * A world on a homebrew line (Configure Settings > Game Lines) reads as the book line it's built
+ * on, so everything that asks "which rules?" - the Party sheet, Story Points, the Threat Builder -
+ * gets a book line. getGameLineId() is the homebrew line itself.
  * @returns {string} A key of E20.gameVersions, or "".
  */
-export const getGameLine = () => game.settings?.get("essence20", "gameLine") ?? "";
+export const getGameLine = () => {
+  // A homebrew line since deleted reads as no line, not as an unknown one.
+  return lineFamily(game.settings?.get("essence20", "gameLine") ?? "");
+};
+
+/** The world's Game Line setting as chosen: a book line's key, a homebrew line's id, or "". */
+export const getGameLineId = () => game.settings?.get("essence20", "gameLine") ?? "";
+
+/** The world's and the active modules' homebrew game lines, into the registry (mechanics/resources/custom-game-lines.mjs). */
+export const syncCustomGameLines = () => {
+  const moduleLines = [...(game.modules ?? [])]
+    .filter(module => module.active && Array.isArray(module.flags?.essence20?.gameLines))
+    .map(module => ({ id: module.id, lines: module.flags.essence20.gameLines }));
+  const lines = setCustomLines(game.settings.get("essence20", CUSTOM_GAME_LINES_SETTING) ?? [], moduleLines);
+
+  // The Game Line dropdown offers them too, each named with the book line it's built on.
+  const choices = game.settings.settings.get("essence20.gameLine")?.choices;
+  if (choices) {
+    for (const key of Object.keys(choices)) {
+      if (key && !E20.gameVersions[key]) {
+        delete choices[key];
+      }
+    }
+
+    for (const line of lines) {
+      choices[line.id] = game.i18n.format("E20.GameLinesChoice", { name: line.label, family: game.i18n.localize(E20.gameVersions[line.family]) });
+    }
+  }
+
+  return lines;
+};
 
 export const getCurrentUiTheme = () => {
   const coreUIConfig = game?.settings?.get?.("core", "uiConfig");
@@ -90,6 +132,20 @@ export const migrateSheetThemeSetting = async () => {
 /** Every frame theme this system offers, so a stale one can always be cleared. */
 const FRAME_THEME_CLASSES = ["theme-default", "theme-pony"];
 
+/**
+ * A window's line look (mechanics/resources/line-look.mjs): the line it's stamped with (data-e20-line - an actor's
+ * sheet, its items and chat cards, mechanics/resources/line-look-hooks.mjs) when that line has one, else the world
+ * line's; null for none.
+ * @param {HTMLElement} element
+ * @returns {Object|null}
+ */
+export const lookFor = (element) => {
+  const own = customLine(element?.dataset?.e20Line)?.look;
+  if (hasLook(own)) return own;
+  const world = customLine(getGameLineId())?.look;
+  return hasLook(world) ? world : null;
+};
+
 export const applyThemeClass = (element) => {
   if (!element) return;
   element.classList.remove("theme-light", "theme-dark");
@@ -105,9 +161,14 @@ export const applyThemeClass = (element) => {
   // Nothing applied this before: getDefaultTheme() was exported and never called, so the
   // theme-pony rules in _theme_wrapper.scss had never once matched an element and the
   // setting appeared to do nothing.
+  //
+  // A homebrew line's look can pick the frame for its sheets (blank keeps each player's own), and adds its accent,
+  // logo and header art.
   element.classList.remove(...FRAME_THEME_CLASSES);
-  const frameClass = getDefaultTheme();
+  const look = lookFor(element);
+  const frameClass = look?.frame ? `theme-${look.frame}` : getDefaultTheme();
   if (FRAME_THEME_CLASSES.includes(frameClass)) element.classList.add(frameClass);
+  applyLook(element, look);
 };
 
 /**
@@ -154,7 +215,9 @@ export const SETTING_GROUPS = [
   { label: "E20.SettingsGroupCompendiumBrowser", firstKey: "enabledSourcebooksMenu" },
   { label: "E20.SettingsGroupBookDescriptions", firstKey: "bookDescriptionsMenu" },
   { label: "E20.SettingsGroupAdventure", firstKey: "adventureImporterMenu" },
+  { label: "E20.SettingsGroupGameLines", firstKey: "gameLinesMenu" },
   { label: "E20.SettingsGroupHouseRules", firstKey: "houseRulesMenu" },
+  { label: "E20.SettingsGroupHomebrewExport", firstKey: "homebrewExportMenu" },
   { label: "E20.SettingsGroupGameLine", firstKey: "gameLine" },
   { label: "E20.SettingsGroupStoryPointTracker", firstKey: "sptAccess" },
   { label: "E20.SettingsGroupCombat", firstKey: "actionEconomyMode" },
@@ -246,9 +309,29 @@ export const registerSettings = function () {
   /*  Game Line                                   */
   /* -------------------------------------------- */
 
-  /* Which of the five lines this world is playing. It names the Party sheet ("Strike Team",
-     "Ranger Team", ...), decides whether that sheet offers Requisition at all, and on change
-     switches off the other lines' sourcebooks - see applyGameLineToSourcebooks(). */
+  /* The world's own homebrew game lines (Configure Settings > Game Lines - apps/game-lines-config.mjs),
+     registered first so the Game Line dropdown below can offer them. */
+  game.settings.register(systemName, CUSTOM_GAME_LINES_SETTING, {
+    scope: "world",
+    config: false,
+    default: [],
+    type: Array,
+    onChange: () => {
+      syncCustomGameLines();
+      foundry.applications.instances.get("essence20-game-lines")?.render();
+      // Role sheets offer the lines built on their own line.
+      for (const app of foundry.applications.instances.values()) {
+        if (app.document?.type === "role") {
+          app.render();
+        }
+      }
+    },
+  });
+
+  /* Which of the five lines this world is playing, or a homebrew line built on one. It names the
+     Party sheet ("Strike Team", "Ranger Team", ...), decides whether that sheet offers Requisition
+     at all, and on change switches off the other lines' sourcebooks - see
+     applyGameLineToSourcebooks(). A homebrew line counts as the book line it's built on. */
   game.settings.register(systemName, "gameLine", {
     name: game.i18n.localize("E20.SettingsGameLine"),
     hint: game.i18n.localize("E20.SettingsGameLineHint"),
@@ -262,7 +345,7 @@ export const registerSettings = function () {
         .map(([key, label]) => [key, game.i18n.localize(label)])),
     },
     onChange: async (line) => {
-      await applyGameLineToSourcebooks(line);
+      await applyGameLineToSourcebooks(lineFamily(line));
       // The Party sheet takes its title, its sidebar caption and whether it shows the
       // Requisition tab from this setting, so any open one is now stale.
       for (const app of foundry.applications.instances.values()) {
@@ -274,6 +357,76 @@ export const registerSettings = function () {
       // The tracker shows or hides the GM pool by line (My Little Pony has none).
       game.StoryPointsTracker?.render(false);
     },
+  });
+
+  /* Homebrew: Vehicles and Zords that change shape (mechanics/vehicles/vehicle-alt-modes.mjs). Off,
+     a Vehicle or Zord takes no Alt Mode, as in the books. */
+  game.settings.register(systemName, VEHICLE_ALT_MODES_SETTING, {
+    name: game.i18n.localize("E20.SettingsVehicleAltModes"),
+    hint: game.i18n.localize("E20.SettingsVehicleAltModesHint"),
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean,
+    onChange: () => {
+      // Their sheets show or hide the Alt Modes tab and the Transform button.
+      for (const app of foundry.applications.instances.values()) {
+        if (["vehicle", "zord"].includes(app.document?.type)) {
+          app.render();
+        }
+      }
+    },
+  });
+
+  /* Homebrew: crossovers (mechanics/resources/line-terms-hooks.mjs). Off, the world's line's words
+     (Game Lines > Words) are used everywhere; on, each character's sheet and chat cards use its own
+     line's words, so a Voltron Paladin and a G.I. Joe can share a table. */
+  game.settings.register(systemName, CROSSOVER_TERMS_SETTING, {
+    name: game.i18n.localize("E20.SettingsCrossoverTerms"),
+    hint: game.i18n.localize("E20.SettingsCrossoverTermsHint"),
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean,
+    onChange: () => {
+      for (const app of foundry.applications.instances.values()) {
+        if (app.document) {
+          app.render();
+        }
+      }
+    },
+  });
+
+  /* Homebrew: the episode tools (mechanics/campaign/episode-tools.mjs) - the Mission Generator's button on the
+     Journal tab and the Race and Chase Tracker's in the Token controls. Off, neither shows. */
+  game.settings.register(systemName, EPISODE_TOOLS_SETTING, {
+    name: game.i18n.localize("E20.SettingsEpisodeTools"),
+    hint: game.i18n.localize("E20.SettingsEpisodeToolsHint"),
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean,
+    onChange: () => {
+      ui.controls?.render({ reset: true });
+      ui.journal?.render();
+    },
+  });
+
+  // The Mission Generator's title and outline for each source, as last written.
+  game.settings.register(systemName, MISSION_TEMPLATES_SETTING, {
+    scope: "world",
+    config: false,
+    default: {},
+    type: Object,
+  });
+
+  // The homebrew lines into the registry, and into the dropdown above - again once translations are
+  // in, since the dropdown names each line with its book line's (localized) name. Then the world
+  // line's own words into the system's text.
+  syncCustomGameLines();
+  Hooks.once("i18nInit", () => {
+    syncCustomGameLines();
+    applyWorldTerms();
   });
 
   /* -------------------------------------------- */
@@ -658,6 +811,15 @@ export const registerSettings = function () {
     },
   });
 
+  game.settings.registerMenu(systemName, "gameLinesMenu", {
+    name: "E20.GameLinesMenuLabel",
+    label: "E20.GameLinesMenuButton",
+    hint: "E20.GameLinesMenuHint",
+    icon: "fa-solid fa-tv",
+    type: GameLinesConfig,
+    restricted: true,
+  });
+
   game.settings.registerMenu(systemName, "houseRulesMenu", {
     name: "E20.HouseRulesMenuLabel",
     label: "E20.HouseRulesMenuButton",
@@ -667,6 +829,34 @@ export const registerSettings = function () {
     restricted: true,
   });
 
-  // Load the world's own house rules now, before any actor prepares its rules.
+  // Export Homebrew (apps/homebrew-export.mjs): the world's homebrew as a module zip.
+  game.settings.registerMenu(systemName, "homebrewExportMenu", {
+    name: "E20.HomebrewExportMenuLabel",
+    label: "E20.HomebrewExportMenuButton",
+    hint: "E20.HomebrewExportMenuHint",
+    icon: "fa-solid fa-file-zipper",
+    type: HomebrewExport,
+    restricted: true,
+  });
+
+  // The last export's name, id, version, author and description, so the next one starts from them.
+  game.settings.register(systemName, HOMEBREW_EXPORT_SETTING, {
+    scope: "world",
+    config: false,
+    type: Object,
+    default: {},
+  });
+
+  // Modules whose recommended settings the GM has been offered (mechanics/export/module-settings.mjs): ["<id>@<version>"].
+  game.settings.register(systemName, MODULE_SETTINGS_OFFERED, {
+    scope: "world",
+    config: false,
+    type: Array,
+    default: [],
+  });
+
+  // Load the active modules' house rules, then the world's own (which win on the same id), before any actor prepares its
+  // rules.
+  syncModuleHouseRules(game.modules ?? []);
   syncWorldHouseRules();
 };

@@ -1,5 +1,6 @@
 import { registerApplyDialog, registerDialogToggles } from "../item-hooks.mjs";
 import { markOf } from "../../rules/predicate.mjs";
+import { lineFamily } from "../resources/custom-game-lines.mjs";
 
 /**
  * The Grappled condition's own penalty. Every core rulebook gives a Grappled target a Snag on all
@@ -27,7 +28,8 @@ const ANY_ESCAPE_SKILL = [...new Set(Object.values(GRAPPLE_ESCAPE_SKILLS).flat()
 function gameLineOf(actor) {
   let setting = '';
   try {
-    setting = globalThis.game?.settings?.get('essence20', 'gameLine') ?? '';
+    // A homebrew line escapes like the book line it's built on.
+    setting = lineFamily(globalThis.game?.settings?.get('essence20', 'gameLine') ?? '');
   } catch {
     setting = '';
   }

@@ -41,6 +41,20 @@
     {{/"systems/essence20/templates/app/parts/field.hbs"}}
   {{/if}}
 
+  {{!-- Homebrew mounts (mechanics/companions/mounts.mjs): a companion or NPC that can be ridden, and by how many. --}}
+  {{#if (or (eq actor.type "companion") (eq actor.type "npc"))}}
+    {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.MountRideable'}}
+    {{#*inline "field-inputs"}}
+      <input type="checkbox" id="mountRideable" name="system.mount.rideable" {{checked system.mount.rideable}}/>
+    {{/inline}}
+    {{/"systems/essence20/templates/app/parts/field.hbs"}}
+    {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.MountRiderLimit'}}
+    {{#*inline "field-inputs"}}
+      <input type="number" id="mountRiders" name="system.mount.riders" value="{{system.mount.riders}}" min="1" step="1"/>
+    {{/inline}}
+    {{/"systems/essence20/templates/app/parts/field.hbs"}}
+  {{/if}}
+
   {{#if system.canMorph}}
     <div class="flexrow">
       <label for="system.image.morphed">{{localize 'E20.MorphedImage'}}</label>

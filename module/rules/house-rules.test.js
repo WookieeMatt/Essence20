@@ -4,7 +4,7 @@ import { jest } from '@jest/globals';
 
 await import('./plugins/index.mjs');
 const { collectRules, rebuildIndex, rulesOfType } = await import('./index.mjs');
-const { houseRule, houseRuleEnabled, houseRuleEntries, houseRuleHolder, houseRules, refreshHouseRuleActors, registerHouseRule, syncWorldHouseRules, unregisterHouseRule, worldHouseRules } = await import('./house-rules.mjs');
+const { houseRule, houseRuleEnabled, houseRuleEntries, houseRuleHolder, houseRules, refreshHouseRuleActors, registerHouseRule, syncModuleHouseRules, syncWorldHouseRules, unregisterHouseRule, worldHouseRules } = await import('./house-rules.mjs');
 
 const initiativeEdge = { type: 'RollModifier', label: 'Heroic Initiative', edge: true, when: ['skill:initiative'] };
 
@@ -109,6 +109,28 @@ describe('every actor holds the enabled ones', () => {
     refreshHouseRuleActors();
     expect(world.reset).toHaveBeenCalledTimes(1);
     expect(token.reset).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("house rules a module ships in module.json", () => {
+  test('active modules register theirs, grouped by the module; inactive ones and bad entries are skipped', () => {
+    const error = jest.spyOn(console, 'error').mockImplementation(() => {});
+    syncModuleHouseRules([
+      { id: 'mask', active: true, flags: { essence20: { houseRules: [{ id: 'mask-fast', label: 'Fast Agents', rules: [initiativeEdge] }, { id: 'no label' }] } } },
+      { id: 'off', active: false, flags: { essence20: { houseRules: [{ id: 'off-rule', label: 'Off' }] } } },
+      { id: 'plain', active: true },
+      null,
+    ]);
+    expect(houseRule('mask-fast')).toMatchObject({ module: 'mask', world: false, label: 'Fast Agents' });
+    expect(houseRule('off-rule')).toBeNull();
+    expect(error).toHaveBeenCalledTimes(1);
+    error.mockRestore();
+
+    // The world's own with the same id wins.
+    syncWorldHouseRules([{ id: 'mask-fast', label: 'Mine' }]);
+    expect(houseRule('mask-fast')).toMatchObject({ world: true, label: 'Mine' });
+    syncWorldHouseRules([]);
+    syncModuleHouseRules();
   });
 });
 

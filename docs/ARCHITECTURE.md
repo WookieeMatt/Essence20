@@ -482,6 +482,8 @@ payload. A stable API, like `game.essence20`.
 | `essence20.altModeBoarded` | Someone climbs into a Transformer's Alt Mode (or is put in its Cage) - mechanics/vehicles/alt-mode-crew.mjs | `{ carrier, passenger, role }` (`role`: driver, passenger or prisoner) |
 | `essence20.altModeDisembarked` | Someone gets out of a Transformer (or escapes its Cage, or is put out by a Mode change or a crash) | `{ carrier, passenger, role, escaped }` |
 | `essence20.altModeCrashed` | A Transformer crashes in Alt Mode | `{ carrier, feet }` |
+| `essence20.mounted` | Someone gets on a creature that can be ridden - mechanics/companions/mounts.mjs | `{ mount, rider }` |
+| `essence20.dismounted` | Someone gets off a mount (or is put off it) | `{ mount, rider }` |
 | `essence20.storyPointNarrative` | A Story Point spent for a narrative effect | (see the Story Point tracker) |
 
 One hook is the exception, called so a listener *can* change something:

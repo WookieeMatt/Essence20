@@ -1,0 +1,98 @@
+<div class="game-lines flexcol">
+  <p class="hint">{{localize "E20.GameLinesHint"}}</p>
+
+  <div class="house-rules-groups">
+    {{#each lines as |line|}}
+      <fieldset class="house-rules-group game-lines-line">
+        <legend>{{#if line.label}}{{line.label}}{{else}}{{localize "E20.GameLinesNew"}}{{/if}}</legend>
+        <div class="form-group">
+          <label>{{localize "E20.GameLinesName"}}</label>
+          <input type="text" name="lines.{{line.index}}.label" value="{{line.label}}" placeholder="{{localize 'E20.GameLinesNamePlaceholder'}}" />
+          <a class="game-lines-delete" data-action="deleteLine" data-index="{{line.index}}" data-tooltip="{{localize 'E20.GameLinesDelete'}}" aria-label="{{localize 'E20.GameLinesDelete'}}"><i class="fas fa-trash"></i></a>
+        </div>
+        <div class="form-group">
+          <label>{{localize "E20.GameLinesFamily"}}</label>
+          <select name="lines.{{line.index}}.family">
+            {{selectOptions @root.families selected=line.family}}
+          </select>
+        </div>
+        <p class="hint">{{localize "E20.GameLinesFamilyHint"}}</p>
+        <div class="form-group">
+          <label>{{localize "E20.GameLinesFolder"}}</label>
+          <select name="lines.{{line.index}}.packFolder">
+            {{selectOptions line.folders selected=line.packFolder}}
+          </select>
+        </div>
+        <p class="hint">{{localize "E20.GameLinesFolderHint"}}</p>
+        <div class="form-group">
+          <label>{{localize "E20.GameLinesMorph"}}</label>
+          <input type="checkbox" name="lines.{{line.index}}.canMorph" {{checked line.canMorph}} />
+        </div>
+        <p class="hint">{{localize "E20.GameLinesMorphHint"}}</p>
+        <details class="game-lines-specializations" {{#if line.extras}}open{{/if}}>
+          <summary>{{localize "E20.GameLinesSpecializations"}}</summary>
+          <p class="hint">{{localize "E20.GameLinesSpecializationsHint"}}</p>
+          <div class="game-lines-skills">
+            {{#each line.skills as |skill|}}
+              <div class="form-group">
+                <label>{{skill.label}}</label>
+                <input type="text" name="lines.{{line.index}}.specializations.{{skill.key}}" value="{{skill.value}}" />
+              </div>
+            {{/each}}
+          </div>
+        </details>
+        <details class="game-lines-look" {{#if line.hasLook}}open{{/if}}>
+          <summary>{{localize "E20.GameLinesLook"}}</summary>
+          <p class="hint">{{localize "E20.GameLinesLookHint"}}</p>
+          <div class="form-group">
+            <label>{{localize "E20.GameLinesLookFrame"}}</label>
+            <select name="lines.{{line.index}}.look.frame">
+              {{selectOptions @root.frames selected=line.look.frame}}
+            </select>
+          </div>
+          <div class="form-group">
+            <label>{{localize "E20.GameLinesLookAccent"}}</label>
+            <color-picker name="lines.{{line.index}}.look.accent" value="{{line.look.accent}}"></color-picker>
+          </div>
+          <div class="form-group">
+            <label>{{localize "E20.GameLinesLookLogo"}}</label>
+            <file-picker name="lines.{{line.index}}.look.logo" type="image" value="{{line.look.logo}}"></file-picker>
+          </div>
+          <div class="form-group">
+            <label>{{localize "E20.GameLinesLookHeaderArt"}}</label>
+            <file-picker name="lines.{{line.index}}.look.headerArt" type="image" value="{{line.look.headerArt}}"></file-picker>
+          </div>
+        </details>
+        <details class="game-lines-terms" {{#if line.termCount}}open{{/if}}>
+          <summary>{{localize "E20.GameLinesTerms"}}</summary>
+          <p class="hint">{{localize "E20.GameLinesTermsHint"}}</p>
+          <div class="game-lines-skills">
+            {{#each line.terms as |term|}}
+              <div class="form-group">
+                <label>{{term.word}}</label>
+                <input type="text" name="lines.{{line.index}}.terms.{{term.word}}" value="{{term.value}}" />
+              </div>
+            {{/each}}
+          </div>
+          <div class="form-group stacked">
+            <label>{{localize "E20.GameLinesOtherTerms"}}</label>
+            <textarea name="lines.{{line.index}}.otherTerms" rows="3" placeholder="{{localize 'E20.GameLinesOtherTermsPlaceholder'}}">{{line.otherTerms}}</textarea>
+          </div>
+        </details>
+      </fieldset>
+    {{else}}
+      <p class="hint">{{localize "E20.GameLinesEmpty"}}</p>
+    {{/each}}
+
+    <button type="button" class="house-rules-new" data-action="addLine"><i class="fas fa-plus"></i> {{localize "E20.GameLinesAdd"}}</button>
+
+    {{#if moduleLines.length}}
+      <fieldset class="house-rules-group">
+        <legend>{{localize "E20.GameLinesFromModules"}}</legend>
+        {{#each moduleLines as |line|}}
+          <p class="game-lines-module-line"><strong>{{line.label}}</strong> - {{line.family}} <span class="hint">({{line.module}})</span></p>
+        {{/each}}
+      </fieldset>
+    {{/if}}
+  </div>
+</div>

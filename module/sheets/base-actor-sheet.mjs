@@ -80,6 +80,7 @@ import { nestSubPerks, withSubPerksUnderParents } from "../mechanics/characters/
 import { missingFocusPickLevels, syncFocusSkillPicks } from "../mechanics/characters/focus-skills.mjs";
 import { currentEssence, currentEssenceUpdate, tracksEssenceDamage } from "../mechanics/combat/essence-current.mjs";
 import * as altModeCrew from "../mechanics/vehicles/alt-mode-crew.mjs";
+import * as mounts from "../mechanics/companions/mounts.mjs";
 import { botSizeFor, fullMovement, movementChoiceIndex, movementLabel } from "../items/shared/alt-mode-chassis.mjs";
 
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
@@ -140,6 +141,9 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       aboardEscape: this.#onAboardEscape,
       aboardAssist: this.#onAboardAssist,
       aboardOpen: this.#onAboardOpen,
+      mountDismount: this.#onMountDismount,
+      mountOpen: this.#onMountOpen,
+      mountRiderOff: this.#onMountRiderOff,
       zordAutoFeatures: this.#onZordAutoFeatures,
       summonContact: this.#onSummonContact,
       systemActorOpen: this.#onSystemActorOpen,
@@ -687,6 +691,9 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     // header's line for whoever is aboard one.
     context.altCrew = altModeCrew.crewSheetContext(this.document);
     context.aboard = altModeCrew.aboardSheetContext(this.document);
+    // Riding a creature (mechanics/companions/mounts.mjs): the rider's "Riding ..." line and the mount's "Ridden by ..." one.
+    context.riding = mounts.ridingSheetContext(this.document);
+    context.mountRiders = mounts.ridersSheetContext(this.document);
 
     context.canMorphOrTransform = context.document.system.canMorph || context.document.system.canTransform;
 
@@ -1259,6 +1266,28 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   /** The header's Assist Driving (the Driver's own sheet). */
   static async #onAboardAssist() {
     await altModeCrew.assistDriving(this.document);
+  }
+
+  /** The header's Dismount (a rider's own sheet). */
+  static async #onMountDismount() {
+    const riding = mounts.mountOf(this.document);
+    if (riding) {
+      await mounts.dismount(riding.mount, this.document);
+    }
+  }
+
+  /** The header's mount or rider name: its sheet. */
+  static async #onMountOpen(event, target) {
+    const uuid = target.dataset.uuid ?? mounts.mountOf(this.document)?.mount?.uuid;
+    (uuid ? await fromUuid(uuid) : null)?.sheet?.render(true);
+  }
+
+  /** A mount's header: put a rider off (the mount's owner or the GM - no Move action). */
+  static async #onMountRiderOff(event, target) {
+    const rider = await fromUuid(target.dataset.uuid);
+    if (rider) {
+      await mounts.dismount(this.document, rider, { force: true });
+    }
   }
 
   /** The header's Transformer name: its sheet. */

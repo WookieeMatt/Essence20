@@ -1,0 +1,59 @@
+<div class="race-tracker-body flexcol">
+  {{#if hasScene}}
+    <p class="hint">{{localize "E20.RaceHint" scene=scene}}</p>
+
+    <div class="form-group">
+      <label>{{localize "E20.RaceMode"}}</label>
+      <select name="mode">
+        {{selectOptions modes selected=race.mode}}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>{{localize "E20.RaceHazards"}}</label>
+      <select name="hazardTable">
+        {{selectOptions tables selected=race.hazardTable}}
+      </select>
+    </div>
+    {{#if isLaps}}
+      <div class="form-group">
+        <label>{{localize "E20.RaceHazardEachLap"}}</label>
+        <input type="checkbox" name="hazardEachLap" {{checked race.hazardEachLap}} />
+      </div>
+    {{/if}}
+
+    <ol class="race-racers">
+      <li class="race-racer race-racers-header">
+        <span class="race-place">#</span>
+        <span class="race-name"></span>
+        <a class="race-spacer" aria-hidden="true"><i class="fa-solid fa-minus"></i></a>
+        <span class="race-count">{{countLabel}}</span>
+        <a class="race-spacer" aria-hidden="true"><i class="fa-solid fa-plus"></i></a>
+        <a class="race-spacer" aria-hidden="true"><i class="fa-solid fa-xmark"></i></a>
+      </li>
+      {{#each racers as |racer|}}
+        <li class="race-racer" data-token-id="{{racer.tokenId}}">
+          <span class="race-place">{{racer.place}}</span>
+          <span class="race-name">{{#if racer.img}}<img src="{{racer.img}}" alt="" />{{/if}}{{racer.name}}</span>
+          <a data-action="down" data-tooltip="{{localize 'E20.RaceDown'}}" aria-label="{{localize 'E20.RaceDown'}}"><i class="fa-solid fa-minus"></i></a>
+          <span class="race-count">{{racer.count}}</span>
+          <a data-action="up" data-tooltip="{{localize 'E20.RaceUp'}}" aria-label="{{localize 'E20.RaceUp'}}"><i class="fa-solid fa-plus"></i></a>
+          <a data-action="remove" data-tooltip="{{localize 'E20.RaceRemove'}}" aria-label="{{localize 'E20.RaceRemove'}}"><i class="fa-solid fa-xmark"></i></a>
+        </li>
+      {{else}}
+        <li class="hint">{{localize "E20.RaceEmpty"}}</li>
+      {{/each}}
+    </ol>
+
+    <div class="race-buttons flexrow">
+      <button type="button" data-action="addSelected"><i class="fa-solid fa-user-plus"></i> {{localize "E20.RaceAddSelected"}}</button>
+      <button type="button" data-action="post"><i class="fa-solid fa-comment"></i> {{localize "E20.RacePost"}}</button>
+    </div>
+    <div class="race-buttons flexrow">
+      <button type="button" data-action="hazard" {{#unless race.hazardTable}}disabled{{/unless}}><i class="fa-solid fa-triangle-exclamation"></i> {{localize "E20.RaceHazard"}}</button>
+      <button type="button" data-action="reset"><i class="fa-solid fa-rotate-left"></i> {{localize "E20.RaceReset"}}</button>
+    </div>
+  {{else}}
+    <p class="hint">{{localize "E20.RaceNoScene"}}</p>
+  {{/if}}
+</div>

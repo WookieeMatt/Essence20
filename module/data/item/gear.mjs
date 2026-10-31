@@ -4,6 +4,7 @@ import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
+import { powerGear } from './templates/power-gear.mjs';
 
 const fields = foundry.data.fields;
 
@@ -12,6 +13,7 @@ export class GearItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
+      ...powerGear(),
       equipped: makeBool(true),
       gearType: makeStrWithChoices(Object.keys(E20.gearTypes), 'clothes'),
       quantity: makeInt(1),

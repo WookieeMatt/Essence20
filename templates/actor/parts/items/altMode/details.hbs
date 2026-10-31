@@ -29,3 +29,6 @@
 {{/if}}
 <div>{{localize 'E20.AltModeCrew'}}: {{item.system.altModeCrew}}</div>
 <div>{{localize 'E20.AltModeFirepoints'}}: {{item.system.altModeFirepoints}}</div>
+{{!-- Its own Toughness / Evasion change while in it (data/item/alt-mode.mjs modeDefenses). --}}
+{{#if item.system.modeDefenses.toughness}}<div>{{localize 'E20.AltModeToughness'}}: {{numberFormat item.system.modeDefenses.toughness sign=true}}</div>{{/if}}
+{{#if item.system.modeDefenses.evasion}}<div>{{localize 'E20.AltModeEvasion'}}: {{numberFormat item.system.modeDefenses.evasion sign=true}}</div>{{/if}}

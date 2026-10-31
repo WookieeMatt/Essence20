@@ -173,11 +173,17 @@ import { handleSetActionLedger, isAiming } from "./mechanics/actions/action-econ
 import "./mechanics/combat/defense-choice.mjs";
 // Deleted actors come off the rosters (crew, Zords, Megaform members, Party) that listed them.
 import "./mechanics/world/roster-refs.mjs";
+// Words per line: sheets and chat cards in their line's words (Game Lines > Words).
+import "./mechanics/resources/line-terms-hooks.mjs";
+import "./mechanics/resources/line-look-hooks.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 import StartingEssences from "./apps/starting-essences.mjs";
 import StatBlockImporter from "./apps/stat-block-importer.mjs";
 import ThreatBuilder from "./apps/threat-builder.mjs";
+import MissionGenerator from "./apps/mission-generator.mjs";
+import RaceTracker from "./apps/race-tracker.mjs";
+import { episodeToolsOn } from "./mechanics/campaign/episode-tools.mjs";
 import { threatApi } from "./mechanics/characters/threat-api.mjs";
 import { canSwapTokenForm, swapTokenForm } from "./mechanics/characters/monster-grow-swap.mjs";
 // Import helper/utility classes and constants.
@@ -373,8 +379,20 @@ Hooks.once("init", async function () {
       carrierOf: async rider => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).carrierOf(rider)?.carrier ?? null,
       capacity: async transformer => (await import("./mechanics/vehicles/alt-mode-crew.mjs")).crewCapacity(transformer),
     },
+    // Riding a creature (homebrew mounts) - mechanics/companions/mounts.mjs.
+    mounts: {
+      mount: async (mount, rider, options) => (await import("./mechanics/companions/mounts.mjs")).mountUp(mount, rider, options),
+      dismount: async (mount, rider, options) => (await import("./mechanics/companions/mounts.mjs")).dismount(mount, rider, options),
+      mountOf: async rider => (await import("./mechanics/companions/mounts.mjs")).mountOf(rider)?.mount ?? null,
+      ridersOf: async mount => (await import("./mechanics/companions/mounts.mjs")).ridersOf(mount),
+    },
     // Building Threats: what the Threat Builder and the Monster Grow dialog do - mechanics/characters/threat-api.mjs.
     threats: threatApi(actor => ThreatBuilder.open(actor)),
+    // The episode tools (mechanics/campaign/episode-tools.mjs), whether or not their buttons are on.
+    episode: {
+      missions: () => MissionGenerator.open(),
+      race: () => RaceTracker.open(),
+    },
     // A Megaform (Megazord or Combiner) taking the field and leaving it: its members' tokens on the viewed scene swap for
     // its own, and back - through the GM for a player (mechanics/vehicles/megaform-join.mjs).
     megaform: {
@@ -771,6 +789,10 @@ Hooks.once("ready", async function () {
      GM runs once for everyone) - every browser has its own copy to carry across. */
   await migrateSheetThemeSetting();
 
+  // Settings an active module recommends (an Export Homebrew module's): offered to the GM once per version.
+  import("./mechanics/export/module-settings.mjs").then(({ offerModuleSettings }) => offerModuleSettings())
+    .catch(error => console.error("Essence20 | Offering module settings failed", error));
+
   /* Catch any lingering Area of Effect region that should have expired while nobody was logged in,
      or whose expiry was missed because no GM was connected at the time. */
   reconcileAoeRegions();
@@ -929,6 +951,38 @@ function addStatBlockImporterFooterButton(app, html) {
 }
 
 Hooks.on("renderActorDirectory", addStatBlockImporterFooterButton);
+
+// The episode tools' buttons, when the GM has them on: the Mission Generator on the Journal tab's footer, the Race and
+// Chase Tracker in the Token controls.
+Hooks.on("renderJournalDirectory", (app, html) => {
+  const footer = html.querySelector('[data-application-part="footer"]');
+  if (!episodeToolsOn() || !footer || footer.querySelector(".essence20-open-mission-generator")) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.classList.add("essence20-open-mission-generator");
+  button.innerHTML = `<i class="fa-solid fa-scroll" inert></i><span>${game.i18n.localize("E20.MissionTitle")}</span>`;
+  button.addEventListener("click", () => MissionGenerator.open());
+  footer.appendChild(button);
+});
+
+Hooks.on("getSceneControlButtons", (controls) => {
+  if (!episodeToolsOn() || !controls.tokens) {
+    return;
+  }
+
+  controls.tokens.tools.e20RaceTracker = {
+    name: "e20RaceTracker",
+    title: "E20.RaceTitle",
+    icon: "fa-solid fa-flag-checkered",
+    order: Object.keys(controls.tokens.tools).length,
+    button: true,
+    visible: true,
+    onChange: () => RaceTracker.open(),
+  };
+});
 
 /**
  * "Make My Monster Grow" on the token HUD - the in-combat half (mode B). Only offered for a

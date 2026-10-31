@@ -1,4 +1,6 @@
-import { makeBool, makeInt, makeStr } from "../../generic-makers.mjs";
+import { E20 } from "../../../util/config.mjs";
+
+import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 import { makeDefensesFields as makeCharacterDefensesFields } from "./character.mjs";
 
@@ -36,6 +38,15 @@ export function makeEssencesFields(usesDrivers, init) {
 }
 
 export const machine = () => ({
+  // Alt Modes on Vehicles and Zords (mechanics/vehicles/vehicle-alt-modes.mjs - a world setting): the same conversion
+  // state a Transformer keeps (templates/character.mjs), read by sheet-handlers/transformer-handler.mjs. The size and
+  // token image it changes back to are the actor's own.
+  altModeId: makeStr(''),
+  altModesize: makeStrWithChoices(Object.keys(E20.actorSizes), null),
+  image: new fields.SchemaField({
+    botmode: makeStr(null),
+  }),
+  isTransformed: makeBool(false),
   canHover: makeBool(false),
   crew: new fields.SchemaField({
     description: makeStr(''),

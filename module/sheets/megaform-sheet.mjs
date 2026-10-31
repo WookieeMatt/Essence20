@@ -2,6 +2,7 @@ import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
 import { joinedTokenOf, megaformTokens, memberTokens } from "../mechanics/vehicles/megaform-join.mjs";
 import { getCombineReadyRound, isCombineReady } from "../mechanics/vehicles/combiner-timer.mjs";
+import { customJoinTypes } from "../mechanics/vehicles/megaform-participants.mjs";
 
 export class Essence20MegaformActorSheet extends Essence20BaseActorSheet {
   static DEFAULT_OPTIONS = {
@@ -97,6 +98,16 @@ export class Essence20MegaformActorSheet extends Essence20BaseActorSheet {
     const scene = globalThis.canvas?.scene;
     context.megaformJoined = !!(scene && joinedTokenOf(this.actor, scene));
     context.megaformMembersHere = scene ? memberTokens(this.actor, scene).length : 0;
+    // Homebrew forms (Combiners tab, GM only): who may join, and who it needs on the scene to Join.
+    if (game.user.isGM) {
+      const roster = Object.values(system.actors ?? {}).filter(entry => entry?.uuid);
+      context.megaformJoin = {
+        types: CONFIG.E20.megaformJoinTypes,
+        custom: !!customJoinTypes(this.actor),
+        roster: roster.length ? Object.fromEntries(roster.map(entry => [entry.uuid, entry.name])) : null,
+      };
+    }
+
     return context;
   }
 }

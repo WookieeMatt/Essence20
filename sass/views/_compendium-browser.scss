@@ -405,6 +405,277 @@
   margin-top: 6px;
 }
 
+/* Homebrew Game Lines (apps/game-lines-config.mjs): one House Rules-style panel per line. */
+.essence20.game-lines-config {
+  min-width: 480px;
+
+  .hint {
+    color: var(--e20-theme-muted-text);
+    margin: 0 0 6px;
+  }
+
+  .form-footer {
+    margin-top: 12px;
+  }
+
+  /* Label beside its field, one row each (the window theme stacks a plain .form-group). */
+  .game-lines-line .form-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+
+    > label {
+      flex: 0 0 150px;
+    }
+
+    > input,
+    > select {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+
+  .game-lines-delete {
+    flex: 0 0 auto;
+  }
+
+  .game-lines-specializations summary {
+    cursor: pointer;
+    font-weight: bold;
+    margin: 6px 0;
+  }
+
+  /* Twenty-odd Skills: two columns, so the list isn't a page long. */
+  .game-lines-skills {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 12px;
+
+    .form-group > label {
+      flex-basis: 95px;
+    }
+  }
+
+  /* Words: any word past the suggested ones, a line each - the box spans the row. */
+  .game-lines-terms .form-group.stacked {
+    flex-direction: column;
+    align-items: stretch;
+
+    textarea {
+      width: 100%;
+    }
+  }
+
+  .game-lines-module-line {
+    margin: 2px 0;
+  }
+}
+
+/* Export Homebrew (apps/homebrew-export.mjs): the module's details, then a ticked list per kind of content. */
+.essence20.homebrew-export {
+  min-width: 480px;
+
+  .hint {
+    color: var(--e20-theme-muted-text);
+    margin: 0 0 6px;
+  }
+
+  .form-footer {
+    margin-top: 12px;
+  }
+
+  .form-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0;
+
+    > label {
+      flex: 0 0 120px;
+    }
+
+    > input {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    &.stacked {
+      flex-direction: column;
+      align-items: stretch;
+
+      > label {
+        flex: 0 0 auto;
+      }
+
+      textarea {
+        width: 100%;
+      }
+    }
+  }
+
+  .homebrew-export-choice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+    color: var(--e20-theme-text-color);
+
+    input {
+      flex: none;
+      margin: 0;
+    }
+  }
+
+  .homebrew-export-name {
+    flex: 1 1 auto;
+  }
+
+  .homebrew-export-meta {
+    flex: none;
+    font-size: 0.85em;
+    color: var(--e20-theme-muted-text);
+  }
+}
+
+/* The episode tools (apps/mission-generator.mjs, apps/race-tracker.mjs). */
+.essence20.mission-generator,
+.essence20.race-tracker {
+  .mission-generator-body,
+  .race-tracker-body {
+    gap: 6px;
+  }
+
+  .hint {
+    color: var(--e20-theme-muted-text);
+    margin: 0;
+  }
+
+  .form-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    > label {
+      flex: 0 0 120px;
+    }
+
+    > input[type="text"],
+    > select {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+  }
+
+  .form-group.stacked {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+
+    > label {
+      flex: 0 0 auto;
+    }
+
+    textarea {
+      width: 100%;
+    }
+  }
+
+  .form-footer {
+    margin-top: 8px;
+  }
+}
+
+.essence20.mission-generator {
+  .mission-section {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--e20-theme-border-color, rgba(128, 128, 128, 0.3));
+  }
+
+  .mission-section-name {
+    flex: 0 0 110px;
+  }
+
+  .mission-section-results {
+    flex: 1 1 auto;
+
+    .mission-result + .mission-result::before {
+      content: ", ";
+    }
+
+    p {
+      display: inline;
+      margin: 0;
+    }
+  }
+}
+
+.essence20.race-tracker {
+  .race-racers {
+    list-style: none;
+    margin: 4px 0;
+    padding: 0;
+  }
+
+  .race-racer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 0;
+
+    > a {
+      flex: 0 0 auto;
+    }
+  }
+
+  .race-racers-header {
+    font-weight: bold;
+    border-bottom: 1px solid var(--e20-theme-border-color, rgba(128, 128, 128, 0.3));
+  }
+
+  .race-place {
+    flex: 0 0 22px;
+    text-align: center;
+  }
+
+  .race-name {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+
+    img {
+      width: 28px;
+      height: 28px;
+      border: none;
+      object-fit: contain;
+    }
+  }
+
+  .race-count {
+    flex: 0 0 40px;
+    text-align: center;
+    font-weight: bold;
+  }
+
+  // The header row keeps a racer row's slots, so its label sits over the counts.
+  .race-spacer {
+    visibility: hidden;
+  }
+
+  .race-count {
+    white-space: nowrap;
+  }
+
+  .race-buttons {
+    gap: 6px;
+  }
+}
+
 /* The house rule editor (apps/house-rule-editor.mjs). */
 .essence20.house-rule-editor {
   min-width: 460px;

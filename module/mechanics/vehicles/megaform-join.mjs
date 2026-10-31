@@ -1,5 +1,5 @@
 import { announce } from "../world/public-hooks.mjs";
-import { getMegaformParticipants } from "./megaform-participants.mjs";
+import { getMegaformParticipants, missingToForm } from "./megaform-participants.mjs";
 
 /**
  * Join and Separate: a Megaform's members' tokens on the scene become the Megaform's token, and back - for Zords forming
@@ -99,6 +99,13 @@ export async function joinMegaform(form, { scene = globalThis.canvas?.scene } = 
   const members = memberTokens(form, scene);
   if (!members.length) {
     ui.notifications.warn(T('MegaformJoinNoTokens', { name: form.name }));
+    return null;
+  }
+
+  // Needed to form (the GM's list, Combiners tab): all of them, here, first.
+  const missing = missingToForm(form, members.map(member => member.actor));
+  if (missing.length) {
+    ui.notifications.warn(T('MegaformJoinMissing', { name: form.name, missing: missing.join(', ') }));
     return null;
   }
 

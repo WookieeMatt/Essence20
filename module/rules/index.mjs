@@ -3,6 +3,7 @@ import { rulesSourceOf } from "./inherit.mjs";
 import { itemsOf } from "../items/shared/item-lookups.mjs";
 import { choiceValue, chosenOf } from "./choice-read.mjs";
 import { houseRuleEntries } from "./house-rules.mjs";
+import { powerGearHolds } from "../items/gear/power-gear.mjs";
 
 /**
  * Reading an actor's rules (docs/RULES_ENGINE_PLAN.md §6, §8).
@@ -38,6 +39,11 @@ export function isItemActive(item) {
   }
 
   if (['armor', 'weapon', 'shield', 'gear'].includes(item.type) && !item.system?.isPowerArmor && item.system?.equipped === false) {
+    return false;
+  }
+
+  // Power gear (items/gear/power-gear.mjs): bonded to someone else, or Alt Mode only and its holder isn't in one.
+  if (!powerGearHolds(item)) {
     return false;
   }
 

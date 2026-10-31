@@ -270,13 +270,20 @@ export function handleGmRelayDone(data) {
  */
 // megaformJoin / megaformSeparate: a Megaform's members' tokens swapped for its own, and back (mechanics/vehicles/megaform-join.mjs).
 // altModeCrew: a seat in a Transformer's Alt Mode taken or given up (mechanics/vehicles/alt-mode-crew.mjs).
-const CREATE_KINDS = new Set(['actor', 'token', 'deleteActor', 'deleteToken', 'megaformJoin', 'megaformSeparate', 'altModeCrew']);
+// mountRider: getting on or off a mount someone else owns (mechanics/companions/mounts.mjs).
+const CREATE_KINDS = new Set(['actor', 'token', 'deleteActor', 'deleteToken', 'megaformJoin', 'megaformSeparate', 'altModeCrew', 'mountRider']);
 const MEGAFORM_KINDS = ['megaformJoin', 'megaformSeparate'];
 // Loaded on first use (it reaches into the rules engine, which this file mustn't pull in at load).
 let altModeCrew = null;
 export async function loadAltModeCrew() {
   altModeCrew ??= await import("../vehicles/alt-mode-crew.mjs");
   return altModeCrew;
+}
+
+let mounts = null;
+export async function loadMounts() {
+  mounts ??= await import("../companions/mounts.mjs");
+  return mounts;
 }
 
 function ownedBy(uuid, user) {
@@ -305,6 +312,10 @@ export function isCreateAllowed(kind, payload, user) {
     return !!altModeCrew?.relayedSeatAllowed(payload, user);
   }
 
+  if (kind == 'mountRider') {
+    return !!mounts?.relayedRiderAllowed(payload, user);
+  }
+
   const actor = payload?.actorUuid ? fromUuidSync(payload.actorUuid) : null;
   if (!actor) {
     return false;
@@ -322,6 +333,10 @@ export function isCreateAllowed(kind, payload, user) {
 async function carryOut(kind, payload, user) {
   if (kind == 'altModeCrew') {
     return (await loadAltModeCrew()).applyRelayedSeat(payload);
+  }
+
+  if (kind == 'mountRider') {
+    return (await loadMounts()).applyRelayedRider(payload);
   }
 
   if (kind == 'actor') {
@@ -378,6 +393,7 @@ export async function createViaGm(kind, payload) {
     megaformJoin: () => user.isGM,
     megaformSeparate: () => user.isGM,
     altModeCrew: () => user.isGM,
+    mountRider: () => user.isGM,
   }[kind];
   if (may?.()) {
     return carryOut(kind, payload, user);
@@ -414,6 +430,10 @@ export async function handleGmCreateRequest(data) {
   let result = null;
   if (data.kind == 'altModeCrew') {
     await loadAltModeCrew();
+  }
+
+  if (data.kind == 'mountRider') {
+    await loadMounts();
   }
 
   if (isCreateAllowed(data.kind, data.payload, user)) {

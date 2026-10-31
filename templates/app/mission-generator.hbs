@@ -1,0 +1,43 @@
+<div class="mission-generator-body flexcol">
+  <p class="hint">{{localize "E20.MissionHint"}}</p>
+
+  <div class="form-group">
+    <label>{{localize "E20.MissionSource"}}</label>
+    <select name="source">
+      {{#each groups as |group|}}
+        <optgroup label="{{group.label}}">
+          {{#each group.sources as |entry|}}
+            <option value="{{entry.key}}" {{#if (eq entry.key @root.source)}}selected{{/if}}>{{entry.name}}</option>
+          {{/each}}
+        </optgroup>
+      {{else}}
+        <option value="">{{localize "E20.MissionNoSources"}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>{{localize "E20.MissionJournalTitle"}}</label>
+    <input type="text" name="title" value="{{title}}" placeholder="{{localize 'E20.MissionJournalTitlePlaceholder'}}" />
+  </div>
+
+  <div class="form-group stacked">
+    <label>{{localize "E20.MissionOutline"}}</label>
+    <textarea name="outline" rows="4" placeholder="{{localize 'E20.MissionOutlinePlaceholder'}}">{{outline}}</textarea>
+  </div>
+  <p class="hint">{{localize "E20.MissionPlaceholdersHint"}}</p>
+
+  <button type="button" data-action="roll" {{#unless source}}disabled{{/unless}}><i class="fa-solid fa-dice"></i> {{localize "E20.MissionRoll"}}</button>
+
+  <div class="mission-sections">
+    {{#each sections as |section|}}
+      <div class="mission-section">
+        <strong class="mission-section-name">{{section.name}}</strong>
+        <span class="mission-section-results">
+          {{#each section.results as |result|}}<span class="mission-result">{{{result.text}}}</span>{{else}}-{{/each}}
+        </span>
+        <a class="mission-reroll" data-action="reroll" data-index="{{section.index}}" data-tooltip="{{localize 'E20.MissionReroll'}}" aria-label="{{localize 'E20.MissionReroll'}}"><i class="fa-solid fa-rotate"></i></a>
+      </div>
+    {{/each}}
+  </div>
+</div>

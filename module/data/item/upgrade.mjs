@@ -9,6 +9,7 @@ import {
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
+import { powerGear } from './templates/power-gear.mjs';
 
 const fields = foundry.data.fields;
 
@@ -17,6 +18,7 @@ export class UpgradeItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
+      ...powerGear(),
       // Deprecated 2026-10-07: unused since rules (an AimBonus rule, scope host); remove from the data model in 6.1.
       aimShiftBonus: makeInt(0),
       armorBonus: new fields.SchemaField({

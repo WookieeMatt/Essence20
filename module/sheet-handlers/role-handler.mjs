@@ -1,5 +1,6 @@
 import { afterSpectrumShifted, spectrumShiftedRetains } from "../mechanics/characters/spectrum-shifted.mjs";
 import { essenceRedirect } from "../mechanics/resources/grants.mjs";
+import { roleGrantsMorph } from "../mechanics/resources/custom-game-lines.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
@@ -114,7 +115,7 @@ export async function performSpectrumShift(actor, newRole) {
   // Role version updates (canMorph/canSpellcast/canQualify) - in practice a Spectrum Shift
   // always stays within the same game line, so this is usually a no-op.
   await actor.update({
-    "system.canMorph": newRole.system.version == 'powerRangers',
+    "system.canMorph": roleGrantsMorph(newRole),
     "system.canSpellcast": newRole.system.version == 'myLittlePony',
     "system.canQualify": newRole.system.version == 'giJoe',
   });
@@ -546,12 +547,14 @@ export async function onRoleDrop(actor, role, dropFunc) {
     });
   }
 
-  // Role version updates
-  if (role.system.version =='powerRangers') {
+  // Role version updates. Morph: a Power Rangers Role, or one on a homebrew line whose characters Morph.
+  if (roleGrantsMorph(role)) {
     await actor.update({
       "system.canMorph": true,
     });
-  } else if (role.system.version =='myLittlePony') {
+  }
+
+  if (role.system.version =='myLittlePony') {
     await actor.update({
       "system.canSpellcast": true,
     });
@@ -703,11 +706,13 @@ export async function onRoleDelete(actor, role) {
   // Old Hand) shouldn't turn off canMorph/canSpellcast/canQualify out from under a base Role
   // that's still there granting the exact same flag.
   if (!isAdditive) {
-    if (role.system.version =='powerRangers') {
+    if (roleGrantsMorph(role)) {
       await actor.update({
         "system.canMorph": false,
       });
-    } else if (role.system.version =='myLittlePony') {
+    }
+
+    if (role.system.version =='myLittlePony') {
       await actor.update({
         "system.canSpellcast": false,
       });

@@ -26,6 +26,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/main/megaform-combiners.hbs",
     "systems/essence20/templates/actor/parts/main/vehicle.hbs",
     "systems/essence20/templates/actor/parts/main/vehicle-passengers.hbs",
+    "systems/essence20/templates/actor/parts/main/machine-altmode.hbs",
     "systems/essence20/templates/actor/parts/main/npc.hbs",
     "systems/essence20/templates/actor/parts/main/party-roster.hbs",
     "systems/essence20/templates/actor/parts/main/party-requisition.hbs",
@@ -79,6 +80,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/requisition-row.hbs",
     "systems/essence20/templates/actor/parts/misc/morph-transform.hbs",
     "systems/essence20/templates/actor/parts/misc/sidebar-transform-morph.hbs",
+    "systems/essence20/templates/actor/parts/misc/sidebar-convert.hbs",
     "systems/essence20/templates/actor/parts/misc/movement.hbs",
     "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs",
     "systems/essence20/templates/actor/parts/misc/system-actors.hbs",
@@ -156,6 +158,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/item/parts/activation-fields.hbs",
     "systems/essence20/templates/item/parts/header.hbs",
     "systems/essence20/templates/item/parts/id-drop.hbs",
+    "systems/essence20/templates/item/parts/power-gear.hbs",
 
     "systems/essence20/templates/item/parts/role-perk-drop.hbs",
     "systems/essence20/templates/item/parts/sub-perk-drop.hbs",

@@ -1,7 +1,7 @@
 import { creatureTagsOf } from "../mechanics/characters/creature-tags.mjs";
 import { isExpired } from "./expiry.mjs";
 import { sourceOf } from "../items/shared/item-lookups.mjs";
-import { actorLineOf, lineCode } from "../mechanics/resources/game-lines.mjs";
+import { actorLineOf, lineMatches } from "../mechanics/resources/game-lines.mjs";
 import { isUnarmedAttack } from "../items/shared/unarmed-attacks.mjs";
 import { choiceValue, chosenOf, hasChosen } from "./choice-read.mjs";
 
@@ -643,8 +643,8 @@ function actorTag(actor, ruleItem, rest) {
       world = '';
     }
 
-    const wanted = lineCode(arg);
-    return !!wanted && actorLineOf(actor, world) == wanted;
+    // A homebrew line counts as the book line it's built on too (game-lines.mjs#lineMatches).
+    return lineMatches(actorLineOf(actor, world), arg);
   }
 
   case 'hasItem': return hasItem(actor, arg);

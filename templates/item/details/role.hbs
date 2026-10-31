@@ -9,6 +9,17 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+    {{!-- Homebrew line built on that line's rules (Configure Settings > Game Lines) --}}
+    {{#if homebrewLines}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RoleGameLine'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.gameLine" data-tooltip="{{localize 'E20.RoleGameLineHint'}}">
+      {{selectOptions @root.homebrewLines selected=@root.system.gameLine}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/if}}
+
     {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="faction" label='E20.RoleDefaultFaction' items=system.items type='faction'}}
 
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.IsAdditiveRole'}}

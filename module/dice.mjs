@@ -156,6 +156,7 @@ import { HIGH_DENSITY_FOLLOW_UP_SHIFT_DOWN, isHighDensityWeapon } from "./items/
 import { hasGeneticAlterations, isRetrogenWeapon } from "./items/attacks/retrogen.mjs";
 import { creatureTagsOf, isRobotic } from "./mechanics/characters/creature-tags.mjs";
 import { hasChosen } from "./rules/choice-read.mjs";
+import { canConvert } from "./mechanics/vehicles/vehicle-alt-modes.mjs";
 
 // Every Commando Perk automated below that isn't specific to Sneak Attack itself (those constants
 // live in mechanics/combat/sneak-attack.mjs instead) - all under GI Joe CRB's own compendium pack.
@@ -772,7 +773,8 @@ export class Dice {
 
     // "Requirements: Bot Mode only" / "Alt Mode only" (Transformers weapons): not in that Mode, no attack.
     const modeRequirement = battlizerWeapon?.system?.modeRequirement;
-    if (modeRequirement && actor?.system?.canTransform && (modeRequirement == 'altMode') != !!actor.system.isTransformed) {
+    // A Vehicle or Zord with Alt Modes (mechanics/vehicles/vehicle-alt-modes.mjs) has Modes too.
+    if (modeRequirement && canConvert(actor) && (modeRequirement == 'altMode') != !!actor.system.isTransformed) {
       ui.notifications.warn(this._localize('E20.WeaponWrongMode', {
         name: battlizerWeapon.name, mode: this._localize(E20.weaponModeRequirements[modeRequirement]),
       }));

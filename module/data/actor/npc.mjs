@@ -3,7 +3,7 @@ import { makeBool, makeInt, makeStr } from "../generic-makers.mjs";
 import { basedEssences, character, migrateCharacterData } from './templates/character.mjs';
 import { migrateCreatureEssences } from '../../mechanics/characters/creature-essences.mjs';
 import { common } from './templates/common.mjs';
-import { creature } from './templates/creature.mjs';
+import { creature, mount } from './templates/creature.mjs';
 import { migrateNonPcStats } from './templates/stat-migration.mjs';
 
 export class NpcActorData extends foundry.abstract.TypeDataModel {
@@ -12,6 +12,7 @@ export class NpcActorData extends foundry.abstract.TypeDataModel {
       ...character(),
       ...common(),
       ...creature(),
+      ...mount(),
       allegiancePoints: makeInt(0),
       gainingTheContact: makeStr(''),
       isContact: makeBool(false),

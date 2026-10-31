@@ -2245,6 +2245,24 @@
   margin: 0;
 }
 
+/* A homebrew line's look (Game Lines > Look, mechanics/resources/line-look.mjs). Header art sits behind the header under
+   a wash of the panel colour, so the fields on it stay readable; the logo sits in the title bar, before the title. */
+.essence20.e20-line-art .sheet-header {
+  background-image: linear-gradient(color-mix(in srgb, var(--e20-theme-bg-color) 70%, transparent), color-mix(in srgb, var(--e20-theme-bg-color) 70%, transparent)), var(--e20-line-header-art);
+  background-size: cover;
+  background-position: center;
+}
+
+.essence20 > .window-header .e20-line-logo {
+  flex: 0 0 auto;
+  height: 22px;
+  width: auto;
+  max-width: 96px;
+  margin-right: 6px;
+  object-fit: contain;
+  border: none;
+}
+
 /* --e20-system-color is set from an Actor's own system.color (helpers/actor.mjs) - Items have
    no such concept, so every var(--e20-system-color, var(--e20-theme-accent)) rule shared with actor
    sheets (active tab fill in _tabs.scss, etc.) was falling through to the raw --e20-theme-accent on
@@ -7243,6 +7261,234 @@ select.e20-select-searchable optgroup[hidden] {
 
 .essence20 .house-rules-new {
   margin-top: 6px;
+}
+
+/* Homebrew Game Lines (apps/game-lines-config.mjs): one House Rules-style panel per line. */
+.essence20.game-lines-config {
+  min-width: 480px;
+  /* Label beside its field, one row each (the window theme stacks a plain .form-group). */
+  /* Twenty-odd Skills: two columns, so the list isn't a page long. */
+  /* Words: any word past the suggested ones, a line each - the box spans the row. */
+}
+.essence20.game-lines-config .hint {
+  color: var(--e20-theme-muted-text);
+  margin: 0 0 6px;
+}
+.essence20.game-lines-config .form-footer {
+  margin-top: 12px;
+}
+.essence20.game-lines-config .game-lines-line .form-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+}
+.essence20.game-lines-config .game-lines-line .form-group > label {
+  flex: 0 0 150px;
+}
+.essence20.game-lines-config .game-lines-line .form-group > input,
+.essence20.game-lines-config .game-lines-line .form-group > select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.essence20.game-lines-config .game-lines-delete {
+  flex: 0 0 auto;
+}
+.essence20.game-lines-config .game-lines-specializations summary {
+  cursor: pointer;
+  font-weight: bold;
+  margin: 6px 0;
+}
+.essence20.game-lines-config .game-lines-skills {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 12px;
+}
+.essence20.game-lines-config .game-lines-skills .form-group > label {
+  flex-basis: 95px;
+}
+.essence20.game-lines-config .game-lines-terms .form-group.stacked {
+  flex-direction: column;
+  align-items: stretch;
+}
+.essence20.game-lines-config .game-lines-terms .form-group.stacked textarea {
+  width: 100%;
+}
+.essence20.game-lines-config .game-lines-module-line {
+  margin: 2px 0;
+}
+
+/* Export Homebrew (apps/homebrew-export.mjs): the module's details, then a ticked list per kind of content. */
+.essence20.homebrew-export {
+  min-width: 480px;
+}
+.essence20.homebrew-export .hint {
+  color: var(--e20-theme-muted-text);
+  margin: 0 0 6px;
+}
+.essence20.homebrew-export .form-footer {
+  margin-top: 12px;
+}
+.essence20.homebrew-export .form-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+}
+.essence20.homebrew-export .form-group > label {
+  flex: 0 0 120px;
+}
+.essence20.homebrew-export .form-group > input {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.essence20.homebrew-export .form-group.stacked {
+  flex-direction: column;
+  align-items: stretch;
+}
+.essence20.homebrew-export .form-group.stacked > label {
+  flex: 0 0 auto;
+}
+.essence20.homebrew-export .form-group.stacked textarea {
+  width: 100%;
+}
+.essence20.homebrew-export .homebrew-export-choice {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+  color: var(--e20-theme-text-color);
+}
+.essence20.homebrew-export .homebrew-export-choice input {
+  flex: none;
+  margin: 0;
+}
+.essence20.homebrew-export .homebrew-export-name {
+  flex: 1 1 auto;
+}
+.essence20.homebrew-export .homebrew-export-meta {
+  flex: none;
+  font-size: 0.85em;
+  color: var(--e20-theme-muted-text);
+}
+
+/* The episode tools (apps/mission-generator.mjs, apps/race-tracker.mjs). */
+.essence20.mission-generator .mission-generator-body,
+.essence20.mission-generator .race-tracker-body,
+.essence20.race-tracker .mission-generator-body,
+.essence20.race-tracker .race-tracker-body {
+  gap: 6px;
+}
+.essence20.mission-generator .hint,
+.essence20.race-tracker .hint {
+  color: var(--e20-theme-muted-text);
+  margin: 0;
+}
+.essence20.mission-generator .form-group,
+.essence20.race-tracker .form-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.essence20.mission-generator .form-group > label,
+.essence20.race-tracker .form-group > label {
+  flex: 0 0 120px;
+}
+.essence20.mission-generator .form-group > input[type=text],
+.essence20.mission-generator .form-group > select,
+.essence20.race-tracker .form-group > input[type=text],
+.essence20.race-tracker .form-group > select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.essence20.mission-generator .form-group.stacked,
+.essence20.race-tracker .form-group.stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+.essence20.mission-generator .form-group.stacked > label,
+.essence20.race-tracker .form-group.stacked > label {
+  flex: 0 0 auto;
+}
+.essence20.mission-generator .form-group.stacked textarea,
+.essence20.race-tracker .form-group.stacked textarea {
+  width: 100%;
+}
+.essence20.mission-generator .form-footer,
+.essence20.race-tracker .form-footer {
+  margin-top: 8px;
+}
+
+.essence20.mission-generator .mission-section {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--e20-theme-border-color, rgba(128, 128, 128, 0.3));
+}
+.essence20.mission-generator .mission-section-name {
+  flex: 0 0 110px;
+}
+.essence20.mission-generator .mission-section-results {
+  flex: 1 1 auto;
+}
+.essence20.mission-generator .mission-section-results .mission-result + .mission-result::before {
+  content: ", ";
+}
+.essence20.mission-generator .mission-section-results p {
+  display: inline;
+  margin: 0;
+}
+
+.essence20.race-tracker .race-racers {
+  list-style: none;
+  margin: 4px 0;
+  padding: 0;
+}
+.essence20.race-tracker .race-racer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 0;
+}
+.essence20.race-tracker .race-racer > a {
+  flex: 0 0 auto;
+}
+.essence20.race-tracker .race-racers-header {
+  font-weight: bold;
+  border-bottom: 1px solid var(--e20-theme-border-color, rgba(128, 128, 128, 0.3));
+}
+.essence20.race-tracker .race-place {
+  flex: 0 0 22px;
+  text-align: center;
+}
+.essence20.race-tracker .race-name {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.essence20.race-tracker .race-name img {
+  width: 28px;
+  height: 28px;
+  border: none;
+  object-fit: contain;
+}
+.essence20.race-tracker .race-count {
+  flex: 0 0 40px;
+  text-align: center;
+  font-weight: bold;
+}
+.essence20.race-tracker .race-spacer {
+  visibility: hidden;
+}
+.essence20.race-tracker .race-count {
+  white-space: nowrap;
+}
+.essence20.race-tracker .race-buttons {
+  gap: 6px;
 }
 
 /* The house rule editor (apps/house-rule-editor.mjs). */

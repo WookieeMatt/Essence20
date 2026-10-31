@@ -45,6 +45,12 @@ export class AltModeItemData extends foundry.abstract.TypeDataModel {
       // An Alt Mode size that fixes the Bot Mode's ({long: 'large'} - Saurian, Slitherer: "corresponds to Large Bot Mode").
       botModeSizeFor: new fields.ObjectField(),
       tokenImage: makeStr(null),
+      // Toughness and Evasion changes while in this Alt Mode (a homebrew vehicle's armoured Strike Mode): added to the
+      // Defense in Essence20Actor#_prepareDefenses, listed under this Alt Mode's name. Negative for a lighter form.
+      modeDefenses: new fields.SchemaField({
+        toughness: makeInt(0),
+        evasion: makeInt(0),
+      }),
       // Limited Articulation (TF CRB, several Alt Mode Chassis, e.g. p.51): no precision
       // Skills (Athletics, Finesse) while converted into this Alt Mode. Read off the actor's currently-active Alt Mode item by
       // dice.mjs's own rollSkill (see LIMITED_ARTICULATION_SKILLS' own comment there).

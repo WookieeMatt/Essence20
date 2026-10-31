@@ -492,6 +492,10 @@ describe('Tokens (the active GM)', () => {
   test('ridePosition centres the smaller token', () => {
     expect(crew.ridePosition({ x: 0, y: 0, width: 2, height: 1 }, { width: 1, height: 1 })).toEqual({ x: 50, y: 0 });
   });
+
+  test("ridePosition goes by where a moving token is going, not its animated spot", () => {
+    expect(crew.ridePosition({ x: 0, y: 0, width: 2, height: 1, _source: { x: 300, y: 100 } }, { width: 1, height: 1 })).toEqual({ x: 350, y: 100 });
+  });
 });
 
 describe('Sheets', () => {

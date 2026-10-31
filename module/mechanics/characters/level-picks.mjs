@@ -425,9 +425,11 @@ async function removeChosen(actor, matches) {
 export async function levelPickChoices(actor, pick) {
   const spec = LEVEL_PICK_KINDS[pick.kind];
   const { getVisibleItemPacks } = await import("../../util/compendium-browser.mjs");
+  const { roleCustomLine } = await import("../resources/custom-game-lines.mjs");
   const roles = actor.items.documentsByType?.role ?? [];
   const role = (pick.track == 'additive' ? roles.find(r => r.system?.isAdditive) : roles.find(r => !r.system?.isAdditive)) ?? roles[0];
-  const folder = CONFIG.E20.gameLinePackFolders?.[role?.system?.version];
+  // A homebrew line's own folder (mechanics/resources/custom-game-lines.mjs) counts as the line's too.
+  const folders = [CONFIG.E20.gameLinePackFolders?.[role?.system?.version], roleCustomLine(role)?.packFolder].filter(Boolean);
 
   const entries = [];
   const groups = {};
@@ -435,7 +437,7 @@ export async function levelPickChoices(actor, pick) {
     const packFolder = pack.folder?.name ?? null;
     // General Perks come from every book the GM has enabled, any line (user ruling 2026-10-07); other picks (Grid
     // Powers) stay within the character's own line.
-    if (pick.kind != 'generalPerk' && folder && packFolder && packFolder != folder) {
+    if (pick.kind != 'generalPerk' && folders.length && packFolder && !folders.includes(packFolder)) {
       continue;
     }
 

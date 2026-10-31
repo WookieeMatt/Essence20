@@ -1,4 +1,4 @@
-import { lineOf } from "../../../mechanics/resources/game-lines.mjs";
+import { lineMatches, lineOf } from "../../../mechanics/resources/game-lines.mjs";
 import { contextFor, evaluate, registerTag } from "../../predicate.mjs";
 import { itemsFor, recipients, registerStep, runSteps } from "../../steps.mjs";
 import { escape } from "../shared/chat-speaker-helpers.mjs";
@@ -29,7 +29,8 @@ import { sourceOf } from "../../../items/shared/item-lookups.mjs";
 
 const listOf = collection => collection?.contents ?? (collection ? [...collection] : []);
 
-registerTag('item:line', (rest, ctx) => (ctx.item ? lineOf(ctx.item.uuid ?? sourceOf(ctx.item)) == rest : false), { phrase: ['{who} {is} from the {arg} line', '{who} {isnt} from the {arg} line'] });
+// A homebrew line's items count as the book line it's built on too (game-lines.mjs#lineMatches).
+registerTag('item:line', (rest, ctx) => (ctx.item ? lineMatches(lineOf(ctx.item.uuid ?? sourceOf(ctx.item)), rest) : false), { phrase: ['{who} {is} from the {arg} line', '{who} {isnt} from the {arg} line'] });
 
 registerTag('item:folderName', (rest, ctx) => {
   const wanted = String(rest ?? '').toLowerCase();

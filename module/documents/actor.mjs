@@ -3,7 +3,7 @@ import { runDerived } from "../mechanics/item-hooks.mjs";
 import { COMMANDER_SKILLS_FLAG } from "../items/zords/commander-combiner-feature.mjs";
 import { ZORD2 } from "../items/zords/combiner-roster-helpers.mjs";
 import { addParticipantBonus, finishParticipantHealth, resetParticipantBonuses } from "../mechanics/vehicles/megaform-bonus-health.mjs";
-import { getMegaformParticipants, subtypeChangeBlockers } from "../mechanics/vehicles/megaform-participants.mjs";
+import { getMegaformParticipants, isGuestComponent, subtypeChangeBlockers } from "../mechanics/vehicles/megaform-participants.mjs";
 import { SIZE_CLASSES, sizeClassIndex } from "../mechanics/combat/size-classes.mjs";
 import { linkedBonuses } from "../mechanics/companions/companions.mjs";
 import { BOND } from "../mechanics/companions/bonded-partners.mjs";
@@ -1220,6 +1220,7 @@ export class Essence20Actor extends Actor {
       }
     }
 
+    const activeAltMode = system.isTransformed ? this.items.get(system.altModeId) : null;
     for (const defenseType of Object.keys(CONFIG.E20.defenses)) {
       const defense = system.defenses[defenseType];
       const base = defense.base;
@@ -1292,6 +1293,13 @@ export class Essence20Actor extends Actor {
       defense.string += ` + ${perkDefenseBonus} (${perkName})`;
 
       // (Imperial Machine Mantle is a Defense rule on the upgrade, over armorShare - rules/conv15-items1.test.js.)
+
+      // The Alt Mode it's in: its own Toughness / Evasion change (alt-mode.mjs modeDefenses - a vehicle's Strike Mode).
+      const modeDefense = Number(activeAltMode?.system?.modeDefenses?.[defenseType]) || 0;
+      if (modeDefense) {
+        defense.total += modeDefense;
+        defense.string += ` + ${modeDefense} (${activeAltMode.name})`;
+      }
 
       // Companion Perks: Reinforced Bond, Mini-Con Master. (Hard Target's, Armored Connection's and In The Right Hands'
       // Body Armor Segment are Defense rules.)
@@ -1725,7 +1733,7 @@ export class Essence20Actor extends Actor {
     // never smaller.
     // A Megaform with a Cybertronian in it is one Size Class larger than its largest component, Titanic at most (Field
     // Guide p.134).
-    if (participants.some(part => part.type != 'zord')) {
+    if (participants.some(part => isGuestComponent(this, part))) {
       const largest = Math.max(0, ...participants.map(part => sizeClassIndex(part.system.size)));
       system.size = SIZE_CLASSES[Math.min(SIZE_CLASSES.length - 1, largest + 1)];
     } else if (sizeClassIndex(system.size) < sizeClassIndex('towering')) {

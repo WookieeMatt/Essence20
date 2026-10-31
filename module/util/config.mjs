@@ -1469,6 +1469,15 @@ E20.megaformSubtypes = {
 };
 preLocalize("megaformSubtypes");
 
+// Who a GM may let into a homebrew Megaform (mechanics/vehicles/megaform-participants.mjs#MEGAFORM_JOIN_TYPES).
+E20.megaformJoinTypes = {
+  zord: "TYPES.Actor.zord",
+  vehicle: "TYPES.Actor.vehicle",
+  playerCharacter: "TYPES.Actor.playerCharacter",
+  npc: "TYPES.Actor.npc",
+};
+preLocalize("megaformJoinTypes");
+
 // Megaform Trait options a Zord with the Combiner Zord Feature can contribute when it
 // joins a Megaform. The base six (coreAbility through move) are from the Power Rangers Core
 // Rulebook (p.140); accurateCombiner/defender/detachable/layeredSystems/resistant were added by
