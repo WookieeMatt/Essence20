@@ -3,7 +3,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { COMMON_FIELDS, RULE_FORMS, STEP_FORMS, formFor, stepChoices } from './editor-spec.mjs';
 import { applyEdit, composeTag, fieldLabel, fieldsHtml, optionList, prerequisitesFormHtml, previewLine, readInput, ruleFormHtml, ruleTypeGroups, tagDatalists, tidy } from './editor-render.mjs';
-import { RULE_TYPES } from './types.mjs';
+import { RULE_TYPES, validateRule } from './types.mjs';
 import { STEP_TYPES } from './steps.mjs';
 import { SKELETONS } from './sheet.mjs';
 
@@ -91,6 +91,13 @@ describe('rendering', () => {
 });
 
 describe('reading it back', () => {
+  test('"No limit" drops the whole limit, so the rule still validates', () => {
+    const rule = { type: 'Use', limit: { per: 'scene', max: 1 }, steps: [{ do: 'chat', text: 'x' }] };
+    readInput(rule, 'limit.per', 'select', '');
+    expect(rule.limit).toBeUndefined();
+    expect(validateRule(tidy(rule))).toEqual([]);
+  });
+
   test('each kind writes the right type, and clearing removes the setting', () => {
     const rule = { type: 'Use', steps: [] };
     readInput(rule, 'label', 'text', 'Zap');

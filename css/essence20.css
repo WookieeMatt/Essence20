@@ -2440,7 +2440,7 @@
   font-weight: 700;
 }
 
-/* Sorcerous Power's committed-vs-budget display (power-points.hbs / sidebars/character.hbs) - same
+/* Sorcerous Power's committed-vs-budget display (sidebars/character.hbs / sidebars/npc.hbs) - same
    amber "needs attention" read as the Load Out chips above, for the same informational-only,
    nothing-blocked warning shape (USER DECISION, 2026-09-24: committed can exceed the budget, the
    GM just gets flagged). */

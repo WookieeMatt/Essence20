@@ -6,7 +6,7 @@ import { buildCommand, commandDefenseBonus, commandSources, isLive, PRESETS } fr
 import { bondOf, bondRollSources, BOND, moduleEnergon } from './bonded-partners.mjs';
 import { groupBonuses, renderCard, tally } from '../rolls/group-tests.mjs';
 import { allegianceLeft, CONTACT, contactKindOf, isContact, startingAllegiance } from './contacts.mjs';
-import { BATTLIZERS, isBattlizer, personalVehicleEdge, racerAbandonMode, SUMMON, vehicleData, VEHICLES } from './summons.mjs';
+import { BATTLIZERS, isBattlizer, personalVehicleEdge, racerAbandonMode, SUMMON, VEHICLE_IMG, vehicleCandidates, vehicleData, VEHICLES } from './summons.mjs';
 import { carrierCapacityLeft, teamKindOf, TEAM } from '../actions/team-actions.mjs';
 
 let nextId = 0;
@@ -199,6 +199,26 @@ describe('summons', () => {
     expect(data.system.essences.strength.value).toBe(7);
     expect(data.system.defenses.toughness.armor).toBe(1);
     expect(data.items.filter(i => i.type == 'weaponEffect').length).toBe(2);
+    // A picture, not a blank token, and one linked token so the same vehicle comes back each summon.
+    expect(data.img).toBe(VEHICLE_IMG);
+    expect(data.prototypeToken).toEqual({ actorLink: true, texture: { src: VEHICLE_IMG } });
+  });
+
+  test('the vehicles a player could use instead of a new one: theirs, not another kind of personal vehicle, this character\'s first', () => {
+    const owner = { uuid: 'Actor.o', system: { actors: { a: { uuid: 'Actor.mine' } } } };
+    const vehicle = (id, name, extra = {}) => ({ uuid: `Actor.${id}`, id, name, type: 'vehicle', isOwner: true, flags: { essence20: {} }, ...extra });
+    const mine = vehicle('mine', 'Zed Bike');
+    const saved = global.fromUuidSync;
+    global.fromUuidSync = uuid => (uuid == 'Actor.mine' ? mine : null);
+    const actors = [
+      vehicle('a', 'Alpha Bike'), mine,
+      vehicle('glider', 'Glider', { flags: { essence20: { personalVehicle: 'galaxyGlider' } } }),
+      vehicle('cycle', 'Old Cycle', { flags: { essence20: { personalVehicle: 'sharkCycle' } } }),
+      vehicle('theirs', 'Not Mine', { isOwner: false }),
+      { uuid: 'Actor.npc', name: 'Npc', type: 'npc', isOwner: true },
+    ];
+    expect(vehicleCandidates(owner, 'sharkCycle', actors).map(actor => actor.name)).toEqual(['Zed Bike', 'Alpha Bike', 'Old Cycle']);
+    global.fromUuidSync = saved;
   });
 
   test('Battlizers, Edge while riding and Racer Abandon', () => {

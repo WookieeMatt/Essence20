@@ -502,7 +502,7 @@ export const TAG_FAMILIES = [
   ['item', ['equipped', 'type:', 'trait:', 'element:', 'source:', 'id:', 'availability<=standard', 'data:', 'name~', 'isHost', 'onHost', 'own']],
   ['weapon', ['trait:', 'data:', 'name~']],
   ['rule', ['data:', 'banked', 'altMode']],
-  ['self', ['morphed', 'transformed', 'canTransform', 'status:', 'toggle:', 'level>=', 'hp<half', 'type:', 'hasItem:', 'tag:', 'marked:', 'data:', 'recklessAbandon', 'skill:', 'essence:', 'size>=', 'has:', 'count:', 'trained:', 'wearing:', 'wearing>=', 'specializedIn:', 'sizeDiff>=1', 'levelDiff>=1', 'notActed']],
+  ['self', ['morphed', 'transformed', 'canTransform', 'movement:aerial','status:', 'toggle:', 'level>=', 'hp<half', 'type:', 'hasItem:', 'tag:', 'marked:', 'data:', 'recklessAbandon', 'skill:', 'essence:', 'size>=', 'has:', 'count:', 'trained:', 'wearing:', 'wearing>=', 'specializedIn:', 'sizeDiff>=1', 'levelDiff>=1', 'notActed']],
   ['target', ['status:', 'tag:', 'type:', 'hasItem:', 'level>=', 'hp<half', 'marked:', 'within:30', 'sizeDiff>=1', 'specializedIn:', 'levelDiff>=1', 'notActed']],
   ['combat', ['', 'round:', 'first', 'aheadOfTarget', 'highestInitiative']],
   ['vehicle', ['crew', 'driving', 'moves:aerial', 'moves:ground', 'moves:swim', 'type:zord', 'type:vehicle']],
