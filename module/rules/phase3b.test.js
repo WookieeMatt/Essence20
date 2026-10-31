@@ -941,11 +941,14 @@ describe('round 29: pick before paying', () => {
 });
 
 describe('round 30: temporary Health', () => {
-  test('heal with temporary adds to the Health bonus, not the value', async () => {
+  // Through the ledger (GI Joe CRB p.210: it lasts the scene): the bonus and the current Health rise together, and the
+  // grant is recorded so the scene's end takes it back - it used to stay on the character for good.
+  test('heal with temporary: bonus and value both rise, recorded for the scene', async () => {
     const actor = makeActor([]);
     await runSteps([{ do: 'heal', amount: 2, temporary: true }], stepContext({ actor, item: { name: 'x' }, targets: [] }));
     expect(actor.system.health.bonus).toBe(2);
-    expect(actor.system.health.value).toBe(5);
+    expect(actor.system.health.value).toBe(7);
+    expect(actor.flags.essence20.resTempGrants).toEqual([expect.objectContaining({ kind: 'health', amount: 2 })]);
   });
 });
 

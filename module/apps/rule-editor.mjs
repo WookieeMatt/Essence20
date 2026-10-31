@@ -199,7 +199,9 @@ export default class RuleEditor extends ApplicationV2 {
         return;
       }
 
-      await this.item.update({ 'system.prerequisites': when.length ? { when } : {} });
+      // An ObjectField merges an update into what's stored, so {} left the old prerequisites in place - the last one has
+      // to be deleted outright.
+      await this.item.update({ 'system.prerequisites.when': when.length ? when : new foundry.data.operators.ForcedDeletion() });
       await this.close();
       return;
     }

@@ -15,11 +15,7 @@
 
     {{!-- Items --}}
     <div class="npc-items">
-      {{#if system.canMorph}}
-        {{> "systems/essence20/templates/actor/parts/misc/power-points.hbs"}}
-      {{else if system.powers.sorcerous.levelTaken}}
-        {{> "systems/essence20/templates/actor/parts/misc/power-points.hbs"}}
-      {{/if}}
+      {{!-- Personal Power and Sorcerous Power are in the sidebar's Resources panel (sidebars/npc.hbs), as on a character. --}}
       {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
       {{> "systems/essence20/templates/actor/parts/items/hangUp/container.hbs"}}
       {{> "systems/essence20/templates/actor/parts/items/power/container.hbs"}}

@@ -198,10 +198,10 @@ async function _applyRestBenefits(actor, completeMessageKey) {
   // Reseting Personal Power
   let powerRestore = 0;
   if (actor.system.powers?.personal.max) {
-    powerRestore = Math.min(
-      actor.system.powers.personal.max,
-      (actor.system.powers.personal.value + actor.system.powers.personal.regeneration),
-    );
+    // A Ranger regains its Role's daily regeneration. An NPC has no Role to set one, so with none set a rest fills it.
+    const personal = actor.system.powers.personal;
+    const regeneration = Number(personal.regeneration) || (actor.type == 'npc' ? personal.max : 0);
+    powerRestore = Math.min(personal.max, (Number(personal.value) || 0) + regeneration);
 
     if (powerRestore) {
       ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));

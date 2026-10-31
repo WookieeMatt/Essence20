@@ -366,6 +366,12 @@ export function readInput(rule, path, kind, raw, row = null) {
   case 'select':
   case 'ruleType':
   case 'stepType':
+    // "No limit" drops the whole limit: a {max} left without its {per} fails validation, so the rule couldn't be saved.
+    if (raw === '' && path.endsWith('limit.per')) {
+      setPath(rule, path.slice(0, -'.per'.length), undefined);
+      break;
+    }
+
     setPath(rule, path, raw === '' ? undefined : raw);
     break;
   case 'number':

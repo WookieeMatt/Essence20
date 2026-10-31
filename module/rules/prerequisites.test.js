@@ -42,6 +42,13 @@ describe('checking', () => {
     expect(result).toEqual({ met: false, unmet: ['Smarts 4+'], asks: ['GM approval'], waiting: ['Attached to: trait computerized'] });
     expect(checkPrerequisites(hero(), perk(['host:trait:computerized']), { host: { type: 'weapon', system: { traits: ['computerized'] } } }).met).toBe(true);
     expect(checkPrerequisites(hero(), perk([])).met).toBe(true);
+    // self:movement - in either Mode: a Bot Mode with none still counts its Alt Mode's (the actor only carries that while converted).
+    const flier = hero({ movement: { aerial: { base: 0, total: 0 }, swim: { base: 0, total: 0 } } });
+    expect(checkPrerequisites(flier, perk(['self:movement:aerial'])).met).toBe(false);
+    flier.items.push({ name: 'Jet', type: 'altMode', system: { altModeMovement: { aerial: 60, aquatic: 20 } } });
+    expect(checkPrerequisites(flier, perk(['self:movement:aerial'])).met).toBe(true);
+    expect(checkPrerequisites(flier, perk(['self:movement:swim'])).met).toBe(true);
+    expect(checkPrerequisites(hero({ movement: { aerial: { base: 0, total: 30 } } }), perk(['self:movement:aerial'])).met).toBe(true);
     expect(checkPrerequisites(hero(), perk(['self:hasType:perk:Favorite Command'])).met).toBe(true);
     expect(checkPrerequisites(hero(), perk(['self:hasType:origin:Favorite Command'])).met).toBe(false);
     expect(prerequisitesOf({ system: {} })).toEqual([]);
@@ -67,6 +74,7 @@ describe('checking', () => {
     expect(describePrerequisite('self:data:system.qualified.poisons.all')).toBe('Qualified: poisons all');
     expect(describePrerequisite('self:data:system.powers.personal.max>=4')).toBe('Maximum Personal Power 4+');
     expect(describePrerequisite('self:data:system.movement.aerial.total>=50')).toBe('Aerial Movement 50+');
+    expect(describePrerequisite('self:movement:aerial')).toBe('Aerial Movement');
     expect(describePrerequisite('self:data:system.crew.numPassengers>=1')).toBe('Passengers 1+');
   });
 });

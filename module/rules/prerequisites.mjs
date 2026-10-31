@@ -94,6 +94,10 @@ export function describePrerequisite(entry) {
     return 'Has an Alt Mode';
   }
 
+  if ((match = /^self:movement:(\w+)$/.exec(text))) {
+    return `${capital(words(match[1]))} Movement`;
+  }
+
   if ((match = /^ask:(.+)$/.exec(text))) {
     return capital(match[1]);
   }
