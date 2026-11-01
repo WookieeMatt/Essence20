@@ -1,3 +1,4 @@
+import { setCustomLines } from '../resources/custom-game-lines.mjs';
 import { canConvert, canHoldAltModes, vehicleAltModesOn } from './vehicle-alt-modes.mjs';
 
 const altMode = { type: 'altMode' };
@@ -35,4 +36,24 @@ test('a Vehicle converts once it holds an Alt Mode, and can always change back',
   expect(canConvert(actor('megaform', [altMode], {}), true)).toBe(false);
   expect(canConvert(actor('npc', [], { canTransform: true }), false)).toBe(true);
   expect(canConvert(null, true)).toBe(false);
+});
+
+test("the world line's vehicleAltModes switch turns them on without the older setting", () => {
+  setCustomLines([{ label: 'GoBots', family: 'transformers', rules: { vehicleAltModes: true } }]);
+  globalThis.game = { settings: { get: (scope, key) => ({ gameLine: 'gobots', vehicleAltModes: false })[key] } };
+  expect(vehicleAltModesOn()).toBe(true);
+  globalThis.game = { settings: { get: (scope, key) => ({ gameLine: 'transformers', vehicleAltModes: false })[key] } };
+  expect(vehicleAltModesOn()).toBe(false);
+  setCustomLines([]);
+});
+
+test("in a Crossover world a Vehicle follows the line its GM picked for it", () => {
+  setCustomLines([{ label: 'GoBots', family: 'transformers', rules: { vehicleAltModes: true } }]);
+  globalThis.game = { settings: { get: (scope, key) => ({ gameLine: '', vehicleAltModes: false })[key] } };
+  const gobot = actor('vehicle', [altMode], {});
+  gobot.flags = { essence20: { rulesLine: 'gobots' } };
+  expect(canHoldAltModes(gobot)).toBe(true);
+  expect(canConvert(gobot)).toBe(true);
+  expect(canHoldAltModes(actor('vehicle'))).toBe(false);
+  setCustomLines([]);
 });

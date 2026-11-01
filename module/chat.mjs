@@ -25,7 +25,7 @@ import {
 import {
   canSpendForActor, canWriteStoryPoints, defenseBoostAfterRoll, spendForActor,
 } from "./mechanics/resources/story-points.mjs";
-import { getGameLine } from "./settings.js";
+import { getGameLineId } from "./settings.js";
 import { claimConsummatePerformer } from "./items/resources/consummate-performer.mjs";
 import { canOfferHighDensityFollowUp, hasDifferentTarget, rollHighDensityFollowUp } from "./items/attacks/high-density.mjs";
 import { ruleSelfRedirect, takeSelfRedirect } from "./rules/plugins/combat/self-redirect.mjs";
@@ -266,7 +266,7 @@ export const addRerollButtons = function (message, html) {
  * addRerollButtons.
  */
 export const addDefenseBoostButton = function (message, html) {
-  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !defenseBoostAfterRoll(getGameLine())) {
+  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !defenseBoostAfterRoll(getGameLineId())) {
     return;
   }
 

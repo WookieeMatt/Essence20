@@ -7263,6 +7263,32 @@ select.e20-select-searchable optgroup[hidden] {
   margin-top: 6px;
 }
 
+/* A Megaform's Forming Rules (apps/megaform-forming-config.mjs): House Rules-style panels, the ticks in a grid. */
+.essence20.megaform-forming-config {
+  min-width: 420px;
+}
+.essence20.megaform-forming-config .megaform-forming {
+  gap: 8px;
+}
+.essence20.megaform-forming-config .hint {
+  color: var(--e20-theme-muted-text);
+  margin: 6px 0 0;
+}
+.essence20.megaform-forming-config select {
+  width: 100%;
+}
+.essence20.megaform-forming-config multi-checkbox {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+}
+.essence20.megaform-forming-config multi-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--e20-theme-text-color);
+}
+
 /* Homebrew Game Lines (apps/game-lines-config.mjs): one House Rules-style panel per line. */
 .essence20.game-lines-config {
   min-width: 480px;

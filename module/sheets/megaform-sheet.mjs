@@ -2,15 +2,34 @@ import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
 import { joinedTokenOf, megaformTokens, memberTokens } from "../mechanics/vehicles/megaform-join.mjs";
 import { getCombineReadyRound, isCombineReady } from "../mechanics/vehicles/combiner-timer.mjs";
-import { customJoinTypes } from "../mechanics/vehicles/megaform-participants.mjs";
+import { formingSummary } from "../mechanics/vehicles/megaform-participants.mjs";
+import MegaformFormingConfig from "../apps/megaform-forming-config.mjs";
 
 export class Essence20MegaformActorSheet extends Essence20BaseActorSheet {
   static DEFAULT_OPTIONS = {
     actions: {
       megaformJoin: Essence20MegaformActorSheet.#onJoin,
       megaformSeparate: Essence20MegaformActorSheet.#onSeparate,
+      megaformForming: Essence20MegaformActorSheet.#onForming,
     },
   };
+
+  /** The GM's Forming Rules window (apps/megaform-forming-config.mjs). */
+  static #onForming() {
+    MegaformFormingConfig.open(this.actor);
+  }
+
+  /** The ⋮ menu's Forming Rules entry, for GMs. */
+  _getHeaderControls() {
+    const controls = super._getHeaderControls();
+    controls.push({
+      icon: 'fa-solid fa-puzzle-piece',
+      label: 'E20.MegaformFormingOpen',
+      action: 'megaformForming',
+      visible: () => game.user.isGM,
+    });
+    return controls;
+  }
 
   /**
    * Join: the members' tokens on this scene become the Megaform's token (mechanics/vehicles/megaform-join.mjs). The
@@ -98,14 +117,12 @@ export class Essence20MegaformActorSheet extends Essence20BaseActorSheet {
     const scene = globalThis.canvas?.scene;
     context.megaformJoined = !!(scene && joinedTokenOf(this.actor, scene));
     context.megaformMembersHere = scene ? memberTokens(this.actor, scene).length : 0;
-    // Homebrew forms (Combiners tab, GM only): who may join, and who it needs on the scene to Join.
+    // Forming rules (Combiners tab, GM only): what they are now - the Forming Rules window changes them.
     if (game.user.isGM) {
-      const roster = Object.values(system.actors ?? {}).filter(entry => entry?.uuid);
-      context.megaformJoin = {
-        types: CONFIG.E20.megaformJoinTypes,
-        custom: !!customJoinTypes(this.actor),
-        roster: roster.length ? Object.fromEntries(roster.map(entry => [entry.uuid, entry.name])) : null,
-      };
+      const summary = formingSummary(this.actor, {
+        subtypes: CONFIG.E20.megaformSubtypes, types: CONFIG.E20.megaformJoinTypes, localize: key => game.i18n.localize(key),
+      });
+      context.megaformJoin = { summary, joins: summary.joins.join(', '), needed: summary.needed.join(', ') };
     }
 
     return context;

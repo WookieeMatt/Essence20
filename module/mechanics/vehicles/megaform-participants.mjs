@@ -1,9 +1,15 @@
-/** The actor types a GM can let into a Megaform (its system.joinTypes - the Combiners tab, GM only). */
+import { actorRule } from "../resources/custom-game-lines.mjs";
+
+/** The actor types a GM can let into a Megaform (its system.joinTypes - the Forming Rules window, GM only). */
 export const MEGAFORM_JOIN_TYPES = ['zord', 'vehicle', 'playerCharacter', 'npc'];
 
-/** The GM's own list of who may join this Megaform, or null for the book's rules below. */
+/**
+ * Who may join this Megaform, or null for the book's rules below: the GM's own list for it, else its line's
+ * (the megaformJoinTypes switch - mechanics/resources/line-profiles.mjs).
+ */
 export function customJoinTypes(megaformActor) {
-  const types = (megaformActor?.system?.joinTypes ?? []).filter(type => MEGAFORM_JOIN_TYPES.includes(type));
+  const own = (megaformActor?.system?.joinTypes ?? []).filter(type => MEGAFORM_JOIN_TYPES.includes(type));
+  const types = own.length ? own : (actorRule(megaformActor, 'megaformJoinTypes') ?? []).filter(type => MEGAFORM_JOIN_TYPES.includes(type));
   return types.length ? types : null;
 }
 
@@ -61,6 +67,29 @@ export function missingToForm(megaformActor, present) {
     .map(uuid => roster.find(entry => entry.uuid == uuid))
     .filter(entry => entry && !here.has(String(entry.uuid).split('.').pop()))
     .map(entry => entry.name);
+}
+
+/**
+ * A Megaform's forming rules in words, for the Combiners tab and the Forming Rules window (apps/megaform-forming-config.mjs):
+ * the rules it forms under, who may join (the book's rules when the GM ticked none), and who it needs on the scene.
+ * @param {Actor} megaformActor
+ * @param {Object} labels   {subtypes, types}: CONFIG.E20.megaformSubtypes / megaformJoinTypes; {localize}: i18n lookup.
+ * @returns {{rules: String, custom: Boolean, fromLine: Boolean, joins: String[], needed: String[]}}   joins is empty for the
+ *   book's rules; fromLine when they're its line's, not ticked for it.
+ */
+export function formingSummary(megaformActor, { subtypes = {}, types = {}, localize = key => key } = {}) {
+  const system = megaformActor?.system ?? {};
+  const subtype = system.subtype?.includes?.('megaformCombiner') ? 'megaformCombiner' : 'megaformZord';
+  const custom = customJoinTypes(megaformActor);
+  const roster = Object.values(system.actors ?? {}).filter(entry => entry?.uuid);
+  return {
+    rules: localize(subtypes[subtype] ?? subtype),
+    custom: !!custom,
+    fromLine: !!custom && !(system.joinTypes ?? []).some(type => MEGAFORM_JOIN_TYPES.includes(type)),
+    joins: (custom ?? []).map(type => localize(types[type] ?? type)),
+    // Only those still on its roster, as missingToForm counts them.
+    needed: (system.requiredMembers ?? []).map(uuid => roster.find(entry => entry.uuid == uuid)?.name).filter(Boolean),
+  };
 }
 
 /**

@@ -90,3 +90,11 @@ test("a Role switched to another book line no longer counts its old homebrew lin
   expect(actorLineOf(actor('playerCharacter', [{ type: 'role', system: { version: 'powerRangers', gameLine: 'mask' } }]))).toBe('pr');
   setCustomLines([]);
 });
+
+test("the line the GM picked for an actor comes before its Role", () => {
+  setCustomLines([{ label: 'Voltron', family: 'powerRangers' }]);
+  expect(actorLineOf({ type: 'zord', flags: { essence20: { rulesLine: 'voltron' } }, items: [] })).toBe('voltron');
+  expect(actorLineOf({ type: 'npc', flags: { essence20: { rulesLine: 'transformers' } }, items: [{ type: 'role', system: { version: 'giJoe' } }] })).toBe('tf');
+  expect(actorLineOf({ type: 'zord', flags: { essence20: { rulesLine: '' } }, items: [] })).toBe('pr');
+  setCustomLines([]);
+});

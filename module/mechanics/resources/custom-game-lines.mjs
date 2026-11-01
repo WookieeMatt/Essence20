@@ -7,10 +7,14 @@
  * (`flags.essence20.gameLines` in module.json - a module ships a line with no code). A world line wins over a module's
  * line with the same id.
  *
- * Imports only line-terms.mjs and line-look.mjs, both import-free (game-lines.mjs and the rules' line tags read it, and jest loads it
- * without Foundry).
+ * A line's rules switches (line-profiles.mjs) are its book line's, with any the homebrew line sets in its own `rules` on
+ * top; lineRule() / roleRule() read them.
+ *
+ * Imports only line-terms.mjs, line-look.mjs and line-profiles.mjs, all import-free (game-lines.mjs and the rules' line
+ * tags read it, and jest loads it without Foundry).
  */
 
+import { normalizeLineRules, profileRule } from "./line-profiles.mjs";
 import { normalizeLook } from "./line-look.mjs";
 import { normalizeTerms } from "./line-terms.mjs";
 
@@ -39,7 +43,8 @@ export function lineIdFrom(label) {
 /**
  * A line as stored, tidied: null when it can't be used (no name, an id a book line already uses, an unknown family).
  * @param {Object} raw   {id, label, family, packFolder, specializations: {skill: [names]}, terms: {book word: its own},
- *   canMorph: its characters Morph whatever its book line (He-Man, Jem, SilverHawks), look: line-look.mjs's}
+ *   canMorph: its characters Morph whatever its book line (He-Man, Jem, SilverHawks), look: line-look.mjs's,
+ *   rules: its own rules switches over its book line's (line-profiles.mjs)}
  * @param {String} [source]   Where it came from: 'world', or the module's id.
  * @returns {Object|null}
  */
@@ -63,9 +68,15 @@ export function normalizeLine(raw, source = 'world') {
     }
   }
 
+  // The older canMorph tick is the Morph switch turned on.
+  const rules = normalizeLineRules(raw.rules);
+  if (raw.canMorph === true && rules.canMorph === undefined) {
+    rules.canMorph = true;
+  }
+
   return {
     id, label, family: raw.family, packFolder: String(raw.packFolder ?? '').trim(), specializations, terms: normalizeTerms(raw.terms),
-    canMorph: raw.canMorph === true, look: normalizeLook(raw.look), source,
+    canMorph: raw.canMorph === true, look: normalizeLook(raw.look), rules, source,
   };
 }
 
@@ -150,13 +161,133 @@ export function roleCustomLine(role) {
 }
 
 /**
+ * One of a line's rules switches (line-profiles.mjs#LINE_RULES): a homebrew line's own setting, else its book line's,
+ * else the core rules' (no line - an all-lines world).
+ * @param {String} line   A game line key (giJoe), a homebrew id (mask), or ''.
+ * @param {String} key   A LINE_RULES key.
+ * @returns {*}
+ */
+export function lineRule(line, key) {
+  const homebrew = customLine(line);
+  return profileRule(homebrew?.family ?? lineFamily(line), key, homebrew?.rules);
+}
+
+/**
+ * The world's Game Line setting as stored: a book line key, a homebrew id, or '' (every line). '' without Foundry, and
+ * for a homebrew line that's gone (deleted, or its module turned off) - it has no rules to apply.
+ * @returns {String}
+ */
+export function worldLineId() {
+  let line = '';
+  try {
+    line = String(globalThis.game?.settings?.get?.('essence20', 'gameLine') ?? '');
+  } catch {
+    return '';
+  }
+
+  return LINE_FAMILIES.includes(line) || customLine(line) ? line : '';
+}
+
+/**
+ * One rules switch for the world's line ('' - every line - gives the core rules').
+ * @param {String} key   A LINE_RULES key.
+ * @returns {*}
+ */
+export function worldRule(key) {
+  return lineRule(worldLineId(), key);
+}
+
+/**
+ * A Role's line for lineRule(): its homebrew line's id, else its book line's key; '' with no Role.
+ * @param {Item} role
+ * @returns {String}
+ */
+export function roleLine(role) {
+  return roleCustomLine(role)?.id || role?.system?.version || '';
+}
+
+/**
+ * Whose rules a Role's character plays by: the world's line when one is set - pick G.I. Joe and the G.I. Joe rules
+ * apply to everyone - unless the Role is on a homebrew line built on that same book line (a M.A.S.K. Role in a G.I. Joe
+ * world keeps M.A.S.K.'s switches). With no world line, the Role's own.
+ * @param {Item} role
+ * @param {String} [world]   The world's line (worldLineId()).
+ * @returns {String}
+ */
+export function ruleLineFor(role, world = worldLineId()) {
+  return lineInWorld(roleLine(role), world);
+}
+
+/** Whose rules something on `own`'s line plays by in a world on `world` (ruleLineFor's rule). */
+function lineInWorld(own, world) {
+  if (!world || own == world || (customLine(own) && customLine(own).family == lineFamily(world))) {
+    return own || world;
+  }
+
+  return world;
+}
+
+/** The actor flag naming the line an actor plays by, when it has no Role to say (a Megaform, Vehicle, Zord or NPC). */
+export const RULES_LINE_FLAG = 'rulesLine';
+
+/**
+ * An actor's own line: the one the GM picked for it (its rulesLine flag - a book line key or a homebrew id), else its
+ * base Role's; '' when neither says.
+ * @param {Actor} actor
+ * @returns {String}
+ */
+export function actorLine(actor) {
+  const picked = String(actor?.flags?.essence20?.[RULES_LINE_FLAG] ?? '');
+  if (picked && (LINE_FAMILIES.includes(picked) || customLine(picked))) {
+    return picked;
+  }
+
+  const items = actor?.items?.contents ?? [...(actor?.items ?? [])];
+  const roles = items.filter(item => item?.type == 'role');
+  return roleLine(roles.find(role => !role.system?.isAdditive) ?? roles[0]);
+}
+
+/**
+ * Whose rules an actor plays by: as ruleLineFor, with the GM's pick for it standing in for a Role. In a Crossover world
+ * (no world line) that's the actor's own line - this Megaform forms like Voltron, that one like Bruticus.
+ * @param {Actor} actor
+ * @param {String} [world]   The world's line (worldLineId()).
+ * @returns {String}
+ */
+export function actorRulesLine(actor, world = worldLineId()) {
+  return lineInWorld(actorLine(actor), world);
+}
+
+/**
+ * One rules switch for an actor (actorRulesLine's line).
+ * @param {Actor} actor
+ * @param {String} key   A LINE_RULES key.
+ * @param {String} [world]   The world's line (worldLineId()).
+ * @returns {*}
+ */
+export function actorRule(actor, key, world = worldLineId()) {
+  return lineRule(actorRulesLine(actor, world), key);
+}
+
+/**
+ * One rules switch for a Role's character (ruleLineFor's line).
+ * @param {Item} role
+ * @param {String} key   A LINE_RULES key.
+ * @param {String} [world]   The world's line (worldLineId()).
+ * @returns {*}
+ */
+export function roleRule(role, key, world = worldLineId()) {
+  return lineRule(ruleLineFor(role, world), key);
+}
+
+/**
  * Whether a Role lets its character Morph (system.canMorph, set when the Role is added): a Power Rangers Role, or one on
  * a homebrew line that Morphs.
  * @param {Item} role
  * @returns {Boolean}
  */
 export function roleGrantsMorph(role) {
-  return role?.system?.version == 'powerRangers' || !!roleCustomLine(role)?.canMorph;
+  return !!roleRule(role, 'canMorph');
 }
 
 /**

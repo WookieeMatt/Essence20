@@ -7,7 +7,7 @@ const SPIKEBALL = parseStatBlock(['Spikeball', 'THREAT LEVEL: 6', 'SIZE: COMMON 
   'STRENGTH: 5 | SPEED: 4', 'SMARTS: 2 | SOCIAL: 1', 'TOUGHNESS: 15 | EVASION: 14', 'WILLPOWER: 12 | CLEVERNESS: 11',
   'SKILLS', 'Initiative +d4', 'Might +d6', 'ATTACKS', 'Spines (Might): +d6, Reach (2 Sharp damage)'].join('\n'));
 const actorToIr = jest.fn(() => JSON.parse(JSON.stringify(SPIKEBALL)));
-jest.unstable_mockModule('./settings.js', () => ({ getGameLine: () => 'powerRangers' }));
+jest.unstable_mockModule('./settings.js', () => ({ getGameLineId: () => 'powerRangers' }));
 jest.unstable_mockModule('./importers/stat-block-import.mjs', () => ({ actorToIr, createActorFromStatBlock }));
 const { THREAT_API_VERSION, auditActor, createThreat, growThreat, linkedForm, newThreatState, partyLevels, threatApi } = await import('./threat-api.mjs');
 

@@ -29,6 +29,8 @@
  * Pure - no Foundry globals - so all of it is unit-tested.
  */
 
+import { lineRule } from "../resources/custom-game-lines.mjs";
+
 export const ESSENCES = ['strength', 'speed', 'smarts', 'social'];
 export const THREAT_TYPES = ['typical', 'resilient', 'canny'];
 export const MOVEMENT_TYPES = ['aerial', 'swim', 'climb', 'burrow'];
@@ -131,7 +133,7 @@ export const RULESETS = {
  * @returns {String}
  */
 export function defaultRulesetFor(gameLine) {
-  return gameLine == 'myLittlePony' ? 'canterlot' : 'fieldGuide';
+  return lineRule(gameLine, 'threatRuleset');
 }
 
 const rulesOf = key => RULESETS[key] ?? RULESETS.fieldGuide;

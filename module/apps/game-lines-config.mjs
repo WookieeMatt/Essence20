@@ -2,6 +2,7 @@ import { applyThemeClass, refreshChatMessageThemes, refreshOpenThemeWrappers } f
 import { CUSTOM_GAME_LINES_SETTING, LINE_FAMILIES, customLines, lineIdFrom, normalizeLine } from "../mechanics/resources/custom-game-lines.mjs";
 import { SUGGESTED_TERMS, normalizeTerms, parseTermLines } from "../mechanics/resources/line-terms.mjs";
 import { LOOK_FRAMES, hasLook, normalizeLook } from "../mechanics/resources/line-look.mjs";
+import { LINE_RULES, normalizeLineRules, profileRule } from "../mechanics/resources/line-profiles.mjs";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -9,7 +10,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 /**
  * GM-only Game Lines screen (Configure Settings > Game Lines): the world's own homebrew lines - "M.A.S.K.",
  * "ThunderCats" - each built on one of the book lines' rules (mechanics/resources/custom-game-lines.mjs). Add, rename,
- * pick the book line, the compendium folder its content sits in, whether its characters Morph, any extra Specializations,
+ * pick the book line, the compendium folder its content sits in, its rules switches (line-profiles.mjs), any extra Specializations,
  * its own words for the book's (mechanics/resources/line-terms.mjs) and its look (mechanics/resources/line-look.mjs); delete. Lines a module
  * ships (its module.json's flags.essence20.gameLines) are listed too, read-only.
  */
@@ -76,7 +77,8 @@ export default class GameLinesConfig extends serializeFormSubmits(HandlebarsAppl
           label: line.label ?? "",
           family: line.family ?? "giJoe",
           packFolder: line.packFolder ?? "",
-          canMorph: !!line.canMorph,
+          rules: this.#rulesContext(line),
+          ruleCount: Object.keys(line.rules ?? {}).length,
           folders: lineFolders,
           skills: skills.map(skill => ({ ...skill, value: [].concat(line.specializations?.[skill.key] ?? []).join(", ") })),
           extras: Object.values(line.specializations ?? {}).flat().length,
@@ -101,6 +103,71 @@ export default class GameLinesConfig extends serializeFormSubmits(HandlebarsAppl
     };
   }
 
+  /**
+   * A line's rules switches for the form: each with its own setting ('' - as its book line - when it has none) and what
+   * its book line does, so "As the book line (On)" reads right.
+   */
+  #rulesContext(line) {
+    const own = { ...(line.canMorph ? { canMorph: true } : {}), ...(line.rules ?? {}) };
+    const family = line.family ?? "giJoe";
+    const show = (key, value) => {
+      const spec = LINE_RULES[key];
+      if (spec.type == "boolean") {
+        return game.i18n.localize(value ? "E20.LineRuleOn" : "E20.LineRuleOff");
+      }
+
+      if (spec.type == "choice") {
+        return game.i18n.localize(`E20.LineRuleChoice.${key}.${value}`);
+      }
+
+      if (spec.type == "list") {
+        const names = spec.choices ? value.map(entry => game.i18n.localize(`E20.LineRuleChoice.${key}.${entry}`)) : value;
+        return names.join(", ") || game.i18n.localize(spec.choices ? "E20.LineRuleBookRules" : "E20.LineRuleAny");
+      }
+
+      return String(value);
+    };
+
+    return Object.entries(LINE_RULES).map(([key, spec]) => {
+      const book = profileRule(family, key);
+      const value = own[key];
+      const options = { "": game.i18n.format("E20.LineRuleAsBook", { value: show(key, book) }) };
+      if (spec.type == "boolean") {
+        options.true = show(key, true);
+        options.false = show(key, false);
+      } else if (spec.type == "choice") {
+        for (const choice of spec.choices) {
+          options[choice] = show(key, choice);
+        }
+      }
+
+      // A list from fixed choices (who may join its Megaforms): ticks; none ticked follows the book line.
+      const isMulti = spec.type == "list" && !!spec.choices;
+      const choices = isMulti ? Object.fromEntries(spec.choices.map(choice => [choice, game.i18n.localize(`E20.LineRuleChoice.${key}.${choice}`)])) : null;
+
+      return {
+        key, type: spec.type, options, placeholder: show(key, book),
+        label: game.i18n.localize(`E20.LineRule.${key}`), hint: game.i18n.localize(`E20.LineRuleHint.${key}`),
+        isSelect: spec.type == "boolean" || spec.type == "choice", isMulti, choices, selected: Array.isArray(value) ? value : [],
+        value: value === undefined ? "" : (Array.isArray(value) ? value.join(", ") : String(value)),
+      };
+    });
+  }
+
+  /** The form's switches as stored: '' (as its book line) left out, On/Off as true/false. */
+  static #readRules(values = {}) {
+    const raw = {};
+    for (const [key, value] of Object.entries(values)) {
+      if (value === "" || value === undefined || value === null) {
+        continue;
+      }
+
+      raw[key] = LINE_RULES[key]?.type == "boolean" ? value === "true" || value === true : value;
+    }
+
+    return normalizeLineRules(raw);
+  }
+
   _onRender(context, options) {
     super._onRender(context, options);
     applyThemeClass(this.element);
@@ -117,7 +184,8 @@ export default class GameLinesConfig extends serializeFormSubmits(HandlebarsAppl
       const line = this.#draft[Number(index)];
       if (line) {
         Object.assign(line, {
-          label: values.label, family: values.family, packFolder: values.packFolder, canMorph: !!values.canMorph, specializations: values.specializations ?? {},
+          label: values.label, family: values.family, packFolder: values.packFolder, canMorph: false,
+          rules: GameLinesConfig.#readRules(values.rules), specializations: values.specializations ?? {},
           terms: { ...normalizeTerms(values.terms), ...parseTermLines(values.otherTerms) },
           look: normalizeLook(values.look),
         });
@@ -127,7 +195,7 @@ export default class GameLinesConfig extends serializeFormSubmits(HandlebarsAppl
 
   static async #onAdd() {
     this.#capture();
-    this.#draft.push({ label: "", family: "giJoe", packFolder: "", canMorph: false, specializations: {}, terms: {}, look: {} });
+    this.#draft.push({ label: "", family: "giJoe", packFolder: "", rules: {}, specializations: {}, terms: {}, look: {} });
     this.render();
   }
 
@@ -159,7 +227,7 @@ export default class GameLinesConfig extends serializeFormSubmits(HandlebarsAppl
       }
 
       ids.add(line.id);
-      saved.push({ id: line.id, label: line.label, family: line.family, packFolder: line.packFolder, canMorph: line.canMorph, specializations: line.specializations, terms: line.terms, look: line.look });
+      saved.push({ id: line.id, label: line.label, family: line.family, packFolder: line.packFolder, rules: line.rules, specializations: line.specializations, terms: line.terms, look: line.look });
     }
 
     this.#draft = null;

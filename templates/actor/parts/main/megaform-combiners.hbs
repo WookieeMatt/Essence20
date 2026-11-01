@@ -48,26 +48,26 @@
   </div>
   {{/if}}
 
-  {{!-- Homebrew forms, GM only (mechanics/vehicles/megaform-participants.mjs): who may join - none ticked keeps the
-       book's rules for its type - and who must be on the scene before it can Join. --}}
+  {{!-- Forming rules, GM only (mechanics/vehicles/megaform-participants.mjs): what they are now, and the button that
+       opens the Forming Rules window (apps/megaform-forming-config.mjs) to change them. --}}
   {{#if megaformJoin}}
   <fieldset class="megaform-join-rules">
     <legend>{{localize 'E20.MegaformJoinRules'}}</legend>
     <div class="form-group">
-      <label data-tooltip="{{localize 'E20.MegaformJoinTypesHint'}}">{{localize 'E20.MegaformJoinTypes'}}</label>
-      <multi-checkbox name="system.joinTypes">
-        {{selectOptions megaformJoin.types selected=system.joinTypes localize=true}}
-      </multi-checkbox>
+      <label>{{localize 'E20.MegaformSubtype'}}</label>
+      <span>{{megaformJoin.summary.rules}}</span>
     </div>
-    <p class="hint">{{#if megaformJoin.custom}}{{localize 'E20.MegaformJoinTypesCustom'}}{{else}}{{localize 'E20.MegaformJoinTypesBook'}}{{/if}}</p>
-    {{#if megaformJoin.roster}}
     <div class="form-group">
-      <label data-tooltip="{{localize 'E20.MegaformRequiredMembersHint'}}">{{localize 'E20.MegaformRequiredMembers'}}</label>
-      <multi-checkbox name="system.requiredMembers">
-        {{selectOptions megaformJoin.roster selected=system.requiredMembers}}
-      </multi-checkbox>
+      <label>{{localize 'E20.MegaformJoinTypes'}}</label>
+      <span>{{#if megaformJoin.summary.custom}}{{megaformJoin.joins}}{{else}}{{localize 'E20.MegaformFormingBookRules'}}{{/if}}</span>
+    </div>
+    {{#if megaformJoin.needed}}
+    <div class="form-group">
+      <label>{{localize 'E20.MegaformRequiredMembers'}}</label>
+      <span>{{megaformJoin.needed}}</span>
     </div>
     {{/if}}
+    <button type="button" data-action="megaformForming"><i class="fa-solid fa-puzzle-piece"></i> {{localize 'E20.MegaformFormingOpen'}}</button>
   </fieldset>
   {{/if}}
 

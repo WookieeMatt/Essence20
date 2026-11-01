@@ -1,4 +1,4 @@
-import { applyThemeClass, getGameLine } from "../settings.js";
+import { applyThemeClass, getGameLineId } from "../settings.js";
 import { computeEssenceSpend } from "../mechanics/rolls/skill-picker-math.mjs";
 import {
   checkStartingEssences, currentBase, ESSENCES, essencesOverspentBy, maxEssenceFor, MIN_ESSENCE,
@@ -87,7 +87,7 @@ export default class StartingEssences extends HandlebarsApplicationMixin(Applica
   /** The creation cap for this character, from the world's Game Line (then its Role). */
   get max() {
     const role = this._actor.items.documentsByType?.role?.[0];
-    return maxEssenceFor(getGameLine(), role?.system?.version ?? null);
+    return maxEssenceFor(getGameLineId(), role?.system?.version ?? null);
   }
 
   async _prepareContext(options) {

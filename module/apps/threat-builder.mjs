@@ -1,4 +1,4 @@
-import { applyThemeClass, getGameLine } from "../settings.js";
+import { applyThemeClass, getGameLineId } from "../settings.js";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 import Essence20CompendiumBrowser from "./compendium-browser.mjs";
 import {
@@ -129,7 +129,7 @@ export default class ThreatBuilder extends serializeFormSubmits(HandlebarsApplic
   /* -------------------------------------------- */
 
   _stateFromActor(actor) {
-    const threat = threatFromActor(actor, { gameLine: getGameLine() });
+    const threat = threatFromActor(actor, { gameLine: getGameLineId() });
     return { ...threat, audit: true };
   }
 

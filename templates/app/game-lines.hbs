@@ -24,11 +24,28 @@
           </select>
         </div>
         <p class="hint">{{localize "E20.GameLinesFolderHint"}}</p>
-        <div class="form-group">
-          <label>{{localize "E20.GameLinesMorph"}}</label>
-          <input type="checkbox" name="lines.{{line.index}}.canMorph" {{checked line.canMorph}} />
-        </div>
-        <p class="hint">{{localize "E20.GameLinesMorphHint"}}</p>
+        <details class="game-lines-rules" {{#if line.ruleCount}}open{{/if}}>
+          <summary>{{localize "E20.GameLinesRules"}}</summary>
+          <p class="hint">{{localize "E20.GameLinesRulesHint"}}</p>
+          {{#each line.rules as |rule|}}
+            <div class="form-group">
+              <label data-tooltip="{{rule.hint}}">{{rule.label}}{{#if rule.isMulti}} <span class="hint">({{rule.placeholder}})</span>{{/if}}</label>
+              {{#if rule.isSelect}}
+                <select name="lines.{{line.index}}.rules.{{rule.key}}">
+                  {{selectOptions rule.options selected=rule.value}}
+                </select>
+              {{else if rule.isMulti}}
+                <multi-checkbox name="lines.{{line.index}}.rules.{{rule.key}}">
+                  {{selectOptions rule.choices selected=rule.selected}}
+                </multi-checkbox>
+              {{else if (eq rule.type "number")}}
+                <input type="number" min="1" name="lines.{{line.index}}.rules.{{rule.key}}" value="{{rule.value}}" placeholder="{{rule.placeholder}}" />
+              {{else}}
+                <input type="text" name="lines.{{line.index}}.rules.{{rule.key}}" value="{{rule.value}}" placeholder="{{rule.placeholder}}" />
+              {{/if}}
+            </div>
+          {{/each}}
+        </details>
         <details class="game-lines-specializations" {{#if line.extras}}open{{/if}}>
           <summary>{{localize "E20.GameLinesSpecializations"}}</summary>
           <p class="hint">{{localize "E20.GameLinesSpecializationsHint"}}</p>

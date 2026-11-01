@@ -1,6 +1,6 @@
 import { afterSpectrumShifted, spectrumShiftedRetains } from "../mechanics/characters/spectrum-shifted.mjs";
 import { essenceRedirect } from "../mechanics/resources/grants.mjs";
-import { roleGrantsMorph } from "../mechanics/resources/custom-game-lines.mjs";
+import { roleGrantsMorph, roleRule } from "../mechanics/resources/custom-game-lines.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
@@ -116,8 +116,8 @@ export async function performSpectrumShift(actor, newRole) {
   // always stays within the same game line, so this is usually a no-op.
   await actor.update({
     "system.canMorph": roleGrantsMorph(newRole),
-    "system.canSpellcast": newRole.system.version == 'myLittlePony',
-    "system.canQualify": newRole.system.version == 'giJoe',
+    "system.canSpellcast": !!roleRule(newRole, 'canSpellcast'),
+    "system.canQualify": !!roleRule(newRole, 'canQualify'),
   });
 }
 
@@ -554,13 +554,23 @@ export async function onRoleDrop(actor, role, dropFunc) {
     });
   }
 
-  if (role.system.version =='myLittlePony') {
+  // Spells and Qualifications: by the line's rules switches (line-profiles.mjs) - My Little Pony and G.I. Joe.
+  if (roleRule(role, 'canSpellcast')) {
     await actor.update({
       "system.canSpellcast": true,
     });
-  } else  if (role.system.version == 'giJoe') {
+  }
+
+  if (roleRule(role, 'canQualify')) {
     await actor.update({
       "system.canQualify": true,
+    });
+  }
+
+  // A line whose characters transform from the start (GoBots): the Alt Modes tab and Transform button now.
+  if (roleRule(role, 'canTransform') && 'canTransform' in (actor.system ?? {})) {
+    await actor.update({
+      "system.canTransform": true,
     });
   }
 
@@ -712,13 +722,22 @@ export async function onRoleDelete(actor, role) {
       });
     }
 
-    if (role.system.version =='myLittlePony') {
+    if (roleRule(role, 'canSpellcast')) {
       await actor.update({
         "system.canSpellcast": false,
       });
-    } else if (role.system.version == 'giJoe') {
+    }
+
+    if (roleRule(role, 'canQualify')) {
       await actor.update({
         "system.canQualify": false,
+      });
+    }
+
+    // Transforming stays while an Alt Mode does (one from an Origin or dropped on its own).
+    if (roleRule(role, 'canTransform') && 'canTransform' in (actor.system ?? {})) {
+      await actor.update({
+        "system.canTransform": actor.items.some(item => item.type == 'altMode'),
       });
     }
 

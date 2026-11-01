@@ -9,8 +9,8 @@ import { E20 } from "./util/config.mjs";
 import { refreshStateIcons } from "./mechanics/characters/morph-state.mjs";
 import { CUSTOM_GAME_LINES_SETTING, customLine, lineFamily, setCustomLines } from "./mechanics/resources/custom-game-lines.mjs";
 import { applyLook, hasLook } from "./mechanics/resources/line-look.mjs";
-import GameLinesConfig from "./apps/game-lines-config.mjs";
-import HomebrewExport, { HOMEBREW_EXPORT_SETTING } from "./apps/homebrew-export.mjs";
+import { onLineRulesChanged, registerLineResync } from "./mechanics/resources/line-resync.mjs";
+import { HOMEBREW_EXPORT_SETTING } from "./apps/homebrew-export.mjs";
 import { MODULE_SETTINGS_OFFERED } from "./mechanics/export/module-settings.mjs";
 import { VEHICLE_ALT_MODES_SETTING } from "./mechanics/vehicles/vehicle-alt-modes.mjs";
 import { CROSSOVER_TERMS_SETTING, applyWorldTerms } from "./mechanics/resources/line-terms-hooks.mjs";
@@ -215,9 +215,7 @@ export const SETTING_GROUPS = [
   { label: "E20.SettingsGroupCompendiumBrowser", firstKey: "enabledSourcebooksMenu" },
   { label: "E20.SettingsGroupBookDescriptions", firstKey: "bookDescriptionsMenu" },
   { label: "E20.SettingsGroupAdventure", firstKey: "adventureImporterMenu" },
-  { label: "E20.SettingsGroupGameLines", firstKey: "gameLinesMenu" },
   { label: "E20.SettingsGroupHouseRules", firstKey: "houseRulesMenu" },
-  { label: "E20.SettingsGroupHomebrewExport", firstKey: "homebrewExportMenu" },
   { label: "E20.SettingsGroupGameLine", firstKey: "gameLine" },
   { label: "E20.SettingsGroupStoryPointTracker", firstKey: "sptAccess" },
   { label: "E20.SettingsGroupCombat", firstKey: "actionEconomyMode" },
@@ -256,6 +254,8 @@ export const insertSettingGroupHeadings = (html) => {
 
 export const registerSettings = function () {
   const systemName = "essence20";
+  // What each character's line switches were, so a line change can update them (mechanics/resources/line-resync.mjs).
+  registerLineResync();
 
   const debouncedReload = foundry.utils.debounce(function () {
     window.location.reload();
@@ -318,6 +318,8 @@ export const registerSettings = function () {
     type: Array,
     onChange: () => {
       syncCustomGameLines();
+      // A line's switches may have changed: existing characters follow (mechanics/resources/line-resync.mjs).
+      onLineRulesChanged();
       foundry.applications.instances.get("essence20-game-lines")?.render();
       // Role sheets offer the lines built on their own line.
       for (const app of foundry.applications.instances.values()) {
@@ -331,7 +333,8 @@ export const registerSettings = function () {
   /* Which of the five lines this world is playing, or a homebrew line built on one. It names the
      Party sheet ("Strike Team", "Ranger Team", ...), decides whether that sheet offers Requisition
      at all, and on change switches off the other lines' sourcebooks - see
-     applyGameLineToSourcebooks(). A homebrew line counts as the book line it's built on. */
+     applyGameLineToSourcebooks(). A homebrew line counts as the book line it's built on. Its rules switches
+     (mechanics/resources/line-profiles.mjs) apply to the whole world - custom-game-lines.mjs#worldRule / roleRule. */
   game.settings.register(systemName, "gameLine", {
     name: game.i18n.localize("E20.SettingsGameLine"),
     hint: game.i18n.localize("E20.SettingsGameLineHint"),
@@ -345,11 +348,13 @@ export const registerSettings = function () {
         .map(([key, label]) => [key, game.i18n.localize(label)])),
     },
     onChange: async (line) => {
+      // Existing characters take the new line's switches (mechanics/resources/line-resync.mjs).
+      await onLineRulesChanged();
       await applyGameLineToSourcebooks(lineFamily(line));
-      // The Party sheet takes its title, its sidebar caption and whether it shows the
-      // Requisition tab from this setting, so any open one is now stale.
+      // The line's rules switches show on sheets: the Party sheet's title, caption and Requisition tab, a Vehicle's
+      // Alt Modes tab and Transform button, and more - so any open sheet is now stale.
       for (const app of foundry.applications.instances.values()) {
-        if (app.document?.type === "party") {
+        if (app.document) {
           app.render();
         }
       }
@@ -396,6 +401,16 @@ export const registerSettings = function () {
       }
     },
   });
+
+  /* Both are line switches now (vehicleAltModes; an every-line world is a crossover) - the older settings stay listed
+     only in a world that has one on, so it can be turned off. */
+  for (const key of [VEHICLE_ALT_MODES_SETTING, CROSSOVER_TERMS_SETTING]) {
+    try {
+      game.settings.settings.get(`${systemName}.${key}`).config = !!game.settings.get(systemName, key);
+    } catch {
+      // Not readable yet: leave it listed.
+    }
+  }
 
   /* Homebrew: the episode tools (mechanics/campaign/episode-tools.mjs) - the Mission Generator's button on the
      Journal tab and the Race and Chase Tracker's in the Token controls. Off, neither shows. */
@@ -811,14 +826,9 @@ export const registerSettings = function () {
     },
   });
 
-  game.settings.registerMenu(systemName, "gameLinesMenu", {
-    name: "E20.GameLinesMenuLabel",
-    label: "E20.GameLinesMenuButton",
-    hint: "E20.GameLinesMenuHint",
-    icon: "fa-solid fa-tv",
-    type: GameLinesConfig,
-    restricted: true,
-  });
+  /* The Game Lines editor and Export Homebrew are the Essence20 Homebrew module's menus (game.essence20.homebrew):
+     a table that only plays the books never sees them. Lines already made keep working without it - they live in the
+     customGameLines setting above, and modules ship theirs in module.json. */
 
   game.settings.registerMenu(systemName, "houseRulesMenu", {
     name: "E20.HouseRulesMenuLabel",
@@ -826,16 +836,6 @@ export const registerSettings = function () {
     hint: "E20.HouseRulesMenuHint",
     icon: "fa-solid fa-scroll",
     type: HouseRulesConfig,
-    restricted: true,
-  });
-
-  // Export Homebrew (apps/homebrew-export.mjs): the world's homebrew as a module zip.
-  game.settings.registerMenu(systemName, "homebrewExportMenu", {
-    name: "E20.HomebrewExportMenuLabel",
-    label: "E20.HomebrewExportMenuButton",
-    hint: "E20.HomebrewExportMenuHint",
-    icon: "fa-solid fa-file-zipper",
-    type: HomebrewExport,
     restricted: true,
   });
 

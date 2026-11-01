@@ -28,6 +28,8 @@
  * The level arithmetic and the eligibility filter are pure and run under plain Node (level-picks.test.js).
  */
 
+import { lineRule, roleRule, ruleLineFor } from "../resources/custom-game-lines.mjs";
+
 export const LEVEL_PICK_FLAG = 'levelPicks';
 export const LEVEL_PICK_KINDS = {
   generalPerk: { itemType: 'perk', subtype: 'general', label: 'E20.LevelPickGeneralPerk' },
@@ -84,8 +86,8 @@ function rolePickChanges(role, track, previousLevel, newLevel, options = {}) {
   }
 
   const lists = { generalPerk: role.system.perkLevels?.general };
-  // Grid Powers are a Power Rangers Role Perk; the field is only shown (and only read) for that line.
-  if (role.system.version == 'powerRangers') {
+  // Grid Powers are a Power Rangers Role Perk; the field is only shown (and only read) for a line with them (line-profiles.mjs).
+  if (roleRule(role, 'gridPower')) {
     lists.gridPower = role.system.gridPowerLevels;
   }
 
@@ -129,7 +131,7 @@ export const isRulePick = pick => String(pick?.track ?? '').startsWith('rule-');
 
 /**
  * The picks a character's LevelPick rules give and take away between two character levels. Grid Powers only for a Power
- * Rangers character (`version`, the base Role's line) - a house rule for everyone doesn't hand them to other lines.
+ * Rangers character, or one on a line with them (`version`, the line its base Role plays by - ruleLineFor()) - a house rule for everyone doesn't hand them to other lines.
  * @param {Array<{rule, item, index}>} entries   The LevelPick rules (rules/index.mjs#collectRules).
  * @param {Number} previousLevel
  * @param {Number} newLevel
@@ -141,7 +143,7 @@ export function rulePickChanges(entries, previousLevel, newLevel, { version = nu
   const changes = { gained: [], lost: [] };
   for (const { rule, item, index } of Array.isArray(entries) ? entries : []) {
     const kind = rule?.kind;
-    if (!LEVEL_PICK_KINDS[kind] || (kind == 'gridPower' && version != 'powerRangers')) {
+    if (!LEVEL_PICK_KINDS[kind] || (kind == 'gridPower' && !lineRule(version ?? '', 'gridPower'))) {
       continue;
     }
 
@@ -280,7 +282,7 @@ export async function updateLevelPicks(actor, previousLevel, newLevel, { open = 
   const changes = levelPickChanges({
     baseRole, additiveRole, transitionLevel: actor.system?.oldHandTransitionLevel, previousLevel, newLevel,
   });
-  const fromRules = rulePickChanges(await levelPickRules(actor), previousLevel, newLevel, { version: baseRole.system?.version });
+  const fromRules = rulePickChanges(await levelPickRules(actor), previousLevel, newLevel, { version: ruleLineFor(baseRole) });
   changes.gained.push(...fromRules.gained);
   changes.lost.push(...fromRules.lost);
   if (!changes.gained.length && !changes.lost.length) {
@@ -318,7 +320,7 @@ export async function syncRuleLevelPicks(actor) {
   const baseRole = roles.find(role => !role.system?.isAdditive);
   const level = Number(actor?.system?.level) || 0;
   const expected = baseRole && level > 0
-    ? rulePickChanges(await levelPickRules(actor), 0, level, { version: baseRole.system?.version }).gained : [];
+    ? rulePickChanges(await levelPickRules(actor), 0, level, { version: ruleLineFor(baseRole) }).gained : [];
   const chosenKeys = new Set(itemList(actor).map(chosenKeyOf).filter(Boolean));
   const before = pendingLevelPicks(actor);
   const pending = reconcileRulePicks(before, expected, chosenKeys);

@@ -1,4 +1,5 @@
-import { getGameLine } from "../settings.js";
+import { getGameLineId } from "../settings.js";
+import { lineRule } from "../mechanics/resources/custom-game-lines.mjs";
 import { runDerived } from "../mechanics/item-hooks.mjs";
 import { COMMANDER_SKILLS_FLAG } from "../items/zords/commander-combiner-feature.mjs";
 import { ZORD2 } from "../items/zords/combiner-roster-helpers.mjs";
@@ -258,7 +259,7 @@ export class Essence20Actor extends Actor {
     // A new Megaform with no type takes the world's game line: a Power Rangers world makes Megazords, any other (All
     // included) Transformers Combiners. The sheet's type select changes it.
     if (this.type == 'megaform' && data?.system?.subtype === undefined) {
-      this.updateSource({ 'system.subtype': [defaultMegaformSubtype(getGameLine())] });
+      this.updateSource({ 'system.subtype': [defaultMegaformSubtype(getGameLineId())] });
     }
 
     // A new Zord's, Vehicle's or Megaform's token is its Size (a baseline Zord is Huge - 3x3), not Foundry's 1x1. A
@@ -2406,11 +2407,11 @@ export class Essence20Actor extends Actor {
 }
 
 /**
- * The Megaform type a new one starts as, by the world's game line (settings.js#getGameLine): Power Rangers - a Megazord;
+ * The Megaform type a new one starts as, by the world's game line (settings.js#getGameLineId): Power Rangers - a Megazord;
  * anything else, All included - a Transformers Combiner.
  * @param {String} gameLine
  * @returns {String}
  */
 export function defaultMegaformSubtype(gameLine) {
-  return gameLine == 'powerRangers' ? 'megaformZord' : 'megaformCombiner';
+  return lineRule(gameLine, 'megaformSubtype');
 }

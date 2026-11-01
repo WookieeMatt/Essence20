@@ -1,3 +1,5 @@
+import MegaformFormingConfig from "./megaform-forming-config.mjs";
+
 const { ActorDirectory } = foundry.applications.sidebar.tabs;
 
 /**
@@ -123,6 +125,13 @@ export class Essence20ActorDirectory extends ActorDirectory {
   /** @inheritDoc */
   _getEntryContextOptions() {
     const options = super._getEntryContextOptions();
+    // A Megaform's Forming Rules window (apps/megaform-forming-config.mjs), GMs only.
+    options.push({
+      label: "E20.MegaformFormingOpen",
+      icon: '<i class="fa-solid fa-puzzle-piece"></i>',
+      visible: li => game.user.isGM && game.actors.get(li.dataset.entryId)?.type == "megaform",
+      callback: li => MegaformFormingConfig.open(game.actors.get(li.dataset.entryId)),
+    });
     options.push({
       label: "E20.PartyRemoveMember",
       icon: '<i class="fa-solid fa-eject"></i>',

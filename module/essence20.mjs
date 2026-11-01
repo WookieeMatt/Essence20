@@ -1,3 +1,5 @@
+import GameLinesConfig from "./apps/game-lines-config.mjs";
+import HomebrewExport from "./apps/homebrew-export.mjs";
 import { registerRollSources, runChatDecorators as runExtChatDecorators, runMissionAdvanced, runSceneAdvanced } from "./mechanics/item-hooks.mjs";
 // Every extension module registers itself on import (items/index.mjs).
 import "./items/index.mjs";
@@ -332,6 +334,9 @@ Hooks.once("init", async function () {
     Essence20Combatant,
     Essence20Item,
     CompendiumBrowser: Essence20CompendiumBrowser,
+    // The homebrew authoring windows, for the Essence20 Homebrew module to put under Configure Settings - the
+    // system registers no menu for them (settings.js).
+    homebrew: { GameLinesConfig, HomebrewExport },
     rollItemMacro,
     // Developer tooling: cross-checks the Effect Wizard's catalog against the actor DataModels it
     // claims to describe, in both directions. See mechanics/characters/effect-catalog-audit.mjs.

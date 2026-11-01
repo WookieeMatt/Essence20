@@ -1,0 +1,41 @@
+<div class="megaform-forming flexcol">
+  <p class="hint">{{localize "E20.MegaformFormingHint"}}</p>
+
+  {{#if rulesLine}}
+  <fieldset class="house-rules-group">
+    <legend>{{localize "E20.RulesLine"}}</legend>
+    <select name="{{rulesLine.name}}">
+      {{selectOptions rulesLine.choices selected=rulesLine.value}}
+    </select>
+    <p class="hint">{{localize "E20.MegaformRulesLineHint"}}</p>
+  </fieldset>
+  {{/if}}
+
+  <fieldset class="house-rules-group">
+    <legend>{{localize "E20.MegaformSubtype"}}</legend>
+    <select name="system.subtype">
+      {{selectOptions subtypes selected=subtype localize=true}}
+    </select>
+    <p class="hint">{{localize "E20.MegaformFormingSubtypeHint"}}</p>
+  </fieldset>
+
+  <fieldset class="house-rules-group">
+    <legend data-tooltip="{{localize 'E20.MegaformJoinTypesHint'}}">{{localize "E20.MegaformJoinTypes"}}</legend>
+    <multi-checkbox name="system.joinTypes">
+      {{selectOptions types selected=system.joinTypes localize=true}}
+    </multi-checkbox>
+    <p class="hint">{{#if summary.fromLine}}{{localize "E20.MegaformJoinTypesFromLine" types=joinsText}}{{else if summary.custom}}{{localize "E20.MegaformJoinTypesCustom"}}{{else}}{{localize "E20.MegaformJoinTypesBook"}}{{/if}}</p>
+  </fieldset>
+
+  <fieldset class="house-rules-group">
+    <legend data-tooltip="{{localize 'E20.MegaformRequiredMembersHint'}}">{{localize "E20.MegaformRequiredMembers"}}</legend>
+    {{#if roster}}
+    <multi-checkbox name="system.requiredMembers">
+      {{selectOptions roster selected=system.requiredMembers}}
+    </multi-checkbox>
+    <p class="hint">{{localize "E20.MegaformRequiredMembersHint"}}</p>
+    {{else}}
+    <p class="hint">{{localize "E20.MegaformFormingNoRoster"}}</p>
+    {{/if}}
+  </fieldset>
+</div>

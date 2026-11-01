@@ -72,3 +72,9 @@ test("under Crossover a Zord or Megaform with no Role reads in its pilot's line;
   expect(replacerFor(zord('joe'))('Lion')).toBe('Zord');
   delete globalThis.fromUuidSync;
 });
+
+test("a world playing every line is a crossover: each actor reads in its own line's words", () => {
+  world('');
+  expect(replacerFor(roleActor('powerRangers', 'voltron'))('Zord')).toBe('Lion');
+  expect(replacerFor(roleActor('giJoe', ''))).toBeNull();
+});

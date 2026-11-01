@@ -1,4 +1,4 @@
-import { getGameLine } from "../../settings.js";
+import { getGameLineId } from "../../settings.js";
 import {
   applyQuickPerks, appropriateThreatLevel, auditThreat, buildThreatIr, defaultRulesetFor, defenseSpread, essenceBudget,
   ESSENCES, isModeConversion, maxDamagePerks, MOVEMENT_TYPES, perkBudget, QUICK_PERKS, RANKED_SHIFTS, ROLE_PRESETS, RULESETS, SHIFT_COST,
@@ -43,7 +43,7 @@ export function partyLevels(party = globalThis.game?.actors?.party) {
  * @param {Object} [context]   {gameLine, partyLevel} - default: the world's.
  * @returns {Object}
  */
-export function newThreatState(overrides = {}, { gameLine = getGameLine(), partyLevel = partyLevels().average } = {}) {
+export function newThreatState(overrides = {}, { gameLine = getGameLineId(), partyLevel = partyLevels().average } = {}) {
   const role = overrides.role ?? 'leader';
   return {
     ruleset: defaultRulesetFor(gameLine),
@@ -91,7 +91,7 @@ export function newThreatState(overrides = {}, { gameLine = getGameLine(), party
  * @returns {Object}
  */
 export function threatIr(state) {
-  const s = newThreatState(state, { gameLine: getGameLine(), partyLevel: 1 });
+  const s = newThreatState(state, { gameLine: getGameLineId(), partyLevel: 1 });
   const labels = { quickPerk: Object.fromEntries(QUICK_PERKS.map(key => [key, T(`E20.ThreatQuickPerk.${key}`)])) };
   // buildThreatIr adds each quick "+Health" Perk itself; the base is the rule set's (or the override).
   const health = s.healthOverride ?? threatHealth(Math.max(0, Number(s.tl) || 0), s.type);
@@ -99,7 +99,7 @@ export function threatIr(state) {
 }
 
 export async function createThreat(state, { folder = null } = {}) {
-  const s = newThreatState(state, { gameLine: getGameLine(), partyLevel: 1 });
+  const s = newThreatState(state, { gameLine: getGameLineId(), partyLevel: 1 });
   if (!s.name?.trim()) {
     throw new Error('essence20 | game.essence20.threats.create: the Threat needs a name.');
   }
@@ -178,7 +178,7 @@ export async function growThreat(actor, options = {}) {
  * @returns {Object[]}
  */
 export function auditActor(actor, { ruleset = null } = {}) {
-  return auditThreat(threatFromActor(actor, { ruleset, gameLine: getGameLine() }));
+  return auditThreat(threatFromActor(actor, { ruleset, gameLine: getGameLineId() }));
 }
 
 /**

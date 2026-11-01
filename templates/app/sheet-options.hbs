@@ -1,5 +1,15 @@
 <div class="trait-selector flexcol">
   {{!-- NPC / Contact moved to the NPC sheet header's buttons (headers/npc.hbs). --}}
+  {{!-- Crossover worlds: the line a Role-less actor plays by, GM only (apps/sheet-options.mjs#picksRulesLine). --}}
+  {{#if rulesLine}}
+    {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.RulesLine'}}
+    {{#*inline "field-inputs"}}
+      <select name="{{rulesLine.name}}" data-tooltip="{{localize 'E20.RulesLineHint'}}">
+        {{selectOptions rulesLine.choices selected=rulesLine.value}}
+      </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/app/parts/field.hbs"}}
+  {{/if}}
   {{#if (ne role.system.version 'powerRanger')}}
     {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.CanMorph'}}
     {{#*inline "field-inputs"}}

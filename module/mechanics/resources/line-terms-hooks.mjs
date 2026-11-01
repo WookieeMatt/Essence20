@@ -1,4 +1,4 @@
-import { customLine } from "./custom-game-lines.mjs";
+import { RULES_LINE_FLAG, customLine } from "./custom-game-lines.mjs";
 import { actorLineOf } from "./game-lines.mjs";
 import { replaceInMessage, rewriteTranslations, termPairs, termReplacer } from "./line-terms.mjs";
 
@@ -6,9 +6,10 @@ import { replaceInMessage, rewriteTranslations, termPairs, termReplacer } from "
  * Words per line, put to work (mechanics/resources/line-terms.mjs):
  *  - World-wide: at i18nInit (after settings.js has read the homebrew lines), the world line's words go into the system's
  *    own strings, so every window, tooltip and chat line reads "Lion" for "Zord". Changing them needs a reload.
- *  - On sheets and chat cards: names in the data (items, compendium content) are swapped too, after each render. With
- *    the Crossover setting on, each actor reads in its own line's words instead of the world's (a G.I. Joe in a Voltron
- *    world still sees "Zord") - its Role's line, or for a Zord, Vehicle or Megaform its pilot's (termsLineOf).
+ *  - On sheets and chat cards: names in the data (items, compendium content) are swapped too, after each render. In an
+ *    every-line (Crossover) world - or with the older Crossover setting on - each actor reads in its own line's words
+ *    instead of the world's (a G.I. Joe in a Voltron world still sees "Zord") - its Role's line, or for a Zord, Vehicle
+ *    or Megaform its pilot's (termsLineOf).
  * Inputs, text boxes and editors are left alone: what is typed is stored as typed.
  */
 
@@ -18,7 +19,12 @@ export const CROSSOVER_TERMS_SETTING = 'crossoverTerms';
 const worldLineId = () => game.settings?.get('essence20', 'gameLine') ?? '';
 const worldTerms = () => customLine(worldLineId())?.terms ?? {};
 
+/** Each actor in its own line's words: always in an every-line (Crossover) world, else by the older setting. */
 function crossoverOn() {
+  if (!worldLineId()) {
+    return true;
+  }
+
   try {
     return !!game.settings.get('essence20', CROSSOVER_TERMS_SETTING);
   } catch {
@@ -40,14 +46,14 @@ export function applyWorldTerms() {
 const hasRole = actor => (actor?.items?.contents ?? [...(actor?.items ?? [])]).some(item => item?.type == 'role');
 
 /**
- * Whose words an actor reads in under Crossover: its Role's line; with no Role (a Zord, a Vehicle, a Megaform), the line
+ * Whose words an actor reads in under Crossover: the line the GM picked for it, or its Role's line; with neither (a Zord, a Vehicle, a Megaform), the line
  * of the first one aboard that has one (its pilot, or a member's pilot); else the world's.
  * @param {Actor} actor
  * @param {Number} [depth]
  * @returns {String}   A line id or code.
  */
 export function termsLineOf(actor, depth = 0) {
-  if (hasRole(actor)) {
+  if (hasRole(actor) || actor?.flags?.essence20?.[RULES_LINE_FLAG]) {
     return actorLineOf(actor, worldLineId());
   }
 

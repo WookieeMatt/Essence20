@@ -1,4 +1,5 @@
 import { personalStoryPoints, spendPersonalStoryPoint } from "../../rules/plugins/resources/personal-story-points.mjs";
+import { lineRule } from "./custom-game-lines.mjs";
 /**
  * The world's shared Story Point pool, and the GM's own points.
  *
@@ -21,7 +22,7 @@ import { personalStoryPoints, spendPersonalStoryPoint } from "../../rules/plugin
  * order, for an honest upfront message.
  */
 
-import { getGameLine } from "../../settings.js";
+import { getGameLineId } from "../../settings.js";
 
 /**
  * The Party that holds the pool.
@@ -265,7 +266,7 @@ async function spend(amount, actorName, say = true, actorUuid = null) {
  * @param {string} actorName
  */
 async function spendGm(amount, actorName, say = true) {
-  if (!hasGmPool(getGameLine())) {
+  if (!hasGmPool(getGameLineId())) {
     return;
   }
 
@@ -299,7 +300,7 @@ async function grant(amount, actorName) {
  * @param {string} actorName
  */
 async function grantGm(amount, actorName) {
-  if (!hasGmPool(getGameLine())) {
+  if (!hasGmPool(getGameLineId())) {
     return;
   }
 
@@ -319,11 +320,11 @@ async function grantGm(amount, actorName) {
  * Power Rangers CRB p.91, Transformers CRB p.105). The My Little Pony CRB does not: Friendship
  * Points are the players' alone, and the book has no GM pool at all. A tracker that shows GM
  * Points to a Friend Group is showing a mechanic that line does not have.
- * @param {string} line   From getGameLine(); "" when no line is set.
+ * @param {string} line   From getGameLineId(); "" when no line is set.
  * @returns {boolean}
  */
 export function hasGmPool(line) {
-  return line != 'myLittlePony';
+  return !!lineRule(line, 'gmStoryPool');
 }
 
 /**
@@ -335,7 +336,7 @@ export function hasGmPool(line) {
  * system knows who the Player Characters are; this is what the pool living on the Party makes
  * possible at all.
  * @param {number} memberCount   Player Characters on the primary Party's roster.
- * @param {string} line   From getGameLine().
+ * @param {string} line   From getGameLineId().
  * @returns {Object} Update data for the Party.
  */
 export function sessionResetUpdate(memberCount, line) {
@@ -383,7 +384,7 @@ export function canSpendForActor(actor, amount = 1) {
   }
 
   if (poolFor(actor) === "gm") {
-    return !!game.user?.isGM && hasGmPool(getGameLine()) && getGmPoints() >= amount;
+    return !!game.user?.isGM && hasGmPool(getGameLineId()) && getGmPoints() >= amount;
   }
 
   return canWriteStoryPoints() && hasStoryPointsAvailable(amount);
@@ -412,11 +413,11 @@ export function spendForActor(actor, amount = 1, options = {}) {
  * GI Joe (p.127) and Transformers (p.105) offer +5 to a Defense before the roll or +1 after it.
  * Power Rangers (p.91) keeps only the +5, spent before results are announced, and My Little Pony (p.118) has only its scene-long +5.
  * A world with no line set gets the core-rules answer.
- * @param {string} line   From getGameLine().
+ * @param {string} line   From getGameLineId().
  * @returns {boolean}
  */
 export function defenseBoostAfterRoll(line) {
-  return !['powerRangers', 'myLittlePony'].includes(line);
+  return !!lineRule(line, 'defenseBoostAfterRoll');
 }
 
 /**
@@ -424,11 +425,11 @@ export function defenseBoostAfterRoll(line) {
  *
  * Only My Little Pony: "Add +5 to any single Defense for the scene" (MLP CRB p.118). In the
  * other three books it is spent per roll.
- * @param {string} line   From getGameLine().
+ * @param {string} line   From getGameLineId().
  * @returns {boolean}
  */
 export function defenseBoostLastsScene(line) {
-  return line === 'myLittlePony';
+  return !!lineRule(line, 'defenseBoostLastsScene');
 }
 
 /**
@@ -436,11 +437,11 @@ export function defenseBoostLastsScene(line) {
  *
  * Power Rangers only (PR CRB p.91): one Story Point per team member triggers a Grid Power bloom,
  * 1d2 Personal Power for each member.
- * @param {string} line   From getGameLine().
+ * @param {string} line   From getGameLineId().
  * @returns {boolean}
  */
 export function hasGridPowerBloom(line) {
-  return line === 'powerRangers';
+  return !!lineRule(line, 'gridPower');
 }
 
 /**

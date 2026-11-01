@@ -1,4 +1,4 @@
-import { customLine, customLineForFolders, lineFamily, roleCustomLine } from "./custom-game-lines.mjs";
+import { RULES_LINE_FLAG, customLine, customLineForFolders, lineFamily, roleCustomLine } from "./custom-game-lines.mjs";
 
 /**
  * Which game line a compendium entry belongs to, by its pack: gij, pr, tf, mlp, wtnv, a homebrew line's id or other.
@@ -50,6 +50,7 @@ export function lineCode(value) {
 
 /**
  * Which game line an actor belongs to, as a short code (the rules' self:line / target:line tags):
+ *  0. the line the GM picked for it (its rulesLine flag - Sheet Options or Forming Rules, in a Crossover world);
  *  1. its Role's line;
  *  2. a Zord is Power Rangers; a Megaform is a Transformers Combiner or a Power Rangers Megazord;
  *  3. the pack it was taken from, then the line most of its compendium items come from (an NPC built from a book);
@@ -62,6 +63,11 @@ export function lineCode(value) {
 export function actorLineOf(actor, worldLine = '') {
   if (!actor) {
     return '';
+  }
+
+  const picked = lineCode(actor.flags?.essence20?.[RULES_LINE_FLAG]);
+  if (picked) {
+    return picked;
   }
 
   const items = actor.items?.contents ?? (actor.items ? [...actor.items] : []);

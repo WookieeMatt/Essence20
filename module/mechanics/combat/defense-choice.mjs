@@ -1,6 +1,6 @@
 import { getDefenseValue } from "./combat.mjs";
 import { registerRemotePrompt, requestChoiceFromUser } from "../world/remote-request.mjs";
-import { getGameLine } from "../../settings.js";
+import { getGameLineId } from "../../settings.js";
 import { getSceneEpoch } from "../resources/scene-clock.mjs";
 import { canSpendForActor, defenseBoostLastsScene, spendForActor } from "../resources/story-points.mjs";
 
@@ -131,7 +131,7 @@ export async function promptDefenseChoice(payload) {
   // ability to spend for the defender that matters, not the attacker's.
   const defender = payload.actorUuid ? await fromUuid(payload.actorUuid) : null;
   const canBoost = !!defender && canSpendForActor(defender);
-  const line = getGameLine();
+  const line = getGameLineId();
 
   const buttons = Object.entries(CONFIG.E20.defenses).map(([defenseType, label]) => ({
     label: `${game.i18n.localize(label)} (${payload.defenses[defenseType]})`,

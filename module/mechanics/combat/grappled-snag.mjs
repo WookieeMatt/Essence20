@@ -1,6 +1,7 @@
 import { registerApplyDialog, registerDialogToggles } from "../item-hooks.mjs";
 import { markOf } from "../../rules/predicate.mjs";
-import { lineFamily } from "../resources/custom-game-lines.mjs";
+import { LINE_FAMILIES, actorRule } from "../resources/custom-game-lines.mjs";
+import { BOOK_PROFILES } from "../resources/line-profiles.mjs";
 
 /**
  * The Grappled condition's own penalty. Every core rulebook gives a Grappled target a Snag on all
@@ -10,37 +11,17 @@ import { lineFamily } from "../resources/custom-game-lines.mjs";
  * off for one.
  */
 
-// Which Skills can escape differs by book - used by Perks that help an escape attempt (Experiment).
-const ACROBATICS_LINE = ['acrobatics', 'athletics', 'brawn', 'finesse'];
-const MIGHT_LINE = ['athletics', 'might', 'finesse'];
-
-export const GRAPPLE_ESCAPE_SKILLS = {
-  giJoe: MIGHT_LINE,
-  welcomeToNightVale: MIGHT_LINE,
-  powerRangers: ['athletics', 'brawn', 'finesse'],
-  transformers: ACROBATICS_LINE,
-  myLittlePony: ACROBATICS_LINE,
-};
+// Which Skills can escape differs by book (each line's grappleEscapeSkills switch, line-profiles.mjs) - used by Perks
+// that help an escape attempt (Experiment).
+export const GRAPPLE_ESCAPE_SKILLS = Object.fromEntries(LINE_FAMILIES.map(line => [line, BOOK_PROFILES[line].grappleEscapeSkills]));
 
 // No game line to go on (a mixed world and no Role): any Skill some book lets you escape with.
 const ANY_ESCAPE_SKILL = [...new Set(Object.values(GRAPPLE_ESCAPE_SKILLS).flat())];
 
-function gameLineOf(actor) {
-  let setting = '';
-  try {
-    // A homebrew line escapes like the book line it's built on.
-    setting = lineFamily(globalThis.game?.settings?.get('essence20', 'gameLine') ?? '');
-  } catch {
-    setting = '';
-  }
-
-  const items = actor?.items?.contents ?? [...(actor?.items ?? [])];
-  return setting || items.find(item => item.type == 'role')?.system?.version || '';
-}
-
-/** The Skills this actor can escape a grapple with: the world's game line, then the character's Role. */
+/** The Skills this actor can escape a grapple with: the world's game line, then its own (custom-game-lines.mjs#actorRulesLine). */
 export function grappleEscapeSkills(actor) {
-  return GRAPPLE_ESCAPE_SKILLS[gameLineOf(actor)] ?? ANY_ESCAPE_SKILL;
+  const skills = actorRule(actor, 'grappleEscapeSkills');
+  return skills?.length ? skills : ANY_ESCAPE_SKILL;
 }
 
 const T = key => globalThis.game?.i18n?.localize?.(key) ?? key;

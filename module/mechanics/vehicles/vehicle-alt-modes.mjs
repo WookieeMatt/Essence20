@@ -1,5 +1,6 @@
 /**
- * Alt Modes on Vehicles and Zords (Configure Settings > "Vehicles and Zords can have Alt Modes", off by default): a
+ * Alt Modes on Vehicles and Zords (the world line's vehicleAltModes switch - mechanics/resources/line-profiles.mjs - or
+ * the older Configure Settings > "Vehicles and Zords can have Alt Modes"; off in every book line): a
  * homebrew vehicle that changes shape - a car that becomes a jet, a Zord's beast and robot modes. It uses the
  * Transformers' own conversion (sheet-handlers/transformer-handler.mjs): Alt Mode items, the Transform button, Alt
  * Mode movement and size, mode-only weapons, the Alt Mode status and chat line.
@@ -9,17 +10,28 @@
  * setting is on and it holds an Alt Mode - dropping one on is all it takes. One already converted can always convert
  * back, even with the setting turned off since.
  *
- * Import-free (jest loads it without Foundry).
+ * Imports only custom-game-lines.mjs, whose imports are import-free (jest loads it without Foundry).
  */
 
-/** The world setting (settings.js). */
+import { actorRule, worldRule } from "../resources/custom-game-lines.mjs";
+
+/** The older world setting (settings.js), still honoured: a world that turned it on before line switches keeps it. */
 export const VEHICLE_ALT_MODES_SETTING = 'vehicleAltModes';
 
 /** The actor types the setting lets convert. */
 export const CONVERTING_TYPES = Object.freeze(['vehicle', 'zord']);
 
-/** Whether the world lets Vehicles and Zords have Alt Modes. */
-export function vehicleAltModesOn() {
+/**
+ * Whether Vehicles and Zords may have Alt Modes: the line's switch - this actor's line (custom-game-lines.mjs#actorRule,
+ * the GM's pick in a Crossover world), or the world's with no actor - or the older setting.
+ * @param {Actor} [actor]
+ * @returns {Boolean}
+ */
+export function vehicleAltModesOn(actor = null) {
+  if (actor ? actorRule(actor, 'vehicleAltModes') : worldRule('vehicleAltModes')) {
+    return true;
+  }
+
   try {
     return !!globalThis.game?.settings?.get?.('essence20', VEHICLE_ALT_MODES_SETTING);
   } catch {
@@ -35,7 +47,7 @@ const altModesOf = actor => [...(actor?.items ?? [])].filter(item => item?.type 
  * @param {Boolean} [enabled]   The setting (read from the world when left out).
  * @returns {Boolean}
  */
-export function canHoldAltModes(actor, enabled = vehicleAltModesOn()) {
+export function canHoldAltModes(actor, enabled = vehicleAltModesOn(actor)) {
   if (actor?.system?.canTransform) {
     return true;
   }
@@ -50,7 +62,7 @@ export function canHoldAltModes(actor, enabled = vehicleAltModesOn()) {
  * @param {Boolean} [enabled]
  * @returns {Boolean}
  */
-export function canConvert(actor, enabled = vehicleAltModesOn()) {
+export function canConvert(actor, enabled = vehicleAltModesOn(actor)) {
   if (actor?.system?.canTransform) {
     return true;
   }
