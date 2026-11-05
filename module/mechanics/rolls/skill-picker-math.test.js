@@ -1,6 +1,6 @@
 import {
   computeEssenceSpend, getEssenceOverspend, getNewEssenceOverspend, getSkillAttributionStatus, getSkillEssences,
-  resetEssenceUpdate,
+  isSpendingCombiner, resetEssenceUpdate, skillBudgetOf,
 } from "./skill-picker-math.mjs";
 
 /**
@@ -164,6 +164,36 @@ describe("computeEssenceSpend", () => {
     const spend = computeEssenceSpend(actor);
 
     expect(spend.strength.value).toBe(8);
+  });
+});
+
+describe("skillBudgetOf / isSpendingCombiner", () => {
+  const combiner = () => ({
+    ...makeActor({
+      skillOverrides: { athletics: { shift: 'd8' } }, // +4 strength
+      essences: { strength: { value: 3 }, speed: { value: 5 }, smarts: { value: 2 }, social: { value: 2 } },
+    }),
+    type: 'megaform',
+  });
+
+  test("a Combiner's members spend its ranks up to the form's own Essence (EoC p.42)", () => {
+    const actor = combiner();
+    actor.system.subtype = ['megaformCombiner'];
+    expect(isSpendingCombiner(actor)).toBe(true);
+    expect(skillBudgetOf(actor)).toEqual({ strength: 3, speed: 5, smarts: 2, social: 2 });
+    expect(getEssenceOverspend(actor)).toEqual({ strength: { spent: 4, max: 3 } });
+  });
+
+  test("the GM's copy-from-members house rule, and a Megazord, have no budget", () => {
+    const copying = combiner();
+    copying.system.subtype = ['megaformCombiner'];
+    copying.system.combinerSkillsFromMembers = true;
+    expect(isSpendingCombiner(copying)).toBe(false);
+
+    const megazord = combiner();
+    megazord.system.subtype = ['megaformZord'];
+    expect(isSpendingCombiner(megazord)).toBe(false);
+    expect(getEssenceOverspend(megazord)).toEqual({});
   });
 });
 

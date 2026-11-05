@@ -1,4 +1,4 @@
-import { Essence20Actor } from "./actor.mjs";
+import { Essence20Actor, zordDefaultSkillsCleared } from "./actor.mjs";
 import { jest } from '@jest/globals';
 import { applyModularIntegration } from "../items/defenses/modular-armor.mjs";
 import { setWorldLookups } from "../rules/predicate.mjs";
@@ -1461,6 +1461,41 @@ describe("_prepareMegaformCombinerData", () => {
     expect(huge.system.size).toBe('gigantic');
   });
 
+  test("Skills Copied from Members (GM house rule): Conditioning is the Strength member's, not the Zord default of 3", () => {
+    const strong = makeComponent({ name: 'Strong', health: 5 });
+    strong.system.essences.strength.value = 6;
+    strong.system.conditioning = 2;
+    const weak = makeComponent({ name: 'Weak', health: 5 });
+    weak.system.conditioning = 4;
+    const actor = makeCombinerActor([weak, strong]);
+    actor.system.combinerSkillsFromMembers = true;
+    actor.system.conditioning = 3;
+    actor._prepareMegaformCombinerData();
+    expect(actor.system.conditioning).toBe(2);
+    expect(actor.system.showConditioning).toBe(true);
+    expect(actor.system.skills.athletics.shift).toBe('d8');
+  });
+
+  test("a new or retyped Combiner drops the Zord schema's default Skills, keeping any it was given", () => {
+    const shift = initial => ({ fields: { shift: { initial } } });
+    const actor = {
+      system: { schema: { fields: { skills: { fields: { driving: shift('d2'), might: shift('d6'), athletics: shift('d20'), targeting: shift('d6') } } } } },
+      _source: { system: { skills: { driving: { shift: 'd2' }, might: { shift: 'd8' }, athletics: { shift: 'd20' }, targeting: { shift: 'd6' } } } },
+    };
+    expect(zordDefaultSkillsCleared(actor, { targeting: { shift: 'd6' } })).toEqual({ 'system.skills.driving.shift': 'd20' });
+  });
+
+  test("by default the form keeps its own spent Skills, and Conditioning is 0 (EoC p.42)", () => {
+    const actor = makeCombinerActor([makeComponent({ name: 'A', health: 5 }), makeComponent({ name: 'B', health: 5 })]);
+    actor.system.conditioning = 3;
+    actor.system.skills.athletics.shift = 'd2';
+    actor._prepareMegaformCombinerData();
+    expect(actor.system.conditioning).toBe(0);
+    expect(actor.system.showConditioning).toBe(false);
+    expect(actor.system.skills.athletics.shift).toBe('d2');
+    expect(actor.system.essences.strength.value).toBe(3);
+  });
+
   test("Willpower and Cleverness are 10 + the form's own Smarts / Social, not a Megazord's pilot stand-in (EoC p.42)", () => {
     const actor = makeCombinerActor([makeComponent({ name: 'A', health: 5 }), makeComponent({ name: 'B', health: 5 })]);
     actor.system.defenses.willpower = { base: null, usesDrivers: true };
@@ -1583,12 +1618,30 @@ describe("_prepareMegaformCombinerData", () => {
       });
       holder.system.essences.strength.value = 2;
       const actor = makeCombinerActor([winner, holder]);
+      actor.system.combinerSkillsFromMembers = true;
 
       actor._prepareMegaformCombinerData();
 
       expect(actor.system.skills.athletics.specializations).toEqual({
         sprint: { name: 'Sprint' },
         climbing: { name: 'Climbing' },
+      });
+    });
+
+    test("spending the form's own ranks, a holder's Specializations still carry over, free", () => {
+      const holder = makeComponent({
+        name: 'Holder', health: 10, perkIds: [BETTER_AS_ONE_ID],
+        athleticsSpecializations: { climbing: { name: 'Climbing' } },
+      });
+      const other = makeComponent({ name: 'Other', health: 10, athleticsSpecializations: { sprint: { name: 'Sprint' } } });
+      const actor = makeCombinerActor([holder, other]);
+      actor.system.skills.athletics.specializations = { lifting: { name: 'Lifting' } };
+
+      actor._prepareMegaformCombinerData();
+
+      expect(actor.system.skills.athletics.specializations).toEqual({
+        lifting: { name: 'Lifting' },
+        climbing: { name: 'Climbing', granted: true },
       });
     });
 
@@ -1602,6 +1655,7 @@ describe("_prepareMegaformCombinerData", () => {
       });
       nonHolder.system.essences.strength.value = 2;
       const actor = makeCombinerActor([winner, nonHolder]);
+      actor.system.combinerSkillsFromMembers = true;
 
       actor._prepareMegaformCombinerData();
 

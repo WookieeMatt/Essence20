@@ -169,6 +169,91 @@ export function altModeSize(actor, altMode) {
 
 registerDerived(sizeDerived);
 
+/** The size the actor has stored - the one before its Size rules (system.size is the size they make). */
+const storedSize = actor => actor?._source?.system?.size ?? actor?.system?.size;
+
+/**
+ * The stored size that the actor's Size rules turn into `wanted` - the size the sheet shows and a player picks, so
+ * saving the sheet never stores Titanspark's Size Class on top of itself. The one nearest the stored size now (the
+ * stored size itself when it already gives it); null when no stored size gives it (a size below a rule's floor).
+ */
+export function baseSizeFor(actor, wanted) {
+  const live = liveSizeRules(actor, 'bot');
+  if (!live.length) {
+    return wanted;
+  }
+
+  const sizes = fullSizes();
+  const from = sizes.indexOf(storedSize(actor));
+  return sizes.filter(size => applySizeRules(size, live, actor) == wanted)
+    .sort((a, b) => Math.abs(sizes.indexOf(a) - from) - Math.abs(sizes.indexOf(b) - from))[0] ?? null;
+}
+
+/** The size the actor's Size rules make of a stored size. */
+export function sizeWithRules(actor, stored) {
+  const live = liveSizeRules(actor, 'bot');
+  return live.length ? applySizeRules(stored, live, actor) : stored;
+}
+
+/** When Size rules change the actor's size: {size: the stored size before them, sources: their labels}; else null. */
+export function sizeBeforeRules(actor) {
+  const stored = storedSize(actor);
+  const live = liveSizeRules(actor, 'bot');
+  if (!stored || !live.length || stored == actor.system.size) {
+    return null;
+  }
+
+  return { size: stored, sources: live.map(({ rule, item }) => ruleLabel(rule, item)) };
+}
+
+/** Whether an item carries a Size rule. */
+const hasSizeRule = item => (item?.system?.rules ?? []).some(rule => rule?.type == 'Size');
+
+/**
+ * An item with a Size rule was added, removed or had its rules changed (Titanspark dropped on or taken off): the actor's
+ * placed tokens and prototype token take the size it has now - the Alt Mode's size while it's transformed
+ * (transformer-handler.mjs#refreshAltModeSize, which also unloads riders who no longer fit). Only for the user who
+ * made the change. Exported for tests.
+ */
+export async function syncSizeRuleTokens(item, userId) {
+  const actor = item?.parent;
+  if (userId != globalThis.game?.user?.id || actor?.documentName != 'Actor') {
+    return;
+  }
+
+  if (actor.system?.isTransformed) {
+    const altMode = actor.items?.get(actor.system.altModeId);
+    if (altMode) {
+      const { refreshAltModeSize } = await import("../../../sheet-handlers/transformer-handler.mjs");
+      await refreshAltModeSize(actor, altMode);
+    }
+
+    return;
+  }
+
+  const dims = globalThis.CONFIG?.E20?.tokenSizes?.[actor.system?.size];
+  if (!dims) {
+    return;
+  }
+
+  const { resizeTokens } = await import("../../../mechanics/world/token-sync.mjs");
+  resizeTokens(actor, dims.width, dims.height);
+  if (actor.prototypeToken?.width != dims.width || actor.prototypeToken?.height != dims.height) {
+    await actor.update({ 'prototypeToken.width': dims.width, 'prototypeToken.height': dims.height });
+  }
+}
+
+const onSizeItem = (item, userId) => hasSizeRule(item) && syncSizeRuleTokens(item, userId)
+  .catch(error => console.error('Essence20 | Size rule tokens', error));
+globalThis.Hooks?.on?.('createItem', (item, options, userId) => onSizeItem(item, userId));
+globalThis.Hooks?.on?.('deleteItem', (item, options, userId) => onSizeItem(item, userId));
+// A Size rule edited on an item already owned (added, changed, switched off).
+globalThis.Hooks?.on?.('updateItem', (item, changes, options, userId) => {
+  if (foundry.utils.hasProperty(changes, 'system.rules')) {
+    onSizeItem(item, userId);
+  }
+});
+
 /* -------------------------------------------- */
 /*  Steps                                        */
 /* -------------------------------------------- */
@@ -179,7 +264,8 @@ registerStep('shiftSize', async (step, ctx) => {
   const { recipients } = await import("../../steps.mjs");
   const steps = Math.round(resolveValue(step.steps ?? 0, { actor: ctx.actor, item: ctx.item, vars: ctx.vars }, 0));
   for (const actor of recipients(step, ctx)) {
-    const size = actor?.system?.size;
+    // The stored size, not the one Size rules make - stepping that and storing it would add their change again.
+    const size = storedSize(actor);
     if (!size) {
       continue;
     }

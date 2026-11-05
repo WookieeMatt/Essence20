@@ -15,7 +15,9 @@ export function resizeTokens(actor, width, height) {
   for (const token of sizedTokensOf(actor)) {
     // A non-square token turned on its side keeps standing that way (canvas/token-facing.mjs).
     const size = orientedSize(width, height, token.rotation, { lockRotation: token.lockRotation });
-    if (token.width != size.width || token.height != size.height) {
+    // The stored size: while a resize is still animating, token.width is the size it's animating from.
+    const source = token._source ?? token;
+    if (source.width != size.width || source.height != size.height) {
       token.update({ height: size.height, width: size.width });
     }
   }

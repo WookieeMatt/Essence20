@@ -33,6 +33,9 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
       // energon.normal.max below, since it depends on in-combat choices this system doesn't
       // otherwise track (Story Point substitutions, NPCs joining, etc).
       energonSpentToMerge: makeInt(0),
+      // Combiner-subtype only, GM-set house rule: the form's Skills (and Conditioning) are copies of each Essence's
+      // contributing member's own, instead of ranks that member spends in the Skill Picker (EoC p.42).
+      combinerSkillsFromMembers: makeBool(false),
       // The following are all computed fresh in Essence20Actor#_prepareMegaformData() from
       // the linked component actors (system.actors) and are never edited directly, but need a
       // schema declaration so their computed values survive Actor#toObject(), which sheets
