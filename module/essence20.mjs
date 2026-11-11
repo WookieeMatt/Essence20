@@ -188,7 +188,7 @@ import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./util/enriche
 import { preloadHandlebarsTemplates } from "./util/templates.mjs";
 import { applyVisionToTokens } from "./mechanics/world/token-sync.mjs";
 import { getNumActions } from "./mechanics/actions/action-counts.mjs";
-import { syncAutoBlindStatus, syncAutoImmobilizedStatus } from "./mechanics/combat/linked-status-sync.mjs";
+import { isLinkedStatusClient, syncAutoBlindStatus, syncAutoImmobilizedStatus } from "./mechanics/combat/linked-status-sync.mjs";
 import { canUsePerk, hasItemUse } from "./mechanics/resources/banked-buffs.mjs";
 import { canUsePower } from "./mechanics/characters/power-use.mjs";
 import { getWeaponEffectDamages } from "./mechanics/combat/damage-display.mjs";
@@ -1157,16 +1157,17 @@ Hooks.on("preCreateActiveEffect", (effect, data) => {
 });
 
 for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiveEffect"]) {
-  Hooks.on(hookName, (effect) => {
+  Hooks.on(hookName, (effect, ...args) => {
     /* Status toggles (Asleep, Unconscious, etc.) apply as ActiveEffects on the actor rather than
        Item changes, so they need their own hook to trigger the vision-grant push. syncAutoBlindStatus
        additionally keeps the real "blinded" status in sync with Asleep/Unconscious, reusing
        Foundry's own working Blind vision-block instead of reinventing it (see mechanics/world/token-sync.mjs
        for why sight.enabled=false alone doesn't actually block a token's perception). This create/
        delete's its own ActiveEffect, which re-fires this same hook - safe since both functions are
-       idempotent no-ops once the actor's state already matches. */
+       idempotent no-ops once the actor's state already matches. Only one client does it (the userId is each hook's last
+       argument) - every client adding its own Blinded is how a Defeated PC got one per connected user. */
     const parent = effect.parent;
-    if (parent instanceof Actor) {
+    if (parent instanceof Actor && isLinkedStatusClient(args.at(-1))) {
       applyVisionToTokens(parent);
       syncAutoBlindStatus(parent);
       // Restrained implies Immobilized (GI Joe CRB, Conditions, p.226) - see

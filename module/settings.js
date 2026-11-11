@@ -7,6 +7,7 @@ import { invalidateImportedDescriptions } from "./importers/book-descriptions-st
 import { applyGameLineToSourcebooks } from "./util/compendium-browser.mjs";
 import { E20 } from "./util/config.mjs";
 import { refreshStateIcons } from "./mechanics/characters/morph-state.mjs";
+import { AUTO_BLIND_SETTING, resyncAutoBlindEverywhere } from "./mechanics/combat/linked-status-sync.mjs";
 
 export const setting = (key) => {
   return game.settings?.get("essence20", key) ?? "default";
@@ -395,6 +396,19 @@ export const registerSettings = function () {
     config: true,
     default: true,
     type: Boolean,
+  });
+
+  /* Asleep/Unconscious put a real Blinded on the actor, which blacks out its owner's view of the map. On by default,
+     as it always was; tables streaming a player's screen turn it off. Only the auto-added Blinded goes - one toggled
+     on by hand stays. See mechanics/combat/linked-status-sync.mjs. */
+  game.settings.register(systemName, AUTO_BLIND_SETTING, {
+    name: game.i18n.localize("E20.AutoBlindWhenUnconsciousLabel"),
+    hint: game.i18n.localize("E20.AutoBlindWhenUnconsciousHint"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+    onChange: () => resyncAutoBlindEverywhere(),
   });
 
   /* -------------------------------------------- */

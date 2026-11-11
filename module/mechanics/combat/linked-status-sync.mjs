@@ -3,6 +3,71 @@
  */
 
 /**
+ * The one client that keeps linked statuses in step: the active GM, or with no GM on, whoever made the change. Every
+ * client hears the ActiveEffect hooks, and each used to add its own Blinded, so a Defeated PC in a full game got one
+ * per connected user.
+ * @param {string} userId The user whose change fired the hook.
+ * @returns {boolean}
+ */
+export function isLinkedStatusClient(userId) {
+  const g = globalThis.game;
+  const activeGM = g?.users?.activeGM;
+  return activeGM ? activeGM.id == g.user?.id : userId == g?.user?.id;
+}
+
+// One sync at a time per actor and status: Defeated adds several statuses at once, and each fired a sync that saw no
+// Blinded yet (the first one's create hadn't landed) and added another.
+const pending = new Map();
+
+/**
+ * Runs fn after any sync already queued for the same key, so each sees the last one's result.
+ * @param {string} key
+ * @param {Function} fn
+ * @returns {Promise}
+ */
+function queued(key, fn) {
+  const run = (pending.get(key) ?? Promise.resolve()).then(fn, fn);
+  const settled = run.catch(error => console.error('Essence20 | Linked status sync', error));
+  pending.set(key, settled);
+  settled.then(() => pending.get(key) === settled && pending.delete(key));
+  return settled;
+}
+
+/**
+ * Keeps one auto-applied `status` effect on the actor while `wanted` holds, and none (of its own) after.
+ * @param {Actor} actor
+ * @param {string} status The status to apply.
+ * @param {string} flag The flags.essence20 marker telling an auto-applied effect from one set by hand.
+ * @param {Function} wanted actor => whether the status should be on.
+ * @returns {Promise}
+ */
+function syncLinkedStatus(actor, status, flag, wanted) {
+  return queued(`${status}:${actor.uuid ?? actor.id ?? ''}`, async () => {
+    const effects = (actor.effects?.contents ?? [...(actor.effects ?? [])]).filter(effect => effect.statuses?.has(status));
+    const auto = effects.filter(effect => effect.getFlag?.('essence20', flag));
+
+    if (wanted(actor)) {
+      if (!effects.length) {
+        const effectData = await ActiveEffect.implementation.fromStatusEffect(status);
+        effectData.updateSource({ [`flags.essence20.${flag}`]: true });
+        await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
+        return;
+      }
+
+      // Copies left over from before this ran one at a time.
+      const extras = auto.length == effects.length ? auto.slice(1) : auto;
+      for (const effect of extras) {
+        await effect.delete();
+      }
+    } else {
+      for (const effect of auto) {
+        await effect.delete();
+      }
+    }
+  });
+}
+
+/**
  * Asleep/Unconscious have no Foundry-native equivalent to Blinded's CONFIG.specialStatusEffects.BLIND
  * wiring (see essence20.mjs), but closed eyes should black out vision exactly the same way. Rather
  * than reinventing that (sight.enabled=false alone doesn't work - see ../world/token-sync.mjs#applyVisionToTokens),
@@ -18,16 +83,41 @@
 export async function syncAutoBlindStatus(actor) {
   if (!actor) return;
 
-  const shouldBeBlind = actor.statuses?.has('asleep') || actor.statuses?.has('unconscious') || false;
-  const blindEffect = actor.effects.find(effect => effect.statuses?.has('blinded'));
-  const isAutoBlind = !!blindEffect?.getFlag('essence20', 'autoBlindFromSleep');
+  await syncLinkedStatus(actor, 'blinded', 'autoBlindFromSleep',
+    a => isAutoBlindEnabled() && (a.statuses?.has('asleep') || a.statuses?.has('unconscious') || false));
+}
 
-  if (shouldBeBlind && !blindEffect) {
-    const effectData = await ActiveEffect.implementation.fromStatusEffect('blinded');
-    effectData.updateSource({ "flags.essence20.autoBlindFromSleep": true });
-    await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
-  } else if (!shouldBeBlind && isAutoBlind) {
-    await blindEffect.delete();
+/** The world setting name; off, a sleeper keeps their sight (tables streaming a player's view asked for it). */
+export const AUTO_BLIND_SETTING = 'autoBlindWhenUnconscious';
+
+/** Whether Asleep/Unconscious turn Blinded on. On unless the GM turned it off. */
+export function isAutoBlindEnabled() {
+  try {
+    return globalThis.game?.settings?.get('essence20', AUTO_BLIND_SETTING) !== false;
+  } catch {
+    // Not registered yet (early load, tests): the default.
+    return true;
+  }
+}
+
+/**
+ * Re-checks every actor's auto Blinded after the setting changes: off strips the auto copies, on gives one to everyone
+ * already asleep or out cold. World actors plus each scene's unlinked token actors, which have effects of their own.
+ * @returns {Promise}
+ */
+export async function resyncAutoBlindEverywhere() {
+  const g = globalThis.game;
+  if (!g?.user?.isActiveGM) return;
+
+  const actors = [...(g.actors ?? [])];
+  for (const scene of g.scenes ?? []) {
+    for (const token of scene.tokens ?? []) {
+      if (!token.actorLink && token.actor) actors.push(token.actor);
+    }
+  }
+
+  for (const actor of actors) {
+    await syncAutoBlindStatus(actor);
   }
 }
 
@@ -44,15 +134,6 @@ export async function syncAutoBlindStatus(actor) {
 export async function syncAutoImmobilizedStatus(actor) {
   if (!actor) return;
 
-  const shouldBeImmobilized = actor.statuses?.has('restrained') || false;
-  const immobilizedEffect = actor.effects.find(effect => effect.statuses?.has('immobilized'));
-  const isAutoImmobilized = !!immobilizedEffect?.getFlag('essence20', 'autoImmobilizedFromRestrained');
-
-  if (shouldBeImmobilized && !immobilizedEffect) {
-    const effectData = await ActiveEffect.implementation.fromStatusEffect('immobilized');
-    effectData.updateSource({ "flags.essence20.autoImmobilizedFromRestrained": true });
-    await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
-  } else if (!shouldBeImmobilized && isAutoImmobilized) {
-    await immobilizedEffect.delete();
-  }
+  await syncLinkedStatus(actor, 'immobilized', 'autoImmobilizedFromRestrained',
+    a => a.statuses?.has('restrained') || false);
 }

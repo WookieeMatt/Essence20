@@ -2646,6 +2646,8 @@
     "SettingsGroupAdventure": "Adventures",
     "SettingsGroupHouseRules": "House Rules",
     "TokenFacingSnapLabel": "Snap Long Tokens to Facings",
+    "AutoBlindWhenUnconsciousLabel": "Asleep and Unconscious Characters Are Blinded",
+    "AutoBlindWhenUnconsciousHint": "Asleep or Unconscious characters are also Blinded, which blacks out their owner's view of the map until they wake. Turn this off to let them keep their sight, for example when a player's screen is being streamed. Only the Blinded added automatically is affected; a Blinded applied by hand stays.",
     "StatBlockCopy": "Copy Stat Block",
     "StatBlockTitle": "Stat Block",
     "StatBlockHint": "Printed-style text for this Threat. Paste it into a message or post to share it - the Stat Block Importer on another table reads it back.",
