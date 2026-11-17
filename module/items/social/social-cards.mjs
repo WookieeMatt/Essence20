@@ -37,7 +37,9 @@ function wire(message, element) {
 async function onSocialButton(message, button) {
   switch (button.dataset.e20Social) {
   case 'groupRoll':
-  case 'groupPerk': {
+  case 'groupPerk':
+  case 'groupLink':
+  case 'groupResolve': {
     const { onGroupButton } = await import("../../mechanics/rolls/group-tests.mjs");
     return onGroupButton(message, button);
   }
@@ -91,5 +93,10 @@ export function onGroupResultChanged(changed) {
     if (message.flags?.essence20?.groupTest) {
       globalThis.ui?.chat?.updateMessage?.(message);
     }
+  }
+
+  // A Megazord attack this client is waiting on goes ahead once its crew have all rolled (mechanics/vehicles/megazord-rolls.mjs).
+  if (foundry.utils.hasProperty(changed ?? {}, 'flags.essence20.groupTest')) {
+    import("../../mechanics/vehicles/megazord-rolls.mjs").then(({ settleMegazordGroupTests }) => settleMegazordGroupTests());
   }
 }

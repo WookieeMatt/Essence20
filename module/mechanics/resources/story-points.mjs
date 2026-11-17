@@ -350,21 +350,53 @@ export function sessionResetUpdate(memberCount, line) {
 /*  Who spends from which pool                  */
 /* -------------------------------------------- */
 
-/** The actor types on the players' side of the table. Everything else is the GM's. */
+/** The actor types on the players' side of the table. Everything else is the GM's, but for CREWED_TYPES. */
 const PLAYER_TYPES = ["playerCharacter", "companion"];
+
+/** Machines that take the side of whoever is aboard: a vehicle, a Zord, a Megaform (whose system.actors are its Zords). */
+const CREWED_TYPES = ["vehicle", "zord", "megaform"];
+
+function aboard(actor) {
+  return Object.values(actor?.system?.actors ?? {}).map(entry => {
+    try {
+      return entry?.uuid ? globalThis.fromUuidSync?.(entry.uuid, { strict: false }) ?? null : null;
+    } catch (error) {
+      return null;
+    }
+  }).filter(Boolean);
+}
+
+/**
+ * Whether a vehicle, Zord or Megaform is the players': a player owns it, or a player-side character rides in it (or,
+ * for a Megazord, in one of its Zords). The GM's pool grows when "NPC personalities" Critically Succeed (PR CRB p.93) -
+ * the Rangers' Megazord isn't one.
+ */
+function isPlayerMachine(actor, depth = 0) {
+  if (actor?.hasPlayerOwner) {
+    return true;
+  }
+
+  return depth < 2 && aboard(actor).some(rider => PLAYER_TYPES.includes(rider.type)
+    || (CREWED_TYPES.includes(rider.type) && isPlayerMachine(rider, depth + 1)));
+}
 
 /**
  * Which pool an actor draws on.
  *
  * Players and GM can each always spend their own Story Points (GI Joe CRB p.127) - THEIR points. A Player Character spends the table's shared pool; an NPC, vehicle or
- * Threat under the GM's hand spends the GM's own. An actor with no type at all (a bare test
- * double, or a chat card with no speaker) is taken to be a player's.
+ * Threat under the GM's hand spends the GM's own. A vehicle, Zord or Megaform the players own or ride in is theirs
+ * (isPlayerMachine). An actor with no type at all (a bare test double, or a chat card with no speaker) is taken to be
+ * a player's.
  * @param {?Actor} actor
  * @returns {"story"|"gm"}
  */
 export function poolFor(actor) {
   const type = actor?.type;
-  return !type || PLAYER_TYPES.includes(type) ? "story" : "gm";
+  if (!type || PLAYER_TYPES.includes(type)) {
+    return "story";
+  }
+
+  return CREWED_TYPES.includes(type) && isPlayerMachine(actor) ? "story" : "gm";
 }
 
 /**

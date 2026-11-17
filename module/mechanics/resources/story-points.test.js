@@ -388,6 +388,24 @@ describe("which pool an actor spends from", () => {
     expect(poolFor({ type: 'vehicle' })).toBe('gm');
   });
 
+  test("a vehicle, Zord or Megazord is the players' when they own it or ride in it", () => {
+    const red = { uuid: 'Actor.red', type: 'playerCharacter' };
+    const goon = { uuid: 'Actor.goon', type: 'npc' };
+    const redZord = { uuid: 'Actor.zord', type: 'zord', system: { actors: { a: { uuid: 'Actor.red' } } } };
+    const actors = { 'Actor.red': red, 'Actor.goon': goon, 'Actor.zord': redZord };
+    const previous = global.fromUuidSync;
+    global.fromUuidSync = jest.fn(uuid => actors[uuid] ?? null);
+    try {
+      expect(poolFor(redZord)).toBe('story');
+      expect(poolFor({ type: 'megaform', system: { actors: { z: { uuid: 'Actor.zord' } } } })).toBe('story');
+      expect(poolFor({ type: 'vehicle', system: { actors: { d: { uuid: 'Actor.goon' } } } })).toBe('gm');
+      expect(poolFor({ type: 'vehicle', hasPlayerOwner: true })).toBe('story');
+      expect(poolFor({ type: 'npc', hasPlayerOwner: true })).toBe('gm');
+    } finally {
+      global.fromUuidSync = previous;
+    }
+  });
+
   test("an actor with no type is taken to be a player's", () => {
     expect(poolFor({ name: 'Duke' })).toBe('story');
     expect(poolFor(null)).toBe('story');
