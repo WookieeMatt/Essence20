@@ -1,3 +1,4 @@
+import { storedNumber } from "./effect-boosted-fields.mjs";
 import { afterSpectrumShifted, spectrumShiftedRetains } from "../mechanics/characters/spectrum-shifted.mjs";
 import { essenceRedirect } from "../mechanics/resources/grants.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
@@ -149,9 +150,9 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[roleEssence], previousLevel);
     // Cordial / Rough and Takes No Guff move an increase to another Essence (mechanics/resources/grants.mjs).
     const essence = totalChange > 0 ? essenceRedirect(actor, role, roleEssence) : roleEssence;
-    const essenceMax = actor.system.essences[essence].max + totalChange;
+    const essenceMax = storedNumber(actor, `system.essences.${essence}.max`) + totalChange;
     const essenceMaxString = `system.essences.${essence}.max`;
-    const essenceValue = actor.system.essences[essence].value+ totalChange;
+    const essenceValue = storedNumber(actor, `system.essences.${essence}.value`) + totalChange;
     const essenceString = `system.essences.${essence}.value`;
     await actor.update({
       [essenceString]: essenceValue,
@@ -160,13 +161,14 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   }
 
   if (role.system.powers.personal.starting) {
-    const totalChange = roleValueChange(currentEssenceLevel, role.system.powers.personal.levels, previousLevel);
-    let newPersonalPowerMax = 0;
-    if (actor.system.powers.personal.max > 0) {
-      newPersonalPowerMax = actor.system.powers.personal.max + role.system.powers.personal.increase * totalChange;
-    } else {
-      newPersonalPowerMax = role.system.powers.personal.starting;
-    }
+    const personal = role.system.powers.personal;
+    // The stored maximum: the one shown includes Power Battery, Grid Connection and the like, and writing that back
+    // made every level change keep their bonus for good.
+    const storedMax = storedPersonalPowerMax(actor);
+    const newPersonalPowerMax = storedMax > 0
+      ? Math.max(0, storedMax + personal.increase * roleValueChange(currentEssenceLevel, personal.levels, previousLevel))
+      // None yet: everything this Role gives up to the level reached, not just its starting amount.
+      : personal.starting + personal.increase * roleValueChange(currentEssenceLevel, personal.levels, null);
 
     await actor.update({
       "system.powers.personal.max": newPersonalPowerMax,
@@ -176,7 +178,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
 
   if (role.system.adjustments.health.length) {
     const totalChange = roleValueChange(currentEssenceLevel, role.system.adjustments.health, previousLevel);
-    const newHealthBonus = actor.system.health.bonus + totalChange;
+    const newHealthBonus = storedNumber(actor, "system.health.bonus") + totalChange;
 
     await actor.update({
       "system.health.bonus": newHealthBonus,
@@ -251,6 +253,11 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
  *                                    time a level change was processed
  * @returns {Number} The number of level changes
  */
+/** The actor's stored Maximum Personal Power. */
+export function storedPersonalPowerMax(actor) {
+  return storedNumber(actor, "system.powers.personal.max");
+}
+
 export function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=null) {
   const levelDiff = currentLevel - lastProcessedLevel;
   if (!levelDiff) {
@@ -388,8 +395,8 @@ export async function _setFocusValues(focus, actor, newLevel=null, previousLevel
   // here to raise/lower at all.
   if (actor.system.focusEssence) {
     const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
-    const essenceMax = actor.system.essences[actor.system.focusEssence].max + totalChange;
-    const essenceValue = actor.system.essences[actor.system.focusEssence].value + totalChange;
+    const essenceMax = storedNumber(actor, `system.essences.${actor.system.focusEssence}.max`) + totalChange;
+    const essenceValue = storedNumber(actor, `system.essences.${actor.system.focusEssence}.value`) + totalChange;
     const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
     const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
 
@@ -688,8 +695,8 @@ export async function onRoleDelete(actor, role) {
   // Essence updates
   for (const essence in role.system.essenceLevels) {
     const totalDecrease = roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
-    const essenceMaxValue = Math.max(0, actor.system.essences[essence].max + totalDecrease);
-    const essenceValue = Math.max(0, actor.system.essences[essence].value + totalDecrease);
+    const essenceMaxValue = Math.max(0, storedNumber(actor, `system.essences.${essence}.max`) + totalDecrease);
+    const essenceValue = Math.max(0, storedNumber(actor, `system.essences.${essence}.value`) + totalDecrease);
     const essenceMaxString = `system.essences.${essence}.max`;
     const essenceString = `system.essences.${essence}.value`;
 
@@ -730,7 +737,7 @@ export async function onRoleDelete(actor, role) {
   // Personal Power updates
   if (role.system.powers.personal.starting) {
     const totalDecrease = roleValueChange(0, role.system.powers.personal.levels, previousLevel);
-    const newPersonalPowerMax = Math.max(0, parseInt(actor.system.powers.personal.max) - role.system.powers.personal.starting + (role.system.powers.personal.increase * totalDecrease));
+    const newPersonalPowerMax = Math.max(0, storedPersonalPowerMax(actor) - role.system.powers.personal.starting + (role.system.powers.personal.increase * totalDecrease));
 
     await actor.update({
       "system.powers.personal.max": newPersonalPowerMax,
@@ -771,7 +778,7 @@ export async function onRoleDelete(actor, role) {
   // Health updates
   if (role.system.adjustments.health.length) {
     const totalDecrease = roleValueChange(0, role.system.adjustments.health, previousLevel);
-    const newHealthBonus = Math.max(0, actor.system.health.bonus + totalDecrease);
+    const newHealthBonus = Math.max(0, storedNumber(actor, "system.health.bonus") + totalDecrease);
 
     await actor.update({
       "system.health.bonus": newHealthBonus,

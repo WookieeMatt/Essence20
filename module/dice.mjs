@@ -3612,10 +3612,14 @@ export class Dice {
         }
       }
 
+      // Positive: a smaller attacker's ↑ against a larger target. Negative: a larger attacker's ↓ against a smaller one.
       const sizeShift = this._getSizeShift(attackerSizeForSizeShift, target.system.size);
-      shiftUp += sizeShift;
-      if (sizeShift) {
+      if (sizeShift > 0) {
+        shiftUp += sizeShift;
         addSource('size', this._localize('E20.CombatModifierSize'), { shiftUp: sizeShift });
+      } else if (sizeShift < 0) {
+        shiftDown -= sizeShift;
+        addSource('size', this._localize('E20.CombatModifierSize'), { shiftDown: -sizeShift });
       }
 
       // Grappling's own Size downshift (GI Joe CRB, Chapter 9: Combat, p.200): a ↓1 for each Size class larger
@@ -3624,7 +3628,8 @@ export class Dice {
       if (item?.type == 'weaponEffect' && item.system.damageType == 'grapple'
         && !ruleImmunities(actor, target, attackRoll, 'grappleSizeDownshift').length) {
         const grappleSizeOrder = Object.keys(E20.actorSizes);
-        const grappleAttackerIndex = grappleSizeOrder.indexOf(actor.system.size);
+        // SizeMatrix (When Push Comes To Shove: "considered one Size Class larger") counts here too.
+        const grappleAttackerIndex = grappleSizeOrder.indexOf(attackerSizeForSizeShift);
         const grappleTargetIndex = grappleSizeOrder.indexOf(target.system.size);
         const grappleSizeDownshift = grappleAttackerIndex != -1 && grappleTargetIndex != -1
           ? Math.min(Math.max(grappleTargetIndex - grappleAttackerIndex, 0), 2)
@@ -3998,13 +4003,14 @@ export class Dice {
   }
 
   /**
-   * Computes the dice shift bonus from Table 10-2: Size Class Combat Adjustment Matrix.
-   * The table's values reduce to a simple rule: the shift equals half the distance
-   * (rounded down) between the two Size Classes on the actorSizes ladder, applied as a
-   * shift up regardless of which side is larger.
+   * Computes the dice shift from Table 10-2: Size Class Combat Adjustment Matrix (PR CRB p.169).
+   * The table's values reduce to a simple rule: the shift is half the distance (rounded down)
+   * between the two Size Classes on the actorSizes ladder. Its direction follows who is bigger:
+   * a smaller attacker gets an upshift against a larger target, a larger attacker a downshift
+   * against a smaller one ("it is easier for smaller targets to land attacks upon larger targets").
    * @param {String} attackerSize   The attacking actor's system.size.
    * @param {String} targetSize   The targeted actor's system.size.
-   * @returns {Number}   The dice shift bonus, 0 if either size is unrecognized.
+   * @returns {Number}   Positive for an upshift, negative for a downshift, 0 if either size is unrecognized.
    * @private
    */
   _getSizeShift(attackerSize, targetSize) {
@@ -4016,7 +4022,8 @@ export class Dice {
       return 0;
     }
 
-    return Math.floor(Math.abs(attackerIndex - targetIndex) / 2);
+    const shift = Math.floor(Math.abs(attackerIndex - targetIndex) / 2);
+    return targetIndex > attackerIndex ? shift : (-shift || 0);
   }
 
   /**

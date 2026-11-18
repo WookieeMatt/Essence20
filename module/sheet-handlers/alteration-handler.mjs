@@ -1,4 +1,5 @@
 
+import { storedNumber } from "./effect-boosted-fields.mjs";
 import AlterationMovementSelector from "../apps/alteration-movement-selector.mjs";
 import AlterationEssenceSelector from "../apps/alteration-essence-selector.mjs";
 import {
@@ -287,8 +288,8 @@ export async function _alterationStatUpdate(actor, alteration, bonusSkill, costE
   }
 
   const bonusEssence = alteration.system.essenceBonus;
-  const bonusEssenceValue = actor.system.essences[bonusEssence].max + 1;
-  const costEssenceValue  = actor.system.essences[costEssence].max - 1;
+  const bonusEssenceValue = storedNumber(actor, `system.essences.${bonusEssence}.max`) + 1;
+  const costEssenceValue  = storedNumber(actor, `system.essences.${costEssence}.max`) - 1;
   const bonusEssenceString = `system.essences.${bonusEssence}.max`;
   const costEssenceString = `system.essences.${costEssence}.max`;
 
@@ -344,7 +345,7 @@ export async function onAlterationDelete(actor, alteration) {
     });
   } else if (alteration.system.type == 'essence') {
     const bonusEssence = alteration.system.essenceBonus;
-    const bonusEssenceValue = actor.system.essences[bonusEssence].max - 1;
+    const bonusEssenceValue = storedNumber(actor, `system.essences.${bonusEssence}.max`) - 1;
     const bonusEssenceString = `system.essences.${bonusEssence}.max`;
     let costEssence = "";
 
@@ -354,7 +355,7 @@ export async function onAlterationDelete(actor, alteration) {
       costEssence = alteration.system.essenceCost;
     }
 
-    const costEssenceValue = actor.system.essences[costEssence].max + 1;
+    const costEssenceValue = storedNumber(actor, `system.essences.${costEssence}.max`) + 1;
     const costEssenceString = `system.essences.${costEssence}.max`;
     const bonusSkill = alteration.system.bonus;
     const costSkill = alteration.system.cost;

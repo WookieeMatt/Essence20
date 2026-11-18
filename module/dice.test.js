@@ -7453,8 +7453,16 @@ describe("_getSizeShift", () => {
     expect(dice._getSizeShift('small', 'titanic')).toBe(5);
   });
 
-  test("far apart, larger attacker", () => {
-    expect(dice._getSizeShift('titanic', 'small')).toBe(5);
+  test("far apart, larger attacker is downshifted (PR CRB Table 10-2)", () => {
+    expect(dice._getSizeShift('titanic', 'small')).toBe(-5);
+  });
+
+  test("two steps apart, larger attacker", () => {
+    expect(dice._getSizeShift('long', 'common')).toBe(-1);
+  });
+
+  test("adjacent larger attacker is a plain 0", () => {
+    expect(Object.is(dice._getSizeShift('large', 'common'), 0)).toBe(true);
   });
 
   test("unrecognized size returns 0", () => {
@@ -7916,6 +7924,23 @@ describe("_getAutomaticCombatModifiers", () => {
           "label": "E20.CombatModifierSize",
           "shiftDown": 0,
           "shiftUp": 5,
+          "snag": false,
+        },
+      ] });
+  });
+
+  test("a larger attacker takes the Size Class shift as a downshift against a smaller target", () => {
+    game.user.targets.first.mockReturnValue({ actor: makeActor('small') });
+    const actor = makeActor('titanic');
+
+    expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
+      .toEqual({ ...defaultModifiers, shiftDown: 5, sources: [
+        {
+          "edge": false,
+          "id": "size",
+          "label": "E20.CombatModifierSize",
+          "shiftDown": 5,
+          "shiftUp": 0,
           "snag": false,
         },
       ] });

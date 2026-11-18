@@ -752,6 +752,12 @@ function writeNumber(target, path, op, value, label) {
   }
 
   setProperty(target, path, applyOp(current, op, value));
+  // The sheet shows the boosted number in its inputs (Grid Connection's +1 on Maximum Personal Power); this keeps it from
+  // being saved back as the base (sheet-handlers/effect-boosted-fields.mjs).
+  if (target?._source) {
+    (target._ruleBoostPaths ??= new Set()).add(path);
+  }
+
   const stringPath = path.replace(/\.(max|total|value)$/, '.string');
   if ((op ?? 'add') == 'add') {
     const breakdown = stringPath != path ? getProperty(target, stringPath) : undefined;
