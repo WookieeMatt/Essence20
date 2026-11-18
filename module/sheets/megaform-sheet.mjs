@@ -86,6 +86,8 @@ export class Essence20MegaformActorSheet extends Essence20BaseActorSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.actionsTab = getActionsTabContext(this.actor);
+    // The Combiner "Skills set by hand" house rule is the GM's to switch.
+    context.isGM = game.user.isGM;
     // Each participant's Health, highest first, as the books print a Megazord's ("HEALTH (9/9/7/7/7)") - by max, so a
     // participant keeps its place as it takes damage. Stun follows the same order, so the two lines read down together.
     const system = this.actor.system;

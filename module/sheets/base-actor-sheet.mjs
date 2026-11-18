@@ -81,6 +81,7 @@ import { missingFocusPickLevels, syncFocusSkillPicks } from "../mechanics/charac
 import { currentEssence, currentEssenceUpdate, tracksEssenceDamage } from "../mechanics/combat/essence-current.mjs";
 import * as altModeCrew from "../mechanics/vehicles/alt-mode-crew.mjs";
 import { botSizeFor, fullMovement, movementChoiceIndex, movementLabel } from "../items/shared/alt-mode-chassis.mjs";
+import { baseSizeFor, sizeBeforeRules } from "../rules/plugins/effects/size.mjs";
 
 export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
@@ -445,6 +446,24 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   _processFormData(event, form, formData) {
     const submitData = keepEffectBoostsOutOfSource(super._processFormData(event, form, formData), this.actor);
     foundry.utils.deleteProperty(submitData, "system.level");
+    // The Size select shows the size Size rules make (Titanspark); what is stored is the size before them.
+    const shownSize = foundry.utils.getProperty(submitData, "system.size");
+    if (shownSize) {
+      const stored = this.actor._source.system?.size;
+      const base = baseSizeFor(this.actor, shownSize);
+      if (!base) {
+        ui.notifications.warn(game.i18n.format("E20.SizeUnreachable", {
+          name: this.actor.name, size: game.i18n.localize(CONFIG.E20.actorSizes[shownSize] ?? shownSize),
+        }));
+      }
+
+      if (!base || base == stored) {
+        foundry.utils.deleteProperty(submitData, "system.size");
+      } else {
+        foundry.utils.setProperty(submitData, "system.size", base);
+      }
+    }
+
     // A Zord's / Vehicle's current Essence is its score less the damage taken (mechanics/combat/essence-current.mjs):
     // the typed current amount is stored as that damage, against the score shown when it was typed.
     const typedCurrent = submitData.essenceCurrent;
@@ -629,6 +648,11 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     const context = await super._prepareContext(options);
     // Make all the Essence20 consts accessible
     context.config = CONFIG.E20;
+    // The size before Size rules (Titanspark), for the header's Size label.
+    const sizeBefore = sizeBeforeRules(this.actor);
+    context.sizeBeforeRules = sizeBefore && game.i18n.format("E20.SizeBeforeRules", {
+      size: game.i18n.localize(CONFIG.E20.actorSizes[sizeBefore.size] ?? sizeBefore.size), sources: sizeBefore.sources.join(", "),
+    });
 
     // Use a safe clone of the actor data for further operations.
     const actorData = this.actor.toObject(false);

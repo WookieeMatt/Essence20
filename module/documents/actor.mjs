@@ -24,6 +24,7 @@ import { E20 } from "../util/config.mjs";
 import { RollDialog } from "../mechanics/rolls/roll-dialog.mjs";
 import { getNumActions } from "../mechanics/actions/action-counts.mjs";
 import { resizeTokens } from "../mechanics/world/token-sync.mjs";
+import { sizeWithRules } from "../rules/plugins/effects/size.mjs";
 import { sceneResistancesOf } from "../mechanics/world/scene-resistances.mjs";
 import { syncMorphState } from "../mechanics/characters/morph-state.mjs";
 import { getBlindsightRange } from "../items/senses/blindsight.mjs";
@@ -89,6 +90,27 @@ import { ruleMovementStages, ruleSurpriseModes } from "../rules/adapter.mjs";
 import { earlyDerivedStats } from "../rules/plugins/effects/derived-stages.mjs";
 import { dropRemovedRosterEntries, rosterRemoval } from "../util/roster.mjs";
 import { whilePreparing } from "../util/token-actor.mjs";
+
+/**
+ * A Combiner's members spend its Skill ranks from nothing (EoC p.42), so the Zord schema's printed defaults (Driving d2,
+ * Might d6, Targeting d6) shouldn't start a new or retyped Combiner over its budget. Clears each skill still at its
+ * schema default; one the creator or this same update sets is left alone. Exported for tests.
+ * @param {Actor} actor A megaform.
+ * @param {Object} [given] The skills the create data or update already sets.
+ * @returns {Object} Flat update data.
+ */
+export function zordDefaultSkillsCleared(actor, given = {}) {
+  const update = {};
+  for (const [skill, field] of Object.entries(actor.system.schema?.fields?.skills?.fields ?? {})) {
+    const initial = field.fields?.shift?.initial;
+    if (initial && initial != 'd20' && actor._source.system.skills?.[skill]?.shift == initial
+      && foundry.utils.getProperty(given ?? {}, `${skill}.shift`) === undefined) {
+      update[`system.skills.${skill}.shift`] = 'd20';
+    }
+  }
+
+  return update;
+}
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -261,6 +283,10 @@ export class Essence20Actor extends Actor {
       this.updateSource({ 'system.subtype': [defaultMegaformSubtype(getGameLine())] });
     }
 
+    if (this.type == 'megaform' && this._source.system.subtype?.includes?.('megaformCombiner')) {
+      this.updateSource(zordDefaultSkillsCleared(this, data?.system?.skills));
+    }
+
     // A new Zord's, Vehicle's or Megaform's token is its Size (a baseline Zord is Huge - 3x3), not Foundry's 1x1. A
     // Megazord is at least Towering (its Size is worked out from its Zords - mechanics/vehicles/megaform-participants.mjs
     // resizes it as they join). A token size the creator gave is kept; later Size changes resize it in _preUpdate.
@@ -363,6 +389,11 @@ export class Essence20Actor extends Actor {
     // A Megaform changing between Megazord and Combiner keeps only a roster that still counts: anyone who wouldn't (a
     // mixed Megazord's Zords, a Combiner's non-transforming characters) has to leave first. A change that stands drops the
     // old kind's timers (mechanics/vehicles/megaform-participants.mjs).
+    // A Combiner's "Skills copied from members" house rule is the GM's call - a player's sheet can't switch it.
+    if (this.type == 'megaform' && !user?.isGM && foundry.utils.hasProperty(changed, 'system.combinerSkillsFromMembers')) {
+      foundry.utils.deleteProperty(changed, 'system.combinerSkillsFromMembers');
+    }
+
     const newSubtype = foundry.utils.getProperty(changed, 'system.subtype');
     if (this.type == 'megaform' && newSubtype !== undefined) {
       const toCombiner = [newSubtype].flat().includes('megaformCombiner');
@@ -385,6 +416,10 @@ export class Essence20Actor extends Actor {
               foundry.utils.setProperty(changed, `flags.essence20.${flag}`, new foundry.data.operators.ForcedDeletion());
             }
           }
+
+          if (toCombiner) {
+            foundry.utils.mergeObject(changed, foundry.utils.expandObject(zordDefaultSkillsCleared(this, changed.system?.skills)));
+          }
         }
       }
     }
@@ -401,7 +436,9 @@ export class Essence20Actor extends Actor {
 
     const currentSize = this.system?.size;
     if (currentSize) {
-      const newSize = foundry.utils.getProperty(changed, "system.size");
+      // The stored size is the one before Size rules (Titanspark): tokens and reach follow the size they make of it.
+      const storedSize = foundry.utils.getProperty(changed, "system.size");
+      const newSize = storedSize && sizeWithRules(this, storedSize);
 
       if (newSize && (newSize !== currentSize)) {
         const width = CONFIG.E20.tokenSizes[newSize].width;
@@ -2020,6 +2057,37 @@ export class Essence20Actor extends Actor {
       }
 
       system.essences[essence].value = Math.min(MAX_ESSENCE, winner.system.essences[essence].value);
+
+      // The member who contributes an Essence "sets" its Skill Ranks (EoC p.42): they spend the form's own ranks for it in
+      // the Skill Picker, budgeted by the form's Essence (skill-picker-math.mjs#skillBudgetOf). Conditioning does nothing
+      // on a form with no Health of its own (each member keeps theirs), so it isn't left at the Zord default of 3 to eat
+      // the Strength budget. Better as One still carries its holders' Specializations over, free.
+      if (!system.combinerSkillsFromMembers) {
+        if (essence == 'strength') {
+          system.conditioning = 0;
+          system.showConditioning = false;
+        }
+
+        for (const skill of CONFIG.E20.skillsByEssence[essence] ?? []) {
+          for (const component of participants) {
+            const specializations = sharesSpecializations(component) && component.system.skills[skill]?.specializations;
+            if (specializations && system.skills[skill]) {
+              const granted = Object.fromEntries(Object.entries(foundry.utils.deepClone(specializations))
+                .map(([key, specialization]) => [key, { ...specialization, granted: true }]));
+              system.skills[skill].specializations = { ...system.skills[skill].specializations, ...granted };
+            }
+          }
+        }
+
+        continue;
+      }
+
+      // A GM may instead copy each contributing member's own Skills (system.combinerSkillsFromMembers, a house rule).
+      // Conditioning is a Strength Skill like the rest, so it is the Strength member's too.
+      if (essence == 'strength') {
+        system.conditioning = Number(winner.system.conditioning) || 0;
+        system.showConditioning = system.conditioning > 0;
+      }
 
       for (const skill of CONFIG.E20.skillsByEssence[essence] ?? []) {
         if (winner.system.skills[skill] && system.skills[skill]) {

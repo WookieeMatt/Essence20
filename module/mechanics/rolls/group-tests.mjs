@@ -9,6 +9,9 @@
  * - The Perks that change one: GroupTestBonus rules (Caretaker's Edge, Pay It Forward's ↑1, Bowling Team: the
  *   leader's participants ↑1), Community Spirit (an ally's Edge, then your ↑1), Prior Experience (1 Power turns
  *   a failure into a success) and Create Chaos (fail, roll another Skill, Edge for everyone).
+ * - A Megazord's group Driving Test (mechanics/vehicles/megazord-rolls.mjs) is one of these too, carrying `megazord`:
+ *   its card says whose test it is, offers its roller a Resolve button, and Megazord Link (A Jump Through Time p.60) lets
+ *   each participant reroll one die of their roll once per turn when a participant holds it.
  */
 
 import { addGroupTestBonuses } from "../../rules/plugins/rolls/group-test-bonus.mjs";
@@ -19,9 +22,18 @@ export const GROUP = {
   communitySpirit: uuid('wtnv_citizens_guide', 'jUROXHqur5Sta05C'),
   priorExperience: uuid('beneath_the_helmet', 'xDoJhX0WmrbFdKhm'),
   createChaos: uuid('cobra_codex', '1Yho7fqBC8IfqHfN'),
+  megazordLink: uuid('jump_through_time', 'c7e7enVe96wOikd9'),
 };
 
 const RESULT_FLAG = 'groupTest';
+const LINK_FLAG = 'megazordLinkReroll';
+
+/** Whether the roll's Skill die came up a Critical Success (mechanics/combat/combat.mjs#_isCritIsFumble). */
+async function isCritRoll(roll) {
+  const { _isCritIsFumble } = await import("../combat/combat.mjs");
+  return !!_isCritIsFumble(roll.dice, false)[0];
+}
+
 const T = (key, data) => (data ? game.i18n.format(key, data) : game.i18n.localize(key));
 
 function has(actor, id) {
@@ -87,7 +99,7 @@ export async function startGroupTest(candidates = null) {
 /*  The card                                     */
 /* -------------------------------------------- */
 
-function resultOf(actor, test) {
+export function resultOf(actor, test) {
   const record = actor?.flags?.essence20?.[RESULT_FLAG];
   return record?.id == test.id ? record : null;
 }
@@ -117,19 +129,40 @@ export function tally(test) {
   return { rows, successes, rolled, done: rolled == rows.length, success: successes * 2 >= rows.length };
 }
 
+/** Whether a participant of this Megazord test holds Megazord Link (A Jump Through Time p.60). */
+export function megazordLinkActive(test) {
+  return !!test?.megazord && !test.megazord.resolved && test.participants.some(id => has(resolve(id), GROUP.megazordLink));
+}
+
+/**
+ * Whether a Megazord attack's crew could still change their results once they've all rolled (Megazord Link, Prior
+ * Experience) - its attack then waits for Resolve instead of going ahead on the last roll.
+ */
+export function megazordAwaitsResolve(test) {
+  return megazordLinkActive(test) || test.participants.some(id => has(resolve(id), GROUP.priorExperience));
+}
+
 export function renderCard(test) {
   const { rows, done, success, successes } = tally(test);
   const skill = T(CONFIG.E20.skills[test.skill] ?? test.skill);
+  const link = megazordLinkActive(test);
   const list = rows.map(row => `<li class="e20-group-test-row"><span class="e20-group-test-name">${foundry.utils.escapeHTML(row.name)}</span>${
-    row.rolled ? `<span class="e20-group-test-result">${T(row.chaos ? 'E20.GroupTestChaos' : (row.success ? 'E20.GroupTestSucceeded' : 'E20.GroupTestFailed'))}</span>`
+    row.rolled ? `<span class="e20-group-test-result">${T(row.chaos ? 'E20.GroupTestChaos' : (row.success ? 'E20.GroupTestSucceeded' : 'E20.GroupTestFailed'))}</span>${
+      link && !row.chaos ? `<button type="button" class="e20-chat-action-button" data-e20-social="groupLink" data-actor="${row.id}">${T('E20.MegazordLinkReroll')}</button>` : ''}`
       : `<button type="button" class="e20-chat-action-button" data-e20-social="groupRoll" data-actor="${row.id}">${T('E20.GroupTestRoll')}</button>`
   }</li>`).join('');
   const extras = [
     `<button type="button" class="e20-chat-action-button" data-e20-social="groupPerk" data-perk="communitySpirit">${T('E20.CommunitySpirit')}</button>`,
     `<button type="button" class="e20-chat-action-button" data-e20-social="groupPerk" data-perk="createChaos">${T('E20.CreateChaos')}</button>`,
     `<button type="button" class="e20-chat-action-button" data-e20-social="groupPerk" data-perk="priorExperience">${T('E20.PriorExperience')}</button>`,
+    // A Megazord attack waits on its roller's client - Resolve goes ahead with whoever has rolled.
+    test.megazord?.attack && !test.megazord.resolved && (!done || megazordAwaitsResolve(test))
+      ? `<button type="button" class="e20-chat-action-button" data-e20-social="groupResolve">${T('E20.MegazordGroupResolve')}</button>` : '',
   ].join('');
-  return `<div class="e20-group-test"><h3>${T('E20.GroupTestHeader', { skill, dif: test.dif })}</h3><ul>${list}</ul>
+  const header = test.megazord
+    ? T(test.megazord.vsDefense ? 'E20.MegazordGroupHeaderAttack' : 'E20.MegazordGroupHeader', { name: foundry.utils.escapeHTML(test.megazord.name), skill, dif: test.dif })
+    : T('E20.GroupTestHeader', { skill, dif: test.dif });
+  return `<div class="e20-group-test"><h3>${header}</h3><ul>${list}</ul>
     <p>${done ? T(success ? 'E20.GroupTestGroupSucceeded' : 'E20.GroupTestGroupFailed', { successes, total: rows.length }) : T('E20.GroupTestPending', { successes, total: rows.length })}</p>
     <div class="e20-chat-action-buttons">${extras}</div></div>`;
 }
@@ -189,11 +222,64 @@ export function groupBonuses(actor, test) {
   return out;
 }
 
+/**
+ * Roll one participant's test.
+ * @returns {Promise<{success: Boolean, total: Number|null, crit: Boolean, roll: Object|null}|null>}   null if cancelled
+ */
 async function rollFor(actor, test, skill = test.skill) {
   const bonus = groupBonuses(actor, test);
   const essence = CONFIG.E20.skillToEssence?.[skill] ?? 'smarts';
   const result = await actor._dice?.rollSkill({ skill, essence, shiftUp: bonus.shiftUp, shiftDown: 0, dif: String(test.dif), edge: bonus.edge }, actor);
-  return result && !result.cancelled ? !!result.success : null;
+  if (!result || result.cancelled) {
+    return null;
+  }
+
+  // The total and Critical Success are what a Megazord's attack reads (mechanics/vehicles/megazord-rolls.mjs), and the
+  // Roll is what Megazord Link rerolls a die of.
+  const roll = result.outcomes?.[0]?.roll ?? null;
+  return {
+    success: !!result.success,
+    total: roll ? Number(roll.total) : null,
+    crit: roll ? await isCritRoll(roll) : false,
+    roll: roll?.toJSON?.() ?? null,
+  };
+}
+
+/**
+ * Megazord Link (A Jump Through Time p.60): "anyone participating in a Driving Skill Group Test with you as part of
+ * piloting your Megazord may re-roll any single die involved once per turn and accept the second result."
+ * @param {Actor} actor   The participant rerolling
+ * @param {Object} test
+ * @returns {Promise<Boolean>}   Whether a die was rerolled
+ */
+async function megazordLinkReroll(actor, test) {
+  const record = resultOf(actor, test);
+  if (!megazordLinkActive(test) || !record?.roll) {
+    return false;
+  }
+
+  const { hasUsedThisTurn, markUsedThisTurn } = await import("../characters/perks.mjs");
+  if (hasUsedThisTurn(actor, LINK_FLAG)) {
+    ui.notifications.warn(T('E20.MegazordLinkUsed', { name: actor.name }));
+    return false;
+  }
+
+  const roll = Roll.fromData(record.roll);
+  const { applyReroll } = await import("./reroll.mjs");
+  if (!(await applyReroll(roll, { mode: 'single', target: 'anyDie' }))) {
+    return false;
+  }
+
+  await markUsedThisTurn(actor, LINK_FLAG);
+  const total = Number(roll.total);
+  await actor.setFlag('essence20', RESULT_FLAG, {
+    ...record, total, success: total >= test.dif, crit: await isCritRoll(roll), roll: roll.toJSON(),
+  });
+  ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    content: T('E20.MegazordLinkRerolled', { name: actor.name, total }),
+  });
+  return true;
 }
 
 /**
@@ -223,12 +309,35 @@ export async function onGroupButton(message, button) {
       }
     }
 
-    const success = await rollFor(actor, test);
-    if (success !== null) {
-      await actor.setFlag('essence20', RESULT_FLAG, { id: test.id, success });
+    const rolled = await rollFor(actor, test);
+    if (rolled) {
+      await actor.setFlag('essence20', RESULT_FLAG, { id: test.id, ...rolled });
     }
 
     return refresh(message);
+  }
+
+  if (button.dataset.e20Social == 'groupLink') {
+    const actor = await fromUuid(button.dataset.actor);
+    if (!actor?.isOwner) {
+      ui.notifications.warn(T('E20.GroupTestNotYours'));
+      return;
+    }
+
+    await megazordLinkReroll(actor, test);
+    return refresh(message);
+  }
+
+  // A Megazord attack goes ahead with whoever has rolled - on the client that is waiting for it
+  // (mechanics/vehicles/megazord-rolls.mjs).
+  if (button.dataset.e20Social == 'groupResolve') {
+    const { isWaitingOn, settleMegazordGroupTests } = await import("../vehicles/megazord-rolls.mjs");
+    if (!isWaitingOn(test.id)) {
+      ui.notifications.warn(T('E20.MegazordGroupResolveElsewhere'));
+      return;
+    }
+
+    return settleMegazordGroupTests(test.id);
   }
 
   const actor = canvas?.tokens?.controlled?.[0]?.actor ?? game.user?.character;
@@ -262,8 +371,8 @@ export async function onGroupButton(message, button) {
     const skill = await chooseSelect(T('E20.CreateChaos'), T('E20.CreateChaosPrompt'),
       Object.entries(CONFIG.E20.skills).map(([value, label]) => ({ value, label: T(label) })));
     if (skill) {
-      const success = await rollFor(actor, test, skill);
-      await actor.setFlag('essence20', RESULT_FLAG, { id: test.id, success: false, chaos: true, chaosSuccess: !!success });
+      const rolled = await rollFor(actor, test, skill);
+      await actor.setFlag('essence20', RESULT_FLAG, { id: test.id, success: false, chaos: true, chaosSuccess: !!rolled?.success });
     }
   }
 

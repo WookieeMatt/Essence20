@@ -64,6 +64,7 @@ import "../mechanics/resources/temporary-resources.mjs";
 import "../mechanics/combat/mlp-stress.mjs";
 import "./magic/circle-of-magical-friends.mjs";
 import "../mechanics/combat/grappled-snag.mjs";
+import "../mechanics/vehicles/megazord-rolls.mjs";
 import "./shared/terrain-perk-ids-and-readers.mjs";
 import "./shared/situation-checks.mjs";
 import "./rolls/situational-initiative-setup.mjs";

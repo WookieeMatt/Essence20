@@ -1,7 +1,7 @@
 import { applyThemeClass } from "../settings.js";
 import {
   computeEssenceSpend, getNewEssenceOverspend, getSkillAttributionStatus, getSkillEssences,
-  resetEssenceUpdate,
+  isSpendingCombiner, resetEssenceUpdate, skillBudgetOf,
 } from "../mechanics/rolls/skill-picker-math.mjs";
 import { addSpecialization, deleteSpecialization } from "../sheet-handlers/specialization-handler.mjs";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
@@ -47,6 +47,14 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     this._isPc = actor.type === 'playerCharacter';
   }
 
+  /**
+   * Each Essence's skill-point budget, for the actors that spend points (PCs and spending Combiners); else null.
+   * @returns {Object|null}
+   */
+  #budget() {
+    return this._isPc || isSpendingCombiner(this._actor) ? skillBudgetOf(this._actor) : null;
+  }
+
   static DEFAULT_OPTIONS = {
     actions: {
       addSpecialization: this.#onAddSpecialization,
@@ -89,11 +97,18 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     context.conditioning = system.conditioning;
     // Drives the Conditioning row's own checkbox, the same way each skill's isChosen does above.
     context.showConditioning = system.showConditioning === true;
+    // A Combiner's contributing members spend its Skill ranks here (EoC p.42); under the GM's copy-from-members house rule
+    // its Skills are the members' own instead, and edits here would be drawn over on the next prepare, so say so.
+    context.combinerSpends = isSpendingCombiner(this._actor);
+    context.skillsFromMembers = this._actor.type == 'megaform' && system.subtype?.includes?.('megaformCombiner')
+      && !context.combinerSpends;
     context.essenceSpend = computeEssenceSpend(this._actor);
-    // Only PCs have a per-Essence spend budget to show/enforce at all (see
-    // getEssenceOverspend's own doc comment) - undefined for every other actor type, which the
-    // tally partial (skill-rank-allocation.hbs) takes as "don't show a max at all".
-    context.essenceMax = this._isPc ? system.essences : undefined;
+    // Only PCs and spending Combiners have a per-Essence budget to show/enforce at all (#budget) - undefined for every
+    // other actor type, which the tally partial (skill-rank-allocation.hbs) takes as "don't show a max at all".
+    const budget = this.#budget();
+    context.essenceMax = budget
+      ? Object.fromEntries(Object.entries(budget).map(([essence, max]) => [essence, { max }]))
+      : undefined;
 
     // Not every actor type has every skill CONFIG.E20.skillsByEssence knows about - Zord/
     // Megaform's schema (zord-base.mjs), for one, has no `weird` entry at all. isMultiEssence
@@ -223,7 +238,7 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     // comment for why a PC already over budget for an unrelated, historical reason must still be
     // able to save everything else. NPC-like actors have no essence-spend budget to check at all,
     // so this never runs for them.
-    if (this._isPc) {
+    if (this.#budget()) {
       const previewActor = this._actor.clone(updateData);
       const overspend = getNewEssenceOverspend(this._actor, previewActor);
       for (const [essence, { spent, max }] of Object.entries(overspend)) {
@@ -316,10 +331,11 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     // essence computeEssenceSpend itself would credit it to (see that function's own "Always
     // credited to the skill's own primary Essence" comment), so this doesn't need
     // getEssenceOverspend's full actor-clone preview like #onSubmit does for shift changes.
-    if (this._isPc && name) {
+    const budget = this.#budget();
+    if (budget && name) {
       const skillData = this._actor.system.skills[skill];
       const essence = getSkillEssences(skillData)[0] || CONFIG.E20.skillToEssence[skill];
-      const max = this._actor.system.essences?.[essence]?.max;
+      const max = budget[essence];
       const spent = computeEssenceSpend(this._actor)[essence].value + 1;
       if (typeof max === 'number' && spent > max) {
         ui.notifications.warn(game.i18n.format('E20.SkillPickerEssenceMaxExceeded', {

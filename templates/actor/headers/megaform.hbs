@@ -19,6 +19,11 @@
   <label class="sliced-border__label">{{ localize 'E20.MegaformEnergonSpentToMerge' }}</label>
   {{numberInput system.energonSpentToMerge name="system.energonSpentToMerge" min=0 step=1}}
 </div>
+{{!-- House rule, GM only: Skills copied from the members rather than spent in the Skill Picker (EoC p.42). --}}
+<div class="sliced-border" data-tooltip="{{localize 'E20.CombinerSkillsFromMembersHint'}}">
+  <label class="sliced-border__label">{{localize 'E20.CombinerSkillsFromMembersLabel'}}</label>
+  <input type="checkbox" name="system.combinerSkillsFromMembers" {{checked system.combinerSkillsFromMembers}}{{#unless @root.isGM}} disabled{{/unless}} />
+</div>
 {{/inArray}}
 {{!-- Colour. A Megaform has always HAD system.color - it comes from the shared actor template, and
       sidebars/megaform.hbs already tints the portrait border with it - but nothing on the sheet

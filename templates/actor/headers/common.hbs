@@ -42,7 +42,9 @@
 
     {{!-- Size --}}
     <div class="sliced-border">
-      <label class="sliced-border__label">{{localize 'E20.ActorSize'}}</label>
+      {{!-- The select shows the size Size rules make; the icon names the size before them (base-actor-sheet.mjs). --}}
+      <label class="sliced-border__label">{{localize 'E20.ActorSize'}}{{#if @root.sizeBeforeRules}}
+        <i class="fa-solid fa-circle-info" data-tooltip="{{@root.sizeBeforeRules}}" aria-label="{{@root.sizeBeforeRules}}"></i>{{/if}}</label>
       {{#if system.isTransformed}}
         <select name="system.altModesize">
           {{selectOptions config.actorSizes selected=system.altModesize}}
