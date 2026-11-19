@@ -56,6 +56,8 @@ const FILES = {
   solar: 'atsitems/_source/Solar_Power__Form__4ksM4tGqdjuyPSj1.json',
   hq: 'jttitems/_source/Mobile_Headquarters_soCSwGBp0AZbEeZC.json',
   command: 'ccitems/_source/This__I_Command_SUc3emTvPnwB6W93.json',
+  primalMovement: 'tsitems/_source/Primal_Movement_y4dfWDqQQt6V5Sk6.json',
+  combinerSpec: 'eocitems/_source/Combiner_Specialization_mWyO6mHSMG4TVw3J.json',
 };
 const SOURCES = {
   tss: 'Compendium.essence20.across_the_stars.Item.tS3P7BZqnH9GGLux',
@@ -689,5 +691,33 @@ describe('This, I Command', () => {
     expect(await perks.offerGrantDouble(granter, granter, 'upshift', 'x')).toBe(false);
     await perks.bankPendingBonus(ally, 'pendingZ', { edge: true }, { granter });
     expect(confirm).not.toHaveBeenCalled();
+  });
+});
+
+/* ---- Permanent bonuses go when their item does (2026-10-26 review: bonuses written to the actor, never taken back) ---- */
+
+describe('a bonus written when an item is added is taken back when it is removed', () => {
+  test('Primal Movement: the +20 ft goes with the Perk, from the Movement it went to', async () => {
+    const hero = makeActor('playerCharacter', 'Hero', { movement: { aerial: { base: 0, bonus: 0 }, burrow: { base: 0, bonus: 0 }, climb: { base: 0, bonus: 0 }, ground: { base: 30, bonus: 0 }, swim: { base: 0, bonus: 0 } } });
+    const perk = addPackItem(hero, 'primalMovement');
+    await fireItemAdded(hero, perk, { ask: answer('Climb') });
+    expect(hero.system.movement.climb.bonus).toBe(20);
+    expect(hero.flags.essence20.primalMovement).toBe('climb');
+    await fireItemAdded(hero, perk, { event: 'removed' });
+    expect(hero.system.movement.climb.bonus).toBe(0);
+    expect(hero.system.movement.aerial.bonus).toBe(0);
+  });
+
+  test('Combiner Specialization: its +1 Health (already a Combiner) goes with it; a copy that granted a Perk takes nothing', async () => {
+    const hero = makeActor();
+    addItem(hero, { name: 'Gestalt Combiner', type: 'perk', system: {}, _stats: { compendiumSource: 'Compendium.essence20.enigma_of_combination.Item.a4BfJxhUC7hAhgdZ' } });
+    const spec = addPackItem(hero, 'combinerSpec');
+    await fireItemAdded(hero, spec);
+    expect(hero.system.health.bonus).toBe(1);
+    await fireItemAdded(hero, spec, { event: 'removed' });
+    expect(hero.system.health.bonus).toBe(0);
+    // Removed again (or a copy that never gave the +1): nothing more comes off.
+    await fireItemAdded(hero, spec, { event: 'removed' });
+    expect(hero.system.health.bonus).toBe(0);
   });
 });

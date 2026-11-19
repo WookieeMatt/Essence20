@@ -11,6 +11,58 @@
       <span>/</span>
       <span class="sidebar-readout">{{system.health.value}}</span>
     </div>
+    {{!-- The same resources a character's sidebar shows, when the NPC has them (Can Transform / Can Morph in the
+         header's Sheet Options). Energon used to sit only on the Alt Mode tab and Personal Power nowhere; the Alt
+         Mode tab now leaves Energon to this panel (npc-altmode.hbs, hideNormal - two inputs of one name break every
+         save). A transforming NPC's maximum is its lowest Essence (documents/actor.mjs#_prepareEnergon), so it's
+         shown, not typed; one with a pool but no Transform (Organic Energon) types its own. --}}
+    {{#if (or system.canTransform system.energon.normal.max)}}
+    <div>
+      <label>{{localize "E20.Energon"}}</label>
+      <input class="two-digit-input no-lock" data-field="system.energon.normal.value" type="number"
+        name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
+      <span>/</span>
+      {{#if system.canTransform}}
+      <span class="sidebar-readout" data-tooltip="{{localize 'E20.EnergonMaxTooltip'}}">{{system.energon.normal.max}}</span>
+      {{else}}
+      <input class="two-digit-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
+        value="{{system.energon.normal.max}}" min="0" step="1" />
+      {{/if}}
+    </div>
+    {{/if}}
+    {{#if system.canMorph}}
+    <div>
+      <label>{{localize "E20.PowerRangerPersonalPower"}}</label>
+      <input class="two-digit-input no-lock" data-field="system.powers.personal.value" type="number"
+        name="system.powers.personal.value" value="{{system.powers.personal.value}}" min="0" step="1" />
+      <span>/</span>
+      <input class="two-digit-input no-lock" data-field="system.powers.personal.max" type="number" name="system.powers.personal.max"
+        value="{{system.powers.personal.max}}" min="0" step="1" />
+    </div>
+    {{/if}}
+    {{#if system.powers.sorcerous.levelTaken}}
+    <div>
+      <label>{{localize "E20.SorcerousPower"}}</label>
+      <span class="two-digit-input{{#if (gt system.powers.sorcerous.committed system.powers.sorcerous.max)}} is-over{{/if}}"
+        data-tooltip="{{localize 'E20.SorcerousPowerCommittedHint'}}">{{system.powers.sorcerous.committed}}</span>
+      <span>/</span>
+      <input class="two-digit-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
+        value="{{system.powers.sorcerous.max}}" min="0" step="1" />
+    </div>
+    {{/if}}
+
+    {{!-- Rest / Recharge restores what this panel tracks, as on a character. --}}
+    {{#if system.canTransform}}
+      <a class="essence20-sidebar-action-button" data-action="recharge" data-tooltip="{{localize "E20.RechargeButtonTitle"}}">
+        <i class="fas fa-charging-station"></i>
+        {{localize "E20.RechargeButtonTitle"}}
+      </a>
+    {{else}}
+      <a class="essence20-sidebar-action-button" data-action="rest" data-tooltip="{{localize "E20.RestButtonTitle"}}">
+        <i class="fas fa-face-sleeping"></i>
+        {{localize "E20.RestButtonTitle"}}
+      </a>
+    {{/if}}
   </div>
   <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-special">
     <label class="sliced-border__label"><i class="fas fa-bolt"></i> Special</label>

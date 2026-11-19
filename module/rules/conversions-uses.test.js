@@ -2390,7 +2390,7 @@ test('You Got This!: 1 Quips & Speeches for temporary Health (its own advance va
   const paid = pay();
   expect(await runUse(item, paid)).toBeTruthy();
   expect(paid).not.toHaveBeenCalled();
-  expect(ally.system.health).toEqual({ value: 5, max: 10, bonus: 3 });
+  expect(ally.system.health).toEqual({ value: 8, max: 10, bonus: 3 });
   expect(points.system.resource.value).toBe(1);
   expect(item.system.rules[0].steps[0]).toMatchObject({ do: 'pickAlly', within: 30 });
 
@@ -2415,7 +2415,8 @@ test("Failure Isn't an Option: a Story Point for 1 temporary Health on the targe
     game.user.targets = new Set([{ actor: downed }]);
     expect(await runUse(item, pay())).toBeTruthy();
     expect(spent).toEqual([1]);
-    expect(downed.system.health).toEqual({ value: 0, max: 10, bonus: 1 });
+    // 'putting them back into the scene and able to act' (Intercontinental Adventures p.68): at 1, not left at 0.
+    expect(downed.system.health).toEqual({ value: 1, max: 10, bonus: 1 });
   } finally {
     setStoryPointHelpers(null);
   }

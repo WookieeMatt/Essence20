@@ -132,8 +132,14 @@ export function vehicleData(spec) {
     traits: Object.fromEntries((spec.traits ?? []).map(t => [t, true])),
     skills: Object.fromEntries(Object.entries(spec.skills ?? {}).map(([key, shift]) => [key, { shift, isSpecialized: (spec.specialized ?? []).includes(key) }])),
   };
-  return { name: spec.name, type: 'vehicle', system, items: vehicleItems(spec) };
+  // A picture (the stat blocks have none - the token came out blank), and a linked token: it's one vehicle, so damage
+  // and the art a player gives it carry over from one summon to the next.
+  const img = spec.img ?? VEHICLE_IMG;
+  return { name: spec.name, type: 'vehicle', img, prototypeToken: { actorLink: true, texture: { src: img } }, system, items: vehicleItems(spec) };
 }
+
+/** The picture a stat-block vehicle starts with (Foundry's core icons); the player can give it their own. */
+export const VEHICLE_IMG = 'icons/commodities/tech/wheel.webp';
 
 /* -------------------------------------------- */
 /*  Summoning a vehicle                          */
@@ -141,6 +147,56 @@ export function vehicleData(spec) {
 
 function vehiclesOf(owner, key) {
   return companionsOf(owner).filter(a => a.type == 'vehicle' && a.flags?.essence20?.personalVehicle == key);
+}
+
+/**
+ * The vehicle actors a player could use as this personal vehicle instead of a new one: vehicles they own that aren't
+ * already another kind of personal vehicle, those already tied to this character first. Exported for tests.
+ * @param {Actor} owner
+ * @param {String} key   A key of VEHICLES.
+ * @param {Actor[]} actors   The world's actors.
+ * @returns {Actor[]}
+ */
+export function vehicleCandidates(owner, key, actors) {
+  const linked = new Set(companionsOf(owner).map(actor => actor.uuid));
+  return actors
+    .filter(actor => actor?.type == 'vehicle' && actor.isOwner && [undefined, null, key].includes(actor.flags?.essence20?.personalVehicle))
+    .sort((a, b) => Number(linked.has(b.uuid)) - Number(linked.has(a.uuid)) || String(a.name).localeCompare(String(b.name)));
+}
+
+/**
+ * The first summon: build the book's vehicle, or use one the player already made. Asked only when they own a vehicle
+ * actor that could be it.
+ * @returns {Promise<Actor|'new'|null>}   The vehicle chosen, 'new', or null when the window was closed.
+ */
+async function chooseVehicle(owner, key) {
+  const candidates = vehicleCandidates(owner, key, worldActors());
+  if (!candidates.length) {
+    return 'new';
+  }
+
+  const escape = foundry.utils.escapeHTML;
+  const vehicle = VEHICLES[key]?.name ?? key;
+  const options = candidates.map(actor => `<option value="${escape(actor.uuid)}">${escape(actor.name)}</option>`).join('');
+  return foundry.applications.api.DialogV2.wait({
+    window: { title: T('E20.SummonVehicleTitle', { vehicle }) },
+    classes: ['essence20', 'e20-window'],
+    content: `<p>${escape(T('E20.SummonVehiclePrompt', { name: owner.name, vehicle }))}</p>
+      <div class="form-group"><select name="vehicle">${options}</select></div>`,
+    buttons: [
+      { action: 'use', label: T('E20.SummonVehicleUse'), icon: 'fa-solid fa-check', default: true,
+        callback: (event, button) => fromUuidSync(button.form.elements.vehicle.value) ?? null },
+      { action: 'new', label: T('E20.SummonVehicleNew', { vehicle }), icon: 'fa-solid fa-plus', callback: () => 'new' },
+    ],
+    rejectClose: false,
+  }).then(answer => answer ?? null);
+}
+
+/** Make an existing vehicle actor this character's personal vehicle of that kind. */
+async function adoptVehicle(owner, vehicle, key) {
+  await vehicle.setFlag('essence20', 'personalVehicle', key);
+  const { linkCompanion } = await import("./companion-link.mjs");
+  await linkCompanion(owner, vehicle);
 }
 
 /**
@@ -185,15 +241,30 @@ export async function summonVehicle(owner, key, { grantor = null, extra = {}, ar
   return vehicle;
 }
 
+/** The owner's token on the scene being viewed, or null. */
+const ownerToken = owner => owner?.getActiveTokens?.()?.[0] ?? null;
+
+/**
+ * Bring the vehicle beside its owner: a new token, or - already on this scene - the one there, moved (summoning it
+ * again brings it to you; it used to do nothing, and still charged the cost).
+ */
 async function placeNear(owner, actor) {
-  const token = owner.getActiveTokens?.()?.[0];
-  if (!token || !canvas?.scene || canvas.scene.tokens.some(t => t.actorId == actor.id)) {
+  const token = ownerToken(owner);
+  if (!token || !canvas?.scene) {
     return null;
   }
 
   const size = canvas.grid?.size ?? 100;
+  const at = { x: token.document.x + (token.document.width ?? 1) * size, y: token.document.y };
+  const existing = canvas.scene.tokens.find(t => t.actorId == actor.id);
+  if (existing) {
+    const { needsGmRelay, relayToGm } = await import("../world/gm-relay.mjs");
+    await (needsGmRelay(existing) ? relayToGm(existing, 'update', [at]) : existing.update(at));
+    return existing;
+  }
+
   const { createViaGm } = await import("../world/gm-relay.mjs");
-  return createViaGm('token', { actorUuid: actor.uuid, sceneId: canvas.scene.id, x: token.document.x + (token.document.width ?? 1) * size, y: token.document.y });
+  return createViaGm('token', { actorUuid: actor.uuid, sceneId: canvas.scene.id, ...at });
 }
 
 /** Scene-long summons go back into storage when the scene ends. Called on essence20.sceneAdvanced by the GM. */
@@ -732,8 +803,36 @@ export async function runSummonUse(item, economy) {
     return summonBattlizer(actor, item, pay);
   }
 
+  // A vehicle: before anything is paid, there must be somewhere to put it, and a first summon may use a vehicle the
+  // player already made rather than the book's.
+  if (kind in VEHICLE_OF) {
+    if (!ownerToken(actor)) {
+      ui.notifications.warn(T('E20.SummonNoToken', { name: actor.name }));
+      return null;
+    }
+
+    const key = VEHICLE_OF[kind];
+    if (key && !vehiclesOf(actor, key).length) {
+      const chosen = await chooseVehicle(actor, key);
+      if (!chosen) {
+        return null;
+      }
+
+      if (chosen != 'new') {
+        await adoptVehicle(actor, chosen, key);
+      }
+    }
+  }
+
   return HANDLERS[kind](actor, item, pay);
 }
+
+/** The personal vehicle each summon brings (null: it asks which, itself - Vector or Strata Cycle). */
+const VEHICLE_OF = {
+  sharkcycleRider: 'sharkCycle', summonCycle: 'sharkCycle', galaxyGlider: 'galaxyGlider', jetJammer: 'jetJammer',
+  dinoRaptor: 'dinoRaptor', timeJet: 'timeJet', hitchARide: 'hitchARide', ridingRig: 'ridingRig', biker: 'ridingRig',
+  skybound: 'jetPack', vectorStrataCycle: null,
+};
 
 /**
  * A teammate chipping in to the Time Jet.

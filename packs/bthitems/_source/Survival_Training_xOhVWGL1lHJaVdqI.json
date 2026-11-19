@@ -6,7 +6,8 @@
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","label":"+1 Health (you or a teammate)","event":"added","steps":[{"do":"pick","key":"who","from":"team"},{"do":"updateActor","to":"picked:who","add":{"system.health.bonus":1}}]}
+      {"type":"Trigger","label":"+1 Health (you or a teammate)","event":"added","steps":[{"do":"pick","key":"who","from":"team"},{"do":"updateActor","to":"picked:who","add":{"system.health.bonus":1}}]},
+      {"type":"Trigger","event":"removed","label":"Survival Training removed (its +1 Health goes)","steps":[{"do":"updateActor","to":"picked:who","add":{"system.health.bonus":-1}}]}
     ],
     "automation": {
       "status": "full",

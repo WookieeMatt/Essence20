@@ -28,6 +28,7 @@ import { ruleClearsPenalties } from "./rules/plugins/dialog/switch-clear-penalti
 import { extDialogToggles, extSpecializes, runApplyDialog, runConsumer, runPreRoll } from "./mechanics/item-hooks.mjs";
 import { battlizerAttackUsedUp, markBattlizerAttack, racerRecklessShifts } from "./mechanics/companions/summons.mjs";
 import { energonDonor, payEnergonDonor } from "./rules/plugins/zords/megaform-contributions.mjs";
+import { groupRowOutcome, runMegazordGroupTest } from "./mechanics/vehicles/megazord-rolls.mjs";
 import { ruleFlatD20 } from "./rules/plugins/rolls/flat-d20.mjs";
 import { applySwitchActions, backfires } from "./rules/plugins/dialog/switch-action-cost.mjs";
 import { sourceKeys } from "./rules/plugins/rolls/once-per-roll.mjs";
@@ -1857,6 +1858,11 @@ export class Dice {
       label = this._getSkillRollLabel(dataset, skillRollOptions);
     }
 
+    // A Megazord rolled with a pilot's Driving (mechanics/vehicles/megazord-rolls.mjs): the card says whose.
+    if (skillRollOptions.rollerNote) {
+      label = `${skillRollOptions.rollerNote}<br>${label}`;
+    }
+
     // Item rules' DownshiftCap (Advantageous Fighter - rules/plugins/rolls/die-facts.mjs), on the settled Edge.
     const downshiftCap = ruleDownshiftCap(actor, {
       item, rolledSkill, rolledEssence, dataset, isAttack: item?.type == 'weaponEffect',
@@ -2775,6 +2781,22 @@ export class Dice {
     // attack below.
     const isMultipleTargetsAttack = checkEntries?.length > 1 && isMultipleTargetsWeaponAttack;
 
+    // A Megazord's group Driving Test (Repulsive Developments p.20 - mechanics/vehicles/megazord-rolls.mjs): the Crew roll
+    // on their own card, and once they have, their outcome stands in for this roll's dice (_rollSkillHelper reads
+    // checkContext.groupOutcome). With nothing to compare against, the crew's card is the whole result.
+    if (skillRollOptions.megazordGroup) {
+      const group = await runMegazordGroupTest(actor, { entries: checkContext?.entries ?? null });
+      if (!group || !checkContext) {
+        return;
+      }
+
+      checkContext.groupOutcome = group;
+      formula = String(group.best);
+      label = `${group.note}<br>${label}`;
+      skillRollOptions.timesToRoll = 1;
+      fanningVolley.length = 0;
+    }
+
     // Repeat the roll as many times as specified in the skill roll options dialog
     // Every _rollSkillHelper outcome from this call: one per repeat, and one per target on a
     // multiple-targets attack. Collected rather than returning just the last, because a caller
@@ -3592,10 +3614,14 @@ export class Dice {
         }
       }
 
+      // Positive: a smaller attacker's ↑ against a larger target. Negative: a larger attacker's ↓ against a smaller one.
       const sizeShift = this._getSizeShift(attackerSizeForSizeShift, target.system.size);
-      shiftUp += sizeShift;
-      if (sizeShift) {
+      if (sizeShift > 0) {
+        shiftUp += sizeShift;
         addSource('size', this._localize('E20.CombatModifierSize'), { shiftUp: sizeShift });
+      } else if (sizeShift < 0) {
+        shiftDown -= sizeShift;
+        addSource('size', this._localize('E20.CombatModifierSize'), { shiftDown: -sizeShift });
       }
 
       // Grappling's own Size downshift (GI Joe CRB, Chapter 9: Combat, p.200): a ↓1 for each Size class larger
@@ -3604,7 +3630,8 @@ export class Dice {
       if (item?.type == 'weaponEffect' && item.system.damageType == 'grapple'
         && !ruleImmunities(actor, target, attackRoll, 'grappleSizeDownshift').length) {
         const grappleSizeOrder = Object.keys(E20.actorSizes);
-        const grappleAttackerIndex = grappleSizeOrder.indexOf(actor.system.size);
+        // SizeMatrix (When Push Comes To Shove: "considered one Size Class larger") counts here too.
+        const grappleAttackerIndex = grappleSizeOrder.indexOf(attackerSizeForSizeShift);
         const grappleTargetIndex = grappleSizeOrder.indexOf(target.system.size);
         const grappleSizeDownshift = grappleAttackerIndex != -1 && grappleTargetIndex != -1
           ? Math.min(Math.max(grappleTargetIndex - grappleAttackerIndex, 0), 2)
@@ -3978,13 +4005,14 @@ export class Dice {
   }
 
   /**
-   * Computes the dice shift bonus from Table 10-2: Size Class Combat Adjustment Matrix.
-   * The table's values reduce to a simple rule: the shift equals half the distance
-   * (rounded down) between the two Size Classes on the actorSizes ladder, applied as a
-   * shift up regardless of which side is larger.
+   * Computes the dice shift from Table 10-2: Size Class Combat Adjustment Matrix (PR CRB p.169).
+   * The table's values reduce to a simple rule: the shift is half the distance (rounded down)
+   * between the two Size Classes on the actorSizes ladder. Its direction follows who is bigger:
+   * a smaller attacker gets an upshift against a larger target, a larger attacker a downshift
+   * against a smaller one ("it is easier for smaller targets to land attacks upon larger targets").
    * @param {String} attackerSize   The attacking actor's system.size.
    * @param {String} targetSize   The targeted actor's system.size.
-   * @returns {Number}   The dice shift bonus, 0 if either size is unrecognized.
+   * @returns {Number}   Positive for an upshift, negative for a downshift, 0 if either size is unrecognized.
    * @private
    */
   _getSizeShift(attackerSize, targetSize) {
@@ -3996,7 +4024,8 @@ export class Dice {
       return 0;
     }
 
-    return Math.floor(Math.abs(attackerIndex - targetIndex) / 2);
+    const shift = Math.floor(Math.abs(attackerIndex - targetIndex) / 2);
+    return targetIndex > attackerIndex ? shift : (-shift || 0);
   }
 
   /**
@@ -4592,6 +4621,14 @@ export class Dice {
 
     let [isCrit, isFumble] = _isCritIsFumble(roll.dice, canCritD2);
 
+    // A Megazord's group Driving Test decided this roll (mechanics/vehicles/megazord-rolls.mjs#groupRowOutcome): its formula
+    // is only the best total, so the crew's Critical Successes and the half-or-more count stand in for the dice.
+    const groupOutcome = checkContext.groupOutcome ?? null;
+    if (groupOutcome) {
+      isCrit = checkContext.entries.some(entry => groupRowOutcome(groupOutcome, entry).crit);
+      isFumble = false;
+    }
+
     // Conditions applied from here on came from this roller - mechanics/combat/target-riders.mjs#noteRoller.
     noteRoller(actor);
 
@@ -4716,7 +4753,7 @@ export class Dice {
       isAttack: !!checkContext.isAttack, isMelee: !!checkContext.isMelee, switches: ruleRider.switches ?? [], dataset: ruleRider.dataset,
     });
     const results = checkContext.entries.map(entry => {
-      let multiplier = computeMultiplier(roll.total, entry.difficulty);
+      let multiplier = groupOutcome ? groupRowOutcome(groupOutcome, entry).multiplier : computeMultiplier(roll.total, entry.difficulty);
       multiplier = multiplierRules.adjust(entry, multiplier, 'early', roll.total);
 
       // A marked roller's MarkedRowOutcome rules - see markedOutcomes above.

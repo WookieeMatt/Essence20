@@ -69,8 +69,11 @@ export async function pickHealSkillTestAmount(maxAmount = MAX_HEAL_SKILL_TEST_AM
  * @param {Boolean} [options.isTempHealth]
  */
 export async function applyHealSkillTestResult(targetActor, amount, { isTempHealth = false } = {}) {
+  // Temporary Health goes through the ledger, which takes it back at the scene's end (GI Joe CRB p.210) - a plain
+  // system.health.bonus add stayed on the character for good.
   if (isTempHealth) {
-    await targetActor.update({ 'system.health.bonus': (targetActor.system.health.bonus ?? 0) + amount });
+    const { grantTemp } = await import("../../mechanics/resources/temporary-resources.mjs");
+    await grantTemp(targetActor, { kind: 'health', amount, source: 'healSkillTest' });
     return;
   }
 

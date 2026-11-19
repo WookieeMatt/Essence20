@@ -104,6 +104,29 @@ export function computeEssenceSpend(actor) {
 }
 
 /**
+ * A Combiner whose contributing members spend its Skill ranks (EoC p.42) - not under the GM's copy-from-members house
+ * rule. Like a PC, it has a per-Essence budget in the Skill Picker.
+ * @param {Actor} actor
+ * @returns {boolean}
+ */
+export function isSpendingCombiner(actor) {
+  const system = actor?.system;
+  return actor?.type == 'megaform' && !!system?.subtype?.includes?.('megaformCombiner') && !system.combinerSkillsFromMembers;
+}
+
+/**
+ * How many skill points each Essence may spend: its Essence score (system.essences.<essence>.max), or for a spending
+ * Combiner the form's own Essence (a machine's essences have no max; the form's value already holds its members' best and
+ * any Combiner features).
+ * @param {Actor} actor
+ * @returns {Object} { <essence>: max }
+ */
+export function skillBudgetOf(actor) {
+  const key = isSpendingCombiner(actor) ? 'value' : 'max';
+  return Object.fromEntries(Object.entries(actor.system.essences ?? {}).map(([essence, data]) => [essence, data?.[key]]));
+}
+
+/**
  * Which of a PC's 4 Essences currently have more skill points spent (see computeEssenceSpend)
  * than that Essence's own max score (system.essences.<essence>.max) allows - a plain snapshot
  * check, with no notion of how the actor GOT there. Used only for the Skill Picker's passive
@@ -123,7 +146,7 @@ export function getEssenceOverspend(actor) {
   const spend = computeEssenceSpend(actor);
   const overspend = {};
   for (const [essence, { value }] of Object.entries(spend)) {
-    const max = actor.system.essences?.[essence]?.max;
+    const max = skillBudgetOf(actor)?.[essence];
     if (typeof max === 'number' && value > max) {
       overspend[essence] = { spent: value, max };
     }
@@ -152,7 +175,7 @@ export function getNewEssenceOverspend(actor, previewActor) {
   const previewSpend = computeEssenceSpend(previewActor);
   const blocked = {};
   for (const [essence, { value }] of Object.entries(previewSpend)) {
-    const max = previewActor.system.essences?.[essence]?.max;
+    const max = skillBudgetOf(previewActor)?.[essence];
     if (typeof max === 'number' && value > max && value > currentSpend[essence].value) {
       blocked[essence] = { spent: value, max };
     }

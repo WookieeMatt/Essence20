@@ -1,3 +1,4 @@
+import { storedNumber } from "./effect-boosted-fields.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { applyHangUpChoice } from "../mechanics/characters/hang-up-choice.mjs";
 import { getItemsOfTypeFromSystemItems, getShiftedSkill } from "../util/utils.mjs";
@@ -221,7 +222,7 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
     }
   }
 
-  const essenceValue = actor.system.essences[essence].max + 1;
+  const essenceValue = storedNumber(actor, `system.essences.${essence}.max`) + 1;
   const essenceString = `system.essences.${essence}.max`;
 
   const grantsAllSkills = Array.isArray(skill);
@@ -398,7 +399,7 @@ export async function _hangUpSelect(actor, uuid, parentItem) {
  */
 export async function onOriginDelete(actor, origin) {
   let essence = actor.system.originEssencesIncrease;
-  let essenceValue = actor.system.essences[essence].max - 1;
+  let essenceValue = storedNumber(actor, `system.essences.${essence}.max`) - 1;
 
   let selectedSkill = actor.system.originSkillsIncrease;
   const [newShift, skillString] = getShiftedSkill(selectedSkill, -1, actor);

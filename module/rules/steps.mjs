@@ -877,18 +877,14 @@ const HANDLERS = {
         continue;
       }
 
-      // tracked: temporary Health through the resource slice's ledger (mechanics/resources/temporary-resources.mjs) -
-      // raises the bonus and the value, and is taken back when it runs out (scene end, or damage with untilDamage).
-      if (step.temporary && step.tracked) {
+      // Temporary Health, always through the resource slice's ledger (mechanics/resources/temporary-resources.mjs): raises
+      // the bonus and the value, and is taken back when it runs out - the scene's end, or damage with untilDamage.
+      // Temporary Health "lasts for a scene or until removed by damage" (GI Joe CRB p.210). An untracked branch here
+      // used to add to system.health.bonus and never take it back, so each use left a permanent extra point of Health
+      // (Stim Dart, You Got This!, Inspiring Words...). `tracked` is still accepted, and means nothing more now.
+      if (step.temporary) {
         const { grantTemp } = await import("../mechanics/resources/temporary-resources.mjs");
         await grantTemp(actor, { kind: 'health', amount, source: ctx.item?.name ?? '', by: ctx.actor?.uuid ?? null, untilDamage: !!step.untilDamage });
-        ctx.chat.push(T('TempHealth', { name: escape(actor.name), amount }));
-        continue;
-      }
-
-      // Temporary Health: added on top (system.health.bonus), as You Got This! and Boosted Vigor do.
-      if (step.temporary) {
-        await write(actor, 'update', [{ 'system.health.bonus': (Number(health.bonus) || 0) + amount }]);
         ctx.chat.push(T('TempHealth', { name: escape(actor.name), amount }));
         continue;
       }

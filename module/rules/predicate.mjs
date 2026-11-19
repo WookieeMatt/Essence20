@@ -632,6 +632,19 @@ function actorTag(actor, ruleItem, rest) {
   case 'morphed': return !!actor.system?.isMorphed;
   case 'transformed': return !!actor.system?.isTransformed;
   case 'canTransform': return !!actor.system?.canTransform;
+  // movement:<aerial|ground|swim...> - the actor has that kind of Movement in either Mode: now, or in one of its Alt Modes
+  // (a Transformer's Alt Mode movement is only written onto the actor while it's converted).
+  case 'movement': {
+    const now = actor.system?.movement?.[arg];
+    if ((Number(now?.total) || 0) > 0 || (Number(now?.base) || 0) > 0) {
+      return true;
+    }
+
+    const altKey = arg == 'swim' ? 'aquatic' : arg;
+    return (actor.items?.contents ?? (actor.items ? [...actor.items] : []))
+      .some(item => item.type == 'altMode' && (Number(item.system?.altModeMovement?.[altKey]) || 0) > 0);
+  }
+
   case 'status': return statusOf(actor, arg);
   case 'type': return actor.type == arg;
   // line:<gij|pr|tf|mlp|wtnv> (or giJoe, powerRangers...) - the actor's game line (mechanics/resources/game-lines.mjs#actorLineOf).

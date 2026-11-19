@@ -49,7 +49,8 @@ describe("applyHealSkillTestResult", () => {
 
     await applyHealSkillTestResult(target, 3, { isTempHealth: true });
 
-    expect(target.update).toHaveBeenCalledWith({ 'system.health.bonus': 4 });
+    // Through the temporary-Health ledger (taken back at the scene's end): bonus and current Health both rise, and it's recorded.
+    expect(target.update).toHaveBeenCalledWith(expect.objectContaining({ 'system.health.bonus': 4, 'flags.essence20.resTempGrants': [expect.objectContaining({ kind: 'health', amount: 3 })] }), expect.anything());
     expect(target.toggleStatusEffect).not.toHaveBeenCalled();
   });
 });

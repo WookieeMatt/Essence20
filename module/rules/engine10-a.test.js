@@ -583,6 +583,39 @@ describe('rule types', () => {
     expect(validateRule({ type: 'Size', set: 'enormous' })).not.toEqual([]);
   });
 
+  test('Size: a shown size is stored as the size before the rules, so saving the sheet never stacks Titanspark again', async () => {
+    // Monolith's Huge, Titanspark's one Size Class up: shown Gigantic, stored Huge.
+    const bot = makeActor('playerCharacter', 'Phalanx', { size: 'gigantic' });
+    bot._source = { system: { size: 'huge' } };
+    const titanspark = addItem(bot, { name: 'Titanspark', type: 'perk' }, [{ type: 'Size', label: 'Titanspark', steps: 1, ladder: 'track', modes: 'both' }]);
+    expect(sizeExt.baseSizeFor(bot, 'gigantic')).toBe('huge');
+    expect(sizeExt.baseSizeFor(bot, 'titanic')).toBe('towering');
+    // Nothing stored is made Small by a step up.
+    expect(sizeExt.baseSizeFor(bot, 'small')).toBeNull();
+    expect(sizeExt.sizeBeforeRules(bot)).toEqual({ size: 'huge', sources: ['Titanspark'] });
+
+    // shiftSize steps the stored size, not the one the rule makes.
+    const item = addItem(bot, { name: 'Enlarged', type: 'feature' });
+    await runSteps([{ do: 'shiftSize', steps: 1, ladder: 'class', record: 'before' }], stepContext({ actor: bot, item, rule: {}, targets: [] }));
+    expect(bot.system.size).toBe('gigantic');
+    expect(item.flags.essence20.rules.choices.before).toBe('huge');
+
+    // Titanspark dropped on: the prototype token takes the size the rule makes (Gigantic, 4x4) - for the user who did it.
+    CONFIG.E20.tokenSizes = { huge: { width: 3, height: 3 }, gigantic: { width: 4, height: 4 } };
+    bot.documentName = 'Actor';
+    bot.prototypeToken = { width: 3, height: 3 };
+    await sizeExt.syncSizeRuleTokens(titanspark, 'someone else');
+    expect(bot.prototypeToken.width).toBe(3);
+    await sizeExt.syncSizeRuleTokens(titanspark, game.user.id);
+    expect(bot.prototypeToken).toEqual({ width: 4, height: 4 });
+    delete CONFIG.E20.tokenSizes;
+
+    // No Size rules: the shown size is the stored one, and there is nothing to tell.
+    const plain = makeActor('playerCharacter', 'Plain', { size: 'common' });
+    expect(sizeExt.baseSizeFor(plain, 'large')).toBe('large');
+    expect(sizeExt.sizeBeforeRules(plain)).toBeNull();
+  });
+
   test('ArmorAccommodation refuses armor without the upgrade the level needs (Restricted covers Limited)', () => {
     const actor = makeActor('playerCharacter', 'Big');
     addItem(actor, { name: 'Enlarged', type: 'perk' }, [{ type: 'ArmorAccommodation', level: 'limited' }]);

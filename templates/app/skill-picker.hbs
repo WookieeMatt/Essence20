@@ -1,4 +1,10 @@
 <div class="skill-picker-body">
+  {{#if skillsFromMembers}}
+  <p class="notification info">{{localize 'E20.CombinerSkillsFromMembers'}}</p>
+  {{/if}}
+  {{#if combinerSpends}}
+  <p class="notification info">{{localize 'E20.CombinerSkillsSpent'}}</p>
+  {{/if}}
   {{!-- Strength/Speed on top, Social/Smarts below - explicit 2x2 order from
        module/apps/skill-picker.mjs's essenceGroups, not CONFIG.E20.originEssences' own order
        (strength, speed, smarts, social). --}}
@@ -72,7 +78,8 @@
            grouped with the other Strength skills, for every actor type - pc-skills.hbs's own
            Conditioning field is a read-only display once this is the one place it's edited,
            same as the skill shifts. --}}
-      {{#if (eq group.essence 'strength')}}
+      {{!-- Not on a spending Combiner: the form has no Health of its own for it to raise (actor.mjs). --}}
+      {{#if (and (eq group.essence 'strength') (not @root.combinerSpends))}}
       <div class="skill-picker-row skill-picker-conditioning">
         {{!-- Same label-is-the-checkbox shape as the skills above: PCs always show Conditioning
              (pc-skills.hbs), every other type picks whether it appears on the sheet. --}}

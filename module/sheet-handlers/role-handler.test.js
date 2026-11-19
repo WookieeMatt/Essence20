@@ -295,3 +295,78 @@ describe("setRoleValues - Essences", () => {
     expect(actor.system.essences.social.max).toBe(3);
   });
 });
+
+describe("setRoleValues - Personal Power works from the stored maximum", () => {
+  /**
+   * A character whose shown Maximum Personal Power is the stored one plus `boost` (Power Battery, Grid Connection).
+   * Updates land in _source, as Foundry's do.
+   */
+  function makeActor(level, storedMax, boost = 2) {
+    const source = { system: { powers: { personal: { max: storedMax } }, health: { bonus: 0 }, essences: {} } };
+    const actor = {
+      _source: source,
+      system: {
+        level,
+        essences: {},
+        health: { bonus: 0 },
+        powers: {
+          personal: {
+            get max() {
+              return source.system.powers.personal.max + boost;
+            },
+          },
+        },
+      },
+      items: [],
+      flags: { essence20: {} },
+      setFlag: jest.fn(),
+      update: jest.fn(async (changes) => {
+        for (const [path, value] of Object.entries(changes)) {
+          const keys = path.split('.');
+          const last = keys.pop();
+          keys.reduce((node, key) => (node[key] ??= {}), source)[last] = value;
+        }
+      }),
+    };
+    return actor;
+  }
+
+  // Gold Ranger: 2 to start, +2 at 5th, 9th, 13th and 17th.
+  const goldRanger = {
+    system: {
+      essenceLevels: {},
+      powers: { personal: { starting: 2, increase: 2, regeneration: 1, levels: ['level5', 'level9', 'level13', 'level17'] } },
+      adjustments: { health: [] },
+      skillDie: { isUsed: false, levels: [], specializedLevels: [] },
+      items: {},
+    },
+  };
+
+  test("levelling up adds the increase to the stored maximum, not the boosted one shown", async () => {
+    const actor = makeActor(5, 2);
+    await setRoleValues(goldRanger, actor, 5, 4);
+    expect(actor._source.system.powers.personal.max).toBe(4);
+  });
+
+  test("levelling back down takes the increase off again", async () => {
+    const actor = makeActor(4, 4);
+    await setRoleValues(goldRanger, actor, 4, 5);
+    expect(actor._source.system.powers.personal.max).toBe(2);
+  });
+
+  test("up and down repeatedly never creeps", async () => {
+    const actor = makeActor(5, 2);
+    for (let i = 0; i < 3; i++) {
+      await setRoleValues(goldRanger, actor, 5, 4);
+      await setRoleValues(goldRanger, actor, 4, 5);
+    }
+
+    expect(actor._source.system.powers.personal.max).toBe(2);
+  });
+
+  test("with none yet, the Role gives every increase up to the level reached", async () => {
+    const actor = makeActor(9, 0, 0);
+    await setRoleValues(goldRanger, actor);
+    expect(actor._source.system.powers.personal.max).toBe(6);
+  });
+});

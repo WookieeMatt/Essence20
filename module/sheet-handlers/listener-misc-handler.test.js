@@ -98,6 +98,16 @@ describe("onRest / onRecharge (_applyRestBenefits)", () => {
     }), { essence20Rest: true });
   });
 
+  test("an NPC with no regeneration (no Role to set one) is refilled; a character with none regains nothing", async () => {
+    const npc = makeActorSheet({ type: 'npc', system: { powers: { personal: { value: 1, max: 4, regeneration: 0 } } } });
+    await onRest(npc);
+    expect(npc.actor.update).toHaveBeenCalledWith(expect.objectContaining({ "system.powers.personal.value": 4 }), { essence20Rest: true });
+
+    const pc = makeActorSheet({ type: 'playerCharacter', system: { powers: { personal: { value: 1, max: 4, regeneration: 0 } } } });
+    await onRest(pc);
+    expect(pc.actor.update).toHaveBeenCalledWith(expect.objectContaining({ "system.powers.personal.value": 1 }), { essence20Rest: true });
+  });
+
   test("recovers each damaged Essence by 1, capped at its own max", async () => {
     const sheet = makeActorSheet({ system: {
       essences: {
