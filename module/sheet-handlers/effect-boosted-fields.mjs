@@ -4,14 +4,16 @@
  * every save of the sheet - any field, submitOnChange - wrote the 5 back as the base, and the effect added its +2 again:
  * 3, 5, 7, 9... (bug report 2026-10-12).
  *
- * For each submitted path an effect touched (actor.overrides): unchanged from what was shown, nothing is written; typed
+ * For each submitted path an effect or a DerivedStat rule touched (actor.overrides, actor._ruleBoostPaths): unchanged from what was shown, nothing is written; typed
  * as a different number, the base moves by the same amount (typing 6 over a shown 5 makes the base 4, shown 6).
  * @param {Object} submitData   The expanded form data about to be saved (changed in place).
  * @param {Actor} actor
  * @returns {Object}            submitData
  */
 export function keepEffectBoostsOutOfSource(submitData, actor) {
-  for (const path of leafPaths(actor?.overrides ?? {})) {
+  // Item rules' DerivedStat numbers (rules/adapter.mjs#writeNumber) boost the shown value the same way, without an override.
+  const boosted = new Set([...leafPaths(actor?.overrides ?? {}), ...(actor?._ruleBoostPaths ?? [])]);
+  for (const path of boosted) {
     const keys = path.split('.');
     const last = keys.pop();
     const parent = keys.reduce((obj, key) => (obj && typeof obj == 'object' ? obj[key] : undefined), submitData);
@@ -39,4 +41,16 @@ function leafPaths(obj, prefix = '') {
   return Object.entries(obj).flatMap(([key, value]) => (value && typeof value == 'object' && !Array.isArray(value)
     ? leafPaths(value, `${prefix}${key}.`)
     : [`${prefix}${key}`]));
+}
+
+/**
+ * A number as the actor stores it, without what Active Effects and item rules add to the one shown. Advancement and
+ * Essence trades add to the stored number; adding to the shown one wrote those bonuses in for good each time.
+ * @param {Actor} actor
+ * @param {String} path   e.g. "system.powers.personal.max"
+ * @returns {Number}
+ */
+export function storedNumber(actor, path) {
+  const stored = valueAt(actor?._source, path);
+  return Number(stored ?? valueAt(actor, path)) || 0;
 }

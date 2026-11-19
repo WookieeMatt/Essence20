@@ -1,4 +1,4 @@
-import { keepEffectBoostsOutOfSource } from './effect-boosted-fields.mjs';
+import { keepEffectBoostsOutOfSource, storedNumber } from './effect-boosted-fields.mjs';
 
 /** A Power Battery holder: base Maximum Personal Power 3, shown 5. */
 function batteryActor() {
@@ -42,5 +42,35 @@ describe('keepEffectBoostsOutOfSource (Power Battery grew the pool on every save
     const data = { system: { size: 'huge' } };
     keepEffectBoostsOutOfSource(data, actor);
     expect(data.system.size).toBe('huge');
+  });
+});
+
+describe('keepEffectBoostsOutOfSource - DerivedStat rules (Grid Connection grew the pool on every save)', () => {
+  /** Grid Connection's +1: stored 3, shown 4, no Active Effect override. */
+  const ruleActor = () => ({
+    _source: { system: { powers: { personal: { max: 3 } } } },
+    system: { powers: { personal: { max: 4 } } },
+    overrides: {},
+    _ruleBoostPaths: new Set(['system.powers.personal.max']),
+  });
+
+  test('saving unchanged leaves the stored maximum alone', () => {
+    const data = { system: { powers: { personal: { max: '4' } } } };
+    keepEffectBoostsOutOfSource(data, ruleActor());
+    expect(data.system.powers.personal).toEqual({});
+  });
+
+  test('typing a new total moves the stored maximum by the same amount', () => {
+    const data = { system: { powers: { personal: { max: 6 } } } };
+    keepEffectBoostsOutOfSource(data, ruleActor());
+    expect(data.system.powers.personal.max).toBe(5);
+  });
+});
+
+describe('storedNumber', () => {
+  test('reads the stored value, falling back to the shown one', () => {
+    expect(storedNumber({ _source: { system: { a: 3 } }, system: { a: 5 } }, 'system.a')).toBe(3);
+    expect(storedNumber({ system: { a: 5 } }, 'system.a')).toBe(5);
+    expect(storedNumber({ system: {} }, 'system.a')).toBe(0);
   });
 });
