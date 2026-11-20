@@ -8,6 +8,7 @@ import { onManageSelectTrait } from "../mechanics/characters/manage-traits.mjs";
 import { getModularCandidates, normalizeModularWeaponIds } from "../items/defenses/modular-armor.mjs";
 import { rollExoFrameTest } from "../items/defenses/exo-frame.mjs";
 import { updateRoleCache } from "../util/utils.mjs";
+import { customLinesOf } from "../mechanics/resources/custom-game-lines.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 import {
   prepareActiveEffectCategories,
@@ -21,6 +22,28 @@ import { SKELETONS, changeChoice, chooseAddKind, deleteRule, effectEntries, rule
 import { rulesOf } from "../rules/index.mjs";
 import { CHARGES_FLAG, itemCharges } from "../rules/triggers.mjs";
 import { perkChoiceDetails } from "../rules/perk-choice-details.mjs";
+import { POWER_GEAR_TYPES, altModeHolds, bondHolds, morphedHolds } from "../items/gear/power-gear.mjs";
+
+/**
+ * The Power Gear section's context (templates/item/parts/power-gear.hbs), or null for an item type without one.
+ * @param {Item} item
+ */
+function powerGearContext(item) {
+  if (!POWER_GEAR_TYPES.includes(item.type)) {
+    return null;
+  }
+
+  const gear = item.system.powerGear ?? {};
+  const bondedTo = gear.bondedTo ? game.actors.get(gear.bondedTo) : null;
+  const inactive = !bondHolds(item) ? 'E20.PowerGearInactiveBond' : !altModeHolds(item) ? 'E20.PowerGearInactiveAltMode'
+    : !morphedHolds(item) ? 'E20.PowerGearInactiveMorphed' : '';
+  return {
+    used: !!(gear.bonded || gear.slot || gear.altModeOnly || gear.morphedOnly),
+    bondedName: gear.bondedTo ? bondedTo?.name ?? game.i18n.localize('E20.PowerGearBondedUnknown') : '',
+    canRebond: game.user.isGM && !!item.parent && gear.bondedTo != item.parent.id,
+    inactive: inactive ? game.i18n.localize(inactive) : '',
+  };
+}
 
 /**
  * Handles retrieving all existing roles of the system version selected.
@@ -94,6 +117,7 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       traitSelector: this.#traitSelector,
       rollExoFrameTest: this.#rollExoFrameTest,
       clearGearNanomite: this.#clearGearNanomite,
+      powerGearRebond: this.#powerGearRebond,
       viewItem: this.#viewItem,
       editDescription: this.#editDescription,
       startSheetTour: this.#onStartSheetTour,
@@ -192,6 +216,14 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
 
     // Make all the Essence20 consts accessible
     context.config = CONFIG.E20;
+
+    // A Role on a book line can name a homebrew line built on it (Configure Settings > Game Lines).
+    if (this.document.type == 'role') {
+      const lines = customLinesOf(this.document.system.version);
+      context.homebrewLines = lines.length || this.document.system.gameLine
+        ? { "": game.i18n.localize("E20.RoleGameLineNone"), ...Object.fromEntries(lines.map(line => [line.id, line.label])) }
+        : null;
+    }
 
     // Use a safe clone of the item data for further operations.
     const itemData = context.document;
@@ -300,7 +332,15 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
     const path = "systems/essence20/templates/item/details";
     context.detailPath = `${path}/${this.document.type}.hbs`;
     context.charges = itemCharges(this.document);
+    context.powerGear = powerGearContext(this.document);
     return context;
+  }
+
+  /** The GM gives a bonded item's bond to whoever holds it now (items/gear/power-gear.mjs). */
+  static async #powerGearRebond() {
+    if (game.user.isGM && this.document.parent) {
+      await this.document.update({ 'system.powerGear.bondedTo': this.document.parent.id });
+    }
   }
 
   /**

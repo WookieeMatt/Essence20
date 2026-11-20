@@ -1,5 +1,6 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { getActionsTabContext } from "../mechanics/actions/action-economy.mjs";
+import { ALT_MODE_PART, ALT_MODE_TAB, altModeContext, applyAltModeTab } from "./machine-alt-modes.mjs";
 import {
   getActiveVesselConditions, getVesselConditionStacks, openVesselRepairDialog, stackedName,
 } from "../mechanics/vehicles/vessel-conditions.mjs";
@@ -17,6 +18,8 @@ export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
         { id: "main", group: 'primary', label: "E20.TabMain" },
         { id: "actions", group: 'primary', label: "E20.TabActions" },
         { id: "passengers", group: 'primary', label: "E20.TabCrew" },
+        // Alt Modes (a world setting - sheets/machine-alt-modes.mjs): hidden while it can't have any.
+        ALT_MODE_TAB,
         { id: "effects", group: 'primary', label: "E20.Rules.Tab" },
         { id: "notes", group: 'primary', label: "E20.TabNotes" },
 
@@ -49,6 +52,7 @@ export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
       template: "systems/essence20/templates/actor/parts/main/vehicle-passengers.hbs",
       scrollable: [''],
     },
+    altmode: ALT_MODE_PART,
     effects: {
       template: "systems/essence20/templates/actor/tabs/effects.hbs",
       scrollable: [''],
@@ -62,6 +66,7 @@ export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.actionsTab = getActionsTabContext(this.actor);
+    Object.assign(context, altModeContext(this.actor));
     // Space Vessel Conditions and their stack counts, for the header's Repair control.
     context.vesselConditions = getActiveVesselConditions(this.actor).map(statusId => ({
       id: statusId,
@@ -81,5 +86,10 @@ export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
    */
   static async #onRepairVesselCondition() {
     await openVesselRepairDialog(this.actor);
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+    applyAltModeTab(this);
   }
 }

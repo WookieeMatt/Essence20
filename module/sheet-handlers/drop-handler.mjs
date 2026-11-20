@@ -9,12 +9,13 @@ import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
 import { onZordFeatureDrop } from "./zord-feature-handler.mjs";
 import { getCombineReadyRound, isCombineReady, rollCombineTimer } from "../mechanics/vehicles/combiner-timer.mjs";
-import { canBeParticipant, getMegaformParticipants, isGuestComponent } from "../mechanics/vehicles/megaform-participants.mjs";
+import { canBeParticipant, customJoinTypes, getMegaformParticipants, isGuestComponent } from "../mechanics/vehicles/megaform-participants.mjs";
 import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
 import { DETACHED_THIS_SCENE_FLAG } from "./vehicle-handler.mjs";
 import { hasUsedThisEncounter } from "../mechanics/characters/perks.mjs";
 import { clearWarriorMode } from "../items/zords/warrior-mode.mjs";
 import { confirmGmDrop } from "../rules/prerequisites.mjs";
+import { CONVERTING_TYPES, canHoldAltModes } from "../mechanics/vehicles/vehicle-alt-modes.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -54,6 +55,13 @@ export async function onDropItem(data, actor, dropFunc) {
   // An Alt Mode dropped straight on (a Mini-Con, a Monstrosity form) makes the character able to transform, as one
   // that comes with an Origin does (background-handler.mjs) - play-through 2026-10-07: the button never showed.
   case 'altMode':
+    // A Vehicle or Zord holds one only with the world's "Vehicles and Zords can have Alt Modes" on
+    // (mechanics/vehicles/vehicle-alt-modes.mjs); with it on, holding one is what lets it convert.
+    if (CONVERTING_TYPES.includes(actor.type) && !canHoldAltModes(actor)) {
+      ui.notifications.warn(game.i18n.localize('E20.VehicleAltModesOff'));
+      return false;
+    }
+
     result = await dropFunc();
     if (result && !actor.system.canTransform && 'canTransform' in (actor.system ?? {})) {
       await actor.update({ 'system.canTransform': true });
@@ -304,10 +312,15 @@ export async function onDropActor(data, actorSheet) {
     // instead. Anything that would be linked but never count is refused with the reason.
     if (!canBeParticipant(targetActor, droppedActor)) {
       const combiner = targetActor.system.subtype?.includes?.('megaformCombiner');
-      ui.notifications.warn(game.i18n.format(
-        combiner && droppedActor.type == 'zord' ? 'E20.MegaformZordInCombiner' : combiner ? 'E20.MegaformCombinerRefuses' : 'E20.MegaformMegazordRefuses',
-        { name: droppedActor.name },
-      ));
+      const custom = customJoinTypes(targetActor);
+      ui.notifications.warn(custom
+        ? game.i18n.format('E20.MegaformCustomRefuses', {
+          name: droppedActor.name, types: custom.map(type => game.i18n.localize(CONFIG.E20.megaformJoinTypes[type])).join(', '),
+        })
+        : game.i18n.format(
+          combiner && droppedActor.type == 'zord' ? 'E20.MegaformZordInCombiner' : combiner ? 'E20.MegaformCombinerRefuses' : 'E20.MegaformMegazordRefuses',
+          { name: droppedActor.name },
+        ));
       return false;
     }
 
@@ -319,7 +332,9 @@ export async function onDropActor(data, actorSheet) {
         return false;
       }
 
-      if (droppedActor.type == 'playerCharacter' && !holdsMergePerk(droppedActor)) {
+      // A character the GM let into a homebrew form that isn't a Transformer pays no Cybertronian merge cost.
+      const transformer = !customJoinTypes(targetActor) || droppedActor.system?.canTransform;
+      if (droppedActor.type == 'playerCharacter' && transformer && !holdsMergePerk(droppedActor)) {
         const line = await beginGuestMerge(droppedActor, targetActor);
         if (line) {
           ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor: droppedActor }), content: line });

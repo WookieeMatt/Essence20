@@ -14,6 +14,8 @@
  * later without disturbing any of those: only the difference in the base is applied.
  */
 
+import { lineRule } from "../resources/custom-game-lines.mjs";
+
 export const ESSENCES = ['strength', 'speed', 'smarts', 'social'];
 
 /** Points to spend at creation. */
@@ -40,8 +42,8 @@ export const DEFAULT_BASE = Object.freeze({ strength: 3, speed: 3, smarts: 3, so
  * @returns {Number}
  */
 export function maxEssenceFor(gameLine, roleVersion = null) {
-  const line = gameLine || roleVersion;
-  return line === 'welcomeToNightVale' ? MAX_ESSENCE_NIGHT_VALE : MAX_ESSENCE;
+  // The line's startingEssenceMax switch (line-profiles.mjs): MAX_ESSENCE, or Night Vale's MAX_ESSENCE_NIGHT_VALE.
+  return lineRule(gameLine || roleVersion || '', 'startingEssenceMax');
 }
 
 /**

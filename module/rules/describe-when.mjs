@@ -1,3 +1,4 @@
+import { customLine } from "../mechanics/resources/custom-game-lines.mjs";
 import { tagPhrase } from "./predicate.mjs";
 
 /**
@@ -582,7 +583,7 @@ function actorFact(rest, who, family) {
   case 'movement': return has(`${humanize(arg)} Movement (in either Mode)`);
   case 'status': return /^any(:|$)/.test(arg) ? is(arg.length > 4 ? statusList(arg.slice(4)) : 'under any Condition') : is(arg.endsWith(':timed') ? `${statusWords(arg.slice(0, -6))} for a set time` : statusList(arg));
   case 'type': return is(ACTOR_TYPES[arg] ?? article(lowerWords(arg)), 'if');
-  case 'line': return is(`from the ${LINE_NAMES[arg] ?? humanize(arg)} line`, 'if');
+  case 'line': return is(`from the ${LINE_NAMES[arg] ?? customLine(arg)?.label ?? humanize(arg)} line`, 'if');
   case 'hasItem': return has(itemName(arg));
   case 'specializedIn': return has(`a ${skillName(arg)} Specialization`);
   case 'tag': return fact('if', `${W.who} count${W.s} as ${humanize(arg)}`, `${W.who} ${W.doesnt} count as ${humanize(arg)}`);

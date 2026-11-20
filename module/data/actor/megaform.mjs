@@ -27,6 +27,10 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
       // entry's, not the list's - the list started empty and the sheet's select fell to its first option, Combiner.)
       subtype: new fields.ArrayField(makeStrWithChoices(Object.keys(E20.megaformSubtypes), null), { initial: ['megaformZord'] }),
       zordIds: makeStrArray(),
+      // Homebrew forms (the Combiners tab, GM only - mechanics/vehicles/megaform-participants.mjs): the actor types that
+      // may join it, empty for the book's rules; and who must be on the scene before it can Join (actor uuids).
+      joinTypes: makeStrArray(),
+      requiredMembers: makeStrArray(),
       // Combiner-subtype only: how many Energon Points the component members actually spent
       // to merge into this form (2/member for a Matched Combiner, 3/member for a Gestalt,
       // per the Transformers Combiner rules) - a GM-tracked value that drives the computed

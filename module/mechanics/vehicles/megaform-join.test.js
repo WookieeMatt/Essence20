@@ -2,8 +2,9 @@ import { jest } from '@jest/globals';
 
 const announce = jest.fn();
 let participants = [];
+let missing = [];
 jest.unstable_mockModule('./mechanics/world/public-hooks.mjs', () => ({ announce }));
-jest.unstable_mockModule('./mechanics/vehicles/megaform-participants.mjs', () => ({ getMegaformParticipants: () => participants }));
+jest.unstable_mockModule('./mechanics/vehicles/megaform-participants.mjs', () => ({ getMegaformParticipants: () => participants, missingToForm: () => missing }));
 const {
   JOINED_FLAG, centerOf, joinPlacement, joinedTokenOf, joinMegaform, megaformTokens, memberTokens, separateMegaform, separatePlacement,
 } = await import('./megaform-join.mjs');
@@ -60,6 +61,7 @@ const form = {
 beforeEach(() => {
   announce.mockReset();
   participants = [{ id: 'z1' }, { id: 'z2' }, { id: 'z3' }];
+  missing = [];
   global.ui = { notifications: { warn: jest.fn() } };
   global.ChatMessage = { create: jest.fn(), getSpeaker: () => ({}) };
   global.game = { ...(global.game ?? {}), i18n: { localize: key => key, format: key => key }, combats: [], user: { isGM: true } };
@@ -144,6 +146,14 @@ describe('join and separate', () => {
     expect(await joinMegaform(form, { scene })).toBeNull();
     expect(ui.notifications.warn).toHaveBeenCalledWith('E20.MegaformJoinNoTokens');
     expect(await joinMegaform(null, { scene })).toBeNull();
+  });
+
+  test('someone the GM marked Needed to Form is missing: nothing joins, and the warning names them', async () => {
+    const scene = makeScene([makeToken('t1', 'z1', 0, 0)]);
+    missing = ['Red Lion'];
+    expect(await joinMegaform(form, { scene })).toBeNull();
+    expect(ui.notifications.warn).toHaveBeenCalledWith('E20.MegaformJoinMissing');
+    expect(scene.createEmbeddedDocuments).not.toHaveBeenCalled();
   });
 
   test('a player without token permissions asks the GM', async () => {

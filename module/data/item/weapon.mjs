@@ -11,6 +11,7 @@ import {
 import { activation } from './templates/activation.mjs';
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
+import { powerGear } from './templates/power-gear.mjs';
 import { parentItem } from './templates/parent-item.mjs';
 
 const fields = foundry.data.fields;
@@ -21,6 +22,7 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
       ...item(),
       ...activation(),
       ...itemDescription(),
+      ...powerGear(),
       ...parentItem(),
       availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
       classification: new fields.SchemaField({

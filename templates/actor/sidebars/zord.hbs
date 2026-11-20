@@ -26,6 +26,7 @@
         {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
       </span>
     </div>
+    {{> "systems/essence20/templates/actor/parts/misc/sidebar-convert.hbs"}}
     {{#if @root.hasWarriorMode}}
     <a class="essence20-sidebar-action-button" data-action="warriorMode" data-tooltip="{{localize 'E20.WarriorModeTooltip'}}">
       <i class="fas fa-person-military-rifle"></i>

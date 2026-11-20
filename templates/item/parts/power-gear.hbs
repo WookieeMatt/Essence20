@@ -1,0 +1,37 @@
+{{!-- Power gear (items/gear/power-gear.mjs): a bond, a slot, Alt Mode only, Morphed only - each optional. --}}
+<details class="e20-power-gear" {{#if powerGear.used}}open{{/if}}>
+  <summary>{{localize 'E20.PowerGear'}}</summary>
+  <p class="hint">{{localize 'E20.PowerGearHint'}}</p>
+
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerGearBonded'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="checkbox" name="system.powerGear.bonded" {{checked system.powerGear.bonded}} data-tooltip="{{localize 'E20.PowerGearBondedHint'}}" />
+  {{#if system.powerGear.bonded}}
+    <span class="hint">{{#if powerGear.bondedName}}{{localize 'E20.PowerGearBondedTo' name=powerGear.bondedName}}{{else}}{{localize 'E20.PowerGearNotBonded'}}{{/if}}</span>
+    {{#if powerGear.canRebond}}
+    <a data-action="powerGearRebond" data-tooltip="{{localize 'E20.PowerGearRebondHint'}}"><i class="fas fa-link"></i> {{localize 'E20.PowerGearRebond'}}</a>
+    {{/if}}
+  {{/if}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerGearSlot'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="text" name="system.powerGear.slot" value="{{system.powerGear.slot}}" placeholder="{{localize 'E20.PowerGearSlotPlaceholder'}}" data-tooltip="{{localize 'E20.PowerGearSlotHint'}}" />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerGearAltModeOnly'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="checkbox" name="system.powerGear.altModeOnly" {{checked system.powerGear.altModeOnly}} data-tooltip="{{localize 'E20.PowerGearAltModeOnlyHint'}}" />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerGearMorphedOnly'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="checkbox" name="system.powerGear.morphedOnly" {{checked system.powerGear.morphedOnly}} data-tooltip="{{localize 'E20.PowerGearMorphedOnlyHint'}}" />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{#if powerGear.inactive}}<p class="hint"><i class="fas fa-power-off"></i> {{powerGear.inactive}}</p>{{/if}}
+</details>

@@ -18,6 +18,7 @@ import "./effects/team-rules-ready-reset.mjs";
 import "./tags/team-holds-and-token-within.mjs";
 import "./zords/form-perks.mjs";
 import "./zords/alt-mode-crew-rules.mjs";
+import "./tags/mount-tags.mjs";
 import "./tags/target-not-beyond.mjs";
 import "./rolls/roll-as-step.mjs";
 import "./zords/transform-into-step.mjs";
@@ -376,6 +377,7 @@ import "./effects/linked-host.mjs";
 // Item-carried mark effects (rollSnag / rollShiftDown / inoperable), item selector var:<key>, tag itemVar:<key>:<tag>
 // (Technical Glitch, Some Assembly Required, Complete System Failure).
 import "./gear/item-disruption.mjs";
+import "./gear/power-gear-tags.mjs";
 // Rule type ShapeOption, step changeShape, tag shape:skill:<key> (Shape-Shift, Face-Shift, Master Morph, Size-Shift).
 import "./effects/shape-change.mjs";
 // Rule type AttackChoice: a pick before the attack's template is placed (Bring It All Down).

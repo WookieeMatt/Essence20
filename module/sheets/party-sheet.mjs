@@ -1,6 +1,7 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { requisitionAccess, requisitionDrop } from "../mechanics/resources/requisition.mjs";
-import { getGameLine } from "../settings.js";
+import { getGameLineId } from "../settings.js";
+import { lineRule } from "../mechanics/resources/custom-game-lines.mjs";
 
 /**
  * Sheet for the Party ("Squad") actor: a roster of Player Characters, the squad's shared
@@ -79,7 +80,7 @@ export class Essence20PartyActorSheet extends Essence20BaseActorSheet {
    * @override
    */
   get title() {
-    const line = getGameLine();
+    const line = getGameLineId();
     if (!line) {
       return this.document.name;
     }
@@ -115,7 +116,7 @@ export class Essence20PartyActorSheet extends Essence20BaseActorSheet {
    * line is changed, and any Requisition already logged is not thrown away.
    */
   #applyConditionalTabs() {
-    const hidden = getGameLine() == 'myLittlePony';
+    const hidden = !lineRule(getGameLineId(), 'requisition');
     const navLink = this.element.querySelector('nav.tabs a[data-tab="requisition"]');
     if (navLink) {
       navLink.style.display = hidden ? 'none' : '';
@@ -132,7 +133,7 @@ export class Essence20PartyActorSheet extends Essence20BaseActorSheet {
 
     // The world's game line, for the sidebar caption. Every part gets it so the template
     // does not have to reach for the setting itself.
-    context.gameLine = getGameLine();
+    context.gameLine = getGameLineId();
 
     if (partId === 'roster') {
       // Live Player Character members only (drops stale / non-PC system.actors entries that

@@ -1,6 +1,34 @@
 ﻿import { applyThemeClass } from "../settings.js";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
+import { RULES_LINE_FLAG, customLines, worldLineId } from "../mechanics/resources/custom-game-lines.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
+/** The actor types with no Role of their own whose GM picks the line they play by (Megaforms do it in Forming Rules). */
+const RULES_LINE_TYPES = ['npc', 'companion', 'vehicle', 'zord'];
+
+/**
+ * The lines an actor can play by, for its "Plays by the rules of" picker: none (the core rules), the book lines, then
+ * the homebrew ones.
+ * @returns {Object<String, String>}
+ */
+export function rulesLineChoices() {
+  return {
+    "": game.i18n.localize("E20.RulesLineNone"),
+    ...Object.fromEntries(Object.entries(CONFIG.E20.gameVersions).map(([key, label]) => [key, game.i18n.localize(label)])),
+    ...Object.fromEntries(customLines().map(line => [line.id, line.label])),
+  };
+}
+
+/**
+ * Whether this actor's GM picks its line here: a GM, in a Crossover world (no world line - with one, the world's rules
+ * apply to everyone), on a Role-less actor of a type that has one.
+ * @param {Actor} actor
+ * @returns {Boolean}
+ */
+export function picksRulesLine(actor) {
+  return !!game.user?.isGM && !worldLineId() && RULES_LINE_TYPES.includes(actor?.type)
+    && !actor.items.some(item => item.type == 'role');
+}
 
 export default class SheetOptions extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(actor, ev) {
@@ -53,6 +81,12 @@ export default class SheetOptions extends serializeFormSubmits(HandlebarsApplica
     }
 
     context.actor = this._actor;
+    // Crossover: the line a Role-less actor plays by (mechanics/resources/custom-game-lines.mjs#actorRulesLine).
+    context.rulesLine = picksRulesLine(this._actor) ? {
+      name: `flags.essence20.${RULES_LINE_FLAG}`,
+      value: this._actor.getFlag("essence20", RULES_LINE_FLAG) ?? "",
+      choices: rulesLineChoices(),
+    } : null;
     context.system = this._actor.system;
     context.buttons = [
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },

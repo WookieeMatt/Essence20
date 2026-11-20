@@ -1,0 +1,88 @@
+<div class="homebrew-export-body flexcol">
+  <p class="hint">{{localize "E20.HomebrewExportHint"}}</p>
+
+  <div class="house-rules-groups">
+    <fieldset class="house-rules-group">
+      <legend>{{localize "E20.HomebrewExportModule"}}</legend>
+      <div class="form-group">
+        <label>{{localize "E20.HomebrewExportName"}}</label>
+        <input type="text" name="title" value="{{title}}" required />
+      </div>
+      <div class="form-group">
+        <label>{{localize "E20.HomebrewExportId"}}</label>
+        <input type="text" name="id" value="{{id}}" placeholder="{{idPlaceholder}}" />
+      </div>
+      <p class="hint">{{localize "E20.HomebrewExportIdHint"}}</p>
+      <div class="form-group">
+        <label>{{localize "E20.HomebrewExportVersion"}}</label>
+        <input type="text" name="version" value="{{version}}" />
+      </div>
+      <p class="hint">{{localize "E20.HomebrewExportVersionHint"}}</p>
+      <div class="form-group">
+        <label>{{localize "E20.HomebrewExportAuthor"}}</label>
+        <input type="text" name="author" value="{{author}}" />
+      </div>
+      <div class="form-group stacked">
+        <label>{{localize "E20.HomebrewExportDescription"}}</label>
+        <textarea name="description" rows="2">{{description}}</textarea>
+      </div>
+    </fieldset>
+
+    <fieldset class="house-rules-group">
+      <legend>{{localize "E20.HomebrewExportPacks"}}</legend>
+      {{#each packs as |pack|}}
+        <label class="homebrew-export-choice">
+          <input type="checkbox" name="packs.{{pack.key}}" checked />
+          <span class="homebrew-export-name">{{pack.label}}</span>
+          <span class="homebrew-export-meta">{{#if pack.folder}}{{pack.folder}} · {{/if}}{{pack.type}} · {{pack.count}}</span>
+        </label>
+      {{else}}
+        <p class="hint">{{localize "E20.HomebrewExportNoPacks"}}</p>
+      {{/each}}
+      <label class="homebrew-export-choice">
+        <input type="checkbox" name="bundleAssets" checked />
+        <span class="homebrew-export-name">{{localize "E20.HomebrewExportAssets"}}</span>
+      </label>
+      <p class="hint">{{localize "E20.HomebrewExportAssetsHint"}}</p>
+    </fieldset>
+
+    {{#if lines.length}}
+      <fieldset class="house-rules-group">
+        <legend>{{localize "E20.HomebrewExportLines"}}</legend>
+        {{#each lines as |line|}}
+          <label class="homebrew-export-choice">
+            <input type="checkbox" name="lines.{{line.id}}" checked />
+            <span class="homebrew-export-name">{{line.label}}</span>
+          </label>
+        {{/each}}
+      </fieldset>
+    {{/if}}
+
+    {{#if houseRules.length}}
+      <fieldset class="house-rules-group">
+        <legend>{{localize "E20.HomebrewExportHouseRules"}}</legend>
+        {{#each houseRules as |rule|}}
+          <label class="homebrew-export-choice">
+            <input type="checkbox" name="houseRules.{{rule.id}}" checked />
+            <span class="homebrew-export-name">{{rule.label}}</span>
+          </label>
+        {{/each}}
+      </fieldset>
+    {{/if}}
+
+    {{#if settings.length}}
+      <fieldset class="house-rules-group">
+        <legend>{{localize "E20.HomebrewExportSettings"}}</legend>
+        <p class="hint">{{localize "E20.HomebrewExportSettingsHint"}}</p>
+        {{#each settings as |setting|}}
+          <label class="homebrew-export-choice">
+            <input type="checkbox" name="settings.{{setting.key}}" checked />
+            <span class="homebrew-export-name">{{setting.label}}</span>
+          </label>
+        {{/each}}
+      </fieldset>
+    {{/if}}
+
+    <p class="hint">{{localize "E20.HomebrewExportInstallHint"}}</p>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-import { applyThemeClass, getGameLine, setting } from "../settings.js";
+import { applyThemeClass, getGameLineId, setting } from "../settings.js";
 import { advanceMission, advanceScene, getMissionEpoch, getSceneEpoch, getSceneLabel } from "../mechanics/resources/scene-clock.mjs";
 import {
   canWriteCircle, circlesLeftThisScene, drawForActor, endCircle, formCircle, FRIENDSHIP_CIRCLE_ID, getCircle,
@@ -166,15 +166,15 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       // empty - a pair of buttons that vanish at zero reads as a missing feature, not an empty pool.
       canSpendNarrative: canWriteStoryPoints(),
       narrativeAffordable: hasStoryPointsAvailable(1),
-      gridPowerBloom: game.user.isGM && hasGridPowerBloom(getGameLine()) ? {
+      gridPowerBloom: game.user.isGM && hasGridPowerBloom(getGameLineId()) ? {
         cost: getStoryPointsActor()?.members.length ?? 0,
         affordable: (getStoryPointsActor()?.members.length ?? 0) > 0
           && hasStoryPointsAvailable(getStoryPointsActor()?.members.length ?? 0),
       } : null,
       // The My Little Pony CRB has no GM pool (hasGmPool), so a Friend Group's tracker shows
       // none - to the GM as well, since there is nothing for them to spend it on.
-      hasGmPool: hasGmPool(getGameLine()),
-      gmPointsArePublic: hasGmPool(getGameLine()) && (game.user.isGM || setting("sptGmPointsArePublic")),
+      hasGmPool: hasGmPool(getGameLineId()),
+      gmPointsArePublic: hasGmPool(getGameLineId()) && (game.user.isGM || setting("sptGmPointsArePublic")),
       pointsName: getPointsName(true),
       // Scene Clock - see mechanics/resources/scene-clock.mjs. Shown to everyone, advanced only by the GM:
       // players benefit from knowing which scene they are in, because it is what refreshes their
@@ -335,7 +335,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       return;
     }
 
-    const line = getGameLine();
+    const line = getGameLineId();
     // The live roster, not the derived system.memberCount: that is computed when the actor is
     // prepared and can lag a roster change made moments earlier, and a reset to the stale number
     // would be the wrong rule applied confidently.
@@ -391,7 +391,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   static async gridPowerBloom() {
     const party = getStoryPointsActor();
     const members = party?.members ?? [];
-    if (!game.user.isGM || !hasGridPowerBloom(getGameLine()) || !members.length
+    if (!game.user.isGM || !hasGridPowerBloom(getGameLineId()) || !members.length
       || !hasStoryPointsAvailable(members.length)) {
       return;
     }

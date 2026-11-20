@@ -1,4 +1,15 @@
-import { makeStr, makeStrArray } from "../../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrArray } from "../../generic-makers.mjs";
+
+/**
+ * Homebrew: a creature that can be ridden - a companion or an NPC (mechanics/companions/mounts.mjs). Off by default;
+ * riders: how many can ride it at once.
+ */
+export const mount = () => ({
+  mount: new foundry.data.fields.SchemaField({
+    rideable: makeBool(false),
+    riders: makeInt(1),
+  }),
+});
 
 export const creature = () => ({
   languages: makeStrArray(),

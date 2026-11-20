@@ -75,6 +75,8 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
           trained: makeStrArrayWithChoices(Object.keys(E20.availabilities)),
         }),
       }),
+      // A homebrew line's id (mechanics/resources/custom-game-lines.mjs); version stays the book line it's built on.
+      gameLine: makeStr(''),
       version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),
       weapons: new fields.SchemaField({
         qualified: makeStrArrayWithChoices(Object.keys(E20.weaponTypes)),

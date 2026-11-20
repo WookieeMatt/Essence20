@@ -786,13 +786,17 @@ registerRollSources((actor, target, ctx) => {
 /*  Tokens (the active GM)                       */
 /* -------------------------------------------- */
 
+/** Where a token is, or is going: v14 reports a moving token's animated spot in x/y while its update hooks run. */
+export const tokenAt = token => ({ x: token._source?.x ?? token.x, y: token._source?.y ?? token.y });
+
 /** Where a rider's token sits: centred on the Transformer's. Exported for tests. */
 export function ridePosition(carrierToken, riderToken, size = 100) {
+  const at = tokenAt(carrierToken);
   const cw = (Number(carrierToken.width) || 1) * size;
   const ch = (Number(carrierToken.height) || 1) * size;
   const rw = (Number(riderToken.width) || 1) * size;
   const rh = (Number(riderToken.height) || 1) * size;
-  return { x: Math.round(carrierToken.x + (cw - rw) / 2), y: Math.round(carrierToken.y + (ch - rh) / 2) };
+  return { x: Math.round(at.x + (cw - rw) / 2), y: Math.round(at.y + (ch - rh) / 2) };
 }
 
 const isActiveGm = () => !!globalThis.game?.users?.activeGM?.isSelf;
@@ -871,7 +875,8 @@ export async function followCarrier(carrierToken) {
   const movement = {};
   for (const token of riders) {
     const position = ridePosition(carrierToken, token, size);
-    if (position.x != token.x || position.y != token.y) {
+    const at = tokenAt(token);
+    if (position.x != at.x || position.y != at.y) {
       updates.push({ _id: token.id, ...position });
       Object.assign(movement, teleportMovement(token, position));
     }

@@ -3,6 +3,8 @@
     {{> (lookup . 'detailPath')}}
    </div>
 
+  {{#if powerGear}}{{> "systems/essence20/templates/item/parts/power-gear.hbs"}}{{/if}}
+
   {{!-- A Use rule's charges, set by hand (one spent by mistake) - rules/triggers.mjs#itemCharges. --}}
   {{#if charges}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Rules.ChargesLeft'}}

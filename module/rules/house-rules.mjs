@@ -120,6 +120,25 @@ export function syncWorldHouseRules(list = worldHouseRules()) {
   }
 }
 
+/**
+ * Register the house rules active modules ship in module.json (flags.essence20.houseRules: [{id, label, hint, rules}]) -
+ * a module made by Export Homebrew carries the world's own this way, with no code. Run before syncWorldHouseRules, so a
+ * world rule with the same id wins. One that won't load is skipped with an error.
+ * @param {Iterable<Object>} modules   game.modules.
+ */
+export function syncModuleHouseRules(modules = []) {
+  for (const module of modules) {
+    const list = module?.active ? module.flags?.essence20?.houseRules : null;
+    for (const entry of Array.isArray(list) ? list : []) {
+      try {
+        store({ ...entry, module: module.id });
+      } catch (error) {
+        console.error(`Essence20 | a house rule from ${module.id} could not be loaded`, error);
+      }
+    }
+  }
+}
+
 /** The world's choices ({id: Boolean}); {} before settings exist. */
 function choices() {
   try {

@@ -10,6 +10,7 @@ import {
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
+import { powerGear } from './templates/power-gear.mjs';
 import { parentItem } from './templates/parent-item.mjs';
 
 export class ArmorItemData extends foundry.abstract.TypeDataModel {
@@ -17,6 +18,7 @@ export class ArmorItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
+      ...powerGear(),
       ...parentItem(),
       availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
       bonusEvasion: makeInt(0),

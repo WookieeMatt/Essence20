@@ -38,6 +38,29 @@
           {{/if}}
         </div>
       {{/if}}
+      {{!-- Riding a creature, or being ridden - mechanics/companions/mounts.mjs. --}}
+      {{#if riding}}
+        <div class="e20-aboard">
+          <span class="e20-state-badge --aboard">{{localize "E20.MountRiding"}}</span>
+          <a class="e20-aboard__carrier" data-action="mountOpen">{{riding.mountName}}</a>
+          {{#if editable}}
+            <a class="e20-aboard__button" data-action="mountDismount"><i class="fas fa-person-walking-arrow-loop-left"></i> {{localize "E20.MountDismount"}}</a>
+          {{/if}}
+        </div>
+      {{/if}}
+      {{#if mountRiders}}
+        <div class="e20-aboard">
+          <span class="e20-state-badge --aboard">{{localize "E20.MountRiders" count=mountRiders.riders.length limit=mountRiders.limit}}</span>
+          {{#each mountRiders.riders as |rider|}}
+            <a class="e20-aboard__carrier" data-action="mountOpen" data-uuid="{{rider.uuid}}">{{rider.name}}</a>
+            {{#if @root.editable}}
+              <a class="e20-aboard__button" data-action="mountRiderOff" data-uuid="{{rider.uuid}}" data-tooltip="{{localize 'E20.MountPutOff'}}" aria-label="{{localize 'E20.MountPutOff'}}"><i class="fas fa-xmark"></i></a>
+            {{/if}}
+          {{else}}
+            <span class="hint">{{localize "E20.MountNoRiders"}}</span>
+          {{/each}}
+        </div>
+      {{/if}}
     </div>
 
     {{!-- Size --}}

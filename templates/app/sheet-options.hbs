@@ -1,5 +1,15 @@
 <div class="trait-selector flexcol">
   {{!-- NPC / Contact moved to the NPC sheet header's buttons (headers/npc.hbs). --}}
+  {{!-- Crossover worlds: the line a Role-less actor plays by, GM only (apps/sheet-options.mjs#picksRulesLine). --}}
+  {{#if rulesLine}}
+    {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.RulesLine'}}
+    {{#*inline "field-inputs"}}
+      <select name="{{rulesLine.name}}" data-tooltip="{{localize 'E20.RulesLineHint'}}">
+        {{selectOptions rulesLine.choices selected=rulesLine.value}}
+      </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/app/parts/field.hbs"}}
+  {{/if}}
   {{#if (ne role.system.version 'powerRanger')}}
     {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.CanMorph'}}
     {{#*inline "field-inputs"}}
@@ -37,6 +47,20 @@
     {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.CanShowWealthDie'}}
     {{#*inline "field-inputs"}}
       <input type="checkbox" id="canShowWealthDie" name="system.canShowWealthDie" {{checked system.canShowWealthDie}}/>
+    {{/inline}}
+    {{/"systems/essence20/templates/app/parts/field.hbs"}}
+  {{/if}}
+
+  {{!-- Homebrew mounts (mechanics/companions/mounts.mjs): a companion or NPC that can be ridden, and by how many. --}}
+  {{#if (or (eq actor.type "companion") (eq actor.type "npc"))}}
+    {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.MountRideable'}}
+    {{#*inline "field-inputs"}}
+      <input type="checkbox" id="mountRideable" name="system.mount.rideable" {{checked system.mount.rideable}}/>
+    {{/inline}}
+    {{/"systems/essence20/templates/app/parts/field.hbs"}}
+    {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.MountRiderLimit'}}
+    {{#*inline "field-inputs"}}
+      <input type="number" id="mountRiders" name="system.mount.riders" value="{{system.mount.riders}}" min="1" step="1"/>
     {{/inline}}
     {{/"systems/essence20/templates/app/parts/field.hbs"}}
   {{/if}}
