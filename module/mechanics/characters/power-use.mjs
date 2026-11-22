@@ -1,5 +1,5 @@
 import { postPerkUseChatCard } from "./perks.mjs";
-import { rollPowerAttack } from "./attack-powers.mjs";
+import { isAttackPower, rollPowerAttack } from "./attack-powers.mjs";
 import { powerGateOpen } from "../../rules/plugins/resources/power-gate.mjs";
 import { activateMonsterGrow } from "../../items/forms/monster-grow.mjs";
 
@@ -21,6 +21,53 @@ export function canUsePower(item) {
   }
 
   return powerGateOpen(item);
+}
+
+const escape = text => String(text ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+
+/**
+ * The "Power used" chat card: who used which Power. Its flags are what animation modules read:
+ * - `powerUsed`: the card is a Power's use (Essence20 FX hands the Power to Automated Animations itself, so it has
+ *   Automated Animations skip these cards rather than play them twice - essence20-fx's aa-bridge.mjs);
+ * - `itemUuid` + `tokenUuid`: the Power and the user's token - what Automated Animations' handling for a system it
+ *   has no support of its own for looks up to play the Power's animation (its own AA settings, or its name in Automatic
+ *   Recognition). An attack Power's card leaves the Power off: its attack roll card carries it, and the animation
+ *   belongs to the attack (else it plays twice).
+ * @param {Actor} actor
+ * @param {Item} item       The Power.
+ * @param {Object} [options]
+ * @param {Object} [options.speaker]   ChatMessage.getSpeaker's result.
+ * @param {String} [options.tokenUuid] The user's token on the scene, if any.
+ * @returns {Object}  ChatMessage data
+ */
+export function powerUsedCardData(actor, item, { speaker = {}, tokenUuid = null } = {}) {
+  const text = game.i18n.format('E20.PowerUsedCard', { actor: escape(actor?.name), power: escape(item?.name) });
+  return {
+    speaker,
+    content: `<p class="e20-power-used">${text}</p>`,
+    flags: {
+      essence20: {
+        powerUsed: true,
+        ...(isAttackPower(item) || !item?.uuid ? {} : { itemUuid: item.uuid }),
+        ...(tokenUuid ? { tokenUuid } : {}),
+      },
+    },
+  };
+}
+
+/** The actor's token on the scene: an unlinked token's own, else the first of its active tokens. */
+function tokenUuidOf(actor) {
+  return actor?.token?.uuid ?? actor?.getActiveTokens?.()?.[0]?.document?.uuid ?? null;
+}
+
+/** Post the Power used card (powerUsedCardData). A card that can't be posted never stops the Power. */
+async function postPowerUsedCard(actor, item) {
+  try {
+    const speaker = globalThis.ChatMessage?.getSpeaker?.({ actor }) ?? {};
+    await globalThis.ChatMessage?.create?.(powerUsedCardData(actor, item, { speaker, tokenUuid: tokenUuidOf(actor) }));
+  } catch (error) {
+    console.warn('Essence20 | Power used card', error);
+  }
 }
 
 /**
@@ -52,6 +99,9 @@ export async function onPowerUse(actor, item, amountSpent = 0, { sourceId: sourc
   if (!actor || !item) {
     return;
   }
+
+  // Said in chat first, so the card sits above whatever the Power does (and animation modules can see it).
+  await postPowerUsedCard(actor, item);
 
   // The Power's own rules: its powerUsed Triggers (rules/plugins/resources/power-used.mjs), @var.spent = amountSpent.
   const { firePowerUsed } = await import("../../rules/plugins/resources/power-used.mjs");

@@ -3919,6 +3919,7 @@
     "PerkSubPerkChoiceList": "Choice list (used by the Pick Sub-Perk rule)",
     "PerkType": "Type",
     "PerkUse": "Use",
+    "PowerUsedCard": "{actor} uses <strong>{power}</strong>.",
     "PerkUsedNotification": "{perk} used on {actor}.",
     "PlanOfActionNoAllies": "No allies within reach to grant Plan of Action to.",
     "PlanOfActionPickAllyTitle": "Grant Plan of Action",
