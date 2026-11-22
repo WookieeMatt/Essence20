@@ -10,6 +10,11 @@ import { activation } from './templates/activation.mjs';
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
 
+/** A Sorcerous Power's cost: never below 1 (Finster's Monster-Matic Cookbook p.274), a blank one included. */
+export function sorcerousPowerCost(cost) {
+  return Math.max(1, parseInt(cost) || 0);
+}
+
 export class PowerItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
@@ -57,6 +62,13 @@ export class PowerItemData extends foundry.abstract.TypeDataModel {
     // See SpellItemData's own note - the readable duration is built once here rather than in
     // each template that shows it.
     this.durationLabel = formatDuration(this.duration);
+
+    // "The point cost for any Power cannot be modified lower than 1" (Finster's Monster-Matic Cookbook p.274): a
+    // Sorcerous Power whose reductions (a focus, a ritual...) were taken off by hand still costs 1 - on its sheet and
+    // against the Sorcery budget (documents/actor.mjs#_prepareSorcerousPower).
+    if (this.type == 'sorcerous') {
+      this.powerCost = sorcerousPowerCost(this.powerCost);
+    }
 
     return super.prepareDerivedData();
   }

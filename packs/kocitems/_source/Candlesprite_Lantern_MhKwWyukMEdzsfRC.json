@@ -26,7 +26,8 @@
     },
     "quantity": 1,
     "range": "5 feet",
-    "spellcastingShift": "d6"
+    "spellcastingShift": "d6",
+    "form": "talisman"
   },
   "effects": [],
   "sort": 0,

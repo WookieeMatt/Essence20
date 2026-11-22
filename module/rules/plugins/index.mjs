@@ -294,6 +294,7 @@ import "./picks/create-companion.mjs";
 // ---- Round 15 (systems) - docs/rules-batches/slSystems15.md ----
 // powerUsed Trigger event + FreeUse (the Powers' own effects).
 import "./resources/power-used.mjs";
+import "./resources/bauble-used.mjs";
 // rollCheck step (a Skill Test whose card carries Apply Damage buttons).
 import "./combat/roll-card-damage.mjs";
 // morph step (the sheet's Morph flow).
@@ -608,6 +609,7 @@ import "./resources/expiring-story-points.mjs";
 import "./zords/summon-arrival.mjs";
 // Step buildSorcerousPower - the Sorcery builder dialog as a Use step (Sorcery).
 import "./picks/sorcery-builder-step.mjs";
+import "./picks/sorcerous-focus-steps.mjs";
 // ---- Round 18 (convB) - end ----
 // ---- Perk choice P1 (docs/PERK_CHOICE_MIGRATION_PLAN.md) - start ----
 // Pick sources config / sense / environment / movement / element (pick steps and ChoiceSet), notHeld / held.

@@ -7,7 +7,7 @@
   "system": {
     "automation": {
       "status": "partial",
-      "notes": "<p>On the sheet: rolling it makes a Spellcasting test at your own rank or the potion's d2, whichever is better.</p><p>Left to the table: the adaptation it grants, its one-day duration, and removing the potion once it's drunk.</p>"
+      "notes": "<p>A potion: no Spellcasting test and no cost - it always works. Using it counts one down (the last is removed).</p><p>Left to the table: the adaptation it grants and its one-day duration.</p>"
     },
     "originalId": "",
     "description": "",
@@ -23,7 +23,8 @@
     },
     "quantity": 1,
     "range": "Reach",
-    "spellcastingShift": "d2"
+    "spellcastingShift": "d2",
+    "form": "potion"
   },
   "effects": [],
   "sort": 200000,

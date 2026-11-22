@@ -6,11 +6,11 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","label":"Petite Pony's Shrink Drink","event":"afterRoll","outcome":"any","when":["item:own","roll:firstRow:success"],"steps":[{"do":"sizeChange","key":"sizePotion","set":"small","until":"scene"}]}
+      {"type":"Trigger","label":"Petite Pony's Shrink Drink","event":"baubleUsed","when":["item:own"],"steps":[{"do":"sizeChange","key":"sizePotion","set":"small","until":"scene"}]}
     ],
     "automation": {
       "status": "partial",
-      "notes": "<p>Roll it from the sheet (uses its own Spellcasting die). On a success your size becomes Small, the smallest size the system tracks.</p><p>Left to the table: shrinking all the way to Tiny, setting your size back when the scene ends, and your gear not shrinking with you.</p>"
+      "notes": "<p>A potion: no Spellcasting test and no cost - it always works. Using it counts one down (the last is removed). Your size becomes Small (the smallest size the system tracks) until the GM starts a new scene.</p><p>Left to the table: shrinking all the way to Tiny, and your gear not shrinking with you.</p>"
     },
     "originalId": "",
     "description": "",
@@ -26,7 +26,8 @@
     },
     "quantity": 1,
     "range": "Reach",
-    "spellcastingShift": "d4"
+    "spellcastingShift": "d4",
+    "form": "potion"
   },
   "effects": [],
   "sort": 0,

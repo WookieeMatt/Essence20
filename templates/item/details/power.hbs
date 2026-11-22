@@ -8,6 +8,18 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{!-- Needs a magical focus (Finster's Table 4-1: -1 point, never below 1) - a Sorcerous Power on an actor with foci.
+        Picking one also adds the focus gate; items/magic/sorcerous-focus.mjs#focusRequirementChanges. --}}
+  {{#if sorcerousFocusPicker}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SorcerousFocusNeeds'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="flags.essence20.sorcerousFocus.requires" data-tooltip="{{localize 'E20.SorcerousFocusNeedsHint'}}">
+    {{selectOptions sorcerousFocusPicker.options selected=sorcerousFocusPicker.requires blank=(localize 'E20.O2SorceryNoFocus')}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
   {{!-- Availability - printed for every G.I. Joe nanomite power (Standard, Limited, Restricted) --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerAvailability'}}
   {{#*inline "item-field-inputs"}}

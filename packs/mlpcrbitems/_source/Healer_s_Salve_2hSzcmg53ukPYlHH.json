@@ -6,8 +6,8 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: rolling it uses the better of your Spellcasting and the salve's own, then uses one up. Left to the table: healing the creature 2 Health.</p>"
+      "status": "full",
+      "notes": "<p>A potion: no Spellcasting test and no cost - it always works. Using it counts one down (the last is removed). Heals the targeted creature (you, with nobody targeted) 2 Health.</p>"
     },
     "originalId": "",
     "description": "",
@@ -26,7 +26,11 @@
     },
     "quantity": 1,
     "range": "Reach",
-    "spellcastingShift": "d4"
+    "spellcastingShift": "d4",
+    "form": "potion",
+    "rules": [
+      {"type":"Trigger","label":"Healer's Salve","event":"baubleUsed","when":["item:own"],"steps":[{"do":"heal","to":"targetOrSelf","amount":2}]}
+    ]
   },
   "effects": [],
   "sort": 0,

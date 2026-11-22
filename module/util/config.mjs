@@ -328,6 +328,9 @@ E20.armorTraits = {
   regal: "E20.ArmorTraitRegal",
   shield: "E20.ArmorTraitShield",
   silent: "E20.ArmorTraitSilent",
+  // Sorcerous (Finster's Monster-Matic Cookbook): worn armor with a magical focus built in (p.274), or marked by a
+  // Sorcerous Power's trait build (Table 4-1, p.273) - items/magic/sorcerous-focus.mjs.
+  sorcerous: "E20.ArmorTraitSorcerous",
   temperamental: "E20.ArmorTraitTemperamental",
   xenotech: "E20.ArmorTraitXenotech",
 };
@@ -1417,6 +1420,14 @@ E20.spellTiers = {
   virtuoso: "E20.SpellTierVirtuoso",
 };
 preLocalize("spellTiers");
+
+// Magic Bauble forms (MLP CRB p.141, Using Magic Baubles) - data/item/magic-bauble.mjs's system.form.
+E20.baubleForms = {
+  scroll: "E20.BaubleFormScroll",
+  potion: "E20.BaubleFormPotion",
+  talisman: "E20.BaubleFormTalisman",
+};
+preLocalize("baubleForms");
 
 // Options for Spell Circles
 E20.spellCircles = {

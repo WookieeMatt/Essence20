@@ -6,8 +6,8 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "automation": {
-      "status": "manual",
-      "notes": "<p>Nothing automatic. Left to the table: the mood music and its harmless effects.</p>"
+      "status": "partial",
+      "notes": "<p>A talisman: no Spellcasting test. Using it counts one down (the last is removed).</p><p>Left to the table: the mood music and its harmless effects.</p>"
     },
     "originalId": "",
     "description": "",
@@ -23,7 +23,8 @@
     },
     "quantity": 1,
     "range": "120 foot radius",
-    "spellcastingShift": "d4"
+    "spellcastingShift": "d4",
+    "form": "talisman"
   },
   "effects": [],
   "sort": 0,

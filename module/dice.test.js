@@ -10872,6 +10872,12 @@ describe("Environment-reading weapon/armor traits (Across the Stars p.24-25/79/8
       expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(false);
     });
 
+    test("Zero-G leaves an Energy damageType (stored as element) weapon alone", () => {
+      const actor = makeEnvironmentActor({ environment: 'zeroGravity' });
+      const item = attachWeapon(actor, makeWeaponEffect({ traits: [], damageType: 'element' }));
+      expect(dice._getAutomaticCombatModifiers(actor, item, 'strength', 'targeting').snag).toBe(false);
+    });
+
     test("Vacuum Snags any ranged attack", () => {
       const actor = makeEnvironmentActor({ environment: 'vacuum' });
       const item = attachWeapon(actor, makeWeaponEffect({ traits: [] }));

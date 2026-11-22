@@ -21,7 +21,7 @@ import { isInactiveMythicForm } from "../items/attacks/mythically-modular.mjs";
 import { checkVehicularEligibility } from "../mechanics/combat/vehicular-trait.mjs";
 import { addOngoingEffect } from "../mechanics/combat/ongoing-effects.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
-import { betterShift, updateRoleCache } from "../util/utils.mjs";
+import { updateRoleCache } from "../util/utils.mjs";
 import { placeAoeTemplate } from "../mechanics/combat/aoe-targeting.mjs";
 import { ruleAreaExclusions, ruleBeforeArea } from "../rules/plugins/combat/before-area.mjs";
 import { ruleAttackChoice } from "../rules/plugins/combat/attack-choice.mjs";
@@ -1217,28 +1217,17 @@ export class Essence20Item extends Item {
       // not it affected the roll that just happened.
       await this.actor.update({ 'system.skills.spellcasting.shiftDown': priorDownshift + castingCost });
     } else if (this.type == 'magicBauble') {
-      const essence = 'any';
-      const skill = 'spellcasting';
-      /* "If the spell calls for a Spellcasting Skill Test, you use your own Spellcasting Skill, or
-         the Spellcasting Skill noted on the Magic Bauble (whichever is higher)" (MLP CRB p.143).
+      if (!this.actor) {
+        return;
+      }
 
-         This used to take the bauble's own shift unconditionally, which had it backwards for the
-         case the rule exists to cover: a trained spellcaster drinking a d2 potion was DOWNGRADED to
-         the potion's rank instead of keeping their own. The bauble only ever helps - it is a floor
-         under an untrained pony, not a ceiling on a skilled one. */
-      const shift = betterShift(this.actor.system.skills.spellcasting.shift, this.system.spellcastingShift);
-      // Whichever shift wins, any lingering Casting Cost downshift (MLP CRB p.132) still applies
-      // on top - the bauble supplies a rank, not immunity to what earlier casting has cost you.
-      const shiftDown = this.actor.system.skills.spellcasting.shiftDown;
-      const spellDataset = {
-        ...dataset,
-        essence,
-        shift,
-        skill,
-        shiftDown,
-      };
-
-      const baubleResult = await this._rollWithRefund(spellDataset, this.actor, spent);
+      /* Each form is used its own way (MLP CRB p.141) - items/magic/magic-baubles.mjs#useMagicBauble: a scroll rolls
+         Spellcasting at the better of the user's rank and the bauble's ("whichever is higher" - the bauble is a floor
+         under an untrained pony, never a ceiling on a skilled one, and any lingering Casting Cost downshift still
+         applies on top); a potion needs no test; a talisman needs no test but costs its user the spell's downshift. A
+         bauble holding an attack still rolls it (not a potion). */
+      const { useMagicBauble } = await import("../items/magic/magic-baubles.mjs");
+      const baubleResult = await useMagicBauble(this, dataset, spellDataset => this._rollWithRefund(spellDataset, this.actor, spent));
 
       /* "As a consumable item, once any magic bauble is used, it is done. A potion is drunk, a
          scroll is consumed by magic, a statue crumbles to dust... it can only ever be used once"

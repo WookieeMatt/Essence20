@@ -6,11 +6,11 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "rules": [
-      {"type":"Trigger","label":"Massive Mug of Mammoth Measurements","event":"afterRoll","outcome":"any","when":["item:own","roll:firstRow:success"],"steps":[{"do":"sizeChange","key":"sizePotion","set":"huge","until":"scene"}]}
+      {"type":"Trigger","label":"Massive Mug of Mammoth Measurements","event":"baubleUsed","when":["item:own"],"steps":[{"do":"sizeChange","key":"sizePotion","set":"huge","until":"scene"}]}
     ],
     "automation": {
       "status": "full",
-      "notes": "<p>Roll it from the sheet (uses its own Spellcasting die). On a success your size becomes Huge until the GM starts a new scene, then goes back to what it was. Your gear not growing with you is flavor.</p>"
+      "notes": "<p>A potion: no Spellcasting test and no cost - it always works. Using it counts one down (the last is removed). Your size becomes Huge until the GM starts a new scene, then goes back to what it was.</p><p>Your gear not growing with you is flavor.</p>"
     },
     "originalId": "",
     "description": "",
@@ -26,7 +26,8 @@
     },
     "quantity": 1,
     "range": "Reach",
-    "spellcastingShift": "d4"
+    "spellcastingShift": "d4",
+    "form": "potion"
   },
   "effects": [],
   "sort": 0,
