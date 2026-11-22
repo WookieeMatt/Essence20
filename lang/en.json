@@ -4387,6 +4387,7 @@
     "SneakAttackReasonTargetImmune": "Target does not suffer sneak attack damage",
     "SnortleNothingToCure": "Your target has no mind-affecting condition to cure.",
     "SorcerousPower": "Sorcerous Power",
+    "SorceryBudget": "Sorcery budget",
     "SorcerousFocusAttackName": {
       "melee": "{focus} (melee attack)",
       "ranged": "{focus} (ranged attack)"

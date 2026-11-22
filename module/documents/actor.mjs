@@ -563,8 +563,12 @@ export class Essence20Actor extends Actor {
     this._prepareHealth();
     this._prepareMovement();
 
-    if (this.type == 'playerCharacter') {
+    // The Sorcery budget (Finster's p.274): any actor with the Perk - a sorcerer NPC/Threat builds its Powers the same way.
+    if (this.type == 'playerCharacter' || this.type == 'npc') {
       this._prepareSorcerousPower();
+    }
+
+    if (this.type == 'playerCharacter') {
       this._prepareResource();
       // Item rules' DerivedStat at stage early (Metier's poison step), before the training is worked out.
       earlyDerivedStats(this);
@@ -1579,6 +1583,10 @@ export class Essence20Actor extends Actor {
    */
   _prepareSorcerousPower() {
     const system = this.system;
+    if (!system.powers?.sorcerous) {
+      return;
+    }
+
     const levelMultiplier = system.level - system.powers.sorcerous.levelTaken;
     if (system.powers.sorcerous.levelTaken) {
       system.powers.sorcerous.max = (levelMultiplier * 2) + 4;
