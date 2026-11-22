@@ -156,7 +156,9 @@ describe('bonded partners', () => {
   test('the Powermaster module regains Energon from Energy (stored as element) or Laser damage only', async () => {
     const partner = actor({ uuid: 'Actor.p' });
     const holder = actor({ uuid: 'Actor.h', items: [item(BOND.powermaster)], flags: { bond: { partner: 'Actor.p', linked: true }, powermasterEnergon: 1 } });
-    holder.setFlag = jest.fn(async (scope, key, value) => { holder.flags.essence20[key] = value; });
+    holder.setFlag = jest.fn(async (scope, key, value) => {
+      holder.flags.essence20[key] = value;
+    });
     actors.push(partner, holder);
     await onBondedHit(holder, 'blunt');
     expect(moduleEnergon(holder)).toBe(1);
