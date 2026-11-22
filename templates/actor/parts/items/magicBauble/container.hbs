@@ -1,6 +1,13 @@
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.magicBaubles title="E20.ItemTypeMagicBaublePlural" dataType="magicBauble"}}
   {{#*inline "roll-button" item}}
-    <a class="rollable" data-action="rollable" data-roll-type="magicBauble"  data-tooltip="{{localize 'E20.MagicBaubleTitle'}}"><i class="fas fa-dice-d20" data-roll-type="magicBauble"></i></a>
+    {{!-- A bauble with its own Use rule (Shard of Power, Smoke Screen...) is used through that, as a Power is. --}}
+    {{#if (hasItemUse item)}}
+      {{#if (canUsePerk item)}}
+        <a class="perk-use" data-action="perkUse" data-id="{{item._id}}" data-tooltip="{{localize 'E20.PerkUse'}}"><i class="fas fa-bolt"></i></a>
+      {{/if}}
+    {{else}}
+    <a class="rollable" data-action="rollable" data-roll-type="magicBauble"  data-tooltip="{{localize 'E20.MagicBaubleTitle'}}"><i class="fas {{#if (eq item.system.form 'scroll')}}fa-dice-d20{{else}}fa-hand-sparkles{{/if}}" data-roll-type="magicBauble"></i></a>
+    {{/if}}
   {{/inline}}
 
   {{#*inline "expand-details" item}}

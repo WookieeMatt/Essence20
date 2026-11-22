@@ -9,12 +9,13 @@
       {"type":"Grant","label":"Cost of Sorcery","uuid":"Compendium.essence20.finster_s_monster_matic_cookbook.Item.BRpf0FNey5oDEvq3","skipIfOwned":true},
       {"type":"Trigger","event":"added","label":"Sorcery taken at this level","steps":[{"do":"updateActor","to":"self","set":{"system.powers.sorcerous.levelTaken":"@actor.system.level"}}]},
       {"type":"Trigger","event":"removed","label":"Sorcery removed","steps":[{"do":"updateActor","to":"self","set":{"system.powers.sorcerous.levelTaken":0}}]},
-      {"type":"Use","label":"Build a Sorcerous Power","steps":[{"do":"buildSorcerousPower"}]}
+      {"type":"Use","label":"Build a Sorcerous Power","steps":[{"do":"buildSorcerousPower"}]},
+      {"type":"Use","label":"Build an enchanted item or focus","steps":[{"do":"buildSorcerousFocus"}]}
     ],
     "prerequisites": {"when":[{"any":["self:skill:culture>=d2","self:skill:performance>=d2"]},"ask:Arcane or Rituals Specialization"]},
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: taking the Perk sets up your Sorcerous Power budget (4 points, +2 each level after) and adds the Cost of Sorcery Hang-Up. Use button: build a Sorcerous Power from the cost table (Energy damage is the base type; no Power costs less than 1 point); it's added to your sheet, and you're warned if it goes over budget.</p>"
+      "notes": "<p>Granted: taking the Perk sets up your Sorcerous Power budget (4 points, +2 each level after) and adds the Cost of Sorcery Hang-Up.</p><p>Use button \"Build a Sorcerous Power\": build one from the cost table (Energy damage is the base type; no Power costs less than 1 point); it's added to your sheet, and you're warned if it goes over budget. A trait build puts the Sorcerous trait on the weapon or armor you pick. \"Needs a magical focus\" links the Power to one of your foci: it can be used only while that focus is in hand.</p><p>Use button \"Build an enchanted item or focus\": spends 2 points (1 for a one-use focus, +1 for a unique adjustment) on a magical focus, built into one of your weapons, armor or gear or an object of its own. A weapon or armor gains the Sorcerous trait. It can grant a basic attack or a Sorcerous Power of up to 3 points, usable once per scene while the focus is in hand. The focus has its own buttons: lost, summoned back for a Story Point, destroyed, and replaced by an hour-long ritual (DIF 15 Performance). A one-use focus is used up the first time.</p><p>Left to the table: how long the replacement ritual takes, and special situations where the focus can't be summoned.</p>"
     },
     "originalId": "",
     "description": "",

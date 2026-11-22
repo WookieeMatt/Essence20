@@ -28,7 +28,8 @@
     },
     "quantity": 1,
     "range": "Reach",
-    "spellcastingShift": "d8"
+    "spellcastingShift": "d8",
+    "form": "potion"
   },
   "effects": [],
   "sort": 0,

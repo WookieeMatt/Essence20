@@ -6,8 +6,8 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "automation": {
-      "status": "partial",
-      "notes": "<p>Automatic: rolling it uses the better of your Spellcasting and the watch's own, then uses one up. Left to the table: making the target Confused for 1 round.</p>"
+      "status": "full",
+      "notes": "<p>A talisman: no Spellcasting test, but using it downshifts your Spellcasting by 3. Using it counts one down (the last is removed). The creature you target is Confused for 1 round.</p>"
     },
     "originalId": "",
     "description": "",
@@ -26,7 +26,12 @@
     },
     "quantity": 1,
     "range": "60 feet",
-    "spellcastingShift": "d6"
+    "spellcastingShift": "d6",
+    "form": "talisman",
+    "castingCost": 3,
+    "rules": [
+      {"type":"Trigger","label":"Pocket Watch of Mind Manipulation","event":"baubleUsed","when":["item:own"],"steps":[{"do":"applyCondition","condition":"confused","to":"target","rounds":1}]}
+    ]
   },
   "effects": [],
   "sort": 0,

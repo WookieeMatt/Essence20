@@ -193,9 +193,12 @@ async function drawModuleEnergon(actor, pay) {
   return T('E20.PowermasterDrawn', { name: actor.name, left: left - 1 });
 }
 
-/** Called by mechanics/combat/combat.mjs#applyDamage when an actor is hit. */
+/**
+ * Called by mechanics/combat/combat.mjs#applyDamage when an actor is hit. "Energy or Laser damage" (Enigma of
+ * Combination p.41): the book's Energy damage is stored as 'element' (this system has no 'energy' damage type).
+ */
 export async function onBondedHit(actor, damageType) {
-  if (['energy', 'laser'].includes(damageType) && has(actor, BOND.powermaster) && isLinked(actor) && moduleEnergon(actor) < 3) {
+  if (['element', 'laser'].includes(damageType) && has(actor, BOND.powermaster) && isLinked(actor) && moduleEnergon(actor) < 3) {
     await actor.setFlag('essence20', 'powermasterEnergon', moduleEnergon(actor) + 1);
   }
 }

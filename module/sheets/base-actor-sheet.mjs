@@ -112,6 +112,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       levelUp: this.#onLevelUp,
       morph: this.#onMorph,
       perkUse: this.#onPerkUse,
+      craftMagicBauble: this.#onCraftMagicBauble,
       recharge: this.#onRecharge,
       recoverSpellcastingDownshift: this.#onRecoverSpellcastingDownshift,
       rest: this.#onRest,
@@ -1188,6 +1189,17 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onPerkUse(event, target) {
     onPerkUseClick(target, this);
+  }
+
+  /** Make a Magic Bauble from the clicked spell (items/magic/magic-baubles.mjs). */
+  static async #onCraftMagicBauble(event, target) {
+    const spell = this.actor.items.get(target.dataset.id);
+    if (!this.document.isOwner || !spell) {
+      return;
+    }
+
+    const { craftMagicBauble } = await import("../items/magic/magic-baubles.mjs");
+    await craftMagicBauble(this.actor, spell);
   }
 
   static #onRoll(event) {

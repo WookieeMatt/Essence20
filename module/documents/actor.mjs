@@ -1587,7 +1587,8 @@ export class Essence20Actor extends Actor {
     }
 
     system.powers.sorcerous.committed = this.items.documentsByType.power
-      .filter(power => power.system.type == 'sorcerous')
+      // A Power a magical focus grants was paid for by the focus (items/magic/sorcerous-focus.mjs, p.274).
+      .filter(power => power.system.type == 'sorcerous' && !power.flags?.essence20?.sorcerousFocus?.grantedBy)
       .reduce((total, power) => total + (parseInt(power.system.powerCost) || 0), 0);
   }
 

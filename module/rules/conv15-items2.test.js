@@ -2026,7 +2026,7 @@ describe('Guardian Blast', () => {
     await rollFor(other, true);
     buttonCards().at(-1).flags.essence20.ruleButton.used = false;
     await pressLast();
-    expect(dealt).toEqual([{ name: 'Foe', amount: 5, type: 'energy' }]);
+    expect(dealt).toEqual([{ name: 'Foe', amount: 5, type: 'element' }]);
   });
 });
 

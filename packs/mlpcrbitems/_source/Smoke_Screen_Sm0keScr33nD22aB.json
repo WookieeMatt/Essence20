@@ -29,7 +29,8 @@
     },
     "quantity": 1,
     "range": "20ft radius",
-    "spellcastingShift": "d4"
+    "spellcastingShift": "d4",
+    "form": "talisman"
   },
   "effects": [],
   "sort": 0,

@@ -9,6 +9,8 @@ import "./attacks/on-hit-status-drive-by.mjs";
 import "./shared/finster-item-ids.mjs";
 import "./attacks/psycho-weapon-riders.mjs";
 import "./magic/mystic-non-mystical.mjs";
+// Magic Baubles: their forms, making one from a spell, and a full rest restoring Spellcasting (MLP CRB p.140-142).
+import "./magic/magic-baubles.mjs";
 import "../mechanics/combat/poisoned-hate-plague.mjs";
 import "./rolls/personal-vehicle-edge.mjs";
 import "../mechanics/combat/implied-conditions.mjs";
