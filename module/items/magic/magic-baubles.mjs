@@ -214,6 +214,8 @@ async function askCraft(actor, spell, terms, rank, pending) {
   buttons.push({ action: 'cancel', label: game.i18n.localize('E20.DialogCancelButton') });
   const answer = await foundry.applications.api.DialogV2.wait({
     window: { title: T('BaubleCraftTitle', { spell: spell.name }) },
+    // A fixed width: with none, the long intro paragraph stretches the dialog across the screen.
+    position: { width: 460 },
     classes: ["window-app", "e20-window"],
     content,
     buttons,

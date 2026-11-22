@@ -454,6 +454,8 @@ function readFocusForm(form) {
 export async function buildSorcerousFocus(actor) {
   const build = await foundry.applications.api.DialogV2.wait({
     window: { title: T('SorcerousFocusTitle') },
+    // A fixed width: with none, the long intro paragraph stretches the dialog across the screen.
+    position: { width: 460 },
     classes: ["window-app", "e20-window"],
     content: focusForm(actor),
     buttons: [
