@@ -28,7 +28,8 @@
     },
     "isSpecialized": false,
     "range": "60 feet",
-    "tier": "superior"
+    "tier": "superior",
+    "defenseType": "evasion"
   },
   "effects": [],
   "sort": 0,

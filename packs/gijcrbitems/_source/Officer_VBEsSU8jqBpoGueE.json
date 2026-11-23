@@ -44,7 +44,19 @@
         "name": "Rouse",
         "type": "perk",
         "subtype": "role",
-        "level": 1
+        "level": 1,
+        "choiceGroup": "cobra-officer",
+        "choiceSide": "rouse"
+      },
+      "eb15": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.5HimuCoEpjYRiOSV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Play Favorites",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1,
+        "choiceGroup": "cobra-officer",
+        "choiceSide": "play-favorites"
       },
       "l3xm": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.qIiCm9vHXFnLYprP",
@@ -116,7 +128,19 @@
         "name": "Rousing Presence",
         "type": "perk",
         "subtype": "role",
-        "level": 15
+        "level": 15,
+        "choiceGroup": "cobra-officer",
+        "choiceSide": "rouse"
+      },
+      "765e": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.f6hlQSJhLCTSAILh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Play Favorites Against Each Other",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15,
+        "choiceGroup": "cobra-officer",
+        "choiceSide": "play-favorites"
       },
       "0e8a": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.Czabb7MnyglRRo2P",

@@ -131,7 +131,7 @@ export async function grantItemEntry(key, item, owner, parentItem) {
  * @param {Actor} owner The Items' owner
  * @param {Item} parentItem The Items' parent Item (e.g. the Role)
  */
-async function promptRolePerkChoice(group, owner, parentItem) {
+async function promptRolePerkChoice(group, owner, parentItem, followUps = null) {
   const choices = {};
   for (const [key, entry] of group) {
     choices[key] = {
@@ -143,10 +143,124 @@ async function promptRolePerkChoice(group, owner, parentItem) {
     };
   }
 
-  new ChoicesSelector(
+  const dialog = new ChoicesSelector(
     choices, owner, 'E20.SelectRolePerk', 'E20.SelectRolePerkTitle', parentItem,
     null, null, null, null, null, 'rolePerk',
-  ).render(true);
+  );
+  // The same Choice Group's later levels that were also due in this pass (see processChoiceChain): they wait for
+  // this pick, then ChoicesSelector's "rolePerk" action resolves them with it.
+  dialog._rolePerkFollowUps = followUps;
+  dialog.render(true);
+}
+
+/**
+ * The side of a Choice Group an entry belongs to: its choiceSide, or else its own Item. Entries on one side are
+ * taken or turned down together, so one pick at the first level settles every later level of the group.
+ * @param {Object} entry A collection entry
+ * @return {String} The side
+ */
+function choiceSideOf(entry) {
+  return entry.choiceSide || entry.uuid;
+}
+
+/**
+ * What an earlier pick in the same Choice Group already settles at this level, or null when nothing has been picked.
+ * A Choice Group can span levels, one side replacing a whole series: Blue's Defensive Flexibility in place of
+ * Grid Tech I-IV (A Jump Through Time p.45), Renegade Commander in place of Reckless Abandon, Not Done Yet and
+ * Ready for Anything (Sgt Slaughter Sourcebook p.12). Once a side is taken, a later level grants that side's
+ * entries and none of the other's - which can be nothing at all, when only the side turned down has one there.
+ * @param {Array<[String, Object]>} group This level's [key, entry] alternatives
+ * @param {Object} items The parent's whole collection
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item
+ * @param {Set<String>} grantedKeys Keys granted in this pass, whose flags may not be written yet
+ * @return {Array<[String, Object]>|null} The settled [key, entry] pairs, or null
+ */
+export function settledChainPicks(group, items, owner, parentItem, grantedKeys = new Set()) {
+  const [, first] = group[0];
+  const level = first.level ?? 0;
+  const earlier = Object.entries(items).filter(([, entry]) =>
+    entry.choiceGroup == first.choiceGroup && entry.type == first.type && (entry.level ?? 0) < level);
+  if (!earlier.length) {
+    return null;
+  }
+
+  const ownedKeys = new Set(grantedKeys);
+  for (const ownerItem of owner.items ?? []) {
+    const flags = ownerItem.flags?.essence20;
+    if (flags?.parentId == parentItem._id && flags.collectionId) {
+      ownedKeys.add(flags.collectionId);
+    }
+  }
+
+  const chosenSides = new Set(earlier.filter(([key]) => ownedKeys.has(key)).map(([, entry]) => choiceSideOf(entry)));
+  if (!chosenSides.size) {
+    return null;
+  }
+
+  return group.filter(([, entry]) => chosenSides.has(choiceSideOf(entry)));
+}
+
+/**
+ * Removes what the player's pick turned down that the parent had already granted: a Choice Group's other side can
+ * hold more than Perks - Meat Shield ignores the Personal Shield Uses column (Sgt Slaughter Sourcebook p.13), and
+ * those Role Points arrive with the Role, before its Perks are asked about.
+ * @param {Object} picked The chosen collection entry
+ * @param {Object} items The parent's whole collection
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item
+ */
+export async function removeTurnedDownSide(picked, items, owner, parentItem) {
+  if (!picked?.choiceGroup) {
+    return;
+  }
+
+  const side = choiceSideOf(picked);
+  const ids = [];
+  for (const ownerItem of owner.items ?? []) {
+    const flags = ownerItem.flags?.essence20;
+    const entry = flags?.parentId == parentItem._id ? items[flags.collectionId] : null;
+    if (entry?.choiceGroup == picked.choiceGroup && choiceSideOf(entry) != side) {
+      ids.push(ownerItem._id);
+    }
+  }
+
+  if (ids.length) {
+    await owner.deleteEmbeddedDocuments('Item', ids);
+  }
+}
+
+/**
+ * Grants one Choice Group's due levels in order: what an earlier pick settles, else a lone option outright, and
+ * otherwise asks - handing the levels after it to that dialog, so they follow the player's pick.
+ * @param {Array<Array<[String, Object]>>} groups The group's due levels, lowest first
+ * @param {Object} items The parent's whole collection
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item
+ * @param {Set<String>} grantedKeys Keys already granted in this pass
+ * @return {Promise<Boolean>} Whether a copy was created
+ */
+export async function processChoiceChain(groups, items, owner, parentItem, grantedKeys = new Set()) {
+  let copyWasCreated = false;
+
+  for (let i = 0; i < groups.length; i++) {
+    const group = groups[i];
+    const picks = settledChainPicks(group, items, owner, parentItem, grantedKeys) ?? (group.length == 1 ? group : null);
+    if (!picks) {
+      const rest = groups.slice(i + 1);
+      await promptRolePerkChoice(group, owner, parentItem, rest.length ? { groups: rest, items } : null);
+      break;
+    }
+
+    for (const [key, entry] of picks) {
+      grantedKeys.add(key);
+      if (await grantItemEntry(key, entry, owner, parentItem)) {
+        copyWasCreated = true;
+      }
+    }
+  }
+
+  return copyWasCreated;
 }
 
 /**
@@ -188,10 +302,18 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
 
     if (item.choiceGroup) {
       if (!choiceGroups.has(item.choiceGroup)) {
-        choiceGroups.set(item.choiceGroup, []);
+        choiceGroups.set(item.choiceGroup, new Map());
       }
 
-      choiceGroups.get(item.choiceGroup).push([key, item]);
+      // One choice per level: a group spanning several levels (Blue's Defensive Flexibility / Grid Tech I-IV) is asked
+      // at its first level, and its later ones follow that pick (processChoiceChain).
+      const levels = choiceGroups.get(item.choiceGroup);
+      const level = item.level ?? 0;
+      if (!levels.has(level)) {
+        levels.set(level, []);
+      }
+
+      levels.get(level).push([key, item]);
     } else {
       ungroupedEntries.push([key, item]);
     }
@@ -203,17 +325,10 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
     }
   }
 
-  for (const group of choiceGroups.values()) {
-    if (group.length > 1) {
-      // A real choice - divert to a dialog instead of granting every alternative.
-      await promptRolePerkChoice(group, owner, parentItem);
-    } else {
-      // Only one alternative is actually available right now (the others were never defined,
-      // or were already granted some other way) - nothing to choose, so just grant it.
-      const [key, item] = group[0];
-      if (await grantItemEntry(key, item, owner, parentItem)) {
-        copyWasCreated = true;
-      }
+  for (const levels of choiceGroups.values()) {
+    const groups = [...levels.entries()].sort(([a], [b]) => a - b).map(([, group]) => group);
+    if (await processChoiceChain(groups, items, owner, parentItem)) {
+      copyWasCreated = true;
     }
   }
 

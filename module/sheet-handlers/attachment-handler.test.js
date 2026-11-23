@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import {
-  _attachItem, createEntry, createItemCopies, deleteAttachmentsForItem, onEquipmentPackageDrop,
+  _attachItem, createEntry, createItemCopies, deleteAttachmentsForItem, onEquipmentPackageDrop, processChoiceChain, removeTurnedDownSide,
 } from './attachment-handler.mjs';
 import ChoicesSelector from '../apps/choices-selector.mjs';
 
@@ -260,6 +260,126 @@ describe("createItemCopies", () => {
 
     expect(global.Item.create).not.toHaveBeenCalled();
     expect(capturedDialog).toBeNull();
+  });
+  // A Choice Group spanning several levels (Blue's Defensive Flexibility in place of Grid Tech I-IV): one pick, then
+  // every later level follows it.
+  function blueChain() {
+    return {
+      g1: perkEntry({ name: "Grid Tech I", level: 2, choiceGroup: "blue", choiceSide: "grid-tech" }),
+      d1: perkEntry({ name: "DF", level: 2, choiceGroup: "blue" }),
+      g2: perkEntry({ name: "Grid Tech II", level: 7, choiceGroup: "blue", choiceSide: "grid-tech" }),
+      d2: perkEntry({ name: "DF", level: 7, choiceGroup: "blue" }),
+    };
+  }
+
+  function owned(...keys) {
+    // setPerkValues looks each owned Item up again by id (perk-handler.mjs#onPerkDrop), as a Collection would.
+    const list = keys.map(key => ({ _id: key, type: "perk", flags: { core: { sourceId: `owned.${key}` }, essence20: { parentId: "role1", collectionId: key } }, _stats: {}, system: { advances: {} } }));
+    list.get = id => list.find(entry => entry._id == id);
+    return list;
+  }
+
+  test("a group spanning levels asks only at its first due level, and hands the later ones to that dialog", async () => {
+    const owner = { system: { level: 10 }, items: [] };
+    const items = blueChain();
+
+    await createItemCopies(items, owner, "perk", makeRole(), 0, 10);
+
+    expect(global.Item.create).not.toHaveBeenCalled();
+    expect(Object.keys(capturedDialog._choices)).toEqual(["g1", "d1"]);
+    expect(capturedDialog._rolePerkFollowUps.groups.map(group => group.map(([key]) => key))).toEqual([["g2", "d2"]]);
+  });
+
+  test("a later level follows an earlier pick of the same perk (Defensive Flexibility again)", async () => {
+    const owner = { system: { level: 7 }, items: owned("d1") };
+
+    await createItemCopies(blueChain(), owner, "perk", makeRole(), 2, 7);
+
+    expect(capturedDialog).toBeNull();
+    expect(global.fromUuid).toHaveBeenCalledWith("Compendium.essence20.pr_crb.Item.DF");
+    expect(global.Item.create).toHaveBeenCalledTimes(1);
+  });
+
+  test("a later level follows an earlier pick of the series (Grid Tech II after Grid Tech I)", async () => {
+    const owner = { system: { level: 7 }, items: owned("g1") };
+
+    await createItemCopies(blueChain(), owner, "perk", makeRole(), 2, 7);
+
+    expect(capturedDialog).toBeNull();
+    expect(global.fromUuid).toHaveBeenCalledWith("Compendium.essence20.pr_crb.Item.Grid Tech II");
+  });
+
+  test("the dialog's pick resolves the follow-up levels, before the new Item's flags are even written", async () => {
+    const owner = { system: { level: 10 }, items: [] };
+    const items = blueChain();
+
+    await processChoiceChain([[["g2", items.g2], ["d2", items.d2]]], items, owner, makeRole(), new Set(["d1"]));
+
+    expect(capturedDialog).toBeNull();
+    expect(global.fromUuid).toHaveBeenCalledWith("Compendium.essence20.pr_crb.Item.DF");
+  });
+
+  // Renegade Commander (Sgt Slaughter Sourcebook p.12) in place of Reckless Abandon and the Perks built on it: the
+  // alternative has no entry of its own at the later levels.
+  function renegadeChain() {
+    return {
+      ra: perkEntry({ name: "Reckless Abandon", level: 1, choiceGroup: "rc", choiceSide: "ra" }),
+      rc: perkEntry({ name: "Renegade Commander", level: 1, choiceGroup: "rc", choiceSide: "rc" }),
+      ndy: perkEntry({ name: "Not Done Yet", level: 5, choiceGroup: "rc", choiceSide: "ra" }),
+    };
+  }
+
+  test("a later level holding only the side turned down grants nothing", async () => {
+    const owner = { system: { level: 5 }, items: owned("rc") };
+
+    await createItemCopies(renegadeChain(), owner, "perk", makeRole(), 1, 5);
+
+    expect(capturedDialog).toBeNull();
+    expect(global.Item.create).not.toHaveBeenCalled();
+  });
+
+  test("a later level holding only the side taken grants it", async () => {
+    const owner = { system: { level: 5 }, items: owned("ra") };
+
+    await createItemCopies(renegadeChain(), owner, "perk", makeRole(), 1, 5);
+
+    expect(global.fromUuid).toHaveBeenCalledWith("Compendium.essence20.pr_crb.Item.Not Done Yet");
+    expect(global.Item.create).toHaveBeenCalledTimes(1);
+  });
+
+  test("a lone later level waits for a first-level pick made in the same pass", async () => {
+    const owner = { system: { level: 5 }, items: [] };
+
+    await createItemCopies(renegadeChain(), owner, "perk", makeRole(), 0, 5);
+
+    expect(global.Item.create).not.toHaveBeenCalled();
+    expect(Object.keys(capturedDialog._choices)).toEqual(["ra", "rc"]);
+    expect(capturedDialog._rolePerkFollowUps.groups.map(group => group.map(([key]) => key))).toEqual([["ndy"]]);
+  });
+
+  test("the pick removes what the Role already granted on the side turned down (Meat Shield drops the Personal Shield uses)", async () => {
+    const items = {
+      uses: { type: "rolePoints", name: "Personal Shield", choiceGroup: "ms", choiceSide: "ps" },
+      ps: perkEntry({ name: "Personal Shield", level: 1, choiceGroup: "ms", choiceSide: "ps" }),
+      ms: perkEntry({ name: "Meat Shield", level: 1, choiceGroup: "ms", choiceSide: "ms" }),
+      other: { type: "rolePoints", name: "Unrelated" },
+    };
+    const owner = { items: [...owned("uses", "other")], deleteEmbeddedDocuments: jest.fn() };
+
+    await removeTurnedDownSide(items.ms, items, owner, makeRole());
+    expect(owner.deleteEmbeddedDocuments).toHaveBeenCalledWith("Item", ["uses"]);
+
+    owner.deleteEmbeddedDocuments.mockClear();
+    await removeTurnedDownSide(items.ps, items, owner, makeRole());
+    expect(owner.deleteEmbeddedDocuments).not.toHaveBeenCalled();
+  });
+
+  test("another Role's Items don't settle this Role's choice", async () => {
+    const owner = { system: { level: 7 }, items: [{ flags: { essence20: { parentId: "otherRole", collectionId: "d1" } } }] };
+
+    await createItemCopies(blueChain(), owner, "perk", makeRole(), 2, 7);
+
+    expect(Object.keys(capturedDialog._choices)).toEqual(["g2", "d2"]);
   });
 });
 

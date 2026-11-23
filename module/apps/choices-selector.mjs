@@ -1,5 +1,5 @@
 ﻿import { _checkForAltModes, _hangUpSelect, _showOriginSkillPrompt, setOriginValues } from "../sheet-handlers/background-handler.mjs";
-import { _attachSelectedItemOptionHandler, grantItemEntry } from "../sheet-handlers/attachment-handler.mjs";
+import { _attachSelectedItemOptionHandler, grantItemEntry, processChoiceChain, removeTurnedDownSide } from "../sheet-handlers/attachment-handler.mjs";
 import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
 import { setShieldOptions } from "../sheet-handlers/listener-item-handler.mjs";
 import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
@@ -221,6 +221,13 @@ export default class ChoicesSelector extends serializeFormSubmits(HandlebarsAppl
   static async rolePerk(event, selection) {
     const choice = this._choices[selection.value];
     await grantItemEntry(selection.value, choice.entry, this._actor, this._item);
+    await removeTurnedDownSide(choice.entry, this._item.system?.items ?? {}, this._actor, this._item);
+    // The same Choice Group's later levels due in this pass follow this pick (attachment-handler.mjs#processChoiceChain).
+    const followUps = this._rolePerkFollowUps;
+    if (followUps) {
+      await processChoiceChain(followUps.groups, followUps.items, this._actor, this._item, new Set([selection.value]));
+    }
+
     this.close();
   }
 

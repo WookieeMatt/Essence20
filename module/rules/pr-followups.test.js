@@ -220,6 +220,63 @@ describe('2. the stray items moved out of the PR core pack', () => {
     }
   });
 
+  test('every Spectrum Modification Perk (A Jump Through Time p.45-46) is offered beside the Role Perk it replaces', () => {
+    // [Role, Role Perk replaced, Spectrum Modification, its JTT id]. Blue's stands in for the whole Grid Tech series.
+    const swaps = [
+      ['Black Ranger', ['Whatever We Need'], 'Iron Bravado', '8bmqJ7hyOAcVNB1Y'],
+      ['White Ranger', ['Follow Me!'], 'Mysterious Aura', 'hSu10Kgj9g1LSmyv'],
+      ['Red Ranger', ["Let's Bring 'Em Together!"], 'Pay It Forward', 'M3pQgNMsU5hU5dMN'],
+      ['Pink Ranger', ['Hard Target'], 'Contingency Shot', 'DAqOZsEq03rJWWQo'],
+      ['Yellow Ranger', ['Nimble Fighter'], 'Heavy Force', 'E4hk9pHESLuYQuO7'],
+      ['Green Ranger', ['Unique Weapon'], 'Brainstorm', 'iVpoqL7ZY4SK4iLc'],
+      ['Blue Ranger', ['Grid Tech I', 'Grid Tech II', 'Grid Tech III', 'Grid Tech IV'], 'Defensive Flexibility', '7kHQ53hZFgwhSFVi'],
+    ];
+
+    for (const [roleName, replaced, altName, altId] of swaps) {
+      const role = [...PR.values()].find(doc => doc.type == 'role' && doc.name == roleName);
+      const entries = Object.values(role.system.items);
+      expect(JTT.get(altId)?.name).toBe(altName);
+      for (const perkName of replaced) {
+        const perk = entries.find(entry => entry.name == perkName);
+        const alt = entries.find(entry => entry.name == altName && entry.level == perk.level);
+        expect([roleName, perkName, Boolean(perk.choiceGroup)]).toEqual([roleName, perkName, true]);
+        expect(alt).toMatchObject({ uuid: `Compendium.essence20.jump_through_time.Item.${altId}`, type: 'perk', choiceGroup: perk.choiceGroup });
+      }
+    }
+  });
+
+  test('the G.I. JOE Alternate Role Perks replace their whole series (Sgt Slaughter Sourcebook p.12-14, Cobra Codex p.56)', () => {
+    // [Role, alternative, its side, the series it replaces (same group, the other side)].
+    const swaps = [
+      ['Renegade', 'Renegade Commander', ['Reckless Abandon', 'Not Done Yet', 'Ready For Anything']],
+      ['Vanguard', 'Meat Shield', ['Personal Shield', 'Shield Upgrade', 'Quick Shield', 'Shield Modulation', 'Impenetrable Shield']],
+      ['Officer', 'Play Favorites', ['Rouse', 'Rousing Presence']],
+    ];
+
+    for (const [roleName, altName, series] of swaps) {
+      const role = [...GIJ.values()].find(doc => doc.type == 'role' && doc.name == roleName);
+      const perks = Object.values(role.system.items).filter(entry => entry.type == 'perk');
+      const alt = perks.find(entry => entry.name == altName);
+      expect([roleName, alt?.level, Boolean(alt?.choiceGroup && alt.choiceSide)]).toEqual([roleName, 1, true]);
+      for (const name of series) {
+        const entry = perks.find(perk => perk.name == name);
+        expect([name, entry.choiceGroup]).toEqual([name, alt.choiceGroup]);
+        expect(entry.choiceSide).not.toBe(alt.choiceSide);
+      }
+
+      // Nothing else in the Role shares the group.
+      const grouped = perks.filter(entry => entry.choiceGroup == alt.choiceGroup).map(entry => entry.name);
+      expect(grouped.filter(name => name != altName && !series.includes(name) && name != 'Play Favorites Against Each Other')).toEqual([]);
+    }
+
+    // Meat Shield ignores the Personal Shield Uses column, so those Role Points sit on the Personal Shield side;
+    // Renegade Commander still spends Reckless Abandon uses, so those stay out of the group.
+    const vanguard = [...GIJ.values()].find(doc => doc.type == 'role' && doc.name == 'Vanguard');
+    expect(Object.values(vanguard.system.items).find(entry => entry.type == 'rolePoints')).toMatchObject({ choiceGroup: 'meat-shield', choiceSide: 'personal-shield' });
+    const renegade = [...GIJ.values()].find(doc => doc.type == 'role' && doc.name == 'Renegade');
+    expect(Object.values(renegade.system.items).find(entry => entry.type == 'rolePoints').choiceGroup).toBeUndefined();
+  });
+
   test('the alias map: every moved item, old uuid -> new; anything else unchanged', () => {
     // 18 moved, plus the per-choice Alt Modes merged into one per chassis (2026-10-14, items/shared/alt-mode-chassis.mjs).
     const BEHEMOTH_LARGE = 'Compendium.essence20.technorganic_secrets.Item.qZQyZDntWJdNeDQy';

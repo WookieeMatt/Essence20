@@ -28,7 +28,8 @@
     },
     "isSpecialized": false,
     "range": "20 feet",
-    "tier": "virtuoso"
+    "tier": "virtuoso",
+    "defenseType": "willpower"
   },
   "effects": [],
   "sort": 0,

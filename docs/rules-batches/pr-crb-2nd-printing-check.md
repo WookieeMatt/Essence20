@@ -114,6 +114,8 @@ new entries on existing Roles.
 - **Non-CRB items in the CRB pack**: 7 A Jump Through Time perks (Brainstorm, Contingency Shot, Defensive
   Flexibility, Heavy Force, Iron Bravado, Mysterious Aura, Pay It Forward). They are wired as Spectrum
   Modification alternatives (`choiceGroup`), e.g. Iron Bravado beside Whatever We Need on the Black Ranger.
+  (Only Iron Bravado actually was until 2026-11-23, when the other six were wired. Blue's Defensive Flexibility
+  replaces the whole Grid Tech series, using `choiceSide`.)
   There are also 4 Pre Gen Characters weapons (Power Crossbow, Hammer, Spear, Tetsubo, cited p.2). Not 1st-printing
   leftovers, so kept.
 - **Upgrade prerequisites** are missing for the same upgrades in the G.I. JOE and Transformers packs. Only the PR

@@ -30,7 +30,8 @@
     "range": "Line of Sight",
     "tier": "virtuoso",
     "damageValue": 2,
-    "damageType": "element"
+    "damageType": "element",
+    "defenseType": "evasion"
   },
   "effects": [],
   "sort": 0,
