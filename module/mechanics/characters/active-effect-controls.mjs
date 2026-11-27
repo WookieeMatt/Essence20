@@ -263,7 +263,9 @@ export async function createEffectMacro(data, slot) {
   // Keyed on id + name rather than uuid, matching createItemMacro: the macro resolves against
   // whichever Actor the user currently controls, so one macro works for every token that carries
   // an effect of that name instead of being pinned to the single document that was dragged.
-  const command = `game.essence20.toggleEffectMacro("${effect.id}", "${effect.name}");`;
+  // JSON.stringify, not bare quotes: a " in the name made invalid JavaScript, which Foundry rejects
+  // at Macro creation. Plain names come out identical, so older macros are still found.
+  const command = `game.essence20.toggleEffectMacro(${JSON.stringify(effect.id)}, ${JSON.stringify(effect.name)});`;
   let macro = game.macros.find(m => m.name === effect.name && m.command === command);
   if (!macro) {
     macro = await Macro.create({
@@ -271,6 +273,9 @@ export async function createEffectMacro(data, slot) {
       type: "script",
       img: effect.img || "icons/svg/aura.svg",
       command,
+      // Foundry 14.371 stopped treating a Macro's author as an implicit OWNER - ownership alone
+      // governs it - so the dragging user has to be granted it or they can't see their own button.
+      ownership: { [game.user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER },
       flags: { "essence20.effectMacro": true },
     });
   }

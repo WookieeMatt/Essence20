@@ -30,7 +30,18 @@
         "name": "Unique Weapon",
         "type": "perk",
         "subtype": "role",
-        "level": 1
+        "level": 1,
+        "choiceGroup": "green-1"
+      },
+      "80f9": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.iVpoqL7ZY4SK4iLc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brainstorm",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1,
+        "choiceGroup": "green-1",
+        "choiceSwitch": true
       },
       "a15c": {
         "uuid": "Compendium.essence20.pr_crb.Item.pdSn2ZRcGm9AZ9r2",

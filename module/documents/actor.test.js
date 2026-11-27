@@ -883,6 +883,34 @@ describe("_prepareSorcerousPower", () => {
     expect(actor.system.powers.sorcerous.committed).toBe(2);
   });
 
+  test("committed counts a magical focus but not the Power it grants (the focus paid for it)", () => {
+    const focus = { system: { type: 'sorcerous', powerCost: 2 }, flags: { essence20: { sorcerousFocus: { isFocus: true } } } };
+    const granted = { system: { type: 'sorcerous', powerCost: 3 }, flags: { essence20: { sorcerousFocus: { requires: 'f', grantedBy: 'f' } } } };
+    const needing = { system: { type: 'sorcerous', powerCost: 1 }, flags: { essence20: { sorcerousFocus: { requires: 'f' } } } };
+    const actor = makeActor('playerCharacter', {
+      level: 10,
+      powers: { sorcerous: { levelTaken: 4 } },
+    }, {
+      power: [focus, granted, needing],
+    });
+    actor._prepareSorcerousPower();
+    expect(actor.system.powers.sorcerous.committed).toBe(3);
+  });
+
+  // 2026-11-22: a sorcerer NPC/Threat has the same budget - prepareDerivedData used to skip NPCs,
+  // leaving committed at 0 whatever they owned.
+  test("an npc with the Sorcery Perk gets its budget and committed too", () => {
+    const actor = makeActor('npc', {
+      level: 3,
+      powers: { sorcerous: { levelTaken: 1 } },
+    }, {
+      power: [sorcerousPower(3)],
+    });
+    actor._prepareSorcerousPower();
+    expect(actor.system.powers.sorcerous.max).toBe(8);
+    expect(actor.system.powers.sorcerous.committed).toBe(3);
+  });
+
   test("committed is 0 with no owned Powers", () => {
     const actor = makeActor('playerCharacter', {
       level: 10,

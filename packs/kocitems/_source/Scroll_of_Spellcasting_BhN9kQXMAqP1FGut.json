@@ -6,8 +6,8 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "automation": {
-      "status": "manual",
-      "notes": "<p>Nothing automatic. Left to the table: casting the imprinted spell without paying its cost, then removing the scroll.</p>"
+      "status": "partial",
+      "notes": "<p>A scroll: using it makes a Spellcasting test at your rank or the scroll's, whichever is higher, with no casting cost, and removes it. To make one holding a particular spell, use the flask on that spell's row of a caster's sheet (Make a Magic Bauble, Scroll).</p><p>Left to the table: which spell a found scroll holds, and whether the reader can cast that tier.</p>"
     },
     "originalId": "",
     "description": "",
@@ -26,7 +26,8 @@
     },
     "quantity": 1,
     "range": "Special",
-    "spellcastingShift": "d4"
+    "spellcastingShift": "d4",
+    "form": "scroll"
   },
   "effects": [],
   "sort": 0,

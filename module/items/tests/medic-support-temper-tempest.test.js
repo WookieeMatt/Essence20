@@ -154,15 +154,15 @@ describe('magic', () => {
 
   test('Sorcerous Power costs follow Table 4-1', () => {
     // Arcane Bolt: a basic Targeting attack (Energy damage) - 1 point.
-    expect(magic.sorceryCost({ base: 'targeting', damageType: 'energy', shape: 'none' })).toBe(1);
-    expect(magic.sorceryPowerData({ base: 'targeting', damageType: 'energy', shape: 'none' }).system).toMatchObject({ damageType: 'energy', damageValue: 1 });
-    // Another type (here Element) is a change: +1 point, +1 damage.
-    expect(magic.sorceryCost({ base: 'targeting', damageType: 'element', shape: 'none' })).toBe(2);
+    expect(magic.sorceryCost({ base: 'targeting', damageType: 'element', shape: 'none' })).toBe(1);
+    expect(magic.sorceryPowerData({ base: 'targeting', damageType: 'element', shape: 'none' }).system).toMatchObject({ damageType: 'element', damageValue: 1 });
+    // Another type (here Sharp) is a change: +1 point, +1 damage. Energy is stored as 'element' (the packs' Arcane Bolt).
+    expect(magic.sorceryCost({ base: 'targeting', damageType: 'sharp', shape: 'none' })).toBe(2);
     // Fireball: Fire (+1), 5ft blast (+1) - 3 points; 2 Fire damage.
     expect(magic.sorceryCost({ base: 'targeting', damageType: 'fire', shape: 'blast' })).toBe(3);
     expect(magic.sorceryPowerData({ base: 'targeting', damageType: 'fire', shape: 'blast' }).system).toMatchObject({ damageValue: 2, shape: 'circle', radius: 5, powerCost: 3 });
     // Wizard Missiles: Multi-Weapon (3) - 4 points.
-    expect(magic.sorceryCost({ base: 'targeting', damageType: 'energy', shape: 'none', multiple: 3 })).toBe(4);
+    expect(magic.sorceryCost({ base: 'targeting', damageType: 'element', shape: 'none', multiple: 3 })).toBe(4);
     // Lucky Charm: mimic a Perk (+2), 1-hour ritual (-2) - the book's 1 point: never below 1.
     expect(magic.sorceryCost({ base: 'mimic', ritual: 'hour', focus: true })).toBe(1);
     // Aura of Decay: Culture area (+2), Void (+2), +1 damage, costs Health (-2) - 3 points.

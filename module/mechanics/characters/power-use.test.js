@@ -1,5 +1,5 @@
 import { jest } from '@jest/globals';
-import { canUsePower, onPowerUse } from './power-use.mjs';
+import { canUsePower, onPowerUse, powerUsedCardData } from './power-use.mjs';
 
 const SPEED_BOOST_ID = "Compendium.essence20.pr_crb.Item.CDbaCheOK2rUsqli";
 
@@ -33,11 +33,13 @@ describe('onPowerUse', () => {
 
   test('silently no-ops for a Power with no registered handler (matches onPerkUse\'s own fallthrough)', async () => {
     const actor = makeActor();
-    const item = { flags: { core: { sourceId: 'Compendium.essence20.pr_crb.Item.NotRegistered' } } };
+    const item = { name: 'Something', uuid: 'Actor.a.Item.p', type: 'power', system: {}, flags: { core: { sourceId: 'Compendium.essence20.pr_crb.Item.NotRegistered' } } };
 
     await onPowerUse(actor, item);
 
-    expect(global.ChatMessage.create).not.toHaveBeenCalled();
+    // Only its Power used card (powerUsedCardData).
+    expect(global.ChatMessage.create).toHaveBeenCalledTimes(1);
+    expect(global.ChatMessage.create.mock.calls[0][0].flags.essence20).toEqual({ powerUsed: true, itemUuid: 'Actor.a.Item.p' });
   });
 
   // (Chrono-File Access is a powerUsed Trigger on the Power - rules/conv17-perm.test.js.)
@@ -57,6 +59,23 @@ describe('onPowerUse', () => {
     expect(targetActor.update).toHaveBeenCalledWith({ 'system.size': 'gigantic' });
     expect(global.ChatMessage.create).toHaveBeenCalled();
     delete global.game.user;
+  });
+});
+
+describe('powerUsedCardData - what Automated Animations and Essence20 FX read off a Power used card', () => {
+  const actor = { name: 'Kim <3' };
+
+  test('names the Power and its token, and escapes the names', () => {
+    const shield = { name: 'Power Shield', uuid: 'Actor.k.Item.s', type: 'power', system: {} };
+    const data = powerUsedCardData(actor, shield, { speaker: { alias: 'Kim' }, tokenUuid: 'Scene.x.Token.t' });
+    expect(data.flags.essence20).toEqual({ powerUsed: true, itemUuid: 'Actor.k.Item.s', tokenUuid: 'Scene.x.Token.t' });
+    expect(data.speaker).toEqual({ alias: 'Kim' });
+    expect(data.content).toContain('e20-power-used');
+  });
+
+  test("an attack Power's card leaves the Power off - its attack roll card carries it, so it animates once", () => {
+    const blast = { name: 'Blast', uuid: 'Actor.k.Item.b', type: 'power', system: { attackSkill: 'targeting', defenseType: 'evasion' } };
+    expect(powerUsedCardData(actor, blast).flags.essence20).toEqual({ powerUsed: true });
   });
 });
 

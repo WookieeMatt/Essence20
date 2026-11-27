@@ -23,6 +23,7 @@ import { rulesOf } from "../rules/index.mjs";
 import { CHARGES_FLAG, itemCharges } from "../rules/triggers.mjs";
 import { perkChoiceDetails } from "../rules/perk-choice-details.mjs";
 import { POWER_GEAR_TYPES, altModeHolds, bondHolds, morphedHolds } from "../items/gear/power-gear.mjs";
+import { focusPickerContext } from "../items/magic/sorcerous-focus.mjs";
 
 /**
  * The Power Gear section's context (templates/item/parts/power-gear.hbs), or null for an item type without one.
@@ -280,6 +281,11 @@ export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicati
       context.dealsElementDamage = own.some(e => e._source?.system?.damageType == 'element')
         || Object.values(this.document.system.items ?? {}).some(e => e?.type == 'weaponEffect' && e.damageType == 'element')
         || !!this.document.system.elementChoice;
+    }
+
+    // A Sorcerous Power can need one of its owner's magical foci (Table 4-1, -1 point - items/magic/sorcerous-focus.mjs).
+    if (this.document.type == 'power') {
+      context.sorcerousFocusPicker = focusPickerContext(this.document);
     }
 
     // Modular armor (Across the Stars p.85) - the wearer's weapons that can be socketed into it.

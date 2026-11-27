@@ -1,5 +1,9 @@
 {{#if system.canSpellcast}}
-  {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill='spellcasting' fields=(lookup system.skills 'spellcasting') readOnly=true}}
+  {{!-- Boxed like the Powers tab's Sorcery Budget (items/power/container.hbs), with the die right
+       beside the label so it reads as "Spellcasting d20" rather than a bare caption. --}}
+  <div class="e20-spellcasting-box">
+    {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill='spellcasting' fields=(lookup system.skills 'spellcasting') readOnly=true}}
+  </div>
 {{/if}}
 
 <div class="flexrow stats-row">

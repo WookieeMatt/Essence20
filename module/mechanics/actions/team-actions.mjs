@@ -224,7 +224,7 @@ export async function onCombinedFire(button) {
   }]);
   const [effect] = await leader.createEmbeddedDocuments('Item', [{
     name: T('E20.CombinedAttackWeapon'), type: 'weaponEffect',
-    system: { classification: { skill: 'targeting', style: 'energy' }, damageType: 'energy', damageValue: members, numTargets: 1, numHands: '0', range: { value: 100, long: 250 } },
+    system: { classification: { skill: 'targeting', style: 'energy' }, damageType: 'element', damageValue: members, numTargets: 1, numHands: '0', range: { value: 100, long: 250 } },
     // The ↑2 rides a flag items/social/social-rolls.mjs reads.
     flags: { essence20: { parentId: weapon.id, temporary: stamp, bonusShiftUp: 2 } },
   }]);

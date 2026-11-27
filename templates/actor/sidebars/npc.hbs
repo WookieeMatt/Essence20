@@ -40,16 +40,7 @@
         value="{{system.powers.personal.max}}" min="0" step="1" />
     </div>
     {{/if}}
-    {{#if system.powers.sorcerous.levelTaken}}
-    <div>
-      <label>{{localize "E20.SorcerousPower"}}</label>
-      <span class="two-digit-input{{#if (gt system.powers.sorcerous.committed system.powers.sorcerous.max)}} is-over{{/if}}"
-        data-tooltip="{{localize 'E20.SorcerousPowerCommittedHint'}}">{{system.powers.sorcerous.committed}}</span>
-      <span>/</span>
-      <input class="two-digit-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
-        value="{{system.powers.sorcerous.max}}" min="0" step="1" />
-    </div>
-    {{/if}}
+    {{!-- Sorcery budget: at the top of the Powers list (items/power/container.hbs). --}}
 
     {{!-- Rest / Recharge restores what this panel tracks, as on a character. --}}
     {{#if system.canTransform}}

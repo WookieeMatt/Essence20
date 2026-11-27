@@ -37,13 +37,109 @@
   font-weight: 700;
 }
 
-/* Sorcerous Power's committed-vs-budget display (sidebars/character.hbs / sidebars/npc.hbs) - same
-   amber "needs attention" read as the Load Out chips above, for the same informational-only,
+/* The Sorcery Perk's committed-vs-budget line atop the Powers list (items/power/container.hbs) -
+   same amber "needs attention" read as the Load Out chips above, for the same informational-only,
    nothing-blocked warning shape (USER DECISION, 2026-09-24: committed can exceed the budget, the
    GM just gets flagged). */
-.essence20 .two-digit-input.is-over {
-  color: #b46a00;
-  font-weight: 700;
+.essence20 .e20-sorcery-budget {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  margin: 0 0 0.4rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--e20-theme-border-color, currentColor);
+  border-radius: 4px;
+  line-height: 1.4;
+
+  .e20-sorcery-budget-label {
+    font-weight: 700;
+  }
+
+  /* "Sorcery Budget – 1 / 4": the same separator as the Spells tab's Spellcasting line. */
+  .e20-sorcery-budget-label::after {
+    content: "\2013";
+    margin-left: 0.4em;
+  }
+
+  /* The value sits right beside its label ("Sorcery Budget 3 / 6"), not flung to the far edge -
+     players missed that the caption had a value at all. Build Focus takes the far end instead. */
+  .e20-sorcery-budget-end {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .e20-sorcery-budget-value {
+    font-weight: 700;
+  }
+
+  /* Build Focus: a small chip-style button beside the budget. */
+  .e20-build-focus {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0 0.45rem;
+    border: 1px solid var(--e20-theme-border-color, currentColor);
+    border-radius: 3px;
+    line-height: 1.5;
+    white-space: nowrap;
+    cursor: pointer;
+    margin-left: auto;
+  }
+
+  &.is-over {
+    color: #b46a00;
+    border-color: #b46a00;
+
+    .e20-sorcery-budget-value {
+      font-weight: 700;
+    }
+  }
+}
+
+/* MLP's Spellcasting Skill atop the Spells tab (misc/spells.hbs): the same box as the Sorcery
+   Budget above, so the two tabs' resource lines match, with the die beside the name and the
+   Casting Cost downshift chip pushed to the far end. */
+.essence20 .e20-spellcasting-box {
+  margin: 0 0 0.4rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--e20-theme-border-color, currentColor);
+  border-radius: 4px;
+  line-height: 1.4;
+
+  .skill-header {
+    font-size: 1em;
+    min-height: 0;
+  }
+
+  .skill-header .skill-name {
+    flex: 0 0 auto;
+    margin-left: 0;
+    font-weight: 700;
+  }
+
+  /* "Spellcasting – d6": a dash between the label and its die, as the Sorcery Budget has. */
+  .skill-header .skill-name::after {
+    content: "\2013";
+    margin-left: 0.4em;
+  }
+
+  .skill-header .skill-shift-display {
+    width: auto;
+    padding: 0;
+    font-weight: 700;
+    opacity: 1;
+  }
+
+  .skill-header .spellcasting-downshift-chip {
+    margin-left: auto;
+  }
+
+  .skill-body {
+    margin-bottom: 0;
+  }
 }
 
 /* Rendered on its own full-width line under the weapon label (weapon/container.hbs "item-subrow"),

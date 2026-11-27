@@ -214,6 +214,7 @@ import { isImmuneToCondition } from "./mechanics/combat/condition-immunity.mjs";
 import { performPreLocalization } from "./util/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
 import { expireAoeRegions, expireAoeRegionsForScene, reconcileAoeRegions } from "./mechanics/combat/aoe-expiry.mjs";
+import { syncAoeRegionsHidden } from "./mechanics/combat/aoe-targeting.mjs";
 import { applyThemeClass, insertSettingGroupHeadings, migrateSheetThemeSetting, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
 import { updateRoleCache } from "./util/utils.mjs";
 import { registerEssence20Tours, sweepTourDemoContent } from "./tours/index.mjs";
@@ -1335,6 +1336,10 @@ Hooks.on("updateWorldTime", () => {
   expireAoeRegions();
 });
 
+/* A lingering emanation is hidden/revealed along with its caster - Foundry 14.371 stopped doing
+   this for attached Regions. See syncAoeRegionsHidden in mechanics/combat/aoe-targeting.mjs. */
+Hooks.on("updateToken", syncAoeRegionsHidden);
+
 /* Reaches the Effect Wizard from an effect that already exists, for adding another change to it
    later. Deliberately a header-control entry on Foundry's own ActiveEffectConfig rather than a
    subclassed sheet: the normal editor stays exactly as core renders it, for everyone who already
@@ -1548,7 +1553,10 @@ async function createItemMacro(data, slot) {
   const item = await fromUuid(data.uuid);
 
   // Create the macro command
-  const command = `game.essence20.rollItemMacro("${item._id}", "${item.name}");`;
+  // JSON.stringify, not bare quotes: a name with a " in it ("Snake Attack" Air-to-Surface Missile)
+  // made invalid JavaScript, which Foundry rejects at Macro creation. Plain names come out identical,
+  // so the lookup below still finds macros made before this change.
+  const command = `game.essence20.rollItemMacro(${JSON.stringify(item._id)}, ${JSON.stringify(item.name)});`;
   let macro = game.macros.find(
     (m) => m.name === item.name && m.command === command,
   );
@@ -1558,6 +1566,9 @@ async function createItemMacro(data, slot) {
       type: "script",
       img: item.img,
       command: command,
+      // Foundry 14.371 stopped treating a Macro's author as an implicit OWNER - ownership alone
+      // governs it - so the dragging user has to be granted it or they can't see their own button.
+      ownership: { [game.user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER },
       flags: { "essence20.itemMacro": true },
     });
   }

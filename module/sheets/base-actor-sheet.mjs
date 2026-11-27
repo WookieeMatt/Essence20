@@ -112,6 +112,8 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       levelUp: this.#onLevelUp,
       morph: this.#onMorph,
       perkUse: this.#onPerkUse,
+      craftMagicBauble: this.#onCraftMagicBauble,
+      buildSorcerousFocus: this.#onBuildSorcerousFocus,
       recharge: this.#onRecharge,
       recoverSpellcastingDownshift: this.#onRecoverSpellcastingDownshift,
       rest: this.#onRest,
@@ -1188,6 +1190,27 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onPerkUse(event, target) {
     onPerkUseClick(target, this);
+  }
+
+  /** Make a Magic Bauble from the clicked spell (items/magic/magic-baubles.mjs). */
+  static async #onCraftMagicBauble(event, target) {
+    const spell = this.actor.items.get(target.dataset.id);
+    if (!this.document.isOwner || !spell) {
+      return;
+    }
+
+    const { craftMagicBauble } = await import("../items/magic/magic-baubles.mjs");
+    await craftMagicBauble(this.actor, spell);
+  }
+
+  /** The Powers tab's Build Focus button: the Sorcery Perk's focus builder (items/magic/sorcerous-focus.mjs). */
+  static async #onBuildSorcerousFocus() {
+    if (!this.document.isOwner) {
+      return;
+    }
+
+    const { buildFocusFromSheet } = await import("../items/magic/sorcerous-focus.mjs");
+    await buildFocusFromSheet(this.actor);
   }
 
   static #onRoll(event) {

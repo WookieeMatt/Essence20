@@ -390,6 +390,13 @@ export function grantedBy(actor, item) {
  */
 export async function setUpItem(item, actor, { ask = askChoice, maxReasks = REQUIRED_REASKS } = {}) {
   return queueAsk(actor, async () => {
+    // Taken off while it waited its turn - e.g. a Role Perk swapped for a Spectrum Modification in the same level-up
+    // (sheet-handlers/attachment-handler.mjs#switchChoiceSide): nothing left to ask about.
+    const gone = () => !!actor.items?.get && !actor.items.get(item.id);
+    if (gone()) {
+      return false;
+    }
+
     let cancelled = [];
     let update = await initialState(item, actor, { ask, cancelled });
     const now = () => actor.items?.get?.(item.id) ?? item;
@@ -403,6 +410,10 @@ export async function setUpItem(item, actor, { ask = askChoice, maxReasks = REQU
     // One a Role or another item granted can't be cancelled: it asks again until something is picked (user ruling
     // 2026-10-07). A pick with nothing to offer would ask forever, so after maxReasks it is left unpicked, with a warning.
     for (let tries = 0; cancelled.length && tries < maxReasks; tries++) {
+      if (gone()) {
+        return false;
+      }
+
       if (Object.keys(update).length) {
         await item.update(update);
         update = {};
@@ -411,6 +422,10 @@ export async function setUpItem(item, actor, { ask = askChoice, maxReasks = REQU
       globalThis.ui?.notifications?.warn?.(globalThis.game?.i18n?.format?.('E20.Rules.ChoiceRequired', { item: item.name }) ?? `${item.name}: a choice is required.`);
       cancelled = [];
       update = await initialState(now(), actor, { ask, cancelled });
+    }
+
+    if (gone()) {
+      return false;
     }
 
     if (Object.keys(update).length) {

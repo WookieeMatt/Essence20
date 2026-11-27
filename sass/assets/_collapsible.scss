@@ -95,6 +95,9 @@
   flex: 0 0 auto !important;
   width: 14px !important;
   height: 14px !important;
+  /* Foundry draws the square as a --checkbox-size glyph (20px by default) from the box's top edge:
+     left at 20px in this 14px box, the square hung 6px below the icons beside it. */
+  --checkbox-size: 14px;
 }
 
 .essence20 .role-points-item {
@@ -204,6 +207,21 @@
 
 .essence20 .item-image .flexrow {
   flex-wrap: nowrap;
+  align-items: center;
+}
+
+/* Every icon button in an item row's button strip (chat, roll, Use, craft...) sits on the row's
+   centre line: the glyph is centred in its own box, rather than riding at the top of a taller one. */
+.essence20 .item-image .flexrow > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* The spell row's Make a Magic Bauble button - the same size as the roll icons beside it (.rollable's 1.25em). */
+.essence20 .item-image .e20-craft-bauble {
+  font-size: 1.25em;
 }
 
 .essence20 .weapon-effect-name {

@@ -36,7 +36,18 @@
         "name": "Nimble Fighter",
         "type": "perk",
         "subtype": "role",
-        "level": 2
+        "level": 2,
+        "choiceGroup": "yellow-2"
+      },
+      "10f0": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.E4hk9pHESLuYQuO7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heavy Force",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2,
+        "choiceGroup": "yellow-2",
+        "choiceSwitch": true
       },
       "45b4": {
         "uuid": "Compendium.essence20.pr_crb.Item.eCTmc2BbsrCLrjkw",

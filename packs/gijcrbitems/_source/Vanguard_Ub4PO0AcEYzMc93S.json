@@ -22,7 +22,19 @@
         "name": "Personal Shield",
         "type": "perk",
         "subtype": "role",
-        "level": 1
+        "level": 1,
+        "choiceGroup": "meat-shield",
+        "choiceSide": "personal-shield"
+      },
+      "3d1d": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.hYwFDsC7azfYB5fO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Meat Shield",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1,
+        "choiceGroup": "meat-shield",
+        "choiceSide": "meat-shield"
       },
       "32a6": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.84JYgd6kZgY41wge",
@@ -68,7 +80,9 @@
           "max": 0,
           "startingMax": 2,
           "value": 0
-        }
+        },
+        "choiceGroup": "meat-shield",
+        "choiceSide": "personal-shield"
       },
       "a607": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK",
@@ -108,7 +122,9 @@
         "name": "Shield Upgrade",
         "type": "perk",
         "subtype": "role",
-        "level": 5
+        "level": 5,
+        "choiceGroup": "meat-shield",
+        "choiceSide": "personal-shield"
       },
       "600e": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.zbrr3W30rFTDTayX",
@@ -124,7 +140,9 @@
         "name": "Quick Shield",
         "type": "perk",
         "subtype": "role",
-        "level": 7
+        "level": 7,
+        "choiceGroup": "meat-shield",
+        "choiceSide": "personal-shield"
       },
       "7d12": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.xsFS0pGQFx1w2qTd",
@@ -148,7 +166,9 @@
         "name": "Shield Modulation",
         "type": "perk",
         "subtype": "role",
-        "level": 13
+        "level": 13,
+        "choiceGroup": "meat-shield",
+        "choiceSide": "personal-shield"
       },
       "d87e": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.ME4xFG31XvT6q6Qp",
@@ -172,7 +192,9 @@
         "name": "Impenetrable Shield",
         "type": "perk",
         "subtype": "role",
-        "level": 18
+        "level": 18,
+        "choiceGroup": "meat-shield",
+        "choiceSide": "personal-shield"
       },
       "9ea1": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.fXgb3kGl2MaZTfPc",

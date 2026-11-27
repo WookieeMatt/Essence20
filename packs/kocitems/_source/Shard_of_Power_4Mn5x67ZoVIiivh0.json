@@ -6,8 +6,8 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "automation": {
-      "status": "manual",
-      "notes": "<p>Nothing automatic. Left to the table: crushing it (a Free action) to recover ↑3 of spent Spellcasting, then removing it.</p>"
+      "status": "full",
+      "notes": "<p>Use button (a Free action): recovers 3 steps of Spellcasting downshift and uses the shard up.</p>"
     },
     "originalId": "",
     "description": "",
@@ -26,7 +26,11 @@
     },
     "quantity": 1,
     "range": "Self",
-    "spellcastingShift": "d2"
+    "spellcastingShift": "d2",
+    "form": "talisman",
+    "rules": [
+      {"type":"Use","label":"Crush it (Shard of Power)","cost":{"action":"free"},"when":["rule:data:system.quantity>0"],"steps":[{"do":"updateActor","to":"self","add":{"system.skills.spellcasting.shiftDown":-3},"min":0},{"do":"spendQuantity","item":"self","amount":1,"deleteAtZero":true}]}
+    ]
   },
   "effects": [],
   "sort": 0,

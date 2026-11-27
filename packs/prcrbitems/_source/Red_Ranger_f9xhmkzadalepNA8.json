@@ -104,7 +104,18 @@
         "name": "Let's Bring 'Em Together!",
         "type": "perk",
         "subtype": "role",
-        "level": 5
+        "level": 5,
+        "choiceGroup": "red-5"
+      },
+      "afbd": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.M3pQgNMsU5hU5dMN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pay It Forward",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5,
+        "choiceGroup": "red-5",
+        "choiceSwitch": true
       },
       "c942": {
         "uuid": "Compendium.essence20.pr_crb.Item.TomU7e31oHoRsIrT",

@@ -157,6 +157,9 @@
   flex: 0 0 auto !important;
   width: 14px !important;
   height: 14px !important;
+  /* Foundry draws the square as a --checkbox-size glyph (20px by default) from the box's top edge:
+     left at 20px in this 14px box, the square hung 6px below the icons beside it. */
+  --checkbox-size: 14px;
 }
 
 .essence20 .role-points-item {
@@ -266,6 +269,21 @@
 
 .essence20 .item-image .flexrow {
   flex-wrap: nowrap;
+  align-items: center;
+}
+
+/* Every icon button in an item row's button strip (chat, roll, Use, craft...) sits on the row's
+   centre line: the glyph is centred in its own box, rather than riding at the top of a taller one. */
+.essence20 .item-image .flexrow > a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* The spell row's Make a Magic Bauble button - the same size as the roll icons beside it (.rollable's 1.25em). */
+.essence20 .item-image .e20-craft-bauble {
+  font-size: 1.25em;
 }
 
 .essence20 .weapon-effect-name {
@@ -2458,13 +2476,96 @@
   font-weight: 700;
 }
 
-/* Sorcerous Power's committed-vs-budget display (sidebars/character.hbs / sidebars/npc.hbs) - same
-   amber "needs attention" read as the Load Out chips above, for the same informational-only,
+/* The Sorcery Perk's committed-vs-budget line atop the Powers list (items/power/container.hbs) -
+   same amber "needs attention" read as the Load Out chips above, for the same informational-only,
    nothing-blocked warning shape (USER DECISION, 2026-09-24: committed can exceed the budget, the
    GM just gets flagged). */
-.essence20 .two-digit-input.is-over {
-  color: #b46a00;
+.essence20 .e20-sorcery-budget {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  margin: 0 0 0.4rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--e20-theme-border-color, currentColor);
+  border-radius: 4px;
+  line-height: 1.4;
+  /* "Sorcery Budget – 1 / 4": the same separator as the Spells tab's Spellcasting line. */
+  /* The value sits right beside its label ("Sorcery Budget 3 / 6"), not flung to the far edge -
+     players missed that the caption had a value at all. Build Focus takes the far end instead. */
+  /* Build Focus: a small chip-style button beside the budget. */
+}
+.essence20 .e20-sorcery-budget .e20-sorcery-budget-label {
   font-weight: 700;
+}
+.essence20 .e20-sorcery-budget .e20-sorcery-budget-label::after {
+  content: "–";
+  margin-left: 0.4em;
+}
+.essence20 .e20-sorcery-budget .e20-sorcery-budget-end {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.essence20 .e20-sorcery-budget .e20-sorcery-budget-value {
+  font-weight: 700;
+}
+.essence20 .e20-sorcery-budget .e20-build-focus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0 0.45rem;
+  border: 1px solid var(--e20-theme-border-color, currentColor);
+  border-radius: 3px;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
+  margin-left: auto;
+}
+.essence20 .e20-sorcery-budget.is-over {
+  color: #b46a00;
+  border-color: #b46a00;
+}
+.essence20 .e20-sorcery-budget.is-over .e20-sorcery-budget-value {
+  font-weight: 700;
+}
+
+/* MLP's Spellcasting Skill atop the Spells tab (misc/spells.hbs): the same box as the Sorcery
+   Budget above, so the two tabs' resource lines match, with the die beside the name and the
+   Casting Cost downshift chip pushed to the far end. */
+.essence20 .e20-spellcasting-box {
+  margin: 0 0 0.4rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--e20-theme-border-color, currentColor);
+  border-radius: 4px;
+  line-height: 1.4;
+  /* "Spellcasting – d6": a dash between the label and its die, as the Sorcery Budget has. */
+}
+.essence20 .e20-spellcasting-box .skill-header {
+  font-size: 1em;
+  min-height: 0;
+}
+.essence20 .e20-spellcasting-box .skill-header .skill-name {
+  flex: 0 0 auto;
+  margin-left: 0;
+  font-weight: 700;
+}
+.essence20 .e20-spellcasting-box .skill-header .skill-name::after {
+  content: "–";
+  margin-left: 0.4em;
+}
+.essence20 .e20-spellcasting-box .skill-header .skill-shift-display {
+  width: auto;
+  padding: 0;
+  font-weight: 700;
+  opacity: 1;
+}
+.essence20 .e20-spellcasting-box .skill-header .spellcasting-downshift-chip {
+  margin-left: auto;
+}
+.essence20 .e20-spellcasting-box .skill-body {
+  margin-bottom: 0;
 }
 
 /* Rendered on its own full-width line under the weapon label (weapon/container.hbs "item-subrow"),

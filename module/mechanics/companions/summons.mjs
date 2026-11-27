@@ -67,7 +67,7 @@ export const VEHICLES = {
   // Jet Jammer (Across the Stars p.91): Health 6, 60ft Aerial, Strength 7, Speed 4, Light Plating +1.
   jetJammer: { name: 'Jet Jammer', threatLevel: 3, size: 'common', health: 6, move: { aerial: 60 }, strength: 7, speed: 4, armor: 1,
     skills: { acrobatics: 'd4', brawn: 'd2', might: 'd4', initiative: 'd4' }, traits: ['aerospace', 'air', 'vehicle', 'vtol'],
-    attacks: [attack('Spark Cannon', 'targeting', 2, 'energy', [40, 90]), attack('Ram', 'might', 2, 'blunt')] },
+    attacks: [attack('Spark Cannon', 'targeting', 2, 'element', [40, 90]), attack('Ram', 'might', 2, 'blunt')] },
   // Dino Raptor (Beneath the Helmet p.56) rides as the book's Raptor Rider (p.70): Health 9, 50ft,
   // Strength 14, Speed 8, Light Plating +1.
   dinoRaptor: { name: 'Dino Raptor', threatLevel: 7, size: 'common', health: 9, move: { ground: 50 }, strength: 14, speed: 8, armor: 1,
@@ -76,7 +76,7 @@ export const VEHICLES = {
   // Time Jet (Jump Through Time p.71): Huge, Health 6, 45ft Aerial / 30ft Ground, Strength 4, Speed 7, +1.
   timeJet: { name: 'Time Jet', threatLevel: 2, size: 'huge', health: 6, move: { aerial: 45, ground: 30 }, strength: 4, speed: 7, armor: 1, passengers: 5,
     skills: { acrobatics: 'd4', brawn: 'd6', driving: 'd4', initiative: 'd2', targeting: 'd4' }, traits: ['air', 'autopilot', 'takeOff', 'vehicle'],
-    attacks: [attack('Flyby', 'driving', 1, 'blunt'), attack('Medium Vector Cannons', 'targeting', 1, 'energy', [50, 150])] },
+    attacks: [attack('Flyby', 'driving', 1, 'blunt'), attack('Medium Vector Cannons', 'targeting', 1, 'element', [50, 150])] },
   // Strata Cycle (Jump Through Time p.70): Long, Health 2, 45ft Aerial (hover), Strength 2, Speed 6, +1.
   strataCycle: { name: 'Strata Cycle', threatLevel: 1, size: 'long', health: 2, move: { aerial: 45 }, strength: 2, speed: 6, armor: 1, passengers: 1,
     skills: { acrobatics: 'd4', brawn: 'd4', driving: 'd2', initiative: 'd4', targeting: 'd2' }, traits: ['autopilot', 'hover', 'vehicle'],
@@ -84,7 +84,7 @@ export const VEHICLES = {
   // Vector Cycle (Jump Through Time p.73): Long, Health 2, 45ft Ground, Strength 4, Speed 2, +1.
   vectorCycle: { name: 'Vector Cycle', threatLevel: 1, size: 'long', health: 2, move: { ground: 45 }, strength: 4, speed: 2, armor: 1, passengers: 1,
     skills: { athletics: 'd4', brawn: 'd4', initiative: 'd4' }, traits: ['land', 'vehicle'],
-    attacks: [attack('Ram', 'driving', 1, 'blunt'), attack('Twin Energy Cannons', 'targeting', 1, 'energy', [40, 120])] },
+    attacks: [attack('Ram', 'driving', 1, 'blunt'), attack('Twin Energy Cannons', 'targeting', 1, 'element', [40, 120])] },
   // Riding Rig (Cobra Codex p.61): Health 2, 45ft ground, Strength 2, Speed 2, Toughness 13, Evasion 12.
   ridingRig: { name: 'Riding Rig', threatLevel: 1, size: 'common', health: 2, move: { ground: 45 }, strength: 2, speed: 2, armor: 1,
     skills: { initiative: 'd4', might: 'd4' }, traits: ['land', 'vehicle', 'wearable', 'responsive'], attacks: [attack('Ram', 'might', 1, 'blunt')] },
@@ -352,14 +352,14 @@ export const BATTLIZERS = {
   // 3 Fire at 5/10ft once a scene.
   [SUMMON.battleWarrior]: { cost: 1, attacks: [attack('Golden Sword', 'might', 2, 'sharp'), attack('Battle Fire Saber', 'might', 3, 'fire', [5, 10], [], { usesPerScene: 1 })] },
   // S.P.D. Battlizer: cost 1; Energy Sword 1 Energy at Reach.
-  [SUMMON.spdBattlizer]: { cost: 1, attacks: [attack('Energy Sword', 'finesse', 1, 'energy')] },
+  [SUMMON.spdBattlizer]: { cost: 1, attacks: [attack('Energy Sword', 'finesse', 1, 'element')] },
   // Red Fury Mode (Beneath the Helmet p.68): cost 1; Cheetah Claws 2 Sharp at Reach; each summon costs
   // the wearer 1 Smarts.
   [SUMMON.redFury]: { cost: 1, smartsLoss: 1, attacks: [attack('Cheetah Claws', 'might', 2, 'sharp')] },
   // Triassic Battlizer: cost 3; 100ft reach, movement tripled. Dragon Yo-yo, Forearm Blaster, Shoulder Cannons, Stretch Kick.
   [SUMMON.triassic]: { cost: 3, tripleMovement: true, attacks: [
-    attack('Dragon Yo-yo', 'targeting', 2, 'energy', [40, 100]), attack('Forearm Blaster', 'targeting', 1, 'energy', [40, 100]),
-    attack('Shoulder Cannons', 'targeting', 3, 'energy', [30, 120]), attack('Stretch Kick', 'might', 1, 'blunt', [100, 100]),
+    attack('Dragon Yo-yo', 'targeting', 2, 'element', [40, 100]), attack('Forearm Blaster', 'targeting', 1, 'element', [40, 100]),
+    attack('Shoulder Cannons', 'targeting', 3, 'element', [30, 120]), attack('Stretch Kick', 'might', 1, 'blunt', [100, 100]),
   ] },
   // Quantum Mega Battle Armor (A Jump Through Time p.69): cost 5; Wing Blades 2 Sharp at Reach, Wing
   // Blaster 2 Energy at 50/120ft, and the once-a-scene Energy Sword Time Strike, 5 Energy at Reach,
@@ -368,8 +368,8 @@ export const BATTLIZERS = {
   // A Jump Through Time; the only printed Anti-Armor is Across the Stars' Zord Feature (Anti-Tank,
   // Wrecker and an armor-shredding Critical Effect for a Zord attack), so it isn't mapped here.
   [SUMMON.quantumMega]: { cost: 5, attacks: [
-    attack('Wing Blades', 'might', 2, 'sharp'), attack('Wing Blaster', 'targeting', 2, 'energy', [50, 120]),
-    attack('Energy Sword Time Strike', 'might', 5, 'energy', null, ['inaccurate'], { usesPerScene: 1, critMultiplier: 3 }),
+    attack('Wing Blades', 'might', 2, 'sharp'), attack('Wing Blaster', 'targeting', 2, 'element', [50, 120]),
+    attack('Energy Sword Time Strike', 'might', 5, 'element', null, ['inaccurate'], { usesPerScene: 1, critMultiplier: 3 }),
   ] },
 };
 

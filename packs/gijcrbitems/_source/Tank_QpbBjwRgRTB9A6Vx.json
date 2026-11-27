@@ -5,9 +5,10 @@
   "_id": "QpbBjwRgRTB9A6Vx",
   "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
+    "prerequisites": {"when":["not:self:hasItem:Compendium.essence20.sgt_slaughter_sourcebook.Item.JgJRqxXzTPBOlOBz"]},
     "automation": {
       "status": "full",
-      "notes": "<p>Granted: Hardened, Enemy Number One, Interpose, Tough Enough, Rallying Cry, Bulwark and Aegis at their listed levels, plus +1 Strength at 1st and 10th.</p>"
+      "notes": "<p>Granted: Hardened, Enemy Number One, Interpose, Tough Enough, Rallying Cry, Bulwark and Aegis at their listed levels, plus +1 Strength at 1st and 10th. Not for a Renegade who took Renegade Commander (Sgt Slaughter Sourcebook p.12): flagged by its prerequisite.</p>"
     },
     "originalId": "",
     "description": "",

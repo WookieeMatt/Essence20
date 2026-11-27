@@ -1,5 +1,5 @@
-import { RULES_LINE_FLAG, customLine } from "./custom-game-lines.mjs";
-import { actorLineOf } from "./game-lines.mjs";
+import { RULES_LINE_FLAG, customLine, lineFamily } from "./custom-game-lines.mjs";
+import { LINE_CODES, actorLineOf } from "./game-lines.mjs";
 import { replaceInMessage, rewriteTranslations, termPairs, termReplacer } from "./line-terms.mjs";
 
 /**
@@ -32,15 +32,91 @@ function crossoverOn() {
   }
 }
 
-/** The world line's words into the system's strings (TYPES and E20). Run once, at i18nInit. */
-export function applyWorldTerms() {
-  const replace = termReplacer(termPairs({}, worldTerms()));
-  if (!replace) {
+/**
+ * The 'element' damage type is one type with two book names: Power Rangers, My Little Pony and Transformers call it
+ * Energy ("1 Energy damage"); G.I. Joe calls it Element. The system's own label says both ("Element/Energy"); a line
+ * with a word of its own reads in that word instead. A homebrew line reads as its family does. By family; '' for none.
+ */
+export const ELEMENT_DAMAGE_WORDS = Object.freeze({ powerRangers: 'energy', myLittlePony: 'energy', transformers: 'energy', giJoe: 'element' });
+
+/** A line's family, from a key (giJoe), a short code (gij) or a homebrew id. */
+function familyOf(line) {
+  const text = String(line ?? '').trim();
+  return lineFamily(text) || Object.keys(LINE_CODES).find(key => LINE_CODES[key] == text) || '';
+}
+
+const translationsE20 = () => game.i18n?.translations?.E20 ?? {};
+
+/**
+ * The 'element' damage type's name in a line's own book (ELEMENT_DAMAGE_WORDS); null for a line with no word of its
+ * own (Night Vale, every line).
+ * @param {String} line   A line key, short code or homebrew id.
+ * @returns {String|null}
+ */
+export function elementDamageWord(line) {
+  const word = ELEMENT_DAMAGE_WORDS[familyOf(line)];
+  return word ? translationsE20().DamageElementWord?.[word] ?? null : null;
+}
+
+/** Whether a line's own Words already rename the damage label (the GM's own word wins). */
+function termsRename(terms, label) {
+  return Object.keys(terms ?? {}).some(word => word.toLowerCase() == String(label).toLowerCase());
+}
+
+/**
+ * The labels that say both names: the damage type, and the weapon trait and weapon style that go with it (G.I. Joe's
+ * Element trait and "element" classification; Power Rangers' and Transformers' "Traits: Energy").
+ */
+export const ELEMENT_LABEL_KEYS = Object.freeze(['DamageElement', 'WeaponTraitEnergy', 'WeaponStyleEnergy']);
+
+/** The both-names texts those labels hold (normally just "Element/Energy"). */
+const bothNameLabels = () => [...new Set(ELEMENT_LABEL_KEYS.map(key => translationsE20()[key]).filter(Boolean))];
+
+/**
+ * The world line's name for the 'element' damage type (and its trait and style) into the labels themselves - and into
+ * CONFIG.E20's lists, which Foundry localized before i18nInit. Not under Crossover: there each actor's sheet and chat
+ * cards swap it for its own line's (replacerFor).
+ * @returns {Number}   How many labels changed.
+ */
+export function applyElementDamageWord() {
+  const strings = translationsE20();
+  const word = elementDamageWord(worldLineId());
+  if (!word || crossoverOn()) {
     return 0;
   }
 
+  const labels = bothNameLabels().filter(label => label != word && !termsRename(worldTerms(), label));
+  let changed = 0;
+  for (const key of ELEMENT_LABEL_KEYS) {
+    if (labels.includes(strings[key])) {
+      strings[key] = word;
+      changed++;
+    }
+  }
+
+  for (const list of Object.values(globalThis.CONFIG?.E20 ?? {})) {
+    if (list && typeof list == 'object' && !Array.isArray(list)) {
+      for (const [key, value] of Object.entries(list)) {
+        if (labels.includes(value)) {
+          list[key] = word;
+        }
+      }
+    }
+  }
+
+  return changed;
+}
+
+/** The world line's words into the system's strings (TYPES and E20). Run once, at i18nInit. */
+export function applyWorldTerms() {
+  const changed = applyElementDamageWord();
+  const replace = termReplacer(termPairs({}, worldTerms()));
+  if (!replace) {
+    return changed;
+  }
+
   const translations = game.i18n?.translations ?? {};
-  return ['TYPES', 'E20'].reduce((sum, key) => sum + rewriteTranslations(translations[key], replace), 0);
+  return changed + ['TYPES', 'E20'].reduce((sum, key) => sum + rewriteTranslations(translations[key], replace), 0);
 }
 
 const hasRole = actor => (actor?.items?.contents ?? [...(actor?.items ?? [])]).some(item => item?.type == 'role');
@@ -77,8 +153,18 @@ export function termsLineOf(actor, depth = 0) {
  */
 export function replacerFor(actor) {
   const world = worldTerms();
-  const own = actor && crossoverOn() ? customLine(termsLineOf(actor))?.terms ?? {} : world;
-  return termReplacer(termPairs(world, own));
+  const crossover = actor && crossoverOn();
+  const own = crossover ? customLine(termsLineOf(actor))?.terms ?? {} : world;
+  const pairs = termPairs(world, own);
+  // Under Crossover the damage label (and its trait and style) still say both names: each actor's things read in its own line's.
+  const word = crossover ? elementDamageWord(termsLineOf(actor)) : null;
+  for (const label of word ? bothNameLabels() : []) {
+    if (label != word && !termsRename(own, label)) {
+      pairs.push({ from: label, to: word });
+    }
+  }
+
+  return termReplacer(pairs);
 }
 
 const SKIP = 'input, textarea, select, script, style, code, prose-mirror, [contenteditable="true"], .editor-content';

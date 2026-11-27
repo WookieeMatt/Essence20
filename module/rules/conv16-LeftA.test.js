@@ -475,16 +475,17 @@ describe('Scarefying Appearance', () => {
 });
 
 describe('Massive Mug of Mammoth Measurements / Petite Pony\'s Shrink Drink', () => {
+  // Potions (MLP CRB p.141): no Spellcasting test, so they act on use - the baubleUsed event (items/magic/magic-baubles.mjs).
   test('Huge (or Small) for the scene; one at a time; an old one from an earlier scene is put back first', async () => {
     const mug = packItem('mug');
     const shrink = packItem('shrink');
     const actor = makeActor([mug, shrink]);
-    await fireTriggers(actor, 'afterRoll', { roll: { item: mug }, outcome: 'success', facts: { results: [{ success: true }] } });
+    await fireTriggers(actor, 'baubleUsed', { roll: { item: mug }, vars: { succeeded: 1 } });
     expect(actor.system.size).toBe('huge');
-    await fireTriggers(actor, 'afterRoll', { roll: { item: shrink }, outcome: 'success', facts: { results: [{ success: true }] } });
+    await fireTriggers(actor, 'baubleUsed', { roll: { item: shrink }, vars: { succeeded: 1 } });
     expect(actor.system.size).toBe('huge');
     epochs.sceneClockScene = 2;
-    await fireTriggers(actor, 'afterRoll', { roll: { item: shrink }, outcome: 'success', facts: { results: [{ success: true }] } });
+    await fireTriggers(actor, 'baubleUsed', { roll: { item: shrink }, vars: { succeeded: 1 } });
     expect(actor.system.size).toBe('small');
     expect(actor.flags.essence20.ruleSizeChanges.sizePotion.original).toBe('common');
   });

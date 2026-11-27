@@ -328,7 +328,8 @@ describe('Megafauna', () => {
 describe('Sorcery', () => {
   test('the Use opens the builder and posts its line', async () => {
     const sorcerer = makeActor('Finster', FILES.sorcery);
-    const card = await runUse(itemNamed(sorcerer, 'Sorcery'), pay);
+    // Sorcery has two Uses now (a Power, or an enchanted item or focus - items/magic/sorcerous-focus.mjs): the first.
+    const card = await runUse(itemNamed(sorcerer, 'Sorcery'), pay, { pick: (item, available) => available.find(({ rule }) => rule.steps[0].do == 'buildSorcerousPower') });
     expect(builder.buildSorcerousPower).toHaveBeenCalledWith(sorcerer);
     expect(card).toContain('built');
   });

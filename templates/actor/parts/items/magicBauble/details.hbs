@@ -1,6 +1,7 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
 <div class="chip-section">
+  <span class="chip" name="chip.magicBauble.form">{{lookup @root.config.baubleForms item.system.form}}{{#if (eq item.system.form 'talisman')}} ↓{{item.system.castingCost}}{{/if}}</span>
   <span class="chip" name="chip.magicBauble.quantity">{{localize 'E20.MagicBaubleQuantity'}}: {{item.system.quantity}}</span>
   <span class="chip" name="chip.magicBauble.spellcastingShift">{{localize 'E20.MagicBaubleSpellcastingShift'}}: {{lookup @root.config.skillShifts item.system.spellcastingShift}}</span>
   {{!-- durationLabel, not duration: the field is a {units, value, text} object now and printing it

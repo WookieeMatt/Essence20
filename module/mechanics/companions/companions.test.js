@@ -3,7 +3,7 @@ import { addNightValeAnimalPerk, animalStats, canCommand, commandDif, commandIsM
 import { COMP, isCompanionUse } from './companion-uses.mjs';
 import { companionsOf, isCompanionPair, ownerOf, worldActors } from './companion-link.mjs';
 import { buildCommand, commandDefenseBonus, commandSources, isLive, PRESETS } from '../actions/commands.mjs';
-import { bondOf, bondRollSources, BOND, moduleEnergon } from './bonded-partners.mjs';
+import { bondOf, bondRollSources, BOND, moduleEnergon, onBondedHit } from './bonded-partners.mjs';
 import { groupBonuses, renderCard, tally } from '../rolls/group-tests.mjs';
 import { allegianceLeft, CONTACT, contactKindOf, isContact, startingAllegiance } from './contacts.mjs';
 import { BATTLIZERS, isBattlizer, personalVehicleEdge, racerAbandonMode, SUMMON, VEHICLE_IMG, vehicleCandidates, vehicleData, VEHICLES } from './summons.mjs';
@@ -150,6 +150,23 @@ describe('bonded partners', () => {
     actors.push(partner, holder);
     expect(bondOf(partner).holder).toBe(holder);
     expect(bondOf(holder).partner).toBe(partner);
+    expect(moduleEnergon(holder)).toBe(3);
+  });
+
+  test('the Powermaster module regains Energon from Energy (stored as element) or Laser damage only', async () => {
+    const partner = actor({ uuid: 'Actor.p' });
+    const holder = actor({ uuid: 'Actor.h', items: [item(BOND.powermaster)], flags: { bond: { partner: 'Actor.p', linked: true }, powermasterEnergon: 1 } });
+    holder.setFlag = jest.fn(async (scope, key, value) => {
+      holder.flags.essence20[key] = value;
+    });
+    actors.push(partner, holder);
+    await onBondedHit(holder, 'blunt');
+    expect(moduleEnergon(holder)).toBe(1);
+    await onBondedHit(holder, 'element');
+    expect(moduleEnergon(holder)).toBe(2);
+    await onBondedHit(holder, 'laser');
+    expect(moduleEnergon(holder)).toBe(3);
+    await onBondedHit(holder, 'element');
     expect(moduleEnergon(holder)).toBe(3);
   });
 

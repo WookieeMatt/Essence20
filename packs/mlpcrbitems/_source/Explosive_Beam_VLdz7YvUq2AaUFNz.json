@@ -27,7 +27,8 @@
     "range": "60 feet",
     "shape": "circle",
     "radius": 7.5,
-    "tier": "superior"
+    "tier": "superior",
+    "defenseType": "evasion"
   },
   "effects": [],
   "sort": 0,

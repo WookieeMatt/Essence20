@@ -250,8 +250,8 @@ export function buildAoeRegionData(actor, item, shapeData, { lingering, attached
     ...data,
     ownership: { [game.user.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER },
     behaviors: buildAoeBehaviors(item),
-    // An emanation follows its caster; core requires an attached Region to match that token's own
-    // hidden state.
+    // An emanation follows its caster, and starts with that token's own hidden state. Core stopped
+    // keeping the two in step in 14.371, so syncAoeRegionsHidden carries later changes across.
     ...(attachedToken
       ? { attachment: { token: attachedToken.id }, hidden: attachedToken.document.hidden }
       : {}),
@@ -287,6 +287,50 @@ function makeEphemeralRegion(shapes) {
     { name: 'AoE Preview', shapes },
     { parent: canvas.scene },
   );
+}
+
+/**
+ * The Region updates that bring a token's attached lingering AoE areas in line with its hidden
+ * state. Pure, so it can be unit tested without a scene.
+ * @param {Iterable<RegionDocument>} regions   The scene's regions.
+ * @param {String} tokenId
+ * @param {Boolean} hidden   The token's new hidden state.
+ * @returns {Array<Object>}   Update data, one entry per region that needs changing.
+ */
+export function aoeRegionHiddenUpdates(regions, tokenId, hidden) {
+  const updates = [];
+  for (const region of regions ?? []) {
+    const attached = region.attachment?.token;
+    const attachedId = typeof attached == 'string' ? attached : attached?.id;
+    if (attachedId == tokenId && region.flags?.essence20?.aoe && region.hidden != hidden) {
+      updates.push({ _id: region.id, hidden });
+    }
+  }
+
+  return updates;
+}
+
+/**
+ * updateToken handler: a lingering emanation follows its caster's hidden state. Foundry 14.371
+ * (#14496) stopped keeping an attached Region's hidden flag in step with its token, so revealing a
+ * caster who was hidden when they cast would leave their aura invisible to players. Only our own
+ * flagged AoE regions are touched - any other attached Region keeps core's independent behavior.
+ * Runs only on the client that made the change, so the update isn't raced from every client.
+ * @param {TokenDocument} tokenDoc
+ * @param {Object} changes
+ * @param {Object} options
+ * @param {String} userId
+ * @returns {Promise<void>}
+ */
+export async function syncAoeRegionsHidden(tokenDoc, changes, options, userId) {
+  if (userId != game.user.id || !('hidden' in (changes ?? {})) || !tokenDoc.parent) {
+    return;
+  }
+
+  const updates = aoeRegionHiddenUpdates(tokenDoc.parent.regions, tokenDoc.id, !!changes.hidden);
+  if (updates.length) {
+    await tokenDoc.parent.updateEmbeddedDocuments('Region', updates);
+  }
 }
 
 /**

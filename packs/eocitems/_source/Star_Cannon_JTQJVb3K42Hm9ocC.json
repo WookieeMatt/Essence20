@@ -26,7 +26,7 @@
           "style": "energy"
         },
         "damageValue": 2,
-        "damageType": "energy",
+        "damageType": "element",
         "numHands": "2",
         "numTargets": 1,
         "radius": 10,

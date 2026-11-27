@@ -4,7 +4,9 @@
  * @jest-environment jsdom
  */
 import { setCustomLines } from './custom-game-lines.mjs';
-import { applyTermsToElement, applyWorldTerms, replacerFor, termsLineOf } from './line-terms-hooks.mjs';
+import {
+  applyElementDamageWord, applyTermsToElement, applyWorldTerms, elementDamageWord, replacerFor, termsLineOf,
+} from './line-terms-hooks.mjs';
 
 const lines = [
   { label: 'Voltron', family: 'powerRangers', terms: { Zord: 'Lion', Megazord: 'Voltron' } },
@@ -23,6 +25,7 @@ const roleActor = (version, gameLine) => ({ type: 'playerCharacter', items: [{ t
 beforeAll(() => setCustomLines(lines));
 afterEach(() => {
   delete globalThis.game;
+  delete globalThis.CONFIG;
 });
 
 test("the world line's words go into the system's own strings, not anyone else's", () => {
@@ -77,4 +80,66 @@ test("a world playing every line is a crossover: each actor reads in its own lin
   world('');
   expect(replacerFor(roleActor('powerRangers', 'voltron'))('Zord')).toBe('Lion');
   expect(replacerFor(roleActor('giJoe', ''))).toBeNull();
+});
+
+describe("the 'element' damage type's name by line (Energy in PR / MLP / TF, Element in G.I. Joe)", () => {
+  function withLabel(gameLine, crossover = false) {
+    world(gameLine, crossover);
+    Object.assign(game.i18n.translations.E20, {
+      DamageElement: 'Element/Energy', WeaponTraitEnergy: 'Element/Energy', WeaponStyleEnergy: 'Element/Energy',
+      DamageElementWord: { element: 'Element', energy: 'Energy' },
+    });
+    globalThis.CONFIG = { E20: { damageTypes: { element: 'Element/Energy', fire: 'Fire' }, weaponTraits: { energy: 'Element/Energy' }, list: ['Element/Energy'] } };
+  }
+
+  test('each book line has its word; a homebrew line has its family\'s; Night Vale and every-line have none', () => {
+    withLabel('');
+    expect(elementDamageWord('powerRangers')).toBe('Energy');
+    expect(elementDamageWord('pr')).toBe('Energy');
+    expect(elementDamageWord('mlp')).toBe('Energy');
+    expect(elementDamageWord('transformers')).toBe('Energy');
+    expect(elementDamageWord('gij')).toBe('Element');
+    expect(elementDamageWord('voltron')).toBe('Energy');
+    expect(elementDamageWord('welcomeToNightVale')).toBeNull();
+    expect(elementDamageWord('')).toBeNull();
+  });
+
+  test("a one-line world's label reads in that line's word", () => {
+    withLabel('giJoe');
+    expect(applyWorldTerms()).toBe(3);
+    expect(game.i18n.translations.E20).toMatchObject({ DamageElement: 'Element', WeaponTraitEnergy: 'Element', WeaponStyleEnergy: 'Element' });
+    // Foundry localized CONFIG's lists before i18nInit: they're changed too.
+    expect(CONFIG.E20).toEqual({ damageTypes: { element: 'Element', fire: 'Fire' }, weaponTraits: { energy: 'Element' }, list: ['Element/Energy'] });
+    withLabel('powerRangers');
+    applyElementDamageWord();
+    expect(game.i18n.translations.E20.DamageElement).toBe('Energy');
+    // Every line, or Night Vale: both names stay.
+    withLabel('');
+    expect(applyElementDamageWord()).toBe(0);
+    withLabel('welcomeToNightVale');
+    expect(applyElementDamageWord()).toBe(0);
+    expect(game.i18n.translations.E20.DamageElement).toBe('Element/Energy');
+  });
+
+  test('under Crossover the label stays, and each actor reads it in its own line\'s word', () => {
+    withLabel('powerRangers', true);
+    expect(applyElementDamageWord()).toBe(0);
+    expect(replacerFor(roleActor('giJoe', ''))('2 Element/Energy damage')).toBe('2 Element damage');
+    expect(replacerFor(roleActor('powerRangers', ''))('2 Element/Energy damage')).toBe('2 Energy damage');
+    // A world playing every line is a crossover too.
+    withLabel('');
+    expect(replacerFor(roleActor('transformers', ''))('Element/Energy')).toBe('Energy');
+    // Nothing to swap for no actor (world text) - the label says both.
+    expect(replacerFor(null)).toBeNull();
+  });
+
+  test("a line's own Words for the label win", () => {
+    setCustomLines([...lines, { label: 'Mask', family: 'giJoe', terms: { 'Element/Energy': 'Venom' } }]);
+    withLabel('mask');
+    expect(applyWorldTerms()).toBe(3);
+    expect(game.i18n.translations.E20.DamageElement).toBe('Venom');
+    withLabel('', true);
+    expect(replacerFor(roleActor('giJoe', 'mask'))('Element/Energy')).toBe('Venom');
+    setCustomLines(lines);
+  });
 });

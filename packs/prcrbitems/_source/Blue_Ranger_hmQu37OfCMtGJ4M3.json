@@ -84,7 +84,20 @@
         "name": "Grid Tech I",
         "type": "perk",
         "subtype": "role",
-        "level": 2
+        "level": 2,
+        "choiceGroup": "blue-grid-tech",
+        "choiceSide": "grid-tech"
+      },
+      "8a21": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.7kHQ53hZFgwhSFVi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Defensive Flexibility",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2,
+        "choiceGroup": "blue-grid-tech",
+        "choiceSide": "defensive-flexibility",
+        "choiceSwitch": true
       },
       "2e9a": {
         "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
@@ -100,7 +113,20 @@
         "name": "Grid Tech II",
         "type": "perk",
         "subtype": "role",
-        "level": 7
+        "level": 7,
+        "choiceGroup": "blue-grid-tech",
+        "choiceSide": "grid-tech"
+      },
+      "798a": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.7kHQ53hZFgwhSFVi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Defensive Flexibility",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7,
+        "choiceGroup": "blue-grid-tech",
+        "choiceSide": "defensive-flexibility",
+        "choiceSwitch": true
       },
       "bd0d": {
         "uuid": "Compendium.essence20.pr_crb.Item.cuBM706WJjAmhoZO",
@@ -132,7 +158,20 @@
         "name": "Grid Tech III",
         "type": "perk",
         "subtype": "role",
-        "level": 12
+        "level": 12,
+        "choiceGroup": "blue-grid-tech",
+        "choiceSide": "grid-tech"
+      },
+      "ff1c": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.7kHQ53hZFgwhSFVi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Defensive Flexibility",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12,
+        "choiceGroup": "blue-grid-tech",
+        "choiceSide": "defensive-flexibility",
+        "choiceSwitch": true
       },
       "a268": {
         "uuid": "Compendium.essence20.pr_crb.Item.XfLsm5inPHekj6rY",
@@ -148,7 +187,20 @@
         "name": "Grid Tech IV",
         "type": "perk",
         "subtype": "role",
-        "level": 17
+        "level": 17,
+        "choiceGroup": "blue-grid-tech",
+        "choiceSide": "grid-tech"
+      },
+      "8bee": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.7kHQ53hZFgwhSFVi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Defensive Flexibility",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17,
+        "choiceGroup": "blue-grid-tech",
+        "choiceSide": "defensive-flexibility",
+        "choiceSwitch": true
       },
       "5af4": {
         "uuid": "Compendium.essence20.pr_crb.Item.cuBM706WJjAmhoZO",

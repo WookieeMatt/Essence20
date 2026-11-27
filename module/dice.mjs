@@ -2611,7 +2611,8 @@ export class Dice {
     // data/attack-schema.mjs). The Power half is what the Sorcerous attack Powers use: Arcane
     // Blast, Fireball, Volcanic Eruption, Icy Breath and Aura of Decay each print an attack Skill,
     // a damage value and a damage type, and before this they had nowhere to put any of it.
-    const authoredSpellDamage = (item?.type == 'spell' || item?.type == 'power') && item.system.damageValue
+    // A Magic Bauble made from an attack spell carries the spell's attack too (items/magic/magic-baubles.mjs).
+    const authoredSpellDamage = (item?.type == 'spell' || item?.type == 'power' || item?.type == 'magicBauble') && item.system.damageValue
       ? { value: item.system.damageValue, type: item.system.damageType }
       : null;
     const beamSpellDamage = (spellSourceId == ENERGY_BEAM_ID || spellSourceId == LANCING_BEAM_ID
@@ -3134,11 +3135,10 @@ export class Dice {
       }
 
       // Zero-G (ATS p.25): a Snag on ranged attacks that aren't normally Energy or Laser damage.
-      // This project's damageType schema has no 'energy' value of its own (only the separate
-      // 'energy' WEAPON TRAIT and the 'laser' damageType), so "normally Energy damage" reads as
-      // the weapon carrying the Energy trait.
+      // This project's damageType schema has no 'energy' value of its own: the book's Energy damage
+      // is stored as 'element', and the separate 'energy' WEAPON TRAIT marks it too.
       if (environment == 'zeroGravity'
-        && !environmentWeapon?.system.traits?.includes('energy') && item.system.damageType != 'laser') {
+        && !environmentWeapon?.system.traits?.includes('energy') && !['element', 'laser'].includes(item.system.damageType)) {
         snag = true;
         addSource('zeroGravity', this._localize('E20.SceneEnvironmentZeroGravity'), { snag: true });
       }

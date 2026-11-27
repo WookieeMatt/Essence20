@@ -25,10 +25,18 @@
        inline instead of needing its own row. --}}
   {{#if (eq skill 'spellcasting')}}
     {{#if fields.shiftDown}}
+    {{!-- After making a Magic Bauble it comes back 1 step an hour, not each round, until a full rest (MLP CRB p.142). --}}
+    {{#if @root.document.flags.essence20.baubleCraft.slowRecovery}}
+    <span class="chip spellcasting-downshift-chip" data-tooltip="{{localize 'E20.SpellcastingDownshiftSlowTooltip'}}">
+      {{localize 'E20.SpellcastingDownshift'}}: -{{fields.shiftDown}} ({{localize 'E20.SpellcastingDownshiftSlow'}})
+    </span>
+    <a class="spellcasting-downshift-action" data-action="recoverSpellcastingDownshift" data-tooltip="{{localize 'E20.SpellcastingDownshiftRecoverSlowTooltip'}}">
+    {{else}}
     <span class="chip spellcasting-downshift-chip" data-tooltip="{{localize 'E20.SpellcastingDownshiftTooltip'}}">
       {{localize 'E20.SpellcastingDownshift'}}: -{{fields.shiftDown}}
     </span>
     <a class="spellcasting-downshift-action" data-action="recoverSpellcastingDownshift" data-tooltip="{{localize 'E20.SpellcastingDownshiftRecoverTooltip'}}">
+    {{/if}}
       <i class="fas fa-arrow-up"></i>
     </a>
     <a class="spellcasting-downshift-action" data-action="sufferForSpellcastingDownshift" data-tooltip="{{localize 'E20.SpellcastingDownshiftRecoverHealthTooltip'}}">
