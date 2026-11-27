@@ -54,7 +54,8 @@
         "type": "perk",
         "subtype": "role",
         "level": 2,
-        "choiceGroup": "white-2"
+        "choiceGroup": "white-2",
+        "choiceSwitch": true
       },
       "f274": {
         "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",

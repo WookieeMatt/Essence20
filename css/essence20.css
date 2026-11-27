@@ -2490,9 +2490,26 @@
   border: 1px solid var(--e20-theme-border-color, currentColor);
   border-radius: 4px;
   line-height: 1.4;
+  /* Build Focus: a small chip-style button beside the budget. */
 }
 .essence20 .e20-sorcery-budget .e20-sorcery-budget-label {
   font-weight: 700;
+}
+.essence20 .e20-sorcery-budget .e20-sorcery-budget-end {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.essence20 .e20-sorcery-budget .e20-build-focus {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0 0.45rem;
+  border: 1px solid var(--e20-theme-border-color, currentColor);
+  border-radius: 3px;
+  line-height: 1.5;
+  white-space: nowrap;
+  cursor: pointer;
 }
 .essence20 .e20-sorcery-budget.is-over {
   color: #b46a00;

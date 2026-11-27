@@ -334,6 +334,26 @@ describe('rename and required', () => {
     expect(await setUpItem(picked, actor, { ask: answers('might').ask })).toBe(true);
     expect(picked.flags.essence20.rules.choices.skill).toBe('might');
   });
+
+  test('an item taken off while its ask waited is skipped, and one taken off between re-asks stops there', async () => {
+    const rule = { type: 'ChoiceSet', key: 'skill', from: 'skill', required: true };
+    const actor = makeActor([]);
+    // Swapped out (a Role Perk for a Spectrum Modification) before its turn in the queue came.
+    const gone = makeItem([rule], { flags: { essence20: { parentId: 'role' } } });
+    const unasked = answers('might');
+    expect(await setUpItem(gone, actor, { ask: unasked.ask })).toBe(false);
+    expect(unasked.ask).not.toHaveBeenCalled();
+
+    const removed = add(actor, makeItem([rule], { flags: { essence20: { parentId: 'role' } } }));
+    const cancelThenRemove = answers(null, 'might');
+    const ask = jest.fn(async (...args) => {
+      await actor.deleteEmbeddedDocuments('Item', [removed.id]);
+      return cancelThenRemove.ask(...args);
+    });
+    expect(await setUpItem(removed, actor, { ask })).toBe(false);
+    expect(ask).toHaveBeenCalledTimes(1);
+    expect(removed.update).not.toHaveBeenCalled();
+  });
 });
 
 describe('one dialog at a time', () => {
@@ -490,6 +510,26 @@ describe('pickSubPerk', () => {
     expect(item.flags.essence20.rules.choices.perks).toEqual([A, B]);
     expect(ctx.vars.picked).toEqual([A, B]);
     expect(rulesContext(item).rules[0].choice.label).toBe(`${A.slice(-16)}, ${B.slice(-16)}`);
+  });
+
+  test('an item taken off before or while it asks makes nothing (a Grid Tech switched for Defensive Flexibility)', async () => {
+    const before = gridScience(1);
+    const actor = makeActor([]);
+    const create = helpers(actor);
+    const ctx = stepContext({ actor, item: before, rule: before.system.rules[0], targets: [] });
+    ctx.askPick = jest.fn(async (step, options) => options[0].value);
+    await runSteps(before.system.rules[0].steps, ctx);
+    expect(ctx.askPick).not.toHaveBeenCalled();
+
+    const during = add(actor, gridScience(1));
+    const ctx2 = stepContext({ actor, item: during, rule: during.system.rules[0], targets: [] });
+    ctx2.askPick = async (step, options) => {
+      await actor.deleteEmbeddedDocuments('Item', [during.id]);
+      return options[0].value;
+    };
+
+    await runSteps(during.system.rules[0].steps, ctx2);
+    expect(create).not.toHaveBeenCalled();
   });
 
   test('count reads @choiceCount; a cancel makes nothing and stops the run; nothing left stops it too', async () => {

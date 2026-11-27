@@ -382,23 +382,49 @@ export async function readyFocus(focus, { destroyed = false } = {}) {
 }
 
 /**
- * Remove a focus: it, the Power it grants, and the Sorcerous trait it gave its host. Powers that merely needed it keep
- * needing it (and stay gated) until they're rebuilt or deleted.
+ * What a focus leaves behind once it goes: the Power it grants (which would otherwise keep working with nothing to
+ * check its once-per-scene limit against) and the Sorcerous trait it gave its host. Safe to run twice - only what is
+ * still there is touched. Powers that merely needed the focus keep needing it (and stay gated) until they're rebuilt
+ * or deleted.
+ * @param {Item} focus
+ * @param {Actor} [actor]
  */
+export async function cleanUpAfterFocus(focus, actor = focus?.parent) {
+  if (!isSorcerousFocus(focus) || !actor) {
+    return;
+  }
+
+  const host = focusHost(focus, actor);
+  const traits = host?.system?.traits;
+  if (focusFlag(focus).addedTrait && Array.isArray(traits) && traits.includes('sorcerous')) {
+    await host.update({ 'system.traits': traits.filter(trait => trait != 'sorcerous') });
+  }
+
+  const ids = itemsOf(actor).filter(item => item.id != focus.id && focusFlag(item).grantedBy == focus.id).map(item => item.id);
+  if (ids.length) {
+    await actor.deleteEmbeddedDocuments('Item', ids);
+  }
+}
+
+/** Remove a focus: it, the Power it grants, and the Sorcerous trait it gave its host (cleanUpAfterFocus). */
 export async function removeFocus(focus) {
   const actor = focus?.parent;
   if (!isSorcerousFocus(focus) || !actor) {
     return;
   }
 
-  const flag = focusFlag(focus);
-  const host = focusHost(focus, actor);
-  if (host && flag.addedTrait && Array.isArray(host.system?.traits)) {
-    await host.update({ 'system.traits': host.system.traits.filter(trait => trait != 'sorcerous') });
-  }
+  await cleanUpAfterFocus(focus, actor);
+  await actor.deleteEmbeddedDocuments('Item', [focus.id]);
+}
 
-  const ids = itemsOf(actor).filter(item => focusFlag(item).grantedBy == focus.id).map(item => item.id);
-  await actor.deleteEmbeddedDocuments('Item', [...ids, focus.id]);
+if (typeof Hooks != 'undefined') {
+  // A focus deleted any other way (the sheet's delete, a drag off, a script) takes its granted Power and trait with it.
+  // Only the client that deleted it does the work, so it happens once.
+  Hooks.on('deleteItem', (item, options, userId) => {
+    if (userId == globalThis.game?.user?.id && isSorcerousFocus(item) && item.parent) {
+      cleanUpAfterFocus(item, item.parent);
+    }
+  });
 }
 
 /**
@@ -414,6 +440,43 @@ export async function useFocusFor(power) {
   const name = focus.name;
   await removeFocus(focus);
   return T('SorcerousFocusSpentChat', { focus: name });
+}
+
+/* -------------------------------------------- */
+/*  The Powers tab's Build Focus button           */
+/* -------------------------------------------- */
+
+/** Whether a rule is the Use that builds a focus (the Sorcery Perk's "Build an enchanted item or focus"). */
+export function isBuildFocusUse(rule) {
+  return rule?.type == 'Use' && Array.isArray(rule.steps) && rule.steps.some(step => step?.do == 'buildSorcerousFocus');
+}
+
+/** The actor's item that can build a focus - the Sorcery Perk, or any item carrying that Use - or null. */
+export function focusBuilderSource(actor) {
+  return itemsOf(actor).find(item => Array.isArray(item.system?.rules) && item.system.rules.some(isBuildFocusUse)) ?? null;
+}
+
+/**
+ * The Powers tab's Build Focus button: runs the Sorcery Perk's own build Use (the same dialog, limits and chat card
+ * as its Use button, without asking which of its Uses), and posts the card.
+ * @param {Actor} actor
+ * @param {{runUse?: Function}} [options]   runUse: rules/triggers.mjs#runUse (tests).
+ * @returns {Promise<String|null>}   The chat card, or null when nothing was built.
+ */
+export async function buildFocusFromSheet(actor, { runUse = null } = {}) {
+  const source = focusBuilderSource(actor);
+  if (!source) {
+    globalThis.ui?.notifications?.warn?.(T('SorcerousFocusNoBuilder', { name: actor?.name ?? '' }));
+    return null;
+  }
+
+  runUse ??= (await import("../../rules/triggers.mjs")).runUse;
+  const card = await runUse(source, async () => true, { pick: (item, available) => available.find(({ rule }) => isBuildFocusUse(rule)) ?? null });
+  if (card && globalThis.ChatMessage?.create) {
+    await ChatMessage.create({ speaker: ChatMessage.getSpeaker({ actor }), content: card });
+  }
+
+  return card ?? null;
 }
 
 /* -------------------------------------------- */

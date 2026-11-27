@@ -96,7 +96,8 @@
         "subtype": "role",
         "level": 2,
         "choiceGroup": "blue-grid-tech",
-        "choiceSide": "defensive-flexibility"
+        "choiceSide": "defensive-flexibility",
+        "choiceSwitch": true
       },
       "2e9a": {
         "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
@@ -124,7 +125,8 @@
         "subtype": "role",
         "level": 7,
         "choiceGroup": "blue-grid-tech",
-        "choiceSide": "defensive-flexibility"
+        "choiceSide": "defensive-flexibility",
+        "choiceSwitch": true
       },
       "bd0d": {
         "uuid": "Compendium.essence20.pr_crb.Item.cuBM706WJjAmhoZO",
@@ -168,7 +170,8 @@
         "subtype": "role",
         "level": 12,
         "choiceGroup": "blue-grid-tech",
-        "choiceSide": "defensive-flexibility"
+        "choiceSide": "defensive-flexibility",
+        "choiceSwitch": true
       },
       "a268": {
         "uuid": "Compendium.essence20.pr_crb.Item.XfLsm5inPHekj6rY",
@@ -196,7 +199,8 @@
         "subtype": "role",
         "level": 17,
         "choiceGroup": "blue-grid-tech",
-        "choiceSide": "defensive-flexibility"
+        "choiceSide": "defensive-flexibility",
+        "choiceSwitch": true
       },
       "5af4": {
         "uuid": "Compendium.essence20.pr_crb.Item.cuBM706WJjAmhoZO",

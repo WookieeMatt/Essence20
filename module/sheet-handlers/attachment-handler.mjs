@@ -1,6 +1,7 @@
 import { promptUpgradeChoice } from "../items/attacks/weapon-upgrades.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { createId } from "../util/utils.mjs";
+import { escapeHtml } from "../items/shared/chat-lines.mjs";
 import { onPerkDelete, setPerkValues, setPerkAdvancesName } from "./perk-handler.mjs";
 
 /**
@@ -185,14 +186,7 @@ export function settledChainPicks(group, items, owner, parentItem, grantedKeys =
     return null;
   }
 
-  const ownedKeys = new Set(grantedKeys);
-  for (const ownerItem of owner.items ?? []) {
-    const flags = ownerItem.flags?.essence20;
-    if (flags?.parentId == parentItem._id && flags.collectionId) {
-      ownedKeys.add(flags.collectionId);
-    }
-  }
-
+  const ownedKeys = new Set([...grantedKeys, ...ownedEntryKeys(owner, parentItem)]);
   const chosenSides = new Set(earlier.filter(([key]) => ownedKeys.has(key)).map(([, entry]) => choiceSideOf(entry)));
   if (!chosenSides.size) {
     return null;
@@ -222,6 +216,11 @@ export async function removeTurnedDownSide(picked, items, owner, parentItem) {
     const entry = flags?.parentId == parentItem._id ? items[flags.collectionId] : null;
     if (entry?.choiceGroup == picked.choiceGroup && choiceSideOf(entry) != side) {
       ids.push(ownerItem._id);
+      // A Perk turned down loses "all of its abilities" too (A Jump Through Time p.47): what it granted (Grid Tech's
+      // picks) and what it set on the actor, as deleting it from the sheet does.
+      if (ownerItem.type == 'perk') {
+        await onPerkDelete(owner, ownerItem);
+      }
     }
   }
 
@@ -261,6 +260,133 @@ export async function processChoiceChain(groups, items, owner, parentItem, grant
   }
 
   return copyWasCreated;
+}
+
+/**
+ * The collection keys of what the owner holds from this parent.
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item
+ * @return {Set<String>} The keys
+ */
+function ownedEntryKeys(owner, parentItem) {
+  const keys = new Set();
+  for (const ownerItem of owner.items ?? []) {
+    const flags = ownerItem.flags?.essence20;
+    if (flags?.parentId == parentItem._id && flags.collectionId) {
+      keys.add(flags.collectionId);
+    }
+  }
+
+  return keys;
+}
+
+/**
+ * The Choice Group sides a character can still switch to on a level-up. An entry marked choiceSwitch can be taken
+ * later in place of the side the character took: Spectrum Modification Perks can be chosen "when you Level up"
+ * too (A Jump Through Time p.47), while G.I. Joe's Alternate Role Perks are decided at the level the Perk is gained
+ * (Sgt Slaughter Sourcebook p.10) and so are left unmarked. Offered only for a group the character settled before
+ * this level-up, on the other side, and hasn't told the Role to stop asking about.
+ * @param {Object} items The parent's whole collection
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item
+ * @param {Number} previousLevel The level before this level-up
+ * @param {Number} newLevel The level after it
+ * @return {Array<{group: String, side: String, entries: Array<[String, Object]>, replaces: Array<String>}>} One
+ *   offer per side, with the side's entries due by newLevel and the names of the owned entries it replaces
+ */
+export function switchableChoices(items, owner, parentItem, previousLevel, newLevel) {
+  const declined = parentItem.flags?.essence20?.declinedChoiceSwitches ?? [];
+  const owned = ownedEntryKeys(owner, parentItem);
+  const groups = new Map();
+  for (const [key, entry] of Object.entries(items ?? {})) {
+    if (!entry.choiceGroup || declined.includes(entry.choiceGroup) || (entry.level ?? 0) > newLevel) {
+      continue;
+    }
+
+    if (!groups.has(entry.choiceGroup)) {
+      groups.set(entry.choiceGroup, []);
+    }
+
+    groups.get(entry.choiceGroup).push([key, entry]);
+  }
+
+  const offers = [];
+  for (const [group, due] of groups) {
+    const switchSides = new Set(due.filter(([, entry]) => entry.choiceSwitch).map(([, entry]) => choiceSideOf(entry)));
+    if (!switchSides.size) {
+      continue;
+    }
+
+    const taken = due.filter(([key, entry]) => owned.has(key) && (entry.level ?? 0) <= previousLevel);
+    const takenSides = new Set(taken.map(([, entry]) => choiceSideOf(entry)));
+    if (!takenSides.size || [...takenSides].some(side => switchSides.has(side))) {
+      continue;
+    }
+
+    const replaces = [...new Set(due.filter(([key]) => owned.has(key)).map(([, entry]) => entry.name))];
+    for (const side of switchSides) {
+      offers.push({ group, side, entries: due.filter(([, entry]) => choiceSideOf(entry) == side), replaces });
+    }
+  }
+
+  return offers;
+}
+
+/**
+ * Switches a character to another side of a Choice Group: removes what the side they took had granted, then grants
+ * the new side's entries for every level they have already reached.
+ * @param {{entries: Array<[String, Object]>}} offer The side to switch to (see switchableChoices)
+ * @param {Object} items The parent's whole collection
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item
+ */
+export async function switchChoiceSide(offer, items, owner, parentItem) {
+  await removeTurnedDownSide(offer.entries[0][1], items, owner, parentItem);
+  for (const [key, entry] of offer.entries) {
+    await grantItemEntry(key, entry, owner, parentItem);
+  }
+}
+
+/**
+ * On a level-up, asks about each Choice Group side the character can still switch to (see switchableChoices).
+ * "Not now" asks again at the next level-up; "Don't ask again" stops asking for that group on this Role.
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item (the Role)
+ * @param {Number} previousLevel The level before this change
+ * @param {Number} newLevel The level after it
+ */
+export async function offerChoiceSwitches(owner, parentItem, previousLevel, newLevel) {
+  if (!previousLevel || !(newLevel > previousLevel)) {
+    return;
+  }
+
+  const items = parentItem.system?.items ?? {};
+  for (const offer of switchableChoices(items, owner, parentItem, previousLevel, newLevel)) {
+    const perks = [...new Set(offer.entries.map(([, entry]) => entry.name))].join(', ');
+    const content = game.i18n.format('E20.ChoiceSwitchPrompt', {
+      role: escapeHtml(parentItem.name),
+      perks: escapeHtml(perks),
+      replaces: escapeHtml(offer.replaces.join(', ')),
+    });
+    const answer = await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize('E20.ChoiceSwitchTitle') },
+      position: { width: 440 },
+      content: `<p>${content}</p>`,
+      buttons: [
+        { action: 'switch', label: game.i18n.localize('E20.ChoiceSwitchYes') },
+        { action: 'later', label: game.i18n.localize('E20.ChoiceSwitchLater'), default: true },
+        { action: 'never', label: game.i18n.localize('E20.ChoiceSwitchNever') },
+      ],
+      rejectClose: false,
+    });
+
+    if (answer == 'switch') {
+      await switchChoiceSide(offer, items, owner, parentItem);
+    } else if (answer == 'never') {
+      const declined = parentItem.flags?.essence20?.declinedChoiceSwitches ?? [];
+      await parentItem.setFlag('essence20', 'declinedChoiceSwitches', [...declined, offer.group]);
+    }
+  }
 }
 
 /**

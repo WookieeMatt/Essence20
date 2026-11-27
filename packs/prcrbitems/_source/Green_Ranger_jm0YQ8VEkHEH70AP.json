@@ -40,7 +40,8 @@
         "type": "perk",
         "subtype": "role",
         "level": 1,
-        "choiceGroup": "green-1"
+        "choiceGroup": "green-1",
+        "choiceSwitch": true
       },
       "a15c": {
         "uuid": "Compendium.essence20.pr_crb.Item.pdSn2ZRcGm9AZ9r2",

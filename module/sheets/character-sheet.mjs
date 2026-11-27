@@ -144,7 +144,10 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
       actions: true,
       gear: true,
       spells: this.actor.system.canSpellcast,
-      powers: this.actor.system.canMorph,
+      // Morphers, and anyone with the Sorcery Perk (it sets powers.sorcerous.levelTaken - Finster's p.274) or a
+      // Power of any kind on the sheet: the tab holds the Sorcery budget and the Powers it pays for.
+      powers: this.actor.system.canMorph || !!this.actor.system.powers?.sorcerous?.levelTaken
+        || !!this.actor.items.documentsByType?.power?.length,
       perks: true,
       altmode: this.actor.system.canTransform,
       zords: this.actor.system.canHaveZord,

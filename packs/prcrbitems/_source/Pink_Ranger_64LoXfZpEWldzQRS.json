@@ -83,7 +83,8 @@
         "type": "perk",
         "subtype": "role",
         "level": 2,
-        "choiceGroup": "pink-2"
+        "choiceGroup": "pink-2",
+        "choiceSwitch": true
       },
       "8ce1": {
         "uuid": "Compendium.essence20.pr_crb.Item.rQQqFLBG7JH4d1kR",

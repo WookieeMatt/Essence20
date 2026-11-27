@@ -1,6 +1,7 @@
 import {
   DEFAULT_CONE_ANGLE_DEGREES,
   angleBetweenPoints,
+  aoeRegionHiddenUpdates,
   buildAoeBehaviors,
   buildAoeRegionData,
   buildAoeShapeData,
@@ -264,5 +265,36 @@ describe("buildAoeRegionData", () => {
       { lingering: true });
 
     expect(data.levels).toEqual([]);
+  });
+});
+
+describe("aoeRegionHiddenUpdates", () => {
+  const aoeFlags = { essence20: { aoe: { placedAtRound: 1 } } };
+  const region = (id, { token = "tok1", hidden = true, flags = aoeFlags } = {}) => ({ id, attachment: { token }, hidden, flags });
+
+  test("reveals a lingering area attached to the revealed token", () => {
+    expect(aoeRegionHiddenUpdates([region("r1")], "tok1", false)).toEqual([{ _id: "r1", hidden: false }]);
+  });
+
+  test("hides it again when the token is hidden", () => {
+    expect(aoeRegionHiddenUpdates([region("r1", { hidden: false })], "tok1", true)).toEqual([{ _id: "r1", hidden: true }]);
+  });
+
+  test("reads an attachment stored as a document rather than an id", () => {
+    expect(aoeRegionHiddenUpdates([region("r1", { token: { id: "tok1" } })], "tok1", false)).toEqual([{ _id: "r1", hidden: false }]);
+  });
+
+  test("leaves regions that already match, belong to another token, or aren't ours", () => {
+    const regions = [
+      region("same", { hidden: false }),
+      region("other", { token: "tok2" }),
+      region("core", { flags: {} }),
+      { id: "loose", attachment: { token: null }, hidden: true, flags: aoeFlags },
+    ];
+    expect(aoeRegionHiddenUpdates(regions, "tok1", false)).toEqual([]);
+  });
+
+  test("copes with no regions at all", () => {
+    expect(aoeRegionHiddenUpdates(undefined, "tok1", false)).toEqual([]);
   });
 });

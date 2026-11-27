@@ -146,7 +146,20 @@ function isGranted(ctx) {
   return !!(now?.flags?.essence20?.grantedBy || now?.flags?.essence20?.parentId);
 }
 
+/**
+ * Whether the rule's item has been taken off the actor since - e.g. a Grid Tech swapped for Defensive Flexibility while
+ * its pick waited or was open (sheet-handlers/attachment-handler.mjs#switchChoiceSide). Its picks are then not made.
+ */
+function isGone(ctx) {
+  const actor = ctx.actor ?? ctx.item?.parent;
+  return !!actor?.items?.get && !!ctx.item?.id && !actor.items.get(ctx.item.id);
+}
+
 async function runPickSubPerk(step, ctx) {
+  if (isGone(ctx)) {
+    return undefined;
+  }
+
   const options = await subPerkOptions(step, ctx);
   // required (Perk choice P2, user ruling 2026-10-07): a granted item is kept whatever happens - it asks again after a
   // cancel, and with nothing to offer it stays unpicked (a warning) rather than being taken off; a dropped one is
@@ -165,6 +178,10 @@ async function runPickSubPerk(step, ctx) {
 
   if (!picks) {
     return step.optional || keep() ? undefined : false;
+  }
+
+  if (isGone(ctx)) {
+    return undefined;
   }
 
   await makeSubPerks(step, ctx, picks);

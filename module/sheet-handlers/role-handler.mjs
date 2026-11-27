@@ -4,7 +4,7 @@ import { essenceRedirect } from "../mechanics/resources/grants.mjs";
 import { roleGrantsMorph, roleRule } from "../mechanics/resources/custom-game-lines.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
-import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
+import { createItemCopies, deleteAttachmentsForItem, offerChoiceSwitches } from "./attachment-handler.mjs";
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 import { onPerkDelete, onPerkDrop } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
@@ -635,9 +635,12 @@ export async function onLevelChange(actor, newLevel) {
     return;
   }
 
+  // Each Role's own [previous, new] perk levels, for the Choice Group switches offered at the end.
+  const perkLevels = [];
   if (!additiveRole) {
     // The common case: a single Role, unchanged from before this Actor could have a second one.
     await setRoleValues(baseRole, actor, newLevel, previousLevel);
+    perkLevels.push([baseRole, previousLevel, newLevel]);
   } else {
     // An additive Role (e.g. Old Hand) is present: its own level runs independently of the
     // Actor's real level, starting at 1 the level it was dropped
@@ -652,6 +655,7 @@ export async function onLevelChange(actor, newLevel) {
 
     await setRoleValues(baseRole, actor, newLevel, previousLevel, null, effectiveBaseRoleLevel, previousEffectiveBaseRoleLevel);
     await setRoleValues(additiveRole, actor, additiveLevel, previousAdditiveLevel, additiveLevel, additiveLevel);
+    perkLevels.push([baseRole, previousEffectiveBaseRoleLevel, effectiveBaseRoleLevel], [additiveRole, previousAdditiveLevel, additiveLevel]);
   }
 
   const focus = actor.items.documentsByType.focus;
@@ -670,6 +674,11 @@ export async function onLevelChange(actor, newLevel) {
   if (newLevel > previousLevel) {
     const { offerZordGrowth } = await import("../mechanics/vehicles/zord-growth.mjs");
     await offerZordGrowth(actor);
+
+    // A Spectrum Modification can also be taken "when you Level up" (A Jump Through Time p.47).
+    for (const [role, before, after] of perkLevels) {
+      await offerChoiceSwitches(actor, role, before, after);
+    }
   }
 }
 

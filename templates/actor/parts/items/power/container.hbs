@@ -7,7 +7,12 @@
 <div class="e20-sorcery-budget{{#if (gt @root.system.powers.sorcerous.committed @root.system.powers.sorcerous.max)}} is-over{{/if}}"
   data-tooltip="{{localize 'E20.SorcerousPowerCommittedHint'}}">
   <span class="e20-sorcery-budget-label">{{localize 'E20.SorceryBudget'}}</span>
-  <span class="e20-sorcery-budget-value">{{@root.system.powers.sorcerous.committed}} / {{@root.system.powers.sorcerous.max}}</span>
+  <span class="e20-sorcery-budget-end">
+    <span class="e20-sorcery-budget-value">{{@root.system.powers.sorcerous.committed}} / {{@root.system.powers.sorcerous.max}}</span>
+    {{#if @root.editable}}
+      <a class="e20-build-focus" data-action="buildSorcerousFocus" data-tooltip="{{localize 'E20.SorcerousFocusBuildButtonHint'}}"><i class="fas fa-wand-sparkles"></i> {{localize 'E20.SorcerousFocusBuildButton'}}</a>
+    {{/if}}
+  </span>
 </div>
 {{/if}}
 

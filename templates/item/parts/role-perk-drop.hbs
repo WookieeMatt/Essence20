@@ -13,6 +13,7 @@
               <input type="text" class="choice-group" placeholder="{{localize 'E20.ChoiceGroupPlaceholder'}}" value="{{item.choiceGroup}}" name="system.items.{{item.key}}.choiceGroup" data-tooltip="{{localize 'E20.ChoiceGroupTooltip'}}" />
               {{#if item.choiceGroup}}
               <input type="text" class="choice-side" placeholder="{{localize 'E20.ChoiceSidePlaceholder'}}" value="{{item.choiceSide}}" name="system.items.{{item.key}}.choiceSide" data-tooltip="{{localize 'E20.ChoiceSideTooltip'}}" />
+              <input type="checkbox" class="choice-switch" name="system.items.{{item.key}}.choiceSwitch" {{checked item.choiceSwitch}} data-tooltip="{{localize 'E20.ChoiceSwitchTooltip'}}" aria-label="{{localize 'E20.ChoiceSwitchTooltip'}}" />
               {{/if}}
               <div class="item-controls">
                 <a class="view-info" data-action="viewItem" data-uuid="{{item.uuid}}" data-tooltip="{{localize 'E20.OpenItem'}}">

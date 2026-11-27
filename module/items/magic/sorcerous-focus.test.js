@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 import {
-  addSorcerousTrait, basicAttackBuild, countsAgainstBudget, focusCost, focusFor, focusGateRules, focusPickerContext, focusPowerData,
+  addSorcerousTrait, basicAttackBuild, buildFocusFromSheet, cleanUpAfterFocus, focusBuilderSource, isBuildFocusUse, countsAgainstBudget, focusCost, focusFor, focusGateRules, focusPickerContext, focusPowerData,
   focusRequirementChanges, isFocusGateRule,
   focusProblem, focusReady, focusUseRules, grantedPowerData, hostTakesTrait, isSorcerousFocus, readyFocus, removeFocus,
   requiringPowerData, sorcerousFoci, useFocusFor,
@@ -166,6 +166,81 @@ describe('magical focus (Finster\'s Monster-Matic Cookbook p.274)', () => {
     actorWith([lasting, power]);
     expect(await useFocusFor(power)).toBe(null);
     await removeFocus(item('power', 'nope'));
+  });
+
+  test('a focus deleted on its own still takes its granted Power and the trait it gave, and nothing else', async () => {
+    const sword = item('weapon', 'w1', { system: { traits: ['sorcerous', 'sharp'] } });
+    const focus = focusItem('f1', { host: 'w1', addedTrait: true });
+    const granted = item('power', 'p1', { flags: { essence20: { sorcerousFocus: { requires: 'f1', grantedBy: 'f1' } } } });
+    const needs = item('power', 'p2', { flags: { essence20: { sorcerousFocus: { requires: 'f1' } } } });
+    const actor = actorWith([sword, granted, needs]);
+    // The focus is already gone from the actor, as it is when the deleteItem hook runs.
+    focus.parent = actor;
+    await cleanUpAfterFocus(focus);
+    expect(actor.items.contents.map(i => i.id)).toEqual(['w1', 'p2']);
+    expect(sword.system.traits).toEqual(['sharp']);
+
+    // Run again (removeFocus already cleaned up): nothing more to do.
+    sword.update.mockClear();
+    actor.deleteEmbeddedDocuments.mockClear();
+    await cleanUpAfterFocus(focus);
+    expect(sword.update).not.toHaveBeenCalled();
+    expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled();
+  });
+
+  test('a host that already had the Sorcerous trait keeps it', async () => {
+    const armor = item('armor', 'a1', { system: { traits: ['sorcerous'] } });
+    const focus = focusItem('f1', { host: 'a1', addedTrait: false });
+    const actor = actorWith([armor]);
+    await cleanUpAfterFocus(focus, actor);
+    expect(armor.system.traits).toEqual(['sorcerous']);
+    await cleanUpAfterFocus(item('power', 'x'), actor);
+    await cleanUpAfterFocus(focus, null);
+  });
+});
+
+describe("the Powers tab's Build Focus button", () => {
+  const buildUse = { type: 'Use', label: 'Build an enchanted item or focus', steps: [{ do: 'buildSorcerousFocus' }] };
+  const powerUse = { type: 'Use', label: 'Build a Sorcerous Power', steps: [{ do: 'buildSorcerousPower' }] };
+
+  test('finds the item carrying the focus-building Use', () => {
+    expect(isBuildFocusUse(buildUse)).toBe(true);
+    expect(isBuildFocusUse(powerUse)).toBe(false);
+    expect(isBuildFocusUse({ type: 'Trigger', steps: [{ do: 'buildSorcerousFocus' }] })).toBe(false);
+    const sorcery = item('perk', 's1', { system: { rules: [powerUse, buildUse] } });
+    expect(focusBuilderSource(actorWith([item('perk', 'x', { system: { rules: [powerUse] } }), sorcery]))).toBe(sorcery);
+    expect(focusBuilderSource(actorWith([item('perk', 'x', { system: {} })]))).toBe(null);
+  });
+
+  test("runs the Perk's build Use without asking which Use, and posts its card", async () => {
+    const sorcery = item('perk', 's1', { system: { rules: [powerUse, buildUse] } });
+    const actor = actorWith([sorcery]);
+    globalThis.ChatMessage = { create: jest.fn(async () => ({})), getSpeaker: jest.fn(() => ({ alias: 'Rita' })) };
+    let picked;
+    const runUse = jest.fn(async (source, pay, { pick }) => {
+      picked = pick(source, [{ rule: powerUse, index: 0 }, { rule: buildUse, index: 1 }]);
+      expect(await pay('standard')).toBe(true);
+      return '<strong>Sorcery</strong><br>built';
+    });
+    expect(await buildFocusFromSheet(actor, { runUse })).toBe('<strong>Sorcery</strong><br>built');
+    expect(runUse.mock.calls[0][0]).toBe(sorcery);
+    expect(picked.rule).toBe(buildUse);
+    expect(ChatMessage.create).toHaveBeenCalledWith({ speaker: { alias: 'Rita' }, content: '<strong>Sorcery</strong><br>built' });
+
+    // Cancelled: no card.
+    ChatMessage.create.mockClear();
+    expect(await buildFocusFromSheet(actor, { runUse: async () => null })).toBe(null);
+    expect(ChatMessage.create).not.toHaveBeenCalled();
+    delete globalThis.ChatMessage;
+  });
+
+  test('without the Perk it warns and builds nothing', async () => {
+    globalThis.ui = { notifications: { warn: jest.fn() } };
+    const runUse = jest.fn();
+    expect(await buildFocusFromSheet(actorWith([]), { runUse })).toBe(null);
+    expect(runUse).not.toHaveBeenCalled();
+    expect(ui.notifications.warn).toHaveBeenCalled();
+    delete globalThis.ui;
   });
 });
 

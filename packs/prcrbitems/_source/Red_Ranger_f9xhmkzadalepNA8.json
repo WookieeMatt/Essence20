@@ -114,7 +114,8 @@
         "type": "perk",
         "subtype": "role",
         "level": 5,
-        "choiceGroup": "red-5"
+        "choiceGroup": "red-5",
+        "choiceSwitch": true
       },
       "c942": {
         "uuid": "Compendium.essence20.pr_crb.Item.TomU7e31oHoRsIrT",

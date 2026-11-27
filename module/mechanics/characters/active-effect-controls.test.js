@@ -42,8 +42,9 @@ function setupGlobals({ effects = [], macros = [], speaker = { actor: "actor1" }
     },
     actors: { get: () => actor, tokens: {} },
     macros: { find: (fn) => macros.find(fn) ?? null },
-    user: { assignHotbarMacro: (macro, slot) => assigned.push({ macro, slot }) },
+    user: { id: "user1", assignHotbarMacro: (macro, slot) => assigned.push({ macro, slot }) },
   };
+  global.CONST = { DOCUMENT_OWNERSHIP_LEVELS: { OWNER: 3 } };
 
   return { actor };
 }
@@ -71,9 +72,20 @@ describe("createEffectMacro", () => {
       type: "script",
       img: "icons/svg/upgrade.svg",
       command: 'game.essence20.toggleEffectMacro("abc", "Field Adrenaline");',
+      ownership: { user1: 3 },
       flags: { "essence20.effectMacro": true },
     });
     expect(assigned).toEqual([{ macro: expect.objectContaining({ name: "Field Adrenaline" }), slot: 3 }]);
+  });
+
+  test("escapes quotes in the effect name so the command stays valid JavaScript", async () => {
+    setupGlobals({ uuidDoc: makeEffect({ id: "abc", name: '"Snake" Rush' }) });
+
+    await createEffectMacro({ type: "ActiveEffect", uuid: "Actor.x.ActiveEffect.abc" }, 1);
+
+    const command = createdMacros[0].command;
+    expect(command).toBe('game.essence20.toggleEffectMacro("abc", "\\"Snake\\" Rush");');
+    expect(() => new Function(command)).not.toThrow();
   });
 
   test("falls back to a default image when the effect has none", async () => {

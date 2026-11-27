@@ -46,7 +46,8 @@
         "type": "perk",
         "subtype": "role",
         "level": 2,
-        "choiceGroup": "yellow-2"
+        "choiceGroup": "yellow-2",
+        "choiceSwitch": true
       },
       "45b4": {
         "uuid": "Compendium.essence20.pr_crb.Item.eCTmc2BbsrCLrjkw",

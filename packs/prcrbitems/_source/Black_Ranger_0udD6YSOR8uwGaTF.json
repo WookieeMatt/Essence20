@@ -88,7 +88,8 @@
         "type": "perk",
         "subtype": "role",
         "level": 2,
-        "choiceGroup": "black-2"
+        "choiceGroup": "black-2",
+        "choiceSwitch": true
       },
       "d75f": {
         "uuid": "Compendium.essence20.pr_crb.Item.FDQFMkT2fUjxVxZY",
